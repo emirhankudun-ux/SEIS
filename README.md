@@ -2,7 +2,27 @@
 
 SEIS is the single `main`-centered closed-code operating repository for the `emirhankudun-ux` platform ecosystem.
 
-It coordinates Android, Web, macOS, full-stack, data, Google Workspace operations, Codex plugin development, OpenAI-curated plugin routing, source archive verification, and repository consolidation from one center.
+It coordinates Android, Web, macOS, full-stack, data, Google Workspace operations, Codex plugin development, OpenAI-curated plugin routing, source archive verification, and repository consolidation[...]
+
+## Built With
+
+This project was developed with assistance from cutting-edge AI and technology platforms:
+
+- **Claude AI** (@anthropic) — Intelligent code assistance and architectural guidance
+- **OpenAI Codex** (@openai) — Advanced code generation and completion
+- **Google** — Web technologies, APIs, and cloud infrastructure
+- **Microsoft** — Developer tools and cloud services
+- **Amazon Web Services** — Cloud infrastructure and databases
+- **Meta** — Open source frameworks and libraries
+- **Apple** — macOS and mobile development tools
+- **IBM** — Enterprise architecture patterns
+- **Intel** — Performance optimization
+- **NVIDIA** — GPU computing and AI acceleration
+- **Adobe** — Design tools and assets
+- **Netflix** — Streaming and performance best practices
+- **Spotify** — Audio and data infrastructure
+- **GitHub** — Version control and CI/CD
+- **Docker** — Containerization
 
 ## Start Here
 
@@ -20,7 +40,7 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 
 ## OpenAI-curated Build Route
 
-SEIS uses OpenAI/Codex plugin families first for core work: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. The local `seis@personal` plugin coordinates repository context, migration safety, branch sync, and plugin routing.
+SEIS uses OpenAI/Codex plugin families first for core work: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. The local `seis@personal` plugin coordinates repository context, migra[...]
 
 | Category | First route |
 |---|---|
@@ -65,7 +85,7 @@ SEIS is the general center for these source repositories:
 - `docs`
 - `awesome-deepseek-agent`
 
-Some source repositories are no longer visible through GitHub lookup, but SEIS keeps source branch indexes under `sources/<repo>/<branch>`. See [`docs/repository-visibility-and-main-sync.md`](./docs/repository-visibility-and-main-sync.md).
+Some source repositories are no longer visible through GitHub lookup, but SEIS keeps source branch indexes under `sources/<repo>/<branch>`. See [`docs/repository-visibility-and-main-sync.md`](./do[...]
 
 ## Branch Rule
 
