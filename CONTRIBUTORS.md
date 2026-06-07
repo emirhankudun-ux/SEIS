@@ -1,19 +1,7 @@
 Contributors
 
-Bu proje katkıda bulunanların listesini içerir. Aşağıda, talep üzerine eklenen tanınmış teknoloji şirketleri ve GitHub organizasyon adları yer almaktadır. (Not: Bunlar bireysel katkıcılar değil, halka açık GitHub organizasyon hesaplarıdır.)
+Bu depoya katkıda bulunanlar:
 
-- Google (@google)
-- Microsoft (@microsoft)
-- Amazon Web Services (@aws)
-- Meta / Facebook (@facebook)
-- Apple (@apple)
-- IBM (@IBM)
-- Intel (@intel)
-- NVIDIA (@NVIDIA)
-- Adobe (@adobe)
-- Netflix (@netflix)
-- Spotify (@spotify)
-- GitHub (@github)
-- Docker (@docker)
+- Emirhan Kudun (@emirhankudun-ux) — Kurucu, tasarım, mühendislik
 
-Katkıda bulunmak isteyen bireyler veya organizasyonlar lütfen bir issue açsın veya pull request gönderin.
+Katkıda bulunmak istersen lütfen CONTRIBUTING.md dosyasını oku ve bir issue aç veya bir pull request gönder.
