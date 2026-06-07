@@ -34,6 +34,27 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 - Legacy files must be analyzed before migration and must not be copied directly into the clean app surface.
 - Documentation is part of system integrity.
 
+## Multi-AI Assistant Model
+
+- Treat Codex as the primary coordinator for local repo work, terminal tasks, Git flow, installation, verification, and final integration.
+- Use Claude Code for deep code reasoning, refactors, architecture review, bug analysis, and high-risk implementation review.
+- Use Gemini CLI or Gemini Code Assist for broad-context reading, documentation synthesis, research-heavy tasks, and Google ecosystem workflows.
+- Use OpenCode, Aider, Qwen Code, or similar assistants as scoped implementation partners, second opinions, or fast patch generators.
+- Keep exactly one assistant in writer mode at a time. Other assistants should operate as reviewers, researchers, planners, or explainers unless explicitly handed the writer role.
+- Before switching writer role between assistants, inspect `git status`, summarize active changes, and preserve unrelated user work.
+- Do not let assistants overwrite each other's edits without a human-readable handoff note or a clean Git diff review.
+- Use branch-based isolation for risky work, broad refactors, generated assets, dependency changes, or experiments from secondary assistants.
+- Never place API keys, tokens, private credentials, `.env` contents, or personal data into prompts, commits, logs, generated docs, or agent handoff files.
+- Prefer small commits with clear scope: install/setup commits, governance-doc commits, feature commits, and fix commits should stay separate.
+
+## AI Handoff Workflow
+
+- Start with a short objective, affected paths, expected output, and acceptance checks.
+- Let one assistant implement, then ask a different assistant to review only the resulting diff when the change is important.
+- Validate with the lightest reliable checks first, then scale testing only when the blast radius justifies it.
+- Record durable operating decisions in repository docs instead of leaving them only in chat history.
+- When an assistant is uncertain, it should name the uncertainty, gather local evidence, and avoid broad speculative rewrites.
+
 ## iCloud Workspace Intake
 
 - Treat `/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
