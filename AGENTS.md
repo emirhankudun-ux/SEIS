@@ -36,10 +36,12 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 
 ## Multi-AI Assistant Model
 
-- Treat Codex as the primary coordinator for local repo work, terminal tasks, Git flow, installation, verification, and final integration.
+- Treat Codex, powered by OpenAI GPT/ChatGPT models, as the primary language and reasoning layer for local repo work, terminal tasks, Git flow, installation, verification, and final integration.
+- Prefer OpenAI GPT/ChatGPT models for the main project voice, Turkish/English reasoning, durable planning, and final synthesis.
 - Use Claude Code for deep code reasoning, refactors, architecture review, bug analysis, and high-risk implementation review.
 - Use Gemini CLI or Gemini Code Assist for broad-context reading, documentation synthesis, research-heavy tasks, and Google ecosystem workflows.
 - Use OpenCode, Aider, Qwen Code, or similar assistants as scoped implementation partners, second opinions, or fast patch generators.
+- Keep local Llama/Ollama-style models optional and secondary: use them for offline drafts, private local notes, lightweight summaries, or experiments, not as the canonical SEIS language layer.
 - Keep exactly one assistant in writer mode at a time. Other assistants should operate as reviewers, researchers, planners, or explainers unless explicitly handed the writer role.
 - Before switching writer role between assistants, inspect `git status`, summarize active changes, and preserve unrelated user work.
 - Do not let assistants overwrite each other's edits without a human-readable handoff note or a clean Git diff review.
