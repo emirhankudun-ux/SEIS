@@ -1,38 +1,41 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+name: Bug Raporu
+about: Bir hata buldum — çözülmesine yardımcı ol
+title: '[BUG] '
+labels: bug
+assignees: emirhankudun-ux
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Hatanın Açıklaması
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+Hatayı net bir şekilde ve kısa açıkla.
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## Reproduksiyon Adımları
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+1. Adım 1...
+2. Adım 2...
+3. Adım 3...
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+## Beklenen Davranış
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+Ne olması gerekiyordu?
 
-**Additional context**
-Add any other context about the problem here.
+## Gerçek Davranış
+
+Ne oldu?
+
+## Ekran Görüntüsü/Video
+
+Eğer mümkünse bir ekran görüntüsü veya video ekle.
+
+## Ortam Bilgisi
+
+- İşletim Sistemi: (ör. Windows 11, macOS 14)
+- Browser: (ör. Chrome 120)
+- Node.js Versiyonu: (ör. 18.x)
+- Proje Versiyonu: (ör. 1.0.0)
+
+## Ek Notlar
+
+Başka bir şey var mı?

@@ -1,20 +1,28 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+name: Özellik İsteği
+about: Yeni bir özellik için fikir öner
+title: '[FEATURE] '
+labels: enhancement
+assignees: emirhankudun-ux
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Özelliğin Açıklaması
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Ne istiyorsun? Kısaca ve net açıkla.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Neden Gerekli?
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Bu özellik ne sorunu çözer? Kimin için değerlidir?
+
+## Önerilen Çözüm
+
+Bunu nasıl uygulamak istiyorsun? (İsteğe bağlı)
+
+## Alternatifler
+
+Senin fikrine göre başka yollar var mı?
+
+## Ek Bağlam
+
+Ekran görüntüsü, mockup veya diğer faydalı bilgiler.
