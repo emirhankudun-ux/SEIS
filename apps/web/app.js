@@ -90,7 +90,10 @@ const state = {
   qualitySignals: [],
   thresholds: [],
   publishGate: null,
-  filter: "all"
+  filter: "all",
+  pluginRegistry: null,
+  buildWorkbench: null,
+  workspaceOps: null
 };
 
 function el(selector) {
@@ -540,6 +543,117 @@ function renderQualityConsole() {
   }
 }
 
+function renderPluginStatus() {
+  const bar = el("[data-cockpit-status-bar]");
+  if (!bar) return;
+
+  const registry = state.pluginRegistry;
+  if (!registry) {
+    bar.replaceChildren(create("p", "", "Plugin registry unavailable."));
+    return;
+  }
+
+  const lanes = registry.lanes || {};
+  const laneNames = Object.keys(lanes);
+  const totalAssignments = laneNames.reduce(
+    (sum, key) => sum + (lanes[key].active_installed || []).length,
+    0
+  );
+
+  const countCard = create("article", "system-card status-active");
+  countCard.append(
+    create("span", "", "Plugins"),
+    create("strong", "", String(registry.installed_enabled_count)),
+    create("h3", "", "Installed and enabled"),
+    create("p", "", `Not installed: ${registry.not_installed_count}. All assigned to lanes.`)
+  );
+
+  const laneCard = create("article", "system-card status-ready");
+  laneCard.append(
+    create("span", "", "Lanes"),
+    create("strong", "", String(laneNames.length)),
+    create("h3", "", "Active platform lanes"),
+    create("p", "", `${totalAssignments} lane assignments across ${laneNames.length} lanes.`)
+  );
+
+  const policyCard = create("article", "system-card status-synced");
+  policyCard.append(
+    create("span", "", "Policy"),
+    create("strong", "", "OpenAI"),
+    create("h3", "", "OpenAI-first active"),
+    create("p", "", "Prefer openai-curated, openai-bundled, openai-primary-runtime families first.")
+  );
+
+  bar.replaceChildren(countCard, laneCard, policyCard);
+}
+
+function renderBuildWorkbench() {
+  const grid = el("[data-workbench-grid]");
+  if (!grid) return;
+
+  const workbench = state.buildWorkbench;
+  if (!workbench?.sprint_1?.modules) {
+    grid.replaceChildren(create("p", "", "Workbench data unavailable."));
+    return;
+  }
+
+  grid.replaceChildren();
+  const order = workbench.next_build_order || [];
+  const modules = [...workbench.sprint_1.modules].sort((a, b) => {
+    const ai = order.indexOf(a.id);
+    const bi = order.indexOf(b.id);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  modules.forEach((module) => {
+    const statusClass =
+      module.status === "active"
+        ? "status-active"
+        : module.status === "ready_to_build"
+          ? "status-ready"
+          : "status-watch";
+    const label = module.id.replaceAll("_", " ");
+    const short =
+      module.deliverable.length > 72
+        ? module.deliverable.slice(0, 72) + "…"
+        : module.deliverable;
+    const card = create("article", `system-card ${statusClass}`);
+    card.append(
+      create("span", "", module.lane || ""),
+      create("strong", "", label),
+      create("h3", "", short),
+      create("p", "", `${module.owner_path} — ${module.status.replaceAll("_", " ")}`)
+    );
+    grid.append(card);
+  });
+}
+
+function renderWorkspaceOps() {
+  const list = el("[data-workspace-links]");
+  if (!list) return;
+
+  const ops = state.workspaceOps;
+  if (!ops) {
+    list.replaceChildren(create("p", "", "Workspace ops unavailable."));
+    return;
+  }
+
+  list.replaceChildren();
+  const driveItems = Object.values(ops.drive || {});
+  const calendarItems = Object.values(ops.calendar || {});
+
+  [...driveItems, ...calendarItems].forEach((item) => {
+    const isCalendar = Boolean(item.event_id || item.start);
+    const card = create("article", "marketplace-source-card status-ready");
+    const link = create("a", "workspace-link", item.title);
+    link.href = item.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    card.append(create("span", "", isCalendar ? "Calendar" : "Drive"), link);
+    list.append(card);
+  });
+}
+
 async function fetchJson(path) {
   const response = await fetch(path);
   if (!response.ok) throw new Error(`${path} failed: ${response.status}`);
@@ -622,6 +736,30 @@ async function loadQualityConsole() {
       }
     ];
     state.thresholds = [];
+  }
+}
+
+async function loadPluginRegistry() {
+  try {
+    state.pluginRegistry = await fetchJson("../../data/installed-codex-plugins-2026-06-05.json");
+  } catch (_error) {
+    state.pluginRegistry = null;
+  }
+}
+
+async function loadBuildWorkbench() {
+  try {
+    state.buildWorkbench = await fetchJson("../../data/openai-curated-build-workbench-2026-06-05.json");
+  } catch (_error) {
+    state.buildWorkbench = null;
+  }
+}
+
+async function loadWorkspaceOps() {
+  try {
+    state.workspaceOps = await fetchJson("../../integrations/google-workspace.json");
+  } catch (_error) {
+    state.workspaceOps = null;
   }
 }
 
@@ -761,7 +899,10 @@ async function init() {
     loadMarketplace(),
     loadCinematicEngine(),
     loadQualityConsole(),
-    loadPublishGate()
+    loadPublishGate(),
+    loadPluginRegistry(),
+    loadBuildWorkbench(),
+    loadWorkspaceOps()
   ]);
   renderGapBoard();
   renderCapabilities();
@@ -769,6 +910,9 @@ async function init() {
   renderCommands();
   renderQualityConsole();
   renderPublishGate();
+  renderPluginStatus();
+  renderBuildWorkbench();
+  renderWorkspaceOps();
 }
 
 init().catch((error) => {
@@ -780,4 +924,7 @@ init().catch((error) => {
   renderMarketplace();
   renderQualityConsole();
   renderPublishGate();
+  renderPluginStatus();
+  renderBuildWorkbench();
+  renderWorkspaceOps();
 });
