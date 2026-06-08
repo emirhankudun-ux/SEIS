@@ -927,6 +927,131 @@
       "language": "Factor",
       "role": "concatenative stack-based language release and motion policy",
       "entrypoints": ["polyglot/factor/release_policy.factor"]
+    },
+    {
+      "language": "CSS",
+      "role": "design-token and motion-preference release badge styles",
+      "entrypoints": ["polyglot/css/release_policy.css"]
+    },
+    {
+      "language": "HLSL",
+      "role": "GPU shader release motion policy for real-time graphics",
+      "entrypoints": ["polyglot/hlsl/release_policy.hlsl"]
+    },
+    {
+      "language": "CUDA",
+      "role": "GPU-parallel batch release gate evaluation",
+      "entrypoints": ["polyglot/cuda/release_policy.cu"]
+    },
+    {
+      "language": "Delphi",
+      "role": "Object Pascal Windows-native release policy model",
+      "entrypoints": ["polyglot/delphi/SeisReleasePolicy.pas"]
+    },
+    {
+      "language": "AppleScript",
+      "role": "macOS automation release policy orchestration",
+      "entrypoints": ["polyglot/applescript/release_policy.applescript"]
+    },
+    {
+      "language": "ActionScript",
+      "role": "Flash/AIR legacy release policy and motion model",
+      "entrypoints": ["polyglot/actionscript/SeisReleasePolicy.as"]
+    },
+    {
+      "language": "BASIC",
+      "role": "educational line-numbered release policy program",
+      "entrypoints": ["polyglot/basic/release_policy.bas"]
+    },
+    {
+      "language": "Arduino",
+      "role": "embedded microcontroller release and motion policy",
+      "entrypoints": ["polyglot/arduino/release_policy.ino"]
+    },
+    {
+      "language": "SAS",
+      "role": "statistical analysis release readiness model",
+      "entrypoints": ["polyglot/sas/release_policy.sas"]
+    },
+    {
+      "language": "DAX",
+      "role": "Power BI data model release readiness measures",
+      "entrypoints": ["polyglot/dax/release_policy.dax"]
+    },
+    {
+      "language": "JSX",
+      "role": "React JSX release gate UI with reduced-motion hook",
+      "entrypoints": ["polyglot/jsx/SeisReleasePolicy.jsx"]
+    },
+    {
+      "language": "Pine Script",
+      "role": "TradingView chart indicator for release readiness signals",
+      "entrypoints": ["polyglot/pinescript/release_policy.pine"]
+    },
+    {
+      "language": "KQL",
+      "role": "Kusto query language release telemetry analysis",
+      "entrypoints": ["polyglot/kql/release_policy.kql"]
+    },
+    {
+      "language": "SPSS",
+      "role": "statistical release readiness analysis macro",
+      "entrypoints": ["polyglot/spss/release_policy.sps"]
+    },
+    {
+      "language": "Stata",
+      "role": "econometric release readiness do-file analysis",
+      "entrypoints": ["polyglot/stata/release_policy.do"]
+    },
+    {
+      "language": "MicroPython",
+      "role": "embedded MicroPython release gate for microcontrollers",
+      "entrypoints": ["polyglot/micropython/release_policy.py"]
+    },
+    {
+      "language": "Metal",
+      "role": "Apple GPU Metal shader release motion policy",
+      "entrypoints": ["polyglot/metal/release_policy.metal"]
+    },
+    {
+      "language": "OpenCL",
+      "role": "cross-platform GPU compute release gate kernel",
+      "entrypoints": ["polyglot/opencl/release_policy.cl"]
+    },
+    {
+      "language": "G-Code",
+      "role": "CNC machine release phase and motion policy program",
+      "entrypoints": ["polyglot/gcode/release_policy.gcode"]
+    },
+    {
+      "language": "Logo",
+      "role": "educational turtle-graphics release policy program",
+      "entrypoints": ["polyglot/logo/release_policy.logo"]
+    },
+    {
+      "language": "Stylus",
+      "role": "CSS preprocessor release badge and motion styles",
+      "entrypoints": ["polyglot/stylus/release_policy.styl"]
+    },
+    {
+      "language": "VBScript",
+      "role": "Windows scripting release policy automation",
+      "entrypoints": ["polyglot/vbscript/release_policy.vbs"]
+    },
+    {
+      "language": "MQL5",
+      "role": "MetaTrader release gate and motion policy script",
+      "entrypoints": ["polyglot/mql5/SeisReleasePolicy.mq5"]
+    },
+    {
+      "language": "Puppet",
+      "role": "infrastructure-as-code release policy and deploy gate",
+      "entrypoints": ["polyglot/puppet/release_policy.pp"]
+    },
+    {
+      "language": "Structured Text",
+      "role": "IEC 61131-3 PLC release gate and motion policy program",
+      "entrypoints": ["polyglot/structured-text/release_policy.st"]
     }
   ]
 }

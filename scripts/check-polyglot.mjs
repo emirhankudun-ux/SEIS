@@ -179,6 +179,31 @@ const requiredFiles = [
   "polyglot/nickel/release-policy.ncl",
   "polyglot/io/release_policy.io",
   "polyglot/factor/release_policy.factor",
+  "polyglot/css/release_policy.css",
+  "polyglot/hlsl/release_policy.hlsl",
+  "polyglot/cuda/release_policy.cu",
+  "polyglot/delphi/SeisReleasePolicy.pas",
+  "polyglot/applescript/release_policy.applescript",
+  "polyglot/actionscript/SeisReleasePolicy.as",
+  "polyglot/basic/release_policy.bas",
+  "polyglot/arduino/release_policy.ino",
+  "polyglot/sas/release_policy.sas",
+  "polyglot/dax/release_policy.dax",
+  "polyglot/jsx/SeisReleasePolicy.jsx",
+  "polyglot/pinescript/release_policy.pine",
+  "polyglot/kql/release_policy.kql",
+  "polyglot/spss/release_policy.sps",
+  "polyglot/stata/release_policy.do",
+  "polyglot/micropython/release_policy.py",
+  "polyglot/metal/release_policy.metal",
+  "polyglot/opencl/release_policy.cl",
+  "polyglot/gcode/release_policy.gcode",
+  "polyglot/logo/release_policy.logo",
+  "polyglot/stylus/release_policy.styl",
+  "polyglot/vbscript/release_policy.vbs",
+  "polyglot/mql5/SeisReleasePolicy.mq5",
+  "polyglot/puppet/release_policy.pp",
+  "polyglot/structured-text/release_policy.st",
   "server/php/health.php",
   "server/node/static-server.mjs",
   "server/express/plugin-source-routes.mjs",
@@ -199,8 +224,8 @@ for (const file of requiredFiles) {
 if (existsSync("polyglot/manifest.json")) {
   const manifest = JSON.parse(readFileSync("polyglot/manifest.json", "utf8"));
   const languages = manifest.languages || [];
-  if (languages.length < 180) {
-    failures.push("polyglot manifest must include at least 180 language/config surfaces");
+  if (languages.length < 205) {
+    failures.push("polyglot manifest must include at least 205 language/config surfaces");
   }
   for (const language of languages) {
     for (const entrypoint of language.entrypoints || []) {
