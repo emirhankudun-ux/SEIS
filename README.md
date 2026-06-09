@@ -11,6 +11,9 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 - Closed-code operating brief: [`SEIS_CLOSED_CODE.md`](./SEIS_CLOSED_CODE.md)
 - Closed-code license notice: [`LICENSE`](./LICENSE)
 - Architecture: [`docs/platform/seis-closed-code-architecture.md`](./docs/platform/seis-closed-code-architecture.md)
+- SEIS evolution model: [`docs/strategy/seis-evolution-model.md`](./docs/strategy/seis-evolution-model.md)
+- GitHub remote configuration: [`docs/deployment/github-remote-configuration.md`](./docs/deployment/github-remote-configuration.md)
+- Publish gate contract: [`docs/deployment/publish-gate-contract.md`](./docs/deployment/publish-gate-contract.md)
 - Plugin stack: [`docs/platform/plugin-stack.md`](./docs/platform/plugin-stack.md)
 - Google Workspace ops: [`docs/platform/google-workspace-ops.md`](./docs/platform/google-workspace-ops.md)
 - Roadmap: [`roadmap/seis-closed-code-backlog.md`](./roadmap/seis-closed-code-backlog.md)
@@ -82,6 +85,12 @@ Some source repositories are no longer visible through GitHub lookup, but SEIS k
 
 ```bash
 npm run check:workspace
+npm run check:seis-evolution-model
+npm run check:github-remote-configuration
+npm run check:publish-gate-contract
+npm run check:aggressive-execution-plan
+npm run check:aggressive-local-cycle
+npm run check:aggressive-safety-firewall
 npm run check:release-sync
 npm run check:ai-stack
 npm run check:cloud-environment

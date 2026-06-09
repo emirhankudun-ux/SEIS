@@ -1,0 +1,63 @@
+{
+  "id": "seis-publish-gate-contract",
+  "version": 1,
+  "status": "active",
+  "purpose": "Keep local GitHub publication decisions explicit by separating configured remote state from push readiness.",
+  "remote": {
+    "name": "origin",
+    "url": "https://github.com/emirhankudun-ux/UIX-Apps.git",
+    "targetBranch": "UIXAppTTR",
+    "acceptedLocalBranches": [
+      "work",
+      "UIXAppTTR"
+    ]
+  },
+  "readinessLevels": [
+    {
+      "id": "configured",
+      "meaning": "The intended GitHub remote exists in local git config.",
+      "allows": [
+        "local validation",
+        "commit creation",
+        "readiness reporting"
+      ],
+      "blocks": [
+        "push claim",
+        "deployment claim"
+      ]
+    },
+    {
+      "id": "publish-preflight",
+      "meaning": "The working tree is clean, branch target is UIXAppTTR, upstream is origin/UIXAppTTR, and GitHub auth is ready.",
+      "allows": [
+        "bounded push preflight",
+        "fast-forward-safe publish attempt"
+      ],
+      "blocks": [
+        "automatic deploy without confirmed target"
+      ]
+    },
+    {
+      "id": "deployment-ready",
+      "meaning": "Publish preflight is ready and the server/deployment target has explicit domain, path, owner, and rollback confirmation.",
+      "allows": [
+        "release artifact upload after human confirmation"
+      ],
+      "blocks": [
+        "unconfirmed overwrite",
+        "branch cleanup without review"
+      ]
+    }
+  ],
+  "currentEnvironmentPolicy": {
+    "expectedResult": "configured-but-not-publish-ready",
+    "reason": "This execution environment can configure and validate the remote locally, but publication remains blocked until UIXAppTTR branch state and GitHub authentication are proven.",
+    "networkLimitation": "CONNECT tunnel failed, response 403"
+  },
+  "qualityCommands": [
+    "npm run check:publish-gate-contract",
+    "npm run check:github-remote-configuration",
+    "npm run automation:publish-readiness"
+  ],
+  "rollback": "If the GitHub target changes, reset origin and update this contract before any push or deployment claim."
+}

@@ -1,0 +1,249 @@
+{
+  "id": "seis-evolution-model",
+  "version": 1,
+  "branch": "UIXAppTTR",
+  "mode": "calm-ai-native-evolution",
+  "purpose": "Keep GitHub-hosted SEIS improvement work modular, humane, observable, and rollback-safe while the ecosystem grows across design, code, content, plugins, and deployment surfaces.",
+  "operatingPrinciples": [
+    "start from the smallest reversible slice",
+    "preserve accessibility and reduced-motion support before adding spectacle",
+    "make every broad operating rule traceable as documentation or a machine-readable record",
+    "prefer source clarity and governance over builder convenience",
+    "validate with the lightest check that proves the change"
+  ],
+  "maturityLevels": [
+    {
+      "level": 1,
+      "id": "foundation",
+      "name": "Foundation Integrity",
+      "intent": "Confirm the repository has a stable operating spine before expansion.",
+      "entrySignals": [
+        "clean working tree before new work",
+        "nearest AGENTS.md instructions reviewed",
+        "target files and rollback path identified"
+      ],
+      "exitSignals": [
+        "core documentation remains discoverable",
+        "machine-readable records parse successfully",
+        "focused checks pass without dependency expansion"
+      ]
+    },
+    {
+      "level": 2,
+      "id": "experience",
+      "name": "Calm Experience System",
+      "intent": "Improve user-facing interfaces with restrained cinematic hierarchy and low cognitive load.",
+      "entrySignals": [
+        "content purpose is explicit",
+        "accessibility and motion constraints are named",
+        "visual changes are scoped to one surface"
+      ],
+      "exitSignals": [
+        "semantic structure stays intact",
+        "prefers-reduced-motion remains supported",
+        "mobile and performance budgets are respected"
+      ]
+    },
+    {
+      "level": 3,
+      "id": "automation",
+      "name": "Governed Automation",
+      "intent": "Add AI-native and script-driven acceleration only when it remains auditable and reversible.",
+      "entrySignals": [
+        "automation purpose is mapped to a repository record",
+        "manual fallback is available",
+        "publish claims are blocked until branch and auth state are explicit"
+      ],
+      "exitSignals": [
+        "automation has a focused check command",
+        "outputs are committed as traceable artifacts when needed",
+        "no forced push, deploy, or destructive cleanup is introduced"
+      ]
+    },
+    {
+      "level": 4,
+      "id": "platform",
+      "name": "Platform Readiness",
+      "intent": "Prepare SEIS for deployment, plugin routing, and cross-surface growth without losing source clarity.",
+      "entrySignals": [
+        "hosting or builder target is explicit",
+        "integration source is trusted or isolated",
+        "server/upload target remains gated until confirmed"
+      ],
+      "exitSignals": [
+        "deployment handoff artifacts are current",
+        "plugin and connector use stays family-routed",
+        "release readiness is proven before shipment"
+      ]
+    }
+  ],
+  "developmentLoop": [
+    {
+      "phase": "sense",
+      "question": "What is the smallest GitHub-visible SEIS improvement that matters now?",
+      "proof": "One target surface, one outcome, and one rollback path are named."
+    },
+    {
+      "phase": "shape",
+      "question": "Which model layer should change: experience, governance, automation, content, or deployment?",
+      "proof": "The changed layer has a human-readable doc or machine-readable record."
+    },
+    {
+      "phase": "ship-local",
+      "question": "Can the change be validated locally without broad dependency or build pressure?",
+      "proof": "Focused npm/script checks pass and the worktree is ready for commit."
+    },
+    {
+      "phase": "publish-gated",
+      "question": "Are branch, remote, authentication, and deployment claims explicit?",
+      "proof": "Publication is claimed only after the UIXAppTTR branch contract and GitHub readiness are known."
+    }
+  ],
+  "qualityGates": [
+    {
+      "id": "model-record",
+      "command": "npm run check:seis-evolution-model",
+      "scope": "Validate this SEIS evolution model and its paired strategy document."
+    },
+    {
+      "id": "workspace-routing",
+      "command": "npm run check:workspace",
+      "scope": "Confirm the working tree remains in the expected SEIS/UIXAppTTR routing shape."
+    },
+    {
+      "id": "development-process",
+      "command": "node scripts/check-development-process.mjs",
+      "scope": "Confirm the development cadence and remote-claim safeguards remain aligned."
+    }
+  ],
+  "rollbackPolicy": {
+    "default": "Revert the smallest commit or restore the previous JSON/doc pair.",
+    "blocks": [
+      "large binary imports",
+      "nested Git repository intake",
+      "automatic deploy without confirmed target",
+      "remote branch deletion without explicit authentication and branch review"
+    ]
+  },
+  "currentFocus": {
+    "id": "github-seis-model-hardening",
+    "status": "active",
+    "intent": "Turn the evolution model from a descriptive artifact into an actionable operating layer for the next SEIS increments.",
+    "primaryBacklogIds": [
+      "SEIS-001",
+      "SEIS-002",
+      "SEIS-003",
+      "SEIS-005",
+      "SEIS-006"
+    ],
+    "decisionBias": "Improve the static, accessible, rollback-safe foundation before adding frameworks, deploy automation, or heavier visual systems."
+  },
+  "activationQueue": [
+    {
+      "id": "evo-001",
+      "backlogId": "SEIS-001",
+      "layer": "experience",
+      "title": "Refine the development cockpit hierarchy",
+      "nextAction": "Audit the current cockpit sections and improve one visible hierarchy issue without changing the dependency stack.",
+      "acceptanceCriteria": [
+        "one public interface section has clearer editorial hierarchy",
+        "keyboard and semantic structure remain intact",
+        "reduced-motion behavior is unchanged"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "rollback": "Restore the previous static markup and style block for the touched section."
+    },
+    {
+      "id": "evo-002",
+      "backlogId": "SEIS-002",
+      "layer": "experience",
+      "title": "Tune mobile motion timing",
+      "nextAction": "Reduce any mobile reveal or transition pressure only after checking the current motion policy.",
+      "acceptanceCriteria": [
+        "prefers-reduced-motion remains honored",
+        "mobile animation remains subtle and non-blocking",
+        "no GPU-expensive effect is added"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "rollback": "Restore the prior motion constants or CSS transition values."
+    },
+    {
+      "id": "evo-003",
+      "backlogId": "SEIS-003",
+      "layer": "deployment",
+      "title": "Confirm production server target",
+      "nextAction": "Collect domain, host, document root, upload method, and rollback path before any upload claim.",
+      "acceptanceCriteria": [
+        "server target fields are explicit",
+        "release rollback path is documented",
+        "automatic deploy remains blocked until confirmation"
+      ],
+      "validationProfile": "expandedFoundation",
+      "rollback": "Revert target records and keep the local release package unchanged."
+    },
+    {
+      "id": "evo-004",
+      "backlogId": "SEIS-005",
+      "layer": "platform",
+      "title": "Choose the mobile starting path",
+      "nextAction": "Compare PWA-first, Expo, and native paths against accessibility, motion, cost, and rollback constraints.",
+      "acceptanceCriteria": [
+        "mobile path decision has a documented rationale",
+        "installability and touch ergonomics are considered",
+        "native expansion is not started before the path decision"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "rollback": "Reopen the decision record and return to PWA-first static operation."
+    },
+    {
+      "id": "evo-005",
+      "backlogId": "SEIS-006",
+      "layer": "automation",
+      "title": "Keep agent workstreams inside UIXAppTTR",
+      "nextAction": "Record agent-driven changes as small UIXAppTTR commits with focused validators and no long-lived branch sprawl.",
+      "acceptanceCriteria": [
+        "agent output is traceable to repository records",
+        "no forced push or remote branch deletion is introduced",
+        "work is committed only after focused checks pass"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "rollback": "Revert the smallest agent commit and preserve branch history."
+    }
+  ],
+  "decisionMatrix": [
+    {
+      "when": "A request is broad or strategic",
+      "route": "Create or update a governance or strategy record before editing runtime surfaces.",
+      "avoid": "Untraceable broad rewrites or builder-only changes."
+    },
+    {
+      "when": "A request changes visible UI",
+      "route": "Make one calm, accessible, reduced-motion-aware interface slice.",
+      "avoid": "Dense animation, visual chaos, or dependency-heavy framework migration."
+    },
+    {
+      "when": "A request asks for deployment or publishing",
+      "route": "Check branch, remote, auth, target, artifact, and rollback readiness first.",
+      "avoid": "Automatic upload or remote shipment claims before explicit target confirmation."
+    },
+    {
+      "when": "A request asks for automation or AI-agent acceleration",
+      "route": "Keep outputs auditable through records, focused validators, and small commits.",
+      "avoid": "Hidden state, unbounded tool use, or destructive cleanup."
+    }
+  ],
+  "metrics": {
+    "preferredSignals": [
+      "focused check pass rate",
+      "number of reversible slices shipped",
+      "accessibility and reduced-motion protections preserved",
+      "branch and publish claims explicitly gated"
+    ],
+    "antiSignals": [
+      "dependency growth without decision record",
+      "large binary import pressure",
+      "automatic deploy before confirmed target",
+      "branch sprawl or unreviewed remote cleanup"
+    ]
+  }
+}
