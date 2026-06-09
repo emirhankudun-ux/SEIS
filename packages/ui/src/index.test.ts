@@ -1,11 +1,18 @@
 import { describe, it, expect } from "vitest";
 import {
+  SEIS_MOTION_ATTR,
   SEIS_MOTION_MODES,
   SEIS_CAPABILITY_ACTIVATION_MODES,
   SEIS_RISK_LEVELS,
   motionModeLabel,
   activationBadgeVariant,
 } from "./index";
+
+describe("SEIS_MOTION_ATTR", () => {
+  it("is the expected DOM data attribute name", () => {
+    expect(SEIS_MOTION_ATTR).toBe("data-motion-mode");
+  });
+});
 
 describe("SEIS_MOTION_MODES", () => {
   it("contains exactly cinematic, balanced, reduced", () => {
