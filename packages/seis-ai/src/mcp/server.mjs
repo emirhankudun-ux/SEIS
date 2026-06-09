@@ -1,16 +1,18 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
 
 import { resolveRepoRoot, resolveWebRoot } from "../lib/repo.mjs";
 import {
   contractCheck,
+  collectReferencedI18nKeys,
   drawingsCatalog,
   i18nGet,
   i18nSearch,
   i18nStatus,
+  loadTranslations,
   runAllChecks,
   seoAudit,
   siteConfig,
@@ -144,6 +146,68 @@ export function buildServer() {
     async () => {
       try {
         return jsonResult(siteConfig(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    "i18n_unreferenced",
+    "List translation keys that exist in translations.json but are never referenced by a data-i18n attribute in index.html or a getT() call in script.js. Useful for cleaning up dead translation copy.",
+    {},
+    async () => {
+      try {
+        const translations = loadTranslations(webRoot);
+        const referenced = new Set(collectReferencedI18nKeys(webRoot));
+        const allKeys = [...new Set(Object.values(translations).flatMap(Object.keys))].sort();
+        const unreferenced = allKeys.filter((k) => !referenced.has(k));
+        return jsonResult({ total: allKeys.length, referencedCount: referenced.size, unreferencedCount: unreferenced.length, unreferenced });
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    "workspace_status",
+    "Summary of the monorepo workspace: lists all packages under packages/ with their name, version, and whether a package.json exists. Also reports the apps/ directory contents.",
+    {},
+    async () => {
+      try {
+        const packagesDir = path.join(repoRoot, "packages");
+        const appsDir = path.join(repoRoot, "apps");
+
+        function listPackages(dir) {
+          if (!existsSync(dir)) return [];
+          return readdirSync(dir).map((entry) => {
+            const pkgJson = path.join(dir, entry, "package.json");
+            if (!existsSync(pkgJson)) return { name: entry, hasPackageJson: false };
+            const { name, version, description } = JSON.parse(readFileSync(pkgJson, "utf8"));
+            const size = dirSize(path.join(dir, entry));
+            return { name, version, description, dir: entry, hasPackageJson: true, sizeKb: Math.round(size / 1024) };
+          });
+        }
+
+        function dirSize(dir) {
+          if (!existsSync(dir)) return 0;
+          return readdirSync(dir).reduce((sum, f) => {
+            const abs = path.join(dir, f);
+            try {
+              const st = statSync(abs);
+              return sum + (st.isDirectory() && f !== "node_modules" ? dirSize(abs) : st.isFile() ? st.size : 0);
+            } catch { return sum; }
+          }, 0);
+        }
+
+        const rootPkg = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8"));
+        return jsonResult({
+          workspace: rootPkg.name,
+          version: rootPkg.version,
+          packages: listPackages(packagesDir),
+          apps: existsSync(appsDir) ? readdirSync(appsDir) : [],
+          repoRoot,
+        });
       } catch (error) {
         return errorResult(error);
       }

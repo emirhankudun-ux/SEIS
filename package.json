@@ -61,7 +61,13 @@
     "quality": "npm run check:workspace && npm run check:foundation && npm run check:release-sync && npm run check:cloud-environment && npm run check:motion-evidence && npm run check:mobile-ergonomics && npm run check:software-languages && npm run check:server-target && npm run check:code-automation-plan && npm run check:monthly-branch-hardening && npm run check:aggressive-capability-map && npm run check:trusted-marketplace-intake && npm run check:seis-trusted-marketplace-plugin && npm run check:connector-activation-report && npm run check:server-cloud-report && npm run check:seis-evolution-model && npm run check:github-remote-configuration && npm run check:publish-gate-contract",
     "check:seis-evolution-model": "node scripts/check-seis-evolution-model.mjs",
     "check:github-remote-configuration": "node scripts/check-github-remote-configuration.mjs",
-    "check:publish-gate-contract": "node scripts/check-publish-gate-contract.mjs"
+    "check:publish-gate-contract": "node scripts/check-publish-gate-contract.mjs",
+    "check:web": "node packages/seis-ai/bin/seis-check.mjs",
+    "seis:check": "node packages/seis-ai/bin/seis-check.mjs",
+    "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
+    "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
+    "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
+    "seis:test": "node --test packages/seis-ai/test/checks.test.mjs packages/seis-ai/test/i18n-write.test.mjs"
   },
   "engines": {
     "node": ">=18"
