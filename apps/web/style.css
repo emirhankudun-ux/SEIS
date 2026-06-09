@@ -65,7 +65,9 @@ body {
   font-weight: 300;
   line-height: 1.7;
   overflow-x: hidden;
-  cursor: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
 }
 ::selection { background: var(--accent); color: var(--bg); }
 

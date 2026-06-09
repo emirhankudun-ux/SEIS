@@ -215,7 +215,8 @@
     "fm.server.method": "İşlem desteklenmiyor.",
     "fm.server.spam": "Mesaj spam olarak işaretlendi.",
     "fm.server.generic": "Bir hata oluştu. Lütfen tekrar deneyin.",
-    "fm.server.noendpoint": "Form endpoint'i yapılandırılmamış."
+    "fm.server.noendpoint": "Form endpoint'i yapılandırılmamış.",
+    "fm.mailto.opening": "E-posta uygulaması açılıyor..."
   },
   "en": {
     "meta.title": "Emirhan Kudun — Graphic Designer & UI/UX Designer | Istanbul",
@@ -433,7 +434,8 @@
     "fm.server.method": "Method not allowed.",
     "fm.server.spam": "Message flagged as spam.",
     "fm.server.generic": "Something went wrong. Please try again.",
-    "fm.server.noendpoint": "Form endpoint is not configured."
+    "fm.server.noendpoint": "Form endpoint is not configured.",
+    "fm.mailto.opening": "Opening email client..."
   },
   "fr": {
     "meta.title": "Emirhan Kudun — Designer graphique & UI/UX | Istanbul",
@@ -651,7 +653,8 @@
     "fm.server.method": "Méthode non autorisée.",
     "fm.server.spam": "Message marqué comme spam.",
     "fm.server.generic": "Une erreur s'est produite. Réessayez.",
-    "fm.server.noendpoint": "Le point d'accès du formulaire n'est pas configuré."
+    "fm.server.noendpoint": "Le point d'accès du formulaire n'est pas configuré.",
+    "fm.mailto.opening": "Ouverture du client e-mail..."
   },
   "it": {
     "meta.title": "Emirhan Kudun — Graphic & UI/UX Designer | Istanbul",
@@ -869,7 +872,8 @@
     "fm.server.method": "Metodo non consentito.",
     "fm.server.spam": "Messaggio contrassegnato come spam.",
     "fm.server.generic": "Si è verificato un errore. Riprova.",
-    "fm.server.noendpoint": "L'endpoint del modulo non è configurato."
+    "fm.server.noendpoint": "L'endpoint del modulo non è configurato.",
+    "fm.mailto.opening": "Apertura client e-mail..."
   },
   "de": {
     "meta.title": "Emirhan Kudun — Grafik- & UI/UX-Designer | Istanbul",
@@ -1087,6 +1091,7 @@
     "fm.server.method": "Methode nicht erlaubt.",
     "fm.server.spam": "Nachricht als Spam markiert.",
     "fm.server.generic": "Ein Fehler ist aufgetreten. Bitte erneut versuchen.",
-    "fm.server.noendpoint": "Formular-Endpunkt ist nicht konfiguriert."
+    "fm.server.noendpoint": "Formular-Endpunkt ist nicht konfiguriert.",
+    "fm.mailto.opening": "E-Mail-Client wird geöffnet..."
   }
 }

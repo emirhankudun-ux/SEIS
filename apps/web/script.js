@@ -2066,9 +2066,29 @@
 
       var submitEndpoint = resolveSubmitEndpoint();
       if (!submitEndpoint) {
-        showFormMessage(getT("fm.server.noendpoint", currentLang) || "Form endpoint is not configured.", false);
+        var fallbackEmail = String(window.__CONTACT_EMAIL__ || "emirhan@kudun.com").trim();
+        var mailName = nameInput ? String(nameInput.value || "").trim() : "";
+        var mailUserEmail = emailInput ? String(emailInput.value || "").trim() : "";
+        var mailServiceEl = serviceInput ? serviceInput.options[serviceInput.selectedIndex] : null;
+        var mailService = mailServiceEl ? String(mailServiceEl.text || "").trim() : "";
+        var mailMessage = messageInput ? String(messageInput.value || "").trim() : "";
+        var mailSubject = "[Portfolio] " + (mailName || "İletişim");
+        var mailBody = [
+          "Ad Soyad: " + mailName,
+          "E-posta: " + mailUserEmail,
+          mailService && mailService !== (getT("fm.svc.o", currentLang) || "Seçin...") ? ("Hizmet: " + mailService) : "",
+          "",
+          "Mesaj:",
+          mailMessage
+        ].filter(Boolean).join("\n");
+        var mailtoHref = "mailto:" + encodeURIComponent(fallbackEmail) +
+          "?subject=" + encodeURIComponent(mailSubject) +
+          "&body=" + encodeURIComponent(mailBody);
+        window.open(mailtoHref, "_blank", "noopener,noreferrer");
         submitButton.classList.remove("loading");
         updateSubmitState();
+        showToast(getT("fm.mailto.opening", currentLang) || "E-posta uygulaması açılıyor...");
+        trackMetric("form_submit", { result: "mailto_fallback" });
         return;
       }
 
@@ -2228,6 +2248,7 @@
     if (!FINE_POINTER || !CAN_HOVER || isReducedMotion()) {
       dot.style.display = "none";
       ring.style.display = "none";
+      document.body.style.cursor = "auto";
       return;
     }
 
@@ -2288,7 +2309,17 @@
     });
   }
 
+  function initServiceWorker() {
+    if (!("serviceWorker" in navigator)) { return; }
+    window.addEventListener("load", function () {
+      navigator.serviceWorker
+        .register("service-worker.js", { scope: "./" })
+        .catch(function () { /* Enhancement only */ });
+    });
+  }
+
   function init() {
+    initServiceWorker();
     userMotionMode = readStoredMotionMode();
     applyMotionMode(userMotionMode, { persist: false });
     initPageLoadFade();
