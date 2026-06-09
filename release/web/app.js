@@ -94,6 +94,7 @@ const state = {
   aggressiveMap: null,
   executionPlan: null,
   localCycle: null,
+  safetyFirewall: null,
   filter: "all"
 };
 
@@ -621,6 +622,39 @@ function renderLocalCycle() {
   });
 }
 
+function renderSafetyFirewall() {
+  const panel = el("[data-safety-firewall-panel]");
+  const summary = el("[data-safety-firewall-summary]");
+  const grid = el("[data-safety-firewall-grid]");
+  if (!panel || !grid) return;
+
+  const firewall = state.safetyFirewall;
+  if (summary) {
+    const violations = firewall?.violations?.length || 0;
+    summary.textContent = `${firewall?.passed ? "Passed" : "Blocked"}; ${violations} violations; push/deploy remain blocked.`;
+  }
+
+  grid.replaceChildren();
+  if (!firewall) {
+    grid.append(create("p", "", "Safety firewall report unavailable; do not increase automation speed."));
+    return;
+  }
+
+  const boundary = create("article", "safety-firewall-card");
+  boundary.append(
+    create("span", "", "boundary"),
+    create("p", "", `${firewall.scannedCommandCount || 0} commands scanned; push allowed: ${firewall.publishBoundary?.pushAllowed ? "yes" : "no"}.`)
+  );
+
+  const stops = create("article", "safety-firewall-card");
+  stops.append(
+    create("span", "", "hard stops"),
+    create("p", "", (firewall.hardStops || []).slice(0, 4).join(" · ") || "No unsafe boundary recorded.")
+  );
+
+  grid.append(boundary, stops);
+}
+
 function renderCommands() {
   const board = el("#command-board");
   if (!board) return;
@@ -713,6 +747,20 @@ async function loadCinematicEngine() {
         action: "Keep the interface usable while engine data is unavailable."
       }
     ];
+  }
+}
+
+async function loadSafetyFirewall() {
+  try {
+    state.safetyFirewall = await fetchJson("../../content/development/aggressive-safety-firewall.json");
+  } catch (_error) {
+    state.safetyFirewall = {
+      passed: false,
+      violations: [{ id: "report-missing" }],
+      scannedCommandCount: 0,
+      publishBoundary: { pushAllowed: false },
+      hardStops: ["no push until firewall report exists"]
+    };
   }
 }
 
@@ -974,7 +1022,8 @@ async function init() {
     loadEvolutionModel(),
     loadAggressiveMap(),
     loadExecutionPlan(),
-    loadLocalCycle()
+    loadLocalCycle(),
+    loadSafetyFirewall()
   ]);
   renderGapBoard();
   renderCapabilities();
@@ -986,6 +1035,7 @@ async function init() {
   renderAggressiveLanes();
   renderExecutionPlan();
   renderLocalCycle();
+  renderSafetyFirewall();
 }
 
 init().catch((error) => {
@@ -1001,4 +1051,5 @@ init().catch((error) => {
   renderAggressiveLanes();
   renderExecutionPlan();
   renderLocalCycle();
+  renderSafetyFirewall();
 });
