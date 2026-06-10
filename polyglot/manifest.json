@@ -118,10 +118,11 @@
     },
     {
       "language": "Java",
-      "role": "drawings SHA-256 integrity ledger",
+      "role": "drawings SHA-256 integrity ledger; CSS responsive media query auditor",
       "entrypoints": [
         "polyglot/java/SeisDeployReadiness.java",
-        "polyglot/java/DrawingsChecksum.java"
+        "polyglot/java/DrawingsChecksum.java",
+        "polyglot/java/CssMediaQueryAudit.java"
       ]
     },
     {

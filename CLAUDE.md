@@ -154,6 +154,7 @@ the JS suite cannot. One command runs them all:
 | Ruby | `html_heading_audit.rb` | Heading hierarchy (1 h1, no skips) + landmark presence audit |
 | PHP | `contact-endpoint.php` | Reference form endpoint (honeypot, anti-injection) |
 | Java | `DrawingsChecksum.java` | SHA-256 ledger of the 20 drawings (`drawings.sha256`) |
+| Java | `CssMediaQueryAudit.java` | CSS responsive breakpoints + prefers-reduced-motion + print query presence |
 | Perl | `hygiene_lint.pl` | BOM / CRLF / trailing-whitespace / final-newline lint |
 | AWK | `css_var_histogram.awk` | CSS `var(--x)` token frequency; top-used + single-use suspects |
 | TypeScript | `seis_config_validator.ts` | Strict type-checked validation of manifest + site-config + translations |

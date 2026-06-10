@@ -101,7 +101,9 @@ php_lane() {
 java_lane() {
   java polyglot/java/DrawingsChecksum.java --self-test &&
   java polyglot/java/DrawingsChecksum.java verify \
-    apps/web/public/media/drawings polyglot/java/drawings.sha256
+    apps/web/public/media/drawings polyglot/java/drawings.sha256 &&
+  java polyglot/java/CssMediaQueryAudit.java --self-test &&
+  java polyglot/java/CssMediaQueryAudit.java
 }
 
 perl_lane() {
