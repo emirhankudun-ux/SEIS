@@ -242,8 +242,8 @@
     },
     {
       "language": "XML",
-      "role": "enterprise interchange release policy contract",
-      "entrypoints": ["polyglot/xml/release-policy.xml"]
+      "role": "xmllint-based sitemap.xml validator (well-formedness, namespace, hreflang, https)",
+      "entrypoints": ["polyglot/xml/seis_sitemap_check.sh"]
     },
     {
       "language": "OCaml",
@@ -329,6 +329,11 @@
       "language": "OpenAPI",
       "role": "future release health API contract",
       "entrypoints": ["polyglot/openapi/release-health.openapi.yaml"]
+    },
+    {
+      "language": "jq",
+      "role": "JSON query language — locale key parity audit with set-theory gap detection",
+      "entrypoints": ["polyglot/jq/seis_translations_audit.jq"]
     },
     {
       "language": "JSON Schema",

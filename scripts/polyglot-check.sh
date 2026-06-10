@@ -118,20 +118,34 @@ typescript_lane() {
     polyglot/typescript/seis_config_validator.ts
 }
 
+jq_lane() {
+  local out
+  out=$(jq -rf polyglot/jq/seis_translations_audit.jq apps/web/translations.json 2>&1)
+  echo "$out"
+  [[ "$out" != *"[FAIL]"* ]]
+}
+
+xml_lane() {
+  bash polyglot/xml/seis_sitemap_check.sh --self-test &&
+  bash polyglot/xml/seis_sitemap_check.sh
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
-run_lane "python     (image+icon)"      python3  python_lane
-run_lane "rust       (link audit)"      cargo    rust_lane
-run_lane "go         (serve+contract)"  go       go_lane
-run_lane "c          (utf-8)"           gcc      c_lane
-run_lane "c++        (translations)"    g++      cpp_lane
-run_lane "ruby       (i18n stats)"      ruby     ruby_lane
-run_lane "php        (contact)"         php      php_lane
-run_lane "java       (checksums)"       java     java_lane
-run_lane "perl       (hygiene)"         perl     perl_lane
-run_lane "awk        (css-vars)"        awk      awk_lane
-run_lane "sql        (audit schema)"    sqlite3  sql_lane
-run_lane "typescript (config-valid)"   ts-node  typescript_lane
+run_lane "python     (image+icon)"      python3   python_lane
+run_lane "rust       (link audit)"      cargo     rust_lane
+run_lane "go         (serve+contract)"  go        go_lane
+run_lane "c          (utf-8)"           gcc       c_lane
+run_lane "c++        (translations)"    g++       cpp_lane
+run_lane "ruby       (i18n stats)"      ruby      ruby_lane
+run_lane "php        (contact)"         php       php_lane
+run_lane "java       (checksums)"       java      java_lane
+run_lane "perl       (hygiene)"         perl      perl_lane
+run_lane "awk        (css-vars)"        awk       awk_lane
+run_lane "sql        (audit schema)"    sqlite3   sql_lane
+run_lane "typescript (config-valid)"    ts-node   typescript_lane
+run_lane "jq         (translations)"    jq        jq_lane
+run_lane "xml        (sitemap)"         xmllint   xml_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

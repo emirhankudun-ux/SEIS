@@ -180,7 +180,7 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 | Skills | `.claude/skills/seis-ai/SKILL.md` + `.claude/skills/UIX-Apps/` |
 | Plugins / commands | `/seis-audit`, `/seis-i18n` slash commands in `.claude/commands/` |
 | Quality gates | `seis-check` (i18n · seo · contract · drawings · style · perf · a11y · security) + 125-test suite + `seis-ai.yml` CI |
-| Polyglot | `polyglot/` executable suite — 12 tested toolchains (Python · Rust · Go · C · C++ · Ruby · PHP · Java · Perl · AWK · TypeScript · SQL/SQLite) via `scripts/polyglot-check.sh` + `polyglot.yml` CI; TS typings in `packages/seis-ai/types/` |
+| Polyglot | `polyglot/` executable suite — 14 tested toolchains (Python · Rust · Go · C · C++ · Ruby · PHP · Java · Perl · AWK · TypeScript · SQL/SQLite · jq · XML/xmllint) via `scripts/polyglot-check.sh` + `polyglot.yml` CI; TS typings in `packages/seis-ai/types/` |
 | GitHub governance | Protected `main`, PR #17 flow, CodeRabbit + Socket + ecc-tools bots, `docs/governance/branch-policy.md` |
 | Web | `apps/web` — 5-locale portfolio, PWA, service worker, SEO/JSON-LD |
 | Mobile / desktop | `apps/android`, `apps/macos`, `apps/fullstack` scaffolds — expansion targets |
