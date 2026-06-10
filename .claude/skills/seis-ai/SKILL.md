@@ -91,9 +91,15 @@ packages/seis-ai/
     seis-agent.mjs      # CLI runner for runAgent()
     seis-mcp.mjs        # Launches MCP server
   test/
-    checks.test.mjs     # node:test unit tests for audit functions
-    i18n-write.test.mjs # node:test unit tests for i18nAddKey
+    checks.test.mjs     # audit functions (i18n/seo/contract/drawings)
+    i18n-write.test.mjs # i18nAddKey validation + write behaviour
+    repo.test.mjs       # path traversal guard + root resolution
+    agent.test.mjs      # tool executor + agentic loop (mock client)
+    mcp-smoke.test.mjs  # spawns the real MCP server over stdio (JSON-RPC)
 ```
+
+CI: `.github/workflows/seis-ai.yml` runs the audit + full test suite on every PR
+touching `packages/seis-ai/**` or `apps/web/**`.
 
 ---
 

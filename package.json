@@ -67,7 +67,7 @@
     "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
     "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
     "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
-    "seis:test": "node --test packages/seis-ai/test/checks.test.mjs packages/seis-ai/test/i18n-write.test.mjs"
+    "seis:test": "npm test --prefix packages/seis-ai"
   },
   "engines": {
     "node": ">=18"
