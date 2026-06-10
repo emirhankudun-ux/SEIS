@@ -48,12 +48,13 @@
     },
     {
       "language": "Python",
-      "role": "binary image-header audit, PWA icon generation, and WCAG 2.1 color contrast checking",
+      "role": "binary image-header audit, PWA icon generation, WCAG 2.1 color contrast checking, and service worker PRECACHE integrity",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
         "polyglot/python/seis_icon_gen.py",
         "polyglot/python/seis_color_contrast.py",
+        "polyglot/python/seis_sw_cache_audit.py",
         "server/python/verify_release.py"
       ]
     },

@@ -48,7 +48,9 @@ python_lane() {
   python3 polyglot/python/test_seis_icon_gen.py -v 2>&1 | tail -1 &&
   python3 polyglot/python/seis_image_audit.py &&
   python3 polyglot/python/seis_color_contrast.py --self-test &&
-  python3 polyglot/python/seis_color_contrast.py
+  python3 polyglot/python/seis_color_contrast.py &&
+  python3 polyglot/python/seis_sw_cache_audit.py --self-test &&
+  python3 polyglot/python/seis_sw_cache_audit.py
 }
 
 rust_lane() {

@@ -144,6 +144,7 @@ the JS suite cannot. One command runs them all:
 | Python | `seis_image_audit.py` | JPEG/PNG/WebP dimensions from binary headers; asset budget |
 | Python | `seis_icon_gen.py` | Deterministic PWA icon PNGs from manifest colors (zero deps) |
 | Python | `seis_color_contrast.py` | WCAG 2.1 contrast ratios for all fg/bg color-token pairs (AA/AAA) |
+| Python | `seis_sw_cache_audit.py` | Service worker PRECACHE integrity — all listed files verified on disk |
 | Rust | `seis-link-audit/` | Every local href/src/url() + manifest icon resolves on disk |
 | Go | `cmd/seis-serve/` | Local preview server with production CSP/security headers |
 | Go | `cmd/seis-jsonld/` | JSON-LD schema.org Person + WebSite block validation |
