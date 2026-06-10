@@ -5,10 +5,11 @@
 // shape used by the portfolio.
 //
 // Checks:
-//   @context must be "https://schema.org"
-//   @graph must contain a Person node with name, url, @id, jobTitle, email
-//   @graph must contain a WebSite node with url, name, publisher
-//   Every sameAs URL must start with https://
+//
+//	@context must be "https://schema.org"
+//	@graph must contain a Person node with name, url, @id, jobTitle, email
+//	@graph must contain a WebSite node with url, name, publisher
+//	Every sameAs URL must start with https://
 //
 // Usage: go run ./cmd/seis-jsonld [path-to-index.html]
 // Exit:  0 PASS, 1 FAIL, 2 file not found

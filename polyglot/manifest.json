@@ -512,6 +512,11 @@
       "entrypoints": ["polyglot/sed/seis_css_vars_defined.sh"]
     },
     {
+      "language": "Bun",
+      "role": "JavaScript production code quality audit — no eval, document.write, unsafe innerHTML, console.log, or TODO markers",
+      "entrypoints": ["polyglot/bun/seis_js_quality_audit.ts"]
+    },
+    {
       "language": "Forth",
       "role": "tiny stack-language readiness policy",
       "entrypoints": ["polyglot/forth/release_policy.fs"]
