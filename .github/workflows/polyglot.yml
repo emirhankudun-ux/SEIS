@@ -17,20 +17,23 @@ on:
 
 jobs:
   polyglot-audit:
-    name: 9-language audit suite
+    name: 12-language audit suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
       # ubuntu-latest ships python3, go, rust, gcc/g++, ruby, php, java,
-      # perl and bash; the orchestrator SKIPs anything missing, so this
-      # job stays green on runner image changes while still failing on
+      # perl, awk, and sqlite3; the orchestrator SKIPs anything missing, so
+      # this job stays green on runner image changes while still failing on
       # real findings.
+      - name: Install ts-node
+        run: npm install -g ts-node typescript
+
       - name: Toolchain inventory
         run: |
-          for t in python3 cargo go gcc g++ ruby php java perl; do
-            printf '%-8s ' "$t"; command -v "$t" >/dev/null && "$t" --version 2>&1 | head -1 || echo "missing"
+          for t in python3 cargo go gcc g++ ruby php java perl awk sqlite3 ts-node; do
+            printf '%-10s ' "$t"; command -v "$t" >/dev/null && "$t" --version 2>&1 | head -1 || echo "missing"
           done
 
       - name: Run polyglot audit

@@ -101,17 +101,37 @@ perl_lane() {
   perl polyglot/perl/hygiene_lint.pl "${WEB_FILES[@]}"
 }
 
+awk_lane() {
+  awk -f polyglot/awk/css_var_histogram.awk apps/web/style.css
+}
+
+# sqlite3 may not be installed on minimal machines; the schema file is
+# tested in CI when sqlite3 is present, skipped otherwise.
+sql_lane() {
+  sqlite3 :memory: < polyglot/sql/audit_ledger.sqlite.sql
+}
+
+typescript_lane() {
+  ts-node --project polyglot/typescript/tsconfig.json \
+    polyglot/typescript/seis_config_validator.ts --self-test &&
+  ts-node --project polyglot/typescript/tsconfig.json \
+    polyglot/typescript/seis_config_validator.ts
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
-run_lane "python (image+icon)"      python3 python_lane
-run_lane "rust   (link audit)"      cargo   rust_lane
-run_lane "go     (serve+contract)"  go      go_lane
-run_lane "c      (utf-8)"           gcc     c_lane
-run_lane "c++    (translations)"    g++     cpp_lane
-run_lane "ruby   (i18n stats)"      ruby    ruby_lane
-run_lane "php    (contact)"         php     php_lane
-run_lane "java   (checksums)"       java    java_lane
-run_lane "perl   (hygiene)"         perl    perl_lane
+run_lane "python     (image+icon)"      python3  python_lane
+run_lane "rust       (link audit)"      cargo    rust_lane
+run_lane "go         (serve+contract)"  go       go_lane
+run_lane "c          (utf-8)"           gcc      c_lane
+run_lane "c++        (translations)"    g++      cpp_lane
+run_lane "ruby       (i18n stats)"      ruby     ruby_lane
+run_lane "php        (contact)"         php      php_lane
+run_lane "java       (checksums)"       java     java_lane
+run_lane "perl       (hygiene)"         perl     perl_lane
+run_lane "awk        (css-vars)"        awk      awk_lane
+run_lane "sql        (audit schema)"    sqlite3  sql_lane
+run_lane "typescript (config-valid)"   ts-node  typescript_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

@@ -15,10 +15,9 @@
     },
     {
       "language": "TypeScript",
-      "role": "audit report typings and release/plugin stack contracts",
+      "role": "strict JSON config validator (manifest, site-config, translations) + audit report type declarations",
       "entrypoints": [
-        "polyglot/typescript/release-contract.ts",
-        "polyglot/typescript/fullstack-plugin-contract.ts",
+        "polyglot/typescript/seis_config_validator.ts",
         "packages/seis-ai/types/seis-ai.d.ts"
       ]
     },
@@ -128,8 +127,8 @@
     },
     {
       "language": "SQL",
-      "role": "future release ledger schema",
-      "entrypoints": ["polyglot/sql/release_readiness_schema.sql"]
+      "role": "queryable audit-ledger schema with CHECK constraints, trigger, and views (SQLite)",
+      "entrypoints": ["polyglot/sql/audit_ledger.sqlite.sql"]
     },
     {
       "language": "Lua",
@@ -488,8 +487,8 @@
     },
     {
       "language": "AWK",
-      "role": "minimal text-ops release policy guard",
-      "entrypoints": ["polyglot/awk/release_policy.awk"]
+      "role": "CSS custom-property usage histogram — token frequency and single-use suspects",
+      "entrypoints": ["polyglot/awk/css_var_histogram.awk"]
     },
     {
       "language": "Forth",
