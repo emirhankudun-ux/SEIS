@@ -171,6 +171,11 @@ tcl_lane() {
   tclsh polyglot/tcl/seis_meta_tags_check.tcl
 }
 
+r_lane() {
+  Rscript polyglot/r/seis_translation_stats.R --self-test &&
+  Rscript polyglot/r/seis_translation_stats.R
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -194,6 +199,7 @@ run_lane "bc         (budget-check)"   bc        bc_lane
 run_lane "bun        (js-quality)"     bun       bun_lane
 run_lane "lua        (i18n-attrs)"     lua5.4    lua_lane
 run_lane "tcl        (meta-tags)"      tclsh     tcl_lane
+run_lane "r          (translation-stats)" Rscript r_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

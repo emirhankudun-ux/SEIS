@@ -527,6 +527,11 @@
       "entrypoints": ["polyglot/tcl/seis_meta_tags_check.tcl"]
     },
     {
+      "language": "R",
+      "role": "Statistical analysis of translation string length ratios across 5 locales; flags keys ≥3× longer than tr base (UI overflow risk)",
+      "entrypoints": ["polyglot/r/seis_translation_stats.R"]
+    },
+    {
       "language": "Forth",
       "role": "tiny stack-language readiness policy",
       "entrypoints": ["polyglot/forth/release_policy.fs"]
