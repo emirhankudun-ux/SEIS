@@ -28,11 +28,11 @@ packages/
 ## MCP server (auto-loaded)
 
 `.mcp.json` registers `packages/seis-ai/bin/seis-mcp.mjs` as the `seis` MCP server.
-In any Claude Code session it exposes **11 tools** and **2 resources**:
+In any Claude Code session it exposes **12 tools**, **3 prompts**, and **2 resources**:
 
 | Tool | What it checks |
 |------|---------------|
-| `run_all_checks` | Full audit in one call |
+| `run_all_checks` | Full audit in one call (5 sections) |
 | `i18n_status` | 5-locale key parity |
 | `i18n_get` | All locale values for a key |
 | `i18n_search` | Substring search across keys + values |
@@ -41,9 +41,11 @@ In any Claude Code session it exposes **11 tools** and **2 resources**:
 | `seo_audit` | 15-point SEO/PWA checklist |
 | `web_contract_check` | HTML↔JS selector contract |
 | `drawings_catalog` | Drawing file cross-check |
+| `style_audit` | CSS: undefined `var(--x)` fails; dead classes reported |
 | `site_config_get` | site-config.json reader |
 | `workspace_status` | Monorepo package inventory |
 
+Prompts: `audit_and_fix`, `add_i18n_key(key, meaning)`, `review_locale(locale)`
 Resources: `seis://web/translations.json`, `seis://web/site-config.json`
 
 ---
@@ -87,9 +89,9 @@ the site. **Always run `seis:check` after editing either file.**
 - JS: `getT("key", lang)`
 - **Never add a key to only one locale.** Use `i18n_add_key` MCP tool or `i18nAddKey()`.
 
-### After any edit to `index.html`, `script.js`, or `translations.json`
+### After any edit to `index.html`, `script.js`, `style.css`, or `translations.json`
 ```bash
-npm run seis:check   # must pass all 4 checks before committing
+npm run seis:check   # must pass all 5 checks before committing
 ```
 
 ---

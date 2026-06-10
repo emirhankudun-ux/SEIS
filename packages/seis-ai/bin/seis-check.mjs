@@ -43,6 +43,18 @@ function printReport(report) {
     console.log(`        referenced but missing: ${rel}`);
   }
 
+  if (report.style.skipped) {
+    console.log(`[PASS] style     (style.css not found — skipped)`);
+  } else {
+    console.log(`[${mark(report.style.ok)}] style     ${report.style.cssClassCount} css classes, ${report.style.definedVarCount} custom props`);
+    for (const v of report.style.undefinedVars) {
+      console.log(`        var(--${v}) used but never defined`);
+    }
+    if (report.style.unusedCss.length) {
+      console.log(`        info: ${report.style.unusedCss.length} css classes unused statically`);
+    }
+  }
+
   console.log("");
   console.log(report.ok ? "All checks passed." : "Checks FAILED.");
 }

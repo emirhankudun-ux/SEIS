@@ -280,6 +280,82 @@ export function drawingsCatalog(webRoot) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Style                                                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Static CSS audit for style.css:
+ * - undefined custom properties: var(--x) used with no --x definition in
+ *   CSS, an inline HTML style, or a JS setProperty call — these silently
+ *   compute to invalid/fallback values, so they FAIL the check.
+ * - unused CSS classes and HTML classes with no styling are reported as
+ *   informational only (JS hooks and runtime-built class strings make a
+ *   static "unused" verdict unreliable).
+ */
+export function styleAudit(webRoot) {
+  const cssPath = path.join(webRoot, "style.css");
+  if (!existsSync(cssPath)) {
+    return { ok: true, skipped: true };
+  }
+  const css = readFileSync(cssPath, "utf8");
+  const html = readWebFile(webRoot, "index.html");
+  const js = readWebFile(webRoot, "script.js");
+
+  const noComments = css.replace(/\/\*[\s\S]*?\*\//g, "");
+
+  // Reduce to selector text by repeatedly dropping innermost {...} blocks
+  // (handles @media / @keyframes nesting), then harvest .class tokens.
+  let selectorText = noComments;
+  let prev;
+  do {
+    prev = selectorText;
+    selectorText = selectorText.replace(/\{[^{}]*\}/g, " ");
+  } while (selectorText !== prev);
+
+  const cssClasses = new Set(
+    [...selectorText.matchAll(/\.([a-zA-Z_][\w-]*)/g)].map((m) => m[1])
+  );
+
+  const htmlClasses = new Set(
+    [...html.matchAll(/\sclass="([^"]+)"/g)].flatMap((m) => m[1].split(/\s+/))
+  );
+  const jsClasses = new Set();
+  for (const m of js.matchAll(/classList\.(?:add|remove|toggle|contains)\(\s*"([^"]+)"/g)) {
+    jsClasses.add(m[1]);
+  }
+  for (const m of js.matchAll(/\bqa?\(\s*"\.([a-zA-Z_][\w-]*)/g)) jsClasses.add(m[1]);
+  for (const m of js.matchAll(/class=\\?"([^"\\]+)/g)) {
+    for (const c of m[1].split(/\s+/)) jsClasses.add(c);
+  }
+  for (const m of js.matchAll(/className\s*[+]?=\s*"\s*([^"]+)"/g)) {
+    for (const c of m[1].split(/\s+/)) jsClasses.add(c);
+  }
+  const used = new Set([...htmlClasses, ...jsClasses]);
+
+  const unusedCss = [...cssClasses].filter((c) => !used.has(c)).sort();
+  const unstyledHtml = [...htmlClasses].filter((c) => !cssClasses.has(c)).sort();
+
+  // Custom properties: definitions can live in CSS, inline HTML styles, or
+  // JS style.setProperty("--x", ...) calls.
+  const definedVars = new Set([...noComments.matchAll(/--([\w-]+)\s*:/g)].map((m) => m[1]));
+  for (const m of html.matchAll(/--([\w-]+)\s*:/g)) definedVars.add(m[1]);
+  for (const m of js.matchAll(/setProperty\(\s*["']--([\w-]+)["']/g)) definedVars.add(m[1]);
+  const usedVars = new Set([...noComments.matchAll(/var\(\s*--([\w-]+)/g)].map((m) => m[1]));
+  const undefinedVars = [...usedVars].filter((v) => !definedVars.has(v)).sort();
+  const unusedVars = [...definedVars].filter((v) => !usedVars.has(v)).sort();
+
+  return {
+    ok: undefinedVars.length === 0,
+    cssClassCount: cssClasses.size,
+    definedVarCount: definedVars.size,
+    undefinedVars,
+    unusedVars,
+    unusedCss,
+    unstyledHtml,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Site config                                                        */
 /* ------------------------------------------------------------------ */
 
@@ -296,11 +372,13 @@ export function runAllChecks(webRoot) {
   const seo = seoAudit(webRoot);
   const contract = contractCheck(webRoot);
   const drawings = drawingsCatalog(webRoot);
+  const style = styleAudit(webRoot);
   return {
-    ok: i18n.ok && seo.ok && contract.ok && drawings.ok,
+    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok,
     i18n,
     seo,
     contract,
     drawings,
+    style,
   };
 }

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 11 tools + 2 resources", async () => {
+  it("initializes and lists 12 tools, 3 prompts, 2 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -81,6 +81,7 @@ describe("seis-mcp stdio smoke", () => {
       { jsonrpc: "2.0", method: "notifications/initialized" },
       { jsonrpc: "2.0", id: 2, method: "tools/list" },
       { jsonrpc: "2.0", id: 3, method: "resources/list" },
+      { jsonrpc: "2.0", id: 4, method: "prompts/list" },
     ]);
 
     const init = responses.get(1);
@@ -97,6 +98,7 @@ describe("seis-mcp stdio smoke", () => {
       "run_all_checks",
       "seo_audit",
       "site_config_get",
+      "style_audit",
       "web_contract_check",
       "workspace_status",
     ]);
@@ -106,6 +108,41 @@ describe("seis-mcp stdio smoke", () => {
       "seis://web/site-config.json",
       "seis://web/translations.json",
     ]);
+
+    const prompts = responses.get(4).result.prompts.map((p) => p.name).sort();
+    assert.deepEqual(prompts, ["add_i18n_key", "audit_and_fix", "review_locale"]);
+  });
+
+  it("renders the add_i18n_key prompt with arguments", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "prompts/get",
+        params: {
+          name: "add_i18n_key",
+          arguments: { key: "test.key", meaning: "a test string" },
+        },
+      },
+    ]);
+
+    const prompt = responses.get(2);
+    assert.ok(!prompt.error, `prompts/get errored: ${JSON.stringify(prompt.error)}`);
+    const text = prompt.result.messages[0].content.text;
+    assert.ok(text.includes('"test.key"'));
+    assert.ok(text.includes("a test string"));
+    assert.ok(text.includes("i18n_add_key"));
   });
 
   it("executes run_all_checks through the protocol", async () => {

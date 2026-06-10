@@ -2,7 +2,7 @@ import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "n
 import path from "node:path";
 
 import { resolveInside } from "../lib/repo.mjs";
-import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog } from "../lib/checks.mjs";
+import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit } from "../lib/checks.mjs";
 
 const MAX_READ_BYTES = 64 * 1024;
 const MAX_GREP_HITS = 60;
@@ -55,11 +55,11 @@ export function toolDefinitions({ allowWrite = false } = {}) {
     {
       name: "run_checks",
       description:
-        "Run the SEIS audit suite against apps/web. scope: 'i18n' (translation parity), 'seo', 'contract' (HTML/JS selector contract), 'drawings' (media integrity) or 'all'. Always run 'contract' and 'i18n' after editing index.html, script.js or translations.json.",
+        "Run the SEIS audit suite against apps/web. scope: 'i18n' (translation parity), 'seo', 'contract' (HTML/JS selector contract), 'drawings' (media integrity), 'style' (CSS custom props + dead classes) or 'all'. Always run 'contract' and 'i18n' after editing index.html, script.js or translations.json; run 'style' after editing style.css.",
       input_schema: {
         type: "object",
         properties: {
-          scope: { type: "string", enum: ["all", "i18n", "seo", "contract", "drawings"] },
+          scope: { type: "string", enum: ["all", "i18n", "seo", "contract", "drawings", "style"] },
         },
         required: ["scope"],
       },
@@ -67,19 +67,35 @@ export function toolDefinitions({ allowWrite = false } = {}) {
   ];
 
   if (allowWrite) {
-    tools.push({
-      name: "write_file",
-      description:
-        "Write a text file relative to the repository root (creates parent directories). Use only for files you have read or are newly creating; re-run run_checks afterwards.",
-      input_schema: {
-        type: "object",
-        properties: {
-          file: { type: "string", description: "File path relative to repo root" },
-          content: { type: "string", description: "Full new file content" },
+    tools.push(
+      {
+        name: "edit_file",
+        description:
+          "Replace one exact string in an existing file. old_string must occur exactly once — include surrounding lines to disambiguate. Prefer this over write_file for small changes; re-run run_checks afterwards.",
+        input_schema: {
+          type: "object",
+          properties: {
+            file: { type: "string", description: "File path relative to repo root" },
+            old_string: { type: "string", description: "Exact text to replace (must be unique in the file)" },
+            new_string: { type: "string", description: "Replacement text" },
+          },
+          required: ["file", "old_string", "new_string"],
         },
-        required: ["file", "content"],
       },
-    });
+      {
+        name: "write_file",
+        description:
+          "Write a text file relative to the repository root (creates parent directories). Use for NEW files or full rewrites; for small changes prefer edit_file. Re-run run_checks afterwards.",
+        input_schema: {
+          type: "object",
+          properties: {
+            file: { type: "string", description: "File path relative to repo root" },
+            content: { type: "string", description: "Full new file content" },
+          },
+          required: ["file", "content"],
+        },
+      }
+    );
   }
 
   return tools;
@@ -123,11 +139,29 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
         : input.scope === "seo" ? seoAudit(webRoot)
         : input.scope === "contract" ? contractCheck(webRoot)
         : input.scope === "drawings" ? drawingsCatalog(webRoot)
+        : input.scope === "style" ? styleAudit(webRoot)
         : runAllChecks(webRoot);
       // Drawing file lists are large and rarely needed in-context.
       if (result.files) result.files = `(${result.files.length} files, omitted)`;
       if (result.drawings?.files) result.drawings.files = `(${result.drawings.files.length} files, omitted)`;
       return JSON.stringify(result, null, 2);
+    }
+    case "edit_file": {
+      if (!allowWrite) {
+        throw new Error("edit_file is disabled — re-run the agent with --write to allow file writes");
+      }
+      const abs = resolveInside(repoRoot, input.file);
+      const content = readFileSync(abs, "utf8");
+      const count = content.split(input.old_string).length - 1;
+      if (count === 0) {
+        throw new Error(`old_string not found in ${input.file}`);
+      }
+      if (count > 1) {
+        throw new Error(`old_string occurs ${count} times in ${input.file} — include more surrounding context to make it unique`);
+      }
+      // Function replacement avoids `$&`-style pattern expansion in new_string.
+      writeFileSync(abs, content.replace(input.old_string, () => input.new_string));
+      return `Edited ${input.file}: replaced ${Buffer.byteLength(input.old_string)} bytes with ${Buffer.byteLength(input.new_string)} bytes`;
     }
     case "write_file": {
       if (!allowWrite) {

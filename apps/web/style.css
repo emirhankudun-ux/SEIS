@@ -191,7 +191,6 @@ body:has(button:hover) #cursor-ring {
   transition: all .3s var(--ease);
   border-radius: var(--radius-sm);
 }
-.nav-links a .n-num { color: var(--accent); font-size: .65rem; }
 .nav-links a:hover, .nav-links a.active {
   background: var(--surface); border-color: var(--accent);
   color: var(--white); transform: translateY(-2px);

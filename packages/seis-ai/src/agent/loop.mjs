@@ -23,8 +23,11 @@ translations.json and data-i18n attributes. script.js queries the DOM by literal
 
 Working rules:
 - Investigate with list_files / read_file / grep_repo before concluding anything.
+- Prefer edit_file (exact-string replacement) for small changes; use write_file
+  only for new files or full rewrites.
 - After editing index.html, script.js or translations.json, ALWAYS validate with
-  run_checks (scope "contract" and "i18n" at minimum) and report the result.
+  run_checks (scope "contract" and "i18n" at minimum); after style.css use
+  scope "style". Report the result.
 - Translation edits must cover all five locales — never add a key to only one.
 - Keep edits minimal and consistent with the existing code style; the site must keep
   working without a build step.

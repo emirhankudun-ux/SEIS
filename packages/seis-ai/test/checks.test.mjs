@@ -12,6 +12,7 @@ import {
   seoAudit,
   drawingsCatalog,
   runAllChecks,
+  styleAudit,
 } from "../src/lib/checks.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -284,6 +285,85 @@ describe("drawingsCatalog", () => {
 });
 
 /* ------------------------------------------------------------------ */
+/* Style audit                                                        */
+/* ------------------------------------------------------------------ */
+
+describe("styleAudit", () => {
+  afterEach(teardown);
+
+  it("passes when every var() is defined", () => {
+    setup({
+      "style.css": ":root { --accent: #fff; } .nav-link { color: var(--accent); }",
+      "index.html": minHtml,
+      "script.js": minScript,
+    });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.deepEqual(r.undefinedVars, []);
+  });
+
+  it("fails when a var() has no definition anywhere", () => {
+    setup({
+      "style.css": ".nav-link { color: var(--ghost-color); }",
+      "index.html": minHtml,
+      "script.js": minScript,
+    });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.deepEqual(r.undefinedVars, ["ghost-color"]);
+  });
+
+  it("accepts vars defined via JS setProperty", () => {
+    setup({
+      "style.css": ".nav-link { left: var(--cursor-x); }",
+      "index.html": minHtml,
+      "script.js": minScript + '\ndocument.body.style.setProperty("--cursor-x", "0px");',
+    });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, true);
+  });
+
+  it("reports statically-unused CSS classes as informational", () => {
+    setup({
+      "style.css": ".nav-link { color: red; } .never-used { color: blue; }",
+      "index.html": minHtml,
+      "script.js": minScript,
+    });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, true); // informational — does not fail
+    assert.deepEqual(r.unusedCss, ["never-used"]);
+  });
+
+  it("counts classList-managed classes as used", () => {
+    setup({
+      "style.css": ".runtime-only { opacity: 0; }",
+      "index.html": minHtml,
+      "script.js": minScript + '\nel.classList.add("runtime-only");',
+    });
+    const r = styleAudit(webRoot);
+    assert.deepEqual(r.unusedCss, []);
+  });
+
+  it("skips gracefully when style.css is absent", () => {
+    setup({ "index.html": minHtml, "script.js": minScript });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.skipped, true);
+  });
+
+  it("handles nested @media blocks when harvesting selectors", () => {
+    setup({
+      "style.css": "@media (hover: hover) { .nav-link:hover { color: var(--accent); } } :root { --accent: red; }",
+      "index.html": minHtml,
+      "script.js": minScript,
+    });
+    const r = styleAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.deepEqual(r.unusedCss, []);
+  });
+});
+
+/* ------------------------------------------------------------------ */
 /* runAllChecks                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -293,6 +373,7 @@ describe("runAllChecks", () => {
       "translations.json": minTranslations,
       "index.html": minHtml,
       "script.js": minScript,
+      "style.css": ":root { --bg: #000; } .nav-link { color: var(--bg); }",
       "robots.txt": "User-agent: *",
       "sitemap.xml": "<urlset/>",
     });
@@ -302,6 +383,22 @@ describe("runAllChecks", () => {
     assert.equal(r.seo.ok, true);
     assert.equal(r.contract.ok, true);
     assert.equal(r.drawings.ok, true);
+    assert.equal(r.style.ok, true);
+    teardown();
+  });
+
+  it("aggregates ok=false when the style check fails", () => {
+    setup({
+      "translations.json": minTranslations,
+      "index.html": minHtml,
+      "script.js": minScript,
+      "style.css": ".nav-link { color: var(--missing-var); }",
+      "robots.txt": "User-agent: *",
+      "sitemap.xml": "<urlset/>",
+    });
+    const r = runAllChecks(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.style.ok, false);
     teardown();
   });
 });

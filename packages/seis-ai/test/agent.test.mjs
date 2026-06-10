@@ -53,15 +53,17 @@ describe("resolveModel", () => {
 /* ------------------------------------------------------------------ */
 
 describe("toolDefinitions", () => {
-  it("excludes write_file by default", () => {
+  it("excludes write tools by default", () => {
     const names = toolDefinitions().map((t) => t.name);
     assert.ok(names.includes("read_file"));
     assert.ok(!names.includes("write_file"));
+    assert.ok(!names.includes("edit_file"));
   });
 
-  it("includes write_file with allowWrite", () => {
+  it("includes edit_file and write_file with allowWrite", () => {
     const names = toolDefinitions({ allowWrite: true }).map((t) => t.name);
     assert.ok(names.includes("write_file"));
+    assert.ok(names.includes("edit_file"));
   });
 });
 
@@ -139,6 +141,56 @@ describe("executeTool", () => {
       /escapes repository root/
     );
     assert.ok(!existsSync(path.join(path.dirname(repoRoot), "outside.txt")));
+  });
+
+  it("edit_file replaces a unique string", () => {
+    executeTool(
+      "edit_file",
+      { file: "notes.md", old_string: "beta needle gamma", new_string: "beta REPLACED gamma" },
+      ctx({ allowWrite: true })
+    );
+    const out = readFileSync(path.join(repoRoot, "notes.md"), "utf8");
+    assert.ok(out.includes("beta REPLACED gamma"));
+    assert.ok(!out.includes("needle"));
+  });
+
+  it("edit_file does not expand $-patterns in new_string", () => {
+    executeTool(
+      "edit_file",
+      { file: "notes.md", old_string: "needle", new_string: "$&$'x$1" },
+      ctx({ allowWrite: true })
+    );
+    const out = readFileSync(path.join(repoRoot, "notes.md"), "utf8");
+    assert.ok(out.includes("beta $&$'x$1 gamma"));
+  });
+
+  it("edit_file rejects a missing old_string", () => {
+    assert.throws(
+      () => executeTool("edit_file", { file: "notes.md", old_string: "zzz", new_string: "x" }, ctx({ allowWrite: true })),
+      /not found/
+    );
+  });
+
+  it("edit_file rejects an ambiguous old_string", () => {
+    writeFileSync(path.join(repoRoot, "dup.txt"), "same\nsame\n");
+    assert.throws(
+      () => executeTool("edit_file", { file: "dup.txt", old_string: "same", new_string: "x" }, ctx({ allowWrite: true })),
+      /occurs 2 times/
+    );
+  });
+
+  it("edit_file is blocked without allowWrite", () => {
+    assert.throws(
+      () => executeTool("edit_file", { file: "notes.md", old_string: "alpha", new_string: "x" }, ctx()),
+      /--write/
+    );
+  });
+
+  it("run_checks accepts the style scope", () => {
+    writeFileSync(path.join(repoRoot, "apps/web/style.css"), ":root { --c: red; } .x { color: var(--c); }");
+    const out = executeTool("run_checks", { scope: "style" }, ctx());
+    const r = JSON.parse(out);
+    assert.equal(r.ok, true);
   });
 
   it("throws on unknown tool", () => {

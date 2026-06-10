@@ -27,8 +27,16 @@ The MCP server (`seis-mcp`) exposes these tools — use them when answering ques
 | `seo_audit` | 15-point SEO/PWA checklist against `index.html` |
 | `web_contract_check` | Verify that every `q("…")` / `qa("…")` literal in `script.js` has a matching element in `index.html` |
 | `drawings_catalog` | Cross-check `<img src="public/media/drawings/…">` references vs files on disk |
+| `style_audit` | CSS audit: fails on `var(--x)` with no definition; reports dead classes (info) |
 | `site_config_get` | Read `site-config.json` (name, email, social links, etc.) |
+| `i18n_unreferenced` | Translation keys never referenced from HTML/JS |
+| `workspace_status` | Monorepo package inventory |
 | `run_all_checks` | Run all checks at once and return a combined pass/fail report |
+
+MCP prompts (pre-built workflows — `prompts/get`):
+- `audit_and_fix` — run the audit, fix every failure, re-verify
+- `add_i18n_key(key, meaning)` — draft on-brand copy for all 5 locales and add it
+- `review_locale(locale)` — tone/grammar/consistency review of one locale
 
 MCP resources:
 - `seis://web/translations.json` — raw translation file content
@@ -62,11 +70,12 @@ Model aliases: `fable` → `claude-fable-5`, `opus` → `claude-opus-4-8` (defau
 
 | Tool | Read/Write | Description |
 |------|-----------|-------------|
-| `list_files` | R | Glob-pattern file listing with size info |
-| `read_file` | R | Read any file inside the repo root |
-| `grep_repo` | R | Regex search across files, with optional glob pattern |
-| `run_checks` | R | Run one or more audit scopes: `i18n`, `seo`, `contract`, `drawings`, `all` |
-| `write_file` | **W** | Overwrite a file (only available with `--write` flag) |
+| `list_files` | R | Directory listing relative to repo root |
+| `read_file` | R | Read any file inside the repo root (64 KB pages) |
+| `grep_repo` | R | Regex search across files |
+| `run_checks` | R | Audit scopes: `i18n`, `seo`, `contract`, `drawings`, `style`, `all` |
+| `edit_file` | **W** | Exact-string replacement; old_string must be unique (needs `--write`) |
+| `write_file` | **W** | Full file write for new files/rewrites (needs `--write`) |
 
 Path traversal is blocked: all file operations are constrained to the repo root.
 

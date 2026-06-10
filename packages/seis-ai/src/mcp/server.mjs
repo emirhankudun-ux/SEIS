@@ -16,6 +16,7 @@ import {
   runAllChecks,
   seoAudit,
   siteConfig,
+  styleAudit,
 } from "../lib/checks.mjs";
 import { i18nAddKey } from "../lib/i18n-write.mjs";
 
@@ -140,6 +141,19 @@ export function buildServer() {
   );
 
   server.tool(
+    "style_audit",
+    "Static CSS audit of style.css: FAILS when a var(--x) custom property is used but never defined (in CSS, inline HTML style, or JS setProperty). Also reports statically-unused CSS classes and unstyled HTML classes as informational.",
+    {},
+    async () => {
+      try {
+        return jsonResult(styleAudit(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "site_config_get",
     "Read site-config.json (contact endpoint + contact email used by the contact form).",
     {},
@@ -225,6 +239,68 @@ export function buildServer() {
         return errorResult(error);
       }
     }
+  );
+
+  server.prompt(
+    "audit_and_fix",
+    "Run the full SEIS audit and fix every failure it reports",
+    {},
+    async () => ({
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Run the seis run_all_checks tool. If every section reports ok, summarise the healthy state in two sentences. For each failing section: explain the root cause, make the smallest fix that respects the HTML/JS selector contract and the 5-locale i18n rule, then re-run the matching check tool to confirm it passes. Finish with a list of files changed and the final aggregate status.`,
+          },
+        },
+      ],
+    })
+  );
+
+  server.prompt(
+    "add_i18n_key",
+    "Draft and add a new translation key across all 5 locales",
+    {
+      key: z.string().describe("New translation key, e.g. services.consulting.title"),
+      meaning: z.string().describe("What the copy should say, in any language"),
+    },
+    async ({ key, meaning }) => ({
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Add the translation key "${key}" to the SEIS portfolio. Intended meaning: ${meaning}
+
+Steps:
+1. Call i18n_get to confirm the key does not already exist.
+2. Draft natural, on-brand copy for ALL five locales (tr, en, fr, it, de) — match the tone of neighbouring keys (use i18n_search to inspect them).
+3. Call i18n_add_key with all five values.
+4. Call i18n_status to verify parity still holds, and report the values you wrote.`,
+          },
+        },
+      ],
+    })
+  );
+
+  server.prompt(
+    "review_locale",
+    "Review one locale's translations for tone, grammar, and consistency",
+    {
+      locale: z.enum(["tr", "en", "fr", "it", "de"]).describe("Locale to review"),
+    },
+    async ({ locale }) => ({
+      messages: [
+        {
+          role: "user",
+          content: {
+            type: "text",
+            text: `Review the "${locale}" locale of the SEIS portfolio translations. Read the seis://web/translations.json resource, then assess the ${locale} values against the Turkish source (tr) for: accuracy of meaning, consistent register (professional portfolio voice), grammar/spelling, and consistent terminology across related keys (nav.*, hero.*, fm.*, wk.*). List concrete issues with key names and proposed replacement strings — do not change anything unless asked.`,
+          },
+        },
+      ],
+    })
   );
 
   server.resource(
