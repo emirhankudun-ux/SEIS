@@ -15,10 +15,11 @@
     },
     {
       "language": "TypeScript",
-      "role": "release contract typing and requested plugin stack contracts",
+      "role": "audit report typings and release/plugin stack contracts",
       "entrypoints": [
         "polyglot/typescript/release-contract.ts",
-        "polyglot/typescript/fullstack-plugin-contract.ts"
+        "polyglot/typescript/fullstack-plugin-contract.ts",
+        "packages/seis-ai/types/seis-ai.d.ts"
       ]
     },
     {
@@ -48,34 +49,46 @@
     },
     {
       "language": "Python",
-      "role": "asset/deploy metadata inspection",
+      "role": "binary image-header audit and PWA icon generation",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
+        "polyglot/python/seis_image_audit.py",
+        "polyglot/python/seis_icon_gen.py",
         "server/python/verify_release.py"
       ]
     },
     {
       "language": "Ruby",
-      "role": "alternate release hash verification",
-      "entrypoints": ["polyglot/ruby/verify_release.rb"]
+      "role": "i18n content statistics and untranslated-value detection",
+      "entrypoints": [
+        "polyglot/ruby/verify_release.rb",
+        "polyglot/ruby/i18n_stats.rb"
+      ]
     },
     {
       "language": "PHP",
-      "role": "shared-hosting health fallback",
+      "role": "contact form endpoint and shared-hosting health fallback",
       "entrypoints": [
+        "polyglot/php/contact-endpoint.php",
         "server/php/health.php",
         "server/php/router.php"
       ]
     },
     {
       "language": "Go",
-      "role": "future service health contract",
-      "entrypoints": ["polyglot/go/health_contract.go"]
+      "role": "local preview server with production security headers",
+      "entrypoints": [
+        "polyglot/go/health_contract.go",
+        "polyglot/go/cmd/seis-serve/main.go"
+      ]
     },
     {
       "language": "Rust",
-      "role": "performance budget contract",
-      "entrypoints": ["polyglot/rust/performance_budget.rs"]
+      "role": "offline link/asset integrity audit",
+      "entrypoints": [
+        "polyglot/rust/performance_budget.rs",
+        "polyglot/rust/seis-link-audit/src/main.rs"
+      ]
     },
     {
       "language": "Swift",
@@ -94,13 +107,19 @@
     },
     {
       "language": "Bash",
-      "role": "portable deploy guard",
-      "entrypoints": ["polyglot/bash/deploy_guard.sh"]
+      "role": "polyglot audit orchestrator and portable deploy guard",
+      "entrypoints": [
+        "polyglot/bash/deploy_guard.sh",
+        "scripts/polyglot-check.sh"
+      ]
     },
     {
       "language": "Java",
-      "role": "JVM release readiness contract",
-      "entrypoints": ["polyglot/java/SeisDeployReadiness.java"]
+      "role": "drawings SHA-256 integrity ledger",
+      "entrypoints": [
+        "polyglot/java/SeisDeployReadiness.java",
+        "polyglot/java/DrawingsChecksum.java"
+      ]
     },
     {
       "language": "C#",
@@ -145,13 +164,19 @@
     },
     {
       "language": "C",
-      "role": "portable embedded readiness contract",
-      "entrypoints": ["polyglot/c/readiness_contract.h"]
+      "role": "strict UTF-8 validation for all web text files",
+      "entrypoints": [
+        "polyglot/c/readiness_contract.h",
+        "polyglot/c/seis_utf8_check.c"
+      ]
     },
     {
       "language": "C++",
-      "role": "native application readiness contract",
-      "entrypoints": ["polyglot/cpp/readiness_contract.hpp"]
+      "role": "duplicate-key-rejecting translations.json linter",
+      "entrypoints": [
+        "polyglot/cpp/readiness_contract.hpp",
+        "polyglot/cpp/seis_translations_lint.cpp"
+      ]
     },
     {
       "language": "Elixir",
@@ -185,8 +210,11 @@
     },
     {
       "language": "Perl",
-      "role": "portable readiness guard for legacy hosting scripts",
-      "entrypoints": ["polyglot/perl/readiness_guard.pl"]
+      "role": "source hygiene lint (BOM, CRLF, trailing whitespace)",
+      "entrypoints": [
+        "polyglot/perl/readiness_guard.pl",
+        "polyglot/perl/hygiene_lint.pl"
+      ]
     },
     {
       "language": "Zig",

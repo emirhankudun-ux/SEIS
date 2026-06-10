@@ -130,6 +130,34 @@ node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you f
 
 ---
 
+## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
+
+Nine non-JS languages each contribute a real, tested tool that audits what
+the JS suite cannot. One command runs them all:
+
+```bash
+./scripts/polyglot-check.sh      # PASS/FAIL/SKIP per language lane
+```
+
+| Language | Tool | Unique value |
+|----------|------|--------------|
+| Python | `seis_image_audit.py` | JPEG/PNG/WebP dimensions from binary headers; asset budget |
+| Python | `seis_icon_gen.py` | Deterministic PWA icon PNGs from manifest colors (zero deps) |
+| Rust | `seis-link-audit/` | Every local href/src/url() + manifest icon resolves on disk |
+| Go | `cmd/seis-serve/` | Local preview server with production CSP/security headers |
+| C | `seis_utf8_check.c` | Strict UTF-8 (rejects overlongs, surrogates, truncation) |
+| C++ | `seis_translations_lint.cpp` | Duplicate JSON keys that `JSON.parse` silently swallows |
+| Ruby | `i18n_stats.rb` | Per-locale volume stats + untranslated-value suspects |
+| PHP | `contact-endpoint.php` | Reference form endpoint (honeypot, anti-injection) |
+| Java | `DrawingsChecksum.java` | SHA-256 ledger of the 20 drawings (`drawings.sha256`) |
+| Perl | `hygiene_lint.pl` | BOM / CRLF / trailing-whitespace / final-newline lint |
+
+Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
+`--self-test` modes). CI: `.github/workflows/polyglot.yml`.
+TypeScript typings for the audit reports: `packages/seis-ai/types/seis-ai.d.ts`.
+
+---
+
 ## Development conventions
 
 - All source is ESM (`.mjs`). No transpilation.

@@ -41,3 +41,10 @@ UIX-Apps-codex-delivery/
 
 # SEIS agent session state
 .seis/
+
+# Polyglot build artifacts
+polyglot/rust/*/target/
+polyglot/**/*.class
+polyglot/c/seis_utf8_check
+polyglot/cpp/seis_translations_lint
+__pycache__/

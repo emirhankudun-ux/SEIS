@@ -22,21 +22,5 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["design", "portfolio", "creative"],
-  "screenshots": [
-    {
-      "src": "images/screenshot-desktop.jpg",
-      "sizes": "1280x720",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Emirhan Kudun Portfolio — Masaüstü"
-    },
-    {
-      "src": "images/screenshot-mobile.jpg",
-      "sizes": "390x844",
-      "type": "image/jpeg",
-      "form_factor": "narrow",
-      "label": "Emirhan Kudun Portfolio — Mobil"
-    }
-  ]
+  "categories": ["design", "portfolio", "creative"]
 }
