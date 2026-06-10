@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import path from "node:path";
 
 /**
@@ -33,4 +33,70 @@ export function i18nAddKey(webRoot, key, values, { overwrite = false } = {}) {
   }
   writeFileSync(file, JSON.stringify(translations, null, 2) + "\n");
   return { key, locales, overwritten: exists.length > 0 };
+}
+
+/**
+ * Rename one key in every locale, preserving its position in each locale
+ * block, and (by default) rewrite all references: data-i18n* attributes in
+ * index.html and literal getT("...") calls in script.js. Returns per-file
+ * replacement counts so the caller can verify the rename took effect.
+ */
+export function i18nRenameKey(webRoot, oldKey, newKey, { updateReferences = true } = {}) {
+  if (!oldKey || !newKey || typeof oldKey !== "string" || typeof newKey !== "string") {
+    throw new Error("oldKey and newKey are required");
+  }
+  if (oldKey === newKey) {
+    throw new Error("oldKey and newKey are identical");
+  }
+  const file = path.join(webRoot, "translations.json");
+  const translations = JSON.parse(readFileSync(file, "utf8"));
+  const locales = Object.keys(translations);
+
+  const missingOld = locales.filter((l) => !(oldKey in translations[l]));
+  if (missingOld.length) {
+    throw new Error(`Key "${oldKey}" missing in locale(s): ${missingOld.join(", ")}`);
+  }
+  const existsNew = locales.filter((l) => newKey in translations[l]);
+  if (existsNew.length) {
+    throw new Error(`Key "${newKey}" already exists in: ${existsNew.join(", ")}`);
+  }
+
+  for (const locale of locales) {
+    const rebuilt = {};
+    for (const [k, v] of Object.entries(translations[locale])) {
+      rebuilt[k === oldKey ? newKey : k] = v;
+    }
+    translations[locale] = rebuilt;
+  }
+  writeFileSync(file, JSON.stringify(translations, null, 2) + "\n");
+
+  const referencesUpdated = { html: 0, js: 0 };
+  if (updateReferences) {
+    const htmlPath = path.join(webRoot, "index.html");
+    if (existsSync(htmlPath)) {
+      const html = readFileSync(htmlPath, "utf8");
+      const re = new RegExp(`(data-i18n(?:-[a-z-]+)?=")${escapeRe(oldKey)}(")`, "g");
+      const next = html.replace(re, (_, p1, p2) => {
+        referencesUpdated.html += 1;
+        return p1 + newKey + p2;
+      });
+      if (referencesUpdated.html) writeFileSync(htmlPath, next);
+    }
+    const jsPath = path.join(webRoot, "script.js");
+    if (existsSync(jsPath)) {
+      const js = readFileSync(jsPath, "utf8");
+      const re = new RegExp(`(getT\\(\\s*")${escapeRe(oldKey)}(")`, "g");
+      const next = js.replace(re, (_, p1, p2) => {
+        referencesUpdated.js += 1;
+        return p1 + newKey + p2;
+      });
+      if (referencesUpdated.js) writeFileSync(jsPath, next);
+    }
+  }
+
+  return { oldKey, newKey, locales, referencesUpdated };
+}
+
+function escapeRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

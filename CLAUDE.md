@@ -28,7 +28,7 @@ packages/
 ## MCP server (auto-loaded)
 
 `.mcp.json` registers `packages/seis-ai/bin/seis-mcp.mjs` as the `seis` MCP server.
-In any Claude Code session it exposes **12 tools**, **3 prompts**, and **2 resources**:
+In any Claude Code session it exposes **13 tools**, **3 prompts**, and **2 resources**:
 
 | Tool | What it checks |
 |------|---------------|
@@ -37,6 +37,7 @@ In any Claude Code session it exposes **12 tools**, **3 prompts**, and **2 resou
 | `i18n_get` | All locale values for a key |
 | `i18n_search` | Substring search across keys + values |
 | `i18n_add_key` | Atomically add a key to all 5 locales |
+| `i18n_rename_key` | Rename a key everywhere — locales + HTML/JS references |
 | `i18n_unreferenced` | Keys in translations.json not used in HTML/JS |
 | `seo_audit` | 15-point SEO/PWA checklist |
 | `web_contract_check` | HTML↔JS selector contract |
@@ -108,8 +109,17 @@ node packages/seis-ai/bin/seis-agent.mjs --model sonnet "Review French translati
 # Add an i18n key (needs --write)
 node packages/seis-ai/bin/seis-agent.mjs --write "Add services.consulting.title to all 5 locales"
 
+# Multi-turn session (history kept in .seis/sessions/<name>.json, gitignored)
+node packages/seis-ai/bin/seis-agent.mjs --session audit "Run all checks"
+node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you found"
+
 # Model aliases: fable | opus (default) | sonnet | haiku
 ```
+
+## Claude Code slash commands
+
+- `/seis-audit` — run the full audit via MCP and fix failures
+- `/seis-i18n <task>` — add/rename/review translation keys (all 5 locales)
 
 ---
 

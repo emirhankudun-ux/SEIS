@@ -18,7 +18,7 @@ import {
   siteConfig,
   styleAudit,
 } from "../lib/checks.mjs";
-import { i18nAddKey } from "../lib/i18n-write.mjs";
+import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
@@ -95,6 +95,23 @@ export function buildServer() {
     async ({ key, values, overwrite }) => {
       try {
         return jsonResult(i18nAddKey(webRoot, key, values, { overwrite }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    "i18n_rename_key",
+    "Rename a translation key across ALL locales and rewrite every reference: data-i18n* attributes in index.html and getT() calls in script.js. Fails if the old key is missing anywhere or the new key already exists. Run web_contract_check + i18n_status afterwards.",
+    {
+      oldKey: z.string().describe("Existing key to rename"),
+      newKey: z.string().describe("New key name"),
+      updateReferences: z.boolean().optional().describe("Also rewrite HTML/JS references (default true)"),
+    },
+    async ({ oldKey, newKey, updateReferences }) => {
+      try {
+        return jsonResult(i18nRenameKey(webRoot, oldKey, newKey, { updateReferences }));
       } catch (error) {
         return errorResult(error);
       }

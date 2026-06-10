@@ -24,6 +24,7 @@ The MCP server (`seis-mcp`) exposes these tools — use them when answering ques
 | `i18n_get` | Fetch all locale values for one key |
 | `i18n_search` | Search translations by key fragment or value substring |
 | `i18n_add_key` | Add a new translation key to all 5 locales atomically |
+| `i18n_rename_key` | Rename a key in all locales + rewrite HTML/JS references |
 | `seo_audit` | 15-point SEO/PWA checklist against `index.html` |
 | `web_contract_check` | Verify that every `q("…")` / `qa("…")` literal in `script.js` has a matching element in `index.html` |
 | `drawings_catalog` | Cross-check `<img src="public/media/drawings/…">` references vs files on disk |
@@ -58,6 +59,10 @@ node packages/seis-ai/bin/seis-agent.mjs --write "Add the key services.title to 
 
 # Cap turns for quick tasks
 node packages/seis-ai/bin/seis-agent.mjs --max-turns 8 --quiet "What SEO tags are present?"
+
+# Multi-turn session — conversation persists in .seis/sessions/<name>.json
+node packages/seis-ai/bin/seis-agent.mjs --session review "List i18n issues"
+node packages/seis-ai/bin/seis-agent.mjs --session review --write "Fix issue #2"
 ```
 
 Environment variable required: `ANTHROPIC_API_KEY`

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 12 tools, 3 prompts, 2 resources", async () => {
+  it("initializes and lists 13 tools, 3 prompts, 2 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -92,6 +92,7 @@ describe("seis-mcp stdio smoke", () => {
       "drawings_catalog",
       "i18n_add_key",
       "i18n_get",
+      "i18n_rename_key",
       "i18n_search",
       "i18n_status",
       "i18n_unreferenced",

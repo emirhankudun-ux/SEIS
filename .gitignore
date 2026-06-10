@@ -38,3 +38,6 @@ UIX-Apps-codex-delivery/
 
 #Ignore vscode AI rules
 .github/instructions/codacy.instructions.md
+
+# SEIS agent session state
+.seis/

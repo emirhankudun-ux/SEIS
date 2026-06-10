@@ -37,7 +37,9 @@ Working rules:
 /**
  * Run the agentic tool-use loop until the model stops calling tools.
  * `client` is an Anthropic SDK instance (injectable for tests).
- * Returns { turns, finalText, stopReason }.
+ * `history` (optional) is a prior `messages` array from an earlier run —
+ * pass it to resume a session; the new task is appended as a user turn.
+ * Returns { turns, finalText, stopReason, messages }.
  */
 export async function runAgent({
   client,
@@ -47,18 +49,21 @@ export async function runAgent({
   model = DEFAULT_MODEL,
   maxTurns = 16,
   allowWrite = false,
+  history = null,
   onText = () => {},
   onToolCall = () => {},
 }) {
   const tools = toolDefinitions({ allowWrite });
-  const messages = [{ role: "user", content: task }];
+  const messages = Array.isArray(history) && history.length
+    ? [...history, { role: "user", content: task }]
+    : [{ role: "user", content: task }];
   let turns = 0;
   let finalText = "";
 
   for (;;) {
     turns += 1;
     if (turns > maxTurns) {
-      return { turns: turns - 1, finalText, stopReason: "max_turns" };
+      return { turns: turns - 1, finalText, stopReason: "max_turns", messages };
     }
 
     const stream = client.messages.stream({
@@ -82,10 +87,12 @@ export async function runAgent({
       continue;
     }
     if (message.stop_reason === "refusal") {
-      return { turns, finalText, stopReason: "refusal" };
+      messages.push({ role: "assistant", content: message.content });
+      return { turns, finalText, stopReason: "refusal", messages };
     }
     if (message.stop_reason !== "tool_use") {
-      return { turns, finalText, stopReason: message.stop_reason };
+      messages.push({ role: "assistant", content: message.content });
+      return { turns, finalText, stopReason: message.stop_reason, messages };
     }
 
     const toolUses = message.content.filter((b) => b.type === "tool_use");

@@ -214,7 +214,9 @@ function mockClient(scripted) {
     requests,
     messages: {
       stream(params) {
-        requests.push(params);
+        // Snapshot the messages array: the real SDK serialises at call time,
+        // and the loop keeps mutating the same array afterwards.
+        requests.push({ ...params, messages: [...params.messages] });
         const message = scripted[Math.min(i, scripted.length - 1)];
         i += 1;
         return {
@@ -336,6 +338,36 @@ describe("runAgent", () => {
     const client = mockClient([textMsg("ok")]);
     const result = await runAgent(opts(client, { onText: () => {} }));
     assert.equal(result.finalText, "ok");
+  });
+
+  it("resumes from history and returns the full message log", async () => {
+    const history = [
+      { role: "user", content: "earlier task" },
+      { role: "assistant", content: [{ type: "text", text: "earlier answer" }] },
+    ];
+    const client = mockClient([textMsg("follow-up answer")]);
+    const result = await runAgent(opts(client, { history }));
+
+    // Request must contain history + the new task appended as a user turn.
+    const sent = client.requests[0].messages;
+    assert.equal(sent.length, 3);
+    assert.equal(sent[0].content, "earlier task");
+    assert.equal(sent[2].content, "test task");
+
+    // Returned log ends with the new assistant reply, ready to persist.
+    assert.equal(result.messages.length, 4);
+    assert.equal(result.messages.at(-1).role, "assistant");
+    assert.equal(result.messages.at(-1).content[0].text, "follow-up answer");
+    // Original history array must not be mutated.
+    assert.equal(history.length, 2);
+  });
+
+  it("includes the final assistant message in the log without history too", async () => {
+    const client = mockClient([textMsg("done.")]);
+    const result = await runAgent(opts(client));
+    assert.equal(result.messages.length, 2);
+    assert.equal(result.messages[0].role, "user");
+    assert.equal(result.messages[1].role, "assistant");
   });
 
   it("excludes write_file from tools sent to the API unless allowWrite", async () => {
