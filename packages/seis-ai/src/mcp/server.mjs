@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { resolveRepoRoot, resolveWebRoot } from "../lib/repo.mjs";
 import {
+  a11yAudit,
   contractCheck,
   collectReferencedI18nKeys,
   drawingsCatalog,
@@ -247,6 +248,19 @@ export function buildServer() {
   );
 
   server.tool(
+    "a11y_check",
+    "Static accessibility audit of index.html: FAILS when an <img> is missing alt=, an interactive input/select/textarea has no associated label, or a <button> has no accessible name (text, aria-label, data-i18n, etc.). Advisory: positive tabindex values.",
+    {},
+    async () => {
+      try {
+        return jsonResult(a11yAudit(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "web_perf_audit",
     "Static performance budget for apps/web: file sizes (HTML ≤ 100 KB, CSS ≤ 100 KB, JS ≤ 150 KB, total ≤ 300 KB), render-blocking <script src> in <head>, and images missing loading=lazy or width/height. Budget violations and blocking scripts FAIL the check; missing lazy/dimensions are advisory.",
     {},
@@ -261,7 +275,7 @@ export function buildServer() {
 
   server.tool(
     "run_all_checks",
-    "Run the full audit suite (i18n parity, SEO, HTML/JS contract, drawings, CSS style, performance budget) and return one aggregate report with a top-level ok flag.",
+    "Run the full audit suite (i18n, SEO, HTML/JS contract, drawings, CSS style, performance, accessibility) and return one aggregate report with a top-level ok flag.",
     {},
     async () => {
       try {

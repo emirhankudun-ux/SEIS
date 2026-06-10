@@ -30,7 +30,8 @@ Working rules:
   only for new files or full rewrites.
 - After editing index.html, script.js or translations.json, ALWAYS validate with
   run_checks (scope "contract" and "i18n" at minimum); after style.css use
-  scope "style". Report the result.
+  scope "style"; after any structural HTML change also run scope "a11y".
+  Report the result.
 - Translation edits must cover all five locales — never add a key to only one.
 - Keep edits minimal and consistent with the existing code style; the site must keep
   working without a build step.

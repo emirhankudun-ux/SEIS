@@ -57,6 +57,7 @@ describe("toolDefinitions", () => {
     const names = toolDefinitions().map((t) => t.name);
     assert.ok(names.includes("read_file"));
     assert.ok(names.includes("git_diff"));
+    assert.ok(names.includes("git_log"));
     assert.ok(!names.includes("write_file"));
     assert.ok(!names.includes("edit_file"));
   });
@@ -66,6 +67,7 @@ describe("toolDefinitions", () => {
     assert.ok(names.includes("write_file"));
     assert.ok(names.includes("edit_file"));
     assert.ok(names.includes("git_diff"));
+    assert.ok(names.includes("git_log"));
   });
 });
 
@@ -215,6 +217,25 @@ describe("executeTool", () => {
   it("git_diff returns (no changes) or a diff for a non-git tmpdir", () => {
     const out = executeTool("git_diff", {}, ctx());
     assert.ok(typeof out === "string");
+  });
+
+  it("git_log returns a string result from the real repo", () => {
+    const out = executeTool("git_log", {}, { repoRoot: process.cwd(), webRoot: "" });
+    assert.ok(typeof out === "string");
+  });
+
+  it("git_log respects the count parameter", () => {
+    const out = executeTool("git_log", { count: 3 }, { repoRoot: process.cwd(), webRoot: "" });
+    assert.ok(typeof out === "string");
+    const lines = out.trim().split("\n").filter(Boolean);
+    assert.ok(lines.length <= 3);
+  });
+
+  it("run_checks accepts the a11y scope", () => {
+    const out = executeTool("run_checks", { scope: "a11y" }, ctx());
+    const r = JSON.parse(out);
+    assert.ok(typeof r.ok === "boolean");
+    assert.ok(Array.isArray(r.imgsWithoutAlt));
   });
 
   it("throws on unknown tool", () => {

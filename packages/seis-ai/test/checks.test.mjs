@@ -14,6 +14,7 @@ import {
   runAllChecks,
   styleAudit,
   perfAudit,
+  a11yAudit,
 } from "../src/lib/checks.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -439,6 +440,89 @@ describe("perfAudit", () => {
 });
 
 /* ------------------------------------------------------------------ */
+/* Accessibility audit                                               */
+/* ------------------------------------------------------------------ */
+
+describe("a11yAudit", () => {
+  afterEach(teardown);
+
+  it("passes with clean HTML (no imgs, no inputs, no buttons)", () => {
+    setup({ "index.html": minHtml, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.imgsWithoutAlt.length, 0);
+    assert.equal(r.unlabeledInputs.length, 0);
+    assert.equal(r.inaccessibleButtons.length, 0);
+  });
+
+  it("fails when an img is missing the alt attribute", () => {
+    const html = minHtml.replace("</body>", '<img src="photo.jpg">\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.imgsWithoutAlt.includes("photo.jpg"));
+  });
+
+  it("passes for img with alt='' (decorative)", () => {
+    const html = minHtml.replace("</body>", '<img src="deco.jpg" alt="">\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.imgsWithoutAlt.length, 0);
+  });
+
+  it("fails when an input has no label", () => {
+    const html = minHtml.replace("</body>", '<input type="text" id="name-field">\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.unlabeledInputs.includes("#name-field"));
+  });
+
+  it("passes when an input is associated via <label for>", () => {
+    const html = minHtml.replace("</body>", '<label for="nm">Name</label><input type="text" id="nm">\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.unlabeledInputs.length, 0);
+  });
+
+  it("passes when an input has aria-label", () => {
+    const html = minHtml.replace("</body>", '<input type="email" aria-label="Email address">\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.unlabeledInputs.length, 0);
+  });
+
+  it("fails when a button has no accessible name", () => {
+    const html = minHtml.replace("</body>", '<button class="icon-btn"></button>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.inaccessibleButtons.includes(".icon-btn"));
+  });
+
+  it("passes for button with aria-label", () => {
+    const html = minHtml.replace("</body>", '<button aria-label="Close dialog"></button>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.inaccessibleButtons.length, 0);
+  });
+
+  it("passes for button with data-i18n (runtime text)", () => {
+    const html = minHtml.replace("</body>", '<button data-i18n="action.submit"></button>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.inaccessibleButtons.length, 0);
+  });
+
+  it("passes for button with aria-hidden (intentionally decorative)", () => {
+    const html = minHtml.replace("</body>", '<button aria-hidden="true"></button>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = a11yAudit(webRoot);
+    assert.equal(r.inaccessibleButtons.length, 0);
+  });
+});
+
+/* ------------------------------------------------------------------ */
 /* runAllChecks                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -460,6 +544,7 @@ describe("runAllChecks", () => {
     assert.equal(r.drawings.ok, true);
     assert.equal(r.style.ok, true);
     assert.equal(r.perf.ok, true);
+    assert.equal(r.a11y.ok, true);
     teardown();
   });
 
@@ -476,6 +561,7 @@ describe("runAllChecks", () => {
     assert.equal(r.ok, false);
     assert.equal(r.style.ok, false);
     assert.equal(r.perf.ok, true);
+    assert.equal(r.a11y.ok, true);
     teardown();
   });
 
@@ -492,6 +578,22 @@ describe("runAllChecks", () => {
     assert.equal(r.ok, false);
     assert.equal(r.perf.ok, false);
     assert.ok(r.perf.renderBlockingScripts.includes("vendor.js"));
+    teardown();
+  });
+
+  it("aggregates ok=false when the a11y check fails", () => {
+    setup({
+      "translations.json": minTranslations,
+      "index.html": minHtml.replace("</body>", '<img src="logo.png">\n</body>'),
+      "script.js": minScript,
+      "style.css": ":root { --bg: #000; } .nav-link { color: var(--bg); }",
+      "robots.txt": "User-agent: *",
+      "sitemap.xml": "<urlset/>",
+    });
+    const r = runAllChecks(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.a11y.ok, false);
+    assert.ok(r.a11y.imgsWithoutAlt.includes("logo.png"));
     teardown();
   });
 });

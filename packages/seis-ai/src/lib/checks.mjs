@@ -356,6 +356,92 @@ export function styleAudit(webRoot) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Accessibility                                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Static accessibility audit for index.html:
+ * FAILS on: <img> missing alt=, interactive <input>/<select>/<textarea>
+ *   without an associated label, and <button> with no accessible name.
+ * Advisory (no FAIL): positive tabindex values that break natural focus order.
+ *
+ * The audit understands SEIS conventions:
+ * - data-i18n / data-i18n-aria-label count as providing accessible text at runtime.
+ * - aria-hidden="true" on a button marks it intentionally invisible to screen readers.
+ */
+export function a11yAudit(webRoot) {
+  const html = readWebFile(webRoot, "index.html");
+
+  // 1. <img> missing alt= entirely (alt="" is fine for decorative images)
+  const imgsWithoutAlt = [...html.matchAll(/<img\b[^>]*>/g)]
+    .filter((m) => !/\balt=/.test(m[0]))
+    .map((m) => {
+      const s = m[0].match(/(?:src|data-src)="([^"]+)"/);
+      return s ? s[1] : "(no src)";
+    });
+
+  // 2. Interactive form controls without an associated label
+  const labeledIds = new Set(
+    [...html.matchAll(/<label\s[^>]*\bfor="([^"]+)"/g)].map((m) => m[1])
+  );
+  const TEXT_INPUT_RE = /^(text|email|tel|password|search|url|number|date|time|month|week)$/i;
+
+  function isLabeled(attrs) {
+    if (/\baria-label=/.test(attrs) || /\baria-labelledby=/.test(attrs)) return true;
+    if (/\baria-hidden="true"/.test(attrs)) return true;
+    const idM = attrs.match(/\bid="([^"]+)"/);
+    return idM ? labeledIds.has(idM[1]) : false;
+  }
+
+  const unlabeledInputs = [];
+  for (const m of html.matchAll(/<input\b([^>]*)>/g)) {
+    const attrs = m[1];
+    const typeM = attrs.match(/\btype="([^"]+)"/i);
+    const type = typeM ? typeM[1] : "text";
+    if (!TEXT_INPUT_RE.test(type)) continue;
+    if (isLabeled(attrs)) continue;
+    const idM = attrs.match(/\bid="([^"]+)"/);
+    unlabeledInputs.push(idM ? `#${idM[1]}` : `(input[type="${type}"])`);
+  }
+  for (const m of html.matchAll(/<(?:select|textarea)\b([^>]*)>/g)) {
+    if (isLabeled(m[1])) continue;
+    const idM = m[1].match(/\bid="([^"]+)"/);
+    unlabeledInputs.push(idM ? `#${idM[1]}` : `(${m[0].split(" ")[0].replace("<", "")})`);
+  }
+
+  // 3. <button> with no accessible name
+  const inaccessibleButtons = [];
+  for (const m of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)) {
+    const attrs = m[1];
+    const innerHtml = m[2];
+    if (/\baria-hidden="true"/.test(attrs)) continue;
+    if (/\baria-label=/.test(attrs) || /\bdata-i18n-aria-label=/.test(attrs)) continue;
+    if (/\bdata-i18n=/.test(attrs) || /\btitle=/.test(attrs)) continue;
+    if (/\bdata-i18n=/.test(innerHtml)) continue;
+    const innerText = innerHtml.replace(/<[^>]+>/g, "").trim();
+    if (innerText) continue;
+    const idM = attrs.match(/\bid="([^"]+)"/);
+    const classM = attrs.match(/\bclass="([^"]+)"/);
+    inaccessibleButtons.push(
+      idM ? `#${idM[1]}` : classM ? `.${classM[1].trim().split(/\s+/)[0]}` : "(unnamed button)"
+    );
+  }
+
+  // 4. Positive tabindex — breaks natural focus order (advisory only)
+  const positiveTabindex = [...html.matchAll(/\btabindex="([0-9]+)"/g)]
+    .filter((m) => parseInt(m[1]) > 0)
+    .map((m) => parseInt(m[1]));
+
+  return {
+    ok: imgsWithoutAlt.length === 0 && unlabeledInputs.length === 0 && inaccessibleButtons.length === 0,
+    imgsWithoutAlt,
+    unlabeledInputs,
+    inaccessibleButtons,
+    positiveTabindex,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Performance budget                                                */
 /* ------------------------------------------------------------------ */
 
@@ -451,13 +537,15 @@ export function runAllChecks(webRoot) {
   const drawings = drawingsCatalog(webRoot);
   const style = styleAudit(webRoot);
   const perf = perfAudit(webRoot);
+  const a11y = a11yAudit(webRoot);
   return {
-    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok,
+    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok && a11y.ok,
     i18n,
     seo,
     contract,
     drawings,
     style,
     perf,
+    a11y,
   };
 }

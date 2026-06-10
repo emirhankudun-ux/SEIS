@@ -70,6 +70,20 @@ function printReport(report) {
     console.log(`        info: ${report.perf.imgsWithoutDimensions.length} images without explicit width/height`);
   }
 
+  console.log(`[${mark(report.a11y.ok)}] a11y      imgs:${report.a11y.imgsWithoutAlt.length === 0 ? "ok" : report.a11y.imgsWithoutAlt.length + " missing alt"} inputs:${report.a11y.unlabeledInputs.length === 0 ? "ok" : report.a11y.unlabeledInputs.length + " unlabeled"} buttons:${report.a11y.inaccessibleButtons.length === 0 ? "ok" : report.a11y.inaccessibleButtons.length + " unnamed"}`);
+  for (const src of report.a11y.imgsWithoutAlt) {
+    console.log(`        img missing alt: ${src}`);
+  }
+  for (const id of report.a11y.unlabeledInputs) {
+    console.log(`        unlabeled input: ${id}`);
+  }
+  for (const btn of report.a11y.inaccessibleButtons) {
+    console.log(`        button without accessible name: ${btn}`);
+  }
+  if (report.a11y.positiveTabindex.length) {
+    console.log(`        info: ${report.a11y.positiveTabindex.length} element(s) with positive tabindex`);
+  }
+
   console.log("");
   console.log(report.ok ? "All checks passed." : "Checks FAILED.");
 }

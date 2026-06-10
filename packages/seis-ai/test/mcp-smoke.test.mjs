@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 14 tools, 3 prompts, 2 resources", async () => {
+  it("initializes and lists 15 tools, 3 prompts, 2 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -89,6 +89,7 @@ describe("seis-mcp stdio smoke", () => {
 
     const tools = responses.get(2).result.tools.map((t) => t.name).sort();
     assert.deepEqual(tools, [
+      "a11y_check",
       "drawings_catalog",
       "i18n_add_key",
       "i18n_get",
@@ -172,5 +173,6 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.contract);
     assert.ok(payload.drawings);
     assert.ok(payload.perf);
+    assert.ok(payload.a11y);
   });
 });
