@@ -106,9 +106,9 @@
     },
     {
       "language": "Bash",
-      "role": "polyglot audit orchestrator and portable deploy guard",
+      "role": "shell static auditor (bash -n, shebang, set -u) + polyglot orchestrator",
       "entrypoints": [
-        "polyglot/bash/deploy_guard.sh",
+        "polyglot/bash/seis_shell_audit.sh",
         "scripts/polyglot-check.sh"
       ]
     },
@@ -167,6 +167,14 @@
       "entrypoints": [
         "polyglot/c/readiness_contract.h",
         "polyglot/c/seis_utf8_check.c"
+      ]
+    },
+    {
+      "language": "bc",
+      "role": "arbitrary-precision asset performance budget calculator (KB thresholds, % utilization)",
+      "entrypoints": [
+        "polyglot/bc/seis_budget_check.bc",
+        "polyglot/bc/seis_budget_check.sh"
       ]
     },
     {

@@ -135,6 +135,16 @@ yaml_lane() {
   bash polyglot/yaml/seis_workflow_lint.sh
 }
 
+bash_lane() {
+  bash polyglot/bash/seis_shell_audit.sh --self-test &&
+  bash polyglot/bash/seis_shell_audit.sh
+}
+
+bc_lane() {
+  bash polyglot/bc/seis_budget_check.sh --self-test &&
+  bash polyglot/bc/seis_budget_check.sh
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -152,6 +162,8 @@ run_lane "typescript (config-valid)"    ts-node   typescript_lane
 run_lane "jq         (translations)"    jq        jq_lane
 run_lane "xml        (sitemap)"         xmllint   xml_lane
 run_lane "yaml       (workflow-lint)"   yq        yaml_lane
+run_lane "bash       (shell-audit)"    bash      bash_lane
+run_lane "bc         (budget-check)"   bc        bc_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"
