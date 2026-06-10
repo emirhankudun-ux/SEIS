@@ -132,7 +132,7 @@ node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you f
 
 ## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
 
-Seventeen non-JS languages each contribute a real, tested tool that audits what
+Eighteen non-JS languages each contribute a real, tested tool that audits what
 the JS suite cannot. One command runs them all:
 
 ```bash
@@ -143,11 +143,14 @@ the JS suite cannot. One command runs them all:
 |----------|------|--------------|
 | Python | `seis_image_audit.py` | JPEG/PNG/WebP dimensions from binary headers; asset budget |
 | Python | `seis_icon_gen.py` | Deterministic PWA icon PNGs from manifest colors (zero deps) |
+| Python | `seis_color_contrast.py` | WCAG 2.1 contrast ratios for all fg/bg color-token pairs (AA/AAA) |
 | Rust | `seis-link-audit/` | Every local href/src/url() + manifest icon resolves on disk |
 | Go | `cmd/seis-serve/` | Local preview server with production CSP/security headers |
+| Go | `cmd/seis-jsonld/` | JSON-LD schema.org Person + WebSite block validation |
 | C | `seis_utf8_check.c` | Strict UTF-8 (rejects overlongs, surrogates, truncation) |
 | C++ | `seis_translations_lint.cpp` | Duplicate JSON keys that `JSON.parse` silently swallows |
 | Ruby | `i18n_stats.rb` | Per-locale volume stats + untranslated-value suspects |
+| Ruby | `html_heading_audit.rb` | Heading hierarchy (1 h1, no skips) + landmark presence audit |
 | PHP | `contact-endpoint.php` | Reference form endpoint (honeypot, anti-injection) |
 | Java | `DrawingsChecksum.java` | SHA-256 ledger of the 20 drawings (`drawings.sha256`) |
 | Perl | `hygiene_lint.pl` | BOM / CRLF / trailing-whitespace / final-newline lint |
@@ -156,6 +159,7 @@ the JS suite cannot. One command runs them all:
 | SQL | `audit_ledger.sqlite.sql` | SQLite audit-ledger schema (tables, CHECK constraints, trigger, views) — SKIP if no sqlite3 |
 | jq | `seis_translations_audit.jq` | JSON set-theory audit of locale key parity; advisory empty-value report |
 | XML | `seis_sitemap_check.sh` | xmllint-based sitemap.xml well-formedness, namespace, hreflang, https checks |
+| sed | `seis_css_vars_defined.sh` | Defined-vs-used CSS custom property cross-check (GNU sed sentinel) |
 | YAML | `seis_workflow_lint.sh` | yq-based CI governance lint — trigger, timeout, and job-name enforcement |
 | Bash | `seis_shell_audit.sh` | bash -n syntax check + shebang + `set -u` guard on all repo shell scripts |
 | bc | `seis_budget_check.bc` + `.sh` | Arbitrary-precision asset budget math (HTML/CSS/JS/media KB vs. thresholds) |

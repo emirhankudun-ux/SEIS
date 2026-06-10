@@ -17,7 +17,7 @@ on:
 
 jobs:
   polyglot-audit:
-    name: 17-language audit suite
+    name: 18-language audit suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Toolchain inventory
         run: |
-          for t in python3 cargo go gcc g++ ruby php java perl awk sqlite3 ts-node jq xmllint yq bash bc; do
+          for t in python3 cargo go gcc g++ ruby php java perl awk sqlite3 ts-node jq xmllint sed yq bash bc; do
             printf '%-10s ' "$t"; command -v "$t" >/dev/null && "$t" --version 2>&1 | head -1 || echo "missing"
           done
 

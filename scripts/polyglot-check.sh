@@ -46,7 +46,9 @@ run_lane() { # name toolchain-cmd command...
 python_lane() {
   python3 polyglot/python/test_seis_image_audit.py -v 2>&1 | tail -1 &&
   python3 polyglot/python/test_seis_icon_gen.py -v 2>&1 | tail -1 &&
-  python3 polyglot/python/seis_image_audit.py
+  python3 polyglot/python/seis_image_audit.py &&
+  python3 polyglot/python/seis_color_contrast.py --self-test &&
+  python3 polyglot/python/seis_color_contrast.py
 }
 
 rust_lane() {
@@ -59,7 +61,9 @@ go_lane() {
   ( cd polyglot/go &&
     test -z "$(gofmt -l .)" &&
     go vet ./... &&
-    go test ./... )
+    go test ./... &&
+    go run ./cmd/seis-jsonld --self-test &&
+    go run ./cmd/seis-jsonld "$REPO_ROOT/apps/web/index.html" )
 }
 
 c_lane() {
@@ -82,7 +86,9 @@ cpp_lane() {
 
 ruby_lane() {
   ruby polyglot/ruby/test_i18n_stats.rb 2>&1 | tail -1 &&
-  ruby polyglot/ruby/i18n_stats.rb
+  ruby polyglot/ruby/i18n_stats.rb &&
+  ruby polyglot/ruby/test_html_heading_audit.rb 2>&1 | tail -1 &&
+  ruby polyglot/ruby/html_heading_audit.rb
 }
 
 php_lane() {
@@ -130,6 +136,11 @@ xml_lane() {
   bash polyglot/xml/seis_sitemap_check.sh
 }
 
+sed_lane() {
+  bash polyglot/sed/seis_css_vars_defined.sh --self-test &&
+  bash polyglot/sed/seis_css_vars_defined.sh
+}
+
 yaml_lane() {
   bash polyglot/yaml/seis_workflow_lint.sh --self-test &&
   bash polyglot/yaml/seis_workflow_lint.sh
@@ -161,6 +172,7 @@ run_lane "sql        (audit schema)"    sqlite3   sql_lane
 run_lane "typescript (config-valid)"    ts-node   typescript_lane
 run_lane "jq         (translations)"    jq        jq_lane
 run_lane "xml        (sitemap)"         xmllint   xml_lane
+run_lane "sed        (css-vars-def)"    sed       sed_lane
 run_lane "yaml       (workflow-lint)"   yq        yaml_lane
 run_lane "bash       (shell-audit)"    bash      bash_lane
 run_lane "bc         (budget-check)"   bc        bc_lane

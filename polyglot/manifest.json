@@ -48,20 +48,22 @@
     },
     {
       "language": "Python",
-      "role": "binary image-header audit and PWA icon generation",
+      "role": "binary image-header audit, PWA icon generation, and WCAG 2.1 color contrast checking",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
         "polyglot/python/seis_icon_gen.py",
+        "polyglot/python/seis_color_contrast.py",
         "server/python/verify_release.py"
       ]
     },
     {
       "language": "Ruby",
-      "role": "i18n content statistics and untranslated-value detection",
+      "role": "i18n content statistics, untranslated-value detection, and HTML heading hierarchy audit",
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
-        "polyglot/ruby/i18n_stats.rb"
+        "polyglot/ruby/i18n_stats.rb",
+        "polyglot/ruby/html_heading_audit.rb"
       ]
     },
     {
@@ -75,10 +77,11 @@
     },
     {
       "language": "Go",
-      "role": "local preview server with production security headers",
+      "role": "local preview server with production security headers; JSON-LD schema.org validator",
       "entrypoints": [
         "polyglot/go/health_contract.go",
-        "polyglot/go/cmd/seis-serve/main.go"
+        "polyglot/go/cmd/seis-serve/main.go",
+        "polyglot/go/cmd/seis-jsonld/main.go"
       ]
     },
     {
@@ -502,6 +505,11 @@
       "language": "AWK",
       "role": "CSS custom-property usage histogram — token frequency and single-use suspects",
       "entrypoints": ["polyglot/awk/css_var_histogram.awk"]
+    },
+    {
+      "language": "sed",
+      "role": "CSS custom-property definition vs. usage cross-check (GNU sed sentinel extraction)",
+      "entrypoints": ["polyglot/sed/seis_css_vars_defined.sh"]
     },
     {
       "language": "Forth",
