@@ -137,8 +137,8 @@
     },
     {
       "language": "YAML",
-      "role": "portable deploy governance configuration",
-      "entrypoints": ["polyglot/yaml/deploy-governance.yml"]
+      "role": "yq-based CI workflow governance lint — trigger, timeout-minutes, and job-name enforcement across all workflows",
+      "entrypoints": ["polyglot/yaml/seis_workflow_lint.sh"]
     },
     {
       "language": "Cloudflare Worker",

@@ -132,7 +132,7 @@ node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you f
 
 ## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
 
-Fourteen non-JS languages each contribute a real, tested tool that audits what
+Fifteen non-JS languages each contribute a real, tested tool that audits what
 the JS suite cannot. One command runs them all:
 
 ```bash
@@ -156,6 +156,7 @@ the JS suite cannot. One command runs them all:
 | SQL | `audit_ledger.sqlite.sql` | SQLite audit-ledger schema (tables, CHECK constraints, trigger, views) — SKIP if no sqlite3 |
 | jq | `seis_translations_audit.jq` | JSON set-theory audit of locale key parity; advisory empty-value report |
 | XML | `seis_sitemap_check.sh` | xmllint-based sitemap.xml well-formedness, namespace, hreflang, https checks |
+| YAML | `seis_workflow_lint.sh` | yq-based CI governance lint — trigger, timeout, and job-name enforcement |
 
 Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
 `--self-test` modes). CI: `.github/workflows/polyglot.yml`.
