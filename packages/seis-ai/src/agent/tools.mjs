@@ -1,8 +1,9 @@
 import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import path from "node:path";
 
 import { resolveInside } from "../lib/repo.mjs";
-import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit } from "../lib/checks.mjs";
+import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit } from "../lib/checks.mjs";
 
 const MAX_READ_BYTES = 64 * 1024;
 const MAX_GREP_HITS = 60;
@@ -53,13 +54,24 @@ export function toolDefinitions({ allowWrite = false } = {}) {
       },
     },
     {
-      name: "run_checks",
+      name: "git_diff",
       description:
-        "Run the SEIS audit suite against apps/web. scope: 'i18n' (translation parity), 'seo', 'contract' (HTML/JS selector contract), 'drawings' (media integrity), 'style' (CSS custom props + dead classes) or 'all'. Always run 'contract' and 'i18n' after editing index.html, script.js or translations.json; run 'style' after editing style.css.",
+        "Show uncommitted changes as a unified diff (git diff HEAD). Pass staged: true to see only staged changes. Read-only — always available without --write.",
       input_schema: {
         type: "object",
         properties: {
-          scope: { type: "string", enum: ["all", "i18n", "seo", "contract", "drawings", "style"] },
+          staged: { type: "boolean", description: "Show only staged changes (default false = working tree)" },
+        },
+      },
+    },
+    {
+      name: "run_checks",
+      description:
+        "Run the SEIS audit suite against apps/web. scope: 'i18n' (translation parity), 'seo', 'contract' (HTML/JS selector contract), 'drawings' (media integrity), 'style' (CSS custom props + dead classes), 'perf' (file size budgets + render-blocking scripts), or 'all'. Always run 'contract' and 'i18n' after editing index.html, script.js or translations.json; run 'style' after editing style.css.",
+      input_schema: {
+        type: "object",
+        properties: {
+          scope: { type: "string", enum: ["all", "i18n", "seo", "contract", "drawings", "style", "perf"] },
         },
         required: ["scope"],
       },
@@ -133,6 +145,20 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
       const suffix = hits.length > shown.length ? `\n[... ${hits.length - shown.length} more matches]` : "";
       return shown.join("\n") + suffix;
     }
+    case "git_diff": {
+      const args = input.staged === true ? ["diff", "--staged"] : ["diff", "HEAD"];
+      let out;
+      try {
+        out = execFileSync("git", args, { cwd: repoRoot, maxBuffer: 512 * 1024, encoding: "utf8" });
+      } catch (err) {
+        out = (err.stdout ?? "") || err.message;
+      }
+      if (!out.trim()) return "(no changes)";
+      if (out.length > MAX_READ_BYTES) {
+        return out.slice(0, MAX_READ_BYTES) + `\n[... truncated at ${MAX_READ_BYTES} bytes of ${out.length}]`;
+      }
+      return out;
+    }
     case "run_checks": {
       const result =
         input.scope === "i18n" ? i18nStatus(webRoot)
@@ -140,6 +166,7 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
         : input.scope === "contract" ? contractCheck(webRoot)
         : input.scope === "drawings" ? drawingsCatalog(webRoot)
         : input.scope === "style" ? styleAudit(webRoot)
+        : input.scope === "perf" ? perfAudit(webRoot)
         : runAllChecks(webRoot);
       // Drawing file lists are large and rarely needed in-context.
       if (result.files) result.files = `(${result.files.length} files, omitted)`;

@@ -356,6 +356,83 @@ export function styleAudit(webRoot) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Performance budget                                                */
+/* ------------------------------------------------------------------ */
+
+const PERF_BUDGETS_BYTES = {
+  html:  100 * 1024,  // 100 KB
+  css:   100 * 1024,  // 100 KB
+  js:    150 * 1024,  // 150 KB
+  total: 300 * 1024,  // 300 KB
+};
+
+/**
+ * Static performance budget checker for apps/web:
+ * FAILS on: file size budget violations, render-blocking <script src> in <head>.
+ * Advisory (no FAIL): images without loading="lazy", images missing width+height.
+ */
+export function perfAudit(webRoot) {
+  function fileBytes(name) {
+    const p = path.join(webRoot, name);
+    try { return statSync(p).size; } catch { return 0; }
+  }
+
+  const htmlBytes  = fileBytes("index.html");
+  const cssBytes   = fileBytes("style.css");
+  const jsBytes    = fileBytes("script.js");
+  const totalBytes = htmlBytes + cssBytes + jsBytes;
+
+  const htmlPath = path.join(webRoot, "index.html");
+  const html = existsSync(htmlPath) ? readFileSync(htmlPath, "utf8") : "";
+
+  // Extract content before <body> as the <head> region.
+  const bodyStart = html.search(/<body/i);
+  const headHtml = bodyStart >= 0 ? html.slice(0, bodyStart) : html;
+
+  // Render-blocking: <script src="..."> in head without defer or async.
+  const renderBlockingScripts = [];
+  for (const m of headHtml.matchAll(/<script\s[^>]*src="([^"]+)"[^>]*>/g)) {
+    if (!/\b(?:defer|async)\b/.test(m[0])) {
+      renderBlockingScripts.push(m[1]);
+    }
+  }
+
+  // Images without loading="lazy" and without explicit dimensions.
+  const allImgTags = [...html.matchAll(/<img\b[^>]*>/g)].map((m) => m[0]);
+  const imgsWithoutLazy = allImgTags
+    .filter((tag) => !/\bloading=["']lazy["']/.test(tag))
+    .map((tag) => {
+      const s = tag.match(/(?:src|data-src)="([^"]+)"/);
+      return s ? s[1] : "(no src)";
+    });
+  const imgsWithoutDimensions = allImgTags
+    .filter((tag) => !/\bwidth=/.test(tag) || !/\bheight=/.test(tag))
+    .map((tag) => {
+      const s = tag.match(/(?:src|data-src)="([^"]+)"/);
+      return s ? s[1] : "(no src)";
+    });
+
+  const budgetViolations = [];
+  if (htmlBytes  > PERF_BUDGETS_BYTES.html)  budgetViolations.push({ file: "index.html", bytes: htmlBytes,  budget: PERF_BUDGETS_BYTES.html });
+  if (cssBytes   > PERF_BUDGETS_BYTES.css)   budgetViolations.push({ file: "style.css",  bytes: cssBytes,   budget: PERF_BUDGETS_BYTES.css });
+  if (jsBytes    > PERF_BUDGETS_BYTES.js)    budgetViolations.push({ file: "script.js",  bytes: jsBytes,    budget: PERF_BUDGETS_BYTES.js });
+  if (totalBytes > PERF_BUDGETS_BYTES.total) budgetViolations.push({ file: "(total)",    bytes: totalBytes, budget: PERF_BUDGETS_BYTES.total });
+
+  return {
+    ok: budgetViolations.length === 0 && renderBlockingScripts.length === 0,
+    htmlBytes,
+    cssBytes,
+    jsBytes,
+    totalBytes,
+    budgets: PERF_BUDGETS_BYTES,
+    budgetViolations,
+    renderBlockingScripts,
+    imgsWithoutLazy,
+    imgsWithoutDimensions,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Site config                                                        */
 /* ------------------------------------------------------------------ */
 
@@ -373,12 +450,14 @@ export function runAllChecks(webRoot) {
   const contract = contractCheck(webRoot);
   const drawings = drawingsCatalog(webRoot);
   const style = styleAudit(webRoot);
+  const perf = perfAudit(webRoot);
   return {
-    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok,
+    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok,
     i18n,
     seo,
     contract,
     drawings,
     style,
+    perf,
   };
 }

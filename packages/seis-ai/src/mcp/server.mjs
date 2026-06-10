@@ -13,6 +13,7 @@ import {
   i18nSearch,
   i18nStatus,
   loadTranslations,
+  perfAudit,
   runAllChecks,
   seoAudit,
   siteConfig,
@@ -246,8 +247,21 @@ export function buildServer() {
   );
 
   server.tool(
+    "web_perf_audit",
+    "Static performance budget for apps/web: file sizes (HTML ≤ 100 KB, CSS ≤ 100 KB, JS ≤ 150 KB, total ≤ 300 KB), render-blocking <script src> in <head>, and images missing loading=lazy or width/height. Budget violations and blocking scripts FAIL the check; missing lazy/dimensions are advisory.",
+    {},
+    async () => {
+      try {
+        return jsonResult(perfAudit(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "run_all_checks",
-    "Run the full audit suite (i18n parity, SEO, HTML/JS contract, drawings) and return one aggregate report with a top-level ok flag.",
+    "Run the full audit suite (i18n parity, SEO, HTML/JS contract, drawings, CSS style, performance budget) and return one aggregate report with a top-level ok flag.",
     {},
     async () => {
       try {

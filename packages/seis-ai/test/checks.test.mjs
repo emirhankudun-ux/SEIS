@@ -13,6 +13,7 @@ import {
   drawingsCatalog,
   runAllChecks,
   styleAudit,
+  perfAudit,
 } from "../src/lib/checks.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -364,6 +365,80 @@ describe("styleAudit", () => {
 });
 
 /* ------------------------------------------------------------------ */
+/* Performance audit                                                  */
+/* ------------------------------------------------------------------ */
+
+describe("perfAudit", () => {
+  afterEach(teardown);
+
+  it("passes with small files and no render-blocking scripts", () => {
+    setup({ "index.html": minHtml, "style.css": ".x{color:red}", "script.js": "var x=1;" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.budgetViolations.length, 0);
+    assert.equal(r.renderBlockingScripts.length, 0);
+  });
+
+  it("fails when index.html exceeds the HTML budget", () => {
+    const bigHtml = minHtml + " ".repeat(100 * 1024 + 1);
+    setup({ "index.html": bigHtml, "style.css": "", "script.js": "" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.budgetViolations.some((v) => v.file === "index.html"));
+  });
+
+  it("fails when a render-blocking script is in <head>", () => {
+    const html = minHtml.replace(
+      "</head>",
+      '<script src="vendor.js"></script>\n</head>'
+    );
+    setup({ "index.html": html, "style.css": "", "script.js": "" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.renderBlockingScripts.includes("vendor.js"));
+  });
+
+  it("does not flag a deferred script as render-blocking", () => {
+    const html = minHtml.replace(
+      "</head>",
+      '<script src="app.js" defer></script>\n</head>'
+    );
+    setup({ "index.html": html, "style.css": "", "script.js": "" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.renderBlockingScripts.length, 0);
+  });
+
+  it("reports images without loading=lazy as advisory, not failure", () => {
+    const html = minHtml.replace(
+      "</body>",
+      '<img src="photo.jpg" width="100" height="100">\n</body>'
+    );
+    setup({ "index.html": html, "style.css": "", "script.js": "" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.ok(r.imgsWithoutLazy.includes("photo.jpg"));
+  });
+
+  it("does not flag an image with loading=lazy", () => {
+    const html = minHtml.replace(
+      "</body>",
+      '<img src="photo.jpg" loading="lazy" width="100" height="100">\n</body>'
+    );
+    setup({ "index.html": html, "style.css": "", "script.js": "" });
+    const r = perfAudit(webRoot);
+    assert.equal(r.imgsWithoutLazy.length, 0);
+  });
+
+  it("returns zero bytes for absent files, still passes", () => {
+    setup({ "index.html": minHtml });
+    const r = perfAudit(webRoot);
+    assert.equal(r.cssBytes, 0);
+    assert.equal(r.jsBytes, 0);
+    assert.equal(r.ok, true);
+  });
+});
+
+/* ------------------------------------------------------------------ */
 /* runAllChecks                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -384,6 +459,7 @@ describe("runAllChecks", () => {
     assert.equal(r.contract.ok, true);
     assert.equal(r.drawings.ok, true);
     assert.equal(r.style.ok, true);
+    assert.equal(r.perf.ok, true);
     teardown();
   });
 
@@ -399,6 +475,23 @@ describe("runAllChecks", () => {
     const r = runAllChecks(webRoot);
     assert.equal(r.ok, false);
     assert.equal(r.style.ok, false);
+    assert.equal(r.perf.ok, true);
+    teardown();
+  });
+
+  it("aggregates ok=false when the perf check fails", () => {
+    setup({
+      "translations.json": minTranslations,
+      "index.html": minHtml.replace("</head>", '<script src="vendor.js"></script>\n</head>'),
+      "script.js": minScript,
+      "style.css": ":root { --bg: #000; } .nav-link { color: var(--bg); }",
+      "robots.txt": "User-agent: *",
+      "sitemap.xml": "<urlset/>",
+    });
+    const r = runAllChecks(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.perf.ok, false);
+    assert.ok(r.perf.renderBlockingScripts.includes("vendor.js"));
     teardown();
   });
 });

@@ -55,6 +55,21 @@ function printReport(report) {
     }
   }
 
+  const kb = (n) => (n / 1024).toFixed(0);
+  console.log(`[${mark(report.perf.ok)}] perf      ${kb(report.perf.totalBytes)} KB total (html:${kb(report.perf.htmlBytes)} css:${kb(report.perf.cssBytes)} js:${kb(report.perf.jsBytes)})`);
+  for (const v of report.perf.budgetViolations) {
+    console.log(`        budget exceeded: ${v.file} ${kb(v.bytes)} KB > ${kb(v.budget)} KB`);
+  }
+  for (const s of report.perf.renderBlockingScripts) {
+    console.log(`        render-blocking script in <head>: ${s}`);
+  }
+  if (report.perf.imgsWithoutLazy.length) {
+    console.log(`        info: ${report.perf.imgsWithoutLazy.length} images without loading="lazy"`);
+  }
+  if (report.perf.imgsWithoutDimensions.length) {
+    console.log(`        info: ${report.perf.imgsWithoutDimensions.length} images without explicit width/height`);
+  }
+
   console.log("");
   console.log(report.ok ? "All checks passed." : "Checks FAILED.");
 }

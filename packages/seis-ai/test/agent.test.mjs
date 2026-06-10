@@ -56,6 +56,7 @@ describe("toolDefinitions", () => {
   it("excludes write tools by default", () => {
     const names = toolDefinitions().map((t) => t.name);
     assert.ok(names.includes("read_file"));
+    assert.ok(names.includes("git_diff"));
     assert.ok(!names.includes("write_file"));
     assert.ok(!names.includes("edit_file"));
   });
@@ -64,6 +65,7 @@ describe("toolDefinitions", () => {
     const names = toolDefinitions({ allowWrite: true }).map((t) => t.name);
     assert.ok(names.includes("write_file"));
     assert.ok(names.includes("edit_file"));
+    assert.ok(names.includes("git_diff"));
   });
 });
 
@@ -191,6 +193,28 @@ describe("executeTool", () => {
     const out = executeTool("run_checks", { scope: "style" }, ctx());
     const r = JSON.parse(out);
     assert.equal(r.ok, true);
+  });
+
+  it("run_checks accepts the perf scope", () => {
+    const out = executeTool("run_checks", { scope: "perf" }, ctx());
+    const r = JSON.parse(out);
+    assert.ok(typeof r.ok === "boolean");
+    assert.ok(typeof r.totalBytes === "number");
+  });
+
+  it("git_diff returns a string result", () => {
+    const out = executeTool("git_diff", {}, { repoRoot: process.cwd(), webRoot: "" });
+    assert.ok(typeof out === "string");
+  });
+
+  it("git_diff staged flag is accepted", () => {
+    const out = executeTool("git_diff", { staged: true }, { repoRoot: process.cwd(), webRoot: "" });
+    assert.ok(typeof out === "string");
+  });
+
+  it("git_diff returns (no changes) or a diff for a non-git tmpdir", () => {
+    const out = executeTool("git_diff", {}, ctx());
+    assert.ok(typeof out === "string");
   });
 
   it("throws on unknown tool", () => {

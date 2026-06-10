@@ -29,10 +29,11 @@ The MCP server (`seis-mcp`) exposes these tools — use them when answering ques
 | `web_contract_check` | Verify that every `q("…")` / `qa("…")` literal in `script.js` has a matching element in `index.html` |
 | `drawings_catalog` | Cross-check `<img src="public/media/drawings/…">` references vs files on disk |
 | `style_audit` | CSS audit: fails on `var(--x)` with no definition; reports dead classes (info) |
+| `web_perf_audit` | Performance budget: file sizes (HTML ≤ 100 KB, CSS ≤ 100 KB, JS ≤ 150 KB, total ≤ 300 KB), render-blocking scripts; advisory: images without `loading="lazy"` or `width`/`height` |
 | `site_config_get` | Read `site-config.json` (name, email, social links, etc.) |
 | `i18n_unreferenced` | Translation keys never referenced from HTML/JS |
 | `workspace_status` | Monorepo package inventory |
-| `run_all_checks` | Run all checks at once and return a combined pass/fail report |
+| `run_all_checks` | Run all checks at once and return a combined pass/fail report (6 sections: i18n, seo, contract, drawings, style, perf) |
 
 MCP prompts (pre-built workflows — `prompts/get`):
 - `audit_and_fix` — run the audit, fix every failure, re-verify
@@ -78,7 +79,8 @@ Model aliases: `fable` → `claude-fable-5`, `opus` → `claude-opus-4-8` (defau
 | `list_files` | R | Directory listing relative to repo root |
 | `read_file` | R | Read any file inside the repo root (64 KB pages) |
 | `grep_repo` | R | Regex search across files |
-| `run_checks` | R | Audit scopes: `i18n`, `seo`, `contract`, `drawings`, `style`, `all` |
+| `git_diff` | R | Show uncommitted changes (`git diff HEAD`); `staged: true` for staged-only |
+| `run_checks` | R | Audit scopes: `i18n`, `seo`, `contract`, `drawings`, `style`, `perf`, `all` |
 | `edit_file` | **W** | Exact-string replacement; old_string must be unique (needs `--write`) |
 | `write_file` | **W** | Full file write for new files/rewrites (needs `--write`) |
 
