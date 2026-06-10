@@ -31,10 +31,11 @@ The MCP server (`seis-mcp`) exposes these tools — use them when answering ques
 | `style_audit` | CSS audit: fails on `var(--x)` with no definition; reports dead classes (info) |
 | `web_perf_audit` | Performance budget: file sizes (HTML ≤ 100 KB, CSS ≤ 100 KB, JS ≤ 150 KB, total ≤ 300 KB), render-blocking scripts; advisory: images without `loading="lazy"` or `width`/`height` |
 | `a11y_check` | Accessibility audit: fails on `<img>` missing `alt=`, unlabeled form controls, and buttons with no accessible name; advisory: positive tabindex |
+| `security_audit` | Security audit: fails on `target="_blank"` without `rel="noopener noreferrer"`, `javascript:` hrefs, `http://` mixed content; advisory: missing CSP, external resources without `integrity=` |
 | `site_config_get` | Read `site-config.json` (name, email, social links, etc.) |
 | `i18n_unreferenced` | Translation keys never referenced from HTML/JS |
 | `workspace_status` | Monorepo package inventory |
-| `run_all_checks` | Run all checks at once and return a combined pass/fail report (6 sections: i18n, seo, contract, drawings, style, perf) |
+| `run_all_checks` | Run all checks at once and return a combined pass/fail report (8 sections: i18n, seo, contract, drawings, style, perf, a11y, security) |
 
 MCP prompts (pre-built workflows — `prompts/get`):
 - `audit_and_fix` — run the audit, fix every failure, re-verify
@@ -82,7 +83,7 @@ Model aliases: `fable` → `claude-fable-5`, `opus` → `claude-opus-4-8` (defau
 | `grep_repo` | R | Regex search across files |
 | `git_diff` | R | Show uncommitted changes (`git diff HEAD`); `staged: true` for staged-only |
 | `git_log` | R | Recent commit history (`git log --oneline`); `count` param (default 10) |
-| `run_checks` | R | Audit scopes: `i18n`, `seo`, `contract`, `drawings`, `style`, `perf`, `a11y`, `all` |
+| `run_checks` | R | Audit scopes: `i18n`, `seo`, `contract`, `drawings`, `style`, `perf`, `a11y`, `security`, `all` |
 | `edit_file` | **W** | Exact-string replacement; old_string must be unique (needs `--write`) |
 | `write_file` | **W** | Full file write for new files/rewrites (needs `--write`) |
 

@@ -238,6 +238,15 @@ describe("executeTool", () => {
     assert.ok(Array.isArray(r.imgsWithoutAlt));
   });
 
+  it("run_checks accepts the security scope", () => {
+    const out = executeTool("run_checks", { scope: "security" }, ctx());
+    const r = JSON.parse(out);
+    assert.ok(typeof r.ok === "boolean");
+    assert.ok(Array.isArray(r.unsafeBlankLinks));
+    assert.ok(Array.isArray(r.jsHrefs));
+    assert.ok(Array.isArray(r.insecureResources));
+  });
+
   it("throws on unknown tool", () => {
     assert.throws(() => executeTool("nope", {}, ctx()), /Unknown tool/);
   });

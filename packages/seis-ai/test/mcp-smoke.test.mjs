@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 15 tools, 3 prompts, 2 resources", async () => {
+  it("initializes and lists 16 tools, 3 prompts, 2 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -98,6 +98,7 @@ describe("seis-mcp stdio smoke", () => {
       "i18n_status",
       "i18n_unreferenced",
       "run_all_checks",
+      "security_audit",
       "seo_audit",
       "site_config_get",
       "style_audit",
@@ -174,5 +175,6 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.drawings);
     assert.ok(payload.perf);
     assert.ok(payload.a11y);
+    assert.ok(payload.security);
   });
 });

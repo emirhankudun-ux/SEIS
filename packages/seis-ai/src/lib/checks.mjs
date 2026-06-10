@@ -519,6 +519,68 @@ export function perfAudit(webRoot) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Security                                                           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Static security audit of index.html:
+ * FAILS on: target="_blank" without rel="noopener"/"noreferrer" (tab-napping),
+ *   javascript: hrefs (XSS), http:// in src/href attributes (mixed content).
+ * Advisory (no FAIL): missing CSP meta tag, external resources without integrity=.
+ */
+export function securityAudit(webRoot) {
+  const html = readWebFile(webRoot, "index.html");
+
+  // 1. target="_blank" links without rel="noopener" or rel="noreferrer"
+  const unsafeBlankLinks = [];
+  for (const m of html.matchAll(/<a\b[^>]*>/g)) {
+    const tag = m[0];
+    if (!/\btarget="_blank"/.test(tag)) continue;
+    const relM = tag.match(/\brel="([^"]*)"/);
+    const rel = relM ? relM[1] : "";
+    if (!/noopener/.test(rel) && !/noreferrer/.test(rel)) {
+      const hrefM = tag.match(/\bhref="([^"]+)"/);
+      unsafeBlankLinks.push(hrefM ? hrefM[1] : "(no href)");
+    }
+  }
+
+  // 2. javascript: hrefs (XSS vectors)
+  const jsHrefs = [...html.matchAll(/\bhref\s*=\s*["']javascript:/g)].map(
+    (m) => html.slice(m.index, m.index + 80).split(/['"]/)[2] ?? "(unknown)"
+  );
+
+  // 3. http:// in src= or href= (mixed content)
+  const insecureResources = [];
+  for (const m of html.matchAll(/\b(?:src|href)\s*=\s*"(http:\/\/[^"]+)"/g)) {
+    insecureResources.push(m[1]);
+  }
+
+  // Advisory: Content Security Policy meta tag
+  const hasCsp = /<meta\s[^>]*http-equiv\s*=\s*["']Content-Security-Policy["']/i.test(html);
+
+  // Advisory: external stylesheets/scripts without integrity=
+  const externalNoIntegrity = [];
+  for (const m of html.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*>/g)) {
+    if (/\bhref\s*=\s*"https?:\/\//.test(m[0]) && !/\bintegrity=/.test(m[0])) {
+      const hrefM = m[0].match(/\bhref\s*=\s*"([^"]+)"/);
+      if (hrefM) externalNoIntegrity.push(hrefM[1]);
+    }
+  }
+  for (const m of html.matchAll(/<script\b[^>]*src\s*=\s*"(https?:\/\/[^"]+)"[^>]*>/g)) {
+    if (!/\bintegrity=/.test(m[0])) externalNoIntegrity.push(m[1]);
+  }
+
+  return {
+    ok: unsafeBlankLinks.length === 0 && jsHrefs.length === 0 && insecureResources.length === 0,
+    unsafeBlankLinks,
+    jsHrefs,
+    insecureResources,
+    hasCsp,
+    externalNoIntegrity,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* Site config                                                        */
 /* ------------------------------------------------------------------ */
 
@@ -538,8 +600,9 @@ export function runAllChecks(webRoot) {
   const style = styleAudit(webRoot);
   const perf = perfAudit(webRoot);
   const a11y = a11yAudit(webRoot);
+  const security = securityAudit(webRoot);
   return {
-    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok && a11y.ok,
+    ok: i18n.ok && seo.ok && contract.ok && drawings.ok && style.ok && perf.ok && a11y.ok && security.ok,
     i18n,
     seo,
     contract,
@@ -547,5 +610,6 @@ export function runAllChecks(webRoot) {
     style,
     perf,
     a11y,
+    security,
   };
 }

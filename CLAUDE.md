@@ -32,11 +32,11 @@ packages/
 ## MCP server (auto-loaded)
 
 `.mcp.json` registers `packages/seis-ai/bin/seis-mcp.mjs` as the `seis` MCP server.
-In any Claude Code session it exposes **15 tools**, **3 prompts**, and **2 resources**:
+In any Claude Code session it exposes **16 tools**, **3 prompts**, and **2 resources**:
 
 | Tool | What it checks |
 |------|---------------|
-| `run_all_checks` | Full audit in one call (7 sections) |
+| `run_all_checks` | Full audit in one call (8 sections) |
 | `i18n_status` | 5-locale key parity |
 | `i18n_get` | All locale values for a key |
 | `i18n_search` | Substring search across keys + values |
@@ -49,6 +49,7 @@ In any Claude Code session it exposes **15 tools**, **3 prompts**, and **2 resou
 | `style_audit` | CSS: undefined `var(--x)` fails; dead classes reported |
 | `web_perf_audit` | File size budgets + render-blocking scripts (6th quality gate) |
 | `a11y_check` | Accessibility: `alt` on images, labeled inputs, accessible buttons (7th quality gate) |
+| `security_audit` | `target="_blank"` safety, `javascript:` hrefs, mixed content (8th quality gate) |
 | `site_config_get` | site-config.json reader |
 | `workspace_status` | Monorepo package inventory |
 

@@ -124,8 +124,8 @@ Enforcement in this repository today:
 
 | Gate | Enforced by |
 |------|-------------|
-| Site integrity (i18n, SEO, HTML↔JS contract, media, CSS) | `seis-check` (5 sections) + `.github/workflows/seis-ai.yml` |
-| Unit + protocol tests | `node --test` suite (88 tests) in CI |
+| Site integrity (i18n, SEO, HTML↔JS contract, media, CSS, perf, a11y, security) | `seis-check` (8 sections) + `.github/workflows/seis-ai.yml` |
+| Unit + protocol tests | `node --test` suite (125 tests) in CI |
 | Review | CodeRabbit on PRs |
 | Dependency security | Socket Security on PRs |
 | Path/write safety in AI tooling | `resolveInside()` guard + `--write` gating, covered by tests |
@@ -174,12 +174,12 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 
 | Pillar | Implemented as |
 |--------|----------------|
-| MCP | `packages/seis-ai` MCP server — 13 tools, 3 prompts, 2 resources, auto-registered via `.mcp.json`, stdio smoke-tested |
+| MCP | `packages/seis-ai` MCP server — 16 tools, 3 prompts, 2 resources, auto-registered via `.mcp.json`, stdio smoke-tested |
 | Agents | `seis-agent` CLI — streaming tool-use loop, adaptive thinking, `--session` persistence, `--write` gating, path-traversal guard |
 | LLMs | Model aliases fable/opus/sonnet/haiku (default `claude-opus-4-8`); injectable client for tests |
 | Skills | `.claude/skills/seis-ai/SKILL.md` + `.claude/skills/UIX-Apps/` |
 | Plugins / commands | `/seis-audit`, `/seis-i18n` slash commands in `.claude/commands/` |
-| Quality gates | `seis-check` (i18n · seo · contract · drawings · style) + 88-test suite + `seis-ai.yml` CI |
+| Quality gates | `seis-check` (i18n · seo · contract · drawings · style · perf · a11y · security) + 125-test suite + `seis-ai.yml` CI |
 | GitHub governance | Protected `main`, PR #17 flow, CodeRabbit + Socket + ecc-tools bots, `docs/governance/branch-policy.md` |
 | Web | `apps/web` — 5-locale portfolio, PWA, service worker, SEO/JSON-LD |
 | Mobile / desktop | `apps/android`, `apps/macos`, `apps/fullstack` scaffolds — expansion targets |

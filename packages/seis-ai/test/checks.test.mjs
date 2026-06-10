@@ -15,6 +15,7 @@ import {
   styleAudit,
   perfAudit,
   a11yAudit,
+  securityAudit,
 } from "../src/lib/checks.mjs";
 
 /* ------------------------------------------------------------------ */
@@ -523,6 +524,87 @@ describe("a11yAudit", () => {
 });
 
 /* ------------------------------------------------------------------ */
+/* securityAudit                                                      */
+/* ------------------------------------------------------------------ */
+
+describe("securityAudit", () => {
+  afterEach(teardown);
+
+  it("passes on clean HTML with no security issues", () => {
+    setup({ "index.html": minHtml, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.unsafeBlankLinks.length, 0);
+    assert.equal(r.jsHrefs.length, 0);
+    assert.equal(r.insecureResources.length, 0);
+  });
+
+  it("fails for target=\"_blank\" without rel", () => {
+    const html = minHtml.replace("</body>", '<a href="https://example.com" target="_blank">link</a>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.unsafeBlankLinks.includes("https://example.com"));
+  });
+
+  it("passes for target=\"_blank\" with rel=\"noopener noreferrer\"", () => {
+    const html = minHtml.replace("</body>", '<a href="https://example.com" target="_blank" rel="noopener noreferrer">link</a>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, true);
+    assert.equal(r.unsafeBlankLinks.length, 0);
+  });
+
+  it("passes for target=\"_blank\" with rel=\"noreferrer\" alone", () => {
+    const html = minHtml.replace("</body>", '<a href="https://x.com" target="_blank" rel="noreferrer">link</a>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, true);
+  });
+
+  it("fails for javascript: href", () => {
+    const html = minHtml.replace("</body>", '<a href="javascript:void(0)">action</a>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.jsHrefs.length, 1);
+  });
+
+  it("fails for http:// in src attribute (mixed content)", () => {
+    const html = minHtml.replace("</body>", '<script src="http://cdn.example.com/lib.js"></script>\n</body>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.insecureResources.some((u) => u.startsWith("http://cdn.example.com")));
+  });
+
+  it("fails for http:// in href attribute", () => {
+    const html = minHtml.replace("</head>", '<link rel="stylesheet" href="http://example.com/a.css">\n</head>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.ok, false);
+    assert.ok(r.insecureResources.some((u) => u.includes("http://example.com")));
+  });
+
+  it("reports hasCsp=true when CSP meta tag is present", () => {
+    const html = minHtml.replace("</head>",
+      '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'">\n</head>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.hasCsp, true);
+  });
+
+  it("reports hasCsp=false and externalNoIntegrity when external stylesheet lacks integrity", () => {
+    const html = minHtml.replace("</head>",
+      '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Foo">\n</head>');
+    setup({ "index.html": html, "script.js": minScript });
+    const r = securityAudit(webRoot);
+    assert.equal(r.hasCsp, false);
+    assert.ok(r.externalNoIntegrity.some((u) => u.includes("fonts.googleapis.com")));
+  });
+});
+
+/* ------------------------------------------------------------------ */
 /* runAllChecks                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -545,6 +627,7 @@ describe("runAllChecks", () => {
     assert.equal(r.style.ok, true);
     assert.equal(r.perf.ok, true);
     assert.equal(r.a11y.ok, true);
+    assert.equal(r.security.ok, true);
     teardown();
   });
 
@@ -594,6 +677,23 @@ describe("runAllChecks", () => {
     assert.equal(r.ok, false);
     assert.equal(r.a11y.ok, false);
     assert.ok(r.a11y.imgsWithoutAlt.includes("logo.png"));
+    teardown();
+  });
+
+  it("aggregates ok=false when the security check fails", () => {
+    setup({
+      "translations.json": minTranslations,
+      "index.html": minHtml.replace("</body>",
+        '<a href="https://x.com" target="_blank">x</a>\n</body>'),
+      "script.js": minScript,
+      "style.css": ":root { --bg: #000; } .nav-link { color: var(--bg); }",
+      "robots.txt": "User-agent: *",
+      "sitemap.xml": "<urlset/>",
+    });
+    const r = runAllChecks(webRoot);
+    assert.equal(r.ok, false);
+    assert.equal(r.security.ok, false);
+    assert.ok(r.security.unsafeBlankLinks.includes("https://x.com"));
     teardown();
   });
 });

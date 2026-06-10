@@ -84,6 +84,23 @@ function printReport(report) {
     console.log(`        info: ${report.a11y.positiveTabindex.length} element(s) with positive tabindex`);
   }
 
+  console.log(`[${mark(report.security.ok)}] security  blank-links:${report.security.unsafeBlankLinks.length === 0 ? "ok" : report.security.unsafeBlankLinks.length + " unsafe"} js-hrefs:${report.security.jsHrefs.length === 0 ? "ok" : report.security.jsHrefs.length + " found"} http:${report.security.insecureResources.length === 0 ? "ok" : report.security.insecureResources.length + " found"}`);
+  for (const link of report.security.unsafeBlankLinks) {
+    console.log(`        target="_blank" without noopener/noreferrer: ${link}`);
+  }
+  for (const href of report.security.jsHrefs) {
+    console.log(`        javascript: href: ${href}`);
+  }
+  for (const url of report.security.insecureResources) {
+    console.log(`        http:// resource: ${url}`);
+  }
+  if (!report.security.hasCsp) {
+    console.log(`        info: no Content-Security-Policy meta tag`);
+  }
+  if (report.security.externalNoIntegrity.length) {
+    console.log(`        info: ${report.security.externalNoIntegrity.length} external resource(s) without integrity=`);
+  }
+
   console.log("");
   console.log(report.ok ? "All checks passed." : "Checks FAILED.");
 }

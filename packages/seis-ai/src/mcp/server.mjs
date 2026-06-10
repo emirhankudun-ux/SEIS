@@ -16,6 +16,7 @@ import {
   loadTranslations,
   perfAudit,
   runAllChecks,
+  securityAudit,
   seoAudit,
   siteConfig,
   styleAudit,
@@ -274,8 +275,21 @@ export function buildServer() {
   );
 
   server.tool(
+    "security_audit",
+    "Static security audit of index.html: FAILS on target=\"_blank\" without rel=\"noopener noreferrer\" (tab-napping), javascript: hrefs (XSS), and http:// src/href attributes (mixed content). Advisory: missing CSP meta tag and external resources without integrity=.",
+    {},
+    async () => {
+      try {
+        return jsonResult(securityAudit(webRoot));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "run_all_checks",
-    "Run the full audit suite (i18n, SEO, HTML/JS contract, drawings, CSS style, performance, accessibility) and return one aggregate report with a top-level ok flag.",
+    "Run the full audit suite (i18n, SEO, HTML/JS contract, drawings, CSS style, performance, accessibility, security) and return one aggregate report with a top-level ok flag.",
     {},
     async () => {
       try {
