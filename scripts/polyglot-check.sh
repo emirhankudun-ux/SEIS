@@ -161,6 +161,16 @@ bun_lane() {
   bun polyglot/bun/seis_js_quality_audit.ts
 }
 
+lua_lane() {
+  lua5.4 polyglot/lua/seis_i18n_attr_audit.lua --self-test &&
+  lua5.4 polyglot/lua/seis_i18n_attr_audit.lua
+}
+
+tcl_lane() {
+  tclsh polyglot/tcl/seis_meta_tags_check.tcl --self-test &&
+  tclsh polyglot/tcl/seis_meta_tags_check.tcl
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -182,6 +192,8 @@ run_lane "yaml       (workflow-lint)"   yq        yaml_lane
 run_lane "bash       (shell-audit)"    bash      bash_lane
 run_lane "bc         (budget-check)"   bc        bc_lane
 run_lane "bun        (js-quality)"     bun       bun_lane
+run_lane "lua        (i18n-attrs)"     lua5.4    lua_lane
+run_lane "tcl        (meta-tags)"      tclsh     tcl_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

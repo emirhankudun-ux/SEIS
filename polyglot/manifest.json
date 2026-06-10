@@ -517,6 +517,16 @@
       "entrypoints": ["polyglot/bun/seis_js_quality_audit.ts"]
     },
     {
+      "language": "Lua",
+      "role": "i18n attribute auditor — all data-i18n* HTML attribute keys verified against tr base locale (Lua 5.4, zero deps)",
+      "entrypoints": ["polyglot/lua/seis_i18n_attr_audit.lua"]
+    },
+    {
+      "language": "Tcl",
+      "role": "12-point HTML meta-tag completeness checker — title, meta description, viewport, canonical, og:*, twitter:*",
+      "entrypoints": ["polyglot/tcl/seis_meta_tags_check.tcl"]
+    },
+    {
       "language": "Forth",
       "role": "tiny stack-language readiness policy",
       "entrypoints": ["polyglot/forth/release_policy.fs"]
