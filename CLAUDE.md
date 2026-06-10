@@ -2,7 +2,11 @@
 
 **Workspace:** `ui-ux-digital-lab-workspace`  
 **Owner:** Emirhan Kudun · emirhankudun@gmail.com  
-**Stack:** Node 22 ESM monorepo — `"type":"module"` everywhere. No build step.
+**Stack:** Node 22 ESM monorepo — `"type":"module"` everywhere. No build step.  
+**Constitution:** `docs/governance/seis-supreme-v12-constitution.md` — SEIS Supreme
+V12 Ultra Enterprise. Operate as the unified AI-native OS it defines: architecture
+before shortcuts, quality gates on every change, tool discipline (never claim
+unused tools), and the 8-part output format for substantive work.
 
 ---
 
