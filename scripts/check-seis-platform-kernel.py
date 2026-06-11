@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT))
 from packages.seis_kernel.platform_language_policy import build_platform_language_policy  # noqa: E402
 from packages.seis_kernel.platform_development_tracks import build_platform_development_tracks  # noqa: E402
 from packages.seis_kernel.platform_matrix import build_platform_contract  # noqa: E402
+from packages.seis_kernel.platform_priority_atlas import build_platform_priority_atlas  # noqa: E402
 
 REQUIRED_FILES = [
     "packages/seis_platform_swift/Package.swift",
@@ -23,7 +24,9 @@ REQUIRED_FILES = [
     "packages/seis_kernel/platform_matrix.py",
     "packages/seis_kernel/platform_language_policy.py",
     "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/platform_priority_atlas.py",
     "scripts/create-seis-platform-development-tracks.py",
+    "scripts/create-seis-platform-priority-atlas.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
     "polyglot/applescript/seis_platform_automation.applescript",
@@ -65,13 +68,16 @@ def main() -> int:
         "packages/seis_kernel/platform_matrix.py",
         "packages/seis_kernel/platform_language_policy.py",
         "packages/seis_kernel/platform_development_tracks.py",
+        "packages/seis_kernel/platform_priority_atlas.py",
         "scripts/check-seis-platform-kernel.py",
         "scripts/create-seis-platform-language-policy.py",
         "scripts/create-seis-platform-development-tracks.py",
+        "scripts/create-seis-platform-priority-atlas.py",
         "polyglot/windows/scripting/seis_windows_platform.py",
     ], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-platform-language-policy.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-platform-development-tracks.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-priority-atlas.py", "--check"], ROOT))
     failures.extend(validate_surface_contents())
     failures.extend(run_swift_tests())
     failures.extend(run_objective_c_syntax())
@@ -101,6 +107,7 @@ def validate_surface_contents() -> list[str]:
     contract = build_platform_contract()
     policy = build_platform_language_policy()
     tracks = build_platform_development_tracks()
+    priority_atlas = build_platform_priority_atlas()
     apple_languages = set(contract["summary"]["appleLanguages"])
     if apple_languages != {"Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"}:
         failures.append("macOS platform matrix must stay Swift/SwiftUI/Objective-C/Playground/AppleScript only")
@@ -119,6 +126,12 @@ def validate_surface_contents() -> list[str]:
             failures.append(f"Windows development track must not include Apple-only languages: {track['id']}")
     if tracks["summary"]["windowsLanguageCoverageCount"] < 40:
         failures.append("Windows development tracks must preserve broad polyglot coverage")
+    if priority_atlas["summary"]["websiteFinalPhase"] is not True:
+        failures.append("Platform priority atlas must keep website as the final release surface")
+    if priority_atlas["rules"]["runtimeInstallPolicy"] != "requirement_led_only":
+        failures.append("Platform priority atlas must not require broad runtime installs")
+    if priority_atlas["summary"]["windowsLanguageCoverageCount"] < 40:
+        failures.append("Platform priority atlas must preserve broad non-Apple Windows coverage")
     return failures
 
 

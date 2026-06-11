@@ -15,6 +15,7 @@ REQUIRED_FILES = [
     "packages/seis_kernel/platform_matrix.py",
     "packages/seis_kernel/platform_language_policy.py",
     "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/platform_priority_atlas.py",
     "packages/seis_kernel/long_horizon.py",
     "packages/seis_kernel/active_board.py",
     "packages/seis_kernel/execution_packages.py",
@@ -63,6 +64,7 @@ PYTHON_COMPILE_TARGETS = [
     "packages/seis_kernel/platform_matrix.py",
     "packages/seis_kernel/platform_language_policy.py",
     "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/platform_priority_atlas.py",
     "packages/seis_kernel/long_horizon.py",
     "packages/seis_kernel/active_board.py",
     "packages/seis_kernel/execution_packages.py",
@@ -70,6 +72,7 @@ PYTHON_COMPILE_TARGETS = [
     "scripts/create-seis-universal-capability-kernel.py",
     "scripts/create-seis-platform-language-policy.py",
     "scripts/create-seis-platform-development-tracks.py",
+    "scripts/create-seis-platform-priority-atlas.py",
     "scripts/create-seis-long-horizon-missions.py",
     "scripts/create-seis-active-mission-board.py",
     "scripts/create-seis-execution-packages.py",
@@ -96,6 +99,7 @@ def main() -> int:
     failures.extend(run(["python3", "scripts/check-seis-platform-kernel.py"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-platform-language-policy.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-platform-development-tracks.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-priority-atlas.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-long-horizon-missions.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-active-mission-board.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-execution-packages.py", "--check"], ROOT))
@@ -140,6 +144,13 @@ def validate_contract() -> list[str]:
         failures.append("kernel contract must include platform development tracks")
     if tracks.get("summary", {}).get("windowsLanguageCoverageCount", 0) < 40:
         failures.append("kernel contract must preserve broad Windows platform development tracks")
+    priority_atlas = data.get("platformPriorityAtlas", {})
+    if priority_atlas.get("summary", {}).get("websiteFinalPhase") is not True:
+        failures.append("kernel contract must keep the website as the final release surface")
+    if priority_atlas.get("rules", {}).get("runtimeInstallPolicy") != "requirement_led_only":
+        failures.append("kernel contract must keep language/runtime installs requirement-led")
+    if priority_atlas.get("summary", {}).get("windowsLanguageCoverageCount", 0) < 40:
+        failures.append("kernel contract must preserve broad Windows priority language coverage")
     return failures
 
 

@@ -8,9 +8,9 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 2360,
-    "countedBytes": 121455497,
-    "javascriptBytes": 589266,
+    "countedFileCount": 2362,
+    "countedBytes": 121483932,
+    "javascriptBytes": 590369,
     "javascriptPercent": 0.49,
     "targetJavaScriptPercent": 10.0,
     "targetStatus": "met",
@@ -21,22 +21,22 @@
     {
       "language": "Other",
       "bytes": 119673815,
-      "percent": 98.53
+      "percent": 98.51
     },
     {
       "language": "JavaScript",
-      "bytes": 589266,
+      "bytes": 590369,
       "percent": 0.49
     },
     {
       "language": "JSON",
-      "bytes": 549695,
+      "bytes": 549908,
       "percent": 0.45
     },
     {
       "language": "Python",
-      "bytes": 199520,
-      "percent": 0.16
+      "bytes": 226639,
+      "percent": 0.19
     },
     {
       "language": "YAML",
@@ -521,14 +521,14 @@
       "bytes": 22927
     },
     {
+      "path": "scripts/automation-refresh-seis-surface.cjs",
+      "language": "JavaScript",
+      "bytes": 20568
+    },
+    {
       "path": "scripts/create-plugin-capability-lanes.cjs",
       "language": "JavaScript",
       "bytes": 19729
-    },
-    {
-      "path": "scripts/automation-refresh-seis-surface.cjs",
-      "language": "JavaScript",
-      "bytes": 19465
     },
     {
       "path": "scripts/third-party-intake-blueprint.mjs",
@@ -563,8 +563,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 480742423,
-    "documentation": 857053,
-    "linguist-generated": 2715348,
+    "documentation": 864740,
+    "linguist-generated": 2759432,
     "linguist-vendored": 46035660
   },
   "requiredLinguistRules": [
@@ -651,7 +651,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "6e53cf221c183471e2c6e653e32cd7176adee14f7471bdf41c34cf99084822f1",
+    "hash": "e19392e802ddf87708874005faa2d2fe446e691798f7612793d12ac8addc716a",
     "algorithm": "sha256"
   }
 }

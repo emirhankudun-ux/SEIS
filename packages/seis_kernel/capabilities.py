@@ -13,6 +13,7 @@ from typing import Any
 from .platform_development_tracks import build_platform_development_tracks, validate_platform_development_tracks
 from .platform_language_policy import build_platform_language_policy, validate_platform_language_policy
 from .platform_matrix import build_platform_contract
+from .platform_priority_atlas import build_platform_priority_atlas, validate_platform_priority_atlas
 from .plugin_inventory import build_plugin_inventory_contract
 
 
@@ -797,6 +798,7 @@ def build_capability_contract() -> dict[str, Any]:
     platform_contract = build_platform_contract()
     platform_language_policy = build_platform_language_policy()
     platform_development_tracks = build_platform_development_tracks()
+    platform_priority_atlas = build_platform_priority_atlas(REQUIRED_DOMAIN_IDS)
 
     return {
         "version": 1,
@@ -817,12 +819,15 @@ def build_capability_contract() -> dict[str, Any]:
             "windowsLanguageCount": platform_contract["summary"]["windowsLanguageCount"],
             "windowsPolicyLanguageCount": platform_language_policy["summary"]["windowsLanguageCount"],
             "platformDevelopmentTrackCount": platform_development_tracks["summary"]["trackCount"],
+            "platformPriorityPhaseCount": platform_priority_atlas["summary"]["phaseCount"],
+            "websiteFinalPhase": platform_priority_atlas["summary"]["websiteFinalPhase"],
         },
         "sourceReferences": {
             "kernelCode": "packages/seis_kernel/capabilities.py",
             "polyglotManifest": "polyglot/manifest.json",
             "llmRoutingPolicy": "content/development/llm-task-routing-policy.json",
             "pluginSources": "deploy/cloud-environment.json",
+            "platformPriorityAtlas": "content/development/seis-platform-priority-atlas.json",
         },
         "routingContract": {
             "entrypoint": "DomainRouter.route(text)",
@@ -833,6 +838,7 @@ def build_capability_contract() -> dict[str, Any]:
         "platformCompatibility": platform_contract,
         "platformLanguagePolicy": platform_language_policy,
         "platformDevelopmentTracks": platform_development_tracks,
+        "platformPriorityAtlas": platform_priority_atlas,
         "domains": domains,
         "flowchart": render_mermaid_flow(),
     }
@@ -911,6 +917,10 @@ def validate_capability_contract(contract: dict[str, Any]) -> list[str]:
 
     failures.extend(validate_platform_language_policy(contract.get("platformLanguagePolicy", {})))
     failures.extend(validate_platform_development_tracks(contract.get("platformDevelopmentTracks", {})))
+    failures.extend(validate_platform_priority_atlas(contract.get("platformPriorityAtlas", {}), REQUIRED_DOMAIN_IDS))
+
+    if contract.get("summary", {}).get("websiteFinalPhase") is not True:
+        failures.append("capability contract must keep website as the final release surface")
 
     if "flowchart TD" not in contract.get("flowchart", ""):
         failures.append("flowchart must be Mermaid TD syntax")

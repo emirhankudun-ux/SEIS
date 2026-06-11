@@ -33,6 +33,8 @@ NON_JS_SURFACES = [
     "packages/seis_kernel/platform_matrix.py",
     "packages/seis_kernel/platform_language_policy.py",
     "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/platform_priority_atlas.py",
+    "scripts/create-seis-platform-priority-atlas.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
     "polyglot/applescript/seis_platform_automation.applescript",
@@ -126,6 +128,7 @@ def build_report(contract: dict) -> dict:
         "platformCompatibility": contract["platformCompatibility"],
         "platformLanguagePolicy": contract["platformLanguagePolicy"],
         "platformDevelopmentTracks": contract["platformDevelopmentTracks"],
+        "platformPriorityAtlas": contract["platformPriorityAtlas"],
         "nonJavaScriptSurfaces": NON_JS_SURFACES,
         "domainIndex": [
             {
@@ -162,6 +165,8 @@ def build_markdown(contract: dict) -> str:
         f"- Windows policy language count: {contract['platformLanguagePolicy']['summary']['windowsLanguageCount']}",
         f"- Platform development tracks: {contract['platformDevelopmentTracks']['summary']['trackCount']}",
         f"- Windows development language coverage: {contract['platformDevelopmentTracks']['summary']['windowsLanguageCoverageCount']}",
+        f"- Platform priority phases: {contract['platformPriorityAtlas']['summary']['phaseCount']}",
+        f"- Website final phase: {contract['platformPriorityAtlas']['summary']['websiteFinalPhase']}",
         "",
         "## SEIS Routing Contract",
         "",
@@ -232,6 +237,25 @@ def build_markdown(contract: dict) -> str:
         languages = ", ".join(track["languages"]) if track["languages"] else "policy-only"
         lines.append(
             f"| {track['label']} | {', '.join(track['platformScope'])} | {languages} | {track['executionRule']} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Platform Priority Atlas",
+            "",
+            f"- Mode: `{contract['platformPriorityAtlas']['mode']}`",
+            f"- Runtime install policy: `{contract['platformPriorityAtlas']['rules']['runtimeInstallPolicy']}`",
+            f"- Website is final surface: {contract['platformPriorityAtlas']['rules']['websiteIsFinalSurface']}",
+            "",
+            "| Order | Phase | Website Allowed | Language Policy |",
+            "| ---: | --- | --- | --- |",
+        ]
+    )
+
+    for phase in contract["platformPriorityAtlas"]["phases"]:
+        lines.append(
+            f"| {phase['order']} | {phase['label']} | {phase['websiteAllowed']} | `{phase['languagePolicy']}` |"
         )
 
     lines.extend(

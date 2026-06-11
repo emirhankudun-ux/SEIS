@@ -9,6 +9,7 @@ from packages.seis_kernel import (
     build_long_horizon_plan,
     build_platform_development_tracks,
     build_platform_language_policy,
+    build_platform_priority_atlas,
     validate_active_mission_board,
     validate_capability_contract,
     validate_execution_packages,
@@ -16,6 +17,7 @@ from packages.seis_kernel import (
     validate_long_horizon_plan,
     validate_platform_development_tracks,
     validate_platform_language_policy,
+    validate_platform_priority_atlas,
 )
 
 
@@ -125,6 +127,30 @@ class SeisCapabilityKernelTest(unittest.TestCase):
         windows_extended = by_id["windows-extended-polyglot-track"]
         self.assertNotIn("SwiftUI", windows_extended["languages"])
         self.assertGreaterEqual(tracks["summary"]["windowsLanguageCoverageCount"], 40)
+
+    def test_platform_priority_atlas_keeps_website_as_final_surface(self) -> None:
+        atlas = build_platform_priority_atlas()
+        self.assertEqual(validate_platform_priority_atlas(atlas), [])
+        self.assertEqual(atlas["mode"], "platform_core_first_website_last")
+        self.assertTrue(atlas["rules"]["websiteIsFinalSurface"])
+        self.assertFalse(atlas["rules"]["installAllLanguages"])
+        self.assertEqual(atlas["rules"]["runtimeInstallPolicy"], "requirement_led_only")
+        self.assertTrue(atlas["phases"][-1]["websiteAllowed"])
+        self.assertEqual(atlas["phases"][-1]["id"], "website-final-release-surface")
+        self.assertTrue(all(not phase["websiteAllowed"] for phase in atlas["phases"][:-1]))
+
+        by_id = {phase["id"]: phase for phase in atlas["phases"]}
+        self.assertEqual(
+            set(by_id["apple-native-platform"]["languages"]),
+            {"Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"},
+        )
+        windows_languages = set(by_id["windows-non-apple-polyglot"]["languages"])
+        self.assertNotIn("Swift", windows_languages)
+        self.assertNotIn("SwiftUI", windows_languages)
+        self.assertNotIn("Objective-C", windows_languages)
+        self.assertNotIn("Playground", windows_languages)
+        self.assertNotIn("AppleScript", windows_languages)
+        self.assertGreaterEqual(len(windows_languages), 40)
 
 
 if __name__ == "__main__":

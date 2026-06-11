@@ -1,9 +1,9 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 2360
-- Counted bytes: 121455497
-- JavaScript: 589266 bytes (0.49%)
+- Counted files: 2362
+- Counted bytes: 121483932
+- JavaScript: 590369 bytes (0.49%)
 - Target JavaScript: 10.0%
 - Target status: `met`
 - Additional non-JavaScript bytes needed for strict target: 0
@@ -12,10 +12,10 @@
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| Other | 119673815 | 98.53% |
-| JavaScript | 589266 | 0.49% |
-| JSON | 549695 | 0.45% |
-| Python | 199520 | 0.16% |
+| Other | 119673815 | 98.51% |
+| JavaScript | 590369 | 0.49% |
+| JSON | 549908 | 0.45% |
+| Python | 226639 | 0.19% |
 | YAML | 121797 | 0.1% |
 | D | 107676 | 0.09% |
 | CSS | 38723 | 0.03% |
@@ -45,8 +45,8 @@
 | `scripts/check-cloud-environment.cjs` | 31107 |
 | `scripts/sync-plugin-environment-sources.cjs` | 26659 |
 | `scripts/create-seis-ecosystem-intake.cjs` | 22927 |
+| `scripts/automation-refresh-seis-surface.cjs` | 20568 |
 | `scripts/create-plugin-capability-lanes.cjs` | 19729 |
-| `scripts/automation-refresh-seis-surface.cjs` | 19465 |
 | `scripts/third-party-intake-blueprint.mjs` | 17482 |
 | `scripts/check-seis-trusted-marketplace-plugin.cjs` | 15405 |
 | `scripts/create-ai-release-manifest.cjs` | 12922 |

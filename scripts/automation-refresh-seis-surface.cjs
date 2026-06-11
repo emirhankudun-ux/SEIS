@@ -69,6 +69,17 @@ const PIPELINE = [
     ]
   },
   {
+    id: "automation:seis-platform-priority-atlas",
+    label: "SEIS platform priority atlas",
+    command: ["run", "automation:seis-platform-priority-atlas"],
+    check: "check:seis-platform-priority-atlas",
+    paths: [
+      "content/development/seis-platform-priority-atlas.json",
+      "reports/seis-platform-priority-atlas.json",
+      "reports/seis-platform-priority-atlas.md"
+    ]
+  },
+  {
     id: "automation:ai-release-manifest",
     label: "AI release manifest",
     command: ["run", "automation:ai-release-manifest"],
@@ -163,6 +174,7 @@ const BASE_VALIDATION_CHECKS = [
   { id: "check:universal-capability-kernel", label: "SEIS universal capability kernel" },
   { id: "check:seis-platform-language-policy", label: "SEIS platform language policy" },
   { id: "check:seis-platform-development-tracks", label: "SEIS platform development tracks" },
+  { id: "check:seis-platform-priority-atlas", label: "SEIS platform priority atlas" },
   { id: "check:seis-long-horizon-missions", label: "SEIS long-horizon mission kernel" },
   { id: "check:seis-active-mission-board", label: "SEIS active mission board" },
   { id: "check:seis-execution-packages", label: "SEIS execution packages" },
@@ -563,10 +575,17 @@ Akış:
   1) npm run automation:ecosystem-intake -> check:ecosystem-intake
   2) npm run automation:plugin-environment-sources -> check:plugin-environment-sources
   3) npm run automation:universal-capability-kernel -> check:universal-capability-kernel
-  4) npm run automation:ai-release-manifest -> check:ai-release-manifest
-  5) npm run automation:fullstack-language-matrix -> check:fullstack-language-matrix
-  6) npm run automation:language-distribution -> check:language-distribution
-  7) npm run automation:refresh-release -> check:release-sync
+  4) npm run automation:seis-platform-language-policy -> check:seis-platform-language-policy
+  5) npm run automation:seis-platform-development-tracks -> check:seis-platform-development-tracks
+  6) npm run automation:seis-platform-priority-atlas -> check:seis-platform-priority-atlas
+  7) npm run automation:ai-release-manifest -> check:ai-release-manifest
+  8) npm run automation:seis-long-horizon-missions -> check:seis-long-horizon-missions
+  9) npm run automation:seis-active-mission-board -> check:seis-active-mission-board
+  10) npm run automation:seis-execution-packages -> check:seis-execution-packages
+  11) npm run automation:seis-execution-runway -> check:seis-execution-runway
+  12) npm run automation:fullstack-language-matrix -> check:fullstack-language-matrix
+  13) npm run automation:language-distribution -> check:language-distribution
+  14) npm run automation:refresh-release -> check:release-sync
 
 Seçenekler:
   --summary     Sonuç raporunu JSON olarak döndürür.

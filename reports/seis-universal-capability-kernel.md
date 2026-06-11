@@ -15,6 +15,8 @@
 - Windows policy language count: 41
 - Platform development tracks: 4
 - Windows development language coverage: 41
+- Platform priority phases: 7
+- Website final phase: True
 
 ## SEIS Routing Contract
 
@@ -88,6 +90,22 @@ flowchart TD
 | Windows Extended Polyglot Track | windows | TypeScript, JavaScript, Dart, Scala, Groovy, Haskell, OCaml, Nim, Zig, Fortran, COBOL, Perl, Awk, Tcl, Shell, YAML, JSON Schema, OpenAPI, Terraform, Bicep, Dockerfile, Make, CMake | Extended Windows languages are allowed as needed; JavaScript stays compatibility-only and below the language budget. |
 | SEIS Platform Boundary Governance Track | macos, windows | policy-only | SEIS stays primary; platform tracks only constrain safe execution boundaries. |
 
+## Platform Priority Atlas
+
+- Mode: `platform_core_first_website_last`
+- Runtime install policy: `requirement_led_only`
+- Website is final surface: True
+
+| Order | Phase | Website Allowed | Language Policy |
+| ---: | --- | --- | --- |
+| 1 | SEIS Agent Foundation | False | `agent_core_language_agnostic_with_requirement_led_runtime_install` |
+| 2 | Apple Native Platform | False | `apple_languages_only` |
+| 3 | Windows Non-Apple Polyglot | False | `windows_polyglot_except_apple_only` |
+| 4 | Engineering Data Security Core | False | `non_js_core_first` |
+| 5 | Design Mobile Game Robotics Lab | False | `platform_specific_with_non_js_prototypes_first` |
+| 6 | Governance Metrics Refactoring | False | `checked_policy_artifacts_only` |
+| 7 | Website Final Release Surface | True | `web_compatibility_only_after_platform_gates` |
+
 ## Domain Index
 
 | Domain | Lane | Agent Role | Algorithms | Quality Gates |
@@ -137,3 +155,4 @@ flowchart TD
 - `polyglotManifest`: `polyglot/manifest.json`
 - `llmRoutingPolicy`: `content/development/llm-task-routing-policy.json`
 - `pluginSources`: `deploy/cloud-environment.json`
+- `platformPriorityAtlas`: `content/development/seis-platform-priority-atlas.json`
