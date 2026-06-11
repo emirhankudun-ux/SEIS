@@ -154,6 +154,7 @@ const fallbackPublishGate = {
 const state = {
   mode: "cinematic",
   gaps: [],
+  portfolio: fallbackPortfolio,
   capabilities: fallbackCapabilities,
   githubModel: fallbackGithubModel,
   marketplace: fallbackMarketplace,
@@ -1024,14 +1025,33 @@ function renderQualityConsole() {
 }
 
 async function fetchJson(path) {
-  const response = await fetch(path);
-  if (!response.ok) throw new Error(`${path} failed: ${response.status}`);
-  return response.json();
+  const candidates = path.startsWith("../../") ? [path, `./${path.slice(6)}`] : [path];
+  let lastError;
+
+  for (const candidate of candidates) {
+    try {
+      const response = await fetch(candidate);
+      if (!response.ok) throw new Error(`${candidate} failed: ${response.status}`);
+      return response.json();
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError;
 }
 
 async function loadGaps() {
   const payload = await fetchJson("../../data/gap-closure-register.json");
   state.gaps = payload.gaps || [];
+}
+
+async function loadPortfolio() {
+  try {
+    state.portfolio = await fetchJson("../../content/portfolio/portfolio-website.json");
+  } catch (_error) {
+    state.portfolio = fallbackPortfolio;
+  }
 }
 
 async function loadCapabilities() {
@@ -1283,6 +1303,7 @@ async function init() {
     loadQualityConsole()
   ]);
   renderGapBoard();
+  renderPortfolio();
   renderCapabilities();
   renderGithubModel();
   renderMarketplace();
@@ -1298,6 +1319,7 @@ init().catch((error) => {
   if (board) {
     board.replaceChildren(create("p", "", `Runtime unavailable: ${error.message}`));
   }
+  renderPortfolio();
   renderCapabilities();
   renderGithubModel();
   renderMarketplace();

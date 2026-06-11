@@ -35,12 +35,28 @@ writeLocalizedRoutes(staticDir, rewrittenIndex);
 writeSitemap(staticDir);
 
 rmSync(archivePath, { force: true });
-execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", "seis-static", "seis-static.zip"], {
-  cwd: outputRoot,
-  stdio: "inherit"
-});
+if (hasCommand("ditto")) {
+  execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", "seis-static", "seis-static.zip"], {
+    cwd: outputRoot,
+    stdio: "inherit"
+  });
+} else {
+  execFileSync("zip", ["-qr", "seis-static.zip", "seis-static"], {
+    cwd: outputRoot,
+    stdio: "inherit"
+  });
+}
 
 console.log(`Static server package ready: ${archivePath}`);
+
+function hasCommand(command) {
+  try {
+    execFileSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" });
+    return true;
+  } catch (_error) {
+    return false;
+  }
+}
 
 function copyDir(source, target) {
   cpSync(source, target, {
