@@ -5,7 +5,7 @@ namespace seis::windows {
 Capability platform_capability() {
   return Capability{
       "windows-native-cpp",
-      {"C++", "C", "PowerShell", "Python"},
+      {"C++", "C", "PowerShell", "Java", "Kotlin", "Rust", "Go", "SQL"},
       {"native_cpp_syntax_when_available",
        "windows_path_safety",
        "permission_scope",

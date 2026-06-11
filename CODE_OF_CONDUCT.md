@@ -1,37 +1,44 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Taahhüdümüz
+## Our Pledge
 
-Bu proje için çalışan, katkıda bulunan ve lider olarak, tüm katılımcılar için taciz mentes ve kapsayıcı bir ortam oluşturmaya taahhüt ediyoruz. Bu sık yaş, kimlik, cinsiyet, cinsiyete dayalı kimlik ve ifade, yaş, özür yeterlilik durumu, deneyim seviyesi, eğitim, sosyoekonomik durum, milliyet, kişisel görünüş, ırk, din veya cinsel kimlik ve yönelim fark etmeksizin geçerlidir.
+SEIS is built for calm, serious, human-centered engineering. We commit to a
+respectful, inclusive, and harassment-free environment for contributors,
+maintainers, reviewers, users, and AI-assisted collaborators.
 
-## Standartlarımız
+## Expected Behavior
 
-Olumlu bir ortam oluşturmaya katkıda bulunan davranış örnekleri şunları içerir:
+- Be respectful and specific.
+- Critique code, architecture, and process without attacking people.
+- Prefer evidence, reproducible steps, and clear tradeoffs.
+- Keep discussions focused on improving SEIS.
+- Respect maintainer decisions about scope, safety, dependencies, and release timing.
 
-- Diğer insanlara karşı nezaket ve saygı göstermek
-- Farklı görüşlere, bakış açılarına ve deneyimlere açık olmak
-- Yapıcı eleştiriyi kibarca almak
-- Topluluk için en iyi olanı odaklamak
-- Diğer topluluk üyelerine empati göstermek
+## Unacceptable Behavior
 
-Kabul edilemez davranış örnekleri şunları içerir:
+- Harassment, threats, intimidation, insults, or personal attacks.
+- Sexualized language or unwanted attention.
+- Publicly sharing private information without permission.
+- Publishing secrets, credentials, private files, or personal data.
+- Manipulating AI-generated contributions to obscure authorship, risk, or licensing.
+- Repeatedly pushing unsafe, unreviewed, or destructive changes after being asked to stop.
 
-- Cinsel dil ve görüntüler veya istenmeyen cinsel ilgi/avanslar
-- Trolleme, hakaret/aşağılayıcı yorumlar ve kişisel veya politik saldırılar
-- Kamuya açık veya özel taciz
-- Başkasının özel bilgilerini (adres, e-posta) açık izin olmaksızın yayınlamak
-- Makul olarak uygunsuz olarak değerlendirilebilecek diğer davranışlar
+## Enforcement
 
-## Uygulama
+Maintainers may warn, edit, close, block, restrict, or remove contributions that
+violate this code of conduct. Serious security, privacy, or harassment issues
+may be handled privately.
 
-Proje liderleri kabul edilemez davranışları açıklamaktan sorumludur ve uygunsuz, tehdit edici, saldırgan veya zararlı davranışlara karşı uygun düzeltici önlemler alacaktır.
+## Reporting
 
-Proje liderleri, bu Davranış Kurallarını kasıtlı olarak iyi bir şekilde yorumlamayan veya gerçekleştiren katkıda bulunanların kodu yönetim, sorun izleme ve diğer katkılara karşı yorum oluşturma veya erişimini kısıtlama, askıya alma veya kalıcı olarak engelleme hakkına sahiptir.
+Report concerns privately to the maintainer through GitHub:
 
-## Raporlama
+- [@emirhankudun-ux](https://github.com/emirhankudun-ux)
 
-Kabul edilemez davranışa tanık olursanız, [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geçin.
+Do not publish security-sensitive reports in public issues. Use
+[`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 
-## İtibar
+## Attribution
 
-Bu Davranış Kuralları, https://www.contributor-covenant.org adresinden erişilebilen Contributor Covenant'tan uyarlanmıştır.
+This document is inspired by the Contributor Covenant and adapted for the SEIS
+AI-native development workflow.

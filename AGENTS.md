@@ -38,6 +38,7 @@ Documentation is part of system integrity.
 
 - Antigravity IDE — öncelikli çalışma yüzeyi
 - Antigravity 2.0 — yardımcı/ikincil çalışma yüzeyi
+- Cursor — kullanıcı özellikle seçerse yardımcı editör yüzeyi
 - Xcode — Apple platformları için öncelikli
 - Android Studio — Android geliştirme için
 - Figma — ana UI/design sistemi yüzeyi
@@ -46,6 +47,16 @@ Documentation is part of system integrity.
 
 - Yalnızca yerel olarak kurulu olan uygulamalar bağlanır.
 - Kurulu olmayan uygulamalar için otomatik kurulum/indirme yapılmaz.
+
+## Güncel Platform Odağı
+
+- Website son release yüzeyidir; önce SEIS çekirdeği, ajanlar, MCP, skills, plugins, LLM routing, Apple-native, Windows-polyglot, Android, güvenlik, veri, SRE ve governance yüzeyleri güçlendirilir.
+- Apple kodu yalnızca Swift, SwiftUI, Playground, Objective-C ve AppleScript yüzeylerinde tutulur.
+- Windows kodu Apple-only dilleri kullanmaz; Windows tarafında geniş non-Apple polyglot yüzeyleri tercih edilir.
+- Android işleri Android Studio odaklı yürütülür; Java/Kotlin/Gradle/emulator doğrulamaları gerektikçe kullanılır.
+- JavaScript yeni özellik dili değildir; mevcut web compatibility ve final release yüzeyi için sınırlı kalır.
+- Python için mevcut fazda yeni uygulama kodu yazılmaz; kullanıcı açıkça yeniden izin verirse kapsam açılır.
+- Runtime ve dil kurulumu sadece gerçek doğrulama veya ürün ihtiyacı varsa yapılır.
 
 ## Büyük Dil Modeli Stratejisi
 
@@ -106,7 +117,7 @@ flowchart TD
 
 ## iCloud Workspace Intake
 
-- Treat `/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
+- Treat `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
 - Use this repository as the active GitHub development surface for UIX-Apps on `UIXAppTTR`.
 - Before merging root workspace material, follow `docs/governance/icloud-github-workspace-ingestion.md`.
 - Do not bulk-import archives, personal media, `.DS_Store`, nested `.git` directories, or symlink mirrors into this repository.

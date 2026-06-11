@@ -1,24 +1,25 @@
 # Android Lane
 
-The Android lane starts with Expo and validates through the Test Android Apps workflow.
+Android is a platform-core lane, not a website-first lane.
 
-## Initial Direction
+## Active Direction
 
-- create an Expo app shell when implementation begins
-- keep shared product logic in `packages/core`
-- keep visual primitives in `packages/ui`
-- use Android emulator testing before release decisions
+- Use Android Studio as the primary Android surface.
+- Prefer Android-native Java/Kotlin project inspection before broad framework work.
+- Keep emulator testing requirement-led; do not download large system images unless a task requires it.
+- Keep shared SEIS policy in small contracts that can be reviewed without a full Android SDK.
+- Website release work comes after Android and platform gates pass.
 
-## Plugin Stack
+## Current Contract
 
-- Expo
-- Test Android Apps
+- Source: `polyglot/android/java/SeisAndroidDevelopmentProfile.java`
+- Validation: `javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java`
+
+## Plugin / Tool Stack
+
+- OpenAI Codex
+- Claude
+- Android Studio
+- Test Android Apps when emulator/log/device work is required
 - GitHub
 - SEIS plugin
-
-## First Build Tasks
-
-1. Choose package manager and Expo template.
-2. Define app navigation and auth shell.
-3. Connect full-stack backend when `apps/fullstack` is ready.
-4. Add Android emulator smoke tests.

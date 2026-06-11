@@ -1,31 +1,67 @@
-Contributing
+# Contributing to SEIS
 
-Teşekkürler — katkıların değerli.
+Katkılar değerli, ama SEIS hızlı büyürken bile düzenli kalmalı.
 
-## Kısa Rehber
+## Development Model
 
-- **Yeni özellikler için** önce bir issue aç: ne ve neden ekleyeceğini açıkla.
-- **Küçük değişiklikler için** doğrudan bir pull request (PR) gönderebilirsin.
-- **PR başlığı ve açıklaması** net olsun; ilgili issue numarasını bağla (örn. `Fixes #12`).
-- **Kod stili**: Projede mevcut olan stili koru (lint, format).
-- **Testler**: Mümkünse yeni davranışı kapsayan küçük test ekle.
-- **Güvenlik**: API anahtarları, özel veriler veya `.env` dosyaları asla gönderilmemeli.
+- `main` tek uzun ömürlü merkez branch'tir.
+- Yeni iş için kısa ömürlü branch açılır, doğrulanır, PR ile `main` içine alınır.
+- Branch temizliği otomasyonla yapılmaz; maintainer açıkça onaylamalıdır.
+- Büyük refactor, yeni runtime, SDK kurulumu, deployment ve branch silme işlemleri önce tartışılır.
 
-## İletişim
+## Current Implementation Focus
 
-- Sorular için issue açabilirsin veya [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geç.
+- Website final release surface olarak kalır.
+- Öncelik: SEIS AI, AI Agent, MCP, Skills, Plugins, LLM, Apple-native, Windows-polyglot, Android, security, data, DevOps, SRE, governance.
+- Apple işleri: Swift, SwiftUI, Playground, Objective-C, AppleScript.
+- Windows işleri: Apple-only diller hariç geniş polyglot.
+- Android işleri: Android Studio, Java/Kotlin, emulator doğrulaması gerektiğinde.
+- JavaScript yeni özellik dili olarak büyütülmez.
+- Python uygulama kodu, maintainer tekrar izin verene kadar eklenmez.
 
-## Katkı Akışı (Önerisi)
+## Pull Request Checklist
 
-1. Fork et → yeni branch aç (kısa, açıklayıcı isim) → küçük commitler yap → PR gönder.
-2. PR açıklamasında şunları yazmalısın:
-   - **Amaç**: Ne yapmak istiyorsun?
-   - **Ne değişti**: Hangi dosyalar/fonksiyonlar etkilendi?
-   - **Test**: Nasıl test ettiysen kısaca anlat.
-3. **Büyük değişiklikler** için önce RFC/issue ile tartış.
+PR açıklamasında şunları yaz:
 
-## Davranış Kuralları
+- Amaç
+- Değişen dosyalar
+- Platform etkisi
+- Güvenlik etkisi
+- Doğrulama komutları
+- Rollback notu
 
-Lütfen [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) dosyasını oku.
+## Quality Bar
 
-Teşekkürler!
+Her anlamlı değişiklik şu başlıklara göre düşünülmeli:
+
+- Maintainability
+- Security
+- Accessibility when UI exists
+- Performance
+- Testability
+- Platform boundary
+- Dependency restraint
+- Release readiness
+
+## Local Checks
+
+Gerektiği kadarını çalıştır:
+
+```bash
+swift test --package-path packages/seis_platform_swift
+javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java
+xcrun clang++ -std=c++20 -fsyntax-only polyglot/windows/native/seis_windows_toolchain_profile.cpp
+cd packages/seis_kernel_go && go test ./...
+npm run check:seis-platform-priority-atlas
+```
+
+## Security
+
+API key, token, `.env`, personal data, private archive, local machine path dump,
+or credential material must not be committed.
+
+Security issues should follow [`SECURITY.md`](./SECURITY.md).
+
+## Conduct
+
+All contributors must follow [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md).

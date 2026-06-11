@@ -1,128 +1,118 @@
-# SEIS CLOSED CODE
+# SEIS
 
-SEIS is the single `main`-centered closed-code operating repository for the `emirhankudun-ux` platform ecosystem.
+SEIS is a main-centered, AI-native development operating system for engineering,
+full-stack delivery, data, design, security, DevOps, mobile, desktop, research,
+and long-horizon software governance.
 
-It coordinates Android, Web, macOS, full-stack, data, Google Workspace operations, Codex plugin development, OpenAI-curated plugin routing, source archive verification, and repository consolidation[...]
+The website is the final release surface. SEIS first hardens the platform core:
+AI, AI agents, MCP, skills, plugins, LLM routing, Apple-native tooling,
+Windows-polyglot tooling, Android readiness, architecture, security, testing,
+SRE, data governance, and release checks.
 
-## Built With
+## Active Collaboration Stack
 
-This project was developed with assistance from cutting-edge AI and technology platforms:
+SEIS is developed with a small, explicit assistant and IDE surface:
 
-- **Claude AI** (@anthropic) — Intelligent code assistance and architectural guidance
-- **OpenAI Codex** (@openai) — Advanced code generation and completion
-- **Google** — Web technologies, APIs, and cloud infrastructure
-- **Microsoft** — Developer tools and cloud services
-- **Amazon Web Services** — Cloud infrastructure and databases
-- **Meta** — Open source frameworks and libraries
-- **Apple** — macOS and mobile development tools
-- **IBM** — Enterprise architecture patterns
-- **Intel** — Performance optimization
-- **NVIDIA** — GPU computing and AI acceleration
-- **Adobe** — Design tools and assets
-- **Netflix** — Streaming and performance best practices
-- **Spotify** — Audio and data infrastructure
-- **GitHub** — Version control and CI/CD
-- **Docker** — Containerization
+| Surface | Role |
+| --- | --- |
+| OpenAI Codex | Primary repo execution, code changes, terminal work, validation, and Git flow |
+| Claude | Architecture review, long-context reasoning, and second-pass critique |
+| Antigravity IDE | Agentic project workflow and local development surface |
+| Cursor | Optional editor surface when the user chooses it |
+| Xcode | Apple development with Swift, SwiftUI, Playground, Objective-C, and AppleScript |
+| Android Studio | Android development, emulator workflows, Java/Kotlin project inspection, and device validation |
 
-## Start Here
+SEIS does not claim broad vendor partnership just because a company or product is
+well known. Tools are listed only when they are part of the active workflow or a
+checked project integration.
 
-- OpenAI-curated build workbench: [`docs/platform/openai-curated-build-workbench.md`](./docs/platform/openai-curated-build-workbench.md)
-- OpenAI-first plugin policy: [`docs/platform/openai-first-plugin-policy.md`](./docs/platform/openai-first-plugin-policy.md)
-- Closed-code operating brief: [`SEIS_CLOSED_CODE.md`](./SEIS_CLOSED_CODE.md)
-- Closed-code license notice: [`LICENSE`](./LICENSE)
-- Architecture: [`docs/platform/seis-closed-code-architecture.md`](./docs/platform/seis-closed-code-architecture.md)
-- SEIS evolution model: [`docs/strategy/seis-evolution-model.md`](./docs/strategy/seis-evolution-model.md)
-- GitHub remote configuration: [`docs/deployment/github-remote-configuration.md`](./docs/deployment/github-remote-configuration.md)
-- Publish gate contract: [`docs/deployment/publish-gate-contract.md`](./docs/deployment/publish-gate-contract.md)
-- Plugin stack: [`docs/platform/plugin-stack.md`](./docs/platform/plugin-stack.md)
-- Google Workspace ops: [`docs/platform/google-workspace-ops.md`](./docs/platform/google-workspace-ops.md)
-- Roadmap: [`roadmap/seis-closed-code-backlog.md`](./roadmap/seis-closed-code-backlog.md)
+## Contributors
 
-## OpenAI-curated Build Route
+- Maintainer: [@emirhankudun-ux](https://github.com/emirhankudun-ux)
+- AI collaboration: OpenAI Codex and Claude
 
-SEIS uses OpenAI/Codex plugin families first for core work: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. The local `seis@personal` plugin coordinates repository context, migra[...]
+GitHub's automatic contributor graph is commit-based. This section names the
+AI-assisted workflow so readers understand how the project is being built.
 
-| Category | First route |
-|---|---|
-| Design | Build Web Apps, Browser, Chrome, Figma, Canva, MagicPath |
-| Developer tools | GitHub, CodeRabbit, CircleCI, Cloudflare, Vercel, Netlify, Convex, Supabase, Neon Postgres |
-| Productivity | Google Drive, Google Calendar, Gmail, Slack, Teams, Notion, Documents, Spreadsheets, Presentations |
-| Research | Hugging Face, Zotero, Life Science Research, Scite, Deepnote |
-| Security | Codex Security, Sentry, Datadog, CodeRabbit, Jam |
+## Platform Policy
 
-## Platform Lanes
+| Platform | Policy |
+| --- | --- |
+| Apple | Use Swift, SwiftUI, Playground, Objective-C, and AppleScript only |
+| Windows | Use broad non-Apple language coverage; never use Swift, SwiftUI, Objective-C, Playground, or AppleScript as Windows implementation surfaces |
+| Android | Prefer Android Studio validation and Android-native Java/Kotlin surfaces; do not install heavyweight SDKs unless the task requires them |
+| Web | Compatibility and final release surface only; JavaScript stays limited because the current repository already has enough |
+| Python | Current phase freeze: do not add new Python implementation unless the maintainer explicitly re-enables it |
 
-| Lane | Path | Purpose |
-|---|---|---|
-| Android | [`apps/android`](./apps/android) | Expo/mobile app direction and Android validation |
-| Web | [`apps/web`](./apps/web) | Browser product surface and dashboards |
-| macOS | [`apps/macos`](./apps/macos) | Local desktop tools and SwiftUI direction |
-| Full-stack | [`apps/fullstack`](./apps/fullstack) | Convex/Supabase/Vercel backend direction |
-| Core package | [`packages/core`](./packages/core) | Shared rules and platform contracts |
-| UI package | [`packages/ui`](./packages/ui) | Shared operational UI primitives |
-| Data package | [`packages/data`](./packages/data) | Inventory and analytics adapters |
-| Data records | [`data`](./data) | Zip, repo visibility, plugin, and migration records |
-| Integrations | [`integrations`](./integrations) | Google Drive, Calendar, and external IDs |
+Runtime installs are requirement-led. SEIS does not install every language just
+to increase a language chart.
 
-## Google Workspace
+## Capability Coverage
 
-- Operating plan: https://docs.google.com/document/d/1EvyhGA4ulJHsEB2DCzZAYxDrUv1X6dGj0PFa0splrps
-- Platform backlog: https://docs.google.com/spreadsheets/d/1sxnxOz9ZRzwZAz2FmHt_3YzAhQjKL2sQbYR1uWdGsaQ
-- Installed plugin operating model: https://docs.google.com/document/d/10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64
-- Weekly build review: https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0
+SEIS is designed to cover:
 
-## Repository Consolidation
+- AI, AI agents, MCP, skills, plugins, and LLM orchestration
+- algorithms, flowcharts, mathematics, and computer science foundations
+- web, mobile, game, full-stack, backend, and desktop development
+- data science, data engineering, databases, big data, NLP, and computer vision
+- cloud computing, cybersecurity, DevOps, SRE, observability, and test engineering
+- software architecture, design patterns, refactoring, reverse engineering, and formal methods
+- UX/UI engineering, product design, sustainable software, low-code/no-code governance, robotics, compiler and language engineering, requirements, agile delivery, SDLC, and metrics
 
-SEIS is the general center for these source repositories:
+The machine-readable source for the current platform order is:
 
-- `UIX-Apps`
-- `emirhan-kudun-portfolio`
-- `github-unified-source`
-- `seis-trusted-marketplace-plugin`
-- `gemini-cli`
-- `DeepSeek-Coder`
-- `claude-code`
-- `docs`
-- `awesome-deepseek-agent`
+- [`content/development/seis-platform-priority-atlas.json`](./content/development/seis-platform-priority-atlas.json)
+- [`reports/seis-platform-priority-atlas.md`](./reports/seis-platform-priority-atlas.md)
 
-Some source repositories are no longer visible through GitHub lookup, but SEIS keeps source branch indexes under `sources/<repo>/<branch>`. See [`docs/repository-visibility-and-main-sync.md`](./do[...]
+## Repository Governance
 
-## Branch Rule
+`main` is the only long-lived public center branch. Temporary work branches are
+allowed only as short-lived review surfaces and should be merged back into
+`main`, then deleted after verification. Existing remote branch cleanup must be
+done deliberately; SEIS does not delete remote branches automatically from an
+automation run.
 
-`main` is the visible center branch. `UIXAppTTR` may still be the configured GitHub default branch, so both branches should mirror the same commit until repository settings are changed.
+Governance references:
 
-## Safety Rules
+- [`docs/governance/branch-policy.md`](./docs/governance/branch-policy.md)
+- [`docs/governance/main-only-branch-consolidation.md`](./docs/governance/main-only-branch-consolidation.md)
+- [`AGENTS.md`](./AGENTS.md)
 
-- closed code by default
-- OpenAI/Codex plugin families first for core build work
-- no automatic deploy
-- no direct Git commit of large binary archives
-- no source repository deletion before verified SEIS refs and depot snapshots
-- no deletion based only on a repository being invisible or returning 404
-- Drive/Calendar records must be linked back into SEIS
+## Key Paths
 
-## Core Commands
+| Path | Purpose |
+| --- | --- |
+| [`packages/seis_platform_swift`](./packages/seis_platform_swift) | Apple-native Swift/SwiftUI policy package |
+| [`polyglot/objective-c`](./polyglot/objective-c) | Objective-C Apple bridge surfaces |
+| [`polyglot/applescript`](./polyglot/applescript) | AppleScript automation surface |
+| [`polyglot/android`](./polyglot/android) | Android-native readiness contracts |
+| [`polyglot/windows`](./polyglot/windows) | Windows non-Apple language contracts |
+| [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go capability budget checks |
+| [`content/development`](./content/development) | Machine-readable SEIS operating contracts |
+| [`reports`](./reports) | Human-readable generated reports |
+| [`release/web`](./release/web) | Final website release surface |
+
+## Validation
+
+Use the lightest reliable checks first:
 
 ```bash
-npm run check:workspace
-npm run check:seis-evolution-model
-npm run check:github-remote-configuration
-npm run check:publish-gate-contract
-npm run check:release-sync
-npm run check:ai-stack
-npm run check:cloud-environment
-npm run check:monthly-branch-hardening
-npm run check:trusted-marketplace-intake
-npm run check:seis-trusted-marketplace-plugin
-npm run automation:develop
-npm run automation:publish-readiness
+swift test --package-path packages/seis_platform_swift
+javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java
+xcrun clang++ -std=c++20 -fsyntax-only polyglot/windows/native/seis_windows_toolchain_profile.cpp
+cd packages/seis_kernel_go && go test ./...
+npm run check:seis-platform-priority-atlas
 ```
 
-## Existing SEIS Records
+For the full repository refresh:
 
-- Central project index: [`PROJECTS.md`](./PROJECTS.md)
-- Central branch registry: [`BRANCHES.md`](./BRANCHES.md)
-- Consolidation manifest: [`data/github-repository-consolidation.json`](./data/github-repository-consolidation.json)
-- Migration audit: [`docs/github-branch-migration-audit.md`](./docs/github-branch-migration-audit.md)
-- Zip import decision: [`docs/github-zip-import-decision.md`](./docs/github-zip-import-decision.md)
-- Codex plugin guide: [`docs/seis-codex-plugin.md`](./docs/seis-codex-plugin.md)
+```bash
+npm run automation:refresh-seis-surface -- --summary
+```
+
+## Community
+
+- [Contributing](./CONTRIBUTING.md)
+- [Code of Conduct](./CODE_OF_CONDUCT.md)
+- [Security Policy](./SECURITY.md)
+- [MIT License](./LICENSE)

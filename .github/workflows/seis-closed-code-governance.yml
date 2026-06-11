@@ -1,14 +1,12 @@
-name: SEIS CLOSED CODE Governance
+name: SEIS Governance
 
 on:
   push:
     branches:
       - main
-      - UIXAppTTR
   pull_request:
     branches:
       - main
-      - UIXAppTTR
 
 jobs:
   governance:

@@ -1,38 +1,43 @@
-## Açıklama
+## Summary
 
-Bu PR hangi sorunu çözüyor veya hangi özelliği ekliyor? Lütfen ilgili issue numarasını bağla (ör. `Fixes #123`).
+What does this change improve?
 
-## Değişiklik Türü
+## Scope
 
-- [ ] Bug fix (sorun çözen, geriye dönük uyumlu)
-- [ ] Yeni özellik (sorun çözen, geriye dönük uyumlu)
-- [ ] Breaking change (sorun çözen veya özellik, geriye dönük uyumlu olmayan)
-- [ ] Belge güncellemesi
-- [ ] Stil/format düzeltmesi
-- [ ] Refactoring (hiçbir işlev veya davranış değişmedi)
+- [ ] Apple native
+- [ ] Android
+- [ ] Windows non-Apple polyglot
+- [ ] SEIS AI / Agent / MCP / Skills / Plugin / LLM
+- [ ] Governance / docs
+- [ ] Final website release surface
 
-## Ne Değişti?
+## Platform Boundary
 
-- Madde 1
-- Madde 2
-- Madde 3
+- [ ] Apple code uses only Swift, SwiftUI, Playground, Objective-C, or AppleScript.
+- [ ] Windows code excludes Swift, SwiftUI, Objective-C, Playground, and AppleScript.
+- [ ] Android changes are compatible with Android Studio validation.
+- [ ] No new Python implementation was added.
+- [ ] No new JavaScript implementation was added unless this PR is explicitly web-release work.
 
-## Nasıl Test Ettiysen?
+## Branch / Release
 
-Bunu nasıl test ettin? Adımları listele.
+- [ ] This branch is short-lived and targets `main`.
+- [ ] No destructive Git operation is included.
+- [ ] Website work, if any, is final release surface work after platform gates.
 
-- Test 1
-- Test 2
+## Validation
 
-## Checklist
+Commands run:
 
-- [ ] Kodumu self-review'ım
-- [ ] Uygun yorumlar ekledim (özellikle neden karmaşık logic varsa)
-- [ ] README veya ilgili belgeleri güncelledim
-- [ ] Breaking change yoksa veya belirtmedim
-- [ ] Testlerim pass ediyor
-- [ ] Yeni warning yok
+```bash
 
-## Ekran Görüntüsü (varsa)
+```
 
-Önce/sonra görüntüleri ekle.
+## Security
+
+- [ ] No secrets, tokens, `.env`, private archives, or personal data are included.
+- [ ] New dependencies or runtimes are justified, or none were added.
+
+## Rollback
+
+How can this be reverted safely?

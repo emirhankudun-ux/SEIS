@@ -48,3 +48,14 @@ import Testing
     #expect(windowsTrack?.forbiddenLanguages.contains("SwiftUI") == true)
     #expect(windowsTrack?.forbiddenLanguages.contains("AppleScript") == true)
 }
+
+@Test func activeToolchainNamesCodexClaudeAndAppleLanguages() {
+    let profile = SeisActiveToolchain.current
+    #expect(profile.activeAIAssistants == ["OpenAI Codex", "Claude"])
+    #expect(profile.activeIDEs.contains("Antigravity IDE"))
+    #expect(profile.activeIDEs.contains("Cursor"))
+    #expect(profile.activeIDEs.contains("Xcode"))
+    #expect(profile.activeIDEs.contains("Android Studio"))
+    #expect(profile.isAppleNativeReady)
+    #expect(profile.collaborationSummary.contains("OpenAI Codex + Claude"))
+}

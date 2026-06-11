@@ -1,37 +1,52 @@
 # Security Policy
 
-## Reporting Security Vulnerabilities
+SEIS treats security, privacy, dependency restraint, branch safety, and
+credential hygiene as release gates.
 
-Teşekkürler — güvenliği ciddiye alıyoruz. Bir güvenlik açığı bulursan, lütfen herkese açık olarak rapor etme — doğrudan [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geç.
+## Reporting a Vulnerability
 
-### Bildirimi Nasıl Yapmalısın?
+Please do not open a public issue for security-sensitive findings.
 
-1. **Doğrudan mesaj gönder**: GitHub üzerinden bize mesaj at.
-2. **E-posta ile iletişim**: emirhankudun@gmail.com adresine güvenlik açığını anlatan bir e-posta gönder.
-3. **Detaylar ekle**:
-   - Açığın türü (XSS, CSRF, injection vb.)
-   - Etkilenen dosya/bölüm
-   - Reproduksiyon adımları (eğer mümkünse)
-   - Olası çözüm (eğer varsa)
+Report privately to:
 
-### Yanıt Süresi
+- GitHub: [@emirhankudun-ux](https://github.com/emirhankudun-ux)
+- Email: emirhankudun@gmail.com
 
-- İlk yanıt: 48 saat içinde
-- Düzeltme: Duruma bağlı olarak 1-2 hafta
-- Açık kaynak: Düzeltme onaylandıktan sonra yayınlanır
+Include when possible:
 
-## Desteklenen Versiyonlar
+- Affected path, package, or platform
+- Vulnerability class
+- Reproduction steps
+- Expected vs actual behavior
+- Impact estimate
+- Suggested fix, if known
 
-Aşağıdaki versiyonlar güvenlik güncellemeleri alıyor:
+## Response Targets
 
-| Versiyon | Destek |
-|----------|--------|
-| 1.x      | ✅ Aktif |
+| Stage | Target |
+| --- | --- |
+| Initial acknowledgement | 48 hours |
+| Triage | 7 days |
+| Fix plan | 14 days for normal severity, faster for critical issues |
 
-## Güvenlik Best Practices
+## Supported Branch
 
-- **Gizli bilgiler paylaşma**: `.env` dosyaları, API anahtarları, kimlik bilgileri asla repo'da kalmamalı.
-- **Bağımlılıkları güncel tut**: Düzenli olarak `npm audit` çalıştır.
-- **Kod incelemesi**: PR'ları güvenlik açılarına karşı kontrol et.
+| Branch | Support |
+| --- | --- |
+| `main` | Supported |
 
-Teşekkürler!
+Temporary feature branches are not supported release channels.
+
+## Security Rules
+
+- Never commit secrets, tokens, API keys, `.env` files, personal data, or private archives.
+- Do not add a new runtime, SDK, package, cloud service, or AI connector unless the task requires it.
+- Do not run destructive Git commands or remote branch deletion without explicit maintainer confirmation.
+- Keep JavaScript and Python growth constrained in the current phase unless the maintainer reopens that scope.
+- Validate Apple, Android, Windows, and release surfaces with the lightest reliable command before merging.
+
+## Disclosure
+
+Security fixes should be coordinated privately until a patch is available.
+Public disclosure should include enough detail for users to upgrade without
+exposing unnecessary exploit instructions.

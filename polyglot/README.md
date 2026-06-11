@@ -1,6 +1,16 @@
-# SEIS Polyglot Branch
+# SEIS Polyglot Surface
 
-This branch keeps the public experience static and lightweight while documenting how SEIS can grow across multiple software languages without dependency bloat.
+This surface keeps SEIS broad without dependency bloat. Language files start as
+small contracts, policies, or validation helpers. Runtime installation is
+requirement-led only.
+
+## Current Priority
+
+- Website is the final release surface.
+- Apple work uses Swift, SwiftUI, Playground, Objective-C, and AppleScript.
+- Windows work excludes Apple-only languages and keeps broad non-Apple coverage.
+- Android work is Android Studio oriented and starts with Java/Kotlin-readable contracts.
+- JavaScript and Python are not expanded as new implementation surfaces in the current phase.
 
 ## Active Languages
 
