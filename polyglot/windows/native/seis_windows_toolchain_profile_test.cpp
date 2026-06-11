@@ -16,5 +16,13 @@ int main() {
     std::cerr << "Windows toolchain profile must keep broad non-Apple language coverage.\n";
     return 1;
   }
+  if (!seis::windows::ai_route_ready(seis::windows::online_ai_provider_route())) {
+    std::cerr << "Windows online AI route must keep SEIS Agent remote and helper AIs local.\n";
+    return 1;
+  }
+  if (!seis::windows::ai_route_ready(seis::windows::offline_ai_provider_route())) {
+    std::cerr << "Windows offline AI route must fall back to Ollama.\n";
+    return 1;
+  }
   return 0;
 }

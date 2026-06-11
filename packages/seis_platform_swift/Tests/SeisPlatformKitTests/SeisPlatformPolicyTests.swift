@@ -274,3 +274,44 @@ import Testing
     #expect(decision.blockers.contains("credential_boundary_missing:slack"))
     #expect(decision.blockers.contains("write_approval_missing:slack"))
 }
+
+@Test func aiProviderRouterSelectsOnlineHelpersWithSeisRemoteAgent() {
+    let decision = SeisAIProviderRouter.evaluate(networkOnline: true)
+
+    #expect(decision.ready)
+    #expect(decision.remoteOrchestrator == "seis-agent")
+    #expect(decision.selectedLocalHelpers == ["openai", "claude", "gemini"])
+    #expect(decision.offlineFallback == "ollama-standby")
+    #expect(decision.blockers.isEmpty)
+}
+
+@Test func aiProviderRouterUsesOllamaWhenOffline() {
+    let decision = SeisAIProviderRouter.evaluate(networkOnline: false)
+
+    #expect(decision.ready)
+    #expect(decision.remoteOrchestrator == "seis-agent")
+    #expect(decision.selectedLocalHelpers == ["ollama"])
+    #expect(decision.offlineFallback == "ollama")
+    #expect(decision.blockers.isEmpty)
+}
+
+@Test func aiProviderRouterBlocksRemoteHelperPromotion() {
+    var providers = SeisAIProviderRouter.defaultProviders
+    providers[1] = SeisAIProviderSurface(
+        id: "openai",
+        role: "remote-orchestrator",
+        runtime: "remote-api",
+        onlineCapable: true,
+        offlineCapable: false,
+        authReady: true,
+        credentialBoundary: false,
+        priority: 10
+    )
+
+    let decision = SeisAIProviderRouter.evaluate(networkOnline: true, providers: providers)
+
+    #expect(!decision.ready)
+    #expect(decision.blockers.contains("local_helper_promoted_to_remote:openai"))
+    #expect(decision.blockers.contains("credential_boundary_missing:openai"))
+    #expect(decision.blockers.contains("remote_orchestrator_must_be_seis_agent_only"))
+}

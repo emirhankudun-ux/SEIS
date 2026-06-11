@@ -20,6 +20,18 @@ public final class SeisAndroidDevelopmentProfileTest {
             SeisAndroidDevelopmentProfile.preferredLanguages().contains("Kotlin"),
             "Android profile must keep Kotlin as a first-class implementation surface"
         );
+        assertTrue(
+            SeisAndroidDevelopmentProfile.remoteOrchestrator().equals("seis-agent"),
+            "Android profile must keep SEIS Agent as the remote orchestrator"
+        );
+        assertTrue(
+            SeisAndroidDevelopmentProfile.selectAiHelpers(true).contains("openai"),
+            "Android online profile should route remote AI helpers locally through SEIS"
+        );
+        assertTrue(
+            SeisAndroidDevelopmentProfile.selectAiHelpers(false).equals(java.util.List.of("ollama")),
+            "Android offline profile should fall back to Ollama"
+        );
     }
 
     private static void assertTrue(boolean value, String message) {

@@ -60,6 +60,19 @@ be activated only when all of these are true:
 This makes "use all plugins" mean "register all useful capabilities, then
 activate the smallest safe set" rather than "call every connector."
 
+## AI Provider Routing
+
+SEIS Agent is the only remote orchestrator. OpenAI, Claude, Gemini, and similar
+providers are local helper routes behind SEIS, not competing remote
+orchestrators. When network access is available, the local SEIS runtime may
+call the online helpers through explicit credential boundaries. When network
+access is unavailable, the route falls back to Ollama as the local offline
+helper.
+
+This rule is now represented in Swift, Go, Android Java, and Windows C++ so the
+Apple, Windows, and Android surfaces share the same AI routing invariant without
+adding new JavaScript or Python code.
+
 ## Trusted Marketplace Intake
 
 Marketplace work starts as curation, not live installation. The intake file
