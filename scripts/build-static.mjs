@@ -35,7 +35,7 @@ writeLocalizedRoutes(staticDir, rewrittenIndex);
 writeSitemap(staticDir);
 
 rmSync(archivePath, { force: true });
-if (hasCommand("ditto")) {
+if (process.platform === "darwin") {
   execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", "seis-static", "seis-static.zip"], {
     cwd: outputRoot,
     stdio: "inherit"
@@ -48,15 +48,6 @@ if (hasCommand("ditto")) {
 }
 
 console.log(`Static server package ready: ${archivePath}`);
-
-function hasCommand(command) {
-  try {
-    execFileSync("sh", ["-lc", `command -v ${command}`], { stdio: "ignore" });
-    return true;
-  } catch (_error) {
-    return false;
-  }
-}
 
 function copyDir(source, target) {
   cpSync(source, target, {
