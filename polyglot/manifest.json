@@ -193,8 +193,11 @@
     },
     {
       "language": "Elixir",
-      "role": "calm release policy for concurrent service experiments",
-      "entrypoints": ["polyglot/elixir/calm_release_policy.ex"]
+      "role": "calm release policy for concurrent service experiments; HTML anchor safety auditor (target=_blank must have rel=noopener/noreferrer)",
+      "entrypoints": [
+        "polyglot/elixir/calm_release_policy.ex",
+        "polyglot/elixir/seis_html_anchor_audit.exs"
+      ]
     },
     {
       "language": "Erlang",
@@ -291,8 +294,11 @@
     },
     {
       "language": "Groovy",
-      "role": "JVM scripting release policy guard",
-      "entrypoints": ["polyglot/groovy/SeisReleasePolicy.groovy"]
+      "role": "JVM scripting release policy guard; JSON file structure validator (manifest, site-config, translations key presence)",
+      "entrypoints": [
+        "polyglot/groovy/SeisReleasePolicy.groovy",
+        "polyglot/groovy/seis_json_files_check.groovy"
+      ]
     },
     {
       "language": "Objective-C",

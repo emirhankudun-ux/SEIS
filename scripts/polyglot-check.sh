@@ -199,6 +199,16 @@ nim_lane() {
   nim r polyglot/nim/seis_html_img_audit.nim
 }
 
+elixir_lane() {
+  elixir polyglot/elixir/seis_html_anchor_audit.exs --self-test &&
+  elixir polyglot/elixir/seis_html_anchor_audit.exs
+}
+
+groovy_lane() {
+  groovy polyglot/groovy/seis_json_files_check.groovy --self-test &&
+  groovy polyglot/groovy/seis_json_files_check.groovy
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -226,6 +236,8 @@ run_lane "r          (translation-stats)" Rscript r_lane
 run_lane "haskell    (css-unit-audit)"   runghc  haskell_lane
 run_lane "ocaml      (css-selectors)"   ocaml   ocaml_lane
 run_lane "nim        (img-alt-audit)"   nim     nim_lane
+run_lane "elixir     (anchor-audit)"   elixir  elixir_lane
+run_lane "groovy     (json-files)"     groovy  groovy_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

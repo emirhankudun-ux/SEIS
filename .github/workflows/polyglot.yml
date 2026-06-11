@@ -17,7 +17,7 @@ on:
 
 jobs:
   polyglot-audit:
-    name: 25-language audit suite
+    name: 27-language audit suite
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -27,17 +27,17 @@ jobs:
       # perl, awk, and sqlite3; the orchestrator SKIPs anything missing, so
       # this job stays green on runner image changes while still failing on
       # real findings.
-      - name: Install ts-node, bun, lua, tcl, R, ghc, ocaml, nim
+      - name: Install ts-node, bun, lua, tcl, R, ghc, ocaml, nim, elixir, groovy
         run: |
           npm install -g ts-node typescript
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
-          sudo apt-get install -y lua5.4 tcl r-base ghc ocaml nim
+          sudo apt-get install -y lua5.4 tcl r-base ghc ocaml nim elixir groovy
           Rscript -e "install.packages('jsonlite', repos='https://cran.r-project.org', quiet=TRUE)"
 
       - name: Toolchain inventory
         run: |
-          for t in python3 cargo go gcc g++ ruby php java perl awk sqlite3 ts-node jq xmllint sed yq bash bc bun lua5.4 tclsh Rscript runghc ocaml nim; do
+          for t in python3 cargo go gcc g++ ruby php java perl awk sqlite3 ts-node jq xmllint sed yq bash bc bun lua5.4 tclsh Rscript runghc ocaml nim elixir groovy; do
             printf '%-10s ' "$t"; command -v "$t" >/dev/null && "$t" --version 2>&1 | head -1 || echo "missing"
           done
 
