@@ -5,6 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+from .platform_language_policy import (
+    APPLE_ONLY_LANGUAGE_SURFACES,
+    WINDOWS_REQUIRED_LANGUAGE_SURFACES,
+    windows_language_set,
+)
+
 
 @dataclass(frozen=True)
 class PlatformSurface:
@@ -34,25 +40,10 @@ class PlatformSurface:
         }
 
 
-APPLE_NATIVE_LANGUAGES = {"Swift", "Objective-C", "AppleScript"}
+APPLE_NATIVE_LANGUAGES = set(APPLE_ONLY_LANGUAGE_SURFACES)
 
 WINDOWS_DEVELOPMENT_LANGUAGES = {
-    "C#",
-    "F#",
-    "Visual Basic",
-    "PowerShell",
-    "Batch",
-    "C++",
-    "Rust",
-    "Go",
-    "Python",
-    "Java",
-    "Kotlin",
-    "SQL",
-    "R",
-    "Lua",
-    "Ruby",
-    "PHP",
+    *windows_language_set(),
 }
 
 
@@ -61,14 +52,16 @@ PLATFORM_SURFACES = [
         id="macos-apple-native",
         label="macOS Apple Native",
         os_family="macos",
-        languages=("Swift", "Objective-C", "AppleScript", "Python", "Go", "Rust"),
-        local_helpers=("SwiftPM", "xcodebuild", "xcrun", "osascript", "python3", "go"),
+        languages=("Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"),
+        local_helpers=("SwiftPM", "xcodebuild", "xcrun", "osascript", "osacompile"),
         remote_helpers=("SEIS Agent", "OpenAI", "Claude", "Gemini"),
         agent_roles=("macos-agent", "apple-platform-agent", "local-helper-agent"),
         quality_gates=(
             "swift_test",
+            "swiftui_playground_surface",
             "objective_c_syntax",
-            "applescript_surface_present",
+            "applescript_syntax_when_available",
+            "apple_native_only_policy",
             "permission_scope",
             "offline_fallback",
             "notarization_awareness",
@@ -79,33 +72,16 @@ PLATFORM_SURFACES = [
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
             "polyglot/objective-c/SEISPlatformBridge.h",
             "polyglot/objective-c/SEISPlatformBridge.m",
-            "polyglot/applescript/seis_platform_automation.applescript",
             "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
+            "polyglot/applescript/seis_platform_automation.applescript",
         ),
-        frameworks=("SwiftUI", "PlaygroundSupport", "Foundation"),
+        frameworks=("SwiftUI", "PlaygroundSupport", "Foundation", "AppleScript"),
     ),
     PlatformSurface(
         id="windows-native",
         label="Windows Native",
         os_family="windows",
-        languages=(
-            "C#",
-            "F#",
-            "Visual Basic",
-            "PowerShell",
-            "Batch",
-            "C++",
-            "Rust",
-            "Go",
-            "Python",
-            "Java",
-            "Kotlin",
-            "SQL",
-            "R",
-            "Lua",
-            "Ruby",
-            "PHP",
-        ),
+        languages=tuple(sorted(WINDOWS_REQUIRED_LANGUAGE_SURFACES)),
         local_helpers=("PowerShell", "dotnet", "winget", "python", "go", "rustc", "javac", "clang++"),
         remote_helpers=("SEIS Agent", "OpenAI", "Claude", "Gemini"),
         agent_roles=("windows-agent", "powershell-ops-agent", "dotnet-agent", "polyglot-runtime-agent"),
@@ -119,6 +95,7 @@ PLATFORM_SURFACES = [
             "permission_scope",
             "offline_fallback",
             "event_log_awareness",
+            "no_swift_windows_surface",
         ),
         source_surfaces=(
             "packages/seis_windows_csharp/SeisPlatformPolicy.cs",

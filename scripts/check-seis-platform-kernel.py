@@ -8,6 +8,11 @@ from pathlib import Path
 
 
 ROOT = Path.cwd()
+sys.path.insert(0, str(ROOT))
+
+from packages.seis_kernel.platform_language_policy import build_platform_language_policy  # noqa: E402
+from packages.seis_kernel.platform_development_tracks import build_platform_development_tracks  # noqa: E402
+from packages.seis_kernel.platform_matrix import build_platform_contract  # noqa: E402
 
 REQUIRED_FILES = [
     "packages/seis_platform_swift/Package.swift",
@@ -16,6 +21,9 @@ REQUIRED_FILES = [
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
     "packages/seis_kernel/platform_matrix.py",
+    "packages/seis_kernel/platform_language_policy.py",
+    "packages/seis_kernel/platform_development_tracks.py",
+    "scripts/create-seis-platform-development-tracks.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
     "polyglot/applescript/seis_platform_automation.applescript",
@@ -55,12 +63,19 @@ def main() -> int:
         "-m",
         "py_compile",
         "packages/seis_kernel/platform_matrix.py",
+        "packages/seis_kernel/platform_language_policy.py",
+        "packages/seis_kernel/platform_development_tracks.py",
         "scripts/check-seis-platform-kernel.py",
+        "scripts/create-seis-platform-language-policy.py",
+        "scripts/create-seis-platform-development-tracks.py",
         "polyglot/windows/scripting/seis_windows_platform.py",
     ], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-language-policy.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-development-tracks.py", "--check"], ROOT))
     failures.extend(validate_surface_contents())
     failures.extend(run_swift_tests())
     failures.extend(run_objective_c_syntax())
+    failures.extend(run_applescript_syntax_when_available())
     failures.extend(run_cpp_syntax_when_available())
     failures.extend(run_java_syntax_when_available())
     failures.extend(run_powershell_syntax_when_available())
@@ -80,11 +95,30 @@ def validate_surface_contents() -> list[str]:
     )
     if "import SwiftUI" not in playground or "PlaygroundPage.current.setLiveView" not in playground:
         failures.append("SwiftUI playground must import SwiftUI and set a live view")
+    if "AppleScript" not in playground:
+        failures.append("SwiftUI playground must present AppleScript as an Apple platform language")
 
-    matrix = (ROOT / "packages/seis_kernel/platform_matrix.py").read_text(encoding="utf-8")
-    for language in ["C#", "F#", "Visual Basic", "PowerShell", "Batch", "C++", "Rust", "Go", "Python", "Java", "Kotlin", "SQL"]:
-        if language not in matrix:
+    contract = build_platform_contract()
+    policy = build_platform_language_policy()
+    tracks = build_platform_development_tracks()
+    apple_languages = set(contract["summary"]["appleLanguages"])
+    if apple_languages != {"Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"}:
+        failures.append("macOS platform matrix must stay Swift/SwiftUI/Objective-C/Playground/AppleScript only")
+    windows_languages = set(contract["summary"]["windowsLanguages"])
+    for language in ["C#", "F#", "Visual Basic", "PowerShell", "Batch", "CMD", "C", "C++", "Rust", "Go", "Python", "Java", "Kotlin", "SQL"]:
+        if language not in windows_languages:
             failures.append(f"Windows platform matrix missing language: {language}")
+    for forbidden in policy["windows"]["excludedLanguageSurfaces"]:
+        if forbidden in windows_languages:
+            failures.append(f"Windows platform matrix must not include Apple-only language: {forbidden}")
+    for track in tracks["tracks"]:
+        if "windows" not in track.get("platformScope", []):
+            continue
+        forbidden = set(track.get("languages", [])) & set(policy["windows"]["excludedLanguageSurfaces"])
+        if forbidden:
+            failures.append(f"Windows development track must not include Apple-only languages: {track['id']}")
+    if tracks["summary"]["windowsLanguageCoverageCount"] < 40:
+        failures.append("Windows development tracks must preserve broad polyglot coverage")
     return failures
 
 
@@ -106,6 +140,20 @@ def run_objective_c_syntax() -> list[str]:
             "-framework",
             "Foundation",
             "polyglot/objective-c/SEISPlatformBridge.m",
+        ],
+        ROOT,
+    )
+
+
+def run_applescript_syntax_when_available() -> list[str]:
+    if shutil.which("osacompile") is None:
+        return []
+    return run(
+        [
+            "osacompile",
+            "-o",
+            "/tmp/seis-platform-automation.scpt",
+            "polyglot/applescript/seis_platform_automation.applescript",
         ],
         ROOT,
     )

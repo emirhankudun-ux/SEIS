@@ -1,9 +1,9 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 2033
-- Counted bytes: 68126242
-- JavaScript: 586459 bytes (0.86%)
+- Counted files: 2360
+- Counted bytes: 121455497
+- JavaScript: 589266 bytes (0.49%)
 - Target JavaScript: 10.0%
 - Target status: `met`
 - Additional non-JavaScript bytes needed for strict target: 0
@@ -12,19 +12,19 @@
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| Other | 66478276 | 97.58% |
-| JavaScript | 586459 | 0.86% |
-| JSON | 548465 | 0.81% |
-| D | 107676 | 0.16% |
-| Python | 99744 | 0.15% |
-| YAML | 95356 | 0.14% |
-| CSS | 38723 | 0.06% |
-| Swift | 26632 | 0.04% |
-| HTML | 25498 | 0.04% |
-| Shell | 24462 | 0.04% |
-| C | 22458 | 0.03% |
-| SQL | 4506 | 0.01% |
-| Go | 4135 | 0.01% |
+| Other | 119673815 | 98.53% |
+| JavaScript | 589266 | 0.49% |
+| JSON | 549695 | 0.45% |
+| Python | 199520 | 0.16% |
+| YAML | 121797 | 0.1% |
+| D | 107676 | 0.09% |
+| CSS | 38723 | 0.03% |
+| Swift | 29623 | 0.02% |
+| HTML | 25498 | 0.02% |
+| Shell | 24461 | 0.02% |
+| C | 22458 | 0.02% |
+| SQL | 4506 | 0.0% |
+| Go | 4135 | 0.0% |
 | C# | 2731 | 0.0% |
 | TOML | 2614 | 0.0% |
 | Rust | 2574 | 0.0% |
@@ -46,13 +46,13 @@
 | `scripts/sync-plugin-environment-sources.cjs` | 26659 |
 | `scripts/create-seis-ecosystem-intake.cjs` | 22927 |
 | `scripts/create-plugin-capability-lanes.cjs` | 19729 |
+| `scripts/automation-refresh-seis-surface.cjs` | 19465 |
 | `scripts/third-party-intake-blueprint.mjs` | 17482 |
-| `scripts/automation-refresh-seis-surface.cjs` | 16651 |
 | `scripts/check-seis-trusted-marketplace-plugin.cjs` | 15405 |
-| `scripts/create-ai-release-manifest.cjs` | 12928 |
+| `scripts/create-ai-release-manifest.cjs` | 12922 |
 | `mcp/seis-mcp-server.mjs` | 12808 |
 | `scripts/create-fullstack-language-matrix.cjs` | 11446 |
-| `scripts/check-llm-orchestration-policy.cjs` | 11007 |
+| `scripts/check-llm-orchestration-policy.cjs` | 11006 |
 
 ## Linguist Controls
 

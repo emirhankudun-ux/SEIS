@@ -47,6 +47,28 @@ const PIPELINE = [
     ]
   },
   {
+    id: "automation:seis-platform-language-policy",
+    label: "SEIS platform language policy",
+    command: ["run", "automation:seis-platform-language-policy"],
+    check: "check:seis-platform-language-policy",
+    paths: [
+      "content/development/seis-platform-language-policy.json",
+      "reports/seis-platform-language-policy.json",
+      "reports/seis-platform-language-policy.md"
+    ]
+  },
+  {
+    id: "automation:seis-platform-development-tracks",
+    label: "SEIS platform development tracks",
+    command: ["run", "automation:seis-platform-development-tracks"],
+    check: "check:seis-platform-development-tracks",
+    paths: [
+      "content/development/seis-platform-development-tracks.json",
+      "reports/seis-platform-development-tracks.json",
+      "reports/seis-platform-development-tracks.md"
+    ]
+  },
+  {
     id: "automation:ai-release-manifest",
     label: "AI release manifest",
     command: ["run", "automation:ai-release-manifest"],
@@ -55,6 +77,50 @@ const PIPELINE = [
       "content/development/ai-release-manifest.json",
       "reports/ai-release-manifest.json",
       "reports/ai-release-manifest.md"
+    ]
+  },
+  {
+    id: "automation:seis-long-horizon-missions",
+    label: "SEIS long-horizon mission kernel",
+    command: ["run", "automation:seis-long-horizon-missions"],
+    check: "check:seis-long-horizon-missions",
+    paths: [
+      "content/development/seis-long-horizon-missions.json",
+      "reports/seis-long-horizon-missions.json",
+      "reports/seis-long-horizon-missions.md"
+    ]
+  },
+  {
+    id: "automation:seis-active-mission-board",
+    label: "SEIS active mission board",
+    command: ["run", "automation:seis-active-mission-board"],
+    check: "check:seis-active-mission-board",
+    paths: [
+      "content/development/seis-active-mission-board.json",
+      "reports/seis-active-mission-board.json",
+      "reports/seis-active-mission-board.md"
+    ]
+  },
+  {
+    id: "automation:seis-execution-packages",
+    label: "SEIS execution packages",
+    command: ["run", "automation:seis-execution-packages"],
+    check: "check:seis-execution-packages",
+    paths: [
+      "content/development/seis-execution-packages.json",
+      "reports/seis-execution-packages.json",
+      "reports/seis-execution-packages.md"
+    ]
+  },
+  {
+    id: "automation:seis-execution-runway",
+    label: "SEIS execution runway",
+    command: ["run", "automation:seis-execution-runway"],
+    check: "check:seis-execution-runway",
+    paths: [
+      "content/development/seis-execution-runway.json",
+      "reports/seis-execution-runway.json",
+      "reports/seis-execution-runway.md"
     ]
   },
   {
@@ -95,6 +161,12 @@ const BASE_VALIDATION_CHECKS = [
   { id: "check:ecosystem-intake", label: "SEIS ecosystem intake" },
   { id: "check:plugin-environment-sources", label: "Plugin environment sources" },
   { id: "check:universal-capability-kernel", label: "SEIS universal capability kernel" },
+  { id: "check:seis-platform-language-policy", label: "SEIS platform language policy" },
+  { id: "check:seis-platform-development-tracks", label: "SEIS platform development tracks" },
+  { id: "check:seis-long-horizon-missions", label: "SEIS long-horizon mission kernel" },
+  { id: "check:seis-active-mission-board", label: "SEIS active mission board" },
+  { id: "check:seis-execution-packages", label: "SEIS execution packages" },
+  { id: "check:seis-execution-runway", label: "SEIS execution runway" },
   { id: "check:ai-release-manifest", label: "AI release manifest" },
   { id: "check:llm-orchestration-policy", label: "LLM orchestration policy" },
   { id: "check:fullstack-language-matrix", label: "Full-stack language matrix" },

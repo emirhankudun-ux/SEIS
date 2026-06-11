@@ -303,8 +303,7 @@ const markdown = [
   "",
   "## Routing",
   "",
-  ...fallbackRouting.map((route) => `- ${route.intent} → ${route.selectedTool}`),
-  ""
+  ...fallbackRouting.map((route) => `- ${route.intent} → ${route.selectedTool}`)
 ].join("\n");
 
 fs.mkdirSync(path.dirname(reportJsonPath), { recursive: true });

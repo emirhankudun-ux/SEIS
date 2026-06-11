@@ -1,0 +1,1129 @@
+{
+  "id": "seis-long-horizon-mission-kernel",
+  "mode": "aggressive_long_duration_execution_backlog",
+  "summary": {
+    "waveCount": 12,
+    "missionCount": 120,
+    "domainCoverageCount": 38,
+    "languageCoverageCount": 35,
+    "appleMissionCount": 20,
+    "windowsMissionCount": 20,
+    "minimumQualityGateCount": 6
+  },
+  "installPolicy": {
+    "default": "do_not_install_new_runtime_for_language_percentage",
+    "allowedWhen": [
+      "a mission has a real build, test, deploy, or product runtime requirement",
+      "the runtime is needed to validate a user-approved platform target",
+      "the dependency can be removed or isolated if the mission is reverted"
+    ]
+  },
+  "topWaves": [
+    {
+      "id": "wave-01-foundation",
+      "label": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "agentRole": "cs-foundation-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-02-apple-native",
+      "label": "Apple Native Studio",
+      "horizon": "weeks-05-08",
+      "agentRole": "apple-platform-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-03-windows-polyglot",
+      "label": "Windows Polyglot Studio",
+      "horizon": "weeks-09-12",
+      "agentRole": "windows-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-04-ai-agent",
+      "label": "AI Agent and LLM Orchestration",
+      "horizon": "weeks-13-16",
+      "agentRole": "llm-routing-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-05-mcp-skills-plugins",
+      "label": "MCP Skills and Plugin Governance",
+      "horizon": "weeks-17-20",
+      "agentRole": "integration-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-06-full-stack",
+      "label": "Full Stack Product Surfaces",
+      "horizon": "weeks-21-24",
+      "agentRole": "full-stack-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-07-data-intelligence",
+      "label": "Data Science and Intelligence",
+      "horizon": "weeks-25-28",
+      "agentRole": "data-science-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-08-design-creative",
+      "label": "Design, UX, and Creative Production",
+      "horizon": "weeks-29-32",
+      "agentRole": "ux-ui-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-09-security-sre",
+      "label": "Security SRE and Observability",
+      "horizon": "weeks-33-36",
+      "agentRole": "sre-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-10-research-labs",
+      "label": "Research Labs and Advanced Computing",
+      "horizon": "weeks-37-40",
+      "agentRole": "research-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-11-language-engineering",
+      "label": "Compiler and Language Engineering",
+      "horizon": "weeks-41-46",
+      "agentRole": "language-engineering-agent",
+      "missionCount": 10
+    },
+    {
+      "id": "wave-12-delivery",
+      "label": "Delivery Metrics and Sustainable Operations",
+      "horizon": "weeks-47-52",
+      "agentRole": "delivery-agent",
+      "missionCount": 10
+    }
+  ],
+  "nextProgressSlice": [
+    {
+      "id": "wave-01-foundation-m01-architecture-contract",
+      "order": 1,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "algorithms-and-flowcharts",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Architecture Contract",
+      "intent": "Create an inspectable contract before implementation expands.",
+      "requiredOutputs": [
+        "architecture note",
+        "interface contract",
+        "risk register"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "maintainability",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m02-agent-policy",
+      "order": 2,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "mathematics-foundations",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Agent Policy",
+      "intent": "Define what SEIS agents may execute, delegate, or refuse.",
+      "requiredOutputs": [
+        "agent policy",
+        "permission matrix",
+        "fallback path"
+      ],
+      "qualityGates": [
+        "credential-safety",
+        "docs-updated",
+        "human-approval",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m01-architecture-contract"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m03-platform-bridge",
+      "order": 3,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "computer-science-foundations",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Platform Bridge",
+      "intent": "Bridge local OS capabilities without making the OS boundary vague.",
+      "requiredOutputs": [
+        "platform adapter",
+        "runtime readiness check",
+        "path safety rule"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "primaryLanguages": [
+        "C#",
+        "CUE",
+        "Go",
+        "PowerShell",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m02-agent-policy"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m04-data-plane",
+      "order": 4,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "web-development",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Data Plane",
+      "intent": "Keep data contracts typed, auditable, and separable from UI code.",
+      "requiredOutputs": [
+        "data schema",
+        "query contract",
+        "lineage note"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "migration-plan",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "R",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m03-platform-bridge"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m05-design-engineering",
+      "order": 5,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "mobile-development",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Design Engineering",
+      "intent": "Make design systems useful for engineers, designers, and software teams.",
+      "requiredOutputs": [
+        "design token map",
+        "interaction states",
+        "accessibility checklist"
+      ],
+      "qualityGates": [
+        "accessibility",
+        "docs-updated",
+        "motion-evidence",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "primaryLanguages": [
+        "CSS",
+        "CUE",
+        "Go",
+        "HTML",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m04-data-plane"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m06-quality-gate",
+      "order": 6,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "game-development",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Quality Gate",
+      "intent": "Turn a capability into repeatable local validation.",
+      "requiredOutputs": [
+        "check script",
+        "failure message",
+        "developer note"
+      ],
+      "qualityGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "fail-fast",
+        "idempotent-output",
+        "reviewable-diff"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m05-design-engineering"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m07-security-governance",
+      "order": 7,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "full-stack-engineering",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Security Governance",
+      "intent": "Keep every new surface behind explicit security and data governance.",
+      "requiredOutputs": [
+        "threat model",
+        "secret handling rule",
+        "abuse case table"
+      ],
+      "qualityGates": [
+        "auditability",
+        "docs-updated",
+        "least-privilege",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m06-quality-gate"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m08-llm-orchestration",
+      "order": 8,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "data-engineering-and-analytics",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "LLM Orchestration",
+      "intent": "Route local and remote models while SEIS remains the task-facing agent.",
+      "requiredOutputs": [
+        "routing rule",
+        "provider policy",
+        "offline fallback"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "model-fallback",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "JSON",
+        "Python",
+        "Rust",
+        "SQL",
+        "YAML"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m07-security-governance"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m09-runtime-surface",
+      "order": 9,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "data-science",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Runtime Surface",
+      "intent": "Add a product-appropriate language surface without installing tools just for percentages.",
+      "requiredOutputs": [
+        "source stub",
+        "readiness gate",
+        "install policy"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "documented-owner",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Java",
+        "Kotlin",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m08-llm-orchestration"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-01-foundation-m10-release-readiness",
+      "order": 10,
+      "waveId": "wave-01-foundation",
+      "waveLabel": "Foundation and Computer Science Core",
+      "horizon": "weeks-01-04",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "domainId": "artificial-intelligence",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "label": "Release Readiness",
+      "intent": "Keep delivery reversible, observable, and aligned with GitHub governance.",
+      "requiredOutputs": [
+        "release note",
+        "rollback checklist",
+        "publish gate"
+      ],
+      "qualityGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "language-budget",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m09-runtime-surface"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-02-apple-native-m01-architecture-contract",
+      "order": 11,
+      "waveId": "wave-02-apple-native",
+      "waveLabel": "Apple Native Studio",
+      "horizon": "weeks-05-08",
+      "lane": "product-engineering",
+      "agentRole": "apple-platform-agent",
+      "domainId": "ai-agent-engineering",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "label": "Architecture Contract",
+      "intent": "Create an inspectable contract before implementation expands.",
+      "requiredOutputs": [
+        "architecture note",
+        "interface contract",
+        "risk register"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "maintainability",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m10-release-readiness"
+      ],
+      "status": "planned"
+    },
+    {
+      "id": "wave-02-apple-native-m02-agent-policy",
+      "order": 12,
+      "waveId": "wave-02-apple-native",
+      "waveLabel": "Apple Native Studio",
+      "horizon": "weeks-05-08",
+      "lane": "product-engineering",
+      "agentRole": "apple-platform-agent",
+      "domainId": "llm-orchestration",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "label": "Agent Policy",
+      "intent": "Define what SEIS agents may execute, delegate, or refuse.",
+      "requiredOutputs": [
+        "agent policy",
+        "permission matrix",
+        "fallback path"
+      ],
+      "qualityGates": [
+        "credential-safety",
+        "docs-updated",
+        "human-approval",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m01-architecture-contract"
+      ],
+      "status": "planned"
+    }
+  ]
+}

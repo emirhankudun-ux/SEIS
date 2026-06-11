@@ -54,23 +54,34 @@ public struct SeisPlatformReadiness: Codable, Equatable, Sendable {
     public let requiredActions: [String]
 }
 
+public struct SeisDevelopmentTrack: Codable, Equatable, Sendable {
+    public let id: String
+    public let platforms: [SeisPlatform]
+    public let languages: [String]
+    public let forbiddenLanguages: [String]
+    public let validationCommands: [String]
+    public let qualityGates: [String]
+    public let executionRule: String
+}
+
 public enum SeisPlatformPolicy {
     public static let macOS = SeisPlatformCapability(
         platform: .macOS,
-        languages: ["Swift", "Objective-C", "AppleScript", "Python", "Go", "Rust"],
+        languages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
         agentRoles: ["macos-agent", "apple-platform-agent", "local-helper-agent"],
-        localHelpers: ["SwiftPM", "xcodebuild", "osascript", "python3", "go"],
+        localHelpers: ["SwiftPM", "xcodebuild", "xcrun", "osascript", "osacompile"],
         remoteHelpers: ["SEIS Agent", "OpenAI", "Claude", "Gemini"],
         qualityGates: [
             "swift_test",
             "swiftui_playground_surface",
             "objective_c_syntax",
+            "applescript_syntax_when_available",
             "permission_scope",
             "offline_fallback",
             "notarization_awareness",
             "accessibility_when_ui"
         ],
-        frameworks: ["SwiftUI", "PlaygroundSupport", "Foundation"],
+        frameworks: ["SwiftUI", "PlaygroundSupport", "Foundation", "AppleScript"],
         supportsOfflineHelper: true,
         supportsRemoteLLMBridge: true
     )
@@ -83,6 +94,8 @@ public enum SeisPlatformPolicy {
             "Visual Basic",
             "PowerShell",
             "Batch",
+            "CMD",
+            "C",
             "C++",
             "Rust",
             "Go",
@@ -107,7 +120,8 @@ public enum SeisPlatformPolicy {
             "permission_scope",
             "offline_fallback",
             "windows_path_safety",
-            "event_log_awareness"
+            "event_log_awareness",
+            "no_swift_windows_surface"
         ],
         frameworks: [".NET", "WinUI", "WPF", "Windows Terminal", "WSL-aware CLI"],
         supportsOfflineHelper: true,
@@ -115,6 +129,27 @@ public enum SeisPlatformPolicy {
     )
 
     public static let all: [SeisPlatformCapability] = [macOS, windows]
+
+    public static let developmentTracks: [SeisDevelopmentTrack] = [
+        SeisDevelopmentTrack(
+            id: "apple-native-macos-track",
+            platforms: [.macOS],
+            languages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
+            forbiddenLanguages: [],
+            validationCommands: ["swift test", "xcrun swift --version", "xcodebuild -version", "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"],
+            qualityGates: ["swift_test", "swiftui_playground_surface", "objective_c_syntax", "applescript_syntax_when_available", "xcode_toolchain_verified"],
+            executionRule: "Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+        ),
+        SeisDevelopmentTrack(
+            id: "windows-required-polyglot-track",
+            platforms: [.windows],
+            languages: windows.languages,
+            forbiddenLanguages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
+            validationCommands: ["dotnet --info", "pwsh --version", "python3 --version"],
+            qualityGates: ["no_swift_windows_surface", "dotnet_readiness_when_available", "powershell_policy"],
+            executionRule: "Windows work is broad polyglot and excludes Apple-only language surfaces."
+        )
+    ]
 
     public static func readiness(for capability: SeisPlatformCapability) -> SeisPlatformReadiness {
         var actions: [String] = []

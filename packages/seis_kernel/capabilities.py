@@ -10,6 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .platform_development_tracks import build_platform_development_tracks, validate_platform_development_tracks
+from .platform_language_policy import build_platform_language_policy, validate_platform_language_policy
 from .platform_matrix import build_platform_contract
 from .plugin_inventory import build_plugin_inventory_contract
 
@@ -793,6 +795,8 @@ def build_capability_contract() -> dict[str, Any]:
     domain_ids = [item.id for item in CAPABILITY_DOMAINS]
     plugin_inventory = build_plugin_inventory_contract(domain_ids)
     platform_contract = build_platform_contract()
+    platform_language_policy = build_platform_language_policy()
+    platform_development_tracks = build_platform_development_tracks()
 
     return {
         "version": 1,
@@ -811,6 +815,8 @@ def build_capability_contract() -> dict[str, Any]:
             "platformCount": platform_contract["summary"]["platformCount"],
             "appleLanguageCount": platform_contract["summary"]["appleLanguageCount"],
             "windowsLanguageCount": platform_contract["summary"]["windowsLanguageCount"],
+            "windowsPolicyLanguageCount": platform_language_policy["summary"]["windowsLanguageCount"],
+            "platformDevelopmentTrackCount": platform_development_tracks["summary"]["trackCount"],
         },
         "sourceReferences": {
             "kernelCode": "packages/seis_kernel/capabilities.py",
@@ -825,6 +831,8 @@ def build_capability_contract() -> dict[str, Any]:
         },
         "pluginInventory": plugin_inventory,
         "platformCompatibility": platform_contract,
+        "platformLanguagePolicy": platform_language_policy,
+        "platformDevelopmentTracks": platform_development_tracks,
         "domains": domains,
         "flowchart": render_mermaid_flow(),
     }
@@ -892,14 +900,17 @@ def validate_capability_contract(contract: dict[str, Any]) -> list[str]:
     if platform_summary.get("platformCount", 0) < 2:
         failures.append("platform compatibility must cover macOS and Windows")
 
-    if platform_summary.get("appleLanguageCount", 0) < 3:
-        failures.append("platform compatibility must include Swift, Objective-C, and AppleScript")
+    if platform_summary.get("appleLanguages", []) != ["AppleScript", "Objective-C", "Playground", "Swift", "SwiftUI"]:
+        failures.append("platform compatibility must keep Apple languages to Swift, SwiftUI, Objective-C, Playground, and AppleScript")
 
     if "SwiftUI" not in platform_summary.get("appleFrameworks", []):
         failures.append("platform compatibility must include SwiftUI playground support")
 
     if platform_summary.get("windowsLanguageCount", 0) < 12:
         failures.append("platform compatibility must include the primary Windows development language families")
+
+    failures.extend(validate_platform_language_policy(contract.get("platformLanguagePolicy", {})))
+    failures.extend(validate_platform_development_tracks(contract.get("platformDevelopmentTracks", {})))
 
     if "flowchart TD" not in contract.get("flowchart", ""):
         failures.append("flowchart must be Mermaid TD syntax")

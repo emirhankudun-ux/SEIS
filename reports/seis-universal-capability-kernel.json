@@ -67,8 +67,10 @@
     "coveredPluginCount": 69,
     "minimumDomainPluginCount": 3,
     "platformCount": 2,
-    "appleLanguageCount": 3,
-    "windowsLanguageCount": 16
+    "appleLanguageCount": 5,
+    "windowsLanguageCount": 18,
+    "windowsPolicyLanguageCount": 41,
+    "platformDevelopmentTrackCount": 4
   },
   "laneCoverage": [
     {
@@ -147,17 +149,21 @@
     "mode": "macos_windows_native_and_cross_platform_support",
     "summary": {
       "platformCount": 2,
-      "appleLanguageCount": 3,
-      "windowsLanguageCount": 16,
+      "appleLanguageCount": 5,
+      "windowsLanguageCount": 18,
       "appleLanguages": [
         "AppleScript",
         "Objective-C",
-        "Swift"
+        "Playground",
+        "Swift",
+        "SwiftUI"
       ],
       "windowsLanguages": [
         "Batch",
+        "C",
         "C#",
         "C++",
+        "CMD",
         "F#",
         "Go",
         "Java",
@@ -173,6 +179,7 @@
         "Visual Basic"
       ],
       "appleFrameworks": [
+        "AppleScript",
         "Foundation",
         "PlaygroundSupport",
         "SwiftUI"
@@ -192,19 +199,17 @@
         "osFamily": "macos",
         "languages": [
           "Swift",
+          "SwiftUI",
           "Objective-C",
-          "AppleScript",
-          "Python",
-          "Go",
-          "Rust"
+          "Playground",
+          "AppleScript"
         ],
         "localHelpers": [
           "SwiftPM",
           "xcodebuild",
           "xcrun",
           "osascript",
-          "python3",
-          "go"
+          "osacompile"
         ],
         "remoteHelpers": [
           "SEIS Agent",
@@ -219,8 +224,10 @@
         ],
         "qualityGates": [
           "swift_test",
+          "swiftui_playground_surface",
           "objective_c_syntax",
-          "applescript_surface_present",
+          "applescript_syntax_when_available",
+          "apple_native_only_policy",
           "permission_scope",
           "offline_fallback",
           "notarization_awareness",
@@ -231,13 +238,14 @@
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
           "polyglot/objective-c/SEISPlatformBridge.h",
           "polyglot/objective-c/SEISPlatformBridge.m",
-          "polyglot/applescript/seis_platform_automation.applescript",
-          "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift"
+          "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
+          "polyglot/applescript/seis_platform_automation.applescript"
         ],
         "frameworks": [
           "SwiftUI",
           "PlaygroundSupport",
-          "Foundation"
+          "Foundation",
+          "AppleScript"
         ]
       },
       {
@@ -245,22 +253,24 @@
         "label": "Windows Native",
         "osFamily": "windows",
         "languages": [
-          "C#",
-          "F#",
-          "Visual Basic",
-          "PowerShell",
           "Batch",
+          "C",
+          "C#",
           "C++",
-          "Rust",
+          "CMD",
+          "F#",
           "Go",
-          "Python",
           "Java",
           "Kotlin",
-          "SQL",
-          "R",
           "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
           "Ruby",
-          "PHP"
+          "Rust",
+          "SQL",
+          "Visual Basic"
         ],
         "localHelpers": [
           "PowerShell",
@@ -293,7 +303,8 @@
           "windows_path_safety",
           "permission_scope",
           "offline_fallback",
-          "event_log_awareness"
+          "event_log_awareness",
+          "no_swift_windows_surface"
         ],
         "sourceSurfaces": [
           "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
@@ -327,6 +338,450 @@
     ],
     "routingRule": "SEIS remains the user-facing agent; platform helpers execute only inside local permission, credential, and OS boundaries."
   },
+  "platformLanguagePolicy": {
+    "version": 1,
+    "id": "seis-platform-language-policy",
+    "mode": "windows_polyglot_except_apple_only_and_apple_native_only",
+    "summary": {
+      "appleLanguageCount": 5,
+      "windowsLanguageCount": 41,
+      "windowsRequiredLanguageCount": 18,
+      "appleOnlyLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "windowsExcludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ]
+    },
+    "apple": {
+      "platforms": [
+        "macos",
+        "ios"
+      ],
+      "allowedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "allowedSourceRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/objective-c/",
+        "polyglot/swiftui-playground/",
+        "polyglot/applescript/"
+      ],
+      "rule": "Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+    },
+    "windows": {
+      "platforms": [
+        "windows"
+      ],
+      "allowedLanguageSurfaces": [
+        "Awk",
+        "Batch",
+        "Bicep",
+        "C",
+        "C#",
+        "C++",
+        "CMD",
+        "CMake",
+        "COBOL",
+        "Dart",
+        "Dockerfile",
+        "F#",
+        "Fortran",
+        "Go",
+        "Groovy",
+        "Haskell",
+        "JSON Schema",
+        "Java",
+        "JavaScript",
+        "Kotlin",
+        "Lua",
+        "Make",
+        "Nim",
+        "OCaml",
+        "OpenAPI",
+        "PHP",
+        "Perl",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Scala",
+        "Shell",
+        "Tcl",
+        "Terraform",
+        "TypeScript",
+        "Visual Basic",
+        "YAML",
+        "Zig"
+      ],
+      "requiredLanguageSurfaces": [
+        "C#",
+        "F#",
+        "Visual Basic",
+        "PowerShell",
+        "Batch",
+        "CMD",
+        "C",
+        "C++",
+        "Rust",
+        "Go",
+        "Python",
+        "Java",
+        "Kotlin",
+        "SQL",
+        "R",
+        "Lua",
+        "Ruby",
+        "PHP"
+      ],
+      "excludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "rule": "Windows work is broad polyglot and excludes Apple-only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+    },
+    "routingRule": "SEIS remains the primary agent; platform helpers are selected by OS boundary and language policy."
+  },
+  "platformDevelopmentTracks": {
+    "version": 1,
+    "id": "seis-platform-development-tracks",
+    "mode": "macos_apple_native_and_windows_polyglot_execution_tracks",
+    "summary": {
+      "trackCount": 4,
+      "appleTrackCount": 1,
+      "windowsTrackCount": 2,
+      "governanceTrackCount": 1,
+      "appleLanguageCount": 5,
+      "windowsRequiredLanguageCount": 18,
+      "windowsExtendedLanguageCount": 23,
+      "windowsLanguageCoverageCount": 41,
+      "qualityGateCount": 27
+    },
+    "platformBoundaries": {
+      "appleOnlyLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "windowsExcludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "javascriptPolicy": "compatibility_only_keep_under_language_budget"
+    },
+    "tracks": [
+      {
+        "id": "apple-native-macos-track",
+        "label": "Apple Native macOS Track",
+        "lane": "apple_native",
+        "platformScope": [
+          "macos"
+        ],
+        "relatedPlatforms": [
+          "ios"
+        ],
+        "languages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "forbiddenLanguages": [
+          "Awk",
+          "Batch",
+          "Bicep",
+          "C#",
+          "CMD",
+          "CMake",
+          "COBOL",
+          "Dart",
+          "Dockerfile",
+          "F#",
+          "Fortran",
+          "Go",
+          "Groovy",
+          "Haskell",
+          "JSON Schema",
+          "Java",
+          "JavaScript",
+          "Kotlin",
+          "Lua",
+          "Make",
+          "Nim",
+          "OCaml",
+          "OpenAPI",
+          "PHP",
+          "Perl",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Scala",
+          "Shell",
+          "Tcl",
+          "Terraform",
+          "TypeScript",
+          "Visual Basic",
+          "YAML",
+          "Zig"
+        ],
+        "sourceRoots": [
+          "packages/seis_platform_swift/",
+          "polyglot/objective-c/",
+          "polyglot/swiftui-playground/",
+          "polyglot/applescript/"
+        ],
+        "validationCommands": [
+          "swift test",
+          "xcrun swift --version",
+          "xcodebuild -version",
+          "xcrun clang -fsyntax-only -fobjc-arc -framework Foundation polyglot/objective-c/SEISPlatformBridge.m",
+          "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+        ],
+        "agentRoles": [
+          "macos-agent",
+          "apple-platform-agent",
+          "local-helper-agent"
+        ],
+        "artifacts": [
+          "SwiftPM package surfaces",
+          "SwiftUI playground live view",
+          "Objective-C bridge header and implementation",
+          "AppleScript automation bridge"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "swiftui_playground_surface",
+          "objective_c_syntax",
+          "applescript_syntax_when_available",
+          "xcode_toolchain_verified",
+          "accessibility_when_ui",
+          "sandbox_permission_review",
+          "notarization_awareness"
+        ],
+        "executionRule": "Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+      },
+      {
+        "id": "windows-required-polyglot-track",
+        "label": "Windows Required Polyglot Track",
+        "lane": "windows_required",
+        "platformScope": [
+          "windows"
+        ],
+        "languages": [
+          "C#",
+          "F#",
+          "Visual Basic",
+          "PowerShell",
+          "Batch",
+          "CMD",
+          "C",
+          "C++",
+          "Rust",
+          "Go",
+          "Python",
+          "Java",
+          "Kotlin",
+          "SQL",
+          "R",
+          "Lua",
+          "Ruby",
+          "PHP"
+        ],
+        "forbiddenLanguages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "sourceRoots": [
+          "packages/seis_windows_csharp/",
+          "polyglot/powershell/",
+          "polyglot/windows/dotnet/",
+          "polyglot/windows/native/",
+          "polyglot/windows/go/",
+          "polyglot/windows/rust/",
+          "polyglot/windows/jvm/",
+          "polyglot/windows/scripting/",
+          "polyglot/windows/data/"
+        ],
+        "validationCommands": [
+          "dotnet --info",
+          "pwsh --version",
+          "python3 --version",
+          "go version",
+          "rustc --version",
+          "javac -version",
+          "npm run check:seis-platform-kernel"
+        ],
+        "agentRoles": [
+          "windows-agent",
+          "dotnet-agent",
+          "powershell-ops-agent",
+          "polyglot-runtime-agent"
+        ],
+        "artifacts": [
+          ".NET C#/F#/Visual Basic policy surfaces",
+          "PowerShell/Batch/CMD operation surfaces",
+          "Native C/C++ and Rust/Go system surfaces",
+          "JVM, scripting, and data-language surfaces"
+        ],
+        "qualityGates": [
+          "no_swift_windows_surface",
+          "dotnet_readiness_when_available",
+          "powershell_policy",
+          "cmd_batch_path_safety",
+          "native_cpp_syntax_when_available",
+          "jvm_syntax_when_available",
+          "offline_fallback",
+          "remote_agent_reasoning_only"
+        ],
+        "executionRule": "Windows work is broad polyglot and must never use Swift, SwiftUI, Objective-C, Playground, or AppleScript surfaces."
+      },
+      {
+        "id": "windows-extended-polyglot-track",
+        "label": "Windows Extended Polyglot Track",
+        "lane": "windows_extended",
+        "platformScope": [
+          "windows"
+        ],
+        "languages": [
+          "TypeScript",
+          "JavaScript",
+          "Dart",
+          "Scala",
+          "Groovy",
+          "Haskell",
+          "OCaml",
+          "Nim",
+          "Zig",
+          "Fortran",
+          "COBOL",
+          "Perl",
+          "Awk",
+          "Tcl",
+          "Shell",
+          "YAML",
+          "JSON Schema",
+          "OpenAPI",
+          "Terraform",
+          "Bicep",
+          "Dockerfile",
+          "Make",
+          "CMake"
+        ],
+        "forbiddenLanguages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "sourceRoots": [
+          "content/development/fullstack-language-matrix.json",
+          "reports/language-distribution.json",
+          "polyglot/windows/"
+        ],
+        "validationCommands": [
+          "npm run check:fullstack-language-matrix",
+          "npm run check:language-distribution",
+          "npm run check:seis-nonjs-kernel"
+        ],
+        "agentRoles": [
+          "polyglot-runtime-agent",
+          "fullstack-agent",
+          "data-platform-agent"
+        ],
+        "artifacts": [
+          "Full-stack language matrix alignment",
+          "Generated language budget reports",
+          "Future Windows language adapters"
+        ],
+        "qualityGates": [
+          "no_swift_windows_surface",
+          "language_budget_kept_under_target",
+          "runtime_install_requirement_led",
+          "artifact_root_declared",
+          "polyglot_matrix_consistent",
+          "generated_output_idempotent"
+        ],
+        "executionRule": "Extended Windows languages are allowed as needed; JavaScript stays compatibility-only and below the language budget."
+      },
+      {
+        "id": "seis-platform-boundary-governance-track",
+        "label": "SEIS Platform Boundary Governance Track",
+        "lane": "governance",
+        "platformScope": [
+          "macos",
+          "windows"
+        ],
+        "languages": [],
+        "forbiddenLanguages": [],
+        "sourceRoots": [
+          "packages/seis_kernel/",
+          "scripts/",
+          "content/development/",
+          "reports/"
+        ],
+        "validationCommands": [
+          "npm run check:seis-platform-language-policy",
+          "npm run check:seis-platform-kernel",
+          "npm run check:seis-nonjs-kernel",
+          "npm run automation:refresh-seis-surface -- --summary"
+        ],
+        "agentRoles": [
+          "seis-governance-agent",
+          "quality-gate-agent"
+        ],
+        "artifacts": [
+          "Platform policy JSON and Markdown",
+          "Development track JSON and Markdown",
+          "Idempotent refresh summary"
+        ],
+        "qualityGates": [
+          "apple_native_only_boundary",
+          "windows_no_apple_only_boundary",
+          "javascript_compatibility_only",
+          "explicit_commit_approval",
+          "explicit_push_approval",
+          "deterministic_refresh"
+        ],
+        "executionRule": "SEIS stays primary; platform tracks only constrain safe execution boundaries.",
+        "boundaryRules": [
+          "macOS artifacts stay Apple-native only",
+          "Windows artifacts exclude Apple-only language surfaces",
+          "runtime installs are requirement-led, never percentage-led",
+          "commit and push require explicit user approval"
+        ]
+      }
+    ]
+  },
   "nonJavaScriptSurfaces": [
     "packages/seis_kernel/plugin_inventory.py",
     "packages/seis_kernel/test_capability_kernel.py",
@@ -342,6 +797,8 @@
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
     "packages/seis_kernel/platform_matrix.py",
+    "packages/seis_kernel/platform_language_policy.py",
+    "packages/seis_kernel/platform_development_tracks.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
     "polyglot/applescript/seis_platform_automation.applescript",

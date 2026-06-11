@@ -13,6 +13,12 @@ REQUIRED_FILES = [
     "packages/seis_kernel/capabilities.py",
     "packages/seis_kernel/plugin_inventory.py",
     "packages/seis_kernel/platform_matrix.py",
+    "packages/seis_kernel/platform_language_policy.py",
+    "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/long_horizon.py",
+    "packages/seis_kernel/active_board.py",
+    "packages/seis_kernel/execution_packages.py",
+    "packages/seis_kernel/execution_runway.py",
     "packages/seis_kernel/test_capability_kernel.py",
     "packages/seis_kernel_go/go.mod",
     "packages/seis_kernel_go/capability_budget.go",
@@ -55,7 +61,19 @@ PYTHON_COMPILE_TARGETS = [
     "packages/seis_kernel/capabilities.py",
     "packages/seis_kernel/plugin_inventory.py",
     "packages/seis_kernel/platform_matrix.py",
+    "packages/seis_kernel/platform_language_policy.py",
+    "packages/seis_kernel/platform_development_tracks.py",
+    "packages/seis_kernel/long_horizon.py",
+    "packages/seis_kernel/active_board.py",
+    "packages/seis_kernel/execution_packages.py",
+    "packages/seis_kernel/execution_runway.py",
     "scripts/create-seis-universal-capability-kernel.py",
+    "scripts/create-seis-platform-language-policy.py",
+    "scripts/create-seis-platform-development-tracks.py",
+    "scripts/create-seis-long-horizon-missions.py",
+    "scripts/create-seis-active-mission-board.py",
+    "scripts/create-seis-execution-packages.py",
+    "scripts/create-seis-execution-runway.py",
     "scripts/check-seis-nonjs-kernel.py",
     "scripts/check-seis-platform-kernel.py",
     "polyglot/windows/scripting/seis_windows_platform.py",
@@ -76,6 +94,12 @@ def main() -> int:
     failures.extend(run(["python3", "-m", "unittest", "packages.seis_kernel.test_capability_kernel"], ROOT))
     failures.extend(run(["go", "test", "./..."], ROOT / "packages" / "seis_kernel_go"))
     failures.extend(run(["python3", "scripts/check-seis-platform-kernel.py"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-language-policy.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-platform-development-tracks.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-long-horizon-missions.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-active-mission-board.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-execution-packages.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-execution-runway.py", "--check"], ROOT))
     failures.extend(validate_contract())
 
     if failures:
@@ -101,14 +125,21 @@ def validate_contract() -> list[str]:
         failures.append("kernel contract must route at least 60 plugins through domains")
     if summary.get("platformCount", 0) < 2:
         failures.append("kernel contract must include macOS and Windows platform support")
-    if summary.get("appleLanguageCount", 0) < 3:
-        failures.append("kernel contract must include Swift, Objective-C, and AppleScript")
+    platform_policy = data.get("platformLanguagePolicy", {})
+    apple_languages = set(platform_policy.get("apple", {}).get("allowedLanguageSurfaces", []))
+    if apple_languages != {"Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"}:
+        failures.append("kernel contract must keep Apple platform languages to Swift, SwiftUI, Objective-C, Playground, and AppleScript")
     if summary.get("windowsLanguageCount", 0) < 12:
         failures.append("kernel contract must include primary Windows development language families")
     if "pluginInventory" not in data:
         failures.append("kernel contract must include pluginInventory")
     if "platformCompatibility" not in data:
         failures.append("kernel contract must include platformCompatibility")
+    tracks = data.get("platformDevelopmentTracks", {})
+    if tracks.get("summary", {}).get("trackCount", 0) < 4:
+        failures.append("kernel contract must include platform development tracks")
+    if tracks.get("summary", {}).get("windowsLanguageCoverageCount", 0) < 40:
+        failures.append("kernel contract must preserve broad Windows platform development tracks")
     return failures
 
 

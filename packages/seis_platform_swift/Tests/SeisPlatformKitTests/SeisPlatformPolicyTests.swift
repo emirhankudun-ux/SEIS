@@ -4,8 +4,11 @@ import Testing
 @Test func macOSPolicyUsesAppleLanguages() {
     let policy = SeisPlatformPolicy.macOS
     #expect(policy.languages.contains("Swift"))
+    #expect(policy.languages.contains("SwiftUI"))
     #expect(policy.languages.contains("Objective-C"))
+    #expect(policy.languages.contains("Playground"))
     #expect(policy.languages.contains("AppleScript"))
+    #expect(!policy.languages.contains("Python"))
     #expect(policy.frameworks.contains("SwiftUI"))
     #expect(policy.isReadyForSEISAgent)
 }
@@ -16,9 +19,12 @@ import Testing
     #expect(policy.languages.contains("F#"))
     #expect(policy.languages.contains("Visual Basic"))
     #expect(policy.languages.contains("PowerShell"))
+    #expect(policy.languages.contains("CMD"))
+    #expect(policy.languages.contains("C"))
     #expect(policy.languages.contains("C++"))
     #expect(policy.languages.contains("Java"))
     #expect(policy.languages.contains("Kotlin"))
+    #expect(!policy.languages.contains("Swift"))
     #expect(policy.languages.count >= 12)
     #expect(policy.isReadyForSEISAgent)
 }
@@ -27,4 +33,18 @@ import Testing
     let result = SeisPlatformPolicy.route(request: "SwiftUI macOS playground and Windows WinUI PowerShell support")
     #expect(result.contains(.macOS))
     #expect(result.contains(.windows))
+}
+
+@Test func developmentTracksKeepAppleAndWindowsBoundaries() {
+    let tracks = SeisPlatformPolicy.developmentTracks
+    let appleTrack = tracks.first { $0.id == "apple-native-macos-track" }
+    let windowsTrack = tracks.first { $0.id == "windows-required-polyglot-track" }
+
+    #expect(appleTrack?.languages == ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"])
+    #expect(appleTrack?.forbiddenLanguages.contains("AppleScript") == false)
+    #expect(windowsTrack?.languages.contains("PowerShell") == true)
+    #expect(windowsTrack?.languages.contains("CMD") == true)
+    #expect(windowsTrack?.languages.contains("Swift") == false)
+    #expect(windowsTrack?.forbiddenLanguages.contains("SwiftUI") == true)
+    #expect(windowsTrack?.forbiddenLanguages.contains("AppleScript") == true)
 }

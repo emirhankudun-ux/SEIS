@@ -31,6 +31,8 @@ NON_JS_SURFACES = [
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
     "packages/seis_kernel/platform_matrix.py",
+    "packages/seis_kernel/platform_language_policy.py",
+    "packages/seis_kernel/platform_development_tracks.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
     "polyglot/applescript/seis_platform_automation.applescript",
@@ -122,6 +124,8 @@ def build_report(contract: dict) -> dict:
             "coverageByGroup": contract["pluginInventory"]["coverageByGroup"],
         },
         "platformCompatibility": contract["platformCompatibility"],
+        "platformLanguagePolicy": contract["platformLanguagePolicy"],
+        "platformDevelopmentTracks": contract["platformDevelopmentTracks"],
         "nonJavaScriptSurfaces": NON_JS_SURFACES,
         "domainIndex": [
             {
@@ -155,6 +159,9 @@ def build_markdown(contract: dict) -> str:
         f"- Apple frameworks: {', '.join(contract['platformCompatibility']['summary']['appleFrameworks'])}",
         f"- Windows native languages: {', '.join(contract['platformCompatibility']['summary']['windowsLanguages'])}",
         f"- Windows frameworks: {', '.join(contract['platformCompatibility']['summary']['windowsFrameworks'])}",
+        f"- Windows policy language count: {contract['platformLanguagePolicy']['summary']['windowsLanguageCount']}",
+        f"- Platform development tracks: {contract['platformDevelopmentTracks']['summary']['trackCount']}",
+        f"- Windows development language coverage: {contract['platformDevelopmentTracks']['summary']['windowsLanguageCoverageCount']}",
         "",
         "## SEIS Routing Contract",
         "",
@@ -203,6 +210,28 @@ def build_markdown(contract: dict) -> str:
     for surface in contract["platformCompatibility"]["surfaces"]:
         lines.append(
             f"| {surface['label']} | {', '.join(surface['languages'])} | {', '.join(surface['localHelpers'])} | {', '.join(surface['qualityGates'][:4])} |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Platform Language Policy",
+            "",
+            f"- Apple only: {', '.join(contract['platformLanguagePolicy']['apple']['allowedLanguageSurfaces'])}",
+            f"- Windows excludes: {', '.join(contract['platformLanguagePolicy']['windows']['excludedLanguageSurfaces'])}",
+            f"- Windows allowed count: {contract['platformLanguagePolicy']['summary']['windowsLanguageCount']}",
+            "",
+            "## Platform Development Tracks",
+            "",
+            "| Track | Platforms | Languages | Rule |",
+            "| --- | --- | --- | --- |",
+        ]
+    )
+
+    for track in contract["platformDevelopmentTracks"]["tracks"]:
+        languages = ", ".join(track["languages"]) if track["languages"] else "policy-only"
+        lines.append(
+            f"| {track['label']} | {', '.join(track['platformScope'])} | {languages} | {track['executionRule']} |"
         )
 
     lines.extend(

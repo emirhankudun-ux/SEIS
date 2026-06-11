@@ -13,7 +13,7 @@ struct SEISPlatformPlaygroundView: View {
         SEISPlatformCard(
             id: "apple-native",
             title: "Apple Native",
-            detail: "Swift, SwiftUI, Objective-C, AppleScript, and local SEIS helper routing.",
+            detail: "Swift, SwiftUI, Objective-C, Playground, AppleScript, and local SEIS helper routing.",
             accent: .blue
         ),
         SEISPlatformCard(
@@ -60,7 +60,7 @@ struct SEISPlatformPlaygroundView: View {
                 }
             }
 
-            Text("Quality gates: SwiftPM tests, Objective-C syntax, SwiftUI playground presence, Windows source surface checks, and optional runtime checks when tools exist.")
+            Text("Quality gates: SwiftPM tests, Objective-C syntax, AppleScript syntax, SwiftUI playground presence, Windows source surface checks, and optional runtime checks when tools exist.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
         }

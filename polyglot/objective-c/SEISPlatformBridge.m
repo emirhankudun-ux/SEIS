@@ -28,9 +28,9 @@
 @end
 
 NSArray<NSString *> *SEISAppleNativeLanguages(void) {
-    return @[@"Swift", @"Objective-C", @"AppleScript"];
+    return @[@"Swift", @"SwiftUI", @"Objective-C", @"Playground", @"AppleScript"];
 }
 
 NSArray<NSString *> *SEISWindowsNativeLanguages(void) {
-    return @[@"C#", @"PowerShell"];
+    return @[@"C#", @"F#", @"Visual Basic", @"PowerShell", @"Batch", @"CMD", @"C", @"C++", @"Rust", @"Go", @"Python", @"Java", @"Kotlin", @"SQL", @"R", @"Lua", @"Ruby", @"PHP"];
 }
