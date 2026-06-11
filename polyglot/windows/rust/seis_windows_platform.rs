@@ -9,7 +9,7 @@ pub struct Capability {
 pub fn capability_surface() -> Capability {
     Capability {
         id: "windows-rust-core",
-        languages: &["Rust", "PowerShell", "C++", "Python"],
+        languages: &["Rust", "PowerShell", "C++", "Go", "SQL", "Java"],
         quality_gates: &[
             "rustc_check_when_available",
             "windows_path_safety",

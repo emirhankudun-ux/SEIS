@@ -49,8 +49,10 @@ Gerektiği kadarını çalıştır:
 
 ```bash
 swift test --package-path packages/seis_platform_swift
-javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java
-xcrun clang++ -std=c++20 -fsyntax-only polyglot/windows/native/seis_windows_toolchain_profile.cpp
+javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java polyglot/android/java/SeisAndroidDevelopmentProfileTest.java
+java -cp /tmp/seis-android-profile seis.android.SeisAndroidDevelopmentProfileTest
+xcrun clang++ -std=c++20 polyglot/windows/native/seis_windows_toolchain_profile.cpp polyglot/windows/native/seis_windows_toolchain_profile_test.cpp -o /tmp/seis-windows-toolchain-profile-test
+/tmp/seis-windows-toolchain-profile-test
 cd packages/seis_kernel_go && go test ./...
 npm run check:seis-platform-priority-atlas
 ```

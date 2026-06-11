@@ -99,7 +99,6 @@ public enum SeisPlatformPolicy {
             "C++",
             "Rust",
             "Go",
-            "Python",
             "Java",
             "Kotlin",
             "SQL",
@@ -109,7 +108,7 @@ public enum SeisPlatformPolicy {
             "PHP"
         ],
         agentRoles: ["windows-agent", "powershell-ops-agent", "dotnet-agent", "polyglot-runtime-agent"],
-        localHelpers: ["PowerShell", "dotnet", "winget", "python", "go", "rustc", "javac", "clang++"],
+        localHelpers: ["PowerShell", "dotnet", "winget", "go", "rustc", "javac", "clang++"],
         remoteHelpers: ["SEIS Agent", "OpenAI", "Claude", "Gemini"],
         qualityGates: [
             "powershell_policy",
@@ -145,7 +144,7 @@ public enum SeisPlatformPolicy {
             platforms: [.windows],
             languages: windows.languages,
             forbiddenLanguages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
-            validationCommands: ["dotnet --info", "pwsh --version", "python3 --version"],
+            validationCommands: ["dotnet --info", "pwsh --version", "go version", "rustc --version", "javac -version"],
             qualityGates: ["no_swift_windows_surface", "dotnet_readiness_when_available", "powershell_policy"],
             executionRule: "Windows work is broad polyglot and excludes Apple-only language surfaces."
         )

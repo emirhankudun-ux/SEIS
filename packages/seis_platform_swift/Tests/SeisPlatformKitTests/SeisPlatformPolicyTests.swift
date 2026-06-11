@@ -25,6 +25,7 @@ import Testing
     #expect(policy.languages.contains("Java"))
     #expect(policy.languages.contains("Kotlin"))
     #expect(!policy.languages.contains("Swift"))
+    #expect(!policy.languages.contains("Python"))
     #expect(policy.languages.count >= 12)
     #expect(policy.isReadyForSEISAgent)
 }
@@ -58,4 +59,51 @@ import Testing
     #expect(profile.activeIDEs.contains("Android Studio"))
     #expect(profile.isAppleNativeReady)
     #expect(profile.collaborationSummary.contains("OpenAI Codex + Claude"))
+}
+
+@Test func marketReadinessLocksMainCodexClaudeAndDomainCoverage() {
+    let input = SeisMarketReadinessInput(
+        domains: SeisCapabilityDomainSet.required,
+        contributorSignals: ["emirhankudun-ux", "OpenAI Codex", "Claude"],
+        primaryBranch: "main",
+        longLivedBranches: ["main"],
+        websiteIsFinalSurface: true,
+        appleLanguages: ["Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"],
+        windowsAndroidLanguages: ["C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"],
+        runtimeInstallPolicy: "requirement_led_only",
+        hasMITLicense: true,
+        hasSecurityPolicy: true,
+        hasContributingGuide: true,
+        hasCodeOfConduct: true
+    )
+
+    let result = SeisMarketReadiness.evaluate(input)
+    #expect(result.ready)
+    #expect(result.score == 100)
+    #expect(result.domainCount == 41)
+    #expect(result.mainOnlyPolicy)
+    #expect(result.codexClaudeVisible)
+    #expect(result.blockers.isEmpty)
+}
+
+@Test func marketReadinessFailsWithoutClaudeAndMainPolicy() {
+    let input = SeisMarketReadinessInput(
+        domains: SeisCapabilityDomainSet.required,
+        contributorSignals: ["emirhankudun-ux", "OpenAI Codex"],
+        primaryBranch: "codex/seis-platform-polyglot-kernel",
+        longLivedBranches: ["main", "codex/seis-platform-polyglot-kernel"],
+        websiteIsFinalSurface: true,
+        appleLanguages: ["Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"],
+        windowsAndroidLanguages: ["C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"],
+        runtimeInstallPolicy: "requirement_led_only",
+        hasMITLicense: true,
+        hasSecurityPolicy: true,
+        hasContributingGuide: true,
+        hasCodeOfConduct: true
+    )
+
+    let result = SeisMarketReadiness.evaluate(input)
+    #expect(!result.ready)
+    #expect(result.blockers.contains("codex_claude_contributor_signal_missing"))
+    #expect(result.blockers.contains("main_only_branch_policy_not_enforced"))
 }

@@ -11,7 +11,7 @@ type Capability struct {
 func CapabilitySurface() Capability {
 	return Capability{
 		ID:            "windows-go-service",
-		Languages:     []string{"Go", "PowerShell", "SQL", "Python"},
+		Languages:     []string{"Go", "PowerShell", "SQL", "Java", "Kotlin", "Rust", "C++"},
 		QualityGates:  []string{"go_build_when_available", "windows_path_safety", "permission_scope", "offline_fallback", "event_log_awareness"},
 		OfflineHelper: true,
 		RemoteBridge:  true,

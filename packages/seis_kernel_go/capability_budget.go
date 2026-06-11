@@ -3,21 +3,21 @@ package seis_kernel_go
 import "sort"
 
 type DomainSignal struct {
-	ID              string
-	Lane            string
-	PluginCount     int
+	ID               string
+	Lane             string
+	PluginCount      int
 	QualityGateCount int
 	HasAgentRole     bool
 	HasFlow          bool
 }
 
 type BudgetResult struct {
-	DomainCount       int
-	MinimumPlugins    int
-	MinimumGates      int
-	ReadyDomainCount  int
-	BlockedDomainIDs  []string
-	CoveragePercent   float64
+	DomainCount      int
+	MinimumPlugins   int
+	MinimumGates     int
+	ReadyDomainCount int
+	BlockedDomainIDs []string
+	CoveragePercent  float64
 }
 
 func EvaluateCapabilityBudget(domains []DomainSignal, minPlugins int, minGates int) BudgetResult {
