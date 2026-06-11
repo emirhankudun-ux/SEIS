@@ -20,16 +20,11 @@ function readJson(file) {
   return JSON.parse(fs.readFileSync(file, "utf8"));
 }
 
-function splitCommand(command) {
-  const parts = command.split(" ").filter(Boolean);
-  return [parts[0], parts.slice(1)];
-}
-
 function runCommand(command) {
-  const [bin, args] = splitCommand(command);
   const startedAt = Date.now();
-  const result = spawnSync(bin, args, {
+  const result = spawnSync(command, {
     cwd: ROOT,
+    shell: true,
     encoding: "utf8",
     env: {
       ...process.env,
