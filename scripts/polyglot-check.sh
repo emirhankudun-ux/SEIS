@@ -209,6 +209,16 @@ groovy_lane() {
   groovy polyglot/groovy/seis_json_files_check.groovy
 }
 
+kotlin_lane() {
+  kotlinc-jvm -script polyglot/kotlin/seis_css_font_audit.kts -- --self-test 2>&1 | grep -v "^OpenJDK\|deprecated\|^info:" &&
+  kotlinc-jvm -script polyglot/kotlin/seis_css_font_audit.kts 2>&1 | grep -v "^OpenJDK\|deprecated\|^info:"
+}
+
+guile_lane() {
+  GUILE_AUTO_COMPILE=0 guile polyglot/guile/seis_hreflang_audit.scm --self-test &&
+  GUILE_AUTO_COMPILE=0 guile polyglot/guile/seis_hreflang_audit.scm
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -238,6 +248,8 @@ run_lane "ocaml      (css-selectors)"   ocaml   ocaml_lane
 run_lane "nim        (img-alt-audit)"   nim     nim_lane
 run_lane "elixir     (anchor-audit)"   elixir  elixir_lane
 run_lane "groovy     (json-files)"     groovy  groovy_lane
+run_lane "kotlin     (font-audit)"    kotlinc-jvm kotlin_lane
+run_lane "guile      (hreflang)"      guile   guile_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

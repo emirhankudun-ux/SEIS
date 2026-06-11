@@ -101,8 +101,11 @@
     },
     {
       "language": "Kotlin",
-      "role": "Android motion/accessibility policy",
-      "entrypoints": ["polyglot/kotlin/SeisMotionPolicy.kt"]
+      "role": "Android motion/accessibility policy; CSS font-family generic-fallback auditor",
+      "entrypoints": [
+        "polyglot/kotlin/SeisMotionPolicy.kt",
+        "polyglot/kotlin/seis_css_font_audit.kts"
+      ]
     },
     {
       "language": "Dart",
@@ -334,6 +337,11 @@
       "language": "Scheme",
       "role": "minimal Lisp readiness policy",
       "entrypoints": ["polyglot/scheme/readiness-policy.scm"]
+    },
+    {
+      "language": "Guile",
+      "role": "GNU Scheme — HTML hreflang link auditor (locale completeness, HTTPS, no duplicates)",
+      "entrypoints": ["polyglot/guile/seis_hreflang_audit.scm"]
     },
     {
       "language": "Prolog",
