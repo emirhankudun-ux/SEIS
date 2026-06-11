@@ -1,0 +1,313 @@
+{
+  "startedAt": "2026-06-09T11:58:51.438Z",
+  "sourceRoot": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS",
+  "targetRoot": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS",
+  "options": {
+    "dryRun": true,
+    "includeDiff": true
+  },
+  "summary": {
+    "candidateCount": 16,
+    "adopted": 0,
+    "adapt": 5,
+    "add": 0,
+    "missingSource": 0,
+    "identical": 11,
+    "conflict": 5,
+    "ignored": 0,
+    "recommendationCount": 5
+  },
+  "items": [
+    {
+      "id": "mcp-server",
+      "title": "MCP sunucu çekirdeği",
+      "priority": "critical",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/mcp/seis-mcp-server.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/mcp/seis-mcp-server.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Yerel MCP araç yüzeyi ve SEIS + LLM yönlendirme çekirdeği.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "0853f853ab136c0e82ba5f1f81c49c0fba73c443becaea964432b6e542db8161",
+        "target": "0853f853ab136c0e82ba5f1f81c49c0fba73c443becaea964432b6e542db8161"
+      }
+    },
+    {
+      "id": "seis-plugin-launcher",
+      "title": "SEIS MCP launcher",
+      "priority": "critical",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/plugins/seis/scripts/seis-mcp-launcher.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis/scripts/seis-mcp-launcher.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Plugin-MCP köprü noktası: SEIS motorunu taşınabilir konuma bağlar.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "d32701681414e11d913b11037cb06687f5d5d811c1edcaaaf802bf1410150232",
+        "target": "d32701681414e11d913b11037cb06687f5d5d811c1edcaaaf802bf1410150232"
+      }
+    },
+    {
+      "id": "seis-plugin-bundle-audit",
+      "title": "Bundle audit scripti",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/plugins/seis/scripts/seis-mcp-bundle-audit.sh",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis/scripts/seis-mcp-bundle-audit.sh",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Kurulum öncesi kritik kontrol: bundle varlık ve bütünlük",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "6e92ad2cb12a18ca7518358b9debdeb4beb1cb7a7fa49b55b68e5480044b646b",
+        "target": "6e92ad2cb12a18ca7518358b9debdeb4beb1cb7a7fa49b55b68e5480044b646b"
+      }
+    },
+    {
+      "id": "seis-plugin-sync",
+      "title": "Plugin bundle sync",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/scripts/sync-seis-plugin-bundle.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/scripts/sync-seis-plugin-bundle.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "3. taraf bundle importu yerine kontrollü repo-local plugin eşleme.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "06d8932fd2a60c8f0e4874215ac14255c48ca24b4116d426f40f81009ec223d9",
+        "target": "06d8932fd2a60c8f0e4874215ac14255c48ca24b4116d426f40f81009ec223d9"
+      }
+    },
+    {
+      "id": "seis-plugin-refresh",
+      "title": "Plugin bundle refresh",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/scripts/refresh-seis-plugin-bundle.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/scripts/refresh-seis-plugin-bundle.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Sync + check + (opsiyonel) install döngüsünü güvenli biçimde yönetir.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "0ba094a49b58bc8a5463ec114b1da1ec7c187f5c79fed51797d3f08376d87034",
+        "target": "0ba094a49b58bc8a5463ec114b1da1ec7c187f5c79fed51797d3f08376d87034"
+      }
+    },
+    {
+      "id": "seis-plugin-check",
+      "title": "SEIS plugin doğrulayıcı",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/scripts/check-seis-plugin-bundle.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/scripts/check-seis-plugin-bundle.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "MCP/plug-in varlıklarını sürüm ve politika açısından doğrular.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "dcfda2ff0e6ea352fdf1dbb06f6973358bb9489f97f7635d0e8ccec6a3aa9e97",
+        "target": "dcfda2ff0e6ea352fdf1dbb06f6973358bb9489f97f7635d0e8ccec6a3aa9e97"
+      }
+    },
+    {
+      "id": "seis-repos-bridge-check",
+      "title": "REPO-LLM köprü doğrulayıcısı",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/scripts/check-seis-repos-llm-bridge.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/scripts/check-seis-repos-llm-bridge.mjs",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Köprü manifestini ve yönlendirme dosyalarını bütünlüklü doğrular.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "ecaff4347db4d43c74ce3f2a257c7dbf9ce1a6dfa754b0088f714f8911fea371",
+        "target": "ecaff4347db4d43c74ce3f2a257c7dbf9ce1a6dfa754b0088f714f8911fea371"
+      }
+    },
+    {
+      "id": "llm-planner",
+      "title": "LLM planlayıcı",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/packages/ai-language/src/llm-task-planner.mjs",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/packages/ai-language/src/llm-task-planner.mjs",
+      "status": "adapt",
+      "action": "manual-merge",
+      "severity": "medium",
+      "reason": "Özel rota kararı: SEIS Agent (uzak yönetim) + yerel yardımcılar.",
+      "note": "Kaynak ile hedef farklı; farkı inceleyip adapt etmelisin.",
+      "hashes": {
+        "source": "763c1e4ddd8a7d88b3d61c905b844b11063284cdefbd21f3239c623e0a0c1ab0",
+        "target": "dea7316a2c5d99fbf8f90ab100d855a452820616dafd6bb3d891f7ccc2cf34fc"
+      },
+      "diff": "L1 | src: export const PLAN_VERSION = \"0.1.0\"; || tgt: export const PLAN_VERSION = \"0.2.0\";\nL4 | src:   local: [\"local\", \"offline\", \"deney\", \"test\", \"deneme\", \"çalıştır\", \"çaliştir\", \"fallback\"], || tgt:   local: [\"local\", \"offline\", \"deney\", \"test\", \"deneme\", \"çalıştır\", \"çaliştir\", \"fallback\", \"private\", \"yerel\", \"ofline\", \"on-device\"],\nL5 | src:   research: [\"research\", \"araştırma\", \"paper\", \"makale\", \"inceleme\", \"karşılaştır\", \"benchmark\"], || tgt:   gemini: [\"research\", \"araştırma\", \"paper\", \"makale\", \"inceleme\", \"karşılaştır\", \"benchmark\", \"doküman\", \"doc\", \"compare\", \"tarayı\", \"kaynak\"],"
+    },
+    {
+      "id": "llm-registry",
+      "title": "LLM paket envanteri",
+      "priority": "medium",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/content/development/llm-package-registry.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/content/development/llm-package-registry.json",
+      "status": "adapt",
+      "action": "manual-merge",
+      "severity": "medium",
+      "reason": "Eklenebilecek modellerin listesi, durumları ve kullanım alanları.",
+      "note": "Kaynak ile hedef farklı; farkı inceleyip adapt etmelisin.",
+      "hashes": {
+        "source": "366640faef0a4a9302eee289580142ac5af33f521ba253bfd77f7a0db484894d",
+        "target": "b7cc075c32ecbb2fbdcb727692b272261523e302249c6b60c727e5a0330ad763"
+      },
+      "diff": "L5 | src:   \"packages\": [], || tgt:   \"packages\": ["
+    },
+    {
+      "id": "llm-routing-policy",
+      "title": "LLM görev yönlendirme politikası",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/content/development/llm-task-routing-policy.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/content/development/llm-task-routing-policy.json",
+      "status": "adapt",
+      "action": "manual-merge",
+      "severity": "medium",
+      "reason": "Politika düzeyi: uzak orkestrasyon ve yerel yardımcı sınırları.",
+      "note": "Kaynak ile hedef farklı; farkı inceleyip adapt etmelisin.",
+      "hashes": {
+        "source": "bb27bb4e02e4f130572322a91a5ef0ffe1db3ac5e54163f6db4c625de102410d",
+        "target": "81baa0957496730080153581d591c5cee2690b9d76f1266fe07c393a4fbe937a"
+      },
+      "diff": "L5 | src:   \"default\": \"openai\", || tgt:   \"default\": \"seis-agent\","
+    },
+    {
+      "id": "llm-adapter-readiness",
+      "title": "LLM adaptör hazırbulma",
+      "priority": "medium",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/content/development/llm-adapter-readiness.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/content/development/llm-adapter-readiness.json",
+      "status": "adapt",
+      "action": "manual-merge",
+      "severity": "medium",
+      "reason": "OpenAI, Claude, Gemini, Ollama vb. için hazır olma durumu.",
+      "note": "Kaynak ile hedef farklı; farkı inceleyip adapt etmelisin.",
+      "hashes": {
+        "source": "df6207fe5e2d3f7e89baf711cbf59efc00cd0a32cf613b22bcbe455ba8ba1e8f",
+        "target": "3cc63bb71574b1180dba227084e0883f9c6a4e4e860e7ecde537d49961ee9896"
+      },
+      "diff": "İçerik eşleşiyor gibi görünüyor ama hash farklı; satır karşılaştırmasında fark çıkarılamadı."
+    },
+    {
+      "id": "llm-request-blueprints",
+      "title": "LLM istek şablonları",
+      "priority": "low",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/content/development/llm-request-blueprints.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/content/development/llm-request-blueprints.json",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Model çağrıları için standardize edilmiş istek gövdesi.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "1af0a7574e900e6059e2b40698e0e2a125a4b8ee3ed69d94a6631f2f00eb240f",
+        "target": "1af0a7574e900e6059e2b40698e0e2a125a4b8ee3ed69d94a6631f2f00eb240f"
+      }
+    },
+    {
+      "id": "mcp-manifest",
+      "title": "MCP manifest veri dosyası",
+      "priority": "medium",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/data/seis-mcp-server-2026-06-07.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/data/seis-mcp-server-2026-06-07.json",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "MCP server hazırbulma manifesti, sürüm/açıklama odaklı.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "ae1a4f23fe249084a13082c9bacac04c0aff3dd39bd5798c7d9860715a626147",
+        "target": "ae1a4f23fe249084a13082c9bacac04c0aff3dd39bd5798c7d9860715a626147"
+      }
+    },
+    {
+      "id": "bridge-manifest",
+      "title": "REPO-LLM köprü manifesti",
+      "priority": "critical",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/data/seis-repos-llm-bridge-2026-06-08.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/data/seis-repos-llm-bridge-2026-06-08.json",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "Kaynak, plugin, MCP ve LLM varlıkları arasında ana bağ.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "db515684af042c43ac057d536768499dd3b3b05fe267c7d6ab2c4d7f94442284",
+        "target": "db515684af042c43ac057d536768499dd3b3b05fe267c7d6ab2c4d7f94442284"
+      }
+    },
+    {
+      "id": "plugin-codex-json",
+      "title": "Plugin manifest",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/plugins/seis/.codex-plugin/plugin.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis/.codex-plugin/plugin.json",
+      "status": "adapt",
+      "action": "manual-merge",
+      "severity": "medium",
+      "reason": "SKILL-kapak ve plugin yetenek tanımı.",
+      "note": "Kaynak ile hedef farklı; farkı inceleyip adapt etmelisin.",
+      "hashes": {
+        "source": "a0e852a8cff4eba8709a0ff13ab694b52b1aaed3d1b55ffd948257b7aa1ea17d",
+        "target": "1988a27c940906b580d2b1182f43fccfb8a0979112fc76e8c5f447be3301e091"
+      },
+      "diff": "İçerik eşleşiyor gibi görünüyor ama hash farklı; satır karşılaştırmasında fark çıkarılamadı."
+    },
+    {
+      "id": "plugin-mcp-json",
+      "title": "Plugin MCP manifesti",
+      "priority": "high",
+      "source": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/SEIS/plugins/seis/.mcp.json",
+      "target": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis/.mcp.json",
+      "status": "aligned",
+      "action": "keep",
+      "severity": "low",
+      "reason": "MCP server transport referansı.",
+      "note": "Kaynak ve hedef aynı içerikte.",
+      "hashes": {
+        "source": "117b2f7e7d4d8e957ac95d3469fbbf529e552fe0626d7b36faecf06e6a55ba48",
+        "target": "117b2f7e7d4d8e957ac95d3469fbbf529e552fe0626d7b36faecf06e6a55ba48"
+      }
+    }
+  ],
+  "archiveAndSkips": {
+    "archives": [],
+    "ignoredDirs": [],
+    "ignoredFiles": []
+  },
+  "recommendations": [
+    {
+      "phase": "Önce",
+      "actions": [
+        "Önce critical ve high öncelik gruplarını kapla: bridge manifest, MCP sunucu, launcher, routing policy.",
+        "Çakışan dosyalarda önce güvenlik ve erişim tarafını (plugin/.mcp.json, plugin.json) senkronla.",
+        "archive ve release paketlerini doğrudan ekleme; referans için sadece dokümanda tut."
+      ]
+    },
+    {
+      "phase": "Sonra",
+      "actions": [
+        "Çeşitlenmiş LLM paket listesi ile content/development dosyalarını güncelle ve iş akışını doğrula.",
+        "npm run check:llm-orchestration-policy && npm run check:seis-repos-llm-bridge ile uyumluluk test et.",
+        "npm run automation:refresh-seis-surface --summary ile yüzey bütünlüğünü test et."
+      ]
+    }
+  ],
+  "nextStep": [
+    "llm-planner",
+    "llm-routing-policy",
+    "plugin-codex-json",
+    "llm-registry",
+    "llm-adapter-readiness"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "id": "seis-platform-language-policy",
+  "mode": "windows_polyglot_except_apple_only_and_apple_native_only",
+  "summary": {
+    "appleLanguageCount": 5,
+    "windowsLanguageCount": 41,
+    "windowsRequiredLanguageCount": 18,
+    "appleOnlyLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "windowsExcludedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ]
+  },
+  "apple": {
+    "platforms": [
+      "macos",
+      "ios"
+    ],
+    "allowedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "allowedSourceRoots": [
+      "packages/seis_platform_swift/",
+      "polyglot/objective-c/",
+      "polyglot/swiftui-playground/",
+      "polyglot/applescript/"
+    ],
+    "rule": "Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+  },
+  "windows": {
+    "platforms": [
+      "windows"
+    ],
+    "allowedLanguageSurfaces": [
+      "Awk",
+      "Batch",
+      "Bicep",
+      "C",
+      "C#",
+      "C++",
+      "CMD",
+      "CMake",
+      "COBOL",
+      "Dart",
+      "Dockerfile",
+      "F#",
+      "Fortran",
+      "Go",
+      "Groovy",
+      "Haskell",
+      "JSON Schema",
+      "Java",
+      "JavaScript",
+      "Kotlin",
+      "Lua",
+      "Make",
+      "Nim",
+      "OCaml",
+      "OpenAPI",
+      "PHP",
+      "Perl",
+      "PowerShell",
+      "Python",
+      "R",
+      "Ruby",
+      "Rust",
+      "SQL",
+      "Scala",
+      "Shell",
+      "Tcl",
+      "Terraform",
+      "TypeScript",
+      "Visual Basic",
+      "YAML",
+      "Zig"
+    ],
+    "requiredLanguageSurfaces": [
+      "C#",
+      "F#",
+      "Visual Basic",
+      "PowerShell",
+      "Batch",
+      "CMD",
+      "C",
+      "C++",
+      "Rust",
+      "Go",
+      "Python",
+      "Java",
+      "Kotlin",
+      "SQL",
+      "R",
+      "Lua",
+      "Ruby",
+      "PHP"
+    ],
+    "excludedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "rule": "Windows work is broad polyglot and excludes Apple-only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+  },
+  "routingRule": "SEIS remains the primary agent; platform helpers are selected by OS boundary and language policy."
+}
