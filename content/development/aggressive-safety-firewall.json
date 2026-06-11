@@ -1,0 +1,39 @@
+{
+  "id": "seis-aggressive-safety-firewall",
+  "version": 1,
+  "mode": "command-and-publish-boundary-firewall",
+  "scannedCommandCount": 101,
+  "blockedPatterns": [
+    "force-push",
+    "remote-delete",
+    "destructive-remove",
+    "secret-print",
+    "blind-production-deploy",
+    "github-repo-delete"
+  ],
+  "violations": [],
+  "publishBoundary": {
+    "pushAllowed": false,
+    "deployAllowed": false,
+    "reason": "configured-but-not-publish-ready"
+  },
+  "hardStops": [
+    "push claim",
+    "deployment claim",
+    "automatic deploy without confirmed target",
+    "unconfirmed overwrite",
+    "branch cleanup without review",
+    "large binary imports",
+    "nested Git repository intake",
+    "remote branch deletion without explicit authentication and branch review",
+    "force push",
+    "main branch writes",
+    "unsigned secret commits",
+    "live deploy without SEIS_SITE_URL and provider token",
+    "broad browser crawls without UI change",
+    "design writes without target file",
+    "blanket OAuth calls",
+    "write connector use without explicit target"
+  ],
+  "passed": true
+}

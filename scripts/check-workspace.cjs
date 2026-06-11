@@ -26,6 +26,9 @@ const requiredFiles = [
   "scripts/automation-refresh-release.cjs",
   "scripts/automation-publish-readiness.cjs",
   "scripts/create-code-automation-plan.cjs",
+  "scripts/create-aggressive-execution-plan.cjs",
+  "scripts/run-aggressive-local-cycle.cjs",
+  "scripts/check-aggressive-safety-firewall.cjs",
   "scripts/check-cloud-environment.cjs",
   "scripts/check-trusted-marketplace-intake.cjs",
   "scripts/check-release-sync.cjs",
@@ -82,6 +85,11 @@ ensure(html.includes("id=\"plugins\""), "index.html must include the visible plu
 ensure(html.includes("id=\"marketplace\""), "index.html must keep the marketplace hash alias.");
 ensure(html.includes("data-marketplace-channels"), "index.html must include visible marketplace channels.");
 ensure(html.includes("data-marketplace-sources"), "index.html must include visible marketplace sources.");
+ensure(html.includes("data-evolution-queue-panel"), "index.html must include visible evolution queue panel.");
+ensure(html.includes("data-aggressive-lanes-panel"), "index.html must include visible aggressive lanes panel.");
+ensure(html.includes("data-execution-plan-panel"), "index.html must include visible aggressive execution plan panel.");
+ensure(html.includes("data-local-cycle-panel"), "index.html must include visible aggressive local cycle panel.");
+ensure(html.includes("data-safety-firewall-panel"), "index.html must include visible aggressive safety firewall panel.");
 ensure(js.includes("trusted-marketplace-intake.json"), "app.js must load trusted marketplace intake data.");
 ensure(js.includes("publish-gate-contract.json"), "app.js must load publish gate contract data.");
 ensure(js.includes("renderMarketplace"), "app.js must render trusted marketplace data.");
