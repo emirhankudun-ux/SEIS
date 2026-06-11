@@ -1,0 +1,473 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import process from "node:process";
+import path from "node:path";
+import { PLAN_VERSION, planTask } from "../packages/ai-language/src/llm-task-planner.mjs";
+
+let pending = Buffer.alloc(0);
+const SEIS_ROOT = path.resolve(process.env.SEIS_ROOT || process.cwd());
+const BRIDGE_MANIFEST = path.join(SEIS_ROOT, "data", "seis-repos-llm-bridge-2026-06-08.json");
+
+const MCP_TOOLS = [
+  {
+    name: "seis_repos_bridge_status",
+    description: "Read the SEIS bridge manifest and MCP bundle readiness summary.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        strict: {
+          type: "boolean",
+          description: "If true, report absent optional assets as errors.",
+          default: false,
+        },
+      },
+    },
+  },
+  {
+    name: "seis_llm_package_snapshot",
+    description: "Summarize governed LLM package assets and readiness files.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        strict: {
+          type: "boolean",
+          description: "If true, treat missing optional assets as blockers.",
+          default: false,
+        },
+      },
+    },
+  },
+  {
+    name: "seis_llm_plan_request",
+    description: "Generate a basic LLM routing plan for a requested SEIS task.",
+    inputSchema: {
+      type: "object",
+      required: ["request"],
+      properties: {
+        request: {
+          type: "string",
+          description: "Task text to evaluate.",
+        },
+      },
+    },
+  },
+  {
+    name: "seis_llm_role_plan_request",
+    description: "Generate a role-aware LLM routing plan using designer / engineer / software context.",
+    inputSchema: {
+      type: "object",
+      required: ["request"],
+      properties: {
+        request: {
+          type: "string",
+          description: "Task text to evaluate.",
+        },
+        preferredRole: {
+          type: "string",
+          description: "Preferred role bias: designer | engineer | software | auto.",
+        },
+      },
+    },
+  },
+];
+
+function safeParseJson(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function summarizeArrayValue(value, fallback = []) {
+  const normalized = Array.isArray(value) ? value : fallback;
+  return {
+    count: normalized.length,
+    sample: normalized.slice(0, 3),
+  };
+}
+
+function summarizeRecord(filePath, requiredKeys, strict) {
+  const result = safeParseJson(filePath);
+  const exists = fs.existsSync(filePath);
+  const keys = requiredKeys || [];
+
+  if (!exists) {
+    return {
+      exists: false,
+      status: strict ? "missing" : "optional-missing",
+      payload: null,
+      missingKeys: [],
+      message: "file missing",
+    };
+  }
+
+  if (!result || typeof result !== "object") {
+    return {
+      exists: true,
+      status: strict ? "invalid" : "invalid",
+      payload: null,
+      missingKeys: keys,
+      message: "invalid JSON",
+    };
+  }
+
+  const missingKeys = [];
+  for (const key of keys) {
+    if (result[key] === undefined) {
+      missingKeys.push(key);
+    }
+  }
+
+  return {
+    exists: true,
+    status: missingKeys.length > 0 ? "invalid" : "ok",
+    payload: result,
+    missingKeys,
+    message: missingKeys.length > 0 ? "required keys missing" : "ok",
+  };
+}
+
+function toBool(value, fallback = false) {
+  if (value === undefined || value === null || value === "") {
+    return fallback;
+  }
+  return Boolean(value);
+}
+
+function bridgeStatus(payload = {}) {
+  const strict = toBool(payload.strict);
+  const requiredPaths = [
+    "data/seis-mcp-server-2026-06-07.json",
+    "data/seis-repos-llm-bridge-2026-06-08.json",
+    "content/development/llm-package-registry.json",
+    "content/development/llm-task-routing-policy.json",
+    "content/development/llm-adapter-readiness.json",
+    "content/development/llm-request-blueprints.json",
+    "packages/ai-language/src/llm-task-planner.mjs",
+    "mcp/seis-mcp-server.mjs",
+    "plugins/seis/.mcp.json",
+    "plugins/seis/scripts/seis-mcp-bundle-audit.sh",
+    "plugins/seis/scripts/seis-mcp-launcher.mjs",
+  ];
+  const pluginPath = path.join(SEIS_ROOT, "plugins/seis");
+
+  const records = {
+    present: [],
+    missing: [],
+    strict,
+  };
+
+  for (const rel of requiredPaths) {
+    const absolute = path.join(SEIS_ROOT, rel);
+    const exists = fs.existsSync(absolute);
+    if (exists) {
+      records.present.push(rel);
+      continue;
+    }
+    records.missing.push(rel);
+  }
+
+  const bridgeFile = safeParseJson(BRIDGE_MANIFEST);
+  if (strict && !bridgeFile) {
+    records.missing.push("data/seis-repos-llm-bridge-2026-06-08.json (invalid JSON)");
+  }
+
+  const pluginManifest = safeParseJson(path.join(pluginPath, ".codex-plugin", "plugin.json"));
+  if (pluginManifest?.mcpServers !== "./.mcp.json") {
+    records.missing.push("plugins/seis/.codex-plugin/plugin.json (missing mcpServers)");
+  }
+
+  const mcpManifest = safeParseJson(path.join(pluginPath, ".mcp.json"));
+  if (!mcpManifest?.mcpServers?.seis) {
+    records.missing.push("plugins/seis/.mcp.json (missing mcpServers.seis)");
+  }
+
+  return {
+    status: "ok",
+    root: SEIS_ROOT,
+    pluginRoot: pluginPath,
+    strict,
+    records,
+    bridge: bridgeFile ? {
+      id: bridgeFile.id,
+      version: bridgeFile.version,
+      updatedAt: bridgeFile.updatedAt,
+      llmPackages: bridgeFile.llmPackages || null,
+    } : null,
+  };
+}
+
+function llmPackageSnapshot(input = {}) {
+  const strict = toBool(input.strict);
+  const registryPath = "content/development/llm-package-registry.json";
+  const routingPolicyPath = "content/development/llm-task-routing-policy.json";
+  const adapterReadinessPath = "content/development/llm-adapter-readiness.json";
+  const requestBlueprintsPath = "content/development/llm-request-blueprints.json";
+  const plannerPath = "packages/ai-language/src/llm-task-planner.mjs";
+
+  const registry = summarizeRecord(path.join(SEIS_ROOT, registryPath), ["id", "packages"], strict);
+  const routingPolicy = summarizeRecord(path.join(SEIS_ROOT, routingPolicyPath), ["id", "policy"], strict);
+  const adapterReadiness = summarizeRecord(path.join(SEIS_ROOT, adapterReadinessPath), ["id", "adapters"], strict);
+  const requestBlueprints = summarizeRecord(path.join(SEIS_ROOT, requestBlueprintsPath), ["id", "blueprints"], strict);
+  const plannerFileExists = fs.existsSync(path.join(SEIS_ROOT, plannerPath));
+  const failed = [registry, routingPolicy, adapterReadiness, requestBlueprints]
+    .filter((record) => record.status !== "ok");
+
+  return {
+    status: failed.length > 0 ? (strict ? "invalid" : "partial") : "ok",
+    strict,
+    root: SEIS_ROOT,
+    planner: {
+      file: plannerPath,
+      exists: plannerFileExists,
+      version: PLAN_VERSION,
+      exportsPlanTask: typeof planTask === "function",
+    },
+    packageRegistry: {
+      path: registryPath,
+      status: registry.status,
+      message: registry.message,
+      id: registry.payload?.id ?? null,
+      missingKeys: registry.missingKeys,
+      packages: summarizeArrayValue(registry.payload?.packages),
+    },
+    routingPolicy: {
+      path: routingPolicyPath,
+      status: routingPolicy.status,
+      message: routingPolicy.message,
+      id: routingPolicy.payload?.id ?? null,
+      default: routingPolicy.payload?.default ?? null,
+      tiers: Object.keys(routingPolicy.payload?.policy?.tiers || {}),
+      routingRulesCount: summarizeArrayValue(routingPolicy.payload?.policy?.routingRules).count,
+    },
+    adapterReadiness: {
+      path: adapterReadinessPath,
+      status: adapterReadiness.status,
+      message: adapterReadiness.message,
+      id: adapterReadiness.payload?.id ?? null,
+      adapters: summarizeArrayValue(adapterReadiness.payload?.adapters),
+    },
+    requestBlueprints: {
+      path: requestBlueprintsPath,
+      status: requestBlueprints.status,
+      message: requestBlueprints.message,
+      id: requestBlueprints.payload?.id ?? null,
+      blueprints: summarizeArrayValue(requestBlueprints.payload?.blueprints),
+    },
+    invalid: failed.map((entry) => entry.message).filter(Boolean),
+  };
+}
+
+function llmPlan(input) {
+  if (typeof input?.request !== "string" || !input.request.trim()) {
+    return {
+      error: {
+        code: -32602,
+        message: "Invalid params: request is required and must be a non-empty string.",
+      },
+    };
+  }
+
+  const result = planTask(input.request);
+  return {
+    tool: "seis_llm_plan_request",
+    plan: result,
+    plannerVersion: PLAN_VERSION,
+  };
+}
+
+function llmRolePlan(input) {
+  if (typeof input?.request !== "string" || !input.request.trim()) {
+    return {
+      error: {
+        code: -32602,
+        message: "Invalid params: request is required and must be a non-empty string.",
+      },
+    };
+  }
+
+  const role = typeof input.preferredRole === "string" ? input.preferredRole.trim() : "";
+  const result = planTask(input.request, { preferredRole: role });
+  return {
+    tool: "seis_llm_role_plan_request",
+    plan: result,
+    plannerVersion: PLAN_VERSION,
+  };
+}
+
+function sendResponse(message) {
+  const body = JSON.stringify(message);
+  const payload = `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
+  process.stdout.write(payload);
+}
+
+function parseBody(bodyBuffer) {
+  if (!bodyBuffer.length) {
+    return null;
+  }
+  try {
+    return JSON.parse(bodyBuffer.toString("utf8"));
+  } catch (error) {
+    return null;
+  }
+}
+
+function handleMessage(message) {
+  if (!message || typeof message !== "object") {
+    return;
+  }
+
+  if (message.method === "initialize") {
+    sendResponse({
+      jsonrpc: "2.0",
+      id: message.id,
+      result: {
+        protocolVersion: "2024-11-05",
+        capabilities: {
+          tools: {
+            listChanged: false,
+          },
+          logging: {},
+        },
+        serverInfo: {
+          name: "seis-mcp-server",
+          version: "0.1.0",
+        },
+      },
+    });
+    return;
+  }
+
+  if (message.method === "tools/list") {
+    sendResponse({
+      jsonrpc: "2.0",
+      id: message.id,
+      result: {
+        tools: MCP_TOOLS,
+      },
+    });
+    return;
+  }
+
+  if (message.method === "tools/call") {
+    const toolName = message.params?.name;
+    const argumentsData = message.params?.arguments || {};
+
+  if (toolName === "seis_repos_bridge_status") {
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result: bridgeStatus(argumentsData),
+      });
+      return;
+    }
+
+    if (toolName === "seis_llm_package_snapshot") {
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result: llmPackageSnapshot(argumentsData),
+      });
+      return;
+    }
+
+    if (toolName === "seis_llm_plan_request") {
+      const plan = llmPlan(argumentsData, message.id);
+      if (plan.error) {
+        sendResponse({
+          jsonrpc: "2.0",
+          id: message.id,
+          error: plan.error,
+        });
+        return;
+      }
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result: plan,
+      });
+      return;
+    }
+
+    if (toolName === "seis_llm_role_plan_request") {
+      const plan = llmRolePlan(argumentsData, message.id);
+      if (plan.error) {
+        sendResponse({
+          jsonrpc: "2.0",
+          id: message.id,
+          error: plan.error,
+        });
+        return;
+      }
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result: plan,
+      });
+      return;
+    }
+
+    sendResponse({
+      jsonrpc: "2.0",
+      id: message.id,
+      error: {
+        code: -32601,
+        message: `Unknown tool: ${toolName ?? "undefined"}`,
+      },
+    });
+    return;
+  }
+
+  if (message.method && message.method.startsWith("notification")) {
+    return;
+  }
+}
+
+function processStream() {
+  while (true) {
+    const separatorIndex = pending.indexOf("\r\n\r\n");
+    if (separatorIndex < 0) {
+      return;
+    }
+
+    const headerRaw = pending.slice(0, separatorIndex).toString("utf8");
+    const lengthMatch = /Content-Length:\s*(\d+)/i.exec(headerRaw);
+    if (!lengthMatch) {
+      pending = pending.slice(separatorIndex + 4);
+      continue;
+    }
+
+    const contentLength = Number.parseInt(lengthMatch[1], 10);
+    if (Number.isNaN(contentLength) || contentLength < 0) {
+      pending = pending.slice(separatorIndex + 4);
+      continue;
+    }
+
+    const bodyStart = separatorIndex + 4;
+    if (pending.length < bodyStart + contentLength) {
+      return;
+    }
+
+    const body = parseBody(pending.slice(bodyStart, bodyStart + contentLength));
+    pending = pending.slice(bodyStart + contentLength);
+    handleMessage(body);
+  }
+}
+
+process.stdin.on("data", (chunk) => {
+  pending = Buffer.concat([pending, Buffer.from(chunk)]);
+  processStream();
+});
+
+process.stdin.on("end", () => {
+  process.exit(0);
+});
+
+setInterval(() => {
+  process.stdout.write("");
+}, 10_000);

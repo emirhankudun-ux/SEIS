@@ -1,0 +1,27 @@
+{
+  "id": "seis-llm-request-blueprints",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-09",
+  "blueprints": [
+    {
+      "id": "seis-audit-query",
+      "name": "SEIS Bundle Audit",
+      "description": "Template for SEIS-specific repository or plugin audit requests.",
+      "tasks": [
+        "bundle integrity check",
+        "manifest validation",
+        "bridge readiness review"
+      ]
+    },
+    {
+      "id": "seis-llm-routing",
+      "name": "LLM Routing Decision",
+      "description": "Template for routing requests across governance lanes.",
+      "tasks": [
+        "lane selection",
+        "policy check",
+        "adapter check"
+      ]
+    }
+  ]
+}

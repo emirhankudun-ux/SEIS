@@ -29,6 +29,17 @@ npm run check:release-sync
 npm run automation:develop
 ```
 
+For a single-step refresh that also updates the AI release manifest, full-stack language matrix, and plugin source references:
+
+```bash
+npm run automation:refresh-seis-surface
+npm run automation:refresh-seis-surface -- --summary
+```
+
+`automation:refresh-release` only updates web release assets, so use
+`npm run automation:refresh-seis-surface` whenever content surfaces (`content/`, `deploy/`, `reports/`) also
+need to be synchronized together.
+
 ## GitHub Server Path
 
 Use this path only after the workspace is connected to the intended GitHub

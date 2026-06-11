@@ -7,6 +7,8 @@ yarn-error.log*
 .eslintcache
 dist/
 build/
+.build/
+packages/*/.build/
 
 # Environment variables
 .env
@@ -34,6 +36,13 @@ Thumbs.db
 .serena/
 logs/
 UIX-Apps-codex-delivery/
+reports/automation-refresh-seis-surface-summary.json
+reports/icloud-personal-inventory.json
+reports/icloud-personal-inventory.md
+
+# Local imported/snapshot copies. Keep them inspectable locally, but do not stage them by accident.
+/SEIS/
+/SE*/
 
 
 #Ignore vscode AI rules

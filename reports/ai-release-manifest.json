@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "id": "seis-ai-release-manifest-report",
+  "generatedAt": "2026-06-09T06:20:32.023Z",
+  "sourceId": "seis-ai-release-manifest",
+  "summary": {
+    "toolCount": 11,
+    "helperToolCount": 10,
+    "remoteOrchestratorCount": 1,
+    "installedTools": 6,
+    "missingRequiredTools": 0,
+    "localModelCount": 0,
+    "releasePackageCount": 2,
+    "routeCount": 11
+  },
+  "releaseProfile": {
+    "id": "seis-large-language-release",
+    "version": "v12-seed",
+    "label": "Büyük Dil Sürümü",
+    "objective": "Keep local intelligence and external model tooling discoverable before runtime activation."
+  },
+  "tools": [
+    {
+      "id": "codex",
+      "label": "Codex",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "installed": false,
+      "status": "missing-optional",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "installed": false,
+      "status": "missing-optional",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "aider",
+      "label": "Aider",
+      "installed": false,
+      "status": "missing-optional",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "interpreter",
+      "label": "Interpreter",
+      "installed": false,
+      "status": "missing-optional",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama",
+      "installed": false,
+      "status": "missing-optional",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "seis-agent",
+      "label": "SEIS Agent",
+      "installed": true,
+      "status": "ready",
+      "executionMode": "remote-agent"
+    }
+  ],
+  "execution": {
+    "remoteOrchestrator": {
+      "id": "seis-agent",
+      "mode": "remote-only-gatekeeper",
+      "role": "AI task orchestration and policy dispatch"
+    },
+    "helperModes": [
+      {
+        "mode": "local-helper",
+        "tools": [
+          "codex",
+          "openai",
+          "claude",
+          "gemini",
+          "qwen",
+          "kimi",
+          "opencode",
+          "aider",
+          "interpreter",
+          "ollama"
+        ]
+      }
+    ]
+  },
+  "packages": [
+    {
+      "id": "seis-large-language-core",
+      "label": "Büyük Dil Sürümü · Core",
+      "scope": "SEIS Core",
+      "provider": "Hybrid (local helpers + SEIS Agent)",
+      "modelCount": 1,
+      "activeLayers": [
+        "repo",
+        "governance",
+        "release"
+      ],
+      "deployment": "API-first",
+      "status": "planned"
+    },
+    {
+      "id": "seis-large-language-plus",
+      "label": "Büyük Dil Sürümü · Plus",
+      "scope": "Experimentation",
+      "provider": "Provider-assisted",
+      "modelCount": 2,
+      "activeLayers": [
+        "analysis",
+        "marketplace",
+        "docs",
+        "translation"
+      ],
+      "deployment": "gated",
+      "status": "requires-provider-keys"
+    }
+  ],
+  "localModels": [],
+  "routing": [
+    {
+      "intent": "quick repo patch",
+      "selectedTool": "aider"
+    },
+    {
+      "intent": "browser research for docs",
+      "selectedTool": "gemini"
+    },
+    {
+      "intent": "local offline llama draft",
+      "selectedTool": "ollama"
+    },
+    {
+      "intent": "csv log analysis",
+      "selectedTool": "interpreter"
+    },
+    {
+      "intent": "qwen cross-check",
+      "selectedTool": "qwen"
+    },
+    {
+      "intent": "opencode terminal coding",
+      "selectedTool": "opencode"
+    },
+    {
+      "intent": "ux copy narrative pass",
+      "selectedTool": "claude"
+    },
+    {
+      "intent": "translate this interface to turkish",
+      "selectedTool": "kimi"
+    },
+    {
+      "intent": "local analysis request",
+      "selectedTool": "openai"
+    },
+    {
+      "intent": "production reasoning and policy check",
+      "selectedTool": "seis-agent"
+    },
+    {
+      "intent": "release governance checklist",
+      "selectedTool": "seis-agent"
+    }
+  ]
+}

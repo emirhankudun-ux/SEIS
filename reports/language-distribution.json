@@ -1,0 +1,657 @@
+{
+  "version": 1,
+  "id": "seis-language-distribution",
+  "mode": "github_linguist_aligned_source_budget",
+  "sourceReferences": {
+    "linguistPolicy": ".gitattributes",
+    "polyglotManifest": "polyglot/manifest.json",
+    "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
+  },
+  "summary": {
+    "countedFileCount": 2360,
+    "countedBytes": 121455497,
+    "javascriptBytes": 589266,
+    "javascriptPercent": 0.49,
+    "targetJavaScriptPercent": 10.0,
+    "targetStatus": "met",
+    "requiredAdditionalNonJavaScriptBytesForTarget": 0,
+    "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
+  },
+  "languages": [
+    {
+      "language": "Other",
+      "bytes": 119673815,
+      "percent": 98.53
+    },
+    {
+      "language": "JavaScript",
+      "bytes": 589266,
+      "percent": 0.49
+    },
+    {
+      "language": "JSON",
+      "bytes": 549695,
+      "percent": 0.45
+    },
+    {
+      "language": "Python",
+      "bytes": 199520,
+      "percent": 0.16
+    },
+    {
+      "language": "YAML",
+      "bytes": 121797,
+      "percent": 0.1
+    },
+    {
+      "language": "D",
+      "bytes": 107676,
+      "percent": 0.09
+    },
+    {
+      "language": "CSS",
+      "bytes": 38723,
+      "percent": 0.03
+    },
+    {
+      "language": "Swift",
+      "bytes": 29623,
+      "percent": 0.02
+    },
+    {
+      "language": "HTML",
+      "bytes": 25498,
+      "percent": 0.02
+    },
+    {
+      "language": "Shell",
+      "bytes": 24461,
+      "percent": 0.02
+    },
+    {
+      "language": "C",
+      "bytes": 22458,
+      "percent": 0.02
+    },
+    {
+      "language": "SQL",
+      "bytes": 4506,
+      "percent": 0.0
+    },
+    {
+      "language": "Go",
+      "bytes": 4135,
+      "percent": 0.0
+    },
+    {
+      "language": "C#",
+      "bytes": 2731,
+      "percent": 0.0
+    },
+    {
+      "language": "TOML",
+      "bytes": 2614,
+      "percent": 0.0
+    },
+    {
+      "language": "Rust",
+      "bytes": 2574,
+      "percent": 0.0
+    },
+    {
+      "language": "TypeScript",
+      "bytes": 2272,
+      "percent": 0.0
+    },
+    {
+      "language": "PowerShell",
+      "bytes": 2176,
+      "percent": 0.0
+    },
+    {
+      "language": "C++",
+      "bytes": 1701,
+      "percent": 0.0
+    },
+    {
+      "language": "PHP",
+      "bytes": 1695,
+      "percent": 0.0
+    },
+    {
+      "language": "F#",
+      "bytes": 1592,
+      "percent": 0.0
+    },
+    {
+      "language": "Perl",
+      "bytes": 1340,
+      "percent": 0.0
+    },
+    {
+      "language": "CUE",
+      "bytes": 1307,
+      "percent": 0.0
+    },
+    {
+      "language": "Rego",
+      "bytes": 1299,
+      "percent": 0.0
+    },
+    {
+      "language": "XML",
+      "bytes": 1276,
+      "percent": 0.0
+    },
+    {
+      "language": "Objective-C",
+      "bytes": 1257,
+      "percent": 0.0
+    },
+    {
+      "language": "Avro",
+      "bytes": 1153,
+      "percent": 0.0
+    },
+    {
+      "language": "Kotlin",
+      "bytes": 1150,
+      "percent": 0.0
+    },
+    {
+      "language": "R",
+      "bytes": 1040,
+      "percent": 0.0
+    },
+    {
+      "language": "Java",
+      "bytes": 999,
+      "percent": 0.0
+    },
+    {
+      "language": "Visual Basic",
+      "bytes": 992,
+      "percent": 0.0
+    },
+    {
+      "language": "Ruby",
+      "bytes": 963,
+      "percent": 0.0
+    },
+    {
+      "language": "Elm",
+      "bytes": 954,
+      "percent": 0.0
+    },
+    {
+      "language": "Common Lisp",
+      "bytes": 902,
+      "percent": 0.0
+    },
+    {
+      "language": "Solidity",
+      "bytes": 869,
+      "percent": 0.0
+    },
+    {
+      "language": "Pascal",
+      "bytes": 858,
+      "percent": 0.0
+    },
+    {
+      "language": "AppleScript",
+      "bytes": 854,
+      "percent": 0.0
+    },
+    {
+      "language": "Move",
+      "bytes": 843,
+      "percent": 0.0
+    },
+    {
+      "language": "dotenv",
+      "bytes": 840,
+      "percent": 0.0
+    },
+    {
+      "language": "PureScript",
+      "bytes": 830,
+      "percent": 0.0
+    },
+    {
+      "language": "HOCON",
+      "bytes": 805,
+      "percent": 0.0
+    },
+    {
+      "language": "Ada",
+      "bytes": 779,
+      "percent": 0.0
+    },
+    {
+      "language": "ABAP",
+      "bytes": 778,
+      "percent": 0.0
+    },
+    {
+      "language": "Hack",
+      "bytes": 772,
+      "percent": 0.0
+    },
+    {
+      "language": "COBOL",
+      "bytes": 723,
+      "percent": 0.0
+    },
+    {
+      "language": "Protocol Buffers",
+      "bytes": 714,
+      "percent": 0.0
+    },
+    {
+      "language": "Zig",
+      "bytes": 711,
+      "percent": 0.0
+    },
+    {
+      "language": "Racket",
+      "bytes": 678,
+      "percent": 0.0
+    },
+    {
+      "language": "WGSL",
+      "bytes": 674,
+      "percent": 0.0
+    },
+    {
+      "language": "GraphQL",
+      "bytes": 669,
+      "percent": 0.0
+    },
+    {
+      "language": "HCL",
+      "bytes": 667,
+      "percent": 0.0
+    },
+    {
+      "language": "Lua",
+      "bytes": 660,
+      "percent": 0.0
+    },
+    {
+      "language": "Scala",
+      "bytes": 660,
+      "percent": 0.0
+    },
+    {
+      "language": "ReScript",
+      "bytes": 652,
+      "percent": 0.0
+    },
+    {
+      "language": "Cairo",
+      "bytes": 649,
+      "percent": 0.0
+    },
+    {
+      "language": "GDScript",
+      "bytes": 645,
+      "percent": 0.0
+    },
+    {
+      "language": "GLSL",
+      "bytes": 632,
+      "percent": 0.0
+    },
+    {
+      "language": "Jsonnet",
+      "bytes": 621,
+      "percent": 0.0
+    },
+    {
+      "language": "CMake",
+      "bytes": 611,
+      "percent": 0.0
+    },
+    {
+      "language": "Julia",
+      "bytes": 595,
+      "percent": 0.0
+    },
+    {
+      "language": "Crystal",
+      "bytes": 594,
+      "percent": 0.0
+    },
+    {
+      "language": "Q#",
+      "bytes": 594,
+      "percent": 0.0
+    },
+    {
+      "language": "Nim",
+      "bytes": 589,
+      "percent": 0.0
+    },
+    {
+      "language": "Elixir",
+      "bytes": 582,
+      "percent": 0.0
+    },
+    {
+      "language": "Nix",
+      "bytes": 577,
+      "percent": 0.0
+    },
+    {
+      "language": "V",
+      "bytes": 572,
+      "percent": 0.0
+    },
+    {
+      "language": "Clojure",
+      "bytes": 569,
+      "percent": 0.0
+    },
+    {
+      "language": "Erlang",
+      "bytes": 560,
+      "percent": 0.0
+    },
+    {
+      "language": "Dart",
+      "bytes": 532,
+      "percent": 0.0
+    },
+    {
+      "language": "Fortran",
+      "bytes": 528,
+      "percent": 0.0
+    },
+    {
+      "language": "OCaml",
+      "bytes": 524,
+      "percent": 0.0
+    },
+    {
+      "language": "Bicep",
+      "bytes": 490,
+      "percent": 0.0
+    },
+    {
+      "language": "JSON-LD",
+      "bytes": 407,
+      "percent": 0.0
+    },
+    {
+      "language": "Dhall",
+      "bytes": 403,
+      "percent": 0.0
+    },
+    {
+      "language": "Smalltalk",
+      "bytes": 382,
+      "percent": 0.0
+    },
+    {
+      "language": "Turtle",
+      "bytes": 375,
+      "percent": 0.0
+    },
+    {
+      "language": "Tcl",
+      "bytes": 372,
+      "percent": 0.0
+    },
+    {
+      "language": "MATLAB",
+      "bytes": 365,
+      "percent": 0.0
+    },
+    {
+      "language": "Scheme",
+      "bytes": 338,
+      "percent": 0.0
+    },
+    {
+      "language": "Just",
+      "bytes": 326,
+      "percent": 0.0
+    },
+    {
+      "language": "Emacs Lisp",
+      "bytes": 310,
+      "percent": 0.0
+    },
+    {
+      "language": "Starlark",
+      "bytes": 291,
+      "percent": 0.0
+    },
+    {
+      "language": "Batchfile",
+      "bytes": 282,
+      "percent": 0.0
+    },
+    {
+      "language": "Dockerfile",
+      "bytes": 277,
+      "percent": 0.0
+    },
+    {
+      "language": "Meson",
+      "bytes": 256,
+      "percent": 0.0
+    },
+    {
+      "language": "AWK",
+      "bytes": 252,
+      "percent": 0.0
+    },
+    {
+      "language": "CEL",
+      "bytes": 252,
+      "percent": 0.0
+    },
+    {
+      "language": "Make",
+      "bytes": 246,
+      "percent": 0.0
+    },
+    {
+      "language": "ReasonML",
+      "bytes": 246,
+      "percent": 0.0
+    },
+    {
+      "language": "KDL",
+      "bytes": 245,
+      "percent": 0.0
+    },
+    {
+      "language": "Mermaid",
+      "bytes": 219,
+      "percent": 0.0
+    },
+    {
+      "language": "SPARQL",
+      "bytes": 217,
+      "percent": 0.0
+    },
+    {
+      "language": "PlantUML",
+      "bytes": 212,
+      "percent": 0.0
+    },
+    {
+      "language": "WebAssembly Text",
+      "bytes": 201,
+      "percent": 0.0
+    },
+    {
+      "language": "Java Properties",
+      "bytes": 190,
+      "percent": 0.0
+    },
+    {
+      "language": "Groovy",
+      "bytes": 173,
+      "percent": 0.0
+    }
+  ],
+  "largestJavaScriptFiles": [
+    {
+      "path": "apps/web/app.js",
+      "language": "JavaScript",
+      "bytes": 41757
+    },
+    {
+      "path": "scripts/check-cloud-environment.cjs",
+      "language": "JavaScript",
+      "bytes": 31107
+    },
+    {
+      "path": "scripts/sync-plugin-environment-sources.cjs",
+      "language": "JavaScript",
+      "bytes": 26659
+    },
+    {
+      "path": "scripts/create-seis-ecosystem-intake.cjs",
+      "language": "JavaScript",
+      "bytes": 22927
+    },
+    {
+      "path": "scripts/create-plugin-capability-lanes.cjs",
+      "language": "JavaScript",
+      "bytes": 19729
+    },
+    {
+      "path": "scripts/automation-refresh-seis-surface.cjs",
+      "language": "JavaScript",
+      "bytes": 19465
+    },
+    {
+      "path": "scripts/third-party-intake-blueprint.mjs",
+      "language": "JavaScript",
+      "bytes": 17482
+    },
+    {
+      "path": "scripts/check-seis-trusted-marketplace-plugin.cjs",
+      "language": "JavaScript",
+      "bytes": 15405
+    },
+    {
+      "path": "scripts/create-ai-release-manifest.cjs",
+      "language": "JavaScript",
+      "bytes": 12922
+    },
+    {
+      "path": "mcp/seis-mcp-server.mjs",
+      "language": "JavaScript",
+      "bytes": 12808
+    },
+    {
+      "path": "scripts/create-fullstack-language-matrix.cjs",
+      "language": "JavaScript",
+      "bytes": 11446
+    },
+    {
+      "path": "scripts/check-llm-orchestration-policy.cjs",
+      "language": "JavaScript",
+      "bytes": 11006
+    }
+  ],
+  "excludedBytesByReason": {
+    "binary": 480742423,
+    "documentation": 857053,
+    "linguist-generated": 2715348,
+    "linguist-vendored": 46035660
+  },
+  "requiredLinguistRules": [
+    {
+      "pattern": "release/**",
+      "attribute": "linguist-generated=true"
+    },
+    {
+      "pattern": "reports/**",
+      "attribute": "linguist-generated=true"
+    },
+    {
+      "pattern": "data/**",
+      "attribute": "linguist-generated=true"
+    },
+    {
+      "pattern": "content/development/*.json",
+      "attribute": "linguist-generated=true"
+    },
+    {
+      "pattern": "apps/web/src/i18n/locales.js",
+      "attribute": "linguist-generated=true"
+    },
+    {
+      "pattern": "SE*S/**",
+      "attribute": "linguist-vendored=true"
+    }
+  ],
+  "localRuntimeReadiness": [
+    {
+      "id": "node",
+      "command": "node --version",
+      "available": true,
+      "exitCode": 0,
+      "version": "v24.16.0"
+    },
+    {
+      "id": "python3",
+      "command": "python3 --version",
+      "available": true,
+      "exitCode": 0,
+      "version": "Python 3.9.6"
+    },
+    {
+      "id": "go",
+      "command": "go version",
+      "available": true,
+      "exitCode": 0,
+      "version": "go version go1.26.4 darwin/amd64"
+    },
+    {
+      "id": "rustc",
+      "command": "rustc --version",
+      "available": false,
+      "exitCode": 1,
+      "version": "error: Missing manifest in toolchain 'stable-x86_64-apple-darwin'"
+    },
+    {
+      "id": "swift",
+      "command": "swift --version",
+      "available": true,
+      "exitCode": 0,
+      "version": "Apple Swift version 6.0 (swiftlang-6.0.0.9.10 clang-1600.0.26.2) Target: x86_64-apple-macosx15.0 swift-driver version: 1.115"
+    },
+    {
+      "id": "javac",
+      "command": "javac -version",
+      "available": true,
+      "exitCode": 0,
+      "version": "javac 21.0.11"
+    },
+    {
+      "id": "dart",
+      "command": "dart --version",
+      "available": true,
+      "exitCode": 0,
+      "version": "Dart SDK version: 3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on \"macos_x64\""
+    }
+  ],
+  "nextMigrationOrder": [
+    "Keep generated release, report, data, and local snapshot files out of GitHub Linguist counts.",
+    "Move translation payloads from JavaScript modules into data files after UI fallback testing.",
+    "Promote stable Node automation scripts to Python or Go only when the behavior is covered by checks.",
+    "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
+  ],
+  "sourceSnapshot": {
+    "hash": "6e53cf221c183471e2c6e653e32cd7176adee14f7471bdf41c34cf99084822f1",
+    "algorithm": "sha256"
+  }
+}
