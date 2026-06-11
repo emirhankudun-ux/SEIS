@@ -31,6 +31,53 @@ const fallbackCapabilities = [
   }
 ];
 
+const fallbackGithubModel = {
+  branch: {
+    active: "UIXAppTTR",
+    singleRemoteBranch: true,
+    remote: "UIX-Apps"
+  },
+  cadence: [
+    {
+      id: "intent",
+      label: "Intent capture",
+      status: "active",
+      owner: "governance-agent",
+      qualityGate: "Scope is small enough to review and rollback.",
+      githubSignal: "A traceable note explains why the work exists."
+    },
+    {
+      id: "source",
+      label: "Source shaping",
+      status: "active",
+      owner: "interface-agent",
+      qualityGate: "Source edits stay modular and dependency-light.",
+      githubSignal: "The diff stays focused before release refresh."
+    },
+    {
+      id: "verification",
+      label: "Local verification",
+      status: "required",
+      owner: "release-agent",
+      qualityGate: "Checks match the changed surface.",
+      githubSignal: "The PR body lists exact checks and limits."
+    },
+    {
+      id: "publication",
+      label: "GitHub publication",
+      status: "gated",
+      owner: "release-agent",
+      qualityGate: "Clean worktree, expected branch, upstream, remote, and auth are confirmed.",
+      githubSignal: "Remote shipment is claimed only after the push exists."
+    }
+  ],
+  readinessSignals: [
+    { id: "branch-honesty", label: "Branch honesty", command: "npm run check:development-program" },
+    { id: "workspace-integrity", label: "Workspace integrity", command: "npm run check:workspace" },
+    { id: "publish-preflight", label: "Publish preflight", command: "npm run automation:publish-readiness" }
+  ]
+};
+
 const fallbackMarketplace = {
   summary: "Track trusted GitHub, MCP, Copilot, and model marketplace channels before live activation.",
   marketplaceChannels: [
@@ -108,6 +155,7 @@ const state = {
   mode: "cinematic",
   gaps: [],
   capabilities: fallbackCapabilities,
+  githubModel: fallbackGithubModel,
   marketplace: fallbackMarketplace,
   publishGate: fallbackPublishGate,
   pluginCommandCenter: null,
@@ -487,6 +535,51 @@ function renderCapabilities() {
     card.append(chips, title, surface, examples);
     board.append(card);
   });
+}
+
+function renderGithubModel() {
+  const status = el("[data-github-model-status]");
+  const grid = el("[data-github-model-grid]");
+  const readinessList = el("[data-github-readiness-list]");
+  if (!grid || !readinessList) return;
+
+  const model = state.githubModel || fallbackGithubModel;
+  const cadence = model.cadence || fallbackGithubModel.cadence;
+  const readinessSignals = model.readinessSignals || fallbackGithubModel.readinessSignals;
+  const branch = model.branch?.active || "UIXAppTTR";
+  const gatedCount = cadence.filter((item) => ["gated", "required"].includes(item.status)).length;
+
+  if (status) {
+    status.textContent = `${branch} branch - ${cadence.length} phases - ${gatedCount} gated verification steps`;
+  }
+
+  grid.replaceChildren();
+  cadence.forEach((phase, index) => {
+    const card = create("article", `system-card ${getGithubStatusClass(phase.status)}`);
+    card.append(
+      create("span", "", phase.status),
+      create("strong", "", String(index + 1).padStart(2, "0")),
+      create("h3", "", phase.label),
+      create("p", "", phase.qualityGate),
+      create("p", "", `GitHub: ${phase.githubSignal}`)
+    );
+    grid.append(card);
+  });
+
+  readinessList.replaceChildren();
+  readinessSignals.forEach((signal) => {
+    const item = create("li");
+    const label = create("span", "github-readiness-label", signal.label);
+    const command = create("code", "", signal.command);
+    item.append(label, command);
+    readinessList.append(item);
+  });
+}
+
+function getGithubStatusClass(status) {
+  if (["active", "required"].includes(status)) return "status-active";
+  if (status === "gated") return "status-blocked";
+  return "status-ready";
 }
 
 function renderMarketplace() {
@@ -950,6 +1043,17 @@ async function loadCapabilities() {
   }
 }
 
+async function loadGithubModel() {
+  for (const path of ["./content/development/github-seis-model.json", "../../content/development/github-seis-model.json"]) {
+    try {
+      state.githubModel = await fetchJson(path);
+      return;
+    } catch (_error) {
+      state.githubModel = fallbackGithubModel;
+    }
+  }
+}
+
 async function loadMarketplace() {
   try {
     state.marketplace = await fetchJson("../../content/development/trusted-marketplace-intake.json");
@@ -1180,6 +1284,7 @@ async function init() {
   ]);
   renderGapBoard();
   renderCapabilities();
+  renderGithubModel();
   renderMarketplace();
   renderPublishGate();
   renderSeisReposLlmBridge();
@@ -1194,6 +1299,7 @@ init().catch((error) => {
     board.replaceChildren(create("p", "", `Runtime unavailable: ${error.message}`));
   }
   renderCapabilities();
+  renderGithubModel();
   renderMarketplace();
   renderPublishGate();
   renderSeisReposLlmBridge();

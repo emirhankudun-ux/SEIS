@@ -401,19 +401,66 @@ h2 {
   margin-bottom: 0;
 }
 
-.marketplace-layout {
+.marketplace-layout,
+.github-model-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.8fr);
   gap: 0.9rem;
   align-items: start;
 }
 
-.marketplace-layout h3 {
+.marketplace-layout h3,
+.github-readiness-panel h3 {
   margin: 0 0 0.7rem;
 }
 
 .marketplace-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.github-model-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.github-readiness-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.62);
+  padding: 1rem;
+}
+
+.github-readiness-panel ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.github-readiness-panel li {
+  display: grid;
+  gap: 0.2rem;
+  border-top: 1px solid rgba(23, 33, 42, 0.14);
+  padding-top: 0.65rem;
+}
+
+.github-readiness-panel li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.github-readiness-label {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.github-readiness-panel code {
+  white-space: normal;
+  color: var(--text);
+  font-size: 0.82rem;
 }
 
 .marketplace-source-list {

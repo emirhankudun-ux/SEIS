@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "model": "seis-github-operating-model",
+  "updatedAt": "2026-06-06",
+  "purpose": "Define how SEIS work should move from local intent to GitHub-visible progress without confusing source quality, publication, and deployment state.",
+  "branch": {
+    "active": "UIXAppTTR",
+    "singleRemoteBranch": true,
+    "remote": "UIX-Apps",
+    "protectedAssumption": "Main branch remains sacred; publish claims require an authenticated UIXAppTTR push."
+  },
+  "cadence": [
+    {
+      "id": "intent",
+      "label": "Intent capture",
+      "status": "active",
+      "owner": "governance-agent",
+      "qualityGate": "Scope is small enough to review and rollback.",
+      "githubSignal": "Issue, commit note, or traceable doc explains why the work exists."
+    },
+    {
+      "id": "source",
+      "label": "Source shaping",
+      "status": "active",
+      "owner": "interface-agent",
+      "qualityGate": "HTML, CSS, JavaScript, JSON, and docs stay modular and dependency-light.",
+      "githubSignal": "Changed files are readable in a focused diff before release refresh."
+    },
+    {
+      "id": "verification",
+      "label": "Local verification",
+      "status": "required",
+      "owner": "release-agent",
+      "qualityGate": "Run proportional checks that match the changed surface.",
+      "githubSignal": "Commit message and PR body list exact checks and any environment limits."
+    },
+    {
+      "id": "publication",
+      "label": "GitHub publication",
+      "status": "gated",
+      "owner": "release-agent",
+      "qualityGate": "Clean worktree, expected branch, upstream, remote, and GitHub authentication are confirmed.",
+      "githubSignal": "Remote shipment is claimed only after the authenticated push exists."
+    }
+  ],
+  "readinessSignals": [
+    {
+      "id": "branch-honesty",
+      "label": "Branch honesty",
+      "command": "npm run check:development-program",
+      "expectation": "UIXAppTTR remains the active GitHub development branch."
+    },
+    {
+      "id": "workspace-integrity",
+      "label": "Workspace integrity",
+      "command": "npm run check:workspace",
+      "expectation": "The web shell, data, marketplace, motion, and release sync checks remain coherent."
+    },
+    {
+      "id": "publish-preflight",
+      "label": "Publish preflight",
+      "command": "npm run automation:publish-readiness",
+      "expectation": "GitHub shipment stays blocked until remote and authentication checks are real."
+    }
+  ],
+  "rollbackRules": [
+    "Prefer one small reversible commit over broad unreviewable imports.",
+    "Refresh release/web only when the visible web surface changes.",
+    "Do not bulk-import archives, nested Git directories, personal media, or symlink mirrors.",
+    "Separate GitHub publication from live server deployment in every status statement."
+  ]
+}

@@ -39,6 +39,7 @@
     "check:software-languages": "node scripts/check-polyglot.mjs",
     "check:polyglot-foundation": "node scripts/check-polyglot.mjs",
     "check:development-program": "node scripts/check-development-process.mjs",
+    "check:github-seis-model": "node scripts/check-github-seis-model.mjs",
     "check:monthly-branch-hardening": "node scripts/check-monthly-branch-hardening.mjs",
     "check:server-handoff": "node scripts/check-server-adapters.mjs",
     "check:server-target": "node scripts/check-server-targets.mjs",
