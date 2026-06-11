@@ -1,0 +1,74 @@
+// SEIS Release Policy — FlatBuffers Schema
+// Motion policy and release gate binary serialisation schema
+
+namespace seis.release;
+
+// ─── Motion Mode ──────────────────────────────────────────────────────────
+enum MotionMode : byte {
+  Full      = 0,
+  Reduced   = 1,
+  ManualLow = 2
+}
+
+// ─── Release Status ───────────────────────────────────────────────────────
+enum ReleaseStatus : byte {
+  Ready   = 0,
+  Pending = 1,
+  Blocked = 2,
+  Draft   = 3
+}
+
+// ─── Motion Token ─────────────────────────────────────────────────────────
+enum MotionToken : byte {
+  Instant   = 0,
+  Fast      = 1,
+  Standard  = 2,
+  Slow      = 3,
+  Cinematic = 4
+}
+
+// ─── Motion Policy ────────────────────────────────────────────────────────
+table MotionPolicy {
+  mode              : MotionMode = Full;
+  duration_instant  : uint32 = 0;
+  duration_fast     : uint32 = 150;
+  duration_standard : uint32 = 300;
+  duration_slow     : uint32 = 500;
+  duration_cinematic: uint32 = 800;
+}
+
+// ─── Deploy Check ─────────────────────────────────────────────────────────
+table DeployCheck {
+  name   : string (required);
+  passed : bool = false;
+  detail : string;
+}
+
+// ─── Release Gate ─────────────────────────────────────────────────────────
+table ReleaseGate {
+  version       : string (required);
+  status        : ReleaseStatus = Pending;
+  branch        : string;
+  commit_sha    : string;
+  deployer      : string;
+  environment   : string;
+  iso_timestamp : string;
+  checks        : [DeployCheck];
+  policy        : MotionPolicy;
+  can_deploy    : bool = false;
+  blocked_reason: string;
+}
+
+// ─── Release Event ────────────────────────────────────────────────────────
+table ReleaseEvent {
+  gate        : ReleaseGate (required);
+  event_type  : string;        // "gate_evaluated" | "deployed" | "blocked"
+  triggered_by: string;
+  timestamp   : uint64;        // Unix epoch milliseconds
+}
+
+// ─── Root Type ────────────────────────────────────────────────────────────
+root_type ReleaseGate;
+
+file_identifier "SEIS";
+file_extension  "seis";

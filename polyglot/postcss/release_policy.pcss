@@ -1,0 +1,100 @@
+/* SEIS Release Policy — PostCSS
+   Motion tokens and release gate styles using CSS custom properties */
+
+/* ── Motion Token Custom Properties ───────────────────────────────────── */
+:root {
+  --motion-duration-instant:   0ms;
+  --motion-duration-fast:      150ms;
+  --motion-duration-standard:  300ms;
+  --motion-duration-slow:      500ms;
+  --motion-duration-cinematic: 800ms;
+
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:    cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Release Gate Badge Colors */
+  --color-badge-ready:   #22c55e;
+  --color-badge-blocked: #ef4444;
+  --color-badge-pending: #f59e0b;
+  --color-badge-draft:   #94a3b8;
+  --color-badge-text:    #ffffff;
+
+  /* Surface tokens */
+  --surface-border: rgb(255 255 255 / 0.08);
+  --surface-radius: 12px;
+}
+
+/* ── Reduced-Motion Override ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast:      0ms;
+    --motion-duration-standard:  0ms;
+    --motion-duration-slow:      0ms;
+    --motion-duration-cinematic: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Release Gate Container ────────────────────────────────────────────── */
+.release-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--surface-radius);
+
+  & .release-gate__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  & .release-gate__enter {
+    animation: gate-enter var(--motion-duration-standard) var(--ease-out-expo) both;
+  }
+}
+
+/* ── Release Badge ─────────────────────────────────────────────────────── */
+.release-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  color: var(--color-badge-text);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: opacity var(--motion-duration-fast) var(--ease-out-expo);
+
+  &--ready   { background-color: var(--color-badge-ready); }
+  &--blocked { background-color: var(--color-badge-blocked); }
+  &--pending { background-color: var(--color-badge-pending); }
+  &--draft   { background-color: var(--color-badge-draft); }
+}
+
+/* ── Keyframe ──────────────────────────────────────────────────────────── */
+@keyframes gate-enter {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ── Motion Mode Utility Classes ───────────────────────────────────────── */
+.motion-mode--full    { --motion-active: 1; }
+.motion-mode--reduced { --motion-active: 0; }

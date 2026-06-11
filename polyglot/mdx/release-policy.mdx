@@ -1,0 +1,28 @@
+import { ReleaseStatus } from "../typescript/release-contract.ts";
+
+# SEIS Release Policy
+
+This document describes the release readiness contract for SEIS deployments.
+
+## Motion Modes
+
+| Mode       | Duration | Reduced-motion safe |
+|------------|----------|---------------------|
+| cinematic  | 600ms    | ✗ (override applies)|
+| balanced   | 300ms    | ✓                   |
+| reduced    | 0ms      | ✓                   |
+
+## Release Gate
+
+A deployment is **ready** only when:
+
+- `quality` checks pass
+- Motion mode is documented
+- Server target is confirmed
+- No critical accessibility violations
+
+```ts
+const canDeploy = (r: ReleaseStatus) => r === "ready";
+```
+
+> Always support `prefers-reduced-motion`. Never animate without a fallback.

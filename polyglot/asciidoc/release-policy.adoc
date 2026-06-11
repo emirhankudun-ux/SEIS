@@ -1,0 +1,144 @@
+= SEIS Release Policy
+Emirhan Kudun <emirhankudun@gmail.com>
+v2.4.0, 2026-06-07
+:doctype: article
+:toc: left
+:toclevels: 3
+:icons: font
+:source-highlighter: highlight.js
+:sectanchors:
+:sectlinks:
+
+== Overview
+
+The SEIS release policy governs deploy readiness, motion configuration, and
+accessibility standards for every surface in the SEIS polyglot ecosystem.
+
+== Motion Mode Policy
+
+All SEIS surfaces must detect and respect the `prefers-reduced-motion` media
+query. A manual low-motion toggle must also be available for users who cannot
+change system preferences.
+
+=== Motion Token Durations
+
+[cols="1,1,1,3", options="header"]
+|===
+| Token | Full Mode | Reduced Mode | Purpose
+
+| `--motion-duration-instant`
+| `0ms`
+| `0ms`
+| Immediate state changes
+
+| `--motion-duration-fast`
+| `150ms`
+| `0ms`
+| Micro-interactions, hover states
+
+| `--motion-duration-standard`
+| `300ms`
+| `0ms`
+| Default transitions
+
+| `--motion-duration-slow`
+| `500ms`
+| `0ms`
+| Complex layout shifts
+
+| `--motion-duration-cinematic`
+| `800ms`
+| `0ms`
+| Hero and entrance animations
+|===
+
+[source,css]
+----
+:root {
+  --motion-duration-fast:      150ms;
+  --motion-duration-standard:  300ms;
+  --motion-duration-cinematic: 800ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast:      0ms;
+    --motion-duration-standard:  0ms;
+    --motion-duration-cinematic: 0ms;
+  }
+}
+----
+
+== Release Gate Checks
+
+[cols="2,1,4", options="header"]
+|===
+| Check | Required | Description
+
+| Type check
+| ✅ Yes
+| Zero TypeScript errors across all workspace packages
+
+| Lint
+| ✅ Yes
+| Zero ESLint violations
+
+| Content validation
+| ✅ Yes
+| All content files validate against declared schemas
+
+| Accessibility audit
+| ✅ Yes
+| Zero critical axe-core violations on all routes
+
+| Reduced-motion tests
+| ✅ Yes
+| All animated components tested in both motion modes
+
+| Source boundaries
+| ✅ Yes
+| No cross-package import violations
+|===
+
+== Release Status Reference
+
+`ready`:: All checks pass. Deployment is authorised.
+`pending`:: Checks running or awaiting human approval.
+`blocked`:: One or more checks failed. Deployment prohibited.
+`draft`:: Branch not yet in a reviewable state.
+
+NOTE: Never bypass the release gate for hotfixes. Always run
+`npm run quality && npm test` before any deploy, including patches.
+
+== Accessibility Requirements
+
+Every release must satisfy WCAG 2.1 Level AA:
+
+* Zero critical axe-core violations on all routes
+* Full keyboard navigation across interactive components
+* Screen reader announcements for dynamic status changes
+* Colour contrast ratio ≥ 4.5:1 for normal text
+* Visible focus indicators at all interaction states
+
+IMPORTANT: Accessibility failures are hard blockers. A release with critical
+violations must not reach production under any circumstance.
+
+== Commands
+
+[source,bash]
+----
+# Run all quality gates
+npm run quality
+
+# Type checking
+npm run typecheck
+
+# Linting
+npm run lint
+
+# Content validation
+npm run check:content
+
+# Pre-push preflight
+npm run github:preflight
+----

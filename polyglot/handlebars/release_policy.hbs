@@ -1,0 +1,87 @@
+{{!-- SEIS Release Policy — Handlebars Template --}}
+{{!-- Renders release gate with motion mode and deploy checks --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Release Gate — {{version}}</title>
+  <link rel="stylesheet" href="/styles/release-policy.css">
+</head>
+<body class="{{#if reducedMotion}}motion-mode--reduced{{else}}motion-mode--full{{/if}}">
+
+  <main id="main-content" class="page">
+
+    <header class="page__header">
+      <h1 class="page__title">SEIS Release Gate</h1>
+      <span class="release-badge release-badge--{{status}}"
+            role="status"
+            aria-label="Release status: {{status}}">
+        {{status}}
+      </span>
+    </header>
+
+    {{#if reducedMotion}}
+      <p class="motion-notice" role="note">
+        Reduced-motion mode active — animations suppressed.
+      </p>
+    {{/if}}
+
+    <section class="release-gate" aria-labelledby="gate-title">
+      <h2 id="gate-title" class="release-gate__title">
+        {{version}} — Deploy Readiness
+      </h2>
+
+      <dl class="release-gate__meta">
+        <dt>Branch</dt>
+        <dd>{{branch}}</dd>
+        <dt>Commit</dt>
+        <dd><code>{{commitSha}}</code></dd>
+        <dt>Deployer</dt>
+        <dd>{{deployer}}</dd>
+        <dt>Timestamp</dt>
+        <dd><time datetime="{{isoTimestamp}}">{{humanTimestamp}}</time></dd>
+      </dl>
+
+      <ul class="release-gate__checks" aria-label="Readiness checks">
+        {{#each checks}}
+          <li class="check check--{{#if this.passed}}passed{{else}}failed{{/if}}"
+              aria-label="{{this.name}}: {{#if this.passed}}passed{{else}}failed{{/if}}">
+            <span class="check__icon" aria-hidden="true">
+              {{#if this.passed}}✓{{else}}✗{{/if}}
+            </span>
+            <span class="check__name">{{this.name}}</span>
+            {{#if this.detail}}
+              <span class="check__detail">{{this.detail}}</span>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+
+      <div class="release-gate__actions">
+        {{#if canDeploy}}
+          <button class="btn btn--primary" type="button"
+                  aria-label="Deploy version {{version}} to production">
+            Deploy to Production
+          </button>
+        {{else}}
+          <button class="btn btn--disabled" type="button" disabled
+                  aria-label="Deploy blocked — resolve failing checks first">
+            Deploy Blocked
+          </button>
+          <p class="gate-blocked-reason" role="alert">
+            {{blockedReason}}
+          </p>
+        {{/if}}
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="page__footer" role="contentinfo">
+    <p>SEIS — cinematic, minimal, accessible.</p>
+  </footer>
+
+</body>
+</html>

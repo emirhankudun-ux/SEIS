@@ -1,0 +1,119 @@
+#+TITLE: SEIS Release Policy
+#+AUTHOR: Emirhan Kudun
+#+EMAIL: emirhankudun@gmail.com
+#+DATE: 2026-06-07
+#+STARTUP: overview
+#+OPTIONS: toc:3 num:t
+
+* SEIS Release Policy v2.4.0
+
+** Overview
+
+The SEIS release policy governs deploy readiness, motion mode configuration,
+and accessibility standards for every surface in the SEIS ecosystem.
+
+** Motion Mode Policy
+
+All SEIS surfaces must respect the =prefers-reduced-motion= media query and
+provide a manual low-motion toggle.
+
+*** Motion Token Table
+
+| Token              | Full Mode | Reduced Mode | Purpose               |
+|--------------------+-----------+--------------+-----------------------|
+| instant            | 0ms       | 0ms          | Immediate state changes|
+| fast               | 150ms     | 0ms          | Micro-interactions    |
+| standard           | 300ms     | 0ms          | Default transitions   |
+| slow               | 500ms     | 0ms          | Layout shifts         |
+| cinematic          | 800ms     | 0ms          | Hero animations       |
+
+*** Motion Mode CSS Implementation
+
+#+BEGIN_SRC css
+:root {
+  --motion-duration-fast:      150ms;
+  --motion-duration-standard:  300ms;
+  --motion-duration-cinematic: 800ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast:      0ms;
+    --motion-duration-standard:  0ms;
+    --motion-duration-cinematic: 0ms;
+  }
+}
+#+END_SRC
+
+*** Motion Mode JavaScript Resolution
+
+#+BEGIN_SRC javascript
+function resolveMotionMode() {
+  const prefersReduced =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const manualOverride =
+    document.documentElement.getAttribute('data-motion-mode');
+
+  if (manualOverride === 'reduced' || prefersReduced) {
+    return 'reduced';
+  }
+  return 'full';
+}
+
+const motionDurations = {
+  full:    { fast: 150, standard: 300, slow: 500, cinematic: 800 },
+  reduced: { fast: 0,   standard: 0,   slow: 0,   cinematic: 0   },
+};
+
+const mode = resolveMotionMode();
+const durations = motionDurations[mode];
+#+END_SRC
+
+** Release Gate Checks
+
+| Check                    | Required | Status  |
+|--------------------------+----------+---------|
+| Type check               | Yes      | PENDING |
+| Lint                     | Yes      | PENDING |
+| Content validation       | Yes      | PENDING |
+| Accessibility audit      | Yes      | PENDING |
+| Reduced-motion tests     | Yes      | PENDING |
+| Source boundary check    | Yes      | PENDING |
+
+** Release Status Values
+
+- =ready=   :: All checks pass — deployment authorised
+- =pending= :: Checks running or awaiting human approval
+- =blocked= :: One or more checks failed — deployment prohibited
+- =draft=   :: Branch not yet in reviewable state
+
+** Commands
+
+#+BEGIN_SRC bash
+# Run all quality gates before committing
+npm run quality
+
+# Individual checks
+npm run typecheck
+npm run lint
+npm run check:content
+npm run check:runtime
+
+# Pre-push preflight validation
+npm run github:preflight
+#+END_SRC
+
+** Accessibility Requirements
+
+1. Zero WCAG 2.1 AA critical violations (axe-core)
+2. Full keyboard navigation across all interactive components
+3. Screen reader announcements for dynamic status changes
+4. Colour contrast ratio ≥ 4.5:1 for normal text
+5. Visible focus indicators at all interaction states
+
+** Notes
+
+#+BEGIN_QUOTE
+Never bypass the release gate for hotfixes. Always run
+=npm run quality && npm test= before any deploy, including patches.
+#+END_QUOTE

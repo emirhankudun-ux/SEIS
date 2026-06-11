@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{booktabs}
+\title{SEIS Release Policy}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\section{Motion Modes}
+\begin{tabular}{lll}
+  \toprule
+  Mode      & Duration & Reduced-motion safe \\
+  \midrule
+  cinematic & 600ms    & No (override applies) \\
+  balanced  & 300ms    & Yes \\
+  reduced   & 0ms      & Yes \\
+  \bottomrule
+\end{tabular}
+
+\section{Release Gate}
+A deployment is \textbf{ready} only when:
+\begin{itemize}
+  \item Quality checks pass
+  \item Motion mode is documented
+  \item Server target is confirmed
+  \item No critical accessibility violations
+\end{itemize}
+
+\end{document}

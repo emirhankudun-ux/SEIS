@@ -676,6 +676,491 @@
       "language": "Taskfile",
       "role": "cross-platform task runner release policy",
       "entrypoints": ["polyglot/taskfile/release-policy.taskfile.yml"]
+    },
+    {
+      "language": "Terraform",
+      "role": "infrastructure-as-code deploy guard and server target governance",
+      "entrypoints": ["polyglot/terraform/seis_deploy_guard.tf"]
+    },
+    {
+      "language": "Vue",
+      "role": "reactive component release status with motion-aware transitions",
+      "entrypoints": ["polyglot/vue/SeisReleasePolicy.vue"]
+    },
+    {
+      "language": "Svelte",
+      "role": "reactive component release status with reduced-motion support",
+      "entrypoints": ["polyglot/svelte/SeisReleasePolicy.svelte"]
+    },
+    {
+      "language": "SCSS",
+      "role": "design token–driven motion policy with prefers-reduced-motion mixin",
+      "entrypoints": ["polyglot/scss/release_policy.scss"]
+    },
+    {
+      "language": "MDX",
+      "role": "human-readable release policy documentation with embedded code",
+      "entrypoints": ["polyglot/mdx/release-policy.mdx"]
+    },
+    {
+      "language": "Astro",
+      "role": "server-rendered release status component with motion-reduced style",
+      "entrypoints": ["polyglot/astro/ReleasePolicy.astro"]
+    },
+    {
+      "language": "Gleam",
+      "role": "type-safe functional release and motion policy on the BEAM VM",
+      "entrypoints": ["polyglot/gleam/release_policy.gleam"]
+    },
+    {
+      "language": "Haxe",
+      "role": "multi-platform release and motion policy in abstract enum style",
+      "entrypoints": ["polyglot/haxe/SeisReleasePolicy.hx"]
+    },
+    {
+      "language": "LaTeX",
+      "role": "typeset release policy governance document",
+      "entrypoints": ["polyglot/latex/release-policy.tex"]
+    },
+    {
+      "language": "Cypher",
+      "role": "graph-based release gate and motion mode relationship model",
+      "entrypoints": ["polyglot/cypher/release_policy.cypher"]
+    },
+    {
+      "language": "Standard ML",
+      "role": "strongly-typed ML-family release and motion policy",
+      "entrypoints": ["polyglot/sml/release_policy.sml"]
+    },
+    {
+      "language": "Vala",
+      "role": "GObject-based release and motion policy for Linux desktop surfaces",
+      "entrypoints": ["polyglot/vala/SeisReleasePolicy.vala"]
+    },
+    {
+      "language": "CoffeeScript",
+      "role": "concise JS-compiled release and motion policy",
+      "entrypoints": ["polyglot/coffeescript/release_policy.coffee"]
+    },
+    {
+      "language": "Fish Shell",
+      "role": "interactive shell release policy and motion mode resolution",
+      "entrypoints": ["polyglot/fish/release_policy.fish"]
+    },
+    {
+      "language": "Pkl",
+      "role": "Apple structured config release policy with typesafe motion modes",
+      "entrypoints": ["polyglot/pkl/release-policy.pkl"]
+    },
+    {
+      "language": "Assembly (x86-64)",
+      "role": "low-level native readiness contract and motion mode resolver",
+      "entrypoints": ["polyglot/assembly/readiness_contract.asm"]
+    },
+    {
+      "language": "VHDL",
+      "role": "hardware-description readiness contract with motion mode logic",
+      "entrypoints": ["polyglot/vhdl/readiness_contract.vhd"]
+    },
+    {
+      "language": "SystemVerilog",
+      "role": "hardware-description readiness contract with enum motion modes",
+      "entrypoints": ["polyglot/systemverilog/readiness_contract.sv"]
+    },
+    {
+      "language": "Carbon",
+      "role": "Google experimental systems language release and motion policy",
+      "entrypoints": ["polyglot/carbon/release_policy.carbon"]
+    },
+    {
+      "language": "Odin",
+      "role": "modern systems language release and motion policy",
+      "entrypoints": ["polyglot/odin/release_policy.odin"]
+    },
+    {
+      "language": "Wren",
+      "role": "lightweight scripting language release and motion policy",
+      "entrypoints": ["polyglot/wren/release_policy.wren"]
+    },
+    {
+      "language": "Idris",
+      "role": "dependently-typed functional release and motion policy",
+      "entrypoints": ["polyglot/idris/ReleasePolicy.idr"]
+    },
+    {
+      "language": "Less",
+      "role": "CSS preprocessor motion token variables and reduced-motion mixin",
+      "entrypoints": ["polyglot/less/release_policy.less"]
+    },
+    {
+      "language": "PostCSS",
+      "role": "CSS custom properties for motion tokens with @media reduced-motion",
+      "entrypoints": ["polyglot/postcss/release_policy.pcss"]
+    },
+    {
+      "language": "Pug",
+      "role": "HTML template mixin for release badge with aria attributes",
+      "entrypoints": ["polyglot/pug/release_policy.pug"]
+    },
+    {
+      "language": "Handlebars",
+      "role": "template for release gate status and motion mode rendering",
+      "entrypoints": ["polyglot/handlebars/release_policy.hbs"]
+    },
+    {
+      "language": "Nunjucks",
+      "role": "server-side template macros for motion-aware release status",
+      "entrypoints": ["polyglot/nunjucks/release_policy.njk"]
+    },
+    {
+      "language": "EJS",
+      "role": "embedded JS template for motion class and release status output",
+      "entrypoints": ["polyglot/ejs/release_policy.ejs"]
+    },
+    {
+      "language": "Jinja2",
+      "role": "Python template engine motion policy and release gate rendering",
+      "entrypoints": ["polyglot/jinja2/release_policy.j2"]
+    },
+    {
+      "language": "Liquid",
+      "role": "Shopify/Jekyll template for motion-aware release status",
+      "entrypoints": ["polyglot/liquid/release-policy.liquid"]
+    },
+    {
+      "language": "reStructuredText",
+      "role": "Python documentation format release policy governance document",
+      "entrypoints": ["polyglot/restructuredtext/release-policy.rst"]
+    },
+    {
+      "language": "AsciiDoc",
+      "role": "technical writing format release policy with admonition blocks",
+      "entrypoints": ["polyglot/asciidoc/release-policy.adoc"]
+    },
+    {
+      "language": "Org-Mode",
+      "role": "Emacs outline format release policy with table and code blocks",
+      "entrypoints": ["polyglot/org-mode/release-policy.org"]
+    },
+    {
+      "language": "Zsh",
+      "role": "Z shell motion mode resolution and release gate script",
+      "entrypoints": ["polyglot/zsh/release_policy.zsh"]
+    },
+    {
+      "language": "Windows Batch",
+      "role": "CMD scripting for motion mode resolution and release gate check",
+      "entrypoints": ["polyglot/batch/release_policy.bat"]
+    },
+    {
+      "language": "REXX",
+      "role": "IBM scripting language motion policy and deploy gate",
+      "entrypoints": ["polyglot/rexx/release_policy.rexx"]
+    },
+    {
+      "language": "Octave",
+      "role": "MATLAB-compatible scientific computing motion duration function",
+      "entrypoints": ["polyglot/octave/release_policy.m"]
+    },
+    {
+      "language": "Wolfram Language",
+      "role": "Mathematica symbolic release gate and motion mode association",
+      "entrypoints": ["polyglot/wolfram/release_policy.wl"]
+    },
+    {
+      "language": "Scilab",
+      "role": "scientific computing motion policy and release gate struct",
+      "entrypoints": ["polyglot/scilab/release_policy.sce"]
+    },
+    {
+      "language": "Roc",
+      "role": "type-safe functional language release and motion policy",
+      "entrypoints": ["polyglot/roc/release_policy.roc"]
+    },
+    {
+      "language": "Pony",
+      "role": "actor-model language release policy with reference capabilities",
+      "entrypoints": ["polyglot/pony/SeisReleasePolicy.pony"]
+    },
+    {
+      "language": "Koka",
+      "role": "effect-based functional release and motion policy",
+      "entrypoints": ["polyglot/koka/release_policy.kk"]
+    },
+    {
+      "language": "Lean 4",
+      "role": "theorem prover and general-purpose release and motion policy",
+      "entrypoints": ["polyglot/lean/ReleasePolicy.lean"]
+    },
+    {
+      "language": "Coq",
+      "role": "proof assistant with verified motion policy theorem",
+      "entrypoints": ["polyglot/coq/release_policy.v"]
+    },
+    {
+      "language": "ATS",
+      "role": "applied type system language for safe release policy",
+      "entrypoints": ["polyglot/ats/release_policy.dats"]
+    },
+    {
+      "language": "Gherkin",
+      "role": "BDD specification for release gate and motion mode scenarios",
+      "entrypoints": ["polyglot/gherkin/release_policy.feature"]
+    },
+    {
+      "language": "FlatBuffers",
+      "role": "binary serialization schema for release gate and motion modes",
+      "entrypoints": ["polyglot/flatbuffers/release_policy.fbs"]
+    },
+    {
+      "language": "Apache Thrift",
+      "role": "cross-language IDL schema for release gate service",
+      "entrypoints": ["polyglot/thrift/release_policy.thrift"]
+    },
+    {
+      "language": "Cap'n Proto",
+      "role": "high-performance schema for release gate and motion modes",
+      "entrypoints": ["polyglot/capnproto/release_policy.capnp"]
+    },
+    {
+      "language": "XSD",
+      "role": "XML schema definition for release gate and motion mode enum",
+      "entrypoints": ["polyglot/xsd/release-policy.xsd"]
+    },
+    {
+      "language": "XSLT",
+      "role": "XML transform for release status and motion mode documents",
+      "entrypoints": ["polyglot/xslt/release-policy.xsl"]
+    },
+    {
+      "language": "XQuery",
+      "role": "XML query language for release gate data retrieval",
+      "entrypoints": ["polyglot/xquery/release_policy.xq"]
+    },
+    {
+      "language": "JSONata",
+      "role": "JSON transform expression for motion duration lookup",
+      "entrypoints": ["polyglot/jsonata/release_policy.jsonata"]
+    },
+    {
+      "language": "Flux",
+      "role": "InfluxDB query for release gate telemetry and motion mode metrics",
+      "entrypoints": ["polyglot/flux/release_policy.flux"]
+    },
+    {
+      "language": "CQL",
+      "role": "Cassandra query for release gate persistence and TTL",
+      "entrypoints": ["polyglot/cql/release_policy.cql"]
+    },
+    {
+      "language": "PL/I",
+      "role": "IBM mainframe release policy with SELECT/WHEN motion logic",
+      "entrypoints": ["polyglot/pli/release_policy.pli"]
+    },
+    {
+      "language": "ALGOL",
+      "role": "historic language release policy with BEGIN/END block structure",
+      "entrypoints": ["polyglot/algol/release_policy.algol"]
+    },
+    {
+      "language": "BCPL",
+      "role": "historic C ancestor language release readiness contract",
+      "entrypoints": ["polyglot/bcpl/release_policy.b"]
+    },
+    {
+      "language": "Simula",
+      "role": "first OOP language release policy class hierarchy",
+      "entrypoints": ["polyglot/simula/SeisReleasePolicy.sim"]
+    },
+    {
+      "language": "Self",
+      "role": "prototype-based OOP release policy object with slots",
+      "entrypoints": ["polyglot/self/release_policy.self"]
+    },
+    {
+      "language": "Pharo",
+      "role": "modern Smalltalk release policy class with method dispatch",
+      "entrypoints": ["polyglot/pharo/SeisReleasePolicy.st"]
+    },
+    {
+      "language": "APL",
+      "role": "array programming language motion mode resolution dfn",
+      "entrypoints": ["polyglot/apl/release_policy.apl"]
+    },
+    {
+      "language": "J Language",
+      "role": "APL-family tacit verb definitions for motion mode resolution",
+      "entrypoints": ["polyglot/j/release_policy.ijs"]
+    },
+    {
+      "language": "Fennel",
+      "role": "Lisp dialect for Lua runtime release and motion policy",
+      "entrypoints": ["polyglot/fennel/release_policy.fnl"]
+    },
+    {
+      "language": "Janet",
+      "role": "functional scripting language release and motion policy",
+      "entrypoints": ["polyglot/janet/release_policy.janet"]
+    },
+    {
+      "language": "Hy",
+      "role": "Lisp dialect on Python release and motion policy",
+      "entrypoints": ["polyglot/hy/release_policy.hy"]
+    },
+    {
+      "language": "Mojo",
+      "role": "Modular Python superset high-performance release policy",
+      "entrypoints": ["polyglot/mojo/release_policy.mojo"]
+    },
+    {
+      "language": "Bend",
+      "role": "parallel functional language (HVM2) release and motion policy",
+      "entrypoints": ["polyglot/bend/release_policy.bend"]
+    },
+    {
+      "language": "Vale",
+      "role": "memory-safe systems language release and motion policy",
+      "entrypoints": ["polyglot/vale/release_policy.vale"]
+    },
+    {
+      "language": "Nickel",
+      "role": "gradual type config language with contracts for release policy",
+      "entrypoints": ["polyglot/nickel/release-policy.ncl"]
+    },
+    {
+      "language": "Io",
+      "role": "prototype-based OOP scripting release and motion policy",
+      "entrypoints": ["polyglot/io/release_policy.io"]
+    },
+    {
+      "language": "Factor",
+      "role": "concatenative stack-based language release and motion policy",
+      "entrypoints": ["polyglot/factor/release_policy.factor"]
+    },
+    {
+      "language": "CSS",
+      "role": "design-token and motion-preference release badge styles",
+      "entrypoints": ["polyglot/css/release_policy.css"]
+    },
+    {
+      "language": "HLSL",
+      "role": "GPU shader release motion policy for real-time graphics",
+      "entrypoints": ["polyglot/hlsl/release_policy.hlsl"]
+    },
+    {
+      "language": "CUDA",
+      "role": "GPU-parallel batch release gate evaluation",
+      "entrypoints": ["polyglot/cuda/release_policy.cu"]
+    },
+    {
+      "language": "Delphi",
+      "role": "Object Pascal Windows-native release policy model",
+      "entrypoints": ["polyglot/delphi/SeisReleasePolicy.pas"]
+    },
+    {
+      "language": "AppleScript",
+      "role": "macOS automation release policy orchestration",
+      "entrypoints": ["polyglot/applescript/release_policy.applescript"]
+    },
+    {
+      "language": "ActionScript",
+      "role": "Flash/AIR legacy release policy and motion model",
+      "entrypoints": ["polyglot/actionscript/SeisReleasePolicy.as"]
+    },
+    {
+      "language": "BASIC",
+      "role": "educational line-numbered release policy program",
+      "entrypoints": ["polyglot/basic/release_policy.bas"]
+    },
+    {
+      "language": "Arduino",
+      "role": "embedded microcontroller release and motion policy",
+      "entrypoints": ["polyglot/arduino/release_policy.ino"]
+    },
+    {
+      "language": "SAS",
+      "role": "statistical analysis release readiness model",
+      "entrypoints": ["polyglot/sas/release_policy.sas"]
+    },
+    {
+      "language": "DAX",
+      "role": "Power BI data model release readiness measures",
+      "entrypoints": ["polyglot/dax/release_policy.dax"]
+    },
+    {
+      "language": "JSX",
+      "role": "React JSX release gate UI with reduced-motion hook",
+      "entrypoints": ["polyglot/jsx/SeisReleasePolicy.jsx"]
+    },
+    {
+      "language": "Pine Script",
+      "role": "TradingView chart indicator for release readiness signals",
+      "entrypoints": ["polyglot/pinescript/release_policy.pine"]
+    },
+    {
+      "language": "KQL",
+      "role": "Kusto query language release telemetry analysis",
+      "entrypoints": ["polyglot/kql/release_policy.kql"]
+    },
+    {
+      "language": "SPSS",
+      "role": "statistical release readiness analysis macro",
+      "entrypoints": ["polyglot/spss/release_policy.sps"]
+    },
+    {
+      "language": "Stata",
+      "role": "econometric release readiness do-file analysis",
+      "entrypoints": ["polyglot/stata/release_policy.do"]
+    },
+    {
+      "language": "MicroPython",
+      "role": "embedded MicroPython release gate for microcontrollers",
+      "entrypoints": ["polyglot/micropython/release_policy.py"]
+    },
+    {
+      "language": "Metal",
+      "role": "Apple GPU Metal shader release motion policy",
+      "entrypoints": ["polyglot/metal/release_policy.metal"]
+    },
+    {
+      "language": "OpenCL",
+      "role": "cross-platform GPU compute release gate kernel",
+      "entrypoints": ["polyglot/opencl/release_policy.cl"]
+    },
+    {
+      "language": "G-Code",
+      "role": "CNC machine release phase and motion policy program",
+      "entrypoints": ["polyglot/gcode/release_policy.gcode"]
+    },
+    {
+      "language": "Logo",
+      "role": "educational turtle-graphics release policy program",
+      "entrypoints": ["polyglot/logo/release_policy.logo"]
+    },
+    {
+      "language": "Stylus",
+      "role": "CSS preprocessor release badge and motion styles",
+      "entrypoints": ["polyglot/stylus/release_policy.styl"]
+    },
+    {
+      "language": "VBScript",
+      "role": "Windows scripting release policy automation",
+      "entrypoints": ["polyglot/vbscript/release_policy.vbs"]
+    },
+    {
+      "language": "MQL5",
+      "role": "MetaTrader release gate and motion policy script",
+      "entrypoints": ["polyglot/mql5/SeisReleasePolicy.mq5"]
+    },
+    {
+      "language": "Puppet",
+      "role": "infrastructure-as-code release policy and deploy gate",
+      "entrypoints": ["polyglot/puppet/release_policy.pp"]
+    },
+    {
+      "language": "Structured Text",
+      "role": "IEC 61131-3 PLC release gate and motion policy program",
+      "entrypoints": ["polyglot/structured-text/release_policy.st"]
     }
   ]
 }

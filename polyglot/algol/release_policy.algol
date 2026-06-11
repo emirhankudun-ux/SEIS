@@ -1,0 +1,90 @@
+BEGIN
+  COMMENT SEIS Release Policy - ALGOL 68;
+  COMMENT Motion policy and deploy gate in ALGOL 68 syntax;
+
+  # ─── Type Declarations ──────────────────────────────────────────────────
+  MODE MOTIONMODE   = ENUM(full, reduced, manuallow);
+  MODE STATUSMODE   = ENUM(ready, pending, blocked, draft);
+
+  MODE DEPLOYCHECK  = STRUCT(
+    STRING name,
+    BOOL   passed
+  );
+
+  # ─── Motion Duration Function ────────────────────────────────────────────
+  PROC motion duration ms = (STRING token, MOTIONMODE mode) INT:
+  BEGIN
+    INT base;
+
+    CASE token
+    IN  (("instant")):   base := 0
+    IN  (("fast")):      base := 150
+    IN  (("standard")):  base := 300
+    IN  (("slow")):      base := 500
+    IN  (("cinematic")): base := 800
+    OUT base := 300
+    ESAC;
+
+    CASE mode
+    IN  (full):      base
+    IN  (reduced):   0
+    IN  (manuallow): 0
+    ESAC
+  END;
+
+  # ─── Gate Status ─────────────────────────────────────────────────────────
+  PROC gate status = ([] DEPLOYCHECK checks) STATUSMODE:
+  BEGIN
+    INT fail count := 0;
+    FOR i FROM 1 TO UPB checks DO
+      IF NOT passed OF checks[i] THEN
+        fail count +:= 1
+      FI
+    OD;
+    IF fail count = 0 THEN ready ELSE blocked FI
+  END;
+
+  # ─── Mode String ─────────────────────────────────────────────────────────
+  PROC mode string = (MOTIONMODE mode) STRING:
+    CASE mode
+    IN  (full):      "full"
+    IN  (reduced):   "reduced"
+    IN  (manuallow): "manual-low"
+    ESAC;
+
+  # ─── Status String ────────────────────────────────────────────────────────
+  PROC status string = (STATUSMODE s) STRING:
+    CASE s
+    IN  (ready):   "READY"
+    IN  (pending): "PENDING"
+    IN  (blocked): "BLOCKED"
+    IN  (draft):   "DRAFT"
+    ESAC;
+
+  # ─── Main Program ─────────────────────────────────────────────────────────
+  MOTIONMODE mode    := full;
+  STRING     version := "v2.4.0";
+
+  [] DEPLOYCHECK checks = (
+    ("typecheck",          TRUE ),
+    ("lint",               TRUE ),
+    ("content validation", TRUE ),
+    ("accessibility",      FALSE)
+  );
+
+  STATUSMODE status = gate status(checks);
+
+  print(("SEIS Release Gate — ", version, newline));
+  print((40 * "-",               newline));
+  print(("Status:      ", status string(status), newline));
+  print(("Motion mode: ", mode string(mode),     newline));
+  print(("Fast (ms):   ", whole(motion duration ms("fast",     mode), 0), newline));
+  print(("Std  (ms):   ", whole(motion duration ms("standard", mode), 0), newline));
+  print((40 * "-", newline));
+
+  FOR i FROM 1 TO UPB checks DO
+    STRING marker = IF passed OF checks[i] THEN "PASS" ELSE "FAIL" FI;
+    print(("  [", marker, "]  ", name OF checks[i], newline))
+  OD
+
+END
