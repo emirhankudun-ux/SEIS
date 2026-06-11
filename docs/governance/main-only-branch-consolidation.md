@@ -11,6 +11,8 @@ by itself.
 - AI-generated branches are temporary implementation records.
 - Valuable code from temporary branches must land in `main` before deletion.
 - Branch deletion is allowed only after the maintainer confirms the exact list.
+- A branch is not considered resolved just because it is marked deletable; the
+  remote branch must actually be removed before the repository is main-only.
 
 ## Safe Review Commands
 
@@ -32,6 +34,16 @@ git push origin --delete <branch-name>
 Do not run broad deletion loops. Do not delete branches based only on naming.
 Do not delete a branch that has unmerged work, unclear ownership, or historical
 value.
+
+## Code Gate
+
+The Swift and Go governance kernels model this same rule:
+
+- default branch must be `main`
+- only `main` may be long-lived or protected
+- non-main branches must be reviewed, merged into `main`, and explicitly
+  confirmed before deletion
+- main-only readiness is true only after no non-main remote branches remain
 
 ## PR Strategy
 

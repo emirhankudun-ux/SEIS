@@ -164,3 +164,50 @@ import Testing
     #expect(decision.blockers.contains("missing_required_orchestration_gates:openai"))
     #expect(decision.blockers.contains("remote_orchestrator_must_be_seis_agent_only"))
 }
+
+@Test func branchGovernanceBlocksUnmergedAndUnconfirmedBranches() {
+    let result = SeisBranchGovernance.evaluate(
+        SeisBranchGovernanceInput(
+            defaultBranch: "main",
+            protectedBranches: ["main"],
+            remoteBranches: ["origin/main", "origin/codex/work", "origin/claude/review", "origin/legacy"],
+            mergedIntoMainBranches: ["codex/work"],
+            confirmedDeleteBranches: []
+        )
+    )
+
+    #expect(result.mainIsDefault)
+    #expect(result.blockers.contains("delete_confirmation_missing:codex/work"))
+    #expect(result.blockers.contains("non_main_branch_not_merged_into_main:claude/review"))
+    #expect(result.blockers.contains("non_main_branch_requires_manual_review:legacy"))
+}
+
+@Test func branchGovernanceRequiresActualDeletionForMainOnlyReadiness() {
+    let result = SeisBranchGovernance.evaluate(
+        SeisBranchGovernanceInput(
+            defaultBranch: "main",
+            protectedBranches: ["main"],
+            remoteBranches: ["origin/main", "origin/codex/work"],
+            mergedIntoMainBranches: ["origin/codex/work"],
+            confirmedDeleteBranches: ["codex/work"]
+        )
+    )
+
+    #expect(result.deletableBranches == ["codex/work"])
+    #expect(result.blockers.isEmpty)
+    #expect(!result.readyForMainOnlyRepository)
+}
+
+@Test func branchGovernanceReadyWhenOnlyMainExists() {
+    let result = SeisBranchGovernance.evaluate(
+        SeisBranchGovernanceInput(
+            defaultBranch: "main",
+            protectedBranches: ["main"],
+            remoteBranches: ["origin/HEAD -> origin/main", "origin/main"],
+            mergedIntoMainBranches: [],
+            confirmedDeleteBranches: []
+        )
+    )
+
+    #expect(result.readyForMainOnlyRepository)
+}
