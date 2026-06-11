@@ -1741,7 +1741,17 @@ async function init() {
     loadSeisReposBridge(),
     loadLlmRegistry(),
     loadCinematicEngine(),
-    loadQualityConsole()
+    loadQualityConsole(),
+    loadPortfolio(),
+    loadGithubModel(),
+    loadSafetyFirewall(),
+    loadLocalCycle(),
+    loadExecutionPlan(),
+    loadAggressiveMap(),
+    loadEvolutionModel(),
+    loadPluginRegistry(),
+    loadBuildWorkbench(),
+    loadWorkspaceOps()
   ]);
   renderGapBoard();
   renderPortfolio();
