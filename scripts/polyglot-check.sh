@@ -90,7 +90,9 @@ ruby_lane() {
   ruby polyglot/ruby/test_i18n_stats.rb 2>&1 | tail -1 &&
   ruby polyglot/ruby/i18n_stats.rb &&
   ruby polyglot/ruby/test_html_heading_audit.rb 2>&1 | tail -1 &&
-  ruby polyglot/ruby/html_heading_audit.rb
+  ruby polyglot/ruby/html_heading_audit.rb &&
+  ruby polyglot/ruby/favicon_audit.rb --self-test &&
+  ruby polyglot/ruby/favicon_audit.rb
 }
 
 php_lane() {
@@ -108,7 +110,9 @@ java_lane() {
 
 perl_lane() {
   perl polyglot/perl/hygiene_lint.pl --self-test &&
-  perl polyglot/perl/hygiene_lint.pl "${WEB_FILES[@]}"
+  perl polyglot/perl/hygiene_lint.pl "${WEB_FILES[@]}" &&
+  perl polyglot/perl/robots_txt_audit.pl --self-test &&
+  perl polyglot/perl/robots_txt_audit.pl
 }
 
 awk_lane() {

@@ -152,10 +152,12 @@ the JS suite cannot. One command runs them all:
 | C++ | `seis_translations_lint.cpp` | Duplicate JSON keys that `JSON.parse` silently swallows |
 | Ruby | `i18n_stats.rb` | Per-locale volume stats + untranslated-value suspects |
 | Ruby | `html_heading_audit.rb` | Heading hierarchy (1 h1, no skips) + landmark presence audit |
+| Ruby | `favicon_audit.rb` | Icon `<link>` href files verified on disk (favicon.svg, apple-touch-icon, etc.) |
 | PHP | `contact-endpoint.php` | Reference form endpoint (honeypot, anti-injection) |
 | Java | `DrawingsChecksum.java` | SHA-256 ledger of the 20 drawings (`drawings.sha256`) |
 | Java | `CssMediaQueryAudit.java` | CSS responsive breakpoints + prefers-reduced-motion + print query presence |
 | Perl | `hygiene_lint.pl` | BOM / CRLF / trailing-whitespace / final-newline lint |
+| Perl | `robots_txt_audit.pl` | robots.txt syntax: User-agent, Disallow paths, Sitemap https, no HTML content |
 | AWK | `css_var_histogram.awk` | CSS `var(--x)` token frequency; top-used + single-use suspects |
 | TypeScript | `seis_config_validator.ts` | Strict type-checked validation of manifest + site-config + translations |
 | SQL | `audit_ledger.sqlite.sql` | SQLite audit-ledger schema (tables, CHECK constraints, trigger, views) — SKIP if no sqlite3 |

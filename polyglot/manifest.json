@@ -60,11 +60,12 @@
     },
     {
       "language": "Ruby",
-      "role": "i18n content statistics, untranslated-value detection, and HTML heading hierarchy audit",
+      "role": "i18n content statistics, untranslated-value detection, HTML heading hierarchy audit, and favicon/icon file existence check",
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
         "polyglot/ruby/i18n_stats.rb",
-        "polyglot/ruby/html_heading_audit.rb"
+        "polyglot/ruby/html_heading_audit.rb",
+        "polyglot/ruby/favicon_audit.rb"
       ]
     },
     {
@@ -222,10 +223,11 @@
     },
     {
       "language": "Perl",
-      "role": "source hygiene lint (BOM, CRLF, trailing whitespace)",
+      "role": "source hygiene lint (BOM, CRLF, trailing whitespace) and robots.txt syntax/content validation",
       "entrypoints": [
         "polyglot/perl/readiness_guard.pl",
-        "polyglot/perl/hygiene_lint.pl"
+        "polyglot/perl/hygiene_lint.pl",
+        "polyglot/perl/robots_txt_audit.pl"
       ]
     },
     {
