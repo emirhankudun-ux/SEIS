@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   GapRegisterSchema,
   TrustedMarketplaceIntakeSchema,
@@ -8,7 +9,8 @@ import {
   MarketplaceChannelSchema,
 } from "./schemas";
 
-const ROOT = join(import.meta.dirname, "../../../");
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = join(__dirname, "../../../");
 
 function readJSON(relPath: string) {
   return JSON.parse(readFileSync(join(ROOT, relPath), "utf8"));
