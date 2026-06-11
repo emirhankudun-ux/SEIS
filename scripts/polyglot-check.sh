@@ -229,6 +229,16 @@ sbcl_lane() {
   sbcl --script polyglot/common-lisp/seis_html_id_uniqueness.lisp
 }
 
+prolog_lane() {
+  swipl polyglot/prolog/seis_html_tabindex_audit.pl --self-test &&
+  swipl polyglot/prolog/seis_html_tabindex_audit.pl
+}
+
+chicken_lane() {
+  csi -script polyglot/chicken/seis_html_button_types.scm --self-test &&
+  csi -script polyglot/chicken/seis_html_button_types.scm
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -262,6 +272,8 @@ run_lane "kotlin     (font-audit)"    kotlinc-jvm kotlin_lane
 run_lane "guile      (hreflang)"      guile   guile_lane
 run_lane "racket     (pwa-manifest)"  racket  racket_lane
 run_lane "sbcl       (html-ids)"      sbcl    sbcl_lane
+run_lane "prolog     (tabindex)"     swipl   prolog_lane
+run_lane "chicken    (btn-types)"    csi     chicken_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

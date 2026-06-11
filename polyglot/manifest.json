@@ -348,8 +348,16 @@
     },
     {
       "language": "Prolog",
-      "role": "logic-programming readiness proof sketch",
-      "entrypoints": ["polyglot/prolog/readiness_policy.pl"]
+      "role": "logic-programming readiness proof sketch; HTML tabindex accessibility auditor (positive tabindex = WCAG 2.4.3 anti-pattern)",
+      "entrypoints": [
+        "polyglot/prolog/readiness_policy.pl",
+        "polyglot/prolog/seis_html_tabindex_audit.pl"
+      ]
+    },
+    {
+      "language": "Chicken Scheme",
+      "role": "R7RS Scheme — HTML button type auditor: form buttons must declare explicit type= to prevent accidental submit",
+      "entrypoints": ["polyglot/chicken/seis_html_button_types.scm"]
     },
     {
       "language": "D",
