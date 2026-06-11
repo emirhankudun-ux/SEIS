@@ -1,6 +1,6 @@
 module SEIS
   module WindowsPlatform
-    LANGUAGES = ["Ruby", "PowerShell", "Python", "SQL"].freeze
+    LANGUAGES = ["Ruby", "PowerShell", "Go", "SQL"].freeze
     QUALITY_GATES = [
       "ruby_syntax_when_available",
       "windows_path_safety",

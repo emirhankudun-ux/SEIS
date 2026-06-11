@@ -1,6 +1,6 @@
 seis_windows_platform <- list(
   id = "windows-r-analytics",
-  languages = c("R", "SQL", "Python", "PowerShell"),
+  languages = c("R", "SQL", "Go", "PowerShell"),
   quality_gates = c(
     "r_syntax_when_available",
     "windows_path_safety",

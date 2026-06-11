@@ -59,6 +59,13 @@ SEIS is designed to cover:
 - software architecture, design patterns, refactoring, reverse engineering, and formal methods
 - UX/UI engineering, product design, sustainable software, low-code/no-code governance, robotics, compiler and language engineering, requirements, agile delivery, SDLC, and metrics
 
+## Orchestration Gate
+
+SEIS Agent is the only approved remote orchestrator. OpenAI, Claude, Gemini,
+Ollama, Qwen, and other helpers stay local-helper lanes unless a future policy
+explicitly changes that. MCP, skills, plugins, LLM routing, and credential
+boundaries are mandatory gates before any helper can be considered ready.
+
 The machine-readable source for the current platform order is:
 
 - [`content/development/seis-platform-priority-atlas.json`](./content/development/seis-platform-priority-atlas.json)

@@ -6,7 +6,7 @@ function seis_windows_platform_capability(): array
 {
     return [
         'id' => 'windows-php-scripting',
-        'languages' => ['PHP', 'PowerShell', 'Python', 'SQL'],
+        'languages' => ['PHP', 'PowerShell', 'Kotlin', 'SQL'],
         'qualityGates' => [
             'php_syntax_when_available',
             'windows_path_safety',

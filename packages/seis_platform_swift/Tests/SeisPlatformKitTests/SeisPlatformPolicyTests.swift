@@ -135,3 +135,32 @@ import Testing
     #expect(result.blockers.contains("javascript_growth_frozen_for_current_phase"))
     #expect(result.blockers.contains("python_growth_frozen_for_current_phase"))
 }
+
+@Test func orchestrationPolicyApprovesSeisAgentRemoteAndLocalHelpers() {
+    let surfaces = [
+        SeisOrchestrationSurface(id: "seis-agent", mode: "remote-orchestrator", gates: ["mcp", "skills", "plugins", "llm-routing", "credential-boundary"], hasCredentialBoundary: true),
+        SeisOrchestrationSurface(id: "openai", mode: "local-helper", gates: ["mcp", "skills", "plugins", "llm-routing", "credential-boundary"], hasCredentialBoundary: true),
+        SeisOrchestrationSurface(id: "claude", mode: "local-helper", gates: ["mcp", "skills", "plugins", "llm-routing", "credential-boundary"], hasCredentialBoundary: true),
+        SeisOrchestrationSurface(id: "ollama", mode: "local-helper", gates: ["mcp", "skills", "plugins", "llm-routing", "credential-boundary"], hasCredentialBoundary: true)
+    ]
+
+    let decision = SeisOrchestrationPolicy.evaluate(surfaces: surfaces)
+    #expect(decision.approved)
+    #expect(decision.remoteOrchestrator == "seis-agent")
+    #expect(decision.localHelperCount == 3)
+    #expect(decision.blockers.isEmpty)
+}
+
+@Test func orchestrationPolicyBlocksRemoteHelperPromotion() {
+    let surfaces = [
+        SeisOrchestrationSurface(id: "seis-agent", mode: "remote-orchestrator", gates: ["mcp", "skills", "plugins", "llm-routing", "credential-boundary"], hasCredentialBoundary: true),
+        SeisOrchestrationSurface(id: "openai", mode: "remote-orchestrator", gates: ["llm-routing"], hasCredentialBoundary: false)
+    ]
+
+    let decision = SeisOrchestrationPolicy.evaluate(surfaces: surfaces)
+    #expect(!decision.approved)
+    #expect(decision.blockers.contains("local_helper_promoted_to_remote:openai"))
+    #expect(decision.blockers.contains("credential_boundary_missing:openai"))
+    #expect(decision.blockers.contains("missing_required_orchestration_gates:openai"))
+    #expect(decision.blockers.contains("remote_orchestrator_must_be_seis_agent_only"))
+}

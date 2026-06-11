@@ -1,6 +1,6 @@
 local capability = {
   id = "windows-lua-scripting",
-  languages = { "Lua", "PowerShell", "Python", "SQL" },
+  languages = { "Lua", "PowerShell", "Rust", "SQL" },
   quality_gates = {
     "lua_syntax_when_available",
     "windows_path_safety",

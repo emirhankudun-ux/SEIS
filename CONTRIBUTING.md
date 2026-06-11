@@ -42,6 +42,8 @@ Her anlamlı değişiklik şu başlıklara göre düşünülmeli:
 - Platform boundary
 - Dependency restraint
 - Release readiness
+- SEIS Agent remains the only remote orchestrator; helper AI, MCP, skills,
+  plugins, and LLM lanes need explicit gates and credential boundaries.
 
 ## Local Checks
 
