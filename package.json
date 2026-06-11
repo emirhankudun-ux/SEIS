@@ -91,9 +91,12 @@
     "check:seis-evolution-model": "node scripts/check-seis-evolution-model.mjs",
     "check:github-remote-configuration": "node scripts/check-github-remote-configuration.mjs",
     "check:publish-gate-contract": "node scripts/check-publish-gate-contract.mjs",
-    "check:ai-launcher-offline": "node scripts/check-ai-launcher-offline.cjs",
-    "scan:icloud-personal-assets": "node scripts/scan-icloud-personal-assets.cjs",
-    "intake:third-party": "node scripts/third-party-intake-blueprint.mjs --source SEIS --diff"
+    "check:web": "node packages/seis-ai/bin/seis-check.mjs",
+    "seis:check": "node packages/seis-ai/bin/seis-check.mjs",
+    "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
+    "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
+    "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
+    "seis:test": "npm test --prefix packages/seis-ai"
   },
   "engines": {
     "node": ">=18"

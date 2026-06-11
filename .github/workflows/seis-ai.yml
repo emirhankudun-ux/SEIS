@@ -1,0 +1,43 @@
+name: SEIS AI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/seis-ai/**'
+      - 'apps/web/**'
+      - '.mcp.json'
+      - '.github/workflows/seis-ai.yml'
+  pull_request:
+    paths:
+      - 'packages/seis-ai/**'
+      - 'apps/web/**'
+      - '.mcp.json'
+      - '.github/workflows/seis-ai.yml'
+
+jobs:
+  audit-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: packages/seis-ai/package-lock.json
+
+      # The audit CLI is dependency-free — run it before installing anything
+      # so a broken lockfile can never mask a broken site.
+      - name: Web audit (seis-check)
+        run: node packages/seis-ai/bin/seis-check.mjs
+
+      - name: Install seis-ai dependencies
+        run: npm ci
+        working-directory: packages/seis-ai
+
+      - name: Unit + MCP smoke tests
+        run: npm test
+        working-directory: packages/seis-ai

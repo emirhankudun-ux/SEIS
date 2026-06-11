@@ -1,0 +1,56 @@
+/* SEIS performance budget calculator — bc arbitrary-precision arithmetic.
+ *
+ * Defines budget functions for web asset size thresholds.
+ * Called by the shell wrapper seis_budget_check.sh which feeds real
+ * file sizes and threshold values; bc handles all arithmetic and
+ * percentage-of-budget reporting with precision that shell integers lack.
+ *
+ * Functions:
+ *   budget_pct(bytes, limit_kb)   — percentage of limit used (2 d.p.)
+ *   over_budget(bytes, limit_kb)  — 1 if over, 0 if within
+ *   kb(bytes)                     — bytes to KB with 1 decimal
+ */
+
+scale = 2
+
+define kb(bytes) {
+  return bytes / 1024
+}
+
+define budget_pct(bytes, limit_kb) {
+  if (limit_kb == 0) return 0
+  return (bytes / (limit_kb * 1024)) * 100
+}
+
+define over_budget(bytes, limit_kb) {
+  if (bytes > limit_kb * 1024) return 1
+  return 0
+}
+
+/* Self-test: verify arithmetic precision. Called when first arg == 1. */
+define selftest() {
+  auto ok, fail
+
+  ok = 0
+  fail = 0
+
+  /* 1024 bytes = 1.00 KB */
+  if (kb(1024) == 1.00) { ok += 1 } else { print "FAIL: kb(1024)\n"; fail += 1 }
+
+  /* 150 KB limit; 150*1024 = 153600 bytes = 100% */
+  if (budget_pct(153600, 150) == 100.00) { ok += 1 } else { print "FAIL: 100%\n"; fail += 1 }
+
+  /* 76800 bytes = 50% of 150 KB */
+  if (budget_pct(76800, 150) == 50.00) { ok += 1 } else { print "FAIL: 50%\n"; fail += 1 }
+
+  /* 153601 bytes is over 150 KB budget */
+  if (over_budget(153601, 150) == 1) { ok += 1 } else { print "FAIL: over\n"; fail += 1 }
+
+  /* 153600 bytes is not over 150 KB budget */
+  if (over_budget(153600, 150) == 0) { ok += 1 } else { print "FAIL: not over\n"; fail += 1 }
+
+  /* Fractional KB: 1500 bytes = 1.46 KB (rounded down by scale=2) */
+  if (kb(1500) == 1.46) { ok += 1 } else { print "FAIL: fractional kb\n"; fail += 1 }
+
+  return ok
+}

@@ -15,10 +15,10 @@
     },
     {
       "language": "TypeScript",
-      "role": "release contract typing and requested plugin stack contracts",
+      "role": "strict JSON config validator (manifest, site-config, translations) + audit report type declarations",
       "entrypoints": [
-        "polyglot/typescript/release-contract.ts",
-        "polyglot/typescript/fullstack-plugin-contract.ts"
+        "polyglot/typescript/seis_config_validator.ts",
+        "packages/seis-ai/types/seis-ai.d.ts"
       ]
     },
     {
@@ -48,34 +48,51 @@
     },
     {
       "language": "Python",
-      "role": "asset/deploy metadata inspection",
+      "role": "binary image-header audit, PWA icon generation, WCAG 2.1 color contrast checking, and service worker PRECACHE integrity",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
+        "polyglot/python/seis_image_audit.py",
+        "polyglot/python/seis_icon_gen.py",
+        "polyglot/python/seis_color_contrast.py",
+        "polyglot/python/seis_sw_cache_audit.py",
         "server/python/verify_release.py"
       ]
     },
     {
       "language": "Ruby",
-      "role": "alternate release hash verification",
-      "entrypoints": ["polyglot/ruby/verify_release.rb"]
+      "role": "i18n content statistics, untranslated-value detection, HTML heading hierarchy audit, and favicon/icon file existence check",
+      "entrypoints": [
+        "polyglot/ruby/verify_release.rb",
+        "polyglot/ruby/i18n_stats.rb",
+        "polyglot/ruby/html_heading_audit.rb",
+        "polyglot/ruby/favicon_audit.rb"
+      ]
     },
     {
       "language": "PHP",
-      "role": "shared-hosting health fallback",
+      "role": "contact form endpoint and shared-hosting health fallback",
       "entrypoints": [
+        "polyglot/php/contact-endpoint.php",
         "server/php/health.php",
         "server/php/router.php"
       ]
     },
     {
       "language": "Go",
-      "role": "future service health contract",
-      "entrypoints": ["polyglot/go/health_contract.go"]
+      "role": "local preview server with production security headers; JSON-LD schema.org validator",
+      "entrypoints": [
+        "polyglot/go/health_contract.go",
+        "polyglot/go/cmd/seis-serve/main.go",
+        "polyglot/go/cmd/seis-jsonld/main.go"
+      ]
     },
     {
       "language": "Rust",
-      "role": "performance budget contract",
-      "entrypoints": ["polyglot/rust/performance_budget.rs"]
+      "role": "offline link/asset integrity audit",
+      "entrypoints": [
+        "polyglot/rust/performance_budget.rs",
+        "polyglot/rust/seis-link-audit/src/main.rs"
+      ]
     },
     {
       "language": "Swift",
@@ -84,8 +101,11 @@
     },
     {
       "language": "Kotlin",
-      "role": "Android motion/accessibility policy",
-      "entrypoints": ["polyglot/kotlin/SeisMotionPolicy.kt"]
+      "role": "Android motion/accessibility policy; CSS font-family generic-fallback auditor",
+      "entrypoints": [
+        "polyglot/kotlin/SeisMotionPolicy.kt",
+        "polyglot/kotlin/seis_css_font_audit.kts"
+      ]
     },
     {
       "language": "Dart",
@@ -94,13 +114,20 @@
     },
     {
       "language": "Bash",
-      "role": "portable deploy guard",
-      "entrypoints": ["polyglot/bash/deploy_guard.sh"]
+      "role": "shell static auditor (bash -n, shebang, set -u) + polyglot orchestrator",
+      "entrypoints": [
+        "polyglot/bash/seis_shell_audit.sh",
+        "scripts/polyglot-check.sh"
+      ]
     },
     {
       "language": "Java",
-      "role": "JVM release readiness contract",
-      "entrypoints": ["polyglot/java/SeisDeployReadiness.java"]
+      "role": "drawings SHA-256 integrity ledger; CSS responsive media query auditor",
+      "entrypoints": [
+        "polyglot/java/SeisDeployReadiness.java",
+        "polyglot/java/DrawingsChecksum.java",
+        "polyglot/java/CssMediaQueryAudit.java"
+      ]
     },
     {
       "language": "C#",
@@ -109,8 +136,8 @@
     },
     {
       "language": "SQL",
-      "role": "future release ledger schema",
-      "entrypoints": ["polyglot/sql/release_readiness_schema.sql"]
+      "role": "queryable audit-ledger schema with CHECK constraints, trigger, and views (SQLite)",
+      "entrypoints": ["polyglot/sql/audit_ledger.sqlite.sql"]
     },
     {
       "language": "Lua",
@@ -119,8 +146,8 @@
     },
     {
       "language": "YAML",
-      "role": "portable deploy governance configuration",
-      "entrypoints": ["polyglot/yaml/deploy-governance.yml"]
+      "role": "yq-based CI workflow governance lint — trigger, timeout-minutes, and job-name enforcement across all workflows",
+      "entrypoints": ["polyglot/yaml/seis_workflow_lint.sh"]
     },
     {
       "language": "Cloudflare Worker",
@@ -145,18 +172,35 @@
     },
     {
       "language": "C",
-      "role": "portable embedded readiness contract",
-      "entrypoints": ["polyglot/c/readiness_contract.h"]
+      "role": "strict UTF-8 validation for all web text files",
+      "entrypoints": [
+        "polyglot/c/readiness_contract.h",
+        "polyglot/c/seis_utf8_check.c"
+      ]
+    },
+    {
+      "language": "bc",
+      "role": "arbitrary-precision asset performance budget calculator (KB thresholds, % utilization)",
+      "entrypoints": [
+        "polyglot/bc/seis_budget_check.bc",
+        "polyglot/bc/seis_budget_check.sh"
+      ]
     },
     {
       "language": "C++",
-      "role": "native application readiness contract",
-      "entrypoints": ["polyglot/cpp/readiness_contract.hpp"]
+      "role": "duplicate-key-rejecting translations.json linter",
+      "entrypoints": [
+        "polyglot/cpp/readiness_contract.hpp",
+        "polyglot/cpp/seis_translations_lint.cpp"
+      ]
     },
     {
       "language": "Elixir",
-      "role": "calm release policy for concurrent service experiments",
-      "entrypoints": ["polyglot/elixir/calm_release_policy.ex"]
+      "role": "calm release policy for concurrent service experiments; HTML anchor safety auditor (target=_blank must have rel=noopener/noreferrer)",
+      "entrypoints": [
+        "polyglot/elixir/calm_release_policy.ex",
+        "polyglot/elixir/seis_html_anchor_audit.exs"
+      ]
     },
     {
       "language": "Erlang",
@@ -165,8 +209,11 @@
     },
     {
       "language": "Haskell",
-      "role": "pure release policy model",
-      "entrypoints": ["polyglot/haskell/CalmReleasePolicy.hs"]
+      "role": "pure release policy model; CSS dimension unit histogram and font-size px usage audit",
+      "entrypoints": [
+        "polyglot/haskell/CalmReleasePolicy.hs",
+        "polyglot/haskell/seis_css_unit_audit.hs"
+      ]
     },
     {
       "language": "Scala",
@@ -185,8 +232,12 @@
     },
     {
       "language": "Perl",
-      "role": "portable readiness guard for legacy hosting scripts",
-      "entrypoints": ["polyglot/perl/readiness_guard.pl"]
+      "role": "source hygiene lint (BOM, CRLF, trailing whitespace) and robots.txt syntax/content validation",
+      "entrypoints": [
+        "polyglot/perl/readiness_guard.pl",
+        "polyglot/perl/hygiene_lint.pl",
+        "polyglot/perl/robots_txt_audit.pl"
+      ]
     },
     {
       "language": "Zig",
@@ -215,13 +266,16 @@
     },
     {
       "language": "XML",
-      "role": "enterprise interchange release policy contract",
-      "entrypoints": ["polyglot/xml/release-policy.xml"]
+      "role": "xmllint-based sitemap.xml validator (well-formedness, namespace, hreflang, https)",
+      "entrypoints": ["polyglot/xml/seis_sitemap_check.sh"]
     },
     {
       "language": "OCaml",
-      "role": "typed functional release policy model",
-      "entrypoints": ["polyglot/ocaml/release_policy.ml"]
+      "role": "typed functional release policy model; CSS selector type distribution auditor",
+      "entrypoints": [
+        "polyglot/ocaml/release_policy.ml",
+        "polyglot/ocaml/seis_css_selector_stats.ml"
+      ]
     },
     {
       "language": "ReasonML",
@@ -230,8 +284,11 @@
     },
     {
       "language": "Nim",
-      "role": "compact systems readiness policy",
-      "entrypoints": ["polyglot/nim/readiness_policy.nim"]
+      "role": "compact systems readiness policy; HTML img tag alt attribute completeness auditor",
+      "entrypoints": [
+        "polyglot/nim/readiness_policy.nim",
+        "polyglot/nim/seis_html_img_audit.nim"
+      ]
     },
     {
       "language": "Crystal",
@@ -240,8 +297,11 @@
     },
     {
       "language": "Groovy",
-      "role": "JVM scripting release policy guard",
-      "entrypoints": ["polyglot/groovy/SeisReleasePolicy.groovy"]
+      "role": "JVM scripting release policy guard; JSON file structure validator (manifest, site-config, translations key presence)",
+      "entrypoints": [
+        "polyglot/groovy/SeisReleasePolicy.groovy",
+        "polyglot/groovy/seis_json_files_check.groovy"
+      ]
     },
     {
       "language": "Objective-C",
@@ -270,8 +330,11 @@
     },
     {
       "language": "Racket",
-      "role": "language-lab readiness policy",
-      "entrypoints": ["polyglot/racket/readiness-policy.rkt"]
+      "role": "language-lab readiness policy; PWA manifest deep validator (display, hex colors, icon sizes)",
+      "entrypoints": [
+        "polyglot/racket/readiness-policy.rkt",
+        "polyglot/racket/seis_pwa_manifest_audit.rkt"
+      ]
     },
     {
       "language": "Scheme",
@@ -279,9 +342,22 @@
       "entrypoints": ["polyglot/scheme/readiness-policy.scm"]
     },
     {
+      "language": "Guile",
+      "role": "GNU Scheme — HTML hreflang link auditor (locale completeness, HTTPS, no duplicates)",
+      "entrypoints": ["polyglot/guile/seis_hreflang_audit.scm"]
+    },
+    {
       "language": "Prolog",
-      "role": "logic-programming readiness proof sketch",
-      "entrypoints": ["polyglot/prolog/readiness_policy.pl"]
+      "role": "logic-programming readiness proof sketch; HTML tabindex accessibility auditor (positive tabindex = WCAG 2.4.3 anti-pattern)",
+      "entrypoints": [
+        "polyglot/prolog/readiness_policy.pl",
+        "polyglot/prolog/seis_html_tabindex_audit.pl"
+      ]
+    },
+    {
+      "language": "Chicken Scheme",
+      "role": "R7RS Scheme — HTML button type auditor: form buttons must declare explicit type= to prevent accidental submit",
+      "entrypoints": ["polyglot/chicken/seis_html_button_types.scm"]
     },
     {
       "language": "D",
@@ -302,6 +378,11 @@
       "language": "OpenAPI",
       "role": "future release health API contract",
       "entrypoints": ["polyglot/openapi/release-health.openapi.yaml"]
+    },
+    {
+      "language": "jq",
+      "role": "JSON query language — locale key parity audit with set-theory gap detection",
+      "entrypoints": ["polyglot/jq/seis_translations_audit.jq"]
     },
     {
       "language": "JSON Schema",
@@ -460,8 +541,33 @@
     },
     {
       "language": "AWK",
-      "role": "minimal text-ops release policy guard",
-      "entrypoints": ["polyglot/awk/release_policy.awk"]
+      "role": "CSS custom-property usage histogram — token frequency and single-use suspects",
+      "entrypoints": ["polyglot/awk/css_var_histogram.awk"]
+    },
+    {
+      "language": "sed",
+      "role": "CSS custom-property definition vs. usage cross-check (GNU sed sentinel extraction)",
+      "entrypoints": ["polyglot/sed/seis_css_vars_defined.sh"]
+    },
+    {
+      "language": "Bun",
+      "role": "JavaScript production code quality audit — no eval, document.write, unsafe innerHTML, console.log, or TODO markers",
+      "entrypoints": ["polyglot/bun/seis_js_quality_audit.ts"]
+    },
+    {
+      "language": "Lua",
+      "role": "i18n attribute auditor — all data-i18n* HTML attribute keys verified against tr base locale (Lua 5.4, zero deps)",
+      "entrypoints": ["polyglot/lua/seis_i18n_attr_audit.lua"]
+    },
+    {
+      "language": "Tcl",
+      "role": "12-point HTML meta-tag completeness checker — title, meta description, viewport, canonical, og:*, twitter:*",
+      "entrypoints": ["polyglot/tcl/seis_meta_tags_check.tcl"]
+    },
+    {
+      "language": "R",
+      "role": "Statistical analysis of translation string length ratios across 5 locales; flags keys ≥3× longer than tr base (UI overflow risk)",
+      "entrypoints": ["polyglot/r/seis_translation_stats.R"]
     },
     {
       "language": "Forth",
@@ -470,8 +576,11 @@
     },
     {
       "language": "Common Lisp",
-      "role": "durable Lisp release policy model",
-      "entrypoints": ["polyglot/common-lisp/release-policy.lisp"]
+      "role": "durable Lisp release policy model; HTML id-attribute uniqueness checker",
+      "entrypoints": [
+        "polyglot/common-lisp/release-policy.lisp",
+        "polyglot/common-lisp/seis_html_id_uniqueness.lisp"
+      ]
     },
     {
       "language": "Emacs Lisp",
