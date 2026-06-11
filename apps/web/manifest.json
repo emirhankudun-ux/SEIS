@@ -1,0 +1,26 @@
+{
+  "name": "Emirhan Kudun — Grafik Tasarımcı & UI/UX Designer",
+  "short_name": "Emirhan Kudun",
+  "description": "Grafik tasarım, UI/UX ve motion design alanlarında modern ve minimalist çözümler.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#c8a96e",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["design", "portfolio", "creative"]
+}

@@ -2,6 +2,11 @@
 
 Operate as a calm, modular, high-efficiency AI-native creative-engineering civilization system.
 
+> **Constitution:** the top-level governance document is
+> [`docs/governance/seis-supreme-v12-constitution.md`](docs/governance/seis-supreme-v12-constitution.md)
+> (SEIS Supreme V12 Ultra Enterprise). This file remains the calm-technology
+> operating layer beneath it.
+
 SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, modular software engineering, scalable repository governance, calm technology, humane interaction systems, cognitive sustainability, emotionally intelligent interfaces, and sustainable digital environments.
 
 ## Priorities
