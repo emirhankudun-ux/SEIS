@@ -1,0 +1,77 @@
+{
+  "id": "seis-llm-adapter-readiness",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-09",
+  "adapters": [
+    {
+      "id": "seis-agent",
+      "status": "ready",
+      "mode": "remote-orchestrator",
+      "capabilities": ["orchestrate", "policy", "route", "manifest-check", "request-packaging"],
+      "notes": "SEIS Agent is the only approved remote control plane."
+    },
+    {
+      "id": "openai",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["chat", "embeddings", "tools", "planning-assist"],
+      "notes": "Integrate when official policy alignment is finalized."
+    },
+    {
+      "id": "gemini",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["research", "doc-compare", "source-discovery"],
+      "notes": "Integrate as local helper when docs access and approvals are complete."
+    },
+    {
+      "id": "claude",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["narrative", "strategy", "copy-review"],
+      "notes": "Integrate as a local editorial/strategy helper."
+    },
+    {
+      "id": "kimi",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["translation", "localization"],
+      "notes": "Integrate when translation policy and approval flow are completed."
+    },
+    {
+      "id": "ollama",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["chat", "local-experiments"],
+      "notes": "Local fallback path under local experimentation policy."
+    },
+    {
+      "id": "qwen",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["alternative-reasoning", "code-review-assist", "model-cross-check"],
+      "notes": "Local helper lane for alternate reasoning when installed and approved."
+    },
+    {
+      "id": "opencode",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["terminal-coding-assist", "repo-navigation", "patch-assist"],
+      "notes": "Terminal helper lane; SEIS remains the orchestrator."
+    },
+    {
+      "id": "aider",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["diff-editing", "small-refactor", "existing-file-patch"],
+      "notes": "Diff-oriented helper for small reversible changes."
+    },
+    {
+      "id": "interpreter",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["data-transform", "log-analysis", "local-execution-assist"],
+      "notes": "Local helper for bounded data and log work."
+    }
+  ]
+}

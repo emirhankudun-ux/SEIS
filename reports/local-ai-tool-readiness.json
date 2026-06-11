@@ -1,0 +1,143 @@
+{
+  "id": "seis-local-ai-tool-readiness",
+  "path": "reports/local-ai-tool-readiness.json",
+  "generatedAt": "2026-06-10T06:28:42.100Z",
+  "helperCount": 9,
+  "readyCount": 2,
+  "missingCredentialCount": 2,
+  "missingCommandCount": 5,
+  "runtimeNotReadyCount": 0,
+  "tools": [
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "command": "openai",
+      "commandPath": null,
+      "installed": false,
+      "credentialState": {
+        "env": "OPENAI_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "command": "claude",
+      "commandPath": "/Users/emirhankudun/.local/bin/claude",
+      "installed": true,
+      "credentialState": {
+        "env": "ANTHROPIC_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-credential",
+      "issueCodes": [
+        "missing-ANTHROPIC_API_KEY"
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "command": "gemini",
+      "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+      "installed": true,
+      "credentialState": {
+        "env": "GEMINI_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-credential",
+      "issueCodes": [
+        "missing-GEMINI_API_KEY"
+      ]
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "command": "qwen",
+      "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "command": "kimi",
+      "commandPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": true,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama",
+      "command": "ollama",
+      "commandPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": false,
+      "offlineFallbackCapable": true,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "command": "opencode",
+      "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "aider",
+      "label": "Aider",
+      "command": "aider",
+      "commandPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "interpreter",
+      "label": "Interpreter",
+      "command": "interpreter",
+      "commandPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    }
+  ]
+}

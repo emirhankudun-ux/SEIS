@@ -8606,6 +8606,937 @@
           "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
         }
       ]
+    },
+    "llmSystem": {
+      "id": "seis-llm-package-registry",
+      "path": "content/development/llm-package-registry.json",
+      "generatedAt": "2026-06-09",
+      "providerCount": 9,
+      "activePackageCount": 1,
+      "packages": [
+        {
+          "id": "seis-agent",
+          "provider": "seis",
+          "mode": "remote-orchestrator",
+          "scope": [
+            "policy",
+            "release-governance",
+            "tool-orchestration",
+            "lane-routing"
+          ],
+          "status": "ready"
+        },
+        {
+          "id": "openai-helper",
+          "provider": "openai",
+          "mode": "local-helper",
+          "scope": [
+            "policy-draft",
+            "analysis",
+            "summarization"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "gemini-helper",
+          "provider": "google",
+          "mode": "local-helper",
+          "scope": [
+            "doc-research",
+            "compare",
+            "web-source-check"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "claude-helper",
+          "provider": "anthropic",
+          "mode": "local-helper",
+          "scope": [
+            "copy",
+            "strategy",
+            "ux-narrative"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "ollama-helper",
+          "provider": "local",
+          "mode": "local-helper",
+          "scope": [
+            "local-draft",
+            "private-rationale",
+            "offline-planning"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "qwen-helper",
+          "provider": "qwen",
+          "mode": "local-helper",
+          "scope": [
+            "alternative-reasoning",
+            "code-review-assist",
+            "model-cross-check"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "opencode-helper",
+          "provider": "opencode",
+          "mode": "local-helper",
+          "scope": [
+            "terminal-coding-assist",
+            "repo-navigation",
+            "patch-assist"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "aider-helper",
+          "provider": "aider",
+          "mode": "local-helper",
+          "scope": [
+            "diff-editing",
+            "small-refactor",
+            "existing-file-patch"
+          ],
+          "status": "planned"
+        },
+        {
+          "id": "interpreter-helper",
+          "provider": "open-interpreter",
+          "mode": "local-helper",
+          "scope": [
+            "data-transform",
+            "log-analysis",
+            "local-notebook-style-work"
+          ],
+          "status": "planned"
+        }
+      ]
+    },
+    "llmTaskRoutingPolicy": {
+      "id": "seis-llm-task-routing-policy",
+      "path": "content/development/llm-task-routing-policy.json",
+      "generatedAt": "2026-06-09",
+      "defaultLane": "seis-agent",
+      "remoteOrchestrator": "seis-agent",
+      "localHelpers": [
+        "openai",
+        "claude",
+        "gemini",
+        "qwen",
+        "kimi",
+        "ollama",
+        "opencode",
+        "aider",
+        "interpreter"
+      ],
+      "remoteOnly": [
+        "release governance",
+        "security policy",
+        "governance check",
+        "cross-tool orchestration"
+      ],
+      "routingRuleCount": 8,
+      "routingRules": [
+        {
+          "keyword": "local",
+          "primary": "ollama"
+        },
+        {
+          "keyword": "qwen|alternative reasoning|cross-check|ikinci görüş",
+          "primary": "qwen"
+        },
+        {
+          "keyword": "opencode|terminal coding|terminal agent",
+          "primary": "opencode"
+        },
+        {
+          "keyword": "translate|localize|multilingual|çeviri",
+          "primary": "kimi"
+        },
+        {
+          "keyword": "research|dokümant|compare|araştır",
+          "primary": "gemini"
+        },
+        {
+          "keyword": "policy|governance|plan|karar",
+          "primary": "seis-agent"
+        },
+        {
+          "keyword": "copy|ux|narrative|strateji|anlatım",
+          "primary": "claude"
+        },
+        {
+          "keyword": "openai|summary|summarize|özet|analiz",
+          "primary": "openai"
+        }
+      ]
+    },
+    "llmAdapterReadiness": {
+      "id": "seis-llm-adapter-readiness",
+      "path": "content/development/llm-adapter-readiness.json",
+      "generatedAt": "2026-06-09",
+      "adapterCount": 10,
+      "readyAdapterCount": 1,
+      "adapters": [
+        {
+          "id": "seis-agent",
+          "status": "ready",
+          "mode": "remote-orchestrator",
+          "capabilities": [
+            "orchestrate",
+            "policy",
+            "route",
+            "manifest-check",
+            "request-packaging"
+          ]
+        },
+        {
+          "id": "openai",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "chat",
+            "embeddings",
+            "tools",
+            "planning-assist"
+          ]
+        },
+        {
+          "id": "gemini",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "research",
+            "doc-compare",
+            "source-discovery"
+          ]
+        },
+        {
+          "id": "claude",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "narrative",
+            "strategy",
+            "copy-review"
+          ]
+        },
+        {
+          "id": "kimi",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "translation",
+            "localization"
+          ]
+        },
+        {
+          "id": "ollama",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "chat",
+            "local-experiments"
+          ]
+        },
+        {
+          "id": "qwen",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "alternative-reasoning",
+            "code-review-assist",
+            "model-cross-check"
+          ]
+        },
+        {
+          "id": "opencode",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "terminal-coding-assist",
+            "repo-navigation",
+            "patch-assist"
+          ]
+        },
+        {
+          "id": "aider",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "diff-editing",
+            "small-refactor",
+            "existing-file-patch"
+          ]
+        },
+        {
+          "id": "interpreter",
+          "status": "planned",
+          "mode": "local-helper",
+          "capabilities": [
+            "data-transform",
+            "log-analysis",
+            "local-execution-assist"
+          ]
+        }
+      ]
+    },
+    "llmRequestBlueprints": {
+      "id": "seis-llm-request-blueprints",
+      "path": "content/development/llm-request-blueprints.json",
+      "generatedAt": "2026-06-09",
+      "blueprintCount": 2,
+      "blueprints": [
+        {
+          "id": "seis-audit-query",
+          "name": "SEIS Bundle Audit",
+          "taskCount": 3
+        },
+        {
+          "id": "seis-llm-routing",
+          "name": "LLM Routing Decision",
+          "taskCount": 3
+        }
+      ]
+    },
+    "llmBridge": {
+      "id": "seis-repos-llm-bridge-2026-06-08",
+      "path": "data/seis-repos-llm-bridge-2026-06-08.json",
+      "generatedAt": "2026-06-09",
+      "canonicalRepo": ".",
+      "canonicalBranch": "main",
+      "pluginManifest": "plugins/seis/.codex-plugin/plugin.json",
+      "mcpServer": "mcp/seis-mcp-server.mjs",
+      "launcher": "plugins/seis/scripts/seis-mcp-launcher.mjs",
+      "planner": "packages/ai-language/src/llm-task-planner.mjs"
+    },
+    "localAiToolReadiness": {
+      "id": "seis-local-ai-tool-readiness",
+      "path": "reports/local-ai-tool-readiness.json",
+      "generatedAt": "2026-06-10T06:28:42.100Z",
+      "helperCount": 9,
+      "readyCount": 2,
+      "missingCredentialCount": 2,
+      "missingCommandCount": 5,
+      "runtimeNotReadyCount": 0,
+      "tools": [
+        {
+          "id": "openai",
+          "label": "OpenAI",
+          "command": "openai",
+          "commandPath": null,
+          "installed": false,
+          "credentialState": {
+            "env": "OPENAI_API_KEY",
+            "present": false
+          },
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
+        },
+        {
+          "id": "claude",
+          "label": "Claude",
+          "command": "claude",
+          "commandPath": "/Users/emirhankudun/.local/bin/claude",
+          "installed": true,
+          "credentialState": {
+            "env": "ANTHROPIC_API_KEY",
+            "present": false
+          },
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "missing-credential",
+          "issueCodes": [
+            "missing-ANTHROPIC_API_KEY"
+          ]
+        },
+        {
+          "id": "gemini",
+          "label": "Gemini",
+          "command": "gemini",
+          "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+          "installed": true,
+          "credentialState": {
+            "env": "GEMINI_API_KEY",
+            "present": false
+          },
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "missing-credential",
+          "issueCodes": [
+            "missing-GEMINI_API_KEY"
+          ]
+        },
+        {
+          "id": "qwen",
+          "label": "Qwen",
+          "command": "qwen",
+          "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "kimi",
+          "label": "Kimi",
+          "command": "kimi",
+          "commandPath": null,
+          "installed": false,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": true,
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
+        },
+        {
+          "id": "ollama",
+          "label": "Ollama",
+          "command": "ollama",
+          "commandPath": null,
+          "installed": false,
+          "credentialState": null,
+          "runtimeOk": false,
+          "offlineFallbackCapable": true,
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
+        },
+        {
+          "id": "opencode",
+          "label": "OpenCode",
+          "command": "opencode",
+          "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "aider",
+          "label": "Aider",
+          "command": "aider",
+          "commandPath": null,
+          "installed": false,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
+        },
+        {
+          "id": "interpreter",
+          "label": "Interpreter",
+          "command": "interpreter",
+          "commandPath": null,
+          "installed": false,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
+        }
+      ]
+    },
+    "thirdPartyAiToolInventory": {
+      "id": "seis-third-party-ai-tool-inventory",
+      "sourceRoot": "../3.taraf kodlar",
+      "path": "reports/third-party-ai-tool-inventory.json",
+      "generatedAt": "2026-06-10T06:28:42.102Z",
+      "available": true,
+      "candidateCount": 5,
+      "detectedCount": 5,
+      "candidates": [
+        {
+          "id": "claude-code",
+          "label": "Claude Code",
+          "status": "detected",
+          "sourceRoot": "../3.taraf kodlar/claude-code",
+          "aliases": [
+            "claude-code"
+          ],
+          "markerHints": [
+            ".claude",
+            ".claude-plugin",
+            ".git"
+          ],
+          "markerHits": [
+            ".claude",
+            ".claude-plugin",
+            ".git"
+          ]
+        },
+        {
+          "id": "gemini-cli",
+          "label": "Gemini CLI",
+          "status": "detected",
+          "sourceRoot": "../3.taraf kodlar/gemini-cli",
+          "aliases": [
+            "gemini-cli"
+          ],
+          "markerHints": [
+            ".gemini",
+            ".github",
+            "packages"
+          ],
+          "markerHits": [
+            ".gemini",
+            ".github",
+            "packages"
+          ]
+        },
+        {
+          "id": "antigravity",
+          "label": "Antigravity IDE",
+          "status": "detected",
+          "sourceRoot": "../3.taraf kodlar/antigravity",
+          "aliases": [
+            "antigravity"
+          ],
+          "markerHints": [
+            "Contents",
+            "Configuration",
+            "Plugins"
+          ],
+          "markerHits": [
+            "Contents",
+            "Configuration"
+          ]
+        },
+        {
+          "id": "deepseek-coder",
+          "label": "DeepSeek Coder",
+          "status": "detected",
+          "sourceRoot": "../3.taraf kodlar/DeepSeek-Coder",
+          "aliases": [
+            "DeepSeek-Coder",
+            "deepseek-coder"
+          ],
+          "markerHints": [
+            ".github",
+            "finetune",
+            "Evaluation"
+          ],
+          "markerHits": [
+            ".github",
+            "finetune",
+            "Evaluation"
+          ]
+        },
+        {
+          "id": "awesome-deepseek-agent",
+          "label": "Awesome DeepSeek Agent",
+          "status": "detected",
+          "sourceRoot": "../3.taraf kodlar/awesome-deepseek-agent",
+          "aliases": [
+            "awesome-deepseek-agent",
+            "deepseek"
+          ],
+          "markerHints": [
+            ".github",
+            "docs",
+            "README.md"
+          ],
+          "markerHits": [
+            ".github",
+            "docs"
+          ]
+        }
+      ]
+    },
+    "thirdPartyAdaptationPlan": {
+      "id": "seis-third-party-adaptation-plan",
+      "path": "content/development/third-party-adaptation-plan.json",
+      "generatedAt": "2026-06-11T08:24:29.889Z",
+      "sourceRoot": "../3.taraf kodlar",
+      "candidateCount": 6,
+      "detectedCount": 6,
+      "blockedDeleteCount": 6,
+      "highRiskCount": 6,
+      "codeImport": "blocked_without_license_review_and_explicit_user_confirmation",
+      "deletePolicy": "blocked_until_owned_reimplementation_validated_and_user_confirms",
+      "githubPublishPolicy": "publish_seis_owned_code_manifests_and_reports_only",
+      "candidates": [
+        {
+          "id": "claude-code",
+          "kind": "agent-source-tree",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "ideas_interfaces_and_cli_boundaries_only",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        },
+        {
+          "id": "gemini-cli",
+          "kind": "agent-source-tree",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "ideas_interfaces_and_cli_boundaries_only",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        },
+        {
+          "id": "deepseek-coder",
+          "kind": "model-source-tree",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "ideas_interfaces_and_cli_boundaries_only",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        },
+        {
+          "id": "awesome-deepseek-agent",
+          "kind": "agent-reference-tree",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "ideas_interfaces_and_cli_boundaries_only",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        },
+        {
+          "id": "antigravity-desktop",
+          "kind": "desktop-application-bundle",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "reference_only_no_import",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        },
+        {
+          "id": "desktop-bundle-root",
+          "kind": "proprietary-or-binary-bundle",
+          "detected": true,
+          "riskLevel": "high",
+          "allowedUse": "reference_only_no_import",
+          "deletionReadiness": "blocked",
+          "githubPublishReadiness": "seis_owned_outputs_only"
+        }
+      ]
+    },
+    "toolchainRuntimeReadiness": {
+      "id": "seis-toolchain-runtime-readiness",
+      "path": "content/development/toolchain-runtime-readiness.json",
+      "generatedAt": "2026-06-11T08:24:30.321Z",
+      "toolCount": 31,
+      "installedCount": 22,
+      "missingCount": 9,
+      "aiAgentCliCount": 8,
+      "languageRuntimeCount": 12,
+      "installExecution": "manual_confirmation_required",
+      "neverInstallSilently": true,
+      "tools": [
+        {
+          "id": "node",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/node",
+          "installAction": "none"
+        },
+        {
+          "id": "npm",
+          "category": "package-manager",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/npm",
+          "installAction": "none"
+        },
+        {
+          "id": "python3",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/usr/bin/python3",
+          "installAction": "none"
+        },
+        {
+          "id": "uv",
+          "category": "package-manager",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/uv",
+          "installAction": "none"
+        },
+        {
+          "id": "go",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/go",
+          "installAction": "none"
+        },
+        {
+          "id": "rustc",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/rustc",
+          "installAction": "none"
+        },
+        {
+          "id": "cargo",
+          "category": "package-manager",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/cargo",
+          "installAction": "none"
+        },
+        {
+          "id": "java",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/usr/bin/java",
+          "installAction": "none"
+        },
+        {
+          "id": "swift",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/usr/bin/swift",
+          "installAction": "none"
+        },
+        {
+          "id": "xcodebuild",
+          "category": "platform-build-tool",
+          "installed": true,
+          "commandPath": "/usr/bin/xcodebuild",
+          "installAction": "none"
+        },
+        {
+          "id": "kotlin",
+          "category": "language-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "dart",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/Developer/flutter/bin/dart",
+          "installAction": "none"
+        },
+        {
+          "id": "ruby",
+          "category": "language-runtime",
+          "installed": true,
+          "commandPath": "/usr/bin/ruby",
+          "installAction": "none"
+        },
+        {
+          "id": "php",
+          "category": "language-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "lua",
+          "category": "language-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "dotnet",
+          "category": "language-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "docker",
+          "category": "container-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "gh",
+          "category": "source-control",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/gh",
+          "installAction": "none"
+        },
+        {
+          "id": "gcloud",
+          "category": "cloud-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/gcloud",
+          "installAction": "none"
+        },
+        {
+          "id": "firebase",
+          "category": "cloud-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/firebase",
+          "installAction": "none"
+        },
+        {
+          "id": "adb",
+          "category": "android-tool",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/Library/Android/sdk/platform-tools/adb",
+          "installAction": "none"
+        },
+        {
+          "id": "sdkmanager",
+          "category": "android-tool",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/sdkmanager",
+          "installAction": "none"
+        },
+        {
+          "id": "claude",
+          "category": "ai-agent-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/claude",
+          "installAction": "none"
+        },
+        {
+          "id": "gemini",
+          "category": "ai-agent-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+          "installAction": "none"
+        },
+        {
+          "id": "qwen",
+          "category": "ai-agent-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+          "installAction": "none"
+        },
+        {
+          "id": "opencode",
+          "category": "ai-agent-cli",
+          "installed": true,
+          "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+          "installAction": "none"
+        },
+        {
+          "id": "aider",
+          "category": "ai-agent-cli",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "ollama",
+          "category": "local-model-runtime",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "openai",
+          "category": "ai-agent-cli",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        },
+        {
+          "id": "codex",
+          "category": "ai-agent-cli",
+          "installed": true,
+          "commandPath": "/Applications/Codex.app/Contents/Resources/codex",
+          "installAction": "none"
+        },
+        {
+          "id": "interpreter",
+          "category": "ai-agent-cli",
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
+        }
+      ]
+    },
+    "desktopAppIntegration": {
+      "id": "seis-desktop-app-integration",
+      "path": "content/development/desktop-app-integration.json",
+      "generatedAt": "2026-06-11T08:24:53.168Z",
+      "appCount": 9,
+      "detectedCount": 6,
+      "missingCount": 3,
+      "launchMode": "manual_or_user_requested",
+      "defaultIde": "antigravity",
+      "apps": [
+        {
+          "id": "antigravity",
+          "role": "preferred-agentic-ide",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/Antigravity.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "xcode",
+          "role": "apple-platform-ide",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/Xcode.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "android-studio",
+          "role": "android-ide",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/Android Studio.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "jetbrains-toolbox",
+          "role": "ide-manager",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/JetBrains Toolbox.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "codex",
+          "role": "primary-agent-execution",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/Codex.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "ollama",
+          "role": "local-model-runtime",
+          "detected": false,
+          "appPath": null,
+          "integrationAction": "install_or_configure_when_needed"
+        },
+        {
+          "id": "docker",
+          "role": "container-runtime",
+          "detected": false,
+          "appPath": null,
+          "integrationAction": "install_or_configure_when_needed"
+        },
+        {
+          "id": "figma",
+          "role": "design-workflow",
+          "detected": true,
+          "appPath": "../../../../../../../Applications/Figma.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "adobe-creative-cloud",
+          "role": "creative-app-manager",
+          "detected": false,
+          "appPath": null,
+          "integrationAction": "install_or_configure_when_needed"
+        }
+      ]
     }
   },
   "providers": [

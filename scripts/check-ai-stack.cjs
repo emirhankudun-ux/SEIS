@@ -4,53 +4,74 @@ const { spawnSync } = require("node:child_process");
 const { chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const tools = [
-  "codex",
-  "claude",
-  "gemini",
-  "kimi",
-  "aider",
-  "interpreter",
-  "ollama"
+  { id: "codex", optional: false },
+  { id: "openai", optional: true, credential: "OPENAI_API_KEY" },
+  { id: "claude", optional: true, credential: "ANTHROPIC_API_KEY" },
+  { id: "gemini", optional: true, credential: "GEMINI_API_KEY" },
+  { id: "qwen", optional: true },
+  { id: "kimi", optional: true },
+  { id: "opencode", optional: true },
+  { id: "aider", optional: true },
+  { id: "interpreter", optional: true },
+  { id: "ollama", optional: true, runtimeCheck: checkOllamaHealth }
 ];
 
-const missing = [];
+const missingRequired = [];
+const warnings = [];
 
-function commandExists( command ) {
-  const result = spawnSync("bash", [ "-lc", `command -v ${command}` ], { encoding: "utf8" });
+function commandExists(command) {
+  const result = spawnSync("bash", ["-lc", `command -v ${command}`], { encoding: "utf8" });
   return result.status === 0 ? (result.stdout || "").trim() : "";
 }
 
 function checkOllamaHealth() {
-  const result = spawnSync("bash", [ "-lc", "ollama list" ], { encoding: "utf8" });
+  const result = spawnSync("bash", ["-lc", "ollama list"], { encoding: "utf8" });
   return result.status === 0;
+}
+
+function readyReason(tool) {
+  if (tool.credential && !process.env[tool.credential]) {
+    return `missing ${tool.credential}`;
+  }
+  if (tool.runtimeCheck && !tool.runtimeCheck()) {
+    return "runtime check failed";
+  }
+  return "ready";
 }
 
 console.log("AI stack health check");
 console.log("");
 
 for (const tool of tools) {
-  const path = commandExists(tool);
-  if (!path) {
-    missing.push(tool);
-    console.log(`[missing]   ${tool}`);
+  const commandPath = commandExists(tool.id);
+  if (!commandPath) {
+    if (!tool.optional) missingRequired.push(tool.id);
+    console.log(`[missing]   ${tool.id}${tool.optional ? " (optional)" : ""}`);
     continue;
   }
-  console.log(`[installed] ${tool} -> ${path}`);
-}
 
-if (!missing.includes("ollama")) {
-  const healthy = checkOllamaHealth();
-  console.log(healthy ? "[running]   ollama server reachable" : "[warning]   ollama installed but server is not reachable");
+  const reason = readyReason(tool);
+  if (reason !== "ready") {
+    warnings.push(`${tool.id}: ${reason}`);
+    console.log(`[not-ready] ${tool.id} -> ${commandPath} (${reason})${tool.optional ? " (optional)" : ""}`);
+    continue;
+  }
+
+  console.log(`[installed] ${tool.id} -> ${commandPath}`);
 }
 
 const routingExpectations = [
-  [ "quick repo patch", "aider" ],
-  [ "browser research for docs", "gemini" ],
-  [ "local offline llama draft", "ollama" ],
-  [ "csv log analysis", "interpreter" ],
-  [ "ux copy narrative pass", "claude" ],
-  [ "translate this interface to turkish", "kimi" ],
-  [ "release governance checklist", "codex" ]
+  ["quick repo patch", "aider"],
+  ["browser research for docs", "gemini"],
+  ["local offline llama draft", "ollama"],
+  ["csv log analysis", "interpreter"],
+  ["openai draft", "openai"],
+  ["qwen cross-check", "qwen"],
+  ["opencode terminal coding", "opencode"],
+  ["ux copy narrative pass", "claude"],
+  ["translate this interface to turkish", "kimi"],
+  ["release governance checklist", "seis-agent"],
+  ["production reasoning and policy check", "seis-agent"]
 ];
 
 console.log("");
@@ -66,10 +87,18 @@ for (const [intent, expected] of routingExpectations) {
   }
 }
 
-if (missing.length > 0 || routingFailures.length > 0) {
+if (warnings.length > 0) {
+  console.log("");
+  console.log("AI stack warnings:");
+  for (const warning of warnings) {
+    console.log(`- ${warning}`);
+  }
+}
+
+if (missingRequired.length > 0 || routingFailures.length > 0) {
   console.error("");
-  if (missing.length > 0) {
-    console.error(`Missing tools: ${missing.join(", ")}`);
+  if (missingRequired.length > 0) {
+    console.error(`Missing required tools: ${missingRequired.join(", ")}`);
   }
   if (routingFailures.length > 0) {
     console.error(`Routing mismatches: ${routingFailures.join("; ")}`);
@@ -78,4 +107,4 @@ if (missing.length > 0 || routingFailures.length > 0) {
 }
 
 console.log("");
-console.log("AI stack is ready.");
+console.log("AI stack check passed.");

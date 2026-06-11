@@ -32,7 +32,54 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 - Keep systems maintainable, explainable, accessible, observable, and rollback-safe.
 - Main branch is sacred; risky work belongs on isolated branches.
 - Legacy files must be analyzed before migration and must not be copied directly into the clean app surface.
-- Documentation is part of system integrity.
+Documentation is part of system integrity.
+
+## Aktif Lokal IDE / Design/Creator Stack
+
+- Antigravity IDE — öncelikli çalışma yüzeyi
+- Antigravity 2.0 — yardımcı/ikincil çalışma yüzeyi
+- Xcode — Apple platformları için öncelikli
+- Android Studio — Android geliştirme için
+- Figma — ana UI/design sistemi yüzeyi
+
+## Bağlama Kuralı (Depolama Dostu)
+
+- Yalnızca yerel olarak kurulu olan uygulamalar bağlanır.
+- Kurulu olmayan uygulamalar için otomatik kurulum/indirme yapılmaz.
+
+## Büyük Dil Modeli Stratejisi
+
+- Varsayılan geliştirme akışında mümkünse en güncel güçlü model sürümleri kullanılır (yüksek bağlam ve karmaşık akıl yürütme gerektiğinde).
+- Mevcut hiyerarşi:
+  1. Kod ve eylem odaklı iş: **Codex / ChatGPT**
+  2. Mimarî ve kontrol odaklı kararlar: **Claude**
+  3. Google ekosistemi ve belge/arayüz doğrulama: **Gemini**
+  4. Alternatif analiz akışı ve karşı-kanıtlama: **Qwen**
+  5. Lokal deney/deneme: **Ollama** (kaynak müsaitse ve proje gerektiriyorsa)
+- Büyük model kullanımı ile seçimi; görev türüne göre yapılır, “her iş için tek model” kuralı uygulanmaz.
+- Depolama baskısı nedeniyle local ağır model kopyaları zorunlu tutulmaz; API tabanlı kullanım ilk tercih olmaya devam eder.
+
+## Hızlı Model Seçim Akışı
+
+```mermaid
+flowchart TD
+  A[Görev İsteği] --> B{Kod yazımı mı, debug mı?}
+  B -->|Evet| C[Codex / ChatGPT]
+  B -->|Hayır| D{Mimari/karar dokümantasyonu mı?}
+  D -->|Evet| E[Claude]
+  D -->|Hayır| F{Google ekosistemi (Cloud/Firebase/docs) mi?}
+  F -->|Evet| G[Gemini]
+  F -->|Hayır| H{Alternatif kontrol / karşılaştırma mı?}
+  H -->|Evet| I[Qwen]
+  H -->|Hayır| J{Yerel deneme / offline prototip mi?}
+  J -->|Evet| K[Ollama]
+  J -->|Hayır| C
+```
+
+- Sonuç:
+  - Birincil: **Codex/ChatGPT**
+  - İkincil destek: **Claude → Gemini → Qwen**
+  - Lokal acil deneme: **Ollama** (zorunlu değil, isteğe bağlı)
 
 ## Multi-AI Assistant Model
 

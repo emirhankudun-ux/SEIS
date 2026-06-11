@@ -443,6 +443,71 @@ h2 {
   text-transform: capitalize;
 }
 
+.language-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.7rem;
+  margin: 0.55rem 0 0.9rem;
+}
+
+.language-summary-grid .system-card {
+  min-height: 10rem;
+}
+
+.language-toolbar {
+  margin-bottom: 0.75rem;
+}
+
+.language-card-grid {
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+
+.language-card-grid .system-card {
+  min-height: 10.5rem;
+}
+
+.language-card-grid .system-card h3 {
+  margin-bottom: 0.25rem;
+}
+
+.language-card-grid .system-card p {
+  margin-top: 0.35rem;
+}
+
+.language-card-grid .system-card .chip-row {
+  margin-bottom: 0.38rem;
+}
+
+.ai-release-summary-grid {
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  margin-top: 0.45rem;
+}
+
+.ai-release-summary-grid .system-card {
+  min-height: 11rem;
+}
+
+.ai-release-summary-grid .system-card h3 {
+  margin-bottom: 0.28rem;
+}
+
+.ai-release-summary-grid .system-card p {
+  margin-top: 0.35rem;
+}
+
+.ai-release-notes {
+  margin-top: 0.75rem;
+}
+
+.ai-release-notes ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.ai-release-notes li {
+  margin: 0.24rem 0;
+}
+
 .artwork-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

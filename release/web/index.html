@@ -26,6 +26,8 @@
         <a href="#modes">Modes</a>
         <a href="#development">Develop</a>
         <a href="#plugins">Plugins</a>
+        <a href="#ai-release">AI</a>
+        <a href="#languages">Languages</a>
         <a href="#pulse">Pulse</a>
         <a href="#archive">Archive</a>
         <a href="#roadmap">Roadmap</a>
@@ -185,7 +187,40 @@
               </article>
             </div>
           </div>
+          <div>
+            <h3>Requested plugin inventory</h3>
+            <p class="status-line" data-requested-plugin-summary>Requested plugin inventory loading.</p>
+            <div class="marketplace-source-list" data-requested-plugin-inventory-sources></div>
+          </div>
         </div>
+      </section>
+
+      <section id="ai-release" class="section-reveal system-section">
+        <p class="eyebrow">AI release manifest</p>
+        <h2>Büyük Dil Sürümünü ve Araçlarını Operasyonel Hale Getir.</h2>
+        <p class="section-copy">
+          Bu bölümde yerel/harici AI araçları, otomatik rota politikası ve Büyük Dil Sürümü paketleri
+          aynı gözetim yüzeyinde görünür. Yayın/aktifleştirme için hala kullanıcı onayı ve yetki gerekir.
+        </p>
+        <p class="status-line" data-ai-release-summary>AI release manifest loading.</p>
+        <div class="system-grid ai-release-summary-grid" data-ai-release-packages></div>
+        <div class="system-grid ai-release-summary-grid" data-ai-release-tools></div>
+        <div class="system-grid ai-release-summary-grid" data-ai-release-models></div>
+        <div class="system-grid ai-release-summary-grid" data-ai-release-routing></div>
+        <div class="ai-release-notes" data-ai-release-notes></div>
+      </section>
+
+      <section id="languages" class="section-reveal system-section">
+        <p class="eyebrow">Polyglot language atlas</p>
+        <h2>Büyük dil paketleri görünür kılınır.</h2>
+        <p class="section-copy">
+          Language coverage and requested stack entrypoints are loaded from the fullstack language matrix
+          contract before UI decisions move from registry to execution.
+        </p>
+        <p class="status-line" data-language-matrix-summary>Language matrix loading.</p>
+        <div class="language-summary-grid" data-language-matrix-summary-grid></div>
+        <div class="language-toolbar artwork-toolbar" data-language-matrix-filters aria-label="Language layer filters"></div>
+        <div class="system-grid language-card-grid" data-language-matrix-languages></div>
       </section>
 
       <section id="pulse" class="section-reveal system-section" data-system-pulse>

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis": {
+      "command": "node",
+      "args": [
+        "scripts/seis-mcp-launcher.mjs"
+      ]
+    }
+  }
+}
