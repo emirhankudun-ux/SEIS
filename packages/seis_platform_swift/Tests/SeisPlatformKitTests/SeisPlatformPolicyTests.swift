@@ -71,6 +71,8 @@ import Testing
         appleLanguages: ["Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"],
         windowsAndroidLanguages: ["C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"],
         runtimeInstallPolicy: "requirement_led_only",
+        addsNewJavaScript: false,
+        addsNewPython: false,
         hasMITLicense: true,
         hasSecurityPolicy: true,
         hasContributingGuide: true,
@@ -96,6 +98,8 @@ import Testing
         appleLanguages: ["Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"],
         windowsAndroidLanguages: ["C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"],
         runtimeInstallPolicy: "requirement_led_only",
+        addsNewJavaScript: false,
+        addsNewPython: false,
         hasMITLicense: true,
         hasSecurityPolicy: true,
         hasContributingGuide: true,
@@ -106,4 +110,28 @@ import Testing
     #expect(!result.ready)
     #expect(result.blockers.contains("codex_claude_contributor_signal_missing"))
     #expect(result.blockers.contains("main_only_branch_policy_not_enforced"))
+}
+
+@Test func marketReadinessBlocksNewJavaScriptAndPythonGrowth() {
+    let input = SeisMarketReadinessInput(
+        domains: SeisCapabilityDomainSet.required,
+        contributorSignals: ["emirhankudun-ux", "OpenAI Codex", "Claude"],
+        primaryBranch: "main",
+        longLivedBranches: ["main"],
+        websiteIsFinalSurface: true,
+        appleLanguages: ["Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"],
+        windowsAndroidLanguages: ["C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"],
+        runtimeInstallPolicy: "requirement_led_only",
+        addsNewJavaScript: true,
+        addsNewPython: true,
+        hasMITLicense: true,
+        hasSecurityPolicy: true,
+        hasContributingGuide: true,
+        hasCodeOfConduct: true
+    )
+
+    let result = SeisMarketReadiness.evaluate(input)
+    #expect(!result.ready)
+    #expect(result.blockers.contains("javascript_growth_frozen_for_current_phase"))
+    #expect(result.blockers.contains("python_growth_frozen_for_current_phase"))
 }

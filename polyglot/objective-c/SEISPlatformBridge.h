@@ -28,5 +28,7 @@ typedef NS_ENUM(NSInteger, SEISPlatformTarget) {
 
 NSArray<NSString *> *SEISAppleNativeLanguages(void);
 NSArray<NSString *> *SEISWindowsNativeLanguages(void);
+BOOL SEISLanguagesContainAppleOnlySurface(NSArray<NSString *> *languages);
+BOOL SEISLanguagesContainFrozenPythonSurface(NSArray<NSString *> *languages);
 
 NS_ASSUME_NONNULL_END

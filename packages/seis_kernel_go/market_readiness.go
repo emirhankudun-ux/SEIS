@@ -11,6 +11,8 @@ type MarketReadinessInput struct {
 	AppleLanguages          []string
 	WindowsAndroidLanguages []string
 	RuntimeInstallPolicy    string
+	AddsNewJavaScript       bool
+	AddsNewPython           bool
 	HasMITLicense           bool
 	HasSecurityPolicy       bool
 	HasContributingGuide    bool
@@ -118,6 +120,12 @@ func EvaluateMarketReadiness(input MarketReadinessInput) MarketReadinessResult {
 
 	if input.RuntimeInstallPolicy != "requirement_led_only" {
 		blockers = append(blockers, "runtime_installs_must_be_requirement_led")
+	}
+	if input.AddsNewJavaScript {
+		blockers = append(blockers, "javascript_growth_frozen_for_current_phase")
+	}
+	if input.AddsNewPython {
+		blockers = append(blockers, "python_growth_frozen_for_current_phase")
 	}
 
 	if !input.HasMITLicense {

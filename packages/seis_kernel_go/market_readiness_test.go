@@ -12,6 +12,8 @@ func TestEvaluateMarketReadinessReady(t *testing.T) {
 		AppleLanguages:          []string{"Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"},
 		WindowsAndroidLanguages: []string{"C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"},
 		RuntimeInstallPolicy:    "requirement_led_only",
+		AddsNewJavaScript:       false,
+		AddsNewPython:           false,
 		HasMITLicense:           true,
 		HasSecurityPolicy:       true,
 		HasContributingGuide:    true,
@@ -42,6 +44,8 @@ func TestEvaluateMarketReadinessBlocksMissingClaudeAndMain(t *testing.T) {
 		AppleLanguages:          []string{"Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"},
 		WindowsAndroidLanguages: []string{"C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"},
 		RuntimeInstallPolicy:    "requirement_led_only",
+		AddsNewJavaScript:       false,
+		AddsNewPython:           false,
 		HasMITLicense:           true,
 		HasSecurityPolicy:       true,
 		HasContributingGuide:    true,
@@ -53,6 +57,31 @@ func TestEvaluateMarketReadinessBlocksMissingClaudeAndMain(t *testing.T) {
 	}
 	assertBlocker(t, result.Blockers, "codex_claude_contributor_signal_missing")
 	assertBlocker(t, result.Blockers, "main_only_branch_policy_not_enforced")
+}
+
+func TestEvaluateMarketReadinessBlocksNewJavaScriptAndPythonGrowth(t *testing.T) {
+	result := EvaluateMarketReadiness(MarketReadinessInput{
+		Domains:                 RequiredCapabilityDomains(),
+		ContributorSignals:      []string{"emirhankudun-ux", "OpenAI Codex", "Claude"},
+		PrimaryBranch:           "main",
+		LongLivedBranches:       []string{"main"},
+		WebsiteIsFinalSurface:   true,
+		AppleLanguages:          []string{"Swift", "SwiftUI", "Playground", "Objective-C", "AppleScript"},
+		WindowsAndroidLanguages: []string{"C#", "PowerShell", "C++", "Rust", "Go", "Java", "Kotlin", "SQL"},
+		RuntimeInstallPolicy:    "requirement_led_only",
+		AddsNewJavaScript:       true,
+		AddsNewPython:           true,
+		HasMITLicense:           true,
+		HasSecurityPolicy:       true,
+		HasContributingGuide:    true,
+		HasCodeOfConduct:        true,
+	})
+
+	if result.Ready {
+		t.Fatal("expected blocked result for frozen language growth")
+	}
+	assertBlocker(t, result.Blockers, "javascript_growth_frozen_for_current_phase")
+	assertBlocker(t, result.Blockers, "python_growth_frozen_for_current_phase")
 }
 
 func assertBlocker(t *testing.T, blockers []string, expected string) {

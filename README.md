@@ -98,8 +98,12 @@ Use the lightest reliable checks first:
 
 ```bash
 swift test --package-path packages/seis_platform_swift
+javac -d /tmp/seis-windows-jvm polyglot/windows/jvm/SeisWindowsPlatform.java polyglot/windows/jvm/SeisWindowsPlatformTest.java
+java -cp /tmp/seis-windows-jvm seis.windows.SeisWindowsPlatformTest
 javac -d /tmp/seis-android-profile polyglot/android/java/SeisAndroidDevelopmentProfile.java polyglot/android/java/SeisAndroidDevelopmentProfileTest.java
 java -cp /tmp/seis-android-profile seis.android.SeisAndroidDevelopmentProfileTest
+clang -fobjc-arc -framework Foundation polyglot/objective-c/SEISPlatformBridge.m polyglot/objective-c/SEISPlatformBridgeTest.m -o /tmp/seis-objective-c-platform-test
+/tmp/seis-objective-c-platform-test
 xcrun clang++ -std=c++20 polyglot/windows/native/seis_windows_toolchain_profile.cpp polyglot/windows/native/seis_windows_toolchain_profile_test.cpp -o /tmp/seis-windows-toolchain-profile-test
 /tmp/seis-windows-toolchain-profile-test
 cd packages/seis_kernel_go && go test ./...

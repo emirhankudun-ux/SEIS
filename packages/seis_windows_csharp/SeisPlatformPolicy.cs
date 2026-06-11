@@ -36,7 +36,6 @@ public static class SeisPlatformPolicy
             "C++",
             "Rust",
             "Go",
-            "Python",
             "Java",
             "Kotlin",
             "SQL",
@@ -45,7 +44,7 @@ public static class SeisPlatformPolicy
             "Ruby",
             "PHP"
         ],
-        ["PowerShell", "dotnet", "winget", "python", "go", "rustc", "javac", "clang++"],
+        ["PowerShell", "dotnet", "winget", "go", "rustc", "javac", "clang++"],
         ["SEIS Agent", "OpenAI", "Claude", "Gemini"],
         [
             "powershell_policy",

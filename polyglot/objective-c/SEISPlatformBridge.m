@@ -32,5 +32,19 @@ NSArray<NSString *> *SEISAppleNativeLanguages(void) {
 }
 
 NSArray<NSString *> *SEISWindowsNativeLanguages(void) {
-    return @[@"C#", @"F#", @"Visual Basic", @"PowerShell", @"Batch", @"CMD", @"C", @"C++", @"Rust", @"Go", @"Python", @"Java", @"Kotlin", @"SQL", @"R", @"Lua", @"Ruby", @"PHP"];
+    return @[@"C#", @"F#", @"Visual Basic", @"PowerShell", @"Batch", @"CMD", @"C", @"C++", @"Rust", @"Go", @"Java", @"Kotlin", @"SQL", @"R", @"Lua", @"Ruby", @"PHP"];
+}
+
+BOOL SEISLanguagesContainAppleOnlySurface(NSArray<NSString *> *languages) {
+    NSSet<NSString *> *appleOnly = [NSSet setWithArray:SEISAppleNativeLanguages()];
+    for (NSString *language in languages) {
+        if ([appleOnly containsObject:language]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+BOOL SEISLanguagesContainFrozenPythonSurface(NSArray<NSString *> *languages) {
+    return [languages containsObject:@"Python"];
 }

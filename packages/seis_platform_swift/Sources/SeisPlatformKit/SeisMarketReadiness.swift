@@ -9,6 +9,8 @@ public struct SeisMarketReadinessInput: Codable, Equatable, Sendable {
     public let appleLanguages: [String]
     public let windowsAndroidLanguages: [String]
     public let runtimeInstallPolicy: String
+    public let addsNewJavaScript: Bool
+    public let addsNewPython: Bool
     public let hasMITLicense: Bool
     public let hasSecurityPolicy: Bool
     public let hasContributingGuide: Bool
@@ -23,6 +25,8 @@ public struct SeisMarketReadinessInput: Codable, Equatable, Sendable {
         appleLanguages: [String],
         windowsAndroidLanguages: [String],
         runtimeInstallPolicy: String,
+        addsNewJavaScript: Bool,
+        addsNewPython: Bool,
         hasMITLicense: Bool,
         hasSecurityPolicy: Bool,
         hasContributingGuide: Bool,
@@ -36,6 +40,8 @@ public struct SeisMarketReadinessInput: Codable, Equatable, Sendable {
         self.appleLanguages = appleLanguages
         self.windowsAndroidLanguages = windowsAndroidLanguages
         self.runtimeInstallPolicy = runtimeInstallPolicy
+        self.addsNewJavaScript = addsNewJavaScript
+        self.addsNewPython = addsNewPython
         self.hasMITLicense = hasMITLicense
         self.hasSecurityPolicy = hasSecurityPolicy
         self.hasContributingGuide = hasContributingGuide
@@ -135,6 +141,14 @@ public enum SeisMarketReadiness {
 
         if input.runtimeInstallPolicy != "requirement_led_only" {
             blockers.append("runtime_installs_must_be_requirement_led")
+        }
+
+        if input.addsNewJavaScript {
+            blockers.append("javascript_growth_frozen_for_current_phase")
+        }
+
+        if input.addsNewPython {
+            blockers.append("python_growth_frozen_for_current_phase")
         }
 
         if !input.hasMITLicense {
