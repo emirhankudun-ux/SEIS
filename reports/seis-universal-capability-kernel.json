@@ -1,0 +1,866 @@
+{
+  "version": 1,
+  "id": "seis-universal-capability-kernel-report",
+  "source": "content/development/seis-universal-capability-kernel.json",
+  "summary": {
+    "domainCount": 38,
+    "laneCount": 14,
+    "requiredDomainCount": 38,
+    "agentRoles": [
+      "agent-orchestrator",
+      "ai-agent",
+      "algorithm-agent",
+      "architecture-agent",
+      "big-data-agent",
+      "cloud-agent",
+      "creative-agent",
+      "cs-foundation-agent",
+      "data-agent",
+      "data-science-agent",
+      "database-agent",
+      "delivery-agent",
+      "devops-agent",
+      "formal-methods-agent",
+      "full-stack-agent",
+      "game-agent",
+      "git-governance-agent",
+      "governance-agent",
+      "integration-agent",
+      "language-engineering-agent",
+      "llm-routing-agent",
+      "low-code-agent",
+      "math-agent",
+      "metrics-agent",
+      "mobile-agent",
+      "multimodal-ai-agent",
+      "qa-agent",
+      "quantum-agent",
+      "refactoring-agent",
+      "requirements-agent",
+      "reverse-engineering-agent",
+      "robotics-agent",
+      "sdlc-agent",
+      "security-agent",
+      "sre-agent",
+      "sustainability-agent",
+      "ux-ui-agent",
+      "web-agent"
+    ],
+    "lanes": {
+      "ai-intelligence": 5,
+      "architecture": 2,
+      "cloud-ops": 3,
+      "core-computing": 5,
+      "data-intelligence": 2,
+      "data-platform": 2,
+      "design-systems": 2,
+      "governance": 3,
+      "interactive-systems": 1,
+      "product-engineering": 4,
+      "product-governance": 3,
+      "quality-engineering": 2,
+      "research-lab": 2,
+      "security-governance": 2
+    },
+    "pluginGroupCount": 5,
+    "pluginInventoryCount": 154,
+    "coveredPluginCount": 69,
+    "minimumDomainPluginCount": 3,
+    "platformCount": 2,
+    "appleLanguageCount": 3,
+    "windowsLanguageCount": 16
+  },
+  "laneCoverage": [
+    {
+      "lane": "ai-intelligence",
+      "domainCount": 5
+    },
+    {
+      "lane": "architecture",
+      "domainCount": 2
+    },
+    {
+      "lane": "cloud-ops",
+      "domainCount": 3
+    },
+    {
+      "lane": "core-computing",
+      "domainCount": 5
+    },
+    {
+      "lane": "data-intelligence",
+      "domainCount": 2
+    },
+    {
+      "lane": "data-platform",
+      "domainCount": 2
+    },
+    {
+      "lane": "design-systems",
+      "domainCount": 2
+    },
+    {
+      "lane": "governance",
+      "domainCount": 3
+    },
+    {
+      "lane": "interactive-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "product-engineering",
+      "domainCount": 4
+    },
+    {
+      "lane": "product-governance",
+      "domainCount": 3
+    },
+    {
+      "lane": "quality-engineering",
+      "domainCount": 2
+    },
+    {
+      "lane": "research-lab",
+      "domainCount": 2
+    },
+    {
+      "lane": "security-governance",
+      "domainCount": 2
+    }
+  ],
+  "pluginInventory": {
+    "groupCount": 5,
+    "pluginCount": 154,
+    "coveredPluginCount": 69,
+    "coverageByGroup": {
+      "design": 12,
+      "developer-tools": 70,
+      "external-or-session": 25,
+      "productivity-ops-business": 39,
+      "research-finance-legal-science": 8,
+      "security": 6
+    }
+  },
+  "platformCompatibility": {
+    "version": 1,
+    "id": "seis-platform-compatibility-kernel",
+    "mode": "macos_windows_native_and_cross_platform_support",
+    "summary": {
+      "platformCount": 2,
+      "appleLanguageCount": 3,
+      "windowsLanguageCount": 16,
+      "appleLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Swift"
+      ],
+      "windowsLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "appleFrameworks": [
+        "Foundation",
+        "PlaygroundSupport",
+        "SwiftUI"
+      ],
+      "windowsFrameworks": [
+        ".NET",
+        "WPF",
+        "WSL-aware CLI",
+        "WinUI",
+        "Windows Terminal"
+      ]
+    },
+    "surfaces": [
+      {
+        "id": "macos-apple-native",
+        "label": "macOS Apple Native",
+        "osFamily": "macos",
+        "languages": [
+          "Swift",
+          "Objective-C",
+          "AppleScript",
+          "Python",
+          "Go",
+          "Rust"
+        ],
+        "localHelpers": [
+          "SwiftPM",
+          "xcodebuild",
+          "xcrun",
+          "osascript",
+          "python3",
+          "go"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "macos-agent",
+          "apple-platform-agent",
+          "local-helper-agent"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "objective_c_syntax",
+          "applescript_surface_present",
+          "permission_scope",
+          "offline_fallback",
+          "notarization_awareness",
+          "accessibility_when_ui"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_platform_swift/Package.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "polyglot/objective-c/SEISPlatformBridge.h",
+          "polyglot/objective-c/SEISPlatformBridge.m",
+          "polyglot/applescript/seis_platform_automation.applescript",
+          "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "PlaygroundSupport",
+          "Foundation"
+        ]
+      },
+      {
+        "id": "windows-native",
+        "label": "Windows Native",
+        "osFamily": "windows",
+        "languages": [
+          "C#",
+          "F#",
+          "Visual Basic",
+          "PowerShell",
+          "Batch",
+          "C++",
+          "Rust",
+          "Go",
+          "Python",
+          "Java",
+          "Kotlin",
+          "SQL",
+          "R",
+          "Lua",
+          "Ruby",
+          "PHP"
+        ],
+        "localHelpers": [
+          "PowerShell",
+          "dotnet",
+          "winget",
+          "python",
+          "go",
+          "rustc",
+          "javac",
+          "clang++"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "windows-agent",
+          "powershell-ops-agent",
+          "dotnet-agent",
+          "polyglot-runtime-agent"
+        ],
+        "qualityGates": [
+          "powershell_policy",
+          "dotnet_readiness",
+          "windows_multilang_source_surface",
+          "native_cpp_syntax_when_available",
+          "jvm_syntax_when_available",
+          "windows_path_safety",
+          "permission_scope",
+          "offline_fallback",
+          "event_log_awareness"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
+          "packages/seis_windows_csharp/SeisPlatformPolicy.csproj",
+          "polyglot/powershell/SeisPlatformReadiness.ps1",
+          "polyglot/windows/dotnet/SeisWindowsPlatform.fs",
+          "polyglot/windows/dotnet/SeisWindowsPlatform.vb",
+          "polyglot/windows/native/seis_windows_platform.hpp",
+          "polyglot/windows/native/seis_windows_platform.cpp",
+          "polyglot/windows/go/seis_windows_platform.go",
+          "polyglot/windows/rust/seis_windows_platform.rs",
+          "polyglot/windows/jvm/SeisWindowsPlatform.java",
+          "polyglot/windows/jvm/SeisWindowsPlatform.kt",
+          "polyglot/windows/scripting/seis_windows_platform.py",
+          "polyglot/windows/scripting/seis_windows_platform.bat",
+          "polyglot/windows/scripting/seis_windows_platform.cmd",
+          "polyglot/windows/scripting/seis_windows_platform.lua",
+          "polyglot/windows/scripting/seis_windows_platform.rb",
+          "polyglot/windows/scripting/seis_windows_platform.php",
+          "polyglot/windows/data/seis_windows_platform.sql",
+          "polyglot/windows/data/seis_windows_platform.r"
+        ],
+        "frameworks": [
+          ".NET",
+          "WinUI",
+          "WPF",
+          "Windows Terminal",
+          "WSL-aware CLI"
+        ]
+      }
+    ],
+    "routingRule": "SEIS remains the user-facing agent; platform helpers execute only inside local permission, credential, and OS boundaries."
+  },
+  "nonJavaScriptSurfaces": [
+    "packages/seis_kernel/plugin_inventory.py",
+    "packages/seis_kernel/test_capability_kernel.py",
+    "packages/seis_kernel_go/capability_budget.go",
+    "packages/seis_kernel_go/capability_budget_test.go",
+    "polyglot/rust/seis_capability_kernel.rs",
+    "polyglot/sql/seis_capability_kernel_schema.sql",
+    "polyglot/rego/seis_capability_gate.rego",
+    "polyglot/cue/seis_capability_kernel.cue",
+    "packages/seis_platform_swift/Package.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+    "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+    "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
+    "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
+    "packages/seis_kernel/platform_matrix.py",
+    "polyglot/objective-c/SEISPlatformBridge.h",
+    "polyglot/objective-c/SEISPlatformBridge.m",
+    "polyglot/applescript/seis_platform_automation.applescript",
+    "packages/seis_windows_csharp/SeisPlatformPolicy.csproj",
+    "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
+    "polyglot/powershell/SeisPlatformReadiness.ps1",
+    "polyglot/windows/dotnet/SeisWindowsPlatform.fs",
+    "polyglot/windows/dotnet/SeisWindowsPlatform.vb",
+    "polyglot/windows/native/seis_windows_platform.hpp",
+    "polyglot/windows/native/seis_windows_platform.cpp",
+    "polyglot/windows/go/seis_windows_platform.go",
+    "polyglot/windows/rust/seis_windows_platform.rs",
+    "polyglot/windows/jvm/SeisWindowsPlatform.java",
+    "polyglot/windows/jvm/SeisWindowsPlatform.kt",
+    "polyglot/windows/scripting/seis_windows_platform.py",
+    "polyglot/windows/scripting/seis_windows_platform.bat",
+    "polyglot/windows/scripting/seis_windows_platform.cmd",
+    "polyglot/windows/scripting/seis_windows_platform.lua",
+    "polyglot/windows/scripting/seis_windows_platform.rb",
+    "polyglot/windows/scripting/seis_windows_platform.php",
+    "polyglot/windows/data/seis_windows_platform.sql",
+    "polyglot/windows/data/seis_windows_platform.r"
+  ],
+  "domainIndex": [
+    {
+      "id": "algorithms-and-flowcharts",
+      "label": "Algorithms and Flowcharts",
+      "lane": "core-computing",
+      "agentRole": "algorithm-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "mathematics-foundations",
+      "label": "Mathematics Foundations",
+      "lane": "core-computing",
+      "agentRole": "math-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "computer-science-foundations",
+      "label": "Computer Science Foundations",
+      "lane": "core-computing",
+      "agentRole": "cs-foundation-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "web-development",
+      "label": "Web Development",
+      "lane": "product-engineering",
+      "agentRole": "web-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "mobile-development",
+      "label": "Mobile Development",
+      "lane": "product-engineering",
+      "agentRole": "mobile-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "game-development",
+      "label": "Game Development",
+      "lane": "interactive-systems",
+      "agentRole": "game-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "full-stack-engineering",
+      "label": "Full-Stack Engineering",
+      "lane": "product-engineering",
+      "agentRole": "full-stack-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "data-engineering-and-analytics",
+      "label": "Data Engineering and Analytics",
+      "lane": "data-intelligence",
+      "agentRole": "data-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "data-science",
+      "label": "Data Science",
+      "lane": "data-intelligence",
+      "agentRole": "data-science-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "artificial-intelligence",
+      "label": "Artificial Intelligence",
+      "lane": "ai-intelligence",
+      "agentRole": "ai-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "ai-agent-engineering",
+      "label": "AI Agent Engineering",
+      "lane": "ai-intelligence",
+      "agentRole": "agent-orchestrator",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "llm-orchestration",
+      "label": "LLM Orchestration",
+      "lane": "ai-intelligence",
+      "agentRole": "llm-routing-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "mcp-skills-plugins",
+      "label": "MCP, Skills, and Plugins",
+      "lane": "ai-intelligence",
+      "agentRole": "integration-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "database-management",
+      "label": "Database Management",
+      "lane": "data-platform",
+      "agentRole": "database-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "version-control-systems",
+      "label": "Version Control Systems",
+      "lane": "governance",
+      "agentRole": "git-governance-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "cloud-computing",
+      "label": "Cloud Computing",
+      "lane": "cloud-ops",
+      "agentRole": "cloud-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "cybersecurity",
+      "label": "Cybersecurity",
+      "lane": "security-governance",
+      "agentRole": "security-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "devops-and-system-management",
+      "label": "DevOps and System Management",
+      "lane": "cloud-ops",
+      "agentRole": "devops-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "test-engineering",
+      "label": "Test Engineering",
+      "lane": "quality-engineering",
+      "agentRole": "qa-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "software-architecture-and-patterns",
+      "label": "Software Architecture and Design Patterns",
+      "lane": "architecture",
+      "agentRole": "architecture-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "big-data-engineering",
+      "label": "Big Data Engineering",
+      "lane": "data-platform",
+      "agentRole": "big-data-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "nlp-and-computer-vision",
+      "label": "NLP and Computer Vision",
+      "lane": "ai-intelligence",
+      "agentRole": "multimodal-ai-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "quantum-programming",
+      "label": "Quantum Programming",
+      "lane": "research-lab",
+      "agentRole": "quantum-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "sustainable-software",
+      "label": "Sustainable Software",
+      "lane": "governance",
+      "agentRole": "sustainability-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "low-code-no-code-platforms",
+      "label": "Low-Code and No-Code Platforms",
+      "lane": "product-engineering",
+      "agentRole": "low-code-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "ux-ui-engineering",
+      "label": "UX and UI Engineering",
+      "lane": "design-systems",
+      "agentRole": "ux-ui-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "product-design-and-creative-systems",
+      "label": "Product Design and Creative Systems",
+      "lane": "design-systems",
+      "agentRole": "creative-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "autonomous-vehicles-and-robotics",
+      "label": "Autonomous Vehicles and Robotics",
+      "lane": "research-lab",
+      "agentRole": "robotics-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "ai-ethics-and-data-governance",
+      "label": "AI Ethics and Data Governance",
+      "lane": "governance",
+      "agentRole": "governance-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "compiler-and-language-engineering",
+      "label": "Compiler and Language Engineering",
+      "lane": "core-computing",
+      "agentRole": "language-engineering-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "requirements-engineering",
+      "label": "Requirements Engineering",
+      "lane": "product-governance",
+      "agentRole": "requirements-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "agile-project-management",
+      "label": "Agile Project Management",
+      "lane": "product-governance",
+      "agentRole": "delivery-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "software-development-lifecycle",
+      "label": "Software Development Lifecycle",
+      "lane": "product-governance",
+      "agentRole": "sdlc-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "software-metrics-and-measurement",
+      "label": "Software Metrics and Measurement",
+      "lane": "quality-engineering",
+      "agentRole": "metrics-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "sre-and-observability",
+      "label": "SRE and Observability",
+      "lane": "cloud-ops",
+      "agentRole": "sre-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "reverse-engineering",
+      "label": "Reverse Engineering",
+      "lane": "security-governance",
+      "agentRole": "reverse-engineering-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "software-refactoring",
+      "label": "Software Refactoring",
+      "lane": "architecture",
+      "agentRole": "refactoring-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    },
+    {
+      "id": "formal-methods",
+      "label": "Formal Methods",
+      "lane": "core-computing",
+      "agentRole": "formal-methods-agent",
+      "primaryQualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability"
+      ]
+    }
+  ],
+  "executionBoundary": "No connector, MCP server, plugin, or external model is activated unless task relevance, authentication, permission scope, and user approval are clear.",
+  "flowchart": "flowchart TD\n  A[\"User goal\"] --> B[\"SEIS intent intake\"]\n  B --> C[\"DomainRouter capability match\"]\n  C --> D[\"Agent role + LLM route\"]\n  D --> E[\"MCP / plugin / skill gate\"]\n  E --> F[\"Implementation plan\"]\n  F --> G[\"Code, docs, or artifact change\"]\n  G --> H[\"Quality gates\"]\n  H --> I[\"Report and next reversible step\"]"
+}

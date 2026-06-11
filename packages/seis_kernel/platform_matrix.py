@@ -1,0 +1,199 @@
+"""macOS and Windows platform compatibility matrix for SEIS."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass(frozen=True)
+class PlatformSurface:
+    id: str
+    label: str
+    os_family: str
+    languages: tuple[str, ...]
+    local_helpers: tuple[str, ...]
+    remote_helpers: tuple[str, ...]
+    agent_roles: tuple[str, ...]
+    quality_gates: tuple[str, ...]
+    source_surfaces: tuple[str, ...]
+    frameworks: tuple[str, ...] = ()
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "id": self.id,
+            "label": self.label,
+            "osFamily": self.os_family,
+            "languages": list(self.languages),
+            "localHelpers": list(self.local_helpers),
+            "remoteHelpers": list(self.remote_helpers),
+            "agentRoles": list(self.agent_roles),
+            "qualityGates": list(self.quality_gates),
+            "sourceSurfaces": list(self.source_surfaces),
+            "frameworks": list(self.frameworks),
+        }
+
+
+APPLE_NATIVE_LANGUAGES = {"Swift", "Objective-C", "AppleScript"}
+
+WINDOWS_DEVELOPMENT_LANGUAGES = {
+    "C#",
+    "F#",
+    "Visual Basic",
+    "PowerShell",
+    "Batch",
+    "C++",
+    "Rust",
+    "Go",
+    "Python",
+    "Java",
+    "Kotlin",
+    "SQL",
+    "R",
+    "Lua",
+    "Ruby",
+    "PHP",
+}
+
+
+PLATFORM_SURFACES = [
+    PlatformSurface(
+        id="macos-apple-native",
+        label="macOS Apple Native",
+        os_family="macos",
+        languages=("Swift", "Objective-C", "AppleScript", "Python", "Go", "Rust"),
+        local_helpers=("SwiftPM", "xcodebuild", "xcrun", "osascript", "python3", "go"),
+        remote_helpers=("SEIS Agent", "OpenAI", "Claude", "Gemini"),
+        agent_roles=("macos-agent", "apple-platform-agent", "local-helper-agent"),
+        quality_gates=(
+            "swift_test",
+            "objective_c_syntax",
+            "applescript_surface_present",
+            "permission_scope",
+            "offline_fallback",
+            "notarization_awareness",
+            "accessibility_when_ui",
+        ),
+        source_surfaces=(
+            "packages/seis_platform_swift/Package.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+            "polyglot/objective-c/SEISPlatformBridge.h",
+            "polyglot/objective-c/SEISPlatformBridge.m",
+            "polyglot/applescript/seis_platform_automation.applescript",
+            "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
+        ),
+        frameworks=("SwiftUI", "PlaygroundSupport", "Foundation"),
+    ),
+    PlatformSurface(
+        id="windows-native",
+        label="Windows Native",
+        os_family="windows",
+        languages=(
+            "C#",
+            "F#",
+            "Visual Basic",
+            "PowerShell",
+            "Batch",
+            "C++",
+            "Rust",
+            "Go",
+            "Python",
+            "Java",
+            "Kotlin",
+            "SQL",
+            "R",
+            "Lua",
+            "Ruby",
+            "PHP",
+        ),
+        local_helpers=("PowerShell", "dotnet", "winget", "python", "go", "rustc", "javac", "clang++"),
+        remote_helpers=("SEIS Agent", "OpenAI", "Claude", "Gemini"),
+        agent_roles=("windows-agent", "powershell-ops-agent", "dotnet-agent", "polyglot-runtime-agent"),
+        quality_gates=(
+            "powershell_policy",
+            "dotnet_readiness",
+            "windows_multilang_source_surface",
+            "native_cpp_syntax_when_available",
+            "jvm_syntax_when_available",
+            "windows_path_safety",
+            "permission_scope",
+            "offline_fallback",
+            "event_log_awareness",
+        ),
+        source_surfaces=(
+            "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
+            "packages/seis_windows_csharp/SeisPlatformPolicy.csproj",
+            "polyglot/powershell/SeisPlatformReadiness.ps1",
+            "polyglot/windows/dotnet/SeisWindowsPlatform.fs",
+            "polyglot/windows/dotnet/SeisWindowsPlatform.vb",
+            "polyglot/windows/native/seis_windows_platform.hpp",
+            "polyglot/windows/native/seis_windows_platform.cpp",
+            "polyglot/windows/go/seis_windows_platform.go",
+            "polyglot/windows/rust/seis_windows_platform.rs",
+            "polyglot/windows/jvm/SeisWindowsPlatform.java",
+            "polyglot/windows/jvm/SeisWindowsPlatform.kt",
+            "polyglot/windows/scripting/seis_windows_platform.py",
+            "polyglot/windows/scripting/seis_windows_platform.bat",
+            "polyglot/windows/scripting/seis_windows_platform.cmd",
+            "polyglot/windows/scripting/seis_windows_platform.lua",
+            "polyglot/windows/scripting/seis_windows_platform.rb",
+            "polyglot/windows/scripting/seis_windows_platform.php",
+            "polyglot/windows/data/seis_windows_platform.sql",
+            "polyglot/windows/data/seis_windows_platform.r",
+        ),
+        frameworks=(".NET", "WinUI", "WPF", "Windows Terminal", "WSL-aware CLI"),
+    ),
+]
+
+
+def build_platform_contract() -> dict[str, Any]:
+    apple_languages = sorted(
+        {
+            language
+            for surface in PLATFORM_SURFACES
+            if surface.os_family == "macos"
+            for language in surface.languages
+            if language in APPLE_NATIVE_LANGUAGES
+        }
+    )
+    windows_languages = sorted(
+        {
+            language
+            for surface in PLATFORM_SURFACES
+            if surface.os_family == "windows"
+            for language in surface.languages
+            if language in WINDOWS_DEVELOPMENT_LANGUAGES
+        }
+    )
+    apple_frameworks = sorted(
+        {
+            framework
+            for surface in PLATFORM_SURFACES
+            if surface.os_family == "macos"
+            for framework in surface.frameworks
+        }
+    )
+    windows_frameworks = sorted(
+        {
+            framework
+            for surface in PLATFORM_SURFACES
+            if surface.os_family == "windows"
+            for framework in surface.frameworks
+        }
+    )
+    return {
+        "version": 1,
+        "id": "seis-platform-compatibility-kernel",
+        "mode": "macos_windows_native_and_cross_platform_support",
+        "summary": {
+            "platformCount": len(PLATFORM_SURFACES),
+            "appleLanguageCount": len(apple_languages),
+            "windowsLanguageCount": len(windows_languages),
+            "appleLanguages": apple_languages,
+            "windowsLanguages": windows_languages,
+            "appleFrameworks": apple_frameworks,
+            "windowsFrameworks": windows_frameworks,
+        },
+        "surfaces": [surface.as_dict() for surface in PLATFORM_SURFACES],
+        "routingRule": "SEIS remains the user-facing agent; platform helpers execute only inside local permission, credential, and OS boundaries.",
+    }

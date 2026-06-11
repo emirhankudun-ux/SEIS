@@ -25,7 +25,12 @@ SEIS is the general center for repository discovery, branch consolidation, sourc
 4. Do not delete source repositories until `sources/<repo>/<branch>` refs and `repositories/<repo>` snapshots are verified in SEIS.
 5. For plugin changes, validate the plugin before reporting completion.
 6. For marketplace-backed plugin updates, use the cachebuster/reinstall flow instead of hand-editing marketplace entries.
-7. Prefer OpenAI/Codex plugin families for core SEIS work: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`.
+7. Keep `seis-agent` as the remote governance layer for policy-sensitive decisions. Use local plugin families (`openai-curated`, `openai-bundled`, etc.) as helpers, never as the default remote decision layer.
+8. Prefer role-oriented helper selection for local execution:
+   - `designer` → metin, UI/UX, anlatı: `claude`
+   - `engineer` → patch, refactor, repo odaklı: `aider`
+   - `software` → ürün ve mimari planlama: `openai`
+9. On a role command, run with `npm run ai -- <role> "..."` and keep `seis-agent` reserved for orchestration / governance decisions.
 
 ## Development Workflow
 
@@ -33,7 +38,7 @@ SEIS is the general center for repository discovery, branch consolidation, sourc
    - repository consolidation
    - plugin development
    - SEIS docs/governance
-   - OpenAI-curated build workflow
+   - SEIS-orchestrated build workflow
    - migration verification
    - GitHub publishing
 2. Gather local and GitHub state:
@@ -78,7 +83,7 @@ Use installed and enabled plugins first. Record plugin availability in SEIS inst
 
 ## OpenAI-First Plugin Rule
 
-For SEIS core workflows, route Design, Developer Tools, Productivity, Research, and Security work to OpenAI/Codex plugin families first:
+For SEIS core workflows, route Design, Developer Tools, Productivity, Research, and Security work to helper plugin families while staying under SEIS governance:
 
 - Design: Build Web Apps, Browser, Chrome, Figma, Canva, MagicPath, Wix, Base44, Hostinger, Replit, Lovable.
 - Developer tools: GitHub, CodeRabbit, CircleCI, Cloudflare, Vercel, Netlify, Supabase, Neon Postgres, Convex, Render, Temporal, OpenAI Developers.
@@ -86,15 +91,15 @@ For SEIS core workflows, route Design, Developer Tools, Productivity, Research, 
 - Research: Hugging Face, Life Science Research, Zotero, Scite, NGS Analysis, Deepnote, Quartr, FactSet, LSEG, S&P, Morningstar.
 - Security: Codex Security, Sentry, Datadog, CodeRabbit, Jam, Semrush, Conductor, Statsig.
 
-Use non-OpenAI or non-installed plugin URI families only when the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for that provider.
+Use non-helper or non-installed plugin URI families only when helper lanes cannot satisfy the request or the user explicitly asks for that provider.
 
-## OpenAI-curated Build Workflow
+## SEIS-First Build Workflow
 
-When the user wants to build SEIS with OpenAI-curated plugins:
+When the user wants to build SEIS:
 
 1. Start from `docs/platform/openai-curated-build-workbench.md`.
 2. Choose the build module: web cockpit, backend state, workspace ops, security quality gate, mobile shell, macOS inspector, or research memory.
-3. Route through the matching OpenAI/Codex plugin category.
+3. Route through the matching helper plugin category with `seis-agent` orchestrating policy and final coordination.
 4. Make a durable repo change under the module path.
 5. Keep `main` mirrored with `UIXAppTTR` after GitHub writes.
 

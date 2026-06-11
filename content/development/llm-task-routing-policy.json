@@ -1,0 +1,94 @@
+{
+  "id": "seis-llm-task-routing-policy",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-09",
+  "default": "seis-agent",
+  "policy": {
+    "executionBoundary": {
+      "remoteOrchestrator": "seis-agent",
+      "remoteOnly": [
+        "release governance",
+        "security policy",
+        "governance check",
+        "cross-tool orchestration"
+      ],
+      "localHelpers": [
+        "openai",
+        "claude",
+        "gemini",
+        "qwen",
+        "kimi",
+        "ollama",
+        "opencode",
+        "aider",
+        "interpreter"
+      ],
+      "notes": "Remote orchestration is centralized in SEIS Agent. Local tools are helper candidates."
+    },
+    "tiers": {
+      "seis-agent": {
+        "preferred": true,
+        "mode": "remote",
+        "description": "Single remote orchestrator for policy checks, governance, and cross-tool coordination."
+      },
+      "openai": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Local/proxy-friendly helper for policy-oriented local reasoning."
+      },
+      "ollama": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Fallback lane for local/offline and private drafting."
+      },
+      "qwen": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Alternative local reasoning helper for cross-checks."
+      },
+      "opencode": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Terminal coding helper; SEIS keeps orchestration authority."
+      }
+    },
+    "routingRules": [
+      {
+        "keyword": "local",
+        "primary": "ollama"
+      },
+      {
+        "keyword": "qwen|alternative reasoning|cross-check|ikinci görüş",
+        "primary": "qwen"
+      },
+      {
+        "keyword": "opencode|terminal coding|terminal agent",
+        "primary": "opencode"
+      },
+      {
+        "keyword": "translate|localize|multilingual|çeviri",
+        "primary": "kimi"
+      },
+      {
+        "keyword": "research|dokümant|compare|araştır",
+        "primary": "gemini"
+      },
+      {
+        "keyword": "policy|governance|plan|karar",
+        "primary": "seis-agent"
+      },
+      {
+        "keyword": "copy|ux|narrative|strateji|anlatım",
+        "primary": "claude"
+      },
+      {
+        "keyword": "openai|summary|summarize|özet|analiz",
+        "primary": "openai"
+      }
+    ]
+  },
+  "notes": [
+    "SEIS Agent is the only remote lane by policy.",
+    "Local helpers are never promoted to remote; they return to SEIS Agent for orchestration."
+  ]
+}
