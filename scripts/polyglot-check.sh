@@ -189,6 +189,16 @@ haskell_lane() {
   runghc polyglot/haskell/seis_css_unit_audit.hs
 }
 
+ocaml_lane() {
+  ocaml polyglot/ocaml/seis_css_selector_stats.ml --self-test &&
+  ocaml polyglot/ocaml/seis_css_selector_stats.ml
+}
+
+nim_lane() {
+  nim r polyglot/nim/seis_html_img_audit.nim --self-test &&
+  nim r polyglot/nim/seis_html_img_audit.nim
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -214,6 +224,8 @@ run_lane "lua        (i18n-attrs)"     lua5.4    lua_lane
 run_lane "tcl        (meta-tags)"      tclsh     tcl_lane
 run_lane "r          (translation-stats)" Rscript r_lane
 run_lane "haskell    (css-unit-audit)"   runghc  haskell_lane
+run_lane "ocaml      (css-selectors)"   ocaml   ocaml_lane
+run_lane "nim        (img-alt-audit)"   nim     nim_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

@@ -132,7 +132,7 @@ node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you f
 
 ## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
 
-Twenty-three non-JS languages each contribute a real, tested tool that audits what
+Twenty-five non-JS languages each contribute a real, tested tool that audits what
 the JS suite cannot. One command runs them all:
 
 ```bash
@@ -172,6 +172,8 @@ the JS suite cannot. One command runs them all:
 | Tcl | `seis_meta_tags_check.tcl` | 12-point SEO/social meta-tag completeness: title, description, OG, Twitter Card |
 | R | `seis_translation_stats.R` | Statistical analysis of string length ratios across 5 locales (flags ≥3× overflow risk) |
 | Haskell | `seis_css_unit_audit.hs` | CSS dimension unit histogram + font-size px check (only root/body/html px accepted) |
+| OCaml | `seis_css_selector_stats.ml` | CSS selector type distribution; fails if ID-selector ratio exceeds 25 % |
+| Nim | `seis_html_img_audit.nim` | All `<img>` tags must have alt attribute; loading attribute advisory |
 
 Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
 `--self-test` modes). CI: `.github/workflows/polyglot.yml`.

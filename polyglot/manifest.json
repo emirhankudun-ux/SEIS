@@ -265,8 +265,11 @@
     },
     {
       "language": "OCaml",
-      "role": "typed functional release policy model",
-      "entrypoints": ["polyglot/ocaml/release_policy.ml"]
+      "role": "typed functional release policy model; CSS selector type distribution auditor",
+      "entrypoints": [
+        "polyglot/ocaml/release_policy.ml",
+        "polyglot/ocaml/seis_css_selector_stats.ml"
+      ]
     },
     {
       "language": "ReasonML",
@@ -275,8 +278,11 @@
     },
     {
       "language": "Nim",
-      "role": "compact systems readiness policy",
-      "entrypoints": ["polyglot/nim/readiness_policy.nim"]
+      "role": "compact systems readiness policy; HTML img tag alt attribute completeness auditor",
+      "entrypoints": [
+        "polyglot/nim/readiness_policy.nim",
+        "polyglot/nim/seis_html_img_audit.nim"
+      ]
     },
     {
       "language": "Crystal",
