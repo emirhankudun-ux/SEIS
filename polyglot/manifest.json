@@ -330,8 +330,11 @@
     },
     {
       "language": "Racket",
-      "role": "language-lab readiness policy",
-      "entrypoints": ["polyglot/racket/readiness-policy.rkt"]
+      "role": "language-lab readiness policy; PWA manifest deep validator (display, hex colors, icon sizes)",
+      "entrypoints": [
+        "polyglot/racket/readiness-policy.rkt",
+        "polyglot/racket/seis_pwa_manifest_audit.rkt"
+      ]
     },
     {
       "language": "Scheme",
@@ -565,8 +568,11 @@
     },
     {
       "language": "Common Lisp",
-      "role": "durable Lisp release policy model",
-      "entrypoints": ["polyglot/common-lisp/release-policy.lisp"]
+      "role": "durable Lisp release policy model; HTML id-attribute uniqueness checker",
+      "entrypoints": [
+        "polyglot/common-lisp/release-policy.lisp",
+        "polyglot/common-lisp/seis_html_id_uniqueness.lisp"
+      ]
     },
     {
       "language": "Emacs Lisp",

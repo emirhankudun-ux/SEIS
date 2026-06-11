@@ -132,7 +132,7 @@ node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you f
 
 ## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
 
-Twenty-nine non-JS languages each contribute a real, tested tool that audits what
+Thirty-one non-JS languages each contribute a real, tested tool that audits what
 the JS suite cannot. One command runs them all:
 
 ```bash
@@ -178,6 +178,8 @@ the JS suite cannot. One command runs them all:
 | Groovy | `seis_json_files_check.groovy` | All `.json` files parse + manifest/site-config/translations key presence |
 | Kotlin | `seis_css_font_audit.kts` | Every `--font-*` CSS custom property must have a generic-family fallback |
 | Guile | `seis_hreflang_audit.scm` | All 5 locale + x-default hreflang links present, no duplicates, all HTTPS |
+| Racket | `seis_pwa_manifest_audit.rkt` | PWA manifest: display mode, hex colors, icon sizes (192×192 + 512×512) |
+| Common Lisp | `seis_html_id_uniqueness.lisp` | All `id=` attribute values are unique (no duplicate IDs) |
 
 Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
 `--self-test` modes). CI: `.github/workflows/polyglot.yml`.

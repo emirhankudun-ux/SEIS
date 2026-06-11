@@ -219,6 +219,16 @@ guile_lane() {
   GUILE_AUTO_COMPILE=0 guile polyglot/guile/seis_hreflang_audit.scm
 }
 
+racket_lane() {
+  racket polyglot/racket/seis_pwa_manifest_audit.rkt --self-test &&
+  racket polyglot/racket/seis_pwa_manifest_audit.rkt
+}
+
+sbcl_lane() {
+  sbcl --script polyglot/common-lisp/seis_html_id_uniqueness.lisp --self-test &&
+  sbcl --script polyglot/common-lisp/seis_html_id_uniqueness.lisp
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -250,6 +260,8 @@ run_lane "elixir     (anchor-audit)"   elixir  elixir_lane
 run_lane "groovy     (json-files)"     groovy  groovy_lane
 run_lane "kotlin     (font-audit)"    kotlinc-jvm kotlin_lane
 run_lane "guile      (hreflang)"      guile   guile_lane
+run_lane "racket     (pwa-manifest)"  racket  racket_lane
+run_lane "sbcl       (html-ids)"      sbcl    sbcl_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"
