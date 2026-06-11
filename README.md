@@ -85,6 +85,17 @@ Governance references:
 - [`docs/governance/main-only-branch-consolidation.md`](./docs/governance/main-only-branch-consolidation.md)
 - [`AGENTS.md`](./AGENTS.md)
 
+## Repository Showcase Gate
+
+GitHub visibility is treated as a product surface, not decoration. The public
+repository should always expose the same core signals: active collaboration
+stack, contributors, platform policy, capability coverage, orchestration gate,
+repository governance, validation commands, and community files.
+
+The gate is implemented in Swift and Go so the README, governance docs, and
+GitHub-facing expectations can stay testable without adding new JavaScript or
+Python code.
+
 ## Key Paths
 
 | Path | Purpose |

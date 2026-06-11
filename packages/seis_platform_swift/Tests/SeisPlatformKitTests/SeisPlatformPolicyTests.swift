@@ -315,3 +315,55 @@ import Testing
     #expect(decision.blockers.contains("credential_boundary_missing:openai"))
     #expect(decision.blockers.contains("remote_orchestrator_must_be_seis_agent_only"))
 }
+
+@Test func repositoryShowcaseGateRequiresGithubMarketSignals() {
+    let result = SeisRepositoryShowcaseGate.evaluate(
+        SeisRepositoryShowcaseInput(
+            readmeSections: SeisRepositoryShowcaseGate.requiredReadmeSections,
+            communityFiles: SeisRepositoryShowcaseGate.requiredCommunityFiles,
+            contributorSignals: SeisRepositoryShowcaseGate.requiredContributorSignals,
+            platformSignals: SeisRepositoryShowcaseGate.requiredPlatformSignals,
+            validationSignals: SeisRepositoryShowcaseGate.requiredValidationSignals,
+            aiRoutingSignals: SeisRepositoryShowcaseGate.requiredAIRoutingSignals,
+            branchPolicy: "main-centered",
+            websiteIsFinalSurface: true,
+            dependencyPolicy: "requirement-led",
+            addsNewJavaScript: false,
+            addsNewPython: false
+        )
+    )
+
+    #expect(result.ready)
+    #expect(result.score == 100)
+    #expect(result.verifiedSignalCount >= 28)
+    #expect(result.blockers.isEmpty)
+}
+
+@Test func repositoryShowcaseGateBlocksWeakPublicSurface() {
+    let result = SeisRepositoryShowcaseGate.evaluate(
+        SeisRepositoryShowcaseInput(
+            readmeSections: ["Active Collaboration Stack", "Contributors"],
+            communityFiles: ["LICENSE"],
+            contributorSignals: ["emirhankudun-ux", "OpenAI Codex"],
+            platformSignals: ["apple-only-languages"],
+            validationSignals: ["swift-test"],
+            aiRoutingSignals: ["online-ai-local-helpers"],
+            branchPolicy: "branch-sprawl",
+            websiteIsFinalSurface: false,
+            dependencyPolicy: "install-everything",
+            addsNewJavaScript: true,
+            addsNewPython: true
+        )
+    )
+
+    #expect(!result.ready)
+    #expect(result.blockers.contains("contributor_signal_missing:Claude"))
+    #expect(result.blockers.contains("community_file_missing:CONTRIBUTING.md"))
+    #expect(result.blockers.contains("readme_section_missing:Repository Governance"))
+    #expect(result.blockers.contains("platform_signal_missing:windows-non-apple-polyglot"))
+    #expect(result.blockers.contains("ai_routing_signal_missing:ollama-offline-fallback"))
+    #expect(result.blockers.contains("branch_policy_must_be_main_centered"))
+    #expect(result.blockers.contains("dependency_policy_must_be_requirement_led"))
+    #expect(result.blockers.contains("javascript_growth_frozen_for_current_phase"))
+    #expect(result.blockers.contains("python_growth_frozen_for_current_phase"))
+}
