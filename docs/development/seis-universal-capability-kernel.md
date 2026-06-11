@@ -13,7 +13,17 @@ npm run check:seis-platform-kernel
 
 ## Scope
 
-The kernel covers engineering, full stack, data, design, development, AI, AI agents, MCP, skills, plugins, LLM routing, algorithms, flowcharts, mathematics, computer science, web, mobile, games, databases, Git, cloud, security, DevOps, testing, architecture, big data, NLP, computer vision, quantum programming, sustainable software, low-code/no-code platforms, UX/UI engineering, robotics, AI ethics, compiler design, requirements, agile delivery, SDLC, metrics, SRE, reverse engineering, refactoring, and formal methods.
+The kernel covers engineering, full stack, data, design, development, AI, AI agents, MCP, skills, plugins, LLM routing, algorithms, flowcharts, mathematics, computer science, web, mobile, games, data science, machine learning, databases, Git, cloud, security, DevOps, system administration, testing, architecture, design patterns, big data, NLP, computer vision, quantum programming, sustainable software, low-code/no-code platforms, UX/UI engineering, robotics, AI ethics, data governance, compiler design, requirements, agile delivery, SDLC, metrics, SRE, reverse engineering, refactoring, and formal methods.
+
+## Universal Domain Coverage Gate
+
+Swift and Go now model the domain promise directly. Every required domain must
+have a lane, agent role, at least two algorithms, an execution flow, required
+quality gates, platform-boundary evidence, and at least one integration surface.
+
+This turns the broad SEIS promise into a checkable contract: "all domains" means
+41 named domains with traceable engineering evidence, not a loose marketing
+phrase.
 
 ## Outputs
 
@@ -34,7 +44,7 @@ The aggressive kernel expansion is intentionally implemented outside JavaScript:
 - SwiftPM package for Apple-native macOS policy and tests.
 - SwiftUI Playground for inspectable Apple UI policy experiments.
 - Objective-C bridge and AppleScript automation surface for Apple ecosystem integration.
-- Windows multi-language surfaces across .NET, PowerShell, Batch, C++, Rust, Go, Python, Java, Kotlin, SQL, R, Lua, Ruby, and PHP.
+- Windows multi-language surfaces across .NET, PowerShell, Batch, C++, Rust, Go, Java, Kotlin, SQL, R, Lua, Ruby, and PHP.
 
 ## Rule
 

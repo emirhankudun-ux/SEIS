@@ -367,3 +367,39 @@ import Testing
     #expect(result.blockers.contains("javascript_growth_frozen_for_current_phase"))
     #expect(result.blockers.contains("python_growth_frozen_for_current_phase"))
 }
+
+@Test func universalDomainCoverageGateCoversAllRequestedDomains() {
+    let result = SeisUniversalDomainCoverageGate.evaluate()
+
+    #expect(result.ready)
+    #expect(result.domainCount == 41)
+    #expect(result.requiredDomainCount == 41)
+    #expect(result.laneCount >= 10)
+    #expect(result.coveragePercent == 100)
+    #expect(result.blockers.isEmpty)
+}
+
+@Test func universalDomainCoverageGateBlocksWeakDomainCoverage() {
+    let result = SeisUniversalDomainCoverageGate.evaluate(profiles: [
+        SeisUniversalDomainProfile(
+            id: "ai-agent",
+            lane: "ai-intelligence",
+            agentRole: "",
+            algorithms: ["intent-routing"],
+            flow: "",
+            qualityGates: ["security"],
+            platformBoundaries: ["apple-only-apple-languages"],
+            integrationSurfaces: []
+        )
+    ])
+
+    #expect(!result.ready)
+    #expect(result.blockers.contains("missing_domain:mcp"))
+    #expect(result.blockers.contains("domain_agent_missing:ai-agent"))
+    #expect(result.blockers.contains("domain_algorithms_insufficient:ai-agent"))
+    #expect(result.blockers.contains("domain_flow_missing:ai-agent"))
+    #expect(result.blockers.contains("domain_quality_gate_missing:ai-agent:maintainability"))
+    #expect(result.blockers.contains("domain_platform_boundary_missing:ai-agent:windows-android-non-apple-polyglot"))
+    #expect(result.blockers.contains("domain_integration_surface_missing:ai-agent"))
+    #expect(result.blockers.contains("domain_lane_coverage_too_narrow"))
+}
