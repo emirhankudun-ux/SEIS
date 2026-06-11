@@ -211,3 +211,66 @@ import Testing
 
     #expect(result.readyForMainOnlyRepository)
 }
+
+@Test func capabilityActivationApprovesSmallRelevantSet() {
+    let decision = SeisCapabilityActivationGate.evaluate([
+        SeisCapabilityActivationSurface(
+            id: "github",
+            family: "repository",
+            mode: "local-cli",
+            missionMatched: true,
+            authReady: true,
+            targetKnown: true,
+            rollbackReady: true,
+            qualityGatePassed: true,
+            credentialBoundary: true,
+            writeCapable: true,
+            approvedForWrite: true
+        ),
+        SeisCapabilityActivationSurface(
+            id: "swiftpm",
+            family: "apple",
+            mode: "local-cli",
+            missionMatched: true,
+            authReady: true,
+            targetKnown: true,
+            rollbackReady: true,
+            qualityGatePassed: true,
+            credentialBoundary: true,
+            writeCapable: false,
+            approvedForWrite: false
+        )
+    ])
+
+    #expect(decision.ready)
+    #expect(decision.approvedSurfaceIDs == ["github", "swiftpm"])
+    #expect(decision.blockedSurfaceIDs.isEmpty)
+}
+
+@Test func capabilityActivationBlocksUnsafeBroadUse() {
+    let decision = SeisCapabilityActivationGate.evaluate([
+        SeisCapabilityActivationSurface(
+            id: "slack",
+            family: "collaboration",
+            mode: "connector",
+            missionMatched: false,
+            authReady: false,
+            targetKnown: false,
+            rollbackReady: false,
+            qualityGatePassed: false,
+            credentialBoundary: false,
+            writeCapable: true,
+            approvedForWrite: false
+        )
+    ])
+
+    #expect(!decision.ready)
+    #expect(decision.blockedSurfaceIDs == ["slack"])
+    #expect(decision.blockers.contains("mission_not_matched:slack"))
+    #expect(decision.blockers.contains("auth_not_ready:slack"))
+    #expect(decision.blockers.contains("target_unknown:slack"))
+    #expect(decision.blockers.contains("rollback_missing:slack"))
+    #expect(decision.blockers.contains("quality_gate_failed:slack"))
+    #expect(decision.blockers.contains("credential_boundary_missing:slack"))
+    #expect(decision.blockers.contains("write_approval_missing:slack"))
+}

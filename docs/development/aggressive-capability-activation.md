@@ -45,6 +45,21 @@ The safe routing order is:
 This keeps powerful surfaces available without turning the workspace into a
 blanket OAuth, broad-scan, or remote-write session.
 
+## Activation Code Gate
+
+Swift and Go kernels now model the activation rule directly. A capability can
+be activated only when all of these are true:
+
+- mission matches the current task
+- auth and credential boundaries are explicit
+- target is known
+- rollback path exists
+- quality gate passed
+- write-capable surfaces have explicit write approval
+
+This makes "use all plugins" mean "register all useful capabilities, then
+activate the smallest safe set" rather than "call every connector."
+
 ## Trusted Marketplace Intake
 
 Marketplace work starts as curation, not live installation. The intake file
