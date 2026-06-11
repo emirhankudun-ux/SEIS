@@ -184,6 +184,11 @@ r_lane() {
   Rscript polyglot/r/seis_translation_stats.R
 }
 
+haskell_lane() {
+  runghc polyglot/haskell/seis_css_unit_audit.hs --self-test &&
+  runghc polyglot/haskell/seis_css_unit_audit.hs
+}
+
 echo "SEIS polyglot audit — $REPO_ROOT"
 echo ""
 run_lane "python     (image+icon)"      python3   python_lane
@@ -208,6 +213,7 @@ run_lane "bun        (js-quality)"     bun       bun_lane
 run_lane "lua        (i18n-attrs)"     lua5.4    lua_lane
 run_lane "tcl        (meta-tags)"      tclsh     tcl_lane
 run_lane "r          (translation-stats)" Rscript r_lane
+run_lane "haskell    (css-unit-audit)"   runghc  haskell_lane
 
 echo ""
 echo "── polyglot summary ──────────────────────"

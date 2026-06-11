@@ -203,8 +203,11 @@
     },
     {
       "language": "Haskell",
-      "role": "pure release policy model",
-      "entrypoints": ["polyglot/haskell/CalmReleasePolicy.hs"]
+      "role": "pure release policy model; CSS dimension unit histogram and font-size px usage audit",
+      "entrypoints": [
+        "polyglot/haskell/CalmReleasePolicy.hs",
+        "polyglot/haskell/seis_css_unit_audit.hs"
+      ]
     },
     {
       "language": "Scala",
