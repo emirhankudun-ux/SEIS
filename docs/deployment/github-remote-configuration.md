@@ -9,16 +9,16 @@ Machine-readable source: [`content/development/github-remote-configuration.json`
 | Field | Value |
 | --- | --- |
 | Remote name | `origin` |
-| Remote URL | `https://github.com/emirhankudun-ux/UIX-Apps.git` |
-| Target branch | `UIXAppTTR` |
-| Local execution branch | `work` |
-| Local tracking target | `origin/UIXAppTTR` |
+| Remote URL | `https://github.com/emirhankudun-ux/SEIS.git` |
+| Target branch | `main` |
+| Local execution branch | `main` |
+| Local tracking target | `origin/main` |
 
 ## Publication Rule
 
-The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, and the publish path uses the `UIXAppTTR` branch contract.
+The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, and the publish path uses the `main` branch contract.
 
-The network probe attempted from this environment was blocked by a `CONNECT tunnel failed, response 403` limitation, so this record treats remote configuration as local Git configuration only, not proof of GitHub authentication or push readiness.
+Branch protection and signature rules can still block or warn on direct pushes. Treat a successful local remote configuration as necessary evidence, not as proof that GitHub accepted the update. When publishing, verify the actual push or PR state and then check GitHub Actions, CodeQL, and open code-scanning alerts.
 
 ## Validation
 
