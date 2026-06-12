@@ -2,40 +2,40 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 538
-- Counted bytes: 2509870
-- JavaScript: 811163 bytes (32.32%)
+- Counted bytes: 2515441
+- JavaScript: 811163 bytes (32.25%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1352810
+- Additional non-JavaScript bytes needed for strict target: 1347239
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 811163 | 32.32% | JavaScript |
+| JavaScript | 811163 | 32.25% | JavaScript |
 | TypeScript | 28824 | 1.15% | TypeScript |
 | Objective-C | 8447 | 0.34% | Objective-C |
-| Other | 1661436 | 66.2% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1667007 | 66.27% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 811163 | 32.32% |
-| JSON | 635229 | 25.31% |
-| Python | 298997 | 11.91% |
-| Swift | 205976 | 8.21% |
+| JavaScript | 811163 | 32.25% |
+| JSON | 635229 | 25.25% |
+| Python | 298997 | 11.89% |
+| Swift | 211547 | 8.41% |
 | CSS | 94204 | 3.75% |
-| HTML | 84633 | 3.37% |
+| HTML | 84633 | 3.36% |
 | Shell | 56789 | 2.26% |
 | Other | 37135 | 1.48% |
 | TypeScript | 28824 | 1.15% |
-| YAML | 25243 | 1.01% |
+| YAML | 25243 | 1.0% |
 | Go | 16367 | 0.65% |
 | Java | 16110 | 0.64% |
 | Scheme | 15747 | 0.63% |
 | Perl | 13916 | 0.55% |
-| Ruby | 13442 | 0.54% |
+| Ruby | 13442 | 0.53% |
 | Rust | 11825 | 0.47% |
 | C++ | 11206 | 0.45% |
 | PHP | 8471 | 0.34% |

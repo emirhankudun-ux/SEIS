@@ -96,6 +96,32 @@ public struct SeisAGIAgentHandoffSnapshot: Codable, Equatable, Sendable {
             records.contains { $0.pluginLaneId == "design-interactive" }
     }
 
+    public var statusLabel: String {
+        "\(records.filter(\.isTraceable).count)/\(records.count) handoffs traceable"
+    }
+
+    public var writerStatusLabel: String {
+        "\(writerCount)/1 writer"
+    }
+
+    public var pluginLaneSummary: String {
+        Set(records.map(\.pluginLaneId))
+            .sorted()
+            .joined(separator: ", ")
+    }
+
+    public static func current(
+        contract: SeisAGISystemContract = .master,
+        recordedAt: String = "2026-06-12T00:00:00Z"
+    ) -> SeisAGIAgentHandoffSnapshot {
+        let memory = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning, recordedAt: recordedAt)
+        let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(
+            contract: contract,
+            memorySnapshot: memory
+        )
+        return bootstrap(from: orchestration, recordedAt: recordedAt)
+    }
+
     public static func bootstrap(
         from plan: SeisAGIAgentOrchestrationPlan,
         recordedAt: String = "2026-06-12T00:00:00Z"
@@ -125,6 +151,7 @@ public struct SeisAGIAgentHandoffSnapshot: Codable, Equatable, Sendable {
         [
             "SeisAGIAgentHandoffRecord",
             "SeisAGIAgentHandoffSnapshot",
+            "current(",
             "bootstrap(",
             "Core Data",
             "CloudKit",
@@ -132,6 +159,17 @@ public struct SeisAGIAgentHandoffSnapshot: Codable, Equatable, Sendable {
             "codex-writer",
             "reviewer-sentinel",
             "no-fake-usage"
+        ]
+    }
+
+    public static var expectedDiagnosticsViewTokens: [String] {
+        [
+            "Agent Handoff Status",
+            "agentHandoffSnapshot.records",
+            "agentHandoffSnapshot.statusLabel",
+            "agentHandoffSnapshot.writerStatusLabel",
+            "pluginLaneSummary",
+            "writeAllowed"
         ]
     }
 }

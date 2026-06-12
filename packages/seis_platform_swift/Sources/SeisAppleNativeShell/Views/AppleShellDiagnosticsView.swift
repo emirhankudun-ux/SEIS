@@ -8,15 +8,18 @@ struct AppleShellDiagnosticsView: View {
     private let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     private let telemetry = SeisAppleShellTelemetryLogger()
     @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
+    @State private var agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot
     @StateObject private var historyStore: SeisAppleShellDiagnosticsHistoryStore
 
     init(
         snapshot: SeisAppleContinuationSnapshot,
         runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current(),
+        agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot = .current(),
         historyStore: SeisAppleShellDiagnosticsHistoryStore = .appleNative()
     ) {
         self.snapshot = snapshot
         self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)
+        self._agentHandoffSnapshot = State(initialValue: agentHandoffSnapshot)
         self._historyStore = StateObject(wrappedValue: historyStore)
     }
 
@@ -137,6 +140,45 @@ struct AppleShellDiagnosticsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Agent Handoff Status")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(agentHandoffSnapshot.writerStatusLabel)
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(agentHandoffSnapshot.writerCount == 1 ? Color.secondary : Color.orange)
+                }
+                Text(agentHandoffSnapshot.statusLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(agentHandoffSnapshot.pluginLaneSummary)
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                ForEach(agentHandoffSnapshot.records) { handoff in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(for: handoff.role))
+                            .foregroundStyle(handoff.writeAllowed ? .blue : .secondary)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(handoff.assignmentId)
+                                .font(.caption.weight(.semibold))
+                            Text("\(handoff.role.rawValue) / \(handoff.pluginLaneId)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("\(handoff.outputArtifact) / selected \(handoff.selectedContextIds.count) / deferred \(handoff.deferredContextIds.count)")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text(handoff.writeAllowed ? "writer enabled / human approval required" : "review lane / human approval required")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
                 Text("Runtime Probes")
                     .font(.subheadline.weight(.semibold))
                 ForEach(runtimeDiagnostics.probes) { probe in
@@ -207,7 +249,7 @@ struct AppleShellDiagnosticsView: View {
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) Active quality gates: \(snapshot.qualityGates.count).")
+        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) \(agentHandoffSnapshot.statusLabel). Active quality gates: \(snapshot.qualityGates.count).")
         .onAppear {
             recordDiagnosticsTelemetry(source: "appear")
         }
@@ -217,11 +259,11 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private var totalReadyCount: Int {
-        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount
+        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount + (agentHandoffSnapshot.isReady ? 1 : 0)
     }
 
     private var totalCheckCount: Int {
-        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count
+        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count + 1
     }
 
     private var validationCommands: [String] {
@@ -247,9 +289,23 @@ struct AppleShellDiagnosticsView: View {
         }
     }
 
+    private func systemImage(for role: SeisAGIAgentRole) -> String {
+        switch role {
+        case .writer:
+            "square.and.pencil"
+        case .reviewer:
+            "checkmark.seal"
+        case .researcher:
+            "doc.text.magnifyingglass"
+        case .designer:
+            "paintpalette"
+        }
+    }
+
     private func refreshDiagnostics(source: String) {
         telemetry.record(.diagnosticsRefreshRequested, detail: "source=\(source)")
         runtimeDiagnostics = .current()
+        agentHandoffSnapshot = .current()
         recordDiagnosticsTelemetry(source: source)
     }
 
@@ -272,6 +328,10 @@ struct AppleShellDiagnosticsView: View {
         telemetry.record(
             .persistenceReadinessSnapshot,
             detail: "source=\(source) ready=\(persistence.readyCount) total=\(persistence.checkCount) accountStates=\(persistence.accountStates.count) migrationGates=\(persistence.migrationGates.count)"
+        )
+        telemetry.record(
+            .agentHandoffSnapshot,
+            detail: "source=\(source) handoffs=\(agentHandoffSnapshot.records.count) writer=\(agentHandoffSnapshot.writerCount) ready=\(agentHandoffSnapshot.isReady)"
         )
     }
 }

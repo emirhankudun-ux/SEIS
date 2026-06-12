@@ -345,10 +345,12 @@ import Testing
     #expect(telemetry.events.contains(.diagnosticsRefreshRequested))
     #expect(telemetry.events.contains(.diagnosticsRefreshed))
     #expect(telemetry.events.contains(.persistenceReadinessSnapshot))
+    #expect(telemetry.events.contains(.agentHandoffSnapshot))
     #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
     #expect(telemetry.category(for: .diagnosticsRefreshRequested) == "Diagnostics")
     #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .persistenceReadinessSnapshot) == "Diagnostics")
+    #expect(telemetry.category(for: .agentHandoffSnapshot) == "Diagnostics")
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
@@ -374,6 +376,10 @@ import Testing
     )
     let persistenceSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift"),
+        encoding: .utf8
+    )
+    let agentHandoffSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift"),
         encoding: .utf8
     )
     let continuation = try String(
@@ -402,9 +408,18 @@ import Testing
     for token in SeisAppleShellDiagnosticsHistorySnapshot.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing diagnostics history view token: \(token)")
     }
+    for token in SeisAGIAgentHandoffSnapshot.expectedSourceTokens {
+        #expect(agentHandoffSource.contains(token), "missing agent handoff source token: \(token)")
+    }
+    for token in SeisAGIAgentHandoffSnapshot.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing agent handoff diagnostics view token: \(token)")
+    }
     #if canImport(CoreData)
     for token in SeisAppleDiagnosticsPersistentHistoryStore.expectedSourceTokens {
         #expect(persistentStoreSource.contains(token), "missing persistent history source token: \(token)")
+    }
+    for token in SeisAGIAgentHandoffPersistentStore.expectedSourceTokens {
+        #expect(agentHandoffSource.contains(token), "missing persistent agent handoff source token: \(token)")
     }
     #endif
 }
@@ -662,6 +677,10 @@ import Testing
     #expect(snapshot.records.contains { $0.assignmentId == "reviewer-sentinel" && !$0.writeAllowed })
     #expect(snapshot.records.allSatisfy { $0.status == .drafted })
     #expect(SeisAGIAgentHandoffSnapshot.storagePolicy.contains("never persist secrets"))
+    #expect(SeisAGIAgentHandoffSnapshot.current().isReady)
+    #expect(snapshot.statusLabel.contains("handoffs traceable"))
+    #expect(snapshot.writerStatusLabel == "1/1 writer")
+    #expect(snapshot.pluginLaneSummary.contains("development-read-write"))
 
     for record in snapshot.records {
         store.save(record)
