@@ -262,6 +262,7 @@ import Testing
         operatingSystemVersion: "macOS-test",
         processName: "SeisAppleNativeShell"
     )
+    let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let store = SeisAppleShellDiagnosticsHistoryStore(historyLimit: 2)
 
     let first = store.record(
@@ -270,6 +271,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 0)
     )
     let second = store.record(
@@ -278,6 +280,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 1)
     )
     let third = store.record(
@@ -286,6 +289,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 2)
     )
 
@@ -296,6 +300,11 @@ import Testing
     #expect(third.qualityGateCount == continuation.qualityGates.count)
     #expect(third.runtimeStatusLabel.contains("runtime"))
     #expect(third.persistenceStatusLabel.contains("persistence"))
+    #expect(third.agentHandoffReadyCount == 1)
+    #expect(third.agentHandoffCheckCount == 1)
+    #expect(third.agentHandoffWriterCount == 1)
+    #expect(third.agentHandoffStatusLabel.contains("handoffs traceable"))
+    #expect(third.agentHandoffStatusSummary.contains("handoff"))
 }
 
 #if canImport(CoreData)
@@ -309,6 +318,7 @@ import Testing
         operatingSystemVersion: "macOS-test",
         processName: "SeisAppleNativeShell"
     )
+    let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let persistentStore = try SeisAppleDiagnosticsPersistentHistoryStore(inMemory: true)
     let store = SeisAppleShellDiagnosticsHistoryStore(
         historyLimit: 3,
@@ -321,6 +331,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 3)
     )
     let hydratedStore = SeisAppleShellDiagnosticsHistoryStore(
@@ -332,6 +343,8 @@ import Testing
     #expect(hydratedStore.latest == snapshot)
     #expect(snapshot.persistenceReadyCount == persistence.readyCount)
     #expect(snapshot.runtimeReadyCount == runtime.readyCount)
+    #expect(snapshot.agentHandoffStatusLabel == agentHandoff.statusLabel)
+    #expect(snapshot.agentHandoffWriterCount == agentHandoff.writerCount)
 }
 #endif
 

@@ -18,6 +18,10 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
     public let runtimeProbeCount: Int
     public let persistenceReadyCount: Int
     public let persistenceCheckCount: Int
+    public let agentHandoffReadyCount: Int
+    public let agentHandoffCheckCount: Int
+    public let agentHandoffWriterCount: Int
+    public let agentHandoffStatusLabel: String
 
     public init(
         id: String,
@@ -29,7 +33,11 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         runtimeReadyCount: Int,
         runtimeProbeCount: Int,
         persistenceReadyCount: Int,
-        persistenceCheckCount: Int
+        persistenceCheckCount: Int,
+        agentHandoffReadyCount: Int,
+        agentHandoffCheckCount: Int,
+        agentHandoffWriterCount: Int,
+        agentHandoffStatusLabel: String
     ) {
         self.id = id
         self.source = source
@@ -41,6 +49,10 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         self.runtimeProbeCount = runtimeProbeCount
         self.persistenceReadyCount = persistenceReadyCount
         self.persistenceCheckCount = persistenceCheckCount
+        self.agentHandoffReadyCount = agentHandoffReadyCount
+        self.agentHandoffCheckCount = agentHandoffCheckCount
+        self.agentHandoffWriterCount = agentHandoffWriterCount
+        self.agentHandoffStatusLabel = agentHandoffStatusLabel
     }
 
     public static func make(
@@ -49,10 +61,13 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         diagnostics: SeisAppleShellDiagnosticsContract,
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
+        agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
-        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount
-        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count
+        let agentHandoffReadyCount = agentHandoff.isReady ? 1 : 0
+        let agentHandoffCheckCount = 1
+        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount + agentHandoffReadyCount
+        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count + agentHandoffCheckCount
         let timestamp = Self.timestampString(from: recordedAt)
         let id = "\(source)-\(readyCount)-\(checkCount)-\(timestamp)"
             .replacingOccurrences(of: ":", with: "-")
@@ -67,7 +82,11 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             runtimeReadyCount: runtime.readyCount,
             runtimeProbeCount: runtime.probes.count,
             persistenceReadyCount: persistence.readyCount,
-            persistenceCheckCount: persistence.checkCount
+            persistenceCheckCount: persistence.checkCount,
+            agentHandoffReadyCount: agentHandoffReadyCount,
+            agentHandoffCheckCount: agentHandoffCheckCount,
+            agentHandoffWriterCount: agentHandoff.writerCount,
+            agentHandoffStatusLabel: agentHandoff.statusLabel
         )
     }
 
@@ -87,6 +106,10 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         "\(persistenceReadyCount)/\(persistenceCheckCount) persistence"
     }
 
+    public var agentHandoffStatusSummary: String {
+        "\(agentHandoffReadyCount)/\(agentHandoffCheckCount) handoff / \(agentHandoffWriterCount)/1 writer / \(agentHandoffStatusLabel)"
+    }
+
     public static var expectedSourceTokens: [String] {
         [
             "import Combine",
@@ -96,7 +119,9 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "SeisAppleShellDiagnosticsHistorySnapshot",
             "qualityGateCount",
             "runtimeStatusLabel",
-            "persistenceStatusLabel"
+            "persistenceStatusLabel",
+            "agentHandoffStatusLabel",
+            "agentHandoffStatusSummary"
         ]
     }
 
@@ -106,7 +131,8 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "historyStore.snapshots",
             "historySnapshot.statusLabel",
             "historySnapshot.runtimeStatusLabel",
-            "historySnapshot.persistenceStatusLabel"
+            "historySnapshot.persistenceStatusLabel",
+            "historySnapshot.agentHandoffStatusSummary"
         ]
     }
 
@@ -152,6 +178,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
         diagnostics: SeisAppleShellDiagnosticsContract,
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
+        agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
         let snapshot = SeisAppleShellDiagnosticsHistorySnapshot.make(
@@ -160,6 +187,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
             diagnostics: diagnostics,
             persistence: persistence,
             runtime: runtime,
+            agentHandoff: agentHandoff,
             recordedAt: recordedAt
         )
         _ = try? persistentStore?.save(snapshot)

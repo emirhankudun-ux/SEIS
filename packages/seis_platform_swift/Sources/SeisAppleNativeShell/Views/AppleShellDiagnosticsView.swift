@@ -226,6 +226,9 @@ struct AppleShellDiagnosticsView: View {
                             Text("\(historySnapshot.runtimeStatusLabel) / \(historySnapshot.persistenceStatusLabel)")
                                 .font(.caption2)
                                 .foregroundStyle(.tertiary)
+                            Text(historySnapshot.agentHandoffStatusSummary)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                 }
@@ -315,7 +318,8 @@ struct AppleShellDiagnosticsView: View {
             continuation: snapshot,
             diagnostics: diagnostics,
             persistence: persistence,
-            runtime: runtimeDiagnostics
+            runtime: runtimeDiagnostics,
+            agentHandoff: agentHandoffSnapshot
         )
         telemetry.record(
             .diagnosticsRefreshed,

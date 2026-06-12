@@ -53,6 +53,10 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
                 object.setValue(snapshot.runtimeProbeCount, forKey: "runtimeProbeCount")
                 object.setValue(snapshot.persistenceReadyCount, forKey: "persistenceReadyCount")
                 object.setValue(snapshot.persistenceCheckCount, forKey: "persistenceCheckCount")
+                object.setValue(snapshot.agentHandoffReadyCount, forKey: "agentHandoffReadyCount")
+                object.setValue(snapshot.agentHandoffCheckCount, forKey: "agentHandoffCheckCount")
+                object.setValue(snapshot.agentHandoffWriterCount, forKey: "agentHandoffWriterCount")
+                object.setValue(snapshot.agentHandoffStatusLabel, forKey: "agentHandoffStatusLabel")
 
                 if context.hasChanges {
                     try context.save()
@@ -99,7 +103,10 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             "NSInMemoryStoreType",
             "NSMergePolicy",
             "shouldMigrateStoreAutomatically",
-            "shouldInferMappingModelAutomatically"
+            "shouldInferMappingModelAutomatically",
+            "agentHandoffWriterCount",
+            "agentHandoffStatusLabel",
+            "defaultValue"
         ]
     }
 
@@ -129,12 +136,20 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             runtimeReadyCount: intValue(object, forKey: "runtimeReadyCount"),
             runtimeProbeCount: intValue(object, forKey: "runtimeProbeCount"),
             persistenceReadyCount: intValue(object, forKey: "persistenceReadyCount"),
-            persistenceCheckCount: intValue(object, forKey: "persistenceCheckCount")
+            persistenceCheckCount: intValue(object, forKey: "persistenceCheckCount"),
+            agentHandoffReadyCount: intValue(object, forKey: "agentHandoffReadyCount"),
+            agentHandoffCheckCount: intValue(object, forKey: "agentHandoffCheckCount"),
+            agentHandoffWriterCount: intValue(object, forKey: "agentHandoffWriterCount"),
+            agentHandoffStatusLabel: stringValue(object, forKey: "agentHandoffStatusLabel")
         )
     }
 
     private static func intValue(_ object: NSManagedObject, forKey key: String) -> Int {
         (object.value(forKey: key) as? NSNumber)?.intValue ?? 0
+    }
+
+    private static func stringValue(_ object: NSManagedObject, forKey key: String) -> String {
+        object.value(forKey: key) as? String ?? ""
     }
 
     private static func makeManagedObjectModel() -> NSManagedObjectModel {
@@ -151,7 +166,11 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             attribute("runtimeReadyCount", .integer64AttributeType),
             attribute("runtimeProbeCount", .integer64AttributeType),
             attribute("persistenceReadyCount", .integer64AttributeType),
-            attribute("persistenceCheckCount", .integer64AttributeType)
+            attribute("persistenceCheckCount", .integer64AttributeType),
+            attribute("agentHandoffReadyCount", .integer64AttributeType, defaultValue: 0),
+            attribute("agentHandoffCheckCount", .integer64AttributeType, defaultValue: 1),
+            attribute("agentHandoffWriterCount", .integer64AttributeType, defaultValue: 0),
+            attribute("agentHandoffStatusLabel", .stringAttributeType, defaultValue: "")
         ]
 
         let model = NSManagedObjectModel()
@@ -159,11 +178,16 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
         return model
     }
 
-    private static func attribute(_ name: String, _ type: NSAttributeType) -> NSAttributeDescription {
+    private static func attribute(
+        _ name: String,
+        _ type: NSAttributeType,
+        defaultValue: Any? = nil
+    ) -> NSAttributeDescription {
         let attribute = NSAttributeDescription()
         attribute.name = name
         attribute.attributeType = type
         attribute.isOptional = false
+        attribute.defaultValue = defaultValue
         return attribute
     }
 
