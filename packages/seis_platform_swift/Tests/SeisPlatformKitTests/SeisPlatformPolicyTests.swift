@@ -115,6 +115,39 @@ import Testing
     }
 }
 
+@Test func appleShellSettingsContractDefinesNativePreferences() {
+    let contract = SeisAppleShellSettingsContract.appleNativeShell
+    #expect(contract.defaultLowMotion)
+    #expect(contract.defaultPreferredFocus == .appleNative)
+    #expect(contract.defaultShowsQualityGates)
+    #expect(contract.appStorageKeys == [
+        "seis.apple.shell.lowMotion",
+        "seis.apple.shell.preferredFocus",
+        "seis.apple.shell.showsQualityGates"
+    ])
+    #expect(SeisAppleShellFocusPreference.macOS.request.contains("AppKit"))
+    #expect(SeisAppleShellFocusPreference.iOS.request.contains("UIKit"))
+}
+
+@Test func appleShellSettingsFilesMatchSwiftContract() throws {
+    let contract = SeisAppleShellSettingsContract.appleNativeShell
+    let root = repositoryRoot()
+    let app = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift"),
+        encoding: .utf8
+    )
+    let settings = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellSettingsView.swift"),
+        encoding: .utf8
+    )
+
+    #expect(app.contains("Settings {"))
+    #expect(app.contains("AppleShellSettingsView()"))
+    for token in contract.expectedSettingsViewTokens {
+        #expect(settings.contains(token), "missing settings token: \(token)")
+    }
+}
+
 @Test func developmentTracksKeepAppleAndWindowsBoundaries() {
     let tracks = SeisPlatformPolicy.developmentTracks
     let appleTrack = tracks.first { $0.id == "apple-native-macos-track" }

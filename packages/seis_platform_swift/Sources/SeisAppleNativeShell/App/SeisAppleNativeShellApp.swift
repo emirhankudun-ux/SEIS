@@ -30,6 +30,10 @@ struct SeisAppleNativeShellApp: App {
                 .keyboardShortcut("1", modifiers: [.command])
             }
         }
+
+        Settings {
+            AppleShellSettingsView()
+        }
     }
 }
 

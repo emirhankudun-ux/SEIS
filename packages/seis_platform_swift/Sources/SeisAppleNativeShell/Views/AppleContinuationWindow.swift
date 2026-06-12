@@ -2,8 +2,9 @@ import SeisPlatformKit
 import SwiftUI
 
 struct AppleContinuationWindow: View {
+    private let settings = SeisAppleShellSettingsContract.appleNativeShell
     @StateObject private var model = SeisAppleContinuationModel()
-    @State private var request = "SwiftUI macOS and iOS UIKit CloudKit Core Data workflow"
+    @State private var request = SeisAppleShellSettingsContract.appleNativeShell.defaultPreferredFocus.request
 
     var body: some View {
         NavigationSplitView {
@@ -49,7 +50,7 @@ struct AppleContinuationWindow: View {
     }
 
     private func focusAppleNative() {
-        request = "SwiftUI macOS and iOS UIKit CloudKit Core Data workflow"
+        request = settings.defaultPreferredFocus.request
         model.focus(on: request)
     }
 }
