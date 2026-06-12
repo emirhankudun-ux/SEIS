@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -90,6 +90,21 @@ for (const workflow of [
 ]) {
   requireIncludes(workflow, "main");
   requireNotIncludes(workflow, "UIXAppTTR", "legacy UIXAppTTR branch trigger");
+}
+
+for (const workflow of readdirSync(resolve(root, ".github/workflows")).filter(name => name.endsWith(".yml") || name.endsWith(".yaml"))) {
+  const file = `.github/workflows/${workflow}`;
+  const contents = read(file);
+  for (const line of contents.split("\n")) {
+    const match = line.match(/uses:\s*([^@\s]+)@([^\s#]+)/);
+    if (!match) {
+      continue;
+    }
+    const reference = match[2];
+    if (!/^[a-f0-9]{40}$/i.test(reference)) {
+      failures.push(`${file} must pin GitHub Action ${match[1]} to a full commit SHA, got ${reference}`);
+    }
+  }
 }
 
 if (failures.length > 0) {
