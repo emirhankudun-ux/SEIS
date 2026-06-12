@@ -209,6 +209,10 @@ import Testing
     #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.noAccount" && $0.qualityGate == "offline_fallback" })
     #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.restricted" && $0.qualityGate == "permission_scope" })
     #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.temporarilyUnavailable" && $0.qualityGate == "coredata_cloudkit_sync_review" })
+    #expect(persistence.migrationGates.count == 5)
+    #expect(persistence.migrationGates.contains { $0.id == "lightweight-migration" && $0.coreDataSurface == "NSMigratePersistentStoresAutomaticallyOption" })
+    #expect(persistence.migrationGates.contains { $0.id == "store-description-options" && $0.coreDataSurface == "NSPersistentStoreDescription" })
+    #expect(persistence.migrationGates.contains { $0.id == "migration-fixture-test" && $0.qualityGate == "swift_test" })
     #expect(persistence.validationCommands.contains("swift test --package-path packages/seis_platform_swift"))
 }
 

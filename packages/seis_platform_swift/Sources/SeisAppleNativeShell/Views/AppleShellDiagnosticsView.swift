@@ -105,6 +105,30 @@ struct AppleShellDiagnosticsView: View {
                         }
                     }
                 }
+
+                Text("Core Data Migration Gates")
+                    .font(.caption.weight(.semibold))
+                    .padding(.top, 4)
+                ForEach(persistence.migrationGates) { migration in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(for: migration.state))
+                            .foregroundStyle(statusColor(for: migration.state))
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(migration.title)
+                                .font(.caption.weight(.semibold))
+                            Text(migration.coreDataSurface)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(migration.releaseAction)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text(migration.qualityGate)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
             }
 
             Divider()

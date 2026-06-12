@@ -64,12 +64,41 @@ public struct SeisAppleCloudKitAccountStateReadiness: Codable, Equatable, Identi
     }
 }
 
+public struct SeisAppleCoreDataMigrationReadiness: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let title: String
+    public let coreDataSurface: String
+    public let state: SeisAppleShellDiagnosticState
+    public let evidence: String
+    public let releaseAction: String
+    public let qualityGate: String
+
+    public init(
+        id: String,
+        title: String,
+        coreDataSurface: String,
+        state: SeisAppleShellDiagnosticState,
+        evidence: String,
+        releaseAction: String,
+        qualityGate: String
+    ) {
+        self.id = id
+        self.title = title
+        self.coreDataSurface = coreDataSurface
+        self.state = state
+        self.evidence = evidence
+        self.releaseAction = releaseAction
+        self.qualityGate = qualityGate
+    }
+}
+
 public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendable {
     public let title: String
     public let summary: String
     public let appleFrameworkSymbols: [String]
     public let items: [SeisApplePersistenceReadinessItem]
     public let accountStates: [SeisAppleCloudKitAccountStateReadiness]
+    public let migrationGates: [SeisAppleCoreDataMigrationReadiness]
     public let validationCommands: [String]
 
     public init(
@@ -78,6 +107,7 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
         appleFrameworkSymbols: [String],
         items: [SeisApplePersistenceReadinessItem],
         accountStates: [SeisAppleCloudKitAccountStateReadiness],
+        migrationGates: [SeisAppleCoreDataMigrationReadiness],
         validationCommands: [String]
     ) {
         self.title = title
@@ -85,6 +115,7 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
         self.appleFrameworkSymbols = appleFrameworkSymbols
         self.items = items
         self.accountStates = accountStates
+        self.migrationGates = migrationGates
         self.validationCommands = validationCommands
     }
 
@@ -98,7 +129,10 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
             "NSPersistentHistoryTransaction",
             "CKContainer",
             "CKRecord",
-            "CKAccountStatus"
+            "CKAccountStatus",
+            "NSMigratePersistentStoresAutomaticallyOption",
+            "NSInferMappingModelAutomaticallyOption",
+            "NSPersistentStoreDescription"
         ],
         items: [
             SeisApplePersistenceReadinessItem(
@@ -203,6 +237,53 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
                 qualityGate: "coredata_cloudkit_sync_review"
             )
         ],
+        migrationGates: [
+            SeisAppleCoreDataMigrationReadiness(
+                id: "model-versioning",
+                title: "Model Versioning",
+                coreDataSurface: "NSManagedObjectModel",
+                state: .ready,
+                evidence: "Every promoted persistent model needs explicit version ownership.",
+                releaseAction: "Name model versions and document the active store model before release.",
+                qualityGate: "coredata_cloudkit_sync_review"
+            ),
+            SeisAppleCoreDataMigrationReadiness(
+                id: "lightweight-migration",
+                title: "Lightweight Migration",
+                coreDataSurface: "NSMigratePersistentStoresAutomaticallyOption",
+                state: .ready,
+                evidence: "Additive schema changes should prefer Apple lightweight migration first.",
+                releaseAction: "Enable automatic store migration and inferred mapping where compatible.",
+                qualityGate: "coredata_cloudkit_sync_review"
+            ),
+            SeisAppleCoreDataMigrationReadiness(
+                id: "store-description-options",
+                title: "Store Description Options",
+                coreDataSurface: "NSPersistentStoreDescription",
+                state: .ready,
+                evidence: "Store options need to be deliberate before sync or history tracking is enabled.",
+                releaseAction: "Review history tracking, remote-change notifications, and CloudKit options together.",
+                qualityGate: "notarization_awareness"
+            ),
+            SeisAppleCoreDataMigrationReadiness(
+                id: "rollback-plan",
+                title: "Rollback Plan",
+                coreDataSurface: "Persistent Store Backup",
+                state: .ready,
+                evidence: "Persistent schema upgrades need an explicit recovery path.",
+                releaseAction: "Keep local backup and destructive-migration rules out of the happy path.",
+                qualityGate: "offline_fallback"
+            ),
+            SeisAppleCoreDataMigrationReadiness(
+                id: "migration-fixture-test",
+                title: "Migration Fixture Test",
+                coreDataSurface: "Versioned Store Fixture",
+                state: .ready,
+                evidence: "A seeded old-store fixture should validate migration before production sync.",
+                releaseAction: "Test old-to-current migration before enabling CloudKit writes.",
+                qualityGate: "swift_test"
+            )
+        ],
         validationCommands: [
             "swift test --package-path packages/seis_platform_swift",
             "xcodebuild -version"
@@ -211,11 +292,12 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
 
     public var readyCount: Int {
         items.filter { $0.state == .ready }.count +
-            accountStates.filter { $0.state == .ready }.count
+            accountStates.filter { $0.state == .ready }.count +
+            migrationGates.filter { $0.state == .ready }.count
     }
 
     public var checkCount: Int {
-        items.count + accountStates.count
+        items.count + accountStates.count + migrationGates.count
     }
 
     public var isReady: Bool {
@@ -236,7 +318,10 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
             "CKContainer",
             "CKRecord",
             "CKAccountStatus",
-            "CKAccountStatus.temporarilyUnavailable"
+            "CKAccountStatus.temporarilyUnavailable",
+            "NSMigratePersistentStoresAutomaticallyOption",
+            "NSInferMappingModelAutomaticallyOption",
+            "NSPersistentStoreDescription"
         ]
     }
 
@@ -244,12 +329,16 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
         [
             "Persistence Readiness",
             "CloudKit Account States",
+            "Core Data Migration Gates",
             "persistence.items",
             "persistence.accountStates",
+            "persistence.migrationGates",
             "item.appleFramework",
             "item.symbol",
             "accountState.accountStatus",
             "accountState.releaseAction",
+            "migration.releaseAction",
+            "migration.coreDataSurface",
             "persistence.validationCommands"
         ]
     }
