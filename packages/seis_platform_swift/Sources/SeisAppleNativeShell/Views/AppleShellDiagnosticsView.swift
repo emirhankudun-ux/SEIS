@@ -235,5 +235,9 @@ struct AppleShellDiagnosticsView: View {
             .runtimeProbeSnapshot,
             detail: "source=\(source) ready=\(runtimeDiagnostics.readyCount) total=\(runtimeDiagnostics.probes.count) process=\(runtimeDiagnostics.processName)"
         )
+        telemetry.record(
+            .persistenceReadinessSnapshot,
+            detail: "source=\(source) ready=\(persistence.readyCount) total=\(persistence.checkCount) accountStates=\(persistence.accountStates.count) migrationGates=\(persistence.migrationGates.count)"
+        )
     }
 }

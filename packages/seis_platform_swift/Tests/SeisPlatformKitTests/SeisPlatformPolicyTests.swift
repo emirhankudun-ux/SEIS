@@ -250,9 +250,11 @@ import Testing
     #expect(telemetry.events.contains(.focusRouteApplied))
     #expect(telemetry.events.contains(.diagnosticsRefreshRequested))
     #expect(telemetry.events.contains(.diagnosticsRefreshed))
+    #expect(telemetry.events.contains(.persistenceReadinessSnapshot))
     #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
     #expect(telemetry.category(for: .diagnosticsRefreshRequested) == "Diagnostics")
     #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
+    #expect(telemetry.category(for: .persistenceReadinessSnapshot) == "Diagnostics")
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
