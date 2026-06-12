@@ -83,6 +83,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "token-savings-target"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "agi-agent-orchestration-runtime",
+            title: "AGI Agent Orchestration Runtime",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+            qualityGate: "agent_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "run-script",
             title: "Run Script",
             relativePath: "script/build_and_run.sh",

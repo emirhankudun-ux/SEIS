@@ -634,6 +634,7 @@ def build_seis_agi_system() -> dict[str, Any]:
             "swiftContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
             "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
             "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+            "swiftAgentOrchestrationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
             "generator": "scripts/create-seis-agi-system.py",
             "sourceContract": "content/development/seis-agi-system.json",
             "report": "reports/seis-agi-system.md",
@@ -648,6 +649,7 @@ def build_seis_agi_system() -> dict[str, Any]:
             "apple_first_language_contract_present",
             "apple_native_memory_store_present",
             "apple_native_context_compression_present",
+            "apple_native_agent_orchestration_present",
             "no_runtime_install_for_language_percentage",
             "security_and_human_review_gates_present",
         ),
@@ -687,6 +689,10 @@ def validate_seis_agi_system(contract: dict[str, Any]) -> list[str]:
         "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift"
     ):
         failures.append("AGI system must track the Swift context compression runtime implementation")
+    if contract.get("implementation", {}).get("swiftAgentOrchestrationRuntime") != (
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift"
+    ):
+        failures.append("AGI system must track the Swift agent orchestration runtime implementation")
     if len(memory_planning.get("checkpoints", [])) < 5:
         failures.append("AGI memory planning must include at least five checkpoints")
     if len(memory_planning.get("loops", [])) < 4:

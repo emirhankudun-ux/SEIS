@@ -1182,6 +1182,7 @@
     "swiftContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
     "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+    "swiftAgentOrchestrationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
     "generator": "scripts/create-seis-agi-system.py",
     "sourceContract": "content/development/seis-agi-system.json",
     "report": "reports/seis-agi-system.md",

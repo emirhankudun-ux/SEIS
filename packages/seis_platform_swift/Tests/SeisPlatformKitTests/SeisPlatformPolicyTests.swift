@@ -235,6 +235,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "agi-operating-system-contract" && $0.qualityGate == "agent_governance" })
     #expect(runtime.probes.contains { $0.id == "agi-memory-planning-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "agi-context-compression-runtime" && $0.qualityGate == "token-savings-target" })
+    #expect(runtime.probes.contains { $0.id == "agi-agent-orchestration-runtime" && $0.qualityGate == "agent_governance" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -615,6 +616,33 @@ import Testing
     )
     for token in SeisAGIContextCompressionRuntime.expectedSourceTokens {
         #expect(source.contains(token), "missing context compression source token: \(token)")
+    }
+}
+
+@Test func agiAgentOrchestrationRuntimeBuildsGovernedMultiAgentPlan() throws {
+    let contract = SeisAGISystemContract.master
+    let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning)
+    let runtime = SeisAGIAgentOrchestrationRuntime()
+    let plan = runtime.makePlan(contract: contract, memorySnapshot: snapshot)
+
+    #expect(plan.isReady)
+    #expect(plan.writerCount == 1)
+    #expect(plan.roleSet == Set(SeisAGIAgentRole.allCases))
+    #expect(plan.assignments.contains { $0.id == "codex-writer" && $0.writeAllowed })
+    #expect(plan.assignments.contains { $0.id == "reviewer-sentinel" && !$0.writeAllowed })
+    #expect(plan.assignments.contains { $0.pluginLaneId == "data-read-write" && $0.role == .researcher })
+    #expect(plan.assignments.contains { $0.pluginLaneId == "design-interactive" && $0.role == .designer })
+    #expect(plan.assignments.allSatisfy { $0.activationMode.contains("candidate") })
+    #expect(plan.qualityGates.contains("no-fake-usage"))
+    #expect(plan.contextPlan.savingsPercent >= 60)
+
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift"),
+        encoding: .utf8
+    )
+    for token in SeisAGIAgentOrchestrationRuntime.expectedSourceTokens {
+        #expect(source.contains(token), "missing agent orchestration source token: \(token)")
     }
 }
 

@@ -1,42 +1,42 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 536
-- Counted bytes: 2478489
-- JavaScript: 811163 bytes (32.73%)
+- Counted files: 537
+- Counted bytes: 2490144
+- JavaScript: 811163 bytes (32.57%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1384191
+- Additional non-JavaScript bytes needed for strict target: 1372536
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 811163 | 32.73% | JavaScript |
+| JavaScript | 811163 | 32.57% | JavaScript |
 | TypeScript | 28824 | 1.16% | TypeScript |
 | Objective-C | 8447 | 0.34% | Objective-C |
-| Other | 1630055 | 65.77% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1641710 | 65.93% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 811163 | 32.73% |
-| JSON | 635229 | 25.63% |
-| Python | 297069 | 11.99% |
-| Swift | 176523 | 7.12% |
-| CSS | 94204 | 3.8% |
-| HTML | 84633 | 3.41% |
-| Shell | 56789 | 2.29% |
-| Other | 37135 | 1.5% |
+| JavaScript | 811163 | 32.57% |
+| JSON | 635229 | 25.51% |
+| Python | 298073 | 11.97% |
+| Swift | 187174 | 7.52% |
+| CSS | 94204 | 3.78% |
+| HTML | 84633 | 3.4% |
+| Shell | 56789 | 2.28% |
+| Other | 37135 | 1.49% |
 | TypeScript | 28824 | 1.16% |
-| YAML | 25243 | 1.02% |
+| YAML | 25243 | 1.01% |
 | Go | 16367 | 0.66% |
 | Java | 16110 | 0.65% |
-| Scheme | 15747 | 0.64% |
+| Scheme | 15747 | 0.63% |
 | Perl | 13916 | 0.56% |
 | Ruby | 13442 | 0.54% |
-| Rust | 11825 | 0.48% |
+| Rust | 11825 | 0.47% |
 | C++ | 11206 | 0.45% |
 | PHP | 8471 | 0.34% |
 | Objective-C | 8447 | 0.34% |

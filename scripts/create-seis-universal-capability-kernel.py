@@ -30,6 +30,7 @@ NON_JS_SURFACES = [
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
