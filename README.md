@@ -106,6 +106,11 @@ npm run check:seis-platform-kernel
 No command above installs a new local language runtime. Some checks skip optional
 toolchains when they are not present.
 
+GitHub Actions also runs CodeQL code scanning for JavaScript, TypeScript, and
+Python on relevant pull requests, `main` pushes, weekly scheduled scans, and
+manual dispatches. This keeps security scanning in GitHub without asking local
+contributors to install every platform SDK.
+
 ## Contribution Path
 
 Start with:

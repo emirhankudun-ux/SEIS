@@ -1,0 +1,58 @@
+name: CodeQL
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/codeql.yml"
+      - "apps/web/**"
+      - "mcp/**"
+      - "packages/seis-ai/**"
+      - "packages/seis_kernel/**"
+      - "scripts/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - ".github/workflows/codeql.yml"
+      - "apps/web/**"
+      - "mcp/**"
+      - "packages/seis-ai/**"
+      - "packages/seis_kernel/**"
+      - "scripts/**"
+  schedule:
+    - cron: "24 4 * * 1"
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
+          - language: python
+            build-mode: none
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          category: "/language:${{ matrix.language }}"

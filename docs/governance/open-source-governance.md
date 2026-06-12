@@ -21,6 +21,9 @@ The GitHub-facing surface must stay current:
   issues, Discussions, and private security reporting.
 - `.github/DISCUSSION_TEMPLATE/` keeps ideas, Q&A, and show-and-tell useful
   before they become issues or pull requests.
+- `.github/workflows/codeql.yml` keeps GitHub CodeQL scanning active for the
+  JavaScript, TypeScript, and Python surfaces that carry the web, MCP, AI, and
+  automation lanes.
 - Repository description, homepage, and topics must accurately present SEIS as
   an AI-native, Apple-first, full-stack, design-driven open source ecosystem.
 
@@ -32,6 +35,7 @@ SEIS should earn GitHub adoption through substance:
 - useful AI-agent, MCP, skill, plugin, and LLM workflow examples
 - strong validation gates before large feature expansion
 - transparent security and governance docs
+- visible CodeQL code scanning for security-sensitive automation surfaces
 - focused issue and PR templates
 - structured discussion forms for community shaping
 - repository metadata and topics that match the real architecture

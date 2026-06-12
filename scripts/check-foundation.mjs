@@ -22,6 +22,7 @@ const requiredFiles = [
   "docs/governance/branch-policy.md",
   "docs/governance/open-source-governance.md",
   "docs/governance/seis-supreme-v12-constitution.md",
+  ".github/workflows/codeql.yml",
   "scripts/check-open-source-governance.mjs"
 ];
 
@@ -34,10 +35,12 @@ const requiredTextChecks = [
   ["AGENTS.md", "active GitHub development surface for SEIS"],
   ["CONTRIBUTING.md", "Do not ask contributors to install every language toolchain"],
   ["SECURITY.md", "MCP tools, plugins, and agent workflows"],
+  ["SECURITY.md", "GitHub CodeQL code scanning"],
   ["CONTRIBUTORS.md", "OpenAI Codex / ChatGPT"],
   ["CONTRIBUTORS.md", "Claude"],
   ["docs/governance/branch-policy.md", "`main` is the only permanent branch"],
   ["docs/governance/open-source-governance.md", "GitHub Update Rule"],
+  ["docs/governance/open-source-governance.md", ".github/workflows/codeql.yml"],
   ["docs/governance/seis-supreme-v12-constitution.md", "open-source AI-native"],
   ["package.json", "\"check:open-source-governance\""],
   [".github/workflows/ci.yml", "npm run check:open-source-governance"],

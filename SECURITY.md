@@ -45,6 +45,17 @@ unless a maintainer explicitly announces another supported release line.
   surfaces.
 - Prefer small, auditable fixes with clear validation.
 
+## Automated Security Scanning
+
+SEIS uses GitHub CodeQL code scanning for the repository's JavaScript,
+TypeScript, and Python surfaces. These lanes cover the web app, MCP entrypoints,
+AI package, kernel builders, and automation scripts without requiring
+contributors to install extra local SDKs.
+
+CodeQL runs on relevant pull requests, `main` pushes, weekly scheduled scans,
+and manual dispatches. Findings should be triaged as security work, not as
+general feature backlog.
+
 ## Dependency and Toolchain Policy
 
 Do not install unused runtimes or SDKs by default. A dependency is acceptable
