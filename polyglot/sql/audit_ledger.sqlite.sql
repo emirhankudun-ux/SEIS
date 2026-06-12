@@ -77,9 +77,16 @@ INSERT INTO finding (run_id, section, message)
 VALUES (2, 'perf', 'script.js 180 KB > 150 KB budget');
 
 -- View sanity: latest run is #2 with one failed section.
+CREATE TEMP TABLE smoke_assertion (
+    verdict TEXT NOT NULL CHECK (verdict = '[PASS] sql-ledger  schema + views + constraints OK')
+);
+
+INSERT INTO smoke_assertion (verdict)
 SELECT CASE
     WHEN (SELECT failed_sections FROM latest_run) = 1
      AND (SELECT git_ref FROM latest_run) = 'smoke-b'
     THEN '[PASS] sql-ledger  schema + views + constraints OK'
-    ELSE RAISE_SENTINEL -- unknown identifier => hard error if logic broke
-END AS verdict;
+    ELSE '[FAIL] sql-ledger  latest_run view returned an unexpected result'
+END;
+
+SELECT verdict FROM smoke_assertion;

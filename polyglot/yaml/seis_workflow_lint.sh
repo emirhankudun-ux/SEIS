@@ -32,9 +32,9 @@ check_workflow() {
   fi
 
   # 2. Has 'on:' trigger section
-  local triggers
-  triggers=$(yq -r '.on | type' "$file" 2>/dev/null)
-  if [ "$triggers" = "null" ]; then
+  local has_triggers
+  has_triggers=$(yq -r 'has("on")' "$file" 2>/dev/null)
+  if [ "$has_triggers" != "true" ]; then
     fail "$base: missing 'on:' trigger section"
   fi
 
@@ -160,9 +160,9 @@ main() {
   fi
 
   local count=0
+  FINDINGS=()
   for wf in "$WORKFLOW_DIR"/*.yml "$WORKFLOW_DIR"/*.yaml; do
     [ -f "$wf" ] || continue
-    FINDINGS=()
     check_workflow "$wf"
     count=$((count + 1))
   done
