@@ -18,7 +18,7 @@ Machine-readable source: [`content/development/github-remote-configuration.json`
 
 The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, and the publish path uses the `main` branch contract.
 
-The network probe attempted from this environment was blocked by a `CONNECT tunnel failed, response 403` limitation, so this record treats remote configuration as local Git configuration only, not proof of GitHub authentication or push readiness.
+Branch protection and signature rules can still block or warn on direct pushes. Treat a successful local remote configuration as necessary evidence, not as proof that GitHub accepted the update. When publishing, verify the actual push or PR state and then check GitHub Actions, CodeQL, and open code-scanning alerts.
 
 ## Validation
 
