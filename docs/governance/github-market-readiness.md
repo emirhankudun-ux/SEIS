@@ -41,18 +41,21 @@ source ecosystem for:
 Before a major feature, release, demo, or public announcement, verify:
 
 1. `README.md` explains what SEIS is, who it helps, and where to start.
-2. `SUPPORT.md` routes questions, ideas, bugs, features, and security reports.
-3. `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTORS.md`,
+2. `docs/development/first-run-quickstart.md` proves a new user can clone,
+   inspect, validate, and choose a platform lane without installing unrelated
+   toolchains.
+3. `SUPPORT.md` routes questions, ideas, bugs, features, and security reports.
+4. `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `CONTRIBUTORS.md`,
    and `LICENSE` are current.
-4. Issue, pull request, and discussion templates guide users toward useful
+5. Issue, pull request, and discussion templates guide users toward useful
    reports.
-5. The feature has a small, reviewable diff and a clear rollback path.
-6. Validation is documented and can run without installing unrelated toolchains.
-7. Security, privacy, accessibility, maintainability, and dependency impact are
+6. The feature has a small, reviewable diff and a clear rollback path.
+7. Validation is documented and can run without installing unrelated toolchains.
+8. Security, privacy, accessibility, maintainability, and dependency impact are
    named.
-8. Documentation links are updated from the most likely entry points.
-9. Generated reports are reproducible through checked commands.
-10. GitHub Actions and CodeQL are green before claiming readiness.
+9. Documentation links are updated from the most likely entry points.
+10. Generated reports are reproducible through checked commands.
+11. GitHub Actions and CodeQL are green before claiming readiness.
 
 ## Star-Worthy Feature Criteria
 

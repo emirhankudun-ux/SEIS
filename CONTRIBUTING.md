@@ -26,7 +26,9 @@ staging surfaces only. Every accepted change must merge back into `main`.
 1. Open an issue for actionable bugs or scoped work. Open a discussion for
    broad architecture, Q&A, show-and-tell, new platform lanes, new dependencies,
    security-sensitive design questions, or large generated output.
-2. Read [`AGENTS.md`](./AGENTS.md) and the relevant docs under [`docs`](./docs).
+2. Read the
+   [`first-run quickstart`](./docs/development/first-run-quickstart.md),
+   [`AGENTS.md`](./AGENTS.md), and the relevant docs under [`docs`](./docs).
 3. Run the lightest relevant checks:
 
 ```bash

@@ -6,6 +6,10 @@ security-sensitive details out of public threads.
 
 ## Where To Ask
 
+Start with the
+[`first-run quickstart`](./docs/development/first-run-quickstart.md) when you
+are unsure which validation path or support surface fits your work.
+
 | Need | Best place |
 | --- | --- |
 | Implementation question | [Discussions Q&A](https://github.com/emirhankudun-ux/SEIS/discussions/categories/q-a) |

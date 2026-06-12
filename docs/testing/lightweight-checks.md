@@ -1,5 +1,8 @@
 # Lightweight Checks
 
+For the first clone-to-validation path, start with
+[`docs/development/first-run-quickstart.md`](../development/first-run-quickstart.md).
+
 ## Local Checks
 
 Use:

@@ -9,6 +9,9 @@ The GitHub-facing surface must stay current:
 
 - `README.md` explains the open source mission, platform scope, architecture map,
   language policy, quality gates, and contribution path.
+- `docs/development/first-run-quickstart.md` gives new contributors a clone,
+  inspect, validate, and lane-selection path without unnecessary toolchain
+  installation.
 - `CONTRIBUTING.md` explains branch flow, AI-assisted contribution rules,
   dependency discipline, and validation expectations.
 - `SECURITY.md` explains private vulnerability reporting, supported versions,
