@@ -17,6 +17,12 @@ The GitHub-facing surface must stay current:
 - `LICENSE` remains MIT unless the maintainer explicitly changes licensing.
 - `CONTRIBUTORS.md` separates real maintainers and AI-assisted workflow
   attribution from tool or company references.
+- `.github/ISSUE_TEMPLATE/config.yml` routes public support toward structured
+  issues, Discussions, and private security reporting.
+- `.github/DISCUSSION_TEMPLATE/` keeps ideas, Q&A, and show-and-tell useful
+  before they become issues or pull requests.
+- Repository description, homepage, and topics must accurately present SEIS as
+  an AI-native, Apple-first, full-stack, design-driven open source ecosystem.
 
 ## Adoption Strategy
 
@@ -27,6 +33,8 @@ SEIS should earn GitHub adoption through substance:
 - strong validation gates before large feature expansion
 - transparent security and governance docs
 - focused issue and PR templates
+- structured discussion forms for community shaping
+- repository metadata and topics that match the real architecture
 - practical platform lanes instead of dependency bloat
 
 ## Toolchain Discipline
@@ -35,9 +43,10 @@ Unused local runtimes and SDKs are not installed by default. CI may install
 specialized tools only for explicit checks, and local checks should skip optional
 toolchains when possible.
 
-Apple work stays focused on Swift, SwiftUI, and Objective-C. Windows and Android
-work may use C#, C++, Rust, Kotlin, Java, TypeScript, Go, Zig, Dart, Python when
-needed, and JavaScript when needed.
+Apple-first work stays focused on Swift, SwiftUI, Objective-C, Metal, AppKit,
+UIKit, Combine, Core Data, and CloudKit. Windows and Android work may use C#,
+.NET, C++, Rust, WinUI, Kotlin, Java, Jetpack Compose, TypeScript, Go, Zig,
+Python when needed, and JavaScript when needed.
 
 ## GitHub Update Rule
 

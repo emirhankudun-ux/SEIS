@@ -46,6 +46,8 @@ for (const required of [
   "LLM workflows",
   "GitHub Growth Strategy",
   "Unused SDKs, runtimes, and language toolchains are not installed by default",
+  "Apple first",
+  "Repository Metadata",
   "OpenAI Codex / ChatGPT",
   "Claude"
 ]) {
@@ -56,6 +58,7 @@ requireNotIncludes("README.md", "# SEIS CLOSED CODE", "closed-code title");
 for (const [file, required] of [
   ["CONTRIBUTING.md", "`main` is the only permanent branch"],
   ["CONTRIBUTING.md", "Do not ask contributors to install every language toolchain"],
+  ["CONTRIBUTING.md", "Discussions"],
   ["CONTRIBUTING.md", "AI tools are allowed"],
   ["SECURITY.md", "Do not open a public issue for a vulnerability"],
   ["SECURITY.md", "MCP tools, plugins, and agent workflows"],
@@ -65,10 +68,18 @@ for (const [file, required] of [
   ["CONTRIBUTORS.md", "do not imply sponsorship"],
   ["docs/governance/branch-policy.md", "`main` is the only permanent branch"],
   ["docs/governance/open-source-governance.md", "GitHub Update Rule"],
+  ["docs/governance/open-source-governance.md", "Repository description, homepage, and topics"],
   [".github/PULL_REQUEST_TEMPLATE.md", "Architecture Fit"],
   [".github/PULL_REQUEST_TEMPLATE.md", "Does not install unused SDKs"],
+  [".github/ISSUE_TEMPLATE/config.yml", "blank_issues_enabled: false"],
+  [".github/ISSUE_TEMPLATE/config.yml", "https://github.com/emirhankudun-ux/SEIS/discussions"],
   [".github/ISSUE_TEMPLATE/feature_request.md", "Maintenance Cost"],
-  [".github/ISSUE_TEMPLATE/bug_report.md", "follow `SECURITY.md`"]
+  [".github/ISSUE_TEMPLATE/bug_report.md", "follow `SECURITY.md`"],
+  [".github/ISSUE_TEMPLATE/custom.md", "Architecture or governance request"],
+  [".github/DISCUSSION_TEMPLATE/ideas.yml", "Platform lane"],
+  [".github/DISCUSSION_TEMPLATE/ideas.yml", "Maintenance cost"],
+  [".github/DISCUSSION_TEMPLATE/q-a.yml", "Safety check"],
+  [".github/DISCUSSION_TEMPLATE/show-and-tell.yml", "Sharing check"]
 ]) {
   requireIncludes(file, required);
 }
@@ -79,6 +90,9 @@ if (!license.startsWith("MIT License")) {
 }
 
 const packageJson = JSON.parse(read("package.json") || "{}");
+if (packageJson.name !== "seis") {
+  failures.push("package.json name must stay aligned with SEIS repository identity");
+}
 if (packageJson.scripts?.["check:open-source-governance"] !== "node scripts/check-open-source-governance.mjs") {
   failures.push("package.json must expose check:open-source-governance");
 }

@@ -1,0 +1,53 @@
+title: "[Idea] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for SEIS ideas that need community shaping before they become issues or pull requests.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: What should SEIS make easier, safer, faster, or more useful?
+      placeholder: Describe the user, contributor, or maintainer problem.
+    validations:
+      required: true
+  - type: dropdown
+    id: platform-lane
+    attributes:
+      label: Platform lane
+      options:
+        - Apple first
+        - AI agents / MCP / skills / plugins
+        - Web / frontend / design systems
+        - Data / ML / AI governance
+        - Android / Windows / cross-platform
+        - Cloud / DevOps / SRE / security
+        - Documentation / community / GitHub excellence
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed direction
+      description: Keep this architecture-aware and dependency-conscious.
+      placeholder: What should be added, changed, removed, or clarified?
+    validations:
+      required: true
+  - type: textarea
+    id: maintenance-cost
+    attributes:
+      label: Maintenance cost
+      description: Name any SDK, runtime, dependency, CI cost, security risk, or long-term owner.
+      placeholder: Prefer no new dependencies unless there is a clear reason.
+    validations:
+      required: true
+  - type: checkboxes
+    id: fit
+    attributes:
+      label: Fit check
+      options:
+        - label: This idea improves SEIS without adding unnecessary bloat.
+          required: true
+        - label: I considered whether an existing file, tool, or workflow can be improved first.
+          required: true

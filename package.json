@@ -1,9 +1,9 @@
 {
-  "name": "ui-ux-digital-lab-workspace",
+  "name": "seis",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Low-pressure AI-native creative engineering workspace.",
+  "description": "AI-native Apple-first full-stack design and engineering ecosystem.",
   "scripts": {
     "check:workspace": "node scripts/check-workspace.cjs",
     "check:open-source-governance": "node scripts/check-open-source-governance.mjs",

@@ -43,16 +43,18 @@ explicit, reviewed, and non-destructive. Do not delete local or remote branches
 only because they look stale; first verify merge state, ownership, and rollback
 needs.
 
-## Platform Language Policy
+## Platform Strategy
 
-SEIS is broad, but not careless. Languages are included when they strengthen a
-platform lane or a quality gate.
+SEIS is broad, but not careless. It is Apple-first whenever practical while
+remaining strong across Windows, Android, Web, AI, data, and infrastructure.
+Languages and frameworks are included when they strengthen a platform lane or a
+quality gate.
 
 | Platform | Priority languages |
 | --- | --- |
-| Apple | Swift, SwiftUI, Objective-C |
-| Windows | C#, C++, Rust, TypeScript, Go, Zig, Dart, Python when needed, JavaScript when needed |
-| Android | Kotlin, Java, C++, Rust, TypeScript, Go, Dart, Python when needed, JavaScript when needed |
+| Apple first | Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, CloudKit |
+| Windows | C#, .NET, C++, Rust, WinUI, TypeScript, Go, Zig, Python when needed |
+| Android | Kotlin, Java, Jetpack Compose, C++, Rust, TypeScript, Go, Python when needed |
 | Web and AI tooling | TypeScript, HTML, CSS, Go, Rust, Python when needed, JavaScript when needed |
 
 Unused SDKs, runtimes, and language toolchains are not installed by default.
@@ -122,12 +124,25 @@ the long-term platform model.
 SEIS should be discoverable, useful, and trustworthy before it tries to be loud.
 The GitHub surface should continuously improve through:
 
-- clear README and topic positioning
+- clear README, repository metadata, and topic positioning
 - strong issue and PR templates
+- structured Discussions for ideas, Q&A, and show-and-tell
+- release notes and GitHub Pages links that explain what changed
 - accurate contributor attribution
 - quality-first examples and demos
 - security and governance transparency
 - approachable docs for agents, MCP, skills, plugins, and platform lanes
+
+Use issues for actionable bugs and scoped work. Use Discussions for architecture
+questions, broad ideas, and examples that need community shaping before they
+become work items.
+
+## Repository Metadata
+
+The public GitHub repository should describe SEIS as an AI-native,
+Apple-first, full-stack, design-driven open source ecosystem. Topics should
+reflect the real architecture: AI agents, MCP, LLM workflows, Swift, SwiftUI,
+TypeScript, Rust, design systems, DevOps, security, and GitHub Pages.
 
 ## Current Status
 

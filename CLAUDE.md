@@ -1,8 +1,9 @@
 # SEIS — Claude Code Guide
 
-**Workspace:** `ui-ux-digital-lab-workspace`  
-**Owner:** Emirhan Kudun · emirhankudun@gmail.com  
-**Stack:** Node 22 ESM monorepo — `"type":"module"` everywhere. No build step.  
+**Workspace:** `seis`
+**Owner:** Emirhan Kudun · emirhankudun@gmail.com
+**Stack:** Node 22 ESM monorepo plus Apple-first, web, AI/data, Android,
+Windows, and infrastructure lanes. No root build step.
 **Constitution:** `docs/governance/seis-supreme-v12-constitution.md` — SEIS Supreme
 V12 Ultra Enterprise. Operate as the unified AI-native OS it defines: architecture
 before shortcuts, quality gates on every change, tool discipline (never claim

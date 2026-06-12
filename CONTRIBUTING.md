@@ -23,8 +23,9 @@ staging surfaces only. Every accepted change must merge back into `main`.
 
 ## Before You Open a PR
 
-1. Open an issue or discussion for broad architecture, new platform lanes, new
-   dependencies, security-sensitive changes, or large generated output.
+1. Open an issue for actionable bugs or scoped work. Open a discussion for
+   broad architecture, Q&A, show-and-tell, new platform lanes, new dependencies,
+   security-sensitive design questions, or large generated output.
 2. Read [`AGENTS.md`](./AGENTS.md) and the relevant docs under [`docs`](./docs).
 3. Run the lightest relevant checks:
 
@@ -37,10 +38,13 @@ npm run seis:check
 
 ## Platform Language Policy
 
-Apple work should stay focused on Swift, SwiftUI, and Objective-C.
+Apple-first work should stay focused on Swift, SwiftUI, Objective-C, Metal,
+AppKit, UIKit, Combine, Core Data, and CloudKit when those technologies are
+practical for the problem.
 
-Windows and Android work may use C#, C++, Rust, Kotlin, Java, TypeScript, Go,
-Zig, Dart, Python when needed, and JavaScript when needed.
+Windows and Android work may use C#, .NET, C++, Rust, WinUI, Kotlin, Java,
+Jetpack Compose, TypeScript, Go, Zig, Python when needed, and JavaScript when
+needed.
 
 Do not ask contributors to install every language toolchain. If a contribution
 requires a runtime or SDK, document why it is needed, whether it is optional, and
@@ -67,5 +71,7 @@ review.
 
 ## Community
 
-Please follow [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md). For security
-reports, use [`SECURITY.md`](./SECURITY.md) instead of public issues.
+Please follow [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md). Use
+[Discussions](https://github.com/emirhankudun-ux/SEIS/discussions) for ideas,
+Q&A, and examples. For security reports, use [`SECURITY.md`](./SECURITY.md)
+instead of public issues or discussions.

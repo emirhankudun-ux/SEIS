@@ -41,6 +41,15 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 - Legacy files must be analyzed before migration and must not be copied directly into the clean app surface.
 - Documentation is part of system integrity.
 
+## Apple-First Platform Strategy
+
+- Prefer Apple-native implementation paths first when the task targets iOS,
+  macOS, or Apple ecosystem integration.
+- Apple platform work should prioritize Swift, SwiftUI, Objective-C, Metal,
+  AppKit, UIKit, Combine, Core Data, and CloudKit.
+- Keep Windows, Android, Web, AI, data, and infrastructure lanes strong without
+  forcing unused SDKs, runtimes, frameworks, or dependencies into local setup.
+
 ## Open Source Platform Direction
 
 - Treat SEIS as an open source AI-native platform for agents, MCP, skills,
@@ -48,6 +57,9 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
   education, automation, and product development.
 - GitHub discoverability, community trust, contribution quality, security, and
   sustainable maintenance are product requirements.
+- Repository metadata, topics, issue templates, pull request templates,
+  Discussions, Releases, GitHub Pages, and community health files are part of
+  the product surface.
 - New features must pass architecture fit, long-term maintainability, security,
   and documentation checks before they become part of the platform.
 

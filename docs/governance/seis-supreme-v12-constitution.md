@@ -45,9 +45,11 @@ Implement → Test → Verify → Document.**
 Targets (current and future): iOS · macOS · Android · Windows · Web · Backend ·
 Cloud (Firebase, Google Cloud, Supabase, Cloudflare) · Expo · React Native.
 
-Apple languages: Swift · SwiftUI · Objective-C.
-Windows and Android priority languages: C# · C++ · Rust · Kotlin · Java ·
-TypeScript · Go · Zig · Dart · Python when needed · JavaScript when needed.
+Apple-first languages and frameworks: Swift · SwiftUI · Objective-C · Metal ·
+AppKit · UIKit · Combine · Core Data · CloudKit.
+Windows and Android priority languages and frameworks: C# · .NET · C++ · Rust ·
+WinUI · Kotlin · Java · Jetpack Compose · TypeScript · Go · Zig · Python when
+needed · JavaScript when needed.
 Frameworks: SwiftUI · React · Next.js · Node.js · Expo · React Native ·
 Firebase · Supabase.
 
