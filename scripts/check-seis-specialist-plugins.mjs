@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 
@@ -63,6 +64,7 @@ for (const token of [
 ]) {
   validateCodeContains(centralMcp, token, `central MCP server must expose ${token}`);
 }
+validateCentralMcpSmoke(centralMcp);
 
 if (checkLocal) {
   validateMarketplace();
@@ -126,6 +128,176 @@ function validatePluginRoot(pluginRoot, lane, scope) {
   for (const tool of lane.tools) {
     validateCodeContains(mcpScript, tool, `${scope} ${lane.name}: MCP script must expose ${tool}`);
   }
+  validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope);
+}
+
+function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
+  if (!fs.existsSync(mcpScript)) {
+    return;
+  }
+
+  const request = `Validate ${lane.displayName} lane readiness.`;
+  const input = [
+    frameMcpMessage({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} }),
+    frameMcpMessage({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "tools/call",
+      params: { name: lane.tools[0], arguments: {} },
+    }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: lane.tools[1], arguments: { request } },
+    }),
+  ].join("");
+
+  const result = spawnSync("node", [mcpScript], {
+    cwd: pluginRoot,
+    env: { ...process.env, SEIS_ROOT: ROOT },
+    input,
+    encoding: "utf8",
+    timeout: 5000,
+  });
+
+  if (result.error) {
+    fail(`${scope} ${lane.name}: MCP smoke failed: ${result.error.message}`);
+    return;
+  }
+  if (result.status !== 0) {
+    fail(`${scope} ${lane.name}: MCP smoke exited ${result.status}: ${result.stderr.trim()}`);
+    return;
+  }
+
+  const responses = parseMcpResponses(result.stdout, `${scope} ${lane.name}`);
+  const toolsList = responses.find((message) => message.id === 2)?.result?.tools || [];
+  for (const tool of lane.tools) {
+    ensure(
+      toolsList.some((record) => record.name === tool),
+      `${scope} ${lane.name}: MCP tools/list missing ${tool}`
+    );
+  }
+
+  const statusPayload = responses.find((message) => message.id === 3)?.result;
+  ensure(statusPayload?.status === "ready", `${scope} ${lane.name}: MCP status must be ready`);
+  ensure(statusPayload?.lane === lane.name, `${scope} ${lane.name}: MCP status lane must match`);
+  ensure(statusPayload?.repoMirrorExists === true, `${scope} ${lane.name}: MCP status must see repo mirror`);
+
+  const planPayload = responses.find((message) => message.id === 4)?.result;
+  ensure(planPayload?.lane === lane.name, `${scope} ${lane.name}: MCP plan lane must match`);
+  ensure(planPayload?.request === request, `${scope} ${lane.name}: MCP plan must echo request`);
+  ensure(Array.isArray(planPayload?.steps) && planPayload.steps.length >= 4, `${scope} ${lane.name}: MCP plan must include steps`);
+  ensure(Array.isArray(planPayload?.defaultChecks) && planPayload.defaultChecks.length > 0, `${scope} ${lane.name}: MCP plan must include default checks`);
+}
+
+function validateCentralMcpSmoke(centralMcp) {
+  if (!fs.existsSync(centralMcp)) {
+    return;
+  }
+
+  const request = "Plan a governed specialist plugin handoff.";
+  const input = [
+    frameMcpMessage({ jsonrpc: "2.0", id: 1, method: "initialize", params: {} }),
+    frameMcpMessage({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 3,
+      method: "tools/call",
+      params: { name: "seis_specialist_lanes", arguments: {} },
+    }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 4,
+      method: "tools/call",
+      params: { name: "seis_specialist_lane_status", arguments: { lane: "seis-code" } },
+    }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 5,
+      method: "tools/call",
+      params: { name: "seis_specialist_lane_plan", arguments: { lane: "seis-data", request } },
+    }),
+  ].join("");
+
+  const result = spawnSync("node", [centralMcp], {
+    cwd: ROOT,
+    env: { ...process.env, SEIS_ROOT: ROOT },
+    input,
+    encoding: "utf8",
+    timeout: 5000,
+  });
+
+  if (result.error) {
+    fail(`central MCP smoke failed: ${result.error.message}`);
+    return;
+  }
+  if (result.status !== 0) {
+    fail(`central MCP smoke exited ${result.status}: ${result.stderr.trim()}`);
+    return;
+  }
+
+  const responses = parseMcpResponses(result.stdout, "central MCP");
+  const toolsList = responses.find((message) => message.id === 2)?.result?.tools || [];
+  for (const tool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
+    ensure(
+      toolsList.some((record) => record.name === tool),
+      `central MCP tools/list missing ${tool}`
+    );
+  }
+
+  const lanesPayload = responses.find((message) => message.id === 3)?.result;
+  ensure(lanesPayload?.status === "ready", "central MCP specialist lanes status must be ready");
+  ensure(lanesPayload?.laneCount === lanes.length, "central MCP specialist lane count must match");
+
+  const statusPayload = responses.find((message) => message.id === 4)?.result;
+  ensure(statusPayload?.id === "seis-code", "central MCP specialist status id must match");
+  ensure(statusPayload?.status === "ready", "central MCP specialist status must be ready");
+
+  const planPayload = responses.find((message) => message.id === 5)?.result;
+  ensure(planPayload?.lane === "seis-data", "central MCP specialist plan lane must match");
+  ensure(planPayload?.request === request, "central MCP specialist plan must echo request");
+  ensure(Array.isArray(planPayload?.steps) && planPayload.steps.length >= 4, "central MCP specialist plan must include steps");
+}
+
+function frameMcpMessage(message) {
+  const body = JSON.stringify(message);
+  return `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
+}
+
+function parseMcpResponses(output, label) {
+  const responses = [];
+  let cursor = 0;
+
+  while (cursor < output.length) {
+    const separatorIndex = output.indexOf("\r\n\r\n", cursor);
+    if (separatorIndex < 0) break;
+    const header = output.slice(cursor, separatorIndex);
+    const lengthMatch = /Content-Length:\s*(\d+)/i.exec(header);
+    if (!lengthMatch) {
+      fail(`${label}: malformed MCP response header`);
+      break;
+    }
+    const contentLength = Number.parseInt(lengthMatch[1], 10);
+    const bodyStart = separatorIndex + 4;
+    const bodyEnd = bodyStart + contentLength;
+    const body = output.slice(bodyStart, bodyEnd);
+    if (body.length !== contentLength) {
+      fail(`${label}: truncated MCP response body`);
+      break;
+    }
+    try {
+      responses.push(JSON.parse(body));
+    } catch {
+      fail(`${label}: invalid MCP response JSON`);
+      break;
+    }
+    cursor = bodyEnd;
+  }
+
+  ensure(responses.length >= 4, `${label}: MCP smoke should return initialize, tools/list, status, and plan responses`);
+  return responses;
 }
 
 function validateMarketplace() {

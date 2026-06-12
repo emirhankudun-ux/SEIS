@@ -9,49 +9,49 @@
   },
   "summary": {
     "countedFileCount": 561,
-    "countedBytes": 2597895,
-    "javascriptBytes": 845359,
-    "javascriptPercent": 32.54,
+    "countedBytes": 2604606,
+    "javascriptBytes": 852070,
+    "javascriptPercent": 32.71,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1427624,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1452870,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 845359,
-      "percent": 32.54
+      "bytes": 852070,
+      "percent": 32.71
     },
     {
       "language": "JSON",
       "bytes": 643334,
-      "percent": 24.76
+      "percent": 24.7
     },
     {
       "language": "Python",
       "bytes": 300155,
-      "percent": 11.55
+      "percent": 11.52
     },
     {
       "language": "Swift",
       "bytes": 248773,
-      "percent": 9.58
+      "percent": 9.55
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 3.63
+      "percent": 3.62
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.26
+      "percent": 3.25
     },
     {
       "language": "Shell",
       "bytes": 56789,
-      "percent": 2.19
+      "percent": 2.18
     },
     {
       "language": "Other",
@@ -81,12 +81,12 @@
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.61
+      "percent": 0.6
     },
     {
       "language": "Perl",
       "bytes": 13916,
-      "percent": 0.54
+      "percent": 0.53
     },
     {
       "language": "Ruby",
@@ -96,7 +96,7 @@
     {
       "language": "Rust",
       "bytes": 11825,
-      "percent": 0.46
+      "percent": 0.45
     },
     {
       "language": "C++",
@@ -111,7 +111,7 @@
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.33
+      "percent": 0.32
     },
     {
       "language": "SQL",
@@ -171,7 +171,7 @@
     {
       "language": "C#",
       "bytes": 2731,
-      "percent": 0.11
+      "percent": 0.1
     },
     {
       "language": "PowerShell",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 845359,
-      "percent": 32.54,
+      "bytes": 852070,
+      "percent": 32.71,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -519,7 +519,7 @@
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.33,
+      "percent": 0.32,
       "sourceLanguages": [
         "Objective-C"
       ]
@@ -527,7 +527,7 @@
     {
       "language": "Other",
       "bytes": 1715265,
-      "percent": 66.03,
+      "percent": 65.86,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "f49fde0d1258877aedece5bab962ea1557aae751dc40732b6ee33d637ada8f9e",
+    "hash": "278a14abca6b4eae20ad7118925e501d95b5f3c89d9df112913182143ee7f4bb",
     "algorithm": "sha256"
   }
 }

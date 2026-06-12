@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 
 const LANE = {
   id: "seis-data",
@@ -12,9 +13,10 @@ const LANE = {
 };
 
 let pending = Buffer.alloc(0);
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 
 function pluginRoot() {
-  return path.resolve(process.env.SEIS_DATA_PLUGIN_ROOT || path.join(process.cwd()));
+  return path.resolve(process.env.SEIS_DATA_PLUGIN_ROOT || path.join(scriptDir, ".."));
 }
 
 function repoRoot() {
