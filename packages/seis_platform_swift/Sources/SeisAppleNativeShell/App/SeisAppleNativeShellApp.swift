@@ -28,6 +28,11 @@ struct SeisAppleNativeShellApp: App {
                     NotificationCenter.default.post(name: .seisFocusAppleNative, object: nil)
                 }
                 .keyboardShortcut("1", modifiers: [.command])
+
+                Button("Refresh Diagnostics") {
+                    NotificationCenter.default.post(name: .seisRefreshAppleDiagnostics, object: nil)
+                }
+                .keyboardShortcut("r", modifiers: [.command, .shift])
             }
         }
 
@@ -39,4 +44,5 @@ struct SeisAppleNativeShellApp: App {
 
 extension Notification.Name {
     static let seisFocusAppleNative = Notification.Name("seis.focus.apple-native")
+    static let seisRefreshAppleDiagnostics = Notification.Name("seis.refresh.apple-diagnostics")
 }

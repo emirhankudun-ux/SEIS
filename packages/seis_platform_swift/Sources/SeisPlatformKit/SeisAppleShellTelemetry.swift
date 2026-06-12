@@ -77,6 +77,15 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
             ".runtimeProbeSnapshot"
         ]
     }
+
+    public var expectedCommandTelemetryTokens: [String] {
+        [
+            "Refresh Diagnostics",
+            "seisRefreshAppleDiagnostics",
+            "NotificationCenter.default.post",
+            ".keyboardShortcut(\"r\", modifiers: [.command, .shift])"
+        ]
+    }
 }
 
 public struct SeisAppleShellTelemetryLogger {

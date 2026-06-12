@@ -249,6 +249,10 @@ import Testing
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift"),
         encoding: .utf8
     )
+    let app = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift"),
+        encoding: .utf8
+    )
 
     for token in telemetry.expectedTelemetrySourceTokens {
         #expect(telemetrySource.contains(token), "missing telemetry source token: \(token)")
@@ -258,6 +262,9 @@ import Testing
     }
     for token in telemetry.expectedDiagnosticsTelemetryTokens {
         #expect(diagnostics.contains(token), "missing diagnostics telemetry token: \(token)")
+    }
+    for token in telemetry.expectedCommandTelemetryTokens {
+        #expect(app.contains(token), "missing command telemetry token: \(token)")
     }
 }
 

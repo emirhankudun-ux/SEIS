@@ -25,7 +25,9 @@ struct AppleShellDiagnosticsView: View {
                 Text("\(totalReadyCount)/\(totalCheckCount) ready")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
-                Button(action: refreshDiagnostics) {
+                Button {
+                    refreshDiagnostics(source: "manual")
+                } label: {
                     Label("Refresh Diagnostics", systemImage: "arrow.clockwise")
                         .labelStyle(.iconOnly)
                 }
@@ -106,6 +108,9 @@ struct AppleShellDiagnosticsView: View {
         .onAppear {
             recordDiagnosticsTelemetry(source: "appear")
         }
+        .onReceive(NotificationCenter.default.publisher(for: .seisRefreshAppleDiagnostics)) { _ in
+            refreshDiagnostics(source: "command")
+        }
     }
 
     private var totalReadyCount: Int {
@@ -134,10 +139,10 @@ struct AppleShellDiagnosticsView: View {
         }
     }
 
-    private func refreshDiagnostics() {
-        telemetry.record(.diagnosticsRefreshRequested, detail: "source=manual")
+    private func refreshDiagnostics(source: String) {
+        telemetry.record(.diagnosticsRefreshRequested, detail: "source=\(source)")
         runtimeDiagnostics = .current()
-        recordDiagnosticsTelemetry(source: "manual")
+        recordDiagnosticsTelemetry(source: source)
     }
 
     private func recordDiagnosticsTelemetry(source: String) {
