@@ -29,6 +29,7 @@ REQUIRED_FILES = [
     "polyglot/cue/seis_capability_kernel.cue",
     "packages/seis_platform_swift/Package.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
     "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",

@@ -13,7 +13,7 @@ struct AppleShellDiagnosticsView: View {
     init(
         snapshot: SeisAppleContinuationSnapshot,
         runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current(),
-        historyStore: SeisAppleShellDiagnosticsHistoryStore = SeisAppleShellDiagnosticsHistoryStore()
+        historyStore: SeisAppleShellDiagnosticsHistoryStore = .appleNative()
     ) {
         self.snapshot = snapshot
         self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)

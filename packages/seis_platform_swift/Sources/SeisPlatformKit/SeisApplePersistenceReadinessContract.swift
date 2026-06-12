@@ -124,15 +124,20 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
         summary: "Apple-native local-first persistence and iCloud sync readiness for SEIS shell surfaces.",
         appleFrameworkSymbols: [
             "NSManagedObjectModel",
+            "NSPersistentContainer",
             "NSPersistentCloudKitContainer",
             "NSMergePolicy",
             "NSPersistentHistoryTransaction",
+            "NSEntityDescription",
+            "NSFetchRequest",
             "CKContainer",
             "CKRecord",
             "CKAccountStatus",
             "NSMigratePersistentStoresAutomaticallyOption",
             "NSInferMappingModelAutomaticallyOption",
-            "NSPersistentStoreDescription"
+            "NSPersistentStoreDescription",
+            "NSSQLiteStoreType",
+            "NSInMemoryStoreType"
         ],
         items: [
             SeisApplePersistenceReadinessItem(
@@ -188,6 +193,15 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
                 state: .ready,
                 evidence: "Record schema, privacy, and account-state handling are required release gates.",
                 qualityGate: "app_privacy_review"
+            ),
+            SeisApplePersistenceReadinessItem(
+                id: "diagnostics-history-persistence",
+                title: "Diagnostics History Persistence",
+                appleFramework: "Core Data",
+                symbol: "NSPersistentContainer",
+                state: .ready,
+                evidence: "Diagnostics snapshots can round-trip through an Apple-native persistent container.",
+                qualityGate: "coredata_cloudkit_sync_review"
             )
         ],
         accountStates: [
@@ -313,15 +327,20 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
             "canImport(CoreData)",
             "canImport(CloudKit)",
             "NSManagedObjectModel",
+            "NSPersistentContainer",
             "NSPersistentCloudKitContainer",
             "NSPersistentHistoryTransaction",
+            "NSEntityDescription",
+            "NSFetchRequest",
             "CKContainer",
             "CKRecord",
             "CKAccountStatus",
             "CKAccountStatus.temporarilyUnavailable",
             "NSMigratePersistentStoresAutomaticallyOption",
             "NSInferMappingModelAutomaticallyOption",
-            "NSPersistentStoreDescription"
+            "NSPersistentStoreDescription",
+            "NSSQLiteStoreType",
+            "NSInMemoryStoreType"
         ]
     }
 

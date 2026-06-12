@@ -199,11 +199,15 @@ import Testing
 
     #expect(persistence.isReady)
     #expect(persistence.readyCount == persistence.checkCount)
+    #expect(persistence.appleFrameworkSymbols.contains("NSPersistentContainer"))
     #expect(persistence.appleFrameworkSymbols.contains("NSPersistentCloudKitContainer"))
+    #expect(persistence.appleFrameworkSymbols.contains("NSEntityDescription"))
+    #expect(persistence.appleFrameworkSymbols.contains("NSFetchRequest"))
     #expect(persistence.appleFrameworkSymbols.contains("CKContainer"))
     #expect(persistence.appleFrameworkSymbols.contains("CKAccountStatus"))
     #expect(persistence.items.contains { $0.id == "persistent-cloudkit-container" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(persistence.items.contains { $0.id == "cloudkit-record-privacy" && $0.qualityGate == "app_privacy_review" })
+    #expect(persistence.items.contains { $0.id == "diagnostics-history-persistence" && $0.symbol == "NSPersistentContainer" })
     #expect(persistence.accountStates.count == 5)
     #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.available" && $0.releaseAction.contains("Enable sync") })
     #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.noAccount" && $0.qualityGate == "offline_fallback" })
@@ -232,6 +236,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "diagnostics-history" && $0.qualityGate == "observability" })
+    #expect(runtime.probes.contains { $0.id == "diagnostics-persistent-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.accessibilitySummary.contains("SeisAppleNativeShell"))
 
     let partial = SeisAppleShellRuntimeDiagnostics.make(
@@ -288,6 +293,43 @@ import Testing
     #expect(third.persistenceStatusLabel.contains("persistence"))
 }
 
+#if canImport(CoreData)
+@Test func appleDiagnosticsPersistentHistoryStoreRoundTripsSnapshots() throws {
+    let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
+    let continuation = SeisAppleContinuationSnapshot.current
+    let runtime = SeisAppleShellRuntimeDiagnostics.make(
+        repositoryRoot: repositoryRoot(),
+        existingRelativePaths: Set(SeisAppleShellRuntimeDiagnostics.requiredSurfaces.map(\.relativePath)),
+        operatingSystemVersion: "macOS-test",
+        processName: "SeisAppleNativeShell"
+    )
+    let persistentStore = try SeisAppleDiagnosticsPersistentHistoryStore(inMemory: true)
+    let store = SeisAppleShellDiagnosticsHistoryStore(
+        historyLimit: 3,
+        persistentStore: persistentStore
+    )
+
+    let snapshot = store.record(
+        source: "persistent-test",
+        continuation: continuation,
+        diagnostics: diagnostics,
+        persistence: persistence,
+        runtime: runtime,
+        recordedAt: Date(timeIntervalSince1970: 3)
+    )
+    let hydratedStore = SeisAppleShellDiagnosticsHistoryStore(
+        historyLimit: 3,
+        persistentStore: persistentStore
+    )
+
+    #expect(try persistentStore.fetch(limit: 1) == [snapshot])
+    #expect(hydratedStore.latest == snapshot)
+    #expect(snapshot.persistenceReadyCount == persistence.readyCount)
+    #expect(snapshot.runtimeReadyCount == runtime.readyCount)
+}
+#endif
+
 @Test func appleShellTelemetryContractDescribesUnifiedLogging() {
     let telemetry = SeisAppleShellTelemetryContract.appleNativeShell
     #expect(telemetry.subsystem == "com.seis.apple-native-shell")
@@ -321,6 +363,10 @@ import Testing
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift"),
         encoding: .utf8
     )
+    let persistentStoreSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift"),
+        encoding: .utf8
+    )
     let persistenceSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift"),
         encoding: .utf8
@@ -351,6 +397,11 @@ import Testing
     for token in SeisAppleShellDiagnosticsHistorySnapshot.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing diagnostics history view token: \(token)")
     }
+    #if canImport(CoreData)
+    for token in SeisAppleDiagnosticsPersistentHistoryStore.expectedSourceTokens {
+        #expect(persistentStoreSource.contains(token), "missing persistent history source token: \(token)")
+    }
+    #endif
 }
 
 @Test func appleShellTelemetryFilesMatchSwiftContract() throws {

@@ -1,6 +1,12 @@
 import Combine
 import Foundation
 
+public protocol SeisAppleDiagnosticsHistoryPersisting {
+    @discardableResult
+    func save(_ snapshot: SeisAppleShellDiagnosticsHistorySnapshot) throws -> SeisAppleShellDiagnosticsHistorySnapshot
+    func fetch(limit: Int) throws -> [SeisAppleShellDiagnosticsHistorySnapshot]
+}
+
 public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let source: String
@@ -86,6 +92,7 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "import Combine",
             "ObservableObject",
             "@Published",
+            "SeisAppleDiagnosticsHistoryPersisting",
             "SeisAppleShellDiagnosticsHistorySnapshot",
             "qualityGateCount",
             "runtimeStatusLabel",
@@ -113,13 +120,29 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
 public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
     @Published public private(set) var snapshots: [SeisAppleShellDiagnosticsHistorySnapshot]
     private let historyLimit: Int
+    private let persistentStore: SeisAppleDiagnosticsHistoryPersisting?
 
     public init(
         historyLimit: Int = 5,
-        snapshots: [SeisAppleShellDiagnosticsHistorySnapshot] = []
+        snapshots: [SeisAppleShellDiagnosticsHistorySnapshot] = [],
+        persistentStore: SeisAppleDiagnosticsHistoryPersisting? = nil
     ) {
         self.historyLimit = max(1, historyLimit)
-        self.snapshots = Array(snapshots.prefix(max(1, historyLimit)))
+        self.persistentStore = persistentStore
+        let persistedSnapshots = (try? persistentStore?.fetch(limit: self.historyLimit)) ?? []
+        let initialSnapshots = persistedSnapshots.isEmpty ? snapshots : persistedSnapshots
+        self.snapshots = Array(initialSnapshots.prefix(self.historyLimit))
+    }
+
+    public static func appleNative(historyLimit: Int = 5) -> SeisAppleShellDiagnosticsHistoryStore {
+        #if canImport(CoreData)
+        SeisAppleShellDiagnosticsHistoryStore(
+            historyLimit: historyLimit,
+            persistentStore: try? SeisAppleDiagnosticsPersistentHistoryStore()
+        )
+        #else
+        SeisAppleShellDiagnosticsHistoryStore(historyLimit: historyLimit)
+        #endif
     }
 
     @discardableResult
@@ -139,6 +162,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
             runtime: runtime,
             recordedAt: recordedAt
         )
+        _ = try? persistentStore?.save(snapshot)
         snapshots.insert(snapshot, at: 0)
         if snapshots.count > historyLimit {
             snapshots.removeLast(snapshots.count - historyLimit)
