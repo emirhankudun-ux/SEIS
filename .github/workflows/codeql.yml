@@ -34,7 +34,7 @@ jobs:
   analyze:
     name: CodeQL (${{ matrix.language }})
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 15
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -50,7 +50,7 @@ jobs:
           - language: swift
             runner: macos-latest
             build-mode: manual
-            build_command: swift build --package-path packages/seis_platform_swift
+            build_command: swift build --package-path packages/seis_platform_swift --target SeisPlatformKit
 
     steps:
       - name: Checkout
