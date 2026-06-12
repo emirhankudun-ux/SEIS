@@ -83,6 +83,13 @@ public struct SeisAppleShellSettingsContract: Codable, Equatable, Sendable {
             "lowMotionKey",
             "preferredFocusKey",
             "showsQualityGatesKey",
+            "@SceneStorage",
+            "selectedFocusFramework",
+            "List(selection: $selectedFocusFramework)",
+            ".tag(focus.framework)",
+            "Selected Framework",
+            "selectedFocus",
+            "ensureSelectedFocus",
             "Quality Gates",
             "withAnimation",
             "onChange"

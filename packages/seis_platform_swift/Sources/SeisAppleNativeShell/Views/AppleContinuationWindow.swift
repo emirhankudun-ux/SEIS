@@ -16,23 +16,57 @@ struct AppleContinuationWindow: View {
 
     @StateObject private var model = SeisAppleContinuationModel()
     @State private var request = SeisAppleShellSettingsContract.appleNativeShell.defaultPreferredFocus.request
+    @SceneStorage("seis.apple.shell.selectedFocusFramework")
+    private var selectedFocusFramework: String?
 
     var body: some View {
         NavigationSplitView {
-            List(model.snapshot.focusAreas, id: \.framework) { focus in
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(focus.framework)
-                        .font(.body.weight(.medium))
-                    Text(focus.platform.rawValue)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+            List(selection: $selectedFocusFramework) {
+                ForEach(model.snapshot.focusAreas, id: \.framework) { focus in
+                    HStack(spacing: 10) {
+                        Image(systemName: systemImage(for: focus))
+                            .foregroundStyle(.secondary)
+                            .frame(width: 16)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(focus.framework)
+                                .lineLimit(1)
+                            Text(focus.platform.rawValue)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
+                    }
+                    .tag(focus.framework)
                 }
             }
+            .listStyle(.sidebar)
             .navigationTitle("Apple")
         } detail: {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     SeisAppleContinuationView(snapshot: model.snapshot)
+
+                    if let selectedFocus {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Selected Framework")
+                                .font(.headline)
+                            Text(selectedFocus.framework)
+                                .font(.subheadline.weight(.semibold))
+                            Text(selectedFocus.purpose)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            HStack {
+                                Text(selectedFocus.platform.rawValue)
+                                Text(selectedFocus.qualityGate)
+                            }
+                            .font(.caption2.monospaced())
+                            .foregroundStyle(.tertiary)
+                        }
+                        .padding()
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(selectedFocus.framework). \(selectedFocus.purpose). Quality gate \(selectedFocus.qualityGate).")
+                    }
 
                     AppleShellDiagnosticsView(snapshot: model.snapshot)
 
@@ -70,6 +104,7 @@ struct AppleContinuationWindow: View {
         .onAppear {
             telemetry.record(.focusPreferenceChanged, detail: "initial=\(preferredFocusRawValue)")
             focusPreferred()
+            ensureSelectedFocus()
         }
         .onChange(of: preferredFocusRawValue) { _ in
             telemetry.record(.focusPreferenceChanged, detail: "preferredFocus=\(preferredFocusRawValue)")
@@ -79,6 +114,14 @@ struct AppleContinuationWindow: View {
             telemetry.record(.focusCommandReceived, detail: "command=seisFocusAppleNative")
             focusPreferred()
         }
+    }
+
+    private var selectedFocus: SeisAppleFrameworkFocus? {
+        if let selectedFocusFramework,
+           let focus = model.snapshot.focusAreas.first(where: { $0.framework == selectedFocusFramework }) {
+            return focus
+        }
+        return model.snapshot.focusAreas.first
     }
 
     private func focusFromRequest() {
@@ -96,14 +139,42 @@ struct AppleContinuationWindow: View {
         request = nextRequest
         if lowMotion {
             model.focus(on: nextRequest)
+            ensureSelectedFocus()
         } else {
             withAnimation(.easeInOut(duration: 0.2)) {
                 model.focus(on: nextRequest)
+                ensureSelectedFocus()
             }
         }
         telemetry.record(
             .focusRouteApplied,
             detail: "source=\(routeSource) platforms=\(model.snapshot.platforms.count) qualityGates=\(model.snapshot.qualityGates.count)"
         )
+    }
+
+    private func ensureSelectedFocus() {
+        let frameworks = model.snapshot.focusAreas.map(\.framework)
+        if let selectedFocusFramework,
+           frameworks.contains(selectedFocusFramework) {
+            return
+        }
+        selectedFocusFramework = frameworks.first
+    }
+
+    private func systemImage(for focus: SeisAppleFrameworkFocus) -> String {
+        switch focus.framework {
+        case "AppKit":
+            "macwindow"
+        case "UIKit":
+            "iphone"
+        case "Metal":
+            "sparkles"
+        case "Combine":
+            "arrow.triangle.2.circlepath"
+        case "Core Data + CloudKit":
+            "icloud"
+        default:
+            "apple.logo"
+        }
     }
 }
