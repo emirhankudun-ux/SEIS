@@ -71,6 +71,7 @@ PLATFORM_SURFACES = [
             "packages/seis_platform_swift/Package.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleRunHandoffContract.swift",
             "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift",
             "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
             "polyglot/objective-c/SEISPlatformBridge.h",
@@ -101,6 +102,7 @@ PLATFORM_SURFACES = [
         source_surfaces=(
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleRunHandoffContract.swift",
             "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
             "polyglot/swift/SEISMotionPolicy.swift",
         ),

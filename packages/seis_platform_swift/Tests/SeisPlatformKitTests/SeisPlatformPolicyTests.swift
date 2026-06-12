@@ -1,3 +1,4 @@
+import Foundation
 import Testing
 @testable import SeisPlatformKit
 
@@ -88,6 +89,32 @@ import Testing
     #expect(!model.snapshot.frameworks.contains("AppKit"))
 }
 
+@Test func appleRunHandoffContractDescribesCodexRunSurface() {
+    let contract = SeisAppleRunHandoffContract.appleNativeShell
+    #expect(contract.productName == "SeisAppleNativeShell")
+    #expect(contract.bundleIdentifier == "com.seis.apple-native-shell")
+    #expect(contract.bundleDisplayName == "SEIS Apple Native")
+    #expect(contract.packageRelativePath == "packages/seis_platform_swift")
+    #expect(contract.runScriptRelativePath == "script/build_and_run.sh")
+    #expect(contract.codexRunCommand == "./script/build_and_run.sh")
+    #expect(contract.supportedModes.contains("--verify"))
+    #expect(contract.requiredInfoPlistKeys.contains("NSPrincipalClass"))
+}
+
+@Test func appleRunHandoffFilesMatchSwiftContract() throws {
+    let contract = SeisAppleRunHandoffContract.appleNativeShell
+    let root = repositoryRoot()
+    let script = try String(contentsOf: root.appending(path: contract.runScriptRelativePath), encoding: .utf8)
+    let environment = try String(contentsOf: root.appending(path: ".codex/environments/environment.toml"), encoding: .utf8)
+
+    for token in contract.expectedScriptTokens {
+        #expect(script.contains(token), "missing script token: \(token)")
+    }
+    for token in contract.expectedEnvironmentTokens {
+        #expect(environment.contains(token), "missing environment token: \(token)")
+    }
+}
+
 @Test func developmentTracksKeepAppleAndWindowsBoundaries() {
     let tracks = SeisPlatformPolicy.developmentTracks
     let appleTrack = tracks.first { $0.id == "apple-native-macos-track" }
@@ -104,4 +131,12 @@ import Testing
     #expect(windowsTrack?.languages.contains("Swift") == false)
     #expect(windowsTrack?.forbiddenLanguages.contains("SwiftUI") == true)
     #expect(windowsTrack?.forbiddenLanguages.contains("AppleScript") == true)
+}
+
+private func repositoryRoot() -> URL {
+    var url = URL(fileURLWithPath: #filePath)
+    for _ in 0..<5 {
+        url.deleteLastPathComponent()
+    }
+    return url
 }
