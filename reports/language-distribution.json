@@ -8,60 +8,60 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 537,
-    "countedBytes": 2490144,
+    "countedFileCount": 538,
+    "countedBytes": 2509870,
     "javascriptBytes": 811163,
-    "javascriptPercent": 32.57,
+    "javascriptPercent": 32.32,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1372536,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1352810,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 811163,
-      "percent": 32.57
+      "percent": 32.32
     },
     {
       "language": "JSON",
       "bytes": 635229,
-      "percent": 25.51
+      "percent": 25.31
     },
     {
       "language": "Python",
-      "bytes": 298073,
-      "percent": 11.97
+      "bytes": 298997,
+      "percent": 11.91
     },
     {
       "language": "Swift",
-      "bytes": 187174,
-      "percent": 7.52
+      "bytes": 205976,
+      "percent": 8.21
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 3.78
+      "percent": 3.75
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.4
+      "percent": 3.37
     },
     {
       "language": "Shell",
       "bytes": 56789,
-      "percent": 2.28
+      "percent": 2.26
     },
     {
       "language": "Other",
       "bytes": 37135,
-      "percent": 1.49
+      "percent": 1.48
     },
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.16
+      "percent": 1.15
     },
     {
       "language": "YAML",
@@ -71,12 +71,12 @@
     {
       "language": "Go",
       "bytes": 16367,
-      "percent": 0.66
+      "percent": 0.65
     },
     {
       "language": "Java",
       "bytes": 16110,
-      "percent": 0.65
+      "percent": 0.64
     },
     {
       "language": "Scheme",
@@ -86,7 +86,7 @@
     {
       "language": "Perl",
       "bytes": 13916,
-      "percent": 0.56
+      "percent": 0.55
     },
     {
       "language": "Ruby",
@@ -161,7 +161,7 @@
     {
       "language": "Groovy",
       "bytes": 5362,
-      "percent": 0.22
+      "percent": 0.21
     },
     {
       "language": "TOML",
@@ -416,7 +416,7 @@
     {
       "language": "Turtle",
       "bytes": 375,
-      "percent": 0.02
+      "percent": 0.01
     },
     {
       "language": "MATLAB",
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 811163,
-      "percent": 32.57,
+      "percent": 32.32,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.16,
+      "percent": 1.15,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1641710,
-      "percent": 65.93,
+      "bytes": 1661436,
+      "percent": 66.2,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -689,8 +689,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 480847155,
-    "documentation": 947158,
-    "linguist-generated": 2915520,
+    "documentation": 947404,
+    "linguist-generated": 2916281,
     "linguist-vendored": 46035660
   },
   "requiredLinguistRules": [
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "d373f29e6f55c07369987f1de43839ced60cbdbe563a06b5310b20f02f3281b5",
+    "hash": "adb3624581ea3250b219f6fb67f97afcc4ca4611f403bb74ded2df1e1a6fb460",
     "algorithm": "sha256"
   }
 }

@@ -89,6 +89,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "agent_governance"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "agi-agent-handoff-store",
+            title: "AGI Agent Handoff Store",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
+            qualityGate: "coredata_cloudkit_sync_review"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "run-script",
             title: "Run Script",
             relativePath: "script/build_and_run.sh",

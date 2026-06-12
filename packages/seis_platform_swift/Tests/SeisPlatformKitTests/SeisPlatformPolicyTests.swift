@@ -236,6 +236,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "agi-memory-planning-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "agi-context-compression-runtime" && $0.qualityGate == "token-savings-target" })
     #expect(runtime.probes.contains { $0.id == "agi-agent-orchestration-runtime" && $0.qualityGate == "agent_governance" })
+    #expect(runtime.probes.contains { $0.id == "agi-agent-handoff-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -646,6 +647,45 @@ import Testing
     }
 }
 
+@Test func agiAgentHandoffSnapshotBootstrapsFromOrchestrationPlan() throws {
+    let contract = SeisAGISystemContract.master
+    let memory = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning)
+    let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(contract: contract, memorySnapshot: memory)
+    let snapshot = SeisAGIAgentHandoffSnapshot.bootstrap(from: orchestration)
+    let store = SeisAGIAgentHandoffHistoryStore()
+
+    #expect(snapshot.isReady)
+    #expect(snapshot.records.count == orchestration.assignments.count)
+    #expect(snapshot.writerCount == 1)
+    #expect(snapshot.roleSet == Set(SeisAGIAgentRole.allCases))
+    #expect(snapshot.records.contains { $0.assignmentId == "codex-writer" && $0.writeAllowed })
+    #expect(snapshot.records.contains { $0.assignmentId == "reviewer-sentinel" && !$0.writeAllowed })
+    #expect(snapshot.records.allSatisfy { $0.status == .drafted })
+    #expect(SeisAGIAgentHandoffSnapshot.storagePolicy.contains("never persist secrets"))
+
+    for record in snapshot.records {
+        store.save(record)
+    }
+
+    let stored = store.snapshot()
+    #expect(stored.isReady)
+    #expect(agentHandoffRecordsSortedById(stored.records) == agentHandoffRecordsSortedById(snapshot.records))
+
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift"),
+        encoding: .utf8
+    )
+    for token in SeisAGIAgentHandoffSnapshot.expectedSourceTokens {
+        #expect(source.contains(token), "missing agent handoff source token: \(token)")
+    }
+    #if canImport(CoreData)
+    for token in SeisAGIAgentHandoffPersistentStore.expectedSourceTokens {
+        #expect(source.contains(token), "missing agent handoff persistence token: \(token)")
+    }
+    #endif
+}
+
 #if canImport(CoreData)
 @Test func agiMemoryPlanningPersistentStoreRoundTripsBootstrapRecords() throws {
     let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(
@@ -662,7 +702,32 @@ import Testing
     #expect(memoryPlanningRecordsSortedById(fetched) == memoryPlanningRecordsSortedById(snapshot.records))
     #expect(SeisAGIMemoryPlanningSnapshot(records: fetched).isReady)
 }
+
+@Test func agiAgentHandoffPersistentStoreRoundTripsRecords() throws {
+    let contract = SeisAGISystemContract.master
+    let memory = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning)
+    let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(contract: contract, memorySnapshot: memory)
+    let snapshot = SeisAGIAgentHandoffSnapshot.bootstrap(
+        from: orchestration,
+        recordedAt: "2026-06-12T18:05:00Z"
+    )
+    let persistentStore = try SeisAGIAgentHandoffPersistentStore(inMemory: true)
+
+    for record in snapshot.records {
+        try persistentStore.save(record)
+    }
+
+    let fetched = try persistentStore.fetch(limit: 10)
+    #expect(agentHandoffRecordsSortedById(fetched) == agentHandoffRecordsSortedById(snapshot.records))
+    #expect(SeisAGIAgentHandoffSnapshot(records: fetched).isReady)
+}
 #endif
+
+private func agentHandoffRecordsSortedById(
+    _ records: [SeisAGIAgentHandoffRecord]
+) -> [SeisAGIAgentHandoffRecord] {
+    records.sorted { $0.id < $1.id }
+}
 
 private func memoryPlanningRecordsSortedById(
     _ records: [SeisAGIMemoryPlanningRecord]
