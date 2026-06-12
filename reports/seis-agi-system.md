@@ -36,7 +36,7 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 | Advanced Agent Orchestration | Route Codex, Claude, Gemini, Qwen, local helpers, MCP tools, and plugins through one governed execution layer. | packages/seis-ai/, mcp/, plugins/seis/, docs/development/agents/ | single-writer-mode, tool-minimization, handoff-notes, permission-scope |
 | Memory Architecture | Preserve durable project, architecture, governance, deployment, research, and design decisions without leaking secrets. | packages/seis_platform_swift/, packages/seis_kernel/, docs/governance/ | source-backed-memory, secret-safety, retrieval-trace, staleness-awareness |
 | Planning and Execution Kernel | Turn large goals into reversible daily packets, 90-day release windows, and long-horizon mission waves. | content/development/seis-active-mission-board.json, reports/seis-execution-packages.md | small-slices, dependency-order, rollback-ready, no-runtime-bloat |
-| Research Automation | Prefer primary sources and task-specific research tools before implementation assumptions become architecture. | docs/research/, reports/, content/development/ | primary-source-first, version-compatibility, citation-trace, claim-boundary |
+| Research Automation | Prefer primary sources and task-specific research tools before implementation assumptions become architecture. | packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift, docs/research/, reports/, content/development/ | primary-source-first, version-compatibility, citation-trace, claim-boundary |
 | Multi-Agent Coordination | Coordinate Codex execution, Claude architecture review, Gemini research validation, and local fallback helpers. | AGENTS.md, packages/ai-language/, docs/platform/ | one-writer-at-a-time, reviewer-role-separated, diff-review, human-approval |
 | Plugin, MCP, and Skills Mesh | Activate data, development, design, research, deployment, security, and collaboration capabilities only when relevant. | content/development/plugin-capability-lanes.json, reports/plugin-capability-lanes.md | authenticated-scope, read-write-gate, minimum-required-tools, no-fake-usage |
 | Token Efficiency Engine | Save at least 60 percent of prompt/runtime budget through retrieval, compression, source manifests, and staged plans. | AGENTS.md, docs/governance/, reports/seis-agi-system.md | bounded-context, source-manifest, summarize-before-expand, avoid-repeated-discovery |
@@ -82,6 +82,7 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 | swiftMemoryPlanningStore | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift` |
 | swiftContextCompressionRuntime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift` |
 | swiftAgentOrchestrationRuntime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift` |
+| swiftResearchAutomationRuntime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift` |
 | swiftAgentHandoffStore | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift` |
 | generator | `scripts/create-seis-agi-system.py` |
 | sourceContract | `content/development/seis-agi-system.json` |
@@ -277,6 +278,7 @@ The full 150-domain taxonomy is stored in `content/development/seis-agi-system.j
 - apple_native_memory_store_present
 - apple_native_context_compression_present
 - apple_native_agent_orchestration_present
+- apple_native_research_automation_present
 - apple_native_agent_handoff_store_present
 - no_runtime_install_for_language_percentage
 - security_and_human_review_gates_present

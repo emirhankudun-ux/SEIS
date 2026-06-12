@@ -10,6 +10,7 @@ SEIS uses the phrase AGI system as a human-owned, AGI-inspired operating archite
 - `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift`
 - `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift`
 - `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift`
+- `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift`
 - `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift`
 - `scripts/create-seis-agi-system.py`
 - `content/development/seis-agi-system.json`

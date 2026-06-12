@@ -52,6 +52,7 @@
       "id": "research-automation",
       "label": "Research Automation",
       "implementationRoots": [
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
         "docs/research/",
         "reports/",
         "content/development/"
@@ -1183,6 +1184,7 @@
     "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
     "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
     "swiftAgentOrchestrationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+    "swiftResearchAutomationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
     "swiftAgentHandoffStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
     "generator": "scripts/create-seis-agi-system.py",
     "sourceContract": "content/development/seis-agi-system.json",

@@ -161,7 +161,12 @@ AGI_SUBSYSTEMS: tuple[AGISubsystem, ...] = (
         id="research-automation",
         label="Research Automation",
         intent="Prefer primary sources and task-specific research tools before implementation assumptions become architecture.",
-        implementation_roots=("docs/research/", "reports/", "content/development/"),
+        implementation_roots=(
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
+            "docs/research/",
+            "reports/",
+            "content/development/",
+        ),
         quality_gates=("primary-source-first", "version-compatibility", "citation-trace", "claim-boundary"),
     ),
     AGISubsystem(
@@ -635,6 +640,7 @@ def build_seis_agi_system() -> dict[str, Any]:
             "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
             "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
             "swiftAgentOrchestrationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+            "swiftResearchAutomationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
             "swiftAgentHandoffStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
             "generator": "scripts/create-seis-agi-system.py",
             "sourceContract": "content/development/seis-agi-system.json",
@@ -651,6 +657,7 @@ def build_seis_agi_system() -> dict[str, Any]:
             "apple_native_memory_store_present",
             "apple_native_context_compression_present",
             "apple_native_agent_orchestration_present",
+            "apple_native_research_automation_present",
             "apple_native_agent_handoff_store_present",
             "no_runtime_install_for_language_percentage",
             "security_and_human_review_gates_present",
@@ -695,6 +702,10 @@ def validate_seis_agi_system(contract: dict[str, Any]) -> list[str]:
         "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift"
     ):
         failures.append("AGI system must track the Swift agent orchestration runtime implementation")
+    if contract.get("implementation", {}).get("swiftResearchAutomationRuntime") != (
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift"
+    ):
+        failures.append("AGI system must track the Swift research automation runtime implementation")
     if contract.get("implementation", {}).get("swiftAgentHandoffStore") != (
         "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift"
     ):

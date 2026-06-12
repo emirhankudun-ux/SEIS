@@ -1,47 +1,47 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 538
-- Counted bytes: 2519400
-- JavaScript: 811163 bytes (32.2%)
+- Counted files: 539
+- Counted bytes: 2531220
+- JavaScript: 811163 bytes (32.05%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1343280
+- Additional non-JavaScript bytes needed for strict target: 1331460
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 811163 | 32.2% | JavaScript |
+| JavaScript | 811163 | 32.05% | JavaScript |
 | TypeScript | 28824 | 1.14% | TypeScript |
-| Objective-C | 8447 | 0.34% | Objective-C |
-| Other | 1670966 | 66.32% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Objective-C | 8447 | 0.33% | Objective-C |
+| Other | 1682786 | 66.48% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 811163 | 32.2% |
-| JSON | 635229 | 25.21% |
-| Python | 298997 | 11.87% |
-| Swift | 215506 | 8.55% |
-| CSS | 94204 | 3.74% |
-| HTML | 84633 | 3.36% |
-| Shell | 56789 | 2.25% |
+| JavaScript | 811163 | 32.05% |
+| JSON | 635229 | 25.1% |
+| Python | 300155 | 11.86% |
+| Swift | 225662 | 8.92% |
+| CSS | 94204 | 3.72% |
+| HTML | 84633 | 3.34% |
+| Shell | 56789 | 2.24% |
 | Other | 37135 | 1.47% |
 | TypeScript | 28824 | 1.14% |
-| YAML | 25243 | 1.0% |
+| YAML | 25749 | 1.02% |
 | Go | 16367 | 0.65% |
 | Java | 16110 | 0.64% |
-| Scheme | 15747 | 0.63% |
+| Scheme | 15747 | 0.62% |
 | Perl | 13916 | 0.55% |
 | Ruby | 13442 | 0.53% |
 | Rust | 11825 | 0.47% |
 | C++ | 11206 | 0.44% |
-| PHP | 8471 | 0.34% |
-| Objective-C | 8447 | 0.34% |
+| PHP | 8471 | 0.33% |
+| Objective-C | 8447 | 0.33% |
 | SQL | 8177 | 0.32% |
-| R | 7953 | 0.32% |
+| R | 7953 | 0.31% |
 | OCaml | 7550 | 0.3% |
 | Tcl | 7290 | 0.29% |
 | Racket | 7245 | 0.29% |

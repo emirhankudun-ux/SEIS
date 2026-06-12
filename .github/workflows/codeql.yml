@@ -10,6 +10,7 @@ on:
       - "mcp/**"
       - "packages/seis-ai/**"
       - "packages/seis_kernel/**"
+      - "packages/seis_platform_swift/**"
       - "scripts/**"
   pull_request:
     branches: [ main ]
@@ -19,6 +20,7 @@ on:
       - "mcp/**"
       - "packages/seis-ai/**"
       - "packages/seis_kernel/**"
+      - "packages/seis_platform_swift/**"
       - "scripts/**"
   schedule:
     - cron: "24 4 * * 1"
@@ -31,16 +33,24 @@ permissions:
 jobs:
   analyze:
     name: CodeQL (${{ matrix.language }})
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
         include:
           - language: javascript-typescript
+            runner: ubuntu-latest
             build-mode: none
+            build_command: ""
           - language: python
+            runner: ubuntu-latest
             build-mode: none
+            build_command: ""
+          - language: swift
+            runner: macos-latest
+            build-mode: manual
+            build_command: swift build --package-path packages/seis_platform_swift
 
     steps:
       - name: Checkout
@@ -51,6 +61,10 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
+
+      - name: Build for CodeQL
+        if: matrix.build_command != ''
+        run: ${{ matrix.build_command }}
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2

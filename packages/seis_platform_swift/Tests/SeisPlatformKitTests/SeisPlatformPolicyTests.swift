@@ -236,6 +236,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "agi-memory-planning-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "agi-context-compression-runtime" && $0.qualityGate == "token-savings-target" })
     #expect(runtime.probes.contains { $0.id == "agi-agent-orchestration-runtime" && $0.qualityGate == "agent_governance" })
+    #expect(runtime.probes.contains { $0.id == "agi-research-automation-runtime" && $0.qualityGate == "primary_source_first" })
     #expect(runtime.probes.contains { $0.id == "agi-agent-handoff-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
@@ -672,6 +673,40 @@ import Testing
     )
     for token in SeisAGIAgentOrchestrationRuntime.expectedSourceTokens {
         #expect(source.contains(token), "missing agent orchestration source token: \(token)")
+    }
+}
+
+@Test func agiResearchAutomationRuntimeBuildsSourceManifestPlan() throws {
+    let contract = SeisAGISystemContract.master
+    let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning)
+    let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(
+        contract: contract,
+        memorySnapshot: snapshot
+    )
+    let plan = SeisAGIResearchAutomationRuntime().makePlan(
+        contract: contract,
+        memorySnapshot: snapshot,
+        orchestrationPlan: orchestration
+    )
+
+    #expect(plan.isReady)
+    #expect(plan.researcherAssignmentId == "research-synthesizer")
+    #expect(plan.outputArtifact == "source manifest")
+    #expect(plan.selectedSources.contains { $0.id == "research-evidence" && $0.sourceKind == .generatedReport })
+    #expect(plan.selectedSources.contains { $0.id == "context-intake" && $0.selectedByContext })
+    #expect(plan.deferredSources.contains { $0.id == "multi-agent-handoff" })
+    #expect(plan.qualityGates.contains("primary-source-first"))
+    #expect(plan.qualityGates.contains("no-fake-usage"))
+    #expect(plan.primarySourcePolicy.contains("official documentation"))
+    #expect(plan.redactionPolicy.contains("never include secrets"))
+
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift"),
+        encoding: .utf8
+    )
+    for token in SeisAGIResearchAutomationRuntime.expectedSourceTokens {
+        #expect(source.contains(token), "missing research automation source token: \(token)")
     }
 }
 

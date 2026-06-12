@@ -223,6 +223,7 @@ public struct SeisAGISystemContract: Codable, Equatable, Sendable {
             releaseMilestones.allSatisfy(\.isTraceable) &&
             releaseMilestones.contains { $0.id == "month-02-memory-planning-mcp" } &&
             releaseMilestones.contains { $0.acceptanceGates.contains("release-evidence-current") } &&
+            implementationRoots.contains("packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift") &&
             implementationRoots.contains("scripts/create-seis-agi-system.py")
     }
 
@@ -492,6 +493,7 @@ public struct SeisAGISystemContract: Codable, Equatable, Sendable {
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
             "packages/seis_kernel/agi_system.py",
             "scripts/create-seis-agi-system.py",
@@ -515,6 +517,7 @@ public extension SeisAGISystemContract {
             "SeisAGIMemoryPlanningStore.swift",
             "SeisAGIContextCompressionRuntime.swift",
             "SeisAGIAgentOrchestrationRuntime.swift",
+            "SeisAGIResearchAutomationRuntime.swift",
             "SeisAGIAgentHandoffStore.swift",
             "Memory Planning Automation",
             "Implementation Surfaces",
