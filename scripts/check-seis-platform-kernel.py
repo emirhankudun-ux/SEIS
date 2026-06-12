@@ -17,6 +17,7 @@ from packages.seis_kernel.platform_matrix import build_platform_contract  # noqa
 REQUIRED_FILES = [
     "packages/seis_platform_swift/Package.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
     "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",

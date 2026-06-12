@@ -8,13 +8,16 @@ struct AppleShellDiagnosticsView: View {
     private let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     private let telemetry = SeisAppleShellTelemetryLogger()
     @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
+    @StateObject private var historyStore: SeisAppleShellDiagnosticsHistoryStore
 
     init(
         snapshot: SeisAppleContinuationSnapshot,
-        runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current()
+        runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current(),
+        historyStore: SeisAppleShellDiagnosticsHistoryStore = SeisAppleShellDiagnosticsHistoryStore()
     ) {
         self.snapshot = snapshot
         self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)
+        self._historyStore = StateObject(wrappedValue: historyStore)
     }
 
     var body: some View {
@@ -164,6 +167,30 @@ struct AppleShellDiagnosticsView: View {
 
             Divider()
 
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Diagnostics Timeline")
+                    .font(.subheadline.weight(.semibold))
+                ForEach(historyStore.snapshots) { historySnapshot in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: historySnapshot.isReady ? "clock.badge.checkmark" : "clock.badge.exclamationmark")
+                            .foregroundStyle(historySnapshot.isReady ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(historySnapshot.statusLabel)
+                                .font(.caption.weight(.semibold))
+                            Text("\(historySnapshot.source) / \(historySnapshot.recordedAt)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text("\(historySnapshot.runtimeStatusLabel) / \(historySnapshot.persistenceStatusLabel)")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
             VStack(alignment: .leading, spacing: 4) {
                 Text("Validation Commands")
                     .font(.subheadline.weight(.semibold))
@@ -227,9 +254,16 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private func recordDiagnosticsTelemetry(source: String) {
+        let historySnapshot = historyStore.record(
+            source: source,
+            continuation: snapshot,
+            diagnostics: diagnostics,
+            persistence: persistence,
+            runtime: runtimeDiagnostics
+        )
         telemetry.record(
             .diagnosticsRefreshed,
-            detail: "source=\(source) ready=\(totalReadyCount) total=\(totalCheckCount) activeGates=\(snapshot.qualityGates.count)"
+            detail: "source=\(source) ready=\(historySnapshot.readyCount) total=\(historySnapshot.checkCount) activeGates=\(historySnapshot.qualityGateCount)"
         )
         telemetry.record(
             .runtimeProbeSnapshot,

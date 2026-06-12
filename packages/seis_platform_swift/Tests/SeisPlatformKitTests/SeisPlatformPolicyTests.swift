@@ -231,6 +231,7 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
+    #expect(runtime.probes.contains { $0.id == "diagnostics-history" && $0.qualityGate == "observability" })
     #expect(runtime.accessibilitySummary.contains("SeisAppleNativeShell"))
 
     let partial = SeisAppleShellRuntimeDiagnostics.make(
@@ -239,6 +240,52 @@ import Testing
     )
     #expect(!partial.isReady)
     #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
+}
+
+@Test func appleShellDiagnosticsHistoryRecordsReadinessSnapshots() {
+    let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
+    let continuation = SeisAppleContinuationSnapshot.current
+    let runtime = SeisAppleShellRuntimeDiagnostics.make(
+        repositoryRoot: repositoryRoot(),
+        existingRelativePaths: Set(SeisAppleShellRuntimeDiagnostics.requiredSurfaces.map(\.relativePath)),
+        operatingSystemVersion: "macOS-test",
+        processName: "SeisAppleNativeShell"
+    )
+    let store = SeisAppleShellDiagnosticsHistoryStore(historyLimit: 2)
+
+    let first = store.record(
+        source: "appear",
+        continuation: continuation,
+        diagnostics: diagnostics,
+        persistence: persistence,
+        runtime: runtime,
+        recordedAt: Date(timeIntervalSince1970: 0)
+    )
+    let second = store.record(
+        source: "manual",
+        continuation: continuation,
+        diagnostics: diagnostics,
+        persistence: persistence,
+        runtime: runtime,
+        recordedAt: Date(timeIntervalSince1970: 1)
+    )
+    let third = store.record(
+        source: "command",
+        continuation: continuation,
+        diagnostics: diagnostics,
+        persistence: persistence,
+        runtime: runtime,
+        recordedAt: Date(timeIntervalSince1970: 2)
+    )
+
+    #expect(first.statusLabel == "\(first.readyCount)/\(first.checkCount) ready")
+    #expect(store.snapshots == [third, second])
+    #expect(store.latest == third)
+    #expect(third.isReady)
+    #expect(third.qualityGateCount == continuation.qualityGates.count)
+    #expect(third.runtimeStatusLabel.contains("runtime"))
+    #expect(third.persistenceStatusLabel.contains("persistence"))
 }
 
 @Test func appleShellTelemetryContractDescribesUnifiedLogging() {
@@ -270,6 +317,10 @@ import Testing
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift"),
         encoding: .utf8
     )
+    let historySource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift"),
+        encoding: .utf8
+    )
     let persistenceSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift"),
         encoding: .utf8
@@ -293,6 +344,12 @@ import Testing
     }
     for token in persistence.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing persistence diagnostics view token: \(token)")
+    }
+    for token in SeisAppleShellDiagnosticsHistorySnapshot.expectedSourceTokens {
+        #expect(historySource.contains(token), "missing diagnostics history source token: \(token)")
+    }
+    for token in SeisAppleShellDiagnosticsHistorySnapshot.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing diagnostics history view token: \(token)")
     }
 }
 

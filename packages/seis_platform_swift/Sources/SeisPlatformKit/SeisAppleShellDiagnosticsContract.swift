@@ -116,6 +116,8 @@ public struct SeisAppleShellDiagnosticsContract: Codable, Equatable, Sendable {
             "item.evidence",
             "item.qualityGate",
             "validationCommands",
+            "Diagnostics Timeline",
+            "historyStore.snapshots",
             "accessibilityLabel"
         ]
     }

@@ -99,6 +99,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             title: "Persistence Readiness",
             relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
             qualityGate: "coredata_cloudkit_sync_review"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "diagnostics-history",
+            title: "Diagnostics History",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
+            qualityGate: "observability"
         )
     ]
 
