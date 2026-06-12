@@ -7,7 +7,7 @@
   "summary": {
     "languageCount": 117,
     "layerCount": 7,
-    "entrypointCount": 156,
+    "entrypointCount": 159,
     "requestedCoreStackCount": 6,
     "pluginCapabilityLaneCount": 12,
     "missingEntrypoints": []
@@ -202,12 +202,13 @@
       "language": "TypeScript",
       "layer": "frontend-and-experience",
       "layerLabel": "Frontend and Experience",
-      "role": "strict JSON config validator (manifest, site-config, translations) + audit report type declarations",
+      "role": "strict JSON config validator (manifest, site-config, translations), language panel split contract, and audit report type declarations",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
+        "polyglot/typescript/language-split-contract.ts",
         "packages/seis-ai/types/seis-ai.d.ts"
       ],
-      "entrypointCount": 2,
+      "entrypointCount": 3,
       "requestedCoreStack": true,
       "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
     },
@@ -794,11 +795,13 @@
       "language": "Objective-C",
       "layer": "mobile-and-native",
       "layerLabel": "Mobile and Native",
-      "role": "Apple native release policy bridge",
+      "role": "Apple native release policy bridge and GitHub language panel split contract",
       "entrypoints": [
-        "polyglot/objective-c/SEISReleasePolicy.h"
+        "polyglot/objective-c/SEISReleasePolicy.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.m"
       ],
-      "entrypointCount": 1,
+      "entrypointCount": 3,
       "requestedCoreStack": false,
       "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
     },

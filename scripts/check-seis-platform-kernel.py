@@ -26,6 +26,8 @@ REQUIRED_FILES = [
     "scripts/create-seis-platform-development-tracks.py",
     "polyglot/objective-c/SEISPlatformBridge.h",
     "polyglot/objective-c/SEISPlatformBridge.m",
+    "polyglot/objective-c/SEISLanguageDistributionContract.h",
+    "polyglot/objective-c/SEISLanguageDistributionContract.m",
     "polyglot/applescript/seis_platform_automation.applescript",
     "packages/seis_windows_csharp/SeisPlatformPolicy.csproj",
     "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
@@ -140,6 +142,7 @@ def run_objective_c_syntax() -> list[str]:
             "-framework",
             "Foundation",
             "polyglot/objective-c/SEISPlatformBridge.m",
+            "polyglot/objective-c/SEISLanguageDistributionContract.m",
         ],
         ROOT,
     )

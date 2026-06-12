@@ -4,7 +4,7 @@
 - Mode: all_polyglot_surfaces_visible_in_environment_sources
 - Languages/config surfaces: 117
 - Full-stack layers: 7
-- Entry points: 156
+- Entry points: 159
 
 ## Layer Summary
 
@@ -23,7 +23,7 @@
 | # | language | layer | core stack | entrypoints |
 | ---: | --- | --- | --- | --- |
 | 1 | JavaScript | Frontend and Experience | yes | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
-| 2 | TypeScript | Frontend and Experience | yes | polyglot/typescript/seis_config_validator.ts, packages/seis-ai/types/seis-ai.d.ts |
+| 2 | TypeScript | Frontend and Experience | yes | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Node.js | Backend and API | yes | scripts/check-foundation.mjs, scripts/prepare-server-upload.mjs, scripts/create-requested-software-stack.cjs, polyglot/node/requested_stack_readiness.mjs |
 | 4 | MySQL | Database and Data | yes | polyglot/mysql/plugin_source_registry.mysql.sql |
 | 5 | React | Frontend and Experience | yes | polyglot/react/PluginSourceDashboard.tsx |
@@ -66,7 +66,7 @@
 | 42 | Nim | Mobile and Native | no | polyglot/nim/readiness_policy.nim, polyglot/nim/seis_html_img_audit.nim |
 | 43 | Crystal | Mobile and Native | no | polyglot/crystal/readiness_policy.cr |
 | 44 | Groovy | Backend and API | no | polyglot/groovy/SeisReleasePolicy.groovy, polyglot/groovy/seis_json_files_check.groovy |
-| 45 | Objective-C | Mobile and Native | no | polyglot/objective-c/SEISReleasePolicy.h |
+| 45 | Objective-C | Mobile and Native | no | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
 | 46 | Visual Basic | Research, Legacy, and Lab | no | polyglot/vb/SeisReleasePolicy.vb |
 | 47 | MATLAB | Database and Data | no | polyglot/matlab/readiness_policy.m |
 | 48 | Fortran | Research, Legacy, and Lab | no | polyglot/fortran/readiness_policy.f90 |

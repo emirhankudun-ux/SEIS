@@ -15,9 +15,10 @@
     },
     {
       "language": "TypeScript",
-      "role": "strict JSON config validator (manifest, site-config, translations) + audit report type declarations",
+      "role": "strict JSON config validator (manifest, site-config, translations), language panel split contract, and audit report type declarations",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
+        "polyglot/typescript/language-split-contract.ts",
         "packages/seis-ai/types/seis-ai.d.ts"
       ]
     },
@@ -305,8 +306,12 @@
     },
     {
       "language": "Objective-C",
-      "role": "Apple native release policy bridge",
-      "entrypoints": ["polyglot/objective-c/SEISReleasePolicy.h"]
+      "role": "Apple native release policy bridge and GitHub language panel split contract",
+      "entrypoints": [
+        "polyglot/objective-c/SEISReleasePolicy.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.m"
+      ]
     },
     {
       "language": "Visual Basic",

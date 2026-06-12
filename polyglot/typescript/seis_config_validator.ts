@@ -9,6 +9,8 @@
 // Usage: ts-node polyglot/typescript/seis_config_validator.ts [--self-test]
 // Exit:  0 PASS, 1 FAIL, 2 wrong invocation
 
+import { buildLanguagePanelSplit, runLanguageSplitContractSelfTest } from "./language-split-contract";
+
 /* --- Node globals without @types/node --- */
 declare const require: (m: string) => any;
 declare const process: {
@@ -181,7 +183,17 @@ function selfTest(): boolean {
   const unbalanced: LocaleMap = { en: { a: "A", b: "B" }, tr: { a: "A" } };
   assert("missing key is caught", validateTranslations(unbalanced).length > 0);
 
-  const total = 9;
+  const split = buildLanguagePanelSplit([
+    { language: "JavaScript", bytes: 51 },
+    { language: "TypeScript", bytes: 25 },
+    { language: "Objective-C", bytes: 13 },
+    { language: "Python", bytes: 11 }
+  ]);
+  const other = split.panels.find((panel) => panel.panel === "Other");
+  assert("language split excludes focused languages from Other", other?.bytes === 11);
+  assert("language split contract self-test passes", runLanguageSplitContractSelfTest().length === 0);
+
+  const total = 11;
   if (passed === total) {
     console.log(`[PASS] ts-config-validator  ${total}/${total} self-tests passed`);
     return true;

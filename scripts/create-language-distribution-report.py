@@ -15,12 +15,14 @@ REPORT_MD = ROOT / "reports" / "language-distribution.md"
 GITATTRIBUTES = ROOT / ".gitattributes"
 CHECK_MODE = "--check" in sys.argv
 TARGET_JAVASCRIPT_PERCENT = 10.0
+FOCUS_LANGUAGE_SPLIT = ("JavaScript", "TypeScript", "Objective-C")
 
 SKIP_DIRS = {
     ".git",
     "node_modules",
     "dist",
     "build",
+    ".build",
     "coverage",
     ".sync-backups",
     ".serena",
@@ -176,6 +178,10 @@ REQUIRED_LINGUIST_RULES = [
     ("content/development/*.json", "linguist-generated=true"),
     ("apps/web/src/i18n/locales.js", "linguist-generated=true"),
     ("SE*S/**", "linguist-vendored=true"),
+    ("polyglot/typescript/**", "linguist-language=TypeScript"),
+    ("polyglot/react/*.tsx", "linguist-language=TypeScript"),
+    ("packages/seis-ai/types/**", "linguist-language=TypeScript"),
+    ("polyglot/objective-c/**", "linguist-language=Objective-C"),
 ]
 
 SELF_REPORT_PATHS = {
@@ -261,7 +267,7 @@ def read_linguist_rules():
             reason = "linguist-generated"
         if "linguist-vendored=true" in attributes:
             reason = "linguist-vendored"
-        if reason:
+        if reason or any(attribute.startswith("linguist-language=") for attribute in attributes):
             rules.append({"pattern": pattern, "attributes": attributes, "reason": reason})
     return rules
 
@@ -281,7 +287,7 @@ def build_report(rules):
             excluded_counts[reason] = excluded_counts.get(reason, 0) + size
             continue
 
-        language = detect_language(file_path)
+        language = detect_language(file_path, rel_path, rules)
         counted_files.append(
             {
                 "path": rel_path,
@@ -305,6 +311,7 @@ def build_report(rules):
     ]
 
     javascript_bytes = by_language.get("JavaScript", 0)
+    focus_split = build_focus_language_split(by_language, total_bytes)
     required_non_js_bytes = required_non_javascript_bytes(javascript_bytes, total_bytes)
     snapshot_hash = hash_counted_files(counted_files)
     largest_js = [
@@ -337,6 +344,7 @@ def build_report(rules):
         },
         "summary": summary,
         "languages": languages,
+        "githubLanguagePanelSplit": focus_split,
         "largestJavaScriptFiles": largest_js,
         "excludedBytesByReason": dict(sorted(excluded_counts.items())),
         "requiredLinguistRules": [
@@ -347,6 +355,7 @@ def build_report(rules):
         "nextMigrationOrder": [
             "Keep generated release, report, data, and local snapshot files out of GitHub Linguist counts.",
             "Move translation payloads from JavaScript modules into data files after UI fallback testing.",
+            "Keep JavaScript, TypeScript, and Objective-C as separate language panels; Other is every remaining language only.",
             "Promote stable Node automation scripts to Python or Go only when the behavior is covered by checks.",
             "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages.",
         ],
@@ -396,13 +405,26 @@ def matches_pattern(rel_path, pattern):
     return False
 
 
-def detect_language(file_path):
+def linguist_language_override(rel_path, rules):
+    for rule in rules:
+        if not matches_pattern(rel_path, rule["pattern"]):
+            continue
+        for attribute in rule["attributes"]:
+            if attribute.startswith("linguist-language="):
+                return attribute.split("=", 1)[1]
+    return None
+
+
+def detect_language(file_path, rel_path, rules):
+    override = linguist_language_override(rel_path, rules)
+    if override:
+        return override
+
     name = file_path.name
     if name in LANGUAGE_BY_FILENAME:
         return LANGUAGE_BY_FILENAME[name]
 
     suffix = file_path.suffix.lower()
-    rel_path = file_path.relative_to(ROOT).as_posix()
     if suffix == ".m" and "/objective-c/" in rel_path:
         return "Objective-C"
     if suffix == ".cjs":
@@ -424,6 +446,34 @@ def required_non_javascript_bytes(javascript_bytes, total_bytes):
     target_total = javascript_bytes / (TARGET_JAVASCRIPT_PERCENT / 100)
     required = target_total - total_bytes
     return int(required) if required > 0 else 0
+
+
+def build_focus_language_split(by_language, total_bytes):
+    focus_entries = []
+    focus_bytes = 0
+    for language in FOCUS_LANGUAGE_SPLIT:
+        byte_count = by_language.get(language, 0)
+        focus_bytes += byte_count
+        focus_entries.append(
+            {
+                "language": language,
+                "bytes": byte_count,
+                "percent": percent(byte_count, total_bytes),
+                "sourceLanguages": [language],
+            }
+        )
+
+    other_source_languages = sorted(language for language in by_language if language not in FOCUS_LANGUAGE_SPLIT)
+    other_bytes = total_bytes - focus_bytes
+    focus_entries.append(
+        {
+            "language": "Other",
+            "bytes": other_bytes,
+            "percent": percent(other_bytes, total_bytes),
+            "sourceLanguages": other_source_languages,
+        }
+    )
+    return focus_entries
 
 
 def runtime_readiness():
@@ -468,11 +518,25 @@ def build_markdown(report):
         f"- Target status: `{summary['targetStatus']}`",
         f"- Additional non-JavaScript bytes needed for strict target: {summary['requiredAdditionalNonJavaScriptBytesForTarget']}",
         "",
+        "## GitHub Language Panel Split",
+        "",
+        "| Panel | Bytes | Percent | Source languages |",
+        "| --- | ---: | ---: | --- |",
+    ]
+
+    for entry in report["githubLanguagePanelSplit"]:
+        source_languages = ", ".join(entry["sourceLanguages"][:12])
+        if len(entry["sourceLanguages"]) > 12:
+            source_languages += f", +{len(entry['sourceLanguages']) - 12} more"
+        lines.append(f"| {entry['language']} | {entry['bytes']} | {entry['percent']}% | {source_languages} |")
+
+    lines.extend([
+        "",
         "## Counted Languages",
         "",
         "| Language | Bytes | Percent |",
         "| --- | ---: | ---: |",
-    ]
+    ])
 
     for entry in report["languages"][:24]:
         lines.append(f"| {entry['language']} | {entry['bytes']} | {entry['percent']}% |")

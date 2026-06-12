@@ -31,6 +31,12 @@ The command writes:
 - `reports/language-distribution.json`
 - `reports/language-distribution.md`
 
+## Focused GitHub Panel Split
+
+The GitHub-facing language split keeps `JavaScript`, `TypeScript`, and
+`Objective-C` as explicit panels. `Other` is calculated as every remaining
+counted language only, so it excludes those three focused languages.
+
 ## Migration Order
 
 1. Keep GitHub Linguist focused on source, not generated release/report/snapshot files.
