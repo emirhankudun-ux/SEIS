@@ -2812,9 +2812,9 @@
       "generatedAt": "2026-06-03",
       "mode": "all_polyglot_surfaces_visible_in_environment_sources",
       "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
-      "languageCount": 108,
+      "languageCount": 117,
       "layerCount": 7,
-      "entrypointCount": 119,
+      "entrypointCount": 156,
       "sourceReferences": {
         "polyglotManifest": "polyglot/manifest.json",
         "requestedSoftwareStack": "content/development/requested-software-stack.json",
@@ -2834,7 +2834,7 @@
         {
           "id": "database-and-data",
           "label": "Database and Data",
-          "languageCount": 12
+          "languageCount": 13
         },
         {
           "id": "mobile-and-native",
@@ -2849,12 +2849,12 @@
         {
           "id": "security-policy-and-governance",
           "label": "Security, Policy, and Governance",
-          "languageCount": 14
+          "languageCount": 15
         },
         {
           "id": "research-legacy-and-lab",
           "label": "Research, Legacy, and Lab",
-          "languageCount": 14
+          "languageCount": 21
         }
       ],
       "languages": [
@@ -2877,10 +2877,10 @@
           "language": "TypeScript",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
-          "role": "release contract typing and requested plugin stack contracts",
+          "role": "strict JSON config validator (manifest, site-config, translations) + audit report type declarations",
           "entrypoints": [
-            "polyglot/typescript/release-contract.ts",
-            "polyglot/typescript/fullstack-plugin-contract.ts"
+            "polyglot/typescript/seis_config_validator.ts",
+            "packages/seis-ai/types/seis-ai.d.ts"
           ],
           "requestedCoreStack": true
         },
@@ -2936,9 +2936,13 @@
           "language": "Python",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "asset/deploy metadata inspection",
+          "role": "binary image-header audit, PWA icon generation, WCAG 2.1 color contrast checking, and service worker PRECACHE integrity",
           "entrypoints": [
             "polyglot/python/seis_manifest.py",
+            "polyglot/python/seis_image_audit.py",
+            "polyglot/python/seis_icon_gen.py",
+            "polyglot/python/seis_color_contrast.py",
+            "polyglot/python/seis_sw_cache_audit.py",
             "server/python/verify_release.py"
           ],
           "requestedCoreStack": false
@@ -2948,9 +2952,12 @@
           "language": "Ruby",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "alternate release hash verification",
+          "role": "i18n content statistics, untranslated-value detection, HTML heading hierarchy audit, and favicon/icon file existence check",
           "entrypoints": [
-            "polyglot/ruby/verify_release.rb"
+            "polyglot/ruby/verify_release.rb",
+            "polyglot/ruby/i18n_stats.rb",
+            "polyglot/ruby/html_heading_audit.rb",
+            "polyglot/ruby/favicon_audit.rb"
           ],
           "requestedCoreStack": false
         },
@@ -2959,8 +2966,9 @@
           "language": "PHP",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "shared-hosting health fallback",
+          "role": "contact form endpoint and shared-hosting health fallback",
           "entrypoints": [
+            "polyglot/php/contact-endpoint.php",
             "server/php/health.php",
             "server/php/router.php"
           ],
@@ -2971,9 +2979,11 @@
           "language": "Go",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "future service health contract",
+          "role": "local preview server with production security headers; JSON-LD schema.org validator",
           "entrypoints": [
-            "polyglot/go/health_contract.go"
+            "polyglot/go/health_contract.go",
+            "polyglot/go/cmd/seis-serve/main.go",
+            "polyglot/go/cmd/seis-jsonld/main.go"
           ],
           "requestedCoreStack": false
         },
@@ -2982,9 +2992,10 @@
           "language": "Rust",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
-          "role": "performance budget contract",
+          "role": "offline link/asset integrity audit",
           "entrypoints": [
-            "polyglot/rust/performance_budget.rs"
+            "polyglot/rust/performance_budget.rs",
+            "polyglot/rust/seis-link-audit/src/main.rs"
           ],
           "requestedCoreStack": false
         },
@@ -3004,9 +3015,10 @@
           "language": "Kotlin",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
-          "role": "Android motion/accessibility policy",
+          "role": "Android motion/accessibility policy; CSS font-family generic-fallback auditor",
           "entrypoints": [
-            "polyglot/kotlin/SeisMotionPolicy.kt"
+            "polyglot/kotlin/SeisMotionPolicy.kt",
+            "polyglot/kotlin/seis_css_font_audit.kts"
           ],
           "requestedCoreStack": false
         },
@@ -3026,9 +3038,10 @@
           "language": "Bash",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
-          "role": "portable deploy guard",
+          "role": "shell static auditor (bash -n, shebang, set -u) + polyglot orchestrator",
           "entrypoints": [
-            "polyglot/bash/deploy_guard.sh"
+            "polyglot/bash/seis_shell_audit.sh",
+            "scripts/polyglot-check.sh"
           ],
           "requestedCoreStack": false
         },
@@ -3037,9 +3050,11 @@
           "language": "Java",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "JVM release readiness contract",
+          "role": "drawings SHA-256 integrity ledger; CSS responsive media query auditor",
           "entrypoints": [
-            "polyglot/java/SeisDeployReadiness.java"
+            "polyglot/java/SeisDeployReadiness.java",
+            "polyglot/java/DrawingsChecksum.java",
+            "polyglot/java/CssMediaQueryAudit.java"
           ],
           "requestedCoreStack": false
         },
@@ -3059,9 +3074,9 @@
           "language": "SQL",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
-          "role": "future release ledger schema",
+          "role": "queryable audit-ledger schema with CHECK constraints, trigger, and views (SQLite)",
           "entrypoints": [
-            "polyglot/sql/release_readiness_schema.sql"
+            "polyglot/sql/audit_ledger.sqlite.sql"
           ],
           "requestedCoreStack": false
         },
@@ -3081,9 +3096,9 @@
           "language": "YAML",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
-          "role": "portable deploy governance configuration",
+          "role": "yq-based CI workflow governance lint — trigger, timeout-minutes, and job-name enforcement across all workflows",
           "entrypoints": [
-            "polyglot/yaml/deploy-governance.yml"
+            "polyglot/yaml/seis_workflow_lint.sh"
           ],
           "requestedCoreStack": false
         },
@@ -3127,36 +3142,51 @@
           "language": "C",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
-          "role": "portable embedded readiness contract",
+          "role": "strict UTF-8 validation for all web text files",
           "entrypoints": [
-            "polyglot/c/readiness_contract.h"
+            "polyglot/c/readiness_contract.h",
+            "polyglot/c/seis_utf8_check.c"
           ],
           "requestedCoreStack": false
         },
         {
           "order": 25,
-          "language": "C++",
-          "layer": "mobile-and-native",
-          "layerLabel": "Mobile and Native",
-          "role": "native application readiness contract",
+          "language": "bc",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "arbitrary-precision asset performance budget calculator (KB thresholds, % utilization)",
           "entrypoints": [
-            "polyglot/cpp/readiness_contract.hpp"
+            "polyglot/bc/seis_budget_check.bc",
+            "polyglot/bc/seis_budget_check.sh"
           ],
           "requestedCoreStack": false
         },
         {
           "order": 26,
-          "language": "Elixir",
-          "layer": "backend-and-api",
-          "layerLabel": "Backend and API",
-          "role": "calm release policy for concurrent service experiments",
+          "language": "C++",
+          "layer": "mobile-and-native",
+          "layerLabel": "Mobile and Native",
+          "role": "duplicate-key-rejecting translations.json linter",
           "entrypoints": [
-            "polyglot/elixir/calm_release_policy.ex"
+            "polyglot/cpp/readiness_contract.hpp",
+            "polyglot/cpp/seis_translations_lint.cpp"
           ],
           "requestedCoreStack": false
         },
         {
           "order": 27,
+          "language": "Elixir",
+          "layer": "backend-and-api",
+          "layerLabel": "Backend and API",
+          "role": "calm release policy for concurrent service experiments; HTML anchor safety auditor (target=_blank must have rel=noopener/noreferrer)",
+          "entrypoints": [
+            "polyglot/elixir/calm_release_policy.ex",
+            "polyglot/elixir/seis_html_anchor_audit.exs"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 28,
           "language": "Erlang",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3167,18 +3197,19 @@
           "requestedCoreStack": false
         },
         {
-          "order": 28,
+          "order": 29,
           "language": "Haskell",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
-          "role": "pure release policy model",
+          "role": "pure release policy model; CSS dimension unit histogram and font-size px usage audit",
           "entrypoints": [
-            "polyglot/haskell/CalmReleasePolicy.hs"
+            "polyglot/haskell/CalmReleasePolicy.hs",
+            "polyglot/haskell/seis_css_unit_audit.hs"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 29,
+          "order": 30,
           "language": "Scala",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3189,7 +3220,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 30,
+          "order": 31,
           "language": "R",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3200,7 +3231,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 31,
+          "order": 32,
           "language": "Julia",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3211,18 +3242,20 @@
           "requestedCoreStack": false
         },
         {
-          "order": 32,
+          "order": 33,
           "language": "Perl",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
-          "role": "portable readiness guard for legacy hosting scripts",
+          "role": "source hygiene lint (BOM, CRLF, trailing whitespace) and robots.txt syntax/content validation",
           "entrypoints": [
-            "polyglot/perl/readiness_guard.pl"
+            "polyglot/perl/readiness_guard.pl",
+            "polyglot/perl/hygiene_lint.pl",
+            "polyglot/perl/robots_txt_audit.pl"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 33,
+          "order": 34,
           "language": "Zig",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3233,7 +3266,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 34,
+          "order": 35,
           "language": "Clojure",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3244,7 +3277,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 35,
+          "order": 36,
           "language": "F#",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3255,7 +3288,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 36,
+          "order": 37,
           "language": "PowerShell",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3266,7 +3299,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 37,
+          "order": 38,
           "language": "TOML",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3277,29 +3310,30 @@
           "requestedCoreStack": false
         },
         {
-          "order": 38,
+          "order": 39,
           "language": "XML",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
-          "role": "enterprise interchange release policy contract",
+          "role": "xmllint-based sitemap.xml validator (well-formedness, namespace, hreflang, https)",
           "entrypoints": [
-            "polyglot/xml/release-policy.xml"
-          ],
-          "requestedCoreStack": false
-        },
-        {
-          "order": 39,
-          "language": "OCaml",
-          "layer": "research-legacy-and-lab",
-          "layerLabel": "Research, Legacy, and Lab",
-          "role": "typed functional release policy model",
-          "entrypoints": [
-            "polyglot/ocaml/release_policy.ml"
+            "polyglot/xml/seis_sitemap_check.sh"
           ],
           "requestedCoreStack": false
         },
         {
           "order": 40,
+          "language": "OCaml",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "typed functional release policy model; CSS selector type distribution auditor",
+          "entrypoints": [
+            "polyglot/ocaml/release_policy.ml",
+            "polyglot/ocaml/seis_css_selector_stats.ml"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 41,
           "language": "ReasonML",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3310,18 +3344,19 @@
           "requestedCoreStack": false
         },
         {
-          "order": 41,
+          "order": 42,
           "language": "Nim",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
-          "role": "compact systems readiness policy",
+          "role": "compact systems readiness policy; HTML img tag alt attribute completeness auditor",
           "entrypoints": [
-            "polyglot/nim/readiness_policy.nim"
+            "polyglot/nim/readiness_policy.nim",
+            "polyglot/nim/seis_html_img_audit.nim"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 42,
+          "order": 43,
           "language": "Crystal",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3332,18 +3367,19 @@
           "requestedCoreStack": false
         },
         {
-          "order": 43,
+          "order": 44,
           "language": "Groovy",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
-          "role": "JVM scripting release policy guard",
+          "role": "JVM scripting release policy guard; JSON file structure validator (manifest, site-config, translations key presence)",
           "entrypoints": [
-            "polyglot/groovy/SeisReleasePolicy.groovy"
+            "polyglot/groovy/SeisReleasePolicy.groovy",
+            "polyglot/groovy/seis_json_files_check.groovy"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 44,
+          "order": 45,
           "language": "Objective-C",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3354,7 +3390,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 45,
+          "order": 46,
           "language": "Visual Basic",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3365,7 +3401,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 46,
+          "order": 47,
           "language": "MATLAB",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3376,7 +3412,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 47,
+          "order": 48,
           "language": "Fortran",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3387,7 +3423,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 48,
+          "order": 49,
           "language": "COBOL",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3398,18 +3434,19 @@
           "requestedCoreStack": false
         },
         {
-          "order": 49,
+          "order": 50,
           "language": "Racket",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
-          "role": "language-lab readiness policy",
+          "role": "language-lab readiness policy; PWA manifest deep validator (display, hex colors, icon sizes)",
           "entrypoints": [
-            "polyglot/racket/readiness-policy.rkt"
+            "polyglot/racket/readiness-policy.rkt",
+            "polyglot/racket/seis_pwa_manifest_audit.rkt"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 50,
+          "order": 51,
           "language": "Scheme",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3420,18 +3457,41 @@
           "requestedCoreStack": false
         },
         {
-          "order": 51,
-          "language": "Prolog",
+          "order": 52,
+          "language": "Guile",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
-          "role": "logic-programming readiness proof sketch",
+          "role": "GNU Scheme — HTML hreflang link auditor (locale completeness, HTTPS, no duplicates)",
           "entrypoints": [
-            "polyglot/prolog/readiness_policy.pl"
+            "polyglot/guile/seis_hreflang_audit.scm"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 52,
+          "order": 53,
+          "language": "Prolog",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "logic-programming readiness proof sketch; HTML tabindex accessibility auditor (positive tabindex = WCAG 2.4.3 anti-pattern)",
+          "entrypoints": [
+            "polyglot/prolog/readiness_policy.pl",
+            "polyglot/prolog/seis_html_tabindex_audit.pl"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 54,
+          "language": "Chicken Scheme",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "R7RS Scheme — HTML button type auditor: form buttons must declare explicit type= to prevent accidental submit",
+          "entrypoints": [
+            "polyglot/chicken/seis_html_button_types.scm"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 55,
           "language": "D",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3442,7 +3502,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 53,
+          "order": 56,
           "language": "V",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3453,7 +3513,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 54,
+          "order": 57,
           "language": "GraphQL",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3464,7 +3524,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 55,
+          "order": 58,
           "language": "OpenAPI",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3475,7 +3535,18 @@
           "requestedCoreStack": false
         },
         {
-          "order": 56,
+          "order": 59,
+          "language": "jq",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "JSON query language — locale key parity audit with set-theory gap detection",
+          "entrypoints": [
+            "polyglot/jq/seis_translations_audit.jq"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 60,
           "language": "JSON Schema",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3486,7 +3557,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 57,
+          "order": 61,
           "language": "WebAssembly Text",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3497,7 +3568,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 58,
+          "order": 62,
           "language": "HCL",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3508,7 +3579,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 59,
+          "order": 63,
           "language": "Protocol Buffers",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3519,7 +3590,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 60,
+          "order": 64,
           "language": "Avro",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3530,7 +3601,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 61,
+          "order": 65,
           "language": "AsyncAPI",
           "layer": "backend-and-api",
           "layerLabel": "Backend and API",
@@ -3541,7 +3612,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 62,
+          "order": 66,
           "language": "JSON-LD",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3552,7 +3623,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 63,
+          "order": 67,
           "language": "INI",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3563,7 +3634,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 64,
+          "order": 68,
           "language": "Solidity",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3574,7 +3645,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 65,
+          "order": 69,
           "language": "Move",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3585,7 +3656,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 66,
+          "order": 70,
           "language": "Cairo",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3596,7 +3667,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 67,
+          "order": 71,
           "language": "Hack",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3607,7 +3678,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 68,
+          "order": 72,
           "language": "Elm",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3618,7 +3689,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 69,
+          "order": 73,
           "language": "PureScript",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3629,7 +3700,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 70,
+          "order": 74,
           "language": "ReScript",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3640,7 +3711,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 71,
+          "order": 75,
           "language": "Q#",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3651,7 +3722,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 72,
+          "order": 76,
           "language": "Apex",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3662,7 +3733,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 73,
+          "order": 77,
           "language": "ABAP",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3673,7 +3744,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 74,
+          "order": 78,
           "language": "PL/SQL",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3684,7 +3755,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 75,
+          "order": 79,
           "language": "T-SQL",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3695,7 +3766,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 76,
+          "order": 80,
           "language": "Bicep",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3706,7 +3777,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 77,
+          "order": 81,
           "language": "Nix",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3717,7 +3788,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 78,
+          "order": 82,
           "language": "CUE",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3728,7 +3799,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 79,
+          "order": 83,
           "language": "Turtle",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3739,7 +3810,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 80,
+          "order": 84,
           "language": "SPARQL",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3750,7 +3821,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 81,
+          "order": 85,
           "language": "Mermaid",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3761,7 +3832,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 82,
+          "order": 86,
           "language": "PlantUML",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3772,7 +3843,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 83,
+          "order": 87,
           "language": "CSV",
           "layer": "database-and-data",
           "layerLabel": "Database and Data",
@@ -3783,7 +3854,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 84,
+          "order": 88,
           "language": "Ada",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3794,7 +3865,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 85,
+          "order": 89,
           "language": "Pascal",
           "layer": "mobile-and-native",
           "layerLabel": "Mobile and Native",
@@ -3805,7 +3876,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 86,
+          "order": 90,
           "language": "Tcl",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3816,18 +3887,73 @@
           "requestedCoreStack": false
         },
         {
-          "order": 87,
+          "order": 91,
           "language": "AWK",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
-          "role": "minimal text-ops release policy guard",
+          "role": "CSS custom-property usage histogram — token frequency and single-use suspects",
           "entrypoints": [
-            "polyglot/awk/release_policy.awk"
+            "polyglot/awk/css_var_histogram.awk"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 88,
+          "order": 92,
+          "language": "sed",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "CSS custom-property definition vs. usage cross-check (GNU sed sentinel extraction)",
+          "entrypoints": [
+            "polyglot/sed/seis_css_vars_defined.sh"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 93,
+          "language": "Bun",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "JavaScript production code quality audit — no eval, document.write, unsafe innerHTML, console.log, or TODO markers",
+          "entrypoints": [
+            "polyglot/bun/seis_js_quality_audit.ts"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 94,
+          "language": "Lua",
+          "layer": "security-policy-and-governance",
+          "layerLabel": "Security, Policy, and Governance",
+          "role": "i18n attribute auditor — all data-i18n* HTML attribute keys verified against tr base locale (Lua 5.4, zero deps)",
+          "entrypoints": [
+            "polyglot/lua/seis_i18n_attr_audit.lua"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 95,
+          "language": "Tcl",
+          "layer": "research-legacy-and-lab",
+          "layerLabel": "Research, Legacy, and Lab",
+          "role": "12-point HTML meta-tag completeness checker — title, meta description, viewport, canonical, og:*, twitter:*",
+          "entrypoints": [
+            "polyglot/tcl/seis_meta_tags_check.tcl"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 96,
+          "language": "R",
+          "layer": "database-and-data",
+          "layerLabel": "Database and Data",
+          "role": "Statistical analysis of translation string length ratios across 5 locales; flags keys ≥3× longer than tr base (UI overflow risk)",
+          "entrypoints": [
+            "polyglot/r/seis_translation_stats.R"
+          ],
+          "requestedCoreStack": false
+        },
+        {
+          "order": 97,
           "language": "Forth",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3838,18 +3964,19 @@
           "requestedCoreStack": false
         },
         {
-          "order": 89,
+          "order": 98,
           "language": "Common Lisp",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
-          "role": "durable Lisp release policy model",
+          "role": "durable Lisp release policy model; HTML id-attribute uniqueness checker",
           "entrypoints": [
-            "polyglot/common-lisp/release-policy.lisp"
+            "polyglot/common-lisp/release-policy.lisp",
+            "polyglot/common-lisp/seis_html_id_uniqueness.lisp"
           ],
           "requestedCoreStack": false
         },
         {
-          "order": 90,
+          "order": 99,
           "language": "Emacs Lisp",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3860,7 +3987,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 91,
+          "order": 100,
           "language": "Smalltalk",
           "layer": "research-legacy-and-lab",
           "layerLabel": "Research, Legacy, and Lab",
@@ -3871,7 +3998,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 92,
+          "order": 101,
           "language": "GDScript",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3882,7 +4009,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 93,
+          "order": 102,
           "language": "GLSL",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3893,7 +4020,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 94,
+          "order": 103,
           "language": "WGSL",
           "layer": "frontend-and-experience",
           "layerLabel": "Frontend and Experience",
@@ -3904,7 +4031,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 95,
+          "order": 104,
           "language": "Rego",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3915,7 +4042,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 96,
+          "order": 105,
           "language": "CEL",
           "layer": "security-policy-and-governance",
           "layerLabel": "Security, Policy, and Governance",
@@ -3926,7 +4053,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 97,
+          "order": 106,
           "language": "Jsonnet",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3937,7 +4064,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 98,
+          "order": 107,
           "language": "Dhall",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3948,7 +4075,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 99,
+          "order": 108,
           "language": "Starlark",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3959,7 +4086,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 100,
+          "order": 109,
           "language": "KDL",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3970,7 +4097,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 101,
+          "order": 110,
           "language": "HOCON",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3981,7 +4108,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 102,
+          "order": 111,
           "language": "Java Properties",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -3992,7 +4119,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 103,
+          "order": 112,
           "language": "dotenv",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -4003,7 +4130,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 104,
+          "order": 113,
           "language": "Make",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -4014,7 +4141,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 105,
+          "order": 114,
           "language": "CMake",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -4025,7 +4152,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 106,
+          "order": 115,
           "language": "Meson",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -4036,7 +4163,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 107,
+          "order": 116,
           "language": "Just",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",
@@ -4047,7 +4174,7 @@
           "requestedCoreStack": false
         },
         {
-          "order": 108,
+          "order": 117,
           "language": "Taskfile",
           "layer": "cloud-devops-and-config",
           "layerLabel": "Cloud, DevOps, and Config",

@@ -544,7 +544,7 @@ describe("securityAudit", () => {
     setup({ "index.html": html, "script.js": minScript });
     const r = securityAudit(webRoot);
     assert.equal(r.ok, false);
-    assert.ok(r.unsafeBlankLinks.includes("https://example.com"));
+    assert.deepEqual(r.unsafeBlankLinks, ["https://example.com"]);
   });
 
   it("passes for target=\"_blank\" with rel=\"noopener noreferrer\"", () => {
@@ -575,7 +575,7 @@ describe("securityAudit", () => {
     setup({ "index.html": html, "script.js": minScript });
     const r = securityAudit(webRoot);
     assert.equal(r.ok, false);
-    assert.ok(r.insecureResources.some((u) => u.startsWith("http://cdn.example.com")));
+    assert.deepEqual(r.insecureResources, ["http://cdn.example.com/lib.js"]);
   });
 
   it("fails for http:// in href attribute", () => {
@@ -583,7 +583,7 @@ describe("securityAudit", () => {
     setup({ "index.html": html, "script.js": minScript });
     const r = securityAudit(webRoot);
     assert.equal(r.ok, false);
-    assert.ok(r.insecureResources.some((u) => u.includes("http://example.com")));
+    assert.deepEqual(r.insecureResources, ["http://example.com/a.css"]);
   });
 
   it("reports hasCsp=true when CSP meta tag is present", () => {
@@ -600,7 +600,7 @@ describe("securityAudit", () => {
     setup({ "index.html": html, "script.js": minScript });
     const r = securityAudit(webRoot);
     assert.equal(r.hasCsp, false);
-    assert.ok(r.externalNoIntegrity.some((u) => u.includes("fonts.googleapis.com")));
+    assert.deepEqual(r.externalNoIntegrity, ["https://fonts.googleapis.com/css2?family=Foo"]);
   });
 });
 
@@ -693,7 +693,7 @@ describe("runAllChecks", () => {
     const r = runAllChecks(webRoot);
     assert.equal(r.ok, false);
     assert.equal(r.security.ok, false);
-    assert.ok(r.security.unsafeBlankLinks.includes("https://x.com"));
+    assert.deepEqual(r.security.unsafeBlankLinks, ["https://x.com"]);
     teardown();
   });
 });

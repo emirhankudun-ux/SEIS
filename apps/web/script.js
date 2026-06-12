@@ -27,6 +27,93 @@
     it: "Italiano",
     de: "Deutsch"
   };
+  var DRAWING_MEDIA_RE = /^(?:\.\/)?public\/media\/drawings\/[a-z0-9-]+\.jpe?g$/i;
+  var BEHANCE_EMBED_HOSTS = ["behance.net", "www.behance.net"];
+
+  function parseHttpUrl(value) {
+    try {
+      var url = new URL(String(value || ""), window.location.href);
+      if (url.protocol !== "https:" && url.protocol !== "http:") {
+        return null;
+      }
+      if (url.username || url.password) {
+        return null;
+      }
+      return url;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  function normalizeDrawingMediaSrc(value) {
+    var rawValue = String(value || "").trim();
+    if (!rawValue) {
+      return "";
+    }
+    if (DRAWING_MEDIA_RE.test(rawValue)) {
+      return rawValue;
+    }
+    var url = parseHttpUrl(rawValue);
+    if (!url || url.origin !== window.location.origin) {
+      return "";
+    }
+    var relativePath = url.pathname.replace(/^\/+/, "");
+    return DRAWING_MEDIA_RE.test(relativePath) ? url.href : "";
+  }
+
+  function assignDrawingMediaSrc(image, attrName) {
+    if (!image) {
+      return false;
+    }
+    var source = image.getAttribute(attrName || "data-src");
+    var safeSource = normalizeDrawingMediaSrc(source);
+    if (!safeSource) {
+      return false;
+    }
+    image.setAttribute("src", safeSource);
+    if (attrName && attrName !== "src") {
+      image.removeAttribute(attrName);
+    }
+    return true;
+  }
+
+  function normalizeBehanceEmbedSrc(value) {
+    var url = parseHttpUrl(value);
+    if (!url || BEHANCE_EMBED_HOSTS.indexOf(url.hostname.toLowerCase()) === -1) {
+      return "";
+    }
+    var projectMatch = url.pathname.match(/^\/embed\/project\/(\d+)$/);
+    if (!projectMatch) {
+      return "";
+    }
+    var safeUrl = "https://www.behance.net/embed/project/" + projectMatch[1];
+    var safeParams = [];
+    var ilo = url.searchParams.get("ilo0");
+    var retry = url.searchParams.get("ek_retry");
+    if (ilo && /^\d+$/.test(ilo)) {
+      safeParams.push("ilo0=" + encodeURIComponent(ilo));
+    }
+    if (retry && /^\d+$/.test(retry)) {
+      safeParams.push("ek_retry=" + encodeURIComponent(retry));
+    }
+    return safeParams.length ? safeUrl + "?" + safeParams.join("&") : safeUrl;
+  }
+
+  function assignBehanceIframeSrc(iframe, attrName) {
+    if (!iframe) {
+      return false;
+    }
+    var source = iframe.getAttribute(attrName || "data-src");
+    var safeSource = normalizeBehanceEmbedSrc(source);
+    if (!safeSource) {
+      return false;
+    }
+    iframe.setAttribute("src", safeSource);
+    if (attrName && attrName !== "src") {
+      iframe.removeAttribute(attrName);
+    }
+    return true;
+  }
 
   function readStoredMotionMode() {
     try {
@@ -588,11 +675,7 @@
         }
         var lazyImage = q(".lazy-media[data-src]", target);
         if (lazyImage) {
-          var src = lazyImage.getAttribute("data-src");
-          if (src) {
-            lazyImage.setAttribute("src", src);
-            lazyImage.removeAttribute("data-src");
-          }
+          assignDrawingMediaSrc(lazyImage, "data-src");
         }
         if (hash === "#work") {
           qa(".behance-grid iframe[data-src]").slice(0, 4).forEach(function (pendingFrame) {
@@ -739,7 +822,9 @@
     if (!iframe) {
       return "https://www.behance.net/emirhankudun";
     }
-    var source = iframe.getAttribute("data-embed-base") || iframe.getAttribute("src") || iframe.getAttribute("data-src") || "";
+    var source = normalizeBehanceEmbedSrc(iframe.getAttribute("data-embed-base"))
+      || normalizeBehanceEmbedSrc(iframe.getAttribute("src"))
+      || normalizeBehanceEmbedSrc(iframe.getAttribute("data-src"));
     var projectId = extractBehanceProjectId(source);
     if (projectId) {
       return "https://www.behance.net/gallery/" + projectId;
@@ -752,11 +837,16 @@
       return;
     }
     var settings = options || {};
-    var source = iframe.getAttribute("data-embed-base") || iframe.getAttribute("src") || iframe.getAttribute("data-src");
+    var source = normalizeBehanceEmbedSrc(iframe.getAttribute("data-embed-base"))
+      || normalizeBehanceEmbedSrc(iframe.getAttribute("src"))
+      || normalizeBehanceEmbedSrc(iframe.getAttribute("data-src"));
     if (!source) {
       return;
     }
-    var cleanSource = String(source).replace(/[?&]ek_retry=\d+/g, "");
+    var cleanSource = normalizeBehanceEmbedSrc(String(source).replace(/[?&]ek_retry=\d+/g, ""));
+    if (!cleanSource) {
+      return;
+    }
     iframe.setAttribute("data-embed-base", cleanSource);
     iframe.removeAttribute("data-src");
     iframe.removeAttribute("src");
@@ -806,8 +896,11 @@
     }
 
     if (parent && !iframe.__ekBindDone) {
-      var embedBase = iframe.getAttribute("src") || iframe.getAttribute("data-src") || "";
-      iframe.setAttribute("data-embed-base", embedBase);
+      var embedBase = normalizeBehanceEmbedSrc(iframe.getAttribute("src"))
+        || normalizeBehanceEmbedSrc(iframe.getAttribute("data-src"));
+      if (embedBase) {
+        iframe.setAttribute("data-embed-base", embedBase);
+      }
 
       var actionRow = document.createElement("div");
       actionRow.className = "b-item-actions";
@@ -938,10 +1031,7 @@
     if (!iframe || iframe.getAttribute("src")) {
       return;
     }
-    var src = iframe.getAttribute("data-src");
-    if (src) {
-      iframe.setAttribute("src", src);
-      iframe.removeAttribute("data-src");
+    if (assignBehanceIframeSrc(iframe, "data-src")) {
       if (typeof iframe.__ekStartFailWatch === "function") {
         iframe.__ekStartFailWatch();
       }
@@ -1161,12 +1251,7 @@
     }
 
     function loadMedia(el) {
-      var src = el.getAttribute("data-src");
-      if (!src) {
-        return;
-      }
-      el.setAttribute("src", src);
-      el.removeAttribute("data-src");
+      assignDrawingMediaSrc(el, "data-src");
     }
 
     if (!("IntersectionObserver" in window)) {
@@ -1194,12 +1279,7 @@
 
     function hydrateAllDrawings() {
       qa("#drawings img[data-src]").forEach(function (img) {
-        var src = img.getAttribute("data-src");
-        if (!src) {
-          return;
-        }
-        img.setAttribute("src", src);
-        img.removeAttribute("data-src");
+        assignDrawingMediaSrc(img, "data-src");
       });
     }
 
@@ -1273,8 +1353,7 @@
       }
       var dataSrc = image.getAttribute("data-src");
       if (dataSrc) {
-        image.setAttribute("src", dataSrc);
-        image.removeAttribute("data-src");
+        assignDrawingMediaSrc(image, "data-src");
       }
       return image;
     }
@@ -1337,7 +1416,7 @@
       if (!image) {
         return;
       }
-      lightboxImage.setAttribute("src", image.getAttribute("src") || "");
+      lightboxImage.setAttribute("src", normalizeDrawingMediaSrc(image.getAttribute("src")) || "");
       lightboxImage.setAttribute("alt", image.getAttribute("alt") || "");
       lightboxCaption.textContent = image.getAttribute("alt") || "";
       updateCounter();

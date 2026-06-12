@@ -386,6 +386,23 @@ export function a11yAudit(webRoot) {
   );
   const TEXT_INPUT_RE = /^(text|email|tel|password|search|url|number|date|time|month|week)$/i;
 
+  function textFromHtmlFragment(fragment) {
+    let text = "";
+    let insideTag = false;
+    for (const char of String(fragment || "")) {
+      if (char === "<") {
+        insideTag = true;
+        continue;
+      }
+      if (insideTag) {
+        if (char === ">") insideTag = false;
+        continue;
+      }
+      text += char;
+    }
+    return text;
+  }
+
   function isLabeled(attrs) {
     if (/\baria-label=/.test(attrs) || /\baria-labelledby=/.test(attrs)) return true;
     if (/\baria-hidden="true"/.test(attrs)) return true;
@@ -406,7 +423,8 @@ export function a11yAudit(webRoot) {
   for (const m of html.matchAll(/<(?:select|textarea)\b([^>]*)>/g)) {
     if (isLabeled(m[1])) continue;
     const idM = m[1].match(/\bid="([^"]+)"/);
-    unlabeledInputs.push(idM ? `#${idM[1]}` : `(${m[0].split(" ")[0].replace("<", "")})`);
+    const tagName = /^<select\b/i.test(m[0]) ? "select" : "textarea";
+    unlabeledInputs.push(idM ? `#${idM[1]}` : `(${tagName})`);
   }
 
   // 3. <button> with no accessible name
@@ -418,7 +436,7 @@ export function a11yAudit(webRoot) {
     if (/\baria-label=/.test(attrs) || /\bdata-i18n-aria-label=/.test(attrs)) continue;
     if (/\bdata-i18n=/.test(attrs) || /\btitle=/.test(attrs)) continue;
     if (/\bdata-i18n=/.test(innerHtml)) continue;
-    const innerText = innerHtml.replace(/<[^>]+>/g, "").trim();
+    const innerText = textFromHtmlFragment(innerHtml).trim();
     if (innerText) continue;
     const idM = attrs.match(/\bid="([^"]+)"/);
     const classM = attrs.match(/\bclass="([^"]+)"/);
