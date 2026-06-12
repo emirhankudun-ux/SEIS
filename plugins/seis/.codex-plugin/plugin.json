@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "SEIS",
     "shortDescription": "Develop SEIS-centered GitHub and Codex workflows.",
-    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, and governed LLM package lanes.",
+    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, governed LLM package lanes, and the SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes.",
     "developerName": "emirhankudun-ux",
     "category": "Productivity",
     "capabilities": [
@@ -35,7 +35,10 @@
       "LLM adapter readiness",
       "LLM request planning",
       "MCP bundled install",
-      "MCP source proof"
+      "MCP source proof",
+      "SEIS-Code engineering lane",
+      "SEIS-Design product lane",
+      "SEIS-DATA knowledge lane"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [

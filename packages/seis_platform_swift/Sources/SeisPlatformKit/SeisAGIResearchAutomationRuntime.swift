@@ -90,6 +90,10 @@ public struct SeisAGIResearchAutomationPlan: Codable, Equatable, Sendable {
             redactionPolicy.contains("never include secrets") &&
             claimBoundary.contains("does not claim autonomous general intelligence")
     }
+
+    public var allSources: [SeisAGIResearchSourceManifestItem] {
+        selectedSources + deferredSources
+    }
 }
 
 public struct SeisAGIResearchAutomationRuntime: Codable, Equatable, Sendable {
@@ -164,6 +168,7 @@ public struct SeisAGIResearchAutomationRuntime: Codable, Equatable, Sendable {
             "SeisAGIResearchAutomationRuntime",
             "SeisAGIResearchAutomationPlan",
             "SeisAGIResearchSourceManifestItem",
+            "allSources",
             "primary-source-first",
             "official documentation",
             "citation-trace",
@@ -171,7 +176,8 @@ public struct SeisAGIResearchAutomationRuntime: Codable, Equatable, Sendable {
             "no-fake-usage",
             "never include secrets",
             "research-synthesizer",
-            "source manifest"
+            "source manifest",
+            "Core Data"
         ]
     }
 
@@ -189,3 +195,233 @@ public struct SeisAGIResearchAutomationRuntime: Codable, Equatable, Sendable {
         return .localRepository
     }
 }
+
+public final class SeisAGIResearchManifestHistoryStore: @unchecked Sendable {
+    private let lock = NSLock()
+    private var itemsById: [String: SeisAGIResearchSourceManifestItem] = [:]
+
+    public init(items: [SeisAGIResearchSourceManifestItem] = []) {
+        for item in items {
+            itemsById[item.id] = item
+        }
+    }
+
+    @discardableResult
+    public func save(_ item: SeisAGIResearchSourceManifestItem) -> SeisAGIResearchSourceManifestItem {
+        lock.lock()
+        defer { lock.unlock() }
+        itemsById[item.id] = item
+        return item
+    }
+
+    public func snapshot() -> [SeisAGIResearchSourceManifestItem] {
+        lock.lock()
+        defer { lock.unlock() }
+        return Self.sorted(itemsById.values)
+    }
+
+    private static func sorted(
+        _ items: Dictionary<String, SeisAGIResearchSourceManifestItem>.Values
+    ) -> [SeisAGIResearchSourceManifestItem] {
+        items.sorted { lhs, rhs in
+            if lhs.selectedByContext == rhs.selectedByContext {
+                return lhs.id < rhs.id
+            }
+            return lhs.selectedByContext && !rhs.selectedByContext
+        }
+    }
+}
+
+#if canImport(CoreData)
+import CoreData
+
+public final class SeisAGIResearchManifestPersistentStore {
+    public static let containerName = "SEISAGIResearchManifest"
+    public static let entityName = "SEISAGIResearchSourceManifestItem"
+    public static let storagePolicy = "Core Data local research source manifest records, optional CloudKit metadata sync, and never persist secrets."
+
+    private let container: NSPersistentContainer
+
+    public init(storeURL: URL? = nil, inMemory: Bool = false) throws {
+        let model = Self.makeManagedObjectModel()
+        self.container = NSPersistentContainer(name: Self.containerName, managedObjectModel: model)
+
+        let description = NSPersistentStoreDescription()
+        if inMemory {
+            description.type = NSInMemoryStoreType
+        } else {
+            let resolvedURL = storeURL ?? Self.defaultStoreURL()
+            try FileManager.default.createDirectory(
+                at: resolvedURL.deletingLastPathComponent(),
+                withIntermediateDirectories: true
+            )
+            description.type = NSSQLiteStoreType
+            description.url = resolvedURL
+        }
+        description.shouldMigrateStoreAutomatically = true
+        description.shouldInferMappingModelAutomatically = true
+
+        container.persistentStoreDescriptions = [description]
+        try Self.loadPersistentStores(for: container)
+        container.viewContext.mergePolicy = NSMergePolicy(merge: .mergeByPropertyObjectTrumpMergePolicyType)
+        container.viewContext.automaticallyMergesChangesFromParent = true
+    }
+
+    @discardableResult
+    public func save(
+        _ item: SeisAGIResearchSourceManifestItem
+    ) throws -> SeisAGIResearchSourceManifestItem {
+        let context = container.viewContext
+        var saveError: Error?
+
+        context.performAndWait {
+            do {
+                let object = try Self.object(for: item.id, in: context)
+                    ?? NSEntityDescription.insertNewObject(forEntityName: Self.entityName, into: context)
+                object.setValue(item.id, forKey: "id")
+                object.setValue(item.title, forKey: "title")
+                object.setValue(item.sourcePath, forKey: "sourcePath")
+                object.setValue(item.sourceKind.rawValue, forKey: "sourceKind")
+                object.setValue(item.selectedByContext, forKey: "selectedByContext")
+                object.setValue(item.requiresFreshnessCheck, forKey: "requiresFreshnessCheck")
+                object.setValue(item.containsSecrets, forKey: "containsSecrets")
+                object.setValue(item.qualityGates.joined(separator: "\n"), forKey: "qualityGates")
+
+                if context.hasChanges {
+                    try context.save()
+                }
+            } catch {
+                saveError = error
+            }
+        }
+
+        if let saveError {
+            throw saveError
+        }
+        return item
+    }
+
+    public func fetch(limit: Int) throws -> [SeisAGIResearchSourceManifestItem] {
+        let context = container.viewContext
+        var fetchResult: Result<[SeisAGIResearchSourceManifestItem], Error>?
+
+        context.performAndWait {
+            do {
+                let request = NSFetchRequest<NSManagedObject>(entityName: Self.entityName)
+                request.fetchLimit = max(1, limit)
+                request.sortDescriptors = [
+                    NSSortDescriptor(key: "selectedByContext", ascending: false),
+                    NSSortDescriptor(key: "id", ascending: true)
+                ]
+                let objects = try context.fetch(request)
+                fetchResult = .success(objects.compactMap(Self.item(from:)))
+            } catch {
+                fetchResult = .failure(error)
+            }
+        }
+
+        return try fetchResult?.get() ?? []
+    }
+
+    public static var expectedSourceTokens: [String] {
+        [
+            "import CoreData",
+            "NSPersistentContainer",
+            "NSPersistentStoreDescription",
+            "NSManagedObjectModel",
+            "NSEntityDescription",
+            "NSFetchRequest",
+            "NSSQLiteStoreType",
+            "NSInMemoryStoreType",
+            "NSMergePolicy",
+            "shouldMigrateStoreAutomatically",
+            "shouldInferMappingModelAutomatically",
+            "Core Data local research source manifest records",
+            "CloudKit",
+            "never persist secrets"
+        ]
+    }
+
+    private static func object(for id: String, in context: NSManagedObjectContext) throws -> NSManagedObject? {
+        let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
+        request.predicate = NSPredicate(format: "id == %@", id)
+        request.fetchLimit = 1
+        return try context.fetch(request).first
+    }
+
+    private static func item(from object: NSManagedObject) -> SeisAGIResearchSourceManifestItem? {
+        guard
+            let id = object.value(forKey: "id") as? String,
+            let title = object.value(forKey: "title") as? String,
+            let sourcePath = object.value(forKey: "sourcePath") as? String,
+            let sourceKindRawValue = object.value(forKey: "sourceKind") as? String,
+            let sourceKind = SeisAGIResearchSourceKind(rawValue: sourceKindRawValue),
+            let qualityGates = object.value(forKey: "qualityGates") as? String
+        else {
+            return nil
+        }
+
+        return SeisAGIResearchSourceManifestItem(
+            id: id,
+            title: title,
+            sourcePath: sourcePath,
+            sourceKind: sourceKind,
+            selectedByContext: object.value(forKey: "selectedByContext") as? Bool ?? false,
+            requiresFreshnessCheck: object.value(forKey: "requiresFreshnessCheck") as? Bool ?? false,
+            containsSecrets: object.value(forKey: "containsSecrets") as? Bool ?? false,
+            qualityGates: qualityGates.split(separator: "\n").map(String.init)
+        )
+    }
+
+    private static func makeManagedObjectModel() -> NSManagedObjectModel {
+        let entity = NSEntityDescription()
+        entity.name = entityName
+        entity.managedObjectClassName = NSStringFromClass(NSManagedObject.self)
+        entity.properties = [
+            attribute("id", .stringAttributeType),
+            attribute("title", .stringAttributeType),
+            attribute("sourcePath", .stringAttributeType),
+            attribute("sourceKind", .stringAttributeType),
+            attribute("selectedByContext", .booleanAttributeType),
+            attribute("requiresFreshnessCheck", .booleanAttributeType),
+            attribute("containsSecrets", .booleanAttributeType),
+            attribute("qualityGates", .stringAttributeType)
+        ]
+
+        let model = NSManagedObjectModel()
+        model.entities = [entity]
+        return model
+    }
+
+    private static func attribute(_ name: String, _ type: NSAttributeType) -> NSAttributeDescription {
+        let attribute = NSAttributeDescription()
+        attribute.name = name
+        attribute.attributeType = type
+        attribute.isOptional = false
+        return attribute
+    }
+
+    private static func loadPersistentStores(for container: NSPersistentContainer) throws {
+        let semaphore = DispatchSemaphore(value: 0)
+        var loadResult: Result<Void, Error>?
+        container.loadPersistentStores { _, error in
+            if let error {
+                loadResult = .failure(error)
+            } else {
+                loadResult = .success(())
+            }
+            semaphore.signal()
+        }
+        semaphore.wait()
+        try loadResult?.get()
+    }
+
+    private static func defaultStoreURL() -> URL {
+        let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? URL(fileURLWithPath: NSTemporaryDirectory())
+        return baseURL
+            .appending(path: "SEIS", directoryHint: .isDirectory)
+            .appending(path: "AGIResearchManifest.sqlite")
+    }
+}
+#endif

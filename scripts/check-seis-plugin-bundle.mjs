@@ -36,6 +36,9 @@ const requiredRepoFiles = [
   path.join(pluginSourceRoot, "scripts", "seis-mcp-launcher.mjs"),
   path.join(pluginSourceRoot, "scripts", "seis-mcp-bundle-audit.sh"),
   path.join(pluginSourceRoot, "skills", "seis-hub", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-code", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-design", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-data", "SKILL.md"),
 ];
 
 const requiredBundleAssets = [
@@ -90,6 +93,9 @@ if (!sourcePluginManifest) {
     "LLM request planning",
     "MCP bundled install",
     "MCP source proof",
+    "SEIS-Code engineering lane",
+    "SEIS-Design product lane",
+    "SEIS-DATA knowledge lane",
   ];
   for (const capability of requiredCapabilities) {
     ensure(sourcePluginManifest.interface.capabilities.includes(capability), `source plugin capability missing: ${capability}`);
@@ -131,6 +137,9 @@ if (checkLocal) {
       path.join(localRoot, "scripts", "seis-mcp-launcher.mjs"),
       path.join(localRoot, "scripts", "seis-mcp-bundle-audit.sh"),
       path.join(localRoot, "skills", "seis-hub", "SKILL.md"),
+      path.join(localRoot, "skills", "seis-code", "SKILL.md"),
+      path.join(localRoot, "skills", "seis-design", "SKILL.md"),
+      path.join(localRoot, "skills", "seis-data", "SKILL.md"),
       path.join(localRoot, ".codex-plugin", "plugin.json"),
       path.join(localRoot, ".mcp.json"),
     ];

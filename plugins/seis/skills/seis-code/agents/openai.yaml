@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Code"
+  short_description: "Code architecture and implementation lane"
+  default_prompt: "Use $seis-code to implement a scoped SEIS code change safely."

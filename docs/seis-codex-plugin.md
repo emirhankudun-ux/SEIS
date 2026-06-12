@@ -19,6 +19,9 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 
 - `.codex-plugin/plugin.json` defines the plugin manifest.
 - `skills/seis-hub/SKILL.md` defines the SEIS-centered Codex workflow.
+- `skills/seis-code/SKILL.md` defines the SEIS engineering and implementation lane.
+- `skills/seis-design/SKILL.md` defines the SEIS product design and design-system lane.
+- `skills/seis-data/SKILL.md` defines the SEIS data, analytics, and knowledge-governance lane.
 - `scripts/seis-status.sh` reports local SEIS/plugin/GitHub auth status.
 - `scripts/seis-zip-audit.sh` audits large workspace zip files before import.
 - `scripts/seis-repo-visibility-audit.sh` checks old repository visibility.
@@ -30,6 +33,9 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 ```bash
 python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis
 python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-hub
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-code
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-design
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-data
 bash -n /Users/emirhankudun/plugins/seis/scripts/seis-status.sh
 bash -n /Users/emirhankudun/plugins/seis/scripts/seis-zip-audit.sh
 bash -n /Users/emirhankudun/plugins/seis/scripts/seis-repo-visibility-audit.sh
@@ -97,12 +103,20 @@ DRY_RUN=0 /Users/emirhankudun/plugins/seis/scripts/seis-main-branch-sync.sh
 
 The GitHub connector can also force-update `main` to the canonical branch SHA when local push auth is unavailable.
 
+## Specialist Lanes
+
+The SEIS plugin now exposes three specialist lanes without splitting governance away from the canonical `seis@personal` plugin:
+
+- SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
+- SEIS-Design: product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.
+- SEIS-DATA: data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.
+
 ## Next Development Targets
 
 - add SEIS migration verification helpers
 - add GitHub auth readiness checks
 - add a repo snapshot integrity report
-- add optional MCP tooling once the command shape is stable
+- expose optional MCP tool handlers for the SEIS-Code, SEIS-Design, and SEIS-DATA lanes once command shapes are stable
 
 ## Safety Rule
 

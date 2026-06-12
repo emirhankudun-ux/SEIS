@@ -12,6 +12,7 @@ This local Codex plugin makes SEIS the default operating center for the `emirhan
 - SEIS-orchestrated routing for Design, Developer Tools, Productivity, Research, and Security
 - Local-helper build workflow for SEIS cockpit, backend, workspace, security, mobile, desktop, and research lanes
 - SEIS Repos bridge, MCP bundled install, MCP source proof, governed LLM package lanes, LLM adapter readiness, and LLM request planning
+- SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes for implementation, product design, and data/knowledge work
 
 ## Local Paths
 
@@ -74,6 +75,12 @@ Bu repo içinde pratik rol akışı:
 MCP plan endpoints:
 - `seis_llm_plan_request`
 - `seis_llm_role_plan_request`
+
+## SEIS Specialist Lanes
+
+- `skills/seis-code/SKILL.md` routes implementation, refactor, test, CI, MCP/plugin, platform, and automation work through SEIS engineering guardrails.
+- `skills/seis-design/SKILL.md` routes UI/UX, product surfaces, design systems, accessibility, motion, and visual QA through the SEIS design constitution.
+- `skills/seis-data/SKILL.md` routes data architecture, analytics, generated reports, schemas, knowledge registries, RAG/memory planning, and provenance through SEIS data governance.
 
 ## SEIS Build Workflow
 

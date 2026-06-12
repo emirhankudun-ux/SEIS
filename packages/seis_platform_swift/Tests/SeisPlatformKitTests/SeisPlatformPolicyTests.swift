@@ -688,10 +688,12 @@ import Testing
         memorySnapshot: snapshot,
         orchestrationPlan: orchestration
     )
+    let historyStore = SeisAGIResearchManifestHistoryStore()
 
     #expect(plan.isReady)
     #expect(plan.researcherAssignmentId == "research-synthesizer")
     #expect(plan.outputArtifact == "source manifest")
+    #expect(plan.allSources.count == snapshot.records.count)
     #expect(plan.selectedSources.contains { $0.id == "research-evidence" && $0.sourceKind == .generatedReport })
     #expect(plan.selectedSources.contains { $0.id == "context-intake" && $0.selectedByContext })
     #expect(plan.deferredSources.contains { $0.id == "multi-agent-handoff" })
@@ -699,6 +701,11 @@ import Testing
     #expect(plan.qualityGates.contains("no-fake-usage"))
     #expect(plan.primarySourcePolicy.contains("official documentation"))
     #expect(plan.redactionPolicy.contains("never include secrets"))
+
+    for item in plan.allSources {
+        historyStore.save(item)
+    }
+    #expect(researchManifestItemsSortedById(historyStore.snapshot()) == researchManifestItemsSortedById(plan.allSources))
 
     let root = repositoryRoot()
     let source = try String(
@@ -708,6 +715,12 @@ import Testing
     for token in SeisAGIResearchAutomationRuntime.expectedSourceTokens {
         #expect(source.contains(token), "missing research automation source token: \(token)")
     }
+    #if canImport(CoreData)
+    for token in SeisAGIResearchManifestPersistentStore.expectedSourceTokens {
+        #expect(source.contains(token), "missing research manifest persistence token: \(token)")
+    }
+    #expect(SeisAGIResearchManifestPersistentStore.storagePolicy.contains("never persist secrets"))
+    #endif
 }
 
 @Test func agiAgentHandoffSnapshotBootstrapsFromOrchestrationPlan() throws {
@@ -788,6 +801,30 @@ import Testing
     #expect(agentHandoffRecordsSortedById(fetched) == agentHandoffRecordsSortedById(snapshot.records))
     #expect(SeisAGIAgentHandoffSnapshot(records: fetched).isReady)
 }
+
+@Test func agiResearchManifestPersistentStoreRoundTripsSources() throws {
+    let contract = SeisAGISystemContract.master
+    let memory = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract.memoryPlanning)
+    let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(
+        contract: contract,
+        memorySnapshot: memory
+    )
+    let plan = SeisAGIResearchAutomationRuntime().makePlan(
+        contract: contract,
+        memorySnapshot: memory,
+        orchestrationPlan: orchestration
+    )
+    let persistentStore = try SeisAGIResearchManifestPersistentStore(inMemory: true)
+
+    for item in plan.allSources {
+        try persistentStore.save(item)
+    }
+
+    let fetched = try persistentStore.fetch(limit: 10)
+    #expect(researchManifestItemsSortedById(fetched) == researchManifestItemsSortedById(plan.allSources))
+    #expect(fetched.contains { $0.id == "research-evidence" && $0.selectedByContext })
+    #expect(fetched.allSatisfy { !$0.containsSecrets })
+}
 #endif
 
 private func agentHandoffRecordsSortedById(
@@ -800,6 +837,12 @@ private func memoryPlanningRecordsSortedById(
     _ records: [SeisAGIMemoryPlanningRecord]
 ) -> [SeisAGIMemoryPlanningRecord] {
     records.sorted { $0.id < $1.id }
+}
+
+private func researchManifestItemsSortedById(
+    _ items: [SeisAGIResearchSourceManifestItem]
+) -> [SeisAGIResearchSourceManifestItem] {
+    items.sorted { $0.id < $1.id }
 }
 
 private func repositoryRoot() -> URL {
