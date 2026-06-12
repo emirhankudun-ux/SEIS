@@ -69,6 +69,7 @@ PLATFORM_SURFACES = [
         ),
         source_surfaces=(
             "packages/seis_platform_swift/Package.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
@@ -110,6 +111,7 @@ PLATFORM_SURFACES = [
         ),
         source_surfaces=(
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",

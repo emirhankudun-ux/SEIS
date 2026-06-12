@@ -2,7 +2,7 @@
 
 ## Target
 
-SEIS should move toward a GitHub language surface where JavaScript is about 10% and the rest of the repository is carried by product-appropriate languages, schemas, policies, and runtime contracts.
+SEIS should move toward a GitHub language surface where JavaScript is about 21% and the rest of the repository is carried by product-appropriate languages, schemas, policies, and runtime contracts.
 
 ## Current Rule
 

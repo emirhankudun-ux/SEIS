@@ -72,8 +72,24 @@ tools, and productivity systems live in a separate ecosystem stack.
 | GitHub source languages | [`reports/language-distribution.md`](./reports/language-distribution.md) | Count real source languages only. |
 | Full-stack language matrix | [`reports/fullstack-language-matrix.md`](./reports/fullstack-language-matrix.md) | Route source/config languages by platform layer. |
 | SEIS ecosystem stack | [`reports/seis-technology-stack.md`](./reports/seis-technology-stack.md) | Show frameworks, tools, clouds, databases, and design systems outside the language bar. |
+| SEIS AGI system | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Govern agent systems, memory, planning, research automation, MCP, skills, plugins, token efficiency, and the 90-day release window. |
 
-Run `npm run check:seis-technology-stack` after changing stack categories.
+Run `npm run check:seis-technology-stack` after changing stack categories and
+`npm run check:seis-agi-system` after changing agent, memory, planning,
+research, MCP, skills, plugin, or token-efficiency policy.
+
+## AGI System and Three-Month Roadmap
+
+SEIS now tracks its AGI direction as a human-owned, Apple-first assistant
+architecture: advanced agents, memory systems, planning systems, research
+automation, MCP, skills, plugins, data, design, development, and interactive
+read/write workflows are routed through explicit safety gates.
+
+| Surface | Canonical record | Rule |
+| --- | --- | --- |
+| AGI system contract | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window. |
+| Apple-first Swift contract | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
+| Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md) | Explain implementation roots, token efficiency, plugin use, and visual source policy. |
 
 ## Architecture Map
 
@@ -84,7 +100,7 @@ Run `npm run check:seis-technology-stack` after changing stack categories.
 | [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
 | [`packages/seis_platform_swift`](./packages/seis_platform_swift) | Apple platform policy package |
 | [`packages/seis_windows_csharp`](./packages/seis_windows_csharp) | Windows platform policy package |
-| [`packages/seis_kernel`](./packages/seis_kernel) | Capability, language, plugin, and platform contract builders |
+| [`packages/seis_kernel`](./packages/seis_kernel) | Capability, language, plugin, platform, and AGI-system contract builders |
 | [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go governance and readiness policy contracts |
 | [`polyglot`](./polyglot) | Cross-language audit lanes and platform proof-of-concept surfaces |
 | [`apps/web`](./apps/web) | Browser-facing product and documentation surface |

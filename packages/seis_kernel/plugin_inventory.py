@@ -8,7 +8,12 @@ from typing import Any
 
 PLUGIN_GROUPS: dict[str, tuple[str, ...]] = {
     "design": (
+        "Adobe Express",
+        "Adobe Photoshop",
         "Canva",
+        "Figma",
+        "Product Design",
+        "Creative Production",
         "Remotion",
         "BioRender",
         "HyperFrames by HeyGen",
@@ -18,8 +23,13 @@ PLUGIN_GROUPS: dict[str, tuple[str, ...]] = {
         "Fal",
     ),
     "developer-tools": (
+        "GitHub",
+        "OpenAI Developers",
+        "Browser",
+        "Chrome",
         "Hugging Face",
         "Netlify",
+        "Vercel",
         "Game Studio",
         "Superpowers",
         "CircleCI",
@@ -54,6 +64,18 @@ PLUGIN_GROUPS: dict[str, tuple[str, ...]] = {
         "Base44",
         "Shopify",
         "MagicPath",
+    ),
+    "data-and-interactive-read-write": (
+        "Data Analytics",
+        "Build Web Data Visualization",
+        "Airtable",
+        "Supabase",
+        "MotherDuck",
+        "Deepnote",
+        "Spreadsheets",
+        "Documents",
+        "Google Drive",
+        "Notion",
     ),
     "productivity-ops-business": (
         "Documents",

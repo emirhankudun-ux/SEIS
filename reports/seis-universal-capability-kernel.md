@@ -4,8 +4,8 @@
 - Domains: 38
 - Lanes: 14
 - Required domains: 38
-- Plugin groups: 5
-- Plugins inventoried: 154
+- Plugin groups: 6
+- Plugins inventoried: 168
 - Plugins covered by domain routing: 69
 - Platform surfaces: 3
 - Apple native languages: AppleScript, Objective-C, Playground, Swift, SwiftUI
@@ -59,10 +59,11 @@ flowchart TD
 
 | Group | Routed Mentions |
 | --- | ---: |
-| `design` | 12 |
-| `developer-tools` | 70 |
-| `external-or-session` | 25 |
-| `productivity-ops-business` | 39 |
+| `data-and-interactive-read-write` | 23 |
+| `design` | 16 |
+| `developer-tools` | 83 |
+| `external-or-session` | 3 |
+| `productivity-ops-business` | 21 |
 | `research-finance-legal-science` | 8 |
 | `security` | 6 |
 

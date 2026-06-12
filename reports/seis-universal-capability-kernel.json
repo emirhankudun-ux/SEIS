@@ -62,8 +62,8 @@
       "research-lab": 2,
       "security-governance": 2
     },
-    "pluginGroupCount": 5,
-    "pluginInventoryCount": 154,
+    "pluginGroupCount": 6,
+    "pluginInventoryCount": 168,
     "coveredPluginCount": 69,
     "minimumDomainPluginCount": 3,
     "platformCount": 3,
@@ -131,14 +131,15 @@
     }
   ],
   "pluginInventory": {
-    "groupCount": 5,
-    "pluginCount": 154,
+    "groupCount": 6,
+    "pluginCount": 168,
     "coveredPluginCount": 69,
     "coverageByGroup": {
-      "design": 12,
-      "developer-tools": 70,
-      "external-or-session": 25,
-      "productivity-ops-business": 39,
+      "data-and-interactive-read-write": 23,
+      "design": 16,
+      "developer-tools": 83,
+      "external-or-session": 3,
+      "productivity-ops-business": 21,
       "research-finance-legal-science": 8,
       "security": 6
     }
@@ -241,6 +242,7 @@
         ],
         "sourceSurfaces": [
           "packages/seis_platform_swift/Package.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
@@ -310,6 +312,7 @@
         ],
         "sourceSurfaces": [
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
@@ -942,6 +945,7 @@
     "polyglot/cue/seis_capability_kernel.cue",
     "packages/seis_platform_swift/Package.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",

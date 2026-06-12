@@ -7,7 +7,7 @@
   "summary": {
     "sourceLanguageCount": 60,
     "ecosystemGroupCount": 7,
-    "ecosystemTechnologyCount": 137,
+    "ecosystemTechnologyCount": 143,
     "requestedCoreStackCount": 6,
     "githubFocusedPanels": [
       "JavaScript",
@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 811011,
+      "githubBytes": 811163,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 239105,
+      "githubBytes": 278122,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 123481,
+      "githubBytes": 137246,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]
@@ -948,19 +948,49 @@
           "order": 13
         },
         {
+          "id": "agi-system-contract",
+          "label": "AGI System Contract",
+          "order": 14
+        },
+        {
+          "id": "agent-memory",
+          "label": "Agent Memory",
+          "order": 15
+        },
+        {
+          "id": "agent-planning",
+          "label": "Agent Planning",
+          "order": 16
+        },
+        {
+          "id": "multi-agent-coordination",
+          "label": "Multi-Agent Coordination",
+          "order": 17
+        },
+        {
+          "id": "research-automation",
+          "label": "Research Automation",
+          "order": 18
+        },
+        {
+          "id": "token-efficiency",
+          "label": "Token Efficiency",
+          "order": 19
+        },
+        {
           "id": "rag",
           "label": "RAG",
-          "order": 14
+          "order": 20
         },
         {
           "id": "embeddings",
           "label": "Embeddings",
-          "order": 15
+          "order": 21
         },
         {
           "id": "model-evaluation",
           "label": "Model Evaluation",
-          "order": 16
+          "order": 22
         }
       ]
     },

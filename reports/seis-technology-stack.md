@@ -4,7 +4,7 @@
 - Mode: source_languages_plus_ecosystem_stack
 - Source languages: 60
 - Ecosystem groups: 7
-- Ecosystem technologies: 137
+- Ecosystem technologies: 143
 
 ## Principle
 
@@ -14,11 +14,11 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 
 | # | language | layer | GitHub bytes | entrypoints |
 | ---: | --- | --- | ---: | --- |
-| 1 | JavaScript | frontend-and-experience | 811011 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
+| 1 | JavaScript | frontend-and-experience | 811163 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
 | 2 | TypeScript | frontend-and-experience | 28824 | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Objective-C | mobile-and-native | 8447 | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
-| 4 | Python | backend-and-api | 239105 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
-| 5 | Swift | mobile-and-native | 123481 | polyglot/swift/SEISMotionPolicy.swift |
+| 4 | Python | backend-and-api | 278122 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
+| 5 | Swift | mobile-and-native | 137246 | polyglot/swift/SEISMotionPolicy.swift |
 | 6 | Go | backend-and-api | 16367 | polyglot/go/health_contract.go, polyglot/go/cmd/seis-serve/main.go, polyglot/go/cmd/seis-jsonld/main.go |
 | 7 | Rust | mobile-and-native | 11825 | polyglot/rust/performance_budget.rs, polyglot/rust/seis-link-audit/src/main.rs |
 | 8 | Java | backend-and-api | 16110 | polyglot/java/SeisDeployReadiness.java, polyglot/java/DrawingsChecksum.java, polyglot/java/CssMediaQueryAudit.java |
@@ -81,7 +81,7 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | --- | --- |
 | Core Languages & Logic | Python, JavaScript, TypeScript, Objective-C, Swift, Go, Rust, Java, Kotlin, C, C++, C#, PHP, Ruby, R, Lua, Scala, Haskell, Elixir, Dart, F#, Perl, Shell, PowerShell, SQL |
 | Web, Mobile & Runtimes | React, Next.js, Angular, Vue, Svelte, Astro, Node.js, Express.js, Django, Flask, Laravel, Ruby on Rails, WordPress, GraphQL, REST, Tailwind CSS, Bootstrap, Sass, jQuery, Flutter, React Native, Expo, Android, SwiftUI, UIKit, AppKit, Web Components, Progressive Web Apps |
-| AI, Data & Intelligence | TensorFlow, PyTorch, OpenCV, scikit-learn, Pandas, NumPy, Jupyter, Matplotlib, D3.js, Chart.js, OpenAI APIs, Agents SDK, MCP, RAG, Embeddings, Model Evaluation |
+| AI, Data & Intelligence | TensorFlow, PyTorch, OpenCV, scikit-learn, Pandas, NumPy, Jupyter, Matplotlib, D3.js, Chart.js, OpenAI APIs, Agents SDK, MCP, AGI System Contract, Agent Memory, Agent Planning, Multi-Agent Coordination, Research Automation, Token Efficiency, RAG, Embeddings, Model Evaluation |
 | Infra, Cloud & DevOps | Docker, Kubernetes, Git, GitHub, GitHub Actions, GitLab, Jenkins, AWS, Google Cloud, Azure, Cloudflare, Firebase, Vercel, Netlify, Render, Heroku, Nginx, Terraform, Ansible, Prometheus, Grafana, Sentry, Datadog |
 | Databases & Storage | PostgreSQL, MySQL, MariaDB, MongoDB, SQLite, Redis, Cassandra, DynamoDB, Supabase, Firebase Realtime Database, Cloudinary, Object Storage |
 | Tools & Design Suite | Antigravity IDE, Xcode, Android Studio, JetBrains Toolbox, Vim, Neovim, Sublime Text, Figma, Adobe Photoshop, Adobe Illustrator, Adobe After Effects, Adobe Premiere Pro, Adobe XD, Blender, Postman, npm, pnpm, Bun, Obsidian, Notion, Discord |

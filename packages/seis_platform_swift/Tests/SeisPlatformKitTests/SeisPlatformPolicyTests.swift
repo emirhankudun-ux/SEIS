@@ -232,6 +232,7 @@ import Testing
 
     #expect(runtime.isReady)
     #expect(runtime.readyCount == runtime.probes.count)
+    #expect(runtime.probes.contains { $0.id == "agi-operating-system-contract" && $0.qualityGate == "agent_governance" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -454,6 +455,73 @@ import Testing
     #expect(windowsTrack?.languages.contains("Swift") == false)
     #expect(windowsTrack?.forbiddenLanguages.contains("SwiftUI") == true)
     #expect(windowsTrack?.forbiddenLanguages.contains("AppleScript") == true)
+}
+
+@Test func agiSystemContractKeepsAppleFirstBudgetAndTokenEfficiency() {
+    let contract = SeisAGISystemContract.master
+
+    #expect(contract.id == "seis-agi-system")
+    #expect(contract.isReadyForImplementation)
+    #expect(contract.budget.javascriptTargetPercent == 21.0)
+    #expect(contract.budget.tokenSavingsTargetPercent == 60)
+    #expect(contract.budget.targetReleaseDate == "2026-09-12")
+    #expect(contract.budget.appleLanguages.contains("Swift"))
+    #expect(contract.budget.appleLanguages.contains("SwiftUI"))
+    #expect(contract.budget.appleLanguages.contains("Objective-C"))
+    #expect(contract.budget.appleLanguages.contains("Metal"))
+    #expect(contract.budget.appleLanguages.contains("AppKit"))
+    #expect(contract.budget.appleLanguages.contains("UIKit"))
+    #expect(contract.budget.appleLanguages.contains("Combine"))
+    #expect(contract.budget.appleLanguages.contains("Core Data"))
+    #expect(contract.budget.appleLanguages.contains("CloudKit"))
+}
+
+@Test func agiSystemContractDocumentsAgentMemoryPlanningResearchAndPluginLanes() {
+    let contract = SeisAGISystemContract.master
+    let subsystemIds = Set(contract.subsystems.map(\.id))
+    let pluginLaneIds = Set(contract.pluginLanes.map(\.id))
+
+    #expect(subsystemIds.contains("agent-orchestration"))
+    #expect(subsystemIds.contains("memory-architecture"))
+    #expect(subsystemIds.contains("planning-and-execution"))
+    #expect(subsystemIds.contains("research-automation"))
+    #expect(subsystemIds.contains("multi-agent-coordination"))
+    #expect(subsystemIds.contains("plugin-mcp-skills"))
+    #expect(subsystemIds.contains("token-efficiency"))
+    #expect(pluginLaneIds.contains("development-read-write"))
+    #expect(pluginLaneIds.contains("data-read-write"))
+    #expect(pluginLaneIds.contains("design-interactive"))
+    #expect(contract.claimBoundary.contains("does not claim autonomous general intelligence"))
+}
+
+@Test func agiSystemGeneratedReportMatchesSwiftContractTokens() throws {
+    let root = repositoryRoot()
+    let report = try String(
+        contentsOf: root.appending(path: "reports/seis-agi-system.md"),
+        encoding: .utf8
+    )
+    let source = try String(
+        contentsOf: root.appending(path: "content/development/seis-agi-system.json"),
+        encoding: .utf8
+    )
+
+    for token in SeisAGISystemContract.expectedReportTokens {
+        #expect(report.contains(token), "missing AGI system report token: \(token)")
+    }
+    for asset in [
+        "basic-programming-concepts.jpeg",
+        "python-programming-roadmap.jpg",
+        "college-projects.jpg",
+        "python-important-topics.jpg",
+        "advanced-c-projects.jpg",
+        "functional-programming-concepts.jpg",
+        "dsa-interview-topics.jpg",
+        "programming-blogs-websites.jpg"
+    ] {
+        let path = "content/development/seis-agi-reference-assets/\(asset)"
+        #expect(source.contains(path), "missing AGI source asset path: \(path)")
+        #expect(FileManager.default.fileExists(atPath: root.appending(path: path).path), "missing AGI reference asset: \(path)")
+    }
 }
 
 private func repositoryRoot() -> URL {

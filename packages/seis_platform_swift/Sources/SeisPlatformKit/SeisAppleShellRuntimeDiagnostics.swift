@@ -65,6 +65,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "swift_test"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "agi-operating-system-contract",
+            title: "AGI System Contract",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+            qualityGate: "agent_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "run-script",
             title: "Run Script",
             relativePath: "script/build_and_run.sh",

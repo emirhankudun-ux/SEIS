@@ -172,6 +172,24 @@ secure systems. Build beautiful systems. Build accessible systems. Build
 human-centered systems. **Improve the ecosystem with every decision.** Treat
 SEIS as a living digital ecosystem that continuously evolves.
 
+## 14. AGI-inspired system extension
+
+The active AGI-inspired target is tracked in `docs/agi/seis-agi-system.md` and
+enforced by `SeisAGISystemContract.master`.
+
+In SEIS, AGI system means a human-owned assistant architecture for agent
+orchestration, memory, planning, research automation, MCP, skills, plugins,
+data, design, development, and interactive read/write workflows. It does not
+claim autonomous general intelligence.
+
+The extension sets three durable constraints:
+
+- Apple-first implementation remains the primary development direction.
+- JavaScript target: roughly 21 percent in language-distribution governance.
+- Token economy: at least 60 percent savings through reusable contracts,
+  summaries, memory, source manifests, and scoped validation.
+- Version path: a 90-day roadmap toward the next SEIS agent-system release.
+
 ---
 
 ## Appendix A — Implementation status (this repository)

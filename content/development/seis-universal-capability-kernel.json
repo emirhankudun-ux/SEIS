@@ -62,8 +62,8 @@
       "research-lab": 2,
       "security-governance": 2
     },
-    "pluginGroupCount": 5,
-    "pluginInventoryCount": 154,
+    "pluginGroupCount": 6,
+    "pluginInventoryCount": 168,
     "coveredPluginCount": 69,
     "minimumDomainPluginCount": 3,
     "platformCount": 3,
@@ -85,15 +85,20 @@
   },
   "pluginInventory": {
     "source": "screenshots-and-enabled-plugin-inventory",
-    "groupCount": 5,
-    "pluginCount": 154,
+    "groupCount": 6,
+    "pluginCount": 168,
     "coveredPluginCount": 69,
     "groups": [
       {
         "id": "design",
-        "pluginCount": 8,
+        "pluginCount": 13,
         "plugins": [
+          "Adobe Express",
+          "Adobe Photoshop",
           "Canva",
+          "Figma",
+          "Product Design",
+          "Creative Production",
           "Remotion",
           "BioRender",
           "HyperFrames by HeyGen",
@@ -105,10 +110,15 @@
       },
       {
         "id": "developer-tools",
-        "pluginCount": 36,
+        "pluginCount": 41,
         "plugins": [
+          "GitHub",
+          "OpenAI Developers",
+          "Browser",
+          "Chrome",
           "Hugging Face",
           "Netlify",
+          "Vercel",
           "Game Studio",
           "Superpowers",
           "CircleCI",
@@ -143,6 +153,22 @@
           "Base44",
           "Shopify",
           "MagicPath"
+        ]
+      },
+      {
+        "id": "data-and-interactive-read-write",
+        "pluginCount": 10,
+        "plugins": [
+          "Data Analytics",
+          "Build Web Data Visualization",
+          "Airtable",
+          "Supabase",
+          "MotherDuck",
+          "Deepnote",
+          "Spreadsheets",
+          "Documents",
+          "Google Drive",
+          "Notion"
         ]
       },
       {
@@ -284,8 +310,8 @@
         ],
         "pluginCount": 3,
         "groups": [
-          "developer-tools",
-          "productivity-ops-business"
+          "data-and-interactive-read-write",
+          "developer-tools"
         ]
       },
       {
@@ -298,8 +324,7 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "external-or-session",
-          "productivity-ops-business",
+          "data-and-interactive-read-write",
           "research-finance-legal-science"
         ]
       },
@@ -312,8 +337,8 @@
         ],
         "pluginCount": 3,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
-          "productivity-ops-business",
           "security"
         ]
       },
@@ -328,8 +353,7 @@
         ],
         "pluginCount": 5,
         "groups": [
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -383,7 +407,7 @@
         ],
         "pluginCount": 5,
         "groups": [
-          "external-or-session",
+          "data-and-interactive-read-write",
           "productivity-ops-business"
         ]
       },
@@ -397,8 +421,8 @@
         ],
         "pluginCount": 4,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
-          "external-or-session",
           "productivity-ops-business"
         ]
       },
@@ -413,8 +437,7 @@
         "pluginCount": 4,
         "groups": [
           "design",
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -441,8 +464,7 @@
         ],
         "pluginCount": 3,
         "groups": [
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -456,9 +478,9 @@
         ],
         "pluginCount": 5,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
-          "external-or-session",
-          "productivity-ops-business"
+          "external-or-session"
         ]
       },
       {
@@ -472,6 +494,7 @@
         ],
         "pluginCount": 5,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
           "productivity-ops-business"
         ]
@@ -487,7 +510,6 @@
         "pluginCount": 4,
         "groups": [
           "developer-tools",
-          "external-or-session",
           "productivity-ops-business"
         ]
       },
@@ -503,8 +525,7 @@
         ],
         "pluginCount": 6,
         "groups": [
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -544,8 +565,7 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -558,9 +578,9 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "developer-tools",
-          "external-or-session",
-          "productivity-ops-business"
+          "data-and-interactive-read-write",
+          "design",
+          "developer-tools"
         ]
       },
       {
@@ -573,6 +593,7 @@
         ],
         "pluginCount": 4,
         "groups": [
+          "data-and-interactive-read-write",
           "productivity-ops-business",
           "research-finance-legal-science"
         ]
@@ -642,8 +663,7 @@
         "pluginCount": 5,
         "groups": [
           "design",
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -658,8 +678,7 @@
         ],
         "pluginCount": 6,
         "groups": [
-          "design",
-          "external-or-session"
+          "design"
         ]
       },
       {
@@ -671,9 +690,9 @@
         ],
         "pluginCount": 3,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
-          "external-or-session",
-          "productivity-ops-business"
+          "external-or-session"
         ]
       },
       {
@@ -686,7 +705,7 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "external-or-session",
+          "data-and-interactive-read-write",
           "productivity-ops-business",
           "security"
         ]
@@ -700,9 +719,8 @@
         ],
         "pluginCount": 3,
         "groups": [
-          "developer-tools",
-          "external-or-session",
-          "productivity-ops-business"
+          "data-and-interactive-read-write",
+          "developer-tools"
         ]
       },
       {
@@ -716,6 +734,7 @@
         ],
         "pluginCount": 5,
         "groups": [
+          "data-and-interactive-read-write",
           "productivity-ops-business"
         ]
       },
@@ -743,8 +762,7 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "developer-tools",
-          "external-or-session"
+          "developer-tools"
         ]
       },
       {
@@ -758,8 +776,8 @@
         ],
         "pluginCount": 5,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
-          "external-or-session",
           "productivity-ops-business"
         ]
       },
@@ -787,6 +805,7 @@
         ],
         "pluginCount": 4,
         "groups": [
+          "data-and-interactive-read-write",
           "developer-tools",
           "productivity-ops-business",
           "security"
@@ -803,7 +822,6 @@
         "pluginCount": 4,
         "groups": [
           "developer-tools",
-          "external-or-session",
           "security"
         ]
       },
@@ -817,17 +835,18 @@
         ],
         "pluginCount": 4,
         "groups": [
-          "productivity-ops-business",
+          "data-and-interactive-read-write",
           "research-finance-legal-science",
           "security"
         ]
       }
     ],
     "coverageByGroup": {
-      "design": 12,
-      "developer-tools": 70,
-      "external-or-session": 25,
-      "productivity-ops-business": 39,
+      "data-and-interactive-read-write": 23,
+      "design": 16,
+      "developer-tools": 83,
+      "external-or-session": 3,
+      "productivity-ops-business": 21,
       "research-finance-legal-science": 8,
       "security": 6
     },
@@ -931,6 +950,7 @@
         ],
         "sourceSurfaces": [
           "packages/seis_platform_swift/Package.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
@@ -1000,6 +1020,7 @@
         ],
         "sourceSurfaces": [
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
           "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",

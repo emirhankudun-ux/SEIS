@@ -14,7 +14,7 @@ REPORT_JSON = ROOT / "reports" / "language-distribution.json"
 REPORT_MD = ROOT / "reports" / "language-distribution.md"
 GITATTRIBUTES = ROOT / ".gitattributes"
 CHECK_MODE = "--check" in sys.argv
-TARGET_JAVASCRIPT_PERCENT = 10.0
+TARGET_JAVASCRIPT_PERCENT = 21.0
 FOCUS_LANGUAGE_SPLIT = ("JavaScript", "TypeScript", "Objective-C")
 
 SKIP_DIRS = {
@@ -243,7 +243,7 @@ Commands:
   python3 scripts/create-language-distribution-report.py --check
 
 This tool reads .gitattributes Linguist generated/vendor rules, measures the
-counted source-language surface, and records the phased JavaScript 10% target.
+counted source-language surface, and records the phased JavaScript 21% target.
 """
     )
 

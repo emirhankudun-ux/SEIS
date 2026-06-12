@@ -19,6 +19,7 @@ REQUIRED_FILES = [
     "packages/seis_kernel/active_board.py",
     "packages/seis_kernel/execution_packages.py",
     "packages/seis_kernel/execution_runway.py",
+    "packages/seis_kernel/agi_system.py",
     "packages/seis_kernel/test_capability_kernel.py",
     "packages/seis_kernel_go/go.mod",
     "packages/seis_kernel_go/capability_budget.go",
@@ -31,6 +32,7 @@ REQUIRED_FILES = [
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
@@ -69,6 +71,7 @@ PYTHON_COMPILE_TARGETS = [
     "packages/seis_kernel/active_board.py",
     "packages/seis_kernel/execution_packages.py",
     "packages/seis_kernel/execution_runway.py",
+    "packages/seis_kernel/agi_system.py",
     "scripts/create-seis-universal-capability-kernel.py",
     "scripts/create-seis-platform-language-policy.py",
     "scripts/create-seis-platform-development-tracks.py",
@@ -76,6 +79,7 @@ PYTHON_COMPILE_TARGETS = [
     "scripts/create-seis-active-mission-board.py",
     "scripts/create-seis-execution-packages.py",
     "scripts/create-seis-execution-runway.py",
+    "scripts/create-seis-agi-system.py",
     "scripts/check-seis-nonjs-kernel.py",
     "scripts/check-seis-platform-kernel.py",
     "polyglot/windows/scripting/seis_windows_platform.py",
@@ -102,6 +106,7 @@ def main() -> int:
     failures.extend(run(["python3", "scripts/create-seis-active-mission-board.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-execution-packages.py", "--check"], ROOT))
     failures.extend(run(["python3", "scripts/create-seis-execution-runway.py", "--check"], ROOT))
+    failures.extend(run(["python3", "scripts/create-seis-agi-system.py", "--check"], ROOT))
     failures.extend(validate_contract())
 
     if failures:

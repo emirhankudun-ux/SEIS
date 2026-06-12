@@ -157,6 +157,12 @@ const ecosystemGroups = [
     "OpenAI APIs",
     "Agents SDK",
     "MCP",
+    "AGI System Contract",
+    "Agent Memory",
+    "Agent Planning",
+    "Multi-Agent Coordination",
+    "Research Automation",
+    "Token Efficiency",
     "RAG",
     "Embeddings",
     "Model Evaluation"
