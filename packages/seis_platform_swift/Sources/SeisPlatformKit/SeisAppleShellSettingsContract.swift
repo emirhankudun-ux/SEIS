@@ -54,6 +54,14 @@ public struct SeisAppleShellSettingsContract: Codable, Equatable, Sendable {
         [lowMotionKey, preferredFocusKey, showsQualityGatesKey]
     }
 
+    public func focusPreference(for rawValue: String) -> SeisAppleShellFocusPreference {
+        SeisAppleShellFocusPreference(rawValue: rawValue) ?? defaultPreferredFocus
+    }
+
+    public func request(for rawValue: String) -> String {
+        focusPreference(for: rawValue).request
+    }
+
     public var expectedSettingsViewTokens: [String] {
         [
             "lowMotionKey",
@@ -66,6 +74,18 @@ public struct SeisAppleShellSettingsContract: Codable, Equatable, Sendable {
             "Low Motion",
             "Quality Gates",
             "Preferred Focus"
+        ]
+    }
+
+    public var expectedContinuationWindowTokens: [String] {
+        [
+            "@AppStorage",
+            "lowMotionKey",
+            "preferredFocusKey",
+            "showsQualityGatesKey",
+            "Quality Gates",
+            "withAnimation",
+            "onChange"
         ]
     }
 }

@@ -127,6 +127,9 @@ import Testing
     ])
     #expect(SeisAppleShellFocusPreference.macOS.request.contains("AppKit"))
     #expect(SeisAppleShellFocusPreference.iOS.request.contains("UIKit"))
+    #expect(contract.focusPreference(for: "ios") == .iOS)
+    #expect(contract.focusPreference(for: "unknown") == .appleNative)
+    #expect(contract.request(for: "macos").contains("AppKit"))
 }
 
 @Test func appleShellSettingsFilesMatchSwiftContract() throws {
@@ -140,11 +143,18 @@ import Testing
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellSettingsView.swift"),
         encoding: .utf8
     )
+    let continuation = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift"),
+        encoding: .utf8
+    )
 
     #expect(app.contains("Settings {"))
     #expect(app.contains("AppleShellSettingsView()"))
     for token in contract.expectedSettingsViewTokens {
         #expect(settings.contains(token), "missing settings token: \(token)")
+    }
+    for token in contract.expectedContinuationWindowTokens {
+        #expect(continuation.contains(token), "missing continuation token: \(token)")
     }
 }
 
