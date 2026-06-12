@@ -64,7 +64,7 @@ Commands:
   python3 scripts/create-seis-platform-development-tracks.py
   python3 scripts/create-seis-platform-development-tracks.py --check
 
-The tracks keep macOS Apple-native only while Windows stays broad polyglot
+The tracks keep Apple-native continuation first while Windows stays broad polyglot
 without Swift/SwiftUI/Objective-C/Playground/AppleScript execution surfaces.
 """
     )
@@ -83,6 +83,7 @@ def build_report(bundle: dict) -> dict:
                 "lane": track["lane"],
                 "platformScope": track["platformScope"],
                 "languages": track["languages"],
+                "frameworks": track.get("frameworks", []),
                 "validationCommands": track["validationCommands"],
                 "qualityGates": track["qualityGates"],
                 "executionRule": track["executionRule"],
@@ -100,6 +101,7 @@ def build_markdown(bundle: dict) -> str:
         f"- Mode: `{bundle['mode']}`",
         f"- Tracks: {summary['trackCount']}",
         f"- Apple language count: {summary['appleLanguageCount']}",
+        f"- Apple native frameworks: {', '.join(bundle['platformBoundaries']['appleNativeFrameworks'])}",
         f"- Windows required languages: {summary['windowsRequiredLanguageCount']}",
         f"- Windows extended languages: {summary['windowsExtendedLanguageCount']}",
         f"- Windows language coverage: {summary['windowsLanguageCoverageCount']}",
@@ -109,6 +111,7 @@ def build_markdown(bundle: dict) -> str:
         "## Platform Boundaries",
         "",
         f"- Apple only: {', '.join(bundle['platformBoundaries']['appleOnlyLanguageSurfaces'])}",
+        f"- Apple frameworks: {', '.join(bundle['platformBoundaries']['appleNativeFrameworks'])}",
         f"- Windows excludes: {', '.join(bundle['platformBoundaries']['windowsExcludedLanguageSurfaces'])}",
         "",
         "## Track Index",

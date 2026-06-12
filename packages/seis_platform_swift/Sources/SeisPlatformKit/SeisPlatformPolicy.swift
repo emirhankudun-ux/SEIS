@@ -2,6 +2,7 @@ import Foundation
 
 public enum SeisPlatform: String, Codable, CaseIterable, Sendable {
     case macOS = "macos"
+    case iOS = "ios"
     case windows = "windows"
 }
 
@@ -65,6 +66,19 @@ public struct SeisDevelopmentTrack: Codable, Equatable, Sendable {
 }
 
 public enum SeisPlatformPolicy {
+    public static let appleNativeContinuationFrameworks = [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
+    ]
+
     public static let macOS = SeisPlatformCapability(
         platform: .macOS,
         languages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
@@ -76,12 +90,37 @@ public enum SeisPlatformPolicy {
             "swiftui_playground_surface",
             "objective_c_syntax",
             "applescript_syntax_when_available",
+            "metal_rendering_budget",
+            "appkit_surface_review",
+            "combine_state_flow_review",
+            "coredata_cloudkit_sync_review",
             "permission_scope",
             "offline_fallback",
             "notarization_awareness",
             "accessibility_when_ui"
         ],
-        frameworks: ["SwiftUI", "PlaygroundSupport", "Foundation", "AppleScript"],
+        frameworks: ["SwiftUI", "AppKit", "Metal", "Combine", "Core Data", "CloudKit", "Foundation", "PlaygroundSupport", "AppleScript"],
+        supportsOfflineHelper: true,
+        supportsRemoteLLMBridge: true
+    )
+
+    public static let iOS = SeisPlatformCapability(
+        platform: .iOS,
+        languages: ["Swift", "SwiftUI", "Objective-C"],
+        agentRoles: ["ios-agent", "apple-platform-agent", "mobile-agent"],
+        localHelpers: ["Xcode", "xcodebuild", "xcrun", "simctl"],
+        remoteHelpers: ["SEIS Agent", "OpenAI", "Claude", "Gemini"],
+        qualityGates: [
+            "swift_test",
+            "swiftui_ios_surface",
+            "objective_c_bridge_review",
+            "uikit_accessibility",
+            "metal_rendering_budget",
+            "combine_state_flow_review",
+            "coredata_cloudkit_sync_review",
+            "app_privacy_review"
+        ],
+        frameworks: ["SwiftUI", "UIKit", "Metal", "Combine", "Core Data", "CloudKit", "Foundation"],
         supportsOfflineHelper: true,
         supportsRemoteLLMBridge: true
     )
@@ -128,7 +167,7 @@ public enum SeisPlatformPolicy {
         supportsRemoteLLMBridge: true
     )
 
-    public static let all: [SeisPlatformCapability] = [macOS, windows]
+    public static let all: [SeisPlatformCapability] = [macOS, iOS, windows]
 
     public static let developmentTracks: [SeisDevelopmentTrack] = [
         SeisDevelopmentTrack(
@@ -136,9 +175,18 @@ public enum SeisPlatformPolicy {
             platforms: [.macOS],
             languages: ["Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"],
             forbiddenLanguages: [],
-            validationCommands: ["swift test", "xcrun swift --version", "xcodebuild -version", "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"],
-            qualityGates: ["swift_test", "swiftui_playground_surface", "objective_c_syntax", "applescript_syntax_when_available", "xcode_toolchain_verified"],
-            executionRule: "Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+            validationCommands: ["swift test --package-path packages/seis_platform_swift", "xcrun swift --version", "xcodebuild -version", "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"],
+            qualityGates: ["swift_test", "swiftui_playground_surface", "objective_c_syntax", "applescript_syntax_when_available", "xcode_toolchain_verified", "metal_rendering_budget", "appkit_surface_review", "combine_state_flow_review", "coredata_cloudkit_sync_review"],
+            executionRule: "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first."
+        ),
+        SeisDevelopmentTrack(
+            id: "apple-native-ios-track",
+            platforms: [.iOS],
+            languages: ["Swift", "SwiftUI", "Objective-C"],
+            forbiddenLanguages: [],
+            validationCommands: ["xcodebuild -version", "xcrun simctl list runtimes"],
+            qualityGates: ["swiftui_ios_surface", "objective_c_bridge_review", "uikit_accessibility", "metal_rendering_budget", "combine_state_flow_review", "coredata_cloudkit_sync_review", "app_privacy_review"],
+            executionRule: "iOS platform work continues through Swift, SwiftUI, Objective-C, UIKit, Metal, Combine, Core Data, and CloudKit surfaces first."
         ),
         SeisDevelopmentTrack(
             id: "windows-required-polyglot-track",
@@ -179,10 +227,15 @@ public enum SeisPlatformPolicy {
         let normalized = request.lowercased()
         var platforms: [SeisPlatform] = []
         if normalized.contains("mac") ||
-            normalized.contains("ios") ||
             normalized.contains("swift") ||
             normalized.contains("apple") {
             platforms.append(.macOS)
+        }
+        if normalized.contains("ios") ||
+            normalized.contains("uikit") ||
+            normalized.contains("cloudkit") ||
+            normalized.contains("core data") {
+            platforms.append(.iOS)
         }
         if normalized.contains("windows") ||
             normalized.contains("powershell") ||

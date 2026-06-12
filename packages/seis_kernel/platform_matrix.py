@@ -75,7 +75,32 @@ PLATFORM_SURFACES = [
             "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
             "polyglot/applescript/seis_platform_automation.applescript",
         ),
-        frameworks=("SwiftUI", "PlaygroundSupport", "Foundation", "AppleScript"),
+        frameworks=("SwiftUI", "AppKit", "Metal", "Combine", "Core Data", "CloudKit", "Foundation", "PlaygroundSupport", "AppleScript"),
+    ),
+    PlatformSurface(
+        id="ios-apple-native",
+        label="iOS Apple Native",
+        os_family="ios",
+        languages=("Swift", "SwiftUI", "Objective-C"),
+        local_helpers=("Xcode", "xcodebuild", "xcrun", "simctl"),
+        remote_helpers=("SEIS Agent", "OpenAI", "Claude", "Gemini"),
+        agent_roles=("ios-agent", "apple-platform-agent", "mobile-agent"),
+        quality_gates=(
+            "swift_test",
+            "swiftui_ios_surface",
+            "objective_c_bridge_review",
+            "uikit_accessibility",
+            "metal_rendering_budget",
+            "combine_state_flow_review",
+            "coredata_cloudkit_sync_review",
+            "app_privacy_review",
+        ),
+        source_surfaces=(
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+            "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+            "polyglot/swift/SEISMotionPolicy.swift",
+        ),
+        frameworks=("SwiftUI", "UIKit", "Metal", "Combine", "Core Data", "CloudKit", "Foundation"),
     ),
     PlatformSurface(
         id="windows-native",
@@ -128,7 +153,7 @@ def build_platform_contract() -> dict[str, Any]:
         {
             language
             for surface in PLATFORM_SURFACES
-            if surface.os_family == "macos"
+            if surface.os_family in {"macos", "ios"}
             for language in surface.languages
             if language in APPLE_NATIVE_LANGUAGES
         }
@@ -146,7 +171,7 @@ def build_platform_contract() -> dict[str, Any]:
         {
             framework
             for surface in PLATFORM_SURFACES
-            if surface.os_family == "macos"
+            if surface.os_family in {"macos", "ios"}
             for framework in surface.frameworks
         }
     )

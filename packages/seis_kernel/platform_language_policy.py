@@ -6,11 +6,25 @@ from typing import Any
 
 
 APPLE_ONLY_LANGUAGE_SURFACES = ("Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript")
+APPLE_NATIVE_FRAMEWORKS = (
+    "SwiftUI",
+    "AppKit",
+    "UIKit",
+    "Metal",
+    "Combine",
+    "Core Data",
+    "CloudKit",
+    "Foundation",
+    "PlaygroundSupport",
+    "AppleScript",
+)
 APPLE_ALLOWED_SOURCE_ROOTS = (
     "packages/seis_platform_swift/",
+    "polyglot/swift/",
     "polyglot/objective-c/",
     "polyglot/swiftui-playground/",
     "polyglot/applescript/",
+    "apps/macos/",
 )
 
 WINDOWS_EXCLUDED_LANGUAGE_SURFACES = ("Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript")
@@ -77,19 +91,23 @@ def build_platform_language_policy() -> dict[str, Any]:
     return {
         "version": 1,
         "id": "seis-platform-language-policy",
-        "mode": "windows_polyglot_except_apple_only_and_apple_native_only",
+        "mode": "apple_native_continuation_first_with_windows_polyglot_support",
         "summary": {
             "appleLanguageCount": len(apple_languages),
+            "appleNativeFrameworkCount": len(APPLE_NATIVE_FRAMEWORKS),
             "windowsLanguageCount": len(windows_languages),
             "windowsRequiredLanguageCount": len(WINDOWS_REQUIRED_LANGUAGE_SURFACES),
             "appleOnlyLanguageSurfaces": apple_languages,
+            "appleNativeFrameworks": list(APPLE_NATIVE_FRAMEWORKS),
             "windowsExcludedLanguageSurfaces": sorted(WINDOWS_EXCLUDED_LANGUAGE_SURFACES),
         },
         "apple": {
             "platforms": ["macos", "ios"],
             "allowedLanguageSurfaces": apple_languages,
+            "prioritizedFrameworks": list(APPLE_NATIVE_FRAMEWORKS),
             "allowedSourceRoots": list(APPLE_ALLOWED_SOURCE_ROOTS),
-            "rule": "Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces.",
+            "rule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+            "continuationRule": "New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere.",
         },
         "windows": {
             "platforms": ["windows"],
@@ -122,9 +140,13 @@ def validate_platform_language_policy(policy: dict[str, Any]) -> list[str]:
     windows_languages = set(policy.get("windows", {}).get("allowedLanguageSurfaces", []))
     windows_required = set(policy.get("windows", {}).get("requiredLanguageSurfaces", []))
     windows_excluded = set(policy.get("windows", {}).get("excludedLanguageSurfaces", []))
+    apple_frameworks = set(policy.get("apple", {}).get("prioritizedFrameworks", []))
 
     if apple_languages != apple_language_set():
         failures.append("Apple language policy must be exactly Swift, SwiftUI, Objective-C, Playground, and AppleScript")
+    missing_frameworks = set(APPLE_NATIVE_FRAMEWORKS) - apple_frameworks
+    if missing_frameworks:
+        failures.append(f"Apple language policy missing native frameworks: {', '.join(sorted(missing_frameworks))}")
     if "Swift" in windows_languages or "SwiftUI" in windows_languages:
         failures.append("Windows language policy must not include Swift or SwiftUI")
     if windows_excluded != set(WINDOWS_EXCLUDED_LANGUAGE_SURFACES):

@@ -64,7 +64,7 @@ Commands:
   python3 scripts/create-seis-platform-language-policy.py
   python3 scripts/create-seis-platform-language-policy.py --check
 
-The policy keeps Apple work native-only while Windows remains broad polyglot
+The policy keeps new SEIS platform work Apple-native first while Windows remains broad polyglot
 without Swift/SwiftUI/Objective-C/Playground/AppleScript surfaces.
 """
     )
@@ -87,12 +87,14 @@ def build_markdown(policy: dict) -> str:
         "",
         f"- Mode: `{policy['mode']}`",
         f"- Apple language surfaces: {', '.join(policy['apple']['allowedLanguageSurfaces'])}",
+        f"- Apple native frameworks: {', '.join(policy['apple']['prioritizedFrameworks'])}",
         f"- Windows language surfaces: {policy['summary']['windowsLanguageCount']}",
         f"- Windows excluded surfaces: {', '.join(policy['windows']['excludedLanguageSurfaces'])}",
         "",
         "## Apple Rule",
         "",
         policy["apple"]["rule"],
+        policy["apple"]["continuationRule"],
         "",
         "## Windows Rule",
         "",

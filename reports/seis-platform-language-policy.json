@@ -1,8 +1,9 @@
 {
   "id": "seis-platform-language-policy",
-  "mode": "windows_polyglot_except_apple_only_and_apple_native_only",
+  "mode": "apple_native_continuation_first_with_windows_polyglot_support",
   "summary": {
     "appleLanguageCount": 5,
+    "appleNativeFrameworkCount": 10,
     "windowsLanguageCount": 41,
     "windowsRequiredLanguageCount": 18,
     "appleOnlyLanguageSurfaces": [
@@ -11,6 +12,18 @@
       "Playground",
       "Swift",
       "SwiftUI"
+    ],
+    "appleNativeFrameworks": [
+      "SwiftUI",
+      "AppKit",
+      "UIKit",
+      "Metal",
+      "Combine",
+      "Core Data",
+      "CloudKit",
+      "Foundation",
+      "PlaygroundSupport",
+      "AppleScript"
     ],
     "windowsExcludedLanguageSurfaces": [
       "AppleScript",
@@ -32,13 +45,28 @@
       "Swift",
       "SwiftUI"
     ],
+    "prioritizedFrameworks": [
+      "SwiftUI",
+      "AppKit",
+      "UIKit",
+      "Metal",
+      "Combine",
+      "Core Data",
+      "CloudKit",
+      "Foundation",
+      "PlaygroundSupport",
+      "AppleScript"
+    ],
     "allowedSourceRoots": [
       "packages/seis_platform_swift/",
+      "polyglot/swift/",
       "polyglot/objective-c/",
       "polyglot/swiftui-playground/",
-      "polyglot/applescript/"
+      "polyglot/applescript/",
+      "apps/macos/"
     ],
-    "rule": "Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+    "rule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+    "continuationRule": "New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere."
   },
   "windows": {
     "platforms": [

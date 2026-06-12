@@ -66,7 +66,7 @@
     "pluginInventoryCount": 154,
     "coveredPluginCount": 69,
     "minimumDomainPluginCount": 3,
-    "platformCount": 2,
+    "platformCount": 3,
     "appleLanguageCount": 5,
     "windowsLanguageCount": 18,
     "windowsPolicyLanguageCount": 41,
@@ -148,7 +148,7 @@
     "id": "seis-platform-compatibility-kernel",
     "mode": "macos_windows_native_and_cross_platform_support",
     "summary": {
-      "platformCount": 2,
+      "platformCount": 3,
       "appleLanguageCount": 5,
       "windowsLanguageCount": 18,
       "appleLanguages": [
@@ -179,10 +179,16 @@
         "Visual Basic"
       ],
       "appleFrameworks": [
+        "AppKit",
         "AppleScript",
+        "CloudKit",
+        "Combine",
+        "Core Data",
         "Foundation",
+        "Metal",
         "PlaygroundSupport",
-        "SwiftUI"
+        "SwiftUI",
+        "UIKit"
       ],
       "windowsFrameworks": [
         ".NET",
@@ -243,9 +249,65 @@
         ],
         "frameworks": [
           "SwiftUI",
-          "PlaygroundSupport",
+          "AppKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
           "Foundation",
+          "PlaygroundSupport",
           "AppleScript"
+        ]
+      },
+      {
+        "id": "ios-apple-native",
+        "label": "iOS Apple Native",
+        "osFamily": "ios",
+        "languages": [
+          "Swift",
+          "SwiftUI",
+          "Objective-C"
+        ],
+        "localHelpers": [
+          "Xcode",
+          "xcodebuild",
+          "xcrun",
+          "simctl"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "ios-agent",
+          "apple-platform-agent",
+          "mobile-agent"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "swiftui_ios_surface",
+          "objective_c_bridge_review",
+          "uikit_accessibility",
+          "metal_rendering_budget",
+          "combine_state_flow_review",
+          "coredata_cloudkit_sync_review",
+          "app_privacy_review"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+          "polyglot/swift/SEISMotionPolicy.swift"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "UIKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
+          "Foundation"
         ]
       },
       {
@@ -341,9 +403,10 @@
   "platformLanguagePolicy": {
     "version": 1,
     "id": "seis-platform-language-policy",
-    "mode": "windows_polyglot_except_apple_only_and_apple_native_only",
+    "mode": "apple_native_continuation_first_with_windows_polyglot_support",
     "summary": {
       "appleLanguageCount": 5,
+      "appleNativeFrameworkCount": 10,
       "windowsLanguageCount": 41,
       "windowsRequiredLanguageCount": 18,
       "appleOnlyLanguageSurfaces": [
@@ -352,6 +415,18 @@
         "Playground",
         "Swift",
         "SwiftUI"
+      ],
+      "appleNativeFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
       ],
       "windowsExcludedLanguageSurfaces": [
         "AppleScript",
@@ -373,13 +448,28 @@
         "Swift",
         "SwiftUI"
       ],
+      "prioritizedFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
+      ],
       "allowedSourceRoots": [
         "packages/seis_platform_swift/",
+        "polyglot/swift/",
         "polyglot/objective-c/",
         "polyglot/swiftui-playground/",
-        "polyglot/applescript/"
+        "polyglot/applescript/",
+        "apps/macos/"
       ],
-      "rule": "Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+      "rule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+      "continuationRule": "New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere."
     },
     "windows": {
       "platforms": [
@@ -462,17 +552,18 @@
   "platformDevelopmentTracks": {
     "version": 1,
     "id": "seis-platform-development-tracks",
-    "mode": "macos_apple_native_and_windows_polyglot_execution_tracks",
+    "mode": "apple_native_continuation_and_windows_polyglot_execution_tracks",
     "summary": {
       "trackCount": 4,
       "appleTrackCount": 1,
       "windowsTrackCount": 2,
       "governanceTrackCount": 1,
       "appleLanguageCount": 5,
+      "appleNativeFrameworkCount": 10,
       "windowsRequiredLanguageCount": 18,
       "windowsExtendedLanguageCount": 23,
       "windowsLanguageCoverageCount": 41,
-      "qualityGateCount": 27
+      "qualityGateCount": 31
     },
     "platformBoundaries": {
       "appleOnlyLanguageSurfaces": [
@@ -481,6 +572,18 @@
         "Playground",
         "Swift",
         "SwiftUI"
+      ],
+      "appleNativeFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
       ],
       "windowsExcludedLanguageSurfaces": [
         "AppleScript",
@@ -494,13 +597,16 @@
     "tracks": [
       {
         "id": "apple-native-macos-track",
-        "label": "Apple Native macOS Track",
+        "label": "Apple Native Continuation Track",
         "lane": "apple_native",
         "platformScope": [
-          "macos"
+          "macos",
+          "ios"
         ],
         "relatedPlatforms": [
-          "ios"
+          "watchos",
+          "tvos",
+          "visionos"
         ],
         "languages": [
           "AppleScript",
@@ -508,6 +614,18 @@
           "Playground",
           "Swift",
           "SwiftUI"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "AppKit",
+          "UIKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
+          "Foundation",
+          "PlaygroundSupport",
+          "AppleScript"
         ],
         "forbiddenLanguages": [
           "Awk",
@@ -552,12 +670,14 @@
         ],
         "sourceRoots": [
           "packages/seis_platform_swift/",
+          "polyglot/swift/",
           "polyglot/objective-c/",
           "polyglot/swiftui-playground/",
-          "polyglot/applescript/"
+          "polyglot/applescript/",
+          "apps/macos/"
         ],
         "validationCommands": [
-          "swift test",
+          "swift test --package-path packages/seis_platform_swift",
           "xcrun swift --version",
           "xcodebuild -version",
           "xcrun clang -fsyntax-only -fobjc-arc -framework Foundation polyglot/objective-c/SEISPlatformBridge.m",
@@ -572,7 +692,8 @@
           "SwiftPM package surfaces",
           "SwiftUI playground live view",
           "Objective-C bridge header and implementation",
-          "AppleScript automation bridge"
+          "AppleScript automation bridge",
+          "Apple framework policy for Metal, AppKit, UIKit, Combine, Core Data, and CloudKit"
         ],
         "qualityGates": [
           "swift_test",
@@ -580,11 +701,16 @@
           "objective_c_syntax",
           "applescript_syntax_when_available",
           "xcode_toolchain_verified",
+          "metal_rendering_budget",
+          "appkit_uikit_surface_review",
+          "combine_state_flow_review",
+          "coredata_cloudkit_sync_review",
           "accessibility_when_ui",
           "sandbox_permission_review",
           "notarization_awareness"
         ],
-        "executionRule": "Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+        "executionRule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+        "continuationBias": "Default new SEIS platform implementation to Apple-native surfaces before adding compatibility work elsewhere."
       },
       {
         "id": "windows-required-polyglot-track",
@@ -739,6 +865,7 @@
         "lane": "governance",
         "platformScope": [
           "macos",
+          "ios",
           "windows"
         ],
         "languages": [],

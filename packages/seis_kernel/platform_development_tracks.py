@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from .platform_language_policy import (
+    APPLE_NATIVE_FRAMEWORKS,
     APPLE_ONLY_LANGUAGE_SURFACES,
     WINDOWS_EXCLUDED_LANGUAGE_SURFACES,
     WINDOWS_EXTENDED_LANGUAGE_SURFACES,
@@ -20,6 +21,10 @@ APPLE_QUALITY_GATES = (
     "objective_c_syntax",
     "applescript_syntax_when_available",
     "xcode_toolchain_verified",
+    "metal_rendering_budget",
+    "appkit_uikit_surface_review",
+    "combine_state_flow_review",
+    "coredata_cloudkit_sync_review",
     "accessibility_when_ui",
     "sandbox_permission_review",
     "notarization_awareness",
@@ -58,20 +63,23 @@ GOVERNANCE_QUALITY_GATES = (
 def build_platform_development_tracks() -> dict[str, Any]:
     apple_track = {
         "id": "apple-native-macos-track",
-        "label": "Apple Native macOS Track",
+        "label": "Apple Native Continuation Track",
         "lane": "apple_native",
-        "platformScope": ["macos"],
-        "relatedPlatforms": ["ios"],
+        "platformScope": ["macos", "ios"],
+        "relatedPlatforms": ["watchos", "tvos", "visionos"],
         "languages": sorted(APPLE_ONLY_LANGUAGE_SURFACES),
+        "frameworks": list(APPLE_NATIVE_FRAMEWORKS),
         "forbiddenLanguages": sorted(windows_language_set() - {"C", "C++"}),
         "sourceRoots": [
             "packages/seis_platform_swift/",
+            "polyglot/swift/",
             "polyglot/objective-c/",
             "polyglot/swiftui-playground/",
             "polyglot/applescript/",
+            "apps/macos/",
         ],
         "validationCommands": [
-            "swift test",
+            "swift test --package-path packages/seis_platform_swift",
             "xcrun swift --version",
             "xcodebuild -version",
             "xcrun clang -fsyntax-only -fobjc-arc -framework Foundation polyglot/objective-c/SEISPlatformBridge.m",
@@ -83,9 +91,11 @@ def build_platform_development_tracks() -> dict[str, Any]:
             "SwiftUI playground live view",
             "Objective-C bridge header and implementation",
             "AppleScript automation bridge",
+            "Apple framework policy for Metal, AppKit, UIKit, Combine, Core Data, and CloudKit",
         ],
         "qualityGates": list(APPLE_QUALITY_GATES),
-        "executionRule": "Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces.",
+        "executionRule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+        "continuationBias": "Default new SEIS platform implementation to Apple-native surfaces before adding compatibility work elsewhere.",
     }
 
     windows_required_track = {
@@ -162,7 +172,7 @@ def build_platform_development_tracks() -> dict[str, Any]:
         "id": "seis-platform-boundary-governance-track",
         "label": "SEIS Platform Boundary Governance Track",
         "lane": "governance",
-        "platformScope": ["macos", "windows"],
+        "platformScope": ["macos", "ios", "windows"],
         "languages": [],
         "forbiddenLanguages": [],
         "sourceRoots": [
@@ -200,13 +210,14 @@ def build_platform_development_tracks() -> dict[str, Any]:
     return {
         "version": 1,
         "id": "seis-platform-development-tracks",
-        "mode": "macos_apple_native_and_windows_polyglot_execution_tracks",
+        "mode": "apple_native_continuation_and_windows_polyglot_execution_tracks",
         "summary": {
             "trackCount": len(tracks),
             "appleTrackCount": 1,
             "windowsTrackCount": 2,
             "governanceTrackCount": 1,
             "appleLanguageCount": len(apple_track["languages"]),
+            "appleNativeFrameworkCount": len(apple_track["frameworks"]),
             "windowsRequiredLanguageCount": len(windows_required_track["languages"]),
             "windowsExtendedLanguageCount": len(windows_extended_track["languages"]),
             "windowsLanguageCoverageCount": len(windows_language_coverage),
@@ -214,6 +225,7 @@ def build_platform_development_tracks() -> dict[str, Any]:
         },
         "platformBoundaries": {
             "appleOnlyLanguageSurfaces": sorted(APPLE_ONLY_LANGUAGE_SURFACES),
+            "appleNativeFrameworks": list(APPLE_NATIVE_FRAMEWORKS),
             "windowsExcludedLanguageSurfaces": sorted(WINDOWS_EXCLUDED_LANGUAGE_SURFACES),
             "javascriptPolicy": "compatibility_only_keep_under_language_budget",
         },
@@ -234,6 +246,9 @@ def validate_platform_development_tracks(bundle: dict[str, Any]) -> list[str]:
     apple_track = track_by_id.get("apple-native-macos-track", {})
     if set(apple_track.get("languages", [])) != apple_language_set():
         failures.append("Apple development track must be exactly Swift, SwiftUI, Objective-C, Playground, and AppleScript")
+    missing_frameworks = set(APPLE_NATIVE_FRAMEWORKS) - set(apple_track.get("frameworks", []))
+    if missing_frameworks:
+        failures.append(f"Apple development track missing native frameworks: {', '.join(sorted(missing_frameworks))}")
     if "AppleScript" in set(apple_track.get("forbiddenLanguages", [])):
         failures.append("Apple development track must allow AppleScript")
     if any(command.startswith("code ") or "VS Code" in command for command in apple_track.get("validationCommands", [])):

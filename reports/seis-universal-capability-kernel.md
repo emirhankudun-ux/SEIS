@@ -7,9 +7,9 @@
 - Plugin groups: 5
 - Plugins inventoried: 154
 - Plugins covered by domain routing: 69
-- Platform surfaces: 2
+- Platform surfaces: 3
 - Apple native languages: AppleScript, Objective-C, Playground, Swift, SwiftUI
-- Apple frameworks: AppleScript, Foundation, PlaygroundSupport, SwiftUI
+- Apple frameworks: AppKit, AppleScript, CloudKit, Combine, Core Data, Foundation, Metal, PlaygroundSupport, SwiftUI, UIKit
 - Windows native languages: Batch, C, C#, C++, CMD, F#, Go, Java, Kotlin, Lua, PHP, PowerShell, Python, R, Ruby, Rust, SQL, Visual Basic
 - Windows frameworks: .NET, WPF, WSL-aware CLI, WinUI, Windows Terminal
 - Windows policy language count: 41
@@ -71,6 +71,7 @@ flowchart TD
 | Platform | Languages | Local Helpers | Quality Gates |
 | --- | --- | --- | --- |
 | macOS Apple Native | Swift, SwiftUI, Objective-C, Playground, AppleScript | SwiftPM, xcodebuild, xcrun, osascript, osacompile | swift_test, swiftui_playground_surface, objective_c_syntax, applescript_syntax_when_available |
+| iOS Apple Native | Swift, SwiftUI, Objective-C | Xcode, xcodebuild, xcrun, simctl | swift_test, swiftui_ios_surface, objective_c_bridge_review, uikit_accessibility |
 | Windows Native | Batch, C, C#, C++, CMD, F#, Go, Java, Kotlin, Lua, PHP, PowerShell, Python, R, Ruby, Rust, SQL, Visual Basic | PowerShell, dotnet, winget, python, go, rustc, javac, clang++ | powershell_policy, dotnet_readiness, windows_multilang_source_surface, native_cpp_syntax_when_available |
 
 ## Platform Language Policy
@@ -83,10 +84,10 @@ flowchart TD
 
 | Track | Platforms | Languages | Rule |
 | --- | --- | --- | --- |
-| Apple Native macOS Track | macos | AppleScript, Objective-C, Playground, Swift, SwiftUI | Apple platform work may only use Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces. |
+| Apple Native Continuation Track | macos, ios | AppleScript, Objective-C, Playground, Swift, SwiftUI | Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first. |
 | Windows Required Polyglot Track | windows | C#, F#, Visual Basic, PowerShell, Batch, CMD, C, C++, Rust, Go, Python, Java, Kotlin, SQL, R, Lua, Ruby, PHP | Windows work is broad polyglot and must never use Swift, SwiftUI, Objective-C, Playground, or AppleScript surfaces. |
 | Windows Extended Polyglot Track | windows | TypeScript, JavaScript, Dart, Scala, Groovy, Haskell, OCaml, Nim, Zig, Fortran, COBOL, Perl, Awk, Tcl, Shell, YAML, JSON Schema, OpenAPI, Terraform, Bicep, Dockerfile, Make, CMake | Extended Windows languages are allowed as needed; JavaScript stays compatibility-only and below the language budget. |
-| SEIS Platform Boundary Governance Track | macos, windows | policy-only | SEIS stays primary; platform tracks only constrain safe execution boundaries. |
+| SEIS Platform Boundary Governance Track | macos, ios, windows | policy-only | SEIS stays primary; platform tracks only constrain safe execution boundaries. |
 
 ## Domain Index
 

@@ -1,13 +1,15 @@
 # SEIS Platform Language Policy
 
-- Mode: `windows_polyglot_except_apple_only_and_apple_native_only`
+- Mode: `apple_native_continuation_first_with_windows_polyglot_support`
 - Apple language surfaces: AppleScript, Objective-C, Playground, Swift, SwiftUI
+- Apple native frameworks: SwiftUI, AppKit, UIKit, Metal, Combine, Core Data, CloudKit, Foundation, PlaygroundSupport, AppleScript
 - Windows language surfaces: 41
 - Windows excluded surfaces: AppleScript, Objective-C, Playground, Swift, SwiftUI
 
 ## Apple Rule
 
-Apple platform work uses only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces.
+Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.
+New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere.
 
 ## Windows Rule
 
