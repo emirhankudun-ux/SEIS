@@ -160,7 +160,10 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             "repositoryRootPath",
             "operatingSystemVersion",
             "processName",
-            "runtimeDiagnostics.probes"
+            "runtimeDiagnostics.probes",
+            "Refresh Diagnostics",
+            "refreshDiagnostics",
+            "State(initialValue"
         ]
     }
 

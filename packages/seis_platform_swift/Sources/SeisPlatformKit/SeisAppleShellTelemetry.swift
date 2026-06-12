@@ -5,6 +5,7 @@ public enum SeisAppleShellTelemetryEvent: String, Codable, CaseIterable, Sendabl
     case focusCommandReceived = "focus_command_received"
     case focusPreferenceChanged = "focus_preference_changed"
     case focusRouteApplied = "focus_route_applied"
+    case diagnosticsRefreshRequested = "diagnostics_refresh_requested"
     case diagnosticsRefreshed = "diagnostics_refreshed"
     case runtimeProbeSnapshot = "runtime_probe_snapshot"
 }
@@ -42,7 +43,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
         switch event {
         case .focusCommandReceived, .focusPreferenceChanged, .focusRouteApplied:
             focusCategory
-        case .diagnosticsRefreshed, .runtimeProbeSnapshot:
+        case .diagnosticsRefreshRequested, .diagnosticsRefreshed, .runtimeProbeSnapshot:
             diagnosticsCategory
         }
     }
@@ -52,6 +53,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
             "import OSLog",
             "Logger",
             "focus_route_applied",
+            "diagnostics_refresh_requested",
             "diagnostics_refreshed",
             "runtime_probe_snapshot",
             "privacy: .public"
@@ -70,6 +72,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
     public var expectedDiagnosticsTelemetryTokens: [String] {
         [
             "SeisAppleShellTelemetryLogger",
+            ".diagnosticsRefreshRequested",
             ".diagnosticsRefreshed",
             ".runtimeProbeSnapshot"
         ]

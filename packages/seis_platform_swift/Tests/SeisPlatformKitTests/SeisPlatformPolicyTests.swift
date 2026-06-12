@@ -199,8 +199,10 @@ import Testing
     #expect(telemetry.diagnosticsCategory == "Diagnostics")
     #expect(telemetry.verificationCommand == "./script/build_and_run.sh --telemetry")
     #expect(telemetry.events.contains(.focusRouteApplied))
+    #expect(telemetry.events.contains(.diagnosticsRefreshRequested))
     #expect(telemetry.events.contains(.diagnosticsRefreshed))
     #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
+    #expect(telemetry.category(for: .diagnosticsRefreshRequested) == "Diagnostics")
     #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
 }
 

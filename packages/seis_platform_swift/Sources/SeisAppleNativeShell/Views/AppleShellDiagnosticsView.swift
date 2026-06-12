@@ -3,17 +3,17 @@ import SwiftUI
 
 struct AppleShellDiagnosticsView: View {
     let snapshot: SeisAppleContinuationSnapshot
-    let runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
 
     private let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
     private let telemetry = SeisAppleShellTelemetryLogger()
+    @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
 
     init(
         snapshot: SeisAppleContinuationSnapshot,
         runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current()
     ) {
         self.snapshot = snapshot
-        self.runtimeDiagnostics = runtimeDiagnostics
+        self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)
     }
 
     var body: some View {
@@ -25,6 +25,12 @@ struct AppleShellDiagnosticsView: View {
                 Text("\(totalReadyCount)/\(totalCheckCount) ready")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
+                Button(action: refreshDiagnostics) {
+                    Label("Refresh Diagnostics", systemImage: "arrow.clockwise")
+                        .labelStyle(.iconOnly)
+                }
+                .buttonStyle(.bordered)
+                .help("Refresh Diagnostics")
             }
 
             VStack(alignment: .leading, spacing: 8) {
@@ -95,9 +101,11 @@ struct AppleShellDiagnosticsView: View {
         }
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("\(diagnostics.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) Active quality gates: \(snapshot.qualityGates.count).")
-        .onAppear(perform: recordDiagnosticsTelemetry)
+        .onAppear {
+            recordDiagnosticsTelemetry(source: "appear")
+        }
     }
 
     private var totalReadyCount: Int {
@@ -126,14 +134,20 @@ struct AppleShellDiagnosticsView: View {
         }
     }
 
-    private func recordDiagnosticsTelemetry() {
+    private func refreshDiagnostics() {
+        telemetry.record(.diagnosticsRefreshRequested, detail: "source=manual")
+        runtimeDiagnostics = .current()
+        recordDiagnosticsTelemetry(source: "manual")
+    }
+
+    private func recordDiagnosticsTelemetry(source: String) {
         telemetry.record(
             .diagnosticsRefreshed,
-            detail: "ready=\(totalReadyCount) total=\(totalCheckCount) activeGates=\(snapshot.qualityGates.count)"
+            detail: "source=\(source) ready=\(totalReadyCount) total=\(totalCheckCount) activeGates=\(snapshot.qualityGates.count)"
         )
         telemetry.record(
             .runtimeProbeSnapshot,
-            detail: "ready=\(runtimeDiagnostics.readyCount) total=\(runtimeDiagnostics.probes.count) process=\(runtimeDiagnostics.processName)"
+            detail: "source=\(source) ready=\(runtimeDiagnostics.readyCount) total=\(runtimeDiagnostics.probes.count) process=\(runtimeDiagnostics.processName)"
         )
     }
 }
