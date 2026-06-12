@@ -156,6 +156,9 @@ import Testing
     for token in contract.expectedContinuationWindowTokens {
         #expect(continuation.contains(token), "missing continuation token: \(token)")
     }
+    for token in contract.expectedSettingsCommandTokens {
+        #expect(app.contains(token), "missing settings command token: \(token)")
+    }
 }
 
 @Test func appleShellDiagnosticsContractDescribesNativeReadiness() {

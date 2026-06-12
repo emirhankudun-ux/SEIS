@@ -80,6 +80,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
 
     public var expectedCommandTelemetryTokens: [String] {
         [
+            "CommandMenu(\"SEIS\")",
             "Refresh Diagnostics",
             "seisRefreshAppleDiagnostics",
             "NotificationCenter.default.post",

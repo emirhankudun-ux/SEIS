@@ -18,12 +18,18 @@ struct SeisAppleNativeShellApp: App {
     @NSApplicationDelegateAdaptor(SeisAppleNativeShellAppDelegate.self) private var appDelegate
     #endif
 
+    @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.lowMotionKey)
+    private var lowMotion = SeisAppleShellSettingsContract.appleNativeShell.defaultLowMotion
+
+    @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.showsQualityGatesKey)
+    private var showsQualityGates = SeisAppleShellSettingsContract.appleNativeShell.defaultShowsQualityGates
+
     var body: some Scene {
         WindowGroup("SEIS Apple Native") {
             AppleContinuationWindow()
         }
         .commands {
-            CommandGroup(after: .appInfo) {
+            CommandMenu("SEIS") {
                 Button("Focus Apple Native") {
                     NotificationCenter.default.post(name: .seisFocusAppleNative, object: nil)
                 }
@@ -33,6 +39,13 @@ struct SeisAppleNativeShellApp: App {
                     NotificationCenter.default.post(name: .seisRefreshAppleDiagnostics, object: nil)
                 }
                 .keyboardShortcut("r", modifiers: [.command, .shift])
+
+                Divider()
+
+                Toggle("Low Motion", isOn: $lowMotion)
+                    .keyboardShortcut("m", modifiers: [.command, .shift])
+                Toggle("Quality Gates", isOn: $showsQualityGates)
+                    .keyboardShortcut("g", modifiers: [.command, .shift])
             }
         }
 

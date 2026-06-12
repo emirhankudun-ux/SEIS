@@ -88,4 +88,17 @@ public struct SeisAppleShellSettingsContract: Codable, Equatable, Sendable {
             "onChange"
         ]
     }
+
+    public var expectedSettingsCommandTokens: [String] {
+        [
+            "@AppStorage",
+            "lowMotionKey",
+            "showsQualityGatesKey",
+            "CommandMenu(\"SEIS\")",
+            "Toggle(\"Low Motion\"",
+            "Toggle(\"Quality Gates\"",
+            ".keyboardShortcut(\"m\", modifiers: [.command, .shift])",
+            ".keyboardShortcut(\"g\", modifiers: [.command, .shift])"
+        ]
+    }
 }
