@@ -10,6 +10,7 @@ const requiredFiles = [
   "LICENSE",
   "package.json",
   "apps/web/index.html",
+  "apps/web/seis-cockpit.html",
   "apps/web/script.js",
   "apps/web/style.css",
   "apps/web/service-worker.js",

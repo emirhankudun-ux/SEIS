@@ -24,4 +24,5 @@ jobs:
         run: |
           npm run check:open-source-governance
           npm run seis:check
+          npm run check:workspace
           npm run check:seis-platform-language-policy

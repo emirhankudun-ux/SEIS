@@ -88,7 +88,7 @@
     "sync:seis-plugin-bundle": "node scripts/sync-seis-plugin-bundle.mjs --source . --local /Users/emirhankudun/plugins/seis",
     "refresh:seis-plugin-bundle": "node scripts/refresh-seis-plugin-bundle.mjs --source . --local /Users/emirhankudun/plugins/seis",
     "automation:publish-readiness": "node scripts/automation-publish-readiness.cjs",
-    "quality": "npm run check:open-source-governance && npm run check:foundation && npm run seis:check && npm run check:seis-platform-language-policy && npm run check:seis-platform-kernel",
+    "quality": "npm run check:open-source-governance && npm run check:foundation && npm run check:workspace && npm run seis:check && npm run check:seis-platform-language-policy && npm run check:seis-platform-kernel",
     "check:seis-evolution-model": "node scripts/check-seis-evolution-model.mjs",
     "check:github-remote-configuration": "node scripts/check-github-remote-configuration.mjs",
     "check:publish-gate-contract": "node scripts/check-publish-gate-contract.mjs",
