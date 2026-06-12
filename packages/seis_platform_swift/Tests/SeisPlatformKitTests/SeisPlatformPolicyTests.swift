@@ -158,6 +158,34 @@ import Testing
     }
 }
 
+@Test func appleShellDiagnosticsContractDescribesNativeReadiness() {
+    let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    #expect(diagnostics.isReady)
+    #expect(diagnostics.readyCount == diagnostics.items.count)
+    #expect(diagnostics.items.contains { $0.id == "run-handoff" && $0.qualityGate == "offline_fallback" })
+    #expect(diagnostics.items.contains { $0.id == "apple-framework-policy" && $0.evidence.contains("CloudKit") })
+    #expect(diagnostics.validationCommands.contains("swift test --package-path packages/seis_platform_swift"))
+    #expect(diagnostics.validationCommands.contains("./script/build_and_run.sh --verify"))
+}
+
+@Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
+    let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    let root = repositoryRoot()
+    let view = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift"),
+        encoding: .utf8
+    )
+    let continuation = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift"),
+        encoding: .utf8
+    )
+
+    #expect(continuation.contains("AppleShellDiagnosticsView(snapshot: model.snapshot)"))
+    for token in diagnostics.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing diagnostics view token: \(token)")
+    }
+}
+
 @Test func developmentTracksKeepAppleAndWindowsBoundaries() {
     let tracks = SeisPlatformPolicy.developmentTracks
     let appleTrack = tracks.first { $0.id == "apple-native-macos-track" }

@@ -33,6 +33,8 @@ struct AppleContinuationWindow: View {
                 VStack(alignment: .leading, spacing: 16) {
                     SeisAppleContinuationView(snapshot: model.snapshot)
 
+                    AppleShellDiagnosticsView(snapshot: model.snapshot)
+
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Route Request")
                             .font(.headline)
