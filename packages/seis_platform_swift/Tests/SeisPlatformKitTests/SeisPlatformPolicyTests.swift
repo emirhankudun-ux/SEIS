@@ -194,6 +194,18 @@ import Testing
     #expect(diagnostics.validationCommands.contains("./script/build_and_run.sh --verify"))
 }
 
+@Test func applePersistenceReadinessContractDescribesCoreDataCloudKit() {
+    let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
+
+    #expect(persistence.isReady)
+    #expect(persistence.readyCount == persistence.items.count)
+    #expect(persistence.appleFrameworkSymbols.contains("NSPersistentCloudKitContainer"))
+    #expect(persistence.appleFrameworkSymbols.contains("CKContainer"))
+    #expect(persistence.items.contains { $0.id == "persistent-cloudkit-container" && $0.qualityGate == "coredata_cloudkit_sync_review" })
+    #expect(persistence.items.contains { $0.id == "cloudkit-record-privacy" && $0.qualityGate == "app_privacy_review" })
+    #expect(persistence.validationCommands.contains("swift test --package-path packages/seis_platform_swift"))
+}
+
 @Test func appleShellRuntimeDiagnosticsTrackRepositorySurfaces() {
     let root = repositoryRoot()
     let requiredPaths = Set(SeisAppleShellRuntimeDiagnostics.requiredSurfaces.map(\.relativePath))
@@ -208,6 +220,7 @@ import Testing
     #expect(runtime.readyCount == runtime.probes.count)
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
+    #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.accessibilitySummary.contains("SeisAppleNativeShell"))
 
     let partial = SeisAppleShellRuntimeDiagnostics.make(
@@ -234,6 +247,7 @@ import Testing
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
     let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     let root = repositoryRoot()
     let runtime = SeisAppleShellRuntimeDiagnostics.current(repositoryRoot: root)
     let view = try String(
@@ -242,6 +256,10 @@ import Testing
     )
     let runtimeSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift"),
+        encoding: .utf8
+    )
+    let persistenceSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift"),
         encoding: .utf8
     )
     let continuation = try String(
@@ -257,6 +275,12 @@ import Testing
     }
     for token in runtime.expectedRuntimeViewTokens {
         #expect(view.contains(token), "missing runtime diagnostics view token: \(token)")
+    }
+    for token in persistence.expectedSourceTokens {
+        #expect(persistenceSource.contains(token), "missing persistence source token: \(token)")
+    }
+    for token in persistence.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing persistence diagnostics view token: \(token)")
     }
 }
 

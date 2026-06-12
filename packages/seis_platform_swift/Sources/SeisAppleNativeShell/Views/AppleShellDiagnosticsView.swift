@@ -5,6 +5,7 @@ struct AppleShellDiagnosticsView: View {
     let snapshot: SeisAppleContinuationSnapshot
 
     private let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    private let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     private let telemetry = SeisAppleShellTelemetryLogger()
     @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
 
@@ -58,6 +59,33 @@ struct AppleShellDiagnosticsView: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
+                Text("Persistence Readiness")
+                    .font(.subheadline.weight(.semibold))
+                ForEach(persistence.items) { item in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(for: item.state))
+                            .foregroundStyle(statusColor(for: item.state))
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(item.title)
+                                .font(.caption.weight(.semibold))
+                            Text("\(item.appleFramework) / \(item.symbol)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(item.evidence)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text(item.qualityGate)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
                 Text("Runtime Probes")
                     .font(.subheadline.weight(.semibold))
                 ForEach(runtimeDiagnostics.probes) { probe in
@@ -91,7 +119,7 @@ struct AppleShellDiagnosticsView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Validation Commands")
                     .font(.subheadline.weight(.semibold))
-                ForEach(diagnostics.validationCommands, id: \.self) { command in
+                ForEach(validationCommands, id: \.self) { command in
                     Text(command)
                         .font(.caption.monospaced())
                         .foregroundStyle(.secondary)
@@ -104,7 +132,7 @@ struct AppleShellDiagnosticsView: View {
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) Active quality gates: \(snapshot.qualityGates.count).")
+        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) Active quality gates: \(snapshot.qualityGates.count).")
         .onAppear {
             recordDiagnosticsTelemetry(source: "appear")
         }
@@ -114,11 +142,16 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private var totalReadyCount: Int {
-        diagnostics.readyCount + runtimeDiagnostics.readyCount
+        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount
     }
 
     private var totalCheckCount: Int {
-        diagnostics.items.count + runtimeDiagnostics.probes.count
+        diagnostics.items.count + persistence.items.count + runtimeDiagnostics.probes.count
+    }
+
+    private var validationCommands: [String] {
+        var seen = Set<String>()
+        return (diagnostics.validationCommands + persistence.validationCommands).filter { seen.insert($0).inserted }
     }
 
     private func systemImage(for state: SeisAppleShellDiagnosticState) -> String {
