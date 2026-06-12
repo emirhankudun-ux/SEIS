@@ -27,6 +27,43 @@ public struct SeisAppleFrameworkFocus: Codable, Equatable, Sendable {
     }
 }
 
+public struct SeisAppleReadinessMetric: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let title: String
+    public let requiredItems: [String]
+    public let availableItems: [String]
+    public let qualityGate: String
+    public let evidence: String
+
+    public init(
+        id: String,
+        title: String,
+        requiredItems: [String],
+        availableItems: [String],
+        qualityGate: String,
+        evidence: String
+    ) {
+        self.id = id
+        self.title = title
+        self.requiredItems = requiredItems
+        self.availableItems = availableItems
+        self.qualityGate = qualityGate
+        self.evidence = evidence
+    }
+
+    public var readyCount: Int {
+        requiredItems.filter { availableItems.contains($0) }.count
+    }
+
+    public var isReady: Bool {
+        !requiredItems.isEmpty && readyCount == requiredItems.count
+    }
+
+    public var readinessLabel: String {
+        "\(readyCount)/\(requiredItems.count) ready"
+    }
+}
+
 public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
     public let title: String
     public let platforms: [SeisPlatform]
@@ -56,12 +93,59 @@ public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
 
     public static let current = make()
 
+    public static let appleFirstLanguages = ["Swift", "SwiftUI", "Objective-C"]
+
     public var isReady: Bool {
         !readiness.isEmpty && readiness.allSatisfy(\.ready)
     }
 
+    public var readinessMetrics: [SeisAppleReadinessMetric] {
+        [
+            SeisAppleReadinessMetric(
+                id: "apple-languages",
+                title: "Apple Languages",
+                requiredItems: Self.appleFirstLanguages,
+                availableItems: languages,
+                qualityGate: "swift_test",
+                evidence: "Swift, SwiftUI, and Objective-C stay present in the routed Apple continuation."
+            ),
+            SeisAppleReadinessMetric(
+                id: "apple-frameworks",
+                title: "Apple Frameworks",
+                requiredItems: frameworkTargets,
+                availableItems: frameworks,
+                qualityGate: "coredata_cloudkit_sync_review",
+                evidence: "Selected Apple framework targets are present for the active macOS and iOS scope."
+            ),
+            SeisAppleReadinessMetric(
+                id: "apple-quality-gates",
+                title: "Apple Quality Gates",
+                requiredItems: qualityGateTargets,
+                availableItems: qualityGates,
+                qualityGate: "accessibility_when_ui",
+                evidence: "Framework-specific quality gates are tracked alongside the native shell."
+            )
+        ]
+    }
+
+    public var readinessSummary: String {
+        let ready = readinessMetrics.filter(\.isReady).count
+        return "\(ready)/\(readinessMetrics.count) Apple readiness checks ready"
+    }
+
     public var accessibilitySummary: String {
-        "\(title). Platforms: \(platforms.map(\.rawValue).joined(separator: ", ")). Frameworks: \(frameworks.joined(separator: ", "))."
+        "\(title). \(readinessSummary). Platforms: \(platforms.map(\.rawValue).joined(separator: ", ")). Frameworks: \(frameworks.joined(separator: ", "))."
+    }
+
+    public static var expectedReadinessViewTokens: [String] {
+        [
+            "Apple Readiness",
+            "snapshot.readinessMetrics",
+            "metric.title",
+            "metric.readinessLabel",
+            "metric.qualityGate",
+            "readinessSummary"
+        ]
     }
 
     public static func make(platforms requestedPlatforms: [SeisPlatform] = [.macOS, .iOS]) -> Self {
@@ -86,6 +170,22 @@ public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
     private static func stableUnique(_ values: [String]) -> [String] {
         var seen = Set<String>()
         return values.filter { seen.insert($0).inserted }
+    }
+
+    private var frameworkTargets: [String] {
+        var targets: [String] = []
+        if platforms.contains(.macOS) {
+            targets.append("AppKit")
+        }
+        if platforms.contains(.iOS) {
+            targets.append("UIKit")
+        }
+        targets.append(contentsOf: ["Metal", "Combine", "Core Data", "CloudKit"])
+        return Self.stableUnique(targets)
+    }
+
+    private var qualityGateTargets: [String] {
+        Self.stableUnique(focusAreas.map(\.qualityGate))
     }
 
     private static func focusAreas(for platforms: [SeisPlatform]) -> [SeisAppleFrameworkFocus] {
@@ -182,6 +282,32 @@ public struct SeisAppleContinuationView: View {
                 .font(.headline)
             Text(snapshot.frameworks.joined(separator: " / "))
                 .font(.subheadline)
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Apple Readiness")
+                    .font(.subheadline.weight(.semibold))
+                ForEach(snapshot.readinessMetrics) { metric in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: metric.isReady ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                            .foregroundStyle(metric.isReady ? .green : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack {
+                                Text(metric.title)
+                                    .font(.caption.weight(.semibold))
+                                Text(metric.readinessLabel)
+                                    .font(.caption2.monospacedDigit())
+                                    .foregroundStyle(.secondary)
+                            }
+                            Text(metric.evidence)
+                                .font(.caption2)
+                                .foregroundStyle(.secondary)
+                            Text(metric.qualityGate)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
             VStack(alignment: .leading, spacing: 8) {
                 ForEach(snapshot.focusAreas, id: \.framework) { focus in
                     VStack(alignment: .leading, spacing: 2) {

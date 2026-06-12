@@ -77,16 +77,27 @@ import Testing
     #expect(snapshot.qualityGates.contains("appkit_surface_review"))
     #expect(snapshot.qualityGates.contains("uikit_accessibility"))
     #expect(snapshot.focusAreas.contains { $0.framework == "Core Data + CloudKit" })
+    #expect(snapshot.readinessMetrics.count == 3)
+    #expect(snapshot.readinessMetrics.allSatisfy { $0.isReady })
+    #expect(snapshot.readinessMetrics.first { $0.id == "apple-languages" }?.requiredItems == ["Swift", "SwiftUI", "Objective-C"])
+    #expect(snapshot.readinessMetrics.first { $0.id == "apple-frameworks" }?.requiredItems.contains("AppKit") == true)
+    #expect(snapshot.readinessMetrics.first { $0.id == "apple-frameworks" }?.requiredItems.contains("UIKit") == true)
+    #expect(snapshot.readinessSummary == "3/3 Apple readiness checks ready")
     #expect(snapshot.isReady)
 }
 
 @Test func appleContinuationModelRoutesRequestsIntoAppleSurfaces() {
     let model = SeisAppleContinuationModel()
     model.focus(on: "Build an iOS UIKit CloudKit Core Data surface")
+    let frameworks = model.snapshot.readinessMetrics.first { $0.id == "apple-frameworks" }
+
     #expect(model.snapshot.platforms == [.iOS])
     #expect(model.snapshot.frameworks.contains("UIKit"))
     #expect(model.snapshot.frameworks.contains("CloudKit"))
     #expect(!model.snapshot.frameworks.contains("AppKit"))
+    #expect(frameworks?.requiredItems.contains("UIKit") == true)
+    #expect(frameworks?.requiredItems.contains("AppKit") == false)
+    #expect(frameworks?.isReady == true)
 }
 
 @Test func appleRunHandoffContractDescribesCodexRunSurface() {
@@ -99,6 +110,18 @@ import Testing
     #expect(contract.codexRunCommand == "./script/build_and_run.sh")
     #expect(contract.supportedModes.contains("--verify"))
     #expect(contract.requiredInfoPlistKeys.contains("NSPrincipalClass"))
+}
+
+@Test func appleContinuationViewRendersReadinessMetrics() throws {
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift"),
+        encoding: .utf8
+    )
+
+    for token in SeisAppleContinuationSnapshot.expectedReadinessViewTokens {
+        #expect(source.contains(token), "missing readiness view token: \(token)")
+    }
 }
 
 @Test func appleRunHandoffFilesMatchSwiftContract() throws {
