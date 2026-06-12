@@ -32,7 +32,12 @@ jobs:
           npm install -g ts-node typescript
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
-          sudo apt-get install -y lua5.4 tcl r-base r-cran-jsonlite ghc ocaml nim elixir groovy kotlin guile-3.0 racket sbcl swi-prolog chicken-bin
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 tcl r-base ghc ocaml nim elixir groovy kotlin guile-3.0 racket sbcl swi-prolog chicken-bin
+          mkdir -p "$RUNNER_TEMP/R-lib"
+          export R_LIBS_USER="$RUNNER_TEMP/R-lib"
+          echo "R_LIBS_USER=$R_LIBS_USER" >> "$GITHUB_ENV"
+          Rscript -e "install.packages('jsonlite', lib=Sys.getenv('R_LIBS_USER'), repos='https://cran.r-project.org', quiet=TRUE)"
 
       - name: Toolchain inventory
         run: |
