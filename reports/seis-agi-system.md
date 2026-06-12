@@ -80,6 +80,7 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 | --- | --- |
 | swiftContract | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift` |
 | swiftMemoryPlanningStore | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift` |
+| swiftContextCompressionRuntime | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift` |
 | generator | `scripts/create-seis-agi-system.py` |
 | sourceContract | `content/development/seis-agi-system.json` |
 | report | `reports/seis-agi-system.md` |
@@ -272,5 +273,6 @@ The full 150-domain taxonomy is stored in `content/development/seis-agi-system.j
 - token_savings_target_is_60_percent
 - apple_first_language_contract_present
 - apple_native_memory_store_present
+- apple_native_context_compression_present
 - no_runtime_install_for_language_percentage
 - security_and_human_review_gates_present

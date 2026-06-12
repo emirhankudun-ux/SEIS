@@ -2049,6 +2049,7 @@
   "implementation": {
     "swiftContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+    "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
     "generator": "scripts/create-seis-agi-system.py",
     "sourceContract": "content/development/seis-agi-system.json",
     "report": "reports/seis-agi-system.md",
@@ -2062,6 +2063,7 @@
     "token_savings_target_is_60_percent",
     "apple_first_language_contract_present",
     "apple_native_memory_store_present",
+    "apple_native_context_compression_present",
     "no_runtime_install_for_language_percentage",
     "security_and_human_review_gates_present"
   ]

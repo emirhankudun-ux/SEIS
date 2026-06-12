@@ -234,6 +234,7 @@ import Testing
     #expect(runtime.readyCount == runtime.probes.count)
     #expect(runtime.probes.contains { $0.id == "agi-operating-system-contract" && $0.qualityGate == "agent_governance" })
     #expect(runtime.probes.contains { $0.id == "agi-memory-planning-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
+    #expect(runtime.probes.contains { $0.id == "agi-context-compression-runtime" && $0.qualityGate == "token-savings-target" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -592,6 +593,29 @@ import Testing
         #expect(source.contains(token), "missing memory planning persistence token: \(token)")
     }
     #endif
+}
+
+@Test func agiContextCompressionRuntimeBuildsTokenEfficientPlan() throws {
+    let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(from: SeisAGISystemContract.master.memoryPlanning)
+    let runtime = SeisAGIContextCompressionRuntime()
+    let plan = runtime.makePlan(from: snapshot.records)
+
+    #expect(plan.isReady)
+    #expect(plan.targetSavingsPercent == 60)
+    #expect(plan.savingsPercent >= 60)
+    #expect(plan.selectedSources.contains { $0.id == "context-intake" })
+    #expect(plan.selectedSources.contains { $0.id == "self-evaluation" })
+    #expect(plan.deferredSources.contains { $0.id == "multi-agent-handoff" })
+    #expect(plan.redactionPolicy.contains("never include secrets"))
+
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift"),
+        encoding: .utf8
+    )
+    for token in SeisAGIContextCompressionRuntime.expectedSourceTokens {
+        #expect(source.contains(token), "missing context compression source token: \(token)")
+    }
 }
 
 #if canImport(CoreData)

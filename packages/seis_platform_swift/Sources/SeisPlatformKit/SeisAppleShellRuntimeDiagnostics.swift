@@ -77,6 +77,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "coredata_cloudkit_sync_review"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "agi-context-compression-runtime",
+            title: "AGI Context Compression Runtime",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+            qualityGate: "token-savings-target"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "run-script",
             title: "Run Script",
             relativePath: "script/build_and_run.sh",

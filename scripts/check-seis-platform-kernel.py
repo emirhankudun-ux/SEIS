@@ -21,6 +21,7 @@ REQUIRED_FILES = [
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
     "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",

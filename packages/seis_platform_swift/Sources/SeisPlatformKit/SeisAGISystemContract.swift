@@ -490,6 +490,7 @@ public struct SeisAGISystemContract: Codable, Equatable, Sendable {
         implementationRoots: [
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
             "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
             "packages/seis_kernel/agi_system.py",
             "scripts/create-seis-agi-system.py",
             "content/development/seis-agi-system.json",
@@ -510,7 +511,9 @@ public extension SeisAGISystemContract {
             "Agents, validation, release",
             "release-evidence-current",
             "SeisAGIMemoryPlanningStore.swift",
+            "SeisAGIContextCompressionRuntime.swift",
             "Memory Planning Automation",
+            "Implementation Surfaces",
             "Core Data for local agent context records",
             "Retrieve Compress Plan",
             "Self Evaluation",
