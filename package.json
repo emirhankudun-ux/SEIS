@@ -6,6 +6,7 @@
   "description": "Low-pressure AI-native creative engineering workspace.",
   "scripts": {
     "check:workspace": "node scripts/check-workspace.cjs",
+    "check:open-source-governance": "node scripts/check-open-source-governance.mjs",
     "check:foundation": "node scripts/check-foundation.mjs",
     "check:release-sync": "node scripts/check-release-sync.cjs",
     "check:ai-stack": "node scripts/check-ai-stack.cjs",
@@ -87,7 +88,7 @@
     "sync:seis-plugin-bundle": "node scripts/sync-seis-plugin-bundle.mjs --source . --local /Users/emirhankudun/plugins/seis",
     "refresh:seis-plugin-bundle": "node scripts/refresh-seis-plugin-bundle.mjs --source . --local /Users/emirhankudun/plugins/seis",
     "automation:publish-readiness": "node scripts/automation-publish-readiness.cjs",
-    "quality": "npm run check:workspace && npm run check:foundation && npm run check:release-sync && npm run check:cloud-environment && npm run check:motion-evidence && npm run check:mobile-ergonomics && npm run check:software-languages && npm run check:server-target && npm run check:code-automation-plan && npm run check:monthly-branch-hardening && npm run check:aggressive-capability-map && npm run check:trusted-marketplace-intake && npm run check:seis-trusted-marketplace-plugin && npm run check:connector-activation-report && npm run check:server-cloud-report && npm run check:seis-evolution-model && npm run check:github-remote-configuration && npm run check:publish-gate-contract",
+    "quality": "npm run check:open-source-governance && npm run check:workspace && npm run check:foundation && npm run check:release-sync && npm run check:cloud-environment && npm run check:motion-evidence && npm run check:mobile-ergonomics && npm run check:software-languages && npm run check:server-target && npm run check:code-automation-plan && npm run check:monthly-branch-hardening && npm run check:aggressive-capability-map && npm run check:trusted-marketplace-intake && npm run check:seis-trusted-marketplace-plugin && npm run check:connector-activation-report && npm run check:server-cloud-report && npm run check:seis-evolution-model && npm run check:github-remote-configuration && npm run check:publish-gate-contract",
     "check:seis-evolution-model": "node scripts/check-seis-evolution-model.mjs",
     "check:github-remote-configuration": "node scripts/check-github-remote-configuration.mjs",
     "check:publish-gate-contract": "node scripts/check-publish-gate-contract.mjs",

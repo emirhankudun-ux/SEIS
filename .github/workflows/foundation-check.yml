@@ -20,7 +20,6 @@ jobs:
 
       - name: Run lightweight checks
         run: |
-          npm run check:js
-          npm run check:foundation
-          npm run package:server
-          npm run prepare:server
+          npm run check:open-source-governance
+          npm run seis:check
+          npm run check:seis-platform-language-policy

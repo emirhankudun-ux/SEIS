@@ -1,18 +1,16 @@
-name: SEIS CLOSED CODE Governance
+name: SEIS Open Source Governance
 
 on:
   push:
     branches:
       - main
-      - UIXAppTTR
   pull_request:
     branches:
       - main
-      - UIXAppTTR
 
 jobs:
   governance:
-    name: SEIS closed-code governance check
+    name: Open source governance check
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -22,5 +20,5 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Check SEIS CLOSED CODE files
-        run: node scripts/check-seis-closed-code.mjs
+      - name: Check SEIS open source governance
+        run: npm run check:open-source-governance
