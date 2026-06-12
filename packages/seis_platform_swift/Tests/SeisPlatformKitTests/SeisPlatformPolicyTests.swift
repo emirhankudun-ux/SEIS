@@ -56,6 +56,38 @@ import Testing
     #expect(result.contains(.iOS))
 }
 
+@Test func capabilityLookupReturnsEveryPlatformPolicy() {
+    #expect(SeisPlatformPolicy.capability(for: .macOS) == SeisPlatformPolicy.macOS)
+    #expect(SeisPlatformPolicy.capability(for: .iOS) == SeisPlatformPolicy.iOS)
+    #expect(SeisPlatformPolicy.capability(for: .windows) == SeisPlatformPolicy.windows)
+}
+
+@Test func appleContinuationSnapshotMaterializesNativeFrameworkPlan() {
+    let snapshot = SeisAppleContinuationSnapshot.current
+    #expect(snapshot.platforms == [.macOS, .iOS])
+    #expect(snapshot.languages.contains("Swift"))
+    #expect(snapshot.languages.contains("SwiftUI"))
+    #expect(snapshot.frameworks.contains("AppKit"))
+    #expect(snapshot.frameworks.contains("UIKit"))
+    #expect(snapshot.frameworks.contains("Metal"))
+    #expect(snapshot.frameworks.contains("Combine"))
+    #expect(snapshot.frameworks.contains("Core Data"))
+    #expect(snapshot.frameworks.contains("CloudKit"))
+    #expect(snapshot.qualityGates.contains("appkit_surface_review"))
+    #expect(snapshot.qualityGates.contains("uikit_accessibility"))
+    #expect(snapshot.focusAreas.contains { $0.framework == "Core Data + CloudKit" })
+    #expect(snapshot.isReady)
+}
+
+@Test func appleContinuationModelRoutesRequestsIntoAppleSurfaces() {
+    let model = SeisAppleContinuationModel()
+    model.focus(on: "Build an iOS UIKit CloudKit Core Data surface")
+    #expect(model.snapshot.platforms == [.iOS])
+    #expect(model.snapshot.frameworks.contains("UIKit"))
+    #expect(model.snapshot.frameworks.contains("CloudKit"))
+    #expect(!model.snapshot.frameworks.contains("AppKit"))
+}
+
 @Test func developmentTracksKeepAppleAndWindowsBoundaries() {
     let tracks = SeisPlatformPolicy.developmentTracks
     let appleTrack = tracks.first { $0.id == "apple-native-macos-track" }

@@ -169,6 +169,10 @@ public enum SeisPlatformPolicy {
 
     public static let all: [SeisPlatformCapability] = [macOS, iOS, windows]
 
+    public static func capability(for platform: SeisPlatform) -> SeisPlatformCapability? {
+        all.first { $0.platform == platform }
+    }
+
     public static let developmentTracks: [SeisDevelopmentTrack] = [
         SeisDevelopmentTrack(
             id: "apple-native-macos-track",

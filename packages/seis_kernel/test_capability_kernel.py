@@ -112,6 +112,11 @@ class SeisCapabilityKernelTest(unittest.TestCase):
         apple_track = by_id["apple-native-macos-track"]
         self.assertEqual(set(apple_track["languages"]), {"Swift", "SwiftUI", "Objective-C", "Playground", "AppleScript"})
         self.assertNotIn("AppleScript", apple_track["forbiddenLanguages"])
+        self.assertIn("AppKit", apple_track["frameworks"])
+        self.assertIn("UIKit", apple_track["frameworks"])
+        self.assertIn("Core Data", apple_track["frameworks"])
+        self.assertIn("CloudKit", apple_track["frameworks"])
+        self.assertIn("packages/seis_platform_swift/", apple_track["sourceRoots"])
 
         windows_required = by_id["windows-required-polyglot-track"]
         self.assertIn("C#", windows_required["languages"])
