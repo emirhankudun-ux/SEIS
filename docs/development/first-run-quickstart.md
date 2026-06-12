@@ -53,7 +53,7 @@ After the baseline passes, move into the narrow lane that matches your work.
 | Lane | First command |
 | --- | --- |
 | Apple native | `swift test --package-path packages/seis_platform_swift` |
-| Apple shell app | `swift build --package-path packages/seis_platform_swift --product SeisAppleNativeShell` |
+| Apple shell app | `./script/build_and_run.sh --verify` |
 | AI and MCP package | `npm test --prefix packages/seis-ai` after installing that package's dependencies |
 | Web audit | `npm run seis:check` |
 | Platform language policy | `npm run check:seis-platform-language-policy` |
@@ -63,6 +63,12 @@ After the baseline passes, move into the narrow lane that matches your work.
 Do not install Swift, Xcode, Android Studio, .NET, Rust, Go, Java, Python
 packages, or other toolchains unless your change is in that lane and the
 validation evidence requires it.
+
+The Apple shell app also has a Codex app `Run` action wired through
+`.codex/environments/environment.toml`. That action calls
+`./script/build_and_run.sh`, which builds `SeisAppleNativeShell`, stages a local
+`.app` bundle under `dist/`, launches it as a foreground macOS app, and supports
+`--debug`, `--logs`, `--telemetry`, and `--verify` modes for focused debugging.
 
 ## 5. Inspect The Product Surface When Needed
 
