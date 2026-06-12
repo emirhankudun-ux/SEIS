@@ -84,6 +84,8 @@ def build_report(contract: dict) -> dict:
             "subsystemCount": len(contract["subsystems"]),
             "domainCount": len(contract["domainTaxonomy"]),
             "pluginLaneCount": len(contract["pluginCapabilityLanes"]),
+            "memoryCheckpointCount": len(contract["memoryPlanning"]["checkpoints"]),
+            "memoryLoopCount": len(contract["memoryPlanning"]["loops"]),
             "usedVisualSourceCount": sum(1 for item in contract["imageReferenceSignals"] if item["used"]),
             "priorityDomainCount": len(contract["priorityDomains"]),
             "javascriptTargetPercent": contract["platformStrategy"]["javascriptTargetPercent"],
@@ -100,6 +102,8 @@ def build_report(contract: dict) -> dict:
             }
             for item in contract["subsystems"]
         ],
+        "memoryPlanning": contract["memoryPlanning"],
+        "releaseWindow": contract["releaseWindow"],
         "pluginCapabilityLanes": contract["pluginCapabilityLanes"],
         "imageReferenceSignals": contract["imageReferenceSignals"],
         "priorityDomains": contract["priorityDomains"],
@@ -160,6 +164,25 @@ def build_markdown(contract: dict) -> str:
             for item in contract["pluginCapabilityLanes"]
         ],
         "",
+        "## Memory Planning Automation",
+        "",
+        f"- Runtime: {contract['memoryPlanning']['ownerRuntime']}",
+        f"- Storage policy: {contract['memoryPlanning']['storagePolicy']}",
+        "",
+        "| checkpoint | phase | storage surface | evidence | gates |",
+        "| --- | --- | --- | --- | --- |",
+        *[
+            f"| {cell(item['label'])} | {cell(item['phase'])} | {cell(item['appleStorageSurface'])} | `{cell(item['evidencePath'])}` | {cell(', '.join(item['qualityGates']))} |"
+            for item in contract["memoryPlanning"]["checkpoints"]
+        ],
+        "",
+        "| loop | trigger | output | gates |",
+        "| --- | --- | --- | --- |",
+        *[
+            f"| {cell(item['label'])} | {cell(item['trigger'])} | `{cell(item['outputArtifact'])}` | {cell(', '.join(item['evaluationGates']))} |"
+            for item in contract["memoryPlanning"]["loops"]
+        ],
+        "",
         "## Visual Sources Used",
         "",
         "| source | repository path | used | signals |",
@@ -171,10 +194,10 @@ def build_markdown(contract: dict) -> str:
         "",
         "## 90 Day Roadmap",
         "",
-        "| window | theme | done definition |",
-        "| --- | --- | --- |",
+        "| window | theme | focus | acceptance gates | evidence |",
+        "| --- | --- | --- | --- | --- |",
         *[
-            f"| {cell(item['dayRange'])} | {cell(item['theme'])} | {cell(item['done'])} |"
+            f"| {cell(item['dayRange'])} | {cell(item['theme'])} | {cell(', '.join(item['focusAreas']))} | {cell(', '.join(item['acceptanceGates']))} | {cell(', '.join(item['evidencePaths']))} |"
             for item in contract["releaseWindow"]["milestones"]
         ],
         "",
@@ -224,6 +247,19 @@ def build_doc(contract: dict) -> str:
         "## Token Efficiency",
         "",
         f"The system target is {contract['tokenEfficiency']['targetSavingsPercent']}% token savings through retrieval, bounded reports, source manifests, and minimum required tool activation.",
+        "",
+        "## Memory Planning Automation",
+        "",
+        f"`{contract['memoryPlanning']['id']}` runs on {contract['memoryPlanning']['ownerRuntime']} and defines context intake, task decomposition, research evidence, multi-agent handoff, and self-evaluation checkpoints.",
+        "",
+        "## Three Month Release Cycle",
+        "",
+        f"The active release window runs from {contract['releaseWindow']['startDate']} to {contract['releaseWindow']['targetReleaseDate']} with three monthly acceptance-gated milestones.",
+        "",
+        *[
+            f"- {item['dayRange']}: {item['theme']} -> {', '.join(item['acceptanceGates'])}"
+            for item in contract["releaseWindow"]["milestones"]
+        ],
         "",
         "## Plugin Use Policy",
         "",

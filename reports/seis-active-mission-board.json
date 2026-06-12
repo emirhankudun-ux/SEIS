@@ -2,20 +2,113 @@
   "id": "seis-active-mission-board",
   "mode": "first_90_days_execution_board",
   "sourcePlan": "seis-long-horizon-mission-kernel",
+  "masterGoalTrace": {
+    "id": "seis-v12-master-prompt-trace",
+    "northStar": "Continuously improve SEIS as a sustainable, high-quality, Apple-first, AI-native, open-source ecosystem.",
+    "workflow": [
+      "inspect",
+      "analyze",
+      "understand-context",
+      "identify-risks",
+      "plan",
+      "validate",
+      "document"
+    ],
+    "priorityFocusAreas": [
+      "engineering",
+      "architecture",
+      "design",
+      "ai-agents",
+      "mcp-plugins",
+      "data",
+      "automation",
+      "documentation",
+      "research",
+      "product"
+    ],
+    "avoid": [
+      "unnecessary-dependencies",
+      "technical-debt",
+      "duplicated-solutions",
+      "low-value-changes",
+      "runtime-installs-for-language-percentages"
+    ]
+  },
   "focusWindow": {
     "weeks": 12,
     "dailyRule": "ship one inspectable slice or one validated blocker note",
     "weeklyRule": "refresh reports, run checks, and promote next card only after gates pass"
   },
+  "monthWindows": [
+    {
+      "id": "month-01-foundation-architecture-docs",
+      "label": "Month 1",
+      "dayRange": "0-30",
+      "laneId": "now",
+      "theme": "Foundation, architecture, documentation",
+      "acceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "evidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "month-02-memory-planning-mcp",
+      "label": "Month 2",
+      "dayRange": "31-60",
+      "laneId": "next",
+      "theme": "Memory, planning, MCP",
+      "acceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "evidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ]
+    },
+    {
+      "id": "month-03-agents-validation-release",
+      "label": "Month 3",
+      "dayRange": "61-90",
+      "laneId": "queued",
+      "theme": "Agents, validation, release",
+      "acceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "evidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ]
+    }
+  ],
   "summary": {
     "laneCount": 3,
+    "monthWindowCount": 3,
     "cardCount": 30,
     "nowCount": 10,
     "nextCount": 10,
     "queuedCount": 10,
     "platformCoverageCount": 5,
     "languageCoverageCount": 29,
-    "qualityGateCoverageCount": 41
+    "qualityGateCoverageCount": 41,
+    "acceptanceGateCoverageCount": 12
   },
   "installPolicy": {
     "default": "do_not_install_new_runtime_for_language_percentage",
@@ -52,6 +145,7 @@
     {
       "id": "now-wave-01-foundation-m01-architecture-contract",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m01-architecture-contract",
       "order": 1,
       "title": "Architecture Contract",
@@ -128,6 +222,18 @@
       },
       "dependencies": [],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -139,6 +245,7 @@
     {
       "id": "now-wave-01-foundation-m02-agent-policy",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m02-agent-policy",
       "order": 2,
       "title": "Agent Policy",
@@ -223,6 +330,18 @@
         "wave-01-foundation-m01-architecture-contract"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -234,6 +353,7 @@
     {
       "id": "now-wave-01-foundation-m03-platform-bridge",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m03-platform-bridge",
       "order": 3,
       "title": "Platform Bridge",
@@ -321,6 +441,18 @@
         "wave-01-foundation-m02-agent-policy"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -332,6 +464,7 @@
     {
       "id": "now-wave-01-foundation-m04-data-plane",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m04-data-plane",
       "order": 4,
       "title": "Data Plane",
@@ -413,6 +546,18 @@
         "wave-01-foundation-m03-platform-bridge"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -424,6 +569,7 @@
     {
       "id": "now-wave-01-foundation-m05-design-engineering",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m05-design-engineering",
       "order": 5,
       "title": "Design Engineering",
@@ -511,6 +657,18 @@
         "wave-01-foundation-m04-data-plane"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -522,6 +680,7 @@
     {
       "id": "now-wave-01-foundation-m06-quality-gate",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m06-quality-gate",
       "order": 6,
       "title": "Quality Gate",
@@ -604,6 +763,18 @@
         "wave-01-foundation-m05-design-engineering"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -615,6 +786,7 @@
     {
       "id": "now-wave-01-foundation-m07-security-governance",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m07-security-governance",
       "order": 7,
       "title": "Security Governance",
@@ -696,6 +868,18 @@
         "wave-01-foundation-m06-quality-gate"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -707,6 +891,7 @@
     {
       "id": "now-wave-01-foundation-m08-llm-orchestration",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m08-llm-orchestration",
       "order": 8,
       "title": "LLM Orchestration",
@@ -792,6 +977,18 @@
         "wave-01-foundation-m07-security-governance"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -803,6 +1000,7 @@
     {
       "id": "now-wave-01-foundation-m09-runtime-surface",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m09-runtime-surface",
       "order": 9,
       "title": "Runtime Surface",
@@ -893,6 +1091,18 @@
         "wave-01-foundation-m08-llm-orchestration"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -904,6 +1114,7 @@
     {
       "id": "now-wave-01-foundation-m10-release-readiness",
       "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
       "missionId": "wave-01-foundation-m10-release-readiness",
       "order": 10,
       "title": "Release Readiness",
@@ -989,6 +1200,18 @@
         "wave-01-foundation-m09-runtime-surface"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -1000,6 +1223,7 @@
     {
       "id": "next-wave-02-apple-native-m01-architecture-contract",
       "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
       "missionId": "wave-02-apple-native-m01-architecture-contract",
       "order": 11,
       "title": "Architecture Contract",
@@ -1049,6 +1273,18 @@
         "wave-01-foundation-m10-release-readiness"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",
@@ -1060,6 +1296,7 @@
     {
       "id": "next-wave-02-apple-native-m02-agent-policy",
       "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
       "missionId": "wave-02-apple-native-m02-agent-policy",
       "order": 12,
       "title": "Agent Policy",
@@ -1109,6 +1346,18 @@
         "wave-02-apple-native-m01-architecture-contract"
       ],
       "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
       "doneDefinition": [
         "source artifact is generated or updated",
         "check command passes without stale output",

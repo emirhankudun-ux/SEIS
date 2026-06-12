@@ -72,7 +72,9 @@ def build_report(board: dict) -> dict:
         "id": board["id"],
         "mode": board["mode"],
         "sourcePlan": board["sourcePlan"],
+        "masterGoalTrace": board["masterGoalTrace"],
         "focusWindow": board["focusWindow"],
+        "monthWindows": board["monthWindows"],
         "summary": board["summary"],
         "installPolicy": board["installPolicy"],
         "lanes": [
@@ -98,17 +100,40 @@ def build_markdown(board: dict) -> str:
         f"- Source plan: `{board['sourcePlan']}`",
         f"- Focus window: {board['focusWindow']['weeks']} weeks",
         f"- Lanes: {summary['laneCount']}",
+        f"- Month windows: {summary['monthWindowCount']}",
         f"- Cards: {summary['cardCount']}",
         f"- Platform coverage: {summary['platformCoverageCount']}",
         f"- Language coverage: {summary['languageCoverageCount']}",
         f"- Quality gate coverage: {summary['qualityGateCoverageCount']}",
+        f"- Acceptance gate coverage: {summary['acceptanceGateCoverageCount']}",
         f"- Runtime install policy: `{board['installPolicy']['default']}`",
+        "",
+        "## Master Goal Trace",
+        "",
+        f"- North star: {board['masterGoalTrace']['northStar']}",
+        f"- Workflow: {', '.join(board['masterGoalTrace']['workflow'])}",
+        f"- Priority focus areas: {', '.join(board['masterGoalTrace']['priorityFocusAreas'])}",
+        f"- Avoid: {', '.join(board['masterGoalTrace']['avoid'])}",
+        "",
+        "## Three Month Windows",
+        "",
+        "| Window | Lane | Theme | Acceptance Gates | Evidence |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for window in board["monthWindows"]:
+        gates = ", ".join(window["acceptanceGates"])
+        evidence = ", ".join(f"`{item}`" for item in window["evidencePaths"])
+        lines.append(
+            f"| {window['label']} `{window['dayRange']}` | `{window['laneId']}` | {window['theme']} | {gates} | {evidence} |"
+        )
+
+    lines.extend([
         "",
         "## Lanes",
         "",
         "| Lane | Wave | WIP Limit | Cards | Cadence |",
         "| --- | --- | ---: | ---: | --- |",
-    ]
+    ])
     for lane in board["lanes"]:
         card_count = sum(1 for card in board["cards"] if card["laneId"] == lane["id"])
         lines.append(
@@ -125,7 +150,7 @@ def build_markdown(board: dict) -> str:
     for card in board["cards"][:30]:
         platforms = ", ".join(card["platformScope"])
         languages = ", ".join(card["primaryLanguages"][:6])
-        gates = ", ".join(card["qualityGates"][:4])
+        gates = ", ".join(list(card["qualityGates"][:4]) + list(card["monthAcceptanceGates"][:2]))
         lines.append(
             f"| {card['order']} | `{card['laneId']}` | `{card['missionId']}` | {platforms} | {languages} | {gates} |"
         )

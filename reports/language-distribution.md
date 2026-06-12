@@ -2,46 +2,46 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 534
-- Counted bytes: 2420222
-- JavaScript: 811163 bytes (33.52%)
+- Counted bytes: 2451506
+- JavaScript: 811163 bytes (33.09%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1442458
+- Additional non-JavaScript bytes needed for strict target: 1411174
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 811163 | 33.52% | JavaScript |
-| TypeScript | 28824 | 1.19% | TypeScript |
-| Objective-C | 8447 | 0.35% | Objective-C |
-| Other | 1571788 | 64.94% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| JavaScript | 811163 | 33.09% | JavaScript |
+| TypeScript | 28824 | 1.18% | TypeScript |
+| Objective-C | 8447 | 0.34% | Objective-C |
+| Other | 1603072 | 65.39% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 811163 | 33.52% |
-| JSON | 635186 | 26.24% |
-| Python | 278122 | 11.49% |
-| Swift | 137246 | 5.67% |
-| CSS | 94204 | 3.89% |
-| HTML | 84633 | 3.5% |
-| Shell | 56789 | 2.35% |
-| Other | 37135 | 1.53% |
-| TypeScript | 28824 | 1.19% |
-| YAML | 25243 | 1.04% |
-| Go | 16367 | 0.68% |
-| Java | 16110 | 0.67% |
-| Scheme | 15747 | 0.65% |
+| JavaScript | 811163 | 33.09% |
+| JSON | 635229 | 25.91% |
+| Python | 294869 | 12.03% |
+| Swift | 151740 | 6.19% |
+| CSS | 94204 | 3.84% |
+| HTML | 84633 | 3.45% |
+| Shell | 56789 | 2.32% |
+| Other | 37135 | 1.51% |
+| TypeScript | 28824 | 1.18% |
+| YAML | 25243 | 1.03% |
+| Go | 16367 | 0.67% |
+| Java | 16110 | 0.66% |
+| Scheme | 15747 | 0.64% |
 | Perl | 13916 | 0.57% |
-| Ruby | 13442 | 0.56% |
-| Rust | 11825 | 0.49% |
+| Ruby | 13442 | 0.55% |
+| Rust | 11825 | 0.48% |
 | C++ | 11206 | 0.46% |
 | PHP | 8471 | 0.35% |
-| Objective-C | 8447 | 0.35% |
-| SQL | 8177 | 0.34% |
-| R | 7953 | 0.33% |
+| Objective-C | 8447 | 0.34% |
+| SQL | 8177 | 0.33% |
+| R | 7953 | 0.32% |
 | OCaml | 7550 | 0.31% |
 | Tcl | 7290 | 0.3% |
 | Racket | 7245 | 0.3% |

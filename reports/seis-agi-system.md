@@ -54,6 +54,26 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 | Research and knowledge | Hugging Face, Scite, Zotero, Google Drive, Notion, Hebbia, Readwise | Use only when source-backed evidence or durable knowledge retrieval is needed. |
 | Collaboration and operations | Slack, Asana, Linear, Jira, Google Calendar, HubSpot, Intercom | Use only with clear write intent, user approval, and communication scope. |
 
+## Memory Planning Automation
+
+- Runtime: Swift + Foundation + Core Data + CloudKit
+- Storage policy: Use Core Data for local agent context records, CloudKit for optional sync metadata, and Foundation JSON for generated evidence manifests; never persist secrets.
+
+| checkpoint | phase | storage surface | evidence | gates |
+| --- | --- | --- | --- | --- |
+| Context Intake | inspect | Core Data local context cache | `AGENTS.md` | repo-state-read, instruction-boundary, secret-safety |
+| Task Decomposition | plan | Core Data task packet records | `reports/seis-execution-packages.md` | small-slices, rollback-ready, dependency-order |
+| Research Evidence | research | Foundation JSON source manifest | `reports/seis-agi-system.md` | primary-source-first, citation-trace, claim-boundary |
+| Multi-Agent Handoff | coordinate | Core Data handoff notes plus git diff summary | `docs/agi/seis-agi-system.md` | single-writer-mode, reviewer-role-separated, human-approval |
+| Self Evaluation | verify | Foundation check transcript plus generated reports | `reports/seis-agi-system.json` | deterministic-checks, coverage-evidence, residual-risk-log |
+
+| loop | trigger | output | gates |
+| --- | --- | --- | --- |
+| Retrieve Compress Plan | large or recurring SEIS goal | `content/development/seis-agi-system.json` | bounded-context, source-backed-memory, token-savings-target |
+| Plan Execute Verify Document | repo modification request | `reports/seis-agi-system.md` | git-diff-reviewable, swift-test, docs-updated |
+| Research Synthesize Validate | unstable or source-sensitive claim | `docs/agi/seis-agi-system.md` | primary-source-first, version-compatibility, citation-trace |
+| Handoff Review Commit | agent writer role changes or commit handoff | `git commit` | one-writer-at-a-time, human-readable-handoff, no-unrelated-reverts |
+
 ## Visual Sources Used
 
 | source | repository path | used | signals |
@@ -69,11 +89,11 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 
 ## 90 Day Roadmap
 
-| window | theme | done definition |
-| --- | --- | --- |
-| 0-30 | agent memory planning foundation | AGI contract, source references, and token policy are generated and checked. |
-| 31-60 | plugin MCP skills read write lanes | Data, development, design, and research lanes have explicit activation gates. |
-| 61-90 | human helper release hardening | Evaluation, security, docs, and GitHub community health are release ready. |
+| window | theme | focus | acceptance gates | evidence |
+| --- | --- | --- | --- | --- |
+| 0-30 | Foundation, architecture, documentation | computer-science-foundation, software-architecture, documentation, open-source-health | agi-contract-generated, agent-memory-planning-foundation-visible, github-community-health-current, quality-gates-pass | reports/seis-agi-system.md, reports/seis-active-mission-board.md, README.md, AGENTS.md |
+| 31-60 | Memory, planning, MCP | memory-architecture, planning-kernel, mcp-skills, plugin-read-write-lanes | memory-checkpoints-traceable, planning-loops-deterministic, plugin-mcp-lanes-scoped, apple-first-contract-covered | content/development/seis-agi-system.json, packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift, reports/plugin-capability-lanes.md, reports/seis-execution-runway.md |
+| 61-90 | Agents, validation, release | agent-orchestration, multi-agent-coordination, security-validation, release-readiness | agent-roles-separated, security-and-human-review-gates-present, github-community-health-ready, release-evidence-current | docs/development/agents/README.md, SECURITY.md, .github/PULL_REQUEST_TEMPLATE.md, reports/seis-agi-system.json |
 
 ## Practical Priority Domains
 

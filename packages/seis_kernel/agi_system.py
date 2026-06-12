@@ -16,6 +16,84 @@ TARGET_RELEASE_DATE = "2026-09-12"
 JAVASCRIPT_TARGET_PERCENT = 21.0
 TOKEN_SAVINGS_TARGET_PERCENT = 60
 
+RELEASE_MILESTONES = (
+    {
+        "id": "month-01-foundation-architecture-docs",
+        "month": 1,
+        "dayRange": "0-30",
+        "theme": "Foundation, architecture, documentation",
+        "done": "AGI contract, source references, master goal trace, and token policy are generated and checked.",
+        "focusAreas": (
+            "computer-science-foundation",
+            "software-architecture",
+            "documentation",
+            "open-source-health",
+        ),
+        "acceptanceGates": (
+            "agi-contract-generated",
+            "agent-memory-planning-foundation-visible",
+            "github-community-health-current",
+            "quality-gates-pass",
+        ),
+        "evidencePaths": (
+            "reports/seis-agi-system.md",
+            "reports/seis-active-mission-board.md",
+            "README.md",
+            "AGENTS.md",
+        ),
+    },
+    {
+        "id": "month-02-memory-planning-mcp",
+        "month": 2,
+        "dayRange": "31-60",
+        "theme": "Memory, planning, MCP",
+        "done": "Memory checkpoints, planning loops, plugin lanes, and MCP/skills activation gates are traceable.",
+        "focusAreas": (
+            "memory-architecture",
+            "planning-kernel",
+            "mcp-skills",
+            "plugin-read-write-lanes",
+        ),
+        "acceptanceGates": (
+            "memory-checkpoints-traceable",
+            "planning-loops-deterministic",
+            "plugin-mcp-lanes-scoped",
+            "apple-first-contract-covered",
+        ),
+        "evidencePaths": (
+            "content/development/seis-agi-system.json",
+            "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+            "reports/plugin-capability-lanes.md",
+            "reports/seis-execution-runway.md",
+        ),
+    },
+    {
+        "id": "month-03-agents-validation-release",
+        "month": 3,
+        "dayRange": "61-90",
+        "theme": "Agents, validation, release",
+        "done": "Agent roles, validation evidence, security gates, and GitHub community health are release ready.",
+        "focusAreas": (
+            "agent-orchestration",
+            "multi-agent-coordination",
+            "security-validation",
+            "release-readiness",
+        ),
+        "acceptanceGates": (
+            "agent-roles-separated",
+            "security-and-human-review-gates-present",
+            "github-community-health-ready",
+            "release-evidence-current",
+        ),
+        "evidencePaths": (
+            "docs/development/agents/README.md",
+            "SECURITY.md",
+            ".github/PULL_REQUEST_TEMPLATE.md",
+            "reports/seis-agi-system.json",
+        ),
+    },
+)
+
 
 @dataclass(frozen=True)
 class AGISubsystem:
@@ -254,6 +332,89 @@ IMAGE_REFERENCE_SIGNALS = (
 )
 
 
+MEMORY_PLANNING_CONTRACT = {
+    "id": "seis-memory-planning-runtime",
+    "ownerRuntime": "Swift + Foundation + Core Data + CloudKit",
+    "storagePolicy": "Use Core Data for local agent context records, CloudKit for optional sync metadata, and Foundation JSON for generated evidence manifests; never persist secrets.",
+    "checkpoints": (
+        {
+            "id": "context-intake",
+            "label": "Context Intake",
+            "phase": "inspect",
+            "appleStorageSurface": "Core Data local context cache",
+            "evidencePath": "AGENTS.md",
+            "qualityGates": ("repo-state-read", "instruction-boundary", "secret-safety"),
+        },
+        {
+            "id": "task-decomposition",
+            "label": "Task Decomposition",
+            "phase": "plan",
+            "appleStorageSurface": "Core Data task packet records",
+            "evidencePath": "reports/seis-execution-packages.md",
+            "qualityGates": ("small-slices", "rollback-ready", "dependency-order"),
+        },
+        {
+            "id": "research-evidence",
+            "label": "Research Evidence",
+            "phase": "research",
+            "appleStorageSurface": "Foundation JSON source manifest",
+            "evidencePath": "reports/seis-agi-system.md",
+            "qualityGates": ("primary-source-first", "citation-trace", "claim-boundary"),
+        },
+        {
+            "id": "multi-agent-handoff",
+            "label": "Multi-Agent Handoff",
+            "phase": "coordinate",
+            "appleStorageSurface": "Core Data handoff notes plus git diff summary",
+            "evidencePath": "docs/agi/seis-agi-system.md",
+            "qualityGates": ("single-writer-mode", "reviewer-role-separated", "human-approval"),
+        },
+        {
+            "id": "self-evaluation",
+            "label": "Self Evaluation",
+            "phase": "verify",
+            "appleStorageSurface": "Foundation check transcript plus generated reports",
+            "evidencePath": "reports/seis-agi-system.json",
+            "qualityGates": ("deterministic-checks", "coverage-evidence", "residual-risk-log"),
+        },
+    ),
+    "loops": (
+        {
+            "id": "retrieve-compress-plan",
+            "label": "Retrieve Compress Plan",
+            "trigger": "large or recurring SEIS goal",
+            "steps": ("retrieve durable contract", "compress scope", "select smallest reversible packet", "record evidence paths"),
+            "outputArtifact": "content/development/seis-agi-system.json",
+            "evaluationGates": ("bounded-context", "source-backed-memory", "token-savings-target"),
+        },
+        {
+            "id": "plan-execute-verify-document",
+            "label": "Plan Execute Verify Document",
+            "trigger": "repo modification request",
+            "steps": ("inspect repo state", "plan focused change", "implement", "run checks", "update docs"),
+            "outputArtifact": "reports/seis-agi-system.md",
+            "evaluationGates": ("git-diff-reviewable", "swift-test", "docs-updated"),
+        },
+        {
+            "id": "research-synthesize-validate",
+            "label": "Research Synthesize Validate",
+            "trigger": "unstable or source-sensitive claim",
+            "steps": ("select source type", "collect evidence", "summarize constraints", "validate compatibility"),
+            "outputArtifact": "docs/agi/seis-agi-system.md",
+            "evaluationGates": ("primary-source-first", "version-compatibility", "citation-trace"),
+        },
+        {
+            "id": "handoff-review-commit",
+            "label": "Handoff Review Commit",
+            "trigger": "agent writer role changes or commit handoff",
+            "steps": ("summarize diff", "separate reviewer role", "run deterministic checks", "commit scoped change"),
+            "outputArtifact": "git commit",
+            "evaluationGates": ("one-writer-at-a-time", "human-readable-handoff", "no-unrelated-reverts"),
+        },
+    ),
+}
+
+
 EXPANDED_DOMAINS: tuple[DomainFocus, ...] = tuple(
     DomainFocus(index + 1, label, lane)
     for index, (label, lane) in enumerate(
@@ -433,11 +594,7 @@ def build_seis_agi_system() -> dict[str, Any]:
             "startDate": GENERATED_AT,
             "targetReleaseDate": TARGET_RELEASE_DATE,
             "cadence": "three_month_version_window",
-            "milestones": (
-                {"dayRange": "0-30", "theme": "agent memory planning foundation", "done": "AGI contract, source references, and token policy are generated and checked."},
-                {"dayRange": "31-60", "theme": "plugin MCP skills read write lanes", "done": "Data, development, design, and research lanes have explicit activation gates."},
-                {"dayRange": "61-90", "theme": "human helper release hardening", "done": "Evaluation, security, docs, and GitHub community health are release ready."},
-            ),
+            "milestones": RELEASE_MILESTONES,
         },
         "platformStrategy": {
             "priority": "apple_first_when_practical",
@@ -464,6 +621,7 @@ def build_seis_agi_system() -> dict[str, Any]:
         },
         "subsystems": [subsystem_to_dict(item) for item in AGI_SUBSYSTEMS],
         "pluginCapabilityLanes": PLUGIN_CAPABILITY_LANES,
+        "memoryPlanning": MEMORY_PLANNING_CONTRACT,
         "imageReferenceSignals": IMAGE_REFERENCE_SIGNALS,
         "priorityDomains": [
             domain_to_dict(domain)
@@ -508,6 +666,24 @@ def validate_seis_agi_system(contract: dict[str, Any]) -> list[str]:
     if len(contract.get("priorityDomains", [])) < 12:
         failures.append("AGI system must keep practical priority domains visible")
 
+    memory_planning = contract.get("memoryPlanning", {})
+    if memory_planning.get("id") != "seis-memory-planning-runtime":
+        failures.append("AGI system must include the memory planning runtime contract")
+    if "Core Data" not in memory_planning.get("ownerRuntime", ""):
+        failures.append("AGI memory planning runtime must include Core Data")
+    if "CloudKit" not in memory_planning.get("ownerRuntime", ""):
+        failures.append("AGI memory planning runtime must include CloudKit")
+    if "never persist secrets" not in memory_planning.get("storagePolicy", ""):
+        failures.append("AGI memory planning storage policy must forbid persisted secrets")
+    if len(memory_planning.get("checkpoints", [])) < 5:
+        failures.append("AGI memory planning must include at least five checkpoints")
+    if len(memory_planning.get("loops", [])) < 4:
+        failures.append("AGI memory planning must include at least four loops")
+    loop_ids = {loop.get("id") for loop in memory_planning.get("loops", [])}
+    for required in ["retrieve-compress-plan", "handoff-review-commit"]:
+        if required not in loop_ids:
+            failures.append(f"AGI memory planning missing loop: {required}")
+
     used_sources = [source for source in contract.get("imageReferenceSignals", []) if source.get("used")]
     if len(used_sources) < 8:
         failures.append("AGI system must mark the provided programming images as used")
@@ -528,6 +704,28 @@ def validate_seis_agi_system(contract: dict[str, Any]) -> list[str]:
     claim_boundary = contract.get("masterGoal", {}).get("claimBoundary", "")
     if "does not claim autonomous general intelligence" not in claim_boundary:
         failures.append("AGI system must keep the human-owned claim boundary explicit")
+
+    release_window = contract.get("releaseWindow", {})
+    milestones = release_window.get("milestones", [])
+    if release_window.get("cadence") != "three_month_version_window":
+        failures.append("AGI release window must stay on the three-month version cadence")
+    if len(milestones) != 3:
+        failures.append("AGI release window must contain exactly three monthly milestones")
+    milestone_ids = {milestone.get("id") for milestone in milestones}
+    for required in [
+        "month-01-foundation-architecture-docs",
+        "month-02-memory-planning-mcp",
+        "month-03-agents-validation-release",
+    ]:
+        if required not in milestone_ids:
+            failures.append(f"AGI release window missing milestone: {required}")
+    for milestone in milestones:
+        if len(milestone.get("acceptanceGates", [])) < 4:
+            failures.append(f"AGI milestone needs at least four acceptance gates: {milestone.get('id')}")
+        if len(milestone.get("evidencePaths", [])) < 4:
+            failures.append(f"AGI milestone needs at least four evidence paths: {milestone.get('id')}")
+        if not milestone.get("focusAreas"):
+            failures.append(f"AGI milestone needs focus areas: {milestone.get('id')}")
 
     return failures
 

@@ -88,6 +88,7 @@ read/write workflows are routed through explicit safety gates.
 | Surface | Canonical record | Rule |
 | --- | --- | --- |
 | AGI system contract | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window. |
+| Active mission board | [`reports/seis-active-mission-board.md`](./reports/seis-active-mission-board.md) | Convert the three-month goal into Month 1/2/3 execution lanes with acceptance gates and evidence paths. |
 | Apple-first Swift contract | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
 | Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md) | Explain implementation roots, token efficiency, plugin use, and visual source policy. |
 
@@ -131,6 +132,7 @@ npm run check:open-source-governance
 npm run seis:check
 npm run check:seis-platform-language-policy
 npm run check:seis-platform-kernel
+npm run check:seis-active-mission-board
 ```
 
 No command above installs a new local language runtime. Some checks skip optional

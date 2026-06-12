@@ -20,6 +20,18 @@ SEIS uses the phrase AGI system as a human-owned, AGI-inspired operating archite
 
 The system target is 60% token savings through retrieval, bounded reports, source manifests, and minimum required tool activation.
 
+## Memory Planning Automation
+
+`seis-memory-planning-runtime` runs on Swift + Foundation + Core Data + CloudKit and defines context intake, task decomposition, research evidence, multi-agent handoff, and self-evaluation checkpoints.
+
+## Three Month Release Cycle
+
+The active release window runs from 2026-06-12 to 2026-09-12 with three monthly acceptance-gated milestones.
+
+- 0-30: Foundation, architecture, documentation -> agi-contract-generated, agent-memory-planning-foundation-visible, github-community-health-current, quality-gates-pass
+- 31-60: Memory, planning, MCP -> memory-checkpoints-traceable, planning-loops-deterministic, plugin-mcp-lanes-scoped, apple-first-contract-covered
+- 61-90: Agents, validation, release -> agent-roles-separated, security-and-human-review-gates-present, github-community-health-ready, release-evidence-current
+
 ## Plugin Use Policy
 
 Plugins, MCP servers, and skills are used only when relevant, authenticated, scoped, and safe. Reports must list only actual usage.

@@ -474,12 +474,24 @@ import Testing
     #expect(contract.budget.appleLanguages.contains("Combine"))
     #expect(contract.budget.appleLanguages.contains("Core Data"))
     #expect(contract.budget.appleLanguages.contains("CloudKit"))
+    #expect(contract.memoryPlanning.isReady)
+    #expect(contract.memoryPlanning.ownerRuntime.contains("Core Data"))
+    #expect(contract.memoryPlanning.ownerRuntime.contains("CloudKit"))
+    #expect(contract.memoryPlanning.storagePolicy.contains("never persist secrets"))
+    #expect(contract.releaseMilestones.count == 3)
+    #expect(contract.releaseMilestones.allSatisfy { $0.isTraceable })
+    #expect(contract.releaseMilestones.first?.id == "month-01-foundation-architecture-docs")
+    #expect(contract.releaseMilestones.contains { $0.id == "month-02-memory-planning-mcp" && $0.focusAreas.contains("mcp-skills") })
+    #expect(contract.releaseMilestones.contains { $0.id == "month-03-agents-validation-release" && $0.acceptanceGates.contains("release-evidence-current") })
 }
 
 @Test func agiSystemContractDocumentsAgentMemoryPlanningResearchAndPluginLanes() {
     let contract = SeisAGISystemContract.master
     let subsystemIds = Set(contract.subsystems.map(\.id))
     let pluginLaneIds = Set(contract.pluginLanes.map(\.id))
+    let checkpointIds = Set(contract.memoryPlanning.checkpoints.map(\.id))
+    let loopIds = Set(contract.memoryPlanning.loops.map(\.id))
+    let milestoneIds = Set(contract.releaseMilestones.map(\.id))
 
     #expect(subsystemIds.contains("agent-orchestration"))
     #expect(subsystemIds.contains("memory-architecture"))
@@ -491,6 +503,18 @@ import Testing
     #expect(pluginLaneIds.contains("development-read-write"))
     #expect(pluginLaneIds.contains("data-read-write"))
     #expect(pluginLaneIds.contains("design-interactive"))
+    #expect(checkpointIds.contains("context-intake"))
+    #expect(checkpointIds.contains("task-decomposition"))
+    #expect(checkpointIds.contains("research-evidence"))
+    #expect(checkpointIds.contains("multi-agent-handoff"))
+    #expect(checkpointIds.contains("self-evaluation"))
+    #expect(loopIds.contains("retrieve-compress-plan"))
+    #expect(loopIds.contains("plan-execute-verify-document"))
+    #expect(loopIds.contains("research-synthesize-validate"))
+    #expect(loopIds.contains("handoff-review-commit"))
+    #expect(milestoneIds.contains("month-01-foundation-architecture-docs"))
+    #expect(milestoneIds.contains("month-02-memory-planning-mcp"))
+    #expect(milestoneIds.contains("month-03-agents-validation-release"))
     #expect(contract.claimBoundary.contains("does not claim autonomous general intelligence"))
 }
 
@@ -508,6 +532,12 @@ import Testing
     for token in SeisAGISystemContract.expectedReportTokens {
         #expect(report.contains(token), "missing AGI system report token: \(token)")
     }
+    #expect(source.contains("\"memoryPlanning\""))
+    #expect(source.contains("\"releaseWindow\""))
+    #expect(source.contains("\"month-02-memory-planning-mcp\""))
+    #expect(source.contains("\"release-evidence-current\""))
+    #expect(source.contains("\"context-intake\""))
+    #expect(source.contains("\"handoff-review-commit\""))
     for asset in [
         "basic-programming-concepts.jpeg",
         "python-programming-roadmap.jpg",
