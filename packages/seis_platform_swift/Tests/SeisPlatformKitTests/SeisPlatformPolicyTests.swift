@@ -233,6 +233,7 @@ import Testing
     #expect(runtime.isReady)
     #expect(runtime.readyCount == runtime.probes.count)
     #expect(runtime.probes.contains { $0.id == "agi-operating-system-contract" && $0.qualityGate == "agent_governance" })
+    #expect(runtime.probes.contains { $0.id == "agi-memory-planning-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -552,6 +553,69 @@ import Testing
         #expect(source.contains(path), "missing AGI source asset path: \(path)")
         #expect(FileManager.default.fileExists(atPath: root.appending(path: path).path), "missing AGI reference asset: \(path)")
     }
+}
+
+@Test func agiMemoryPlanningSnapshotBootstrapsFromContract() {
+    let contract = SeisAGISystemContract.master.memoryPlanning
+    let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(from: contract)
+    let store = SeisAGIMemoryPlanningHistoryStore()
+
+    #expect(snapshot.isReady)
+    #expect(snapshot.records.count == contract.checkpoints.count)
+    #expect(snapshot.records.allSatisfy { $0.isTraceable })
+    #expect(snapshot.records.contains { $0.checkpointId == "context-intake" })
+    #expect(snapshot.records.contains { $0.checkpointId == "self-evaluation" })
+    #expect(snapshot.records.contains { $0.loopId == "retrieve-compress-plan" })
+    #expect(snapshot.records.contains { $0.loopId == "handoff-review-commit" })
+
+    for record in snapshot.records {
+        store.save(record)
+    }
+
+    let stored = store.snapshot()
+    #expect(stored.isReady)
+    #expect(memoryPlanningRecordsSortedById(stored.records) == memoryPlanningRecordsSortedById(snapshot.records))
+}
+
+@Test func agiMemoryPlanningStoreSourceDocumentsPersistenceTokens() throws {
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift"),
+        encoding: .utf8
+    )
+
+    for token in SeisAGIMemoryPlanningSnapshot.expectedSourceTokens {
+        #expect(source.contains(token), "missing memory planning source token: \(token)")
+    }
+    #if canImport(CoreData)
+    for token in SeisAGIMemoryPlanningPersistentStore.expectedSourceTokens {
+        #expect(source.contains(token), "missing memory planning persistence token: \(token)")
+    }
+    #endif
+}
+
+#if canImport(CoreData)
+@Test func agiMemoryPlanningPersistentStoreRoundTripsBootstrapRecords() throws {
+    let snapshot = SeisAGIMemoryPlanningSnapshot.bootstrap(
+        from: SeisAGISystemContract.master.memoryPlanning,
+        recordedAt: "2026-06-12T16:55:00Z"
+    )
+    let persistentStore = try SeisAGIMemoryPlanningPersistentStore(inMemory: true)
+
+    for record in snapshot.records {
+        try persistentStore.save(record)
+    }
+
+    let fetched = try persistentStore.fetch(limit: 10)
+    #expect(memoryPlanningRecordsSortedById(fetched) == memoryPlanningRecordsSortedById(snapshot.records))
+    #expect(SeisAGIMemoryPlanningSnapshot(records: fetched).isReady)
+}
+#endif
+
+private func memoryPlanningRecordsSortedById(
+    _ records: [SeisAGIMemoryPlanningRecord]
+) -> [SeisAGIMemoryPlanningRecord] {
+    records.sorted { $0.id < $1.id }
 }
 
 private func repositoryRoot() -> URL {

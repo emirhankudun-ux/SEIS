@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 294869,
+      "githubBytes": 296065,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 151740,
+      "githubBytes": 167358,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]

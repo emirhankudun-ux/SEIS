@@ -8,75 +8,75 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 534,
-    "countedBytes": 2451506,
+    "countedFileCount": 535,
+    "countedBytes": 2468320,
     "javascriptBytes": 811163,
-    "javascriptPercent": 33.09,
+    "javascriptPercent": 32.86,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1411174,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1394360,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 811163,
-      "percent": 33.09
+      "percent": 32.86
     },
     {
       "language": "JSON",
       "bytes": 635229,
-      "percent": 25.91
+      "percent": 25.74
     },
     {
       "language": "Python",
-      "bytes": 294869,
-      "percent": 12.03
+      "bytes": 296065,
+      "percent": 11.99
     },
     {
       "language": "Swift",
-      "bytes": 151740,
-      "percent": 6.19
+      "bytes": 167358,
+      "percent": 6.78
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 3.84
+      "percent": 3.82
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.45
+      "percent": 3.43
     },
     {
       "language": "Shell",
       "bytes": 56789,
-      "percent": 2.32
+      "percent": 2.3
     },
     {
       "language": "Other",
       "bytes": 37135,
-      "percent": 1.51
+      "percent": 1.5
     },
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.18
+      "percent": 1.17
     },
     {
       "language": "YAML",
       "bytes": 25243,
-      "percent": 1.03
+      "percent": 1.02
     },
     {
       "language": "Go",
       "bytes": 16367,
-      "percent": 0.67
+      "percent": 0.66
     },
     {
       "language": "Java",
       "bytes": 16110,
-      "percent": 0.66
+      "percent": 0.65
     },
     {
       "language": "Scheme",
@@ -86,12 +86,12 @@
     {
       "language": "Perl",
       "bytes": 13916,
-      "percent": 0.57
+      "percent": 0.56
     },
     {
       "language": "Ruby",
       "bytes": 13442,
-      "percent": 0.55
+      "percent": 0.54
     },
     {
       "language": "Rust",
@@ -101,12 +101,12 @@
     {
       "language": "C++",
       "bytes": 11206,
-      "percent": 0.46
+      "percent": 0.45
     },
     {
       "language": "PHP",
       "bytes": 8471,
-      "percent": 0.35
+      "percent": 0.34
     },
     {
       "language": "Objective-C",
@@ -136,7 +136,7 @@
     {
       "language": "Racket",
       "bytes": 7245,
-      "percent": 0.3
+      "percent": 0.29
     },
     {
       "language": "Lua",
@@ -186,7 +186,7 @@
     {
       "language": "AWK",
       "bytes": 1595,
-      "percent": 0.07
+      "percent": 0.06
     },
     {
       "language": "F#",
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 811163,
-      "percent": 33.09,
+      "percent": 32.86,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.18,
+      "percent": 1.17,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1603072,
-      "percent": 65.39,
+      "bytes": 1619886,
+      "percent": 65.63,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -689,8 +689,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 480847155,
-    "documentation": 946000,
-    "linguist-generated": 2913082,
+    "documentation": 946618,
+    "linguist-generated": 2913854,
     "linguist-vendored": 46035660
   },
   "requiredLinguistRules": [
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "d0aa6cf16f60e12d3aea56ab4c7f7bad59ec0e73a0d0eaeb1d81df8cbaefc145",
+    "hash": "5fa0e6b939726a71a36c8b367296672cc69047d49d0cf3dee994faaaa1198ad9",
     "algorithm": "sha256"
   }
 }

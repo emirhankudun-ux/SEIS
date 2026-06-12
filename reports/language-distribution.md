@@ -1,50 +1,50 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 534
-- Counted bytes: 2451506
-- JavaScript: 811163 bytes (33.09%)
+- Counted files: 535
+- Counted bytes: 2468320
+- JavaScript: 811163 bytes (32.86%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1411174
+- Additional non-JavaScript bytes needed for strict target: 1394360
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 811163 | 33.09% | JavaScript |
-| TypeScript | 28824 | 1.18% | TypeScript |
+| JavaScript | 811163 | 32.86% | JavaScript |
+| TypeScript | 28824 | 1.17% | TypeScript |
 | Objective-C | 8447 | 0.34% | Objective-C |
-| Other | 1603072 | 65.39% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1619886 | 65.63% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 811163 | 33.09% |
-| JSON | 635229 | 25.91% |
-| Python | 294869 | 12.03% |
-| Swift | 151740 | 6.19% |
-| CSS | 94204 | 3.84% |
-| HTML | 84633 | 3.45% |
-| Shell | 56789 | 2.32% |
-| Other | 37135 | 1.51% |
-| TypeScript | 28824 | 1.18% |
-| YAML | 25243 | 1.03% |
-| Go | 16367 | 0.67% |
-| Java | 16110 | 0.66% |
+| JavaScript | 811163 | 32.86% |
+| JSON | 635229 | 25.74% |
+| Python | 296065 | 11.99% |
+| Swift | 167358 | 6.78% |
+| CSS | 94204 | 3.82% |
+| HTML | 84633 | 3.43% |
+| Shell | 56789 | 2.3% |
+| Other | 37135 | 1.5% |
+| TypeScript | 28824 | 1.17% |
+| YAML | 25243 | 1.02% |
+| Go | 16367 | 0.66% |
+| Java | 16110 | 0.65% |
 | Scheme | 15747 | 0.64% |
-| Perl | 13916 | 0.57% |
-| Ruby | 13442 | 0.55% |
+| Perl | 13916 | 0.56% |
+| Ruby | 13442 | 0.54% |
 | Rust | 11825 | 0.48% |
-| C++ | 11206 | 0.46% |
-| PHP | 8471 | 0.35% |
+| C++ | 11206 | 0.45% |
+| PHP | 8471 | 0.34% |
 | Objective-C | 8447 | 0.34% |
 | SQL | 8177 | 0.33% |
 | R | 7953 | 0.32% |
 | OCaml | 7550 | 0.31% |
 | Tcl | 7290 | 0.3% |
-| Racket | 7245 | 0.3% |
+| Racket | 7245 | 0.29% |
 
 ## Largest JavaScript Files Still Counted
 

@@ -74,6 +74,17 @@ Continuously improve SEIS as a premium AI-native, full-stack, design-driven, ope
 | Research Synthesize Validate | unstable or source-sensitive claim | `docs/agi/seis-agi-system.md` | primary-source-first, version-compatibility, citation-trace |
 | Handoff Review Commit | agent writer role changes or commit handoff | `git commit` | one-writer-at-a-time, human-readable-handoff, no-unrelated-reverts |
 
+## Implementation Surfaces
+
+| surface | path |
+| --- | --- |
+| swiftContract | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift` |
+| swiftMemoryPlanningStore | `packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift` |
+| generator | `scripts/create-seis-agi-system.py` |
+| sourceContract | `content/development/seis-agi-system.json` |
+| report | `reports/seis-agi-system.md` |
+| documentation | `docs/agi/seis-agi-system.md` |
+
 ## Visual Sources Used
 
 | source | repository path | used | signals |
@@ -260,5 +271,6 @@ The full 150-domain taxonomy is stored in `content/development/seis-agi-system.j
 - javascript_target_is_21_percent
 - token_savings_target_is_60_percent
 - apple_first_language_contract_present
+- apple_native_memory_store_present
 - no_runtime_install_for_language_percentage
 - security_and_human_review_gates_present

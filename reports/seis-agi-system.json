@@ -1180,6 +1180,7 @@
   ],
   "implementation": {
     "swiftContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+    "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
     "generator": "scripts/create-seis-agi-system.py",
     "sourceContract": "content/development/seis-agi-system.json",
     "report": "reports/seis-agi-system.md",

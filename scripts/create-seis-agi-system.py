@@ -183,6 +183,15 @@ def build_markdown(contract: dict) -> str:
             for item in contract["memoryPlanning"]["loops"]
         ],
         "",
+        "## Implementation Surfaces",
+        "",
+        "| surface | path |",
+        "| --- | --- |",
+        *[
+            f"| {cell(surface)} | `{cell(path)}` |"
+            for surface, path in contract["implementation"].items()
+        ],
+        "",
         "## Visual Sources Used",
         "",
         "| source | repository path | used | signals |",
