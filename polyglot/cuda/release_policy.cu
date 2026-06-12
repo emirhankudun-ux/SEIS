@@ -17,7 +17,7 @@ __device__ bool canDeploy(ReleaseStatus status) {
 
 __device__ int motionDurationMs(MotionMode mode) {
     switch (mode) {
-        case CINEMATIC: return 600;
+        case CINEMATIC: return 800;
         case BALANCED:  return 300;
         case REDUCED:   return 0;
         default:        return 0;

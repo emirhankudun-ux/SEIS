@@ -1,5 +1,7 @@
 export type SeisLocale = "tr" | "en" | "fr" | "it" | "de" | "es" | "ar";
 
+export type ReleaseStatus = "ready" | "blocked" | "pending" | "draft";
+
 export interface SeisReleaseContract {
   version: 1;
   packagePath: string;

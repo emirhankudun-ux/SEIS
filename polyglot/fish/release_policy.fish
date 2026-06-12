@@ -1,7 +1,7 @@
 #!/usr/bin/env fish
 # SEIS Release Policy — Fish Shell
 
-function resolve_motion --argument requested prefers_reduced
+function resolve_motion --argument-names requested prefers_reduced
     if test "$prefers_reduced" = "true"
         echo "reduced"
     else
@@ -9,10 +9,10 @@ function resolve_motion --argument requested prefers_reduced
     end
 end
 
-function motion_duration_ms --argument mode
+function motion_duration_ms --argument-names mode
     switch $mode
         case cinematic
-            echo 600
+            echo 800
         case balanced
             echo 300
         case reduced
@@ -22,7 +22,7 @@ function motion_duration_ms --argument mode
     end
 end
 
-function can_deploy --argument status
+function can_deploy --argument-names status
     test "$status" = "ready"
 end
 

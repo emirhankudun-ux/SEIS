@@ -18,21 +18,21 @@
     </xs:documentation>
   </xs:annotation>
 
-  <!-- ─── Simple Types ──────────────────────────────────────────────── -->
+  <!-- ─── Simple Types ──────────────────────────────────────────────────── -->
 
   <xs:simpleType name="MotionMode">
     <xs:annotation>
       <xs:documentation>
         Motion playback mode for the SEIS surface.
-        'full' = standard cinematic durations;
-        'reduced' = system prefers-reduced-motion detected;
-        'manual-low' = user explicitly toggled off animation.
+        'cinematic' = full cinematic durations (800ms);
+        'balanced' = moderate durations (300ms);
+        'reduced' = system prefers-reduced-motion or zero durations.
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:enumeration value="full"/>
+      <xs:enumeration value="cinematic"/>
+      <xs:enumeration value="balanced"/>
       <xs:enumeration value="reduced"/>
-      <xs:enumeration value="manual-low"/>
     </xs:restriction>
   </xs:simpleType>
 
@@ -64,7 +64,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <!-- ─── Complex Types ─────────────────────────────────────────────── -->
+  <!-- ─── Complex Types ─────────────────────────────────────────────────── -->
 
   <xs:complexType name="MotionPolicy">
     <xs:sequence>
@@ -109,7 +109,7 @@
     <xs:attribute name="schemaVersion" type="xs:string" fixed="2.4.0"/>
   </xs:complexType>
 
-  <!-- ─── Root Element ──────────────────────────────────────────────── -->
+  <!-- ─── Root Element ──────────────────────────────────────────────────── -->
 
   <xs:element name="releaseGate" type="seis:ReleaseGate">
     <xs:annotation>

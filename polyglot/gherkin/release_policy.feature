@@ -55,10 +55,7 @@ Feature: SEIS Release Gate
       | reduced-motion tests |
 
   # ─── Motion Mode ─────────────────────────────────────────────────────────
-  Feature: SEIS Motion Mode Policy
-    As a SEIS user
-    I want motion to respect my system preferences
-    So that I am not harmed by excessive animation
+  Rule: SEIS Motion Mode Policy
 
     Scenario: System prefers-reduced-motion is active — durations collapse
       Given the user's system has "prefers-reduced-motion: reduce" enabled
@@ -104,10 +101,7 @@ Feature: SEIS Release Gate
         | cinematic | reduced | 0ms         |
 
   # ─── Accessibility Gate ──────────────────────────────────────────────────
-  Feature: SEIS Accessibility Requirements
-    As a SEIS user
-    I want all pages to be accessible
-    So that no one is excluded from the content
+  Rule: SEIS Accessibility Requirements
 
     Scenario: Homepage passes axe-core audit
       Given the SEIS homepage is loaded

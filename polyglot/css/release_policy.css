@@ -3,7 +3,7 @@
  */
 
 :root {
-  --seis-motion-duration-cinematic: 600ms;
+  --seis-motion-duration-cinematic: 800ms;
   --seis-motion-duration-balanced:  300ms;
   --seis-motion-duration-reduced:   0ms;
 

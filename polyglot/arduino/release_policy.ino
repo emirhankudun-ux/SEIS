@@ -3,7 +3,7 @@
 enum MotionMode   { CINEMATIC, BALANCED, REDUCED };
 enum ReleaseStatus{ READY, BLOCKED, PENDING };
 
-const int MOTION_DURATIONS[] = { 600, 300, 0 };
+const int MOTION_DURATIONS[] = { 800, 300, 0 };
 
 MotionMode resolveMotionMode(MotionMode requested, bool prefersReduced) {
   return prefersReduced ? REDUCED : requested;

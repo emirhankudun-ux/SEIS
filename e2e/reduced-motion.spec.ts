@@ -83,14 +83,14 @@ test.describe("apps/web — reduced-motion behaviour", () => {
     await page.goto("/");
     await page.waitForLoadState("networkidle");
 
-    const canvas = page.locator("canvas#particle-field, canvas.particle-canvas");
+    const canvas = page.locator("[data-cinematic-field]");
     const count = await canvas.count();
     if (count > 0) {
       const hidden =
         (await canvas.first().evaluate((el) => {
           const s = window.getComputedStyle(el);
           return s.display === "none" || s.visibility === "hidden" || s.opacity === "0";
-        })) || true;
+        }));
       expect(hidden).toBe(true);
     }
 

@@ -1,7 +1,20 @@
-import { useReducedMotion } from 'react';
+import { useState, useEffect } from 'react';
+
+function useReducedMotion() {
+  const [prefersReduced, setPrefersReduced] = useState(
+    () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handler = (e) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return prefersReduced;
+}
 
 const MOTION_DURATION = {
-  cinematic: 600,
+  cinematic: 800,
   balanced:  300,
   reduced:   0,
 };

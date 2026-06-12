@@ -14,7 +14,7 @@ end resolveMotionMode
 
 on motionDurationMs(motionMode)
     if motionMode is MOTION_CINEMATIC then
-        return 600
+        return 800
     else if motionMode is MOTION_BALANCED then
         return 300
     else

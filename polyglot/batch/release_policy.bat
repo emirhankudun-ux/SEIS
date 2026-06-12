@@ -50,7 +50,7 @@ ECHO SEIS Release Gate ^— %VERSION%
 ECHO ─────────────────────────────────────
 
 :: Check: typecheck
-CALL npm run typecheck --silent >/dev/null 2>&1
+CALL npm run typecheck --silent >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
     ECHO   [PASS]  typecheck
 ) ELSE (
@@ -59,7 +59,7 @@ IF %ERRORLEVEL% EQU 0 (
 )
 
 :: Check: lint
-CALL npm run lint --silent >/dev/null 2>&1
+CALL npm run lint --silent >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
     ECHO   [PASS]  lint
 ) ELSE (
@@ -68,7 +68,7 @@ IF %ERRORLEVEL% EQU 0 (
 )
 
 :: Check: content validation
-CALL npm run check:content --silent >/dev/null 2>&1
+CALL npm run check:content --silent >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (
     ECHO   [PASS]  content validation
 ) ELSE (
