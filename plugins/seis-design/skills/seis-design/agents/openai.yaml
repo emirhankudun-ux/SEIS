@@ -1,0 +1,6 @@
+interface:
+  display_name: "SEIS-Design"
+  short_description: "Product design and design-system lane"
+  default_prompt: "Use $seis-design to shape a SEIS product or design-system update."
+policy:
+  allow_implicit_invocation: true

@@ -7,6 +7,59 @@ import { PLAN_VERSION, planTask } from "../packages/ai-language/src/llm-task-pla
 let pending = Buffer.alloc(0);
 const SEIS_ROOT = path.resolve(process.env.SEIS_ROOT || process.cwd());
 const BRIDGE_MANIFEST = path.join(SEIS_ROOT, "data", "seis-repos-llm-bridge-2026-06-08.json");
+const SPECIALIST_LANES = [
+  {
+    id: "seis-code",
+    label: "SEIS-Code",
+    pluginPath: "plugins/seis-code",
+    profilePath: "plugins/seis-code/assets/lane-profile.json",
+    skillPath: "plugins/seis-code/skills/seis-code/SKILL.md",
+    mcpToolStatus: "seis_code_status",
+    mcpToolPlan: "seis_code_plan",
+    focus: "architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repository automation",
+    planSteps: [
+      "Inspect git status, branch, and remote before edits.",
+      "Read nearest repo context and map affected code lane.",
+      "Implement the smallest durable engineering change.",
+      "Run scoped tests or checks tied to touched paths.",
+      "Record validation, risks, rollback notes, and changed files.",
+    ],
+  },
+  {
+    id: "seis-design",
+    label: "SEIS-Design",
+    pluginPath: "plugins/seis-design",
+    profilePath: "plugins/seis-design/assets/lane-profile.json",
+    skillPath: "plugins/seis-design/skills/seis-design/SKILL.md",
+    mcpToolStatus: "seis_design_status",
+    mcpToolPlan: "seis_design_plan",
+    focus: "product design, UI/UX architecture, design systems, accessibility, motion, and visual QA",
+    planSteps: [
+      "Read the current product surface and audience context.",
+      "Map workflow, accessibility, responsive, and reduced-motion requirements.",
+      "Design or implement the smallest reusable product/design-system change.",
+      "Validate with screenshots or static checks when a runnable surface exists.",
+      "Document durable design decisions and remaining risks.",
+    ],
+  },
+  {
+    id: "seis-data",
+    label: "SEIS-DATA",
+    pluginPath: "plugins/seis-data",
+    profilePath: "plugins/seis-data/assets/lane-profile.json",
+    skillPath: "plugins/seis-data/skills/seis-data/SKILL.md",
+    mcpToolStatus: "seis_data_status",
+    mcpToolPlan: "seis_data_plan",
+    focus: "data architecture, analytics, reports, schemas, knowledge registries, RAG or memory planning, and provenance",
+    planSteps: [
+      "Classify source data, generated outputs, sensitivity, and provenance.",
+      "Find the source of truth and generator before editing records.",
+      "Model or transform data with structured parsers and deterministic ordering.",
+      "Regenerate paired reports when source records change.",
+      "Validate schema, parity, privacy, provenance, and relevant checks.",
+    ],
+  },
+];
 
 const MCP_TOOLS = [
   {
@@ -65,6 +118,46 @@ const MCP_TOOLS = [
         preferredRole: {
           type: "string",
           description: "Preferred role bias: designer | engineer | software | auto.",
+        },
+      },
+    },
+  },
+  {
+    name: "seis_specialist_lanes",
+    description: "List the SEIS-Code, SEIS-Design, and SEIS-DATA specialist plugin lanes and readiness summaries.",
+    inputSchema: {
+      type: "object",
+      properties: {},
+    },
+  },
+  {
+    name: "seis_specialist_lane_status",
+    description: "Report readiness for one SEIS specialist plugin lane.",
+    inputSchema: {
+      type: "object",
+      required: ["lane"],
+      properties: {
+        lane: {
+          type: "string",
+          description: "Lane id: seis-code | seis-design | seis-data",
+        },
+      },
+    },
+  },
+  {
+    name: "seis_specialist_lane_plan",
+    description: "Create a scoped SEIS specialist lane plan for a task.",
+    inputSchema: {
+      type: "object",
+      required: ["lane", "request"],
+      properties: {
+        lane: {
+          type: "string",
+          description: "Lane id: seis-code | seis-design | seis-data",
+        },
+        request: {
+          type: "string",
+          description: "Task text to plan.",
         },
       },
     },
@@ -153,6 +246,15 @@ function bridgeStatus(payload = {}) {
     "plugins/seis/.mcp.json",
     "plugins/seis/scripts/seis-mcp-bundle-audit.sh",
     "plugins/seis/scripts/seis-mcp-launcher.mjs",
+    "plugins/seis-code/.codex-plugin/plugin.json",
+    "plugins/seis-code/.mcp.json",
+    "plugins/seis-code/skills/seis-code/SKILL.md",
+    "plugins/seis-design/.codex-plugin/plugin.json",
+    "plugins/seis-design/.mcp.json",
+    "plugins/seis-design/skills/seis-design/SKILL.md",
+    "plugins/seis-data/.codex-plugin/plugin.json",
+    "plugins/seis-data/.mcp.json",
+    "plugins/seis-data/skills/seis-data/SKILL.md",
   ];
   const pluginPath = path.join(SEIS_ROOT, "plugins/seis");
 
@@ -199,6 +301,105 @@ function bridgeStatus(payload = {}) {
       updatedAt: bridgeFile.updatedAt,
       llmPackages: bridgeFile.llmPackages || null,
     } : null,
+  };
+}
+
+function findSpecialistLane(laneId) {
+  const normalized = typeof laneId === "string" ? laneId.trim().toLowerCase() : "";
+  return SPECIALIST_LANES.find((lane) => lane.id === normalized || lane.label.toLowerCase() === normalized);
+}
+
+function specialistLaneStatus(lane) {
+  const pluginRoot = path.join(SEIS_ROOT, lane.pluginPath);
+  const manifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
+  const mcpPath = path.join(pluginRoot, ".mcp.json");
+  const profilePath = path.join(SEIS_ROOT, lane.profilePath);
+  const skillPath = path.join(SEIS_ROOT, lane.skillPath);
+  const manifest = safeParseJson(manifestPath);
+  const mcp = safeParseJson(mcpPath);
+  const profile = safeParseJson(profilePath);
+
+  return {
+    id: lane.id,
+    label: lane.label,
+    status: manifest && profile && fs.existsSync(skillPath) ? "ready" : "partial",
+    pluginPath: lane.pluginPath,
+    skillPath: lane.skillPath,
+    profilePath: lane.profilePath,
+    manifest: manifest ? {
+      name: manifest.name,
+      version: manifest.version,
+      displayName: manifest.interface?.displayName || null,
+      capabilities: summarizeArrayValue(manifest.interface?.capabilities),
+    } : null,
+    mcp: {
+      manifestExists: Boolean(mcp),
+      serverConfigured: Boolean(mcp?.mcpServers?.[lane.id]),
+      statusTool: lane.mcpToolStatus,
+      planTool: lane.mcpToolPlan,
+    },
+    profile,
+  };
+}
+
+function specialistLanes() {
+  const lanes = SPECIALIST_LANES.map(specialistLaneStatus);
+  return {
+    status: lanes.every((lane) => lane.status === "ready") ? "ready" : "partial",
+    root: SEIS_ROOT,
+    laneCount: lanes.length,
+    lanes,
+  };
+}
+
+function specialistLaneStatusRequest(input = {}) {
+  const lane = findSpecialistLane(input.lane);
+  if (!lane) {
+    return {
+      error: {
+        code: -32602,
+        message: "Invalid params: lane must be one of seis-code, seis-design, or seis-data.",
+      },
+    };
+  }
+
+  return specialistLaneStatus(lane);
+}
+
+function specialistLanePlan(input = {}) {
+  const lane = findSpecialistLane(input.lane);
+  if (!lane) {
+    return {
+      error: {
+        code: -32602,
+        message: "Invalid params: lane must be one of seis-code, seis-design, or seis-data.",
+      },
+    };
+  }
+
+  if (typeof input.request !== "string" || !input.request.trim()) {
+    return {
+      error: {
+        code: -32602,
+        message: "Invalid params: request is required and must be a non-empty string.",
+      },
+    };
+  }
+
+  const status = specialistLaneStatus(lane);
+  return {
+    tool: "seis_specialist_lane_plan",
+    lane: lane.id,
+    label: lane.label,
+    request: input.request,
+    focus: lane.focus,
+    steps: lane.planSteps,
+    defaultChecks: status.profile?.qualityCommands || [],
+    readiness: {
+      status: status.status,
+      pluginPath: status.pluginPath,
+      skillPath: status.skillPath,
+    },
   };
 }
 
@@ -408,6 +609,51 @@ function handleMessage(message) {
         jsonrpc: "2.0",
         id: message.id,
         result: plan,
+      });
+      return;
+    }
+
+    if (toolName === "seis_specialist_lanes") {
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result: specialistLanes(argumentsData),
+      });
+      return;
+    }
+
+    if (toolName === "seis_specialist_lane_status") {
+      const result = specialistLaneStatusRequest(argumentsData);
+      if (result.error) {
+        sendResponse({
+          jsonrpc: "2.0",
+          id: message.id,
+          error: result.error,
+        });
+        return;
+      }
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result,
+      });
+      return;
+    }
+
+    if (toolName === "seis_specialist_lane_plan") {
+      const result = specialistLanePlan(argumentsData);
+      if (result.error) {
+        sendResponse({
+          jsonrpc: "2.0",
+          id: message.id,
+          error: result.error,
+        });
+        return;
+      }
+      sendResponse({
+        jsonrpc: "2.0",
+        id: message.id,
+        result,
       });
       return;
     }

@@ -1,0 +1,30 @@
+{
+  "id": "seis-data",
+  "displayName": "SEIS-DATA",
+  "version": 1,
+  "lane": "data",
+  "intent": "Data architecture, analytics, reporting, schema design, generated JSON/Markdown reports, knowledge registries, RAG or memory planning, source provenance, and safe dataset handling.",
+  "activationPolicy": "use_when_task_requires_data_or_knowledge_governance_under_seis",
+  "primaryPaths": [
+    "data",
+    "content/development",
+    "reports",
+    "packages/seis_kernel",
+    "scripts/create-*",
+    "docs"
+  ],
+  "qualityCommands": [
+    "npm run check:plugin-capability-lanes",
+    "npm run check:seis-technology-stack",
+    "npm run check:seis-agi-system",
+    "npm run check:universal-capability-kernel",
+    "npm run check:language-distribution"
+  ],
+  "guardrails": [
+    "do not invent data",
+    "preserve provenance",
+    "avoid exposing secrets or PII",
+    "keep generated reports synchronized",
+    "validate structured records"
+  ]
+}

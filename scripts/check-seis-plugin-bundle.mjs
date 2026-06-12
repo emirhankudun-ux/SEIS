@@ -176,6 +176,9 @@ if (fs.existsSync(path.join(sourceRoot, "content", "development", "llm-request-b
 }
 validateCodeContains(path.join(sourceRoot, "packages", "ai-language", "src", "llm-task-planner.mjs"), "planTask", "llm task planner must export planTask");
 validateCodeContains(path.join(sourceRoot, "mcp", "seis-mcp-server.mjs"), "tools/list", "mcp server should expose tools/list handler stub");
+for (const specialistTool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
+  validateCodeContains(path.join(sourceRoot, "mcp", "seis-mcp-server.mjs"), specialistTool, `mcp server should expose ${specialistTool}`);
+}
 
 if (failures.length > 0) {
   console.error("SEIS plugin bundle check failed:");

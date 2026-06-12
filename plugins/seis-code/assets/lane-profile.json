@@ -1,0 +1,29 @@
+{
+  "id": "seis-code",
+  "displayName": "SEIS-Code",
+  "version": 1,
+  "lane": "engineering",
+  "intent": "Architecture-aware implementation, refactors, tests, CI quality gates, MCP/plugin work, Apple-first platform code, and repository automation.",
+  "activationPolicy": "use_when_task_requires_code_changes_or_engineering_review_under_seis_governance",
+  "primaryPaths": [
+    "packages",
+    "mcp",
+    "plugins",
+    "scripts",
+    "apps",
+    ".github/workflows"
+  ],
+  "qualityCommands": [
+    "npm run seis:check",
+    "npm run check:seis-plugin-bundle",
+    "npm run check:seis-platform-kernel",
+    "npm run check:seis-agi-system"
+  ],
+  "guardrails": [
+    "inspect git status before edits",
+    "preserve user work",
+    "avoid dependency bloat",
+    "never expose secrets",
+    "validate before completion"
+  ]
+}

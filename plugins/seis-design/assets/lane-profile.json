@@ -1,0 +1,29 @@
+{
+  "id": "seis-design",
+  "displayName": "SEIS-Design",
+  "version": 1,
+  "lane": "design",
+  "intent": "Product design, UI/UX architecture, design systems, accessibility, calm motion, visual QA, responsive ergonomics, and implementation-aware handoff.",
+  "activationPolicy": "use_when_task_requires_user_experience_or_design_system_work_under_seis_governance",
+  "primaryPaths": [
+    "apps/web",
+    "docs/design",
+    "docs/platform",
+    "content",
+    "plugins",
+    "reports"
+  ],
+  "qualityCommands": [
+    "npm run check:motion-evidence",
+    "npm run check:mobile-ergonomics",
+    "npm run check:web",
+    "npm run seis:check"
+  ],
+  "guardrails": [
+    "build the usable experience first",
+    "preserve accessibility",
+    "respect reduced motion",
+    "avoid decorative one-off systems",
+    "validate rendered surfaces when available"
+  ]
+}

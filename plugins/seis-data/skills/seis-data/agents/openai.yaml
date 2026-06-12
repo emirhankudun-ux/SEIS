@@ -1,0 +1,6 @@
+interface:
+  display_name: "SEIS-DATA"
+  short_description: "Data, analytics, and knowledge lane"
+  default_prompt: "Use $seis-data to model, validate, or analyze SEIS data safely."
+policy:
+  allow_implicit_invocation: true

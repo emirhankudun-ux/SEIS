@@ -13,7 +13,7 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 | SEIS source mirror | `plugins/seis` |
 | Personal marketplace | `/Users/emirhankudun/.agents/plugins/marketplace.json` |
 | Installed plugin | `seis@personal` |
-| Installed cache root | `/Users/emirhankudun/.codex/plugins/cache/personal/seis/0.1.0+codex.20260605125627` |
+| Installed cache root | `/Users/emirhankudun/.codex/plugins/cache/personal/seis/0.1.0+codex.20260612200508` |
 
 ## Current Components
 
@@ -105,18 +105,39 @@ The GitHub connector can also force-update `main` to the canonical branch SHA wh
 
 ## Specialist Lanes
 
-The SEIS plugin now exposes three specialist lanes without splitting governance away from the canonical `seis@personal` plugin:
+The SEIS plugin exposes three specialist lanes inside the canonical `seis@personal` plugin and the personal marketplace also exposes each lane as its own full Codex plugin card:
 
 - SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
 - SEIS-Design: product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.
 - SEIS-DATA: data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.
+
+Full plugin packages:
+
+| Plugin | Repo mirror | Local root | MCP tools |
+|---|---|---|---|
+| `seis-code@personal` | `plugins/seis-code` | `/Users/emirhankudun/plugins/seis-code` | `seis_code_status`, `seis_code_plan` |
+| `seis-design@personal` | `plugins/seis-design` | `/Users/emirhankudun/plugins/seis-design` | `seis_design_status`, `seis_design_plan` |
+| `seis-data@personal` | `plugins/seis-data` | `/Users/emirhankudun/plugins/seis-data` | `seis_data_status`, `seis_data_plan` |
+
+Installed cache roots:
+
+- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-code/0.1.0`
+- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-design/0.1.0`
+- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-data/0.1.0`
+
+The central `seis` MCP server additionally exposes `seis_specialist_lanes`, `seis_specialist_lane_status`, and `seis_specialist_lane_plan`.
+
+Specialist plugin governance is tracked in:
+
+- [`data/seis-specialist-plugins-2026-06-12.json`](../data/seis-specialist-plugins-2026-06-12.json)
+- [`docs/platform/seis-specialist-plugins.md`](./platform/seis-specialist-plugins.md)
 
 ## Next Development Targets
 
 - add SEIS migration verification helpers
 - add GitHub auth readiness checks
 - add a repo snapshot integrity report
-- expose optional MCP tool handlers for the SEIS-Code, SEIS-Design, and SEIS-DATA lanes once command shapes are stable
+- add richer MCP write tools for the specialist lanes only after command shapes and safety gates are stable
 
 ## Safety Rule
 
