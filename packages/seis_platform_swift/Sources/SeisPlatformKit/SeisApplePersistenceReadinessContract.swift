@@ -36,11 +36,40 @@ public struct SeisApplePersistenceReadinessItem: Codable, Equatable, Identifiabl
     }
 }
 
+public struct SeisAppleCloudKitAccountStateReadiness: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let title: String
+    public let accountStatus: String
+    public let state: SeisAppleShellDiagnosticState
+    public let evidence: String
+    public let releaseAction: String
+    public let qualityGate: String
+
+    public init(
+        id: String,
+        title: String,
+        accountStatus: String,
+        state: SeisAppleShellDiagnosticState,
+        evidence: String,
+        releaseAction: String,
+        qualityGate: String
+    ) {
+        self.id = id
+        self.title = title
+        self.accountStatus = accountStatus
+        self.state = state
+        self.evidence = evidence
+        self.releaseAction = releaseAction
+        self.qualityGate = qualityGate
+    }
+}
+
 public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendable {
     public let title: String
     public let summary: String
     public let appleFrameworkSymbols: [String]
     public let items: [SeisApplePersistenceReadinessItem]
+    public let accountStates: [SeisAppleCloudKitAccountStateReadiness]
     public let validationCommands: [String]
 
     public init(
@@ -48,12 +77,14 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
         summary: String,
         appleFrameworkSymbols: [String],
         items: [SeisApplePersistenceReadinessItem],
+        accountStates: [SeisAppleCloudKitAccountStateReadiness],
         validationCommands: [String]
     ) {
         self.title = title
         self.summary = summary
         self.appleFrameworkSymbols = appleFrameworkSymbols
         self.items = items
+        self.accountStates = accountStates
         self.validationCommands = validationCommands
     }
 
@@ -66,7 +97,8 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
             "NSMergePolicy",
             "NSPersistentHistoryTransaction",
             "CKContainer",
-            "CKRecord"
+            "CKRecord",
+            "CKAccountStatus"
         ],
         items: [
             SeisApplePersistenceReadinessItem(
@@ -124,6 +156,53 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
                 qualityGate: "app_privacy_review"
             )
         ],
+        accountStates: [
+            SeisAppleCloudKitAccountStateReadiness(
+                id: "account-available",
+                title: "iCloud Account Available",
+                accountStatus: "CKAccountStatus.available",
+                state: .ready,
+                evidence: "CloudKit sync may proceed only after the user account is available.",
+                releaseAction: "Enable sync and surface last-successful-sync telemetry.",
+                qualityGate: "app_privacy_review"
+            ),
+            SeisAppleCloudKitAccountStateReadiness(
+                id: "account-missing",
+                title: "No iCloud Account",
+                accountStatus: "CKAccountStatus.noAccount",
+                state: .ready,
+                evidence: "The shell must keep local Core Data behavior useful without iCloud.",
+                releaseAction: "Stay local-first and explain that iCloud sign-in enables sync.",
+                qualityGate: "offline_fallback"
+            ),
+            SeisAppleCloudKitAccountStateReadiness(
+                id: "account-restricted",
+                title: "Restricted Account",
+                accountStatus: "CKAccountStatus.restricted",
+                state: .ready,
+                evidence: "Managed Apple IDs and device restrictions can prevent CloudKit writes.",
+                releaseAction: "Disable sync actions and keep policy-safe local persistence.",
+                qualityGate: "permission_scope"
+            ),
+            SeisAppleCloudKitAccountStateReadiness(
+                id: "account-unknown",
+                title: "Account State Unknown",
+                accountStatus: "CKAccountStatus.couldNotDetermine",
+                state: .ready,
+                evidence: "Network or system uncertainty must not block local work.",
+                releaseAction: "Retry account lookup with observable status and no destructive writes.",
+                qualityGate: "notarization_awareness"
+            ),
+            SeisAppleCloudKitAccountStateReadiness(
+                id: "account-temporary",
+                title: "Temporarily Unavailable",
+                accountStatus: "CKAccountStatus.temporarilyUnavailable",
+                state: .ready,
+                evidence: "Temporary CloudKit failures need backoff instead of user data loss.",
+                releaseAction: "Queue sync, preserve local changes, and surface retry status.",
+                qualityGate: "coredata_cloudkit_sync_review"
+            )
+        ],
         validationCommands: [
             "swift test --package-path packages/seis_platform_swift",
             "xcodebuild -version"
@@ -131,15 +210,20 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
     )
 
     public var readyCount: Int {
-        items.filter { $0.state == .ready }.count
+        items.filter { $0.state == .ready }.count +
+            accountStates.filter { $0.state == .ready }.count
+    }
+
+    public var checkCount: Int {
+        items.count + accountStates.count
     }
 
     public var isReady: Bool {
-        !items.isEmpty && readyCount == items.count
+        checkCount > 0 && readyCount == checkCount
     }
 
     public var accessibilitySummary: String {
-        "\(title). \(readyCount) of \(items.count) Apple persistence checks ready. \(summary)"
+        "\(title). \(readyCount) of \(checkCount) Apple persistence checks ready. \(summary)"
     }
 
     public var expectedSourceTokens: [String] {
@@ -150,16 +234,22 @@ public struct SeisApplePersistenceReadinessContract: Codable, Equatable, Sendabl
             "NSPersistentCloudKitContainer",
             "NSPersistentHistoryTransaction",
             "CKContainer",
-            "CKRecord"
+            "CKRecord",
+            "CKAccountStatus",
+            "CKAccountStatus.temporarilyUnavailable"
         ]
     }
 
     public var expectedDiagnosticsViewTokens: [String] {
         [
             "Persistence Readiness",
+            "CloudKit Account States",
             "persistence.items",
+            "persistence.accountStates",
             "item.appleFramework",
             "item.symbol",
+            "accountState.accountStatus",
+            "accountState.releaseAction",
             "persistence.validationCommands"
         ]
     }

@@ -81,6 +81,30 @@ struct AppleShellDiagnosticsView: View {
                         }
                     }
                 }
+
+                Text("CloudKit Account States")
+                    .font(.caption.weight(.semibold))
+                    .padding(.top, 4)
+                ForEach(persistence.accountStates) { accountState in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(for: accountState.state))
+                            .foregroundStyle(statusColor(for: accountState.state))
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(accountState.title)
+                                .font(.caption.weight(.semibold))
+                            Text(accountState.accountStatus)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(accountState.releaseAction)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                            Text(accountState.qualityGate)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
             }
 
             Divider()
@@ -146,7 +170,7 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private var totalCheckCount: Int {
-        diagnostics.items.count + persistence.items.count + runtimeDiagnostics.probes.count
+        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count
     }
 
     private var validationCommands: [String] {

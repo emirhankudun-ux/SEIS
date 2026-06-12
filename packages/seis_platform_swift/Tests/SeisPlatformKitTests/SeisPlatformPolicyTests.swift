@@ -198,11 +198,17 @@ import Testing
     let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
 
     #expect(persistence.isReady)
-    #expect(persistence.readyCount == persistence.items.count)
+    #expect(persistence.readyCount == persistence.checkCount)
     #expect(persistence.appleFrameworkSymbols.contains("NSPersistentCloudKitContainer"))
     #expect(persistence.appleFrameworkSymbols.contains("CKContainer"))
+    #expect(persistence.appleFrameworkSymbols.contains("CKAccountStatus"))
     #expect(persistence.items.contains { $0.id == "persistent-cloudkit-container" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(persistence.items.contains { $0.id == "cloudkit-record-privacy" && $0.qualityGate == "app_privacy_review" })
+    #expect(persistence.accountStates.count == 5)
+    #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.available" && $0.releaseAction.contains("Enable sync") })
+    #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.noAccount" && $0.qualityGate == "offline_fallback" })
+    #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.restricted" && $0.qualityGate == "permission_scope" })
+    #expect(persistence.accountStates.contains { $0.accountStatus == "CKAccountStatus.temporarilyUnavailable" && $0.qualityGate == "coredata_cloudkit_sync_review" })
     #expect(persistence.validationCommands.contains("swift test --package-path packages/seis_platform_swift"))
 }
 
