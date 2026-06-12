@@ -22,6 +22,12 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
     public let agentHandoffCheckCount: Int
     public let agentHandoffWriterCount: Int
     public let agentHandoffStatusLabel: String
+    public let researchAutomationReadyCount: Int
+    public let researchAutomationCheckCount: Int
+    public let researchSelectedSourceCount: Int
+    public let researchDeferredSourceCount: Int
+    public let researchFreshnessCheckCount: Int
+    public let researchAutomationStatusLabel: String
 
     public init(
         id: String,
@@ -37,7 +43,13 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         agentHandoffReadyCount: Int,
         agentHandoffCheckCount: Int,
         agentHandoffWriterCount: Int,
-        agentHandoffStatusLabel: String
+        agentHandoffStatusLabel: String,
+        researchAutomationReadyCount: Int = 0,
+        researchAutomationCheckCount: Int = 1,
+        researchSelectedSourceCount: Int = 0,
+        researchDeferredSourceCount: Int = 0,
+        researchFreshnessCheckCount: Int = 0,
+        researchAutomationStatusLabel: String = ""
     ) {
         self.id = id
         self.source = source
@@ -53,6 +65,12 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         self.agentHandoffCheckCount = agentHandoffCheckCount
         self.agentHandoffWriterCount = agentHandoffWriterCount
         self.agentHandoffStatusLabel = agentHandoffStatusLabel
+        self.researchAutomationReadyCount = researchAutomationReadyCount
+        self.researchAutomationCheckCount = researchAutomationCheckCount
+        self.researchSelectedSourceCount = researchSelectedSourceCount
+        self.researchDeferredSourceCount = researchDeferredSourceCount
+        self.researchFreshnessCheckCount = researchFreshnessCheckCount
+        self.researchAutomationStatusLabel = researchAutomationStatusLabel
     }
 
     public static func make(
@@ -61,13 +79,16 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         diagnostics: SeisAppleShellDiagnosticsContract,
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
+        researchAutomation: SeisAGIResearchAutomationPlan = .current(),
         agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
+        let researchAutomationReadyCount = researchAutomation.isReady ? 1 : 0
+        let researchAutomationCheckCount = 1
         let agentHandoffReadyCount = agentHandoff.isReady ? 1 : 0
         let agentHandoffCheckCount = 1
-        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount + agentHandoffReadyCount
-        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count + agentHandoffCheckCount
+        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount + researchAutomationReadyCount + agentHandoffReadyCount
+        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count + researchAutomationCheckCount + agentHandoffCheckCount
         let timestamp = Self.timestampString(from: recordedAt)
         let id = "\(source)-\(readyCount)-\(checkCount)-\(timestamp)"
             .replacingOccurrences(of: ":", with: "-")
@@ -86,7 +107,13 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             agentHandoffReadyCount: agentHandoffReadyCount,
             agentHandoffCheckCount: agentHandoffCheckCount,
             agentHandoffWriterCount: agentHandoff.writerCount,
-            agentHandoffStatusLabel: agentHandoff.statusLabel
+            agentHandoffStatusLabel: agentHandoff.statusLabel,
+            researchAutomationReadyCount: researchAutomationReadyCount,
+            researchAutomationCheckCount: researchAutomationCheckCount,
+            researchSelectedSourceCount: researchAutomation.selectedSourceCount,
+            researchDeferredSourceCount: researchAutomation.deferredSourceCount,
+            researchFreshnessCheckCount: researchAutomation.freshnessCheckCount,
+            researchAutomationStatusLabel: researchAutomation.statusLabel
         )
     }
 
@@ -110,6 +137,10 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         "\(agentHandoffReadyCount)/\(agentHandoffCheckCount) handoff / \(agentHandoffWriterCount)/1 writer / \(agentHandoffStatusLabel)"
     }
 
+    public var researchAutomationStatusSummary: String {
+        "\(researchAutomationReadyCount)/\(researchAutomationCheckCount) research / \(researchSelectedSourceCount) selected / \(researchDeferredSourceCount) deferred / \(researchFreshnessCheckCount) freshness / \(researchAutomationStatusLabel)"
+    }
+
     public static var expectedSourceTokens: [String] {
         [
             "import Combine",
@@ -121,7 +152,9 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "runtimeStatusLabel",
             "persistenceStatusLabel",
             "agentHandoffStatusLabel",
-            "agentHandoffStatusSummary"
+            "agentHandoffStatusSummary",
+            "researchAutomationStatusLabel",
+            "researchAutomationStatusSummary"
         ]
     }
 
@@ -132,7 +165,8 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "historySnapshot.statusLabel",
             "historySnapshot.runtimeStatusLabel",
             "historySnapshot.persistenceStatusLabel",
-            "historySnapshot.agentHandoffStatusSummary"
+            "historySnapshot.agentHandoffStatusSummary",
+            "historySnapshot.researchAutomationStatusSummary"
         ]
     }
 
@@ -178,6 +212,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
         diagnostics: SeisAppleShellDiagnosticsContract,
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
+        researchAutomation: SeisAGIResearchAutomationPlan = .current(),
         agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
@@ -187,6 +222,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
             diagnostics: diagnostics,
             persistence: persistence,
             runtime: runtime,
+            researchAutomation: researchAutomation,
             agentHandoff: agentHandoff,
             recordedAt: recordedAt
         )

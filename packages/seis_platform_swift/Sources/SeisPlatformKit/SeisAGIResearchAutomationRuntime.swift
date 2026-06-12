@@ -94,6 +94,70 @@ public struct SeisAGIResearchAutomationPlan: Codable, Equatable, Sendable {
     public var allSources: [SeisAGIResearchSourceManifestItem] {
         selectedSources + deferredSources
     }
+
+    public var selectedSourceCount: Int {
+        selectedSources.count
+    }
+
+    public var deferredSourceCount: Int {
+        deferredSources.count
+    }
+
+    public var usableSelectedSourceCount: Int {
+        selectedSources.filter(\.isUsable).count
+    }
+
+    public var freshnessCheckCount: Int {
+        allSources.filter(\.requiresFreshnessCheck).count
+    }
+
+    public var statusLabel: String {
+        "\(usableSelectedSourceCount)/\(selectedSourceCount) selected sources usable"
+    }
+
+    public var sourceBalanceLabel: String {
+        "\(selectedSourceCount) selected / \(deferredSourceCount) deferred"
+    }
+
+    public var freshnessStatusLabel: String {
+        "\(freshnessCheckCount) freshness checks"
+    }
+
+    public var redactionStatusLabel: String {
+        redactionPolicy.contains("never include secrets") ? "secret-safe manifest only" : "redaction review required"
+    }
+
+    public static func current(
+        contract: SeisAGISystemContract = .master,
+        recordedAt: String = "2026-06-12T00:00:00Z"
+    ) -> SeisAGIResearchAutomationPlan {
+        let memory = SeisAGIMemoryPlanningSnapshot.bootstrap(
+            from: contract.memoryPlanning,
+            recordedAt: recordedAt
+        )
+        let orchestration = SeisAGIAgentOrchestrationRuntime().makePlan(
+            contract: contract,
+            memorySnapshot: memory
+        )
+        return SeisAGIResearchAutomationRuntime().makePlan(
+            contract: contract,
+            memorySnapshot: memory,
+            orchestrationPlan: orchestration
+        )
+    }
+
+    public static var expectedDiagnosticsViewTokens: [String] {
+        [
+            "Research Automation Status",
+            "researchAutomationPlan.statusLabel",
+            "researchAutomationPlan.sourceBalanceLabel",
+            "freshnessStatusLabel",
+            "redactionStatusLabel",
+            "selectedSources",
+            "requiresFreshnessCheck",
+            "sourceKind"
+        ]
+    }
 }
 
 public struct SeisAGIResearchAutomationRuntime: Codable, Equatable, Sendable {

@@ -10,6 +10,7 @@ public enum SeisAppleShellTelemetryEvent: String, Codable, CaseIterable, Sendabl
     case runtimeProbeSnapshot = "runtime_probe_snapshot"
     case persistenceReadinessSnapshot = "persistence_readiness_snapshot"
     case agentHandoffSnapshot = "agent_handoff_snapshot"
+    case researchAutomationSnapshot = "research_automation_snapshot"
 }
 
 public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
@@ -45,7 +46,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
         switch event {
         case .focusCommandReceived, .focusPreferenceChanged, .focusRouteApplied:
             focusCategory
-        case .diagnosticsRefreshRequested, .diagnosticsRefreshed, .runtimeProbeSnapshot, .persistenceReadinessSnapshot, .agentHandoffSnapshot:
+        case .diagnosticsRefreshRequested, .diagnosticsRefreshed, .runtimeProbeSnapshot, .persistenceReadinessSnapshot, .agentHandoffSnapshot, .researchAutomationSnapshot:
             diagnosticsCategory
         }
     }
@@ -60,6 +61,7 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
             "runtime_probe_snapshot",
             "persistence_readiness_snapshot",
             "agent_handoff_snapshot",
+            "research_automation_snapshot",
             "privacy: .public"
         ]
     }
@@ -80,7 +82,8 @@ public struct SeisAppleShellTelemetryContract: Codable, Equatable, Sendable {
             ".diagnosticsRefreshed",
             ".runtimeProbeSnapshot",
             ".persistenceReadinessSnapshot",
-            ".agentHandoffSnapshot"
+            ".agentHandoffSnapshot",
+            ".researchAutomationSnapshot"
         ]
     }
 

@@ -263,6 +263,7 @@ import Testing
         operatingSystemVersion: "macOS-test",
         processName: "SeisAppleNativeShell"
     )
+    let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let store = SeisAppleShellDiagnosticsHistoryStore(historyLimit: 2)
 
@@ -272,6 +273,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        researchAutomation: researchAutomation,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 0)
     )
@@ -281,6 +283,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        researchAutomation: researchAutomation,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 1)
     )
@@ -290,6 +293,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        researchAutomation: researchAutomation,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 2)
     )
@@ -306,6 +310,13 @@ import Testing
     #expect(third.agentHandoffWriterCount == 1)
     #expect(third.agentHandoffStatusLabel.contains("handoffs traceable"))
     #expect(third.agentHandoffStatusSummary.contains("handoff"))
+    #expect(third.researchAutomationReadyCount == 1)
+    #expect(third.researchAutomationCheckCount == 1)
+    #expect(third.researchSelectedSourceCount == researchAutomation.selectedSourceCount)
+    #expect(third.researchDeferredSourceCount == researchAutomation.deferredSourceCount)
+    #expect(third.researchFreshnessCheckCount == researchAutomation.freshnessCheckCount)
+    #expect(third.researchAutomationStatusLabel == researchAutomation.statusLabel)
+    #expect(third.researchAutomationStatusSummary.contains("research"))
 }
 
 #if canImport(CoreData)
@@ -319,6 +330,7 @@ import Testing
         operatingSystemVersion: "macOS-test",
         processName: "SeisAppleNativeShell"
     )
+    let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let persistentStore = try SeisAppleDiagnosticsPersistentHistoryStore(inMemory: true)
     let store = SeisAppleShellDiagnosticsHistoryStore(
@@ -332,6 +344,7 @@ import Testing
         diagnostics: diagnostics,
         persistence: persistence,
         runtime: runtime,
+        researchAutomation: researchAutomation,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 3)
     )
@@ -346,6 +359,8 @@ import Testing
     #expect(snapshot.runtimeReadyCount == runtime.readyCount)
     #expect(snapshot.agentHandoffStatusLabel == agentHandoff.statusLabel)
     #expect(snapshot.agentHandoffWriterCount == agentHandoff.writerCount)
+    #expect(snapshot.researchAutomationStatusLabel == researchAutomation.statusLabel)
+    #expect(snapshot.researchSelectedSourceCount == researchAutomation.selectedSourceCount)
 }
 #endif
 
@@ -360,11 +375,13 @@ import Testing
     #expect(telemetry.events.contains(.diagnosticsRefreshed))
     #expect(telemetry.events.contains(.persistenceReadinessSnapshot))
     #expect(telemetry.events.contains(.agentHandoffSnapshot))
+    #expect(telemetry.events.contains(.researchAutomationSnapshot))
     #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
     #expect(telemetry.category(for: .diagnosticsRefreshRequested) == "Diagnostics")
     #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .persistenceReadinessSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .agentHandoffSnapshot) == "Diagnostics")
+    #expect(telemetry.category(for: .researchAutomationSnapshot) == "Diagnostics")
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
@@ -394,6 +411,10 @@ import Testing
     )
     let agentHandoffSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift"),
+        encoding: .utf8
+    )
+    let researchSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift"),
         encoding: .utf8
     )
     let continuation = try String(
@@ -428,6 +449,11 @@ import Testing
     for token in SeisAGIAgentHandoffSnapshot.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing agent handoff diagnostics view token: \(token)")
     }
+    for token in SeisAGIResearchAutomationPlan.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing research automation diagnostics view token: \(token)")
+    }
+    #expect(researchSource.contains("current("))
+    #expect(researchSource.contains("redactionStatusLabel"))
     #if canImport(CoreData)
     for token in SeisAppleDiagnosticsPersistentHistoryStore.expectedSourceTokens {
         #expect(persistentStoreSource.contains(token), "missing persistent history source token: \(token)")
@@ -701,6 +727,11 @@ import Testing
     #expect(plan.qualityGates.contains("no-fake-usage"))
     #expect(plan.primarySourcePolicy.contains("official documentation"))
     #expect(plan.redactionPolicy.contains("never include secrets"))
+    #expect(plan.statusLabel.contains("selected sources usable"))
+    #expect(plan.sourceBalanceLabel.contains("selected"))
+    #expect(plan.freshnessStatusLabel.contains("freshness checks"))
+    #expect(plan.redactionStatusLabel == "secret-safe manifest only")
+    #expect(SeisAGIResearchAutomationPlan.current().isReady)
 
     for item in plan.allSources {
         historyStore.save(item)

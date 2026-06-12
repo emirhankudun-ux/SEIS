@@ -57,6 +57,12 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
                 object.setValue(snapshot.agentHandoffCheckCount, forKey: "agentHandoffCheckCount")
                 object.setValue(snapshot.agentHandoffWriterCount, forKey: "agentHandoffWriterCount")
                 object.setValue(snapshot.agentHandoffStatusLabel, forKey: "agentHandoffStatusLabel")
+                object.setValue(snapshot.researchAutomationReadyCount, forKey: "researchAutomationReadyCount")
+                object.setValue(snapshot.researchAutomationCheckCount, forKey: "researchAutomationCheckCount")
+                object.setValue(snapshot.researchSelectedSourceCount, forKey: "researchSelectedSourceCount")
+                object.setValue(snapshot.researchDeferredSourceCount, forKey: "researchDeferredSourceCount")
+                object.setValue(snapshot.researchFreshnessCheckCount, forKey: "researchFreshnessCheckCount")
+                object.setValue(snapshot.researchAutomationStatusLabel, forKey: "researchAutomationStatusLabel")
 
                 if context.hasChanges {
                     try context.save()
@@ -106,6 +112,8 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             "shouldInferMappingModelAutomatically",
             "agentHandoffWriterCount",
             "agentHandoffStatusLabel",
+            "researchAutomationStatusLabel",
+            "researchFreshnessCheckCount",
             "defaultValue"
         ]
     }
@@ -140,7 +148,13 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             agentHandoffReadyCount: intValue(object, forKey: "agentHandoffReadyCount"),
             agentHandoffCheckCount: intValue(object, forKey: "agentHandoffCheckCount"),
             agentHandoffWriterCount: intValue(object, forKey: "agentHandoffWriterCount"),
-            agentHandoffStatusLabel: stringValue(object, forKey: "agentHandoffStatusLabel")
+            agentHandoffStatusLabel: stringValue(object, forKey: "agentHandoffStatusLabel"),
+            researchAutomationReadyCount: intValue(object, forKey: "researchAutomationReadyCount"),
+            researchAutomationCheckCount: intValue(object, forKey: "researchAutomationCheckCount"),
+            researchSelectedSourceCount: intValue(object, forKey: "researchSelectedSourceCount"),
+            researchDeferredSourceCount: intValue(object, forKey: "researchDeferredSourceCount"),
+            researchFreshnessCheckCount: intValue(object, forKey: "researchFreshnessCheckCount"),
+            researchAutomationStatusLabel: stringValue(object, forKey: "researchAutomationStatusLabel")
         )
     }
 
@@ -170,7 +184,13 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             attribute("agentHandoffReadyCount", .integer64AttributeType, defaultValue: 0),
             attribute("agentHandoffCheckCount", .integer64AttributeType, defaultValue: 1),
             attribute("agentHandoffWriterCount", .integer64AttributeType, defaultValue: 0),
-            attribute("agentHandoffStatusLabel", .stringAttributeType, defaultValue: "")
+            attribute("agentHandoffStatusLabel", .stringAttributeType, defaultValue: ""),
+            attribute("researchAutomationReadyCount", .integer64AttributeType, defaultValue: 0),
+            attribute("researchAutomationCheckCount", .integer64AttributeType, defaultValue: 1),
+            attribute("researchSelectedSourceCount", .integer64AttributeType, defaultValue: 0),
+            attribute("researchDeferredSourceCount", .integer64AttributeType, defaultValue: 0),
+            attribute("researchFreshnessCheckCount", .integer64AttributeType, defaultValue: 0),
+            attribute("researchAutomationStatusLabel", .stringAttributeType, defaultValue: "")
         ]
 
         let model = NSManagedObjectModel()

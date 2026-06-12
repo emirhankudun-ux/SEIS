@@ -9,17 +9,20 @@ struct AppleShellDiagnosticsView: View {
     private let telemetry = SeisAppleShellTelemetryLogger()
     @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
     @State private var agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot
+    @State private var researchAutomationPlan: SeisAGIResearchAutomationPlan
     @StateObject private var historyStore: SeisAppleShellDiagnosticsHistoryStore
 
     init(
         snapshot: SeisAppleContinuationSnapshot,
         runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current(),
         agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot = .current(),
+        researchAutomationPlan: SeisAGIResearchAutomationPlan = .current(),
         historyStore: SeisAppleShellDiagnosticsHistoryStore = .appleNative()
     ) {
         self.snapshot = snapshot
         self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)
         self._agentHandoffSnapshot = State(initialValue: agentHandoffSnapshot)
+        self._researchAutomationPlan = State(initialValue: researchAutomationPlan)
         self._historyStore = StateObject(wrappedValue: historyStore)
     }
 
@@ -141,6 +144,50 @@ struct AppleShellDiagnosticsView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
+                    Text("Research Automation Status")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(researchAutomationPlan.sourceBalanceLabel)
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(researchAutomationPlan.isReady ? Color.secondary : Color.orange)
+                }
+                Text(researchAutomationPlan.statusLabel)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                Text(researchAutomationPlan.freshnessStatusLabel)
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text(researchAutomationPlan.redactionStatusLabel)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                Text(researchAutomationPlan.primarySourcePolicy)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(researchAutomationPlan.selectedSources) { source in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(for: source.sourceKind))
+                            .foregroundStyle(source.requiresFreshnessCheck ? .orange : .secondary)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(source.title)
+                                .font(.caption.weight(.semibold))
+                            Text("\(source.sourceKind.rawValue) / \(source.sourcePath)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                            Text(source.requiresFreshnessCheck ? "freshness check required / citation trace required" : "local evidence selected / citation trace required")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
                     Text("Agent Handoff Status")
                         .font(.subheadline.weight(.semibold))
                     Spacer()
@@ -229,6 +276,9 @@ struct AppleShellDiagnosticsView: View {
                             Text(historySnapshot.agentHandoffStatusSummary)
                                 .font(.caption2)
                                 .foregroundStyle(.tertiary)
+                            Text(historySnapshot.researchAutomationStatusSummary)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                 }
@@ -252,7 +302,7 @@ struct AppleShellDiagnosticsView: View {
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) \(agentHandoffSnapshot.statusLabel). Active quality gates: \(snapshot.qualityGates.count).")
+        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) \(researchAutomationPlan.statusLabel). \(agentHandoffSnapshot.statusLabel). Active quality gates: \(snapshot.qualityGates.count).")
         .onAppear {
             recordDiagnosticsTelemetry(source: "appear")
         }
@@ -262,11 +312,11 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private var totalReadyCount: Int {
-        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount + (agentHandoffSnapshot.isReady ? 1 : 0)
+        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount + (researchAutomationPlan.isReady ? 1 : 0) + (agentHandoffSnapshot.isReady ? 1 : 0)
     }
 
     private var totalCheckCount: Int {
-        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count + 1
+        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count + 2
     }
 
     private var validationCommands: [String] {
@@ -292,6 +342,19 @@ struct AppleShellDiagnosticsView: View {
         }
     }
 
+    private func systemImage(for sourceKind: SeisAGIResearchSourceKind) -> String {
+        switch sourceKind {
+        case .localRepository:
+            "folder"
+        case .generatedReport:
+            "doc.text"
+        case .officialDocumentation:
+            "book.closed"
+        case .userProvidedReference:
+            "photo.on.rectangle"
+        }
+    }
+
     private func systemImage(for role: SeisAGIAgentRole) -> String {
         switch role {
         case .writer:
@@ -308,6 +371,7 @@ struct AppleShellDiagnosticsView: View {
     private func refreshDiagnostics(source: String) {
         telemetry.record(.diagnosticsRefreshRequested, detail: "source=\(source)")
         runtimeDiagnostics = .current()
+        researchAutomationPlan = .current()
         agentHandoffSnapshot = .current()
         recordDiagnosticsTelemetry(source: source)
     }
@@ -319,6 +383,7 @@ struct AppleShellDiagnosticsView: View {
             diagnostics: diagnostics,
             persistence: persistence,
             runtime: runtimeDiagnostics,
+            researchAutomation: researchAutomationPlan,
             agentHandoff: agentHandoffSnapshot
         )
         telemetry.record(
@@ -332,6 +397,10 @@ struct AppleShellDiagnosticsView: View {
         telemetry.record(
             .persistenceReadinessSnapshot,
             detail: "source=\(source) ready=\(persistence.readyCount) total=\(persistence.checkCount) accountStates=\(persistence.accountStates.count) migrationGates=\(persistence.migrationGates.count)"
+        )
+        telemetry.record(
+            .researchAutomationSnapshot,
+            detail: "source=\(source) selected=\(researchAutomationPlan.selectedSourceCount) deferred=\(researchAutomationPlan.deferredSourceCount) freshness=\(researchAutomationPlan.freshnessCheckCount) ready=\(researchAutomationPlan.isReady)"
         )
         telemetry.record(
             .agentHandoffSnapshot,
