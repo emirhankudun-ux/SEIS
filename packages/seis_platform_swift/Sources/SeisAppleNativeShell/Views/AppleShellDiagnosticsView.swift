@@ -6,6 +6,7 @@ struct AppleShellDiagnosticsView: View {
     let runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
 
     private let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
+    private let telemetry = SeisAppleShellTelemetryLogger()
 
     init(
         snapshot: SeisAppleContinuationSnapshot,
@@ -96,6 +97,7 @@ struct AppleShellDiagnosticsView: View {
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(diagnostics.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) Active quality gates: \(snapshot.qualityGates.count).")
+        .onAppear(perform: recordDiagnosticsTelemetry)
     }
 
     private var totalReadyCount: Int {
@@ -122,5 +124,16 @@ struct AppleShellDiagnosticsView: View {
         case .watch:
             .orange
         }
+    }
+
+    private func recordDiagnosticsTelemetry() {
+        telemetry.record(
+            .diagnosticsRefreshed,
+            detail: "ready=\(totalReadyCount) total=\(totalCheckCount) activeGates=\(snapshot.qualityGates.count)"
+        )
+        telemetry.record(
+            .runtimeProbeSnapshot,
+            detail: "ready=\(runtimeDiagnostics.readyCount) total=\(runtimeDiagnostics.probes.count) process=\(runtimeDiagnostics.processName)"
+        )
     }
 }

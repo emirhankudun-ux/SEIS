@@ -32,6 +32,7 @@ NON_JS_SURFACES = [
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsContract.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellSettingsContract.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellTelemetry.swift",
     "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift",
     "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
     "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift",

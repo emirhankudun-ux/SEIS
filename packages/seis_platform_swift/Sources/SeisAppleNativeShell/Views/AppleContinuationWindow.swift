@@ -3,6 +3,7 @@ import SwiftUI
 
 struct AppleContinuationWindow: View {
     private let settings = SeisAppleShellSettingsContract.appleNativeShell
+    private let telemetry = SeisAppleShellTelemetryLogger()
 
     @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.lowMotionKey)
     private var lowMotion = SeisAppleShellSettingsContract.appleNativeShell.defaultLowMotion
@@ -66,11 +67,16 @@ struct AppleContinuationWindow: View {
                 Button("Preferred Focus", action: focusPreferred)
             }
         }
-        .onAppear(perform: focusPreferred)
+        .onAppear {
+            telemetry.record(.focusPreferenceChanged, detail: "initial=\(preferredFocusRawValue)")
+            focusPreferred()
+        }
         .onChange(of: preferredFocusRawValue) { _ in
+            telemetry.record(.focusPreferenceChanged, detail: "preferredFocus=\(preferredFocusRawValue)")
             focusPreferred()
         }
         .onReceive(NotificationCenter.default.publisher(for: .seisFocusAppleNative)) { _ in
+            telemetry.record(.focusCommandReceived, detail: "command=seisFocusAppleNative")
             focusPreferred()
         }
     }
@@ -84,6 +90,9 @@ struct AppleContinuationWindow: View {
     }
 
     private func applyFocus(_ nextRequest: String) {
+        let routeSource = nextRequest == settings.request(for: preferredFocusRawValue)
+            ? "preferred:\(settings.focusPreference(for: preferredFocusRawValue).rawValue)"
+            : "manual"
         request = nextRequest
         if lowMotion {
             model.focus(on: nextRequest)
@@ -92,5 +101,9 @@ struct AppleContinuationWindow: View {
                 model.focus(on: nextRequest)
             }
         }
+        telemetry.record(
+            .focusRouteApplied,
+            detail: "source=\(routeSource) platforms=\(model.snapshot.platforms.count) qualityGates=\(model.snapshot.qualityGates.count)"
+        )
     }
 }

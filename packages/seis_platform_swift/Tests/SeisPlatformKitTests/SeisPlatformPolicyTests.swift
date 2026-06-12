@@ -181,6 +181,7 @@ import Testing
     #expect(runtime.isReady)
     #expect(runtime.readyCount == runtime.probes.count)
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
+    #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.accessibilitySummary.contains("SeisAppleNativeShell"))
 
     let partial = SeisAppleShellRuntimeDiagnostics.make(
@@ -189,6 +190,18 @@ import Testing
     )
     #expect(!partial.isReady)
     #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
+}
+
+@Test func appleShellTelemetryContractDescribesUnifiedLogging() {
+    let telemetry = SeisAppleShellTelemetryContract.appleNativeShell
+    #expect(telemetry.subsystem == "com.seis.apple-native-shell")
+    #expect(telemetry.focusCategory == "Focus")
+    #expect(telemetry.diagnosticsCategory == "Diagnostics")
+    #expect(telemetry.verificationCommand == "./script/build_and_run.sh --telemetry")
+    #expect(telemetry.events.contains(.focusRouteApplied))
+    #expect(telemetry.events.contains(.diagnosticsRefreshed))
+    #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
+    #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
@@ -216,6 +229,33 @@ import Testing
     }
     for token in runtime.expectedRuntimeViewTokens {
         #expect(view.contains(token), "missing runtime diagnostics view token: \(token)")
+    }
+}
+
+@Test func appleShellTelemetryFilesMatchSwiftContract() throws {
+    let telemetry = SeisAppleShellTelemetryContract.appleNativeShell
+    let root = repositoryRoot()
+    let telemetrySource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellTelemetry.swift"),
+        encoding: .utf8
+    )
+    let continuation = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift"),
+        encoding: .utf8
+    )
+    let diagnostics = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift"),
+        encoding: .utf8
+    )
+
+    for token in telemetry.expectedTelemetrySourceTokens {
+        #expect(telemetrySource.contains(token), "missing telemetry source token: \(token)")
+    }
+    for token in telemetry.expectedFocusTelemetryTokens {
+        #expect(continuation.contains(token), "missing focus telemetry token: \(token)")
+    }
+    for token in telemetry.expectedDiagnosticsTelemetryTokens {
+        #expect(diagnostics.contains(token), "missing diagnostics telemetry token: \(token)")
     }
 }
 
