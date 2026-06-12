@@ -35,9 +35,21 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 ## Engineering Philosophy
 
 - Keep systems maintainable, explainable, accessible, observable, and rollback-safe.
-- Main branch is sacred; risky work belongs on isolated branches.
+- Main branch is sacred and is the only permanent repository branch.
+- Risky work belongs on short-lived review branches or isolated worktrees that
+  merge back into `main`.
 - Legacy files must be analyzed before migration and must not be copied directly into the clean app surface.
-Documentation is part of system integrity.
+- Documentation is part of system integrity.
+
+## Open Source Platform Direction
+
+- Treat SEIS as an open source AI-native platform for agents, MCP, skills,
+  plugins, LLM workflows, engineering systems, design systems, data systems,
+  education, automation, and product development.
+- GitHub discoverability, community trust, contribution quality, security, and
+  sustainable maintenance are product requirements.
+- New features must pass architecture fit, long-term maintainability, security,
+  and documentation checks before they become part of the platform.
 
 ## Aktif Lokal IDE / Design/Creator Stack
 
@@ -111,8 +123,9 @@ flowchart TD
 
 ## iCloud Workspace Intake
 
-- Treat `/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
-- Use this repository as the active GitHub development surface for UIX-Apps on `UIXAppTTR`.
+- Treat `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
+- Use this repository as the active GitHub development surface for SEIS on
+  `main`.
 - Before merging root workspace material, follow `docs/governance/icloud-github-workspace-ingestion.md`.
 - Do not bulk-import archives, personal media, `.DS_Store`, nested `.git` directories, or symlink mirrors into this repository.
 - Convert broad operating instructions into traceable governance docs before pushing.

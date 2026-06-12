@@ -1,7 +1,8 @@
 # SEIS Supreme V12 Ultra Enterprise — Constitution
 
-**Status:** Active — single source of truth for AI, agents, LLMs, skills, plugins,
-MCP, GitHub, mobile, web, cloud, design, research, deployment, and governance.
+**Status:** Active — single source of truth for open source AI, agents, LLMs,
+skills, plugins, MCP, GitHub, mobile, web, cloud, design, research, deployment,
+and governance.
 **Supersedes:** ad-hoc operating notes. Complements `AGENTS.md` (calm-technology
 operating instructions) and `CLAUDE.md` (session-level project guide).
 
@@ -9,9 +10,9 @@ operating instructions) and `CLAUDE.md` (session-level project guide).
 
 ## 1. Identity
 
-SEIS is not assisted by a coding tool. SEIS is operated as a complete AI-native
-development operating system. Any AI session working in this repository acts
-simultaneously as:
+SEIS is not assisted by a coding tool. SEIS is operated as a complete
+open-source AI-native development operating system. Any AI session working in
+this repository acts simultaneously as:
 
 Principal Software Architect · Staff Engineer · AI Systems Architect · Agent
 Systems Architect · LLM Architect · MCP Architect · Plugin Architect · Skills
@@ -44,8 +45,9 @@ Implement → Test → Verify → Document.**
 Targets (current and future): iOS · macOS · Android · Windows · Web · Backend ·
 Cloud (Firebase, Google Cloud, Supabase, Cloudflare) · Expo · React Native.
 
-Languages: Swift · Kotlin · TypeScript · JavaScript · Python · Go · Rust ·
-Java · C# · HTML · CSS.
+Apple languages: Swift · SwiftUI · Objective-C.
+Windows and Android priority languages: C# · C++ · Rust · Kotlin · Java ·
+TypeScript · Go · Zig · Dart · Python when needed · JavaScript when needed.
 Frameworks: SwiftUI · React · Next.js · Node.js · Expo · React Native ·
 Firebase · Supabase.
 
@@ -103,13 +105,15 @@ Before repository work: `git status --short` · `git branch --show-current` ·
 Rules:
 
 - **Main is sacred.** Changes land through pull requests.
+- **Main is the only permanent branch.** Temporary branches are staging surfaces
+  and must converge back into `main`.
 - Small commits. Reversible changes. Clean history.
 - No dependency bloat. No chaos. No destructive operations.
 - Never overwrite user work. Never discard uncommitted changes.
 
-**Branch strategy:** `main` · `develop` · `feature/*` · `fix/*` · `release/*` ·
-`experiment/*` — plus environment-managed working branches (e.g. `claude/*`)
-that always merge back through PRs.
+**Branch strategy:** `main` plus short-lived PR, review, experiment, or
+AI-managed branches (e.g. `feature/*`, `fix/*`, `docs/*`, `codex/*`,
+`claude/*`) that always merge back through PRs.
 
 **Worktree strategy:** isolated worktrees for experiments, migrations, large
 features, AI testing, and deployment validation. Main-branch stability is
@@ -181,7 +185,7 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 | Plugins / commands | `/seis-audit`, `/seis-i18n` slash commands in `.claude/commands/` |
 | Quality gates | `seis-check` (i18n · seo · contract · drawings · style · perf · a11y · security) + 125-test suite + `seis-ai.yml` CI |
 | Polyglot | `polyglot/` executable suite — 17 tested toolchains (Python · Rust · Go · C · C++ · Ruby · PHP · Java · Perl · AWK · TypeScript · SQL/SQLite · jq · XML/xmllint · YAML/yq · Bash · bc) via `scripts/polyglot-check.sh` + `polyglot.yml` CI; TS typings in `packages/seis-ai/types/` |
-| GitHub governance | Protected `main`, PR #17 flow, CodeRabbit + Socket + ecc-tools bots, `docs/governance/branch-policy.md` |
+| GitHub governance | Main-only permanent branch policy, open source governance gate, CodeRabbit + Socket + ecc-tools bots, `docs/governance/branch-policy.md` |
 | Web | `apps/web` — 5-locale portfolio, PWA, service worker, SEO/JSON-LD |
 | Mobile / desktop | `apps/android`, `apps/macos`, `apps/fullstack` scaffolds — expansion targets |
 | Memory | `docs/decisions/`, `docs/architecture/`, `docs/governance/`, `.seis/sessions/` (agent conversation memory, gitignored) |
@@ -197,6 +201,6 @@ experimentation.
 
 **Remote AI sessions (Claude Code cloud, CI):** ephemeral container, fresh
 clone, repository-scoped GitHub access, MCP-based GitHub operations, no local
-IDE assumptions. Work lands only via commits + PRs to the designated branch.
+IDE assumptions. Work lands only via commits + PRs to `main`.
 Capabilities listed in the registry are used **only when present in the active
 environment** (per §11 Tool Discipline).

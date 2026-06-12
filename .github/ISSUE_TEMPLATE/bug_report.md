@@ -1,41 +1,41 @@
 ---
-name: Bug Raporu
-about: Bir hata buldum — çözülmesine yardımcı ol
+name: Bug report
+about: Report a reproducible problem in SEIS
 title: '[BUG] '
 labels: bug
 assignees: emirhankudun-ux
-
 ---
 
-## Hatanın Açıklaması
+## Problem
 
-Hatayı net bir şekilde ve kısa açıkla.
+Describe the bug clearly.
 
-## Reproduksiyon Adımları
+## Reproduction Steps
 
-1. Adım 1...
-2. Adım 2...
-3. Adım 3...
+1.
+2.
+3.
 
-## Beklenen Davranış
+## Expected Behavior
 
-Ne olması gerekiyordu?
+What should happen?
 
-## Gerçek Davranış
+## Actual Behavior
 
-Ne oldu?
+What happened instead?
 
-## Ekran Görüntüsü/Video
+## Environment
 
-Eğer mümkünse bir ekran görüntüsü veya video ekle.
+- OS:
+- Node.js version:
+- Browser or runtime:
+- SEIS commit SHA:
 
-## Ortam Bilgisi
+## Validation
 
-- İşletim Sistemi: (ör. Windows 11, macOS 14)
-- Browser: (ör. Chrome 120)
-- Node.js Versiyonu: (ör. 18.x)
-- Proje Versiyonu: (ör. 1.0.0)
+Which checks did you run?
 
-## Ek Notlar
+## Security
 
-Başka bir şey var mı?
+If this may be a vulnerability, stop here and follow `SECURITY.md` instead of
+posting details publicly.

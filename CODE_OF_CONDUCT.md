@@ -1,37 +1,52 @@
 # Contributor Covenant Code of Conduct
 
-## Taahhüdümüz
+## Our Pledge
 
-Bu proje için çalışan, katkıda bulunan ve lider olarak, tüm katılımcılar için taciz mentes ve kapsayıcı bir ortam oluşturmaya taahhüt ediyoruz. Bu sık yaş, kimlik, cinsiyet, cinsiyete dayalı kimlik ve ifade, yaş, özür yeterlilik durumu, deneyim seviyesi, eğitim, sosyoekonomik durum, milliyet, kişisel görünüş, ırk, din veya cinsel kimlik ve yönelim fark etmeksizin geçerlidir.
+We pledge to make participation in SEIS a respectful, inclusive, and
+harassment-free experience for everyone, regardless of age, body size,
+disability, ethnicity, sex characteristics, gender identity and expression,
+level of experience, education, socio-economic status, nationality, personal
+appearance, race, religion, or sexual identity and orientation.
 
-## Standartlarımız
+## Our Standards
 
-Olumlu bir ortam oluşturmaya katkıda bulunan davranış örnekleri şunları içerir:
+Examples of behavior that contributes to a positive environment:
 
-- Diğer insanlara karşı nezaket ve saygı göstermek
-- Farklı görüşlere, bakış açılarına ve deneyimlere açık olmak
-- Yapıcı eleştiriyi kibarca almak
-- Topluluk için en iyi olanı odaklamak
-- Diğer topluluk üyelerine empati göstermek
+- using welcoming and inclusive language
+- respecting different viewpoints and experiences
+- accepting constructive feedback gracefully
+- focusing on what is best for the community and the project
+- showing empathy toward other community members
 
-Kabul edilemez davranış örnekleri şunları içerir:
+Examples of unacceptable behavior:
 
-- Cinsel dil ve görüntüler veya istenmeyen cinsel ilgi/avanslar
-- Trolleme, hakaret/aşağılayıcı yorumlar ve kişisel veya politik saldırılar
-- Kamuya açık veya özel taciz
-- Başkasının özel bilgilerini (adres, e-posta) açık izin olmaksızın yayınlamak
-- Makul olarak uygunsuz olarak değerlendirilebilecek diğer davranışlar
+- sexualized language or imagery
+- unwanted sexual attention or advances
+- insults, personal attacks, or sustained disruption
+- public or private harassment
+- publishing private information without explicit permission
+- conduct that would reasonably be considered inappropriate in a professional
+  open source setting
 
-## Uygulama
+## Enforcement
 
-Proje liderleri kabul edilemez davranışları açıklamaktan sorumludur ve uygunsuz, tehdit edici, saldırgan veya zararlı davranışlara karşı uygun düzeltici önlemler alacaktır.
+Project maintainers are responsible for clarifying and enforcing standards of
+acceptable behavior. Maintainers may remove, edit, or reject comments, commits,
+issues, pull requests, and other contributions that do not align with this Code
+of Conduct.
 
-Proje liderleri, bu Davranış Kurallarını kasıtlı olarak iyi bir şekilde yorumlamayan veya gerçekleştiren katkıda bulunanların kodu yönetim, sorun izleme ve diğer katkılara karşı yorum oluşturma veya erişimini kısıtlama, askıya alma veya kalıcı olarak engelleme hakkına sahiptir.
+Maintainers may temporarily or permanently ban contributors for harmful,
+threatening, or abusive behavior.
 
-## Raporlama
+## Reporting
 
-Kabul edilemez davranışa tanık olursanız, [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geçin.
+Report unacceptable behavior privately to
+[@emirhankudun-ux](https://github.com/emirhankudun-ux).
 
-## İtibar
+Security vulnerabilities should be reported through [`SECURITY.md`](./SECURITY.md)
+instead of public issues.
 
-Bu Davranış Kuralları, https://www.contributor-covenant.org adresinden erişilebilen Contributor Covenant'tan uyarlanmıştır.
+## Attribution
+
+This Code of Conduct is adapted from the
+[Contributor Covenant](https://www.contributor-covenant.org/).

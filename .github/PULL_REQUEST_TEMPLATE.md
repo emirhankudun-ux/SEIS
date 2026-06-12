@@ -1,38 +1,41 @@
-## Açıklama
+## Summary
 
-Bu PR hangi sorunu çözüyor veya hangi özelliği ekliyor? Lütfen ilgili issue numarasını bağla (ör. `Fixes #123`).
+What does this PR change, and why does it matter for SEIS?
 
-## Değişiklik Türü
+## Scope
 
-- [ ] Bug fix (sorun çözen, geriye dönük uyumlu)
-- [ ] Yeni özellik (sorun çözen, geriye dönük uyumlu)
-- [ ] Breaking change (sorun çözen veya özellik, geriye dönük uyumlu olmayan)
-- [ ] Belge güncellemesi
-- [ ] Stil/format düzeltmesi
-- [ ] Refactoring (hiçbir işlev veya davranış değişmedi)
+- [ ] AI / agents / MCP / skills / plugins / LLM workflows
+- [ ] Engineering / platform / full stack / mobile / desktop
+- [ ] Data / ML / governance / observability
+- [ ] Design systems / UX / accessibility / calm technology
+- [ ] Documentation / open source governance
+- [ ] Security / dependency / infrastructure
 
-## Ne Değişti?
+## Architecture Fit
 
-- Madde 1
-- Madde 2
-- Madde 3
+Explain how this change fits the SEIS platform model. For new features,
+describe why the long-term maintenance cost is justified.
 
-## Nasıl Test Ettiysen?
+## Validation
 
-Bunu nasıl test ettin? Adımları listele.
+List the checks you ran:
 
-- Test 1
-- Test 2
+```bash
+npm run check:open-source-governance
+npm run seis:check
+```
+
+## Risk
+
+- Security or privacy impact:
+- Dependency or runtime impact:
+- Rollback plan:
 
 ## Checklist
 
-- [ ] Kodumu self-review'ım
-- [ ] Uygun yorumlar ekledim (özellikle neden karmaşık logic varsa)
-- [ ] README veya ilgili belgeleri güncelledim
-- [ ] Breaking change yoksa veya belirtmedim
-- [ ] Testlerim pass ediyor
-- [ ] Yeni warning yok
-
-## Ekran Görüntüsü (varsa)
-
-Önce/sonra görüntüleri ekle.
+- [ ] Targets `main` through a short-lived branch or fork PR.
+- [ ] Keeps the change small, reversible, and reviewable.
+- [ ] Updates docs when behavior, policy, or user workflow changes.
+- [ ] Does not commit secrets, private data, `.env` files, or credentials.
+- [ ] Does not install unused SDKs, runtimes, or dependencies.
+- [ ] Discloses material AI assistance when relevant.
