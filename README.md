@@ -117,6 +117,8 @@ Start with:
 
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) for contribution rules
 - [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) for community expectations
+- [`SUPPORT.md`](./SUPPORT.md) for questions, ideas, bugs, features, and safe
+  support routing
 - [`SECURITY.md`](./SECURITY.md) for private vulnerability reporting
 - [`LICENSE`](./LICENSE) for the MIT license
 - [`AGENTS.md`](./AGENTS.md) for AI operating instructions inside this repo
@@ -132,6 +134,8 @@ The GitHub surface should continuously improve through:
 - clear README, repository metadata, and topic positioning
 - strong issue and PR templates
 - structured Discussions for ideas, Q&A, and show-and-tell
+- a visible support path that keeps questions, bugs, features, and security
+  reports in the right place
 - release notes and GitHub Pages links that explain what changed
 - accurate contributor attribution
 - quality-first examples and demos
@@ -141,6 +145,9 @@ The GitHub surface should continuously improve through:
 Use issues for actionable bugs and scoped work. Use Discussions for architecture
 questions, broad ideas, and examples that need community shaping before they
 become work items.
+
+The GitHub adoption model is tracked in
+[`docs/governance/github-market-readiness.md`](./docs/governance/github-market-readiness.md).
 
 ## Repository Metadata
 

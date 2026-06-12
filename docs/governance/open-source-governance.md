@@ -13,10 +13,15 @@ The GitHub-facing surface must stay current:
   dependency discipline, and validation expectations.
 - `SECURITY.md` explains private vulnerability reporting, supported versions,
   dependency policy, MCP/plugin/agent risk, and response targets.
+- `SUPPORT.md` routes public questions, ideas, bugs, feature requests, and
+  private security reports into the correct GitHub surface.
 - `CODE_OF_CONDUCT.md` keeps a professional, inclusive community standard.
 - `LICENSE` remains MIT unless the maintainer explicitly changes licensing.
 - `CONTRIBUTORS.md` separates real maintainers and AI-assisted workflow
   attribution from tool or company references.
+- `docs/governance/github-market-readiness.md` records the GitHub discovery,
+  adoption, support, and star-readiness operating model without claiming
+  marketplace status prematurely.
 - `.github/ISSUE_TEMPLATE/config.yml` routes public support toward structured
   issues, Discussions, and private security reporting.
 - `.github/DISCUSSION_TEMPLATE/` keeps ideas, Q&A, and show-and-tell useful
@@ -36,6 +41,8 @@ SEIS should earn GitHub adoption through substance:
 - strong validation gates before large feature expansion
 - transparent security and governance docs
 - visible CodeQL code scanning for security-sensitive automation surfaces
+- a visible support path that keeps questions, ideas, bugs, features, and
+  security reports in the right place
 - focused issue and PR templates
 - structured discussion forms for community shaping
 - repository metadata and topics that match the real architecture
