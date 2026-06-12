@@ -61,6 +61,20 @@ Unused SDKs, runtimes, and language toolchains are not installed by default.
 Local development should stay fast, simple, and reversible. CI may install
 specialized tools only when a specific check requires them.
 
+## Source Languages and Ecosystem Stack
+
+SEIS keeps the GitHub language surface honest: real source languages are counted
+from real files, while frameworks, SDKs, cloud products, databases, IDEs, design
+tools, and productivity systems live in a separate ecosystem stack.
+
+| Surface | Canonical record | Rule |
+| --- | --- | --- |
+| GitHub source languages | [`reports/language-distribution.md`](./reports/language-distribution.md) | Count real source languages only. |
+| Full-stack language matrix | [`reports/fullstack-language-matrix.md`](./reports/fullstack-language-matrix.md) | Route source/config languages by platform layer. |
+| SEIS ecosystem stack | [`reports/seis-technology-stack.md`](./reports/seis-technology-stack.md) | Show frameworks, tools, clouds, databases, and design systems outside the language bar. |
+
+Run `npm run check:seis-technology-stack` after changing stack categories.
+
 ## Architecture Map
 
 | Path | Purpose |

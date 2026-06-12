@@ -8,100 +8,100 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 528,
-    "countedBytes": 2329132,
-    "javascriptBytes": 797688,
-    "javascriptPercent": 34.25,
+    "countedFileCount": 531,
+    "countedBytes": 2367094,
+    "javascriptBytes": 811011,
+    "javascriptPercent": 34.26,
     "targetJavaScriptPercent": 10.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 5647748,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 5743016,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 797688,
-      "percent": 34.25
+      "bytes": 811011,
+      "percent": 34.26
     },
     {
       "language": "JSON",
-      "bytes": 634690,
-      "percent": 27.25
+      "bytes": 634992,
+      "percent": 26.83
     },
     {
       "language": "Python",
-      "bytes": 238033,
-      "percent": 10.22
+      "bytes": 239105,
+      "percent": 10.1
     },
     {
       "language": "Swift",
-      "bytes": 100216,
-      "percent": 4.3
+      "bytes": 123481,
+      "percent": 5.22
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 4.04
+      "percent": 3.98
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.63
+      "percent": 3.58
     },
     {
       "language": "Shell",
       "bytes": 56789,
-      "percent": 2.44
+      "percent": 2.4
     },
     {
       "language": "Other",
       "bytes": 37135,
-      "percent": 1.59
+      "percent": 1.57
     },
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.24
+      "percent": 1.22
     },
     {
       "language": "YAML",
       "bytes": 25243,
-      "percent": 1.08
+      "percent": 1.07
     },
     {
       "language": "Go",
       "bytes": 16367,
-      "percent": 0.7
+      "percent": 0.69
     },
     {
       "language": "Java",
       "bytes": 16110,
-      "percent": 0.69
+      "percent": 0.68
     },
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.68
+      "percent": 0.67
     },
     {
       "language": "Perl",
       "bytes": 13916,
-      "percent": 0.6
+      "percent": 0.59
     },
     {
       "language": "Ruby",
       "bytes": 13442,
-      "percent": 0.58
+      "percent": 0.57
     },
     {
       "language": "Rust",
       "bytes": 11825,
-      "percent": 0.51
+      "percent": 0.5
     },
     {
       "language": "C++",
       "bytes": 11206,
-      "percent": 0.48
+      "percent": 0.47
     },
     {
       "language": "PHP",
@@ -141,7 +141,7 @@
     {
       "language": "Lua",
       "bytes": 6948,
-      "percent": 0.3
+      "percent": 0.29
     },
     {
       "language": "Common Lisp",
@@ -201,7 +201,7 @@
     {
       "language": "Rego",
       "bytes": 1299,
-      "percent": 0.06
+      "percent": 0.05
     },
     {
       "language": "Avro",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 797688,
-      "percent": 34.25,
+      "bytes": 811011,
+      "percent": 34.26,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.24,
+      "percent": 1.22,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1494173,
-      "percent": 64.15,
+      "bytes": 1518812,
+      "percent": 64.16,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -689,8 +689,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 480746532,
-    "documentation": 912977,
-    "linguist-generated": 2745324,
+    "documentation": 923746,
+    "linguist-generated": 2811464,
     "linguist-vendored": 46035660
   },
   "requiredLinguistRules": [
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "701ae61593fe8c25c968b08112191d293cf7f8ad58288d92402848b4ff79427d",
+    "hash": "2c056ad39a84c83d2a7579dd4314b28f0a482f9e51ca573228a5b4292bc3b476",
     "algorithm": "sha256"
   }
 }

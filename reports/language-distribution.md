@@ -1,43 +1,43 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 528
-- Counted bytes: 2329132
-- JavaScript: 797688 bytes (34.25%)
+- Counted files: 531
+- Counted bytes: 2367094
+- JavaScript: 811011 bytes (34.26%)
 - Target JavaScript: 10.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 5647748
+- Additional non-JavaScript bytes needed for strict target: 5743016
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 797688 | 34.25% | JavaScript |
-| TypeScript | 28824 | 1.24% | TypeScript |
+| JavaScript | 811011 | 34.26% | JavaScript |
+| TypeScript | 28824 | 1.22% | TypeScript |
 | Objective-C | 8447 | 0.36% | Objective-C |
-| Other | 1494173 | 64.15% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1518812 | 64.16% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 797688 | 34.25% |
-| JSON | 634690 | 27.25% |
-| Python | 238033 | 10.22% |
-| Swift | 100216 | 4.3% |
-| CSS | 94204 | 4.04% |
-| HTML | 84633 | 3.63% |
-| Shell | 56789 | 2.44% |
-| Other | 37135 | 1.59% |
-| TypeScript | 28824 | 1.24% |
-| YAML | 25243 | 1.08% |
-| Go | 16367 | 0.7% |
-| Java | 16110 | 0.69% |
-| Scheme | 15747 | 0.68% |
-| Perl | 13916 | 0.6% |
-| Ruby | 13442 | 0.58% |
-| Rust | 11825 | 0.51% |
-| C++ | 11206 | 0.48% |
+| JavaScript | 811011 | 34.26% |
+| JSON | 634992 | 26.83% |
+| Python | 239105 | 10.1% |
+| Swift | 123481 | 5.22% |
+| CSS | 94204 | 3.98% |
+| HTML | 84633 | 3.58% |
+| Shell | 56789 | 2.4% |
+| Other | 37135 | 1.57% |
+| TypeScript | 28824 | 1.22% |
+| YAML | 25243 | 1.07% |
+| Go | 16367 | 0.69% |
+| Java | 16110 | 0.68% |
+| Scheme | 15747 | 0.67% |
+| Perl | 13916 | 0.59% |
+| Ruby | 13442 | 0.57% |
+| Rust | 11825 | 0.5% |
+| C++ | 11206 | 0.47% |
 | PHP | 8471 | 0.36% |
 | Objective-C | 8447 | 0.36% |
 | SQL | 8177 | 0.35% |
