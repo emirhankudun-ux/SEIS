@@ -168,11 +168,39 @@ import Testing
     #expect(diagnostics.validationCommands.contains("./script/build_and_run.sh --verify"))
 }
 
+@Test func appleShellRuntimeDiagnosticsTrackRepositorySurfaces() {
+    let root = repositoryRoot()
+    let requiredPaths = Set(SeisAppleShellRuntimeDiagnostics.requiredSurfaces.map(\.relativePath))
+    let runtime = SeisAppleShellRuntimeDiagnostics.make(
+        repositoryRoot: root,
+        existingRelativePaths: requiredPaths,
+        operatingSystemVersion: "macOS-test",
+        processName: "SeisAppleNativeShell"
+    )
+
+    #expect(runtime.isReady)
+    #expect(runtime.readyCount == runtime.probes.count)
+    #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
+    #expect(runtime.accessibilitySummary.contains("SeisAppleNativeShell"))
+
+    let partial = SeisAppleShellRuntimeDiagnostics.make(
+        repositoryRoot: root,
+        existingRelativePaths: ["packages/seis_platform_swift/Package.swift"]
+    )
+    #expect(!partial.isReady)
+    #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
+}
+
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
     let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
     let root = repositoryRoot()
+    let runtime = SeisAppleShellRuntimeDiagnostics.current(repositoryRoot: root)
     let view = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift"),
+        encoding: .utf8
+    )
+    let runtimeSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift"),
         encoding: .utf8
     )
     let continuation = try String(
@@ -180,9 +208,14 @@ import Testing
         encoding: .utf8
     )
 
+    #expect(runtime.isReady)
+    #expect(runtimeSource.contains("SeisAppleShellRuntimeDiagnostics"))
     #expect(continuation.contains("AppleShellDiagnosticsView(snapshot: model.snapshot)"))
     for token in diagnostics.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing diagnostics view token: \(token)")
+    }
+    for token in runtime.expectedRuntimeViewTokens {
+        #expect(view.contains(token), "missing runtime diagnostics view token: \(token)")
     }
 }
 
