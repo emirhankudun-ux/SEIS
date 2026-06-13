@@ -74,6 +74,24 @@
       "requiredInput": ["host", "port"]
     },
     {
+      "id": "gcp-compute-vm",
+      "type": "team-vpn-cloud-compute-server",
+      "status": "ready-after-project-billing-api-and-ssh-source-confirmation",
+      "requiredInput": [
+        "project",
+        "zone",
+        "instance",
+        "ssh_user",
+        "ssh_source_range",
+        "vpn",
+        "vpn_source_range",
+        "vpn_admin_peer",
+        "origin",
+        "path",
+        "rollback_contact"
+      ]
+    },
+    {
       "id": "azure-static-web-apps",
       "type": "cloud-static-hosting",
       "status": "ready-after-project-and-token-confirmation",

@@ -15,6 +15,10 @@ const ROUTE_HINTS = [
     ]
   },
   {
+    tool: "codex",
+    hints: ["codex", "primary execution", "repo execution lane"]
+  },
+  {
     tool: "ollama",
     hints: ["local", "offline", "private", "on-device", "llama", "ollama"]
   },
@@ -37,6 +41,18 @@ const ROUTE_HINTS = [
   {
     tool: "opencode",
     hints: ["opencode", "terminal coding", "terminal agent"]
+  },
+  {
+    tool: "hermes",
+    hints: ["hermes", "hermes agent", "agent gateway", "tool gateway", "mcp gateway"]
+  },
+  {
+    tool: "goose",
+    hints: ["goose", "desktop agent", "general agent", "automation agent"]
+  },
+  {
+    tool: "open-design",
+    hints: ["open design", "opendesign", "design artifact", "visual prototype", "design system preview"]
   },
   {
     tool: "claude",

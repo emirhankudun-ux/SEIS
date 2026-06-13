@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 845359,
+      "githubBytes": 923199,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 300155,
+      "githubBytes": 300868,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 248773,
+      "githubBytes": 278456,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]
@@ -191,7 +191,7 @@
       "order": 17,
       "label": "Shell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 56789,
+      "githubBytes": 61251,
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
         "scripts/polyglot-check.sh"

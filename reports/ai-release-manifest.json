@@ -4,14 +4,14 @@
   "generatedAt": "2026-06-09T06:20:32.023Z",
   "sourceId": "seis-ai-release-manifest",
   "summary": {
-    "toolCount": 11,
-    "helperToolCount": 10,
+    "toolCount": 14,
+    "helperToolCount": 13,
     "remoteOrchestratorCount": 1,
-    "installedTools": 6,
+    "installedTools": 11,
     "missingRequiredTools": 0,
     "localModelCount": 0,
     "releasePackageCount": 2,
-    "routeCount": 11
+    "routeCount": 15
   },
   "releaseProfile": {
     "id": "seis-large-language-release",
@@ -72,8 +72,8 @@
     {
       "id": "aider",
       "label": "Aider",
-      "installed": false,
-      "status": "missing-optional",
+      "installed": true,
+      "status": "installed",
       "executionMode": "local-helper"
     },
     {
@@ -86,8 +86,29 @@
     {
       "id": "ollama",
       "label": "Ollama",
-      "installed": false,
-      "status": "missing-optional",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes Agent",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "installed": true,
+      "status": "installed",
+      "executionMode": "local-helper"
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "installed": true,
+      "status": "installed",
       "executionMode": "local-helper"
     },
     {
@@ -117,7 +138,10 @@
           "opencode",
           "aider",
           "interpreter",
-          "ollama"
+          "ollama",
+          "hermes",
+          "goose",
+          "open-design"
         ]
       }
     ]
@@ -156,6 +180,10 @@
   "localModels": [],
   "routing": [
     {
+      "intent": "codex primary execution",
+      "selectedTool": "codex"
+    },
+    {
       "intent": "quick repo patch",
       "selectedTool": "aider"
     },
@@ -178,6 +206,18 @@
     {
       "intent": "opencode terminal coding",
       "selectedTool": "opencode"
+    },
+    {
+      "intent": "hermes mcp gateway",
+      "selectedTool": "hermes"
+    },
+    {
+      "intent": "goose general agent",
+      "selectedTool": "goose"
+    },
+    {
+      "intent": "open design prototype",
+      "selectedTool": "open-design"
     },
     {
       "intent": "ux copy narrative pass",

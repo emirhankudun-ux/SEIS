@@ -5,6 +5,21 @@
   "lane": "engineering",
   "intent": "Architecture-aware implementation, refactors, tests, CI quality gates, MCP/plugin work, Apple-first platform code, and repository automation.",
   "activationPolicy": "use_when_task_requires_code_changes_or_engineering_review_under_seis_governance",
+  "sourceEvidence": [
+    "data/seis-plugin-package-intake-2026-06-13.json",
+    "docs/platform/seis-plugin-package-intake.md"
+  ],
+  "helperFamilies": [
+    "GitHub",
+    "CircleCI",
+    "Superpowers",
+    "Build iOS Apps",
+    "Build macOS Apps",
+    "Build Web Apps",
+    "Test Android Apps",
+    "OpenAI Developers",
+    "Hugging Face"
+  ],
   "primaryPaths": [
     "packages",
     "mcp",

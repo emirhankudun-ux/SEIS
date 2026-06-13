@@ -13,7 +13,21 @@ const CLOUD_ENV_PATH = path.join(ROOT, "deploy", "cloud-environment.json");
 
 const failures = [];
 const REMOTE_ORCHESTRATOR = "seis-agent";
-const REQUIRED_LOCAL_HELPERS = ["openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter"];
+const REQUIRED_LOCAL_HELPERS = [
+  "codex",
+  "openai",
+  "claude",
+  "gemini",
+  "qwen",
+  "kimi",
+  "ollama",
+  "opencode",
+  "aider",
+  "interpreter",
+  "hermes",
+  "goose",
+  "open-design"
+];
 const REQUIRED_REMOTE_ONLY_KEYWORDS = ["release governance", "security policy", "governance check", "cross-tool orchestration"];
 const EXPECTED_ORCHESTRATOR_SCOPE = ["policy", "release-governance", "tool-orchestration", "lane-routing"];
 const EXPECTED_ORCHESTRATOR_CAPABILITIES = ["orchestrate", "policy", "route", "manifest-check"];
@@ -80,6 +94,10 @@ if (!policy) {
   ensure(chooseAutoTool("local") === "ollama", "auto routing should map local intents to ollama");
   ensure(chooseAutoTool("qwen cross-check") === "qwen", "auto routing should map qwen cross-check intents to qwen");
   ensure(chooseAutoTool("opencode terminal coding") === "opencode", "auto routing should map opencode intents to opencode");
+  ensure(chooseAutoTool("codex primary execution") === "codex", "auto routing should map codex primary execution intents to codex");
+  ensure(chooseAutoTool("hermes mcp gateway") === "hermes", "auto routing should map hermes gateway intents to hermes");
+  ensure(chooseAutoTool("goose general agent") === "goose", "auto routing should map goose agent intents to goose");
+  ensure(chooseAutoTool("open design prototype") === "open-design", "auto routing should map Open Design intents to open-design");
   ensure(chooseAutoTool("translate") === "kimi", "auto routing should map translation intents to kimi");
   ensure(chooseAutoTool("research") === "gemini", "auto routing should map research intents to gemini");
   ensure(chooseAutoTool("özet") === "openai", "auto routing should map translation-aware summary intents to openai");

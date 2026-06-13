@@ -4,7 +4,7 @@
   "path": "reports/third-party-ai-tool-inventory.json",
   "generatedAt": "2026-06-10T06:28:42.102Z",
   "available": true,
-  "candidateCount": 5,
+  "candidateCount": 6,
   "detectedCount": 5,
   "candidates": [
     {
@@ -101,6 +101,24 @@
         ".github",
         "docs"
       ]
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "status": "missing",
+      "sourceRoot": null,
+      "aliases": [
+        "open-design",
+        "Open Design",
+        "opendesign"
+      ],
+      "markerHints": [
+        "apps",
+        "deploy",
+        "package.json",
+        "QUICKSTART.md"
+      ],
+      "markerHits": []
     }
   ]
 }

@@ -43,6 +43,10 @@ reports/icloud-personal-inventory.md
 # Local imported/snapshot copies. Keep them inspectable locally, but do not stage them by accident.
 /SEIS/
 /SE*/
+!/server/
+!/server/cloud/
+!/server/cloud/gcp/
+!/server/cloud/gcp/startup-seis-cloud.sh
 
 
 #Ignore vscode AI rules

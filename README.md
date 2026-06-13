@@ -99,6 +99,7 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis-ai`](./packages/seis-ai) | AI agent CLI, MCP server, audit tools, prompts, resources, and tests |
 | [`mcp`](./mcp) | SEIS MCP server entrypoints and integration surface |
 | [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
+| [`plugins/seis-cloud`](./plugins/seis-cloud) | Dedicated SEIS Cloud deployment, server-target, and cloud-readiness plugin package |
 | [`plugins/seis-code`](./plugins/seis-code) | Dedicated SEIS-Code engineering plugin package |
 | [`plugins/seis-design`](./plugins/seis-design) | Dedicated SEIS-Design product and design-system plugin package |
 | [`plugins/seis-data`](./plugins/seis-data) | Dedicated SEIS-DATA analytics and knowledge-governance plugin package |

@@ -14,11 +14,11 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 
 | # | language | layer | GitHub bytes | entrypoints |
 | ---: | --- | --- | ---: | --- |
-| 1 | JavaScript | frontend-and-experience | 845359 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
+| 1 | JavaScript | frontend-and-experience | 923199 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
 | 2 | TypeScript | frontend-and-experience | 28824 | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Objective-C | mobile-and-native | 8447 | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
-| 4 | Python | backend-and-api | 300155 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
-| 5 | Swift | mobile-and-native | 248773 | polyglot/swift/SEISMotionPolicy.swift |
+| 4 | Python | backend-and-api | 300868 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
+| 5 | Swift | mobile-and-native | 278456 | polyglot/swift/SEISMotionPolicy.swift |
 | 6 | Go | backend-and-api | 16367 | polyglot/go/health_contract.go, polyglot/go/cmd/seis-serve/main.go, polyglot/go/cmd/seis-jsonld/main.go |
 | 7 | Rust | mobile-and-native | 11825 | polyglot/rust/performance_budget.rs, polyglot/rust/seis-link-audit/src/main.rs |
 | 8 | Java | backend-and-api | 16110 | polyglot/java/SeisDeployReadiness.java, polyglot/java/DrawingsChecksum.java, polyglot/java/CssMediaQueryAudit.java |
@@ -30,7 +30,7 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 14 | C++ | mobile-and-native | 11206 | polyglot/cpp/readiness_contract.hpp, polyglot/cpp/seis_translations_lint.cpp |
 | 15 | C# | backend-and-api | 2731 | polyglot/csharp/SeisReleaseContract.cs |
 | 16 | SQL | database-and-data | 8177 | polyglot/sql/audit_ledger.sqlite.sql |
-| 17 | Shell | cloud-devops-and-config | 56789 | polyglot/bash/deploy_guard.sh, scripts/polyglot-check.sh |
+| 17 | Shell | cloud-devops-and-config | 61251 | polyglot/bash/deploy_guard.sh, scripts/polyglot-check.sh |
 | 18 | PowerShell | cloud-devops-and-config | 2176 | polyglot/powershell/SeisReleasePolicy.ps1 |
 | 19 | Lua | security-policy-and-governance | 6948 | polyglot/lua/seis_i18n_attr_audit.lua |
 | 20 | R | database-and-data | 7953 | polyglot/r/seis_translation_stats.R |

@@ -14,12 +14,16 @@ const manifestPolicy = "activate_only_when_relevant_authenticated_scoped_and_use
 const remoteOrchestratorId = "seis-agent";
 
 const routingIntents = [
+  "codex primary execution",
   "quick repo patch",
   "browser research for docs",
   "local offline llama draft",
   "csv log analysis",
   "qwen cross-check",
   "opencode terminal coding",
+  "hermes mcp gateway",
+  "goose general agent",
+  "open design prototype",
   "ux copy narrative pass",
   "translate this interface to turkish",
   "release governance checklist",
@@ -33,6 +37,12 @@ function commandExists(command) {
     installed: result.status === 0,
     path: result.status === 0 ? (result.stdout || "").trim() : ""
   };
+}
+
+function openDesignAppPath() {
+  const homeCandidate = path.join(process.env.HOME || "", "Applications", "Open Design.app");
+  if (homeCandidate && fs.existsSync(homeCandidate)) return homeCandidate;
+  return "/Applications/Open Design.app";
 }
 
 function readJson(filePath) {
@@ -88,6 +98,9 @@ function chooseRoute(tool) {
     qwen: "qwen cross-check",
     kimi: "translate this interface to turkish",
     opencode: "opencode terminal coding",
+    hermes: "hermes mcp gateway",
+    goose: "goose general agent",
+    "open-design": "open design prototype",
     aider: "quick repo patch",
     interpreter: "csv log analysis",
     ollama: "local offline llama draft",
@@ -100,7 +113,7 @@ function chooseRoute(tool) {
 
 function buildToolMatrix() {
   const tools = [
-    { id: "codex", label: "Codex", commandId: "codex", gate: "generalist", routingIntent: "release governance checklist" },
+    { id: "codex", label: "Codex", commandId: "codex", gate: "primary repo execution", routingIntent: "codex primary execution" },
     { id: "openai", label: "OpenAI", commandId: "openai", gate: "production reasoning", routingIntent: "local analysis request", optional: true },
     { id: "claude", label: "Claude", commandId: "claude", gate: "strategy+copy", routingIntent: "ux copy narrative pass" },
     { id: "gemini", label: "Gemini", commandId: "gemini", gate: "research", routingIntent: "browser research for docs" },
@@ -109,18 +122,23 @@ function buildToolMatrix() {
     { id: "opencode", label: "OpenCode", commandId: "opencode", gate: "terminal coding", routingIntent: "opencode terminal coding", optional: true },
     { id: "aider", label: "Aider", commandId: "aider", gate: "small patch editing", routingIntent: "quick repo patch", optional: true },
     { id: "interpreter", label: "Interpreter", commandId: "interpreter", gate: "dataset+trace", routingIntent: "csv log analysis", optional: true },
-    { id: "ollama", label: "Ollama", commandId: "ollama", gate: "local/offline", routingIntent: "local offline llama draft", optional: true }
+    { id: "ollama", label: "Ollama", commandId: "ollama", gate: "local/offline", routingIntent: "local offline llama draft", optional: true },
+    { id: "hermes", label: "Hermes Agent", commandId: "hermes", gate: "agent gateway+mcp", routingIntent: "hermes mcp gateway", optional: true },
+    { id: "goose", label: "Goose", commandId: "goose", gate: "general automation agent", routingIntent: "goose general agent", optional: true },
+    { id: "open-design", label: "Open Design", commandId: "open", appPath: openDesignAppPath(), gate: "agent-native design", routingIntent: "open design prototype", optional: true }
   ];
 
   return tools.map((tool) => {
     const command = commandExists(tool.commandId);
-    const installed = command.installed;
+    const appInstalled = tool.appPath ? fs.existsSync(tool.appPath) : true;
+    const installed = command.installed && appInstalled;
     const routingMatch = routingIntents.includes(tool.routingIntent) ? tool.id : chooseRoute(tool.id);
 
     return {
       id: tool.id,
       label: tool.label,
-      commandPath: command.path || null,
+      commandPath: tool.appPath || command.path || null,
+      launcherCommandPath: tool.appPath ? command.path || null : null,
       installed,
       gate: tool.gate,
       routingIntent: tool.routingIntent,
@@ -149,12 +167,16 @@ function remoteController() {
 }
 
 const fallbackRouting = [
+  { intent: "codex primary execution", selectedTool: "codex" },
   { intent: "quick repo patch", selectedTool: "aider" },
   { intent: "browser research for docs", selectedTool: "gemini" },
   { intent: "local offline llama draft", selectedTool: "ollama" },
   { intent: "csv log analysis", selectedTool: "interpreter" },
   { intent: "qwen cross-check", selectedTool: "qwen" },
   { intent: "opencode terminal coding", selectedTool: "opencode" },
+  { intent: "hermes mcp gateway", selectedTool: "hermes" },
+  { intent: "goose general agent", selectedTool: "goose" },
+  { intent: "open design prototype", selectedTool: "open-design" },
   { intent: "ux copy narrative pass", selectedTool: "claude" },
   { intent: "translate this interface to turkish", selectedTool: "kimi" },
   { intent: "local analysis request", selectedTool: "openai" },

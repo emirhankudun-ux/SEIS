@@ -101,6 +101,48 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "coredata_cloudkit_sync_review"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "specialist-plugin-readiness",
+            title: "Specialist Plugin Readiness",
+            relativePath: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSpecialistPluginLaneReadiness.swift",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-plugin-manifest",
+            title: "Specialist Plugin Manifest",
+            relativePath: "data/seis-specialist-plugins-2026-06-12.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-plugin-check",
+            title: "Specialist Plugin Check",
+            relativePath: "scripts/check-seis-specialist-plugins.mjs",
+            qualityGate: "mcp_smoke_test"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-cloud-plugin",
+            title: "SEIS Cloud Plugin",
+            relativePath: "plugins/seis-cloud/.codex-plugin/plugin.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-code-plugin",
+            title: "SEIS-Code Plugin",
+            relativePath: "plugins/seis-code/.codex-plugin/plugin.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-design-plugin",
+            title: "SEIS-Design Plugin",
+            relativePath: "plugins/seis-design/.codex-plugin/plugin.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
+            id: "specialist-data-plugin",
+            title: "SEIS-DATA Plugin",
+            relativePath: "plugins/seis-data/.codex-plugin/plugin.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "run-script",
             title: "Run Script",
             relativePath: "script/build_and_run.sh",
@@ -215,6 +257,7 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             "operatingSystemVersion",
             "processName",
             "runtimeDiagnostics.probes",
+            "probe.relativePath",
             "Refresh Diagnostics",
             "refreshDiagnostics",
             "State(initialValue"

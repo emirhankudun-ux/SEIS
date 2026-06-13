@@ -15,10 +15,10 @@
     "neverInstallSilently": true
   },
   "summary": {
-    "toolCount": 31,
-    "installedCount": 22,
-    "missingCount": 9,
-    "aiAgentCliCount": 8,
+    "toolCount": 34,
+    "installedCount": 27,
+    "missingCount": 7,
+    "aiAgentCliCount": 11,
     "languageRuntimeCount": 12
   },
   "tools": [
@@ -41,7 +41,7 @@
       "command": "npm",
       "commandPath": "/Users/emirhankudun/.local/bin/npm",
       "installed": true,
-      "version": "11.13.0",
+      "version": "11.17.0",
       "use": "Use for workspace automation.",
       "notes": "Already central to this repo.",
       "installAction": "none"
@@ -257,7 +257,7 @@
       "command": "firebase",
       "commandPath": "/Users/emirhankudun/.local/bin/firebase",
       "installed": true,
-      "version": "15.19.1",
+      "version": "15.20.0",
       "use": "Use for Firebase readiness.",
       "notes": "Do not deploy without explicit deploy request.",
       "installAction": "none"
@@ -293,7 +293,7 @@
       "command": "claude",
       "commandPath": "/Users/emirhankudun/.local/bin/claude",
       "installed": true,
-      "version": "2.1.168 (Claude Code)",
+      "version": "2.1.177 (Claude Code)",
       "use": "Use as local long-context/narrative helper.",
       "notes": "Credential gate required.",
       "installAction": "none"
@@ -305,7 +305,7 @@
       "command": "gemini",
       "commandPath": "/Users/emirhankudun/.local/bin/gemini",
       "installed": true,
-      "version": "0.45.2",
+      "version": "0.46.0",
       "use": "Use as local research/Google helper.",
       "notes": "Credential gate required.",
       "installAction": "none"
@@ -317,7 +317,7 @@
       "command": "qwen",
       "commandPath": "/Users/emirhankudun/.local/bin/qwen",
       "installed": true,
-      "version": "0.17.1",
+      "version": "0.18.0",
       "use": "Use as alternate local reasoning helper.",
       "notes": "Optional.",
       "installAction": "none"
@@ -329,7 +329,7 @@
       "command": "opencode",
       "commandPath": "/Users/emirhankudun/.local/bin/opencode",
       "installed": true,
-      "version": "1.16.2",
+      "version": "1.17.4",
       "use": "Use for terminal coding assistance.",
       "notes": "Optional.",
       "installAction": "none"
@@ -339,24 +339,24 @@
       "label": "Aider",
       "category": "ai-agent-cli",
       "command": "aider",
-      "commandPath": null,
-      "installed": false,
-      "version": null,
+      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "installed": true,
+      "version": "aider 0.86.2",
       "use": "Use for diff-oriented local edits.",
       "notes": "Optional.",
-      "installAction": "manual_install_when_needed"
+      "installAction": "none"
     },
     {
       "id": "ollama",
       "label": "Ollama",
       "category": "local-model-runtime",
       "command": "ollama",
-      "commandPath": null,
-      "installed": false,
-      "version": null,
+      "commandPath": "/usr/local/bin/ollama",
+      "installed": true,
+      "version": "ollama version is 0.30.8",
       "use": "Use as offline/private fallback.",
       "notes": "Install/start only with user confirmation.",
-      "installAction": "manual_install_when_needed"
+      "installAction": "none"
     },
     {
       "id": "openai",
@@ -375,9 +375,9 @@
       "label": "Codex CLI",
       "category": "ai-agent-cli",
       "command": "codex",
-      "commandPath": "/Applications/Codex.app/Contents/Resources/codex",
+      "commandPath": "/Users/emirhankudun/.local/bin/codex",
       "installed": true,
-      "version": "codex-cli 0.138.0-alpha.7",
+      "version": "codex-cli 0.139.0",
       "use": "Use for repo execution and agent workflows.",
       "notes": "Primary execution lane.",
       "installAction": "none"
@@ -393,6 +393,44 @@
       "use": "Use for data/log analysis.",
       "notes": "Optional.",
       "installAction": "manual_install_when_needed"
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes Agent",
+      "category": "ai-agent-cli",
+      "command": "hermes",
+      "commandPath": "/Users/emirhankudun/.local/bin/hermes",
+      "installed": true,
+      "version": "Hermes Agent v0.16.0 (2026.6.5) · upstream 8cf9d868 | Project: /Users/emirhankudun/.hermes/hermes-agent | Python: 3.11.15",
+      "use": "Use as a bounded agent gateway and MCP helper.",
+      "notes": "Optional; keep under SEIS policy.",
+      "installAction": "none"
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "category": "ai-agent-cli",
+      "command": "goose",
+      "commandPath": "/Users/emirhankudun/.local/bin/goose",
+      "installed": true,
+      "version": "1.37.0",
+      "use": "Use as a general local automation agent helper.",
+      "notes": "Optional; keep under SEIS policy.",
+      "installAction": "none"
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "category": "ai-agent-cli",
+      "command": "open",
+      "commandPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "launcherCommandPath": "/usr/bin/open",
+      "appPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "installed": true,
+      "version": "0.10.1",
+      "use": "Use for design artifacts, prototypes, and design-system previews.",
+      "notes": "Desktop app route; do not alias to /usr/bin/od.",
+      "installAction": "none"
     }
   ]
 }

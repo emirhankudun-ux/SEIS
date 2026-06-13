@@ -1,0 +1,96 @@
+{
+  "id": "seis-plugin-package-intake",
+  "version": 1,
+  "updatedAt": "2026-06-13",
+  "sourcePath": "/Users/emirhankudun/Downloads/SEIS Eklenti paketi to Repo",
+  "sourceType": "local-image-and-screenshot-folder",
+  "fileCount": 75,
+  "fileGroups": [
+    {
+      "id": "codex-marketplace-category-screens",
+      "count": 7,
+      "pattern": "Ekran Resmi 2026-06-05 *.png",
+      "observedPurpose": "Category-level installed plugin inventory for design, developer tools, productivity, research, security, and workflow helpers."
+    },
+    {
+      "id": "codex-plugin-list-screens",
+      "count": 45,
+      "pattern": "Ekran Resmi 2026-06-12 *.png",
+      "observedPurpose": "Detailed Codex plugin list with personal SEIS plugin, installed helper plugins, and SDK/tool families."
+    },
+    {
+      "id": "technology-taxonomy-screens",
+      "count": 3,
+      "pattern": "Ekran Resmi 2026-06-10 *.png",
+      "observedPurpose": "Technology stack icon taxonomy covering core languages, AI/data, infra/cloud/DevOps, web/mobile runtimes, databases, tools, and productivity."
+    },
+    {
+      "id": "reference-education-images",
+      "count": 20,
+      "pattern": "images*, Unknown*, C-Programming-index-topics.jpg.webp",
+      "observedPurpose": "Programming language and learning roadmap references for long-horizon SEIS education and capability planning."
+    }
+  ],
+  "inspectedSamples": [
+    {
+      "file": "Ekran Resmi 2026-06-05 17.13.41.png",
+      "observed": [
+        "Design helpers: Canva, BioRender, HeyGen, Picsart, Remotion, HyperFrames by HeyGen, Shutterstock, Fal.",
+        "Developer helpers: Hugging Face, Netlify, Game Studio, Superpowers, CircleCI, Cloudflare, Sentry, Build iOS Apps, Build macOS Apps, Build Web Apps, Build Web Data Visualization, Test Android Apps."
+      ]
+    },
+    {
+      "file": "Ekran Resmi 2026-06-05 17.14.15.png",
+      "observed": [
+        "Productivity and data helpers: Documents, Jam, Box, Amplitude, Brand24, Carta CRM, Circleback, Common Room, Coupler.io, Demandbase, Atlassian Rovo, Stripe, Deepnote, Attio, Brex, Channel99, ClickUp, Conductor, Coveo, Docket, Domotz, Dovetail."
+      ]
+    },
+    {
+      "file": "Ekran Resmi 2026-06-12 13.42.03.png",
+      "observed": [
+        "Personal SEIS plugin is visible and enabled alongside Documents, Spreadsheets, Presentations, Browser, Chrome, LaTeX, Airtable, Apollo, and Asana."
+      ]
+    },
+    {
+      "file": "Ekran Resmi 2026-06-12 13.42.53.png",
+      "observed": [
+        "Data and cloud-capable helpers include MotherDuck, Neon Postgres, Netlify, Notion, NVIDIA, Omni Analytics, OpenAI Developers, and Otter.ai."
+      ]
+    },
+    {
+      "file": "Ekran Resmi 2026-06-10 09.09.37.png",
+      "observed": [
+        "Technology taxonomy includes Infra, Cloud and DevOps icons for Docker, Kubernetes, Git, GitHub, GitLab, CI, Jenkins, AWS, Google Cloud, Azure, Nginx, Cloudflare, Terraform, Ansible, Vercel, Netlify, and Heroku-like hosting.",
+        "Technology taxonomy also groups databases, storage, web runtimes, mobile runtimes, embedded/OS, tooling, and design suite capabilities."
+      ]
+    }
+  ],
+  "laneMappings": [
+    {
+      "lane": "seis-cloud",
+      "evidence": ["Cloudflare", "Netlify", "Neon Postgres", "GitHub", "Docker", "Kubernetes", "Google Cloud", "Azure", "AWS", "Terraform", "Ansible"],
+      "repoAction": "Promote SEIS Cloud into a first-class specialist lane with provider-neutral readiness, cloud preflight, and rollback governance."
+    },
+    {
+      "lane": "seis-code",
+      "evidence": ["GitHub", "CircleCI", "Superpowers", "Build iOS Apps", "Build macOS Apps", "Build Web Apps", "Test Android Apps", "OpenAI Developers", "Hugging Face"],
+      "repoAction": "Keep engineering work routed through architecture-aware implementation, CI, native platform, MCP/plugin, and repository automation guardrails."
+    },
+    {
+      "lane": "seis-data",
+      "evidence": ["Deepnote", "MotherDuck", "Amplitude", "Omni Analytics", "Alation", "Coupler.io", "Conductor", "Neon Postgres"],
+      "repoAction": "Strengthen generated report, analytics, schema, provenance, and safe dataset handling policies."
+    },
+    {
+      "lane": "seis-design",
+      "evidence": ["Canva", "BioRender", "HeyGen", "Picsart", "Remotion", "HyperFrames by HeyGen", "Shutterstock", "Fal"],
+      "repoAction": "Keep visual, design-system, motion, asset, and handoff work implementation-aware, accessible, and reusable."
+    }
+  ],
+  "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
+  "securityNotes": [
+    "The source folder is treated as evidence and planning input, not a binary asset import.",
+    "No screenshots or binary assets are copied into the repository by default.",
+    "Visible plugin availability is not treated as authenticated connector readiness."
+  ]
+}

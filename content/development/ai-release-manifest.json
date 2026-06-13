@@ -27,10 +27,11 @@
     {
       "id": "codex",
       "label": "Codex",
-      "commandPath": "/Applications/Codex.app/Contents/Resources/codex",
+      "commandPath": "/Users/emirhankudun/.local/bin/codex",
+      "launcherCommandPath": null,
       "installed": true,
-      "gate": "generalist",
-      "routingIntent": "release governance checklist",
+      "gate": "primary repo execution",
+      "routingIntent": "codex primary execution",
       "executionMode": "local-helper",
       "expectedAutoTool": "codex",
       "routingCoverage": true,
@@ -40,6 +41,7 @@
       "id": "openai",
       "label": "OpenAI",
       "commandPath": null,
+      "launcherCommandPath": null,
       "installed": false,
       "gate": "production reasoning",
       "routingIntent": "local analysis request",
@@ -52,6 +54,7 @@
       "id": "claude",
       "label": "Claude",
       "commandPath": "/Users/emirhankudun/.local/bin/claude",
+      "launcherCommandPath": null,
       "installed": true,
       "gate": "strategy+copy",
       "routingIntent": "ux copy narrative pass",
@@ -64,6 +67,7 @@
       "id": "gemini",
       "label": "Gemini",
       "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+      "launcherCommandPath": null,
       "installed": true,
       "gate": "research",
       "routingIntent": "browser research for docs",
@@ -76,6 +80,7 @@
       "id": "qwen",
       "label": "Qwen",
       "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+      "launcherCommandPath": null,
       "installed": true,
       "gate": "alternative reasoning",
       "routingIntent": "qwen cross-check",
@@ -88,6 +93,7 @@
       "id": "kimi",
       "label": "Kimi",
       "commandPath": null,
+      "launcherCommandPath": null,
       "installed": false,
       "gate": "translation+multilingual",
       "routingIntent": "translate this interface to turkish",
@@ -100,6 +106,7 @@
       "id": "opencode",
       "label": "OpenCode",
       "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+      "launcherCommandPath": null,
       "installed": true,
       "gate": "terminal coding",
       "routingIntent": "opencode terminal coding",
@@ -111,19 +118,21 @@
     {
       "id": "aider",
       "label": "Aider",
-      "commandPath": null,
-      "installed": false,
+      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "launcherCommandPath": null,
+      "installed": true,
       "gate": "small patch editing",
       "routingIntent": "quick repo patch",
       "executionMode": "local-helper",
       "expectedAutoTool": "aider",
       "routingCoverage": true,
-      "status": "missing-optional"
+      "status": "installed"
     },
     {
       "id": "interpreter",
       "label": "Interpreter",
       "commandPath": null,
+      "launcherCommandPath": null,
       "installed": false,
       "gate": "dataset+trace",
       "routingIntent": "csv log analysis",
@@ -135,14 +144,54 @@
     {
       "id": "ollama",
       "label": "Ollama",
-      "commandPath": null,
-      "installed": false,
+      "commandPath": "/usr/local/bin/ollama",
+      "launcherCommandPath": null,
+      "installed": true,
       "gate": "local/offline",
       "routingIntent": "local offline llama draft",
       "executionMode": "local-helper",
       "expectedAutoTool": "ollama",
       "routingCoverage": true,
-      "status": "missing-optional"
+      "status": "installed"
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes Agent",
+      "commandPath": "/Users/emirhankudun/.local/bin/hermes",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "agent gateway+mcp",
+      "routingIntent": "hermes mcp gateway",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "hermes",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "commandPath": "/Users/emirhankudun/.local/bin/goose",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "general automation agent",
+      "routingIntent": "goose general agent",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "goose",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "commandPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "launcherCommandPath": "/usr/bin/open",
+      "installed": true,
+      "gate": "agent-native design",
+      "routingIntent": "open design prototype",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "open-design",
+      "routingCoverage": true,
+      "status": "installed"
     },
     {
       "id": "seis-agent",
@@ -192,6 +241,10 @@
   "localModels": [],
   "routing": [
     {
+      "intent": "codex primary execution",
+      "selectedTool": "codex"
+    },
+    {
       "intent": "quick repo patch",
       "selectedTool": "aider"
     },
@@ -214,6 +267,18 @@
     {
       "intent": "opencode terminal coding",
       "selectedTool": "opencode"
+    },
+    {
+      "intent": "hermes mcp gateway",
+      "selectedTool": "hermes"
+    },
+    {
+      "intent": "goose general agent",
+      "selectedTool": "goose"
+    },
+    {
+      "intent": "open design prototype",
+      "selectedTool": "open-design"
     },
     {
       "intent": "ux copy narrative pass",
@@ -255,20 +320,23 @@
           "opencode",
           "aider",
           "interpreter",
-          "ollama"
+          "ollama",
+          "hermes",
+          "goose",
+          "open-design"
         ]
       }
     ]
   },
   "summary": {
-    "toolCount": 11,
-    "helperToolCount": 10,
+    "toolCount": 14,
+    "helperToolCount": 13,
     "remoteOrchestratorCount": 1,
-    "installedTools": 6,
+    "installedTools": 11,
     "missingRequiredTools": 0,
     "localModelCount": 0,
     "releasePackageCount": 2,
-    "routeCount": 11
+    "routeCount": 15
   },
   "notes": [
     "Ollama local model discovery is optional and depends on local daemon availability.",
