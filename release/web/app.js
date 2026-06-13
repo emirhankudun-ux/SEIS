@@ -151,6 +151,16 @@ const fallbackPublishGate = {
   }
 };
 
+const fallbackPortfolio = {
+  hero: {
+    title: "Emirhan Kudun Portfolio",
+    positioning: "Premium UI/UX, cinematic web systems, AI-native creative engineering.",
+    availability: "Portfolio shell active."
+  },
+  services: [],
+  pluginStack: []
+};
+
 const state = {
   mode: "cinematic",
   gaps: [],
@@ -506,6 +516,46 @@ function renderGapBoard() {
   });
 }
 
+function renderPortfolio() {
+  const statusEl = el("[data-portfolio-status]");
+  const serviceBoard = el("#portfolio-service-board");
+  const pluginBoard = el("#portfolio-plugin-board");
+
+  const portfolio = state.portfolio || fallbackPortfolio;
+  const services = portfolio.services || [];
+  const plugins = portfolio.pluginStack || [];
+
+  if (statusEl) {
+    statusEl.textContent = portfolio.hero?.availability || "Portfolio shell active.";
+  }
+
+  if (serviceBoard) {
+    serviceBoard.replaceChildren();
+    services.slice(0, 6).forEach((service) => {
+      const card = create("article", "portfolio-service-card");
+      card.append(
+        create("h3", "", service.label),
+        create("p", "", service.summary),
+        create("p", "", `Tools: ${(service.pluginAssist || []).join(", ")}`)
+      );
+      serviceBoard.append(card);
+    });
+  }
+
+  if (pluginBoard) {
+    pluginBoard.replaceChildren();
+    plugins.slice(0, 6).forEach((plugin) => {
+      const card = create("article", "plugin-stack-card");
+      card.append(
+        create("span", "", plugin.lane || ""),
+        create("h4", "", plugin.label),
+        create("p", "", plugin.role)
+      );
+      pluginBoard.append(card);
+    });
+  }
+}
+
 function renderCapabilities() {
   const board = el("#capability-board");
   if (!board) return;
@@ -622,36 +672,6 @@ function renderMarketplace() {
       create("p", "", `Family: ${source.family} - ${source.activationPosture}`)
     );
     sourcesBoard.append(card);
-  });
-}
-
-function renderPublishGate() {
-  const panel = el("[data-publish-gate-panel]");
-  const summary = el("[data-publish-gate-summary]");
-  const levelsBoard = el("[data-publish-gate-levels]");
-  if (!panel || !levelsBoard) return;
-
-  const publishGate = state.publishGate || fallbackPublishGate;
-  const levels = publishGate.readinessLevels || fallbackPublishGate.readinessLevels;
-  const policy = publishGate.currentEnvironmentPolicy || fallbackPublishGate.currentEnvironmentPolicy;
-
-  panel.dataset.publishGateStatus = publishGate.status || "unknown";
-  if (summary) {
-    summary.textContent = `${policy.expectedResult || "configured"} - ${policy.reason || publishGate.purpose || fallbackPublishGate.purpose}`;
-  }
-
-  levelsBoard.replaceChildren();
-  levels.forEach((level) => {
-    const card = create("article", `system-card ${level.id === "deployment-ready" ? "status-blocked" : "status-ready"}`);
-    const allows = (level.allows || []).slice(0, 3).join(", ");
-    const blocks = (level.blocks || []).slice(0, 3).join(", ");
-    card.append(
-      create("span", "", level.id),
-      create("h3", "", level.meaning || level.id),
-      create("p", "", allows ? `Allows: ${allows}` : "Allows remain gated."),
-      create("p", "", blocks ? `Blocks: ${blocks}` : "No additional blocks declared.")
-    );
-    levelsBoard.append(card);
   });
 }
 
@@ -1275,14 +1295,6 @@ async function loadMarketplace() {
   }
 }
 
-async function loadPublishGate() {
-  try {
-    state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
-  } catch (_error) {
-    state.publishGate = fallbackPublishGate;
-  }
-}
-
 async function loadPluginCommandCenter() {
   try {
     state.pluginCommandCenter = await fetchJson("../../data/plugin-command-center-2026-06-05.json");
@@ -1606,7 +1618,14 @@ async function init() {
     loadSeisReposBridge(),
     loadLlmRegistry(),
     loadCinematicEngine(),
-    loadQualityConsole()
+    loadQualityConsole(),
+    loadPortfolio(),
+    loadGithubModel(),
+    loadSafetyFirewall(),
+    loadLocalCycle(),
+    loadExecutionPlan(),
+    loadAggressiveMap(),
+    loadEvolutionModel()
   ]);
   renderGapBoard();
   renderPortfolio();
