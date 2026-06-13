@@ -66,7 +66,7 @@ ensure(provisioner.includes("--ssh-source-range"), "provisioner must require a s
 ensure(provisioner.includes("--vpn-source-range"), "provisioner must require a scoped VPN source range");
 ensure(provisioner.includes("--vpn-peer"), "provisioner must support WireGuard peers");
 ensure(provisioner.includes("hasBroadCidr"), "provisioner must reject broad VPN source ranges");
-ensure(provisioner.includes("compute.googleapis.com"), "provisioner must enable or check Compute Engine");
+ensure(sourceContainsStringLiteral(provisioner, "compute.googleapis.com"), "provisioner must enable or check Compute Engine");
 ensure(!provisioner.includes('sshSourceRange || "0.0.0.0/0"'), "provisioner must not default SSH to 0.0.0.0/0");
 ensure(!provisioner.includes('vpnSourceRange || "0.0.0.0/0"'), "provisioner must not default VPN to 0.0.0.0/0");
 
@@ -117,4 +117,9 @@ function readText(file) {
 
 function ensure(condition, message) {
   if (!condition) failures.push(message);
+}
+
+function sourceContainsStringLiteral(source, literal) {
+  const escapedLiteral = literal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`["'\`]${escapedLiteral}["'\`]`, "u").test(source);
 }
