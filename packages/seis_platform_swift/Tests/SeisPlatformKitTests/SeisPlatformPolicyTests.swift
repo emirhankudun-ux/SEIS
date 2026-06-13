@@ -238,6 +238,12 @@ import Testing
     #expect(runtime.probes.contains { $0.id == "agi-agent-orchestration-runtime" && $0.qualityGate == "agent_governance" })
     #expect(runtime.probes.contains { $0.id == "agi-research-automation-runtime" && $0.qualityGate == "primary_source_first" })
     #expect(runtime.probes.contains { $0.id == "agi-agent-handoff-store" && $0.qualityGate == "coredata_cloudkit_sync_review" })
+    #expect(runtime.probes.contains { $0.id == "specialist-plugin-readiness" && $0.qualityGate == "plugin_governance" })
+    #expect(runtime.probes.contains { $0.id == "specialist-plugin-manifest" && $0.qualityGate == "plugin_governance" })
+    #expect(runtime.probes.contains { $0.id == "specialist-plugin-check" && $0.qualityGate == "mcp_smoke_test" })
+    #expect(runtime.probes.contains { $0.id == "specialist-code-plugin" && $0.qualityGate == "plugin_governance" })
+    #expect(runtime.probes.contains { $0.id == "specialist-design-plugin" && $0.qualityGate == "plugin_governance" })
+    #expect(runtime.probes.contains { $0.id == "specialist-data-plugin" && $0.qualityGate == "plugin_governance" })
     #expect(runtime.probes.contains { $0.id == "run-script" && $0.state == .ready })
     #expect(runtime.probes.contains { $0.id == "telemetry-contract" && $0.qualityGate == "observability" })
     #expect(runtime.probes.contains { $0.id == "persistence-readiness" && $0.qualityGate == "coredata_cloudkit_sync_review" })
@@ -264,6 +270,7 @@ import Testing
         processName: "SeisAppleNativeShell"
     )
     let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
+    let specialistPlugins = SeisSpecialistPluginLaneReadiness.current
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let store = SeisAppleShellDiagnosticsHistoryStore(historyLimit: 2)
 
@@ -274,6 +281,7 @@ import Testing
         persistence: persistence,
         runtime: runtime,
         researchAutomation: researchAutomation,
+        specialistPlugins: specialistPlugins,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 0)
     )
@@ -284,6 +292,7 @@ import Testing
         persistence: persistence,
         runtime: runtime,
         researchAutomation: researchAutomation,
+        specialistPlugins: specialistPlugins,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 1)
     )
@@ -294,6 +303,7 @@ import Testing
         persistence: persistence,
         runtime: runtime,
         researchAutomation: researchAutomation,
+        specialistPlugins: specialistPlugins,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 2)
     )
@@ -317,6 +327,12 @@ import Testing
     #expect(third.researchFreshnessCheckCount == researchAutomation.freshnessCheckCount)
     #expect(third.researchAutomationStatusLabel == researchAutomation.statusLabel)
     #expect(third.researchAutomationStatusSummary.contains("research"))
+    #expect(third.specialistPluginReadyCount == specialistPlugins.readyCount)
+    #expect(third.specialistPluginCheckCount == specialistPlugins.checkCount)
+    #expect(third.specialistPluginLaneCount == specialistPlugins.lanes.count)
+    #expect(third.specialistPluginToolCount == specialistPlugins.toolCount)
+    #expect(third.specialistPluginStatusLabel == specialistPlugins.statusLabel)
+    #expect(third.specialistPluginStatusSummary.contains("specialist plugins"))
 }
 
 #if canImport(CoreData)
@@ -331,6 +347,7 @@ import Testing
         processName: "SeisAppleNativeShell"
     )
     let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
+    let specialistPlugins = SeisSpecialistPluginLaneReadiness.current
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let persistentStore = try SeisAppleDiagnosticsPersistentHistoryStore(inMemory: true)
     let store = SeisAppleShellDiagnosticsHistoryStore(
@@ -345,6 +362,7 @@ import Testing
         persistence: persistence,
         runtime: runtime,
         researchAutomation: researchAutomation,
+        specialistPlugins: specialistPlugins,
         agentHandoff: agentHandoff,
         recordedAt: Date(timeIntervalSince1970: 3)
     )
@@ -361,6 +379,9 @@ import Testing
     #expect(snapshot.agentHandoffWriterCount == agentHandoff.writerCount)
     #expect(snapshot.researchAutomationStatusLabel == researchAutomation.statusLabel)
     #expect(snapshot.researchSelectedSourceCount == researchAutomation.selectedSourceCount)
+    #expect(snapshot.specialistPluginStatusLabel == specialistPlugins.statusLabel)
+    #expect(snapshot.specialistPluginLaneCount == specialistPlugins.lanes.count)
+    #expect(snapshot.specialistPluginToolCount == specialistPlugins.toolCount)
 }
 #endif
 
@@ -376,12 +397,45 @@ import Testing
     #expect(telemetry.events.contains(.persistenceReadinessSnapshot))
     #expect(telemetry.events.contains(.agentHandoffSnapshot))
     #expect(telemetry.events.contains(.researchAutomationSnapshot))
+    #expect(telemetry.events.contains(.specialistPluginSnapshot))
     #expect(telemetry.category(for: .focusRouteApplied) == "Focus")
     #expect(telemetry.category(for: .diagnosticsRefreshRequested) == "Diagnostics")
     #expect(telemetry.category(for: .runtimeProbeSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .persistenceReadinessSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .agentHandoffSnapshot) == "Diagnostics")
     #expect(telemetry.category(for: .researchAutomationSnapshot) == "Diagnostics")
+    #expect(telemetry.category(for: .specialistPluginSnapshot) == "Diagnostics")
+}
+
+@Test func specialistPluginLaneReadinessDocumentsCodexPluginMesh() throws {
+    let readiness = SeisSpecialistPluginLaneReadiness.current
+    let laneIds = Set(readiness.lanes.map(\.id))
+    let root = repositoryRoot()
+    let source = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSpecialistPluginLaneReadiness.swift"),
+        encoding: .utf8
+    )
+    let manifest = try String(
+        contentsOf: root.appending(path: "data/seis-specialist-plugins-2026-06-12.json"),
+        encoding: .utf8
+    )
+
+    #expect(readiness.isReady)
+    #expect(readiness.readyCount == readiness.checkCount)
+    #expect(readiness.lanes.count == 3)
+    #expect(readiness.toolCount == 9)
+    #expect(readiness.centralMcpTools == SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools)
+    #expect(laneIds == ["seis-code", "seis-design", "seis-data"])
+    #expect(readiness.lanes.contains { $0.id == "seis-code" && $0.tools.contains("seis_code_plan") })
+    #expect(readiness.lanes.contains { $0.id == "seis-design" && $0.qualityCommands.contains("npm run check:mobile-ergonomics") })
+    #expect(readiness.lanes.contains { $0.id == "seis-data" && $0.qualityCommands.contains("npm run check:seis-technology-stack") })
+    #expect(readiness.validationCommands.contains("npm run check:seis-specialist-plugins"))
+    for token in SeisSpecialistPluginLaneReadiness.expectedSourceTokens {
+        #expect(source.contains(token), "missing specialist plugin source token: \(token)")
+    }
+    for token in ["\"seis-code\"", "\"seis-design\"", "\"seis-data\"", "\"seis_specialist_lane_plan\""] {
+        #expect(manifest.contains(token), "missing specialist plugin manifest token: \(token)")
+    }
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {
@@ -403,6 +457,10 @@ import Testing
     )
     let persistentStoreSource = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift"),
+        encoding: .utf8
+    )
+    let specialistPluginSource = try String(
+        contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSpecialistPluginLaneReadiness.swift"),
         encoding: .utf8
     )
     let persistenceSource = try String(
@@ -451,6 +509,12 @@ import Testing
     }
     for token in SeisAGIResearchAutomationPlan.expectedDiagnosticsViewTokens {
         #expect(view.contains(token), "missing research automation diagnostics view token: \(token)")
+    }
+    for token in SeisSpecialistPluginLaneReadiness.expectedSourceTokens {
+        #expect(specialistPluginSource.contains(token), "missing specialist plugin source token: \(token)")
+    }
+    for token in SeisSpecialistPluginLaneReadiness.expectedDiagnosticsViewTokens {
+        #expect(view.contains(token), "missing specialist plugin diagnostics view token: \(token)")
     }
     #expect(researchSource.contains("current("))
     #expect(researchSource.contains("redactionStatusLabel"))

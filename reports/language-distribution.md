@@ -1,47 +1,47 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 561
-- Counted bytes: 2604606
-- JavaScript: 852070 bytes (32.71%)
+- Counted files: 562
+- Counted bytes: 2625891
+- JavaScript: 852526 bytes (32.47%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1452870
+- Additional non-JavaScript bytes needed for strict target: 1433756
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 852070 | 32.71% | JavaScript |
-| TypeScript | 28824 | 1.11% | TypeScript |
+| JavaScript | 852526 | 32.47% | JavaScript |
+| TypeScript | 28824 | 1.1% | TypeScript |
 | Objective-C | 8447 | 0.32% | Objective-C |
-| Other | 1715265 | 65.86% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1736094 | 66.11% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 852070 | 32.71% |
-| JSON | 643334 | 24.7% |
-| Python | 300155 | 11.52% |
-| Swift | 248773 | 9.55% |
-| CSS | 94204 | 3.62% |
-| HTML | 84633 | 3.25% |
-| Shell | 56789 | 2.18% |
-| Other | 37135 | 1.43% |
-| TypeScript | 28824 | 1.11% |
-| YAML | 27012 | 1.04% |
-| Go | 16367 | 0.63% |
-| Java | 16110 | 0.62% |
+| JavaScript | 852526 | 32.47% |
+| JSON | 643334 | 24.5% |
+| Python | 300155 | 11.43% |
+| Swift | 269602 | 10.27% |
+| CSS | 94204 | 3.59% |
+| HTML | 84633 | 3.22% |
+| Shell | 56789 | 2.16% |
+| Other | 37135 | 1.41% |
+| TypeScript | 28824 | 1.1% |
+| YAML | 27012 | 1.03% |
+| Go | 16367 | 0.62% |
+| Java | 16110 | 0.61% |
 | Scheme | 15747 | 0.6% |
 | Perl | 13916 | 0.53% |
-| Ruby | 13442 | 0.52% |
+| Ruby | 13442 | 0.51% |
 | Rust | 11825 | 0.45% |
 | C++ | 11206 | 0.43% |
-| PHP | 8471 | 0.33% |
+| PHP | 8471 | 0.32% |
 | Objective-C | 8447 | 0.32% |
 | SQL | 8177 | 0.31% |
-| R | 7953 | 0.31% |
+| R | 7953 | 0.3% |
 | OCaml | 7550 | 0.29% |
 | Tcl | 7290 | 0.28% |
 | Racket | 7245 | 0.28% |

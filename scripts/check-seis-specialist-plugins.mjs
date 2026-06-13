@@ -52,7 +52,13 @@ for (const lane of lanes) {
   }
 }
 
-validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace"]);
+const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace", "centralMcpTools"]);
+if (specialistManifest) {
+  ensure(Array.isArray(specialistManifest.centralMcpTools), "specialist plugin manifest centralMcpTools must be an array");
+  for (const tool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
+    ensure(specialistManifest.centralMcpTools?.includes(tool), `specialist plugin manifest centralMcpTools missing ${tool}`);
+  }
+}
 
 const centralMcp = path.join(ROOT, "mcp", "seis-mcp-server.mjs");
 ensureFile(centralMcp, "central SEIS MCP server");
@@ -373,6 +379,8 @@ function validateJsonObject(filePath, label, requiredKeys = []) {
   for (const key of requiredKeys) {
     ensure(record[key] !== undefined, `${label}: key '${key}' is missing`);
   }
+
+  return record;
 }
 
 function validateCodeContains(filePath, token, message) {

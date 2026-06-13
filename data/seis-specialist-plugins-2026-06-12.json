@@ -12,6 +12,11 @@
       "authentication": "ON_INSTALL"
     }
   },
+  "centralMcpTools": [
+    "seis_specialist_lanes",
+    "seis_specialist_lane_status",
+    "seis_specialist_lane_plan"
+  ],
   "plugins": [
     {
       "name": "seis-code",

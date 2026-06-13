@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 852070,
+      "githubBytes": 852526,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -88,7 +88,7 @@
       "label": "Swift",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 248773,
+      "githubBytes": 269602,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"

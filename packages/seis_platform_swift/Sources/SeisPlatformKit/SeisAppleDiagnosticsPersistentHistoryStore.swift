@@ -63,6 +63,11 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
                 object.setValue(snapshot.researchDeferredSourceCount, forKey: "researchDeferredSourceCount")
                 object.setValue(snapshot.researchFreshnessCheckCount, forKey: "researchFreshnessCheckCount")
                 object.setValue(snapshot.researchAutomationStatusLabel, forKey: "researchAutomationStatusLabel")
+                object.setValue(snapshot.specialistPluginReadyCount, forKey: "specialistPluginReadyCount")
+                object.setValue(snapshot.specialistPluginCheckCount, forKey: "specialistPluginCheckCount")
+                object.setValue(snapshot.specialistPluginLaneCount, forKey: "specialistPluginLaneCount")
+                object.setValue(snapshot.specialistPluginToolCount, forKey: "specialistPluginToolCount")
+                object.setValue(snapshot.specialistPluginStatusLabel, forKey: "specialistPluginStatusLabel")
 
                 if context.hasChanges {
                     try context.save()
@@ -114,6 +119,8 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             "agentHandoffStatusLabel",
             "researchAutomationStatusLabel",
             "researchFreshnessCheckCount",
+            "specialistPluginStatusLabel",
+            "specialistPluginToolCount",
             "defaultValue"
         ]
     }
@@ -154,7 +161,12 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             researchSelectedSourceCount: intValue(object, forKey: "researchSelectedSourceCount"),
             researchDeferredSourceCount: intValue(object, forKey: "researchDeferredSourceCount"),
             researchFreshnessCheckCount: intValue(object, forKey: "researchFreshnessCheckCount"),
-            researchAutomationStatusLabel: stringValue(object, forKey: "researchAutomationStatusLabel")
+            researchAutomationStatusLabel: stringValue(object, forKey: "researchAutomationStatusLabel"),
+            specialistPluginReadyCount: intValue(object, forKey: "specialistPluginReadyCount"),
+            specialistPluginCheckCount: intValue(object, forKey: "specialistPluginCheckCount"),
+            specialistPluginLaneCount: intValue(object, forKey: "specialistPluginLaneCount"),
+            specialistPluginToolCount: intValue(object, forKey: "specialistPluginToolCount"),
+            specialistPluginStatusLabel: stringValue(object, forKey: "specialistPluginStatusLabel")
         )
     }
 
@@ -190,7 +202,12 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
             attribute("researchSelectedSourceCount", .integer64AttributeType, defaultValue: 0),
             attribute("researchDeferredSourceCount", .integer64AttributeType, defaultValue: 0),
             attribute("researchFreshnessCheckCount", .integer64AttributeType, defaultValue: 0),
-            attribute("researchAutomationStatusLabel", .stringAttributeType, defaultValue: "")
+            attribute("researchAutomationStatusLabel", .stringAttributeType, defaultValue: ""),
+            attribute("specialistPluginReadyCount", .integer64AttributeType, defaultValue: 0),
+            attribute("specialistPluginCheckCount", .integer64AttributeType, defaultValue: 1),
+            attribute("specialistPluginLaneCount", .integer64AttributeType, defaultValue: 0),
+            attribute("specialistPluginToolCount", .integer64AttributeType, defaultValue: 0),
+            attribute("specialistPluginStatusLabel", .stringAttributeType, defaultValue: "")
         ]
 
         let model = NSManagedObjectModel()

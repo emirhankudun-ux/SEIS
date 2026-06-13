@@ -10,6 +10,7 @@ struct AppleShellDiagnosticsView: View {
     @State private var runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics
     @State private var agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot
     @State private var researchAutomationPlan: SeisAGIResearchAutomationPlan
+    @State private var specialistPluginReadiness: SeisSpecialistPluginLaneReadiness
     @StateObject private var historyStore: SeisAppleShellDiagnosticsHistoryStore
 
     init(
@@ -17,12 +18,14 @@ struct AppleShellDiagnosticsView: View {
         runtimeDiagnostics: SeisAppleShellRuntimeDiagnostics = .current(),
         agentHandoffSnapshot: SeisAGIAgentHandoffSnapshot = .current(),
         researchAutomationPlan: SeisAGIResearchAutomationPlan = .current(),
+        specialistPluginReadiness: SeisSpecialistPluginLaneReadiness = .current,
         historyStore: SeisAppleShellDiagnosticsHistoryStore = .appleNative()
     ) {
         self.snapshot = snapshot
         self._runtimeDiagnostics = State(initialValue: runtimeDiagnostics)
         self._agentHandoffSnapshot = State(initialValue: agentHandoffSnapshot)
         self._researchAutomationPlan = State(initialValue: researchAutomationPlan)
+        self._specialistPluginReadiness = State(initialValue: specialistPluginReadiness)
         self._historyStore = StateObject(wrappedValue: historyStore)
     }
 
@@ -188,6 +191,46 @@ struct AppleShellDiagnosticsView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
+                    Text("Specialist Plugin Lanes")
+                        .font(.subheadline.weight(.semibold))
+                    Spacer()
+                    Text(specialistPluginReadiness.statusLabel)
+                        .font(.caption.monospacedDigit())
+                        .foregroundStyle(specialistPluginReadiness.isReady ? Color.secondary : Color.orange)
+                }
+                Text(specialistPluginReadiness.centralMcpToolSummary)
+                    .font(.caption2.monospaced())
+                    .foregroundStyle(.tertiary)
+                Text("\(specialistPluginReadiness.marketplaceName) / \(specialistPluginReadiness.installationPolicy) / \(specialistPluginReadiness.authenticationPolicy)")
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+
+                ForEach(specialistPluginReadiness.lanes) { lane in
+                    HStack(alignment: .top, spacing: 10) {
+                        Image(systemName: systemImage(forSpecialistCategory: lane.category))
+                            .foregroundStyle(lane.isReady ? .blue : .orange)
+                            .frame(width: 18)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(lane.displayName)
+                                .font(.caption.weight(.semibold))
+                            Text("\(lane.category) / \(lane.repoMirror)")
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.secondary)
+                            Text(lane.toolSummary)
+                                .font(.caption2.monospaced())
+                                .foregroundStyle(.tertiary)
+                            Text("\(lane.qualityCommandSummary) / \(lane.skillPath)")
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
+                        }
+                    }
+                }
+            }
+
+            Divider()
+
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
                     Text("Agent Handoff Status")
                         .font(.subheadline.weight(.semibold))
                     Spacer()
@@ -279,6 +322,9 @@ struct AppleShellDiagnosticsView: View {
                             Text(historySnapshot.researchAutomationStatusSummary)
                                 .font(.caption2)
                                 .foregroundStyle(.tertiary)
+                            Text(historySnapshot.specialistPluginStatusSummary)
+                                .font(.caption2)
+                                .foregroundStyle(.tertiary)
                         }
                     }
                 }
@@ -302,7 +348,7 @@ struct AppleShellDiagnosticsView: View {
         .padding()
         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 8))
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) \(researchAutomationPlan.statusLabel). \(agentHandoffSnapshot.statusLabel). Active quality gates: \(snapshot.qualityGates.count).")
+        .accessibilityLabel("\(diagnostics.accessibilitySummary) \(persistence.accessibilitySummary) \(runtimeDiagnostics.accessibilitySummary) \(researchAutomationPlan.statusLabel). \(specialistPluginReadiness.statusLabel). \(agentHandoffSnapshot.statusLabel). Active quality gates: \(snapshot.qualityGates.count).")
         .onAppear {
             recordDiagnosticsTelemetry(source: "appear")
         }
@@ -312,16 +358,17 @@ struct AppleShellDiagnosticsView: View {
     }
 
     private var totalReadyCount: Int {
-        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount + (researchAutomationPlan.isReady ? 1 : 0) + (agentHandoffSnapshot.isReady ? 1 : 0)
+        diagnostics.readyCount + persistence.readyCount + runtimeDiagnostics.readyCount + (researchAutomationPlan.isReady ? 1 : 0) + specialistPluginReadiness.readyCount + (agentHandoffSnapshot.isReady ? 1 : 0)
     }
 
     private var totalCheckCount: Int {
-        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count + 2
+        diagnostics.items.count + persistence.checkCount + runtimeDiagnostics.probes.count + specialistPluginReadiness.checkCount + 2
     }
 
     private var validationCommands: [String] {
         var seen = Set<String>()
-        return (diagnostics.validationCommands + persistence.validationCommands).filter { seen.insert($0).inserted }
+        return (diagnostics.validationCommands + persistence.validationCommands + specialistPluginReadiness.validationCommands)
+            .filter { seen.insert($0).inserted }
     }
 
     private func systemImage(for state: SeisAppleShellDiagnosticState) -> String {
@@ -355,6 +402,19 @@ struct AppleShellDiagnosticsView: View {
         }
     }
 
+    private func systemImage(forSpecialistCategory category: String) -> String {
+        switch category {
+        case "Developer":
+            "hammer"
+        case "Design":
+            "paintpalette"
+        case "Data":
+            "chart.xyaxis.line"
+        default:
+            "puzzlepiece.extension"
+        }
+    }
+
     private func systemImage(for role: SeisAGIAgentRole) -> String {
         switch role {
         case .writer:
@@ -372,6 +432,7 @@ struct AppleShellDiagnosticsView: View {
         telemetry.record(.diagnosticsRefreshRequested, detail: "source=\(source)")
         runtimeDiagnostics = .current()
         researchAutomationPlan = .current()
+        specialistPluginReadiness = .current
         agentHandoffSnapshot = .current()
         recordDiagnosticsTelemetry(source: source)
     }
@@ -384,6 +445,7 @@ struct AppleShellDiagnosticsView: View {
             persistence: persistence,
             runtime: runtimeDiagnostics,
             researchAutomation: researchAutomationPlan,
+            specialistPlugins: specialistPluginReadiness,
             agentHandoff: agentHandoffSnapshot
         )
         telemetry.record(
@@ -401,6 +463,10 @@ struct AppleShellDiagnosticsView: View {
         telemetry.record(
             .researchAutomationSnapshot,
             detail: "source=\(source) selected=\(researchAutomationPlan.selectedSourceCount) deferred=\(researchAutomationPlan.deferredSourceCount) freshness=\(researchAutomationPlan.freshnessCheckCount) ready=\(researchAutomationPlan.isReady)"
+        )
+        telemetry.record(
+            .specialistPluginSnapshot,
+            detail: "source=\(source) ready=\(specialistPluginReadiness.readyCount) total=\(specialistPluginReadiness.checkCount) lanes=\(specialistPluginReadiness.lanes.count) tools=\(specialistPluginReadiness.toolCount)"
         )
         telemetry.record(
             .agentHandoffSnapshot,

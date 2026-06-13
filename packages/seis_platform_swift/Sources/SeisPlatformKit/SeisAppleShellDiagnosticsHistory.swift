@@ -28,6 +28,11 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
     public let researchDeferredSourceCount: Int
     public let researchFreshnessCheckCount: Int
     public let researchAutomationStatusLabel: String
+    public let specialistPluginReadyCount: Int
+    public let specialistPluginCheckCount: Int
+    public let specialistPluginLaneCount: Int
+    public let specialistPluginToolCount: Int
+    public let specialistPluginStatusLabel: String
 
     public init(
         id: String,
@@ -49,7 +54,12 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         researchSelectedSourceCount: Int = 0,
         researchDeferredSourceCount: Int = 0,
         researchFreshnessCheckCount: Int = 0,
-        researchAutomationStatusLabel: String = ""
+        researchAutomationStatusLabel: String = "",
+        specialistPluginReadyCount: Int = 0,
+        specialistPluginCheckCount: Int = 1,
+        specialistPluginLaneCount: Int = 0,
+        specialistPluginToolCount: Int = 0,
+        specialistPluginStatusLabel: String = ""
     ) {
         self.id = id
         self.source = source
@@ -71,6 +81,11 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         self.researchDeferredSourceCount = researchDeferredSourceCount
         self.researchFreshnessCheckCount = researchFreshnessCheckCount
         self.researchAutomationStatusLabel = researchAutomationStatusLabel
+        self.specialistPluginReadyCount = specialistPluginReadyCount
+        self.specialistPluginCheckCount = specialistPluginCheckCount
+        self.specialistPluginLaneCount = specialistPluginLaneCount
+        self.specialistPluginToolCount = specialistPluginToolCount
+        self.specialistPluginStatusLabel = specialistPluginStatusLabel
     }
 
     public static func make(
@@ -80,6 +95,7 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
         researchAutomation: SeisAGIResearchAutomationPlan = .current(),
+        specialistPlugins: SeisSpecialistPluginLaneReadiness = .current,
         agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
@@ -87,8 +103,8 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         let researchAutomationCheckCount = 1
         let agentHandoffReadyCount = agentHandoff.isReady ? 1 : 0
         let agentHandoffCheckCount = 1
-        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount + researchAutomationReadyCount + agentHandoffReadyCount
-        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count + researchAutomationCheckCount + agentHandoffCheckCount
+        let readyCount = diagnostics.readyCount + persistence.readyCount + runtime.readyCount + researchAutomationReadyCount + specialistPlugins.readyCount + agentHandoffReadyCount
+        let checkCount = diagnostics.items.count + persistence.checkCount + runtime.probes.count + researchAutomationCheckCount + specialistPlugins.checkCount + agentHandoffCheckCount
         let timestamp = Self.timestampString(from: recordedAt)
         let id = "\(source)-\(readyCount)-\(checkCount)-\(timestamp)"
             .replacingOccurrences(of: ":", with: "-")
@@ -113,7 +129,12 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             researchSelectedSourceCount: researchAutomation.selectedSourceCount,
             researchDeferredSourceCount: researchAutomation.deferredSourceCount,
             researchFreshnessCheckCount: researchAutomation.freshnessCheckCount,
-            researchAutomationStatusLabel: researchAutomation.statusLabel
+            researchAutomationStatusLabel: researchAutomation.statusLabel,
+            specialistPluginReadyCount: specialistPlugins.readyCount,
+            specialistPluginCheckCount: specialistPlugins.checkCount,
+            specialistPluginLaneCount: specialistPlugins.lanes.count,
+            specialistPluginToolCount: specialistPlugins.toolCount,
+            specialistPluginStatusLabel: specialistPlugins.statusLabel
         )
     }
 
@@ -141,6 +162,10 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
         "\(researchAutomationReadyCount)/\(researchAutomationCheckCount) research / \(researchSelectedSourceCount) selected / \(researchDeferredSourceCount) deferred / \(researchFreshnessCheckCount) freshness / \(researchAutomationStatusLabel)"
     }
 
+    public var specialistPluginStatusSummary: String {
+        "\(specialistPluginReadyCount)/\(specialistPluginCheckCount) specialist plugins / \(specialistPluginLaneCount) lanes / \(specialistPluginToolCount) tools / \(specialistPluginStatusLabel)"
+    }
+
     public static var expectedSourceTokens: [String] {
         [
             "import Combine",
@@ -154,7 +179,9 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "agentHandoffStatusLabel",
             "agentHandoffStatusSummary",
             "researchAutomationStatusLabel",
-            "researchAutomationStatusSummary"
+            "researchAutomationStatusSummary",
+            "specialistPluginStatusLabel",
+            "specialistPluginStatusSummary"
         ]
     }
 
@@ -166,7 +193,8 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
             "historySnapshot.runtimeStatusLabel",
             "historySnapshot.persistenceStatusLabel",
             "historySnapshot.agentHandoffStatusSummary",
-            "historySnapshot.researchAutomationStatusSummary"
+            "historySnapshot.researchAutomationStatusSummary",
+            "historySnapshot.specialistPluginStatusSummary"
         ]
     }
 
@@ -213,6 +241,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
         persistence: SeisApplePersistenceReadinessContract,
         runtime: SeisAppleShellRuntimeDiagnostics,
         researchAutomation: SeisAGIResearchAutomationPlan = .current(),
+        specialistPlugins: SeisSpecialistPluginLaneReadiness = .current,
         agentHandoff: SeisAGIAgentHandoffSnapshot = .current(),
         recordedAt: Date = Date()
     ) -> SeisAppleShellDiagnosticsHistorySnapshot {
@@ -223,6 +252,7 @@ public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
             persistence: persistence,
             runtime: runtime,
             researchAutomation: researchAutomation,
+            specialistPlugins: specialistPlugins,
             agentHandoff: agentHandoff,
             recordedAt: recordedAt
         )
