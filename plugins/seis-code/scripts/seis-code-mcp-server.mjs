@@ -24,6 +24,7 @@ function repoRoot() {
   const candidates = [
     process.env.SEIS_ROOT,
     process.env.SEIS_REPO_ROOT,
+    path.resolve(scriptDir, "..", "..", ".."),
     path.join(home, "Library", "Mobile Documents", "com~apple~CloudDocs", "Github", "SEIS"),
     path.resolve(pluginRoot(), "..", "SEIS"),
   ].filter(Boolean);
@@ -61,14 +62,17 @@ function status() {
   const repo = repoRoot();
   const profilePath = path.join(root, "assets", "lane-profile.json");
   const profile = fs.existsSync(profilePath) ? JSON.parse(fs.readFileSync(profilePath, "utf8")) : null;
+  const skillExists = fs.existsSync(path.join(root, LANE.skillPath));
+  const mcpManifestExists = fs.existsSync(path.join(root, ".mcp.json"));
+  const repoMirrorExists = repo ? fs.existsSync(path.join(repo, "plugins", LANE.pluginName, ".codex-plugin", "plugin.json")) : false;
   return {
-    status: profile ? "ready" : "partial",
+    status: profile && skillExists && mcpManifestExists && repoMirrorExists ? "ready" : "partial",
     lane: LANE.id,
     pluginRoot: root,
     repoRoot: repo,
-    skillExists: fs.existsSync(path.join(root, LANE.skillPath)),
-    mcpManifestExists: fs.existsSync(path.join(root, ".mcp.json")),
-    repoMirrorExists: repo ? fs.existsSync(path.join(repo, "plugins", LANE.pluginName, ".codex-plugin", "plugin.json")) : false,
+    skillExists,
+    mcpManifestExists,
+    repoMirrorExists,
     profile,
   };
 }

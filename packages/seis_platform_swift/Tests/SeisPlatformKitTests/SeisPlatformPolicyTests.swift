@@ -409,6 +409,7 @@ import Testing
 
 @Test func specialistPluginLaneReadinessDocumentsCodexPluginMesh() throws {
     let readiness = SeisSpecialistPluginLaneReadiness.current
+    let fixtureReadiness = specialistPluginFixtureReadiness(from: readiness)
     let laneIds = Set(readiness.lanes.map(\.id))
     let root = repositoryRoot()
     let source = try String(
@@ -420,22 +421,58 @@ import Testing
         encoding: .utf8
     )
 
-    #expect(readiness.isReady)
-    #expect(readiness.readyCount == readiness.checkCount)
     #expect(readiness.lanes.count == 3)
     #expect(readiness.toolCount == 9)
     #expect(readiness.centralMcpTools == SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools)
+    #expect(readiness.marketplacePath.contains(FileManager.default.homeDirectoryForCurrentUser.path))
     #expect(laneIds == ["seis-code", "seis-design", "seis-data"])
     #expect(readiness.lanes.contains { $0.id == "seis-code" && $0.tools.contains("seis_code_plan") })
     #expect(readiness.lanes.contains { $0.id == "seis-design" && $0.qualityCommands.contains("npm run check:mobile-ergonomics") })
     #expect(readiness.lanes.contains { $0.id == "seis-data" && $0.qualityCommands.contains("npm run check:seis-technology-stack") })
+    #expect(fixtureReadiness.isReady)
+    #expect(fixtureReadiness.readyCount == fixtureReadiness.checkCount)
     #expect(readiness.validationCommands.contains("npm run check:seis-specialist-plugins"))
     for token in SeisSpecialistPluginLaneReadiness.expectedSourceTokens {
         #expect(source.contains(token), "missing specialist plugin source token: \(token)")
     }
-    for token in ["\"seis-code\"", "\"seis-design\"", "\"seis-data\"", "\"seis_specialist_lane_plan\""] {
+    #expect(!source.contains("/Users/emirhankudun"))
+    for token in [
+        "\"seis-code\"",
+        "\"seis-design\"",
+        "\"seis-data\""
+    ] + SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools.map({ "\"\($0)\"" }) {
         #expect(manifest.contains(token), "missing specialist plugin manifest token: \(token)")
     }
+}
+
+private func specialistPluginFixtureReadiness(
+    from readiness: SeisSpecialistPluginLaneReadiness
+) -> SeisSpecialistPluginLaneReadiness {
+    let root = repositoryRoot()
+    return SeisSpecialistPluginLaneReadiness(
+        marketplacePath: root.appending(path: "plugins").path,
+        marketplaceName: readiness.marketplaceName,
+        installationPolicy: readiness.installationPolicy,
+        authenticationPolicy: readiness.authenticationPolicy,
+        centralMcpTools: readiness.centralMcpTools,
+        lanes: readiness.lanes.map { lane in
+            let repoMirrorPath = root.appending(path: lane.repoMirror).path
+            return SeisSpecialistPluginLane(
+                id: lane.id,
+                displayName: lane.displayName,
+                category: lane.category,
+                repoMirror: lane.repoMirror,
+                localRoot: repoMirrorPath,
+                installedCacheRoot: repoMirrorPath,
+                skillPath: lane.skillPath,
+                mcpServer: lane.mcpServer,
+                tools: lane.tools,
+                laneProfilePath: lane.laneProfilePath,
+                qualityCommands: lane.qualityCommands
+            )
+        },
+        validationCommands: readiness.validationCommands
+    )
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {

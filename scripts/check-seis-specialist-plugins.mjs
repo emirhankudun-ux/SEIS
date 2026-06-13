@@ -164,7 +164,6 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
     cwd: pluginRoot,
     env: { ...process.env, SEIS_ROOT: ROOT },
     input,
-    encoding: "utf8",
     timeout: 5000,
   });
 
@@ -173,7 +172,7 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
     return;
   }
   if (result.status !== 0) {
-    fail(`${scope} ${lane.name}: MCP smoke exited ${result.status}: ${result.stderr.trim()}`);
+    fail(`${scope} ${lane.name}: MCP smoke exited ${exitDetail(result)}: ${outputText(result.stderr).trim()}`);
     return;
   }
 
@@ -231,7 +230,6 @@ function validateCentralMcpSmoke(centralMcp) {
     cwd: ROOT,
     env: { ...process.env, SEIS_ROOT: ROOT },
     input,
-    encoding: "utf8",
     timeout: 5000,
   });
 
@@ -240,7 +238,7 @@ function validateCentralMcpSmoke(centralMcp) {
     return;
   }
   if (result.status !== 0) {
-    fail(`central MCP smoke exited ${result.status}: ${result.stderr.trim()}`);
+    fail(`central MCP smoke exited ${exitDetail(result)}: ${outputText(result.stderr).trim()}`);
     return;
   }
 
@@ -273,13 +271,14 @@ function frameMcpMessage(message) {
 }
 
 function parseMcpResponses(output, label) {
+  const buffer = output ? Buffer.isBuffer(output) ? output : Buffer.from(String(output), "utf8") : Buffer.alloc(0);
   const responses = [];
   let cursor = 0;
 
-  while (cursor < output.length) {
-    const separatorIndex = output.indexOf("\r\n\r\n", cursor);
+  while (cursor < buffer.length) {
+    const separatorIndex = buffer.indexOf("\r\n\r\n", cursor, "utf8");
     if (separatorIndex < 0) break;
-    const header = output.slice(cursor, separatorIndex);
+    const header = buffer.subarray(cursor, separatorIndex).toString("utf8");
     const lengthMatch = /Content-Length:\s*(\d+)/i.exec(header);
     if (!lengthMatch) {
       fail(`${label}: malformed MCP response header`);
@@ -288,13 +287,13 @@ function parseMcpResponses(output, label) {
     const contentLength = Number.parseInt(lengthMatch[1], 10);
     const bodyStart = separatorIndex + 4;
     const bodyEnd = bodyStart + contentLength;
-    const body = output.slice(bodyStart, bodyEnd);
+    const body = buffer.subarray(bodyStart, bodyEnd);
     if (body.length !== contentLength) {
       fail(`${label}: truncated MCP response body`);
       break;
     }
     try {
-      responses.push(JSON.parse(body));
+      responses.push(JSON.parse(body.toString("utf8")));
     } catch {
       fail(`${label}: invalid MCP response JSON`);
       break;
@@ -304,6 +303,15 @@ function parseMcpResponses(output, label) {
 
   ensure(responses.length >= 4, `${label}: MCP smoke should return initialize, tools/list, status, and plan responses`);
   return responses;
+}
+
+function outputText(output) {
+  if (!output) return "";
+  return Buffer.isBuffer(output) ? output.toString("utf8") : String(output);
+}
+
+function exitDetail(result) {
+  return result.status ?? result.signal ?? "unknown";
 }
 
 function validateMarketplace() {

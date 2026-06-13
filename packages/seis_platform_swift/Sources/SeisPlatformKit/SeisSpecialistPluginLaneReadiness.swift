@@ -42,12 +42,16 @@ public struct SeisSpecialistPluginLane: Codable, Equatable, Identifiable, Sendab
     public var isReady: Bool {
         !id.isEmpty &&
             !displayName.isEmpty &&
+            !category.isEmpty &&
             repoMirror.hasPrefix("plugins/") &&
+            !localRoot.isEmpty &&
+            !installedCacheRoot.isEmpty &&
             skillPath.hasSuffix("SKILL.md") &&
             !mcpServer.isEmpty &&
             tools.count >= 2 &&
             laneProfilePath == "assets/lane-profile.json" &&
-            !qualityCommands.isEmpty
+            !qualityCommands.isEmpty &&
+            localInstallationReady
     }
 
     public var toolSummary: String {
@@ -56,6 +60,13 @@ public struct SeisSpecialistPluginLane: Codable, Equatable, Identifiable, Sendab
 
     public var qualityCommandSummary: String {
         "\(qualityCommands.count) checks"
+    }
+
+    public var localInstallationReady: Bool {
+        let fileManager = FileManager.default
+        return fileManager.fileExists(atPath: localRoot) &&
+            fileManager.fileExists(atPath: installedCacheRoot) &&
+            fileManager.fileExists(atPath: "\(localRoot)/\(skillPath)")
     }
 }
 
@@ -86,74 +97,77 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         self.validationCommands = validationCommands
     }
 
-    public static let current = SeisSpecialistPluginLaneReadiness(
-        marketplacePath: "/Users/emirhankudun/.agents/plugins/marketplace.json",
-        marketplaceName: "personal",
-        installationPolicy: "AVAILABLE",
-        authenticationPolicy: "ON_INSTALL",
-        centralMcpTools: Self.expectedCentralMcpTools,
-        lanes: [
-            SeisSpecialistPluginLane(
-                id: "seis-code",
-                displayName: "SEIS-Code",
-                category: "Developer",
-                repoMirror: "plugins/seis-code",
-                localRoot: "/Users/emirhankudun/plugins/seis-code",
-                installedCacheRoot: "/Users/emirhankudun/.codex/plugins/cache/personal/seis-code/0.1.0",
-                skillPath: "skills/seis-code/SKILL.md",
-                mcpServer: "seis-code",
-                tools: ["seis_code_status", "seis_code_plan"],
-                laneProfilePath: "assets/lane-profile.json",
-                qualityCommands: [
-                    "npm run seis:check",
-                    "npm run check:seis-plugin-bundle",
-                    "npm run check:seis-platform-kernel",
-                    "npm run check:seis-agi-system"
-                ]
-            ),
-            SeisSpecialistPluginLane(
-                id: "seis-design",
-                displayName: "SEIS-Design",
-                category: "Design",
-                repoMirror: "plugins/seis-design",
-                localRoot: "/Users/emirhankudun/plugins/seis-design",
-                installedCacheRoot: "/Users/emirhankudun/.codex/plugins/cache/personal/seis-design/0.1.0",
-                skillPath: "skills/seis-design/SKILL.md",
-                mcpServer: "seis-design",
-                tools: ["seis_design_status", "seis_design_plan"],
-                laneProfilePath: "assets/lane-profile.json",
-                qualityCommands: [
-                    "npm run check:motion-evidence",
-                    "npm run check:mobile-ergonomics",
-                    "npm run check:web",
-                    "npm run seis:check"
-                ]
-            ),
-            SeisSpecialistPluginLane(
-                id: "seis-data",
-                displayName: "SEIS-DATA",
-                category: "Data",
-                repoMirror: "plugins/seis-data",
-                localRoot: "/Users/emirhankudun/plugins/seis-data",
-                installedCacheRoot: "/Users/emirhankudun/.codex/plugins/cache/personal/seis-data/0.1.0",
-                skillPath: "skills/seis-data/SKILL.md",
-                mcpServer: "seis-data",
-                tools: ["seis_data_status", "seis_data_plan"],
-                laneProfilePath: "assets/lane-profile.json",
-                qualityCommands: [
-                    "npm run check:plugin-capability-lanes",
-                    "npm run check:seis-technology-stack",
-                    "npm run check:seis-agi-system",
-                    "npm run check:universal-capability-kernel",
-                    "npm run check:language-distribution"
-                ]
-            )
-        ],
-        validationCommands: [
-            "npm run check:seis-specialist-plugins",
-            "npm run check:seis-plugin-bundle"
-        ]
-    )
+    public static var current: SeisSpecialistPluginLaneReadiness {
+        let home = homePath
+        return SeisSpecialistPluginLaneReadiness(
+            marketplacePath: "\(home)/.agents/plugins/marketplace.json",
+            marketplaceName: "personal",
+            installationPolicy: "AVAILABLE",
+            authenticationPolicy: "ON_INSTALL",
+            centralMcpTools: Self.expectedCentralMcpTools,
+            lanes: [
+                SeisSpecialistPluginLane(
+                    id: "seis-code",
+                    displayName: "SEIS-Code",
+                    category: "Developer",
+                    repoMirror: "plugins/seis-code",
+                    localRoot: "\(home)/plugins/seis-code",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-code/0.1.0",
+                    skillPath: "skills/seis-code/SKILL.md",
+                    mcpServer: "seis-code",
+                    tools: ["seis_code_status", "seis_code_plan"],
+                    laneProfilePath: "assets/lane-profile.json",
+                    qualityCommands: [
+                        "npm run seis:check",
+                        "npm run check:seis-plugin-bundle",
+                        "npm run check:seis-platform-kernel",
+                        "npm run check:seis-agi-system"
+                    ]
+                ),
+                SeisSpecialistPluginLane(
+                    id: "seis-design",
+                    displayName: "SEIS-Design",
+                    category: "Design",
+                    repoMirror: "plugins/seis-design",
+                    localRoot: "\(home)/plugins/seis-design",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-design/0.1.0",
+                    skillPath: "skills/seis-design/SKILL.md",
+                    mcpServer: "seis-design",
+                    tools: ["seis_design_status", "seis_design_plan"],
+                    laneProfilePath: "assets/lane-profile.json",
+                    qualityCommands: [
+                        "npm run check:motion-evidence",
+                        "npm run check:mobile-ergonomics",
+                        "npm run check:web",
+                        "npm run seis:check"
+                    ]
+                ),
+                SeisSpecialistPluginLane(
+                    id: "seis-data",
+                    displayName: "SEIS-DATA",
+                    category: "Data",
+                    repoMirror: "plugins/seis-data",
+                    localRoot: "\(home)/plugins/seis-data",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-data/0.1.0",
+                    skillPath: "skills/seis-data/SKILL.md",
+                    mcpServer: "seis-data",
+                    tools: ["seis_data_status", "seis_data_plan"],
+                    laneProfilePath: "assets/lane-profile.json",
+                    qualityCommands: [
+                        "npm run check:plugin-capability-lanes",
+                        "npm run check:seis-technology-stack",
+                        "npm run check:seis-agi-system",
+                        "npm run check:universal-capability-kernel",
+                        "npm run check:language-distribution"
+                    ]
+                )
+            ],
+            validationCommands: [
+                "npm run check:seis-specialist-plugins",
+                "npm run check:seis-plugin-bundle"
+            ]
+        )
+    }
 
     public var readyCount: Int {
         lanes.filter(\.isReady).count + (centralMcpTools == Self.expectedCentralMcpTools ? 1 : 0)
@@ -190,6 +204,10 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         }
     }
 
+    private static var homePath: String {
+        FileManager.default.homeDirectoryForCurrentUser.path
+    }
+
     public static var expectedCentralMcpTools: [String] {
         [
             "seis_specialist_lanes",
@@ -204,6 +222,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "SEIS-Code",
             "SEIS-Design",
             "SEIS-DATA",
+            "homeDirectoryForCurrentUser",
+            "localInstallationReady",
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",
