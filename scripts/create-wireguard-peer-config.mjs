@@ -80,6 +80,7 @@ function isValidWireGuardPeerAddress(value) {
   if (extra || prefix !== "32") return false;
   const parts = ip.split(".");
   if (parts.length !== 4 || parts[0] !== "10" || parts[1] !== "44" || parts[2] !== "0") return false;
+  if (!/^\d{1,3}$/.test(parts[3])) return false;
   const peerOctet = Number(parts[3]);
   return Number.isInteger(peerOctet) && peerOctet >= 2 && peerOctet <= 254;
 }

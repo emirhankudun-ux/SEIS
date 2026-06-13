@@ -37,6 +37,7 @@ const failures = [];
 if (!project) failures.push("Missing --project or GCP_PROJECT.");
 if (!existsSync(startupScript)) failures.push(`Missing startup script: ${relative(startupScript)}`);
 if (!existsSync(publicKeyPath)) failures.push(`Missing SSH public key: ${publicKeyPath}`);
+if (!isValidLinuxUsername(sshUser)) failures.push("Invalid --ssh-user. Use a non-root Linux username such as seis.");
 if (apply && !sshSourceRange) failures.push("Apply requires --ssh-source-range CIDR. Do not open SSH broadly by default.");
 if (apply && hasBroadCidr(sshSourceRange)) failures.push("SSH source ranges must be scoped; do not use 0.0.0.0/0 or ::/0.");
 if (vpn !== "wireguard" && vpn !== "none") failures.push("VPN must be wireguard or none.");
@@ -301,19 +302,14 @@ function describeFirewallRule(ruleName) {
 
 function assertFirewallRule(payload, { label, expectedAllow, expectedSourceRange, expectedTag }) {
   const problems = [];
-  const sourceRanges = Array.isArray(payload.sourceRanges) ? payload.sourceRanges : [];
+  const sourceRanges = normalizeList(payload.sourceRanges);
   const targetTags = Array.isArray(payload.targetTags) ? payload.targetTags : [];
+  const requestedSourceRanges = normalizeList(String(expectedSourceRange || "").split(","));
 
   if (!firewallAllows(payload, expectedAllow)) problems.push(`missing ${expectedAllow}`);
   if (!targetTags.includes(expectedTag)) problems.push(`missing target tag ${expectedTag}`);
   if (hasBroadCidr(sourceRanges.join(","))) problems.push("uses a broad source range");
-  const requestedSourceRanges = String(expectedSourceRange || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-  for (const requestedRange of requestedSourceRanges) {
-    if (!sourceRanges.includes(requestedRange)) problems.push(`missing requested source range ${requestedRange}`);
-  }
+  if (!sameStringSet(sourceRanges, requestedSourceRanges)) problems.push("source ranges do not match exactly");
 
   if (problems.length > 0) {
     failApply(`${label} firewall rule ${payload.name || "(unknown)"} is not safe to reuse: ${problems.join(", ")}.`);
@@ -390,8 +386,24 @@ function isValidWireGuardPeerAddress(value) {
   if (extra || prefix !== "32") return false;
   const parts = ip.split(".");
   if (parts.length !== 4 || parts[0] !== "10" || parts[1] !== "44" || parts[2] !== "0") return false;
+  if (!/^\d{1,3}$/.test(parts[3])) return false;
   const peerOctet = Number(parts[3]);
   return Number.isInteger(peerOctet) && peerOctet >= 2 && peerOctet <= 254;
+}
+
+function isValidLinuxUsername(value) {
+  return /^[a-z_][a-z0-9_-]{0,31}$/.test(String(value || ""))
+    && !["root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody"].includes(value);
+}
+
+function normalizeList(items) {
+  return [...new Set((Array.isArray(items) ? items : [])
+    .map((item) => String(item || "").trim())
+    .filter(Boolean))].sort();
+}
+
+function sameStringSet(left, right) {
+  return left.length === right.length && left.every((item, index) => item === right[index]);
 }
 
 function hasBroadCidr(value) {

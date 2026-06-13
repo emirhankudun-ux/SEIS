@@ -302,6 +302,8 @@ Options:
   --instance NAME               VM name. Default: seis-cloud-dev.
   --ssh-firewall-rule NAME      SSH firewall rule name.
   --vpn-firewall-rule NAME      WireGuard firewall rule name.
+  --network-tag TAG             GCE network tag. Default: ${networkTag}.
+  --vpn-port PORT               WireGuard UDP port. Default: ${vpnPort}.
   --require-ready               Exit non-zero when the cloud host is not ready.
 `);
 }

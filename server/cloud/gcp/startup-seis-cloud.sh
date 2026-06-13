@@ -11,6 +11,23 @@ metadata_attr_bootstrap() {
 SEIS_ROOT="${SEIS_ROOT:-/opt/seis}"
 CODEX_INSTALL_URL="${CODEX_INSTALL_URL:-https://chatgpt.com/codex/install.sh}"
 
+valid_seis_user() {
+  local user
+  user="$1"
+
+  if [[ ! "${user}" =~ ^[a-z_][a-z0-9_-]{0,31}$ ]]; then
+    return 1
+  fi
+
+  case "${user}" in
+    root|daemon|bin|sys|sync|games|man|lp|mail|news|uucp|proxy|www-data|backup|list|irc|gnats|nobody)
+      return 1
+      ;;
+  esac
+
+  return 0
+}
+
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
@@ -28,6 +45,10 @@ apt-get install -y --no-install-recommends \
 
 SEIS_USER="${SEIS_USER:-$(metadata_attr_bootstrap seis-user)}"
 SEIS_USER="${SEIS_USER:-seis}"
+if ! valid_seis_user "${SEIS_USER}"; then
+  echo "Invalid SEIS user metadata '${SEIS_USER}', falling back to seis." >&2
+  SEIS_USER="seis"
+fi
 SEIS_HOME="/home/${SEIS_USER}"
 
 if ! id "${SEIS_USER}" >/dev/null 2>&1; then
@@ -163,7 +184,7 @@ WG
 }
 
 valid_peer_address() {
-  local address ip prefix first second third octet
+  local address ip prefix first second third octet octet_value
   address="$1"
   ip="${address%/*}"
   prefix="${address##*/}"
@@ -180,8 +201,12 @@ valid_peer_address() {
   case "${octet:-}" in
     ''|*[!0-9]*) return 1 ;;
   esac
+  if [ "${#octet}" -gt 3 ]; then
+    return 1
+  fi
 
-  [ "${octet}" -ge 2 ] && [ "${octet}" -le 254 ]
+  octet_value=$((10#${octet}))
+  [ "${octet_value}" -ge 2 ] && [ "${octet_value}" -le 254 ]
 }
 
 setup_wireguard

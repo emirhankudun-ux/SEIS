@@ -3,6 +3,7 @@
 import fnmatch
 import hashlib
 import json
+import math
 import os
 import subprocess
 import sys
@@ -473,7 +474,7 @@ def required_non_javascript_bytes(javascript_bytes, total_bytes):
         return 0
     target_total = javascript_bytes / (TARGET_JAVASCRIPT_PERCENT / 100)
     required = target_total - total_bytes
-    return int(required) if required > 0 else 0
+    return math.ceil(required) if required > 0 else 0
 
 
 def build_focus_language_split(by_language, total_bytes):

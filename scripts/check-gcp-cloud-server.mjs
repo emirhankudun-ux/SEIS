@@ -68,9 +68,11 @@ ensure(provisioner.includes("--vpn-peer"), "provisioner must support WireGuard p
 ensure(provisioner.includes("Apply with WireGuard requires at least one --vpn-peer approved workplace/team peer."), "provisioner must require at least one approved WireGuard peer for apply");
 ensure(provisioner.includes("hasBroadCidr"), "provisioner must reject broad VPN source ranges");
 ensure(provisioner.includes("assertFirewallRule"), "provisioner must validate existing firewall rules before reuse");
+ensure(provisioner.includes("source ranges do not match exactly"), "provisioner must reject firewall rules with extra source ranges");
 ensure(provisioner.includes("Apply with WireGuard requires at least one --vpn-peer"), "provisioner must require a WireGuard peer before apply");
 ensure(provisioner.includes("privateKeyPathFromPublicKeyPath"), "provisioner must derive SSH identity from the selected public key");
 ensure(provisioner.includes("seis-user"), "provisioner must pass the SSH user to startup metadata");
+ensure(provisioner.includes("isValidLinuxUsername"), "provisioner must validate the SSH username before metadata injection");
 ensure(sourceContainsStringLiteral(provisioner, "compute.googleapis.com"), "provisioner must enable or check Compute Engine");
 ensure(!provisioner.includes('sshSourceRange || "0.0.0.0/0"'), "provisioner must not default SSH to 0.0.0.0/0");
 ensure(!provisioner.includes('vpnSourceRange || "0.0.0.0/0"'), "provisioner must not default VPN to 0.0.0.0/0");
@@ -84,14 +86,18 @@ ensure(readiness.includes("workplaces-and-teams"), "readiness checker must prese
 ensure(readiness.includes("allowsExpectedTraffic"), "readiness checker must validate firewall allowed ports");
 ensure(readiness.includes("targetsInstanceTag"), "readiness checker must validate firewall target tags");
 ensure(readiness.includes("instance-not-running"), "readiness checker must block stopped instances");
+ensure(readiness.includes("--network-tag TAG"), "readiness help must document network tags");
+ensure(readiness.includes("--vpn-port PORT"), "readiness help must document VPN port");
 
 const startup = readText("server/cloud/gcp/startup-seis-cloud.sh");
 ensure(startup.includes("PasswordAuthentication no"), "startup script must disable password SSH");
 ensure(startup.includes("PermitRootLogin no"), "startup script must disable root SSH login");
 ensure(startup.includes("https://chatgpt.com/codex/install.sh"), "startup script must install standalone Codex");
 ensure(startup.includes("metadata_attr_bootstrap seis-user"), "startup script must honor SSH user metadata");
+ensure(startup.includes("valid_seis_user"), "startup script must validate SSH user metadata before use");
 ensure(startup.includes("env CODEX_NON_INTERACTIVE=1"), "startup script must export Codex installer flags to sh");
 ensure(startup.includes("valid_peer_address"), "startup script must validate WireGuard peer address octets");
+ensure(startup.includes("10#${octet}"), "startup script must parse peer octets in base 10");
 ensure(startup.includes("wg-quick@wg0"), "startup script must enable WireGuard wg0");
 ensure(startup.includes("seis-wg-peers"), "startup script must read WireGuard peers from metadata");
 ensure(startup.includes("SEIS_REMOTE_HOST_READY=1"), "startup script must expose a readiness marker");
@@ -100,6 +106,7 @@ const peerHelper = readText("scripts/create-wireguard-peer-config.mjs");
 ensure(peerHelper.includes("metadataPeer"), "WireGuard peer helper must emit metadataPeer");
 ensure(peerHelper.includes("CLIENT_PRIVATE_KEY"), "WireGuard peer helper must avoid storing client private keys");
 ensure(peerHelper.includes("isValidWireGuardPeerAddress"), "WireGuard peer helper must validate peer address octets");
+ensure(peerHelper.includes("\\d{1,3}"), "WireGuard peer helper must reject non-decimal octets");
 
 const docs = readText("docs/deployment/gcp-compute-cloud-server.md");
 ensure(docs.includes("npm run cloud:gcp:readiness"), "GCP runbook must document readiness command");

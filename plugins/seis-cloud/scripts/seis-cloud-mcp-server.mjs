@@ -60,13 +60,11 @@ function status() {
   const root = pluginRoot();
   const repo = repoRoot();
   const profilePath = path.join(root, "assets", "lane-profile.json");
-  const profile = fs.existsSync(profilePath) ? JSON.parse(fs.readFileSync(profilePath, "utf8")) : null;
+  const profile = readJsonFile(profilePath);
   const skillExists = fs.existsSync(path.join(root, LANE.skillPath));
   const mcpManifestExists = fs.existsSync(path.join(root, ".mcp.json"));
   const accessPolicyPath = repo ? path.join(repo, "deploy", "cloud-access-policy.json") : null;
-  const accessPolicy = accessPolicyPath && fs.existsSync(accessPolicyPath)
-    ? JSON.parse(fs.readFileSync(accessPolicyPath, "utf8"))
-    : null;
+  const accessPolicy = readJsonFile(accessPolicyPath);
   const repoMirrorExists = repo ? fs.existsSync(path.join(repo, "plugins", LANE.pluginName, ".codex-plugin", "plugin.json")) : false;
   const ready = Boolean(profile && skillExists && mcpManifestExists && repoMirrorExists && accessPolicy);
   return {
@@ -80,6 +78,15 @@ function status() {
     accessPolicy,
     profile,
   };
+}
+
+function readJsonFile(filePath) {
+  if (!filePath || !fs.existsSync(filePath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 function plan(input) {
