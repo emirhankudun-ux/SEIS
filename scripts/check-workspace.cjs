@@ -21,6 +21,7 @@ const requiredFiles = [
   "apps/web/index.html",
   "apps/web/styles.css",
   "apps/web/app.js",
+  "release/web/index.html",
   "scripts/automation-develop.cjs",
   "scripts/automation-gap-sync.cjs",
   "scripts/automation-refresh-release.cjs",
@@ -59,7 +60,7 @@ if (failures.length > 0) {
 const data = JSON.parse(readText("data/gap-closure-register.json"));
 const css = readText("apps/web/styles.css");
 const js = readText("apps/web/app.js");
-const html = readText("apps/web/index.html");
+const html = readText("release/web/index.html");
 
 ensure(Array.isArray(data.gaps), "gap-closure-register must define gaps array.");
 ensure(data.summary.gaps === data.gaps.length, "Gap summary count must match gap records.");

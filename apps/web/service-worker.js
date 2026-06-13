@@ -12,8 +12,7 @@
     "./translations.json",
     "./manifest.json",
     "./site-config.json",
-    "./favicon.svg",
-    "./github-seis-model.json"
+    "./favicon.svg"
   ];
 
   self.addEventListener("install", function (event) {

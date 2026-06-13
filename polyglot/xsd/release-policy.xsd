@@ -18,7 +18,7 @@
     </xs:documentation>
   </xs:annotation>
 
-  <!-- ─── Simple Types ──────────────────────────────────────────────────── -->
+  <!-- ─── Simple Types ──────────────────────────────────────────────── -->
 
   <xs:simpleType name="MotionMode">
     <xs:annotation>
@@ -64,7 +64,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <!-- ─── Complex Types ─────────────────────────────────────────────────── -->
+  <!-- ─── Complex Types ─────────────────────────────────────────────── -->
 
   <xs:complexType name="MotionPolicy">
     <xs:sequence>
@@ -109,7 +109,7 @@
     <xs:attribute name="schemaVersion" type="xs:string" fixed="2.4.0"/>
   </xs:complexType>
 
-  <!-- ─── Root Element ──────────────────────────────────────────────────── -->
+  <!-- ─── Root Element ──────────────────────────────────────────────── -->
 
   <xs:element name="releaseGate" type="seis:ReleaseGate">
     <xs:annotation>

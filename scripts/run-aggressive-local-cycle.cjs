@@ -62,6 +62,13 @@ if (CHECK_MODE) {
     process.exit(1);
   }
   const report = readJson(REPORT_PATH);
+  if (report.generatedAt) {
+    const ageMs = Date.now() - new Date(report.generatedAt).getTime();
+    const ageHours = ageMs / (1000 * 60 * 60);
+    if (ageHours > 24) {
+      console.warn(`Warning: aggressive local run report is ${Math.round(ageHours)}h old — re-run to revalidate.`);
+    }
+  }
   const failures = validateReport(report);
   if (failures.length > 0) {
     console.error("Aggressive local run report check failed:");

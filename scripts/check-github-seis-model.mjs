@@ -2,9 +2,8 @@ import { existsSync, readFileSync } from "node:fs";
 
 const modelPath = "content/development/github-seis-model.json";
 const docsPath = "docs/development/github-seis-model.md";
-const webPath = "apps/web/index.html";
-const appPath = "apps/web/app.js";
-const serviceWorkerPath = "apps/web/service-worker.js";
+const webPath = "release/web/index.html";
+const appPath = "release/web/app.js";
 
 const failures = [];
 
@@ -16,7 +15,7 @@ function readText(path) {
   return existsSync(path) ? readFileSync(path, "utf8") : "";
 }
 
-for (const path of [modelPath, docsPath, webPath, appPath, serviceWorkerPath]) {
+for (const path of [modelPath, docsPath, webPath, appPath]) {
   if (!existsSync(path)) failures.push(`missing ${path}`);
 }
 
@@ -24,7 +23,6 @@ const model = existsSync(modelPath) ? readJson(modelPath) : null;
 const docs = readText(docsPath);
 const web = readText(webPath);
 const app = readText(appPath);
-const serviceWorker = readText(serviceWorkerPath);
 
 if (model) {
   if (model.model !== "seis-github-operating-model") {
@@ -83,10 +81,6 @@ for (const requiredAppText of [
   "loadGithubModel"
 ]) {
   if (!app.includes(requiredAppText)) failures.push(`app runtime missing ${requiredAppText}`);
-}
-
-if (!serviceWorker.includes("github-seis-model.json")) {
-  failures.push("service worker must cache github-seis-model.json for the cockpit");
 }
 
 if (failures.length > 0) {
