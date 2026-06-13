@@ -120,6 +120,38 @@ function ensure(condition, message) {
 }
 
 function sourceContainsStringLiteral(source, literal) {
-  const escapedLiteral = literal.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`["'\`]${escapedLiteral}["'\`]`, "u").test(source);
+  for (const value of sourceStringLiterals(source)) {
+    if (value === literal) return true;
+  }
+  return false;
+}
+
+function sourceStringLiterals(source) {
+  const literals = [];
+  for (let index = 0; index < source.length; index += 1) {
+    const quote = source[index];
+    if (quote !== '"' && quote !== "'" && quote !== "`") continue;
+
+    let value = "";
+    let escaped = false;
+    index += 1;
+
+    for (; index < source.length; index += 1) {
+      const char = source[index];
+      if (escaped) {
+        value += char;
+        escaped = false;
+        continue;
+      }
+      if (char === "\\") {
+        escaped = true;
+        continue;
+      }
+      if (char === quote) break;
+      value += char;
+    }
+
+    literals.push(value);
+  }
+  return literals;
 }
