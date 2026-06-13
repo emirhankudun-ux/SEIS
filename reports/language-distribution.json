@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 577,
-    "countedBytes": 2722732,
+    "countedBytes": 2722783,
     "javascriptBytes": 923199,
     "javascriptPercent": 33.91,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1673453,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1673402,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -60,8 +60,8 @@
     },
     {
       "language": "YAML",
-      "bytes": 28947,
-      "percent": 1.06
+      "bytes": 28998,
+      "percent": 1.07
     },
     {
       "language": "TypeScript",
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 1762262,
+      "bytes": 1762313,
       "percent": 64.72,
       "sourceLanguages": [
         "ABAP",
@@ -793,7 +793,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "ea37af44153317103ea23ea37a3f7daadd943a547e93bed06695c7b6b57df884",
+    "hash": "27b91ff686270ea8366aca37c625233d9033543d26789540c36e0a2e03af8598",
     "algorithm": "sha256"
   }
 }
