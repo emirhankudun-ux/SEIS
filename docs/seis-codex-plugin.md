@@ -9,11 +9,9 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 | Field | Value |
 |---|---|
 | Plugin name | `seis` |
-| Local plugin root | `/Users/emirhankudun/plugins/seis` |
-| SEIS source mirror | `plugins/seis` |
-| Personal marketplace | `/Users/emirhankudun/.agents/plugins/marketplace.json` |
-| Installed plugin | `seis@personal` |
-| Installed cache root | `/Users/emirhankudun/.codex/plugins/cache/personal/seis/0.1.0+codex.20260612200508` |
+| Repo plugin root | `plugins/seis` |
+| Repo marketplace | `.agents/plugins/marketplace.json` |
+| Installed plugin | `seis@seis-repo` |
 
 ## Current Components
 
@@ -32,16 +30,16 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-hub
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-cloud
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-code
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-design
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-data
-bash -n /Users/emirhankudun/plugins/seis/scripts/seis-status.sh
-bash -n /Users/emirhankudun/plugins/seis/scripts/seis-zip-audit.sh
-bash -n /Users/emirhankudun/plugins/seis/scripts/seis-repo-visibility-audit.sh
-bash -n /Users/emirhankudun/plugins/seis/scripts/seis-main-branch-sync.sh
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis/skills/seis-hub
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis/skills/seis-cloud
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis/skills/seis-code
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis/skills/seis-design
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis/skills/seis-data
+bash -n plugins/seis/scripts/seis-status.sh
+bash -n plugins/seis/scripts/seis-zip-audit.sh
+bash -n plugins/seis/scripts/seis-repo-visibility-audit.sh
+bash -n plugins/seis/scripts/seis-main-branch-sync.sh
 ```
 
 If the system Python does not have `PyYAML`, use a temporary validation venv.
@@ -51,21 +49,22 @@ If the system Python does not have `PyYAML`, use a temporary validation venv.
 Initial install:
 
 ```bash
-/Applications/Codex.app/Contents/Resources/codex plugin add seis@personal
+codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
+codex plugin add seis@seis-repo
 ```
 
 For later edits, update the plugin cachebuster before reinstalling:
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py /Users/emirhankudun/plugins/seis
-/Applications/Codex.app/Contents/Resources/codex plugin add seis@personal
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
+codex plugin add seis@seis-repo
 ```
 
 Start a new Codex thread after reinstalling so new skills and tools are picked up.
 
 ## Source Sync
 
-Develop locally in `/Users/emirhankudun/plugins/seis`, then mirror stable plugin source into SEIS under `plugins/seis` so the canonical repository keeps the plugin history.
+Develop inside SEIS under `plugins/seis`; Codex installs from the repo-contained `seis-repo` marketplace so Git remains the source of truth. The older `/Users/emirhankudun/plugins/seis` mirror is only a compatibility copy when needed.
 
 ## Zip Audit
 
@@ -107,7 +106,7 @@ The GitHub connector can also force-update `main` to the canonical branch SHA wh
 
 ## Specialist Lanes
 
-The SEIS plugin exposes four specialist lanes inside the canonical `seis@personal` plugin and the personal marketplace also exposes each lane as its own full Codex plugin card:
+The SEIS plugin exposes four specialist lanes inside the canonical `seis@seis-repo` plugin and the repo marketplace also exposes each lane as its own full Codex plugin card:
 
 - SEIS Cloud: provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation.
 - SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
@@ -116,19 +115,12 @@ The SEIS plugin exposes four specialist lanes inside the canonical `seis@persona
 
 Full plugin packages:
 
-| Plugin | Repo mirror | Local root | MCP tools |
+| Plugin | Repo root | Install id | MCP tools |
 |---|---|---|---|
-| `seis-cloud@personal` | `plugins/seis-cloud` | `/Users/emirhankudun/plugins/seis-cloud` | `seis_cloud_status`, `seis_cloud_plan` |
-| `seis-code@personal` | `plugins/seis-code` | `/Users/emirhankudun/plugins/seis-code` | `seis_code_status`, `seis_code_plan` |
-| `seis-design@personal` | `plugins/seis-design` | `/Users/emirhankudun/plugins/seis-design` | `seis_design_status`, `seis_design_plan` |
-| `seis-data@personal` | `plugins/seis-data` | `/Users/emirhankudun/plugins/seis-data` | `seis_data_status`, `seis_data_plan` |
-
-Installed cache roots:
-
-- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-cloud/0.1.0`
-- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-code/0.1.0`
-- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-design/0.1.0`
-- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-data/0.1.0`
+| `seis-cloud` | `plugins/seis-cloud` | `seis-cloud@seis-repo` | `seis_cloud_status`, `seis_cloud_plan` |
+| `seis-code` | `plugins/seis-code` | `seis-code@seis-repo` | `seis_code_status`, `seis_code_plan` |
+| `seis-design` | `plugins/seis-design` | `seis-design@seis-repo` | `seis_design_status`, `seis_design_plan` |
+| `seis-data` | `plugins/seis-data` | `seis-data@seis-repo` | `seis_data_status`, `seis_data_plan` |
 
 The central `seis` MCP server additionally exposes `seis_specialist_lanes`, `seis_specialist_lane_status`, and `seis_specialist_lane_plan`.
 

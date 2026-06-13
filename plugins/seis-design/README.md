@@ -14,11 +14,11 @@ SEIS-Design is the dedicated product design lane for SEIS. It focuses Codex on U
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-design
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis-design/skills/seis-design
-node /Users/emirhankudun/plugins/seis-design/scripts/seis-design-status.mjs
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-design
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-design/skills/seis-design
+node plugins/seis-design/scripts/seis-design-status.mjs
 ```
 
 ## Install
 
-The personal marketplace entry points at `/Users/emirhankudun/plugins/seis-design` as `seis-design@personal`.
+The repository marketplace points at `plugins/seis-design` as `seis-design@seis-repo`.

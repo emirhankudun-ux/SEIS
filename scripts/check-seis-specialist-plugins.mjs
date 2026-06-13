@@ -50,6 +50,7 @@ Usage:
 
 Options:
   --no-local   Skip local plugin root and personal marketplace checks
+               The repo-contained marketplace is always checked.
   --help       Show usage
 `);
   process.exit(0);
@@ -82,8 +83,9 @@ for (const token of [
 }
 validateCentralMcpSmoke(centralMcp);
 
+validateMarketplace(path.join(ROOT, ".agents", "plugins", "marketplace.json"), "repo marketplace", "seis-repo");
 if (checkLocal) {
-  validateMarketplace();
+  validateMarketplace(path.join(homeDir(), ".agents", "plugins", "marketplace.json"), "personal marketplace", "personal");
 }
 
 if (failures.length > 0) {
@@ -361,23 +363,24 @@ function exitDetail(result) {
   return result.status ?? result.signal ?? "unknown";
 }
 
-function validateMarketplace() {
-  const marketplacePath = path.join(homeDir(), ".agents", "plugins", "marketplace.json");
+function validateMarketplace(marketplacePath, label, expectedName) {
   const marketplace = readJson(marketplacePath);
   if (!marketplace) {
-    fail(`marketplace missing or invalid: ${marketplacePath}`);
+    fail(`${label} missing or invalid: ${marketplacePath}`);
     return;
   }
+  ensure(marketplace.name === expectedName, `${label}: name must be ${expectedName}`);
+  ensure(Array.isArray(marketplace.plugins), `${label}: plugins must be an array`);
 
   for (const lane of lanes) {
     const entry = marketplace.plugins?.find((plugin) => plugin.name === lane.name);
-    ensure(entry, `marketplace entry missing: ${lane.name}`);
+    ensure(entry, `${label}: entry missing: ${lane.name}`);
     if (!entry) continue;
-    ensure(entry.source?.source === "local", `marketplace ${lane.name}: source must be local`);
-    ensure(entry.source?.path === `./plugins/${lane.name}`, `marketplace ${lane.name}: path must be ./plugins/${lane.name}`);
-    ensure(entry.policy?.installation === "AVAILABLE", `marketplace ${lane.name}: installation must be AVAILABLE`);
-    ensure(entry.policy?.authentication === "ON_INSTALL", `marketplace ${lane.name}: authentication must be ON_INSTALL`);
-    ensure(entry.category === lane.marketplaceCategory, `marketplace ${lane.name}: category must be ${lane.marketplaceCategory}`);
+    ensure(entry.source?.source === "local", `${label} ${lane.name}: source must be local`);
+    ensure(entry.source?.path === `./plugins/${lane.name}`, `${label} ${lane.name}: path must be ./plugins/${lane.name}`);
+    ensure(entry.policy?.installation === "AVAILABLE", `${label} ${lane.name}: installation must be AVAILABLE`);
+    ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${lane.name}: authentication must be ON_INSTALL`);
+    ensure(entry.category === lane.marketplaceCategory, `${label} ${lane.name}: category must be ${lane.marketplaceCategory}`);
   }
 }
 

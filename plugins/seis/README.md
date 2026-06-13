@@ -16,44 +16,46 @@ This local Codex plugin makes SEIS the default operating center for the `emirhan
 
 ## Local Paths
 
-- Plugin root: `/Users/emirhankudun/plugins/seis` (fallback: auto-detected)
-- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json`
+- Repo plugin root: `plugins/seis`
+- Repo marketplace: `.agents/plugins/marketplace.json`
+- Install id: `seis@seis-repo`
+- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
 - Workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
 
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
 ```
 
 ## Status
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-status.sh
+plugins/seis/scripts/seis-status.sh
 ```
 
 ## Zip Audit
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-zip-audit.sh
+plugins/seis/scripts/seis-zip-audit.sh
 ```
 
 ## Repository Visibility
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-repo-visibility-audit.sh
+plugins/seis/scripts/seis-repo-visibility-audit.sh
 ```
 
 ## Branch Sync Check
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-main-branch-sync.sh
+plugins/seis/scripts/seis-main-branch-sync.sh
 ```
 
 ## Installed Plugin Audit
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh
+plugins/seis/scripts/seis-installed-plugin-audit.sh
 ```
 
 ## SEIS-Orchestrated Routing
@@ -97,11 +99,11 @@ The plugin ships `./.mcp.json` and the manifest points `mcpServers` to it, so in
 To customize search locations, set `SEIS_ROOT_HINTS` (path list, platform delimiter-separated) before launching plugin-based MCP.
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-mcp-bundle-audit.sh
-/Users/emirhankudun/plugins/seis/scripts/seis-mcp-bundle-audit.sh --strict
+plugins/seis/scripts/seis-mcp-bundle-audit.sh
+plugins/seis/scripts/seis-mcp-bundle-audit.sh --strict
 ```
 
-## Bundle Sync (Repo -> Local Plugin)
+## Legacy Bundle Sync (Repo -> Personal Mirror)
 
 From repo root:
 
@@ -115,7 +117,7 @@ Use optional flags if your local plugin path differs:
 node scripts/sync-seis-plugin-bundle.mjs --local /absolute/path/to/plugins/seis --source /absolute/path/to/SEIS
 ```
 
-## Bundle Refresh (Sync + Reinstall Cache)
+## Legacy Bundle Refresh (Sync + Reinstall Cache)
 
 One-shot refresh for repository changes and local plugin cache refresh:
 
@@ -125,9 +127,17 @@ npm run refresh:seis-plugin-bundle -- --install
 
 This command:
 
-- syncs `plugins/seis` from repo -> local plugin,
+- syncs `plugins/seis` from repo -> personal mirror,
 - regenerates cachebuster in the local plugin manifest,
 - and runs `codex plugin add seis@personal`.
+
+For repo-source installs, prefer:
+
+```bash
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
+codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
+codex plugin add seis@seis-repo
+```
 
 Optional flags:
 

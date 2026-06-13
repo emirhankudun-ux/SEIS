@@ -1,6 +1,6 @@
 {
   "name": "seis-cloud",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260613134630",
   "description": "SEIS Cloud lane for public cloud readiness, team VPN cloud workspaces, server targets, cloud preflight, rollback planning, and secret-safe infrastructure automation.",
   "author": {
     "name": "emirhankudun-ux",

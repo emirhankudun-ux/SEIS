@@ -14,11 +14,11 @@ SEIS-DATA is the dedicated data and knowledge-governance lane for SEIS. It focus
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-data
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis-data/skills/seis-data
-node /Users/emirhankudun/plugins/seis-data/scripts/seis-data-status.mjs
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-data/skills/seis-data
+node plugins/seis-data/scripts/seis-data-status.mjs
 ```
 
 ## Install
 
-The personal marketplace entry points at `/Users/emirhankudun/plugins/seis-data` as `seis-data@personal`.
+The repository marketplace points at `plugins/seis-data` as `seis-data@seis-repo`.

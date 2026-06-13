@@ -10,10 +10,12 @@ Use this skill whenever the user wants to work on SEIS, consolidate repositories
 ## Canonical Context
 
 - Canonical GitHub repository: `emirhankudun-ux/SEIS`
-- Canonical default branch: `UIXAppTTR`
+- Canonical default branch: `main`
 - Local workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
-- Local plugin root: `/Users/emirhankudun/plugins/seis`
-- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json`
+- Repo plugin root: `plugins/seis`
+- Repo marketplace: `.agents/plugins/marketplace.json`
+- Install id: `seis@seis-repo`
+- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
 
 SEIS is the general center for repository discovery, branch consolidation, source repository migration records, governance, plugin coordination, and deletion decisions.
 
@@ -59,14 +61,14 @@ SEIS is the general center for repository discovery, branch consolidation, sourc
 ## Important Commands
 
 ```bash
-/Users/emirhankudun/plugins/seis/scripts/seis-status.sh
-/Users/emirhankudun/plugins/seis/scripts/seis-zip-audit.sh
-/Users/emirhankudun/plugins/seis/scripts/seis-repo-visibility-audit.sh
-/Users/emirhankudun/plugins/seis/scripts/seis-main-branch-sync.sh
-/Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py /Users/emirhankudun/plugins/seis
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/read_marketplace_name.py
+plugins/seis/scripts/seis-status.sh
+plugins/seis/scripts/seis-zip-audit.sh
+plugins/seis/scripts/seis-repo-visibility-audit.sh
+plugins/seis/scripts/seis-main-branch-sync.sh
+plugins/seis/scripts/seis-installed-plugin-audit.sh
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
+codex plugin add seis@seis-repo
 ```
 
 ## Zip Import Rule

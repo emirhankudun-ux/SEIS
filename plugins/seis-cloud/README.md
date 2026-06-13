@@ -20,12 +20,17 @@ SEIS Cloud is the dedicated cloud, deployment, and infrastructure-readiness lane
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-cloud
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis-cloud/skills/seis-cloud
-node /Users/emirhankudun/plugins/seis-cloud/scripts/seis-cloud-status.mjs
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-cloud/skills/seis-cloud
+node plugins/seis-cloud/scripts/seis-cloud-status.mjs
 npm run check:cloud-access-policy
 ```
 
 ## Install
 
-The personal marketplace entry points at `/Users/emirhankudun/plugins/seis-cloud` as `seis-cloud@personal`.
+The repository marketplace lives at `.agents/plugins/marketplace.json` and points at `plugins/seis-cloud` as `seis-cloud@seis-repo`.
+
+```bash
+codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
+codex plugin add seis-cloud@seis-repo
+```

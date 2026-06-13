@@ -1,0 +1,68 @@
+{
+  "name": "seis-repo",
+  "interface": {
+    "displayName": "SEIS Repo"
+  },
+  "plugins": [
+    {
+      "name": "seis",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "seis-cloud",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-cloud"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-code",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-code"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    },
+    {
+      "name": "seis-design",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-design"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Design"
+    },
+    {
+      "name": "seis-data",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-data"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data"
+    }
+  ]
+}

@@ -8,35 +8,35 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 577,
-    "countedBytes": 2724782,
-    "javascriptBytes": 925198,
+    "countedFileCount": 578,
+    "countedBytes": 2726590,
+    "javascriptBytes": 925571,
     "javascriptPercent": 33.95,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1680922,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1680890,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 925198,
+      "bytes": 925571,
       "percent": 33.95
     },
     {
       "language": "JSON",
-      "bytes": 659599,
-      "percent": 24.21
+      "bytes": 661034,
+      "percent": 24.24
     },
     {
       "language": "Python",
       "bytes": 300868,
-      "percent": 11.04
+      "percent": 11.03
     },
     {
       "language": "Swift",
       "bytes": 278456,
-      "percent": 10.22
+      "percent": 10.21
     },
     {
       "language": "CSS",
@@ -46,7 +46,7 @@
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.11
+      "percent": 3.1
     },
     {
       "language": "Shell",
@@ -221,7 +221,7 @@
     {
       "language": "Elm",
       "bytes": 954,
-      "percent": 0.04
+      "percent": 0.03
     },
     {
       "language": "Solidity",
@@ -502,7 +502,7 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 925198,
+      "bytes": 925571,
       "percent": 33.95,
       "sourceLanguages": [
         "JavaScript"
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1762313,
-      "percent": 64.68,
+      "bytes": 1763748,
+      "percent": 64.69,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -684,13 +684,13 @@
     {
       "path": "scripts/check-seis-specialist-plugins.mjs",
       "language": "JavaScript",
-      "bytes": 16740
+      "bytes": 17113
     }
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 601210,
-    "linguist-generated": 2871763
+    "documentation": 600377,
+    "linguist-generated": 2871180
   },
   "requiredLinguistRules": [
     {
@@ -793,7 +793,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "bb468e0edab4bfe4ab5556ac35eb335757384d710f85d6f9480cb0f322d138f0",
+    "hash": "d10ac86f710f1f540782848487b2b9fa20966e834178c365006a341fad6ca9e3",
     "algorithm": "sha256"
   }
 }
