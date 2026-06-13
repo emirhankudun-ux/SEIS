@@ -11,6 +11,13 @@ const failures = [];
 
 const lanes = [
   {
+    name: "seis-cloud",
+    displayName: "SEIS Cloud",
+    marketplaceCategory: "Developer",
+    mcpServer: "seis-cloud",
+    tools: ["seis_cloud_status", "seis_cloud_plan"],
+  },
+  {
     name: "seis-code",
     displayName: "SEIS-Code",
     marketplaceCategory: "Developer",
@@ -132,6 +139,17 @@ function validatePluginRoot(pluginRoot, lane, scope) {
   if (profile) {
     ensure(profile.id === lane.name, `${scope} ${lane.name}: profile id must match`);
     ensure(Array.isArray(profile.qualityCommands) && profile.qualityCommands.length > 0, `${scope} ${lane.name}: profile must define quality commands`);
+    if (lane.name === "seis-cloud") {
+      ensure(profile.accessPolicy?.publicCloud?.audience === "everyone", `${scope} seis-cloud: profile must expose public cloud audience`);
+      ensure(profile.accessPolicy?.teamVpnCloud?.audience === "workplaces-and-teams", `${scope} seis-cloud: profile must expose team VPN cloud audience`);
+      ensure(profile.qualityCommands.includes("npm run check:cloud-access-policy"), `${scope} seis-cloud: profile must include cloud access policy check`);
+    }
+  }
+
+  if (lane.name === "seis-cloud") {
+    const skill = fs.existsSync(skillPath) ? fs.readFileSync(skillPath, "utf8") : "";
+    ensure(skill.includes("public cloud"), `${scope} seis-cloud: skill must mention public cloud`);
+    ensure(skill.includes("team/workplace VPN cloud"), `${scope} seis-cloud: skill must mention team/workplace VPN cloud`);
   }
 
   for (const tool of lane.tools) {
@@ -198,6 +216,14 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
   ensure(planPayload?.request === request, `${scope} ${lane.name}: MCP plan must echo request`);
   ensure(Array.isArray(planPayload?.steps) && planPayload.steps.length >= 4, `${scope} ${lane.name}: MCP plan must include steps`);
   ensure(Array.isArray(planPayload?.defaultChecks) && planPayload.defaultChecks.length > 0, `${scope} ${lane.name}: MCP plan must include default checks`);
+  if (lane.name === "seis-cloud") {
+    ensure(statusPayload?.accessPolicy?.publicCloud?.audience === "everyone", `${scope} seis-cloud: MCP status must expose public cloud policy`);
+    ensure(statusPayload?.accessPolicy?.teamVpnCloud?.audience === "workplaces-and-teams", `${scope} seis-cloud: MCP status must expose team VPN cloud policy`);
+    ensure(
+      planPayload.steps.some((step) => String(step).includes("public cloud") && String(step).includes("team/workplace VPN cloud")),
+      `${scope} seis-cloud: MCP plan must classify public vs team VPN cloud`
+    );
+  }
 }
 
 function validateCentralMcpSmoke(centralMcp) {

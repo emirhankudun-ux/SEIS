@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "id": "seis-cloud-access-policy",
+  "publicCloud": {
+    "audience": "everyone",
+    "purpose": "public product, documentation, site, release, and preview surfaces",
+    "vpnRequired": false,
+    "providers": [
+      "github-pages",
+      "cloudflare-pages",
+      "vercel-static",
+      "netlify-static",
+      "azure-static-web-apps",
+      "aws-amplify-static",
+      "firebase-hosting",
+      "hostinger-static",
+      "apache-shared-hosting"
+    ]
+  },
+  "teamVpnCloud": {
+    "audience": "workplaces-and-teams",
+    "purpose": "private engineering, Codex remote host, handoff, and operational workspace",
+    "vpnRequired": true,
+    "providers": [
+      "gcp-compute-vm",
+      "node-vps",
+      "docker-node-static",
+      "generic-sftp"
+    ],
+    "rules": [
+      "Use WireGuard or an equivalent peer-authenticated VPN for private cloud workspaces.",
+      "Add only approved workplace or team peers.",
+      "Use per-peer /32 VPN addresses.",
+      "Do not expose team VPN cloud as a public everyone surface.",
+      "Do not use 0.0.0.0/0 or ::/0 for VPN source ranges."
+    ]
+  }
+}

@@ -19,6 +19,9 @@ npm run ai -- ollama
 npm run ai -- opencode
 npm run ai -- aider
 npm run ai -- interpreter
+npm run ai -- hermes
+npm run ai -- goose
+npm run ai -- open-design
 ```
 
 `auto` mode uses `scripts/ai-routing-policy.cjs`.
@@ -31,12 +34,16 @@ Not:
 Current routing intent:
 
 - `seis-agent`: default orchestration for repo governance, release, and policy-sensitive work.
+- `codex`: primary repo execution lane when explicitly requested.
 - `aider`: small existing-file patches, refactors, and diff-oriented edits.
 - `openai`: local analysis and summarization on demand.
 - `gemini`: browser-led research, source lookup, and documentation comparison.
 - `qwen`: alternative reasoning and cross-check helper.
 - `opencode`: terminal coding helper, still routed through SEIS policy.
 - `ollama`: explicitly local, offline, or privacy-first drafting.
+- `hermes`: bounded agent gateway and MCP-oriented helper.
+- `goose`: general local automation agent helper.
+- `open-design`: Open Design desktop route for design artifacts and prototype previews.
 - `seis-agent`: remote policy layer; never executes local inference itself.
 
 Yerelde doğrudan çağırmak için:
@@ -47,9 +54,13 @@ npm run ai -- gemini --help
 npm run ai -- qwen --help
 npm run ai -- opencode --help
 npm run ai -- ollama list
+npm run ai -- hermes --version
+npm run ai -- goose --version
+npm run ai -- open-design
 ```
 
 Not: Gemini CLI güvenli klasör uyarısı verirse `GEMINI_CLI_TRUST_WORKSPACE=true` ekleyerek çalıştırabilirsin.
+Not: Open Design bu workspace’te masaüstü uygulaması olarak `open-design` route’u üzerinden açılır. macOS `/usr/bin/od` komutu Open Design değildir; SEIS bunu alias olarak kullanmaz.
 
 Duruma göre otomatik yönlendirme:
 
@@ -57,6 +68,9 @@ Duruma göre otomatik yönlendirme:
 npm run ai -- auto "browser research for docs mcp"    # → gemini (anahtarlar varsa) / yoksa fallback: seis-agent
 npm run ai -- auto "local offline llama draft"        # → ollama (daemon açıksa) / yoksa fallback: seis-agent
 npm run ai -- auto "quick repo patch with internet down" # → ollama (eğer açık) / yoksa fallback: seis-agent
+npm run ai -- auto "hermes mcp gateway"               # → hermes / yoksa fallback: seis-agent
+npm run ai -- auto "goose general agent"              # → goose / yoksa fallback: seis-agent
+npm run ai -- auto "open design prototype"            # → open-design desktop app / yoksa fallback: seis-agent
 ```
 
 Rol bazlı öneri örnekleri:
@@ -109,7 +123,7 @@ SEIS MCP sunucusunda iki LLM planlama aracı vardır:
 
 Bu akışta SEIS politikası şu şekildedir:
 
-- Yerel yardımcılar: `openai`, `claude`, `gemini`, `qwen`, `kimi`, `ollama`, `opencode`, `aider`, `interpreter`.
+- Yerel yardımcılar: `codex`, `openai`, `claude`, `gemini`, `qwen`, `kimi`, `ollama`, `opencode`, `aider`, `interpreter`, `hermes`, `goose`, `open-design`.
 - Tek remote karar katmanı: `seis-agent`.
 - SEIS Agent, remote akışı yönlendirir; yerel yardımcılar doğrudan araç çağrısı için yalnızca yardımcı rolde kullanılır.
 - `npm run automation:plugin-environment-sources` ile üretim sonrası `deploy/cloud-environment.json` içinde source girer:

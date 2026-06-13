@@ -2,7 +2,7 @@
 
 Generated: 2026-06-11T08:24:30.321Z
 
-Installed: 22/31
+Installed: 27/34
 
 | Tool | Category | Installed | Path |
 | --- | --- | --- | --- |
@@ -32,8 +32,11 @@ Installed: 22/31
 | gemini | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/gemini |
 | qwen | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/qwen |
 | opencode | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/opencode |
-| aider | ai-agent-cli | no |  |
-| ollama | local-model-runtime | no |  |
+| aider | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/aider |
+| ollama | local-model-runtime | yes | /usr/local/bin/ollama |
 | openai | ai-agent-cli | no |  |
-| codex | ai-agent-cli | yes | /Applications/Codex.app/Contents/Resources/codex |
+| codex | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/codex |
 | interpreter | ai-agent-cli | no |  |
+| hermes | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/hermes |
+| goose | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/goose |
+| open-design | ai-agent-cli | yes | /Users/emirhankudun/Applications/Open Design.app |

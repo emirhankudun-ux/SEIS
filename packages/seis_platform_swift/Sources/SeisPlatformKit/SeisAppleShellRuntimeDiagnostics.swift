@@ -119,6 +119,12 @@ public struct SeisAppleShellRuntimeDiagnostics: Codable, Equatable, Sendable {
             qualityGate: "mcp_smoke_test"
         ),
         SeisAppleShellRuntimeSurface(
+            id: "specialist-cloud-plugin",
+            title: "SEIS Cloud Plugin",
+            relativePath: "plugins/seis-cloud/.codex-plugin/plugin.json",
+            qualityGate: "plugin_governance"
+        ),
+        SeisAppleShellRuntimeSurface(
             id: "specialist-code-plugin",
             title: "SEIS-Code Plugin",
             relativePath: "plugins/seis-code/.codex-plugin/plugin.json",

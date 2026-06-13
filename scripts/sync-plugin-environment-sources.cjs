@@ -34,9 +34,11 @@ const THIRD_PARTY_AI_HELPERS = [
   { id: "gemini-cli", label: "Gemini CLI", aliases: ["gemini-cli"], markerHints: [".gemini", ".github", "packages"] },
   { id: "antigravity", label: "Antigravity IDE", aliases: ["antigravity"], markerHints: ["Contents", "Configuration", "Plugins"] },
   { id: "deepseek-coder", label: "DeepSeek Coder", aliases: ["DeepSeek-Coder", "deepseek-coder"], markerHints: [".github", "finetune", "Evaluation"] },
-  { id: "awesome-deepseek-agent", label: "Awesome DeepSeek Agent", aliases: ["awesome-deepseek-agent", "deepseek"], markerHints: [".github", "docs", "README.md"] }
+  { id: "awesome-deepseek-agent", label: "Awesome DeepSeek Agent", aliases: ["awesome-deepseek-agent", "deepseek"], markerHints: [".github", "docs", "README.md"] },
+  { id: "open-design", label: "Open Design", aliases: ["open-design", "Open Design", "opendesign"], markerHints: ["apps", "deploy", "package.json", "QUICKSTART.md"] }
 ];
 const LOCAL_AI_HELPERS = [
+  { id: "codex", label: "Codex", command: "codex" },
   { id: "openai", label: "OpenAI", command: "openai", credentialEnv: "OPENAI_API_KEY" },
   { id: "claude", label: "Claude", command: "claude", credentialEnv: "ANTHROPIC_API_KEY" },
   { id: "gemini", label: "Gemini", command: "gemini", credentialEnv: "GEMINI_API_KEY" },
@@ -45,7 +47,10 @@ const LOCAL_AI_HELPERS = [
   { id: "ollama", label: "Ollama", command: "ollama", offlineFallback: true, runtimeCheck: checkOllamaHealth },
   { id: "opencode", label: "OpenCode", command: "opencode" },
   { id: "aider", label: "Aider", command: "aider" },
-  { id: "interpreter", label: "Interpreter", command: "interpreter" }
+  { id: "interpreter", label: "Interpreter", command: "interpreter" },
+  { id: "hermes", label: "Hermes Agent", command: "hermes" },
+  { id: "goose", label: "Goose", command: "goose" },
+  { id: "open-design", label: "Open Design", command: "open", appPath: openDesignAppPath() }
 ];
 
 const environment = readJson(environmentPath);
@@ -168,8 +173,15 @@ function commandExists(command) {
   };
 }
 
+function openDesignAppPath() {
+  const homeCandidate = path.join(process.env.HOME || "", "Applications", "Open Design.app");
+  if (homeCandidate && fs.existsSync(homeCandidate)) return homeCandidate;
+  return "/Applications/Open Design.app";
+}
+
 function formatLocalAiToolState(tool) {
   const commandState = commandExists(tool.command);
+  const appInstalled = tool.appPath ? fs.existsSync(tool.appPath) : true;
   const hasCredential = !tool.credentialEnv || Boolean(process.env[tool.credentialEnv]);
   const runtimeOk = !tool.runtimeCheck ? true : Boolean(tool.runtimeCheck());
   let status = "ready";
@@ -178,6 +190,9 @@ function formatLocalAiToolState(tool) {
   if (!commandState.installed) {
     status = "missing-command";
     issues.push("command-not-found");
+  } else if (!appInstalled) {
+    status = "missing-command";
+    issues.push("app-not-found");
   } else if (!hasCredential) {
     status = "missing-credential";
     issues.push(`missing-${tool.credentialEnv}`);
@@ -190,8 +205,10 @@ function formatLocalAiToolState(tool) {
     id: tool.id,
     label: tool.label,
     command: tool.command,
-    commandPath: commandState.path,
-    installed: commandState.installed,
+    commandPath: tool.appPath || commandState.path,
+    launcherCommandPath: tool.appPath ? commandState.path : null,
+    appPath: tool.appPath || null,
+    installed: commandState.installed && appInstalled,
     credentialState: tool.credentialEnv ? {
       env: tool.credentialEnv,
       present: hasCredential

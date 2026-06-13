@@ -14,6 +14,18 @@
   "docker-node-static": {
     "host": "127.0.0.1",
     "port": "4177"
+  },
+  "gcp-compute-vm": {
+    "project": "example-gcp-project",
+    "zone": "us-central1-a",
+    "instance": "seis-cloud-dev",
+    "ssh_user": "seis",
+    "ssh_source_range": "203.0.113.10/32",
+    "vpn": "wireguard",
+    "vpn_source_range": "198.51.100.0/24",
+    "vpn_admin_peer": "admin|CLIENT_PUBLIC_KEY|10.44.0.2/32",
+    "origin": "ssh://seis-gcp-cloud-vpn",
+    "path": "/opt/seis",
+    "rollback_contact": "repository-maintainer"
   }
 }
-

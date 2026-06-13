@@ -116,6 +116,18 @@ function createThirdPartyAdaptationPlan() {
       ]
     }),
     thirdPartyCandidate({
+      id: "open-design",
+      label: "Open Design source tree",
+      relativePath: "open-design",
+      kind: "agent-design-system-source-tree",
+      targetRole: "design-helper-adapter",
+      ownedAdaptation: [
+        "Use official release artifacts or source checkout boundaries only.",
+        "Do not treat macOS /usr/bin/od as the Open Design CLI.",
+        "Keep SEIS-owned routing in scripts/ai-launcher.cjs and policy JSON."
+      ]
+    }),
+    thirdPartyCandidate({
       id: "antigravity-desktop",
       label: "Antigravity desktop bundle",
       relativePath: "antigravity",
@@ -245,7 +257,10 @@ function createToolchainRuntimeReadiness() {
     tool("ollama", "Ollama", "local-model-runtime", "ollama --version", "Use as offline/private fallback.", "Install/start only with user confirmation."),
     tool("openai", "OpenAI CLI", "ai-agent-cli", "openai --version", "Use as local OpenAI helper.", "Credential gate required."),
     tool("codex", "Codex CLI", "ai-agent-cli", "codex --version", "Use for repo execution and agent workflows.", "Primary execution lane."),
-    tool("interpreter", "Open Interpreter", "ai-agent-cli", "interpreter --version", "Use for data/log analysis.", "Optional.")
+    tool("interpreter", "Open Interpreter", "ai-agent-cli", "interpreter --version", "Use for data/log analysis.", "Optional."),
+    tool("hermes", "Hermes Agent", "ai-agent-cli", "hermes --version", "Use as a bounded agent gateway and MCP helper.", "Optional; keep under SEIS policy."),
+    tool("goose", "Goose", "ai-agent-cli", "goose --version", "Use as a general local automation agent helper.", "Optional; keep under SEIS policy."),
+    desktopAgentTool("open-design", "Open Design", "open", "Use for design artifacts, prototypes, and design-system previews.", "Desktop app route; do not alias to /usr/bin/od.")
   ];
 
   return {
@@ -288,6 +303,41 @@ function tool(id, label, category, versionCommand, use, notes) {
   };
 }
 
+function desktopAgentTool(id, label, command, use, notes) {
+  const appPath = openDesignAppPath();
+  const commandPath = commandExists(command);
+  const installed = Boolean(commandPath && appPath && fs.existsSync(appPath));
+  return {
+    id,
+    label,
+    category: "ai-agent-cli",
+    command,
+    commandPath: installed ? appPath : commandPath,
+    launcherCommandPath: commandPath,
+    appPath: installed ? appPath : null,
+    installed,
+    version: installed ? readAppVersion(appPath) : null,
+    use,
+    notes,
+    installAction: installed ? "none" : "manual_install_when_needed"
+  };
+}
+
+function openDesignAppPath() {
+  const homeCandidate = path.join(process.env.HOME || "", "Applications", "Open Design.app");
+  if (homeCandidate && fs.existsSync(homeCandidate)) return homeCandidate;
+  const systemCandidate = "/Applications/Open Design.app";
+  return fs.existsSync(systemCandidate) ? systemCandidate : null;
+}
+
+function readAppVersion(appPath) {
+  if (!appPath) return null;
+  const result = spawnSync("/usr/bin/defaults", ["read", path.join(appPath, "Contents", "Info"), "CFBundleShortVersionString"], {
+    encoding: "utf8"
+  });
+  return result.status === 0 ? result.stdout.trim() : null;
+}
+
 function createDesktopAppIntegration() {
   const existing = readJsonIfExists(DESKTOP_PATH);
   const generatedAt = existing?.generatedAt || new Date().toISOString();
@@ -297,6 +347,7 @@ function createDesktopAppIntegration() {
     app("android-studio", "Android Studio", ["Android Studio.app"], "android-ide", ["Gradle projects", "Emulator/device workflows", "Kotlin/Java inspection"]),
     app("jetbrains-toolbox", "JetBrains Toolbox", ["JetBrains Toolbox.app"], "ide-manager", ["Manage JetBrains IDEs", "Open JVM/backend projects"]),
     app("codex", "Codex", ["Codex.app"], "primary-agent-execution", ["Repo edits", "Terminal automation", "Validation"]),
+    app("open-design", "Open Design", ["Open Design.app"], "design-agent-workflow", ["Design artifacts", "Prototype previews", "Design-system generation"]),
     app("ollama", "Ollama", ["Ollama.app"], "local-model-runtime", ["Offline fallback", "Local model experiments"]),
     app("docker", "Docker Desktop", ["Docker.app"], "container-runtime", ["Container validation when explicitly needed"]),
     app("figma", "Figma", ["Figma.app"], "design-workflow", ["Design review", "Prototype and asset handoff"]),

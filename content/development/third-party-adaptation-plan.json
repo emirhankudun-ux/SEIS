@@ -11,10 +11,10 @@
     "secretPolicy": "never_commit_tokens_credentials_or_private_app_state"
   },
   "summary": {
-    "candidateCount": 6,
+    "candidateCount": 7,
     "detectedCount": 6,
-    "blockedDeleteCount": 6,
-    "highRiskCount": 6
+    "blockedDeleteCount": 7,
+    "highRiskCount": 7
   },
   "candidates": [
     {
@@ -124,6 +124,32 @@
         "Use as a capability checklist only.",
         "Implement SEIS-owned MCP/skill conventions.",
         "No direct source import."
+      ]
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design source tree",
+      "kind": "agent-design-system-source-tree",
+      "targetRole": "design-helper-adapter",
+      "sourcePath": "../3.taraf kodlar/open-design",
+      "detected": false,
+      "riskLevel": "high",
+      "allowedUse": "ideas_interfaces_and_cli_boundaries_only",
+      "copyPolicy": "do_not_copy_third_party_source_into_seis",
+      "deletionReadiness": "blocked",
+      "githubPublishReadiness": "seis_owned_outputs_only",
+      "gitRemote": null,
+      "licenseFiles": [],
+      "metadataFiles": [],
+      "fileProfile": {
+        "scannedFiles": 0,
+        "scannedDirs": 0,
+        "topExtensions": []
+      },
+      "ownedAdaptation": [
+        "Use official release artifacts or source checkout boundaries only.",
+        "Do not treat macOS /usr/bin/od as the Open Design CLI.",
+        "Keep SEIS-owned routing in scripts/ai-launcher.cjs and policy JSON."
       ]
     },
     {

@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const { spawnSync } = require("node:child_process");
 const { chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const tools = [
+  { id: "seis-agent", command: "npm", optional: false, runtimeCheck: checkSeisAgentEntrypoint },
   { id: "codex", optional: false },
   { id: "openai", optional: true, credential: "OPENAI_API_KEY" },
   { id: "claude", optional: true, credential: "ANTHROPIC_API_KEY" },
@@ -13,7 +17,10 @@ const tools = [
   { id: "opencode", optional: true },
   { id: "aider", optional: true },
   { id: "interpreter", optional: true },
-  { id: "ollama", optional: true, runtimeCheck: checkOllamaHealth }
+  { id: "ollama", optional: true, runtimeCheck: checkOllamaHealth },
+  { id: "hermes", optional: true },
+  { id: "goose", optional: true },
+  { id: "open-design", command: "open", optional: true, runtimeCheck: checkOpenDesignApp }
 ];
 
 const missingRequired = [];
@@ -27,6 +34,17 @@ function commandExists(command) {
 function checkOllamaHealth() {
   const result = spawnSync("bash", ["-lc", "ollama list"], { encoding: "utf8" });
   return result.status === 0;
+}
+
+function checkOpenDesignApp() {
+  return [
+    path.join(os.homedir(), "Applications", "Open Design.app"),
+    "/Applications/Open Design.app"
+  ].some((candidate) => fs.existsSync(candidate));
+}
+
+function checkSeisAgentEntrypoint() {
+  return fs.existsSync(path.join(process.cwd(), "packages", "seis-ai", "bin", "seis-agent.mjs"));
 }
 
 function readyReason(tool) {
@@ -43,7 +61,7 @@ console.log("AI stack health check");
 console.log("");
 
 for (const tool of tools) {
-  const commandPath = commandExists(tool.id);
+  const commandPath = commandExists(tool.command || tool.id);
   if (!commandPath) {
     if (!tool.optional) missingRequired.push(tool.id);
     console.log(`[missing]   ${tool.id}${tool.optional ? " (optional)" : ""}`);
@@ -68,6 +86,10 @@ const routingExpectations = [
   ["openai draft", "openai"],
   ["qwen cross-check", "qwen"],
   ["opencode terminal coding", "opencode"],
+  ["codex primary execution", "codex"],
+  ["hermes mcp gateway", "hermes"],
+  ["goose general agent", "goose"],
+  ["open design prototype", "open-design"],
   ["ux copy narrative pass", "claude"],
   ["translate this interface to turkish", "kimi"],
   ["release governance checklist", "seis-agent"],

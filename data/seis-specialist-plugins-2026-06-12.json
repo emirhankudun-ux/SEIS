@@ -1,9 +1,13 @@
 {
   "id": "seis-specialist-plugins",
   "version": 1,
-  "updatedAt": "2026-06-12",
+  "updatedAt": "2026-06-13",
   "mode": "personal-marketplace-specialist-lanes",
-  "summary": "SEIS-Code, SEIS-Design, and SEIS-DATA are full local Codex plugins with repo mirrors, skills, MCP status/plan tools, lane profiles, and personal marketplace entries.",
+  "summary": "SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are full local Codex plugins with repo mirrors, skills, MCP status/plan tools, lane profiles, and personal marketplace entries.",
+  "sourceEvidence": [
+    "data/seis-plugin-package-intake-2026-06-13.json",
+    "docs/platform/seis-plugin-package-intake.md"
+  ],
   "marketplace": {
     "path": "/Users/emirhankudun/.agents/plugins/marketplace.json",
     "name": "personal",
@@ -18,6 +22,19 @@
     "seis_specialist_lane_plan"
   ],
   "plugins": [
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "category": "Developer",
+      "accessModel": "public-cloud-for-everyone-and-team-vpn-cloud-for-workplaces-and-teams",
+      "repoMirror": "plugins/seis-cloud",
+      "localRoot": "/Users/emirhankudun/plugins/seis-cloud",
+      "installedCacheRoot": "/Users/emirhankudun/.codex/plugins/cache/personal/seis-cloud/0.1.0",
+      "skill": "skills/seis-cloud/SKILL.md",
+      "mcpServer": "seis-cloud",
+      "tools": ["seis_cloud_status", "seis_cloud_plan"],
+      "laneProfile": "assets/lane-profile.json"
+    },
     {
       "name": "seis-code",
       "displayName": "SEIS-Code",
@@ -57,6 +74,7 @@
   ],
   "validation": [
     "npm run check:seis-specialist-plugins",
+    "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-cloud",
     "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-code",
     "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-design",
     "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis-data"

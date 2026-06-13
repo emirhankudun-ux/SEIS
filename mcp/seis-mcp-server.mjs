@@ -9,6 +9,24 @@ const SEIS_ROOT = path.resolve(process.env.SEIS_ROOT || process.cwd());
 const BRIDGE_MANIFEST = path.join(SEIS_ROOT, "data", "seis-repos-llm-bridge-2026-06-08.json");
 const SPECIALIST_LANES = [
   {
+    id: "seis-cloud",
+    label: "SEIS Cloud",
+    pluginPath: "plugins/seis-cloud",
+    profilePath: "plugins/seis-cloud/assets/lane-profile.json",
+    skillPath: "plugins/seis-cloud/skills/seis-cloud/SKILL.md",
+    mcpToolStatus: "seis_cloud_status",
+    mcpToolPlan: "seis_cloud_plan",
+    focus: "provider-neutral deployment readiness, public cloud targets for everyone, team/workplace VPN cloud, cloud preflight, rollback planning, and secret-safe infrastructure automation",
+    planSteps: [
+      "Inspect git status, branch, remote, and current cloud target records.",
+      "Classify access audience: public cloud for everyone or team/workplace VPN cloud for approved peers.",
+      "Classify provider, server target, secrets, public URL, rollback owner, and authentication scope.",
+      "Run or update provider-neutral preflight records before provider-specific mutation.",
+      "Keep apply/deploy commands behind explicit user confirmation.",
+      "Validate cloud access policy, cloud reports, server target checks, rollback notes, and blockers.",
+    ],
+  },
+  {
     id: "seis-code",
     label: "SEIS-Code",
     pluginPath: "plugins/seis-code",
@@ -124,7 +142,7 @@ const MCP_TOOLS = [
   },
   {
     name: "seis_specialist_lanes",
-    description: "List the SEIS-Code, SEIS-Design, and SEIS-DATA specialist plugin lanes and readiness summaries.",
+    description: "List the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist plugin lanes and readiness summaries.",
     inputSchema: {
       type: "object",
       properties: {},
@@ -139,7 +157,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-code | seis-design | seis-data",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data",
         },
       },
     },
@@ -153,7 +171,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-code | seis-design | seis-data",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data",
         },
         request: {
           type: "string",
@@ -246,6 +264,9 @@ function bridgeStatus(payload = {}) {
     "plugins/seis/.mcp.json",
     "plugins/seis/scripts/seis-mcp-bundle-audit.sh",
     "plugins/seis/scripts/seis-mcp-launcher.mjs",
+    "plugins/seis-cloud/.codex-plugin/plugin.json",
+    "plugins/seis-cloud/.mcp.json",
+    "plugins/seis-cloud/skills/seis-cloud/SKILL.md",
     "plugins/seis-code/.codex-plugin/plugin.json",
     "plugins/seis-code/.mcp.json",
     "plugins/seis-code/skills/seis-code/SKILL.md",
@@ -358,7 +379,7 @@ function specialistLaneStatusRequest(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-code, seis-design, or seis-data.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, or seis-data.",
       },
     };
   }
@@ -372,7 +393,7 @@ function specialistLanePlan(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-code, seis-design, or seis-data.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, or seis-data.",
       },
     };
   }

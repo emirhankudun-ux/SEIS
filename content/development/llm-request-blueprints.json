@@ -1,7 +1,7 @@
 {
   "id": "seis-llm-request-blueprints",
   "version": "0.1.0",
-  "updatedAt": "2026-06-09",
+  "updatedAt": "2026-06-13",
   "blueprints": [
     {
       "id": "seis-audit-query",
@@ -21,6 +21,16 @@
         "lane selection",
         "policy check",
         "adapter check"
+      ]
+    },
+    {
+      "id": "seis-agent-design-gateway",
+      "name": "Agent Design and Gateway Request",
+      "description": "Template for Hermes, Goose, and Open Design helper requests that must stay under SEIS Agent policy.",
+      "tasks": [
+        "helper readiness check",
+        "SEIS Agent policy handoff",
+        "artifact or gateway output review"
       ]
     }
   ]

@@ -24,9 +24,27 @@ Docker/Node:
 node scripts/configure-server-target.mjs docker-node-static --host 127.0.0.1 --port 4177
 ```
 
+Google Compute Engine VM:
+
+```bash
+npm run cloud:gcp:readiness -- --project example-project
+npm run cloud:gcp:server:plan -- --project example-project
+npm run vpn:wireguard:peer -- --name admin --public-key CLIENT_PUBLIC_KEY --address 10.44.0.2/32
+npm run cloud:gcp:server:apply -- --project example-project --ssh-source-range 203.0.113.10/32 --vpn-source-range 198.51.100.0/24 --vpn-peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32'
+```
+
 Cloud static candidates are also modeled for Azure Static Web Apps, AWS Amplify
 static hosting, and Firebase Hosting. Keep them inactive until the project id,
 public URL, token storage location, and rollback owner are explicit.
+
+Public cloud is for everyone. VPN cloud targets are only for workplaces and
+teams with explicit peer membership.
+
+Before a public GitHub Pages handoff, run:
+
+```bash
+npm run cloud:public:readiness -- --repo OWNER/REPO
+```
 
 Then run:
 

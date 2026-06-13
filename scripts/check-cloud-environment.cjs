@@ -37,9 +37,9 @@ const REQUIRED_ENVIRONMENT_SOURCE_KEYS = [
   "llmRequestBlueprints",
   "llmBridge"
 ];
-const REQUIRED_LOCAL_AI_TOOL_IDS = ["openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter"];
-const REQUIRED_THIRD_PARTY_AI_HELPER_IDS = ["claude-code", "gemini-cli", "antigravity", "deepseek-coder", "awesome-deepseek-agent"];
-const REQUIRED_ECOSYSTEM_CANDIDATE_IDS = ["claude-code", "gemini-cli", "deepseek-coder", "awesome-deepseek-agent", "antigravity-desktop", "desktop-bundle-root"];
+const REQUIRED_LOCAL_AI_TOOL_IDS = ["codex", "openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter", "hermes", "goose", "open-design"];
+const REQUIRED_THIRD_PARTY_AI_HELPER_IDS = ["claude-code", "gemini-cli", "antigravity", "deepseek-coder", "awesome-deepseek-agent", "open-design"];
+const REQUIRED_ECOSYSTEM_CANDIDATE_IDS = ["claude-code", "gemini-cli", "deepseek-coder", "awesome-deepseek-agent", "open-design", "antigravity-desktop", "desktop-bundle-root"];
 const REQUIRED_REQUESTED_PLUGIN_IDS = [
   "base44",
   "wix",
@@ -425,7 +425,7 @@ if (toolchainRuntimeReadiness) {
   ensure(source?.toolCount === tools.length, "toolchainRuntimeReadiness toolCount must match tools");
   ensure(source?.neverInstallSilently === true, "toolchainRuntimeReadiness must forbid silent installs");
   ensure(source?.installExecution === "manual_confirmation_required", "toolchainRuntimeReadiness install execution must require confirmation");
-  for (const toolId of ["node", "npm", "python3", "uv", "go", "rustc", "java", "swift", "gh", "gcloud", "firebase", "claude", "gemini", "qwen", "opencode", "codex"]) {
+  for (const toolId of ["node", "npm", "python3", "uv", "go", "rustc", "java", "swift", "gh", "gcloud", "firebase", "claude", "gemini", "qwen", "opencode", "codex", "ollama", "aider", "hermes", "goose", "open-design"]) {
     ensure(toolIds.has(toolId), `toolchainRuntimeReadiness missing tool ${toolId}`);
   }
 }
@@ -440,7 +440,7 @@ if (desktopAppIntegration) {
   ensure(source?.appCount === apps.length, "desktopAppIntegration appCount must match apps");
   ensure(source?.launchMode === "manual_or_user_requested", "desktopAppIntegration launch mode must stay manual/user requested");
   ensure(source?.defaultIde === "antigravity", "desktopAppIntegration default IDE must be antigravity");
-  for (const appId of ["antigravity", "xcode", "android-studio", "jetbrains-toolbox", "codex"]) {
+  for (const appId of ["antigravity", "xcode", "android-studio", "jetbrains-toolbox", "codex", "open-design"]) {
     ensure(appIds.has(appId), `desktopAppIntegration missing app ${appId}`);
   }
 }

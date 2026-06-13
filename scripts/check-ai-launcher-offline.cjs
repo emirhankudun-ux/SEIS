@@ -22,10 +22,11 @@ function makeFakeCommand( dir, name, body ) {
 }
 
 function runWithEnv( commandLineArgs, extraEnv, pathExtensions = [] ) {
+  const deterministicPath = [ ...pathExtensions, "/usr/bin", "/bin" ].join( path.delimiter );
   const env = {
     ...process.env,
     ...extraEnv,
-    PATH: `${pathExtensions.join( path.delimiter )}${process.env.PATH ? `${path.delimiter}${process.env.PATH}` : ""}`
+    PATH: deterministicPath
   };
 
   const result = spawnSync( process.execPath, [ launcherPath, ...commandLineArgs ], {

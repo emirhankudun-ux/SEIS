@@ -120,6 +120,25 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             centralMcpServerPath: "\(repositoryRoot)/mcp/seis-mcp-server.mjs",
             lanes: [
                 SeisSpecialistPluginLane(
+                    id: "seis-cloud",
+                    displayName: "SEIS Cloud",
+                    category: "Developer",
+                    repoMirror: "plugins/seis-cloud",
+                    localRoot: "\(home)/plugins/seis-cloud",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-cloud/0.1.0",
+                    skillPath: "skills/seis-cloud/SKILL.md",
+                    mcpServer: "seis-cloud",
+                    tools: ["seis_cloud_status", "seis_cloud_plan"],
+                    laneProfilePath: "assets/lane-profile.json",
+                    qualityCommands: [
+                        "npm run check:cloud-access-policy",
+                        "npm run check:cloud-environment",
+                        "npm run check:server-cloud-report",
+                        "npm run check:server-target",
+                        "npm run check:gcp-cloud-server"
+                    ]
+                ),
+                SeisSpecialistPluginLane(
                     id: "seis-code",
                     displayName: "SEIS-Code",
                     category: "Developer",
@@ -305,6 +324,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     public static var expectedSourceTokens: [String] {
         [
             "SeisSpecialistPluginLaneReadiness",
+            "SEIS Cloud",
             "SEIS-Code",
             "SEIS-Design",
             "SEIS-DATA",
@@ -318,6 +338,9 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",
+            "seis_cloud_plan",
+            "npm run check:cloud-access-policy",
+            "npm run check:gcp-cloud-server",
             "seis_code_plan",
             "seis_design_plan",
             "seis_data_plan",

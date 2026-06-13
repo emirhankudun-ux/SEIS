@@ -421,11 +421,12 @@ import Testing
         encoding: .utf8
     )
 
-    #expect(readiness.lanes.count == 3)
-    #expect(readiness.toolCount == 9)
+    #expect(readiness.lanes.count == 4)
+    #expect(readiness.toolCount == 11)
     #expect(readiness.centralMcpTools == SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools)
     #expect(readiness.marketplacePath.contains(FileManager.default.homeDirectoryForCurrentUser.path))
-    #expect(laneIds == ["seis-code", "seis-design", "seis-data"])
+    #expect(laneIds == ["seis-cloud", "seis-code", "seis-design", "seis-data"])
+    #expect(readiness.lanes.contains { $0.id == "seis-cloud" && $0.tools.contains("seis_cloud_plan") })
     #expect(readiness.lanes.contains { $0.id == "seis-code" && $0.tools.contains("seis_code_plan") })
     #expect(readiness.lanes.contains { $0.id == "seis-design" && $0.qualityCommands.contains("npm run check:mobile-ergonomics") })
     #expect(readiness.lanes.contains { $0.id == "seis-data" && $0.qualityCommands.contains("npm run check:seis-technology-stack") })
@@ -437,6 +438,7 @@ import Testing
     }
     #expect(!source.contains("/Users/emirhankudun"))
     for token in [
+        "\"seis-cloud\"",
         "\"seis-code\"",
         "\"seis-design\"",
         "\"seis-data\""

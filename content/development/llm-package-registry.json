@@ -1,7 +1,7 @@
 {
   "id": "seis-llm-package-registry",
   "version": "0.1.0",
-  "updatedAt": "2026-06-09",
+  "updatedAt": "2026-06-13",
   "packages": [
     {
       "id": "seis-agent",
@@ -16,6 +16,14 @@
         "lane-routing"
       ],
       "notes": "Tek uzaktan yetkili karar ve orchestrasyon katmanı."
+    },
+    {
+      "id": "codex-helper",
+      "label": "Codex Helper",
+      "provider": "openai",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["repo-execution", "automation", "bounded-task-runner"]
     },
     {
       "id": "openai-helper",
@@ -64,6 +72,30 @@
       "mode": "local-helper",
       "status": "planned",
       "scope": ["terminal-coding-assist", "repo-navigation", "patch-assist"]
+    },
+    {
+      "id": "hermes-helper",
+      "label": "Hermes Agent Helper",
+      "provider": "nousresearch",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["agent-gateway", "mcp-gateway", "tool-routing"]
+    },
+    {
+      "id": "goose-helper",
+      "label": "Goose Helper",
+      "provider": "block",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["desktop-agent", "automation", "local-agent-experiments"]
+    },
+    {
+      "id": "open-design-helper",
+      "label": "Open Design Helper",
+      "provider": "open-design",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["design-artifacts", "prototype-preview", "design-system-generation"]
     },
     {
       "id": "aider-helper",

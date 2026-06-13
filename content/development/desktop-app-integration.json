@@ -10,9 +10,9 @@
     "noPrivateAppStateInRepo": true
   },
   "summary": {
-    "appCount": 9,
-    "detectedCount": 6,
-    "missingCount": 3
+    "appCount": 10,
+    "detectedCount": 8,
+    "missingCount": 2
   },
   "apps": [
     {
@@ -95,11 +95,27 @@
       "integrationAction": "use_when_task_matches"
     },
     {
+      "id": "open-design",
+      "label": "Open Design",
+      "role": "design-agent-workflow",
+      "detected": true,
+      "appPath": "../../../../../Applications/Open Design.app",
+      "bundleNames": [
+        "Open Design.app"
+      ],
+      "workflows": [
+        "Design artifacts",
+        "Prototype previews",
+        "Design-system generation"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
       "id": "ollama",
       "label": "Ollama",
       "role": "local-model-runtime",
-      "detected": false,
-      "appPath": null,
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Ollama.app",
       "bundleNames": [
         "Ollama.app"
       ],
@@ -107,7 +123,7 @@
         "Offline fallback",
         "Local model experiments"
       ],
-      "integrationAction": "install_or_configure_when_needed"
+      "integrationAction": "use_when_task_matches"
     },
     {
       "id": "docker",

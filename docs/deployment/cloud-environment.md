@@ -22,6 +22,16 @@ development:
 - rollback path before upload
 - quiet observability instead of dashboard overload
 
+## Access Model
+
+SEIS separates cloud access by audience:
+
+- Public cloud is for everyone and should not require VPN access.
+- VPN cloud is for workplaces and teams, with explicit peer approval and
+  scoped network access.
+
+See `docs/deployment/cloud-access-policy.md`.
+
 ## Candidate Providers
 
 - GitHub Pages
@@ -29,6 +39,7 @@ development:
 - Vercel static
 - Netlify static
 - Docker Node static
+- Google Compute Engine VM for team/workplace VPN cloud
 - Azure Static Web Apps
 - AWS Amplify static hosting
 - Firebase Hosting

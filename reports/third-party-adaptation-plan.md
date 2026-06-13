@@ -17,6 +17,7 @@ Generated: 2026-06-11T08:24:29.889Z
 | gemini-cli | yes | high | ideas_interfaces_and_cli_boundaries_only | blocked | seis_owned_outputs_only |
 | deepseek-coder | yes | high | ideas_interfaces_and_cli_boundaries_only | blocked | seis_owned_outputs_only |
 | awesome-deepseek-agent | yes | high | ideas_interfaces_and_cli_boundaries_only | blocked | seis_owned_outputs_only |
+| open-design | no | high | ideas_interfaces_and_cli_boundaries_only | blocked | seis_owned_outputs_only |
 | antigravity-desktop | yes | high | reference_only_no_import | blocked | seis_owned_outputs_only |
 | desktop-bundle-root | yes | high | reference_only_no_import | blocked | seis_owned_outputs_only |
 

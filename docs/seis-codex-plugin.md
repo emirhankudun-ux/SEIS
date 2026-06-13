@@ -19,6 +19,7 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 
 - `.codex-plugin/plugin.json` defines the plugin manifest.
 - `skills/seis-hub/SKILL.md` defines the SEIS-centered Codex workflow.
+- `skills/seis-cloud/SKILL.md` defines the SEIS cloud and deployment readiness lane.
 - `skills/seis-code/SKILL.md` defines the SEIS engineering and implementation lane.
 - `skills/seis-design/SKILL.md` defines the SEIS product design and design-system lane.
 - `skills/seis-data/SKILL.md` defines the SEIS data, analytics, and knowledge-governance lane.
@@ -33,6 +34,7 @@ The local `seis` Codex plugin connects Codex work back to the canonical SEIS rep
 ```bash
 python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /Users/emirhankudun/plugins/seis
 python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-hub
+python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-cloud
 python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-code
 python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-design
 python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py /Users/emirhankudun/plugins/seis/skills/seis-data
@@ -105,8 +107,9 @@ The GitHub connector can also force-update `main` to the canonical branch SHA wh
 
 ## Specialist Lanes
 
-The SEIS plugin exposes three specialist lanes inside the canonical `seis@personal` plugin and the personal marketplace also exposes each lane as its own full Codex plugin card:
+The SEIS plugin exposes four specialist lanes inside the canonical `seis@personal` plugin and the personal marketplace also exposes each lane as its own full Codex plugin card:
 
+- SEIS Cloud: provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation.
 - SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
 - SEIS-Design: product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.
 - SEIS-DATA: data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.
@@ -115,12 +118,14 @@ Full plugin packages:
 
 | Plugin | Repo mirror | Local root | MCP tools |
 |---|---|---|---|
+| `seis-cloud@personal` | `plugins/seis-cloud` | `/Users/emirhankudun/plugins/seis-cloud` | `seis_cloud_status`, `seis_cloud_plan` |
 | `seis-code@personal` | `plugins/seis-code` | `/Users/emirhankudun/plugins/seis-code` | `seis_code_status`, `seis_code_plan` |
 | `seis-design@personal` | `plugins/seis-design` | `/Users/emirhankudun/plugins/seis-design` | `seis_design_status`, `seis_design_plan` |
 | `seis-data@personal` | `plugins/seis-data` | `/Users/emirhankudun/plugins/seis-data` | `seis_data_status`, `seis_data_plan` |
 
 Installed cache roots:
 
+- `/Users/emirhankudun/.codex/plugins/cache/personal/seis-cloud/0.1.0`
 - `/Users/emirhankudun/.codex/plugins/cache/personal/seis-code/0.1.0`
 - `/Users/emirhankudun/.codex/plugins/cache/personal/seis-design/0.1.0`
 - `/Users/emirhankudun/.codex/plugins/cache/personal/seis-data/0.1.0`
@@ -137,7 +142,7 @@ Specialist plugin governance is tracked in:
 - add SEIS migration verification helpers
 - add GitHub auth readiness checks
 - add a repo snapshot integrity report
-- add richer MCP write tools for the specialist lanes only after command shapes and safety gates are stable
+- add richer MCP write tools for the specialist lanes only after cloud, command shapes, and safety gates are stable
 
 ## Safety Rule
 

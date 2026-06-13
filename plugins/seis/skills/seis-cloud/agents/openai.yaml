@@ -1,0 +1,6 @@
+interface:
+  display_name: "SEIS Cloud"
+  short_description: "Cloud and deployment readiness lane"
+  default_prompt: "Use $seis-cloud to plan or validate a SEIS cloud deployment safely."
+policy:
+  allow_implicit_invocation: true
