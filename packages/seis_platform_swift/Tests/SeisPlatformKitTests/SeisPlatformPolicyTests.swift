@@ -409,7 +409,7 @@ import Testing
 
 @Test func specialistPluginLaneReadinessDocumentsCodexPluginMesh() throws {
     let readiness = SeisSpecialistPluginLaneReadiness.current
-    let fixtureReadiness = specialistPluginFixtureReadiness(from: readiness)
+    let fixtureReadiness = try specialistPluginFixtureReadiness(from: readiness)
     let laneIds = Set(readiness.lanes.map(\.id))
     let root = repositoryRoot()
     let source = try String(
@@ -447,14 +447,16 @@ import Testing
 
 private func specialistPluginFixtureReadiness(
     from readiness: SeisSpecialistPluginLaneReadiness
-) -> SeisSpecialistPluginLaneReadiness {
+) throws -> SeisSpecialistPluginLaneReadiness {
     let root = repositoryRoot()
+    let marketplacePath = try writeSpecialistMarketplaceFixture(from: readiness)
     return SeisSpecialistPluginLaneReadiness(
-        marketplacePath: root.appending(path: "plugins").path,
+        marketplacePath: marketplacePath,
         marketplaceName: readiness.marketplaceName,
         installationPolicy: readiness.installationPolicy,
         authenticationPolicy: readiness.authenticationPolicy,
         centralMcpTools: readiness.centralMcpTools,
+        centralMcpServerPath: root.appending(path: "mcp/seis-mcp-server.mjs").path,
         lanes: readiness.lanes.map { lane in
             let repoMirrorPath = root.appending(path: lane.repoMirror).path
             return SeisSpecialistPluginLane(
@@ -473,6 +475,41 @@ private func specialistPluginFixtureReadiness(
         },
         validationCommands: readiness.validationCommands
     )
+}
+
+private func writeSpecialistMarketplaceFixture(
+    from readiness: SeisSpecialistPluginLaneReadiness
+) throws -> String {
+    let fixtureDirectory = FileManager.default.temporaryDirectory
+        .appending(path: "seis-specialist-plugin-readiness-\(UUID().uuidString)")
+    try FileManager.default.createDirectory(at: fixtureDirectory, withIntermediateDirectories: true)
+    let marketplacePath = fixtureDirectory.appending(path: "marketplace.json")
+    let pluginEntries = readiness.lanes.map { lane in
+        """
+            {
+              "name": "\(lane.id)",
+              "source": {
+                "source": "local",
+                "path": "./plugins/\(lane.id)"
+              },
+              "policy": {
+                "installation": "\(readiness.installationPolicy)",
+                "authentication": "\(readiness.authenticationPolicy)"
+              },
+              "category": "\(lane.category)"
+            }
+        """
+    }.joined(separator: ",\n")
+    let marketplace = """
+    {
+      "name": "\(readiness.marketplaceName)",
+      "plugins": [
+    \(pluginEntries)
+      ]
+    }
+    """
+    try marketplace.write(to: marketplacePath, atomically: true, encoding: .utf8)
+    return marketplacePath.path
 }
 
 @Test func appleShellDiagnosticsFilesMatchSwiftContract() throws {

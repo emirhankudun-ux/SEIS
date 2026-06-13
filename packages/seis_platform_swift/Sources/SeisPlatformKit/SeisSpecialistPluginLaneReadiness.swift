@@ -64,9 +64,17 @@ public struct SeisSpecialistPluginLane: Codable, Equatable, Identifiable, Sendab
 
     public var localInstallationReady: Bool {
         let fileManager = FileManager.default
+        let requiredRelativePaths = [
+            skillPath,
+            ".mcp.json",
+            laneProfilePath
+        ]
         return fileManager.fileExists(atPath: localRoot) &&
             fileManager.fileExists(atPath: installedCacheRoot) &&
-            fileManager.fileExists(atPath: "\(localRoot)/\(skillPath)")
+            requiredRelativePaths.allSatisfy { relativePath in
+                fileManager.fileExists(atPath: "\(localRoot)/\(relativePath)") &&
+                    fileManager.fileExists(atPath: "\(installedCacheRoot)/\(relativePath)")
+            }
     }
 }
 
@@ -76,6 +84,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     public let installationPolicy: String
     public let authenticationPolicy: String
     public let centralMcpTools: [String]
+    public let centralMcpServerPath: String
     public let lanes: [SeisSpecialistPluginLane]
     public let validationCommands: [String]
 
@@ -85,6 +94,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         installationPolicy: String,
         authenticationPolicy: String,
         centralMcpTools: [String],
+        centralMcpServerPath: String,
         lanes: [SeisSpecialistPluginLane],
         validationCommands: [String]
     ) {
@@ -93,18 +103,21 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         self.installationPolicy = installationPolicy
         self.authenticationPolicy = authenticationPolicy
         self.centralMcpTools = centralMcpTools
+        self.centralMcpServerPath = centralMcpServerPath
         self.lanes = lanes
         self.validationCommands = validationCommands
     }
 
     public static var current: SeisSpecialistPluginLaneReadiness {
         let home = homePath
+        let repositoryRoot = defaultRepositoryRoot(home: home)
         return SeisSpecialistPluginLaneReadiness(
             marketplacePath: "\(home)/.agents/plugins/marketplace.json",
             marketplaceName: "personal",
             installationPolicy: "AVAILABLE",
             authenticationPolicy: "ON_INSTALL",
             centralMcpTools: Self.expectedCentralMcpTools,
+            centralMcpServerPath: "\(repositoryRoot)/mcp/seis-mcp-server.mjs",
             lanes: [
                 SeisSpecialistPluginLane(
                     id: "seis-code",
@@ -206,15 +219,79 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     }
 
     public var marketplaceReady: Bool {
-        !marketplacePath.isEmpty && FileManager.default.fileExists(atPath: marketplacePath)
+        guard
+            !marketplacePath.isEmpty,
+            let data = FileManager.default.contents(atPath: marketplacePath),
+            let marketplace = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            marketplace["name"] as? String == marketplaceName,
+            let plugins = marketplace["plugins"] as? [[String: Any]]
+        else {
+            return false
+        }
+
+        return lanes.allSatisfy { lane in
+            guard
+                let entry = plugins.first(where: { $0["name"] as? String == lane.id }),
+                let source = entry["source"] as? [String: Any],
+                let policy = entry["policy"] as? [String: Any]
+            else {
+                return false
+            }
+
+            return source["source"] as? String == "local" &&
+                source["path"] as? String == "./plugins/\(lane.id)" &&
+                policy["installation"] as? String == installationPolicy &&
+                policy["authentication"] as? String == authenticationPolicy &&
+                entry["category"] as? String == lane.category
+        }
     }
 
     public var centralSurfaceReady: Bool {
-        marketplaceReady && centralMcpTools == Self.expectedCentralMcpTools
+        marketplaceReady &&
+            centralMcpTools == Self.expectedCentralMcpTools &&
+            centralMcpServerReady
+    }
+
+    public var centralMcpServerReady: Bool {
+        guard
+            !centralMcpServerPath.isEmpty,
+            let source = try? String(contentsOfFile: centralMcpServerPath, encoding: .utf8)
+        else {
+            return false
+        }
+
+        return Self.expectedCentralMcpTools.allSatisfy { source.contains($0) }
     }
 
     private static var homePath: String {
         FileManager.default.homeDirectoryForCurrentUser.path
+    }
+
+    private static func defaultRepositoryRoot(home: String) -> String {
+        let environment = ProcessInfo.processInfo.environment
+        if let seisRoot = environment["SEIS_ROOT"], !seisRoot.isEmpty {
+            return seisRoot
+        }
+        if let repositoryRoot = environment["SEIS_REPO_ROOT"], !repositoryRoot.isEmpty {
+            return repositoryRoot
+        }
+
+        let fileManager = FileManager.default
+        var candidate = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+        while true {
+            let centralMcpPath = candidate.appendingPathComponent("mcp/seis-mcp-server.mjs").path
+            if fileManager.fileExists(atPath: centralMcpPath) {
+                return candidate.path
+            }
+
+            let parent = candidate.deletingLastPathComponent()
+            if parent.path == candidate.path {
+                break
+            }
+            candidate = parent
+        }
+
+        return "\(home)/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS"
     }
 
     public static var expectedCentralMcpTools: [String] {
@@ -232,9 +309,12 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "SEIS-Design",
             "SEIS-DATA",
             "homeDirectoryForCurrentUser",
+            "currentDirectoryPath",
             "localInstallationReady",
             "marketplaceReady",
             "centralSurfaceReady",
+            "centralMcpServerReady",
+            "centralMcpServerPath",
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",

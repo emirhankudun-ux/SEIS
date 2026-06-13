@@ -14,6 +14,7 @@ const lanes = [
     name: "seis-code",
     displayName: "SEIS-Code",
     marketplaceCategory: "Developer",
+    pluginRootEnv: "SEIS_CODE_PLUGIN_ROOT",
     mcpServer: "seis-code",
     tools: ["seis_code_status", "seis_code_plan"],
   },
@@ -21,6 +22,7 @@ const lanes = [
     name: "seis-design",
     displayName: "SEIS-Design",
     marketplaceCategory: "Design",
+    pluginRootEnv: "SEIS_DESIGN_PLUGIN_ROOT",
     mcpServer: "seis-design",
     tools: ["seis_design_status", "seis_design_plan"],
   },
@@ -28,6 +30,7 @@ const lanes = [
     name: "seis-data",
     displayName: "SEIS-DATA",
     marketplaceCategory: "Data",
+    pluginRootEnv: "SEIS_DATA_PLUGIN_ROOT",
     mcpServer: "seis-data",
     tools: ["seis_data_status", "seis_data_plan"],
   },
@@ -162,7 +165,7 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
 
   const result = spawnSync("node", [mcpScript], {
     cwd: pluginRoot,
-    env: { ...process.env, SEIS_ROOT: ROOT },
+    env: smokeEnvironment(lane, pluginRoot),
     input,
     timeout: 5000,
   });
@@ -268,6 +271,15 @@ function validateCentralMcpSmoke(centralMcp) {
 function frameMcpMessage(message) {
   const body = JSON.stringify(message);
   return `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;
+}
+
+function smokeEnvironment(lane, pluginRoot) {
+  return {
+    ...process.env,
+    SEIS_ROOT: ROOT,
+    SEIS_REPO_ROOT: ROOT,
+    [lane.pluginRootEnv]: pluginRoot,
+  };
 }
 
 function parseMcpResponses(output, label) {

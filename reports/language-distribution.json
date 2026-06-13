@@ -9,44 +9,44 @@
   },
   "summary": {
     "countedFileCount": 561,
-    "countedBytes": 2623599,
-    "javascriptBytes": 853588,
-    "javascriptPercent": 32.54,
+    "countedBytes": 2628389,
+    "javascriptBytes": 853891,
+    "javascriptPercent": 32.49,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1441105,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1437758,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 853588,
-      "percent": 32.54
+      "bytes": 853891,
+      "percent": 32.49
     },
     {
       "language": "JSON",
       "bytes": 643334,
-      "percent": 24.52
+      "percent": 24.48
     },
     {
       "language": "Python",
       "bytes": 300155,
-      "percent": 11.44
+      "percent": 11.42
     },
     {
       "language": "Swift",
-      "bytes": 272396,
-      "percent": 10.38
+      "bytes": 276883,
+      "percent": 10.53
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 3.59
+      "percent": 3.58
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.23
+      "percent": 3.22
     },
     {
       "language": "Shell",
@@ -146,7 +146,7 @@
     {
       "language": "Common Lisp",
       "bytes": 5908,
-      "percent": 0.23
+      "percent": 0.22
     },
     {
       "language": "Nim",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 853588,
-      "percent": 32.54,
+      "bytes": 853891,
+      "percent": 32.49,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1732740,
-      "percent": 66.04,
+      "bytes": 1737227,
+      "percent": 66.09,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "6ee933065cfd4f9955285d2b87fa3f6f065f9db790804691b702c8065d961697",
+    "hash": "f2ba638dff93f8e2a6a52183a8c6b803d2873ad2536ce3fc46f3264234e33711",
     "algorithm": "sha256"
   }
 }
