@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 276883,
+      "githubBytes": 276912,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]

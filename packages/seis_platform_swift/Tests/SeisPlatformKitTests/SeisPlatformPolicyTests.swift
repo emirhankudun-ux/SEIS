@@ -259,7 +259,7 @@ import Testing
     #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
 }
 
-@Test func appleShellDiagnosticsHistoryRecordsReadinessSnapshots() {
+@Test func appleShellDiagnosticsHistoryRecordsReadinessSnapshots() throws {
     let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
     let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
     let continuation = SeisAppleContinuationSnapshot.current
@@ -270,7 +270,7 @@ import Testing
         processName: "SeisAppleNativeShell"
     )
     let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
-    let specialistPlugins = SeisSpecialistPluginLaneReadiness.current
+    let specialistPlugins = try specialistPluginFixtureReadiness(from: .current)
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let store = SeisAppleShellDiagnosticsHistoryStore(historyLimit: 2)
 
@@ -347,7 +347,7 @@ import Testing
         processName: "SeisAppleNativeShell"
     )
     let researchAutomation = SeisAGIResearchAutomationPlan.current(recordedAt: "2026-06-12T00:00:00Z")
-    let specialistPlugins = SeisSpecialistPluginLaneReadiness.current
+    let specialistPlugins = try specialistPluginFixtureReadiness(from: .current)
     let agentHandoff = SeisAGIAgentHandoffSnapshot.current(recordedAt: "2026-06-12T00:00:00Z")
     let persistentStore = try SeisAppleDiagnosticsPersistentHistoryStore(inMemory: true)
     let store = SeisAppleShellDiagnosticsHistoryStore(

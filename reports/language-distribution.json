@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 561,
-    "countedBytes": 2628389,
+    "countedBytes": 2628418,
     "javascriptBytes": 853891,
     "javascriptPercent": 32.49,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1437758,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1437729,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -35,8 +35,8 @@
     },
     {
       "language": "Swift",
-      "bytes": 276883,
-      "percent": 10.53
+      "bytes": 276912,
+      "percent": 10.54
     },
     {
       "language": "CSS",
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1737227,
-      "percent": 66.09,
+      "bytes": 1737256,
+      "percent": 66.1,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -794,7 +794,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "f2ba638dff93f8e2a6a52183a8c6b803d2873ad2536ce3fc46f3264234e33711",
+    "hash": "af0e536cda643528bff7dc67284d77be61b6f0038e4208067cc6e70935c7bd30",
     "algorithm": "sha256"
   }
 }
