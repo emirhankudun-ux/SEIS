@@ -367,6 +367,16 @@ def build_report(rules):
 
 
 def iter_files():
+    git_paths = git_source_paths()
+    if git_paths is not None:
+        for rel_path in git_paths:
+            if has_skipped_dir(rel_path):
+                continue
+            path = ROOT / rel_path
+            if path.is_file():
+                yield path
+        return
+
     for current_root, dirs, files in os.walk(ROOT):
         dirs[:] = sorted(
             dirname
@@ -379,6 +389,24 @@ def iter_files():
             path = Path(current_root) / name
             if path.is_file():
                 yield path
+
+
+def git_source_paths():
+    result = subprocess.run(
+        ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    if result.returncode != 0:
+        return None
+
+    paths = [path for path in result.stdout.split("\0") if path]
+    return sorted(paths)
+
+
+def has_skipped_dir(rel_path):
+    return bool(set(rel_path.split("/")) & SKIP_DIRS)
 
 
 def exclusion_reason(rel_path, file_path, rules):
