@@ -172,7 +172,7 @@ function validateMcpServerSmoke(pluginRoot, mcpScript, lane, scope) {
     return;
   }
   if (result.status !== 0) {
-    fail(`${scope} ${lane.name}: MCP smoke exited ${exitDetail(result)}: ${outputText(result.stderr).trim()}`);
+    fail(`${scope} ${lane.name}: MCP smoke exited ${exitDetail(result)}: ${trimmedOutputText(result.stderr)}`);
     return;
   }
 
@@ -238,7 +238,7 @@ function validateCentralMcpSmoke(centralMcp) {
     return;
   }
   if (result.status !== 0) {
-    fail(`central MCP smoke exited ${exitDetail(result)}: ${outputText(result.stderr).trim()}`);
+    fail(`central MCP smoke exited ${exitDetail(result)}: ${trimmedOutputText(result.stderr)}`);
     return;
   }
 
@@ -271,8 +271,13 @@ function frameMcpMessage(message) {
 }
 
 function parseMcpResponses(output, label) {
-  const buffer = output ? Buffer.isBuffer(output) ? output : Buffer.from(String(output), "utf8") : Buffer.alloc(0);
   const responses = [];
+  if (!output) {
+    fail(`${label}: MCP smoke produced no output`);
+    return responses;
+  }
+
+  const buffer = Buffer.isBuffer(output) ? output : Buffer.from(String(output), "utf8");
   let cursor = 0;
 
   while (cursor < buffer.length) {
@@ -308,6 +313,10 @@ function parseMcpResponses(output, label) {
 function outputText(output) {
   if (!output) return "";
   return Buffer.isBuffer(output) ? output.toString("utf8") : String(output);
+}
+
+function trimmedOutputText(output) {
+  return outputText(output).trim();
 }
 
 function exitDetail(result) {

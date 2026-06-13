@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 853443,
+      "githubBytes": 853588,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 272088,
+      "githubBytes": 272396,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]

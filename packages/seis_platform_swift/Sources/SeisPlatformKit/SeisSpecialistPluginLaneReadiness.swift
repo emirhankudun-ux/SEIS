@@ -170,7 +170,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     }
 
     public var readyCount: Int {
-        lanes.filter(\.isReady).count + (centralMcpTools == Self.expectedCentralMcpTools ? 1 : 0)
+        lanes.filter(\.isReady).count + (centralSurfaceReady ? 1 : 0)
     }
 
     public var checkCount: Int {
@@ -180,10 +180,11 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     public var isReady: Bool {
         checkCount > 0 &&
             readyCount == checkCount &&
+            marketplaceReady &&
             marketplaceName == "personal" &&
             installationPolicy == "AVAILABLE" &&
             authenticationPolicy == "ON_INSTALL" &&
-            centralMcpTools == Self.expectedCentralMcpTools
+            centralSurfaceReady
     }
 
     public var statusLabel: String {
@@ -202,6 +203,14 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         lanes.reduce(centralMcpTools.count) { partialResult, lane in
             partialResult + lane.tools.count
         }
+    }
+
+    public var marketplaceReady: Bool {
+        !marketplacePath.isEmpty && FileManager.default.fileExists(atPath: marketplacePath)
+    }
+
+    public var centralSurfaceReady: Bool {
+        marketplaceReady && centralMcpTools == Self.expectedCentralMcpTools
     }
 
     private static var homePath: String {
@@ -224,6 +233,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "SEIS-DATA",
             "homeDirectoryForCurrentUser",
             "localInstallationReady",
+            "marketplaceReady",
+            "centralSurfaceReady",
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",
