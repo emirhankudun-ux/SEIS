@@ -22,6 +22,7 @@ const checks = {
   account: { active: false, value: null },
   project: { selected: Boolean(project), value: project || null },
   billing: { enabled: false, checked: false },
+  billingAccounts: { checked: false, available: false, count: 0, openCount: 0, accounts: [] },
   computeApi: { enabled: false, checked: false },
   instance: { exists: false, checked: false, name: instance, zone, externalIp: null },
   sshFirewall: { exists: false, checked: false, sourceRanges: [] },
@@ -69,6 +70,31 @@ if (checks.gcloud.available && project) {
     rawStatus: billingResult.status
   };
   if (!checks.billing.enabled) blockers.push("billing-disabled");
+
+  const billingAccountsResult = runGcloud(["billing", "accounts", "list", "--format=json(name,displayName,open)"]);
+  const billingAccounts = parseJson(billingAccountsResult.stdout, []);
+  const accounts = Array.isArray(billingAccounts)
+    ? billingAccounts.map((account) => ({
+      name: account.name || null,
+      displayName: account.displayName || null,
+      open: Boolean(account.open)
+    }))
+    : [];
+  const openAccounts = accounts.filter((account) => account.open);
+  checks.billingAccounts = {
+    checked: true,
+    available: billingAccountsResult.status === 0 && openAccounts.length > 0,
+    count: accounts.length,
+    openCount: openAccounts.length,
+    accounts,
+    rawStatus: billingAccountsResult.status
+  };
+  if (!checks.billing.enabled && billingAccountsResult.status === 0 && openAccounts.length === 0) {
+    blockers.push("billing-account-unavailable");
+  }
+  if (billingAccountsResult.status !== 0) {
+    warnings.push("billing-accounts-list-unavailable");
+  }
 
   const servicesResult = runGcloud([
     "services",
@@ -188,7 +214,8 @@ function nextActions(items) {
   if (items.includes("gcloud-missing-or-unavailable")) actions.push("Install or configure Google Cloud CLI.");
   if (items.includes("gcloud-account-not-active")) actions.push("Run gcloud auth login with the intended Google account.");
   if (items.includes("project-not-selected")) actions.push("Pass --project PROJECT_ID or set GCP_PROJECT.");
-  if (items.includes("billing-disabled")) actions.push("Enable billing for the selected Google Cloud project before creating Compute resources.");
+  if (items.includes("billing-account-unavailable")) actions.push("Create or gain access to an open Google Cloud billing account before enabling Compute resources.");
+  if (items.includes("billing-disabled")) actions.push("Link an open billing account to the selected Google Cloud project before creating Compute resources.");
   if (items.includes("compute-api-disabled")) actions.push("Enable compute.googleapis.com for the selected project.");
   if (items.includes("instance-missing")) actions.push("Run the guarded apply command after billing/API and source ranges are confirmed.");
   if (items.includes("ssh-firewall-missing")) actions.push("Create the scoped SSH firewall rule with a narrow source range.");

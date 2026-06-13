@@ -9,34 +9,34 @@
   },
   "summary": {
     "countedFileCount": 577,
-    "countedBytes": 2722783,
-    "javascriptBytes": 923199,
-    "javascriptPercent": 33.91,
+    "countedBytes": 2724050,
+    "javascriptBytes": 924466,
+    "javascriptPercent": 33.94,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1673402,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1678169,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 923199,
-      "percent": 33.91
+      "bytes": 924466,
+      "percent": 33.94
     },
     {
       "language": "JSON",
       "bytes": 659599,
-      "percent": 24.23
+      "percent": 24.21
     },
     {
       "language": "Python",
       "bytes": 300868,
-      "percent": 11.05
+      "percent": 11.04
     },
     {
       "language": "Swift",
       "bytes": 278456,
-      "percent": 10.23
+      "percent": 10.22
     },
     {
       "language": "CSS",
@@ -61,7 +61,7 @@
     {
       "language": "YAML",
       "bytes": 28998,
-      "percent": 1.07
+      "percent": 1.06
     },
     {
       "language": "TypeScript",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 923199,
-      "percent": 33.91,
+      "bytes": 924466,
+      "percent": 33.94,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -527,7 +527,7 @@
     {
       "language": "Other",
       "bytes": 1762313,
-      "percent": 64.72,
+      "percent": 64.69,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -689,7 +689,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 600841,
+    "documentation": 601144,
     "linguist-generated": 2871763
   },
   "requiredLinguistRules": [
@@ -793,7 +793,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "27b91ff686270ea8366aca37c625233d9033543d26789540c36e0a2e03af8598",
+    "hash": "88961046aebc9ae03d8756c15cee5e15b349e84c4f3aeffe12f4a46be75167b5",
     "algorithm": "sha256"
   }
 }

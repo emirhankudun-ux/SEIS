@@ -28,10 +28,16 @@ Readiness is read-only and creates no cloud resources:
 npm run cloud:gcp:readiness -- --project PROJECT_ID
 ```
 
-The readiness report checks the active `gcloud` account, billing state, Compute
-Engine API, VM presence, scoped SSH firewall rule, and scoped WireGuard firewall
-rule. It returns `status: "blocked"` until the real cloud host exists and the
-network rules are narrow enough for workplace/team access.
+The readiness report checks the active `gcloud` account, project billing state,
+accessible billing accounts, Compute Engine API, VM presence, scoped SSH
+firewall rule, and scoped WireGuard firewall rule. It returns
+`status: "blocked"` until the real cloud host exists and the network rules are
+narrow enough for workplace/team access.
+
+If the report includes `billing-account-unavailable`, the active Google account
+does not currently see an open billing account that can be linked to the
+project. Create or gain access to a billing account first, then rerun readiness
+before enabling Compute Engine.
 
 Use strict mode only when a pipeline or release handoff must fail if the team
 VPN cloud host is not already ready:
