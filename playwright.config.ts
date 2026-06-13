@@ -18,7 +18,7 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "npx serve apps/web -p 3000 -s",
+    command: "npx serve release/web -p 3000 -s",
     port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,
