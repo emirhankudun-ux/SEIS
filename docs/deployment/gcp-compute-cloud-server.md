@@ -91,7 +91,8 @@ npm run cloud:gcp:server:apply -- \
 
 The provisioner refuses to apply without `ssh_source_range` /
 `--ssh-source-range`. When WireGuard is enabled, it also refuses to apply
-without `vpn_source_range` / `--vpn-source-range`.
+without `vpn_source_range` / `--vpn-source-range` and at least one approved
+WireGuard peer passed with `--vpn-peer`.
 
 ## What The VM Installs
 

@@ -39,6 +39,7 @@ if (!existsSync(publicKeyPath)) failures.push(`Missing SSH public key: ${publicK
 if (apply && !sshSourceRange) failures.push("Apply requires --ssh-source-range CIDR. Do not open SSH broadly by default.");
 if (vpn !== "wireguard" && vpn !== "none") failures.push("VPN must be wireguard or none.");
 if (apply && vpn === "wireguard" && !vpnSourceRange) failures.push("Apply with WireGuard requires --vpn-source-range CIDR.");
+if (apply && vpn === "wireguard" && vpnPeers.length === 0) failures.push("Apply with WireGuard requires at least one --vpn-peer approved workplace/team peer.");
 if (vpn === "wireguard" && hasBroadCidr(vpnSourceRange)) failures.push("WireGuard VPN source ranges must be scoped to workplace/team networks, not 0.0.0.0/0 or ::/0.");
 for (const peer of vpnPeers) {
   if (!isValidPeer(peer)) failures.push(`Invalid --vpn-peer format: ${peer}`);
@@ -133,7 +134,7 @@ if (!apply) {
     },
     publicKey: publicKeyPath,
     startupScript: relative(startupScript),
-    applyCommand: "npm run cloud:gcp:server:apply -- --project <project> --ssh-source-range <your-public-ip>/32 --vpn-source-range <vpn-client-public-ip-ranges>",
+    applyCommand: "npm run cloud:gcp:server:apply -- --project <project> --ssh-source-range <your-public-ip>/32 --vpn-source-range <vpn-client-public-ip-ranges> --vpn-peer '<name>|<client-public-key>|10.44.0.2/32'",
     commands: {
       enableServices: shellQuote(enableServicesCommand),
       createFirewallRule: shellQuote(firewallCommand),
@@ -322,7 +323,7 @@ function hasBroadCidr(value) {
 function printHelp() {
   console.log(`Usage:
   npm run cloud:gcp:server:plan -- --project PROJECT
-  npm run cloud:gcp:server:apply -- --project PROJECT --ssh-source-range YOUR_PUBLIC_IP/32
+  npm run cloud:gcp:server:apply -- --project PROJECT --ssh-source-range YOUR_PUBLIC_IP/32 --vpn-source-range WORKPLACE_OR_TEAM_PUBLIC_CIDR --vpn-peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32'
 
 Options:
   --project PROJECT             Google Cloud project id.
@@ -336,6 +337,7 @@ Options:
   --vpn-source-range CIDR       Required with --apply when VPN is wireguard.
                                 Must be scoped to workplace/team source ranges.
   --vpn-peer NAME|PUBLIC_KEY|10.44.0.x/32
+                                 Required with --apply when VPN is wireguard.
                                  Repeatable WireGuard peer metadata.
   --vpn-port PORT               WireGuard UDP port. Default: 51820.
   --public-key PATH             Public key path. Default: ~/.ssh/id_ed25519_seis_codex.pub.

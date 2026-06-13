@@ -65,6 +65,7 @@ ensure(provisioner.includes("--apply"), "provisioner must keep apply as an expli
 ensure(provisioner.includes("--ssh-source-range"), "provisioner must require a scoped SSH source range");
 ensure(provisioner.includes("--vpn-source-range"), "provisioner must require a scoped VPN source range");
 ensure(provisioner.includes("--vpn-peer"), "provisioner must support WireGuard peers");
+ensure(provisioner.includes("Apply with WireGuard requires at least one --vpn-peer approved workplace/team peer."), "provisioner must require at least one approved WireGuard peer for apply");
 ensure(provisioner.includes("hasBroadCidr"), "provisioner must reject broad VPN source ranges");
 ensure(sourceContainsStringLiteral(provisioner, "compute.googleapis.com"), "provisioner must enable or check Compute Engine");
 ensure(!provisioner.includes('sshSourceRange || "0.0.0.0/0"'), "provisioner must not default SSH to 0.0.0.0/0");
@@ -94,6 +95,7 @@ ensure(docs.includes("npm run cloud:gcp:readiness"), "GCP runbook must document 
 ensure(docs.includes("npm run cloud:gcp:server:plan"), "GCP runbook must document plan command");
 ensure(docs.includes("npm run cloud:gcp:server:apply"), "GCP runbook must document apply command");
 ensure(docs.includes("ssh_source_range"), "GCP runbook must document SSH source scoping");
+ensure(docs.includes("at least one approved") && docs.includes("WireGuard peer"), "GCP runbook must document the required approved WireGuard peer");
 ensure(docs.includes("WireGuard"), "GCP runbook must document WireGuard");
 ensure(docs.includes("Public cloud remains the surface for everyone"), "GCP runbook must separate public cloud from team VPN cloud");
 
