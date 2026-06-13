@@ -17,7 +17,7 @@ const allowedIps = args["allowed-ips"] || "10.44.0.1/32";
 const failures = [];
 if (!/^[A-Za-z0-9_.-]+$/.test(name)) failures.push("Missing or invalid --name.");
 if (!/^[A-Za-z0-9+/=]{40,60}$/.test(publicKey)) failures.push("Missing or invalid --public-key.");
-if (!/^10\.44\.0\.[0-9]{1,3}\/32$/.test(address)) failures.push("Missing or invalid --address. Use 10.44.0.x/32.");
+if (!isValidWireGuardPeerAddress(address)) failures.push("Missing or invalid --address. Use 10.44.0.x/32.");
 
 if (failures.length > 0) {
   console.error("SEIS WireGuard peer config failed:");
@@ -73,6 +73,15 @@ function parseArgs(tokens) {
 function shellQuote(value) {
   if (/^[A-Za-z0-9_./:=,@+| -]+$/.test(value)) return `'${value}'`;
   return `'${String(value).replace(/'/g, "'\\''")}'`;
+}
+
+function isValidWireGuardPeerAddress(value) {
+  const [ip, prefix, extra] = String(value || "").split("/");
+  if (extra || prefix !== "32") return false;
+  const parts = ip.split(".");
+  if (parts.length !== 4 || parts[0] !== "10" || parts[1] !== "44" || parts[2] !== "0") return false;
+  const peerOctet = Number(parts[3]);
+  return Number.isInteger(peerOctet) && peerOctet >= 2 && peerOctet <= 254;
 }
 
 function printHelp() {

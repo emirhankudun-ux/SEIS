@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SEIS_USER="${SEIS_USER:-seis}"
-SEIS_HOME="/home/${SEIS_USER}"
+metadata_attr_bootstrap() {
+  curl -fsS \
+    -H "Metadata-Flavor: Google" \
+    "http://metadata.google.internal/computeMetadata/v1/instance/attributes/$1" \
+    2>/dev/null || true
+}
+
 SEIS_ROOT="${SEIS_ROOT:-/opt/seis}"
 CODEX_INSTALL_URL="${CODEX_INSTALL_URL:-https://chatgpt.com/codex/install.sh}"
 
@@ -21,6 +26,10 @@ apt-get install -y --no-install-recommends \
   unzip \
   wireguard
 
+SEIS_USER="${SEIS_USER:-$(metadata_attr_bootstrap seis-user)}"
+SEIS_USER="${SEIS_USER:-seis}"
+SEIS_HOME="/home/${SEIS_USER}"
+
 if ! id "${SEIS_USER}" >/dev/null 2>&1; then
   useradd --create-home --shell /bin/bash --groups sudo "${SEIS_USER}"
 fi
@@ -33,7 +42,7 @@ touch "${SEIS_HOME}/.ssh/authorized_keys"
 chmod 0600 "${SEIS_HOME}/.ssh/authorized_keys"
 chown -R "${SEIS_USER}:${SEIS_USER}" "${SEIS_HOME}/.ssh"
 
-sudo -H -u "${SEIS_USER}" bash -lc "CODEX_NON_INTERACTIVE=1 curl -fsSL '${CODEX_INSTALL_URL}' | sh"
+sudo -H -u "${SEIS_USER}" env CODEX_NON_INTERACTIVE=1 bash -lc "curl -fsSL '${CODEX_INSTALL_URL}' | sh"
 
 cat > "${SEIS_HOME}/.profile" <<'PROFILE'
 if [ -d "$HOME/.local/bin" ]; then
@@ -44,23 +53,20 @@ if [ -d "$HOME/.local/bin" ]; then
 fi
 PROFILE
 
-cat > /etc/ssh/sshd_config.d/90-seis-cloud.conf <<'SSHD'
+cat > /etc/ssh/sshd_config.d/90-seis-cloud.conf <<SSHD
 PasswordAuthentication no
 KbdInteractiveAuthentication no
 PermitRootLogin no
 PubkeyAuthentication yes
 X11Forwarding no
-AllowUsers seis
+AllowUsers ${SEIS_USER}
 SSHD
 
 systemctl enable ssh
 systemctl restart ssh
 
 metadata_attr() {
-  curl -fsS \
-    -H "Metadata-Flavor: Google" \
-    "http://metadata.google.internal/computeMetadata/v1/instance/attributes/$1" \
-    2>/dev/null || true
+  metadata_attr_bootstrap "$1"
 }
 
 setup_wireguard() {
@@ -142,7 +148,7 @@ add_wireguard_peer() {
     return
   fi
 
-  if [[ ! "${peer_ip}" =~ ^10\.44\.0\.[0-9]{1,3}/32$ ]]; then
+  if ! valid_peer_address "${peer_ip}"; then
     echo "Skipping invalid WireGuard peer address for peer: ${peer_name}" >&2
     return
   fi
@@ -154,6 +160,28 @@ add_wireguard_peer() {
 PublicKey = ${peer_key}
 AllowedIPs = ${peer_ip}
 WG
+}
+
+valid_peer_address() {
+  local address ip prefix first second third octet
+  address="$1"
+  ip="${address%/*}"
+  prefix="${address##*/}"
+
+  if [ "${prefix}" != "32" ]; then
+    return 1
+  fi
+
+  IFS='.' read -r first second third octet <<< "${ip}"
+  if [ "${first:-}" != "10" ] || [ "${second:-}" != "44" ] || [ "${third:-}" != "0" ]; then
+    return 1
+  fi
+
+  case "${octet:-}" in
+    ''|*[!0-9]*) return 1 ;;
+  esac
+
+  [ "${octet}" -ge 2 ] && [ "${octet}" -le 254 ]
 }
 
 setup_wireguard

@@ -1,40 +1,40 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 578
-- Counted bytes: 2726590
-- JavaScript: 925571 bytes (33.95%)
+- Counted files: 580
+- Counted bytes: 2765158
+- JavaScript: 963551 bytes (34.85%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1680890
+- Additional non-JavaScript bytes needed for strict target: 1823180
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 925571 | 33.95% | JavaScript |
-| TypeScript | 28824 | 1.06% | TypeScript |
+| JavaScript | 963551 | 34.85% | JavaScript |
+| TypeScript | 28824 | 1.04% | TypeScript |
 | Objective-C | 8447 | 0.31% | Objective-C |
-| Other | 1763748 | 64.69% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1764336 | 63.81% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 925571 | 33.95% |
-| JSON | 661034 | 24.24% |
-| Python | 300868 | 11.03% |
-| Swift | 278456 | 10.21% |
-| CSS | 94204 | 3.46% |
-| HTML | 84633 | 3.1% |
-| Shell | 61251 | 2.25% |
-| Other | 31074 | 1.14% |
-| YAML | 28998 | 1.06% |
-| TypeScript | 28824 | 1.06% |
-| Go | 16367 | 0.6% |
-| Java | 16110 | 0.59% |
-| Scheme | 15747 | 0.58% |
-| Perl | 13916 | 0.51% |
+| JavaScript | 963551 | 34.85% |
+| JSON | 661034 | 23.91% |
+| Python | 300868 | 10.88% |
+| Swift | 278456 | 10.07% |
+| CSS | 94204 | 3.41% |
+| HTML | 84633 | 3.06% |
+| Shell | 61839 | 2.24% |
+| Other | 31074 | 1.12% |
+| YAML | 28998 | 1.05% |
+| TypeScript | 28824 | 1.04% |
+| Go | 16367 | 0.59% |
+| Java | 16110 | 0.58% |
+| Scheme | 15747 | 0.57% |
+| Perl | 13916 | 0.5% |
 | Ruby | 13442 | 0.49% |
 | Rust | 11825 | 0.43% |
 | C++ | 11206 | 0.41% |
@@ -42,9 +42,9 @@
 | Objective-C | 8447 | 0.31% |
 | SQL | 8177 | 0.3% |
 | R | 7953 | 0.29% |
-| OCaml | 7550 | 0.28% |
-| Tcl | 7290 | 0.27% |
-| Racket | 7245 | 0.27% |
+| OCaml | 7550 | 0.27% |
+| Tcl | 7290 | 0.26% |
+| Racket | 7245 | 0.26% |
 
 ## Largest JavaScript Files Still Counted
 
@@ -57,7 +57,7 @@
 | `packages/seis-ai/test/checks.test.mjs` | 25298 |
 | `scripts/create-seis-ecosystem-intake.cjs` | 25262 |
 | `packages/seis-ai/src/lib/checks.mjs` | 24228 |
-| `mcp/seis-mcp-server.mjs` | 21799 |
+| `mcp/seis-mcp-server.mjs` | 21947 |
 | `scripts/create-plugin-capability-lanes.cjs` | 19783 |
 | `scripts/automation-refresh-seis-surface.cjs` | 19465 |
 | `scripts/third-party-intake-blueprint.mjs` | 17482 |

@@ -339,11 +339,14 @@ function specialistLaneStatus(lane) {
   const manifest = safeParseJson(manifestPath);
   const mcp = safeParseJson(mcpPath);
   const profile = safeParseJson(profilePath);
+  const skillExists = fs.existsSync(skillPath);
+  const mcpServerConfigured = Boolean(mcp?.mcpServers?.[lane.id]);
+  const ready = Boolean(manifest && mcp && mcpServerConfigured && profile && skillExists);
 
   return {
     id: lane.id,
     label: lane.label,
-    status: manifest && profile && fs.existsSync(skillPath) ? "ready" : "partial",
+    status: ready ? "ready" : "partial",
     pluginPath: lane.pluginPath,
     skillPath: lane.skillPath,
     profilePath: lane.profilePath,
@@ -355,7 +358,7 @@ function specialistLaneStatus(lane) {
     } : null,
     mcp: {
       manifestExists: Boolean(mcp),
-      serverConfigured: Boolean(mcp?.mcpServers?.[lane.id]),
+      serverConfigured: mcpServerConfigured,
       statusTool: lane.mcpToolStatus,
       planTool: lane.mcpToolPlan,
     },

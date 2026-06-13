@@ -22,6 +22,7 @@ const vpnServerAddress = args["vpn-server-address"] || process.env.SEIS_VPN_SERV
 const vpnPeers = listArg(args["vpn-peer"] || process.env.SEIS_VPN_PEERS || []);
 const vpnAudience = "workplaces-and-teams";
 const publicKeyPath = resolvePath(args["public-key"] || process.env.GCP_SSH_PUBLIC_KEY || "~/.ssh/id_ed25519_seis_codex.pub");
+const privateKeyPath = privateKeyPathFromPublicKeyPath(publicKeyPath);
 const startupScript = resolve(ROOT, "server/cloud/gcp/startup-seis-cloud.sh");
 const networkTag = args["network-tag"] || "seis-codex-ssh";
 const firewallRule = args["firewall-rule"] || "seis-allow-ssh-codex";
@@ -37,6 +38,7 @@ if (!project) failures.push("Missing --project or GCP_PROJECT.");
 if (!existsSync(startupScript)) failures.push(`Missing startup script: ${relative(startupScript)}`);
 if (!existsSync(publicKeyPath)) failures.push(`Missing SSH public key: ${publicKeyPath}`);
 if (apply && !sshSourceRange) failures.push("Apply requires --ssh-source-range CIDR. Do not open SSH broadly by default.");
+if (apply && hasBroadCidr(sshSourceRange)) failures.push("SSH source ranges must be scoped; do not use 0.0.0.0/0 or ::/0.");
 if (vpn !== "wireguard" && vpn !== "none") failures.push("VPN must be wireguard or none.");
 if (apply && vpn === "wireguard" && !vpnSourceRange) failures.push("Apply with WireGuard requires --vpn-source-range CIDR.");
 if (apply && vpn === "wireguard" && vpnPeers.length === 0) failures.push("Apply with WireGuard requires at least one --vpn-peer approved workplace/team peer.");
@@ -58,6 +60,7 @@ const sshKey = readFileSync(publicKeyPath, "utf8").trim();
 const metadataSshKey = `${sshUser}:${sshKey}`;
 const metadata = [
   `ssh-keys=${metadataSshKey}`,
+  `seis-user=${sshUser}`,
   `seis-vpn=${vpn}`,
   `seis-vpn-audience=${vpnAudience}`,
   `seis-wg-port=${vpnPort}`,
@@ -133,6 +136,7 @@ if (!apply) {
       peerCount: vpnPeers.length
     },
     publicKey: publicKeyPath,
+    privateKey: displayPath(privateKeyPath),
     startupScript: relative(startupScript),
     applyCommand: "npm run cloud:gcp:server:apply -- --project <project> --ssh-source-range <your-public-ip>/32 --vpn-source-range <vpn-client-public-ip-ranges> --vpn-peer '<name>|<client-public-key>|10.44.0.2/32'",
     commands: {
@@ -154,25 +158,29 @@ if (!apply) {
 
 runChecked(enableServicesCommand);
 
-const existingFirewall = run("gcloud", [
-  "compute", "firewall-rules", "describe", firewallRule,
-  "--project", project,
-  "--format=value(name)"
-], { allowFailure: true }).stdout.trim();
-
-if (!existingFirewall) {
+const existingFirewall = describeFirewallRule(firewallRule);
+if (!existingFirewall.exists) {
   runChecked(firewallCommand);
+} else {
+  assertFirewallRule(existingFirewall.payload, {
+    label: "SSH",
+    expectedAllow: "tcp:22",
+    expectedSourceRange: sshSourceRange,
+    expectedTag: networkTag
+  });
 }
 
 if (vpn === "wireguard") {
-  const existingVpnFirewall = run("gcloud", [
-    "compute", "firewall-rules", "describe", vpnFirewallRule,
-    "--project", project,
-    "--format=value(name)"
-  ], { allowFailure: true }).stdout.trim();
-
-  if (!existingVpnFirewall) {
+  const existingVpnFirewall = describeFirewallRule(vpnFirewallRule);
+  if (!existingVpnFirewall.exists) {
     runChecked(vpnFirewallCommand);
+  } else {
+    assertFirewallRule(existingVpnFirewall.payload, {
+      label: "WireGuard",
+      expectedAllow: `udp:${vpnPort}`,
+      expectedSourceRange: vpnSourceRange,
+      expectedTag: networkTag
+    });
   }
 }
 
@@ -205,7 +213,7 @@ console.log(JSON.stringify({
     "Host seis-gcp-cloud",
     `  HostName ${externalIp}`,
     `  User ${sshUser}`,
-    "  IdentityFile ~/.ssh/id_ed25519_seis_codex",
+    `  IdentityFile ${displayPath(privateKeyPath)}`,
     "  IdentitiesOnly yes",
     "  ServerAliveInterval 30",
     "  ServerAliveCountMax 3"
@@ -214,7 +222,7 @@ console.log(JSON.stringify({
     "Host seis-gcp-cloud-vpn",
     "  HostName 10.44.0.1",
     `  User ${sshUser}`,
-    "  IdentityFile ~/.ssh/id_ed25519_seis_codex",
+    `  IdentityFile ${displayPath(privateKeyPath)}`,
     "  IdentitiesOnly yes",
     "  ServerAliveInterval 30",
     "  ServerAliveCountMax 3"
@@ -278,11 +286,75 @@ function run(command, commandArgs, options = {}) {
   };
 }
 
+function describeFirewallRule(ruleName) {
+  const result = run("gcloud", [
+    "compute", "firewall-rules", "describe", ruleName,
+    "--project", project,
+    "--format=json"
+  ], { allowFailure: true });
+
+  return {
+    exists: result.status === 0,
+    payload: parseJson(result.stdout, {})
+  };
+}
+
+function assertFirewallRule(payload, { label, expectedAllow, expectedSourceRange, expectedTag }) {
+  const problems = [];
+  const sourceRanges = Array.isArray(payload.sourceRanges) ? payload.sourceRanges : [];
+  const targetTags = Array.isArray(payload.targetTags) ? payload.targetTags : [];
+
+  if (!firewallAllows(payload, expectedAllow)) problems.push(`missing ${expectedAllow}`);
+  if (!targetTags.includes(expectedTag)) problems.push(`missing target tag ${expectedTag}`);
+  if (hasBroadCidr(sourceRanges.join(","))) problems.push("uses a broad source range");
+  const requestedSourceRanges = String(expectedSourceRange || "")
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  for (const requestedRange of requestedSourceRanges) {
+    if (!sourceRanges.includes(requestedRange)) problems.push(`missing requested source range ${requestedRange}`);
+  }
+
+  if (problems.length > 0) {
+    failApply(`${label} firewall rule ${payload.name || "(unknown)"} is not safe to reuse: ${problems.join(", ")}.`);
+  }
+}
+
+function firewallAllows(payload, expectedAllow) {
+  if (!Array.isArray(payload.allowed)) return false;
+  const allowed = payload.allowed.flatMap((entry) => (entry.ports || []).map((port) => `${entry.IPProtocol}:${port}`));
+  return allowed.includes(expectedAllow);
+}
+
+function failApply(message) {
+  console.error("SEIS GCP cloud server apply refused:");
+  console.error(`- ${message}`);
+  process.exit(1);
+}
+
+function parseJson(text, fallback) {
+  try {
+    return text ? JSON.parse(text) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 function resolvePath(input) {
   if (input.startsWith("~/")) {
     return resolve(process.env.HOME || "", input.slice(2));
   }
   return resolve(input);
+}
+
+function privateKeyPathFromPublicKeyPath(input) {
+  return input.endsWith(".pub") ? input.slice(0, -4) : input;
+}
+
+function displayPath(input) {
+  const home = process.env.HOME || "";
+  if (home && input.startsWith(`${home}/`)) return `~/${input.slice(home.length + 1)}`;
+  return input;
 }
 
 function relative(path) {
@@ -310,7 +382,16 @@ function isValidPeer(peer) {
   return !extra
     && /^[A-Za-z0-9_.-]+$/.test(name || "")
     && /^[A-Za-z0-9+/=]{40,60}$/.test(key || "")
-    && /^10\.44\.0\.[0-9]{1,3}\/32$/.test(address || "");
+    && isValidWireGuardPeerAddress(address || "");
+}
+
+function isValidWireGuardPeerAddress(value) {
+  const [ip, prefix, extra] = String(value || "").split("/");
+  if (extra || prefix !== "32") return false;
+  const parts = ip.split(".");
+  if (parts.length !== 4 || parts[0] !== "10" || parts[1] !== "44" || parts[2] !== "0") return false;
+  const peerOctet = Number(parts[3]);
+  return Number.isInteger(peerOctet) && peerOctet >= 2 && peerOctet <= 254;
 }
 
 function hasBroadCidr(value) {
