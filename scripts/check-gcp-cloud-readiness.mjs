@@ -8,6 +8,8 @@ const zone = args.zone || process.env.GCP_ZONE || "us-central1-a";
 const instance = args.instance || process.env.GCP_INSTANCE || "seis-cloud-dev";
 const sshFirewallRule = args["ssh-firewall-rule"] || "seis-allow-ssh-codex";
 const vpnFirewallRule = args["vpn-firewall-rule"] || "seis-allow-wireguard-vpn";
+const networkTag = args["network-tag"] || "seis-codex-ssh";
+const vpnPort = args["vpn-port"] || process.env.SEIS_VPN_PORT || "51820";
 const requireReady = Boolean(args["require-ready"]);
 
 if (args.help) {
@@ -138,13 +140,18 @@ if (checks.gcloud.available && project && checks.computeApi.enabled) {
     rawStatus: instanceResult.status
   };
   if (!checks.instance.exists) blockers.push("instance-missing");
+  if (checks.instance.exists && checks.instance.status !== "RUNNING") blockers.push("instance-not-running");
 
   checks.sshFirewall = firewallReadiness(sshFirewallRule, "tcp:22");
   if (!checks.sshFirewall.exists) blockers.push("ssh-firewall-missing");
+  if (checks.sshFirewall.exists && !checks.sshFirewall.allowsExpectedTraffic) blockers.push("ssh-firewall-wrong-port");
+  if (checks.sshFirewall.exists && !checks.sshFirewall.targetsInstanceTag) blockers.push("ssh-firewall-wrong-target-tag");
   if (hasBroadCidr(checks.sshFirewall.sourceRanges)) blockers.push("ssh-firewall-too-broad");
 
-  checks.vpnFirewall = firewallReadiness(vpnFirewallRule, "udp:51820");
+  checks.vpnFirewall = firewallReadiness(vpnFirewallRule, `udp:${vpnPort}`);
   if (!checks.vpnFirewall.exists) blockers.push("wireguard-firewall-missing");
+  if (checks.vpnFirewall.exists && !checks.vpnFirewall.allowsExpectedTraffic) blockers.push("wireguard-firewall-wrong-port");
+  if (checks.vpnFirewall.exists && !checks.vpnFirewall.targetsInstanceTag) blockers.push("wireguard-firewall-wrong-target-tag");
   if (hasBroadCidr(checks.vpnFirewall.sourceRanges)) blockers.push("wireguard-firewall-too-broad");
 }
 
@@ -167,6 +174,8 @@ const output = {
   project: project || null,
   zone,
   instance,
+  networkTag,
+  vpnPort: Number(vpnPort),
   checks,
   blockers,
   warnings,
@@ -205,6 +214,7 @@ function firewallReadiness(ruleName, expectedAllow) {
     sourceRanges: payload.sourceRanges || [],
     targetTags: payload.targetTags || [],
     allowsExpectedTraffic: allowed.includes(expectedAllow),
+    targetsInstanceTag: Array.isArray(payload.targetTags) && payload.targetTags.includes(networkTag),
     rawStatus: result.status
   };
 }
@@ -218,8 +228,13 @@ function nextActions(items) {
   if (items.includes("billing-disabled")) actions.push("Link an open billing account to the selected Google Cloud project before creating Compute resources.");
   if (items.includes("compute-api-disabled")) actions.push("Enable compute.googleapis.com for the selected project.");
   if (items.includes("instance-missing")) actions.push("Run the guarded apply command after billing/API and source ranges are confirmed.");
+  if (items.includes("instance-not-running")) actions.push("Start the named VM or provision a replacement before declaring the cloud host ready.");
   if (items.includes("ssh-firewall-missing")) actions.push("Create the scoped SSH firewall rule with a narrow source range.");
   if (items.includes("wireguard-firewall-missing")) actions.push("Create the WireGuard UDP firewall rule with workplace/team source ranges.");
+  if (items.includes("ssh-firewall-wrong-port")) actions.push("Update the SSH firewall rule so it allows tcp:22.");
+  if (items.includes("wireguard-firewall-wrong-port")) actions.push(`Update the WireGuard firewall rule so it allows udp:${vpnPort}.`);
+  if (items.includes("ssh-firewall-wrong-target-tag")) actions.push(`Update the SSH firewall rule target tags to include ${networkTag}.`);
+  if (items.includes("wireguard-firewall-wrong-target-tag")) actions.push(`Update the WireGuard firewall rule target tags to include ${networkTag}.`);
   if (items.includes("ssh-firewall-too-broad")) actions.push("Narrow SSH source ranges; do not use 0.0.0.0/0.");
   if (items.includes("wireguard-firewall-too-broad")) actions.push("Narrow WireGuard source ranges; do not use 0.0.0.0/0 or ::/0.");
   return actions;
@@ -287,6 +302,8 @@ Options:
   --instance NAME               VM name. Default: seis-cloud-dev.
   --ssh-firewall-rule NAME      SSH firewall rule name.
   --vpn-firewall-rule NAME      WireGuard firewall rule name.
+  --network-tag TAG             GCE network tag. Default: ${networkTag}.
+  --vpn-port PORT               WireGuard UDP port. Default: ${vpnPort}.
   --require-ready               Exit non-zero when the cloud host is not ready.
 `);
 }
