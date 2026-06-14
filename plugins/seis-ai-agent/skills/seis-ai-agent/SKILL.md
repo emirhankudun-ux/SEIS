@@ -1,11 +1,12 @@
 ---
 name: seis-ai-agent
-description: Use SEIS-AI Agent as the combined SEIS orchestration layer across SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA.
+description: Use SEIS-Agent as the combined SEIS orchestration layer across SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, and SEIS-Data.
 ---
 
-# SEIS-AI Agent
+# SEIS-Agent
 
-Use this skill when the user wants the combined SEIS agent system rather than one isolated lane. Keep development directly inside the SEIS repository.
+Use this skill when the user wants the combined SEIS agent system rather than one
+isolated lane. Keep development directly inside the SEIS repository.
 
 ## Canonical Context
 
@@ -14,10 +15,12 @@ Use this skill when the user wants the combined SEIS agent system rather than on
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis-ai-agent@seis-repo`
 - Composed plugins: `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`
+- Operating identity: `SEIS-Agent`
 
 ## Validation
 
 ```bash
-node scripts/check-seis-ai-agent.mjs
+npm run check:seis-ai-agent
+npm run check:seis-operating-identities
 npm run quality
 ```

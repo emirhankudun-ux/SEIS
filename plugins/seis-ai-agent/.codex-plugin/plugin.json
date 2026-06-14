@@ -22,13 +22,14 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "SEIS-AI Agent",
-    "shortDescription": "One SEIS agent that coordinates cloud, code, design, and data lanes.",
-    "longDescription": "SEIS-AI Agent is the combined orchestration layer for SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA. It keeps long-running SEIS development inside the repository, prepares terminal installation flows for macOS, Windows, Linux, and future app surfaces, and preserves a cinematic design and website roadmap for the eventual public release decision.",
+    "displayName": "SEIS-Agent",
+    "shortDescription": "One SEIS agent that coordinates cloud, code, design, data, memory, and context lanes.",
+    "longDescription": "SEIS-Agent is the combined orchestration layer for SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, and SEIS-Data. It keeps long-running SEIS development inside the repository, prepares terminal installation flows for macOS, Windows, Linux, and future app surfaces, and preserves a cinematic design and website roadmap for the eventual public launch decision.",
     "developerName": "emirhankudun-ux",
     "category": "Developer Tools",
     "capabilities": [
       "Unified SEIS orchestration",
+      "Memory and context governance",
       "SEIS Cloud deployment planning",
       "SEIS-Code engineering governance",
       "SEIS-Design cinematic product direction",

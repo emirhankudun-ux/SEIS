@@ -8,80 +8,80 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 591,
-    "countedBytes": 2783658,
-    "javascriptBytes": 970234,
-    "javascriptPercent": 34.85,
+    "countedFileCount": 592,
+    "countedBytes": 2803142,
+    "javascriptBytes": 982201,
+    "javascriptPercent": 35.04,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1836503,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1874005,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 970234,
-      "percent": 34.85
+      "bytes": 982201,
+      "percent": 35.04
     },
     {
       "language": "JSON",
-      "bytes": 667980,
-      "percent": 24.0
+      "bytes": 668277,
+      "percent": 23.84
     },
     {
       "language": "Python",
-      "bytes": 300868,
-      "percent": 10.81
+      "bytes": 307964,
+      "percent": 10.99
     },
     {
       "language": "Swift",
       "bytes": 278456,
-      "percent": 10.0
+      "percent": 9.93
     },
     {
       "language": "CSS",
       "bytes": 94204,
-      "percent": 3.38
+      "percent": 3.36
     },
     {
       "language": "HTML",
       "bytes": 84633,
-      "percent": 3.04
+      "percent": 3.02
     },
     {
       "language": "Shell",
       "bytes": 66459,
-      "percent": 2.39
+      "percent": 2.37
     },
     {
       "language": "Other",
-      "bytes": 31074,
-      "percent": 1.12
+      "bytes": 31198,
+      "percent": 1.11
     },
     {
       "language": "YAML",
       "bytes": 28998,
-      "percent": 1.04
+      "percent": 1.03
     },
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.04
+      "percent": 1.03
     },
     {
       "language": "Go",
       "bytes": 16367,
-      "percent": 0.59
+      "percent": 0.58
     },
     {
       "language": "Java",
       "bytes": 16110,
-      "percent": 0.58
+      "percent": 0.57
     },
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.57
+      "percent": 0.56
     },
     {
       "language": "Perl",
@@ -121,7 +121,7 @@
     {
       "language": "R",
       "bytes": 7953,
-      "percent": 0.29
+      "percent": 0.28
     },
     {
       "language": "OCaml",
@@ -151,12 +151,12 @@
     {
       "language": "Nim",
       "bytes": 5452,
-      "percent": 0.2
+      "percent": 0.19
     },
     {
       "language": "C",
       "bytes": 5440,
-      "percent": 0.2
+      "percent": 0.19
     },
     {
       "language": "Groovy",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 970234,
-      "percent": 34.85,
+      "bytes": 982201,
+      "percent": 35.04,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 28824,
-      "percent": 1.04,
+      "percent": 1.03,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1776153,
-      "percent": 63.81,
+      "bytes": 1783670,
+      "percent": 63.63,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -625,6 +625,219 @@
       ]
     }
   ],
+  "languageBalanceTargets": {
+    "mode": "multi_platform_real_source_balance",
+    "status": "needs_real_platform_work",
+    "noFillerPolicy": "Do not add filler code only to change GitHub language percentages. Every language must serve a real SEIS purpose.",
+    "targets": [
+      {
+        "id": "apple-swift-ecosystem",
+        "label": "Apple / Swift ecosystem",
+        "bytes": 287757,
+        "percent": 10.27,
+        "minPercent": 25.0,
+        "maxPercent": 30.0,
+        "status": "below_target",
+        "sourceLanguages": [
+          "Swift",
+          "Objective-C",
+          "AppleScript"
+        ],
+        "purpose": "Apple-first app, platform, policy, and native integration code.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "ai-data-python-sql",
+        "label": "AI, Data, Python, SQL",
+        "bytes": 994625,
+        "percent": 35.48,
+        "minPercent": 18.0,
+        "maxPercent": 22.0,
+        "status": "above_target",
+        "sourceLanguages": [
+          "Python",
+          "SQL",
+          "R",
+          "Julia",
+          "Scala",
+          "JSON",
+          "JSON-LD",
+          "Turtle",
+          "SPARQL"
+        ],
+        "purpose": "AI, analytics, memory, context, data contracts, and knowledge governance.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "typescript-javascript-tooling",
+        "label": "TypeScript / JavaScript tooling",
+        "bytes": 1011025,
+        "percent": 36.07,
+        "minPercent": 15.0,
+        "maxPercent": 20.0,
+        "status": "above_target",
+        "sourceLanguages": [
+          "TypeScript",
+          "JavaScript"
+        ],
+        "purpose": "Tooling, web interaction, MCP, automation, and agent surfaces.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "android-jvm",
+        "label": "Android / JVM",
+        "bytes": 23191,
+        "percent": 0.83,
+        "minPercent": 10.0,
+        "maxPercent": 15.0,
+        "status": "below_target",
+        "sourceLanguages": [
+          "Kotlin",
+          "Java",
+          "Groovy",
+          "Clojure"
+        ],
+        "purpose": "Android, JVM validation, and cross-platform policy contracts.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "rust-c-cpp-systems",
+        "label": "Rust / C / C++ systems",
+        "bytes": 29182,
+        "percent": 1.04,
+        "minPercent": 10.0,
+        "maxPercent": 15.0,
+        "status": "below_target",
+        "sourceLanguages": [
+          "Rust",
+          "C",
+          "C++",
+          "Zig"
+        ],
+        "purpose": "Systems, performance, safety, native audits, and low-level contracts.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "go-infrastructure",
+        "label": "Go / Infrastructure",
+        "bytes": 119330,
+        "percent": 4.26,
+        "minPercent": 5.0,
+        "maxPercent": 8.0,
+        "status": "below_target",
+        "sourceLanguages": [
+          "Go",
+          "Shell",
+          "YAML",
+          "HCL",
+          "TOML",
+          "Bicep",
+          "Nix",
+          "CUE",
+          "Rego",
+          "Dockerfile"
+        ],
+        "purpose": "Cloud, CI, deployment, server, policy, and infrastructure automation.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "windows-dotnet",
+        "label": "Windows / .NET",
+        "bytes": 7742,
+        "percent": 0.28,
+        "minPercent": 5.0,
+        "maxPercent": 8.0,
+        "status": "below_target",
+        "sourceLanguages": [
+          "C#",
+          "F#",
+          "Visual Basic",
+          "PowerShell"
+        ],
+        "purpose": "Windows platform and .NET policy contracts.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      },
+      {
+        "id": "html-css-preview",
+        "label": "HTML / CSS previews",
+        "bytes": 178837,
+        "percent": 6.38,
+        "minPercent": 0.0,
+        "maxPercent": 3.0,
+        "status": "above_target",
+        "sourceLanguages": [
+          "HTML",
+          "CSS"
+        ],
+        "purpose": "Docs, demos, previews, and lightweight product surfaces only.",
+        "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target."
+      }
+    ],
+    "unassigned": {
+      "bytes": 151453,
+      "percent": 5.4,
+      "languages": [
+        "ABAP",
+        "AWK",
+        "Ada",
+        "Avro",
+        "Batchfile",
+        "CEL",
+        "CMake",
+        "COBOL",
+        "Cairo",
+        "Common Lisp",
+        "Crystal",
+        "D",
+        "Dart",
+        "Dhall",
+        "Elixir",
+        "Elm",
+        "Emacs Lisp",
+        "Erlang",
+        "Fortran",
+        "GDScript",
+        "GLSL",
+        "GraphQL",
+        "HOCON",
+        "Hack",
+        "Java Properties",
+        "Jsonnet",
+        "Just",
+        "KDL",
+        "Lua",
+        "MATLAB",
+        "Make",
+        "Mermaid",
+        "Meson",
+        "Move",
+        "Nim",
+        "OCaml",
+        "Other",
+        "PHP",
+        "Pascal",
+        "Perl",
+        "PlantUML",
+        "Protocol Buffers",
+        "PureScript",
+        "Q#",
+        "Racket",
+        "ReScript",
+        "ReasonML",
+        "Ruby",
+        "Scheme",
+        "Smalltalk",
+        "Solidity",
+        "Starlark",
+        "Tcl",
+        "V",
+        "WGSL",
+        "WebAssembly Text",
+        "XML",
+        "dotenv"
+      ]
+    }
+  },
   "largestJavaScriptFiles": [
     {
       "path": "apps/web/script.js",
@@ -689,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 610217,
-    "linguist-generated": 2877705
+    "documentation": 617167,
+    "linguist-generated": 2879956
   },
   "requiredLinguistRules": [
     {
@@ -790,10 +1003,11 @@
     "Move translation payloads from JavaScript modules into data files after UI fallback testing.",
     "Keep JavaScript, TypeScript, and Objective-C as separate language panels; Other is every remaining language only.",
     "Promote stable Node automation scripts to Python or Go only when the behavior is covered by checks.",
+    "Grow Apple, Android, systems, Go/infrastructure, and Windows lanes through real SEIS features, not filler language-percentage code.",
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "da5726d140cf45922b1980e870e8f85537c648c742d69bd94a5a445645040293",
+    "hash": "4132d5dd057b1b8f61b261d36f48a34fe9de48eaea7325f60674604609e5d660",
     "algorithm": "sha256"
   }
 }

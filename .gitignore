@@ -28,6 +28,9 @@ coverage/
 *.lcov
 .nyc_output/
 
+# Generated local cloud/static check scratch
+.dist.seis-cloud-check.*/
+
 # OS
 Thumbs.db
 

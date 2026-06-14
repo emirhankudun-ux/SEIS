@@ -1,39 +1,58 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 591
-- Counted bytes: 2783658
-- JavaScript: 970234 bytes (34.85%)
+- Counted files: 592
+- Counted bytes: 2803142
+- JavaScript: 982201 bytes (35.04%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1836503
+- Additional non-JavaScript bytes needed for strict target: 1874005
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 970234 | 34.85% | JavaScript |
-| TypeScript | 28824 | 1.04% | TypeScript |
+| JavaScript | 982201 | 35.04% | JavaScript |
+| TypeScript | 28824 | 1.03% | TypeScript |
 | Objective-C | 8447 | 0.3% | Objective-C |
-| Other | 1776153 | 63.81% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1783670 | 63.63% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+
+## GitHub Language Balance Targets
+
+- Mode: `multi_platform_real_source_balance`
+- Status: `needs_real_platform_work`
+- No-filler policy: Do not add filler code only to change GitHub language percentages. Every language must serve a real SEIS purpose.
+
+| Platform family | Current | Target | Status | Source languages |
+| --- | ---: | ---: | --- | --- |
+| Apple / Swift ecosystem | 10.27% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 35.48% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 36.07% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Android / JVM | 0.83% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
+| Rust / C / C++ systems | 1.04% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
+| Go / Infrastructure | 4.26% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Windows / .NET | 0.28% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
+| HTML / CSS previews | 6.38% | 0.0-3.0% | `above_target` | HTML, CSS |
+
+Unassigned counted languages: 5.4% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 970234 | 34.85% |
-| JSON | 667980 | 24.0% |
-| Python | 300868 | 10.81% |
-| Swift | 278456 | 10.0% |
-| CSS | 94204 | 3.38% |
-| HTML | 84633 | 3.04% |
-| Shell | 66459 | 2.39% |
-| Other | 31074 | 1.12% |
-| YAML | 28998 | 1.04% |
-| TypeScript | 28824 | 1.04% |
-| Go | 16367 | 0.59% |
-| Java | 16110 | 0.58% |
-| Scheme | 15747 | 0.57% |
+| JavaScript | 982201 | 35.04% |
+| JSON | 668277 | 23.84% |
+| Python | 307964 | 10.99% |
+| Swift | 278456 | 9.93% |
+| CSS | 94204 | 3.36% |
+| HTML | 84633 | 3.02% |
+| Shell | 66459 | 2.37% |
+| Other | 31198 | 1.11% |
+| YAML | 28998 | 1.03% |
+| TypeScript | 28824 | 1.03% |
+| Go | 16367 | 0.58% |
+| Java | 16110 | 0.57% |
+| Scheme | 15747 | 0.56% |
 | Perl | 13916 | 0.5% |
 | Ruby | 13442 | 0.48% |
 | Rust | 11825 | 0.42% |
@@ -41,7 +60,7 @@
 | PHP | 8471 | 0.3% |
 | Objective-C | 8447 | 0.3% |
 | SQL | 8177 | 0.29% |
-| R | 7953 | 0.29% |
+| R | 7953 | 0.28% |
 | OCaml | 7550 | 0.27% |
 | Tcl | 7290 | 0.26% |
 | Racket | 7245 | 0.26% |
@@ -96,4 +115,5 @@
 - Move translation payloads from JavaScript modules into data files after UI fallback testing.
 - Keep JavaScript, TypeScript, and Objective-C as separate language panels; Other is every remaining language only.
 - Promote stable Node automation scripts to Python or Go only when the behavior is covered by checks.
+- Grow Apple, Android, systems, Go/infrastructure, and Windows lanes through real SEIS features, not filler language-percentage code.
 - Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages.

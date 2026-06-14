@@ -69,10 +69,16 @@ tools, and productivity systems live in a separate ecosystem stack.
 
 | Surface | Canonical record | Rule |
 | --- | --- | --- |
-| GitHub source languages | [`reports/language-distribution.md`](./reports/language-distribution.md) | Count real source languages only. |
+| GitHub source languages | [`reports/language-distribution.md`](./reports/language-distribution.md) | Count real source languages only and track platform-family balance without filler code. |
 | Full-stack language matrix | [`reports/fullstack-language-matrix.md`](./reports/fullstack-language-matrix.md) | Route source/config languages by platform layer. |
 | SEIS ecosystem stack | [`reports/seis-technology-stack.md`](./reports/seis-technology-stack.md) | Show frameworks, tools, clouds, databases, and design systems outside the language bar. |
 | SEIS AGI system | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Govern agent systems, memory, planning, research automation, MCP, skills, plugins, token efficiency, and the 90-day release window. |
+
+The long-term GitHub language profile should signal a real multi-platform
+ecosystem: Apple/Swift 25-30%, AI/Data/Python/SQL 18-22%,
+TypeScript/JavaScript tooling 15-20%, Android/JVM 10-15%, Rust/C/C++ systems
+10-15%, Go/Infrastructure 5-8%, Windows/.NET 5-8%, and HTML/CSS previews 0-3%.
+Do not add filler code to change percentages.
 
 Run `npm run check:seis-technology-stack` after changing stack categories and
 `npm run check:seis-agi-system` after changing agent, memory, planning,
@@ -99,6 +105,7 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis-ai`](./packages/seis-ai) | AI agent CLI, MCP server, audit tools, prompts, resources, and tests |
 | [`mcp`](./mcp) | SEIS MCP server entrypoints and integration surface |
 | [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
+| [`plugins/seis-ai-agent`](./plugins/seis-ai-agent) | SEIS-Agent unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation |
 | [`plugins/seis-cloud`](./plugins/seis-cloud) | Dedicated SEIS Cloud deployment, server-target, and cloud-readiness plugin package |
 | [`plugins/seis-code`](./plugins/seis-code) | Dedicated SEIS-Code engineering plugin package |
 | [`plugins/seis-design`](./plugins/seis-design) | Dedicated SEIS-Design product and design-system plugin package |
@@ -160,6 +167,8 @@ Start with:
 - [`SECURITY.md`](./SECURITY.md) for private vulnerability reporting
 - [`LICENSE`](./LICENSE) for the MIT license
 - [`AGENTS.md`](./AGENTS.md) for AI operating instructions inside this repo
+- [`CODEX.md`](./CODEX.md) for Codex Cloud, branch, PR, SSH, and quality workflow
+- [`CLAUDE.md`](./CLAUDE.md) for Claude Code review and MCP workflow
 
 Good contributions are small, reviewed, reversible, documented, and aligned with
 the long-term platform model.

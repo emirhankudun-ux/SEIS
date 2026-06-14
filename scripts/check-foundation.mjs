@@ -2,6 +2,8 @@ import { existsSync, readFileSync } from "node:fs";
 
 const requiredFiles = [
   "AGENTS.md",
+  "CODEX.md",
+  "CLAUDE.md",
   "README.md",
   "CONTRIBUTING.md",
   "SECURITY.md",
@@ -35,8 +37,14 @@ const requiredTextChecks = [
   ["README.md", "MCP servers"],
   ["README.md", "first-run-quickstart.md"],
   ["README.md", "GitHub Growth Strategy"],
+  ["README.md", "plugins/seis-ai-agent"],
+  ["README.md", "Do not add filler code"],
   ["AGENTS.md", "Open Source Platform Direction"],
   ["AGENTS.md", "active GitHub development surface for SEIS"],
+  ["CODEX.md", "GitHub -> Codex Cloud -> Branch -> Commit -> Pull Request -> Review -> Merge"],
+  ["CODEX.md", "SEIS-Agent"],
+  ["CODEX.md", "Ed25519"],
+  ["CLAUDE.md", "Claude Code Guide"],
   ["docs/development/first-run-quickstart.md", "npm run quality"],
   ["docs/development/first-run-quickstart.md", "./script/build_and_run.sh --verify"],
   ["docs/development/first-run-quickstart.md", "Do not install Swift, Xcode, Android Studio"],
@@ -51,6 +59,8 @@ const requiredTextChecks = [
   ["docs/governance/open-source-governance.md", "GitHub Update Rule"],
   ["docs/governance/open-source-governance.md", ".github/workflows/codeql.yml"],
   ["docs/governance/seis-supreme-v12-constitution.md", "open-source AI-native"],
+  ["docs/polyglot/language-balance-plan.md", "GitHub Language Balance"],
+  ["docs/polyglot/language-balance-plan.md", "Do not add filler code only to change language percentages"],
   ["package.json", "\"check:open-source-governance\""],
   [".github/workflows/ci.yml", "npm run check:open-source-governance"],
   [".github/workflows/seis-open-source-governance.yml", "SEIS Open Source Governance"]

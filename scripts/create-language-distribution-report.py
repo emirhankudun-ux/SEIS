@@ -17,6 +17,73 @@ CHECK_MODE = "--check" in sys.argv
 TARGET_JAVASCRIPT_PERCENT = 21.0
 FOCUS_LANGUAGE_SPLIT = ("JavaScript", "TypeScript", "Objective-C")
 
+LANGUAGE_BALANCE_TARGETS = [
+    {
+        "id": "apple-swift-ecosystem",
+        "label": "Apple / Swift ecosystem",
+        "minPercent": 25.0,
+        "maxPercent": 30.0,
+        "languages": ["Swift", "Objective-C", "AppleScript"],
+        "purpose": "Apple-first app, platform, policy, and native integration code.",
+    },
+    {
+        "id": "ai-data-python-sql",
+        "label": "AI, Data, Python, SQL",
+        "minPercent": 18.0,
+        "maxPercent": 22.0,
+        "languages": ["Python", "SQL", "R", "Julia", "Scala", "JSON", "JSON-LD", "Turtle", "SPARQL"],
+        "purpose": "AI, analytics, memory, context, data contracts, and knowledge governance.",
+    },
+    {
+        "id": "typescript-javascript-tooling",
+        "label": "TypeScript / JavaScript tooling",
+        "minPercent": 15.0,
+        "maxPercent": 20.0,
+        "languages": ["TypeScript", "JavaScript"],
+        "purpose": "Tooling, web interaction, MCP, automation, and agent surfaces.",
+    },
+    {
+        "id": "android-jvm",
+        "label": "Android / JVM",
+        "minPercent": 10.0,
+        "maxPercent": 15.0,
+        "languages": ["Kotlin", "Java", "Groovy", "Clojure"],
+        "purpose": "Android, JVM validation, and cross-platform policy contracts.",
+    },
+    {
+        "id": "rust-c-cpp-systems",
+        "label": "Rust / C / C++ systems",
+        "minPercent": 10.0,
+        "maxPercent": 15.0,
+        "languages": ["Rust", "C", "C++", "Zig", "Assembly"],
+        "purpose": "Systems, performance, safety, native audits, and low-level contracts.",
+    },
+    {
+        "id": "go-infrastructure",
+        "label": "Go / Infrastructure",
+        "minPercent": 5.0,
+        "maxPercent": 8.0,
+        "languages": ["Go", "Shell", "YAML", "HCL", "TOML", "Bicep", "Nix", "CUE", "Rego", "Dockerfile"],
+        "purpose": "Cloud, CI, deployment, server, policy, and infrastructure automation.",
+    },
+    {
+        "id": "windows-dotnet",
+        "label": "Windows / .NET",
+        "minPercent": 5.0,
+        "maxPercent": 8.0,
+        "languages": ["C#", "F#", "Visual Basic", "PowerShell"],
+        "purpose": "Windows platform and .NET policy contracts.",
+    },
+    {
+        "id": "html-css-preview",
+        "label": "HTML / CSS previews",
+        "minPercent": 0.0,
+        "maxPercent": 3.0,
+        "languages": ["HTML", "CSS"],
+        "purpose": "Docs, demos, previews, and lightweight product surfaces only.",
+    },
+]
+
 SKIP_DIRS = {
     ".git",
     "node_modules",
@@ -31,6 +98,10 @@ SKIP_DIRS = {
     ".turbo",
     "__pycache__",
 }
+
+SKIP_DIR_PREFIXES = (
+    ".dist.seis-cloud-check.",
+)
 
 BINARY_EXTENSIONS = {
     ".apng",
@@ -312,6 +383,7 @@ def build_report(rules):
 
     javascript_bytes = by_language.get("JavaScript", 0)
     focus_split = build_focus_language_split(by_language, total_bytes)
+    language_balance = build_language_balance(by_language, total_bytes)
     required_non_js_bytes = required_non_javascript_bytes(javascript_bytes, total_bytes)
     snapshot_hash = hash_counted_files(counted_files)
     largest_js = [
@@ -345,6 +417,7 @@ def build_report(rules):
         "summary": summary,
         "languages": languages,
         "githubLanguagePanelSplit": focus_split,
+        "languageBalanceTargets": language_balance,
         "largestJavaScriptFiles": largest_js,
         "excludedBytesByReason": dict(sorted(excluded_counts.items())),
         "requiredLinguistRules": [
@@ -357,6 +430,7 @@ def build_report(rules):
             "Move translation payloads from JavaScript modules into data files after UI fallback testing.",
             "Keep JavaScript, TypeScript, and Objective-C as separate language panels; Other is every remaining language only.",
             "Promote stable Node automation scripts to Python or Go only when the behavior is covered by checks.",
+            "Grow Apple, Android, systems, Go/infrastructure, and Windows lanes through real SEIS features, not filler language-percentage code.",
             "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages.",
         ],
         "sourceSnapshot": {
@@ -382,6 +456,7 @@ def iter_files():
             dirname
             for dirname in dirs
             if dirname not in SKIP_DIRS
+            and not dirname.startswith(SKIP_DIR_PREFIXES)
             and not dirname.endswith(".app")
             and not dirname.endswith(".xcarchive")
         )
@@ -406,12 +481,17 @@ def git_source_paths():
 
 
 def has_skipped_dir(rel_path):
-    return bool(set(rel_path.split("/")) & SKIP_DIRS)
+    return bool(set(rel_path.split("/")) & SKIP_DIRS) or any(
+        part.startswith(SKIP_DIR_PREFIXES)
+        for part in rel_path.split("/")
+    )
 
 
 def exclusion_reason(rel_path, file_path, rules):
     path_parts = set(rel_path.split("/"))
     if path_parts & SKIP_DIRS:
+        return "workspace-ignore"
+    if any(part.startswith(SKIP_DIR_PREFIXES) for part in rel_path.split("/")):
         return "workspace-ignore"
     if file_path.suffix.lower() in BINARY_EXTENSIONS:
         return "binary"
@@ -504,6 +584,50 @@ def build_focus_language_split(by_language, total_bytes):
     return focus_entries
 
 
+def build_language_balance(by_language, total_bytes):
+    targets = []
+    assigned_languages = set()
+    for target in LANGUAGE_BALANCE_TARGETS:
+        source_languages = [language for language in target["languages"] if by_language.get(language, 0) > 0]
+        byte_count = sum(by_language.get(language, 0) for language in target["languages"])
+        current_percent = percent(byte_count, total_bytes)
+        if current_percent < target["minPercent"]:
+            status = "below_target"
+        elif current_percent > target["maxPercent"]:
+            status = "above_target"
+        else:
+            status = "within_target"
+        assigned_languages.update(target["languages"])
+        targets.append(
+            {
+                "id": target["id"],
+                "label": target["label"],
+                "bytes": byte_count,
+                "percent": current_percent,
+                "minPercent": target["minPercent"],
+                "maxPercent": target["maxPercent"],
+                "status": status,
+                "sourceLanguages": source_languages,
+                "purpose": target["purpose"],
+                "noFillerRule": "Only product, platform, automation, security, data, design, or governance work can move this target.",
+            }
+        )
+
+    unassigned_languages = sorted(language for language, byte_count in by_language.items() if byte_count > 0 and language not in assigned_languages)
+    unassigned_bytes = sum(by_language.get(language, 0) for language in unassigned_languages)
+    return {
+        "mode": "multi_platform_real_source_balance",
+        "status": "within_target" if all(target["status"] == "within_target" for target in targets) else "needs_real_platform_work",
+        "noFillerPolicy": "Do not add filler code only to change GitHub language percentages. Every language must serve a real SEIS purpose.",
+        "targets": targets,
+        "unassigned": {
+            "bytes": unassigned_bytes,
+            "percent": percent(unassigned_bytes, total_bytes),
+            "languages": unassigned_languages,
+        },
+    }
+
+
 def runtime_readiness():
     runtimes = []
     for runtime_id, command in RUNTIME_COMMANDS:
@@ -557,6 +681,36 @@ def build_markdown(report):
         if len(entry["sourceLanguages"]) > 12:
             source_languages += f", +{len(entry['sourceLanguages']) - 12} more"
         lines.append(f"| {entry['language']} | {entry['bytes']} | {entry['percent']}% | {source_languages} |")
+
+    balance = report["languageBalanceTargets"]
+    lines.extend([
+        "",
+        "## GitHub Language Balance Targets",
+        "",
+        f"- Mode: `{balance['mode']}`",
+        f"- Status: `{balance['status']}`",
+        f"- No-filler policy: {balance['noFillerPolicy']}",
+        "",
+        "| Platform family | Current | Target | Status | Source languages |",
+        "| --- | ---: | ---: | --- | --- |",
+    ])
+
+    for target in balance["targets"]:
+        source_languages = ", ".join(target["sourceLanguages"]) or "not yet counted"
+        lines.append(
+            f"| {target['label']} | {target['percent']}% | "
+            f"{target['minPercent']}-{target['maxPercent']}% | `{target['status']}` | {source_languages} |"
+        )
+
+    unassigned = balance["unassigned"]
+    if unassigned["languages"]:
+        source_languages = ", ".join(unassigned["languages"][:12])
+        if len(unassigned["languages"]) > 12:
+            source_languages += f", +{len(unassigned['languages']) - 12} more"
+        lines.extend([
+            "",
+            f"Unassigned counted languages: {unassigned['percent']}% ({source_languages}).",
+        ])
 
     lines.extend([
         "",
@@ -624,6 +778,25 @@ def check_report(report, markdown):
     for pattern, attribute in REQUIRED_LINGUIST_RULES:
         if not any(rule["pattern"] == pattern and attribute in rule["attributes"] for rule in rules):
             failures.append(f"missing .gitattributes rule: {pattern} {attribute}")
+
+    balance = report.get("languageBalanceTargets", {})
+    target_ids = {target["id"] for target in balance.get("targets", [])}
+    for expected in [
+        "apple-swift-ecosystem",
+        "ai-data-python-sql",
+        "typescript-javascript-tooling",
+        "android-jvm",
+        "rust-c-cpp-systems",
+        "go-infrastructure",
+        "windows-dotnet",
+        "html-css-preview",
+    ]:
+        if expected not in target_ids:
+            failures.append(f"missing language balance target: {expected}")
+    if "Do not add filler code" not in balance.get("noFillerPolicy", ""):
+        failures.append("language balance report must preserve the no-filler policy")
+    if "GitHub Language Balance Targets" not in markdown:
+        failures.append("language distribution markdown must include language balance targets")
 
     if not REPORT_JSON.exists():
         failures.append(f"missing report: {relative(REPORT_JSON)}")

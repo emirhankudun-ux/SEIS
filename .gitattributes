@@ -4,6 +4,7 @@ reports/** linguist-generated=true
 data/** linguist-generated=true
 content/development/*.json linguist-generated=true
 apps/web/src/i18n/locales.js linguist-generated=true
+.dist.seis-cloud-check.*/** linguist-generated=true
 
 # Local imported/snapshot copies are useful for comparison but not source language signal.
 SE*S/** linguist-vendored=true

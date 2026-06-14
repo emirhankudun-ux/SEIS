@@ -63,6 +63,24 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 - New features must pass architecture fit, long-term maintainability, security,
   and documentation checks before they become part of the platform.
 
+## Primary SEIS Identities
+
+- SEIS — ecosystem governance, architecture, documentation, quality, and
+  open-source operating model.
+- SEIS-Agent — unified orchestration across MCP, skills, plugins, automation,
+  memory, context, cloud, code, design, and data.
+- SEIS-Cloud — SSH-enabled, VPN-ready engineering cloud and public cloud
+  readiness.
+- SEIS-Code — implementation, tests, CI, MCP/plugin code, and automation.
+- SEIS-Design — premium, minimal, cinematic, accessible product and design
+  systems.
+- SEIS-Data — memory, context systems, analytics, reports, knowledge governance,
+  source intake, and provenance.
+
+Canonical identity records live in
+`data/seis-operating-identities.json` and
+`docs/governance/seis-operating-identities.md`.
+
 ## Aktif Lokal IDE / Design/Creator Stack
 
 - Antigravity IDE — öncelikli çalışma yüzeyi

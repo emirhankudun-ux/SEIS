@@ -1,0 +1,57 @@
+{
+  "id": "seis-operating-identities",
+  "version": 1,
+  "updatedAt": "2026-06-14",
+  "canonicalRepository": "emirhankudun-ux/SEIS",
+  "workflow": "GitHub -> Codex Cloud -> Branch -> Commit -> Pull Request -> Review -> Merge",
+  "security": {
+    "sshKeyType": "Ed25519",
+    "privilegeModel": "least-privilege",
+    "secretsPolicy": "never expose credentials, secrets, private keys, certificates, tokens, provisioning files, or .env contents"
+  },
+  "identities": [
+    {
+      "name": "SEIS",
+      "kind": "ecosystem",
+      "repoSurface": ".",
+      "scope": "open-source governance, architecture, documentation, quality, and ecosystem coherence",
+      "qualityGate": "npm run check:open-source-governance"
+    },
+    {
+      "name": "SEIS-Agent",
+      "kind": "unified-agent",
+      "repoSurface": "plugins/seis-ai-agent",
+      "installId": "seis-ai-agent@seis-repo",
+      "scope": "unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation",
+      "qualityGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "name": "SEIS-Cloud",
+      "kind": "cloud-lane",
+      "repoSurface": "plugins/seis-cloud",
+      "scope": "SSH-enabled and VPN-ready engineering cloud for workplaces and teams, plus public cloud readiness for everyone-facing surfaces",
+      "qualityGate": "npm run check:ssh-vpn-cloud-server"
+    },
+    {
+      "name": "SEIS-Code",
+      "kind": "engineering-lane",
+      "repoSurface": "plugins/seis-code",
+      "scope": "architecture-aware implementation, tests, CI, MCP/plugin code, and repository automation",
+      "qualityGate": "npm run check:seis-specialist-plugins"
+    },
+    {
+      "name": "SEIS-Design",
+      "kind": "design-lane",
+      "repoSurface": "plugins/seis-design",
+      "scope": "premium, minimal, cinematic, accessible, responsive, and consistent product and design-system work",
+      "qualityGate": "npm run check:seis-specialist-plugins"
+    },
+    {
+      "name": "SEIS-Data",
+      "kind": "data-memory-lane",
+      "repoSurface": "plugins/seis-data",
+      "scope": "memory, context systems, analytics, reports, source intake, knowledge governance, and provenance",
+      "qualityGate": "npm run check:seis-specialist-plugins"
+    }
+  ]
+}
