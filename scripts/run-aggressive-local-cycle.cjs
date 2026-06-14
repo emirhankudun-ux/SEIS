@@ -91,7 +91,7 @@ const report = {
   id: "seis-aggressive-local-run-report",
   version: 1,
   mode: "safe-local-aggressive-cycle",
-  generatedAt: "2026-06-06T00:00:00.000Z",
+  generatedAt: new Date().toISOString(),
   sourcePlan: "content/development/aggressive-execution-plan.json",
   sprintWindowMinutes: plan.sprintWindowMinutes,
   publishPosture: {
