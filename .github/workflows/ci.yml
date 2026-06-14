@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, UIXAppTTR]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, UIXAppTTR]
 
 jobs:
   # ── 1. Governance quality checks ──────────────────────────────────────────
@@ -94,9 +94,6 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-
-      - name: Build static release
-        run: npm run build:static
 
       - name: Run E2E tests
         run: npm run test:e2e
