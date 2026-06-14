@@ -8,5 +8,5 @@ apps/web/src/i18n/locales.js linguist-generated=true
 # Local imported/snapshot copies are useful for comparison but not source language signal.
 SE*S/** linguist-vendored=true
 
-# Windows batch files must use CRLF line endings for correct GOTO/CALL label parsing.
-*.bat text eol=crlf
+# Windows batch files need binary treatment to preserve CRLF on any platform.
+*.bat -text

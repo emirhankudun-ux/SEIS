@@ -633,17 +633,10 @@ html[data-motion-mode="cinematic"] .hero {
   .gap-grid,
   .system-grid,
   .marketplace-layout,
+  .github-model-layout,
   .artwork-grid,
   .timeline {
     grid-template-columns: 1fr;
-  }
-
-  .contact-section {
-    grid-template-columns: 1fr;
-  }
-
-  .contact-actions {
-    justify-content: flex-start;
   }
 
   .header-actions,
@@ -793,5 +786,13 @@ html[data-motion-mode="cinematic"] .hero {
   .portfolio-project-grid,
   .portfolio-service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-section {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-actions {
+    justify-content: flex-start;
   }
 }
