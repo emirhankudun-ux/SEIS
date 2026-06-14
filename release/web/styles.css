@@ -668,6 +668,10 @@ html[data-motion-mode="cinematic"] .hero {
     opacity: 1;
     transform: none;
   }
+
+  [data-cinematic-field] {
+    display: none;
+  }
 }
 
 .hero-actions {
