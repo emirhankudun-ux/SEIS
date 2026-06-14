@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 925571,
+      "githubBytes": 970234,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -191,7 +191,7 @@
       "order": 17,
       "label": "Shell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 61251,
+      "githubBytes": 66459,
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
         "scripts/polyglot-check.sh"
@@ -201,7 +201,7 @@
       "order": 18,
       "label": "PowerShell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 2176,
+      "githubBytes": 2427,
       "entrypoints": [
         "polyglot/powershell/SeisReleasePolicy.ps1"
       ]

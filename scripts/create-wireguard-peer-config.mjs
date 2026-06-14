@@ -17,7 +17,7 @@ const allowedIps = args["allowed-ips"] || "10.44.0.1/32";
 const failures = [];
 if (!/^[A-Za-z0-9_.-]+$/.test(name)) failures.push("Missing or invalid --name.");
 if (!/^[A-Za-z0-9+/=]{40,60}$/.test(publicKey)) failures.push("Missing or invalid --public-key.");
-if (!/^10\.44\.0\.[0-9]{1,3}\/32$/.test(address)) failures.push("Missing or invalid --address. Use 10.44.0.x/32.");
+if (!isValidWireGuardPeerAddress(address)) failures.push("Missing or invalid --address. Use 10.44.0.2-254/32.");
 
 if (failures.length > 0) {
   console.error("SEIS WireGuard peer config failed:");
@@ -75,6 +75,13 @@ function shellQuote(value) {
   return `'${String(value).replace(/'/g, "'\\''")}'`;
 }
 
+function isValidWireGuardPeerAddress(value) {
+  const match = /^10\.44\.0\.([0-9]{1,3})\/32$/.exec(value || "");
+  if (!match) return false;
+  const octet = Number(match[1]);
+  return Number.isInteger(octet) && octet >= 2 && octet <= 254;
+}
+
 function printHelp() {
   console.log(`Usage:
   npm run vpn:wireguard:peer -- --name USER --public-key CLIENT_PUBLIC_KEY --address 10.44.0.2/32
@@ -82,7 +89,7 @@ function printHelp() {
 Options:
   --name USER                 Peer label used in VM metadata.
   --public-key KEY            Client WireGuard public key.
-  --address CIDR              Client VPN address, for example 10.44.0.2/32.
+  --address CIDR              Client VPN address, for example 10.44.0.2/32. Range: 10.44.0.2-254/32.
   --server-public-key KEY     Optional server public key for the client template.
   --endpoint HOST:PORT        Optional server endpoint for the client template.
   --allowed-ips CIDR          Optional route. Default: 10.44.0.1/32.

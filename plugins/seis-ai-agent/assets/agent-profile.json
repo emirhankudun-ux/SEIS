@@ -1,0 +1,43 @@
+{
+  "id": "seis-ai-agent",
+  "displayName": "SEIS-AI Agent",
+  "version": 1,
+  "status": "development",
+  "intent": "Unify SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA into one repo-contained AI-native agent system before any public website or release decision.",
+  "canonicalRepo": "emirhankudun-ux/SEIS",
+  "canonicalBranch": "main",
+  "repoMarketplace": "seis-repo",
+  "installId": "seis-ai-agent@seis-repo",
+  "composedPlugins": [
+    "seis",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data"
+  ],
+  "terminalInstall": {
+    "entrypoint": "node scripts/install-seis-ai-agent.mjs",
+    "packageScript": "npm run install:seis-ai-agent",
+    "platforms": [
+      "macos",
+      "windows",
+      "linux"
+    ]
+  },
+  "websiteRoadmap": {
+    "releasePolicy": "Build the website only when SEIS-AI Agent is ready for a deliberate public release decision.",
+    "direction": "Cinematic, premium, design-driven, accessible, responsive, and grounded in real SEIS product surfaces."
+  },
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-repo-marketplace",
+    "npm run quality"
+  ],
+  "guardrails": [
+    "keep development inside the SEIS repo",
+    "do not publish or deploy before explicit release decision",
+    "avoid dependency bloat",
+    "do not expose secrets",
+    "validate plugin, terminal install, docs, and generated reports before handoff"
+  ]
+}

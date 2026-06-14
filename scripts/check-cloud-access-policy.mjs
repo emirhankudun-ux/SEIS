@@ -12,6 +12,8 @@ const docs = readText("docs/deployment/cloud-access-policy.md")
   + "\n"
   + readText("docs/deployment/gcp-compute-cloud-server.md")
   + "\n"
+  + readText("docs/deployment/ssh-wireguard-vps-cloud-server.md")
+  + "\n"
   + readText("docs/deployment/server-target-selection.md");
 const cloudProfile = readJson("plugins/seis-cloud/assets/lane-profile.json");
 const cloudSkill = readText("plugins/seis-cloud/skills/seis-cloud/SKILL.md");
@@ -32,7 +34,7 @@ for (const id of ["github-pages", "cloudflare-pages", "vercel-static", "netlify-
 }
 
 const teamProviders = new Set(policy?.teamVpnCloud?.providers || []);
-for (const id of ["gcp-compute-vm", "node-vps", "docker-node-static", "generic-sftp"]) {
+for (const id of ["gcp-compute-vm", "ssh-wireguard-vps", "node-vps", "docker-node-static", "generic-sftp"]) {
   ensure(teamProviders.has(id), `teamVpnCloud providers must include ${id}`);
 }
 
@@ -40,11 +42,17 @@ const gcpTarget = (targets?.candidates || []).find((target) => target.id === "gc
 const gcpMatrix = (matrix?.providers || []).find((provider) => provider.id === "gcp-compute-vm");
 const gcpCloud = (cloud?.providers || []).find((provider) => provider.id === "gcp-compute-vm");
 const gcpExample = localExample?.["gcp-compute-vm"] || {};
+const sshVpnTarget = (targets?.candidates || []).find((target) => target.id === "ssh-wireguard-vps");
+const sshVpnMatrix = (matrix?.providers || []).find((provider) => provider.id === "ssh-wireguard-vps");
+const sshVpnCloud = (cloud?.providers || []).find((provider) => provider.id === "ssh-wireguard-vps");
+const sshVpnExample = localExample?.["ssh-wireguard-vps"] || {};
 const githubPagesMatrix = (matrix?.providers || []).find((provider) => provider.id === "github-pages");
 const githubPagesCloud = (cloud?.providers || []).find((provider) => provider.id === "github-pages");
 
 ensure(packageJson?.scripts?.["cloud:public:readiness"] === "node scripts/check-public-cloud-readiness.mjs", "missing cloud:public:readiness script");
 ensure(packageJson?.scripts?.["cloud:public:readiness:strict"] === "node scripts/check-public-cloud-readiness.mjs --require-ready", "missing cloud:public:readiness:strict script");
+ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs", "missing cloud:ssh-vpn:readiness script");
+ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness:strict"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs --require-ready", "missing cloud:ssh-vpn:readiness:strict script");
 ensure(packageJson?.scripts?.["check:static-build"] === "node scripts/check-static-build.mjs", "missing check:static-build script");
 ensure(githubPagesMatrix?.audience === "everyone", "github-pages matrix audience must be everyone");
 ensure(githubPagesCloud?.audience === "everyone", "github-pages cloud audience must be everyone");
@@ -56,6 +64,11 @@ ensure(gcpMatrix?.audience === "workplaces-and-teams", "gcp-compute-vm matrix au
 ensure(gcpCloud?.audience === "workplaces-and-teams", "gcp-compute-vm cloud audience must be workplaces-and-teams");
 ensure(gcpCloud?.kind === "team-vpn-cloud-compute-server", "gcp-compute-vm cloud kind must be team-vpn-cloud-compute-server");
 ensure(gcpExample.vpn_source_range !== "0.0.0.0/0", "local example must not use 0.0.0.0/0 for VPN source range");
+ensure(sshVpnTarget?.type === "team-vpn-cloud-existing-ssh-server", "ssh-wireguard-vps target type must be team-vpn-cloud-existing-ssh-server");
+ensure(sshVpnMatrix?.audience === "workplaces-and-teams", "ssh-wireguard-vps matrix audience must be workplaces-and-teams");
+ensure(sshVpnCloud?.audience === "workplaces-and-teams", "ssh-wireguard-vps cloud audience must be workplaces-and-teams");
+ensure(sshVpnCloud?.kind === "team-vpn-cloud-existing-ssh-server", "ssh-wireguard-vps cloud kind must be team-vpn-cloud-existing-ssh-server");
+ensure(sshVpnExample.vpn_admin_peer?.includes("CLIENT_PUBLIC_KEY"), "ssh-wireguard-vps local example must use placeholder peer key");
 
 ensure(docs.includes("Public cloud is for everyone"), "docs must state public cloud is for everyone");
 ensure(docs.includes("VPN cloud is for workplaces and teams"), "docs must state VPN cloud is for workplaces and teams");
@@ -77,6 +90,9 @@ for (const [label, content] of [
 const provisioner = readText("scripts/provision-gcp-cloud-server.mjs");
 ensure(provisioner.includes("workplaces-and-teams"), "provisioner must encode VPN audience");
 ensure(provisioner.includes("hasBroadCidr"), "provisioner must reject broad VPN source ranges");
+const sshVpnReadiness = readText("scripts/check-ssh-wireguard-cloud-readiness.mjs");
+ensure(sshVpnReadiness.includes("mode: \"read-only\""), "SSH VPN readiness checker must declare read-only mode");
+ensure(sshVpnReadiness.includes("workplaces-and-teams"), "SSH VPN readiness checker must preserve team/workplace audience");
 
 const publicReadiness = readText("scripts/check-public-cloud-readiness.mjs");
 ensure(publicReadiness.includes("mode: \"read-only\""), "public readiness checker must declare read-only mode");

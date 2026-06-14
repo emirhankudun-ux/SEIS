@@ -42,6 +42,7 @@ engineering work, Codex remote hosts, handoff flows, and operational workspaces.
 Use team VPN cloud when access should be limited to approved people:
 
 - Google Compute Engine VM with WireGuard
+- existing Linux SSH/VPS hosts with WireGuard
 - Node/VPS hosts
 - Docker static hosts used as internal workspaces
 - Generic SFTP or private server targets

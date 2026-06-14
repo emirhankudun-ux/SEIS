@@ -23,6 +23,7 @@
     "vpnRequired": true,
     "providers": [
       "gcp-compute-vm",
+      "ssh-wireguard-vps",
       "node-vps",
       "docker-node-static",
       "generic-sftp"

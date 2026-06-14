@@ -9975,6 +9975,19 @@
       "rollback": "stop_or_delete_compute_instance_after_handoff"
     },
     {
+      "id": "ssh-wireguard-vps",
+      "kind": "team-vpn-cloud-existing-ssh-server",
+      "audience": "workplaces-and-teams",
+      "status": "candidate-requires-existing-host-vpn-peer-and-user-plan",
+      "uploadModel": "existing_linux_ssh_host_with_wireguard_vpn_and_codex_remote_host",
+      "readinessCommand": "npm run cloud:ssh-vpn:readiness -- --ssh-target USER@HOST",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:ssh-vpn-cloud-server"
+      ],
+      "rollback": "disable_wireguard_peer_or_stop_existing_vps_service_after_handoff"
+    },
+    {
       "id": "azure-static-web-apps",
       "kind": "static-site",
       "status": "candidate",

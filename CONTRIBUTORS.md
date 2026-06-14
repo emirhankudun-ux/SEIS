@@ -17,6 +17,17 @@ SEIS is developed with human ownership and AI assistance:
 AI tools are collaborators in the workflow, not owners of the project. The
 maintainer remains responsible for accepted changes.
 
+## AI Tooling Participants
+
+- OpenAI - the company behind Codex and ChatGPT, listed as a tooling participant
+  for SEIS automation and AI-native development workflows.
+- Anthropic - the company behind Claude, listed as a tooling participant for
+  architecture, reasoning, and review workflows.
+
+These participant entries describe tools and companies that SEIS is designed to
+work with. They do not imply sponsorship, endorsement, employment, or direct
+project governance.
+
 ## Attribution Notes
 
 References to companies, frameworks, cloud providers, or tools in the codebase

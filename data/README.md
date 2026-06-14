@@ -7,6 +7,8 @@ The data lane tracks repository visibility, zip inventory, migration state, and 
 - `data/github-zip-import-inventory.json`
 - `data/github-repository-consolidation.json`
 - `data/repository-visibility-audit-2026-06-05.json`
+- `data/seis-child-agent-intake.json`
+- `data/seis-unified-github-visibility-policy.json`
 
 ## Plugin Stack
 

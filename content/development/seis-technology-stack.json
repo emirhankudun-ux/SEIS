@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 925571,
+      "githubBytes": 970234,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -245,7 +245,7 @@
       "label": "Shell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 61251,
+      "githubBytes": 66459,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
@@ -258,7 +258,7 @@
       "label": "PowerShell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 2176,
+      "githubBytes": 2427,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/powershell/SeisReleasePolicy.ps1"

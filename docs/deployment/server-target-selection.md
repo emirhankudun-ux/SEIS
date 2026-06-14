@@ -33,6 +33,13 @@ npm run vpn:wireguard:peer -- --name admin --public-key CLIENT_PUBLIC_KEY --addr
 npm run cloud:gcp:server:apply -- --project example-project --ssh-source-range 203.0.113.10/32 --vpn-source-range 198.51.100.0/24 --vpn-peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32'
 ```
 
+Existing Linux SSH/VPS with WireGuard:
+
+```bash
+npm run cloud:ssh-vpn:readiness -- --ssh-target seis@example.com
+npm run cloud:ssh-vpn:server:plan -- --ssh-target seis@example.com --vpn-peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32'
+```
+
 Cloud static candidates are also modeled for Azure Static Web Apps, AWS Amplify
 static hosting, and Firebase Hosting. Keep them inactive until the project id,
 public URL, token storage location, and rollback owner are explicit.

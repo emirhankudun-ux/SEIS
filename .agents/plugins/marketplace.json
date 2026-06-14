@@ -63,6 +63,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Data"
+    },
+    {
+      "name": "seis-ai-agent",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-ai-agent"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
     }
   ]
 }

@@ -73,6 +73,20 @@
       "rollback": "delete_or_stop_compute_instance_after_release_handoff"
     },
     {
+      "id": "ssh-wireguard-vps",
+      "audience": "workplaces-and-teams",
+      "uploadModel": "verify_existing_linux_ssh_host_with_wireguard_vpn_and_codex_remote_host",
+      "readinessCommand": "npm run cloud:ssh-vpn:readiness -- --ssh-target USER@HOST",
+      "requiredFiles": [
+        "scripts/check-ssh-wireguard-cloud-readiness.mjs",
+        "scripts/provision-ssh-wireguard-cloud-server.mjs",
+        "scripts/create-wireguard-peer-config.mjs",
+        "server/cloud/ssh-wireguard/install-seis-cloud-host.sh"
+      ],
+      "verifyRoutes": ["udp://wireguard:51820", "ssh://ssh-wireguard-vps", "/_server/health"],
+      "rollback": "disable_wireguard_peer_or_stop_existing_vps_service_after_handoff"
+    },
+    {
       "id": "azure-static-web-apps",
       "uploadModel": "upload_dist_static_site_to_selected_azure_static_web_app",
       "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],

@@ -92,6 +92,20 @@
       ]
     },
     {
+      "id": "ssh-wireguard-vps",
+      "type": "team-vpn-cloud-existing-ssh-server",
+      "status": "ready-after-existing-host-ssh-vpn-peer-and-rollback-confirmation",
+      "requiredInput": [
+        "ssh_target",
+        "ssh_user",
+        "vpn",
+        "vpn_admin_peer",
+        "origin",
+        "path",
+        "rollback_contact"
+      ]
+    },
+    {
       "id": "azure-static-web-apps",
       "type": "cloud-static-hosting",
       "status": "ready-after-project-and-token-confirmation",
