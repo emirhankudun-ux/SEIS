@@ -2,8 +2,11 @@ import { z } from "zod";
 
 export const GapSchema = z.object({
   id: z.string().min(1),
+  label: z.string().min(1),
   status: z.string().min(1),
   priority: z.string().min(1),
+  surface: z.string().min(1),
+  impact: z.string().min(1),
   nextAction: z.string().min(1),
   closureMetric: z.string().min(1),
   qualityCommands: z.array(z.string()).min(1),
