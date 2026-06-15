@@ -1,0 +1,37 @@
+// SEIS Release Policy — Stylus (CSS preprocessor)
+
+motion-cinematic = 600ms
+motion-balanced  = 300ms
+motion-reduced   = 0ms
+
+color-ready   = #22c55e
+color-blocked = #ef4444
+color-pending = #f59e0b
+
+seis-transition(dur = motion-balanced)
+  transition opacity dur ease, transform dur ease
+  @media (prefers-reduced-motion: reduce)
+    transition none
+
+.seis-release-badge
+  display inline-flex
+  align-items center
+  padding 0.25rem 0.75rem
+  border-radius 9999px
+  font-weight 600
+  seis-transition()
+
+  &[data-status="ready"]
+    color color-ready
+
+  &[data-status="blocked"]
+    color color-blocked
+
+  &[data-status="pending"]
+    color color-pending
+
+[data-motion-mode="cinematic"] .seis-release-badge
+  seis-transition(motion-cinematic)
+
+[data-motion-mode="reduced"] .seis-release-badge
+  transition none

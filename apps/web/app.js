@@ -31,6 +31,53 @@ const fallbackCapabilities = [
   }
 ];
 
+const fallbackGithubModel = {
+  branch: {
+    active: "UIXAppTTR",
+    singleRemoteBranch: true,
+    remote: "UIX-Apps"
+  },
+  cadence: [
+    {
+      id: "intent",
+      label: "Intent capture",
+      status: "active",
+      owner: "governance-agent",
+      qualityGate: "Scope is small enough to review and rollback.",
+      githubSignal: "A traceable note explains why the work exists."
+    },
+    {
+      id: "source",
+      label: "Source shaping",
+      status: "active",
+      owner: "interface-agent",
+      qualityGate: "Source edits stay modular and dependency-light.",
+      githubSignal: "The diff stays focused before release refresh."
+    },
+    {
+      id: "verification",
+      label: "Local verification",
+      status: "required",
+      owner: "release-agent",
+      qualityGate: "Checks match the changed surface.",
+      githubSignal: "The PR body lists exact checks and limits."
+    },
+    {
+      id: "publication",
+      label: "GitHub publication",
+      status: "gated",
+      owner: "release-agent",
+      qualityGate: "Clean worktree, expected branch, upstream, remote, and auth are confirmed.",
+      githubSignal: "Remote shipment is claimed only after the push exists."
+    }
+  ],
+  readinessSignals: [
+    { id: "branch-honesty", label: "Branch honesty", command: "npm run check:development-program" },
+    { id: "workspace-integrity", label: "Workspace integrity", command: "npm run check:workspace" },
+    { id: "publish-preflight", label: "Publish preflight", command: "npm run automation:publish-readiness" }
+  ]
+};
+
 const fallbackMarketplace = {
   summary: "Track trusted GitHub, MCP, Copilot, and model marketplace channels before live activation.",
   marketplaceChannels: [
@@ -104,10 +151,22 @@ const fallbackPublishGate = {
   }
 };
 
+const fallbackPortfolio = {
+  hero: {
+    title: "Emirhan Kudun Portfolio",
+    positioning: "Premium UI/UX, cinematic web systems, AI-native creative engineering.",
+    availability: "Portfolio shell active."
+  },
+  services: [],
+  pluginStack: []
+};
+
 const state = {
   mode: "cinematic",
   gaps: [],
+  portfolio: fallbackPortfolio,
   capabilities: fallbackCapabilities,
+  githubModel: fallbackGithubModel,
   marketplace: fallbackMarketplace,
   publishGate: fallbackPublishGate,
   pluginCommandCenter: null,
@@ -457,6 +516,46 @@ function renderGapBoard() {
   });
 }
 
+function renderPortfolio() {
+  const statusEl = el("[data-portfolio-status]");
+  const serviceBoard = el("#portfolio-service-board");
+  const pluginBoard = el("#portfolio-plugin-board");
+
+  const portfolio = state.portfolio || fallbackPortfolio;
+  const services = portfolio.services || [];
+  const plugins = portfolio.pluginStack || [];
+
+  if (statusEl) {
+    statusEl.textContent = portfolio.hero?.availability || "Portfolio shell active.";
+  }
+
+  if (serviceBoard) {
+    serviceBoard.replaceChildren();
+    services.slice(0, 6).forEach((service) => {
+      const card = create("article", "portfolio-service-card");
+      card.append(
+        create("h3", "", service.label),
+        create("p", "", service.summary),
+        create("p", "", `Tools: ${(service.pluginAssist || []).join(", ")}`)
+      );
+      serviceBoard.append(card);
+    });
+  }
+
+  if (pluginBoard) {
+    pluginBoard.replaceChildren();
+    plugins.slice(0, 6).forEach((plugin) => {
+      const card = create("article", "plugin-stack-card");
+      card.append(
+        create("span", "", plugin.lane || ""),
+        create("h4", "", plugin.label),
+        create("p", "", plugin.role)
+      );
+      pluginBoard.append(card);
+    });
+  }
+}
+
 function renderCapabilities() {
   const board = el("#capability-board");
   if (!board) return;
@@ -487,6 +586,51 @@ function renderCapabilities() {
     card.append(chips, title, surface, examples);
     board.append(card);
   });
+}
+
+function renderGithubModel() {
+  const status = el("[data-github-model-status]");
+  const grid = el("[data-github-model-grid]");
+  const readinessList = el("[data-github-readiness-list]");
+  if (!grid || !readinessList) return;
+
+  const model = state.githubModel || fallbackGithubModel;
+  const cadence = model.cadence || fallbackGithubModel.cadence;
+  const readinessSignals = model.readinessSignals || fallbackGithubModel.readinessSignals;
+  const branch = model.branch?.active || "UIXAppTTR";
+  const gatedCount = cadence.filter((item) => ["gated", "required"].includes(item.status)).length;
+
+  if (status) {
+    status.textContent = `${branch} branch - ${cadence.length} phases - ${gatedCount} gated verification steps`;
+  }
+
+  grid.replaceChildren();
+  cadence.forEach((phase, index) => {
+    const card = create("article", `system-card ${getGithubStatusClass(phase.status)}`);
+    card.append(
+      create("span", "", phase.status),
+      create("strong", "", String(index + 1).padStart(2, "0")),
+      create("h3", "", phase.label),
+      create("p", "", phase.qualityGate),
+      create("p", "", `GitHub: ${phase.githubSignal}`)
+    );
+    grid.append(card);
+  });
+
+  readinessList.replaceChildren();
+  readinessSignals.forEach((signal) => {
+    const item = create("li");
+    const label = create("span", "github-readiness-label", signal.label);
+    const command = create("code", "", signal.command);
+    item.append(label, command);
+    readinessList.append(item);
+  });
+}
+
+function getGithubStatusClass(status) {
+  if (["active", "required"].includes(status)) return "status-active";
+  if (status === "gated") return "status-blocked";
+  return "status-ready";
 }
 
 function renderMarketplace() {
@@ -528,36 +672,6 @@ function renderMarketplace() {
       create("p", "", `Family: ${source.family} - ${source.activationPosture}`)
     );
     sourcesBoard.append(card);
-  });
-}
-
-function renderPublishGate() {
-  const panel = el("[data-publish-gate-panel]");
-  const summary = el("[data-publish-gate-summary]");
-  const levelsBoard = el("[data-publish-gate-levels]");
-  if (!panel || !levelsBoard) return;
-
-  const publishGate = state.publishGate || fallbackPublishGate;
-  const levels = publishGate.readinessLevels || fallbackPublishGate.readinessLevels;
-  const policy = publishGate.currentEnvironmentPolicy || fallbackPublishGate.currentEnvironmentPolicy;
-
-  panel.dataset.publishGateStatus = publishGate.status || "unknown";
-  if (summary) {
-    summary.textContent = `${policy.expectedResult || "configured"} - ${policy.reason || publishGate.purpose || fallbackPublishGate.purpose}`;
-  }
-
-  levelsBoard.replaceChildren();
-  levels.forEach((level) => {
-    const card = create("article", `system-card ${level.id === "deployment-ready" ? "status-blocked" : "status-ready"}`);
-    const allows = (level.allows || []).slice(0, 3).join(", ");
-    const blocks = (level.blocks || []).slice(0, 3).join(", ");
-    card.append(
-      create("span", "", level.id),
-      create("h3", "", level.meaning || level.id),
-      create("p", "", allows ? `Allows: ${allows}` : "Allows remain gated."),
-      create("p", "", blocks ? `Blocks: ${blocks}` : "No additional blocks declared.")
-    );
-    levelsBoard.append(card);
   });
 }
 
@@ -880,6 +994,199 @@ function getMarketplaceStatusClass(status) {
   return "status-watch";
 }
 
+function renderPublishGate() {
+  const panel = el("[data-publish-gate-panel]");
+  const summary = el("[data-publish-gate-summary]");
+  const levelsBoard = el("[data-publish-gate-levels]");
+  if (!panel || !levelsBoard) return;
+
+  const gate = state.publishGate;
+  if (!gate) {
+    panel.classList.add("status-watch");
+    levelsBoard.replaceChildren(create("p", "", "Publish gate contract is unavailable; keep publication blocked."));
+    return;
+  }
+
+  const remote = gate.remote || {};
+  const environment = gate.currentEnvironmentPolicy || {};
+  if (summary) {
+    summary.textContent = `${remote.name || "origin"} targets ${remote.targetBranch || "UIXAppTTR"}; current policy: ${environment.expectedResult || "publish gated"}.`;
+  }
+
+  levelsBoard.replaceChildren();
+  (gate.readinessLevels || []).forEach((level, index) => {
+    const item = create("article", "publish-gate-level");
+    const marker = create("span", "publish-gate-level__marker", String(index + 1));
+    const copy = create("div");
+    copy.append(
+      create("h4", "", level.id || "gate"),
+      create("p", "", level.meaning || "Publication remains gated until this level is explicit.")
+    );
+    item.append(marker, copy);
+    levelsBoard.append(item);
+  });
+}
+
+function renderEvolutionQueue() {
+  const panel = el("[data-evolution-queue-panel]");
+  const focus = el("[data-evolution-queue-focus]");
+  const list = el("[data-evolution-queue-list]");
+  if (!panel || !list) return;
+
+  const model = state.evolutionModel;
+  const queue = (model?.activationQueue || []).slice(0, 3);
+  if (focus) {
+    focus.textContent = model?.currentFocus?.decisionBias || "Keep the next SEIS move small, reversible, and validated.";
+  }
+
+  list.replaceChildren();
+  if (!queue.length) {
+    list.append(create("p", "", "Evolution queue unavailable; keep changes small and rollback-safe."));
+    return;
+  }
+
+  queue.forEach((item) => {
+    const card = create("article", "evolution-queue-item");
+    card.append(
+      create("span", "", `${item.backlogId || item.id} · ${item.layer || "model"}`),
+      create("h4", "", item.title || "SEIS evolution move"),
+      create("p", "", item.nextAction || "Keep the next action traceable before implementation."),
+      create("div", "evolution-queue-item__meta", `Validate: ${item.validationProfile || "lowPowerDefault"}`)
+    );
+    list.append(card);
+  });
+}
+
+function renderAggressiveLanes() {
+  const panel = el("[data-aggressive-lanes-panel]");
+  const summary = el("[data-aggressive-lanes-summary]");
+  const grid = el("[data-aggressive-lanes-grid]");
+  if (!panel || !grid) return;
+
+  const map = state.aggressiveMap;
+  const lanes = (map?.capabilityLanes || []).slice(0, 4);
+  if (summary) {
+    const timebox = map?.timeboxMinutes ? `${map.timeboxMinutes} min` : "bounded";
+    summary.textContent = `${map?.mode || "aggressive-safe-activation"}; ${timebox} reversible batches.`;
+  }
+
+  grid.replaceChildren();
+  if (!lanes.length) {
+    grid.append(create("p", "", "Aggressive capability map unavailable; stay in low-power reversible mode."));
+    return;
+  }
+
+  lanes.forEach((lane) => {
+    const card = create("article", "aggressive-lane-card");
+    const surfaces = (lane.surfaces || []).slice(0, 3).join(" · ");
+    const guard = (lane.blockedActions || ["no unsafe action"]).slice(0, 1).join(", ");
+    card.append(
+      create("span", "", lane.id || "lane"),
+      create("h4", "", String(lane.id || "capability lane").replaceAll("-", " ")),
+      create("p", "", surfaces || "Registry-first activation only."),
+      create("div", "aggressive-lane-card__guard", `Guard: ${guard}`)
+    );
+    grid.append(card);
+  });
+}
+
+function renderExecutionPlan() {
+  const panel = el("[data-execution-plan-panel]");
+  const summary = el("[data-execution-plan-summary]");
+  const list = el("[data-execution-plan-list]");
+  if (!panel || !list) return;
+
+  const plan = state.executionPlan;
+  const batches = (plan?.executionBatches || []).slice(0, 5);
+  if (summary) {
+    const blocker = plan?.publishState?.expectedBlocker || "publish gated";
+    summary.textContent = `${plan?.mode || "maximum-safe-aggression"}; ${plan?.sprintWindowMinutes || 10} min window; ${blocker}.`;
+  }
+
+  list.replaceChildren();
+  if (!batches.length) {
+    list.append(create("p", "", "Execution plan unavailable; generate it before aggressive work."));
+    return;
+  }
+
+  batches.forEach((batch) => {
+    const row = create("article", "execution-plan-row");
+    const identity = create("div");
+    identity.append(create("span", "", batch.id || "batch"), create("h4", "", batch.lane || "local-safe"));
+    const action = create("p", "", batch.action || "Keep the next batch reversible and checked.");
+    const commands = create(
+      "div",
+      "execution-plan-row__commands",
+      (batch.qualityCommands || []).slice(0, 2).join(" · ") || "npm run check:workspace"
+    );
+    row.append(identity, action, commands);
+    list.append(row);
+  });
+}
+
+function renderLocalCycle() {
+  const panel = el("[data-local-cycle-panel]");
+  const summary = el("[data-local-cycle-summary]");
+  const grid = el("[data-local-cycle-grid]");
+  if (!panel || !grid) return;
+
+  const report = state.localCycle;
+  const commands = (report?.commands || []).slice(0, 6);
+  if (summary) {
+    const posture = report?.publishPosture?.reason || "publish gated";
+    summary.textContent = `${report?.passed ? "Passed" : "Blocked"}; push remains ${report?.publishPosture?.pushAllowed ? "allowed" : "blocked"}; ${posture}.`;
+  }
+
+  grid.replaceChildren();
+  if (!commands.length) {
+    grid.append(create("p", "", "Local aggressive cycle report unavailable; run automation before increasing speed."));
+    return;
+  }
+
+  commands.forEach((entry) => {
+    const card = create("article", "local-cycle-card");
+    card.append(
+      create("span", "", entry.status || "unknown"),
+      create("p", "", entry.command || "local check"),
+      create("p", "", entry.summary || "No summary recorded.")
+    );
+    grid.append(card);
+  });
+}
+
+function renderSafetyFirewall() {
+  const panel = el("[data-safety-firewall-panel]");
+  const summary = el("[data-safety-firewall-summary]");
+  const grid = el("[data-safety-firewall-grid]");
+  if (!panel || !grid) return;
+
+  const firewall = state.safetyFirewall;
+  if (summary) {
+    const violations = firewall?.violations?.length || 0;
+    summary.textContent = `${firewall?.passed ? "Passed" : "Blocked"}; ${violations} violations; push/deploy remain blocked.`;
+  }
+
+  grid.replaceChildren();
+  if (!firewall) {
+    grid.append(create("p", "", "Safety firewall report unavailable; do not increase automation speed."));
+    return;
+  }
+
+  const boundary = create("article", "safety-firewall-card");
+  boundary.append(
+    create("span", "", "boundary"),
+    create("p", "", `${firewall.scannedCommandCount || 0} commands scanned; push allowed: ${firewall.publishBoundary?.pushAllowed ? "yes" : "no"}.`)
+  );
+
+  const stops = create("article", "safety-firewall-card");
+  stops.append(
+    create("span", "", "hard stops"),
+    create("p", "", (firewall.hardStops || []).slice(0, 4).join(" · ") || "No unsafe boundary recorded.")
+  );
+
+  grid.append(boundary, stops);
+}
+
 function renderCommands() {
   const board = el("#command-board");
   if (!board) return;
@@ -930,15 +1237,145 @@ function renderQualityConsole() {
   }
 }
 
+function renderPluginStatus() {
+  const bar = el("[data-cockpit-status-bar]");
+  if (!bar) return;
+
+  const registry = state.pluginRegistry;
+  if (!registry) {
+    bar.replaceChildren(create("p", "", "Plugin registry unavailable."));
+    return;
+  }
+
+  const lanes = registry.lanes || {};
+  const laneNames = Object.keys(lanes);
+  const totalAssignments = laneNames.reduce(
+    (sum, key) => sum + (lanes[key].active_installed || []).length,
+    0
+  );
+
+  const countCard = create("article", "system-card status-active");
+  countCard.append(
+    create("span", "", "Plugins"),
+    create("strong", "", String(registry.installed_enabled_count)),
+    create("h3", "", "Installed and enabled"),
+    create("p", "", `Not installed: ${registry.not_installed_count}. All assigned to lanes.`)
+  );
+
+  const laneCard = create("article", "system-card status-ready");
+  laneCard.append(
+    create("span", "", "Lanes"),
+    create("strong", "", String(laneNames.length)),
+    create("h3", "", "Active platform lanes"),
+    create("p", "", `${totalAssignments} lane assignments across ${laneNames.length} lanes.`)
+  );
+
+  const policyCard = create("article", "system-card status-synced");
+  policyCard.append(
+    create("span", "", "Policy"),
+    create("strong", "", "OpenAI"),
+    create("h3", "", "OpenAI-first active"),
+    create("p", "", "Prefer openai-curated, openai-bundled, openai-primary-runtime families first.")
+  );
+
+  bar.replaceChildren(countCard, laneCard, policyCard);
+}
+
+function renderBuildWorkbench() {
+  const grid = el("[data-workbench-grid]");
+  if (!grid) return;
+
+  const workbench = state.buildWorkbench;
+  if (!workbench?.sprint_1?.modules) {
+    grid.replaceChildren(create("p", "", "Workbench data unavailable."));
+    return;
+  }
+
+  grid.replaceChildren();
+  const order = workbench.next_build_order || [];
+  const modules = [...workbench.sprint_1.modules].sort((a, b) => {
+    const ai = order.indexOf(a.id);
+    const bi = order.indexOf(b.id);
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  modules.forEach((module) => {
+    const statusClass =
+      module.status === "active"
+        ? "status-active"
+        : module.status === "ready_to_build"
+          ? "status-ready"
+          : "status-watch";
+    const label = module.id.replaceAll("_", " ");
+    const short =
+      module.deliverable.length > 72
+        ? module.deliverable.slice(0, 72) + "…"
+        : module.deliverable;
+    const card = create("article", `system-card ${statusClass}`);
+    card.append(
+      create("span", "", module.lane || ""),
+      create("strong", "", label),
+      create("h3", "", short),
+      create("p", "", `${module.owner_path} — ${module.status.replaceAll("_", " ")}`)
+    );
+    grid.append(card);
+  });
+}
+
+function renderWorkspaceOps() {
+  const list = el("[data-workspace-links]");
+  if (!list) return;
+
+  const ops = state.workspaceOps;
+  if (!ops) {
+    list.replaceChildren(create("p", "", "Workspace ops unavailable."));
+    return;
+  }
+
+  list.replaceChildren();
+  const driveItems = Object.values(ops.drive || {});
+  const calendarItems = Object.values(ops.calendar || {});
+
+  [...driveItems, ...calendarItems].forEach((item) => {
+    const isCalendar = Boolean(item.event_id || item.start);
+    const card = create("article", "marketplace-source-card status-ready");
+    const link = create("a", "workspace-link", item.title);
+    link.href = item.url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    card.append(create("span", "", isCalendar ? "Calendar" : "Drive"), link);
+    list.append(card);
+  });
+}
+
 async function fetchJson(path) {
-  const response = await fetch(path);
-  if (!response.ok) throw new Error(`${path} failed: ${response.status}`);
-  return response.json();
+  const candidates = path.startsWith("../../") ? [path, `./${path.slice(6)}`] : [path];
+  let lastError;
+
+  for (const candidate of candidates) {
+    try {
+      const response = await fetch(candidate);
+      if (!response.ok) throw new Error(`${candidate} failed: ${response.status}`);
+      return response.json();
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError;
 }
 
 async function loadGaps() {
   const payload = await fetchJson("../../data/gap-closure-register.json");
   state.gaps = payload.gaps || [];
+}
+
+async function loadPortfolio() {
+  try {
+    state.portfolio = await fetchJson("../../content/portfolio/portfolio-website.json");
+  } catch (_error) {
+    state.portfolio = fallbackPortfolio;
+  }
 }
 
 async function loadCapabilities() {
@@ -950,19 +1387,22 @@ async function loadCapabilities() {
   }
 }
 
+async function loadGithubModel() {
+  for (const path of ["./content/development/github-seis-model.json", "../../content/development/github-seis-model.json"]) {
+    try {
+      state.githubModel = await fetchJson(path);
+      return;
+    } catch (_error) {
+      state.githubModel = fallbackGithubModel;
+    }
+  }
+}
+
 async function loadMarketplace() {
   try {
     state.marketplace = await fetchJson("../../content/development/trusted-marketplace-intake.json");
   } catch (_error) {
     state.marketplace = fallbackMarketplace;
-  }
-}
-
-async function loadPublishGate() {
-  try {
-    state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
-  } catch (_error) {
-    state.publishGate = fallbackPublishGate;
   }
 }
 
@@ -1015,6 +1455,119 @@ async function loadCinematicEngine() {
   }
 }
 
+async function loadSafetyFirewall() {
+  try {
+    state.safetyFirewall = await fetchJson("../../content/development/aggressive-safety-firewall.json");
+  } catch (_error) {
+    state.safetyFirewall = {
+      passed: false,
+      violations: [{ id: "report-missing" }],
+      scannedCommandCount: 0,
+      publishBoundary: { pushAllowed: false },
+      hardStops: ["no push until firewall report exists"]
+    };
+  }
+}
+
+async function loadLocalCycle() {
+  try {
+    state.localCycle = await fetchJson("../../content/development/aggressive-local-run-report.json");
+  } catch (_error) {
+    state.localCycle = {
+      passed: false,
+      publishPosture: { pushAllowed: false, reason: "report missing" },
+      commands: [
+        {
+          command: "npm run automation:aggressive-local-cycle",
+          status: "needed",
+          summary: "Generate the local aggressive run report before increasing speed."
+        }
+      ]
+    };
+  }
+}
+
+async function loadExecutionPlan() {
+  try {
+    state.executionPlan = await fetchJson("../../content/development/aggressive-execution-plan.json");
+  } catch (_error) {
+    state.executionPlan = {
+      mode: "maximum-safe-aggression",
+      sprintWindowMinutes: 10,
+      publishState: { expectedBlocker: "publish gated" },
+      executionBatches: [
+        {
+          id: "batch-01",
+          lane: "local-safe-default",
+          action: "Generate the aggressive execution plan, then run focused checks before commit.",
+          qualityCommands: ["npm run check:workspace"]
+        }
+      ]
+    };
+  }
+}
+
+async function loadAggressiveMap() {
+  try {
+    state.aggressiveMap = await fetchJson("../../content/development/aggressive-capability-map.json");
+  } catch (_error) {
+    state.aggressiveMap = {
+      mode: "aggressive-safe-activation",
+      timeboxMinutes: 10,
+      capabilityLanes: [
+        {
+          id: "local-safe-default",
+          surfaces: ["workspace checks", "release sync", "rollback notes"],
+          blockedActions: ["no force push or live deploy"]
+        }
+      ]
+    };
+  }
+}
+
+async function loadEvolutionModel() {
+  try {
+    state.evolutionModel = await fetchJson("../../content/development/seis-evolution-model.json");
+  } catch (_error) {
+    state.evolutionModel = {
+      currentFocus: {
+        decisionBias: "Keep the next SEIS move small, reversible, and validated."
+      },
+      activationQueue: [
+        {
+          id: "fallback-evolution",
+          backlogId: "SEIS",
+          layer: "governance",
+          title: "Maintain calm evolution",
+          nextAction: "Use the smallest reversible slice and run focused checks before commit.",
+          validationProfile: "lowPowerDefault"
+        }
+      ]
+    };
+  }
+}
+
+async function loadPublishGate() {
+  try {
+    state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
+  } catch (_error) {
+    state.publishGate = {
+      remote: { name: "origin", targetBranch: "UIXAppTTR" },
+      currentEnvironmentPolicy: { expectedResult: "publish gated" },
+      readinessLevels: [
+        {
+          id: "configured",
+          meaning: "Local remote configuration can be reviewed, but publishing remains blocked."
+        },
+        {
+          id: "publish-preflight",
+          meaning: "UIXAppTTR, upstream, clean worktree, and GitHub auth must be ready."
+        }
+      ]
+    };
+  }
+}
+
 async function loadQualityConsole() {
   try {
     const payload = await fetchJson("../../content/lab/quality-console.json");
@@ -1031,6 +1584,30 @@ async function loadQualityConsole() {
       }
     ];
     state.thresholds = [];
+  }
+}
+
+async function loadPluginRegistry() {
+  try {
+    state.pluginRegistry = await fetchJson("../../data/installed-codex-plugins-2026-06-05.json");
+  } catch (_error) {
+    state.pluginRegistry = null;
+  }
+}
+
+async function loadBuildWorkbench() {
+  try {
+    state.buildWorkbench = await fetchJson("../../data/openai-curated-build-workbench-2026-06-05.json");
+  } catch (_error) {
+    state.buildWorkbench = null;
+  }
+}
+
+async function loadWorkspaceOps() {
+  try {
+    state.workspaceOps = await fetchJson("../../integrations/google-workspace.json");
+  } catch (_error) {
+    state.workspaceOps = null;
   }
 }
 
@@ -1176,16 +1753,34 @@ async function init() {
     loadSeisReposBridge(),
     loadLlmRegistry(),
     loadCinematicEngine(),
-    loadQualityConsole()
+    loadQualityConsole(),
+    loadPortfolio(),
+    loadGithubModel(),
+    loadSafetyFirewall(),
+    loadLocalCycle(),
+    loadExecutionPlan(),
+    loadAggressiveMap(),
+    loadEvolutionModel(),
+    loadPluginRegistry(),
+    loadBuildWorkbench(),
+    loadWorkspaceOps()
   ]);
   renderGapBoard();
+  renderPortfolio();
   renderCapabilities();
+  renderGithubModel();
   renderMarketplace();
   renderPublishGate();
   renderSeisReposLlmBridge();
   renderPluginCommandCenter();
   renderCommands();
   renderQualityConsole();
+  renderPublishGate();
+  renderEvolutionQueue();
+  renderAggressiveLanes();
+  renderExecutionPlan();
+  renderLocalCycle();
+  renderSafetyFirewall();
 }
 
 init().catch((error) => {
@@ -1193,10 +1788,18 @@ init().catch((error) => {
   if (board) {
     board.replaceChildren(create("p", "", `Runtime unavailable: ${error.message}`));
   }
+  renderPortfolio();
   renderCapabilities();
+  renderGithubModel();
   renderMarketplace();
   renderPublishGate();
   renderSeisReposLlmBridge();
   renderPluginCommandCenter();
   renderQualityConsole();
+  renderPublishGate();
+  renderEvolutionQueue();
+  renderAggressiveLanes();
+  renderExecutionPlan();
+  renderLocalCycle();
+  renderSafetyFirewall();
 });

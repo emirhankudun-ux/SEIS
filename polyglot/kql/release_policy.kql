@@ -1,0 +1,33 @@
+// SEIS Release Policy — KQL (Kusto Query Language — Azure Data Explorer / Log Analytics)
+
+// Release gate telemetry table schema:
+// ReleaseGates: Timestamp, Status (string), MotionMode (string), CanDeploy (bool), DurationMs (int)
+
+// Query 1: Recent release gate status
+ReleaseGates
+| where Timestamp > ago(24h)
+| summarize
+    TotalChecks    = count(),
+    ReadyCount     = countif(Status == "ready"),
+    BlockedCount   = countif(Status == "blocked"),
+    PendingCount   = countif(Status == "pending"),
+    AvgDurationMs  = avg(DurationMs)
+  by bin(Timestamp, 1h), MotionMode
+| order by Timestamp desc
+
+// Query 2: Reduced-motion compliance over time
+ReleaseGates
+| where Timestamp > ago(7d)
+| summarize
+    TotalSessions        = count(),
+    ReducedMotionSessions = countif(MotionMode == "reduced")
+  by bin(Timestamp, 1d)
+| extend ComplianceRate = round(100.0 * ReducedMotionSessions / TotalSessions, 2)
+| project Timestamp, ComplianceRate, ReducedMotionSessions, TotalSessions
+
+// Query 3: Alert — blocked deploys in the last hour
+ReleaseGates
+| where Timestamp > ago(1h)
+| where Status == "blocked"
+| project Timestamp, Status, MotionMode, CanDeploy
+| order by Timestamp desc

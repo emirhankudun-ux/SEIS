@@ -1,0 +1,77 @@
+{
+  "id": "seis-aggressive-local-run-report",
+  "version": 1,
+  "mode": "safe-local-aggressive-cycle",
+  "generatedAt": "2026-06-06T00:00:00.000Z",
+  "sourcePlan": "content/development/aggressive-execution-plan.json",
+  "sprintWindowMinutes": 10,
+  "publishPosture": {
+    "configuredRemote": true,
+    "pushAllowed": false,
+    "reason": "configured-but-not-publish-ready"
+  },
+  "commands": [
+    {
+      "command": "npm run check:aggressive-execution-plan",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 450,
+      "summary": "> node scripts/create-aggressive-execution-plan.cjs --check | Aggressive execution plan check passed."
+    },
+    {
+      "command": "npm run check:workspace",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 978,
+      "summary": "> node scripts/check-workspace.cjs | Workspace check passed."
+    },
+    {
+      "command": "npm run check:release-sync",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 385,
+      "summary": "> node scripts/check-release-sync.cjs | Release sync check passed."
+    },
+    {
+      "command": "npm run check:motion-evidence",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 375,
+      "summary": "> node scripts/check-motion-evidence.cjs | Motion evidence check passed."
+    },
+    {
+      "command": "npm run check:mobile-ergonomics",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 358,
+      "summary": "> node scripts/check-mobile-ergonomics.cjs | Mobile ergonomics check passed."
+    },
+    {
+      "command": "npm run check:aggressive-capability-map",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 365,
+      "summary": "> node scripts/check-aggressive-capability-map.cjs | SEIS aggressive capability map check passed."
+    }
+  ],
+  "passed": true,
+  "nextAction": "Continue with the next reversible cockpit or governance batch; do not push until publish readiness is clean.",
+  "doNotCross": [
+    "push claim",
+    "deployment claim",
+    "automatic deploy without confirmed target",
+    "unconfirmed overwrite",
+    "branch cleanup without review",
+    "large binary imports",
+    "nested Git repository intake",
+    "remote branch deletion without explicit authentication and branch review",
+    "force push",
+    "main branch writes",
+    "unsigned secret commits",
+    "live deploy without SEIS_SITE_URL and provider token",
+    "broad browser crawls without UI change",
+    "design writes without target file",
+    "blanket OAuth calls",
+    "write connector use without explicit target"
+  ]
+}

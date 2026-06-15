@@ -18,7 +18,8 @@
         "circleci@openai-curated",
         "codex-security@openai-curated",
         "superpowers@openai-curated",
-        "plugin-eval@openai-curated"
+        "plugin-eval@openai-curated",
+        "openai-developers@openai-curated"
       ],
       "mentioned_but_not_installed": []
     },
@@ -82,7 +83,9 @@
         "coupler-io@openai-curated",
         "alation@openai-curated",
         "omni-analytics@openai-curated",
-        "daloopa@openai-curated"
+        "daloopa@openai-curated",
+        "amplitude@openai-curated",
+        "coveo@openai-curated"
       ],
       "mentioned_but_not_installed": []
     },
@@ -113,7 +116,10 @@
         "otter-ai@openai-curated",
         "circleback@openai-curated",
         "superhuman@openai-curated",
-        "streak@openai-curated"
+        "streak@openai-curated",
+        "dovetail@openai-curated",
+        "fyxer@openai-curated",
+        "read-ai@openai-curated"
       ],
       "mentioned_but_not_installed": []
     },
@@ -128,7 +134,8 @@
         "conductor@openai-curated",
         "statsig@openai-curated",
         "brand24@openai-curated",
-        "similarweb@openai-curated"
+        "similarweb@openai-curated",
+        "domotz-preview@openai-curated"
       ],
       "mentioned_but_not_installed": []
     },
@@ -228,7 +235,9 @@
         "united-rentals@openai-curated",
         "keybid-puls@openai-curated",
         "network-solutions@openai-curated",
-        "skywatch@openai-curated"
+        "skywatch@openai-curated",
+        "datasite@openai-curated",
+        "marcopolo@openai-curated"
       ],
       "mentioned_but_not_installed": []
     }

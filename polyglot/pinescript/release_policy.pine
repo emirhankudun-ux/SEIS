@@ -1,0 +1,32 @@
+//@version=5
+// SEIS Release Policy — Pine Script (TradingView)
+
+indicator("SEIS Release Gate Monitor", overlay=false, shorttitle="SEIS Gate")
+
+// Inputs
+motionMode      = input.string("balanced", "Motion Mode",    options=["cinematic","balanced","reduced"])
+prefersReduced  = input.bool(false,        "Prefers Reduced Motion")
+releaseStatus   = input.string("ready",    "Release Status", options=["ready","blocked","pending"])
+
+// Motion duration
+motionDurationMs(mode) =>
+    mode == "cinematic" ? 600 :
+    mode == "balanced"  ? 300 : 0
+
+resolvedMode = prefersReduced ? "reduced" : motionMode
+duration     = motionDurationMs(resolvedMode)
+canDeploy    = releaseStatus == "ready"
+
+// Status color
+statusColor = releaseStatus == "ready"   ? color.green :
+              releaseStatus == "blocked" ? color.red   : color.orange
+
+// Plot
+plot(duration,  "Motion Duration (ms)", color=color.blue,  linewidth=2)
+plot(canDeploy ? 1 : 0, "Can Deploy", color=statusColor, linewidth=2, style=plot.style_histogram)
+
+// Label
+if barstate.islast
+    label.new(bar_index, duration,
+      "Mode: " + resolvedMode + "\nDuration: " + str.tostring(duration) + "ms\nDeploy: " + (canDeploy ? "✓" : "✗"),
+      style=label.style_label_left, color=statusColor, textcolor=color.white)

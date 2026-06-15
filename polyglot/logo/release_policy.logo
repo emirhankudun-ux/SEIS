@@ -1,0 +1,36 @@
+; SEIS Release Policy — Logo (Turtle Graphics / Educational Language)
+
+to resolve.motion :requested :prefers.reduced
+  if :prefers.reduced [output "reduced]
+  output :requested
+end
+
+to motion.duration.ms :mode
+  if equal? :mode "cinematic [output 600]
+  if equal? :mode "balanced  [output 300]
+  output 0
+end
+
+to can.deploy :status
+  output equal? :status "ready
+end
+
+to draw.release.badge :status
+  if equal? :status "ready   [setpencolor 2]  ; green
+  if equal? :status "blocked [setpencolor 4]  ; red
+  if equal? :status "pending [setpencolor 14] ; orange
+  pendown
+  repeat 4 [forward 60 right 90]
+  penup
+end
+
+; Main program
+make "resolved resolve.motion "cinematic :true
+make "duration motion.duration.ms :resolved
+make "deployable can.deploy "ready
+
+print sentence "Resolved: :resolved
+print sentence "Duration: :duration
+print sentence "Can deploy: :deployable
+
+draw.release.badge "ready

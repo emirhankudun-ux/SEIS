@@ -1,0 +1,42 @@
+// SEIS Release Policy — DAX (Data Analysis Expressions — Power BI / Excel)
+
+// Motion mode duration table measure
+MotionDurationMs =
+SWITCH(
+    TRUE(),
+    SELECTEDVALUE(MotionModes[Mode]) = "cinematic", 600,
+    SELECTEDVALUE(MotionModes[Mode]) = "balanced",  300,
+    SELECTEDVALUE(MotionModes[Mode]) = "reduced",   0,
+    0
+)
+
+// Resolved motion mode (respects prefers-reduced-motion)
+ResolvedMotionMode =
+IF(
+    [PrefersReducedMotion] = TRUE(),
+    "reduced",
+    SELECTEDVALUE(MotionModes[Mode], "balanced")
+)
+
+// Release gate: deployable only when status = ready
+CanDeploy =
+IF(
+    SELECTEDVALUE(ReleaseGates[Status]) = "ready",
+    TRUE(),
+    FALSE()
+)
+
+// Count of ready deployments
+ReadyDeployments =
+CALCULATE(
+    COUNTROWS(ReleaseGates),
+    ReleaseGates[Status] = "ready"
+)
+
+// KPI: reduced-motion compliance rate
+ReducedMotionComplianceRate =
+DIVIDE(
+    CALCULATE(COUNTROWS(Components), Components[SupportsReducedMotion] = TRUE()),
+    COUNTROWS(Components),
+    0
+)

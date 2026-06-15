@@ -1,0 +1,127 @@
+{
+    "version": 1,
+    "id": "seis-portfolio-website",
+    "updatedAt": "2026-06-06",
+    "mode": "portfolio-site-using-app-plugin-lanes",
+    "hero": {
+        "title": "Emirhan Kudun Portfolio",
+        "positioning": "Premium UI/UX, cinematic web systems, AI-native creative engineering, and calm product governance.",
+        "availability": "Portfolio shell ready for case studies, visual archive, and scoped plugin-assisted production."
+    },
+    "services": [
+        {
+            "id": "ux-product-strategy",
+            "label": "UX / Product Strategy",
+            "summary": "Information architecture, product narrative, interaction strategy, and calm launch planning for humane digital products.",
+            "pluginAssist": [
+                "OpenAI Models",
+                "Lovable",
+                "Figma MCP"
+            ]
+        },
+        {
+            "id": "cinematic-interface-design",
+            "label": "Cinematic Interface Design",
+            "summary": "Premium landing pages, portfolio systems, editorial UI, responsive composition, and low-motion-aware visual direction.",
+            "pluginAssist": [
+                "Lovable",
+                "Figma MCP",
+                "Browser + Playwright"
+            ]
+        },
+        {
+            "id": "frontend-governance",
+            "label": "Frontend Governance",
+            "summary": "Static-first implementation, accessibility checks, release handoff, rollback planning, and repository-safe plugin workflows.",
+            "pluginAssist": [
+                "GitHub MCP",
+                "Browser + Playwright",
+                "Vercel / Cloudflare / Netlify"
+            ]
+        }
+    ],
+    "pluginStack": [
+        {
+            "id": "lovable",
+            "label": "Lovable",
+            "lane": "AI-native builder",
+            "role": "Rapid visual drafts and product iteration before clean code migration.",
+            "status": "preferred-prototype"
+        },
+        {
+            "id": "figma-mcp-server",
+            "label": "Figma MCP",
+            "lane": "Design source",
+            "role": "Pull structured design intent into implementation when a concrete Figma target exists.",
+            "status": "candidate-after-target"
+        },
+        {
+            "id": "browser-playwright",
+            "label": "Browser + Playwright",
+            "lane": "Quality review",
+            "role": "Validate responsive behavior, interaction pacing, and visible regressions with lightweight checks.",
+            "status": "active-local-check"
+        },
+        {
+            "id": "github-mcp-server",
+            "label": "GitHub MCP",
+            "lane": "Repository workflow",
+            "role": "Connect issues, pull requests, and release status after repository scope is explicit.",
+            "status": "candidate-after-repo-scope"
+        },
+        {
+            "id": "openai-models",
+            "label": "OpenAI Models",
+            "lane": "Content intelligence",
+            "role": "Assist case-study structure, copy quality, accessibility language, and portfolio critique.",
+            "status": "model-selection-only"
+        },
+        {
+            "id": "vercel-cloudflare-netlify",
+            "label": "Vercel / Cloudflare / Netlify",
+            "lane": "Static hosting",
+            "role": "Deploy only after domain, rollback owner, and publish target are confirmed.",
+            "status": "blocked-until-target"
+        }
+    ],
+    "contact": {
+        "headline": "Yeni portfolyo i\u015fi i\u00e7in sakin, kapsam\u0131 net bir ba\u015flang\u0131\u00e7 yap\u0131labilir.",
+        "summary": "\u0130lk ad\u0131m; hedef, referans, yay\u0131n kanal\u0131, plugin izinleri ve rollback beklentisini netle\u015ftiren k\u00fc\u00e7\u00fck bir ke\u015fif notudur.",
+        "primaryAction": "Kapsam notu haz\u0131rla",
+        "secondaryAction": "Plugin hatt\u0131n\u0131 incele"
+    },
+    "featuredProjects": [
+        {
+            "id": "seis-foundation",
+            "title": "SEIS Foundation",
+            "type": "Operating system case study",
+            "summary": "A calm, low-pressure web foundation for portfolio, governance, release handoff, and plugin-aware production.",
+            "pluginAssist": [
+                "OpenAI Models",
+                "Browser + Playwright",
+                "GitHub MCP"
+            ]
+        },
+        {
+            "id": "uix-apps-portfolio",
+            "title": "UIX Apps Portfolio Surface",
+            "type": "Cinematic portfolio website",
+            "summary": "A premium static portfolio shell with case studies, visual archive, motion controls, and plugin lane transparency.",
+            "pluginAssist": [
+                "Lovable",
+                "Figma MCP",
+                "OpenAI Models"
+            ]
+        },
+        {
+            "id": "legacy-archive",
+            "title": "Legacy Visual Archive",
+            "type": "Artwork and media curation",
+            "summary": "A lightweight drawing archive that keeps older assets inspectable without overloading the portfolio experience.",
+            "pluginAssist": [
+                "Browser + Playwright",
+                "OpenAI Models"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,92 @@
+<%# SEIS Release Policy — EJS Template %>
+<%# Motion-aware release gate with conditional motion class %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Release Gate — <%= version %></title>
+  <style>
+    <%
+      const durations = {
+        instant:   0,
+        fast:      150,
+        standard:  300,
+        slow:      500,
+        cinematic: 800
+      };
+      const resolvedDuration = (key) => reducedMotion ? 0 : (durations[key] || 300);
+    %>
+    :root {
+      --motion-fast:     <%= resolvedDuration('fast') %>ms;
+      --motion-standard: <%= resolvedDuration('standard') %>ms;
+      --motion-slow:     <%= resolvedDuration('slow') %>ms;
+    }
+  </style>
+  <link rel="stylesheet" href="/styles/release-policy.css">
+</head>
+<body class="<%= reducedMotion ? 'motion-mode--reduced' : 'motion-mode--full' %>">
+
+  <main id="main-content" class="page">
+
+    <header class="page__header">
+      <h1 class="page__title">SEIS Release Gate</h1>
+      <span class="release-badge release-badge--<%= status %>"
+            role="status"
+            aria-label="Release status: <%= status %>">
+        <%= status.toUpperCase() %>
+      </span>
+    </header>
+
+    <% if (reducedMotion) { %>
+      <aside class="motion-notice" role="note">
+        Reduced-motion mode — animations disabled.
+      </aside>
+    <% } %>
+
+    <section class="release-gate" aria-labelledby="gate-heading">
+      <h2 id="gate-heading"><%= version %> — Deploy Readiness</h2>
+
+      <dl class="release-meta">
+        <dt>Branch</dt>    <dd><%= branch %></dd>
+        <dt>Commit</dt>    <dd><code><%= commitSha %></code></dd>
+        <dt>Environment</dt><dd><%= environment || 'production' %></dd>
+        <dt>Deployer</dt>  <dd><%= deployer %></dd>
+      </dl>
+
+      <ul class="release-gate__checks" aria-label="Readiness checks">
+        <% checks.forEach(function(check) { %>
+          <li class="check check--<%= check.passed ? 'passed' : 'failed' %>"
+              aria-label="<%= check.name %>: <%= check.passed ? 'passed' : 'failed' %>">
+            <span class="check__icon" aria-hidden="true"><%= check.passed ? '✓' : '✗' %></span>
+            <span class="check__name"><%= check.name %></span>
+            <% if (check.detail) { %>
+              <span class="check__detail"><%= check.detail %></span>
+            <% } %>
+          </li>
+        <% }); %>
+      </ul>
+
+      <% const failCount = checks.filter(c => !c.passed).length; %>
+      <% if (failCount === 0) { %>
+        <p class="gate-summary gate-summary--ready" role="status">
+          All <%= checks.length %> checks passed — deploy ready.
+        </p>
+        <button class="btn btn--primary" type="button">Deploy to Production</button>
+      <% } else { %>
+        <p class="gate-summary gate-summary--blocked" role="alert">
+          <%= failCount %> check<%= failCount > 1 ? 's' : '' %> failing — deploy blocked.
+        </p>
+        <button class="btn btn--disabled" type="button" disabled>Deploy Blocked</button>
+      <% } %>
+
+    </section>
+
+  </main>
+
+  <footer class="page__footer" role="contentinfo">
+    <p>SEIS — cinematic, minimal, accessible.</p>
+  </footer>
+
+</body>
+</html>

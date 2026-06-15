@@ -1,0 +1,153 @@
+{
+  "id": "seis-aggressive-execution-plan",
+  "version": 1,
+  "mode": "maximum-safe-aggression",
+  "branch": "UIXAppTTR",
+  "remote": "origin",
+  "sprintWindowMinutes": 10,
+  "publishState": {
+    "configuredRemote": true,
+    "pushAllowed": false,
+    "expectedBlocker": "configured-but-not-publish-ready"
+  },
+  "executionBatches": [
+    {
+      "id": "batch-01",
+      "sourceBacklogId": "SEIS-001",
+      "layer": "experience",
+      "lane": "github-shipment",
+      "action": "Audit the current cockpit sections and improve one visible hierarchy issue without changing the dependency stack.",
+      "acceptanceCriteria": [
+        "one public interface section has clearer editorial hierarchy",
+        "keyboard and semantic structure remain intact",
+        "reduced-motion behavior is unchanged"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "qualityCommands": [
+        "npm run publish:preflight",
+        "npm run check:seis-evolution-model",
+        "npm run check:workspace",
+        "node scripts/check-development-process.mjs"
+      ],
+      "rollback": "Restore the previous static markup and style block for the touched section."
+    },
+    {
+      "id": "batch-02",
+      "sourceBacklogId": "SEIS-002",
+      "layer": "experience",
+      "lane": "cloud-environment",
+      "action": "Reduce any mobile reveal or transition pressure only after checking the current motion policy.",
+      "acceptanceCriteria": [
+        "prefers-reduced-motion remains honored",
+        "mobile animation remains subtle and non-blocking",
+        "no GPU-expensive effect is added"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:server-target",
+        "npm run check:seis-evolution-model",
+        "npm run check:workspace"
+      ],
+      "rollback": "Restore the prior motion constants or CSS transition values."
+    },
+    {
+      "id": "batch-03",
+      "sourceBacklogId": "SEIS-003",
+      "layer": "deployment",
+      "lane": "design-and-browser-quality",
+      "action": "Collect domain, host, document root, upload method, and rollback path before any upload claim.",
+      "acceptanceCriteria": [
+        "server target fields are explicit",
+        "release rollback path is documented",
+        "automatic deploy remains blocked until confirmation"
+      ],
+      "validationProfile": "expandedFoundation",
+      "qualityCommands": [
+        "npm run check:mobile-ergonomics",
+        "npm run check:motion-evidence",
+        "npm run check:seis-evolution-model",
+        "npm run check:workspace"
+      ],
+      "rollback": "Revert target records and keep the local release package unchanged."
+    },
+    {
+      "id": "batch-04",
+      "sourceBacklogId": "SEIS-005",
+      "layer": "platform",
+      "lane": "connector-and-mcp-governance",
+      "action": "Compare PWA-first, Expo, and native paths against accessibility, motion, cost, and rollback constraints.",
+      "acceptanceCriteria": [
+        "mobile path decision has a documented rationale",
+        "installability and touch ergonomics are considered",
+        "native expansion is not started before the path decision"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map",
+        "npm run check:code-automation-plan",
+        "npm run check:seis-evolution-model",
+        "npm run check:workspace"
+      ],
+      "rollback": "Reopen the decision record and return to PWA-first static operation."
+    },
+    {
+      "id": "batch-05",
+      "sourceBacklogId": "SEIS-006",
+      "layer": "automation",
+      "lane": "polyglot-language-presence",
+      "action": "Record agent-driven changes as small UIXAppTTR commits with focused validators and no long-lived branch sprawl.",
+      "acceptanceCriteria": [
+        "agent output is traceable to repository records",
+        "no forced push or remote branch deletion is introduced",
+        "work is committed only after focused checks pass"
+      ],
+      "validationProfile": "lowPowerDefault",
+      "qualityCommands": [
+        "npm run check:software-languages",
+        "npm run check:seis-evolution-model",
+        "npm run check:workspace",
+        "node scripts/check-development-process.mjs"
+      ],
+      "rollback": "Revert the smallest agent commit and preserve branch history."
+    }
+  ],
+  "fastTrackCommands": [
+    "npm run check:seis-evolution-model",
+    "npm run check:workspace",
+    "node scripts/check-development-process.mjs",
+    "npm run publish:preflight",
+    "npm run check:cloud-environment",
+    "npm run check:server-target",
+    "npm run check:mobile-ergonomics",
+    "npm run check:motion-evidence",
+    "npm run check:aggressive-capability-map",
+    "npm run check:code-automation-plan",
+    "npm run check:software-languages",
+    "npm run check:publish-gate-contract"
+  ],
+  "doNotCross": [
+    "push claim",
+    "deployment claim",
+    "automatic deploy without confirmed target",
+    "unconfirmed overwrite",
+    "branch cleanup without review",
+    "large binary imports",
+    "nested Git repository intake",
+    "remote branch deletion without explicit authentication and branch review",
+    "force push",
+    "main branch writes",
+    "unsigned secret commits",
+    "live deploy without SEIS_SITE_URL and provider token",
+    "broad browser crawls without UI change",
+    "design writes without target file",
+    "blanket OAuth calls",
+    "write connector use without explicit target"
+  ],
+  "sourceRecords": [
+    "content/development/seis-evolution-model.json",
+    "content/development/aggressive-capability-map.json",
+    "content/development/publish-gate-contract.json",
+    "content/development/github-remote-configuration.json"
+  ]
+}

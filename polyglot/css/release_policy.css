@@ -1,0 +1,37 @@
+/* SEIS Release Policy — CSS
+ * Motion design tokens for release gate states
+ */
+
+:root {
+  --seis-motion-duration-cinematic: 800ms;
+  --seis-motion-duration-balanced:  300ms;
+  --seis-motion-duration-reduced:   0ms;
+
+  --seis-color-ready:   #22c55e;
+  --seis-color-blocked: #ef4444;
+  --seis-color-pending: #f59e0b;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --seis-motion-duration-cinematic: 0ms;
+    --seis-motion-duration-balanced:  0ms;
+  }
+}
+
+.seis-release-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: opacity var(--seis-motion-duration-balanced) ease;
+}
+
+.seis-release-badge[data-status="ready"]   { color: var(--seis-color-ready); }
+.seis-release-badge[data-status="blocked"] { color: var(--seis-color-blocked); }
+.seis-release-badge[data-status="pending"] { color: var(--seis-color-pending); }
+
+[data-motion-mode="reduced"] .seis-release-badge {
+  transition: none;
+}

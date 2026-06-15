@@ -401,19 +401,66 @@ h2 {
   margin-bottom: 0;
 }
 
-.marketplace-layout {
+.marketplace-layout,
+.github-model-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.8fr);
   gap: 0.9rem;
   align-items: start;
 }
 
-.marketplace-layout h3 {
+.marketplace-layout h3,
+.github-readiness-panel h3 {
   margin: 0 0 0.7rem;
 }
 
 .marketplace-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.github-model-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.github-readiness-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.62);
+  padding: 1rem;
+}
+
+.github-readiness-panel ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.github-readiness-panel li {
+  display: grid;
+  gap: 0.2rem;
+  border-top: 1px solid rgba(23, 33, 42, 0.14);
+  padding-top: 0.65rem;
+}
+
+.github-readiness-panel li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.github-readiness-label {
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.github-readiness-panel code {
+  white-space: normal;
+  color: var(--text);
+  font-size: 0.82rem;
 }
 
 .marketplace-source-list {
@@ -591,6 +638,14 @@ html[data-motion-mode="cinematic"] .hero {
     grid-template-columns: 1fr;
   }
 
+  .contact-section {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-actions {
+    justify-content: flex-start;
+  }
+
   .header-actions,
   .section-heading {
     align-items: flex-start;
@@ -612,5 +667,127 @@ html[data-motion-mode="cinematic"] .hero {
   .section-reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1.15rem;
+}
+
+.primary-link,
+.secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.55rem;
+  border-radius: 999px;
+  padding: 0.58rem 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.primary-link {
+  color: #fff;
+  background: linear-gradient(135deg, var(--text), #2f3f4c);
+  box-shadow: 0 12px 28px rgba(23, 33, 42, 0.18);
+}
+
+.secondary-link {
+  border: 1px solid var(--line);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.66);
+}
+
+.portfolio-grid,
+.plugin-stack-grid,
+.portfolio-project-grid,
+.portfolio-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.portfolio-card,
+.project-card,
+.service-card,
+.plugin-stack-card,
+.capability-card,
+.command-card,
+.quality-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.64);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+}
+
+.portfolio-card--lead {
+  background:
+    linear-gradient(145deg, rgba(47, 111, 115, 0.12), rgba(255, 255, 255, 0.68)),
+    var(--card);
+}
+
+.portfolio-card span,
+.project-card span,
+.service-card span,
+.plugin-stack-card span {
+  display: inline-flex;
+  color: var(--teal);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.portfolio-card h3,
+.project-card h3,
+.service-card h3,
+.plugin-stack-card h3 {
+  margin: 0.35rem 0 0.45rem;
+  font-size: 1.08rem;
+}
+
+.portfolio-card p,
+.project-card p,
+.service-card p,
+.plugin-stack-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.plugin-stack-card__assist {
+  margin-top: 0.75rem;
+}
+
+.contact-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid rgba(47, 111, 115, 0.28);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(47, 111, 115, 0.12), rgba(154, 106, 47, 0.08)),
+    rgba(255, 255, 255, 0.62);
+  box-shadow: var(--shadow);
+  padding: clamp(1rem, 3vw, 1.4rem);
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 900px) {
+  .portfolio-grid,
+  .plugin-stack-grid,
+  .portfolio-project-grid,
+  .portfolio-service-grid {
+    grid-template-columns: 1fr;
   }
 }

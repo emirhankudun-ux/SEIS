@@ -1,0 +1,107 @@
+{#- SEIS Release Policy — Jinja2 Template -#}
+{#- Motion-aware release gate for Python/Flask/Django rendering -#}
+
+{%- set motion_durations = {
+  'instant':   0,
+  'fast':      150,
+  'standard':  300,
+  'slow':      500,
+  'cinematic': 800
+} -%}
+
+{%- macro motion_ms(key) -%}
+  {%- if prefers_reduced -%}0{%- else -%}{{ motion_durations.get(key, 300) }}{%- endif -%}ms
+{%- endmacro -%}
+
+{%- macro badge(status) -%}
+  <span class="release-badge release-badge--{{ status | lower }}"
+        role="status"
+        aria-label="Release status: {{ status }}">
+    {{- status | upper -}}
+  </span>
+{%- endmacro -%}
+
+{%- macro check_item(check) -%}
+  <li class="check check--{{ 'passed' if check.passed else 'failed' }}"
+      aria-label="{{ check.name }}: {{ 'passed' if check.passed else 'failed' }}">
+    <span class="check__icon" aria-hidden="true">
+      {{- '✓' if check.passed else '✗' -}}
+    </span>
+    <span class="check__name">{{ check.name }}</span>
+    {%- if check.detail is defined %}
+      <span class="check__detail">{{ check.detail }}</span>
+    {%- endif %}
+  </li>
+{%- endmacro -%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Release Gate — {{ version }}</title>
+  <style>
+    :root {
+      --motion-fast:     {{ motion_ms('fast') }};
+      --motion-standard: {{ motion_ms('standard') }};
+      --motion-slow:     {{ motion_ms('slow') }};
+    }
+  </style>
+  <link rel="stylesheet" href="/static/release-policy.css">
+</head>
+<body class="{{ 'motion-mode--reduced' if prefers_reduced else 'motion-mode--full' }}">
+
+  <main id="main-content" class="page">
+
+    <header class="page__header">
+      <h1 class="page__title">SEIS Release Gate</h1>
+      {{ badge(status) }}
+    </header>
+
+    {% if prefers_reduced %}
+      <aside class="motion-notice" role="note" aria-live="polite">
+        Reduced-motion mode active.
+      </aside>
+    {% endif %}
+
+    <section class="release-gate" aria-labelledby="gate-heading">
+      <h2 id="gate-heading">{{ version }} — Deploy Readiness</h2>
+
+      <dl class="release-meta">
+        <dt>Branch</dt>      <dd>{{ branch }}</dd>
+        <dt>Commit</dt>      <dd><code>{{ commit_sha }}</code></dd>
+        <dt>Environment</dt> <dd>{{ environment | default('production') }}</dd>
+        <dt>Requested by</dt><dd>{{ deployer }}</dd>
+        <dt>Timestamp</dt>   <dd>
+          <time datetime="{{ iso_timestamp }}">{{ human_timestamp }}</time>
+        </dd>
+      </dl>
+
+      <ul class="release-gate__checks" aria-label="Readiness checks">
+        {% for check in checks %}
+          {{ check_item(check) }}
+        {% endfor %}
+      </ul>
+
+      {%- set fail_count = checks | selectattr('passed', 'equalto', false) | list | length -%}
+
+      {% if fail_count == 0 %}
+        <p class="gate-summary gate-summary--ready" role="status">
+          All {{ checks | length }} checks passed — deploy ready.
+        </p>
+      {% else %}
+        <p class="gate-summary gate-summary--blocked" role="alert">
+          {{ fail_count }} check{{ 's' if fail_count > 1 else '' }} failing — deploy blocked.
+        </p>
+      {% endif %}
+
+    </section>
+
+  </main>
+
+  <footer class="page__footer" role="contentinfo">
+    <p>SEIS — cinematic, minimal, accessible.</p>
+  </footer>
+
+</body>
+</html>
