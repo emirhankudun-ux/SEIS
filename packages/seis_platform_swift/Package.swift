@@ -14,7 +14,14 @@ let package = Package(
     ],
     targets: [
         .target(name: "SeisPlatformKit"),
-        .executableTarget(name: "SeisAppleNativeShell", dependencies: ["SeisPlatformKit"]),
+        .executableTarget(
+            name: "SeisAppleNativeShell",
+            dependencies: ["SeisPlatformKit"],
+            resources: [
+                .copy("Resources/seisdemo-urlscheme-template.plist"),
+                .copy("Resources/seis-demo-contract.json"),
+            ]
+        ),
         .testTarget(name: "SeisPlatformKitTests", dependencies: ["SeisPlatformKit"])
     ]
 )

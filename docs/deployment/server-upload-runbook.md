@@ -45,6 +45,9 @@ It contains the zip, checksum manifest, upload plan, and latest release pointer 
 
 ## Server Options
 
+If local SSH/local-preview remnants appear during setup, follow
+[`local-to-cloud-ssh-playbook.md`](./local-to-cloud-ssh-playbook.md) first.
+
 Use the selected server provider once domain/account details are confirmed.
 
 | Server Type | Action |
@@ -58,6 +61,16 @@ Use the selected server provider once domain/account details are confirmed.
 
 Use public cloud targets for everyone-facing releases. Use WireGuard-backed VM
 targets only for workplace and team operations.
+
+Before deciding on a live upload target, run:
+
+```bash
+npm run cloud:migration:audit
+npm run cloud:migration:audit -- --strict
+```
+
+This keeps local preview entries visible as local-only and confirms no local
+SSH-like assumptions are accidentally treated as publishable targets.
 
 For GitHub Pages public cloud, run `npm run cloud:public:readiness -- --repo
 OWNER/REPO` before handoff. For GCP team VPN cloud, run `npm run

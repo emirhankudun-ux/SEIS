@@ -1,4 +1,5 @@
 import SeisPlatformKit
+import Foundation
 import SwiftUI
 
 struct AppleContinuationWindow: View {
@@ -18,6 +19,20 @@ struct AppleContinuationWindow: View {
     @State private var request = SeisAppleShellSettingsContract.appleNativeShell.defaultPreferredFocus.request
     @SceneStorage("seis.apple.shell.selectedFocusFramework")
     private var selectedFocusFramework: String?
+    private var repositoryRoot: String {
+        #if os(macOS)
+        FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library")
+            .appendingPathComponent("Mobile Documents")
+            .appendingPathComponent("com~apple~CloudDocs")
+            .appendingPathComponent("Github")
+            .appendingPathComponent("SEIS")
+            .path
+        #else
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.path ?? ""
+        #endif
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -67,6 +82,10 @@ struct AppleContinuationWindow: View {
                         .accessibilityElement(children: .combine)
                         .accessibilityLabel("\(selectedFocus.framework). \(selectedFocus.purpose). Quality gate \(selectedFocus.qualityGate).")
                     }
+
+                    #if os(macOS)
+                    SeisDesktopDemoCommandCenterView(workspacePath: repositoryRoot)
+                    #endif
 
                     AppleShellDiagnosticsView(snapshot: model.snapshot)
 

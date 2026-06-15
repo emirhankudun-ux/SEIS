@@ -45,6 +45,60 @@ login endpoint. Readiness checks for:
   `/opt/seis/vpn/wireguard-server-public.key`.
 - Key-only SSH hardening through the installer contract.
 
+## Connect and verify
+
+After SSH proof-of-concept and WireGuard peer approval, add this block to
+`~/.ssh/config` with your approved host and key:
+
+```sshconfig
+Host seis-cloud-vps
+  HostName TEAM_VPN_HOST
+  User seis
+  IdentityFile ~/.ssh/id_ed25519_seis_codex
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
+
+Host seis-cloud-vpn
+  HostName 10.44.0.1
+  User seis
+  IdentityFile ~/.ssh/id_ed25519_seis_codex
+  IdentitiesOnly yes
+  ServerAliveInterval 30
+  ServerAliveCountMax 3
+```
+
+Replace `TEAM_VPN_HOST` with the approved SSH host and `User` if your SSH
+service account differs.
+
+Then verify the SSH + WireGuard + Codex preflight checks:
+
+```bash
+ssh -o BatchMode=yes seis-cloud-vps 'command -v codex && codex --version'
+ssh -o BatchMode=yes seis-cloud-vps 'sudo cat /opt/seis/vpn/wireguard-server-public.key'
+ssh -o BatchMode=yes seis-cloud-vpn 'hostname && command -v codex'
+```
+
+After connectivity and checks pass, set the deploy target:
+
+```bash
+node scripts/configure-server-target.mjs \
+  ssh-wireguard-vps \
+  --ssh_target seis-cloud-vps \
+  --ssh_user seis \
+  --vpn wireguard \
+  --vpn_admin_peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32' \
+  --origin ssh://seis-cloud-vpn \
+  --path /opt/seis \
+  --rollback_contact repository-maintainer
+```
+
+Then run:
+
+```bash
+npm run check:deploy-readiness
+```
+
 ## Plan
 
 Planning prints the commands to review before touching the host:

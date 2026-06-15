@@ -5,14 +5,14 @@
   "generic-sftp": {
     "host": "example.com",
     "path": "/public_html",
-    "auth_method": "ssh"
+    "auth_method": "sftp"
   },
   "apache-shared-hosting": {
     "domain": "example.com",
     "document_root": "public_html"
   },
   "docker-node-static": {
-    "host": "127.0.0.1",
+    "host": "local-preview.seis.internal",
     "port": "4177"
   },
   "gcp-compute-vm": {
@@ -29,7 +29,7 @@
     "rollback_contact": "repository-maintainer"
   },
   "ssh-wireguard-vps": {
-    "ssh_target": "seis@example-vps.invalid",
+    "ssh_target": "seis@TEAM_VPN_HOST",
     "ssh_user": "seis",
     "vpn": "wireguard",
     "vpn_admin_peer": "admin|CLIENT_PUBLIC_KEY|10.44.0.2/32",

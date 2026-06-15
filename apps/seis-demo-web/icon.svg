@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">SEIS Demo</title>
+  <desc id="desc">SEIS icon</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1323"/>
+      <stop offset="100%" stop-color="#101f36"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path d="M128 170h64c28 0 42 14 42 40v92h-64v-86h-42zm128 0h64c28 0 42 14 42 40v92h-64v-86h-42z" fill="#70c0ff"/>
+  <path d="M116 314h280" stroke="#d6deea" stroke-width="14" stroke-linecap="round"/>
+  <text x="256" y="392" text-anchor="middle" fill="#d6deea" font-size="90" font-family="SF Pro Display, Arial" font-weight="700">SEIS</text>
+</svg>

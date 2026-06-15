@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1323" />
+  <meta name="description" content="SEIS demo experience for macOS and iOS teams. Explore scenarios, run specialists, and inspect shared telemetry." />
+  <title>SEIS Demo</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="brand" id="home-link" data-route="/">SEIS Demo</a>
+      <nav aria-label="Primary routes">
+        <a href="#/" id="nav-home" data-route="/" class="nav-link">Home</a>
+        <a href="#/demo" id="nav-demo" data-route="/demo" class="nav-link">Demo</a>
+        <a href="#/results/demo-home" id="nav-results" data-route="/results/demo-home" class="nav-link">Results</a>
+      </nav>
+      <button id="fallback-reload" class="ghost-button" type="button" title="Reload demo surface">Reload</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <section class="hero card">
+      <p class="eyebrow">AI-native demo surface</p>
+      <h1>Open-source SEIS demo for <span>macOS + iOS</span></h1>
+      <p>
+        This demo validates how SEIS orchestrates specialists and returns
+        structured artifacts for analytics, quality signals, and handoff.
+      </p>
+      <div class="hero-cta-row">
+        <button type="button" class="button" data-route="/demo" data-cta-id="hero_start_demo">Start Demo</button>
+        <a href="#/results/demo-home" class="button ghost" data-route="/results/demo-home" data-cta-id="view_default_results">View Sample Result</a>
+      </div>
+      <p class="live-hint">
+        Active route: <strong id="route-pill"></strong>
+      </p>
+    </section>
+
+    <section id="content" class="content card" aria-live="polite"></section>
+
+    <section class="card metrics">
+      <h2>Shared Contract & Analytics Snapshot</h2>
+      <ul id="contract-metrics"></ul>
+    </section>
+
+    <section class="card events">
+      <div class="events-header">
+        <h2>Recent Events</h2>
+        <button type="button" id="events-copy" class="ghost-button">Copy JSON</button>
+      </div>
+      <pre id="event-log" role="status" aria-live="polite"></pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Designed for iOS / macOS preview and deep-link parity.</p>
+    <p>Contract-first architecture. No backend required.</p>
+  </footer>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {
+          // best effort
+        });
+      });
+    }
+  </script>
+  <script src="script.js" defer></script>
+</body>
+</html>

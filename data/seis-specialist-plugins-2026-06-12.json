@@ -3,7 +3,7 @@
   "version": 1,
   "updatedAt": "2026-06-15",
   "mode": "single-seis-agent-embedded-lanes",
-  "summary": "SEIS-Agent is the only repo marketplace plugin. SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are embedded lane skills and profiles inside the single agent, while standalone lane directories remain source mirrors for focused development.",
+  "summary": "SEIS-Agent is the only repo marketplace plugin. SEIS Hub, SEIS Governance, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are embedded lane skills and profiles inside the single agent, while standalone lane directories remain source mirrors for focused development.",
   "consolidation": {
     "primaryInstallId": "seis-ai-agent@seis-repo",
     "defaultInstallMode": "single-agent",
@@ -30,6 +30,20 @@
     "seis_specialist_lane_plan"
   ],
   "plugins": [
+    {
+      "name": "seis-governance",
+      "displayName": "SEIS Governance",
+      "category": "Developer",
+      "accessModel": "public-repo-governance-with-release-readiness-validation",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-governance",
+      "skill": "skills/seis-governance/SKILL.md",
+      "mcpServer": "seis-governance",
+      "tools": ["seis_governance_status", "seis_governance_plan"],
+      "laneProfile": "assets/lanes/seis-governance.json"
+    },
     {
       "name": "seis-cloud",
       "displayName": "SEIS Cloud",
