@@ -90,6 +90,12 @@ Windows / .NET          |██----------------------------------| 0.26% (hedef:
 - `ecosystemGroupCount`: `7`
 - `githubFocusedPanels`: `JavaScript`, `TypeScript`, `Objective-C`, `Other`
 
+### Kısa metrik hattı (tek bakış)
+- Dil hedef sapma skoru: `+31.29 p.p.` (AI/Data + TS/JS + HTML/CSS üstünde), `-36.47 p.p.` (Apple, Android/JVM, Rust/C/C++, Windows altında).
+- Kritik açık: `Apple / Swift` hala `-12.62 p.p.` hedef altında, gerçek SEIS ürün yatırımıyla kapatılmalı.
+- `check:language-distribution`: `needs_real_platform_work`
+- `check:seis-technology-stack`: PASS, ancak platform dağılımında eşitleme aksiyonu gerekiyor.
+
 ### Kısa çıkarım
 - Üst hedef: AI/Data + TS/JS yüzdelerinin halen yüksek olduğu, Apple / Swift ve diğer native-yönlü ailelerin düşük olduğu bir dağılım var.
 - Yeni denge, yalnızca gerçek SEIS ürünü/altyapısı ile (ör. Swift özellik modülleri, Android/JVM ve Windows tarafı gerçek iş yükleri) kurulmalı; tekniğe uygun olmayan filler artışı kabul edilemez.

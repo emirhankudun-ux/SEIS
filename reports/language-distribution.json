@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 620,
-    "countedBytes": 2953341,
+    "countedBytes": 2953082,
     "javascriptBytes": 1030005,
     "javascriptPercent": 34.88,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1951444,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1951703,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -30,8 +30,8 @@
     },
     {
       "language": "Swift",
-      "bytes": 356340,
-      "percent": 12.07
+      "bytes": 356081,
+      "percent": 12.06
     },
     {
       "language": "Python",
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 1886065,
+      "bytes": 1885806,
       "percent": 63.86,
       "sourceLanguages": [
         "ABAP",
@@ -633,8 +633,8 @@
       {
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
-        "bytes": 365641,
-        "percent": 12.38,
+        "bytes": 365382,
+        "percent": 12.37,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -672,7 +672,7 @@
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
         "bytes": 1058829,
-        "percent": 35.85,
+        "percent": 35.86,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -775,7 +775,7 @@
     ],
     "unassigned": {
       "bytes": 153127,
-      "percent": 5.18,
+      "percent": 5.19,
       "languages": [
         "ABAP",
         "AWK",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 679308,
+    "documentation": 680153,
     "linguist-generated": 2949862
   },
   "requiredLinguistRules": [
@@ -1007,7 +1007,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "7dffaf04252ff09b9f70ab2e09924ed5559da4acc88707bd2fdbffec16bc0ee8",
+    "hash": "7f331854d3cf97a626882e4e00d3d5641ba3a3e3951408cf63a5c79ac50b3bc2",
     "algorithm": "sha256"
   }
 }

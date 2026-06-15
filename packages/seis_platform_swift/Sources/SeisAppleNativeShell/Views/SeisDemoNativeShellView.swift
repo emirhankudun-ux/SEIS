@@ -441,52 +441,79 @@ final class SeisDemoNativeShellState: NSObject, ObservableObject {
             source: "native"
         )
 
-        Task { @MainActor in
+        Task(priority: .userInitiated) { [weak self, scenarioSteps, runId] in
+            guard let self else {
+                return
+            }
+
             for (index, stepName) in scenarioSteps.enumerated() {
                 try? await Task.sleep(for: .milliseconds(650 + Int.random(in: 0...250)))
-                guard var latest = self.runs[runId], latest.status == "running" else {
+                let shouldContinue = await MainActor.run {
+                    self.applyScenarioStep(
+                        runId: runId,
+                        stepName: stepName,
+                        stepIndex: index + 1,
+                        totalSteps: scenarioSteps.count
+                    )
+                }
+                if !shouldContinue {
                     return
                 }
-
-                var steps = latest.steps
-                steps.append(
-                    DemoStep(
-                        name: stepName,
-                        state: "success",
-                        at: self.isoFormatter.string(from: Date())
-                    )
-                )
-
-                let startDate = ISO8601DateParser.date(from: latest.startedAt) ?? Date()
-                let duration = Int(Date().timeIntervalSince(startDate) * 1000)
-                let done = index == scenarioSteps.count - 1
-
-                latest = DemoRun(
-                    id: runId,
-                    scenarioId: latest.scenarioId,
-                    status: done ? "completed" : "running",
-                    durationMs: duration,
-                    startedAt: latest.startedAt,
-                    completedAt: done ? self.isoFormatter.string(from: Date()) : nil,
-                    steps: steps
-                )
-                self.runs[runId] = latest
-
-                self.recordTelemetryEvent(
-                    eventName: "seis_demo_step",
-                    details: [
-                        "run_id": runId,
-                        "scenario_id": latest.scenarioId,
-                        "step": done ? "complete" : stepName,
-                        "step_index": index + 1,
-                        "steps_count": scenarioSteps.count,
-                        "duration_ms": duration,
-                        "route": "/results/\(runId)"
-                    ],
-                    source: "native"
-                )
             }
         }
+    }
+
+    @MainActor
+    private func applyScenarioStep(
+        runId: String,
+        stepName: String,
+        stepIndex: Int,
+        totalSteps: Int
+    ) -> Bool {
+        guard var latest = runs[runId], latest.status == "running" else {
+            return false
+        }
+
+        var steps = latest.steps
+        let isFinalStep = stepIndex >= totalSteps
+        steps.append(
+            DemoStep(
+                name: stepName,
+                state: "success",
+                at: isoFormatter.string(from: Date())
+            )
+        )
+
+        let startDate = ISO8601DateParser.date(from: latest.startedAt) ?? Date()
+        let duration = Int(Date().timeIntervalSince(startDate) * 1000)
+        let done = isFinalStep
+
+        latest = DemoRun(
+            id: runId,
+            scenarioId: latest.scenarioId,
+            status: done ? "completed" : "running",
+            durationMs: duration,
+            startedAt: latest.startedAt,
+            completedAt: done ? isoFormatter.string(from: Date()) : nil,
+            steps: steps
+        )
+        runs[runId] = latest
+
+        recordTelemetryEvent(
+            eventName: "seis_demo_step",
+            details: [
+                "run_id": runId,
+                "scenario_id": latest.scenarioId,
+                "step": isFinalStep ? "complete" : stepName,
+                "step_index": stepIndex,
+                "steps_count": totalSteps,
+                "duration_ms": duration,
+                "route": "/results/\(runId)"
+            ],
+            source: "native"
+        )
+
+        return !done
     }
 
     private func extractRouteParameter(from route: String, prefix: String) -> String? {
