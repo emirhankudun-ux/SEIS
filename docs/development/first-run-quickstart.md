@@ -58,6 +58,7 @@ After the baseline passes, move into the narrow lane that matches your work.
 | --- | --- |
 | Apple native | `swift test --package-path packages/seis_platform_swift` |
 | Apple shell app | `./script/build_and_run.sh --verify` |
+| macOS portfolio demo | `./apps/macos/run-demo.sh self-test` (then `both` to launch the website + native app) |
 | AI and MCP package | `npm test --prefix packages/seis-ai` after installing that package's dependencies |
 | Web audit | `npm run seis:check` |
 | Platform language policy | `npm run check:seis-platform-language-policy` |
