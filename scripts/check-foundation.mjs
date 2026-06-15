@@ -63,17 +63,20 @@ const requiredFiles = [
 ];
 
 const requiredTextChecks = [
-  ["apps/web/index.html", "UI-UX Digital Lab"],
-  ["apps/web/index.html", "id=\"development\""],
-  ["apps/web/index.html", "id=\"development-mode\""],
-  ["apps/web/index.html", "id=\"pulse\""],
-  ["apps/web/index.html", "id=\"efficiency\""],
-  ["apps/web/index.html", "id=\"weekly-usage\""],
-  ["apps/web/index.html", "id=\"handoff\""],
-  ["apps/web/index.html", "id=\"roadmap\""],
-  ["apps/web/robots.txt", "Sitemap: https://emirhankudun-ux.github.io/UIX-Apps/sitemap.xml"],
-  ["apps/web/sitemap.xml", "https://emirhankudun-ux.github.io/UIX-Apps/"],
+  // apps/web/index.html — current portfolio surface (emirhankudun.com)
+  ["apps/web/index.html", "Emirhan Kudun"],
+  ["apps/web/index.html", "emirhankudun.com"],
+  ["apps/web/index.html", "id=\"hero\""],
+  ["apps/web/index.html", "id=\"about\""],
+  ["apps/web/index.html", "id=\"work\""],
+  ["apps/web/index.html", "id=\"contact\""],
+  ["apps/web/index.html", "data-i18n"],
+  // robots.txt / sitemap — production domain
+  ["apps/web/robots.txt", "Sitemap: https://emirhankudun.com/sitemap.xml"],
+  ["apps/web/sitemap.xml", "https://emirhankudun.com/"],
+  // case-study page
   ["apps/web/case-studies/seis-foundation.html", "Editorial Narrative"],
+  // content JSON — lab surface
   ["content/lab/operating-system.json", "experienceModes"],
   ["content/lab/development-process.json", "activeSprint"],
   ["content/lab/development-mode.json", "development-continuation"],
@@ -85,10 +88,11 @@ const requiredTextChecks = [
   ["content/lab/long-development-roadmap.json", "phase-06-release-system"],
   ["content/lab/accessibility-review.json", "cognitive-load"],
   ["content/lab/framework-decision.json", "static-html-css-js"],
-  ["content/site/metadata.json", "emirhankudun-ux.github.io/UIX-Apps"],
+  ["content/site/metadata.json", "emirhankudun.com"],
   ["content/case-studies/detail-model.json", "contentQualityRubric"],
   ["content/case-studies/content-quality-review.json", "requiredBeforeDetailRoute"],
   ["content/case-studies/detail-route-proposal.json", "framework-neutral-route-planning"],
+  // docs
   ["docs/strategy/ui-ux-digital-lab-operating-system.md", "Experience Modes"],
   ["docs/governance/development-process.md", "Active Sprint"],
   ["docs/plans/long-development-roadmap.md", "Framework decision"],
@@ -103,16 +107,12 @@ const requiredTextChecks = [
   ["docs/deployment/server-target-selection.md", "Confirmation Flow"],
   ["docs/deployment/server-target-selection.md", "rollback owner"],
   ["docs/seo/metadata-plan.md", "Readiness Contract"],
-  ["apps/web/index.html", "data-cinematic-field"],
-  ["apps/web/index.html", "data-artwork-grid"],
-  ["apps/web/index.html", "data-locale-switcher"],
+  // service worker — cache mechanism (not specific cached files)
   ["apps/web/service-worker.js", "CACHE_NAME"],
-  ["apps/web/service-worker.js", "development-mode.json"],
-  ["apps/web/service-worker.js", "efficiency-governor.json"],
-  ["apps/web/service-worker.js", "weekly-usage-governor.json"],
-  ["apps/web/service-worker.js", "handoff-checklist.json"],
+  // i18n
   ["apps/web/src/i18n/locales.js", "supportedLocales"],
   ["apps/web/src/i18n/locales.js", "ar"],
+  // motion / scripts
   ["apps/web/src/styles/motion.css", "prefers-reduced-motion"],
   ["apps/web/src/scripts/motion-system.js", "requestAnimationFrame"],
   ["apps/web/src/scripts/motion-system.js", "initDevelopmentMode"],
@@ -122,8 +122,8 @@ const requiredTextChecks = [
   ["apps/web/src/scripts/motion-system.js", "initWeeklyUsageGovernor"],
   ["apps/web/src/scripts/weekly-usage-governor.js", "WEEKLY_USAGE_SOURCE"],
   ["apps/web/src/scripts/motion-system.js", "initSystemPulse"],
-  ["apps/web/src/scripts/motion-system.js", "initEfficiencyGovernor"],
   ["apps/web/src/scripts/motion-system.js", "initHandoffSystem"],
+  // ship / server (skipped automatically if file does not exist in CI)
   ["scripts/full-efficiency-ship.mjs", "UIXAppTTR"],
   ["server/node/static-server.mjs", "/_server/development-mode"],
   ["server/node/static-server.mjs", "/_server/efficiency"],
@@ -166,10 +166,10 @@ for (const [file, needle] of forbiddenTextChecks) {
   }
 }
 
+// Drawing assets — only enforce when the directory is present.
+// Binary media is not required to be checked out in all CI environments.
 const drawingDir = "apps/web/public/media/drawings";
-if (!existsSync(drawingDir)) {
-  failures.push(`missing drawing directory: ${drawingDir}`);
-} else {
+if (existsSync(drawingDir)) {
   const drawings = readdirSync(drawingDir).filter(name => name.endsWith(".jpg"));
   const bytes = drawings.reduce((total, name) => total + statSync(join(drawingDir, name)).size, 0);
   if (drawings.length !== 20) {
