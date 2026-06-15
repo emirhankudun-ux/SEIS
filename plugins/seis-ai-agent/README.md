@@ -1,7 +1,7 @@
 # SEIS-Agent
 
 SEIS-Agent is the unified orchestration plugin for the SEIS repository. It
-combines `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` into
+combines `seis-governance`, `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` into
 one long-running agent direction across memory, context, cloud, code, design,
 data, MCP, skills, plugins, and automation.
 
@@ -31,6 +31,8 @@ separate repo marketplace plugin cards.
 - `seis_hub_plan`
 - `seis_cloud_status`
 - `seis_cloud_plan`
+- `seis_governance_status`
+- `seis_governance_plan`
 - `seis_code_status`
 - `seis_code_plan`
 - `seis_design_status`

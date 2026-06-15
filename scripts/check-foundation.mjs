@@ -62,7 +62,7 @@ const requiredTextChecks = [
   ["docs/polyglot/language-balance-plan.md", "GitHub Language Balance"],
   ["docs/polyglot/language-balance-plan.md", "Do not add filler code only to change language percentages"],
   ["package.json", "\"check:open-source-governance\""],
-  [".github/workflows/ci.yml", "npm run check:open-source-governance"],
+  [".github/workflows/ci.yml", "npm run quality:governance"],
   [".github/workflows/seis-open-source-governance.yml", "SEIS Open Source Governance"]
 ];
 

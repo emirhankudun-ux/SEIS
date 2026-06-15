@@ -101,6 +101,7 @@ SKIP_DIRS = {
 
 SKIP_DIR_PREFIXES = (
     ".dist.seis-cloud-check.",
+    ".build-",
 )
 
 BINARY_EXTENSIONS = {
@@ -262,6 +263,7 @@ SELF_REPORT_PATHS = {
 
 VOLATILE_REPORT_PATHS = {
     "reports/automation-refresh-seis-surface-summary.json",
+    "cloud-migration-audit.ci.json",
 }
 
 RUNTIME_COMMANDS = [

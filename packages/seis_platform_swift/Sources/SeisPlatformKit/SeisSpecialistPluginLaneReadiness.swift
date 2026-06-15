@@ -320,7 +320,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
     }
 
     private static var homePath: String {
-        FileManager.default.homeDirectoryForCurrentUser.path
+        NSHomeDirectory()
     }
 
     private static func defaultRepositoryRoot(home: String) -> String {

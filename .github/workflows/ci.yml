@@ -20,8 +20,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Open source governance
-        run: npm run check:open-source-governance
-
-      - name: SEIS web audit
-        run: npm run seis:check
+      - name: Single governance/quality closure
+        run: npm run quality:governance

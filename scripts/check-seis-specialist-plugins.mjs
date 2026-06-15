@@ -9,7 +9,7 @@ const args = parseArgs(process.argv.slice(2));
 const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true;
 const failures = [];
 
-const lanes = [
+const standaloneLanes = [
   {
     name: "seis-cloud",
     displayName: "SEIS Cloud",
@@ -43,6 +43,20 @@ const lanes = [
   },
 ];
 
+const governanceLane = {
+  name: "seis-governance",
+  displayName: "SEIS Governance",
+  marketplaceCategory: "Developer",
+  mcpServer: "seis-governance",
+  tools: ["seis_governance_status", "seis_governance_plan"],
+  embeddedOnly: true,
+};
+
+const lanes = [
+  ...standaloneLanes,
+  governanceLane,
+];
+
 if (args.help) {
   console.log(`
 Usage:
@@ -58,7 +72,7 @@ Options:
   process.exit(0);
 }
 
-for (const lane of lanes) {
+for (const lane of standaloneLanes) {
   validatePluginRoot(path.join(ROOT, "plugins", lane.name), lane, "repo");
   if (checkLocal) {
     validatePluginRoot(path.join(homeDir(), "plugins", lane.name), lane, "local");
@@ -87,7 +101,7 @@ for (const token of [
   "seis_specialist_lanes",
   "seis_specialist_lane_status",
   "seis_specialist_lane_plan",
-  ...lanes.flatMap((lane) => lane.tools),
+  ...standaloneLanes.flatMap((lane) => lane.tools),
 ]) {
   validateCodeContains(centralMcp, token, `central MCP server must expose ${token}`);
 }
@@ -265,6 +279,18 @@ function validateCentralMcpSmoke(centralMcp) {
       method: "tools/call",
       params: { name: "seis_specialist_lane_plan", arguments: { lane: "seis-data", request } },
     }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 6,
+      method: "tools/call",
+      params: { name: "seis_specialist_lane_status", arguments: { lane: "seis-governance" } },
+    }),
+    frameMcpMessage({
+      jsonrpc: "2.0",
+      id: 7,
+      method: "tools/call",
+      params: { name: "seis_specialist_lane_plan", arguments: { lane: "seis-governance", request } },
+    }),
   ].join("");
 
   const result = spawnSync("node", [centralMcp], {
@@ -304,6 +330,15 @@ function validateCentralMcpSmoke(centralMcp) {
   ensure(planPayload?.lane === "seis-data", "central MCP specialist plan lane must match");
   ensure(planPayload?.request === request, "central MCP specialist plan must echo request");
   ensure(Array.isArray(planPayload?.steps) && planPayload.steps.length >= 4, "central MCP specialist plan must include steps");
+
+  const governanceStatusPayload = responses.find((message) => message.id === 6)?.result;
+  ensure(governanceStatusPayload?.id === "seis-governance", "central MCP governance status id must match");
+  ensure(governanceStatusPayload?.status === "ready", "central MCP governance status must be ready");
+
+  const governancePlanPayload = responses.find((message) => message.id === 7)?.result;
+  ensure(governancePlanPayload?.lane === "seis-governance", "central MCP governance plan lane must match");
+  ensure(governancePlanPayload?.request === request, "central MCP governance plan must echo request");
+  ensure(Array.isArray(governancePlanPayload?.steps) && governancePlanPayload.steps.length >= 4, "central MCP governance plan must include steps");
 }
 
 function frameMcpMessage(message) {
@@ -391,13 +426,14 @@ function validateMarketplace(marketplacePath, label, expectedName) {
     ensure(entry?.policy?.installation === "AVAILABLE", `${label} seis-ai-agent: installation must be AVAILABLE`);
     ensure(entry?.policy?.authentication === "ON_INSTALL", `${label} seis-ai-agent: authentication must be ON_INSTALL`);
     ensure(entry?.category === "Developer", `${label} seis-ai-agent: category must be Developer`);
-    for (const lane of lanes) {
+    for (const lane of standaloneLanes) {
       ensure(!marketplace.plugins.some((plugin) => plugin.name === lane.name), `${label}: ${lane.name} must be embedded in SEIS-Agent instead of published`);
     }
     return;
   }
 
   for (const lane of lanes) {
+    if (lane.embeddedOnly) continue;
     const entry = marketplace.plugins?.find((plugin) => plugin.name === lane.name);
     ensure(entry, `${label}: entry missing: ${lane.name}`);
     if (!entry) continue;
