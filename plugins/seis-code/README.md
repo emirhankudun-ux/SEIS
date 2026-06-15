@@ -19,6 +19,9 @@ python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_va
 node plugins/seis-code/scripts/seis-code-status.mjs
 ```
 
-## Install
+## Embedded Use
 
-The repository marketplace points at `plugins/seis-code` as `seis-code@seis-repo`.
+The repository marketplace publishes SEIS-Agent only. This lane is embedded at
+`plugins/seis-ai-agent/skills/seis-code/SKILL.md` and installed through
+`seis-ai-agent@seis-repo`; this directory remains the source mirror for focused
+lane development and validation.

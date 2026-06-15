@@ -1,7 +1,7 @@
 {
   "source": "codex plugin list",
   "installed_enabled_count": 186,
-  "not_installed_count": 10,
+  "not_installed_count": 5,
   "installed_enabled": [
     {
       "id": "documents@openai-primary-runtime",
@@ -2046,7 +2046,7 @@
       "status": "installed, enabled",
       "installed": true,
       "enabled": true,
-      "version": "0.1.0",
+      "version": "0.1.0+codex.20260615061928",
       "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-ai-agent"
     }
   ],
@@ -2105,61 +2105,6 @@
       "enabled": false,
       "version": null,
       "path": "/Users/emirhankudun/plugins/seis-data"
-    },
-    {
-      "id": "seis@seis-repo",
-      "name": "seis",
-      "marketplace": "seis-repo",
-      "marketplace_section": "seis-repo",
-      "status": "not installed",
-      "installed": false,
-      "enabled": false,
-      "version": null,
-      "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis"
-    },
-    {
-      "id": "seis-cloud@seis-repo",
-      "name": "seis-cloud",
-      "marketplace": "seis-repo",
-      "marketplace_section": "seis-repo",
-      "status": "not installed",
-      "installed": false,
-      "enabled": false,
-      "version": null,
-      "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-cloud"
-    },
-    {
-      "id": "seis-code@seis-repo",
-      "name": "seis-code",
-      "marketplace": "seis-repo",
-      "marketplace_section": "seis-repo",
-      "status": "not installed",
-      "installed": false,
-      "enabled": false,
-      "version": null,
-      "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-code"
-    },
-    {
-      "id": "seis-design@seis-repo",
-      "name": "seis-design",
-      "marketplace": "seis-repo",
-      "marketplace_section": "seis-repo",
-      "status": "not installed",
-      "installed": false,
-      "enabled": false,
-      "version": null,
-      "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-design"
-    },
-    {
-      "id": "seis-data@seis-repo",
-      "name": "seis-data",
-      "marketplace": "seis-repo",
-      "marketplace_section": "seis-repo",
-      "status": "not installed",
-      "installed": false,
-      "enabled": false,
-      "version": null,
-      "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-data"
     }
   ]
 }

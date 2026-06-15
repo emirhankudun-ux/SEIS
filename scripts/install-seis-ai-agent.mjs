@@ -9,12 +9,11 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const args = new Set(process.argv.slice(2));
 const marketplace = "seis-repo";
 const primaryInstallId = "seis-ai-agent@seis-repo";
-const standaloneTargets = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].map((name) => `${name}@${marketplace}`);
-const includeStandaloneTargets = args.has("--with-lanes") && !args.has("--agent-only");
-const targets = [primaryInstallId, ...(includeStandaloneTargets ? standaloneTargets : [])];
+const embeddedLanes = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"];
+const targets = [primaryInstallId];
 
 if (args.has("--help") || args.has("-h")) {
-  console.log("Usage: node scripts/install-seis-ai-agent.mjs [--apply] [--check-only] [--with-lanes] [--agent-only]");
+  console.log("Usage: node scripts/install-seis-ai-agent.mjs [--apply] [--check-only]");
   process.exit(0);
 }
 
@@ -25,9 +24,8 @@ const readiness = {
   marketplaceExists: fs.existsSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json")),
   codexAvailable: commandExists("codex"),
   primaryInstallId,
-  standaloneTargets,
-  includeStandaloneTargets,
-  consolidationPolicy: "default installs only SEIS-Agent; standalone SEIS lane plugins remain repo-contained optional packages",
+  embeddedLanes,
+  consolidationPolicy: "SEIS-Agent is the only install target; SEIS, Cloud, Code, Design, and Data lanes are embedded skills inside the single plugin",
   targets,
 };
 

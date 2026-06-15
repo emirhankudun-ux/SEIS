@@ -136,13 +136,10 @@ This legacy compatibility command:
 - regenerates cachebuster in the local plugin manifest,
 - and runs `codex plugin add seis@personal` only for the personal mirror.
 
-For optional standalone repo-source governance-lane installs, prefer:
-
-```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
-codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
-codex plugin add seis@seis-repo
-```
+For repo-source governance lane work, use the unified `seis-ai-agent@seis-repo`
+plugin. This `plugins/seis` directory is a source mirror for governance scripts,
+skills, and validation contracts; the repo marketplace does not publish it as a
+separate plugin card.
 
 Optional flags:
 

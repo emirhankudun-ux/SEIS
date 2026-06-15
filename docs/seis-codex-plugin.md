@@ -4,8 +4,8 @@ Date: 2026-06-05
 
 The unified `seis-ai-agent` Codex plugin connects Codex work back to the
 canonical SEIS repository and gives future SEIS development a stable plugin
-workflow. The older `seis` plugin remains a repo-contained governance lane for
-compatibility and focused debugging.
+workflow. The older lane packages remain repo-contained source mirrors, while
+SEIS-Agent is the only repo marketplace plugin card.
 
 ## Local Plugin
 
@@ -15,7 +15,7 @@ compatibility and focused debugging.
 | Repo plugin root | `plugins/seis-ai-agent` |
 | Repo marketplace | `.agents/plugins/marketplace.json` |
 | Installed plugin | `seis-ai-agent@seis-repo` |
-| Optional governance lane | `seis@seis-repo` |
+| Embedded governance lane | `plugins/seis-ai-agent/skills/seis-hub/SKILL.md` |
 
 ## Current Components
 
@@ -60,12 +60,6 @@ Apply the install only after reviewing the plan:
 
 ```bash
 npm run install:seis-ai-agent -- --apply
-```
-
-Install standalone lane cards only for marketplace or MCP debugging:
-
-```bash
-npm run install:seis-ai-agent -- --with-lanes
 ```
 
 Start a new Codex thread after reinstalling so new skills and tools are picked up.
@@ -118,23 +112,23 @@ The GitHub connector can also force-update `main` to the canonical branch SHA wh
 ## Specialist Lanes
 
 The unified `seis-ai-agent@seis-repo` plugin is the primary SEIS surface. It
-composes SEIS governance plus four specialist lanes. The repo marketplace keeps
-each standalone lane card available for focused plugin debugging, but normal
-work should start from SEIS-Agent:
+composes SEIS governance plus four specialist lanes. The repo marketplace
+publishes only SEIS-Agent; standalone lane directories remain source mirrors for
+development and validation:
 
 - SEIS Cloud: provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation.
 - SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
 - SEIS-Design: product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.
 - SEIS-DATA: data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.
 
-Optional standalone plugin packages:
+Embedded lane surfaces:
 
-| Plugin | Repo root | Install id | MCP tools |
+| Lane | Embedded path | Source mirror | MCP tools |
 |---|---|---|---|
-| `seis-cloud` | `plugins/seis-cloud` | `seis-cloud@seis-repo` | `seis_cloud_status`, `seis_cloud_plan` |
-| `seis-code` | `plugins/seis-code` | `seis-code@seis-repo` | `seis_code_status`, `seis_code_plan` |
-| `seis-design` | `plugins/seis-design` | `seis-design@seis-repo` | `seis_design_status`, `seis_design_plan` |
-| `seis-data` | `plugins/seis-data` | `seis-data@seis-repo` | `seis_data_status`, `seis_data_plan` |
+| `seis-cloud` | `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` | `plugins/seis-cloud` | `seis_cloud_status`, `seis_cloud_plan` |
+| `seis-code` | `plugins/seis-ai-agent/skills/seis-code/SKILL.md` | `plugins/seis-code` | `seis_code_status`, `seis_code_plan` |
+| `seis-design` | `plugins/seis-ai-agent/skills/seis-design/SKILL.md` | `plugins/seis-design` | `seis_design_status`, `seis_design_plan` |
+| `seis-data` | `plugins/seis-ai-agent/skills/seis-data/SKILL.md` | `plugins/seis-data` | `seis_data_status`, `seis_data_plan` |
 
 The central `seis` MCP server additionally exposes `seis_specialist_lanes`, `seis_specialist_lane_status`, and `seis_specialist_lane_plan`.
 

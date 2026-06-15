@@ -67,14 +67,19 @@ for (const lane of lanes) {
 
 const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace", "centralMcpTools"]);
 if (specialistManifest) {
+  ensure(specialistManifest.mode === "single-seis-agent-embedded-lanes", "specialist plugin manifest must use single-agent embedded lane mode");
   ensure(Array.isArray(specialistManifest.centralMcpTools), "specialist plugin manifest centralMcpTools must be an array");
   ensure(specialistManifest.consolidation?.primaryInstallId === "seis-ai-agent@seis-repo", "specialist plugin manifest must point at the SEIS-Agent primary install id");
   ensure(specialistManifest.consolidation?.defaultInstallMode === "single-agent", "specialist plugin manifest must keep single-agent default install mode");
   ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
+  ensure(specialistManifest.consolidation?.standaloneLaneInstallMode === "disabled", "specialist plugin manifest must disable standalone lane installs");
+  ensure(specialistManifest.consolidation?.marketplacePolicy === "only-seis-ai-agent-is-published", "specialist plugin manifest must publish only SEIS-Agent");
   for (const tool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
     ensure(specialistManifest.centralMcpTools?.includes(tool), `specialist plugin manifest centralMcpTools missing ${tool}`);
   }
 }
+
+validateEmbeddedAgentPlugin();
 
 const centralMcp = path.join(ROOT, "mcp", "seis-mcp-server.mjs");
 ensureFile(centralMcp, "central SEIS MCP server");
@@ -377,6 +382,21 @@ function validateMarketplace(marketplacePath, label, expectedName) {
   ensure(marketplace.name === expectedName, `${label}: name must be ${expectedName}`);
   ensure(Array.isArray(marketplace.plugins), `${label}: plugins must be an array`);
 
+  if (expectedName === "seis-repo") {
+    ensure(marketplace.plugins.length === 1, `${label}: must publish exactly one plugin`);
+    const entry = marketplace.plugins?.[0];
+    ensure(entry?.name === "seis-ai-agent", `${label}: only entry must be seis-ai-agent`);
+    ensure(entry?.source?.source === "local", `${label} seis-ai-agent: source must be local`);
+    ensure(entry?.source?.path === "./plugins/seis-ai-agent", `${label} seis-ai-agent: path must be ./plugins/seis-ai-agent`);
+    ensure(entry?.policy?.installation === "AVAILABLE", `${label} seis-ai-agent: installation must be AVAILABLE`);
+    ensure(entry?.policy?.authentication === "ON_INSTALL", `${label} seis-ai-agent: authentication must be ON_INSTALL`);
+    ensure(entry?.category === "Developer", `${label} seis-ai-agent: category must be Developer`);
+    for (const lane of lanes) {
+      ensure(!marketplace.plugins.some((plugin) => plugin.name === lane.name), `${label}: ${lane.name} must be embedded in SEIS-Agent instead of published`);
+    }
+    return;
+  }
+
   for (const lane of lanes) {
     const entry = marketplace.plugins?.find((plugin) => plugin.name === lane.name);
     ensure(entry, `${label}: entry missing: ${lane.name}`);
@@ -386,6 +406,26 @@ function validateMarketplace(marketplacePath, label, expectedName) {
     ensure(entry.policy?.installation === "AVAILABLE", `${label} ${lane.name}: installation must be AVAILABLE`);
     ensure(entry.policy?.authentication === "ON_INSTALL", `${label} ${lane.name}: authentication must be ON_INSTALL`);
     ensure(entry.category === lane.marketplaceCategory, `${label} ${lane.name}: category must be ${lane.marketplaceCategory}`);
+  }
+}
+
+function validateEmbeddedAgentPlugin() {
+  const agentRoot = path.join(ROOT, "plugins", "seis-ai-agent");
+  const profile = readJson(path.join(agentRoot, "assets", "agent-profile.json"));
+  ensureFile(path.join(agentRoot, ".codex-plugin", "plugin.json"), "embedded SEIS-Agent manifest");
+  ensureFile(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), "embedded SEIS-Agent MCP server");
+  ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "disabled", "SEIS-Agent profile must disable standalone lane installs");
+  ensure(profile?.consolidationPolicy?.marketplacePolicy === "only-seis-ai-agent-is-published", "SEIS-Agent profile must publish only one marketplace card");
+
+  for (const skill of ["seis-ai-agent", "seis-hub", ...lanes.map((lane) => lane.name)]) {
+    ensureFile(path.join(agentRoot, "skills", skill, "SKILL.md"), `embedded ${skill} skill`);
+    ensure(profile?.consolidationPolicy?.embeddedSkills?.includes(skill), `SEIS-Agent profile embeddedSkills missing ${skill}`);
+  }
+
+  for (const lane of lanes) {
+    ensureFile(path.join(agentRoot, "assets", "lanes", `${lane.name}.json`), `embedded ${lane.name} lane profile`);
+    validateCodeContains(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), lane.tools[0], `SEIS-Agent MCP server must expose embedded ${lane.tools[0]}`);
+    validateCodeContains(path.join(agentRoot, "scripts", "seis-ai-agent-mcp-server.mjs"), lane.tools[1], `SEIS-Agent MCP server must expose embedded ${lane.tools[1]}`);
   }
 }
 

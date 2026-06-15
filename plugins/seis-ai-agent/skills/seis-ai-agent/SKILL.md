@@ -9,9 +9,8 @@ Use this skill when the user wants the combined SEIS agent system rather than on
 isolated lane. Keep development directly inside the SEIS repository.
 
 SEIS-Agent is the primary operator for SEIS, SEIS-Cloud, SEIS-Code,
-SEIS-Design, and SEIS-Data. Treat the specialist plugins as repo-contained lanes
-behind the unified agent unless the user explicitly asks to install or debug a
-standalone lane card.
+SEIS-Design, and SEIS-Data. Treat the specialist packages as repo-contained
+source mirrors behind the unified agent.
 
 ## Canonical Context
 
@@ -20,9 +19,8 @@ standalone lane card.
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis-ai-agent@seis-repo`
 - Default install mode: one visible SEIS-Agent plugin
-- Composed plugins: `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`
+- Composed lanes: `seis`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`
 - Operating identity: `SEIS-Agent`
-- Optional standalone lane install: `npm run install:seis-ai-agent -- --with-lanes`
 - Legacy personal marketplace: compatibility mirror only
 
 ## Unified Workflow
@@ -44,8 +42,8 @@ standalone lane card.
 
 - Use `seis-ai-agent@seis-repo` as the canonical install and user-facing plugin.
 - Do not install the old `personal` SEIS plugin family unless maintaining a legacy mirror.
-- Do not install standalone `seis`, `seis-cloud`, `seis-code`, `seis-design`, or `seis-data` cards by default; use `--with-lanes` only for focused plugin debugging or marketplace QA.
-- Keep specialist source packages in `plugins/` so their skills, MCP servers, lane profiles, and validation contracts stay testable inside the repo.
+- Do not publish standalone `seis`, `seis-cloud`, `seis-code`, `seis-design`, or `seis-data` cards from the repo marketplace.
+- Keep specialist source mirrors in `plugins/` so their skills, MCP servers, lane profiles, and validation contracts stay testable inside the repo.
 - If duplicate plugin cards are already installed, prefer removing the legacy `personal` duplicates first and keeping SEIS-Agent as the active surface.
 
 ## Validation

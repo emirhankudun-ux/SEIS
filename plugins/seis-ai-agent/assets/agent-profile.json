@@ -16,16 +16,24 @@
     "primaryInstallId": "seis-ai-agent@seis-repo",
     "defaultInstallMode": "single-agent",
     "legacyPersonalMarketplace": "compatibility-mirror-only",
-    "standaloneLaneInstallMode": "optional-with-lanes",
-    "standalonePlugins": [
-      "seis@seis-repo",
-      "seis-cloud@seis-repo",
-      "seis-code@seis-repo",
-      "seis-design@seis-repo",
-      "seis-data@seis-repo"
+    "standaloneLaneInstallMode": "disabled",
+    "marketplacePolicy": "only-seis-ai-agent-is-published",
+    "embeddedSkills": [
+      "seis-ai-agent",
+      "seis-hub",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data"
+    ],
+    "embeddedLaneProfiles": [
+      "assets/lanes/seis-cloud.json",
+      "assets/lanes/seis-code.json",
+      "assets/lanes/seis-design.json",
+      "assets/lanes/seis-data.json"
     ]
   },
-  "composedPlugins": [
+  "composedLanes": [
     "seis",
     "seis-cloud",
     "seis-code",

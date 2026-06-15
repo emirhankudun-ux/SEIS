@@ -9,7 +9,16 @@ const required = [
   "plugins/seis-ai-agent/.codex-plugin/plugin.json",
   "plugins/seis-ai-agent/.mcp.json",
   "plugins/seis-ai-agent/assets/agent-profile.json",
+  "plugins/seis-ai-agent/assets/lanes/seis-cloud.json",
+  "plugins/seis-ai-agent/assets/lanes/seis-code.json",
+  "plugins/seis-ai-agent/assets/lanes/seis-design.json",
+  "plugins/seis-ai-agent/assets/lanes/seis-data.json",
   "plugins/seis-ai-agent/skills/seis-ai-agent/SKILL.md",
+  "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+  "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+  "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+  "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+  "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
   "plugins/seis-ai-agent/README.md",
   "plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs",
   "scripts/install-seis-ai-agent.mjs",
@@ -32,14 +41,19 @@ ensure(manifest?.interface?.capabilities?.includes("Memory and context governanc
 ensure(profile?.displayName === "SEIS-Agent", "profile display name must be SEIS-Agent");
 ensure(profile?.aliases?.includes("SEIS-AI Agent"), "profile must preserve SEIS-AI Agent alias");
 ensure(profile?.installId === "seis-ai-agent@seis-repo", "profile install id must use seis-repo");
-for (const name of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"]) ensure(profile?.composedPlugins?.includes(name), `profile missing ${name}`);
+ensure(profile?.consolidationPolicy?.standaloneLaneInstallMode === "disabled", "profile must disable standalone lane installs");
+ensure(profile?.consolidationPolicy?.marketplacePolicy === "only-seis-ai-agent-is-published", "profile must publish only SEIS-Agent");
+for (const name of ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"]) ensure(profile?.composedLanes?.includes(name), `profile missing lane ${name}`);
+for (const name of ["seis-ai-agent", "seis-hub", "seis-cloud", "seis-code", "seis-design", "seis-data"]) ensure(profile?.consolidationPolicy?.embeddedSkills?.includes(name), `profile missing embedded skill ${name}`);
 for (const platform of ["macos", "windows", "linux"]) ensure(profile?.terminalInstall?.platforms?.includes(platform), `profile missing ${platform}`);
 ensure(profile?.websiteRoadmap?.direction?.includes("Cinematic"), "website roadmap must preserve cinematic direction");
 ensure((identities?.identities || []).some((identity) => identity.name === "SEIS-Agent" && identity.repoSurface === "plugins/seis-ai-agent"), "operating identities must map SEIS-Agent to plugin");
 ensure(mcp?.mcpServers?.["seis-ai-agent"]?.args?.[0] === "./scripts/seis-ai-agent-mcp-server.mjs", "MCP manifest must point at server");
-ensure(marketplace?.plugins?.some((plugin) => plugin.name === "seis-ai-agent" && plugin.source?.path === "./plugins/seis-ai-agent"), "marketplace must include seis-ai-agent");
+ensure(marketplace?.plugins?.length === 1, "marketplace must publish exactly one plugin");
+ensure(marketplace?.plugins?.[0]?.name === "seis-ai-agent" && marketplace?.plugins?.[0]?.source?.path === "./plugins/seis-ai-agent", "marketplace must include only seis-ai-agent");
 contains("scripts/install-seis-ai-agent.mjs", "seis-ai-agent@seis-repo", "installer must include repo install id");
 contains("scripts/install-seis-ai-agent.mjs", "plan-only", "installer must default to plan-only");
+contains("scripts/install-seis-ai-agent.mjs", "SEIS-Agent is the only install target", "installer must document single install target policy");
 contains("docs/platform/seis-ai-agent.md", "macOS", "platform doc must mention macOS");
 contains("docs/platform/seis-ai-agent.md", "Windows", "platform doc must mention Windows");
 contains("docs/platform/seis-ai-agent.md", "Linux", "platform doc must mention Linux");
@@ -47,8 +61,11 @@ contains("docs/platform/seis-ai-agent.md", "SEIS-Agent", "platform doc must use 
 contains("docs/platform/seis-ai-agent.md", "Consolidation Rule", "platform doc must define consolidation rule");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_ai_agent_status", "MCP server must expose status tool");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "SEIS-Data: memory, context systems", "MCP server must route memory/context through SEIS-Data");
+contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_agent_lanes", "MCP server must expose embedded lane inventory");
+for (const tool of ["seis_hub_status", "seis_hub_plan", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_code_plan", "seis_design_status", "seis_design_plan", "seis_data_status", "seis_data_plan"]) {
+  contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", tool, `MCP server must expose ${tool}`);
+}
 validateInstallerPlan([], false);
-validateInstallerPlan(["--with-lanes"], true);
 validateMcpSmoke();
 if (failures.length) { console.error("SEIS-AI Agent check failed:"); for (const failure of failures) console.error(`- ${failure}`); process.exit(1); }
 console.log("SEIS-AI Agent check passed.");
@@ -76,10 +93,10 @@ function validateInstallerPlan(extraArgs, expectStandaloneTargets) {
   ensure(payload?.mode === "plan-only", "installer must default to plan-only");
   ensure(targets[0] === "seis-ai-agent@seis-repo", "installer first target must be seis-ai-agent@seis-repo");
   ensure(payload?.readiness?.primaryInstallId === "seis-ai-agent@seis-repo", "installer readiness must expose primary install id");
-  ensure(payload?.readiness?.consolidationPolicy?.includes("default installs only SEIS-Agent"), "installer must document consolidation policy");
+  ensure(payload?.readiness?.consolidationPolicy?.includes("SEIS-Agent is the only install target"), "installer must document consolidation policy");
   const standaloneTargets = ["seis@seis-repo", "seis-cloud@seis-repo", "seis-code@seis-repo", "seis-design@seis-repo", "seis-data@seis-repo"];
   for (const target of standaloneTargets) {
-    ensure(targets.includes(target) === expectStandaloneTargets, `installer target ${target} must be ${expectStandaloneTargets ? "included with --with-lanes" : "excluded by default"}`);
+    ensure(targets.includes(target) === expectStandaloneTargets, `installer target ${target} must be ${expectStandaloneTargets ? "included" : "excluded"}`);
   }
 }
 function frame(message) {
@@ -111,6 +128,8 @@ function validateMcpSmoke() {
     frame({ jsonrpc: "2.0", id: 2, method: "tools/list", params: {} }),
     frame({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "seis_ai_agent_status", arguments: {} } }),
     frame({ jsonrpc: "2.0", id: 4, method: "tools/call", params: { name: "seis_ai_agent_plan", arguments: { request: "Plan memory context governance." } } }),
+    frame({ jsonrpc: "2.0", id: 5, method: "tools/call", params: { name: "seis_agent_lanes", arguments: {} } }),
+    frame({ jsonrpc: "2.0", id: 6, method: "tools/call", params: { name: "seis_data_plan", arguments: { request: "Plan generated report provenance." } } }),
   ].join("");
   const result = spawnSync("node", [server], { cwd: root, input, timeout: 5000 });
   if (result.error) {
@@ -124,7 +143,14 @@ function validateMcpSmoke() {
   const responses = parseResponses(result.stdout);
   const tools = responses.find((response) => response.id === 2)?.result?.tools || [];
   ensure(tools.some((tool) => tool.name === "seis_ai_agent_status"), "MCP tools/list must include status");
+  for (const tool of ["seis_agent_lanes", "seis_cloud_status", "seis_cloud_plan", "seis_code_status", "seis_design_status", "seis_data_status", "seis_data_plan"]) {
+    ensure(tools.some((record) => record.name === tool), `MCP tools/list must include ${tool}`);
+  }
   ensure(responses.find((response) => response.id === 3)?.result?.identity === "SEIS-Agent", "MCP status must report SEIS-Agent identity");
   const plan = responses.find((response) => response.id === 4)?.result;
   ensure(plan?.lanes?.some((lane) => String(lane).includes("SEIS-Data: memory, context systems")), "MCP plan must route memory/context through SEIS-Data");
+  const lanes = responses.find((response) => response.id === 5)?.result;
+  ensure(lanes?.status === "ready" && lanes?.laneCount === 5, "MCP lane inventory must report five embedded lanes");
+  const dataPlan = responses.find((response) => response.id === 6)?.result;
+  ensure(dataPlan?.lane === "seis-data", "MCP data plan must route through embedded SEIS-DATA lane");
 }

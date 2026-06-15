@@ -11,6 +11,93 @@ const AGENT = {
   skillPath: "skills/seis-ai-agent/SKILL.md",
 };
 
+const LANES = [
+  {
+    id: "seis-hub",
+    label: "SEIS Hub",
+    skillPath: "skills/seis-hub/SKILL.md",
+    statusTool: "seis_hub_status",
+    planTool: "seis_hub_plan",
+    focus: "repository governance, architecture, documentation, migration safety, GitHub readiness, and source-of-truth discipline",
+    defaultChecks: ["npm run check:open-source-governance", "npm run check:foundation"],
+    steps: [
+      "Inspect git status, branch, remote, and GitHub auth readiness.",
+      "Read the nearest SEIS governance and repository context.",
+      "Keep main as the canonical branch and preserve rollback evidence.",
+      "Record durable decisions in repo docs, manifests, or generated reports.",
+      "Validate governance, marketplace, and quality gates before handoff.",
+    ],
+  },
+  {
+    id: "seis-cloud",
+    label: "SEIS Cloud",
+    skillPath: "skills/seis-cloud/SKILL.md",
+    profilePath: "assets/lanes/seis-cloud.json",
+    statusTool: "seis_cloud_status",
+    planTool: "seis_cloud_plan",
+    focus: "public cloud readiness, team/workplace VPN cloud, server targets, provider preflight, secrets hygiene, and rollback",
+    defaultChecks: ["npm run check:cloud-access-policy", "npm run check:cloud-environment", "npm run check:server-target"],
+    steps: [
+      "Classify the access audience as public cloud or team/workplace VPN cloud.",
+      "Verify provider assumptions, authentication state, target URL, secrets, and rollback owner without exposing secret values.",
+      "Prefer plan/preflight commands before provider-specific mutation.",
+      "Keep apply/deploy commands behind explicit user confirmation.",
+      "Validate cloud reports, server targets, access policy, and rollback notes.",
+    ],
+  },
+  {
+    id: "seis-code",
+    label: "SEIS-Code",
+    skillPath: "skills/seis-code/SKILL.md",
+    profilePath: "assets/lanes/seis-code.json",
+    statusTool: "seis_code_status",
+    planTool: "seis_code_plan",
+    focus: "architecture-aware implementation, refactors, tests, CI, MCP/plugin engineering, Apple-first packages, and repo automation",
+    defaultChecks: ["npm run seis:check", "npm run check:seis-ai-agent", "npm run check:seis-platform-kernel"],
+    steps: [
+      "Inspect repo safety before edits.",
+      "Read local context, package manifests, scripts, tests, and nearby docs.",
+      "Map the affected code lane and make the smallest durable change.",
+      "Validate with the lightest reliable checks, then scale by risk.",
+      "Keep generated files synchronized with their source scripts.",
+    ],
+  },
+  {
+    id: "seis-design",
+    label: "SEIS-Design",
+    skillPath: "skills/seis-design/SKILL.md",
+    profilePath: "assets/lanes/seis-design.json",
+    statusTool: "seis_design_status",
+    planTool: "seis_design_plan",
+    focus: "product design, UI/UX architecture, design systems, accessibility, calm motion, responsive ergonomics, and visual QA",
+    defaultChecks: ["npm run check:motion-evidence", "npm run check:mobile-ergonomics", "npm run check:web"],
+    steps: [
+      "Read the current product or docs surface before proposing UI changes.",
+      "Identify the audience, workflow, accessibility needs, and target platform.",
+      "Reuse existing tokens, components, routes, and interaction patterns.",
+      "Validate rendered surfaces with screenshots when a runnable UI exists.",
+      "Document durable design-system decisions when they affect reusable patterns.",
+    ],
+  },
+  {
+    id: "seis-data",
+    label: "SEIS-DATA",
+    skillPath: "skills/seis-data/SKILL.md",
+    profilePath: "assets/lanes/seis-data.json",
+    statusTool: "seis_data_status",
+    planTool: "seis_data_plan",
+    focus: "data architecture, analytics, generated reports, schema design, knowledge registries, memory/RAG planning, provenance, and safe data handling",
+    defaultChecks: ["npm run check:plugin-capability-lanes", "npm run check:seis-technology-stack", "npm run check:language-distribution"],
+    steps: [
+      "Classify the data surface and check sensitivity before reading or transforming.",
+      "Find the source of truth and generator before editing records.",
+      "Use structured parsers and deterministic ordering.",
+      "Regenerate paired JSON/Markdown reports when source records change.",
+      "Validate schema, parity, privacy, provenance, and generated report checks.",
+    ],
+  },
+];
+
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 let pending = Buffer.alloc(0);
 
@@ -31,6 +118,29 @@ const tools = [
       },
     },
   },
+  {
+    name: "seis_agent_lanes",
+    description: "List every embedded SEIS-Agent lane and its skill/profile readiness inside the single plugin.",
+    inputSchema: { type: "object", properties: {} },
+  },
+  ...LANES.flatMap((lane) => [
+    {
+      name: lane.statusTool,
+      description: `Report ${lane.label} readiness inside the unified SEIS-Agent plugin.`,
+      inputSchema: { type: "object", properties: {} },
+    },
+    {
+      name: lane.planTool,
+      description: `Create a ${lane.label} plan through the unified SEIS-Agent plugin.`,
+      inputSchema: {
+        type: "object",
+        required: ["request"],
+        properties: {
+          request: { type: "string", description: `${lane.label} request to plan.` },
+        },
+      },
+    },
+  ]),
 ];
 
 function pluginRoot() {
@@ -52,19 +162,16 @@ function status() {
   const profile = readJson(path.join(root, AGENT.profilePath));
   const identities = repo ? readJson(path.join(repo, "data", "seis-operating-identities.json")) : null;
   const marketplace = repo ? readJson(path.join(repo, ".agents", "plugins", "marketplace.json")) : null;
-  const composedPluginReadiness = Object.fromEntries((profile?.composedPlugins || []).map((name) => [
-    name,
-    repo ? fs.existsSync(path.join(repo, "plugins", name, ".codex-plugin", "plugin.json")) : false,
-  ]));
+  const laneReadiness = Object.fromEntries(LANES.map((lane) => [lane.id, laneStatus(lane).status === "ready"]));
   const readiness = {
     profile: Boolean(profile),
     skill: fs.existsSync(path.join(root, AGENT.skillPath)),
     mcpManifest: fs.existsSync(path.join(root, ".mcp.json")),
     mcpServer: fs.existsSync(path.join(root, "scripts", "seis-ai-agent-mcp-server.mjs")),
     operatingIdentities: Boolean((identities?.identities || []).find((item) => item.name === AGENT.identity)),
-    marketplace: Boolean(marketplace?.plugins?.some((plugin) => plugin.name === AGENT.id && plugin.source?.path === "./plugins/seis-ai-agent")),
+    marketplace: Boolean(marketplace?.plugins?.length === 1 && marketplace.plugins?.[0]?.name === AGENT.id && marketplace.plugins?.[0]?.source?.path === "./plugins/seis-ai-agent"),
     installer: repo ? fs.existsSync(path.join(repo, "scripts", "install-seis-ai-agent.mjs")) : false,
-    composedPlugins: Object.values(composedPluginReadiness).every(Boolean),
+    embeddedLanes: Object.values(laneReadiness).every(Boolean),
   };
 
   return {
@@ -74,9 +181,60 @@ function status() {
     pluginRoot: root,
     repoRoot: repo,
     readiness,
-    composedPluginReadiness,
+    laneReadiness,
     profile,
     operatingIdentities: identities?.identities?.map((item) => item.name) || [],
+  };
+}
+
+function laneStatus(lane) {
+  const root = pluginRoot();
+  const skill = fs.existsSync(path.join(root, lane.skillPath));
+  const profile = lane.profilePath ? readJson(path.join(root, lane.profilePath)) : null;
+  const profileReady = lane.profilePath ? Boolean(profile) : true;
+  return {
+    id: lane.id,
+    label: lane.label,
+    status: skill && profileReady ? "ready" : "partial",
+    skillPath: lane.skillPath,
+    profilePath: lane.profilePath || null,
+    focus: lane.focus,
+    tools: [lane.statusTool, lane.planTool],
+    defaultChecks: profile?.qualityCommands || lane.defaultChecks,
+    profile,
+  };
+}
+
+function lanesStatus() {
+  const lanes = LANES.map(laneStatus);
+  return {
+    status: lanes.every((lane) => lane.status === "ready") ? "ready" : "partial",
+    agent: AGENT.id,
+    identity: AGENT.identity,
+    laneCount: lanes.length,
+    lanes,
+  };
+}
+
+function lanePlan(lane, input) {
+  if (typeof input?.request !== "string" || !input.request.trim()) {
+    return { error: { code: -32602, message: "Invalid params: request is required." } };
+  }
+  const current = laneStatus(lane);
+  return {
+    agent: AGENT.id,
+    identity: AGENT.identity,
+    lane: lane.id,
+    label: lane.label,
+    request: input.request,
+    focus: lane.focus,
+    steps: lane.steps,
+    defaultChecks: current.defaultChecks,
+    readiness: {
+      status: current.status,
+      skillPath: current.skillPath,
+      profilePath: current.profilePath,
+    },
   };
 }
 
@@ -104,6 +262,7 @@ function plan(input) {
       "Keep cloud, SSH, repository visibility, and source-intake work plan-first until explicit apply approval.",
       "Validate targeted checks, generated reports, and npm run quality before handoff.",
     ],
+    embeddedTools: tools.map((tool) => tool.name),
     defaultChecks: status().profile?.qualityCommands || [],
   };
 }
@@ -121,7 +280,18 @@ function handle(message) {
   if (message.method === "tools/call") {
     const name = message.params?.name;
     const args = message.params?.arguments || {};
-    const result = name === "seis_ai_agent_status" ? status() : name === "seis_ai_agent_plan" ? plan(args) : null;
+    const lane = LANES.find((candidate) => candidate.statusTool === name || candidate.planTool === name);
+    const result = name === "seis_ai_agent_status"
+      ? status()
+      : name === "seis_ai_agent_plan"
+        ? plan(args)
+        : name === "seis_agent_lanes"
+          ? lanesStatus()
+          : lane?.statusTool === name
+            ? laneStatus(lane)
+            : lane?.planTool === name
+              ? lanePlan(lane, args)
+              : null;
     if (result?.error) {
       send({ jsonrpc: "2.0", id: message.id, error: result.error });
       return;

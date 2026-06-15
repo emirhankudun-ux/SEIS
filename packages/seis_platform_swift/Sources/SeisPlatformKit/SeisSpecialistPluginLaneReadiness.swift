@@ -280,21 +280,26 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             return false
         }
 
-        return lanes.allSatisfy { lane in
-            guard
-                let entry = plugins.first(where: { $0["name"] as? String == lane.id }),
-                let source = entry["source"] as? [String: Any],
-                let policy = entry["policy"] as? [String: Any]
-            else {
-                return false
-            }
-
-            return source["source"] as? String == "local" &&
-                source["path"] as? String == "./plugins/\(lane.id)" &&
-                policy["installation"] as? String == installationPolicy &&
-                policy["authentication"] as? String == authenticationPolicy &&
-                entry["category"] as? String == lane.category
+        guard
+            plugins.count == 1,
+            let entry = plugins.first,
+            let source = entry["source"] as? [String: Any],
+            let policy = entry["policy"] as? [String: Any]
+        else {
+            return false
         }
+
+        let standaloneLanePublished = lanes.contains { lane in
+            plugins.contains { $0["name"] as? String == lane.id }
+        }
+
+        return !standaloneLanePublished &&
+            entry["name"] as? String == "seis-ai-agent" &&
+            source["source"] as? String == "local" &&
+            source["path"] as? String == "./plugins/seis-ai-agent" &&
+            policy["installation"] as? String == installationPolicy &&
+            policy["authentication"] as? String == authenticationPolicy &&
+            entry["category"] as? String == "Developer"
     }
 
     public var centralSurfaceReady: Bool {
@@ -370,6 +375,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "centralMcpServerPath",
             "seis-repo",
             "seis-ai-agent",
+            "./plugins/seis-ai-agent",
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",

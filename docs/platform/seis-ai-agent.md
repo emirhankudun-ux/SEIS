@@ -1,6 +1,6 @@
 # SEIS-Agent
 
-Date: 2026-06-14
+Date: 2026-06-15
 
 SEIS-Agent is the combined agent direction for the repo-contained SEIS plugin
 family. Its stable package id is `seis-ai-agent`; its operating identity is
@@ -25,22 +25,15 @@ SEIS-Agent development stays directly inside the SEIS repository:
 the SEIS governance plugin plus SEIS Cloud, SEIS-Code, SEIS-Design, and
 SEIS-DATA as repo-contained lanes.
 
-The old `personal` marketplace is a compatibility mirror only. The standalone
-`seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` repo plugin
-cards remain source packages for validation and focused debugging, but they are
-not installed by default.
+The old `personal` marketplace is a compatibility mirror only. The `seis`,
+`seis-cloud`, `seis-code`, `seis-design`, and `seis-data` directories remain
+source mirrors for lane development, but the repo marketplace publishes only the
+single `seis-ai-agent` plugin card.
 
 Use the single-agent install for normal work:
 
 ```bash
 npm run install:seis-ai-agent
-```
-
-Use standalone lane cards only when a plugin card or marketplace surface itself
-needs testing:
-
-```bash
-npm run install:seis-ai-agent -- --with-lanes
 ```
 
 The website is a future release surface, not the immediate source of truth. Build it only when the agent, install flow, docs, quality gates, and release decision are ready.

@@ -1,6 +1,6 @@
 {
   "name": "seis-ai-agent",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260615061928",
   "description": "Unified SEIS-AI Agent that orchestrates SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA as one repo-contained development system.",
   "author": {
     "name": "emirhankudun-ux",

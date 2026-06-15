@@ -1,10 +1,10 @@
 # SEIS Specialist Plugins
 
-Date: 2026-06-13
+Date: 2026-06-15
 
-SEIS now keeps four specialist Codex lane packages in addition to the central
-`seis` governance package. The normal user-facing install is the unified
-`seis-ai-agent@seis-repo` plugin, which composes these packages as lanes.
+SEIS now keeps four specialist lane packages and the governance hub as embedded
+skills inside the unified `seis-ai-agent@seis-repo` plugin. The repo marketplace
+publishes one user-facing plugin card: SEIS-Agent.
 
 The canonical local marketplace is repo-contained at `.agents/plugins/marketplace.json` with marketplace name `seis-repo`. The older `personal` marketplace can remain installed as a compatibility mirror, but SEIS repo development should use the repo marketplace as the source of truth.
 
@@ -12,29 +12,23 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 
 - Primary visible plugin: `seis-ai-agent@seis-repo`.
 - Legacy duplicate source: `personal` marketplace, compatibility mirror only.
-- Standalone lane cards: optional debugging and marketplace QA surfaces.
-- Source packages stay in `plugins/` so each lane keeps its skill, MCP server,
-  profile, and validation contract under repo control.
+- Standalone lane cards: disabled for normal repo marketplace publishing.
+- Source mirrors stay in `plugins/` so each lane keeps its skill, MCP server,
+  profile, and validation contract under repo control while SEIS-Agent embeds
+  the active skills and lane profiles.
 
-## Plugin Cards
+## Embedded Lanes
 
-| Plugin | Purpose | Repo root | Install id |
+| Lane | Purpose | Embedded skill | Source mirror |
 |---|---|---|---|
-| `seis-cloud` | Public cloud for everyone, team/workplace VPN cloud, provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation. | `plugins/seis-cloud` | `seis-cloud@seis-repo` |
-| `seis-code` | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation. | `plugins/seis-code` | `seis-code@seis-repo` |
-| `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-design` | `seis-design@seis-repo` |
-| `seis-data` | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance. | `plugins/seis-data` | `seis-data@seis-repo` |
-
-Optional standalone repo marketplace install ids:
-
-- `seis-cloud@seis-repo`
-- `seis-code@seis-repo`
-- `seis-design@seis-repo`
-- `seis-data@seis-repo`
+| `seis-cloud` | Public cloud for everyone, team/workplace VPN cloud, provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation. | `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` | `plugins/seis-cloud` |
+| `seis-code` | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation. | `plugins/seis-ai-agent/skills/seis-code/SKILL.md` | `plugins/seis-code` |
+| `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-ai-agent/skills/seis-design/SKILL.md` | `plugins/seis-design` |
+| `seis-data` | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance. | `plugins/seis-ai-agent/skills/seis-data/SKILL.md` | `plugins/seis-data` |
 
 ## Contract
 
-Each specialist plugin includes:
+Each source mirror includes:
 
 - `.codex-plugin/plugin.json` for the Codex plugin card.
 - `.mcp.json` for a plugin-local MCP server.
@@ -57,13 +51,9 @@ approved peer access.
 ## Marketplace
 
 The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
-the canonical `seis-ai-agent@seis-repo` entry plus local entries for optional
-standalone lane testing:
+exactly one canonical entry:
 
-- `seis-cloud@seis-repo`
-- `seis-code@seis-repo`
-- `seis-design@seis-repo`
-- `seis-data@seis-repo`
+- `seis-ai-agent@seis-repo`
 
 ## Validate
 
@@ -75,10 +65,7 @@ npm run check:seis-ai-agent
 For plugin ingestion checks:
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-design
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data
+python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent
 ```
 
 If system Python lacks `PyYAML`, use a temporary validation environment.

@@ -13,5 +13,5 @@ Windows PowerShell:
 ```
 
 Default mode installs the single unified `seis-ai-agent@seis-repo` plugin.
-Pass `--with-lanes` only when standalone SEIS lane plugin cards need focused
-marketplace or MCP debugging.
+The SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA lanes are embedded
+inside that single plugin.

@@ -489,27 +489,22 @@ private func writeSpecialistMarketplaceFixture(
         .appending(path: "seis-specialist-plugin-readiness-\(UUID().uuidString)")
     try FileManager.default.createDirectory(at: fixtureDirectory, withIntermediateDirectories: true)
     let marketplacePath = fixtureDirectory.appending(path: "marketplace.json")
-    let pluginEntries = readiness.lanes.map { lane in
-        """
-            {
-              "name": "\(lane.id)",
-              "source": {
-                "source": "local",
-                "path": "./plugins/\(lane.id)"
-              },
-              "policy": {
-                "installation": "\(readiness.installationPolicy)",
-                "authentication": "\(readiness.authenticationPolicy)"
-              },
-              "category": "\(lane.category)"
-            }
-        """
-    }.joined(separator: ",\n")
     let marketplace = """
     {
       "name": "\(readiness.marketplaceName)",
       "plugins": [
-    \(pluginEntries)
+        {
+          "name": "seis-ai-agent",
+          "source": {
+            "source": "local",
+            "path": "./plugins/seis-ai-agent"
+          },
+          "policy": {
+            "installation": "\(readiness.installationPolicy)",
+            "authentication": "\(readiness.authenticationPolicy)"
+          },
+          "category": "Developer"
+        }
       ]
     }
     """

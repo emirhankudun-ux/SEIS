@@ -26,11 +26,9 @@ node plugins/seis-cloud/scripts/seis-cloud-status.mjs
 npm run check:cloud-access-policy
 ```
 
-## Install
+## Embedded Use
 
-The repository marketplace lives at `.agents/plugins/marketplace.json` and points at `plugins/seis-cloud` as `seis-cloud@seis-repo`.
-
-```bash
-codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
-codex plugin add seis-cloud@seis-repo
-```
+The repository marketplace publishes SEIS-Agent only. This lane is embedded at
+`plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` and installed through
+`seis-ai-agent@seis-repo`; this directory remains the source mirror for focused
+lane development and validation.
