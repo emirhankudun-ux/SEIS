@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { existsSync, readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 
 const failures = [];
 const policy = readJson("deploy/cloud-access-policy.json");
@@ -53,6 +54,9 @@ ensure(packageJson?.scripts?.["cloud:public:readiness"] === "node scripts/check-
 ensure(packageJson?.scripts?.["cloud:public:readiness:strict"] === "node scripts/check-public-cloud-readiness.mjs --require-ready", "missing cloud:public:readiness:strict script");
 ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs", "missing cloud:ssh-vpn:readiness script");
 ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness:strict"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs --require-ready", "missing cloud:ssh-vpn:readiness:strict script");
+ensure(packageJson?.scripts?.["cloud:migration:audit"] === "node scripts/cloud-migration-audit.mjs", "missing cloud:migration:audit script");
+ensure(packageJson?.scripts?.["cloud:migration:audit:json"] === "node scripts/cloud-migration-audit.mjs --json", "missing cloud:migration:audit:json script");
+ensure(packageJson?.scripts?.["cloud:migration:audit:ci"] === "node scripts/cloud-migration-audit.mjs --strict --json --output cloud-migration-audit.ci.json", "missing cloud:migration:audit:ci script");
 ensure(packageJson?.scripts?.["check:static-build"] === "node scripts/check-static-build.mjs", "missing check:static-build script");
 ensure(githubPagesMatrix?.audience === "everyone", "github-pages matrix audience must be everyone");
 ensure(githubPagesCloud?.audience === "everyone", "github-pages cloud audience must be everyone");
@@ -107,6 +111,10 @@ ensure(pagesWorkflow.includes("npm run build:static"), "Pages workflow must buil
 ensure(pagesWorkflow.includes("npm run check:static-build"), "Pages workflow must validate the static package");
 ensure(pagesWorkflow.includes("dist/seis-static"), "Pages workflow must publish dist/seis-static");
 
+const migrationAuditPath = "cloud-migration-audit.ci.json";
+const migrationAudit = runMigrationAudit(migrationAuditPath);
+printMigrationAuditSummary(migrationAudit);
+
 if (failures.length > 0) {
   console.error("SEIS cloud access policy check failed:");
   for (const failure of failures) console.error(`- ${failure}`);
@@ -133,4 +141,65 @@ function readText(file) {
 
 function ensure(condition, message) {
   if (!condition) failures.push(message);
+}
+
+function runMigrationAudit(outputPath) {
+  const result = runCommand([
+    "scripts/cloud-migration-audit.mjs", "--strict", "--json", "--output", outputPath
+  ], "npm run cloud:migration:audit -- --strict --json --output");
+  if (!result) return null;
+  return result;
+}
+
+function runCommand(argv, commandLabel) {
+  const result = spawnSync(process.execPath, argv, {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    timeout: 30000
+  });
+
+  if (result.error) {
+    failures.push(`${commandLabel}: ${result.error.message}`);
+    return null;
+  }
+
+  let payload = null;
+  try {
+    payload = JSON.parse(result.stdout || "{}");
+  } catch (err) {
+    failures.push(`${commandLabel} returned invalid JSON: ${err?.message || String(err)}`);
+  }
+
+  if (result.status !== 0) {
+    const detail = (String(result.stderr || "") || String(result.stdout || "")).trim();
+    failures.push(`${commandLabel} failed with exit ${result.status}${detail ? `: ${detail}` : ""}`);
+  }
+
+  return payload;
+}
+
+function printMigrationAuditSummary(report) {
+  if (!report) {
+    console.log("Cloud migration audit summary: unavailable");
+    return;
+  }
+
+  const findings = Array.isArray(report.findings) ? report.findings : [];
+  const severityBuckets = { high: 0, medium: 0, low: 0 };
+
+  for (const item of findings) {
+    if (item?.severity && severityBuckets[item.severity] !== undefined) {
+      severityBuckets[item.severity] += 1;
+    }
+  }
+
+  console.log("Cloud migration audit summary:");
+  console.log(`- migration needed: ${report.migrationNeeded ? "YES" : "NO"}`);
+  console.log(`- findings: ${findings.length} (high=${severityBuckets.high}, medium=${severityBuckets.medium}, low=${severityBuckets.low})`);
+
+  if (report.migrationNeeded) {
+    console.log("- decision: BLOCKED by strict policy");
+  } else {
+    console.log("- decision: PASS");
+  }
 }
