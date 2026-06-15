@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 593
-- Counted bytes: 2815332
-- JavaScript: 982201 bytes (34.89%)
+- Counted bytes: 2820138
+- JavaScript: 985020 bytes (34.93%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1861815
+- Additional non-JavaScript bytes needed for strict target: 1870433
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 982201 | 34.89% | JavaScript |
+| JavaScript | 985020 | 34.93% | JavaScript |
 | TypeScript | 28824 | 1.02% | TypeScript |
 | Objective-C | 8447 | 0.3% | Objective-C |
-| Other | 1795860 | 63.79% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1797847 | 63.75% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,27 +25,27 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 10.65% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 35.34% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 35.91% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Apple / Swift ecosystem | 10.68% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 35.29% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 35.95% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.82% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
-| Rust / C / C++ systems | 1.04% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 4.24% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Rust / C / C++ systems | 1.03% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
+| Go / Infrastructure | 4.23% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.27% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 6.35% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 6.34% | 0.0-3.0% | `above_target` | HTML, CSS |
 
-Unassigned counted languages: 5.38% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
+Unassigned counted languages: 5.37% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 982201 | 34.89% |
-| JSON | 668277 | 23.74% |
-| Python | 308164 | 10.95% |
-| Swift | 290446 | 10.32% |
-| CSS | 94204 | 3.35% |
-| HTML | 84633 | 3.01% |
+| JavaScript | 985020 | 34.93% |
+| JSON | 668695 | 23.71% |
+| Python | 308164 | 10.93% |
+| Swift | 292015 | 10.35% |
+| CSS | 94204 | 3.34% |
+| HTML | 84633 | 3.0% |
 | Shell | 66459 | 2.36% |
 | Other | 31198 | 1.11% |
 | YAML | 28998 | 1.03% |
@@ -79,8 +79,8 @@ Unassigned counted languages: 5.38% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `mcp/seis-mcp-server.mjs` | 21799 |
 | `scripts/create-plugin-capability-lanes.cjs` | 19783 |
 | `scripts/automation-refresh-seis-surface.cjs` | 19465 |
+| `scripts/check-seis-specialist-plugins.mjs` | 17881 |
 | `scripts/third-party-intake-blueprint.mjs` | 17482 |
-| `scripts/check-seis-specialist-plugins.mjs` | 17113 |
 
 ## Linguist Controls
 

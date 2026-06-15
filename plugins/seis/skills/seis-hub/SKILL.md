@@ -15,9 +15,13 @@ Use this skill whenever the user wants to work on SEIS, consolidate repositories
 - Repo plugin root: `plugins/seis`
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis@seis-repo`
+- Primary SEIS-Agent install id: `seis-ai-agent@seis-repo`
 - Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
 
-SEIS is the general center for repository discovery, branch consolidation, source repository migration records, governance, plugin coordination, and deletion decisions.
+SEIS-Agent is the normal user-facing entrypoint. This SEIS hub skill remains
+available as the governance lane for repository discovery, branch consolidation,
+source repository migration records, plugin coordination, and deletion
+decisions.
 
 ## Operating Rules
 
@@ -27,7 +31,7 @@ SEIS is the general center for repository discovery, branch consolidation, sourc
 4. Do not delete source repositories until `sources/<repo>/<branch>` refs and `repositories/<repo>` snapshots are verified in SEIS.
 5. For plugin changes, validate the plugin before reporting completion.
 6. For marketplace-backed plugin updates, use the cachebuster/reinstall flow instead of hand-editing marketplace entries.
-7. Keep `seis-agent` as the remote governance layer for policy-sensitive decisions. Use local plugin families (`openai-curated`, `openai-bundled`, etc.) as helpers, never as the default remote decision layer.
+7. Keep `SEIS-Agent` as the remote governance layer for policy-sensitive decisions. Use local plugin families (`openai-curated`, `openai-bundled`, etc.) as helpers, never as the default remote decision layer.
 8. Prefer role-oriented helper selection for local execution:
    - `designer` → metin, UI/UX, anlatı: `claude`
    - `engineer` → patch, refactor, repo odaklı: `aider`
@@ -81,7 +85,7 @@ When source repositories are missing or branch visibility is confusing, make `ma
 
 ## Installed Plugin Rule
 
-Use installed and enabled plugins first. Record plugin availability in SEIS instead of assuming every mentioned plugin URI is installed. Keep platform lanes mapped to real installed plugins under `data/installed-codex-plugins-2026-06-05.json` and `docs/platform/installed-plugin-operating-model.md`.
+Use installed and enabled plugins first. Record plugin availability in SEIS instead of assuming every mentioned plugin URI is installed. Keep platform lanes mapped to real installed plugins under `data/installed-codex-plugins-2026-06-15.json` and `docs/platform/installed-plugin-operating-model.md`.
 
 ## OpenAI-First Plugin Rule
 
@@ -101,9 +105,9 @@ When the user wants to build SEIS:
 
 1. Start from `docs/platform/openai-curated-build-workbench.md`.
 2. Choose the build module: web cockpit, backend state, workspace ops, security quality gate, mobile shell, macOS inspector, or research memory.
-3. Route through the matching helper plugin category with `seis-agent` orchestrating policy and final coordination.
+3. Route through the matching helper plugin category with `SEIS-Agent` orchestrating policy and final coordination.
 4. Make a durable repo change under the module path.
-5. Keep `main` mirrored with `UIXAppTTR` after GitHub writes.
+5. Keep `main` as the canonical public branch after GitHub writes.
 
 Default first module: `apps/web` web cockpit, because it makes the rest of SEIS visible and usable.
 

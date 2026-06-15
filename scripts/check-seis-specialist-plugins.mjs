@@ -6,7 +6,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
-const checkLocal = args["no-local"] !== true;
+const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true;
 const failures = [];
 
 const lanes = [
@@ -49,8 +49,10 @@ Usage:
   node scripts/check-seis-specialist-plugins.mjs [options]
 
 Options:
-  --no-local   Skip local plugin root and personal marketplace checks
+  --include-legacy-personal
+               Also check the old personal marketplace mirror and local plugin roots.
                The repo-contained marketplace is always checked.
+  --no-local   Skip local plugin root and personal marketplace checks.
   --help       Show usage
 `);
   process.exit(0);
@@ -66,6 +68,9 @@ for (const lane of lanes) {
 const specialistManifest = validateJsonObject(path.join(ROOT, "data", "seis-specialist-plugins-2026-06-12.json"), "specialist plugin manifest", ["id", "version", "plugins", "marketplace", "centralMcpTools"]);
 if (specialistManifest) {
   ensure(Array.isArray(specialistManifest.centralMcpTools), "specialist plugin manifest centralMcpTools must be an array");
+  ensure(specialistManifest.consolidation?.primaryInstallId === "seis-ai-agent@seis-repo", "specialist plugin manifest must point at the SEIS-Agent primary install id");
+  ensure(specialistManifest.consolidation?.defaultInstallMode === "single-agent", "specialist plugin manifest must keep single-agent default install mode");
+  ensure(specialistManifest.consolidation?.legacyPersonalMarketplace === "compatibility-mirror-only", "specialist plugin manifest must mark personal marketplace as compatibility mirror only");
   for (const tool of ["seis_specialist_lanes", "seis_specialist_lane_status", "seis_specialist_lane_plan"]) {
     ensure(specialistManifest.centralMcpTools?.includes(tool), `specialist plugin manifest centralMcpTools missing ${tool}`);
   }
@@ -387,6 +392,7 @@ function validateMarketplace(marketplacePath, label, expectedName) {
 function parseArgs(argv) {
   const result = {};
   for (const token of argv) {
+    if (token === "--include-legacy-personal") result["include-legacy-personal"] = true;
     if (token === "--no-local") result["no-local"] = true;
     if (token === "--help") result.help = true;
   }

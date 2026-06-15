@@ -2,11 +2,15 @@
 
 Date: 2026-06-05
 
-This workbench turns the OpenAI-first policy into an implementation path for SEIS CLOSED CODE. It uses OpenAI/Codex plugin families first, then records each durable outcome back into SEIS.
+This workbench turns the OpenAI-first policy into an implementation path for
+SEIS. It uses OpenAI/Codex plugin families first, then records each durable
+outcome back into SEIS.
 
 ## Build Principle
 
-Start with `seis@personal` for repo orientation and gates. Then route the work through the installed OpenAI/Codex plugin category that fits the task:
+Start with `seis-ai-agent@seis-repo` for repo orientation, SEIS lane routing,
+and gates. Then route the work through the installed OpenAI/Codex plugin
+category that fits the task:
 
 - Design: product UI, browser cockpit, visual assets, prototypes.
 - Developer Tools: GitHub, CI, backend, deployment, mobile, desktop, OpenAI APIs.
@@ -16,7 +20,7 @@ Start with `seis@personal` for repo orientation and gates. Then route the work t
 
 ## Sprint 1 Objective
 
-Turn SEIS from a repository hub into a usable closed-code operating cockpit.
+Turn SEIS from a repository hub into a usable open-source operating cockpit.
 
 ## Build Modules
 
@@ -66,5 +70,5 @@ Use Convex-first for reactive cockpit state unless SQL/reporting becomes the dom
 - Build matrix: `data/openai-curated-build-workbench-2026-06-05.json`
 - Plugin policy: `docs/platform/openai-first-plugin-policy.md`
 - Plugin stack: `docs/platform/plugin-stack.md`
-- Installed registry: `data/installed-codex-plugins-2026-06-05.json`
+- Installed registry: `data/installed-codex-plugins-2026-06-15.json`
 - Backlog: `roadmap/seis-closed-code-backlog.md`

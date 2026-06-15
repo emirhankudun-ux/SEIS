@@ -15,7 +15,7 @@ Drive is for planning, backlog review, and human-readable status. GitHub remains
 
 | Event | Link |
 |---|---|
-| SEIS CLOSED CODE - Weekly Build Review | https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0 |
+| SEIS Open Source - Weekly Build Review | https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0 |
 
 Calendar is for cadence, not source truth. Important decisions should be copied back into SEIS docs or issues.
 

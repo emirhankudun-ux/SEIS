@@ -19,6 +19,30 @@ SEIS-Agent development stays directly inside the SEIS repository:
 - install id: `seis-ai-agent@seis-repo`
 - terminal installer: `scripts/install-seis-ai-agent.mjs`
 
+## Consolidation Rule
+
+`seis-ai-agent@seis-repo` is the canonical user-facing SEIS plugin. It composes
+the SEIS governance plugin plus SEIS Cloud, SEIS-Code, SEIS-Design, and
+SEIS-DATA as repo-contained lanes.
+
+The old `personal` marketplace is a compatibility mirror only. The standalone
+`seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` repo plugin
+cards remain source packages for validation and focused debugging, but they are
+not installed by default.
+
+Use the single-agent install for normal work:
+
+```bash
+npm run install:seis-ai-agent
+```
+
+Use standalone lane cards only when a plugin card or marketplace surface itself
+needs testing:
+
+```bash
+npm run install:seis-ai-agent -- --with-lanes
+```
+
 The website is a future release surface, not the immediate source of truth. Build it only when the agent, install flow, docs, quality gates, and release decision are ready.
 
 ## Terminal Install

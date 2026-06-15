@@ -17,6 +17,15 @@ only after an explicit release decision.
 npm run install:seis-ai-agent
 ```
 
+This installs only the unified `seis-ai-agent@seis-repo` surface by default.
+Standalone `seis`, `seis-cloud`, `seis-code`, `seis-design`, and `seis-data`
+plugin cards are repo-contained lane packages and can be installed for focused
+plugin debugging with:
+
+```bash
+npm run install:seis-ai-agent -- --with-lanes
+```
+
 ## MCP Tools
 
 - `seis_ai_agent_status`

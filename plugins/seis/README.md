@@ -2,6 +2,10 @@
 
 This local Codex plugin makes SEIS the default operating center for the `emirhankudun-ux` GitHub ecosystem.
 
+Normal user-facing SEIS work should start from `seis-ai-agent@seis-repo`. This
+`seis` package stays in the repository as the optional governance lane and
+legacy compatibility mirror.
+
 ## Scope
 
 - SEIS canonical repository workflow
@@ -19,6 +23,7 @@ This local Codex plugin makes SEIS the default operating center for the `emirhan
 - Repo plugin root: `plugins/seis`
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis@seis-repo`
+- Primary SEIS-Agent install id: `seis-ai-agent@seis-repo`
 - Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
 - Workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
 
@@ -125,13 +130,13 @@ One-shot refresh for repository changes and local plugin cache refresh:
 npm run refresh:seis-plugin-bundle -- --install
 ```
 
-This command:
+This legacy compatibility command:
 
 - syncs `plugins/seis` from repo -> personal mirror,
 - regenerates cachebuster in the local plugin manifest,
-- and runs `codex plugin add seis@personal`.
+- and runs `codex plugin add seis@personal` only for the personal mirror.
 
-For repo-source installs, prefer:
+For optional standalone repo-source governance-lane installs, prefer:
 
 ```bash
 python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis

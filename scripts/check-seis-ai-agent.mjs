@@ -44,14 +44,44 @@ contains("docs/platform/seis-ai-agent.md", "macOS", "platform doc must mention m
 contains("docs/platform/seis-ai-agent.md", "Windows", "platform doc must mention Windows");
 contains("docs/platform/seis-ai-agent.md", "Linux", "platform doc must mention Linux");
 contains("docs/platform/seis-ai-agent.md", "SEIS-Agent", "platform doc must use SEIS-Agent identity");
+contains("docs/platform/seis-ai-agent.md", "Consolidation Rule", "platform doc must define consolidation rule");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "seis_ai_agent_status", "MCP server must expose status tool");
 contains("plugins/seis-ai-agent/scripts/seis-ai-agent-mcp-server.mjs", "SEIS-Data: memory, context systems", "MCP server must route memory/context through SEIS-Data");
+validateInstallerPlan([], false);
+validateInstallerPlan(["--with-lanes"], true);
 validateMcpSmoke();
 if (failures.length) { console.error("SEIS-AI Agent check failed:"); for (const failure of failures) console.error(`- ${failure}`); process.exit(1); }
 console.log("SEIS-AI Agent check passed.");
 function ensure(condition, message) { if (!condition) failures.push(message); }
 function readJson(file) { try { return JSON.parse(fs.readFileSync(path.join(root, file), "utf8")); } catch { failures.push(`invalid JSON: ${file}`); return null; } }
 function contains(file, token, message) { if (fs.existsSync(path.join(root, file))) ensure(fs.readFileSync(path.join(root, file), "utf8").includes(token), message); }
+function validateInstallerPlan(extraArgs, expectStandaloneTargets) {
+  const result = spawnSync(process.execPath, ["scripts/install-seis-ai-agent.mjs", ...extraArgs], { cwd: root, encoding: "utf8", timeout: 5000 });
+  if (result.error) {
+    failures.push(`installer plan failed: ${result.error.message}`);
+    return;
+  }
+  if (result.status !== 0) {
+    failures.push(`installer plan exited ${result.status}: ${String(result.stderr || "").trim()}`);
+    return;
+  }
+  let payload;
+  try {
+    payload = JSON.parse(result.stdout);
+  } catch {
+    failures.push("installer plan must emit JSON");
+    return;
+  }
+  const targets = payload?.readiness?.targets || [];
+  ensure(payload?.mode === "plan-only", "installer must default to plan-only");
+  ensure(targets[0] === "seis-ai-agent@seis-repo", "installer first target must be seis-ai-agent@seis-repo");
+  ensure(payload?.readiness?.primaryInstallId === "seis-ai-agent@seis-repo", "installer readiness must expose primary install id");
+  ensure(payload?.readiness?.consolidationPolicy?.includes("default installs only SEIS-Agent"), "installer must document consolidation policy");
+  const standaloneTargets = ["seis@seis-repo", "seis-cloud@seis-repo", "seis-code@seis-repo", "seis-design@seis-repo", "seis-data@seis-repo"];
+  for (const target of standaloneTargets) {
+    ensure(targets.includes(target) === expectStandaloneTargets, `installer target ${target} must be ${expectStandaloneTargets ? "included with --with-lanes" : "excluded by default"}`);
+  }
+}
 function frame(message) {
   const body = JSON.stringify(message);
   return `Content-Length: ${Buffer.byteLength(body, "utf8")}\r\n\r\n${body}`;

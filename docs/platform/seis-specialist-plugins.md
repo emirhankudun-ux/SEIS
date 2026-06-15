@@ -2,9 +2,19 @@
 
 Date: 2026-06-13
 
-SEIS now exposes four specialist Codex plugins in addition to the central `seis` governance plugin.
+SEIS now keeps four specialist Codex lane packages in addition to the central
+`seis` governance package. The normal user-facing install is the unified
+`seis-ai-agent@seis-repo` plugin, which composes these packages as lanes.
 
 The canonical local marketplace is repo-contained at `.agents/plugins/marketplace.json` with marketplace name `seis-repo`. The older `personal` marketplace can remain installed as a compatibility mirror, but SEIS repo development should use the repo marketplace as the source of truth.
+
+## Consolidation Rule
+
+- Primary visible plugin: `seis-ai-agent@seis-repo`.
+- Legacy duplicate source: `personal` marketplace, compatibility mirror only.
+- Standalone lane cards: optional debugging and marketplace QA surfaces.
+- Source packages stay in `plugins/` so each lane keeps its skill, MCP server,
+  profile, and validation contract under repo control.
 
 ## Plugin Cards
 
@@ -15,7 +25,7 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 | `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-design` | `seis-design@seis-repo` |
 | `seis-data` | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance. | `plugins/seis-data` | `seis-data@seis-repo` |
 
-Repo marketplace install ids:
+Optional standalone repo marketplace install ids:
 
 - `seis-cloud@seis-repo`
 - `seis-code@seis-repo`
@@ -46,7 +56,9 @@ approved peer access.
 
 ## Marketplace
 
-The repo marketplace file is `.agents/plugins/marketplace.json`. It contains local entries for:
+The repo marketplace file is `.agents/plugins/marketplace.json`. It contains
+the canonical `seis-ai-agent@seis-repo` entry plus local entries for optional
+standalone lane testing:
 
 - `seis-cloud@seis-repo`
 - `seis-code@seis-repo`
@@ -57,6 +69,7 @@ The repo marketplace file is `.agents/plugins/marketplace.json`. It contains loc
 
 ```bash
 npm run check:seis-specialist-plugins
+npm run check:seis-ai-agent
 ```
 
 For plugin ingestion checks:

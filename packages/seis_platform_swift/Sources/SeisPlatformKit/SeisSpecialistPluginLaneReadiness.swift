@@ -69,12 +69,44 @@ public struct SeisSpecialistPluginLane: Codable, Equatable, Identifiable, Sendab
             ".mcp.json",
             laneProfilePath
         ]
-        return fileManager.fileExists(atPath: localRoot) &&
-            fileManager.fileExists(atPath: installedCacheRoot) &&
+        let sourceReady = fileManager.fileExists(atPath: localRoot) &&
             requiredRelativePaths.allSatisfy { relativePath in
-                fileManager.fileExists(atPath: "\(localRoot)/\(relativePath)") &&
-                    fileManager.fileExists(atPath: "\(installedCacheRoot)/\(relativePath)")
+                fileManager.fileExists(atPath: "\(localRoot)/\(relativePath)")
             }
+        let cacheReady = installedCacheRoot.isEmpty ||
+            cacheRootReady(resolvedInstalledCacheRoot, requiredRelativePaths: [".codex-plugin/plugin.json"])
+
+        return sourceReady && cacheReady
+    }
+
+    public var resolvedInstalledCacheRoot: String {
+        let fileManager = FileManager.default
+        if cacheRootReady(installedCacheRoot, requiredRelativePaths: [".codex-plugin/plugin.json"]) {
+            return installedCacheRoot
+        }
+
+        guard let entries = try? fileManager.contentsOfDirectory(atPath: installedCacheRoot) else {
+            return installedCacheRoot
+        }
+
+        for entry in entries.sorted().reversed() {
+            let candidate = "\(installedCacheRoot)/\(entry)"
+            if cacheRootReady(candidate, requiredRelativePaths: [".codex-plugin/plugin.json"]) {
+                return candidate
+            }
+        }
+
+        return installedCacheRoot
+    }
+
+    private func cacheRootReady(_ root: String, requiredRelativePaths: [String]) -> Bool {
+        let fileManager = FileManager.default
+        guard !root.isEmpty, fileManager.fileExists(atPath: root) else {
+            return false
+        }
+        return requiredRelativePaths.allSatisfy { relativePath in
+            fileManager.fileExists(atPath: "\(root)/\(relativePath)")
+        }
     }
 }
 
@@ -112,8 +144,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         let home = homePath
         let repositoryRoot = defaultRepositoryRoot(home: home)
         return SeisSpecialistPluginLaneReadiness(
-            marketplacePath: "\(home)/.agents/plugins/marketplace.json",
-            marketplaceName: "personal",
+            marketplacePath: "\(repositoryRoot)/.agents/plugins/marketplace.json",
+            marketplaceName: "seis-repo",
             installationPolicy: "AVAILABLE",
             authenticationPolicy: "ON_INSTALL",
             centralMcpTools: Self.expectedCentralMcpTools,
@@ -124,8 +156,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
                     displayName: "SEIS Cloud",
                     category: "Developer",
                     repoMirror: "plugins/seis-cloud",
-                    localRoot: "\(home)/plugins/seis-cloud",
-                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-cloud/0.1.0",
+                    localRoot: "\(repositoryRoot)/plugins/seis-cloud",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/seis-repo/seis-ai-agent",
                     skillPath: "skills/seis-cloud/SKILL.md",
                     mcpServer: "seis-cloud",
                     tools: ["seis_cloud_status", "seis_cloud_plan"],
@@ -143,8 +175,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
                     displayName: "SEIS-Code",
                     category: "Developer",
                     repoMirror: "plugins/seis-code",
-                    localRoot: "\(home)/plugins/seis-code",
-                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-code/0.1.0",
+                    localRoot: "\(repositoryRoot)/plugins/seis-code",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/seis-repo/seis-ai-agent",
                     skillPath: "skills/seis-code/SKILL.md",
                     mcpServer: "seis-code",
                     tools: ["seis_code_status", "seis_code_plan"],
@@ -161,8 +193,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
                     displayName: "SEIS-Design",
                     category: "Design",
                     repoMirror: "plugins/seis-design",
-                    localRoot: "\(home)/plugins/seis-design",
-                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-design/0.1.0",
+                    localRoot: "\(repositoryRoot)/plugins/seis-design",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/seis-repo/seis-ai-agent",
                     skillPath: "skills/seis-design/SKILL.md",
                     mcpServer: "seis-design",
                     tools: ["seis_design_status", "seis_design_plan"],
@@ -179,8 +211,8 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
                     displayName: "SEIS-DATA",
                     category: "Data",
                     repoMirror: "plugins/seis-data",
-                    localRoot: "\(home)/plugins/seis-data",
-                    installedCacheRoot: "\(home)/.codex/plugins/cache/personal/seis-data/0.1.0",
+                    localRoot: "\(repositoryRoot)/plugins/seis-data",
+                    installedCacheRoot: "\(home)/.codex/plugins/cache/seis-repo/seis-ai-agent",
                     skillPath: "skills/seis-data/SKILL.md",
                     mcpServer: "seis-data",
                     tools: ["seis_data_status", "seis_data_plan"],
@@ -213,7 +245,7 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
         checkCount > 0 &&
             readyCount == checkCount &&
             marketplaceReady &&
-            marketplaceName == "personal" &&
+            marketplaceName == "seis-repo" &&
             installationPolicy == "AVAILABLE" &&
             authenticationPolicy == "ON_INSTALL" &&
             centralSurfaceReady
@@ -331,10 +363,13 @@ public struct SeisSpecialistPluginLaneReadiness: Codable, Equatable, Sendable {
             "homeDirectoryForCurrentUser",
             "currentDirectoryPath",
             "localInstallationReady",
+            "resolvedInstalledCacheRoot",
             "marketplaceReady",
             "centralSurfaceReady",
             "centralMcpServerReady",
             "centralMcpServerPath",
+            "seis-repo",
+            "seis-ai-agent",
             "seis_specialist_lanes",
             "seis_specialist_lane_status",
             "seis_specialist_lane_plan",

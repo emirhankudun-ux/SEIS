@@ -9,10 +9,12 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".."
 const args = new Set(process.argv.slice(2));
 const marketplace = "seis-repo";
 const primaryInstallId = "seis-ai-agent@seis-repo";
-const targets = [primaryInstallId, ...(args.has("--agent-only") ? [] : ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"])].map((name) => name.includes("@") ? name : `${name}@${marketplace}`);
+const standaloneTargets = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"].map((name) => `${name}@${marketplace}`);
+const includeStandaloneTargets = args.has("--with-lanes") && !args.has("--agent-only");
+const targets = [primaryInstallId, ...(includeStandaloneTargets ? standaloneTargets : [])];
 
 if (args.has("--help") || args.has("-h")) {
-  console.log("Usage: node scripts/install-seis-ai-agent.mjs [--apply] [--check-only] [--agent-only]");
+  console.log("Usage: node scripts/install-seis-ai-agent.mjs [--apply] [--check-only] [--with-lanes] [--agent-only]");
   process.exit(0);
 }
 
@@ -22,6 +24,10 @@ const readiness = {
   nodeVersion: process.version,
   marketplaceExists: fs.existsSync(path.join(repoRoot, ".agents", "plugins", "marketplace.json")),
   codexAvailable: commandExists("codex"),
+  primaryInstallId,
+  standaloneTargets,
+  includeStandaloneTargets,
+  consolidationPolicy: "default installs only SEIS-Agent; standalone SEIS lane plugins remain repo-contained optional packages",
   targets,
 };
 

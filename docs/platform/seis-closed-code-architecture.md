@@ -1,4 +1,8 @@
-# SEIS CLOSED CODE Architecture
+# SEIS Open Source Platform Architecture
+
+Compatibility note: this file keeps its historical path so older references and
+checks stay stable, but the active SEIS governance model is open source,
+main-centered, and GitHub-visible.
 
 Date: 2026-06-05
 
@@ -30,7 +34,7 @@ docs/platform/
 | macOS | desktop shell, local tools, SwiftUI/AppKit direction | Build macOS Apps |
 | Full-stack | backend, auth, APIs, realtime data | Convex, Supabase, Vercel |
 | Data | inventory, metrics, imports, dashboards | Data Analytics, Google Drive |
-| Governance | closed-code policy, migration gates, repo sync | GitHub, SEIS plugin |
+| Governance | open-source policy, migration gates, repo sync | GitHub, SEIS-Agent |
 
 ## Backend Direction
 
@@ -46,10 +50,10 @@ Recommended first stack:
 - Google Drive for planning docs and sheets
 - Google Calendar for build cadence
 
-## Closed Code Constraints
+## Open Source Governance Constraints
 
-- Keep proprietary source under this repository's closed-code policy.
+- Keep public-facing source under the repository's open-source governance policy.
 - Do not assume source repository deletion means content is safely imported.
 - Do not commit large binary archives directly.
-- Keep `main` mirrored to the canonical SEIS branch until the GitHub default branch is switched.
+- Keep `main` as the canonical GitHub branch.
 - Keep Drive/Calendar links in `integrations/google-workspace.json`.

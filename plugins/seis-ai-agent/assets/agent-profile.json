@@ -12,6 +12,19 @@
   "canonicalBranch": "main",
   "repoMarketplace": "seis-repo",
   "installId": "seis-ai-agent@seis-repo",
+  "consolidationPolicy": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-agent",
+    "legacyPersonalMarketplace": "compatibility-mirror-only",
+    "standaloneLaneInstallMode": "optional-with-lanes",
+    "standalonePlugins": [
+      "seis@seis-repo",
+      "seis-cloud@seis-repo",
+      "seis-code@seis-repo",
+      "seis-design@seis-repo",
+      "seis-data@seis-repo"
+    ]
+  },
   "composedPlugins": [
     "seis",
     "seis-cloud",

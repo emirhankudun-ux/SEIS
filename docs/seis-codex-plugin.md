@@ -2,16 +2,20 @@
 
 Date: 2026-06-05
 
-The local `seis` Codex plugin connects Codex work back to the canonical SEIS repository and gives future SEIS development a stable plugin workflow.
+The unified `seis-ai-agent` Codex plugin connects Codex work back to the
+canonical SEIS repository and gives future SEIS development a stable plugin
+workflow. The older `seis` plugin remains a repo-contained governance lane for
+compatibility and focused debugging.
 
 ## Local Plugin
 
 | Field | Value |
 |---|---|
-| Plugin name | `seis` |
-| Repo plugin root | `plugins/seis` |
+| Plugin name | `seis-ai-agent` |
+| Repo plugin root | `plugins/seis-ai-agent` |
 | Repo marketplace | `.agents/plugins/marketplace.json` |
-| Installed plugin | `seis@seis-repo` |
+| Installed plugin | `seis-ai-agent@seis-repo` |
+| Optional governance lane | `seis@seis-repo` |
 
 ## Current Components
 
@@ -46,25 +50,32 @@ If the system Python does not have `PyYAML`, use a temporary validation venv.
 
 ## Install Or Refresh
 
-Initial install:
+Default install plan:
 
 ```bash
-codex plugin marketplace add /Users/emirhankudun/Library/Mobile\ Documents/com~apple~CloudDocs/Github/SEIS
-codex plugin add seis@seis-repo
+npm run install:seis-ai-agent
 ```
 
-For later edits, update the plugin cachebuster before reinstalling:
+Apply the install only after reviewing the plan:
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/update_plugin_cachebuster.py plugins/seis
-codex plugin add seis@seis-repo
+npm run install:seis-ai-agent -- --apply
+```
+
+Install standalone lane cards only for marketplace or MCP debugging:
+
+```bash
+npm run install:seis-ai-agent -- --with-lanes
 ```
 
 Start a new Codex thread after reinstalling so new skills and tools are picked up.
 
 ## Source Sync
 
-Develop inside SEIS under `plugins/seis`; Codex installs from the repo-contained `seis-repo` marketplace so Git remains the source of truth. The older `/Users/emirhankudun/plugins/seis` mirror is only a compatibility copy when needed.
+Develop inside SEIS under `plugins/seis-ai-agent` and the specialist lane
+packages; Codex installs from the repo-contained `seis-repo` marketplace so Git
+remains the source of truth. The older `/Users/emirhankudun/plugins/seis`
+mirror is only a compatibility copy when needed.
 
 ## Zip Audit
 
@@ -106,14 +117,17 @@ The GitHub connector can also force-update `main` to the canonical branch SHA wh
 
 ## Specialist Lanes
 
-The SEIS plugin exposes four specialist lanes inside the canonical `seis@seis-repo` plugin and the repo marketplace also exposes each lane as its own full Codex plugin card:
+The unified `seis-ai-agent@seis-repo` plugin is the primary SEIS surface. It
+composes SEIS governance plus four specialist lanes. The repo marketplace keeps
+each standalone lane card available for focused plugin debugging, but normal
+work should start from SEIS-Agent:
 
 - SEIS Cloud: provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation.
 - SEIS-Code: code architecture, implementation, refactors, tests, CI, MCP/plugin code, and platform packages.
 - SEIS-Design: product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.
 - SEIS-DATA: data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.
 
-Full plugin packages:
+Optional standalone plugin packages:
 
 | Plugin | Repo root | Install id | MCP tools |
 |---|---|---|---|

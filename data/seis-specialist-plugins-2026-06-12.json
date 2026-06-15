@@ -4,6 +4,12 @@
   "updatedAt": "2026-06-13",
   "mode": "repo-marketplace-specialist-lanes",
   "summary": "SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are full repo-contained Codex plugins with skills, MCP status/plan tools, lane profiles, and repo marketplace entries.",
+  "consolidation": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-agent",
+    "legacyPersonalMarketplace": "compatibility-mirror-only",
+    "standaloneLaneInstallMode": "optional-with-lanes"
+  },
   "sourceEvidence": [
     "data/seis-plugin-package-intake-2026-06-13.json",
     "docs/platform/seis-plugin-package-intake.md"

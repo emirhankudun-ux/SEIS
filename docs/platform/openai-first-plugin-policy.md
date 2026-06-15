@@ -7,13 +7,17 @@ SEIS should use OpenAI/Codex plugin families first for core work. The primary fa
 - `openai-curated`
 - `openai-bundled`
 - `openai-primary-runtime`
-- `seis@personal` for local SEIS coordination
+- `seis-ai-agent@seis-repo` for unified SEIS coordination
 
 External or non-installed plugin URI families are fallback paths unless the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for a specific provider.
 
 ## Why This Fits SEIS
 
-SEIS is a closed-code command center for repository consolidation, plugin coordination, full-stack/product work, and governance. OpenAI/Codex plugins are the best default layer because they are already installed, audited in SEIS, visible through the Codex runtime, and easier to keep aligned with repo governance.
+SEIS is an open-source command center for repository consolidation, plugin
+coordination, full-stack/product work, and governance. OpenAI/Codex plugins are
+the best default layer because they are already installed, audited in SEIS,
+visible through the Codex runtime, and easier to keep aligned with repo
+governance.
 
 ## Priority Categories
 
@@ -27,8 +31,8 @@ SEIS is a closed-code command center for repository consolidation, plugin coordi
 
 ## Operating Rule
 
-1. Start with the SEIS plugin for repo orientation and safety gates.
+1. Start with `seis-ai-agent@seis-repo` for repo orientation, SEIS lane routing, and safety gates.
 2. Select the OpenAI/Codex category plugin that matches the work.
 3. Use external or non-installed plugin URI families only as explicit fallback.
 4. Write durable outputs back to SEIS docs, data files, or integration manifests.
-5. Keep `data/openai-plugin-priority-2026-06-05.json` and `data/installed-codex-plugins-2026-06-05.json` aligned after plugin changes.
+5. Keep `data/openai-plugin-priority-2026-06-05.json` and `data/installed-codex-plugins-2026-06-15.json` aligned after plugin changes.
