@@ -93,7 +93,7 @@ main() {
   check_file_budget "$web/index.html"         80   "index.html"
   check_file_budget "$web/style.css"          60   "style.css"
   check_file_budget "$web/script.js"         150   "script.js"
-  check_file_budget "$web/translations.json"  60   "translations.json"
+  check_file_budget "$web/translations.json"  80   "translations.json"  # 5-locale i18n catalog — headroom for translation growth
   check_media_total "$web/public/media"     5120   # 5 MB
 
   if [ "${#FINDINGS[@]}" -eq 0 ]; then
