@@ -2,25 +2,55 @@
   "name": "Emirhan Kudun — Grafik Tasarımcı & UI/UX Designer",
   "short_name": "Emirhan Kudun",
   "description": "Grafik tasarım, UI/UX ve motion design alanlarında modern ve minimalist çözümler.",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#0a0a0a",
   "theme_color": "#c8a96e",
   "lang": "tr",
+  "dir": "ltr",
   "icons": [
     {
       "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["design", "portfolio", "creative"]
+  "categories": ["design", "portfolio", "creative"],
+  "shortcuts": [
+    {
+      "name": "Çizimler",
+      "short_name": "Çizimler",
+      "description": "Çizim galerisini aç",
+      "url": "/#drawings"
+    },
+    {
+      "name": "İletişim",
+      "short_name": "İletişim",
+      "description": "İletişim bölümüne git",
+      "url": "/#contact"
+    }
+  ]
 }

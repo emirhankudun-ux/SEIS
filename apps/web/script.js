@@ -804,6 +804,80 @@
     declineBtn.addEventListener("click", function () { setConsent("declined"); });
   }
 
+  function initInstallPrompt() {
+    var bar = q("#install-bar");
+    if (!bar) { return; }
+    var acceptBtn = q("#install-accept");
+    var dismissBtn = q("#install-dismiss");
+    var bodyEl = q("#install-body");
+    var deferredPrompt = null;
+    var DISMISS_KEY = "ek-pwa-install-dismissed";
+
+    function alreadyInstalled() {
+      try {
+        return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) ||
+          window.navigator.standalone === true;
+      } catch (err) { return false; }
+    }
+    function isDismissed() {
+      try { return window.localStorage.getItem(DISMISS_KEY) === "1"; } catch (err) { return false; }
+    }
+    function rememberDismiss() {
+      try { window.localStorage.setItem(DISMISS_KEY, "1"); } catch (err) { /* noop */ }
+    }
+    function localize() {
+      var title = q("#install-title");
+      if (title) { title.textContent = getT("pwa.install.title", currentLang) || title.textContent; }
+      if (bodyEl) { bodyEl.textContent = getT("pwa.install.body", currentLang) || bodyEl.textContent; }
+      if (acceptBtn) { acceptBtn.textContent = getT("pwa.install.accept", currentLang) || acceptBtn.textContent; }
+      if (dismissBtn) { dismissBtn.textContent = getT("pwa.install.dismiss", currentLang) || dismissBtn.textContent; }
+    }
+    function show() {
+      if (alreadyInstalled() || isDismissed()) { return; }
+      localize();
+      bar.hidden = false;
+      window.setTimeout(function () { bar.classList.add("visible"); }, 60);
+    }
+    function hide() {
+      bar.classList.remove("visible");
+      window.setTimeout(function () { bar.hidden = true; }, 450);
+    }
+
+    var isIOS = /iphone|ipad|ipod/i.test(window.navigator.userAgent || "") && !window.MSStream;
+
+    window.addEventListener("beforeinstallprompt", function (event) {
+      event.preventDefault();
+      deferredPrompt = event;
+      show();
+    });
+
+    if (acceptBtn) {
+      acceptBtn.addEventListener("click", function () {
+        if (deferredPrompt && typeof deferredPrompt.prompt === "function") {
+          deferredPrompt.prompt();
+          if (deferredPrompt.userChoice && typeof deferredPrompt.userChoice.then === "function") {
+            deferredPrompt.userChoice.then(function () { deferredPrompt = null; });
+          }
+          hide();
+        } else if (isIOS && bodyEl) {
+          bodyEl.textContent = getT("pwa.install.ios", currentLang) || "Paylaş → Ana Ekrana Ekle";
+          acceptBtn.hidden = true;
+        }
+      });
+    }
+    if (dismissBtn) {
+      dismissBtn.addEventListener("click", function () { rememberDismiss(); hide(); });
+    }
+
+    if (isIOS && !alreadyInstalled() && !isDismissed()) {
+      if (bodyEl) { bodyEl.textContent = getT("pwa.install.ios", currentLang) || bodyEl.textContent; }
+      if (acceptBtn) { acceptBtn.hidden = true; }
+      show();
+    }
+
+    window.addEventListener("appinstalled", function () { rememberDismiss(); hide(); });
+  }
+
   function emitBehanceStateChange() {
     try {
       window.dispatchEvent(new CustomEvent("ek:behance-state"));
@@ -2413,6 +2487,7 @@
     initActiveNavAndScrollState();
     initRevealAnimations();
     initCookieBar();
+    initInstallPrompt();
     initDrawingsGallery();
     initDrawingsQuickHydration();
     initLazyMediaViewportTrigger();
