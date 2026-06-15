@@ -161,6 +161,7 @@ Start with:
 - [`docs/development/first-run-quickstart.md`](./docs/development/first-run-quickstart.md)
   for clone, first validation, lane selection, and no-bloat setup
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) for contribution rules
+- [`docs/deployment/seis-codespaces-cloud-workspace.md`](./docs/deployment/seis-codespaces-cloud-workspace.md) for a cloud-only dev workflow
 - [`CODE_OF_CONDUCT.md`](./CODE_OF_CONDUCT.md) for community expectations
 - [`SUPPORT.md`](./SUPPORT.md) for questions, ideas, bugs, features, and safe
   support routing

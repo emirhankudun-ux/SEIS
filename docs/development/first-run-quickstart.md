@@ -14,6 +14,10 @@ git branch --show-current
 git remote -v
 ```
 
+> If your environment is cloud-only, prefer:
+>
+> - [SEIS Cloud Workspace with GitHub Codespaces](../deployment/seis-codespaces-cloud-workspace.md)
+
 Expected:
 
 - the branch is `main`
