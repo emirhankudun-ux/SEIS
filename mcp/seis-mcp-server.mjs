@@ -77,6 +77,23 @@ const SPECIALIST_LANES = [
       "Validate schema, parity, privacy, provenance, and relevant checks.",
     ],
   },
+  {
+    id: "seis-governance",
+    label: "SEIS Governance",
+    pluginPath: "plugins/seis-ai-agent",
+    profilePath: "plugins/seis-ai-agent/assets/lanes/seis-governance.json",
+    skillPath: "plugins/seis-ai-agent/skills/seis-governance/SKILL.md",
+    mcpToolStatus: "seis_governance_status",
+    mcpToolPlan: "seis_governance_plan",
+    focus: "memory and context governance, release readiness, traceability, and policy-consistent cross-lane orchestration",
+    planSteps: [
+      "Check policy constraints and repo-level governance evidence before making lane-level changes.",
+      "Assess quality commands and specialist lane coupling points.",
+      "Define traceable implementation steps with explicit ownership and risk controls.",
+      "Run repository checks that validate consistency across agent, lane, and manifest surfaces.",
+      "Document outcomes, rollback points, and handoff notes.",
+    ],
+  },
 ];
 
 const MCP_TOOLS = [
@@ -142,7 +159,7 @@ const MCP_TOOLS = [
   },
   {
     name: "seis_specialist_lanes",
-    description: "List the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist plugin lanes and readiness summaries.",
+    description: "List the SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, and SEIS Governance specialist plugin lanes and readiness summaries.",
     inputSchema: {
       type: "object",
       properties: {},
@@ -157,7 +174,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-governance",
         },
       },
     },
@@ -171,7 +188,7 @@ const MCP_TOOLS = [
       properties: {
         lane: {
           type: "string",
-          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data",
+          description: "Lane id: seis-cloud | seis-code | seis-design | seis-data | seis-governance",
         },
         request: {
           type: "string",
@@ -379,7 +396,7 @@ function specialistLaneStatusRequest(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, or seis-data.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, or seis-governance.",
       },
     };
   }
@@ -393,7 +410,7 @@ function specialistLanePlan(input = {}) {
     return {
       error: {
         code: -32602,
-        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, or seis-data.",
+        message: "Invalid params: lane must be one of seis-cloud, seis-code, seis-design, seis-data, or seis-governance.",
       },
     };
   }

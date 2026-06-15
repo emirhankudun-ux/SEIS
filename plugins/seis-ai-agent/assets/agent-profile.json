@@ -20,6 +20,7 @@
     "marketplacePolicy": "only-seis-ai-agent-is-published",
     "embeddedSkills": [
       "seis-ai-agent",
+      "seis-governance",
       "seis-hub",
       "seis-cloud",
       "seis-code",
@@ -27,6 +28,7 @@
       "seis-data"
     ],
     "embeddedLaneProfiles": [
+      "assets/lanes/seis-governance.json",
       "assets/lanes/seis-cloud.json",
       "assets/lanes/seis-code.json",
       "assets/lanes/seis-design.json",
@@ -35,6 +37,7 @@
   },
   "composedLanes": [
     "seis",
+    "seis-governance",
     "seis-cloud",
     "seis-code",
     "seis-design",

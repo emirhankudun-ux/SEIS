@@ -1,6 +1,6 @@
 {
   "name": "seis-ai-agent",
-  "version": "0.1.0+codex.20260615061928",
+  "version": "0.1.0+codex.20260615102011",
   "description": "Unified SEIS-AI Agent that orchestrates SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA as one repo-contained development system.",
   "author": {
     "name": "emirhankudun-ux",
@@ -14,6 +14,7 @@
     "ai-agent",
     "codex",
     "mcp",
+    "governance",
     "cloud",
     "code",
     "design",
@@ -29,6 +30,7 @@
     "category": "Developer Tools",
     "capabilities": [
       "Unified SEIS orchestration",
+      "SEIS governance readiness",
       "Memory and context governance",
       "SEIS Cloud deployment planning",
       "SEIS-Code engineering governance",

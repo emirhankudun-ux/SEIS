@@ -73,3 +73,15 @@ Before claiming GitHub is updated, verify:
 5. push or PR state, when publishing is part of the task
 
 No remote update should be claimed without evidence.
+
+## Single Command Governance Closure
+
+After source changes, close the governance lane in one command:
+
+```bash
+npm run quality:governance
+```
+
+This command runs the consolidated set used by CI for governance validation:
+open-source governance, repo identity, cloud policy, specialist lane integrity,
+SEIS-Agent validation, and generated-language/runtime reports.

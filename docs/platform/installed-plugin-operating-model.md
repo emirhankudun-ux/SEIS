@@ -1,6 +1,6 @@
 # SEIS Installed Plugin Operating Model
 
-Date: 2026-06-05
+Date: 2026-06-15
 
 Google Drive companion document: https://docs.google.com/document/d/10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64
 
@@ -10,13 +10,14 @@ not treated as active unless they appear as installed and enabled in
 
 ## Summary
 
-- Installed and enabled plugins after SEIS consolidation audit: 186
-- Not installed plugins after SEIS consolidation audit: 10
+- Installed and enabled plugins after SEIS consolidation audit: 187
+- Not installed plugins after SEIS consolidation audit: 5
 - Canonical SEIS plugin: `seis-ai-agent@seis-repo`
 - Legacy SEIS mirror: `seis@personal` compatibility only
 - Duplicate SEIS lane cards: not installed by default
 - Canonical repository: `emirhankudun-ux/SEIS`
 - Primary plugin policy: OpenAI-first
+- Governance registry closure is `npm run quality:governance`.
 
 ## OpenAI-First Rule
 

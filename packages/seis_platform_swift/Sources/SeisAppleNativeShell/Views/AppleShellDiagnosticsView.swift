@@ -45,7 +45,9 @@ struct AppleShellDiagnosticsView: View {
                         .labelStyle(.iconOnly)
                 }
                 .buttonStyle(.bordered)
+                #if os(macOS)
                 .help("Refresh Diagnostics")
+                #endif
             }
 
             VStack(alignment: .leading, spacing: 8) {
