@@ -27,9 +27,10 @@ See how the `apps/web` portfolio behaves both as a **macOS website** and as a
 **native macOS app** — from one codebase:
 
 ```bash
-./apps/macos/run-demo.sh both   # browser + native window (default)
-./apps/macos/run-demo.sh web    # macOS website demo only (opens your browser)
-./apps/macos/run-demo.sh app    # native macOS app demo only (WKWebView window)
+./apps/macos/run-demo.sh both        # browser + native window (default)
+./apps/macos/run-demo.sh web         # macOS website demo only (opens your browser)
+./apps/macos/run-demo.sh app         # native macOS app demo only (WKWebView window)
+./apps/macos/run-demo.sh self-test   # verify everything is ready (no Swift/macOS needed)
 ```
 
 What it does:

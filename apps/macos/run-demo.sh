@@ -93,7 +93,55 @@ PLIST
     open -n "$app"
 }
 
+# Validate everything the demo needs — no macOS / Swift compiler required, so it
+# also runs in CI and on this Linux host. Exits non-zero on any failure.
+self_test() {
+    ST_FAIL=0
+    local rf code swift_src
+    st() {
+        if [ "$1" = "ok" ]; then echo "[PASS] $2"; else echo "[FAIL] $2"; ST_FAIL=1; fi
+    }
+
+    [ -d "$WEB_DIR" ] && st ok "web dir present" || st no "web dir missing: $WEB_DIR"
+    for rf in index.html translations.json site-config.json manifest.json service-worker.js; do
+        [ -f "$WEB_DIR/$rf" ] && st ok "web/$rf present" || st no "web/$rf missing"
+    done
+
+    [ -f "$PKG_DIR/Package.swift" ] && st ok "Package.swift present" || st no "Package.swift missing"
+    swift_src="$PKG_DIR/Sources/SeisPortfolioDemo/SeisPortfolioDemoApp.swift"
+    if [ -f "$swift_src" ] && python3 - "$swift_src" <<'PY'
+import sys
+s = open(sys.argv[1], encoding="utf-8").read()
+ok = (s.count("@main") == 1
+      and s.count("{") == s.count("}")
+      and s.count("(") == s.count(")")
+      and "WKWebView" in s
+      and "WindowGroup" in s)
+sys.exit(0 if ok else 1)
+PY
+    then
+        st ok "swift app structure (@main, balanced, WKWebView, WindowGroup)"
+    else
+        st no "swift app structure invalid or source missing"
+    fi
+
+    for rf in "" translations.json manifest.json service-worker.js; do
+        code="$(curl -fsS -o /dev/null -w '%{http_code}' "${URL}${rf}" 2>/dev/null || echo 000)"
+        [ "$code" = "200" ] && st ok "GET /${rf} -> 200" || st no "GET /${rf} -> ${code}"
+    done
+
+    if [ "$ST_FAIL" -eq 0 ]; then
+        echo "[PASS] run-demo self-test — everything is ready"
+        return 0
+    fi
+    echo "[FAIL] run-demo self-test — see failures above"
+    return 1
+}
+
 case "$MODE" in
+    self-test|--self-test|check|--check)
+        if self_test; then exit 0; else exit 1; fi
+        ;;
     web)
         open_browser
         echo "▸ Browser demo running. Press Ctrl+C to stop the server."
@@ -111,7 +159,7 @@ case "$MODE" in
         wait "$SERVER_PID"
         ;;
     *)
-        echo "usage: $0 [app|web|both]" >&2
+        echo "usage: $0 [app|web|both|self-test]" >&2
         exit 2
         ;;
 esac
