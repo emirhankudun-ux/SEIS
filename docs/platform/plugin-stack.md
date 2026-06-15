@@ -1,10 +1,17 @@
 # SEIS Plugin Stack
 
-SEIS uses installed and enabled Codex plugins as the operating layer for the closed-code platform. The current audited registry is `data/installed-codex-plugins-2026-06-05.json`, with the reader-facing operating model in `docs/platform/installed-plugin-operating-model.md`.
+SEIS uses installed and enabled Codex plugins as the operating layer for the
+open-source platform. The current audited registry is
+`data/installed-codex-plugins-2026-06-15.json`, with the reader-facing
+operating model in `docs/platform/installed-plugin-operating-model.md`.
 
 ## OpenAI-First Policy
 
-For core SEIS work, prioritize OpenAI/Codex plugin families first: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. The local `seis@personal` plugin coordinates repo context, migration safety, and routing. External or non-installed plugin URI families are fallback paths unless the user explicitly asks for that provider.
+For core SEIS work, prioritize OpenAI/Codex plugin families first:
+`openai-curated`, `openai-bundled`, and `openai-primary-runtime`.
+`seis-ai-agent@seis-repo` coordinates repo context, migration safety, lane
+routing, and SEIS-Agent consolidation. External or non-installed plugin URI
+families are fallback paths unless the user explicitly asks for that provider.
 
 Policy records:
 
@@ -15,12 +22,11 @@ Policy records:
 
 | Metric | Value |
 |---|---:|
-| Audit date | 2026-06-05 |
-| Installed and enabled plugins before install pass | 143 |
-| Installed and enabled plugins after install pass | 179 |
-| Not installed plugins after install pass | 0 |
-| Install pass | 36 attempted, 36 succeeded, 0 failed |
-| Local SEIS plugin | `seis@personal` |
+| Audit date | 2026-06-15 |
+| Installed and enabled plugins after SEIS consolidation | 186 |
+| Not installed plugins after SEIS consolidation | 10 |
+| Canonical SEIS plugin | `seis-ai-agent@seis-repo` |
+| Legacy SEIS mirror | `seis@personal` compatibility only |
 
 ## Priority Categories
 
@@ -28,24 +34,24 @@ Policy records:
 |---|---|
 | Design | `build-web-apps@openai-curated`, `browser@openai-bundled`, `chrome@openai-bundled`, `figma@openai-curated`, `canva@openai-curated`, `magicpath@openai-curated`, `wix@openai-curated`, `base44@openai-curated`, `hostinger@openai-curated`, `replit@openai-curated`, `lovable@openai-curated` |
 | Developer tools | `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `cloudflare@openai-curated`, `vercel@openai-curated`, `netlify@openai-curated`, `supabase@openai-curated`, `neon-postgres@openai-curated`, `convex@openai-curated`, `render@openai-curated`, `temporal@openai-curated`, `openai-developers@openai-curated`, `expo@openai-curated`, `build-ios-apps@openai-curated`, `build-macos-apps@openai-curated`, `test-android-apps@openai-curated` |
-| Productivity | `google-drive@openai-curated`, `google-calendar@openai-curated`, `gmail@openai-curated`, `slack@openai-curated`, `teams@openai-curated`, `sharepoint@openai-curated`, `outlook-email@openai-curated`, `outlook-calendar@openai-curated`, `notion@openai-curated`, `box@openai-curated`, `documents@openai-primary-runtime`, `spreadsheets@openai-primary-runtime`, `presentations@openai-primary-runtime`, `linear@openai-curated`, `atlassian-rovo@openai-curated`, `asana@openai-curated`, `calendly@openai-curated`, `zoom@openai-curated`, `read-ai@openai-curated`, `dovetail@openai-curated`, `fyxer@openai-curated` |
-| Research | `hugging-face@openai-curated`, `life-science-research@openai-curated`, `zotero@openai-curated`, `scite@openai-curated`, `ngs-analysis@openai-curated`, `deepnote@openai-curated`, `quartr@openai-curated`, `factset@openai-curated`, `lseg@openai-curated`, `s-p@openai-curated`, `morningstar@openai-curated`, `moody-s@openai-curated`, `dow-jones-factiva@openai-curated`, `aiera@openai-curated`, `mt-newswires@openai-curated`, `third-bridge@openai-curated`, `pitchbook@openai-curated`, `cb-insights@openai-curated`, `govtribe@openai-curated`, `policynote@openai-curated`, `dnb-finance-analytics@openai-curated`, `chronograph@openai-curated`, `hebbia@openai-curated`, `midpage@openai-curated`, `particl-market-research@openai-curated`, `tinman-ai@openai-curated`, `fiscal-ai@openai-curated` |
-| Security | `codex-security@openai-curated`, `sentry@openai-curated`, `datadog@openai-curated`, `coderabbit@openai-curated`, `jam@openai-curated`, `semrush@openai-curated`, `conductor@openai-curated`, `statsig@openai-curated`, `domotz-preview@openai-curated` |
+| Productivity | `google-drive@openai-curated`, `google-calendar@openai-curated`, `gmail@openai-curated`, `slack@openai-curated`, `teams@openai-curated`, `sharepoint@openai-curated`, `outlook-email@openai-curated`, `outlook-calendar@openai-curated`, `notion@openai-curated`, `box@openai-curated`, `documents@openai-primary-runtime`, `spreadsheets@openai-primary-runtime`, `presentations@openai-primary-runtime`, `linear@openai-curated`, `atlassian-rovo@openai-curated`, `asana@openai-curated`, `calendly@openai-curated`, `zoom@openai-curated` |
+| Research | `hugging-face@openai-curated`, `life-science-research@openai-curated`, `zotero@openai-curated`, `scite@openai-curated`, `ngs-analysis@openai-curated`, `deepnote@openai-curated`, `quartr@openai-curated`, `factset@openai-curated`, `lseg@openai-curated`, `s-p@openai-curated`, `morningstar@openai-curated`, `moody-s@openai-curated`, `dow-jones-factiva@openai-curated` |
+| Security | `codex-security@openai-curated`, `sentry@openai-curated`, `datadog@openai-curated`, `coderabbit@openai-curated`, `jam@openai-curated`, `semrush@openai-curated`, `conductor@openai-curated`, `statsig@openai-curated` |
 
 ## Platform Lanes
 
 | Lane | Installed plugins |
 |---|---|
-| Repository and governance | `seis@personal`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated`, `openai-developers@openai-curated` |
+| Repository and governance | `seis-ai-agent@seis-repo`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated` |
 | Android and iOS mobile | `expo@openai-curated`, `test-android-apps@openai-curated`, `build-ios-apps@openai-curated` |
 | Web and design | `build-web-apps@openai-curated`, `browser@openai-bundled`, `chrome@openai-bundled`, `figma@openai-curated`, `canva@openai-curated`, `magicpath@openai-curated`, `wix@openai-curated`, `base44@openai-curated`, `hostinger@openai-curated`, `replit@openai-curated`, `lovable@openai-curated` |
 | macOS desktop | `build-macos-apps@openai-curated` |
 | Full-stack, backend, deploy | `convex@openai-curated`, `supabase@openai-curated`, `neon-postgres@openai-curated`, `vercel@openai-curated`, `netlify@openai-curated`, `cloudflare@openai-curated`, `render@openai-curated`, `temporal@openai-curated`, `quicknode@openai-curated`, `yepcode@openai-curated` |
-| Data analytics and visualization | `build-web-data-visualization@openai-curated`, `deepnote@openai-curated`, `spreadsheets@openai-primary-runtime`, `motherduck@openai-curated`, `metabase@openai-curated`, `mixpanel@openai-curated`, `mixpanel-headless@openai-curated`, `thoughtspot@openai-curated`, `posthog@openai-curated`, `cube@openai-curated`, `coupler-io@openai-curated`, `alation@openai-curated`, `omni-analytics@openai-curated`, `daloopa@openai-curated`, `amplitude@openai-curated`, `coveo@openai-curated` |
-| Workspace and communications | `google-drive@openai-curated`, `google-calendar@openai-curated`, `gmail@openai-curated`, `slack@openai-curated`, `notion@openai-curated`, `box@openai-curated`, `documents@openai-primary-runtime`, `presentations@openai-primary-runtime`, `linear@openai-curated`, `atlassian-rovo@openai-curated`, `asana@openai-curated`, `calendly@openai-curated`, `zoom@openai-curated`, `teams@openai-curated`, `sharepoint@openai-curated`, `outlook-email@openai-curated`, `outlook-calendar@openai-curated`, `egnyte@openai-curated`, `readwise@openai-curated`, `mem@openai-curated`, `granola@openai-curated`, `fireflies@openai-curated`, `otter-ai@openai-curated`, `circleback@openai-curated`, `superhuman@openai-curated`, `streak@openai-curated`, `dovetail@openai-curated`, `fyxer@openai-curated`, `read-ai@openai-curated` |
-| Observability, quality, security | `sentry@openai-curated`, `datadog@openai-curated`, `codex-security@openai-curated`, `coderabbit@openai-curated`, `jam@openai-curated`, `semrush@openai-curated`, `conductor@openai-curated`, `statsig@openai-curated`, `brand24@openai-curated`, `similarweb@openai-curated`, `domotz-preview@openai-curated` |
+| Data analytics and visualization | `build-web-data-visualization@openai-curated`, `deepnote@openai-curated`, `spreadsheets@openai-primary-runtime`, `motherduck@openai-curated`, `metabase@openai-curated`, `mixpanel@openai-curated`, `mixpanel-headless@openai-curated`, `thoughtspot@openai-curated`, `posthog@openai-curated`, `cube@openai-curated`, `coupler-io@openai-curated`, `alation@openai-curated`, `omni-analytics@openai-curated`, `daloopa@openai-curated` |
+| Workspace and communications | `google-drive@openai-curated`, `google-calendar@openai-curated`, `gmail@openai-curated`, `slack@openai-curated`, `teams@openai-curated`, `sharepoint@openai-curated`, `outlook-email@openai-curated`, `outlook-calendar@openai-curated`, `notion@openai-curated`, `box@openai-curated`, `documents@openai-primary-runtime`, `presentations@openai-primary-runtime`, `linear@openai-curated`, `atlassian-rovo@openai-curated`, `asana@openai-curated`, `calendly@openai-curated`, `zoom@openai-curated`, `egnyte@openai-curated`, `readwise@openai-curated`, `mem@openai-curated`, `granola@openai-curated`, `fireflies@openai-curated`, `otter-ai@openai-curated`, `circleback@openai-curated`, `superhuman@openai-curated`, `streak@openai-curated` |
+| Observability, quality, security | `sentry@openai-curated`, `datadog@openai-curated`, `codex-security@openai-curated`, `coderabbit@openai-curated`, `jam@openai-curated`, `semrush@openai-curated`, `conductor@openai-curated`, `statsig@openai-curated`, `brand24@openai-curated`, `similarweb@openai-curated` |
 | AI, media, research | `hugging-face@openai-curated`, `life-science-research@openai-curated`, `zotero@openai-curated`, `remotion@openai-curated`, `game-studio@openai-curated`, `fal@openai-curated`, `heygen@openai-curated`, `hyperframes@openai-curated`, `nvidia@openai-curated`, `shutterstock@openai-curated`, `cloudinary@openai-curated`, `latex@openai-bundled`, `biorender@openai-curated`, `picsart@openai-curated`, `scite@openai-curated`, `ngs-analysis@openai-curated` |
-| Business, GTM, finance, and operations | `airtable@openai-curated`, `hubspot@openai-curated`, `apollo@openai-curated`, `clay@openai-curated`, `common-room@openai-curated`, `zoominfo@openai-curated`, `close@openai-curated`, `outreach@openai-curated`, `pipedrive@openai-curated`, `shopify@openai-curated`, `stripe@openai-curated`, `quickbooks@openai-curated`, `brex@openai-curated`, `carta-crm@openai-curated`, `docusign@openai-curated`, `signnow@openai-curated`, `intercom@openai-curated`, `help-scout@openai-curated`, `teamwork-com@openai-curated`, `clickup@openai-curated`, `monday-com@openai-curated`, `zoho@openai-curated`, `pylon@openai-curated`, `attio@openai-curated`, `responsive@openai-curated`, `docket@openai-curated`, `demandbase@openai-curated`, `channel99@openai-curated`, `happenstance@openai-curated`, `meticulate@openai-curated`, `actively@openai-curated`, `hg-insights@openai-curated`, `rox@openai-curated`, `ranked-ai@openai-curated`, `windsor-ai@openai-curated`, `waldo@openai-curated`, `vantage@openai-curated`, `sendgrid@openai-curated`, `twilio-developer-kit@openai-curated`, `highlevel@openai-curated`, `fiscal-ai@openai-curated`, `factset@openai-curated`, `lseg@openai-curated`, `s-p@openai-curated`, `quartr@openai-curated`, `morningstar@openai-curated`, `moody-s@openai-curated`, `aiera@openai-curated`, `mt-newswires@openai-curated`, `third-bridge@openai-curated`, `pitchbook@openai-curated`, `cb-insights@openai-curated`, `govtribe@openai-curated`, `policynote@openai-curated`, `dnb-finance-analytics@openai-curated`, `dow-jones-factiva@openai-curated`, `chronograph@openai-curated`, `hebbia@openai-curated`, `midpage@openai-curated`, `particl-market-research@openai-curated`, `tinman-ai@openai-curated`, `alpaca@openai-curated`, `binance@openai-curated`, `razorpay@openai-curated`, `setu-bharat-connect-billpay@openai-curated`, `taxdown@openai-curated`, `weatherpromise@openai-curated`, `finn@openai-curated`, `cogedim@openai-curated`, `myregistry-com@openai-curated`, `united-rentals@openai-curated`, `keybid-puls@openai-curated`, `network-solutions@openai-curated`, `skywatch@openai-curated`, `datasite@openai-curated`, `marcopolo@openai-curated` |
+| Business, GTM, finance, and operations | `airtable@openai-curated`, `hubspot@openai-curated`, `apollo@openai-curated`, `clay@openai-curated`, `common-room@openai-curated`, `zoominfo@openai-curated`, `close@openai-curated`, `outreach@openai-curated`, `pipedrive@openai-curated`, `shopify@openai-curated`, `stripe@openai-curated`, `quickbooks@openai-curated`, `brex@openai-curated`, `carta-crm@openai-curated`, `docusign@openai-curated`, `signnow@openai-curated`, `factset@openai-curated`, `lseg@openai-curated`, `s-p@openai-curated`, `quartr@openai-curated`, `morningstar@openai-curated`, `moody-s@openai-curated`, `dow-jones-factiva@openai-curated`, `pitchbook@openai-curated`, `cb-insights@openai-curated`, `alpaca@openai-curated`, `binance@openai-curated` |
 
 ## Google Workspace Links
 
