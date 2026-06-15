@@ -40,8 +40,10 @@ What it does:
 - `app` builds a tiny isolated SwiftPM executable (`SeisPortfolioDemo`,
   `apps/macos/PortfolioDemo/`), wraps the binary in a `.app` whose generated
   `Info.plist` injects the local URL and allows local networking (ATS), then
-  launches it with `/usr/bin/open -n`. The window hosts the portfolio in a
-  `WKWebView`.
+  launches it with `/usr/bin/open -n`. The window is a native **SwiftUI** shell
+  hosting the portfolio in a `WKWebView`: a unified toolbar (back / forward /
+  reload / open-in-browser), loading + error states, and the site's dark brand
+  theme.
 
 Requirements: macOS, `python3`, and (for `app`/`both`) the Swift toolchain from
 Xcode Command Line Tools. Press `Ctrl+C` to stop the local server. The demo is
