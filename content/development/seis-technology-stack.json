@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 307964,
+      "githubBytes": 308164,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -88,7 +88,7 @@
       "label": "Swift",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 278456,
+      "githubBytes": 290446,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"

@@ -998,6 +998,81 @@ private func writeSpecialistMarketplaceFixture(
 }
 #endif
 
+@Test func githubLanguageBalanceContractDefinesNoFillerTargets() {
+    let targets = SeisGitHubLanguageBalanceContract.targets
+    let appleTarget = SeisGitHubLanguageBalanceContract.target(for: "apple-swift-ecosystem")
+    let previewTarget = SeisGitHubLanguageBalanceContract.target(for: "html-css-preview")
+
+    #expect(targets.count == 8)
+    #expect(SeisGitHubLanguageBalanceContract.isReady)
+    #expect(SeisGitHubLanguageBalanceContract.noFillerPolicy.contains("Do not add filler code"))
+    #expect(SeisGitHubLanguageBalanceContract.validationCommands.contains("swift test --package-path packages/seis_platform_swift"))
+    #expect(SeisGitHubLanguageBalanceContract.validationCommands.contains("npm run quality"))
+    #expect(Set(SeisGitHubLanguageBalanceContract.migrationOrder).isSuperset(of: SeisGitHubLanguageBalanceContract.targetIDs))
+
+    #expect(appleTarget?.minPercent == 25.0)
+    #expect(appleTarget?.maxPercent == 30.0)
+    #expect(appleTarget?.sourceLanguages == ["Swift", "Objective-C", "AppleScript"])
+    #expect(appleTarget?.ecosystemSurfaces.contains("SwiftUI") == true)
+    #expect(appleTarget?.ecosystemSurfaces.contains("CloudKit") == true)
+    #expect(appleTarget?.owningIdentity == "SEIS")
+    #expect(appleTarget?.status(for: 10.27) == .belowTarget)
+    #expect(appleTarget?.status(for: 27.0) == .withinTarget)
+    #expect(appleTarget?.status(for: 35.0) == .aboveTarget)
+    #expect(previewTarget?.status(for: 6.38) == .aboveTarget)
+}
+
+@Test func githubLanguageBalanceContractMatchesGeneratedReportTargets() throws {
+    let root = repositoryRoot()
+    let reportURL = root.appending(path: "reports/language-distribution.json")
+    let report = try JSONDecoder().decode(
+        LanguageDistributionReport.self,
+        from: Data(contentsOf: reportURL)
+    )
+    let contractTargetsByID = Dictionary(
+        uniqueKeysWithValues: SeisGitHubLanguageBalanceContract.targets.map { ($0.id, $0) }
+    )
+
+    #expect(report.languageBalanceTargets.mode == SeisGitHubLanguageBalanceContract.mode)
+    #expect(report.languageBalanceTargets.status == "needs_real_platform_work")
+    #expect(report.languageBalanceTargets.noFillerPolicy == SeisGitHubLanguageBalanceContract.noFillerPolicy)
+    #expect(Set(report.languageBalanceTargets.targets.map(\.id)) == Set(SeisGitHubLanguageBalanceContract.targetIDs))
+
+    for reportTarget in report.languageBalanceTargets.targets {
+        let contractTarget = try #require(contractTargetsByID[reportTarget.id])
+        #expect(reportTarget.label == contractTarget.label)
+        #expect(reportTarget.minPercent == contractTarget.minPercent)
+        #expect(reportTarget.maxPercent == contractTarget.maxPercent)
+        #expect(reportTarget.sourceLanguages == contractTarget.sourceLanguages)
+        #expect(reportTarget.purpose == contractTarget.purpose)
+        #expect(reportTarget.noFillerRule == contractTarget.noFillerRule)
+        #expect(contractTarget.status(for: reportTarget.percent).rawValue == reportTarget.status)
+    }
+}
+
+private struct LanguageDistributionReport: Decodable {
+    let languageBalanceTargets: ReportLanguageBalanceTargets
+}
+
+private struct ReportLanguageBalanceTargets: Decodable {
+    let mode: String
+    let status: String
+    let noFillerPolicy: String
+    let targets: [ReportLanguageBalanceTarget]
+}
+
+private struct ReportLanguageBalanceTarget: Decodable {
+    let id: String
+    let label: String
+    let percent: Double
+    let minPercent: Double
+    let maxPercent: Double
+    let status: String
+    let sourceLanguages: [String]
+    let purpose: String
+    let noFillerRule: String
+}
+
 private func agentHandoffRecordsSortedById(
     _ records: [SeisAGIAgentHandoffRecord]
 ) -> [SeisAGIAgentHandoffRecord] {

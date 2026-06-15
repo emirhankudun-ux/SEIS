@@ -25,6 +25,7 @@ REQUIRED_FILES = [
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
     "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
+    "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisGitHubLanguageBalanceContract.swift",
     "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
     "polyglot/swiftui-playground/SEISPlatformPlayground.playground/contents.xcplayground",
