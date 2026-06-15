@@ -47,7 +47,6 @@
     "check:software-languages": "node scripts/check-polyglot.mjs",
     "check:polyglot-foundation": "node scripts/check-polyglot.mjs",
     "check:development-program": "node scripts/check-development-process.mjs",
-    "check:github-seis-model": "node scripts/check-github-seis-model.mjs",
     "check:monthly-branch-hardening": "node scripts/check-monthly-branch-hardening.mjs",
     "check:server-handoff": "node scripts/check-server-adapters.mjs",
     "check:server-target": "node scripts/check-server-targets.mjs",
@@ -66,8 +65,6 @@
     "check:seis-cloud-environment": "node scripts/check-cloud-environment.cjs",
     "check:seis-github-language-presence": "node scripts/check-polyglot.mjs",
     "check:seis-capability-activation-hub": "node scripts/check-cloud-environment.cjs",
-    "check:aggressive-execution-plan": "node scripts/create-aggressive-execution-plan.cjs --check",
-    "check:aggressive-safety-firewall": "node scripts/check-aggressive-safety-firewall.cjs --check",
     "check:static-build": "node scripts/check-static-build.mjs",
     "build:static": "node scripts/build-static.mjs",
     "publish:preflight": "node scripts/check-github-publish-readiness.mjs",
@@ -112,9 +109,6 @@
     "automation:refresh-seis-surface": "node scripts/automation-refresh-seis-surface.cjs",
     "automation:refresh-seis-surface:ci": "node scripts/automation-refresh-seis-surface.cjs --ci",
     "automation:refresh-release": "node scripts/automation-refresh-release.cjs",
-    "automation:aggressive-execution-plan": "node scripts/create-aggressive-execution-plan.cjs",
-    "automation:aggressive-local-cycle": "node scripts/run-aggressive-local-cycle.cjs",
-    "automation:aggressive-safety-firewall": "node scripts/check-aggressive-safety-firewall.cjs",
     "sync:seis-plugin-bundle": "node scripts/sync-seis-plugin-bundle.mjs --source . --local ./plugins/seis",
     "refresh:seis-plugin-bundle": "node scripts/refresh-seis-plugin-bundle.mjs --source . --local ./plugins/seis --marketplace seis-repo",
     "install:seis-ai-agent": "node scripts/install-seis-ai-agent.mjs",
@@ -129,19 +123,9 @@
     "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
     "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
     "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
-    "seis:test": "npm test --prefix packages/seis-ai",
-    "test": "vitest run",
-    "test:e2e": "playwright test"
-  },
-  "devDependencies": {
-    "@axe-core/playwright": "^4.9.1",
-    "@playwright/test": "^1.60.0",
-    "@vitest/coverage-v8": "^4.1.8",
-    "serve": "^14.2.6",
-    "vitest": "^4.1.8",
-    "zod": "^3.25.76"
+    "seis:test": "npm test --prefix packages/seis-ai"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   }
 }

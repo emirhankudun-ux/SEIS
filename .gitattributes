@@ -9,9 +9,6 @@ apps/web/src/i18n/locales.js linguist-generated=true
 # Local imported/snapshot copies are useful for comparison but not source language signal.
 SE*S/** linguist-vendored=true
 
-# Windows batch files need binary treatment to preserve CRLF on any platform.
-*.bat -text
-
 # Keep the requested GitHub language split explicit without reclassifying source.
 polyglot/typescript/** linguist-language=TypeScript
 polyglot/react/*.tsx linguist-language=TypeScript
