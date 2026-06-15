@@ -72,6 +72,7 @@ final class WebViewModel: NSObject, ObservableObject, WKNavigationDelegate {
 
     func goBack() { webView.goBack() }
     func goForward() { webView.goForward() }
+    func goHome() { load() }
 
     var currentURL: URL { webView.url ?? homeURL }
 
@@ -147,6 +148,8 @@ struct ContentView: View {
                     .help("Forward")
                 Button(action: model.reload) { Image(systemName: "arrow.clockwise") }
                     .help("Reload")
+                Button(action: model.goHome) { Image(systemName: "house") }
+                    .help("Home")
             }
             ToolbarItem(placement: .primaryAction) {
                 Button { openInBrowser(model.currentURL) } label: { Image(systemName: "safari") }
@@ -201,6 +204,8 @@ struct SeisPortfolioDemoApp: App {
             CommandMenu("Navigate") {
                 Button("Reload", action: model.reload)
                     .keyboardShortcut("r", modifiers: .command)
+                Button("Home", action: model.goHome)
+                    .keyboardShortcut("h", modifiers: [.command, .shift])
                 Divider()
                 Button("Back", action: model.goBack)
                     .keyboardShortcut("[", modifiers: .command)

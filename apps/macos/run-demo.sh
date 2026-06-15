@@ -59,6 +59,18 @@ build_and_open_app() {
     mkdir -p "${contents}/MacOS"
     cp "$bin" "${contents}/MacOS/${APP_NAME}"
     chmod +x "${contents}/MacOS/${APP_NAME}"
+    mkdir -p "${contents}/Resources"
+    if command -v sips >/dev/null 2>&1 && command -v iconutil >/dev/null 2>&1 && [ -f "$ROOT/apps/web/icons/icon-512.png" ]; then
+        local iconset
+        iconset="$(mktemp -d)/AppIcon.iconset"
+        mkdir -p "$iconset"
+        local sz
+        for sz in 16 32 128 256 512; do
+            sips -z "$sz" "$sz" "$ROOT/apps/web/icons/icon-512.png" --out "$iconset/icon_${sz}x${sz}.png" >/dev/null 2>&1 || true
+            sips -z "$((sz * 2))" "$((sz * 2))" "$ROOT/apps/web/icons/icon-512.png" --out "$iconset/icon_${sz}x${sz}@2x.png" >/dev/null 2>&1 || true
+        done
+        iconutil -c icns "$iconset" -o "${contents}/Resources/AppIcon.icns" >/dev/null 2>&1 || true
+    fi
     cat >"${contents}/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -67,6 +79,7 @@ build_and_open_app() {
   <key>CFBundleExecutable</key><string>${APP_NAME}</string>
   <key>CFBundleIdentifier</key><string>com.seis.portfolio-demo</string>
   <key>CFBundleName</key><string>SEIS Portfolio Demo</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>LSMinimumSystemVersion</key><string>12.0</string>
   <key>NSPrincipalClass</key><string>NSApplication</string>
