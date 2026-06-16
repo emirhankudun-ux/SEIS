@@ -67,7 +67,7 @@ if (currentBranch.status === 0) {
 const branchRemote = git(["config", "--get", `branch.${record?.localBranchMode?.currentWorkingBranch}.remote`]);
 const branchMerge = git(["config", "--get", `branch.${record?.localBranchMode?.currentWorkingBranch}.merge`]);
 ensure(branchRemote.stdout.trim() === record?.repository?.remoteName, "current branch remote tracking must point to origin");
-ensure(branchMerge.stdout.trim() === `refs/heads/${record?.repository?.targetBranch}`, "current branch merge target must point to UIXAppTTR");
+ensure(branchMerge.stdout.trim() === `refs/heads/${record?.repository?.targetBranch}`, "current branch merge target must point to configured target branch");
 
 for (const requiredText of [
   "GitHub Remote Configuration",

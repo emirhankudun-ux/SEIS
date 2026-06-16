@@ -1,3 +1,4 @@
+const { readFileSync, existsSync } = require("node:fs");
 const { spawnSync } = require("node:child_process");
 
 function run(root, command, args) {
@@ -11,6 +12,18 @@ function trim(value) {
   return String(value || "").trim();
 }
 
+function readContract() {
+  try {
+    if (!existsSync("content/development/publish-gate-contract.json")) {
+      return {};
+    }
+
+    return JSON.parse(readFileSync("content/development/publish-gate-contract.json", "utf8"));
+  } catch (error) {
+    return {};
+  }
+}
+
 function parseDirtyFiles(stdout) {
   return String(stdout || "")
     .split("\n")
@@ -20,6 +33,10 @@ function parseDirtyFiles(stdout) {
 }
 
 function getPublishReadinessState(root = process.cwd()) {
+  const contract = readContract();
+  const expectedBranch = trim(contract?.remote?.targetBranch) || "main";
+  const expectedRemoteName = trim(contract?.remote?.name) || "origin";
+  const expectedUpstream = `${expectedRemoteName}/${expectedBranch}`;
   const git = (args) => run(root, "git", args);
   const inside = git(["rev-parse", "--is-inside-work-tree"]);
   const gitInside = inside.status === 0;
@@ -60,8 +77,8 @@ function getPublishReadinessState(root = process.cwd()) {
   const upstreamName = upstream.status === 0 ? trim(upstream.stdout) : "";
   const hasRemote = trim(remote.stdout).length > 0;
   const hasUpstream = upstream.status === 0 && upstreamName.length > 0;
-  const isExpectedBranch = branchName === "UIXAppTTR";
-  const isExpectedUpstream = upstreamName === "origin/UIXAppTTR";
+  const isExpectedBranch = branchName === expectedBranch;
+  const isExpectedUpstream = upstreamName === expectedUpstream;
   const worktreeClean = dirtyFiles.length === 0;
   const ghAvailable = !ghAuth.error;
   const authReady = hasRemote && ghAvailable && ghAuth.status === 0;
@@ -85,17 +102,17 @@ function getPublishReadinessState(root = process.cwd()) {
     blocker = "git remote is not configured";
     action = "configure the intended origin remote before publish preflight";
   } else if (!isExpectedBranch) {
-    blocker = "active branch is not UIXAppTTR";
-    action = "switch to UIXAppTTR before publish preflight";
+    blocker = `active branch is not ${expectedBranch}`;
+    action = `switch to ${expectedBranch} before publish preflight`;
   } else if (!worktreeClean) {
     blocker = "working tree must be clean before publish";
     action = "commit intended changes before push and keep unrelated edits out of the publish path";
   } else if (!hasUpstream) {
     blocker = "branch is not tracking a remote upstream";
-    action = "run git branch --set-upstream-to origin/UIXAppTTR UIXAppTTR";
+    action = `run git branch --set-upstream-to ${expectedUpstream} ${expectedBranch}`;
   } else if (!isExpectedUpstream) {
-    blocker = "branch upstream is not origin/UIXAppTTR";
-    action = "point UIXAppTTR to origin/UIXAppTTR before publish preflight";
+    blocker = `branch upstream is not ${expectedUpstream}`;
+    action = `point ${expectedBranch} to ${expectedUpstream} before publish preflight`;
   } else if (!ghAvailable) {
     blocker = "GitHub CLI is not available in this environment";
     action = "install GitHub CLI before publish preflight";
@@ -103,8 +120,8 @@ function getPublishReadinessState(root = process.cwd()) {
     blocker = "GitHub CLI auth is missing";
     action = "run gh auth login -h github.com";
   } else if (Number.isInteger(behindCount) && behindCount > 0) {
-    blocker = "local branch is behind origin/UIXAppTTR";
-    action = "integrate origin/UIXAppTTR into UIXAppTTR before pushing";
+    blocker = `local branch is behind ${expectedUpstream}`;
+    action = `integrate ${expectedUpstream} into ${expectedBranch} before pushing`;
   }
 
   return {
@@ -114,6 +131,9 @@ function getPublishReadinessState(root = process.cwd()) {
     dirtyFiles,
     hasRemote,
     isExpectedBranch,
+    expectedBranch,
+    expectedRemoteName,
+    expectedUpstream,
     upstreamName,
     hasUpstream,
     isExpectedUpstream,

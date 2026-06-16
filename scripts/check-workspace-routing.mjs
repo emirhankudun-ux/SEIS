@@ -37,8 +37,12 @@ if (!existsSync("docs/deployment/workspace-routing.md")) {
 const processConfig = existsSync("content/lab/development-process.json")
   ? readJson("content/lab/development-process.json")
   : {};
+const remoteConfig = existsSync("content/development/github-remote-configuration.json")
+  ? readJson("content/development/github-remote-configuration.json")
+  : {};
 const branchPolicy = processConfig.activeBranchPolicy || {};
-const expectedBranch = branchPolicy.githubBranch || "UIXAppTTR";
+const expectedBranch = remoteConfig.repository?.targetBranch || branchPolicy.githubBranch || "main";
+const expectedRemoteHint = remoteConfig.repository?.remoteUrl || "github.com";
 
 const insideWorkTree = git(["rev-parse", "--is-inside-work-tree"]);
 
@@ -51,8 +55,8 @@ if (insideWorkTree.status === 0 && insideWorkTree.stdout.trim() === "true") {
     fail(`git workspace must use ${expectedBranch}, got ${currentBranch || "unknown"}`);
   }
 
-  if (!remote.stdout.includes("UIX-Apps.git")) {
-    fail("git workspace must point at the UIX-Apps GitHub remote");
+  if (!remote.stdout.includes(expectedRemoteHint)) {
+    fail(`git workspace must point at ${expectedRemoteHint}`);
   }
 
   notes.push(`git workspace detected on ${currentBranch || "unknown"}`);

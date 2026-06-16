@@ -1,8 +1,39 @@
+import { existsSync, readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
-const expectedBranch = "UIXAppTTR";
-const expectedRemoteHint = "UIX-Apps";
+const fallbackBranch = process.env.SEIS_PRIMARY_BRANCH || "main";
+const publishContractPath = "content/development/publish-gate-contract.json";
+const remoteConfigPath = "content/development/github-remote-configuration.json";
 const fullQualityMode = process.env.SEIS_PUBLISH_READINESS_FULL === "1";
+
+const publishContract = existsSync(publishContractPath)
+  ? (() => {
+      try {
+        return JSON.parse(readFileSync(publishContractPath, "utf8"));
+      } catch (error) {
+        return null;
+      }
+    })()
+  : null;
+
+const remoteConfig = existsSync(remoteConfigPath)
+  ? (() => {
+      try {
+        return JSON.parse(readFileSync(remoteConfigPath, "utf8"));
+      } catch (error) {
+        return null;
+      }
+    })()
+  : null;
+
+const expectedBranch = String((publishContract && publishContract.remote && publishContract.remote.targetBranch) || fallbackBranch);
+const expectedRemote = String((publishContract && publishContract.remote && publishContract.remote.name) || "origin");
+const expectedRemoteHint = String(
+  (publishContract && publishContract.remote && publishContract.remote.url) ||
+  (remoteConfig && remoteConfig.repository && remoteConfig.repository.remoteUrl) ||
+  "github.com"
+);
+const expectedUpstream = `${expectedRemote}/${expectedBranch}`;
 
 function run(command, args) {
   return spawnSync(command, args, {
@@ -21,15 +52,15 @@ function trim(value) {
 function hasDirtyWorktree(statusText) {
   return statusText
     .split("\n")
-    .map(line => line.trim())
-    .some(line => line && !line.startsWith("##"));
+    .map((line) => line.trim())
+    .some((line) => line && !line.startsWith("##"));
 }
 
 function getDivergence(statusText) {
   const branchLine = statusText
     .split("\n")
-    .map(line => line.trim())
-    .find(line => line.startsWith("##")) || "";
+    .map((line) => line.trim())
+    .find((line) => line.startsWith("##")) || "";
   const ahead = Number((branchLine.match(/ahead (\d+)/) || [])[1] || 0);
   const behind = Number((branchLine.match(/behind (\d+)/) || [])[1] || 0);
   return { ahead, behind };
@@ -57,7 +88,7 @@ function getGitState() {
   const statusLines = statusText ? statusText.split("\n") : [];
   const worktreeClean = statusLines.length <= 1;
   const upstreamText = trim(upstream.stdout);
-  const isExpectedUpstream = upstreamText === `origin/${expectedBranch}`;
+  const isExpectedUpstream = upstreamText === expectedUpstream;
 
   if (currentBranch !== expectedBranch) {
     return {
@@ -78,7 +109,7 @@ function getGitState() {
       remote: remoteText,
       status: statusText,
       divergence,
-      reason: `origin remote must include ${expectedRemoteHint}`,
+      reason: `remote must include ${expectedRemoteHint}`,
       nextStep: "Set the intended GitHub remote before publishing."
     };
   }
@@ -105,7 +136,7 @@ function getGitState() {
       divergence,
       upstream: null,
       reason: "branch upstream is not configured",
-      nextStep: `Set ${expectedBranch} to track origin/${expectedBranch} before publishing.`
+      nextStep: `Set ${expectedBranch} to track ${expectedUpstream} before publishing.`
     };
   }
 
@@ -117,8 +148,8 @@ function getGitState() {
       status: statusText,
       upstream: upstreamText,
       divergence,
-      reason: `expected upstream origin/${expectedBranch}, got ${upstreamText}`,
-      nextStep: `Point ${expectedBranch} to origin/${expectedBranch} before publishing.`
+      reason: `expected upstream ${expectedUpstream}, got ${upstreamText}`,
+      nextStep: `Point ${expectedBranch} to ${expectedUpstream} before publishing.`
     };
   }
 
@@ -130,8 +161,8 @@ function getGitState() {
       status: statusText,
       upstream: upstreamText,
       divergence,
-      reason: "local branch is behind origin",
-      nextStep: `Run git pull --rebase origin ${expectedBranch}, resolve conflicts, then rerun publish preflight.`
+      reason: `local branch is behind ${expectedUpstream}`,
+      nextStep: `Run git pull --rebase ${expectedRemote} ${expectedBranch}, resolve conflicts, then rerun publish preflight.`
     };
   }
 
@@ -159,7 +190,7 @@ function getGithubAuthState() {
   return {
     ok: false,
     reason: "GitHub CLI authentication is missing.",
-    nextStep: "Run gh auth login -h github.com before pushing to origin."
+    nextStep: `Run gh auth login -h github.com before pushing to ${expectedRemote}.`
   };
 }
 
@@ -179,7 +210,7 @@ function getQualityState() {
         { id: "javascript-syntax", command: "node", args: ["--check", "scripts/check-github-publish-readiness.mjs"] }
       ];
 
-  const results = checks.map(check => {
+  const results = checks.map((check) => {
     const result = run(check.command, check.args);
     return {
       id: check.id,
@@ -189,7 +220,7 @@ function getQualityState() {
       stderr: trim(result.stderr)
     };
   });
-  const failed = results.filter(result => !result.ok);
+  const failed = results.filter((result) => !result.ok);
 
   return {
     ok: failed.length === 0,
@@ -200,7 +231,7 @@ function getQualityState() {
     checks: results,
     nextStep: failed.length === 0
       ? null
-      : `Fix failing checks: ${failed.map(result => result.id).join(", ")}.`
+      : `Fix failing checks: ${failed.map((result) => result.id).join(", ")}.`
   };
 }
 
@@ -219,12 +250,14 @@ function buildReport() {
     mode: "publish-readiness-preflight",
     qualityMode: quality.mode,
     expectedBranch,
+    expectedRemote,
+    expectedUpstream,
     expectedRemoteHint,
     git,
     githubAuth,
     quality,
     blockers,
-    nextCommand: blockers.length === 0 ? `GIT_TERMINAL_PROMPT=0 git push origin ${expectedBranch}` : null
+    nextCommand: blockers.length === 0 ? `GIT_TERMINAL_PROMPT=0 git push ${expectedRemote} ${expectedBranch}` : null
   };
 }
 
