@@ -9,19 +9,19 @@
   },
   "summary": {
     "countedFileCount": 620,
-    "countedBytes": 2953082,
+    "countedBytes": 2953642,
     "javascriptBytes": 1030005,
-    "javascriptPercent": 34.88,
+    "javascriptPercent": 34.87,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1951703,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1951143,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 1030005,
-      "percent": 34.88
+      "percent": 34.87
     },
     {
       "language": "JSON",
@@ -30,8 +30,8 @@
     },
     {
       "language": "Swift",
-      "bytes": 356081,
-      "percent": 12.06
+      "bytes": 356641,
+      "percent": 12.07
     },
     {
       "language": "Python",
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 1030005,
-      "percent": 34.88,
+      "percent": 34.87,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1885806,
-      "percent": 63.86,
+      "bytes": 1886366,
+      "percent": 63.87,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -633,8 +633,8 @@
       {
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
-        "bytes": 365382,
-        "percent": 12.37,
+        "bytes": 365942,
+        "percent": 12.39,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -672,7 +672,7 @@
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
         "bytes": 1058829,
-        "percent": 35.86,
+        "percent": 35.85,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -775,7 +775,7 @@
     ],
     "unassigned": {
       "bytes": 153127,
-      "percent": 5.19,
+      "percent": 5.18,
       "languages": [
         "ABAP",
         "AWK",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 680153,
+    "documentation": 664262,
     "linguist-generated": 2949862
   },
   "requiredLinguistRules": [
@@ -1007,7 +1007,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "7f331854d3cf97a626882e4e00d3d5641ba3a3e3951408cf63a5c79ac50b3bc2",
+    "hash": "296f2e3c76607700e126db9dfef476969ba99eab7ef3b7cc90a577ba100c3ef0",
     "algorithm": "sha256"
   }
 }

@@ -1,5 +1,11 @@
-import Combine
 import Foundation
+
+#if canImport(Combine)
+import Combine
+typealias SeisAppleShellDiagnosticsHistoryObservationObject = ObservableObject
+#else
+protocol SeisAppleShellDiagnosticsHistoryObservationObject {}
+#endif
 
 public protocol SeisAppleDiagnosticsHistoryPersisting {
     @discardableResult
@@ -205,10 +211,16 @@ public struct SeisAppleShellDiagnosticsHistorySnapshot: Codable, Equatable, Iden
     }
 }
 
-public final class SeisAppleShellDiagnosticsHistoryStore: ObservableObject {
-    @Published public private(set) var snapshots: [SeisAppleShellDiagnosticsHistorySnapshot]
+@MainActor
+public final class SeisAppleShellDiagnosticsHistoryStore: SeisAppleShellDiagnosticsHistoryObservationObject {
     private let historyLimit: Int
     private let persistentStore: SeisAppleDiagnosticsHistoryPersisting?
+
+    #if canImport(Combine)
+    @Published public private(set) var snapshots: [SeisAppleShellDiagnosticsHistorySnapshot]
+    #else
+    public private(set) var snapshots: [SeisAppleShellDiagnosticsHistorySnapshot]
+    #endif
 
     public init(
         historyLimit: Int = 5,

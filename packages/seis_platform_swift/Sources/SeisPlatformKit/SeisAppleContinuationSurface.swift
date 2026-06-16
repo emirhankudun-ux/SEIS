@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 #if canImport(AppKit)
@@ -11,6 +10,12 @@ import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
+#endif
+
+#if canImport(Combine)
+typealias SeisAppleContinuationObservationObject = ObservableObject
+#else
+protocol SeisAppleContinuationObservationObject {}
 #endif
 
 public struct SeisAppleFrameworkFocus: Codable, Equatable, Sendable {
@@ -238,7 +243,8 @@ public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
     }
 }
 
-public final class SeisAppleContinuationModel: ObservableObject {
+@MainActor
+public final class SeisAppleContinuationModel: SeisAppleContinuationObservationObject {
     @Published public private(set) var snapshot: SeisAppleContinuationSnapshot
 
     public init(snapshot: SeisAppleContinuationSnapshot = .current) {
