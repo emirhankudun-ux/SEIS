@@ -8,20 +8,20 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 620,
-    "countedBytes": 2953341,
+    "countedFileCount": 621,
+    "countedBytes": 2953648,
     "javascriptBytes": 1030005,
-    "javascriptPercent": 34.88,
+    "javascriptPercent": 34.87,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1951444,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1951137,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 1030005,
-      "percent": 34.88
+      "percent": 34.87
     },
     {
       "language": "JSON",
@@ -30,7 +30,7 @@
     },
     {
       "language": "Swift",
-      "bytes": 356340,
+      "bytes": 356647,
       "percent": 12.07
     },
     {
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 1030005,
-      "percent": 34.88,
+      "percent": 34.87,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 1886065,
-      "percent": 63.86,
+      "bytes": 1886372,
+      "percent": 63.87,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -633,8 +633,8 @@
       {
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
-        "bytes": 365641,
-        "percent": 12.38,
+        "bytes": 365948,
+        "percent": 12.39,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 679308,
+    "documentation": 665750,
     "linguist-generated": 2949862
   },
   "requiredLinguistRules": [
@@ -1007,7 +1007,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "7dffaf04252ff09b9f70ab2e09924ed5559da4acc88707bd2fdbffec16bc0ee8",
+    "hash": "20d4f0700005e4ac80a5894e90354f905f0f6f7e4c714d89cce90220e4905d51",
     "algorithm": "sha256"
   }
 }

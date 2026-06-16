@@ -160,16 +160,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                                 .font(.caption.monospaced())
                                 .foregroundStyle(.secondary)
                             if last.hasRedactions {
-                            Label("Sensitive values redacted: \(last.redactedCount)", systemImage: "eye.slash")
-                                .font(.caption2)
-                                .foregroundStyle(.orange)
-                                .optionalHelp("Sensitive values were masked for safety before display.")
-                                .overlay(alignment: .trailing) {
-                                    Image(systemName: "info.circle")
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
-                                        .optionalHelp("Redacted tokens are shown as [REDACTED] to avoid exposing secrets.")
-                                }
+                                redactionBadge(for: last.redactedCount)
                             }
                             Text("Started \(last.startedAt.formatted(date: .omitted, time: .standard)) • Duration \(last.durationMs) ms")
                                 .font(.caption2.monospaced())
@@ -232,16 +223,7 @@ struct SeisDesktopDemoCommandCenterView: View {
                                 .foregroundStyle(.secondary)
 
                             if result.hasRedactions {
-                                Label("Sensitive values redacted: \(result.redactedCount)", systemImage: "eye.slash")
-                                    .font(.caption2)
-                                    .foregroundStyle(.orange)
-                                    .optionalHelp("Sensitive values were masked for safety before display.")
-                                    .overlay(alignment: .trailing) {
-                                        Image(systemName: "info.circle")
-                                            .font(.caption2)
-                                            .foregroundStyle(.secondary)
-                                            .optionalHelp("Redacted tokens are shown as [REDACTED] to avoid exposing secrets.")
-                                    }
+                                redactionBadge(for: result.redactedCount)
                             }
 
                             if let suggestion = model.suggestedAction(for: result) {
@@ -381,6 +363,23 @@ struct SeisDesktopDemoCommandCenterView: View {
                     copyToast = nil
                 }
             }
+        }
+    }
+
+    private func redactionBadge(for count: Int) -> some View {
+        let level: Color = count >= 10 ? .red : (count >= 5 ? .orange : .yellow)
+        let helpText = "This command output contained \(count) masked item\(count == 1 ? "" : "s"). Values were replaced with [REDACTED] to avoid exposing secrets."
+
+        return HStack(alignment: .center, spacing: 6) {
+            Label("Masked fields: \(count)", systemImage: "eye.slash")
+                .font(.caption2)
+                .foregroundStyle(level)
+                .optionalHelp(helpText)
+            Image(systemName: "info.circle")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .optionalHelp("Redacted tokens are shown as [REDACTED] to avoid exposing secrets.")
+                .symbolRenderingMode(.hierarchical)
         }
     }
 }
