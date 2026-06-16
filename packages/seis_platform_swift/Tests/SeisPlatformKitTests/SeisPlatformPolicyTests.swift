@@ -86,6 +86,7 @@ import Testing
     #expect(snapshot.isReady)
 }
 
+@MainActor
 @Test func appleContinuationModelRoutesRequestsIntoAppleSurfaces() {
     let model = SeisAppleContinuationModel()
     model.focus(on: "Build an iOS UIKit CloudKit Core Data surface")
@@ -259,6 +260,7 @@ import Testing
     #expect(partial.probes.first { $0.id == "run-script" }?.state == .watch)
 }
 
+@MainActor
 @Test func appleShellDiagnosticsHistoryRecordsReadinessSnapshots() throws {
     let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
     let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit
@@ -336,6 +338,7 @@ import Testing
 }
 
 #if canImport(CoreData)
+@MainActor
 @Test func appleDiagnosticsPersistentHistoryStoreRoundTripsSnapshots() throws {
     let diagnostics = SeisAppleShellDiagnosticsContract.appleNativeShell
     let persistence = SeisApplePersistenceReadinessContract.coreDataCloudKit

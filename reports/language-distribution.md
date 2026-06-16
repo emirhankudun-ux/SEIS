@@ -1,21 +1,21 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 620
-- Counted bytes: 2953341
-- JavaScript: 1030005 bytes (34.88%)
+- Counted files: 621
+- Counted bytes: 2953648
+- JavaScript: 1030005 bytes (34.87%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 1951444
+- Additional non-JavaScript bytes needed for strict target: 1951137
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1030005 | 34.88% | JavaScript |
+| JavaScript | 1030005 | 34.87% | JavaScript |
 | TypeScript | 28824 | 0.98% | TypeScript |
 | Objective-C | 8447 | 0.29% | Objective-C |
-| Other | 1886065 | 63.86% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 1886372 | 63.87% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,7 +25,7 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 12.38% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| Apple / Swift ecosystem | 12.39% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
 | AI, Data, Python, SQL | 34.11% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
 | TypeScript / JavaScript tooling | 35.85% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.79% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
@@ -40,9 +40,9 @@ Unassigned counted languages: 5.18% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1030005 | 34.88% |
+| JavaScript | 1030005 | 34.87% |
 | JSON | 680755 | 23.05% |
-| Swift | 356340 | 12.07% |
+| Swift | 356647 | 12.07% |
 | Python | 308216 | 10.44% |
 | CSS | 99419 | 3.37% |
 | HTML | 87594 | 2.97% |
