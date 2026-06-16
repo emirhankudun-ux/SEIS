@@ -2,8 +2,9 @@
 
 Date: 2026-06-15
 
-SEIS now keeps four specialist lane packages and the governance hub as embedded
-skills inside the unified `seis-ai-agent@seis-repo` plugin. The repo marketplace
+SEIS now keeps four specialist lane packages plus a governance core and a
+governance-operating lane as embedded skills inside the unified
+`seis-ai-agent@seis-repo` plugin. The repo marketplace
 publishes one user-facing plugin card: SEIS-Agent.
 
 The canonical local marketplace is repo-contained at `.agents/plugins/marketplace.json` with marketplace name `seis-repo`. The older `personal` marketplace can remain installed as a compatibility mirror, but SEIS repo development should use the repo marketplace as the source of truth.
@@ -21,6 +22,8 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 
 | Lane | Purpose | Embedded skill | Source mirror |
 |---|---|---|---|
+| `seis` | Repository governance, architecture documentation alignment, migration safety, and quality-forward policy coordination. | `plugins/seis-ai-agent/skills/seis-hub/SKILL.md` | `plugins/seis` |
+| `seis-governance` | Release readiness, marketplace policy validation, identity checks, branch discipline, and operating contract evidence. | `plugins/seis-ai-agent/skills/seis-governance/SKILL.md` | `plugins/seis` |
 | `seis-cloud` | Public cloud for everyone, team/workplace VPN cloud, provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation. | `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` | `plugins/seis-cloud` |
 | `seis-code` | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation. | `plugins/seis-ai-agent/skills/seis-code/SKILL.md` | `plugins/seis-code` |
 | `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-ai-agent/skills/seis-design/SKILL.md` | `plugins/seis-design` |
@@ -59,7 +62,9 @@ exactly one canonical entry:
 
 ```bash
 npm run check:seis-specialist-plugins
+npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
+npm run quality:governance
 ```
 
 For plugin ingestion checks:

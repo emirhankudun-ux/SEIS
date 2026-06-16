@@ -1,0 +1,36 @@
+{
+  "id": "seis-governance",
+  "displayName": "SEIS Governance",
+  "version": 1,
+  "lane": "governance",
+  "intent": "Operate repository governance and release readiness as source-of-truth policy: main branch protection, marketplace policy, plugin audit alignment, identity consistency, and quality-gate discipline.",
+  "activationPolicy": "use_when_task_requires_repo_governance_main_branch_policy_release_readiness_or_operating_identity_checks",
+  "sourceEvidence": [
+    "data/seis-plugin-package-intake-2026-06-13.json",
+    "docs/platform/seis-plugin-package-intake.md",
+    "data/installed-codex-plugins-2026-06-15.json"
+  ],
+  "primaryPaths": [
+    ".agents/plugins",
+    ".github/workflows",
+    "data",
+    "docs/platform",
+    "docs",
+    "install",
+    "scripts"
+  ],
+  "qualityCommands": [
+    "npm run check:open-source-governance",
+    "npm run check:foundation",
+    "npm run check:seis-operating-identities",
+    "npm run check:seis-repo-marketplace",
+    "npm run check:seis-ai-agent"
+  ],
+  "guardrails": [
+    "keep main as the canonical public branch",
+    "do not publish standalone lanes from repo marketplace",
+    "do not hand off unverified plugin inventory",
+    "never expose secrets in checks or commit messages",
+    "collect explicit evidence for every policy-sensitive change"
+  ]
+}

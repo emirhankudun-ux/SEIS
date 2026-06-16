@@ -29,6 +29,28 @@ const LANES = [
     ],
   },
   {
+    id: "seis-governance",
+    label: "SEIS Governance",
+    skillPath: "skills/seis-governance/SKILL.md",
+    profilePath: "assets/lanes/seis-governance.json",
+    statusTool: "seis_governance_status",
+    planTool: "seis_governance_plan",
+    focus: "branch discipline, repo governance policy, release readiness, identity and marketplace evidence, and long-running operating contracts.",
+    defaultChecks: [
+      "npm run check:open-source-governance",
+      "npm run check:foundation",
+      "npm run check:seis-operating-identities",
+      "npm run check:seis-repo-marketplace",
+    ],
+    steps: [
+      "Verify main-branch discipline, git status, remote freshness, and active GitHub identity/permissions.",
+      "Confirm repo marketplace and installed plugin inventory match consolidation policy.",
+      "Validate operating identities and lane policy before modifying any release-facing artifact.",
+      "Collect evidence paths and keep the same evidence trail for every release gating action.",
+      "Only propose apply-only actions after explicit user confirmation.",
+    ],
+  },
+  {
     id: "seis-cloud",
     label: "SEIS Cloud",
     skillPath: "skills/seis-cloud/SKILL.md",

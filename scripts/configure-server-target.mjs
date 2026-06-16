@@ -53,5 +53,5 @@ function printUsage() {
   console.log("  node scripts/configure-server-target.mjs hostinger-static --domain example.com");
   console.log("  node scripts/configure-server-target.mjs generic-sftp --host example.com --path /public_html --auth_method ssh");
   console.log("  node scripts/configure-server-target.mjs apache-shared-hosting --domain example.com --document_root public_html");
+  console.log("  node scripts/configure-server-target.mjs ssh-wireguard-vps --ssh_target seis@HOST --ssh_user seis --vpn wireguard --vpn_admin_peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32' --origin ssh://seis-cloud-vpn --path /opt/seis --rollback_contact repository-maintainer");
 }
-

@@ -1,6 +1,6 @@
 {
   "source": "codex plugin list",
-  "installed_enabled_count": 186,
+  "installed_enabled_count": 187,
   "not_installed_count": 5,
   "installed_enabled": [
     {
@@ -11,8 +11,19 @@
       "status": "installed, enabled",
       "installed": true,
       "enabled": true,
-      "version": "26.601.10930",
+      "version": "26.614.11602",
       "path": "/Users/emirhankudun/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/documents"
+    },
+    {
+      "id": "pdf@openai-primary-runtime",
+      "name": "pdf",
+      "marketplace": "openai-primary-runtime",
+      "marketplace_section": "openai-primary-runtime",
+      "status": "installed, enabled",
+      "installed": true,
+      "enabled": true,
+      "version": "26.614.11602",
+      "path": "/Users/emirhankudun/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/pdf"
     },
     {
       "id": "spreadsheets@openai-primary-runtime",
@@ -22,7 +33,7 @@
       "status": "installed, enabled",
       "installed": true,
       "enabled": true,
-      "version": "26.601.10930",
+      "version": "26.614.11602",
       "path": "/Users/emirhankudun/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/spreadsheets"
     },
     {
@@ -33,7 +44,7 @@
       "status": "installed, enabled",
       "installed": true,
       "enabled": true,
-      "version": "26.601.10930",
+      "version": "26.614.11602",
       "path": "/Users/emirhankudun/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime/plugins/presentations"
     },
     {
@@ -2046,7 +2057,7 @@
       "status": "installed, enabled",
       "installed": true,
       "enabled": true,
-      "version": "0.1.0+codex.20260615061928",
+      "version": "0.1.0+codex.20260615102011",
       "path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/plugins/seis-ai-agent"
     }
   ],

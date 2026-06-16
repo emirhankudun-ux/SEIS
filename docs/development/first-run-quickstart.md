@@ -43,6 +43,15 @@ branch model, CodeQL wiring, and core SEIS identity.
 npm run quality
 ```
 
+Before opening an SSH-dependent release handoff, run:
+
+```bash
+npm run cloud:migration:audit
+```
+
+This audit highlights local SSH/localhost assumptions in deployment examples and
+recommends the correct cloud path for public and team workflows.
+
 This is the default local validation gate for small documentation, governance,
 web, platform-policy, and repository-health changes.
 
