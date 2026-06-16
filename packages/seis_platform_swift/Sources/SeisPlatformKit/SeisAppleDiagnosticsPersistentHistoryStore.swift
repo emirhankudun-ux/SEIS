@@ -4,8 +4,8 @@ import Foundation
 import CoreData
 
 public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnosticsHistoryPersisting {
-    public static let containerName = "SEISDiagnosticsHistory"
-    public static let entityName = "SEISDiagnosticsHistorySnapshot"
+    nonisolated public static let containerName = "SEISDiagnosticsHistory"
+    nonisolated public static let entityName = "SEISDiagnosticsHistorySnapshot"
 
     private let container: NSPersistentContainer
 
@@ -102,7 +102,7 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
         return try fetchResult?.get() ?? []
     }
 
-    public static var expectedSourceTokens: [String] {
+    nonisolated public static var expectedSourceTokens: [String] {
         [
             "import CoreData",
             "NSPersistentContainer",
@@ -125,14 +125,14 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
         ]
     }
 
-    private static func object(for id: String, in context: NSManagedObjectContext) throws -> NSManagedObject? {
+    nonisolated private static func object(for id: String, in context: NSManagedObjectContext) throws -> NSManagedObject? {
         let request = NSFetchRequest<NSManagedObject>(entityName: entityName)
         request.predicate = NSPredicate(format: "id == %@", id)
         request.fetchLimit = 1
         return try context.fetch(request).first
     }
 
-    private static func snapshot(from object: NSManagedObject) -> SeisAppleShellDiagnosticsHistorySnapshot? {
+    nonisolated private static func snapshot(from object: NSManagedObject) -> SeisAppleShellDiagnosticsHistorySnapshot? {
         guard
             let id = object.value(forKey: "id") as? String,
             let source = object.value(forKey: "source") as? String,
@@ -170,11 +170,11 @@ public final class SeisAppleDiagnosticsPersistentHistoryStore: SeisAppleDiagnost
         )
     }
 
-    private static func intValue(_ object: NSManagedObject, forKey key: String) -> Int {
+    nonisolated private static func intValue(_ object: NSManagedObject, forKey key: String) -> Int {
         (object.value(forKey: key) as? NSNumber)?.intValue ?? 0
     }
 
-    private static func stringValue(_ object: NSManagedObject, forKey key: String) -> String {
+    nonisolated private static func stringValue(_ object: NSManagedObject, forKey key: String) -> String {
         object.value(forKey: key) as? String ?? ""
     }
 

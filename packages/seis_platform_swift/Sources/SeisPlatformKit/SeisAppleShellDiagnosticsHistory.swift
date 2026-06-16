@@ -7,6 +7,7 @@ typealias SeisAppleShellDiagnosticsHistoryObservationObject = ObservableObject
 protocol SeisAppleShellDiagnosticsHistoryObservationObject {}
 #endif
 
+@MainActor
 public protocol SeisAppleDiagnosticsHistoryPersisting {
     @discardableResult
     func save(_ snapshot: SeisAppleShellDiagnosticsHistorySnapshot) throws -> SeisAppleShellDiagnosticsHistorySnapshot

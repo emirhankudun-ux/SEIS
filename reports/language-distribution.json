@@ -8,13 +8,13 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 620,
-    "countedBytes": 2953642,
+    "countedFileCount": 621,
+    "countedBytes": 2954257,
     "javascriptBytes": 1030005,
     "javascriptPercent": 34.87,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 1951143,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 1950528,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -26,17 +26,17 @@
     {
       "language": "JSON",
       "bytes": 680755,
-      "percent": 23.05
+      "percent": 23.04
     },
     {
       "language": "Swift",
-      "bytes": 356641,
-      "percent": 12.07
+      "bytes": 357256,
+      "percent": 12.09
     },
     {
       "language": "Python",
       "bytes": 308216,
-      "percent": 10.44
+      "percent": 10.43
     },
     {
       "language": "CSS",
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 1886366,
+      "bytes": 1886981,
       "percent": 63.87,
       "sourceLanguages": [
         "ABAP",
@@ -633,8 +633,8 @@
       {
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
-        "bytes": 365942,
-        "percent": 12.39,
+        "bytes": 366557,
+        "percent": 12.41,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -650,7 +650,7 @@
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
         "bytes": 1007355,
-        "percent": 34.11,
+        "percent": 34.1,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -672,7 +672,7 @@
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
         "bytes": 1058829,
-        "percent": 35.85,
+        "percent": 35.84,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -721,7 +721,7 @@
         "id": "go-infrastructure",
         "label": "Go / Infrastructure",
         "bytes": 121261,
-        "percent": 4.11,
+        "percent": 4.1,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 106822136,
-    "documentation": 664262,
+    "documentation": 665750,
     "linguist-generated": 2949862
   },
   "requiredLinguistRules": [
@@ -1007,7 +1007,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "296f2e3c76607700e126db9dfef476969ba99eab7ef3b7cc90a577ba100c3ef0",
+    "hash": "6110902562fa98d1b6bf15caeb9db2bc8d811104bde2757a995b12b22007a507",
     "algorithm": "sha256"
   }
 }
