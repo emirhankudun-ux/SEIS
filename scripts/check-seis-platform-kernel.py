@@ -134,6 +134,14 @@ def validate_surface_contents() -> list[str]:
 
 
 def run_swift_tests() -> list[str]:
+    # SeisPlatformKit is an Apple-only package (Combine, AppKit, CoreData,
+    # CloudKit, SwiftUI), so `swift test` only succeeds on macOS — on Linux the
+    # Apple modules are absent and the build fails. Apple toolchains ship
+    # `xcrun`; when it is missing we are not on macOS, so skip here (the package
+    # is validated by the swift CodeQL job on a macOS runner). This mirrors the
+    # Objective-C / C++ "when available" checks below.
+    if shutil.which("xcrun") is None:
+        return []
     if shutil.which("swift") is None:
         return ["swift is required for the macOS Apple-language platform package"]
     return run(["swift", "test"], ROOT / "packages" / "seis_platform_swift")
