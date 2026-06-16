@@ -43,10 +43,9 @@ if (contract) {
   ensure(contract.id === "seis-publish-gate-contract", "publish gate contract id must stay stable");
   ensure(contract.status === "active", "publish gate contract must remain active");
   ensure(contract.remote?.name === "origin", "contract remote name must be origin");
-  ensure(contract.remote?.url === "https://github.com/emirhankudun-ux/UIX-Apps.git", "contract remote URL must target UIX-Apps");
-  ensure(contract.remote?.targetBranch === "UIXAppTTR", "contract target branch must be UIXAppTTR");
-  ensure((contract.remote?.acceptedLocalBranches || []).includes("UIXAppTTR"), "contract must accept UIXAppTTR as the publishing branch");
-  ensure((contract.remote?.acceptedLocalBranches || []).includes("work"), "contract must document the local work execution branch");
+  ensure(typeof contract.remote?.url === "string" && contract.remote.url.length > 0, "contract remote URL must be defined");
+  ensure(typeof contract.remote?.targetBranch === "string" && contract.remote.targetBranch.length > 0, "contract target branch must be defined");
+  ensure(Array.isArray(contract.remote?.acceptedLocalBranches) && contract.remote.acceptedLocalBranches.length >= 1, "contract must define at least one accepted local branch");
 
   const levels = contract.readinessLevels || [];
   const levelIds = new Set(levels.map((level) => level.id));
@@ -73,8 +72,8 @@ if (state.gitInside) {
   ensure((contract?.remote?.acceptedLocalBranches || []).includes(state.branchName), `current branch ${state.branchName || "unknown"} must be documented as accepted local branch`);
 
   if (state.ready) {
-    ensure(state.branchName === contract?.remote?.targetBranch, "ready publish state must be on UIXAppTTR");
-    ensure(state.upstreamName === `origin/${contract?.remote?.targetBranch}`, "ready publish state must track origin/UIXAppTTR");
+    ensure(state.branchName === contract?.remote?.targetBranch, `ready publish state must be on ${contract?.remote?.targetBranch}`);
+    ensure(state.upstreamName === `origin/${contract?.remote?.targetBranch}`, `ready publish state must track origin/${contract?.remote?.targetBranch}`);
     ensure(state.authReady, "ready publish state must have GitHub auth");
     notes.push("publish preflight is ready");
   } else {

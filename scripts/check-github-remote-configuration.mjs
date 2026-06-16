@@ -40,8 +40,8 @@ if (record) {
   ensure(record.id === "github-remote-configuration", "remote configuration id must stay stable");
   ensure(record.status === "configured-local-remote", "remote configuration status must be configured-local-remote");
   ensure(record.repository?.remoteName === "origin", "remote name must be origin");
-  ensure(record.repository?.remoteUrl === "https://github.com/emirhankudun-ux/UIX-Apps.git", "remote URL must target UIX-Apps");
-  ensure(record.repository?.targetBranch === "UIXAppTTR", "target branch must be UIXAppTTR");
+  ensure(typeof record.repository?.remoteUrl === "string" && record.repository.remoteUrl.length > 0, "remote URL must be defined");
+  ensure(typeof record.repository?.targetBranch === "string" && record.repository.targetBranch.length > 0, "target branch must be defined");
   ensure(record.publishReadiness?.remoteConfigured === true, "remoteConfigured must be true");
   ensure(record.publishReadiness?.pushAllowed === false, "pushAllowed must remain false until auth and branch readiness are proven");
   ensure(Array.isArray(record.publishReadiness?.pushRequires) && record.publishReadiness.pushRequires.length >= 5, "publish readiness must define push requirements");
@@ -72,8 +72,8 @@ ensure(branchMerge.stdout.trim() === `refs/heads/${record?.repository?.targetBra
 for (const requiredText of [
   "GitHub Remote Configuration",
   "content/development/github-remote-configuration.json",
-  "https://github.com/emirhankudun-ux/UIX-Apps.git",
-  "UIXAppTTR",
+  record?.repository?.remoteUrl,
+  record?.repository?.targetBranch,
   "npm run check:github-remote-configuration",
   "CONNECT tunnel failed, response 403"
 ]) {

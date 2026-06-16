@@ -2,25 +2,25 @@
   "id": "github-remote-configuration",
   "version": 1,
   "status": "configured-local-remote",
-  "configuredAt": "2026-06-06",
+  "configuredAt": "2026-06-16",
   "repository": {
-    "name": "UIX-Apps",
+    "name": "SEIS",
     "owner": "emirhankudun-ux",
     "remoteName": "origin",
-    "remoteUrl": "https://github.com/emirhankudun-ux/UIX-Apps.git",
-    "targetBranch": "UIXAppTTR"
+    "remoteUrl": "https://github.com/emirhankudun-ux/SEIS.git",
+    "targetBranch": "main"
   },
   "localBranchMode": {
-    "currentWorkingBranch": "work",
-    "tracks": "origin/UIXAppTTR",
-    "reason": "The execution environment is committing on the current work branch while preserving the SEIS GitHub target branch contract for publication readiness."
+    "currentWorkingBranch": "main",
+    "tracks": "origin/main",
+    "reason": "The execution environment is committing on main while preserving the SEIS GitHub target branch contract for publication readiness."
   },
   "publishReadiness": {
     "remoteConfigured": true,
     "networkProbe": "blocked-by-environment-connect-tunnel-403",
     "pushAllowed": false,
     "pushRequires": [
-      "switch or publish from UIXAppTTR",
+      "switch or publish from main",
       "clean worktree",
       "GitHub authentication ready",
       "remote branch state reviewed",

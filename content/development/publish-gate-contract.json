@@ -5,11 +5,10 @@
   "purpose": "Keep local GitHub publication decisions explicit by separating configured remote state from push readiness.",
   "remote": {
     "name": "origin",
-    "url": "https://github.com/emirhankudun-ux/UIX-Apps.git",
-    "targetBranch": "UIXAppTTR",
+    "url": "https://github.com/emirhankudun-ux/SEIS.git",
+    "targetBranch": "main",
     "acceptedLocalBranches": [
-      "work",
-      "UIXAppTTR"
+      "main"
     ]
   },
   "readinessLevels": [
@@ -51,7 +50,7 @@
   ],
   "currentEnvironmentPolicy": {
     "expectedResult": "configured-but-not-publish-ready",
-    "reason": "This execution environment can configure and validate the remote locally, but publication remains blocked until UIXAppTTR branch state and GitHub authentication are proven.",
+    "reason": "This execution environment can configure and validate the remote locally, but publication remains blocked until main branch state and GitHub authentication are proven.",
     "networkLimitation": "CONNECT tunnel failed, response 403"
   },
   "qualityCommands": [
