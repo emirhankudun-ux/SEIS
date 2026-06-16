@@ -1,0 +1,17 @@
+flow: seis-total-capability-flow
+steps:
+  - id: classify
+    question: Which capability and platform does the request target?
+  - id: choose-language
+    apple: Swift/SwiftUI/Objective-C/Objective-C++/AppleScript/Metal
+    android: Kotlin/Java/XML/Gradle/C++/Rust/Go/SQL
+    windows: C#/F#/PowerShell/Batch/C++/Rust/Go/T-SQL/MSBuild
+    policy: SQL/YAML/TOML/CUE/Rego/schema
+  - id: block-js-python
+    rule: Do not add new JavaScript or Python application code in this pass.
+  - id: runtime-check
+    rule: Do not install runtimes unless product need, owner, validation, cost, and rollback are documented.
+  - id: market-gate
+    requires: [README, Code of Conduct, Contributing, MIT License, Security, Contributors, main branch governance]
+  - id: release
+    rule: Release only through reviewed main-branch PR and safe publish preflight.

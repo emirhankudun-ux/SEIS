@@ -1,6 +1,6 @@
-# SEIS CLOSED CODE
+# SEIS
 
-SEIS is the single `main`-centered closed-code operating repository for the `emirhankudun-ux` platform ecosystem.
+SEIS is the single `main`-centered MIT-licensed operating repository for the `emirhankudun-ux` platform ecosystem.
 
 It coordinates Android, Web, macOS, full-stack, data, Google Workspace operations, Codex plugin development, OpenAI-curated plugin routing, source archive verification, and repository consolidation[...]
 
@@ -37,6 +37,8 @@ This project was developed with assistance from cutting-edge AI and technology p
 - Plugin stack: [`docs/platform/plugin-stack.md`](./docs/platform/plugin-stack.md)
 - Google Workspace ops: [`docs/platform/google-workspace-ops.md`](./docs/platform/google-workspace-ops.md)
 - Roadmap: [`roadmap/seis-closed-code-backlog.md`](./roadmap/seis-closed-code-backlog.md)
+- Native polyglot market-readiness kernel: [`docs/development/native-polyglot-market-readiness-kernel.md`](./docs/development/native-polyglot-market-readiness-kernel.md)
+- Total capability operating system: [`docs/capability/seis-total-capability-operating-system.md`](./docs/capability/seis-total-capability-operating-system.md)
 
 ## OpenAI-curated Build Route
 
@@ -49,6 +51,18 @@ SEIS uses OpenAI/Codex plugin families first for core work: `openai-curated`, `o
 | Productivity | Google Drive, Google Calendar, Gmail, Slack, Teams, Notion, Documents, Spreadsheets, Presentations |
 | Research | Hugging Face, Zotero, Life Science Research, Scite, Deepnote |
 | Security | Codex Security, Sentry, Datadog, CodeRabbit, Jam |
+
+
+## GitHub Market Readiness Focus
+
+SEIS is being shaped as a main-first, MIT-licensed, marketplace-grade engineering system for calm AI-native product work. The public surface should make it obvious that the repository covers engineering, full stack, data, design, development, AI agents, MCP, skills, plugins, LLM routing, algorithms, computer science, web/mobile/game development, data science, databases, cloud, cybersecurity, DevOps, testing, architecture, big data, NLP, computer vision, quantum research, sustainable software, low-code/no-code intake, UX/UI engineering, robotics, AI ethics, compiler/language engineering, requirements, agile delivery, SDLC, metrics, SRE, reverse engineering, refactoring, and formal methods.
+
+Language policy for the current acceleration pass:
+
+- Apple platform surfaces use Apple languages first: Swift, SwiftUI, Objective-C, Objective-C++, AppleScript, Metal Shading Language, and Apple platform metadata.
+- Android and Windows surfaces use non-Apple language families first: Kotlin, Java, C#, F#, PowerShell, Batch, C++, Rust, Go, SQL, YAML, TOML, Rego, CUE, and platform configuration formats.
+- New JavaScript and Python application code is intentionally paused until explicitly requested again.
+- Do not install every language runtime. Add or install a runtime only when there is a product reason, owner, validation command, storage/security budget, and rollback path.
 
 ## Platform Lanes
 
@@ -89,11 +103,11 @@ Some source repositories are no longer visible through GitHub lookup, but SEIS k
 
 ## Branch Rule
 
-`main` is the visible center branch. `UIXAppTTR` may still be the configured GitHub default branch, so both branches should mirror the same commit until repository settings are changed.
+`main` is the canonical public product branch. Legacy, assistant, source-import, or experiment branches should be treated as archived inputs under `main` records unless a human explicitly opens a short-lived reviewed branch for a bounded change. The desired GitHub presentation is one clear `main` surface with all other branch knowledge represented as traceable documentation, data, or source snapshots.
 
 ## Safety Rules
 
-- closed code by default
+- MIT license clarity by default for repository contents unless a file states a narrower notice
 - OpenAI/Codex plugin families first for core build work
 - no automatic deploy
 - no direct Git commit of large binary archives

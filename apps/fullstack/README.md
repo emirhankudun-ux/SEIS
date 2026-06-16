@@ -33,3 +33,11 @@ Add a client provider in the app shell and ensure `NEXT_PUBLIC_CONVEX_URL` is av
 2. Define auth provider and JWT strategy.
 3. Add repo visibility and migration status models.
 4. Add Drive/Calendar integration metadata.
+
+## Capability-first Boundary
+
+Full-stack work should begin as contracts before runtime expansion: database schema, API policy, auth boundaries, cloud cost, observability, rollback, and security gates. For this acceleration pass, do not add new JavaScript or Python application code; use SQL, YAML, TOML, CUE, Rego, OpenAPI, AsyncAPI, GraphQL, C#, Go, Rust, or platform-owned contracts when a non-Apple backend surface is needed.
+
+## Market-readiness Focus
+
+A full-stack SEIS surface is not market-ready until auth, data retention, privacy, backup, migration, incident response, rate limits, monitoring, support, and rollback are documented.

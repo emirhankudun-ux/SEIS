@@ -19,3 +19,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+---
+
+SEIS Project Notice
+
+This repository is intended to be MIT-licensed unless a file or directory explicitly states a narrower third-party license, private-data exclusion, generated-asset restriction, or platform-specific notice. AI-assisted contributions from tools such as Codex / ChatGPT and Claude must still be human-reviewed for correctness, license compatibility, security, and privacy before release.

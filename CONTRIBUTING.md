@@ -1,31 +1,43 @@
-Contributing
+# Contributing to SEIS
 
-Teşekkürler — katkıların değerli.
+Thank you for helping SEIS become a main-first, marketplace-grade, calm AI-native engineering system.
 
-## Kısa Rehber
+## Current Focus
 
-- **Yeni özellikler için** önce bir issue aç: ne ve neden ekleyeceğini açıkla.
-- **Küçük değişiklikler için** doğrudan bir pull request (PR) gönderebilirsin.
-- **PR başlığı ve açıklaması** net olsun; ilgili issue numarasını bağla (örn. `Fixes #12`).
-- **Kod stili**: Projede mevcut olan stili koru (lint, format).
-- **Testler**: Mümkünse yeni davranışı kapsayan küçük test ekle.
-- **Güvenlik**: API anahtarları, özel veriler veya `.env` dosyaları asla gönderilmemeli.
+The current acceleration lane prioritizes:
 
-## İletişim
+- engineering, full stack, data, design, development, and product governance;
+- AI / Agent / MCP / Skills / Plugin / LLM routing;
+- algorithms, mathematics, computer science, software architecture, and formal methods;
+- web, mobile, game, database, cloud, cybersecurity, DevOps, SRE, testing, and metrics readiness;
+- NLP, computer vision, big data, quantum research, robotics, AI ethics, and data governance;
+- sustainable software, low-code/no-code intake, UX/UI engineering, requirements, agile delivery, SDLC, refactoring, and reverse-engineering safety.
 
-- Sorular için issue açabilirsin veya [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geç.
+## Language Policy for This Pass
 
-## Katkı Akışı (Önerisi)
+- Do **not** add new JavaScript or Python application code unless the maintainer explicitly asks for it later.
+- Apple surfaces should use Apple languages first: Swift, SwiftUI, Objective-C, Objective-C++, AppleScript, Metal Shading Language, and Apple platform metadata.
+- Android surfaces should use Android-native and non-Apple languages first: Kotlin, Java, XML, Gradle metadata, C++, Rust, Go, and SQL contracts.
+- Windows surfaces should use Windows and non-Apple languages first: C#, F#, PowerShell, Batch, C++, Rust, Go, T-SQL, MSBuild metadata, and SQL contracts.
+- Cross-platform policy should start as SQL, YAML, TOML, CUE, Rego, JSON Schema, GraphQL, OpenAPI, AsyncAPI, or Markdown before runtime services.
+- Do not install every language runtime. Add a runtime only when product need, owner, validation, storage/security cost, and rollback are documented.
 
-1. Fork et → yeni branch aç (kısa, açıklayıcı isim) → küçük commitler yap → PR gönder.
-2. PR açıklamasında şunları yazmalısın:
-   - **Amaç**: Ne yapmak istiyorsun?
-   - **Ne değişti**: Hangi dosyalar/fonksiyonlar etkilendi?
-   - **Test**: Nasıl test ettiysen kısaca anlat.
-3. **Büyük değişiklikler** için önce RFC/issue ile tartış.
+## Branch and Pull Request Rules
 
-## Davranış Kuralları
+- `main` is the canonical public product branch.
+- Keep changes small, reversible, and easy to review.
+- Branches are temporary workspaces; long-lived branch knowledge should be represented under `main` as docs, data, or source snapshots.
+- Before switching writer role between AI assistants, inspect `git status` and preserve unrelated work.
+- PRs should include motivation, changed paths, validation commands, risk/rollback notes, and AI-assistance disclosure when relevant.
 
-Lütfen [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) dosyasını oku.
+## Contribution Checklist
 
-Teşekkürler!
+1. Read [`README.md`](README.md), [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), and [`SECURITY.md`](SECURITY.md).
+2. Open an issue or proposal for broad feature, architecture, runtime, dependency, or marketplace changes.
+3. Keep secrets, personal data, `.env` contents, generated archives, and private media out of commits.
+4. Add or update documentation when behavior, policy, architecture, or market-readiness changes.
+5. Run the lightest reliable checks first, then scale validation based on risk.
+
+## AI Partner Attribution
+
+It is acceptable to state that a contribution was developed with Codex / ChatGPT, Claude, Gemini, Qwen, or another assistant. The human contributor remains responsible for correctness, licensing, testing, and safety.

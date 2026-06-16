@@ -1,12 +1,21 @@
 # SEIS Source Branch Registry
 
-SEIS is the canonical branch center for all source repositories.
+SEIS is moving toward a **main-only public product model**. The canonical branch is `main`; every other branch is treated as a temporary workspace, source-import input, assistant experiment, or archived historical reference.
 
-The following `sources/<repo>/<branch>` refs exist in SEIS as centralized tracking refs. They make every source branch visible under the SEIS repository. Full source commit history preservation still requires authenticated git push into these refs.
+## Main-only Operating Decision
 
-## Source Branches In SEIS
+| Rule | Meaning |
+| --- | --- |
+| `main` is canonical | GitHub visitors and market reviewers should see one clear product surface. |
+| Other branches are inputs | Assistant, source, import, and experiment branches should not compete with `main`. |
+| Preserve useful history under `main` | Important branch knowledge becomes docs, data records, source snapshots, or migration reports. |
+| Do not delete blindly | Branch cleanup requires remote/auth review, provenance check, and rollback confidence. |
 
-| Source repository | Source branch | SEIS branch |
+## Historical Source Branches In SEIS
+
+The following records describe source branches that were previously tracked or intended as centralized refs. They should be interpreted as provenance and migration inputs, not as active product surfaces.
+
+| Source repository | Source branch | SEIS archival ref |
 |---|---|---|
 | `DeepSeek-Coder` | `dependabot/pip/pip-19adfad5d4` | `sources/DeepSeek-Coder/dependabot/pip/pip-19adfad5d4` |
 | `DeepSeek-Coder` | `main` | `sources/DeepSeek-Coder/main` |
@@ -35,22 +44,6 @@ The following `sources/<repo>/<branch>` refs exist in SEIS as centralized tracki
 | `github-unified-source` | `main` | `sources/github-unified-source/main` |
 | `seis-trusted-marketplace-plugin` | `main` | `sources/seis-trusted-marketplace-plugin/main` |
 
-## Verification
+## Cleanup Safety
 
-Run:
-
-```bash
-git ls-remote --heads https://github.com/emirhankudun-ux/SEIS.git 'refs/heads/sources/*'
-```
-
-Expected count: 26 source tracking refs.
-
-## Final History Migration
-
-When GitHub push authentication is available, run:
-
-```bash
-DRY_RUN=0 scripts/migrate-github-branches-to-seis.sh
-```
-
-That command updates the `sources/<repo>/<branch>` refs with the real source branch commit history.
+Do not delete branches only because they look old, invisible, or noisy. First verify remote state, branch provenance, merge status, backup path, and whether the useful knowledge has been represented under `main`.

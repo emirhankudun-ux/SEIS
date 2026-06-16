@@ -1,0 +1,90 @@
+{
+  "name": "SEIS Native Polyglot Market Readiness Kernel",
+  "date": "2026-06-11",
+  "scope": "Apple-only Apple-language surfaces, Windows/Android non-Apple polyglot surfaces, AI/Agent/MCP/Skills/Plugin/LLM decision core, governance, and market readiness without adding JavaScript or Python code.",
+  "languageRules": {
+    "appleOnly": [
+      "Swift",
+      "SwiftUI",
+      "Objective-C",
+      "Objective-C++",
+      "AppleScript",
+      "Metal Shading Language",
+      "Core ML model metadata"
+    ],
+    "androidWindowsNonApple": [
+      "Kotlin",
+      "Java",
+      "C#",
+      "F#",
+      "PowerShell",
+      "Batch",
+      "C++",
+      "Rust",
+      "Go",
+      "SQL",
+      "YAML",
+      "TOML",
+      "JSON Schema",
+      "Rego",
+      "CUE"
+    ],
+    "blockedForThisPass": [
+      "new JavaScript application code",
+      "new Python application code",
+      "runtime dependency expansion without product owner and rollback",
+      "automatic deploy"
+    ]
+  },
+  "capabilityCoverage": [
+    "engineering",
+    "full stack",
+    "data",
+    "design",
+    "development",
+    "AI agents, MCP, skills, plugins, LLM routing",
+    "algorithms, flowcharts, mathematics, and computer science",
+    "web, mobile, and game development",
+    "data science, AI, database management, and big data",
+    "version control, cloud computing, cybersecurity, DevOps, systems, SRE, and test engineering",
+    "software architecture, design patterns, compiler design, and language engineering",
+    "NLP, computer vision, quantum programming, robotics, and autonomous systems",
+    "sustainable software, low-code/no-code, UX/UI engineering, AI ethics, and data governance",
+    "requirements engineering, agile project management, SDLC, metrics, reverse engineering, refactoring, and formal methods"
+  ],
+  "decisionCore": {
+    "primaryWriter": "Codex or ChatGPT for repository work",
+    "reviewRoutes": [
+      "Claude for high-risk architecture review",
+      "Gemini for Google ecosystem and broad-context documentation review",
+      "Qwen for counter-evidence and alternative patch review"
+    ],
+    "mcpPolicy": "MCP servers may expose repository context, plugin status, and market-readiness records, but must not receive secrets or private personal data.",
+    "skillsPolicy": "Skills and plugins are intake-gated, reversible, documented, and promoted only after ownership, cost, privacy, and rollback are known.",
+    "llmPolicy": "One assistant holds writer mode at a time; all other assistants act as reviewers, researchers, planners, or explainers."
+  },
+  "governanceGates": [
+    "main is the canonical public product branch",
+    "branch and remote state reviewed before push",
+    "no secrets or .env contents committed",
+    "no large binary/archive additions for governance-only changes",
+    "documentation and machine-readable records stay traceable",
+    "publish readiness is separate from deployment readiness"
+  ],
+  "marketReadiness": {
+    "minimumChecklist": [
+      "clear README value proposition",
+      "MIT license clarity",
+      "code of conduct",
+      "contribution path",
+      "security reporting",
+      "contributors file with Codex and Claude attribution",
+      "platform ownership is explicit",
+      "privacy posture is documented",
+      "accessibility and low-motion expectations are defined",
+      "plugin marketplace intake has trust and rollback criteria",
+      "support, release notes, and security contact paths exist"
+    ],
+    "releasePosture": "documentation-ready, not deployment-ready"
+  }
+}

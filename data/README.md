@@ -21,3 +21,7 @@ The data lane tracks repository visibility, zip inventory, migration state, and 
 2. Create dashboard-friendly summaries.
 3. Track imported source snapshots and missing repos.
 4. Keep Drive backlog aligned with repository data.
+
+## Data and AI Governance Focus
+
+SEIS data work should prioritize provenance, privacy, retention, lineage, explainability, dataset ownership, model-card readiness, evaluation records, and safe AI-agent access. During the current acceleration pass, new Python notebooks or services are intentionally paused until explicitly requested; prefer SQL, schemas, YAML, TOML, CUE, Rego, and documentation contracts first.

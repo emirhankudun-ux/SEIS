@@ -1,37 +1,36 @@
-# Contributor Covenant Code of Conduct
+# SEIS Code of Conduct
 
-## Taahhüdümüz
+SEIS is a calm, humane, AI-native creative-engineering ecosystem. We want a community where design, engineering, data, AI, security, DevOps, research, and product contributors can collaborate without harassment, pressure, or unsafe behavior.
 
-Bu proje için çalışan, katkıda bulunan ve lider olarak, tüm katılımcılar için taciz mentes ve kapsayıcı bir ortam oluşturmaya taahhüt ediyoruz. Bu sık yaş, kimlik, cinsiyet, cinsiyete dayalı kimlik ve ifade, yaş, özür yeterlilik durumu, deneyim seviyesi, eğitim, sosyoekonomik durum, milliyet, kişisel görünüş, ırk, din veya cinsel kimlik ve yönelim fark etmeksizin geçerlidir.
+## Our Standards
 
-## Standartlarımız
+Expected behavior:
 
-Olumlu bir ortam oluşturmaya katkıda bulunan davranış örnekleri şunları içerir:
+- Be respectful, patient, and precise.
+- Welcome different backgrounds, disciplines, languages, experience levels, and accessibility needs.
+- Give actionable feedback focused on the work, not the person.
+- Protect private data, credentials, personal documents, and unpublished user material.
+- Use AI assistants transparently when they materially shape a contribution.
+- Keep disagreements calm, evidence-based, and reversible.
 
-- Diğer insanlara karşı nezaket ve saygı göstermek
-- Farklı görüşlere, bakış açılarına ve deneyimlere açık olmak
-- Yapıcı eleştiriyi kibarca almak
-- Topluluk için en iyi olanı odaklamak
-- Diğer topluluk üyelerine empati göstermek
+Unacceptable behavior:
 
-Kabul edilemez davranış örnekleri şunları içerir:
+- Harassment, insults, intimidation, discrimination, or personal attacks.
+- Publishing another person's private information without explicit permission.
+- Submitting secrets, tokens, `.env` contents, malware, exploit payloads, or private personal data.
+- Misrepresenting AI-generated work, copied work, licenses, authorship, or security status.
+- Using issues, discussions, or pull requests for spam, manipulation, or abusive marketplace promotion.
 
-- Cinsel dil ve görüntüler veya istenmeyen cinsel ilgi/avanslar
-- Trolleme, hakaret/aşağılayıcı yorumlar ve kişisel veya politik saldırılar
-- Kamuya açık veya özel taciz
-- Başkasının özel bilgilerini (adres, e-posta) açık izin olmaksızın yayınlamak
-- Makul olarak uygunsuz olarak değerlendirilebilecek diğer davranışlar
+## AI Collaboration Standard
 
-## Uygulama
+Codex / ChatGPT and Claude may be acknowledged as AI development partners when they assist with code, architecture, review, documentation, or governance. AI assistance does not remove human responsibility: contributors must review outputs, check licenses, avoid secrets, and explain material changes.
 
-Proje liderleri kabul edilemez davranışları açıklamaktan sorumludur ve uygunsuz, tehdit edici, saldırgan veya zararlı davranışlara karşı uygun düzeltici önlemler alacaktır.
+## Enforcement
 
-Proje liderleri, bu Davranış Kurallarını kasıtlı olarak iyi bir şekilde yorumlamayan veya gerçekleştiren katkıda bulunanların kodu yönetim, sorun izleme ve diğer katkılara karşı yorum oluşturma veya erişimini kısıtlama, askıya alma veya kalıcı olarak engelleme hakkına sahiptir.
+Project maintainers may edit, reject, hide, or remove contributions that violate this Code of Conduct. Severe or repeated violations may lead to blocked participation.
 
-## Raporlama
+## Reporting
 
-Kabul edilemez davranışa tanık olursanız, [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geçin.
+Report conduct or safety concerns privately to [@emirhankudun-ux](https://github.com/emirhankudun-ux). If the concern is security-sensitive, follow [`SECURITY.md`](SECURITY.md) instead of opening a public issue.
 
-## İtibar
-
-Bu Davranış Kuralları, https://www.contributor-covenant.org adresinden erişilebilen Contributor Covenant'tan uyarlanmıştır.
+This Code of Conduct is inspired by the Contributor Covenant and adapted for SEIS's AI-native, privacy-aware, calm-technology workflow.

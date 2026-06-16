@@ -43,3 +43,10 @@ The command writes:
 ## Install Policy
 
 Do not download heavy language runtimes just to change a percentage. First use installed runtimes, then add a runtime only when the repo has a real build, test, deploy, or product reason for it.
+
+## Native / Polyglot 2026-06-11 Addendum
+
+- Apple-only Apple platform work should use Swift, SwiftUI, Objective-C, Objective-C++, AppleScript, Metal Shading Language, and Apple platform metadata before considering cross-platform runtimes.
+- Android and Windows lanes should prefer their own non-Apple language families: Kotlin, Java, C#, F#, PowerShell, Batch, C++, Rust, Go, SQL, YAML, TOML, JSON Schema, Rego, and CUE.
+- AI/Agent/MCP/Skills/Plugin/LLM decisions should be captured as contracts, records, and governance docs before runtime code expands.
+- This direction does not require new JavaScript or Python code; existing validation scripts can still verify documentation and policy integrity.

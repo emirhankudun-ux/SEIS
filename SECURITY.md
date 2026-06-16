@@ -1,37 +1,42 @@
 # Security Policy
 
+SEIS treats security, privacy, and safe AI-assisted development as product requirements, not afterthoughts.
+
 ## Reporting Security Vulnerabilities
 
-Teşekkürler — güvenliği ciddiye alıyoruz. Bir güvenlik açığı bulursan, lütfen herkese açık olarak rapor etme — doğrudan [@emirhankudun-ux](https://github.com/emirhankudun-ux) ile iletişime geç.
+Do not open a public issue for a suspected vulnerability. Contact [@emirhankudun-ux](https://github.com/emirhankudun-ux) or email emirhankudun@gmail.com with a concise private report.
 
-### Bildirimi Nasıl Yapmalısın?
+Include when possible:
 
-1. **Doğrudan mesaj gönder**: GitHub üzerinden bize mesaj at.
-2. **E-posta ile iletişim**: emirhankudun@gmail.com adresine güvenlik açığını anlatan bir e-posta gönder.
-3. **Detaylar ekle**:
-   - Açığın türü (XSS, CSRF, injection vb.)
-   - Etkilenen dosya/bölüm
-   - Reproduksiyon adımları (eğer mümkünse)
-   - Olası çözüm (eğer varsa)
+- vulnerability class (for example XSS, injection, auth bypass, secret exposure, supply-chain risk, unsafe agent/tool permission, prompt/data exfiltration);
+- affected path, feature, plugin, MCP surface, or workflow;
+- reproduction steps or proof of concept that avoids exposing private data;
+- impact estimate and suggested mitigation;
+- whether AI tools were involved in discovery or reproduction.
 
-### Yanıt Süresi
+## Response Targets
 
-- İlk yanıt: 48 saat içinde
-- Düzeltme: Duruma bağlı olarak 1-2 hafta
-- Açık kaynak: Düzeltme onaylandıktan sonra yayınlanır
+| Stage | Target |
+| --- | --- |
+| Initial acknowledgement | Within 48 hours |
+| Triage and severity label | Within 5 business days |
+| Fix or mitigation plan | Usually 1-2 weeks, depending on severity and blast radius |
+| Public disclosure | After a safe fix, mitigation, or maintainer-approved advisory path |
 
-## Desteklenen Versiyonlar
+## Supported Security Surface
 
-Aşağıdaki versiyonlar güvenlik güncellemeleri alıyor:
+| Surface | Support posture |
+| --- | --- |
+| `main` branch | Primary supported surface |
+| Documentation and policy records | Supported when they affect security decisions |
+| AI / Agent / MCP / Skills / Plugin workflows | Supported for permission, secret, prompt, data, and supply-chain risks |
+| Archived/import/source snapshots | Reviewed case by case; do not assume active support |
 
-| Versiyon | Destek |
-|----------|--------|
-| 1.x      | ✅ Aktif |
+## Security Baseline
 
-## Güvenlik Best Practices
-
-- **Gizli bilgiler paylaşma**: `.env` dosyaları, API anahtarları, kimlik bilgileri asla repo'da kalmamalı.
-- **Bağımlılıkları güncel tut**: Düzenli olarak `npm audit` çalıştır.
-- **Kod incelemesi**: PR'ları güvenlik açılarına karşı kontrol et.
-
-Teşekkürler!
+- Never commit API keys, tokens, private credentials, `.env` contents, personal identity files, or private media.
+- Treat MCP servers, plugins, skills, and AI agents as permissioned software surfaces.
+- Prefer least privilege, explicit scopes, auditable handoffs, and reversible automation.
+- Do not install new runtimes or dependencies without product need, owner, validation, security review, and rollback.
+- Use dependency, license, secret, and provenance checks before market-facing releases.
+- Keep publish readiness separate from deployment readiness.

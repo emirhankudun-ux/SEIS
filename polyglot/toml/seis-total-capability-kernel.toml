@@ -1,0 +1,22 @@
+[id]
+name = "seis-total-capability-kernel"
+date = "2026-06-11"
+canonical_branch = "main"
+mode = "aggressive-capability-focus-without-new-js-python"
+
+[runtime]
+install_policy = "Install only for real product need, owner, validation path, storage budget, and rollback."
+blocked_for_this_pass = ["new JavaScript application code", "new Python application code"]
+
+[apple]
+languages = ["Swift", "SwiftUI", "Objective-C", "Objective-C++", "AppleScript", "Metal Shading Language"]
+
+[android]
+languages = ["Kotlin", "Java", "XML", "Gradle", "C++", "Rust", "Go", "SQL"]
+
+[windows]
+languages = ["C#", "F#", "PowerShell", "Batch", "C++", "Rust", "Go", "T-SQL", "MSBuild", "SQL"]
+
+[market]
+required_files = ["README.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "LICENSE", "SECURITY.md", "CONTRIBUTORS.md"]
+required_posture = ["clear value", "safe contribution", "security reporting", "MIT clarity", "Codex and Claude attribution", "main-first governance"]

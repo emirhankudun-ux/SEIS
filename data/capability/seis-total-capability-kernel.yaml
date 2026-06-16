@@ -1,0 +1,55 @@
+id: seis-total-capability-kernel
+date: "2026-06-11"
+mode: aggressive-documentation-and-contract-first
+no_new_application_code:
+  - JavaScript
+  - Python
+runtime_install_policy: install only for real product need, owner, validation path, storage budget, and rollback
+canonical_branch: main
+ai_partners:
+  primary_writer: Codex / ChatGPT
+  architecture_review: Claude
+  google_context_review: Gemini
+  counter_evidence: Qwen
+  local_optional: Ollama
+platforms:
+  apple:
+    languages: [Swift, SwiftUI, Objective-C, Objective-C++, AppleScript, Metal Shading Language]
+    rule: Apple surfaces use Apple languages first.
+  android:
+    languages: [Kotlin, Java, XML, Gradle, C++, Rust, Go, SQL]
+    rule: Android surfaces use Android-native and non-Apple languages first.
+  windows:
+    languages: [C#, F#, PowerShell, Batch, C++, Rust, Go, T-SQL, MSBuild]
+    rule: Windows surfaces use Windows and non-Apple enterprise languages first.
+  policy:
+    languages: [SQL, YAML, TOML, CUE, Rego, JSON Schema, GraphQL, OpenAPI, AsyncAPI]
+    rule: Cross-platform readiness starts as contracts before services.
+capabilities:
+  - engineering
+  - full_stack
+  - data
+  - design
+  - development
+  - ai_agents_mcp_skills_plugins_llm
+  - algorithms_flowcharts_math_cs
+  - web_mobile_game_development
+  - data_science_ai_database_management
+  - version_control_cloud_cybersecurity_devops_sre
+  - test_engineering_architecture_patterns_big_data
+  - nlp_computer_vision_quantum_programming
+  - sustainable_software_low_code_no_code
+  - ux_ui_engineering_robotics_ai_ethics_data_governance
+  - compiler_language_engineering_requirements_agile_sdlc_metrics
+  - reverse_engineering_refactoring_formal_methods
+market_readiness:
+  minimum:
+    - clear README
+    - MIT license clarity
+    - code of conduct
+    - contribution path
+    - security reporting
+    - contributors with Codex and Claude attribution
+    - main-first branch governance
+    - no secrets
+    - validation commands
