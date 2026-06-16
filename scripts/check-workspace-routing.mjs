@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 
 const failures = [];
 const notes = [];
+const githubRemotePath = "content/development/github-remote-configuration.json";
 
 function fail(message) {
   failures.push(message);
@@ -38,7 +39,13 @@ const processConfig = existsSync("content/lab/development-process.json")
   ? readJson("content/lab/development-process.json")
   : {};
 const branchPolicy = processConfig.activeBranchPolicy || {};
-const expectedBranch = branchPolicy.githubBranch || "UIXAppTTR";
+const githubRemoteConfig = existsSync(githubRemotePath) ? readJson(githubRemotePath) : {};
+const expectedBranch = branchPolicy.githubBranch || githubRemoteConfig?.repository?.targetBranch || "main";
+const expectedRemote = githubRemoteConfig?.repository?.remoteUrl;
+const expectedRemotePath = typeof expectedRemote === "string"
+  ? expectedRemote.replace(/^https:\/\//, "").split("/").slice(1).join("/")
+  : "";
+const expectedRemotePathAlt = expectedRemotePath ? expectedRemotePath.replace("/", ":") : "";
 
 const insideWorkTree = git(["rev-parse", "--is-inside-work-tree"]);
 
@@ -51,8 +58,8 @@ if (insideWorkTree.status === 0 && insideWorkTree.stdout.trim() === "true") {
     fail(`git workspace must use ${expectedBranch}, got ${currentBranch || "unknown"}`);
   }
 
-  if (!remote.stdout.includes("UIX-Apps.git")) {
-    fail("git workspace must point at the UIX-Apps GitHub remote");
+  if (expectedRemote && !remote.stdout.includes(expectedRemote) && !remote.stdout.includes(expectedRemotePath) && !remote.stdout.includes(expectedRemotePathAlt)) {
+    fail("git workspace must point at the SEIS GitHub remote");
   }
 
   notes.push(`git workspace detected on ${currentBranch || "unknown"}`);
