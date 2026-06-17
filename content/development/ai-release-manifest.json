@@ -1,0 +1,346 @@
+{
+  "version": 1,
+  "id": "seis-ai-release-manifest",
+  "generatedAt": "2026-06-09T06:20:32.023Z",
+  "mode": "large-language-productivity-surface",
+  "releaseProfile": {
+    "id": "seis-large-language-release",
+    "version": "v12-seed",
+    "label": "Büyük Dil Sürümü",
+    "objective": "Keep local intelligence and external model tooling discoverable before runtime activation."
+  },
+  "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
+  "environment": {
+    "source": "scripts/create-ai-release-manifest.cjs",
+    "sourceReferences": {
+      "aiRoutingPolicy": "scripts/ai-routing-policy.cjs",
+      "aiLauncher": "scripts/ai-launcher.cjs"
+    },
+    "credentialsPresent": {
+      "hasOpenAiKey": false,
+      "hasAnthropicKey": false,
+      "hasGeminiKey": false,
+      "hasOllamaHost": false
+    }
+  },
+  "tools": [
+    {
+      "id": "codex",
+      "label": "Codex",
+      "commandPath": "/Users/emirhankudun/.local/bin/codex",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "primary repo execution",
+      "routingIntent": "codex primary execution",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "codex",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "installed": false,
+      "gate": "production reasoning",
+      "routingIntent": "local analysis request",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "openai",
+      "routingCoverage": true,
+      "status": "missing-optional"
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "commandPath": "/Users/emirhankudun/.local/bin/claude",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "strategy+copy",
+      "routingIntent": "ux copy narrative pass",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "claude",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "research",
+      "routingIntent": "browser research for docs",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "gemini",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "alternative reasoning",
+      "routingIntent": "qwen cross-check",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "qwen",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "installed": false,
+      "gate": "translation+multilingual",
+      "routingIntent": "translate this interface to turkish",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "kimi",
+      "routingCoverage": true,
+      "status": "missing-optional"
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "terminal coding",
+      "routingIntent": "opencode terminal coding",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "opencode",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "aider",
+      "label": "Aider",
+      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "small patch editing",
+      "routingIntent": "quick repo patch",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "aider",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "interpreter",
+      "label": "Interpreter",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "installed": false,
+      "gate": "dataset+trace",
+      "routingIntent": "csv log analysis",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "interpreter",
+      "routingCoverage": true,
+      "status": "missing-optional"
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama",
+      "commandPath": "/usr/local/bin/ollama",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "local/offline",
+      "routingIntent": "local offline llama draft",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "ollama",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes Agent",
+      "commandPath": "/Users/emirhankudun/.local/bin/hermes",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "agent gateway+mcp",
+      "routingIntent": "hermes mcp gateway",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "hermes",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "commandPath": "/Users/emirhankudun/.local/bin/goose",
+      "launcherCommandPath": null,
+      "installed": true,
+      "gate": "general automation agent",
+      "routingIntent": "goose general agent",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "goose",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "commandPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "launcherCommandPath": "/usr/bin/open",
+      "installed": true,
+      "gate": "agent-native design",
+      "routingIntent": "open design prototype",
+      "executionMode": "local-helper",
+      "expectedAutoTool": "open-design",
+      "routingCoverage": true,
+      "status": "installed"
+    },
+    {
+      "id": "seis-agent",
+      "label": "SEIS Agent",
+      "commandPath": null,
+      "installed": true,
+      "gate": "orchestration",
+      "routingIntent": "release governance checklist",
+      "executionMode": "remote-agent",
+      "role": "system_orchestrator",
+      "expectedAutoTool": "seis-agent",
+      "routingCoverage": true,
+      "status": "ready"
+    }
+  ],
+  "packages": [
+    {
+      "id": "seis-large-language-core",
+      "label": "Büyük Dil Sürümü · Core",
+      "scope": "SEIS Core",
+      "provider": "Hybrid (local helpers + SEIS Agent)",
+      "modelCount": 1,
+      "activeLayers": [
+        "repo",
+        "governance",
+        "release"
+      ],
+      "deployment": "API-first",
+      "status": "planned"
+    },
+    {
+      "id": "seis-large-language-plus",
+      "label": "Büyük Dil Sürümü · Plus",
+      "scope": "Experimentation",
+      "provider": "Provider-assisted",
+      "modelCount": 2,
+      "activeLayers": [
+        "analysis",
+        "marketplace",
+        "docs",
+        "translation"
+      ],
+      "deployment": "gated",
+      "status": "requires-provider-keys"
+    }
+  ],
+  "localModels": [],
+  "routing": [
+    {
+      "intent": "codex primary execution",
+      "selectedTool": "codex"
+    },
+    {
+      "intent": "quick repo patch",
+      "selectedTool": "aider"
+    },
+    {
+      "intent": "browser research for docs",
+      "selectedTool": "gemini"
+    },
+    {
+      "intent": "local offline llama draft",
+      "selectedTool": "ollama"
+    },
+    {
+      "intent": "csv log analysis",
+      "selectedTool": "interpreter"
+    },
+    {
+      "intent": "qwen cross-check",
+      "selectedTool": "qwen"
+    },
+    {
+      "intent": "opencode terminal coding",
+      "selectedTool": "opencode"
+    },
+    {
+      "intent": "hermes mcp gateway",
+      "selectedTool": "hermes"
+    },
+    {
+      "intent": "goose general agent",
+      "selectedTool": "goose"
+    },
+    {
+      "intent": "open design prototype",
+      "selectedTool": "open-design"
+    },
+    {
+      "intent": "ux copy narrative pass",
+      "selectedTool": "claude"
+    },
+    {
+      "intent": "translate this interface to turkish",
+      "selectedTool": "kimi"
+    },
+    {
+      "intent": "local analysis request",
+      "selectedTool": "openai"
+    },
+    {
+      "intent": "production reasoning and policy check",
+      "selectedTool": "seis-agent"
+    },
+    {
+      "intent": "release governance checklist",
+      "selectedTool": "seis-agent"
+    }
+  ],
+  "execution": {
+    "remoteOrchestrator": {
+      "id": "seis-agent",
+      "mode": "remote-only-gatekeeper",
+      "role": "AI task orchestration and policy dispatch"
+    },
+    "helperModes": [
+      {
+        "mode": "local-helper",
+        "tools": [
+          "codex",
+          "openai",
+          "claude",
+          "gemini",
+          "qwen",
+          "kimi",
+          "opencode",
+          "aider",
+          "interpreter",
+          "ollama",
+          "hermes",
+          "goose",
+          "open-design"
+        ]
+      }
+    ]
+  },
+  "summary": {
+    "toolCount": 14,
+    "helperToolCount": 13,
+    "remoteOrchestratorCount": 1,
+    "installedTools": 11,
+    "missingRequiredTools": 0,
+    "localModelCount": 0,
+    "releasePackageCount": 2,
+    "routeCount": 15
+  },
+  "notes": [
+    "Ollama local model discovery is optional and depends on local daemon availability.",
+    "Provider tools are treated as local helper candidates and are gated by credentials and user approval.",
+    "Remote runtime is only SEIS Agent. Local helpers never bypass remote policy control."
+  ]
+}

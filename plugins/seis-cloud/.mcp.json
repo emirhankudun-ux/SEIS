@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "seis-cloud": {
+      "command": "node",
+      "args": [
+        "scripts/seis-cloud-mcp-server.mjs"
+      ]
+    }
+  }
+}

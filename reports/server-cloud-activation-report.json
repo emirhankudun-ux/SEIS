@@ -20,8 +20,10 @@
     {
       "id": "github-pages",
       "kind": "static-site",
+      "audience": "everyone",
       "status": "candidate",
       "uploadModel": "github-actions-pages-artifact",
+      "readinessCommand": "npm run cloud:public:readiness -- --repo OWNER/REPO",
       "qualityCommands": [
         "npm run automation:publish-readiness",
         "npm run check:cloud-environment"
@@ -71,6 +73,32 @@
         "node scripts/check-server-adapters.mjs"
       ],
       "rollback": "redeploy_previous_container_image"
+    },
+    {
+      "id": "gcp-compute-vm",
+      "kind": "team-vpn-cloud-compute-server",
+      "audience": "workplaces-and-teams",
+      "status": "candidate-requires-billing-api-vpn-peer-and-user-apply",
+      "uploadModel": "google_compute_engine_vm_with_wireguard_vpn_and_codex_remote_host",
+      "readinessCommand": "npm run cloud:gcp:readiness -- --project PROJECT_ID",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:gcp-cloud-server"
+      ],
+      "rollback": "stop_or_delete_compute_instance_after_handoff"
+    },
+    {
+      "id": "ssh-wireguard-vps",
+      "kind": "team-vpn-cloud-existing-ssh-server",
+      "audience": "workplaces-and-teams",
+      "status": "candidate-requires-existing-host-vpn-peer-and-user-plan",
+      "uploadModel": "existing_linux_ssh_host_with_wireguard_vpn_and_codex_remote_host",
+      "readinessCommand": "npm run cloud:ssh-vpn:readiness -- --ssh-target USER@HOST",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:ssh-vpn-cloud-server"
+      ],
+      "rollback": "disable_wireguard_peer_or_stop_existing_vps_service_after_handoff"
     },
     {
       "id": "azure-static-web-apps",

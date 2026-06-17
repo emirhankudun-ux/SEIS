@@ -1,10 +1,17 @@
 # SEIS Plugin Stack
 
-SEIS uses installed and enabled Codex plugins as the operating layer for the closed-code platform. The current audited registry is `data/installed-codex-plugins-2026-06-05.json`, with the reader-facing operating model in `docs/platform/installed-plugin-operating-model.md`.
+SEIS uses installed and enabled Codex plugins as the operating layer for the
+open-source platform. The current audited registry is
+`data/installed-codex-plugins-2026-06-15.json`, with the reader-facing
+operating model in `docs/platform/installed-plugin-operating-model.md`.
 
 ## OpenAI-First Policy
 
-For core SEIS work, prioritize OpenAI/Codex plugin families first: `openai-curated`, `openai-bundled`, and `openai-primary-runtime`. The local `seis@personal` plugin coordinates repo context, migration safety, and routing. External or non-installed plugin URI families are fallback paths unless the user explicitly asks for that provider.
+For core SEIS work, prioritize OpenAI/Codex plugin families first:
+`openai-curated`, `openai-bundled`, and `openai-primary-runtime`.
+`seis-ai-agent@seis-repo` coordinates repo context, migration safety, lane
+routing, and SEIS-Agent consolidation. External or non-installed plugin URI
+families are fallback paths unless the user explicitly asks for that provider.
 
 Policy records:
 
@@ -15,12 +22,11 @@ Policy records:
 
 | Metric | Value |
 |---|---:|
-| Audit date | 2026-06-05 |
-| Installed and enabled plugins before install pass | 143 |
-| Installed and enabled plugins after install pass | 179 |
-| Not installed plugins after install pass | 0 |
-| Install pass | 36 attempted, 36 succeeded, 0 failed |
-| Local SEIS plugin | `seis@personal` |
+| Audit date | 2026-06-15 |
+| Installed and enabled plugins after SEIS consolidation | 186 |
+| Not installed plugins after SEIS consolidation | 10 |
+| Canonical SEIS plugin | `seis-ai-agent@seis-repo` |
+| Legacy SEIS mirror | `seis@personal` compatibility only |
 
 ## Priority Categories
 
@@ -36,7 +42,7 @@ Policy records:
 
 | Lane | Installed plugins |
 |---|---|
-| Repository and governance | `seis@personal`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated` |
+| Repository and governance | `seis-ai-agent@seis-repo`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated` |
 | Android and iOS mobile | `expo@openai-curated`, `test-android-apps@openai-curated`, `build-ios-apps@openai-curated` |
 | Web and design | `build-web-apps@openai-curated`, `browser@openai-bundled`, `chrome@openai-bundled`, `figma@openai-curated`, `canva@openai-curated`, `magicpath@openai-curated`, `wix@openai-curated`, `base44@openai-curated`, `hostinger@openai-curated`, `replit@openai-curated`, `lovable@openai-curated` |
 | macOS desktop | `build-macos-apps@openai-curated` |

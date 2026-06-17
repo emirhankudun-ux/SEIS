@@ -1,4 +1,7 @@
-# SEIS CLOSED CODE Backlog
+# SEIS Open Source Platform Backlog
+
+Compatibility note: this file keeps its historical path for older references,
+but the active backlog tracks the open-source SEIS platform.
 
 Drive Sheet: https://docs.google.com/spreadsheets/d/1sxnxOz9ZRzwZAz2FmHt_3YzAhQjKL2sQbYR1uWdGsaQ
 
@@ -35,8 +38,8 @@ Source: [`docs/platform/openai-curated-build-workbench.md`](../docs/platform/ope
 - Installed all locally visible Codex plugins: 179 active, 0 missing
 - Added OpenAI-first plugin policy
 - Added OpenAI-curated build workbench
-- Created SEIS CLOSED CODE Drive operating plan
+- Created SEIS open-source Drive operating plan
 - Created Google Sheet platform backlog
 - Created weekly Calendar build review
-- Added closed-code policy and architecture files
+- Added open-source governance and architecture files
 - Added Android/Web/macOS/full-stack/data repo lanes

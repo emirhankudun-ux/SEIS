@@ -12,7 +12,7 @@ function ensure(condition, message) {
   if (!condition) failures.push(message);
 }
 
-const html = read("apps/web/index.html");
+const html = read("apps/web/seis-cockpit.html");
 const css = read("apps/web/styles.css");
 const js = read("apps/web/app.js");
 

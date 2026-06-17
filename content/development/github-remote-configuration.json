@@ -2,28 +2,29 @@
   "id": "github-remote-configuration",
   "version": 1,
   "status": "configured-local-remote",
-  "configuredAt": "2026-06-06",
+  "configuredAt": "2026-06-12",
   "repository": {
-    "name": "UIX-Apps",
+    "name": "SEIS",
     "owner": "emirhankudun-ux",
     "remoteName": "origin",
-    "remoteUrl": "https://github.com/emirhankudun-ux/UIX-Apps.git",
-    "targetBranch": "UIXAppTTR"
+    "remoteUrl": "https://github.com/emirhankudun-ux/SEIS.git",
+    "targetBranch": "main"
   },
   "localBranchMode": {
-    "currentWorkingBranch": "work",
-    "tracks": "origin/UIXAppTTR",
-    "reason": "The execution environment is committing on the current work branch while preserving the SEIS GitHub target branch contract for publication readiness."
+    "currentWorkingBranch": "main",
+    "tracks": "origin/main",
+    "reason": "The execution environment is committing on the current SEIS main branch while preserving main as the only permanent repository branch."
   },
   "publishReadiness": {
     "remoteConfigured": true,
-    "networkProbe": "blocked-by-environment-connect-tunnel-403",
+    "networkProbe": "verified-with-gh-repo-view",
     "pushAllowed": false,
     "pushRequires": [
-      "switch or publish from UIXAppTTR",
       "clean worktree",
       "GitHub authentication ready",
       "remote branch state reviewed",
+      "branch protection and signed-commit policy reviewed",
+      "GitHub Actions and CodeQL state reviewed",
       "target deployment path confirmed when publishing release artifacts"
     ]
   },
@@ -32,5 +33,5 @@
     "npm run check:seis-evolution-model",
     "npm run check:workspace"
   ],
-  "rollback": "Remove or reset the origin remote and restore branch tracking config if the repository target changes."
+  "rollback": "Remove or reset the origin remote and restore main branch tracking config if the repository target changes."
 }

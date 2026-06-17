@@ -1,0 +1,120 @@
+{
+  "id": "seis-unified-github-visibility-policy",
+  "version": 1,
+  "updatedAt": "2026-06-14",
+  "canonical": {
+    "visibleRepository": "emirhankudun-ux/SEIS",
+    "defaultBranch": "main",
+    "localWorkspaceRoot": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github",
+    "publicFacingMode": "single-visible-seis-repository"
+  },
+  "cloudModel": {
+    "publicCloud": {
+      "audience": "everyone",
+      "vpnRequired": false,
+      "visibleRepository": "emirhankudun-ux/SEIS"
+    },
+    "teamVpnCloud": {
+      "audience": "workplaces-and-teams",
+      "vpnRequired": true,
+      "sshRequired": true,
+      "provider": "ssh-wireguard-vps"
+    }
+  },
+  "githubWorkspace": {
+    "target": "All GitHub workspace repositories and source folders become SEIS-governed child agents, source snapshots, or hidden migration sources.",
+    "publicVisibilityRule": "Only SEIS should be public-facing until a source has been imported and represented as a SEIS child agent.",
+    "localFoldersSeen": [
+      {
+        "path": "Codex",
+        "role": "source-folder",
+        "targetState": "seis-child-agent-or-hidden-source"
+      },
+      {
+        "path": "REPO",
+        "role": "source-folder",
+        "targetState": "seis-child-agent-or-hidden-source"
+      },
+      {
+        "path": "UIX-Apps",
+        "role": "source-folder",
+        "targetState": "seis-child-agent-or-hidden-source"
+      },
+      {
+        "path": "UX 2",
+        "role": "source-folder",
+        "targetState": "seis-child-agent-or-hidden-source"
+      },
+      {
+        "path": "github-ai-assistant",
+        "role": "source-folder",
+        "targetState": "seis-child-agent-or-hidden-source"
+      }
+    ],
+    "knownSourceRepoCandidates": [
+      "UIX-Apps",
+      "emirhan-kudun-portfolio",
+      "github-unified-source",
+      "seis-trusted-marketplace-plugin",
+      "memories",
+      "gemini-cli",
+      "DeepSeek-Coder",
+      "claude-code",
+      "docs",
+      "awesome-deepseek-agent"
+    ]
+  },
+  "childAgentModel": {
+    "status": "required-before-hiding-or-deleting-source-repositories",
+    "requiredEvidence": [
+      "sources/<repo>/<branch> ref exists in SEIS or a verified source snapshot exists",
+      "SEIS child-agent manifest names the source owner, scope, commands, and rollback owner",
+      "README or docs route users to SEIS instead of the old source repository",
+      "GitHub API/CLI confirms the source repository visibility before any mutation",
+      "explicit maintainer confirmation is recorded for archive/private/delete apply"
+    ],
+    "forbiddenWithoutConfirmation": [
+      "delete-source-repository",
+      "make-source-repository-private",
+      "archive-source-repository",
+      "force-push-source-refs"
+    ]
+  },
+  "toolingAttribution": {
+    "intent": "Make the public SEIS surface easier to discover and make AI tooling participants visible without implying sponsorship.",
+    "participantSurface": "CONTRIBUTORS.md",
+    "partners": [
+      {
+        "company": "OpenAI",
+        "tools": [
+          "Codex",
+          "ChatGPT"
+        ],
+        "role": "execution, automation, repository operations, and AI-native workflow support",
+        "participantRole": "AI tooling participant",
+        "attributionRule": "Mention as tooling used or supported; do not imply OpenAI sponsorship."
+      },
+      {
+        "company": "Anthropic",
+        "tools": [
+          "Claude"
+        ],
+        "role": "architecture, long-context reasoning, and secondary AI workflow support",
+        "participantRole": "AI tooling participant",
+        "attributionRule": "Mention as tooling used or supported; do not imply Anthropic sponsorship."
+      }
+    ]
+  },
+  "applyGate": {
+    "mode": "plan-first",
+    "liveGitHubMutationDefault": "disabled",
+    "childAgentIntake": "data/seis-child-agent-intake.json",
+    "requiredBeforeApply": [
+      "gh auth status succeeds",
+      "gh repo list succeeds for the owner",
+      "non-SEIS public repositories are listed in a dry-run plan",
+      "the maintainer chooses archive, private, transfer, or keep for each non-SEIS repository",
+      "rollback owner and public communication note are confirmed"
+    ]
+  }
+}

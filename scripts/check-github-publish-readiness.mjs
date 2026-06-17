@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 
-const expectedBranch = "UIXAppTTR";
-const expectedRemoteHint = "UIX-Apps";
+const expectedBranch = "main";
+const expectedRemoteHint = "SEIS";
 const fullQualityMode = process.env.SEIS_PUBLISH_READINESS_FULL === "1";
 
 function run(command, args) {
@@ -67,7 +67,7 @@ function getGitState() {
       status: statusText,
       divergence,
       reason: `expected branch ${expectedBranch}, got ${currentBranch || "unknown"}`,
-      nextStep: `Switch to ${expectedBranch} before publishing.`
+      nextStep: `Switch to ${expectedBranch} before publishing SEIS.`
     };
   }
 
@@ -169,13 +169,12 @@ function getQualityState() {
         { id: "automation:develop", command: "npm", args: ["run", "automation:develop"] }
       ]
     : [
+        { id: "open-source-governance", command: "node", args: ["scripts/check-open-source-governance.mjs"] },
         { id: "foundation", command: "node", args: ["scripts/check-foundation.mjs"] },
-        { id: "seo-metadata", command: "node", args: ["scripts/check-seo-metadata.mjs"] },
-        { id: "locales", command: "node", args: ["scripts/check-locales.mjs"] },
-        { id: "code-automation-plan", command: "node", args: ["scripts/check-code-automation-plan.cjs"] },
-        { id: "aggressive-capability-map", command: "node", args: ["scripts/check-aggressive-capability-map.cjs"] },
-        { id: "server-target", command: "node", args: ["scripts/check-server-targets.mjs"] },
-        { id: "server-cloud-report", command: "node", args: ["scripts/create-server-cloud-activation-report.cjs", "--check"] },
+        { id: "workspace", command: "node", args: ["scripts/check-workspace.cjs"] },
+        { id: "web-audit", command: "node", args: ["packages/seis-ai/bin/seis-check.mjs"] },
+        { id: "seis-platform-language-policy", command: "python3", args: ["scripts/create-seis-platform-language-policy.py", "--check"] },
+        { id: "seis-platform-kernel", command: "python3", args: ["scripts/check-seis-platform-kernel.py"] },
         { id: "javascript-syntax", command: "node", args: ["--check", "scripts/check-github-publish-readiness.mjs"] }
       ];
 

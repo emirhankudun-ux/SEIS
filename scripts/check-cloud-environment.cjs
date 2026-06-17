@@ -9,6 +9,14 @@ const PLUGIN_CAPABILITY_LANES_FILE = path.join(ROOT, "content", "development", "
 const PLUGIN_DOWNLOAD_READINESS_FILE = path.join(ROOT, "content", "development", "plugin-download-readiness.json");
 const REQUESTED_SOFTWARE_STACK_FILE = path.join(ROOT, "content", "development", "requested-software-stack.json");
 const FULLSTACK_LANGUAGE_MATRIX_FILE = path.join(ROOT, "content", "development", "fullstack-language-matrix.json");
+const LLM_PACKAGE_REGISTRY_FILE = path.join(ROOT, "content", "development", "llm-package-registry.json");
+const LLM_TASK_ROUTING_POLICY_FILE = path.join(ROOT, "content", "development", "llm-task-routing-policy.json");
+const LLM_ADAPTER_READINESS_FILE = path.join(ROOT, "content", "development", "llm-adapter-readiness.json");
+const LLM_REQUEST_BLUEPRINTS_FILE = path.join(ROOT, "content", "development", "llm-request-blueprints.json");
+const LLM_BRIDGE_FILE = path.join(ROOT, "data", "seis-repos-llm-bridge-2026-06-08.json");
+const THIRD_PARTY_ADAPTATION_PLAN_FILE = path.join(ROOT, "content", "development", "third-party-adaptation-plan.json");
+const TOOLCHAIN_RUNTIME_READINESS_FILE = path.join(ROOT, "content", "development", "toolchain-runtime-readiness.json");
+const DESKTOP_APP_INTEGRATION_FILE = path.join(ROOT, "content", "development", "desktop-app-integration.json");
 const SERVER_TARGETS_FILE = path.join(ROOT, "deploy", "server-targets.json");
 const PACKAGE_FILE = path.join(ROOT, "package.json");
 const failures = [];
@@ -17,8 +25,21 @@ const REQUIRED_ENVIRONMENT_SOURCE_KEYS = [
   "submittedPluginCapabilityLanes",
   "pluginDownloadReadiness",
   "requestedSoftwareStack",
-  "fullstackLanguageMatrix"
+  "fullstackLanguageMatrix",
+  "localAiToolReadiness",
+  "thirdPartyAiToolInventory",
+  "thirdPartyAdaptationPlan",
+  "toolchainRuntimeReadiness",
+  "desktopAppIntegration",
+  "llmSystem",
+  "llmTaskRoutingPolicy",
+  "llmAdapterReadiness",
+  "llmRequestBlueprints",
+  "llmBridge"
 ];
+const REQUIRED_LOCAL_AI_TOOL_IDS = ["codex", "openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter", "hermes", "goose", "open-design"];
+const REQUIRED_THIRD_PARTY_AI_HELPER_IDS = ["claude-code", "gemini-cli", "antigravity", "deepseek-coder", "awesome-deepseek-agent", "open-design"];
+const REQUIRED_ECOSYSTEM_CANDIDATE_IDS = ["claude-code", "gemini-cli", "deepseek-coder", "awesome-deepseek-agent", "open-design", "antigravity-desktop", "desktop-bundle-root"];
 const REQUIRED_REQUESTED_PLUGIN_IDS = [
   "base44",
   "wix",
@@ -80,6 +101,14 @@ const pluginCapabilityLanes = readJson(PLUGIN_CAPABILITY_LANES_FILE);
 const pluginDownloadReadiness = readJson(PLUGIN_DOWNLOAD_READINESS_FILE);
 const requestedSoftwareStack = readJson(REQUESTED_SOFTWARE_STACK_FILE);
 const fullstackLanguageMatrix = readJson(FULLSTACK_LANGUAGE_MATRIX_FILE);
+const llmPackageRegistry = readJson(LLM_PACKAGE_REGISTRY_FILE);
+const llmTaskRoutingPolicy = readJson(LLM_TASK_ROUTING_POLICY_FILE);
+const llmAdapterReadiness = readJson(LLM_ADAPTER_READINESS_FILE);
+const llmRequestBlueprints = readJson(LLM_REQUEST_BLUEPRINTS_FILE);
+const llmBridge = readJson(LLM_BRIDGE_FILE);
+const thirdPartyAdaptationPlan = readJson(THIRD_PARTY_ADAPTATION_PLAN_FILE);
+const toolchainRuntimeReadiness = readJson(TOOLCHAIN_RUNTIME_READINESS_FILE);
+const desktopAppIntegration = readJson(DESKTOP_APP_INTEGRATION_FILE);
 const serverTargets = readJson(SERVER_TARGETS_FILE);
 const packageJson = readJson(PACKAGE_FILE);
 const packageScripts = new Set(Object.keys(packageJson?.scripts || {}));
@@ -332,6 +361,117 @@ if (fullstackLanguageMatrix) {
       ensure(fs.existsSync(path.join(ROOT, entrypoint)), `fullstackLanguageMatrix entrypoint missing: ${entrypoint}`);
     }
   }
+}
+
+if (payload.sources?.localAiToolReadiness) {
+  const source = payload.sources.localAiToolReadiness;
+  const tools = Array.isArray(source.tools) ? source.tools : [];
+  const toolsById = new Map(tools.map((tool) => [tool.id, tool]));
+
+  ensure(source.id === "seis-local-ai-tool-readiness", "localAiToolReadiness source id must be seis-local-ai-tool-readiness");
+  ensure(source.path === "reports/local-ai-tool-readiness.json", "localAiToolReadiness path must point to readiness report");
+  ensure(source.helperCount === tools.length, "localAiToolReadiness helperCount must match tools");
+  for (const helperId of REQUIRED_LOCAL_AI_TOOL_IDS) {
+    ensure(toolsById.has(helperId), `localAiToolReadiness missing helper ${helperId}`);
+  }
+  for (const helper of tools) {
+    ensure(
+      ["ready", "missing-command", "missing-credential", "runtime-not-ready"].includes(helper.status),
+      `localAiToolReadiness invalid status for ${helper.id}: ${helper.status}`
+    );
+  }
+}
+
+if (payload.sources?.thirdPartyAiToolInventory) {
+  const source = payload.sources.thirdPartyAiToolInventory;
+  const candidates = Array.isArray(source.candidates) ? source.candidates : [];
+  const candidatesById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
+
+  ensure(source.id === "seis-third-party-ai-tool-inventory", "thirdPartyAiToolInventory source id must match");
+  ensure(source.path === "reports/third-party-ai-tool-inventory.json", "thirdPartyAiToolInventory path must point to report");
+  ensure(source.candidateCount === candidates.length, "thirdPartyAiToolInventory candidateCount must match candidates");
+  ensure(source.detectedCount >= 1, "thirdPartyAiToolInventory must detect at least one source");
+  for (const candidateId of REQUIRED_THIRD_PARTY_AI_HELPER_IDS) {
+    ensure(candidatesById.has(candidateId), `thirdPartyAiToolInventory missing candidate ${candidateId}`);
+  }
+}
+
+if (thirdPartyAdaptationPlan) {
+  const source = payload.sources?.thirdPartyAdaptationPlan;
+  const candidates = Array.isArray(thirdPartyAdaptationPlan.candidates) ? thirdPartyAdaptationPlan.candidates : [];
+  const candidateIds = new Set(candidates.map((candidate) => candidate.id));
+  const sourceCandidates = Array.isArray(source?.candidates) ? source.candidates : [];
+
+  ensure(source, "cloud environment sources must include thirdPartyAdaptationPlan");
+  ensure(source?.path === "content/development/third-party-adaptation-plan.json", "thirdPartyAdaptationPlan path must point to plan file");
+  ensure(source?.candidateCount === candidates.length, "thirdPartyAdaptationPlan candidateCount must match plan");
+  ensure(source?.blockedDeleteCount === candidates.length, "thirdPartyAdaptationPlan must block deletion for every candidate");
+  ensure(source?.codeImport === "blocked_without_license_review_and_explicit_user_confirmation", "thirdPartyAdaptationPlan must block direct code import");
+  ensure(source?.deletePolicy === "blocked_until_owned_reimplementation_validated_and_user_confirms", "thirdPartyAdaptationPlan delete policy must require confirmation");
+  ensure(source?.githubPublishPolicy === "publish_seis_owned_code_manifests_and_reports_only", "thirdPartyAdaptationPlan publish policy must keep third-party code out");
+  ensure(sourceCandidates.length === candidates.length, "thirdPartyAdaptationPlan source candidates must mirror plan candidates");
+  for (const candidateId of REQUIRED_ECOSYSTEM_CANDIDATE_IDS) {
+    ensure(candidateIds.has(candidateId), `thirdPartyAdaptationPlan missing candidate ${candidateId}`);
+  }
+}
+
+if (toolchainRuntimeReadiness) {
+  const source = payload.sources?.toolchainRuntimeReadiness;
+  const tools = Array.isArray(toolchainRuntimeReadiness.tools) ? toolchainRuntimeReadiness.tools : [];
+  const toolIds = new Set(tools.map((tool) => tool.id));
+
+  ensure(source, "cloud environment sources must include toolchainRuntimeReadiness");
+  ensure(source?.path === "content/development/toolchain-runtime-readiness.json", "toolchainRuntimeReadiness path must point to readiness file");
+  ensure(source?.toolCount === tools.length, "toolchainRuntimeReadiness toolCount must match tools");
+  ensure(source?.neverInstallSilently === true, "toolchainRuntimeReadiness must forbid silent installs");
+  ensure(source?.installExecution === "manual_confirmation_required", "toolchainRuntimeReadiness install execution must require confirmation");
+  for (const toolId of ["node", "npm", "python3", "uv", "go", "rustc", "java", "swift", "gh", "gcloud", "firebase", "claude", "gemini", "qwen", "opencode", "codex", "ollama", "aider", "hermes", "goose", "open-design"]) {
+    ensure(toolIds.has(toolId), `toolchainRuntimeReadiness missing tool ${toolId}`);
+  }
+}
+
+if (desktopAppIntegration) {
+  const source = payload.sources?.desktopAppIntegration;
+  const apps = Array.isArray(desktopAppIntegration.apps) ? desktopAppIntegration.apps : [];
+  const appIds = new Set(apps.map((app) => app.id));
+
+  ensure(source, "cloud environment sources must include desktopAppIntegration");
+  ensure(source?.path === "content/development/desktop-app-integration.json", "desktopAppIntegration path must point to integration file");
+  ensure(source?.appCount === apps.length, "desktopAppIntegration appCount must match apps");
+  ensure(source?.launchMode === "manual_or_user_requested", "desktopAppIntegration launch mode must stay manual/user requested");
+  ensure(source?.defaultIde === "antigravity", "desktopAppIntegration default IDE must be antigravity");
+  for (const appId of ["antigravity", "xcode", "android-studio", "jetbrains-toolbox", "codex", "open-design"]) {
+    ensure(appIds.has(appId), `desktopAppIntegration missing app ${appId}`);
+  }
+}
+
+if (llmPackageRegistry || llmTaskRoutingPolicy || llmAdapterReadiness || llmRequestBlueprints || llmBridge) {
+  const source = payload.sources?.llmSystem;
+  const routingSource = payload.sources?.llmTaskRoutingPolicy;
+  const adapterSource = payload.sources?.llmAdapterReadiness;
+  const blueprintSource = payload.sources?.llmRequestBlueprints;
+  const bridgeSource = payload.sources?.llmBridge;
+  const registryPackages = Array.isArray(llmPackageRegistry?.packages) ? llmPackageRegistry.packages : [];
+  const readyPackages = registryPackages.filter((entry) => entry.status === "ready").length;
+  const routingPolicies = Array.isArray(llmTaskRoutingPolicy?.policy?.routingRules) ? llmTaskRoutingPolicy.policy.routingRules : [];
+  const adapterEntries = Array.isArray(llmAdapterReadiness?.adapters) ? llmAdapterReadiness.adapters : [];
+  const readyAdapters = adapterEntries.filter((entry) => entry.status === "ready").length;
+  const requestBlueprints = Array.isArray(llmRequestBlueprints?.blueprints) ? llmRequestBlueprints.blueprints : [];
+
+  ensure(source, "cloud environment sources must include llmSystem");
+  ensure(source?.path === "content/development/llm-package-registry.json", "llmSystem source path must point to llm-package-registry");
+  ensure(source?.providerCount === registryPackages.length, "llmSystem provider count must match llm package registry");
+  ensure(source?.activePackageCount === readyPackages, "llmSystem active package count must match registry ready entries");
+  ensure(routingSource?.path === "content/development/llm-task-routing-policy.json", "llmTaskRoutingPolicy source path must point to policy");
+  ensure(routingSource?.routingRuleCount === routingPolicies.length, "llmTaskRoutingPolicy routingRuleCount must match file");
+  ensure(adapterSource?.path === "content/development/llm-adapter-readiness.json", "llmAdapterReadiness source path must point to adapters");
+  ensure(adapterSource?.adapterCount === adapterEntries.length, "llmAdapterReadiness adapterCount must match file");
+  ensure(adapterSource?.readyAdapterCount === readyAdapters, "llmAdapterReadiness readyAdapterCount must match file");
+  ensure(blueprintSource?.path === "content/development/llm-request-blueprints.json", "llmRequestBlueprints source path must point to blueprints");
+  ensure(blueprintSource?.blueprintCount === requestBlueprints.length, "llmRequestBlueprints blueprintCount must match file");
+  ensure(bridgeSource?.path === "data/seis-repos-llm-bridge-2026-06-08.json", "llmBridge source path must point to bridge");
+  ensure(bridgeSource?.canonicalRepo === ".", "llmBridge canonical repo should remain repo root");
+  ensure(bridgeSource?.canonicalBranch === "main", "llmBridge canonicalBranch must be main");
 }
 }
 

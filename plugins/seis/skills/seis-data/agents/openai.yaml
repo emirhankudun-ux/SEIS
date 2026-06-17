@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Data"
+  short_description: "Data architecture and analytics lane"
+  default_prompt: "Use $seis-data to model, validate, or analyze SEIS data safely."

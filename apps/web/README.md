@@ -1,6 +1,11 @@
 # Web Lane
 
-The Web lane is the browser product surface for SEIS CLOSED CODE.
+The Web lane contains two browser surfaces:
+
+- `index.html`, `style.css`, and `script.js` power the public portfolio/site
+  surface checked by `npm run seis:check`.
+- `seis-cockpit.html`, `styles.css`, and `app.js` power the SEIS cockpit/release
+  shell checked by `npm run check:workspace` and copied into `release/web/`.
 
 ## Initial Direction
 

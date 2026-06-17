@@ -1,0 +1,121 @@
+{
+  "id": "seis-llm-package-registry",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-13",
+  "packages": [
+    {
+      "id": "seis-agent",
+      "label": "SEIS Agent",
+      "provider": "seis",
+      "mode": "remote-orchestrator",
+      "status": "ready",
+      "scope": [
+        "policy",
+        "release-governance",
+        "tool-orchestration",
+        "lane-routing"
+      ],
+      "notes": "Tek uzaktan yetkili karar ve orchestrasyon katmanı."
+    },
+    {
+      "id": "codex-helper",
+      "label": "Codex Helper",
+      "provider": "openai",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["repo-execution", "automation", "bounded-task-runner"]
+    },
+    {
+      "id": "openai-helper",
+      "label": "OpenAI Helper",
+      "provider": "openai",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["policy-draft", "analysis", "summarization"]
+    },
+    {
+      "id": "gemini-helper",
+      "label": "Gemini Helper",
+      "provider": "google",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["doc-research", "compare", "web-source-check"]
+    },
+    {
+      "id": "claude-helper",
+      "label": "Claude Helper",
+      "provider": "anthropic",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["copy", "strategy", "ux-narrative"]
+    },
+    {
+      "id": "ollama-helper",
+      "label": "Ollama Helper",
+      "provider": "local",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["local-draft", "private-rationale", "offline-planning"]
+    },
+    {
+      "id": "qwen-helper",
+      "label": "Qwen Helper",
+      "provider": "qwen",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["alternative-reasoning", "code-review-assist", "model-cross-check"]
+    },
+    {
+      "id": "opencode-helper",
+      "label": "OpenCode Helper",
+      "provider": "opencode",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["terminal-coding-assist", "repo-navigation", "patch-assist"]
+    },
+    {
+      "id": "hermes-helper",
+      "label": "Hermes Agent Helper",
+      "provider": "nousresearch",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["agent-gateway", "mcp-gateway", "tool-routing"]
+    },
+    {
+      "id": "goose-helper",
+      "label": "Goose Helper",
+      "provider": "block",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["desktop-agent", "automation", "local-agent-experiments"]
+    },
+    {
+      "id": "open-design-helper",
+      "label": "Open Design Helper",
+      "provider": "open-design",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["design-artifacts", "prototype-preview", "design-system-generation"]
+    },
+    {
+      "id": "aider-helper",
+      "label": "Aider Helper",
+      "provider": "aider",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["diff-editing", "small-refactor", "existing-file-patch"]
+    },
+    {
+      "id": "interpreter-helper",
+      "label": "Interpreter Helper",
+      "provider": "open-interpreter",
+      "mode": "local-helper",
+      "status": "planned",
+      "scope": ["data-transform", "log-analysis", "local-notebook-style-work"]
+    }
+  ],
+  "notes": [
+    "Placeholder registry matured with remote-orchestrator + helper split.",
+    "Remote orchestration must stay on SEIS Agent only."
+  ]
+}

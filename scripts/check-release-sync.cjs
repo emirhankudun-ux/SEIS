@@ -3,7 +3,7 @@ const path = require("node:path");
 
 const ROOT = process.cwd();
 const pairs = [
-  ["apps/web/index.html", "release/web/index.html"],
+  ["apps/web/seis-cockpit.html", "release/web/index.html"],
   ["apps/web/styles.css", "release/web/styles.css"],
   ["apps/web/app.js", "release/web/app.js"]
 ];

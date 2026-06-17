@@ -1,0 +1,51 @@
+title: "[Show and tell] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Share work built with or inspired by SEIS. Useful examples help the ecosystem become practical, not just broad.
+  - type: input
+    id: project
+    attributes:
+      label: Project or artifact
+      description: Name the project, demo, experiment, document, or integration.
+      placeholder: "Example: Apple-first SEIS prototype, MCP skill demo, design-system audit"
+    validations:
+      required: true
+  - type: textarea
+    id: what-it-does
+    attributes:
+      label: What it does
+      description: Explain the concrete user or contributor value.
+      placeholder: What can someone learn, reuse, or improve?
+    validations:
+      required: true
+  - type: dropdown
+    id: lane
+    attributes:
+      label: SEIS lane
+      options:
+        - Apple first
+        - AI agents / MCP / skills / plugins
+        - Web / full stack / design systems
+        - Data / ML / AI governance
+        - Android / Windows / cross-platform
+        - Cloud / DevOps / security
+        - Documentation / education / community
+    validations:
+      required: true
+  - type: textarea
+    id: links
+    attributes:
+      label: Links or evidence
+      description: Add screenshots, repos, docs, commands, tests, or release notes when available.
+      placeholder: Avoid secrets, private credentials, and proprietary material.
+  - type: checkboxes
+    id: sharing
+    attributes:
+      label: Sharing check
+      options:
+        - label: I have permission to share any linked material.
+          required: true
+        - label: This post does not include secrets, tokens, credentials, or private user data.
+          required: true

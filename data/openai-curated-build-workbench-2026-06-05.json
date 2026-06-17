@@ -5,14 +5,14 @@
   "source_policy_files": [
     "docs/platform/openai-first-plugin-policy.md",
     "data/openai-plugin-priority-2026-06-05.json",
-    "data/installed-codex-plugins-2026-06-05.json"
+    "data/installed-codex-plugins-2026-06-15.json"
   ],
   "active_counts": {
-    "installed_enabled_plugins": 179,
-    "not_installed_plugins": 0
+    "installed_enabled_plugins": 186,
+    "not_installed_plugins": 10
   },
   "sprint_1": {
-    "goal": "Turn SEIS from a repository hub into a usable closed-code operating cockpit.",
+    "goal": "Turn SEIS from a repository hub into a usable open-source operating cockpit.",
     "modules": [
       {
         "id": "web_cockpit",

@@ -1,183 +1,109 @@
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { existsSync, readFileSync } from "node:fs";
 
 const requiredFiles = [
   "AGENTS.md",
+  "CODEX.md",
+  "CLAUDE.md",
   "README.md",
+  "CONTRIBUTING.md",
+  "SECURITY.md",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTORS.md",
+  "LICENSE",
+  "package.json",
   "apps/web/index.html",
-  "apps/web/case-studies/seis-foundation.html",
-  "apps/web/case-studies/case-study.css",
-  "apps/web/manifest.webmanifest",
-  "apps/web/robots.txt",
-  "apps/web/sitemap.xml",
-  "apps/web/src/scripts/motion-system.js",
-  "apps/web/src/scripts/development-mode.js",
-  "apps/web/src/scripts/efficiency-governor.js",
-  "apps/web/src/scripts/weekly-usage-governor.js",
-  "apps/web/src/scripts/gallery-system.js",
-  "apps/web/src/scripts/handoff-system.js",
-  "apps/web/src/scripts/i18n-system.js",
-  "apps/web/src/scripts/pwa-system.js",
-  "apps/web/src/scripts/system-pulse.js",
+  "apps/web/seis-cockpit.html",
+  "apps/web/script.js",
+  "apps/web/style.css",
   "apps/web/service-worker.js",
-  "apps/web/src/i18n/locales.js",
-  "apps/web/src/content/artworks.js",
-  "content/lab/operating-system.json",
-  "content/lab/development-process.json",
-  "content/lab/development-mode.json",
-  "content/lab/system-pulse.json",
-  "content/lab/efficiency-governor.json",
-  "content/lab/efficiency-mode.json",
-  "content/lab/weekly-usage-governor.json",
-  "content/lab/handoff-checklist.json",
-  "content/lab/long-development-roadmap.json",
-  "content/lab/accessibility-review.json",
-  "content/lab/framework-decision.json",
-  "content/site/metadata.json",
-  "content/case-studies/detail-model.json",
-  "content/case-studies/content-quality-review.json",
-  "content/case-studies/detail-route-proposal.json",
-  "deploy/server-targets.json",
-  "deploy/server-targets.local.example.json",
-  "packages/design-tokens/seis.tokens.css",
-  "packages/asset-registry/legacy-assets.json",
-  "docs/reports/zip-analysis-2026-05-24.md",
-  "docs/seo/metadata-plan.md",
-  "docs/architecture/web-mobile-foundation.md",
-  "docs/architecture/animation-system-plan.md",
-  "docs/architecture/case-study-detail-route-proposal.md",
-  "docs/decisions/framework-decision-record.md",
-  "docs/quality/responsive-performance-accessibility.md",
-  "docs/quality/manual-accessibility-review.md",
-  "docs/quality/case-study-content-quality-review.md",
-  "docs/strategy/ui-ux-digital-lab-operating-system.md",
-  "docs/strategy/case-study-detail-model.md",
-  "docs/deployment/workspace-routing.md",
-  "docs/deployment/full-efficiency-shipment.md",
-  "docs/deployment/server-target-selection.md",
-  "docs/governance/development-process.md",
-  "docs/plans/long-development-roadmap.md",
-  "docs/plans/first-commit-plan.md",
-  "scripts/full-efficiency-ship.mjs",
-  "scripts/check-seo-metadata.mjs"
+  "packages/seis-ai/bin/seis-check.mjs",
+  "packages/seis-ai/bin/seis-agent.mjs",
+  "packages/seis-ai/src/mcp/server.mjs",
+  "mcp/seis-mcp-server.mjs",
+  "plugins/seis/README.md",
+  "script/build_and_run.sh",
+  "docs/development/first-run-quickstart.md",
+  "apps/macos/README.md",
+  "docs/governance/branch-policy.md",
+  "docs/governance/open-source-governance.md",
+  "docs/governance/seis-supreme-v12-constitution.md",
+  ".github/workflows/codeql.yml",
+  "scripts/check-open-source-governance.mjs"
 ];
 
 const requiredTextChecks = [
-  ["apps/web/index.html", "UI-UX Digital Lab"],
-  ["apps/web/index.html", "id=\"development\""],
-  ["apps/web/index.html", "id=\"development-mode\""],
-  ["apps/web/index.html", "id=\"pulse\""],
-  ["apps/web/index.html", "id=\"efficiency\""],
-  ["apps/web/index.html", "id=\"weekly-usage\""],
-  ["apps/web/index.html", "id=\"handoff\""],
-  ["apps/web/index.html", "id=\"roadmap\""],
-  ["apps/web/robots.txt", "Sitemap: https://emirhankudun-ux.github.io/UIX-Apps/sitemap.xml"],
-  ["apps/web/sitemap.xml", "https://emirhankudun-ux.github.io/UIX-Apps/"],
-  ["apps/web/case-studies/seis-foundation.html", "Editorial Narrative"],
-  ["content/lab/operating-system.json", "experienceModes"],
-  ["content/lab/development-process.json", "activeSprint"],
-  ["content/lab/development-mode.json", "development-continuation"],
-  ["content/lab/system-pulse.json", "static-release"],
-  ["content/lab/efficiency-governor.json", "high-cognition-low-machine-load"],
-  ["content/lab/efficiency-mode.json", "full-efficiency-low-pressure"],
-  ["content/lab/weekly-usage-governor.json", "productive-weekly-usage"],
-  ["content/lab/handoff-checklist.json", "confirm-target"],
-  ["content/lab/long-development-roadmap.json", "phase-06-release-system"],
-  ["content/lab/accessibility-review.json", "cognitive-load"],
-  ["content/lab/framework-decision.json", "static-html-css-js"],
-  ["content/site/metadata.json", "emirhankudun-ux.github.io/UIX-Apps"],
-  ["content/case-studies/detail-model.json", "contentQualityRubric"],
-  ["content/case-studies/content-quality-review.json", "requiredBeforeDetailRoute"],
-  ["content/case-studies/detail-route-proposal.json", "framework-neutral-route-planning"],
-  ["docs/strategy/ui-ux-digital-lab-operating-system.md", "Experience Modes"],
-  ["docs/governance/development-process.md", "Active Sprint"],
-  ["docs/plans/long-development-roadmap.md", "Framework decision"],
-  ["docs/decisions/framework-decision-record.md", "Status: deferred"],
-  ["docs/decisions/framework-decision-record.md", "Dependency Budget"],
-  ["docs/quality/manual-accessibility-review.md", "Release Blockers"],
-  ["docs/strategy/case-study-detail-model.md", "No new dependency"],
-  ["docs/quality/case-study-content-quality-review.md", "Review Sequence"],
-  ["docs/architecture/case-study-detail-route-proposal.md", "Rollback Path"],
-  ["docs/deployment/workspace-routing.md", "GitHub branch target"],
-  ["docs/deployment/full-efficiency-shipment.md", "npm run ship:full-efficiency"],
-  ["docs/deployment/server-target-selection.md", "Confirmation Flow"],
-  ["docs/deployment/server-target-selection.md", "rollback owner"],
-  ["docs/seo/metadata-plan.md", "Readiness Contract"],
-  ["apps/web/index.html", "data-cinematic-field"],
-  ["apps/web/index.html", "data-artwork-grid"],
-  ["apps/web/index.html", "data-locale-switcher"],
-  ["apps/web/service-worker.js", "CACHE_NAME"],
-  ["apps/web/service-worker.js", "development-mode.json"],
-  ["apps/web/service-worker.js", "efficiency-governor.json"],
-  ["apps/web/service-worker.js", "weekly-usage-governor.json"],
-  ["apps/web/service-worker.js", "handoff-checklist.json"],
-  ["apps/web/src/i18n/locales.js", "supportedLocales"],
-  ["apps/web/src/i18n/locales.js", "ar"],
-  ["apps/web/src/styles/motion.css", "prefers-reduced-motion"],
-  ["apps/web/src/scripts/motion-system.js", "requestAnimationFrame"],
-  ["apps/web/src/scripts/motion-system.js", "initDevelopmentMode"],
-  ["apps/web/src/scripts/development-mode.js", "DEVELOPMENT_MODE_SOURCE"],
-  ["apps/web/src/scripts/motion-system.js", "initEfficiencyGovernor"],
-  ["apps/web/src/scripts/efficiency-governor.js", "GOVERNOR_SOURCE"],
-  ["apps/web/src/scripts/motion-system.js", "initWeeklyUsageGovernor"],
-  ["apps/web/src/scripts/weekly-usage-governor.js", "WEEKLY_USAGE_SOURCE"],
-  ["apps/web/src/scripts/motion-system.js", "initSystemPulse"],
-  ["apps/web/src/scripts/motion-system.js", "initEfficiencyGovernor"],
-  ["apps/web/src/scripts/motion-system.js", "initHandoffSystem"],
-  ["scripts/full-efficiency-ship.mjs", "UIXAppTTR"],
-  ["server/node/static-server.mjs", "/_server/development-mode"],
-  ["server/node/static-server.mjs", "/_server/efficiency"],
-  ["server/node/static-server.mjs", "/_server/weekly-usage"],
-  ["server/node/static-server.mjs", "/_server/handoff"],
-  ["docs/reports/zip-analysis-2026-05-24.md", "Valuable Assets"]
+  ["README.md", "AI-native open source platform"],
+  ["README.md", "`main` is the only permanent branch"],
+  ["README.md", "MCP servers"],
+  ["README.md", "first-run-quickstart.md"],
+  ["README.md", "GitHub Growth Strategy"],
+  ["README.md", "plugins/seis-ai-agent"],
+  ["README.md", "Do not add filler code"],
+  ["AGENTS.md", "Open Source Platform Direction"],
+  ["AGENTS.md", "active GitHub development surface for SEIS"],
+  ["CODEX.md", "GitHub -> Codex Cloud -> Branch -> Commit -> Pull Request -> Review -> Merge"],
+  ["CODEX.md", "SEIS-Agent"],
+  ["CODEX.md", "Ed25519"],
+  ["CLAUDE.md", "Claude Code Guide"],
+  ["docs/development/first-run-quickstart.md", "npm run quality"],
+  ["docs/development/first-run-quickstart.md", "./script/build_and_run.sh --verify"],
+  ["docs/development/first-run-quickstart.md", "Do not install Swift, Xcode, Android Studio"],
+  ["apps/macos/README.md", "./script/build_and_run.sh --verify"],
+  ["apps/macos/README.md", "SeisAppleNativeShell"],
+  ["CONTRIBUTING.md", "Do not ask contributors to install every language toolchain"],
+  ["SECURITY.md", "MCP tools, plugins, and agent workflows"],
+  ["SECURITY.md", "GitHub CodeQL code scanning"],
+  ["CONTRIBUTORS.md", "OpenAI Codex / ChatGPT"],
+  ["CONTRIBUTORS.md", "Claude"],
+  ["docs/governance/branch-policy.md", "`main` is the only permanent branch"],
+  ["docs/governance/open-source-governance.md", "GitHub Update Rule"],
+  ["docs/governance/open-source-governance.md", ".github/workflows/codeql.yml"],
+  ["docs/governance/seis-supreme-v12-constitution.md", "open-source AI-native"],
+  ["docs/polyglot/language-balance-plan.md", "GitHub Language Balance"],
+  ["docs/polyglot/language-balance-plan.md", "Do not add filler code only to change language percentages"],
+  ["package.json", "\"check:open-source-governance\""],
+  [".github/workflows/ci.yml", "npm run quality:governance"],
+  [".github/workflows/seis-open-source-governance.yml", "SEIS Open Source Governance"]
 ];
 
 const forbiddenTextChecks = [
-  ["apps/web/robots.txt", "example.com"],
-  ["apps/web/sitemap.xml", "example.com"],
-  ["content/site/metadata.json", "example.com"]
+  ["README.md", "# SEIS CLOSED CODE"],
+  [".github/workflows/ci.yml", "UIXAppTTR"],
+  [".github/workflows/foundation-check.yml", "UIXAppTTR"],
+  [".github/workflows/seis-open-source-governance.yml", "UIXAppTTR"]
 ];
 
 const failures = [];
 
-for (const file of requiredFiles) {
+function read(file) {
   if (!existsSync(file)) {
     failures.push(`missing required file: ${file}`);
+    return "";
   }
+  return readFileSync(file, "utf8");
+}
+
+for (const file of requiredFiles) {
+  read(file);
 }
 
 for (const [file, needle] of requiredTextChecks) {
-  if (!existsSync(file)) {
-    continue;
-  }
-  const contents = readFileSync(file, "utf8");
-  if (!contents.includes(needle)) {
+  const contents = read(file);
+  if (contents && !contents.includes(needle)) {
     failures.push(`missing "${needle}" in ${file}`);
   }
 }
 
 for (const [file, needle] of forbiddenTextChecks) {
-  if (!existsSync(file)) {
-    continue;
-  }
-  const contents = readFileSync(file, "utf8");
+  const contents = read(file);
   if (contents.includes(needle)) {
     failures.push(`forbidden "${needle}" in ${file}`);
   }
 }
 
-const drawingDir = "apps/web/public/media/drawings";
-if (!existsSync(drawingDir)) {
-  failures.push(`missing drawing directory: ${drawingDir}`);
-} else {
-  const drawings = readdirSync(drawingDir).filter(name => name.endsWith(".jpg"));
-  const bytes = drawings.reduce((total, name) => total + statSync(join(drawingDir, name)).size, 0);
-  if (drawings.length !== 20) {
-    failures.push(`expected 20 curated drawing assets, found ${drawings.length}`);
-  }
-  if (bytes > 7_000_000) {
-    failures.push(`curated drawing assets exceed lightweight budget: ${bytes} bytes`);
-  }
+const packageJson = JSON.parse(read("package.json") || "{}");
+if (packageJson.scripts?.["check:foundation"] !== "node scripts/check-foundation.mjs") {
+  failures.push("package.json must expose check:foundation");
 }
 
 if (failures.length > 0) {

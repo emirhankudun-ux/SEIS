@@ -1,0 +1,1240 @@
+{
+  "id": "seis-execution-runway",
+  "mode": "extreme_long_duration_execution_runway",
+  "sourcePackages": "seis-execution-packages",
+  "duration": {
+    "weeks": 26,
+    "minimumFocusHours": 780,
+    "cadence": "deep multi-week work windows with weekly generated checkpoints"
+  },
+  "summary": {
+    "phaseCount": 4,
+    "slotCount": 60,
+    "checkpointCount": 60,
+    "minimumFocusHours": 780,
+    "packageCoverageCount": 30,
+    "commandCoverageCount": 10
+  },
+  "governance": {
+    "defaultCadence": "one package per focused work slice",
+    "commitPolicy": "commit only after explicit user approval",
+    "pushPolicy": "push only after explicit user approval",
+    "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+  },
+  "phases": [
+    {
+      "id": "phase-01-foundation-deepening",
+      "label": "Foundation Deepening",
+      "weeks": "01-06",
+      "laneId": "now",
+      "focusHours": 180
+    },
+    {
+      "id": "phase-02-apple-native-deepening",
+      "label": "Apple Native Deepening",
+      "weeks": "07-13",
+      "laneId": "next",
+      "focusHours": 210
+    },
+    {
+      "id": "phase-03-windows-polyglot-deepening",
+      "label": "Windows Polyglot Deepening",
+      "weeks": "14-20",
+      "laneId": "queued",
+      "focusHours": 210
+    },
+    {
+      "id": "phase-04-cross-platform-hardening",
+      "label": "Cross Platform Hardening",
+      "weeks": "21-26",
+      "laneId": "all",
+      "focusHours": 180
+    }
+  ],
+  "nextSlots": [
+    {
+      "id": "phase-01-foundation-deepening-slot-01",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 1,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-01-wave-01-foundation-m01-architecture-contract",
+      "missionId": "wave-01-foundation-m01-architecture-contract",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-02",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 2,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-02-wave-01-foundation-m02-agent-policy",
+      "missionId": "wave-01-foundation-m02-agent-policy",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-03",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 3,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-03-wave-01-foundation-m03-platform-bridge",
+      "missionId": "wave-01-foundation-m03-platform-bridge",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "C#",
+        "CUE",
+        "Go",
+        "PowerShell",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-04",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 4,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-04-wave-01-foundation-m04-data-plane",
+      "missionId": "wave-01-foundation-m04-data-plane",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "R",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-05",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 5,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-05-wave-01-foundation-m05-design-engineering",
+      "missionId": "wave-01-foundation-m05-design-engineering",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CSS",
+        "CUE",
+        "Go",
+        "HTML",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-06",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 6,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-06-wave-01-foundation-m06-quality-gate",
+      "missionId": "wave-01-foundation-m06-quality-gate",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-07",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 7,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-07-wave-01-foundation-m07-security-governance",
+      "missionId": "wave-01-foundation-m07-security-governance",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-08",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 8,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-08-wave-01-foundation-m08-llm-orchestration",
+      "missionId": "wave-01-foundation-m08-llm-orchestration",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "JSON",
+        "Python",
+        "Rust",
+        "SQL",
+        "YAML"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-09",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 9,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-09-wave-01-foundation-m09-runtime-surface",
+      "missionId": "wave-01-foundation-m09-runtime-surface",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Java",
+        "Kotlin",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-01-foundation-deepening-slot-10",
+      "phaseId": "phase-01-foundation-deepening",
+      "phaseLabel": "Foundation Deepening",
+      "phaseOrder": 10,
+      "weekWindow": "01-06",
+      "focusHours": 18,
+      "packageId": "packet-10-wave-01-foundation-m10-release-readiness",
+      "missionId": "wave-01-foundation-m10-release-readiness",
+      "laneId": "now",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-02-apple-native-deepening-slot-01",
+      "phaseId": "phase-02-apple-native-deepening",
+      "phaseLabel": "Apple Native Deepening",
+      "phaseOrder": 1,
+      "weekWindow": "07-13",
+      "focusHours": 21,
+      "packageId": "packet-11-wave-02-apple-native-m01-architecture-contract",
+      "missionId": "wave-02-apple-native-m01-architecture-contract",
+      "laneId": "next",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    },
+    {
+      "id": "phase-02-apple-native-deepening-slot-02",
+      "phaseId": "phase-02-apple-native-deepening",
+      "phaseLabel": "Apple Native Deepening",
+      "phaseOrder": 2,
+      "weekWindow": "07-13",
+      "focusHours": 21,
+      "packageId": "packet-12-wave-02-apple-native-m02-agent-policy",
+      "missionId": "wave-02-apple-native-m02-agent-policy",
+      "laneId": "next",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "exitCriteria": [
+        "all package acceptance gates reviewed",
+        "automation refresh remains idempotent",
+        "no commit or push occurs without explicit approval"
+      ]
+    }
+  ],
+  "nextCheckpoints": [
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-01",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-01-wave-01-foundation-m01-architecture-contract",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-02",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-02-wave-01-foundation-m02-agent-policy",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-03",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-03-wave-01-foundation-m03-platform-bridge",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-04",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-04-wave-01-foundation-m04-data-plane",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-05",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-05-wave-01-foundation-m05-design-engineering",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-06",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-06-wave-01-foundation-m06-quality-gate",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-07",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-07-wave-01-foundation-m07-security-governance",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-08",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-08-wave-01-foundation-m08-llm-orchestration",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-09",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-09-wave-01-foundation-m09-runtime-surface",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-01-foundation-deepening-slot-10",
+      "phaseId": "phase-01-foundation-deepening",
+      "packageId": "packet-10-wave-01-foundation-m10-release-readiness",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-02-apple-native-deepening-slot-01",
+      "phaseId": "phase-02-apple-native-deepening",
+      "packageId": "packet-11-wave-02-apple-native-m01-architecture-contract",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    },
+    {
+      "id": "checkpoint-phase-02-apple-native-deepening-slot-02",
+      "phaseId": "phase-02-apple-native-deepening",
+      "packageId": "packet-12-wave-02-apple-native-m02-agent-policy",
+      "requiredChecks": [
+        "npm run check:seis-execution-packages",
+        "npm run check:seis-execution-runway",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "evidence": [
+        "reports/seis-execution-packages.md",
+        "reports/seis-execution-runway.md",
+        "reports/automation-refresh-seis-surface-summary.json"
+      ]
+    }
+  ]
+}

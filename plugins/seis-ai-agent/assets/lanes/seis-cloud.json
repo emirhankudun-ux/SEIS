@@ -1,0 +1,47 @@
+{
+  "id": "seis-cloud",
+  "displayName": "SEIS Cloud",
+  "version": 1,
+  "lane": "cloud",
+  "intent": "Provider-neutral deployment readiness, public cloud target selection, team/workplace VPN cloud planning, GCP Compute preflight, rollback contracts, and secret-safe infrastructure automation.",
+  "activationPolicy": "use_when_task_requires_cloud_deployment_server_target_provider_preflight_or_infrastructure_readiness_under_seis_governance",
+  "accessPolicy": {
+    "source": "deploy/cloud-access-policy.json",
+    "publicCloud": {
+      "audience": "everyone",
+      "vpnRequired": false
+    },
+    "teamVpnCloud": {
+      "audience": "workplaces-and-teams",
+      "vpnRequired": true,
+      "defaultVpn": "wireguard"
+    }
+  },
+  "sourceEvidence": [
+    "data/seis-plugin-package-intake-2026-06-13.json",
+    "docs/platform/seis-plugin-package-intake.md"
+  ],
+  "primaryPaths": [
+    "deploy",
+    "server",
+    "scripts",
+    "docs/deployment",
+    "reports"
+  ],
+  "qualityCommands": [
+    "npm run check:cloud-access-policy",
+    "npm run check:cloud-environment",
+    "npm run check:server-cloud-report",
+    "npm run check:server-target",
+    "npm run check:gcp-cloud-server"
+  ],
+  "guardrails": [
+    "never commit secrets",
+    "keep apply commands behind explicit user confirmation",
+    "prefer provider-neutral readiness before provider-specific mutation",
+    "route everyone-facing surfaces to public cloud without VPN",
+    "route workplace/team workspaces to VPN cloud with approved peers only",
+    "require rollback owner and public URL before live upload",
+    "validate cloud reports before completion"
+  ]
+}

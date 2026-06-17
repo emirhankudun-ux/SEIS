@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: SEIS Support Guide
+    url: https://github.com/emirhankudun-ux/SEIS/blob/main/SUPPORT.md
+    about: Choose the right place for questions, ideas, bugs, features, and security reports.
+  - name: SEIS Discussions
+    url: https://github.com/emirhankudun-ux/SEIS/discussions
+    about: Use discussions for broad ideas, architecture questions, Q&A, and show-and-tell.
+  - name: Security Policy
+    url: https://github.com/emirhankudun-ux/SEIS/security/policy
+    about: Report vulnerabilities privately instead of opening a public issue.

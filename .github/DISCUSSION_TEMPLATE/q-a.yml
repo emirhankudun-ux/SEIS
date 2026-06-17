@@ -1,0 +1,49 @@
+title: "[Q&A] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ask implementation, architecture, or contribution questions here. Do not post secrets or vulnerability details.
+  - type: input
+    id: context
+    attributes:
+      label: Context
+      description: Which SEIS area, file, platform, or workflow is involved?
+      placeholder: "Example: packages/seis-ai MCP tools, Apple platform lane, GitHub Actions, apps/web"
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What are you trying to understand or decide?
+      placeholder: Ask the specific question and include relevant constraints.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - Apple first
+        - AI systems / agents / MCP
+        - Full stack / web / backend
+        - Data / ML / governance
+        - DevOps / cloud / security
+        - Design systems / UX / UI
+        - GitHub / releases / community
+    validations:
+      required: true
+  - type: textarea
+    id: tried
+    attributes:
+      label: What you checked
+      description: Link docs, commands, errors, or files you already inspected.
+      placeholder: Keep it concise and source-backed.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: This is not a private security report or credential issue.
+          required: true

@@ -17,4 +17,3 @@ func FoundationHealth() HealthStatus {
 		ReducedMotion:     true,
 	}
 }
-

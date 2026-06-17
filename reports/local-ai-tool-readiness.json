@@ -1,0 +1,213 @@
+{
+  "id": "seis-local-ai-tool-readiness",
+  "path": "reports/local-ai-tool-readiness.json",
+  "generatedAt": "2026-06-10T06:28:42.100Z",
+  "helperCount": 13,
+  "readyCount": 8,
+  "missingCredentialCount": 2,
+  "missingCommandCount": 3,
+  "runtimeNotReadyCount": 0,
+  "tools": [
+    {
+      "id": "codex",
+      "label": "Codex",
+      "command": "codex",
+      "commandPath": "/Users/emirhankudun/.local/bin/codex",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "openai",
+      "label": "OpenAI",
+      "command": "openai",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": false,
+      "credentialState": {
+        "env": "OPENAI_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "claude",
+      "label": "Claude",
+      "command": "claude",
+      "commandPath": "/Users/emirhankudun/.local/bin/claude",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": {
+        "env": "ANTHROPIC_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-credential",
+      "issueCodes": [
+        "missing-ANTHROPIC_API_KEY"
+      ]
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "command": "gemini",
+      "commandPath": "/Users/emirhankudun/.local/bin/gemini",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": {
+        "env": "GEMINI_API_KEY",
+        "present": false
+      },
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-credential",
+      "issueCodes": [
+        "missing-GEMINI_API_KEY"
+      ]
+    },
+    {
+      "id": "qwen",
+      "label": "Qwen",
+      "command": "qwen",
+      "commandPath": "/Users/emirhankudun/.local/bin/qwen",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "kimi",
+      "label": "Kimi",
+      "command": "kimi",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": true,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama",
+      "command": "ollama",
+      "commandPath": "/usr/local/bin/ollama",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": true,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "opencode",
+      "label": "OpenCode",
+      "command": "opencode",
+      "commandPath": "/Users/emirhankudun/.local/bin/opencode",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "aider",
+      "label": "Aider",
+      "command": "aider",
+      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "interpreter",
+      "label": "Interpreter",
+      "command": "interpreter",
+      "commandPath": null,
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": false,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
+    },
+    {
+      "id": "hermes",
+      "label": "Hermes Agent",
+      "command": "hermes",
+      "commandPath": "/Users/emirhankudun/.local/bin/hermes",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "goose",
+      "label": "Goose",
+      "command": "goose",
+      "commandPath": "/Users/emirhankudun/.local/bin/goose",
+      "launcherCommandPath": null,
+      "appPath": null,
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "command": "open",
+      "commandPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "launcherCommandPath": "/usr/bin/open",
+      "appPath": "/Users/emirhankudun/Applications/Open Design.app",
+      "installed": true,
+      "credentialState": null,
+      "runtimeOk": true,
+      "offlineFallbackCapable": false,
+      "status": "ready",
+      "issueCodes": []
+    }
+  ]
+}

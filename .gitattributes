@@ -1,0 +1,16 @@
+# GitHub Linguist policy: keep generated surfaces out of the language bar.
+release/** linguist-generated=true
+reports/** linguist-generated=true
+data/** linguist-generated=true
+content/development/*.json linguist-generated=true
+apps/web/src/i18n/locales.js linguist-generated=true
+.dist.seis-cloud-check.*/** linguist-generated=true
+
+# Local imported/snapshot copies are useful for comparison but not source language signal.
+SE*S/** linguist-vendored=true
+
+# Keep the requested GitHub language split explicit without reclassifying source.
+polyglot/typescript/** linguist-language=TypeScript
+polyglot/react/*.tsx linguist-language=TypeScript
+packages/seis-ai/types/** linguist-language=TypeScript
+polyglot/objective-c/** linguist-language=Objective-C

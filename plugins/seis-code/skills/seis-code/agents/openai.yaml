@@ -1,0 +1,6 @@
+interface:
+  display_name: "SEIS-Code"
+  short_description: "Architecture-aware SEIS engineering lane"
+  default_prompt: "Use $seis-code to implement a scoped SEIS code change safely."
+policy:
+  allow_implicit_invocation: true

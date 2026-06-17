@@ -1,210 +1,244 @@
-# SEIS — Claude Code Operating Instructions
+# SEIS — Claude Code Guide
 
-## Identity
-
-SEIS (Software Engineering Intelligence System) is a humane digital ecosystem focused on cinematic design, premium UI/UX, modular software engineering, scalable repository governance, calm technology, humane interaction systems, cognitive sustainability, emotionally intelligent interfaces, and sustainable digital environments.
-
-Operate as a calm, modular, high-efficiency AI-native creative-engineering civilization system.
-
----
-
-## Core Priorities
-
-- Clarity, maintainability, accessibility, scalability, rollback safety, compositional quality
-- Humane UX, cognitive sustainability, emotional balance, calm technology
-- Performance efficiency, modular architecture, observability awareness
-- Proportional orchestration: small tasks stay lightweight, large tasks become phased architecture-aware updates
-- High-efficiency / low-power mode: avoid unnecessary indexing, heavy validation loops, broad tool activation, dependency bloat
+**Workspace:** `seis`
+**Owner:** Emirhan Kudun · emirhankudun@gmail.com
+**Stack:** Node 22 ESM monorepo plus Apple-first, web, AI/data, Android,
+Windows, and infrastructure lanes. No root build step.
+**Constitution:** `docs/governance/seis-supreme-v12-constitution.md` — SEIS Supreme
+V12 Ultra Enterprise. Operate as the unified AI-native OS it defines: architecture
+before shortcuts, quality gates on every change, tool discipline (never claim
+unused tools), and the 8-part output format for substantive work.
 
 ---
 
-## Design Philosophy
-
-- Cinematic minimalism, editorial hierarchy, restrained elegance
-- Whitespace intelligence, atmospheric clarity, calm interaction pacing
-- Premium typography and spatial harmony
-- Emotionally sustainable interfaces
-
-## Motion Philosophy
-
-- Restrained cinematic movement, smooth transitions, subtle depth, calm pacing
-- Always support `prefers-reduced-motion` and an explicit low-motion mode
-- Avoid excessive animation, visual chaos, psychological overstimulation, and GPU-expensive effects on mobile
-
-## Engineering Philosophy
-
-- Keep systems maintainable, explainable, accessible, observable, and rollback-safe
-- Main branch is sacred; risky work belongs on isolated branches
-- Legacy files must be analyzed before migration — never copy them directly into the clean app surface
-- Documentation is part of system integrity
-
----
-
-## Repository Structure
+## Repository layout
 
 ```
-SEIS/
-├── apps/
-│   ├── web/          # Vanilla JS/HTML/CSS — primary delivery surface
-│   ├── fullstack/    # Full-stack app surface
-│   ├── android/      # Android surface
-│   └── macos/        # macOS surface
-├── packages/
-│   ├── core/         # Shared logic and utilities
-│   ├── ui/           # Shared UI components
-│   ├── data/         # Data layer
-│   ├── design-tokens/
-│   └── asset-registry/
-├── scripts/          # Governance and quality check scripts
-├── content/          # JSON registry files (marketplace, plugins, etc.)
-├── data/             # Gap closure register and runtime data
-├── docs/             # Governance documentation
-└── .claude/          # Claude commands and skills
+apps/
+  web/              Portfolio site (static HTML/CSS/vanilla JS)
+packages/
+  seis-ai/          AI tooling: MCP server, Claude agent CLI, audit suite
+  core/             Shared utilities + unit tests (Vitest)
+  ui/               UI component library + unit tests (Vitest)
+  design-tokens/    Design token definitions
+  data/             Data schemas and fixtures
+  asset-registry/   Asset catalogue
+.mcp.json           Registers seis-mcp for Claude Code auto-discovery
+.claude/
+  skills/seis-ai/   Claude Code skill: SEIS AI tool reference
+polyglot/           Language manifest (205 languages tracked via check-polyglot.mjs)
+scripts/            Governance scripts + polyglot-check.sh (33 language audit tools)
 ```
 
 ---
 
-## Development Commands
+## MCP server (auto-loaded)
+
+`.mcp.json` registers `packages/seis-ai/bin/seis-mcp.mjs` as the `seis` MCP server.
+In any Claude Code session it exposes **16 tools**, **3 prompts**, and **2 resources**:
+
+| Tool | What it checks |
+|------|---------------|
+| `run_all_checks` | Full audit in one call (8 sections) |
+| `i18n_status` | 5-locale key parity |
+| `i18n_get` | All locale values for a key |
+| `i18n_search` | Substring search across keys + values |
+| `i18n_add_key` | Atomically add a key to all 5 locales |
+| `i18n_rename_key` | Rename a key everywhere — locales + HTML/JS references |
+| `i18n_unreferenced` | Keys in translations.json not used in HTML/JS |
+| `seo_audit` | 15-point SEO/PWA checklist |
+| `web_contract_check` | HTML↔JS selector contract |
+| `drawings_catalog` | Drawing file cross-check |
+| `style_audit` | CSS: undefined `var(--x)` fails; dead classes reported |
+| `web_perf_audit` | File size budgets + render-blocking scripts (6th quality gate) |
+| `a11y_check` | Accessibility: `alt` on images, labeled inputs, accessible buttons (7th quality gate) |
+| `security_audit` | `target="_blank"` safety, `javascript:` hrefs, mixed content (8th quality gate) |
+| `site_config_get` | site-config.json reader |
+| `workspace_status` | Monorepo package inventory |
+
+Prompts: `audit_and_fix`, `add_i18n_key(key, meaning)`, `review_locale(locale)`
+Resources: `seis://web/translations.json`, `seis://web/site-config.json`
+
+---
+
+## CLI tools
 
 ```bash
-# Quality gate (run before every commit)
-npm run quality
+# Audit the portfolio site
+npm run seis:check          # or: node packages/seis-ai/bin/seis-check.mjs
 
-# Individual checks
-npm run check:workspace
-npm run check:foundation
-npm run check:release-sync
-npm run check:cloud-environment
-npm run check:motion-evidence
-npm run check:mobile-ergonomics
-npm run check:software-languages
-npm run check:server-target
-npm run check:monthly-branch-hardening
-npm run check:trusted-marketplace-intake
-npm run check:seis-trusted-marketplace-plugin
-npm run check:connector-activation-report
-npm run check:server-cloud-report
-npm run check:seis-evolution-model
-npm run check:github-remote-configuration
-npm run check:publish-gate-contract
+# Watch mode — re-runs on every save
+npm run seis:watch          # or: node packages/seis-ai/bin/seis-check.mjs --watch
+
+# Launch the Claude agent
+npm run seis:agent -- "task description"
+# or with options:
+node packages/seis-ai/bin/seis-agent.mjs --model sonnet --write "add i18n key foo"
+
+# MCP server (stdio)
+npm run seis:mcp
+
+# Unit tests (packages/core + packages/ui via Vitest)
+npm test
+
+# Schema validation tests
+cd packages/core && npx vitest run src/schemas.test.ts
+```
+
+**`ANTHROPIC_API_KEY`** is required for `seis:agent`.
+
+---
+
+## Portfolio site (`apps/web/`)
+
+### Strict HTML↔JS contract
+`script.js` queries the DOM by **literal** `#id` and `.class` selectors. Any element
+renamed in `index.html` without updating `script.js` (or vice versa) silently breaks
+the site. **Always run `seis:check` after editing either file.**
+
+### i18n system
+- 5 locales: `tr` (default), `en`, `fr`, `it`, `de`
+- All keys in `apps/web/translations.json` — flat object per locale
+- HTML: `data-i18n="key"`, `data-i18n-placeholder="key"`, `data-i18n-aria-label="key"`
+- JS: `getT("key", lang)`
+- **Never add a key to only one locale.** Use `i18n_add_key` MCP tool or `i18nAddKey()`.
+
+### After any edit to `index.html`, `script.js`, `style.css`, or `translations.json`
+```bash
+npm run seis:check   # must pass all 5 checks before committing
 ```
 
 ---
 
-## Test Improvement Areas
+## Agent usage
 
-The current `check:*` scripts verify structural integrity and governance (files exist, JSON schemas are valid, release sync is current). They are not behavioral tests. The following areas need dedicated testing.
+```bash
+# Review and explain audit failures
+node packages/seis-ai/bin/seis-agent.mjs "Run all checks and explain any failures"
 
-### 1. Unit Test Framework — Not Yet Added
+# Review translations
+node packages/seis-ai/bin/seis-agent.mjs --model sonnet "Review French translations for tone"
 
-**Problem:** `packages/core` and `packages/ui` have zero tests. No test runner (Jest, Vitest) is configured anywhere.
+# Add an i18n key (needs --write)
+node packages/seis-ai/bin/seis-agent.mjs --write "Add services.consulting.title to all 5 locales"
 
-**Priority action:**
-- Add [Vitest](https://vitest.dev) to `packages/core` and `packages/ui`
-- Write unit tests for any utility functions exported from `packages/core`
-- Write component-level tests for anything exported from `packages/ui`
-- Add a root-level `test` script: `"test": "vitest run --reporter=verbose"`
+# Multi-turn session (history kept in .seis/sessions/<name>.json, gitignored)
+node packages/seis-ai/bin/seis-agent.mjs --session audit "Run all checks"
+node packages/seis-ai/bin/seis-agent.mjs --session audit --write "Fix what you found"
 
-### 2. Reduced-Motion Behavior Tests — Partially Covered
+# Model aliases: fable | opus (default) | sonnet | haiku
+```
 
-**Problem:** `check:motion-evidence` only checks that the keyword `prefers-reduced-motion` appears in source files. It does not verify that the behavior is correct at runtime.
+## Claude Code slash commands
 
-**Priority action:**
-- Add Playwright tests that simulate `prefers-reduced-motion: reduce` and assert that animations are disabled/skipped
-- Test that the manual `#motion-mode` toggle in `apps/web/index.html` correctly applies low-motion classes
-
-### 3. Accessibility Tests — Not Covered
-
-**Problem:** Accessibility is a stated core value but has zero automated enforcement.
-
-**Priority action:**
-- Install `@axe-core/playwright` alongside Playwright
-- Run axe on every primary page/route as part of the e2e suite
-- Assert zero critical accessibility violations in CI
-
-### 4. Marketplace & Plugin Data Integrity Tests — Partially Covered
-
-**Problem:** `check:trusted-marketplace-intake` verifies JSON structure but does not test rendering or data-driven behavior in `apps/web/app.js`.
-
-**Priority action:**
-- Add Playwright tests that load `apps/web/index.html` (or the served app) and assert:
-  - `#plugins` section renders at least one plugin card
-  - `#marketplace` section renders channel and source data
-  - `renderMarketplace` and `renderPublishGate` produce non-empty DOM
-
-### 5. Content Schema Validation Tests — Not Covered
-
-**Problem:** JSON files in `content/development/` have no automated schema validation beyond what check scripts perform.
-
-**Priority action:**
-- Use [zod](https://zod.dev) or [ajv](https://ajv.js.org) to validate JSON against declared schemas
-- Add a `test:schema` script that validates all registry files before deploy
-
-### 6. CI Pipeline — No Test Stage
-
-**Problem:** `.github/` workflows do not include a dedicated test stage.
-
-**Priority action:**
-- Add a GitHub Actions workflow that runs `npm run quality && npm test` on every push to `main` and on every PR
-- Block merges if quality or tests fail
+- `/seis-audit` — run the full audit via MCP and fix failures
+- `/seis-i18n <task>` — add/rename/review translation keys (all 5 locales)
 
 ---
 
-## Adding Tests — Rules for This Repo
+## Polyglot toolchain (`polyglot/` + `scripts/polyglot-check.sh`)
 
-When writing tests for SEIS, follow these rules:
+Thirty-three non-JS languages each contribute a real, tested tool that audits what
+the JS suite cannot. One command runs them all:
 
-1. **Test behavior, not implementation.** Assert outputs and DOM state, not internal function calls.
-2. **Keep tests calm.** No flaky timeouts, no network calls in unit tests, no large fixture files.
-3. **Accessibility always.** Every new page or component must have a corresponding axe assertion.
-4. **Reduced-motion always.** Any animation-related component must have a test in both motion modes.
-5. **Use Vitest for units, Playwright for e2e.** Do not mix test frameworks.
-6. **Tests live next to source.** `packages/core/src/utils.test.ts`, not a top-level `__tests__/` folder.
+```bash
+./scripts/polyglot-check.sh      # PASS/FAIL/SKIP per language lane
+```
+
+A separate JSON-based manifest tracks 205 globally-known languages:
+
+```bash
+node scripts/check-polyglot.mjs  # validates polyglot/manifest.json (205 languages)
+```
+
+| Language | Tool | Unique value |
+|----------|------|--------------|
+| Python | `seis_image_audit.py` | JPEG/PNG/WebP dimensions from binary headers; asset budget |
+| Python | `seis_icon_gen.py` | Deterministic PWA icon PNGs from manifest colors (zero deps) |
+| Python | `seis_color_contrast.py` | WCAG 2.1 contrast ratios for all fg/bg color-token pairs (AA/AAA) |
+| Python | `seis_sw_cache_audit.py` | Service worker PRECACHE integrity — all listed files verified on disk |
+| Rust | `seis-link-audit/` | Every local href/src/url() + manifest icon resolves on disk |
+| Go | `cmd/seis-serve/` | Local preview server with production CSP/security headers |
+| Go | `cmd/seis-jsonld/` | JSON-LD schema.org Person + WebSite block validation |
+| C | `seis_utf8_check.c` | Strict UTF-8 (rejects overlongs, surrogates, truncation) |
+| C++ | `seis_translations_lint.cpp` | Duplicate JSON keys that `JSON.parse` silently swallows |
+| Ruby | `i18n_stats.rb` | Per-locale volume stats + untranslated-value suspects |
+| Ruby | `html_heading_audit.rb` | Heading hierarchy (1 h1, no skips) + landmark presence audit |
+| Ruby | `favicon_audit.rb` | Icon `<link>` href files verified on disk (favicon.svg, apple-touch-icon, etc.) |
+| PHP | `contact-endpoint.php` | Reference form endpoint (honeypot, anti-injection) |
+| Java | `DrawingsChecksum.java` | SHA-256 ledger of the 20 drawings (`drawings.sha256`) |
+| Java | `CssMediaQueryAudit.java` | CSS responsive breakpoints + prefers-reduced-motion + print query presence |
+| Perl | `hygiene_lint.pl` | BOM / CRLF / trailing-whitespace / final-newline lint |
+| Perl | `robots_txt_audit.pl` | robots.txt syntax: User-agent, Disallow paths, Sitemap https, no HTML content |
+| AWK | `css_var_histogram.awk` | CSS `var(--x)` token frequency; top-used + single-use suspects |
+| TypeScript | `seis_config_validator.ts` | Strict type-checked validation of manifest + site-config + translations |
+| SQL | `audit_ledger.sqlite.sql` | SQLite audit-ledger schema (tables, CHECK constraints, trigger, views) — SKIP if no sqlite3 |
+| jq | `seis_translations_audit.jq` | JSON set-theory audit of locale key parity; advisory empty-value report |
+| XML | `seis_sitemap_check.sh` | xmllint-based sitemap.xml well-formedness, namespace, hreflang, https checks |
+| sed | `seis_css_vars_defined.sh` | Defined-vs-used CSS custom property cross-check (GNU sed sentinel) |
+| YAML | `seis_workflow_lint.sh` | yq-based CI governance lint — trigger, timeout, and job-name enforcement |
+| Bash | `seis_shell_audit.sh` | bash -n syntax check + shebang + `set -u` guard on all repo shell scripts |
+| bc | `seis_budget_check.bc` + `.sh` | Arbitrary-precision asset budget math (HTML/CSS/JS/media KB vs. thresholds) |
+| Bun | `seis_js_quality_audit.ts` | JS production quality: no eval, document.write, unsafe innerHTML, console.log, TODO |
+| Lua | `seis_i18n_attr_audit.lua` | All `data-i18n*` HTML attribute keys verified against tr locale (Lua 5.4, zero deps) |
+| Tcl | `seis_meta_tags_check.tcl` | 12-point SEO/social meta-tag completeness: title, description, OG, Twitter Card |
+| R | `seis_translation_stats.R` | Statistical analysis of string length ratios across 5 locales (flags ≥3× overflow risk) |
+| Haskell | `seis_css_unit_audit.hs` | CSS dimension unit histogram + font-size px check (only root/body/html px accepted) |
+| OCaml | `seis_css_selector_stats.ml` | CSS selector type distribution; fails if ID-selector ratio exceeds 25 % |
+| Nim | `seis_html_img_audit.nim` | All `<img>` tags must have alt attribute; loading attribute advisory |
+| Elixir | `seis_html_anchor_audit.exs` | `target="_blank"` anchors must have `rel="noopener"` or `rel="noreferrer"` (tab-napping) |
+| Groovy | `seis_json_files_check.groovy` | All `.json` files parse + manifest/site-config/translations key presence |
+| Kotlin | `seis_css_font_audit.kts` | Every `--font-*` CSS custom property must have a generic-family fallback |
+| Guile | `seis_hreflang_audit.scm` | All 5 locale + x-default hreflang links present, no duplicates, all HTTPS |
+| Racket | `seis_pwa_manifest_audit.rkt` | PWA manifest: display mode, hex colors, icon sizes (192×192 + 512×512) |
+| Common Lisp | `seis_html_id_uniqueness.lisp` | All `id=` attribute values are unique (no duplicate IDs) |
+| SWI-Prolog | `seis_html_tabindex_audit.pl` | Detects positive `tabindex` values — accessibility anti-pattern (WCAG 2.4.3) |
+| Chicken Scheme | `seis_html_button_types.scm` | `<button>` tags inside `<form>` must have explicit `type=` to prevent accidental submit |
+
+Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
+`--self-test` modes). CI: `.github/workflows/polyglot.yml`.
+TypeScript typings for the audit reports: `packages/seis-ai/types/seis-ai.d.ts`.
 
 ---
 
-## Contributors & AI Partners
+## Unit tests (`packages/core` + `packages/ui`)
 
-SEIS is built with a multi-firm AI-native workflow. Each assistant has a defined role.
+Vitest 4 runs behavioral unit tests for shared utilities and UI constants:
 
-| Firm / Tool | Product | Role in SEIS |
-|---|---|---|
-| **Anthropic** | Claude Code, Claude API | Deep code reasoning, refactors, architecture review, bug analysis, test writing, high-risk implementation review |
-| **OpenAI** | Codex, GPT-4o, ChatGPT | Primary language and reasoning layer for local repo work, terminal tasks, Git flow, Turkish/English synthesis, durable planning |
-| **Google** | Gemini CLI, Gemini Code Assist | Broad-context reading, documentation synthesis, research-heavy tasks, Google ecosystem workflows |
-| **GitHub / Microsoft** | Copilot, Actions, MCP | Inline suggestions, CI/CD orchestration, repository automation |
-| **OpenCode / Aider** | Aider, OpenCode | Scoped implementation partner, fast patch generator, second opinion |
-| **Qwen / Alibaba** | Qwen Code | Supplementary code generation, polyglot support |
-| **Meta / Community** | Llama / Ollama | Offline drafts, private local notes, lightweight summaries, experiments — never canonical |
+```bash
+npm test                          # run all unit tests (26 tests)
+npm run test:watch                # watch mode
+npm run test:coverage             # coverage report
+cd packages/core && npm test      # core only (motion, schemas, risk/activation logic)
+cd packages/ui && npm test        # ui only (motion labels, badge variants)
+```
 
-**Collaboration rules:**
-- Keep exactly one assistant in **writer mode** at a time. Others operate as reviewers, researchers, or planners.
-- Before switching writer role between assistants, inspect `git status`, summarize active changes, and preserve unrelated work.
-- Do not let assistants overwrite each other's edits without a human-readable handoff note or a clean Git diff review.
-- Never place API keys, tokens, private credentials, or `.env` contents into prompts, commits, or agent handoff files.
+Tests live next to source — `packages/core/src/motion.test.ts`, not a top-level `__tests__/`.
 
-## AI Handoff Workflow
-
-1. Start with a short objective, affected paths, expected output, and acceptance checks.
-2. Let one assistant implement, then ask a different assistant to review only the resulting diff.
-3. Validate with the lightest reliable checks first, then scale testing only when the blast radius justifies it.
-4. Record durable operating decisions in `docs/` instead of leaving them only in chat history.
-5. When uncertain, name the uncertainty, gather local evidence, and avoid broad speculative rewrites.
+### Adding tests — rules
+1. **Test behavior, not implementation.** Assert outputs and DOM state.
+2. **Keep tests calm.** No flaky timeouts, no network calls, no large fixture files.
+3. **Accessibility always.** Every new page or component gets an axe assertion in e2e.
+4. **Reduced-motion always.** Animation-related components get tested in both motion modes.
+5. **Use Vitest for units, Playwright for e2e.** Do not mix frameworks.
 
 ---
 
-## Git Workflow
+## Development conventions
+
+- All source is ESM (`.mjs`). No transpilation.
+- No frameworks on the portfolio site — vanilla JS only, no bundler.
+- Keep edits minimal and consistent with existing code style.
+- Run `npm run quality:governance` before committing.
+- Run `npm test` before committing once tests touch files you changed.
+
+---
+
+## Git workflow
 
 - Main branch is sacred — never push directly to `main` without a PR review.
-- Prefer small commits with clear scope: install/setup, governance-doc, feature, fix — keep these separate.
-- Risky work (broad refactors, generated assets, dependency changes, experiments) must use isolated branches.
-- Run `npm run quality` before every commit.
-
-## iCloud Workspace
-
-- Treat `/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root.
-- Before merging root workspace material, follow `docs/governance/icloud-github-workspace-ingestion.md`.
-- Do not bulk-import archives, personal media, `.DS_Store`, nested `.git` directories, or symlink mirrors.
+- Prefer small commits with clear scope: install/setup, governance-doc, feature, fix.
+- Risky work (broad refactors, generated assets, dependency changes) must use isolated branches.
 
 ---
 

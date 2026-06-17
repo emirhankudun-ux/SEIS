@@ -12,8 +12,14 @@
     },
     {
       "id": "github-pages",
+      "audience": "everyone",
       "uploadModel": "publish_dist_seis_static_to_pages_source",
-      "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],
+      "readinessCommand": "npm run cloud:public:readiness -- --repo OWNER/REPO",
+      "requiredFiles": [
+        "scripts/check-public-cloud-readiness.mjs",
+        "dist/seis-static/index.html",
+        "dist/seis-static/health.json"
+      ],
       "verifyRoutes": ["/", "/tr/", "/sitemap.xml"],
       "rollback": "revert_pages_publish_commit"
     },
@@ -51,6 +57,34 @@
       "requiredFiles": ["server/docker/Dockerfile", "dist/seis-static.zip"],
       "verifyRoutes": ["/_server/health", "/health.json"],
       "rollback": "redeploy_previous_container_image"
+    },
+    {
+      "id": "gcp-compute-vm",
+      "audience": "workplaces-and-teams",
+      "uploadModel": "provision_google_compute_vm_with_wireguard_team_vpn_then_connect_over_ssh",
+      "readinessCommand": "npm run cloud:gcp:readiness -- --project PROJECT_ID",
+      "requiredFiles": [
+        "scripts/check-gcp-cloud-readiness.mjs",
+        "scripts/provision-gcp-cloud-server.mjs",
+        "scripts/create-wireguard-peer-config.mjs",
+        "server/cloud/gcp/startup-seis-cloud.sh"
+      ],
+      "verifyRoutes": ["udp://wireguard:51820", "ssh://seis-gcp-cloud-vpn", "/_server/health"],
+      "rollback": "delete_or_stop_compute_instance_after_release_handoff"
+    },
+    {
+      "id": "ssh-wireguard-vps",
+      "audience": "workplaces-and-teams",
+      "uploadModel": "verify_existing_linux_ssh_host_with_wireguard_vpn_and_codex_remote_host",
+      "readinessCommand": "npm run cloud:ssh-vpn:readiness -- --ssh-target USER@HOST",
+      "requiredFiles": [
+        "scripts/check-ssh-wireguard-cloud-readiness.mjs",
+        "scripts/provision-ssh-wireguard-cloud-server.mjs",
+        "scripts/create-wireguard-peer-config.mjs",
+        "server/cloud/ssh-wireguard/install-seis-cloud-host.sh"
+      ],
+      "verifyRoutes": ["udp://wireguard:51820", "ssh://ssh-wireguard-vps", "/_server/health"],
+      "rollback": "disable_wireguard_peer_or_stop_existing_vps_service_after_handoff"
     },
     {
       "id": "azure-static-web-apps",

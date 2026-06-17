@@ -1,0 +1,172 @@
+{
+  "id": "seis-desktop-app-integration",
+  "version": "0.1.0",
+  "generatedAt": "2026-06-11T08:24:53.168Z",
+  "policy": {
+    "launchMode": "manual_or_user_requested",
+    "defaultIde": "antigravity",
+    "appleWork": "xcode",
+    "androidWork": "android-studio",
+    "noPrivateAppStateInRepo": true
+  },
+  "summary": {
+    "appCount": 10,
+    "detectedCount": 8,
+    "missingCount": 2
+  },
+  "apps": [
+    {
+      "id": "antigravity",
+      "label": "Antigravity IDE",
+      "role": "preferred-agentic-ide",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Antigravity.app",
+      "bundleNames": [
+        "Antigravity.app"
+      ],
+      "workflows": [
+        "Open repo/worktree",
+        "Run agent workflows",
+        "Review SEIS plans"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "xcode",
+      "label": "Xcode",
+      "role": "apple-platform-ide",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Xcode.app",
+      "bundleNames": [
+        "Xcode.app"
+      ],
+      "workflows": [
+        "Build iOS/macOS",
+        "Inspect signing",
+        "Use simulators"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "android-studio",
+      "label": "Android Studio",
+      "role": "android-ide",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Android Studio.app",
+      "bundleNames": [
+        "Android Studio.app"
+      ],
+      "workflows": [
+        "Gradle projects",
+        "Emulator/device workflows",
+        "Kotlin/Java inspection"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "jetbrains-toolbox",
+      "label": "JetBrains Toolbox",
+      "role": "ide-manager",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/JetBrains Toolbox.app",
+      "bundleNames": [
+        "JetBrains Toolbox.app"
+      ],
+      "workflows": [
+        "Manage JetBrains IDEs",
+        "Open JVM/backend projects"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "codex",
+      "label": "Codex",
+      "role": "primary-agent-execution",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Codex.app",
+      "bundleNames": [
+        "Codex.app"
+      ],
+      "workflows": [
+        "Repo edits",
+        "Terminal automation",
+        "Validation"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "open-design",
+      "label": "Open Design",
+      "role": "design-agent-workflow",
+      "detected": true,
+      "appPath": "../../../../../Applications/Open Design.app",
+      "bundleNames": [
+        "Open Design.app"
+      ],
+      "workflows": [
+        "Design artifacts",
+        "Prototype previews",
+        "Design-system generation"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "ollama",
+      "label": "Ollama",
+      "role": "local-model-runtime",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Ollama.app",
+      "bundleNames": [
+        "Ollama.app"
+      ],
+      "workflows": [
+        "Offline fallback",
+        "Local model experiments"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "docker",
+      "label": "Docker Desktop",
+      "role": "container-runtime",
+      "detected": false,
+      "appPath": null,
+      "bundleNames": [
+        "Docker.app"
+      ],
+      "workflows": [
+        "Container validation when explicitly needed"
+      ],
+      "integrationAction": "install_or_configure_when_needed"
+    },
+    {
+      "id": "figma",
+      "label": "Figma",
+      "role": "design-workflow",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Figma.app",
+      "bundleNames": [
+        "Figma.app"
+      ],
+      "workflows": [
+        "Design review",
+        "Prototype and asset handoff"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "adobe-creative-cloud",
+      "label": "Adobe Creative Cloud",
+      "role": "creative-app-manager",
+      "detected": false,
+      "appPath": null,
+      "bundleNames": [
+        "Adobe Creative Cloud.app"
+      ],
+      "workflows": [
+        "Reference only unless project-owned assets are exported"
+      ],
+      "integrationAction": "install_or_configure_when_needed"
+    }
+  ]
+}
