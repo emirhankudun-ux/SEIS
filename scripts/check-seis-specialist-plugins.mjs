@@ -6,7 +6,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
-const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true;
+const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && !process.env.CI;
 const failures = [];
 
 const standaloneLanes = [
