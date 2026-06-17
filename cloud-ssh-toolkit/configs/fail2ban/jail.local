@@ -1,0 +1,48 @@
+[DEFAULT]
+# Default actions
+bantime = 3600
+findtime = 600
+maxretry = 3
+backend = auto
+usedns = warn
+logencoding = auto
+mode = normal
+ignoreip = 127.0.0.1/8 ::1
+
+# E-posta bildirimleri (opsiyonel)
+# destemail = admin@example.com
+# sender = fail2ban@example.com
+# mta = sendmail
+
+# Ban aksiyonu
+banaction = ufw
+banaction_allports = ufw-allports
+
+# SSH koruması
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 3600
+action = %(action_mwl)s
+
+# SSH DDoS koruması
+[sshd-ddos]
+enabled = true
+port = ssh
+filter = sshd-ddos
+logpath = /var/log/auth.log
+maxretry = 6
+bantime = 7200
+action = %(action_mwl)s
+
+# Recidive - tekrarlayan saldırganlar için uzun ban
+[recidive]
+enabled = true
+logpath = /var/log/fail2ban.log
+banaction = ufw
+bantime = 604800  # 1 hafta
+findtime = 86400   # 1 gün
+maxretry = 5

@@ -1,66 +1,79 @@
-# Node.js / npm
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-.eslintcache
-dist/
-build/
-.build/
-packages/*/.build/
+```
+# Compressed archives
+*.tar.gz
+*.zip
 
-# Environment variables
+# Releases directory (contains build artifacts)
+releases/
+
+# Environment files
 .env
 .env.local
-.env.*.local
+*.env.*
 
-# IDE
+# Logs
+*.log
+
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+dist/
+build/
+target/
+
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
+
+# OS generated files
 .DS_Store
-
-# Testing
-coverage/
-*.lcov
-.nyc_output/
-
-# Generated local cloud/static check scratch
-.dist.seis-cloud-check.*/
-
-# OS
 Thumbs.db
 
-# Local sync safety
-.sync-backups/
-.serena/
-logs/
-UIX-Apps-codex-delivery/
-reports/automation-refresh-seis-surface-summary.json
-reports/icloud-personal-inventory.json
-reports/icloud-personal-inventory.md
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
 
-# Local imported/snapshot copies. Keep them inspectable locally, but do not stage them by accident.
-/SEIS/
-/SE*/
-!/server/
-!/server/cloud/
-!/server/cloud/gcp/
-!/server/cloud/gcp/startup-seis-cloud.sh
+# Python specific
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
 
+# Temporary files
+*.tmp
+*~
 
-#Ignore vscode AI rules
-.github/instructions/codacy.instructions.md
+# MyPy cache
+.mypy_cache/
 
-# SEIS agent session state
-.seis/
+# Pytest cache
+.pytest_cache/
 
-# Polyglot build artifacts
-polyglot/rust/*/target/
-polyglot/**/*.class
-polyglot/c/seis_utf8_check
-polyglot/cpp/seis_translations_lint
-__pycache__/
+# Gradle
+.gradle/
+
+# Compiled binary files
+*.exe
+*.dll
+*.so
+*.a
+*.obj
+*.out
+*.class
+
+# Backup files
+*~
+*.bak
+*.orig
+
+# Testing
+.nyc_output/
+coverage.xml
+```
