@@ -1,0 +1,54 @@
+{
+  "agent": {
+    "name": "SEIS-Guardian",
+    "version": "1.0.0",
+    "role": "Security & Quality Gatekeeper",
+    "description": "Otonom güvenlik, kod kalitesi ve V14 uyumluluk denetçisi.",
+    "capabilities": [
+      "secret-detection",
+      "v14-compliance-check",
+      "design-system-validation",
+      "accessibility-audit",
+      "dependency-scan"
+    ],
+    "triggers": {
+      "pre-commit": ["secret-scan", "lint-check"],
+      "pre-push": ["test-run", "security-audit"],
+      "on-pr": ["full-v14-audit", "visual-regression"]
+    },
+    "policies": {
+      "block_on_secret": true,
+      "block_on_v14_violation": false,
+      "warn_on_deprecated_api": true,
+      "auto_fix_formatting": true
+    },
+    "context_awareness": {
+      "project_root": ".",
+      "config_file": "config/agents/guardian.config.json",
+      "ignore_patterns": ["node_modules/", "dist/", "*.lock"]
+    }
+  },
+  "rules": [
+    {
+      "id": "SEC-001",
+      "name": "No Secrets in Code",
+      "severity": "critical",
+      "check": "gitleaks",
+      "action": "block"
+    },
+    {
+      "id": "DES-001",
+      "name": "Design System Variables",
+      "severity": "warning",
+      "check": "css-variable-exists",
+      "action": "warn"
+    },
+    {
+      "id": "V14-001",
+      "name": "Apple First Priority",
+      "severity": "info",
+      "check": "platform-balance",
+      "action": "report"
+    }
+  ]
+}
