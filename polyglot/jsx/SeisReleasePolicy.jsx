@@ -1,7 +1,7 @@
-import { useReducedMotion } from 'react';
+import { useState, useEffect } from 'react';
 
 const MOTION_DURATION = {
-  cinematic: 600,
+  cinematic: 800,
   balanced:  300,
   reduced:   0,
 };
@@ -11,6 +11,24 @@ const STATUS_COLOR = {
   blocked: '#ef4444',
   pending: '#f59e0b',
 };
+
+function useReducedMotion() {
+  const query = '(prefers-reduced-motion: reduce)';
+  const [prefersReduced, setPrefersReduced] = useState(
+    typeof window !== 'undefined'
+      ? window.matchMedia(query).matches
+      : false
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const handler = (e) => setPrefersReduced(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
+  return prefersReduced;
+}
 
 function SeisReleasePolicy({ status = 'pending', motionMode = 'balanced' }) {
   const prefersReduced = useReducedMotion();

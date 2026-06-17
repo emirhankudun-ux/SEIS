@@ -1,11 +1,12 @@
 // SEIS Release Policy — Structured Text (IEC 61131-3 PLC)
 
-PROGRAM SeisReleasePolicy
-
+// TYPE declarations must appear at global scope, outside any PROGRAM block
 TYPE
   MOTION_MODE : (CINEMATIC, BALANCED, REDUCED);
   RELEASE_STATUS : (STATUS_READY, STATUS_BLOCKED, STATUS_PENDING);
 END_TYPE
+
+PROGRAM SeisReleasePolicy
 
 VAR
   motionMode     : MOTION_MODE    := BALANCED;

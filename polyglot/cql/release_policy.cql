@@ -94,8 +94,9 @@ FROM deploy_checks
 WHERE version = 'v2.4.0'
 ORDER BY check_name ASC, checked_at DESC;
 
--- Motion mode distribution
-SELECT motion_mode, can_deploy, COUNT(*) AS evaluations
+-- Motion mode distribution (grouped by primary key columns only)
+-- Cassandra GROUP BY is restricted to primary key columns;
+-- use application-side aggregation for non-key columns.
+SELECT version, evaluated_at, motion_mode, can_deploy
 FROM release_gates
-GROUP BY motion_mode, can_deploy
 ALLOW FILTERING;

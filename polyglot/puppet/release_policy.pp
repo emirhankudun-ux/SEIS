@@ -31,6 +31,8 @@ class seis::release_policy (
     exec { 'seis_deploy_trigger':
       command => '/usr/local/bin/seis-deploy.sh',
       onlyif  => "/usr/local/bin/seis-check.sh ${release_status}",
+      unless  => '/usr/local/bin/seis-deploy-check.sh',
+      timeout => 120,
     }
   }
 }

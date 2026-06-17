@@ -26,7 +26,11 @@ NB. Tacit: y = boolean vector of check results
 NB. Returns 'ready' if all pass, 'blocked' otherwise
 gate_status =: 3 : 0
   failCount =. +/ -. y
-  failCount { 'ready';'blocked'
+  if. failCount = 0 do.
+    'ready'
+  else.
+    'blocked'
+  end.
 )
 
 NB. ─── Can Deploy ────────────────────────────────────────────────────────────
@@ -34,9 +38,13 @@ can_deploy =: 'ready' -: gate_status
 
 NB. ─── Mode String ──────────────────────────────────────────────────────────
 mode_string =: 3 : 0
-  y e. <'reduced'   { 'reduced'
-  y e. <'manual-low'{ 'manual-low'
-  'full'
+  if. y -: 'reduced' do.
+    'reduced'
+  elseif. y -: 'manual-low' do.
+    'manual-low'
+  else.
+    'full'
+  end.
 )
 
 NB. ─── Print Line ────────────────────────────────────────────────────────────

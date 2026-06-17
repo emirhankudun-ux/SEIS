@@ -25,7 +25,7 @@ to draw.release.badge :status
 end
 
 ; Main program
-make "resolved resolve.motion "cinematic :true
+make "resolved resolve.motion "cinematic true
 make "duration motion.duration.ms :resolved
 make "deployable can.deploy "ready
 
