@@ -74,8 +74,13 @@ Options:
 
 for (const lane of standaloneLanes) {
   validatePluginRoot(path.join(ROOT, "plugins", lane.name), lane, "repo");
-  if (checkLocal) {
-    validatePluginRoot(path.join(homeDir(), "plugins", lane.name), lane, "local");
+  // --include-legacy-personal validates the optional personal/home install only
+  // when it is present; a missing legacy mirror (e.g. a clean CI runner or a
+  // fresh machine) is not a failure. The repo-contained root above is always
+  // checked.
+  const localRoot = path.join(homeDir(), "plugins", lane.name);
+  if (checkLocal && fs.existsSync(localRoot)) {
+    validatePluginRoot(localRoot, lane, "local");
   }
 }
 
@@ -108,8 +113,11 @@ for (const token of [
 validateCentralMcpSmoke(centralMcp);
 
 validateMarketplace(path.join(ROOT, ".agents", "plugins", "marketplace.json"), "repo marketplace", "seis-repo");
-if (checkLocal) {
-  validateMarketplace(path.join(homeDir(), ".agents", "plugins", "marketplace.json"), "personal marketplace", "personal");
+// The personal marketplace mirror is a legacy convenience; validate it only when
+// it exists locally. Its absence on a clean CI runner is not a failure.
+const personalMarketplace = path.join(homeDir(), ".agents", "plugins", "marketplace.json");
+if (checkLocal && fs.existsSync(personalMarketplace)) {
+  validateMarketplace(personalMarketplace, "personal marketplace", "personal");
 }
 
 if (failures.length > 0) {
