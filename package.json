@@ -143,8 +143,7 @@
     "@vitest/coverage-v8": "^4.1.0",
     "zod": "^3.23.8",
     "@playwright/test": "^1.45.0",
-    "@axe-core/playwright": "^4.9.1",
-    "serve": "^14.2.3"
+    "@axe-core/playwright": "^4.9.1"
   },
   "engines": {
     "node": ">=18"
