@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  var CACHE_NAME = "ek-portfolio-v1";
+  var CACHE_NAME = "ek-portfolio-v2";
 
   var PRECACHE = [
     "./",
@@ -12,7 +12,9 @@
     "./translations.json",
     "./manifest.json",
     "./site-config.json",
-    "./favicon.svg"
+    "./favicon.svg",
+    "./icons/icon-192.png",
+    "./icons/icon-512.png"
   ];
 
   self.addEventListener("install", function (event) {
