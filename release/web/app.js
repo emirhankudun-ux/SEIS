@@ -609,7 +609,6 @@ function renderPluginCommandCenter() {
     "policy_guide_unavailable"
   ];
   const writeGated = gatedPolicies.reduce((sum, policy) => sum + (counts.by_call_policy?.[policy] || 0), 0);
-  const provenCount = provenPluginIds.size;
   const usedCount = effectiveUsedPluginIds.size;
   const pendingCount = commandPlugins.length - usedCount;
   const pluginFilters = document.querySelectorAll("[data-plugin-proof-filter]");
@@ -945,7 +944,7 @@ async function loadCapabilities() {
   try {
     const payload = await fetchJson("../../content/development/plugin-skill-capability-map.json");
     state.capabilities = payload.capabilities || fallbackCapabilities;
-  } catch (_error) {
+  } catch {
     state.capabilities = fallbackCapabilities;
   }
 }
@@ -953,7 +952,7 @@ async function loadCapabilities() {
 async function loadMarketplace() {
   try {
     state.marketplace = await fetchJson("../../content/development/trusted-marketplace-intake.json");
-  } catch (_error) {
+  } catch {
     state.marketplace = fallbackMarketplace;
   }
 }
@@ -961,7 +960,7 @@ async function loadMarketplace() {
 async function loadPublishGate() {
   try {
     state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
-  } catch (_error) {
+  } catch {
     state.publishGate = fallbackPublishGate;
   }
 }
@@ -969,7 +968,7 @@ async function loadPublishGate() {
 async function loadPluginCommandCenter() {
   try {
     state.pluginCommandCenter = await fetchJson("../../data/plugin-command-center-2026-06-05.json");
-  } catch (_error) {
+  } catch {
     state.pluginCommandCenter = null;
   }
 }
@@ -977,7 +976,7 @@ async function loadPluginCommandCenter() {
 async function loadMcpManifest() {
   try {
     state.mcpManifest = await fetchJson("../../_mcp/seis-mcp-server-2026-06-07.json");
-  } catch (_error) {
+  } catch {
     state.mcpManifest = null;
   }
 }
@@ -985,7 +984,7 @@ async function loadMcpManifest() {
 async function loadSeisReposBridge() {
   try {
     state.seisReposBridge = await fetchJson("../../data/seis-repos-llm-bridge-2026-06-08.json");
-  } catch (_error) {
+  } catch {
     state.seisReposBridge = null;
   }
 }
@@ -993,7 +992,7 @@ async function loadSeisReposBridge() {
 async function loadLlmRegistry() {
   try {
     state.llmRegistry = await fetchJson("../../content/development/llm-package-registry.json");
-  } catch (_error) {
+  } catch {
     state.llmRegistry = null;
   }
 }
@@ -1002,7 +1001,7 @@ async function loadCinematicEngine() {
   try {
     const payload = await fetchJson("../../content/lab/cinematic-engine.json");
     state.commands = payload.commandDeck || [];
-  } catch (_error) {
+  } catch {
     state.commands = [
       {
         id: "local-fallback",
@@ -1020,7 +1019,7 @@ async function loadQualityConsole() {
     const payload = await fetchJson("../../content/lab/quality-console.json");
     state.qualitySignals = payload.signals || [];
     state.thresholds = payload.thresholds || [];
-  } catch (_error) {
+  } catch {
     state.qualitySignals = [
       {
         id: "quality-fallback",
