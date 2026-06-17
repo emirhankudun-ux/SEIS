@@ -116,4 +116,10 @@ apps/web/content/
 
 # Documentation
 docs/
+
+# Local accidental artifacts from monorepo preparation
+SEİS/
+SEİS/
+packages/seis_platform_swift/.build/
+scripts/super-ssh-manager.py
 ```
