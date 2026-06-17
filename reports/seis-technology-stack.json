@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1030005,
+      "githubBytes": 1913055,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -34,7 +34,7 @@
       "order": 2,
       "label": "TypeScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 28824,
+      "githubBytes": 433045,
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
         "polyglot/typescript/language-split-contract.ts",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 308216,
+      "githubBytes": 312038,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 356647,
+      "githubBytes": 361744,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]
@@ -79,7 +79,7 @@
       "order": 6,
       "label": "Go",
       "layer": "backend-and-api",
-      "githubBytes": 16367,
+      "githubBytes": 17373,
       "entrypoints": [
         "polyglot/go/health_contract.go",
         "polyglot/go/cmd/seis-serve/main.go",
@@ -90,7 +90,7 @@
       "order": 7,
       "label": "Rust",
       "layer": "mobile-and-native",
-      "githubBytes": 11825,
+      "githubBytes": 12687,
       "entrypoints": [
         "polyglot/rust/performance_budget.rs",
         "polyglot/rust/seis-link-audit/src/main.rs"
@@ -100,7 +100,7 @@
       "order": 8,
       "label": "Java",
       "layer": "backend-and-api",
-      "githubBytes": 16110,
+      "githubBytes": 16946,
       "entrypoints": [
         "polyglot/java/SeisDeployReadiness.java",
         "polyglot/java/DrawingsChecksum.java",
@@ -111,7 +111,7 @@
       "order": 9,
       "label": "Kotlin",
       "layer": "mobile-and-native",
-      "githubBytes": 1150,
+      "githubBytes": 1778,
       "entrypoints": [
         "polyglot/kotlin/SeisMotionPolicy.kt",
         "polyglot/kotlin/seis_css_font_audit.kts"
@@ -121,7 +121,7 @@
       "order": 10,
       "label": "Dart",
       "layer": "mobile-and-native",
-      "githubBytes": 532,
+      "githubBytes": 1064,
       "entrypoints": [
         "polyglot/dart/seis_motion_policy.dart"
       ]
@@ -130,7 +130,7 @@
       "order": 11,
       "label": "PHP",
       "layer": "backend-and-api",
-      "githubBytes": 8471,
+      "githubBytes": 9972,
       "entrypoints": [
         "polyglot/php/contact-endpoint.php",
         "server/php/health.php",
@@ -141,7 +141,7 @@
       "order": 12,
       "label": "Ruby",
       "layer": "backend-and-api",
-      "githubBytes": 13442,
+      "githubBytes": 14249,
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
         "polyglot/ruby/i18n_stats.rb",
@@ -153,7 +153,7 @@
       "order": 13,
       "label": "C",
       "layer": "mobile-and-native",
-      "githubBytes": 5440,
+      "githubBytes": 6442,
       "entrypoints": [
         "polyglot/c/readiness_contract.h",
         "polyglot/c/seis_utf8_check.c"
@@ -163,7 +163,7 @@
       "order": 14,
       "label": "C++",
       "layer": "mobile-and-native",
-      "githubBytes": 11206,
+      "githubBytes": 11897,
       "entrypoints": [
         "polyglot/cpp/readiness_contract.hpp",
         "polyglot/cpp/seis_translations_lint.cpp"
@@ -173,7 +173,7 @@
       "order": 15,
       "label": "C#",
       "layer": "backend-and-api",
-      "githubBytes": 2731,
+      "githubBytes": 3254,
       "entrypoints": [
         "polyglot/csharp/SeisReleaseContract.cs"
       ]
@@ -182,7 +182,7 @@
       "order": 16,
       "label": "SQL",
       "layer": "database-and-data",
-      "githubBytes": 8177,
+      "githubBytes": 11471,
       "entrypoints": [
         "polyglot/sql/audit_ledger.sqlite.sql"
       ]
@@ -191,7 +191,7 @@
       "order": 17,
       "label": "Shell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 67450,
+      "githubBytes": 92234,
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
         "scripts/polyglot-check.sh"
@@ -201,7 +201,7 @@
       "order": 18,
       "label": "PowerShell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 2427,
+      "githubBytes": 3289,
       "entrypoints": [
         "polyglot/powershell/SeisReleasePolicy.ps1"
       ]
@@ -210,7 +210,7 @@
       "order": 19,
       "label": "Lua",
       "layer": "security-policy-and-governance",
-      "githubBytes": 6948,
+      "githubBytes": 7271,
       "entrypoints": [
         "polyglot/lua/seis_i18n_attr_audit.lua"
       ]
@@ -219,7 +219,7 @@
       "order": 20,
       "label": "R",
       "layer": "database-and-data",
-      "githubBytes": 7953,
+      "githubBytes": 8477,
       "entrypoints": [
         "polyglot/r/seis_translation_stats.R"
       ]
@@ -228,7 +228,7 @@
       "order": 21,
       "label": "Julia",
       "layer": "database-and-data",
-      "githubBytes": 595,
+      "githubBytes": 1190,
       "entrypoints": [
         "polyglot/julia/readiness_metrics.jl"
       ]
@@ -237,7 +237,7 @@
       "order": 22,
       "label": "Perl",
       "layer": "security-policy-and-governance",
-      "githubBytes": 13916,
+      "githubBytes": 15256,
       "entrypoints": [
         "polyglot/perl/readiness_guard.pl",
         "polyglot/perl/hygiene_lint.pl",
@@ -258,7 +258,7 @@
       "order": 24,
       "label": "Scala",
       "layer": "backend-and-api",
-      "githubBytes": 660,
+      "githubBytes": 1320,
       "entrypoints": [
         "polyglot/scala/SeisReleasePolicy.scala"
       ]
@@ -267,7 +267,7 @@
       "order": 25,
       "label": "Elixir",
       "layer": "backend-and-api",
-      "githubBytes": 582,
+      "githubBytes": 1164,
       "entrypoints": [
         "polyglot/elixir/calm_release_policy.ex",
         "polyglot/elixir/seis_html_anchor_audit.exs"
@@ -277,7 +277,7 @@
       "order": 26,
       "label": "Erlang",
       "layer": "backend-and-api",
-      "githubBytes": 560,
+      "githubBytes": 1120,
       "entrypoints": [
         "polyglot/erlang/calm_release_policy.erl"
       ]
@@ -286,7 +286,7 @@
       "order": 27,
       "label": "Clojure",
       "layer": "backend-and-api",
-      "githubBytes": 569,
+      "githubBytes": 1138,
       "entrypoints": [
         "polyglot/clojure/readiness_policy.clj"
       ]
@@ -295,7 +295,7 @@
       "order": 28,
       "label": "F#",
       "layer": "backend-and-api",
-      "githubBytes": 1592,
+      "githubBytes": 2404,
       "entrypoints": [
         "polyglot/fsharp/SeisReleasePolicy.fs"
       ]
@@ -304,7 +304,7 @@
       "order": 29,
       "label": "OCaml",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 7550,
+      "githubBytes": 8074,
       "entrypoints": [
         "polyglot/ocaml/release_policy.ml",
         "polyglot/ocaml/seis_css_selector_stats.ml"
@@ -314,7 +314,7 @@
       "order": 30,
       "label": "Nim",
       "layer": "mobile-and-native",
-      "githubBytes": 5452,
+      "githubBytes": 6041,
       "entrypoints": [
         "polyglot/nim/readiness_policy.nim",
         "polyglot/nim/seis_html_img_audit.nim"
@@ -324,7 +324,7 @@
       "order": 31,
       "label": "Zig",
       "layer": "mobile-and-native",
-      "githubBytes": 711,
+      "githubBytes": 1422,
       "entrypoints": [
         "polyglot/zig/readiness_contract.zig"
       ]
@@ -333,7 +333,7 @@
       "order": 32,
       "label": "Groovy",
       "layer": "backend-and-api",
-      "githubBytes": 5362,
+      "githubBytes": 5535,
       "entrypoints": [
         "polyglot/groovy/SeisReleasePolicy.groovy",
         "polyglot/groovy/seis_json_files_check.groovy"
@@ -343,7 +343,7 @@
       "order": 33,
       "label": "Crystal",
       "layer": "mobile-and-native",
-      "githubBytes": 594,
+      "githubBytes": 1188,
       "entrypoints": [
         "polyglot/crystal/readiness_policy.cr"
       ]
@@ -352,7 +352,7 @@
       "order": 34,
       "label": "D",
       "layer": "mobile-and-native",
-      "githubBytes": 455,
+      "githubBytes": 910,
       "entrypoints": [
         "polyglot/d/readiness_policy.d"
       ]
@@ -361,7 +361,7 @@
       "order": 35,
       "label": "V",
       "layer": "mobile-and-native",
-      "githubBytes": 572,
+      "githubBytes": 5991,
       "entrypoints": [
         "polyglot/v/readiness_policy.v"
       ]
@@ -370,7 +370,7 @@
       "order": 36,
       "label": "Fortran",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 528,
+      "githubBytes": 1056,
       "entrypoints": [
         "polyglot/fortran/readiness_policy.f90"
       ]
@@ -379,7 +379,7 @@
       "order": 37,
       "label": "COBOL",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 723,
+      "githubBytes": 1446,
       "entrypoints": [
         "polyglot/cobol/readiness-policy.cob"
       ]
@@ -388,7 +388,7 @@
       "order": 38,
       "label": "Pascal",
       "layer": "mobile-and-native",
-      "githubBytes": 858,
+      "githubBytes": 2832,
       "entrypoints": [
         "polyglot/pascal/release_policy.pas"
       ]
@@ -397,7 +397,7 @@
       "order": 39,
       "label": "Racket",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 7245,
+      "githubBytes": 7923,
       "entrypoints": [
         "polyglot/racket/readiness-policy.rkt",
         "polyglot/racket/seis_pwa_manifest_audit.rkt"
@@ -407,7 +407,7 @@
       "order": 40,
       "label": "Scheme",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 15747,
+      "githubBytes": 16085,
       "entrypoints": [
         "polyglot/scheme/readiness-policy.scm"
       ]
@@ -426,7 +426,7 @@
       "order": 42,
       "label": "Tcl",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 7290,
+      "githubBytes": 7662,
       "entrypoints": [
         "polyglot/tcl/seis_meta_tags_check.tcl"
       ]
@@ -435,7 +435,7 @@
       "order": 43,
       "label": "AWK",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 1595,
+      "githubBytes": 1847,
       "entrypoints": [
         "polyglot/awk/css_var_histogram.awk"
       ]
@@ -444,7 +444,7 @@
       "order": 44,
       "label": "Common Lisp",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 5908,
+      "githubBytes": 6810,
       "entrypoints": [
         "polyglot/common-lisp/release-policy.lisp",
         "polyglot/common-lisp/seis_html_id_uniqueness.lisp"
@@ -454,7 +454,7 @@
       "order": 45,
       "label": "Emacs Lisp",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 310,
+      "githubBytes": 620,
       "entrypoints": [
         "polyglot/emacs-lisp/release-policy.el"
       ]
@@ -463,7 +463,7 @@
       "order": 46,
       "label": "Smalltalk",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 382,
+      "githubBytes": 6472,
       "entrypoints": [
         "polyglot/smalltalk/ReleasePolicy.st"
       ]
@@ -472,7 +472,7 @@
       "order": 47,
       "label": "Ada",
       "layer": "mobile-and-native",
-      "githubBytes": 779,
+      "githubBytes": 1558,
       "entrypoints": [
         "polyglot/ada/seis_release_policy.ads"
       ]
@@ -481,7 +481,7 @@
       "order": 48,
       "label": "Visual Basic",
       "layer": "research-legacy-and-lab",
-      "githubBytes": 992,
+      "githubBytes": 1405,
       "entrypoints": [
         "polyglot/vb/SeisReleasePolicy.vb"
       ]
@@ -490,7 +490,7 @@
       "order": 49,
       "label": "Batchfile",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 282,
+      "githubBytes": 3599,
       "entrypoints": [
         "polyglot/windows/scripting/seis_windows_platform.bat"
       ]
@@ -499,7 +499,7 @@
       "order": 50,
       "label": "MATLAB",
       "layer": "database-and-data",
-      "githubBytes": 365,
+      "githubBytes": 4372,
       "entrypoints": [
         "polyglot/matlab/readiness_policy.m"
       ]
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 87594,
+      "githubBytes": 162343,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -517,18 +517,17 @@
     {
       "order": 52,
       "label": "CSS",
-      "layer": "frontend-and-experience",
-      "githubBytes": 99419,
+      "layer": "research-legacy-and-lab",
+      "githubBytes": 320288,
       "entrypoints": [
-        "apps/web/style.css",
-        "apps/web/styles.css"
+        "polyglot/css/release_policy.css"
       ]
     },
     {
       "order": 53,
       "label": "Solidity",
       "layer": "security-policy-and-governance",
-      "githubBytes": 869,
+      "githubBytes": 1738,
       "entrypoints": [
         "polyglot/solidity/SeisReleasePolicy.sol"
       ]
@@ -537,7 +536,7 @@
       "order": 54,
       "label": "Move",
       "layer": "security-policy-and-governance",
-      "githubBytes": 843,
+      "githubBytes": 1686,
       "entrypoints": [
         "polyglot/move/release_policy.move"
       ]
@@ -546,7 +545,7 @@
       "order": 55,
       "label": "Cairo",
       "layer": "security-policy-and-governance",
-      "githubBytes": 649,
+      "githubBytes": 1298,
       "entrypoints": [
         "polyglot/cairo/release_policy.cairo"
       ]
@@ -555,7 +554,7 @@
       "order": 56,
       "label": "Hack",
       "layer": "security-policy-and-governance",
-      "githubBytes": 772,
+      "githubBytes": 1544,
       "entrypoints": [
         "polyglot/hack/SeisReleasePolicy.hack"
       ]
@@ -573,7 +572,7 @@
       "order": 58,
       "label": "ABAP",
       "layer": "security-policy-and-governance",
-      "githubBytes": 778,
+      "githubBytes": 1556,
       "entrypoints": [
         "polyglot/abap/readiness_policy.abap"
       ]
@@ -582,7 +581,7 @@
       "order": 59,
       "label": "Q#",
       "layer": "security-policy-and-governance",
-      "githubBytes": 594,
+      "githubBytes": 1188,
       "entrypoints": [
         "polyglot/qsharp/ReleasePolicy.qs"
       ]
@@ -591,7 +590,7 @@
       "order": 60,
       "label": "Make",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 246,
+      "githubBytes": 492,
       "entrypoints": [
         "polyglot/make/release-policy.mk"
       ]
