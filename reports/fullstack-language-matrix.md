@@ -2,9 +2,9 @@
 
 - Generated: 2026-06-03
 - Mode: all_polyglot_surfaces_visible_in_environment_sources
-- Languages/config surfaces: 117
+- Languages/config surfaces: 214
 - Full-stack layers: 7
-- Entry points: 159
+- Entry points: 256
 
 ## Layer Summary
 
@@ -16,7 +16,7 @@
 | Mobile and Native | 14 |
 | Cloud, DevOps, and Config | 25 |
 | Security, Policy, and Governance | 15 |
-| Research, Legacy, and Lab | 21 |
+| Research, Legacy, and Lab | 118 |
 
 ## Language Assignment
 
@@ -139,6 +139,103 @@
 | 115 | Meson | Cloud, DevOps, and Config | no | polyglot/meson/release-policy.meson |
 | 116 | Just | Cloud, DevOps, and Config | no | polyglot/just/release-policy.just |
 | 117 | Taskfile | Cloud, DevOps, and Config | no | polyglot/taskfile/release-policy.taskfile.yml |
+| 118 | Terraform | Research, Legacy, and Lab | no | polyglot/terraform/seis_deploy_guard.tf |
+| 119 | Vue | Research, Legacy, and Lab | no | polyglot/vue/SeisReleasePolicy.vue |
+| 120 | Svelte | Research, Legacy, and Lab | no | polyglot/svelte/SeisReleasePolicy.svelte |
+| 121 | SCSS | Research, Legacy, and Lab | no | polyglot/scss/release_policy.scss |
+| 122 | MDX | Research, Legacy, and Lab | no | polyglot/mdx/release-policy.mdx |
+| 123 | Astro | Research, Legacy, and Lab | no | polyglot/astro/ReleasePolicy.astro |
+| 124 | Gleam | Research, Legacy, and Lab | no | polyglot/gleam/release_policy.gleam |
+| 125 | Haxe | Research, Legacy, and Lab | no | polyglot/haxe/SeisReleasePolicy.hx |
+| 126 | LaTeX | Research, Legacy, and Lab | no | polyglot/latex/release-policy.tex |
+| 127 | Cypher | Research, Legacy, and Lab | no | polyglot/cypher/release_policy.cypher |
+| 128 | Standard ML | Research, Legacy, and Lab | no | polyglot/sml/release_policy.sml |
+| 129 | Vala | Research, Legacy, and Lab | no | polyglot/vala/SeisReleasePolicy.vala |
+| 130 | CoffeeScript | Research, Legacy, and Lab | no | polyglot/coffeescript/release_policy.coffee |
+| 131 | Fish Shell | Research, Legacy, and Lab | no | polyglot/fish/release_policy.fish |
+| 132 | Pkl | Research, Legacy, and Lab | no | polyglot/pkl/release-policy.pkl |
+| 133 | Assembly (x86-64) | Research, Legacy, and Lab | no | polyglot/assembly/readiness_contract.asm |
+| 134 | VHDL | Research, Legacy, and Lab | no | polyglot/vhdl/readiness_contract.vhd |
+| 135 | SystemVerilog | Research, Legacy, and Lab | no | polyglot/systemverilog/readiness_contract.sv |
+| 136 | Carbon | Research, Legacy, and Lab | no | polyglot/carbon/release_policy.carbon |
+| 137 | Odin | Research, Legacy, and Lab | no | polyglot/odin/release_policy.odin |
+| 138 | Wren | Research, Legacy, and Lab | no | polyglot/wren/release_policy.wren |
+| 139 | Idris | Research, Legacy, and Lab | no | polyglot/idris/ReleasePolicy.idr |
+| 140 | Less | Research, Legacy, and Lab | no | polyglot/less/release_policy.less |
+| 141 | PostCSS | Research, Legacy, and Lab | no | polyglot/postcss/release_policy.pcss |
+| 142 | Pug | Research, Legacy, and Lab | no | polyglot/pug/release_policy.pug |
+| 143 | Handlebars | Research, Legacy, and Lab | no | polyglot/handlebars/release_policy.hbs |
+| 144 | Nunjucks | Research, Legacy, and Lab | no | polyglot/nunjucks/release_policy.njk |
+| 145 | EJS | Research, Legacy, and Lab | no | polyglot/ejs/release_policy.ejs |
+| 146 | Jinja2 | Research, Legacy, and Lab | no | polyglot/jinja2/release_policy.j2 |
+| 147 | Liquid | Research, Legacy, and Lab | no | polyglot/liquid/release-policy.liquid |
+| 148 | reStructuredText | Research, Legacy, and Lab | no | polyglot/restructuredtext/release-policy.rst |
+| 149 | AsciiDoc | Research, Legacy, and Lab | no | polyglot/asciidoc/release-policy.adoc |
+| 150 | Org-Mode | Research, Legacy, and Lab | no | polyglot/org-mode/release-policy.org |
+| 151 | Zsh | Research, Legacy, and Lab | no | polyglot/zsh/release_policy.zsh |
+| 152 | Windows Batch | Research, Legacy, and Lab | no | polyglot/batch/release_policy.bat |
+| 153 | REXX | Research, Legacy, and Lab | no | polyglot/rexx/release_policy.rexx |
+| 154 | Octave | Research, Legacy, and Lab | no | polyglot/octave/release_policy.m |
+| 155 | Wolfram Language | Research, Legacy, and Lab | no | polyglot/wolfram/release_policy.wl |
+| 156 | Scilab | Research, Legacy, and Lab | no | polyglot/scilab/release_policy.sce |
+| 157 | Roc | Research, Legacy, and Lab | no | polyglot/roc/release_policy.roc |
+| 158 | Pony | Research, Legacy, and Lab | no | polyglot/pony/SeisReleasePolicy.pony |
+| 159 | Koka | Research, Legacy, and Lab | no | polyglot/koka/release_policy.kk |
+| 160 | Lean 4 | Research, Legacy, and Lab | no | polyglot/lean/ReleasePolicy.lean |
+| 161 | Coq | Research, Legacy, and Lab | no | polyglot/coq/release_policy.v |
+| 162 | ATS | Research, Legacy, and Lab | no | polyglot/ats/release_policy.dats |
+| 163 | Gherkin | Research, Legacy, and Lab | no | polyglot/gherkin/release_policy.feature |
+| 164 | FlatBuffers | Research, Legacy, and Lab | no | polyglot/flatbuffers/release_policy.fbs |
+| 165 | Apache Thrift | Research, Legacy, and Lab | no | polyglot/thrift/release_policy.thrift |
+| 166 | Cap'n Proto | Research, Legacy, and Lab | no | polyglot/capnproto/release_policy.capnp |
+| 167 | XSD | Research, Legacy, and Lab | no | polyglot/xsd/release-policy.xsd |
+| 168 | XSLT | Research, Legacy, and Lab | no | polyglot/xslt/release-policy.xsl |
+| 169 | XQuery | Research, Legacy, and Lab | no | polyglot/xquery/release_policy.xq |
+| 170 | JSONata | Research, Legacy, and Lab | no | polyglot/jsonata/release_policy.jsonata |
+| 171 | Flux | Research, Legacy, and Lab | no | polyglot/flux/release_policy.flux |
+| 172 | CQL | Research, Legacy, and Lab | no | polyglot/cql/release_policy.cql |
+| 173 | PL/I | Research, Legacy, and Lab | no | polyglot/pli/release_policy.pli |
+| 174 | ALGOL | Research, Legacy, and Lab | no | polyglot/algol/release_policy.algol |
+| 175 | BCPL | Research, Legacy, and Lab | no | polyglot/bcpl/release_policy.b |
+| 176 | Simula | Research, Legacy, and Lab | no | polyglot/simula/SeisReleasePolicy.sim |
+| 177 | Self | Research, Legacy, and Lab | no | polyglot/self/release_policy.self |
+| 178 | Pharo | Research, Legacy, and Lab | no | polyglot/pharo/SeisReleasePolicy.st |
+| 179 | APL | Research, Legacy, and Lab | no | polyglot/apl/release_policy.apl |
+| 180 | J Language | Research, Legacy, and Lab | no | polyglot/j/release_policy.ijs |
+| 181 | Fennel | Research, Legacy, and Lab | no | polyglot/fennel/release_policy.fnl |
+| 182 | Janet | Research, Legacy, and Lab | no | polyglot/janet/release_policy.janet |
+| 183 | Hy | Research, Legacy, and Lab | no | polyglot/hy/release_policy.hy |
+| 184 | Mojo | Research, Legacy, and Lab | no | polyglot/mojo/release_policy.mojo |
+| 185 | Bend | Research, Legacy, and Lab | no | polyglot/bend/release_policy.bend |
+| 186 | Vale | Research, Legacy, and Lab | no | polyglot/vale/release_policy.vale |
+| 187 | Nickel | Research, Legacy, and Lab | no | polyglot/nickel/release-policy.ncl |
+| 188 | Io | Research, Legacy, and Lab | no | polyglot/io/release_policy.io |
+| 189 | Factor | Research, Legacy, and Lab | no | polyglot/factor/release_policy.factor |
+| 190 | CSS | Research, Legacy, and Lab | no | polyglot/css/release_policy.css |
+| 191 | HLSL | Research, Legacy, and Lab | no | polyglot/hlsl/release_policy.hlsl |
+| 192 | CUDA | Research, Legacy, and Lab | no | polyglot/cuda/release_policy.cu |
+| 193 | Delphi | Research, Legacy, and Lab | no | polyglot/delphi/SeisReleasePolicy.pas |
+| 194 | AppleScript | Research, Legacy, and Lab | no | polyglot/applescript/release_policy.applescript |
+| 195 | ActionScript | Research, Legacy, and Lab | no | polyglot/actionscript/SeisReleasePolicy.as |
+| 196 | BASIC | Research, Legacy, and Lab | no | polyglot/basic/release_policy.bas |
+| 197 | Arduino | Research, Legacy, and Lab | no | polyglot/arduino/release_policy.ino |
+| 198 | SAS | Research, Legacy, and Lab | no | polyglot/sas/release_policy.sas |
+| 199 | DAX | Research, Legacy, and Lab | no | polyglot/dax/release_policy.dax |
+| 200 | JSX | Research, Legacy, and Lab | no | polyglot/jsx/SeisReleasePolicy.jsx |
+| 201 | Pine Script | Research, Legacy, and Lab | no | polyglot/pinescript/release_policy.pine |
+| 202 | KQL | Research, Legacy, and Lab | no | polyglot/kql/release_policy.kql |
+| 203 | SPSS | Research, Legacy, and Lab | no | polyglot/spss/release_policy.sps |
+| 204 | Stata | Research, Legacy, and Lab | no | polyglot/stata/release_policy.do |
+| 205 | MicroPython | Research, Legacy, and Lab | no | polyglot/micropython/release_policy.py |
+| 206 | Metal | Research, Legacy, and Lab | no | polyglot/metal/release_policy.metal |
+| 207 | OpenCL | Research, Legacy, and Lab | no | polyglot/opencl/release_policy.cl |
+| 208 | G-Code | Research, Legacy, and Lab | no | polyglot/gcode/release_policy.gcode |
+| 209 | Logo | Research, Legacy, and Lab | no | polyglot/logo/release_policy.logo |
+| 210 | Stylus | Research, Legacy, and Lab | no | polyglot/stylus/release_policy.styl |
+| 211 | VBScript | Research, Legacy, and Lab | no | polyglot/vbscript/release_policy.vbs |
+| 212 | MQL5 | Research, Legacy, and Lab | no | polyglot/mql5/SeisReleasePolicy.mq5 |
+| 213 | Puppet | Research, Legacy, and Lab | no | polyglot/puppet/release_policy.pp |
+| 214 | Structured Text | Research, Legacy, and Lab | no | polyglot/structured-text/release_policy.st |
 
 ## Governance
 

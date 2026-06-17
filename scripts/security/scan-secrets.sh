@@ -4,7 +4,7 @@
 # GitLeaks kullanarak hassas verileri tarar.
 # V14 Güvenlik Standardı: "Asla sırları commit etme."
 
-set -e
+set -eu
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'

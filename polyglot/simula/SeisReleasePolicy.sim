@@ -1,0 +1,127 @@
+! SEIS Release Policy — Simula 67
+! Motion policy and deploy gate using Simula's class system
+! Compatible with GNU Cim
+
+BEGIN
+
+  ! ─── MotionPolicy Class ─────────────────────────────────────────────────
+  CLASS MotionPolicy(mode);
+    TEXT mode;
+  BEGIN
+    INTEGER durationInstant, durationFast, durationStandard,
+            durationSlow, durationCinematic;
+
+    PROCEDURE InitDurations;
+    BEGIN
+      IF mode = "reduced" OR mode = "manual-low" THEN
+      BEGIN
+        durationInstant   := 0;
+        durationFast      := 0;
+        durationStandard  := 0;
+        durationSlow      := 0;
+        durationCinematic := 0
+      END ELSE BEGIN
+        durationInstant   := 0;
+        durationFast      := 150;
+        durationStandard  := 300;
+        durationSlow      := 500;
+        durationCinematic := 800
+      END;
+    END;
+
+    INTEGER PROCEDURE DurationMs(token);
+      TEXT token;
+    BEGIN
+      IF mode = "reduced" OR mode = "manual-low" THEN
+        DurationMs := 0
+      ELSE
+        INSPECT THIS MotionPolicy WHEN MotionPolicy DO
+          IF      token = "instant"   THEN DurationMs := durationInstant
+          ELSE IF token = "fast"      THEN DurationMs := durationFast
+          ELSE IF token = "standard"  THEN DurationMs := durationStandard
+          ELSE IF token = "slow"      THEN DurationMs := durationSlow
+          ELSE IF token = "cinematic" THEN DurationMs := durationCinematic
+          ELSE                             DurationMs := durationStandard;
+    END;
+
+    InitDurations;
+  END;
+
+  ! ─── DeployCheck Class ──────────────────────────────────────────────────
+  CLASS DeployCheck(name, passed);
+    TEXT name;
+    BOOLEAN passed;
+  BEGIN
+    TEXT PROCEDURE Marker;
+    BEGIN
+      IF passed THEN Marker :- "PASS" ELSE Marker :- "FAIL";
+    END;
+  END;
+
+  ! ─── ReleaseGate Class ──────────────────────────────────────────────────
+  CLASS ReleaseGate(version, policy);
+    TEXT version;
+    REF(MotionPolicy) policy;
+  BEGIN
+    REF(DeployCheck) ARRAY checks(1:10);
+    INTEGER checkCount;
+    TEXT status;
+
+    PROCEDURE AddCheck(name, passed);
+      TEXT name;
+      BOOLEAN passed;
+    BEGIN
+      checkCount := checkCount + 1;
+      checks(checkCount) :- NEW DeployCheck(name, passed);
+    END;
+
+    TEXT PROCEDURE EvaluateStatus;
+    BEGIN
+      INTEGER failCount, i;
+      failCount := 0;
+      FOR i := 1 STEP 1 UNTIL checkCount DO
+        IF NOT checks(i).passed THEN
+          failCount := failCount + 1;
+      IF failCount = 0 THEN EvaluateStatus :- "ready"
+      ELSE                  EvaluateStatus :- "blocked";
+    END;
+
+    PROCEDURE PrintReport;
+    BEGIN
+      INTEGER i;
+      status :- EvaluateStatus;
+      OutText("SEIS Release Gate -- "); OutText(version); OutImage;
+      OutText("-----------------------------------"); OutImage;
+      OutText("Status:      "); OutText(status); OutImage;
+      OutText("Motion mode: "); OutText(policy.mode); OutImage;
+      OutText("Fast (ms):   ");
+        OutInt(policy.DurationMs("fast"), 0); OutImage;
+      OutText("Standard (ms): ");
+        OutInt(policy.DurationMs("standard"), 0); OutImage;
+      OutText("-----------------------------------"); OutImage;
+      FOR i := 1 STEP 1 UNTIL checkCount DO
+      BEGIN
+        OutText("  ["); OutText(checks(i).Marker); OutText("]  ");
+        OutText(checks(i).name); OutImage;
+      END;
+      OutText("-----------------------------------"); OutImage;
+    END;
+
+    checkCount := 0;
+  END;
+
+  ! ─── Main Program ─────────────────────────────────────────────────────────
+  REF(MotionPolicy) policy;
+  REF(ReleaseGate)  gate;
+
+  policy :- NEW MotionPolicy("full");
+  gate   :- NEW ReleaseGate("v2.4.0", policy);
+
+  gate.AddCheck("typecheck",          TRUE);
+  gate.AddCheck("lint",               TRUE);
+  gate.AddCheck("content validation", TRUE);
+  gate.AddCheck("accessibility",      FALSE);
+
+  gate.PrintReport;
+
+END.

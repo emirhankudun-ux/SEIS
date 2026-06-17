@@ -134,6 +134,8 @@ def validate_surface_contents() -> list[str]:
 
 
 def run_swift_tests() -> list[str]:
+    if sys.platform != "darwin":
+        return []  # Combine is Apple-only; Swift tests require macOS
     if shutil.which("swift") is None:
         return ["swift is required for the macOS Apple-language platform package"]
     return run(["swift", "test"], ROOT / "packages" / "seis_platform_swift")

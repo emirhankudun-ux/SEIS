@@ -1,0 +1,22 @@
+---
+export interface Props {
+  status: "ready" | "blocked" | "pending";
+  reducedMotion?: boolean;
+}
+
+const { status, reducedMotion = false } = Astro.props;
+const motionClass = reducedMotion ? "motion-reduced" : "motion-cinematic";
+---
+
+<div class:list={["seis-release", motionClass]} role="status">
+  <span>{status}</span>
+</div>
+
+<style>
+  .seis-release { transition: opacity 0.3s ease; }
+  .motion-reduced { transition: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seis-release { transition: none; }
+  }
+</style>

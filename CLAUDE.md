@@ -18,14 +18,16 @@ apps/
   web/              Portfolio site (static HTML/CSS/vanilla JS)
 packages/
   seis-ai/          AI tooling: MCP server, Claude agent CLI, audit suite
-  core/             Shared utilities
-  ui/               UI component library
+  core/             Shared utilities + unit tests (Vitest)
+  ui/               UI component library + unit tests (Vitest)
   design-tokens/    Design token definitions
   data/             Data schemas and fixtures
   asset-registry/   Asset catalogue
 .mcp.json           Registers seis-mcp for Claude Code auto-discovery
 .claude/
   skills/seis-ai/   Claude Code skill: SEIS AI tool reference
+polyglot/           Language manifest (205 languages tracked via check-polyglot.mjs)
+scripts/            Governance scripts + polyglot-check.sh (33 language audit tools)
 ```
 
 ---
@@ -76,8 +78,11 @@ node packages/seis-ai/bin/seis-agent.mjs --model sonnet --write "add i18n key fo
 # MCP server (stdio)
 npm run seis:mcp
 
-# Unit tests
-npm run seis:test
+# Unit tests (packages/core + packages/ui via Vitest)
+npm test
+
+# Schema validation tests
+cd packages/core && npx vitest run src/schemas.test.ts
 ```
 
 **`ANTHROPIC_API_KEY`** is required for `seis:agent`.
@@ -140,6 +145,12 @@ the JS suite cannot. One command runs them all:
 ./scripts/polyglot-check.sh      # PASS/FAIL/SKIP per language lane
 ```
 
+A separate JSON-based manifest tracks 205 globally-known languages:
+
+```bash
+node scripts/check-polyglot.mjs  # validates polyglot/manifest.json (205 languages)
+```
+
 | Language | Tool | Unique value |
 |----------|------|--------------|
 | Python | `seis_image_audit.py` | JPEG/PNG/WebP dimensions from binary headers; asset budget |
@@ -190,9 +201,49 @@ TypeScript typings for the audit reports: `packages/seis-ai/types/seis-ai.d.ts`.
 
 ---
 
+## Unit tests (`packages/core` + `packages/ui`)
+
+Vitest 4 runs behavioral unit tests for shared utilities and UI constants:
+
+```bash
+npm test                          # run all unit tests (26 tests)
+npm run test:watch                # watch mode
+npm run test:coverage             # coverage report
+cd packages/core && npm test      # core only (motion, schemas, risk/activation logic)
+cd packages/ui && npm test        # ui only (motion labels, badge variants)
+```
+
+Tests live next to source — `packages/core/src/motion.test.ts`, not a top-level `__tests__/`.
+
+### Adding tests — rules
+1. **Test behavior, not implementation.** Assert outputs and DOM state.
+2. **Keep tests calm.** No flaky timeouts, no network calls, no large fixture files.
+3. **Accessibility always.** Every new page or component gets an axe assertion in e2e.
+4. **Reduced-motion always.** Animation-related components get tested in both motion modes.
+5. **Use Vitest for units, Playwright for e2e.** Do not mix frameworks.
+
+---
+
 ## Development conventions
 
 - All source is ESM (`.mjs`). No transpilation.
 - No frameworks on the portfolio site — vanilla JS only, no bundler.
 - Keep edits minimal and consistent with existing code style.
-- Commits on branch `claude/laughing-ride-4dnijl`, PR #17 targets `main`.
+- Run `npm run quality:governance` before committing.
+- Run `npm test` before committing once tests touch files you changed.
+
+---
+
+## Git workflow
+
+- Main branch is sacred — never push directly to `main` without a PR review.
+- Prefer small commits with clear scope: install/setup, governance-doc, feature, fix.
+- Risky work (broad refactors, generated assets, dependency changes) must use isolated branches.
+
+---
+
+## Security
+
+- No API keys, tokens, credentials, or `.env` contents in commits, logs, generated docs, or agent handoff files.
+- Validate all external inputs at system boundaries.
+- Follow OWASP Top 10 for any server-side code.

@@ -1,0 +1,54 @@
+/**
+ * SEIS Release Policy — JSONata Expression
+ * Evaluates a release gate payload and resolves motion duration tokens.
+ *
+ * Input: { version, status, motionMode, checks: [{name, passed}] }
+ * Output: enriched gate report with resolved durations and canDeploy flag
+ *
+ * Compatible with the JSONata npm package and Stedi.
+ */
+
+/* ─── Motion Duration Table ────────────────────────────────────────────── */
+$motionDurations := {
+  "instant":   0,
+  "fast":      150,
+  "standard":  300,
+  "slow":      500,
+  "cinematic": 800
+};
+
+/* ─── Motion Duration Resolver ─────────────────────────────────────────── */
+$motionDurationMs := function($token, $mode) {(
+  $base := $lookup($motionDurations, $token) ~> $default(300);
+  $mode in ["reduced", "manual-low"] ? 0 : $base
+)};
+
+/* ─── Gate Status Resolver ──────────────────────────────────────────────── */
+$gateStatus := function($checks) {(
+  $failCount := $count($checks[passed = false]);
+  $failCount = 0 ? "ready" : "blocked"
+)};
+
+/* ─── Enriched Report ───────────────────────────────────────────────────── */
+{
+  "version":         version,
+  "status":          $gateStatus(checks),
+  "statusLabel":     $uppercase($gateStatus(checks)),
+  "motionMode":      motionMode ? motionMode : "full",
+  "motionFastMs":    $motionDurationMs("fast",      motionMode ? motionMode : "full"),
+  "motionStdMs":     $motionDurationMs("standard",  motionMode ? motionMode : "full"),
+  "motionSlowMs":    $motionDurationMs("slow",      motionMode ? motionMode : "full"),
+  "motionCineMs":    $motionDurationMs("cinematic", motionMode ? motionMode : "full"),
+  "canDeploy":       $gateStatus(checks) = "ready",
+  "totalChecks":     $count(checks),
+  "passedChecks":    $count(checks[passed = true]),
+  "failedChecks":    $count(checks[passed = false]),
+  "checks":          checks.{
+    "name":   name,
+    "passed": passed,
+    "marker": passed ? "PASS" : "FAIL"
+  },
+  "blockedReason":   $gateStatus(checks) != "ready"
+                     ? "Failing checks: " & $join(checks[passed = false].name, ", ")
+                     : null
+}

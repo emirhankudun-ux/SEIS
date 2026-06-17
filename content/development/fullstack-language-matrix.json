@@ -10,9 +10,9 @@
   },
   "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved",
   "summary": {
-    "languageCount": 117,
+    "languageCount": 214,
     "layerCount": 7,
-    "entrypointCount": 159,
+    "entrypointCount": 256,
     "requestedCoreStackCount": 6,
     "pluginCapabilityLaneCount": 12,
     "missingEntrypoints": []
@@ -159,7 +159,7 @@
     {
       "id": "research-legacy-and-lab",
       "label": "Research, Legacy, and Lab",
-      "languageCount": 21,
+      "languageCount": 118,
       "languages": [
         "bc",
         "Haskell",
@@ -181,7 +181,104 @@
         "Forth",
         "Common Lisp",
         "Emacs Lisp",
-        "Smalltalk"
+        "Smalltalk",
+        "Terraform",
+        "Vue",
+        "Svelte",
+        "SCSS",
+        "MDX",
+        "Astro",
+        "Gleam",
+        "Haxe",
+        "LaTeX",
+        "Cypher",
+        "Standard ML",
+        "Vala",
+        "CoffeeScript",
+        "Fish Shell",
+        "Pkl",
+        "Assembly (x86-64)",
+        "VHDL",
+        "SystemVerilog",
+        "Carbon",
+        "Odin",
+        "Wren",
+        "Idris",
+        "Less",
+        "PostCSS",
+        "Pug",
+        "Handlebars",
+        "Nunjucks",
+        "EJS",
+        "Jinja2",
+        "Liquid",
+        "reStructuredText",
+        "AsciiDoc",
+        "Org-Mode",
+        "Zsh",
+        "Windows Batch",
+        "REXX",
+        "Octave",
+        "Wolfram Language",
+        "Scilab",
+        "Roc",
+        "Pony",
+        "Koka",
+        "Lean 4",
+        "Coq",
+        "ATS",
+        "Gherkin",
+        "FlatBuffers",
+        "Apache Thrift",
+        "Cap'n Proto",
+        "XSD",
+        "XSLT",
+        "XQuery",
+        "JSONata",
+        "Flux",
+        "CQL",
+        "PL/I",
+        "ALGOL",
+        "BCPL",
+        "Simula",
+        "Self",
+        "Pharo",
+        "APL",
+        "J Language",
+        "Fennel",
+        "Janet",
+        "Hy",
+        "Mojo",
+        "Bend",
+        "Vale",
+        "Nickel",
+        "Io",
+        "Factor",
+        "CSS",
+        "HLSL",
+        "CUDA",
+        "Delphi",
+        "AppleScript",
+        "ActionScript",
+        "BASIC",
+        "Arduino",
+        "SAS",
+        "DAX",
+        "JSX",
+        "Pine Script",
+        "KQL",
+        "SPSS",
+        "Stata",
+        "MicroPython",
+        "Metal",
+        "OpenCL",
+        "G-Code",
+        "Logo",
+        "Stylus",
+        "VBScript",
+        "MQL5",
+        "Puppet",
+        "Structured Text"
       ]
     }
   ],
@@ -1744,6 +1841,1267 @@
       "role": "cross-platform task runner release policy",
       "entrypoints": [
         "polyglot/taskfile/release-policy.taskfile.yml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 118,
+      "language": "Terraform",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "infrastructure-as-code deploy guard and server target governance",
+      "entrypoints": [
+        "polyglot/terraform/seis_deploy_guard.tf"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 119,
+      "language": "Vue",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "reactive component release status with motion-aware transitions",
+      "entrypoints": [
+        "polyglot/vue/SeisReleasePolicy.vue"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 120,
+      "language": "Svelte",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "reactive component release status with reduced-motion support",
+      "entrypoints": [
+        "polyglot/svelte/SeisReleasePolicy.svelte"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 121,
+      "language": "SCSS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "design token–driven motion policy with prefers-reduced-motion mixin",
+      "entrypoints": [
+        "polyglot/scss/release_policy.scss"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 122,
+      "language": "MDX",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "human-readable release policy documentation with embedded code",
+      "entrypoints": [
+        "polyglot/mdx/release-policy.mdx"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 123,
+      "language": "Astro",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "server-rendered release status component with motion-reduced style",
+      "entrypoints": [
+        "polyglot/astro/ReleasePolicy.astro"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 124,
+      "language": "Gleam",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "type-safe functional release and motion policy on the BEAM VM",
+      "entrypoints": [
+        "polyglot/gleam/release_policy.gleam"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 125,
+      "language": "Haxe",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "multi-platform release and motion policy in abstract enum style",
+      "entrypoints": [
+        "polyglot/haxe/SeisReleasePolicy.hx"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 126,
+      "language": "LaTeX",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "typeset release policy governance document",
+      "entrypoints": [
+        "polyglot/latex/release-policy.tex"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 127,
+      "language": "Cypher",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "graph-based release gate and motion mode relationship model",
+      "entrypoints": [
+        "polyglot/cypher/release_policy.cypher"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 128,
+      "language": "Standard ML",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "strongly-typed ML-family release and motion policy",
+      "entrypoints": [
+        "polyglot/sml/release_policy.sml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 129,
+      "language": "Vala",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "GObject-based release and motion policy for Linux desktop surfaces",
+      "entrypoints": [
+        "polyglot/vala/SeisReleasePolicy.vala"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 130,
+      "language": "CoffeeScript",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "concise JS-compiled release and motion policy",
+      "entrypoints": [
+        "polyglot/coffeescript/release_policy.coffee"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 131,
+      "language": "Fish Shell",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "interactive shell release policy and motion mode resolution",
+      "entrypoints": [
+        "polyglot/fish/release_policy.fish"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 132,
+      "language": "Pkl",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Apple structured config release policy with typesafe motion modes",
+      "entrypoints": [
+        "polyglot/pkl/release-policy.pkl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 133,
+      "language": "Assembly (x86-64)",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "low-level native readiness contract and motion mode resolver",
+      "entrypoints": [
+        "polyglot/assembly/readiness_contract.asm"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 134,
+      "language": "VHDL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "hardware-description readiness contract with motion mode logic",
+      "entrypoints": [
+        "polyglot/vhdl/readiness_contract.vhd"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 135,
+      "language": "SystemVerilog",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "hardware-description readiness contract with enum motion modes",
+      "entrypoints": [
+        "polyglot/systemverilog/readiness_contract.sv"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 136,
+      "language": "Carbon",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Google experimental systems language release and motion policy",
+      "entrypoints": [
+        "polyglot/carbon/release_policy.carbon"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 137,
+      "language": "Odin",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "modern systems language release and motion policy",
+      "entrypoints": [
+        "polyglot/odin/release_policy.odin"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 138,
+      "language": "Wren",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "lightweight scripting language release and motion policy",
+      "entrypoints": [
+        "polyglot/wren/release_policy.wren"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 139,
+      "language": "Idris",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "dependently-typed functional release and motion policy",
+      "entrypoints": [
+        "polyglot/idris/ReleasePolicy.idr"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 140,
+      "language": "Less",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "CSS preprocessor motion token variables and reduced-motion mixin",
+      "entrypoints": [
+        "polyglot/less/release_policy.less"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 141,
+      "language": "PostCSS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "CSS custom properties for motion tokens with @media reduced-motion",
+      "entrypoints": [
+        "polyglot/postcss/release_policy.pcss"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 142,
+      "language": "Pug",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "HTML template mixin for release badge with aria attributes",
+      "entrypoints": [
+        "polyglot/pug/release_policy.pug"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 143,
+      "language": "Handlebars",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "template for release gate status and motion mode rendering",
+      "entrypoints": [
+        "polyglot/handlebars/release_policy.hbs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 144,
+      "language": "Nunjucks",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "server-side template macros for motion-aware release status",
+      "entrypoints": [
+        "polyglot/nunjucks/release_policy.njk"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 145,
+      "language": "EJS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "embedded JS template for motion class and release status output",
+      "entrypoints": [
+        "polyglot/ejs/release_policy.ejs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 146,
+      "language": "Jinja2",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Python template engine motion policy and release gate rendering",
+      "entrypoints": [
+        "polyglot/jinja2/release_policy.j2"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 147,
+      "language": "Liquid",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Shopify/Jekyll template for motion-aware release status",
+      "entrypoints": [
+        "polyglot/liquid/release-policy.liquid"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 148,
+      "language": "reStructuredText",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Python documentation format release policy governance document",
+      "entrypoints": [
+        "polyglot/restructuredtext/release-policy.rst"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 149,
+      "language": "AsciiDoc",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "technical writing format release policy with admonition blocks",
+      "entrypoints": [
+        "polyglot/asciidoc/release-policy.adoc"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 150,
+      "language": "Org-Mode",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Emacs outline format release policy with table and code blocks",
+      "entrypoints": [
+        "polyglot/org-mode/release-policy.org"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 151,
+      "language": "Zsh",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Z shell motion mode resolution and release gate script",
+      "entrypoints": [
+        "polyglot/zsh/release_policy.zsh"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 152,
+      "language": "Windows Batch",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "CMD scripting for motion mode resolution and release gate check",
+      "entrypoints": [
+        "polyglot/batch/release_policy.bat"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 153,
+      "language": "REXX",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "IBM scripting language motion policy and deploy gate",
+      "entrypoints": [
+        "polyglot/rexx/release_policy.rexx"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 154,
+      "language": "Octave",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "MATLAB-compatible scientific computing motion duration function",
+      "entrypoints": [
+        "polyglot/octave/release_policy.m"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 155,
+      "language": "Wolfram Language",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Mathematica symbolic release gate and motion mode association",
+      "entrypoints": [
+        "polyglot/wolfram/release_policy.wl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 156,
+      "language": "Scilab",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "scientific computing motion policy and release gate struct",
+      "entrypoints": [
+        "polyglot/scilab/release_policy.sce"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 157,
+      "language": "Roc",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "type-safe functional language release and motion policy",
+      "entrypoints": [
+        "polyglot/roc/release_policy.roc"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 158,
+      "language": "Pony",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "actor-model language release policy with reference capabilities",
+      "entrypoints": [
+        "polyglot/pony/SeisReleasePolicy.pony"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 159,
+      "language": "Koka",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "effect-based functional release and motion policy",
+      "entrypoints": [
+        "polyglot/koka/release_policy.kk"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 160,
+      "language": "Lean 4",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "theorem prover and general-purpose release and motion policy",
+      "entrypoints": [
+        "polyglot/lean/ReleasePolicy.lean"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 161,
+      "language": "Coq",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "proof assistant with verified motion policy theorem",
+      "entrypoints": [
+        "polyglot/coq/release_policy.v"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 162,
+      "language": "ATS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "applied type system language for safe release policy",
+      "entrypoints": [
+        "polyglot/ats/release_policy.dats"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 163,
+      "language": "Gherkin",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "BDD specification for release gate and motion mode scenarios",
+      "entrypoints": [
+        "polyglot/gherkin/release_policy.feature"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 164,
+      "language": "FlatBuffers",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "binary serialization schema for release gate and motion modes",
+      "entrypoints": [
+        "polyglot/flatbuffers/release_policy.fbs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 165,
+      "language": "Apache Thrift",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "cross-language IDL schema for release gate service",
+      "entrypoints": [
+        "polyglot/thrift/release_policy.thrift"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 166,
+      "language": "Cap'n Proto",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "high-performance schema for release gate and motion modes",
+      "entrypoints": [
+        "polyglot/capnproto/release_policy.capnp"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 167,
+      "language": "XSD",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "XML schema definition for release gate and motion mode enum",
+      "entrypoints": [
+        "polyglot/xsd/release-policy.xsd"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 168,
+      "language": "XSLT",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "XML transform for release status and motion mode documents",
+      "entrypoints": [
+        "polyglot/xslt/release-policy.xsl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 169,
+      "language": "XQuery",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "XML query language for release gate data retrieval",
+      "entrypoints": [
+        "polyglot/xquery/release_policy.xq"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 170,
+      "language": "JSONata",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "JSON transform expression for motion duration lookup",
+      "entrypoints": [
+        "polyglot/jsonata/release_policy.jsonata"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 171,
+      "language": "Flux",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "InfluxDB query for release gate telemetry and motion mode metrics",
+      "entrypoints": [
+        "polyglot/flux/release_policy.flux"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 172,
+      "language": "CQL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Cassandra query for release gate persistence and TTL",
+      "entrypoints": [
+        "polyglot/cql/release_policy.cql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 173,
+      "language": "PL/I",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "IBM mainframe release policy with SELECT/WHEN motion logic",
+      "entrypoints": [
+        "polyglot/pli/release_policy.pli"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 174,
+      "language": "ALGOL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "historic language release policy with BEGIN/END block structure",
+      "entrypoints": [
+        "polyglot/algol/release_policy.algol"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 175,
+      "language": "BCPL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "historic C ancestor language release readiness contract",
+      "entrypoints": [
+        "polyglot/bcpl/release_policy.b"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 176,
+      "language": "Simula",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "first OOP language release policy class hierarchy",
+      "entrypoints": [
+        "polyglot/simula/SeisReleasePolicy.sim"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 177,
+      "language": "Self",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "prototype-based OOP release policy object with slots",
+      "entrypoints": [
+        "polyglot/self/release_policy.self"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 178,
+      "language": "Pharo",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "modern Smalltalk release policy class with method dispatch",
+      "entrypoints": [
+        "polyglot/pharo/SeisReleasePolicy.st"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 179,
+      "language": "APL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "array programming language motion mode resolution dfn",
+      "entrypoints": [
+        "polyglot/apl/release_policy.apl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 180,
+      "language": "J Language",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "APL-family tacit verb definitions for motion mode resolution",
+      "entrypoints": [
+        "polyglot/j/release_policy.ijs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 181,
+      "language": "Fennel",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Lisp dialect for Lua runtime release and motion policy",
+      "entrypoints": [
+        "polyglot/fennel/release_policy.fnl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 182,
+      "language": "Janet",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "functional scripting language release and motion policy",
+      "entrypoints": [
+        "polyglot/janet/release_policy.janet"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 183,
+      "language": "Hy",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Lisp dialect on Python release and motion policy",
+      "entrypoints": [
+        "polyglot/hy/release_policy.hy"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 184,
+      "language": "Mojo",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Modular Python superset high-performance release policy",
+      "entrypoints": [
+        "polyglot/mojo/release_policy.mojo"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 185,
+      "language": "Bend",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "parallel functional language (HVM2) release and motion policy",
+      "entrypoints": [
+        "polyglot/bend/release_policy.bend"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 186,
+      "language": "Vale",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "memory-safe systems language release and motion policy",
+      "entrypoints": [
+        "polyglot/vale/release_policy.vale"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 187,
+      "language": "Nickel",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "gradual type config language with contracts for release policy",
+      "entrypoints": [
+        "polyglot/nickel/release-policy.ncl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 188,
+      "language": "Io",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "prototype-based OOP scripting release and motion policy",
+      "entrypoints": [
+        "polyglot/io/release_policy.io"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 189,
+      "language": "Factor",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "concatenative stack-based language release and motion policy",
+      "entrypoints": [
+        "polyglot/factor/release_policy.factor"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 190,
+      "language": "CSS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "design-token and motion-preference release badge styles",
+      "entrypoints": [
+        "polyglot/css/release_policy.css"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 191,
+      "language": "HLSL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "GPU shader release motion policy for real-time graphics",
+      "entrypoints": [
+        "polyglot/hlsl/release_policy.hlsl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 192,
+      "language": "CUDA",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "GPU-parallel batch release gate evaluation",
+      "entrypoints": [
+        "polyglot/cuda/release_policy.cu"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 193,
+      "language": "Delphi",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Object Pascal Windows-native release policy model",
+      "entrypoints": [
+        "polyglot/delphi/SeisReleasePolicy.pas"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 194,
+      "language": "AppleScript",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "macOS automation release policy orchestration",
+      "entrypoints": [
+        "polyglot/applescript/release_policy.applescript"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 195,
+      "language": "ActionScript",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Flash/AIR legacy release policy and motion model",
+      "entrypoints": [
+        "polyglot/actionscript/SeisReleasePolicy.as"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 196,
+      "language": "BASIC",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "educational line-numbered release policy program",
+      "entrypoints": [
+        "polyglot/basic/release_policy.bas"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 197,
+      "language": "Arduino",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "embedded microcontroller release and motion policy",
+      "entrypoints": [
+        "polyglot/arduino/release_policy.ino"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 198,
+      "language": "SAS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "statistical analysis release readiness model",
+      "entrypoints": [
+        "polyglot/sas/release_policy.sas"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 199,
+      "language": "DAX",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Power BI data model release readiness measures",
+      "entrypoints": [
+        "polyglot/dax/release_policy.dax"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 200,
+      "language": "JSX",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "React JSX release gate UI with reduced-motion hook",
+      "entrypoints": [
+        "polyglot/jsx/SeisReleasePolicy.jsx"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 201,
+      "language": "Pine Script",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "TradingView chart indicator for release readiness signals",
+      "entrypoints": [
+        "polyglot/pinescript/release_policy.pine"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 202,
+      "language": "KQL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Kusto query language release telemetry analysis",
+      "entrypoints": [
+        "polyglot/kql/release_policy.kql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 203,
+      "language": "SPSS",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "statistical release readiness analysis macro",
+      "entrypoints": [
+        "polyglot/spss/release_policy.sps"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 204,
+      "language": "Stata",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "econometric release readiness do-file analysis",
+      "entrypoints": [
+        "polyglot/stata/release_policy.do"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 205,
+      "language": "MicroPython",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "embedded MicroPython release gate for microcontrollers",
+      "entrypoints": [
+        "polyglot/micropython/release_policy.py"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 206,
+      "language": "Metal",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Apple GPU Metal shader release motion policy",
+      "entrypoints": [
+        "polyglot/metal/release_policy.metal"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 207,
+      "language": "OpenCL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "cross-platform GPU compute release gate kernel",
+      "entrypoints": [
+        "polyglot/opencl/release_policy.cl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 208,
+      "language": "G-Code",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "CNC machine release phase and motion policy program",
+      "entrypoints": [
+        "polyglot/gcode/release_policy.gcode"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 209,
+      "language": "Logo",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "educational turtle-graphics release policy program",
+      "entrypoints": [
+        "polyglot/logo/release_policy.logo"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 210,
+      "language": "Stylus",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "CSS preprocessor release badge and motion styles",
+      "entrypoints": [
+        "polyglot/stylus/release_policy.styl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 211,
+      "language": "VBScript",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "Windows scripting release policy automation",
+      "entrypoints": [
+        "polyglot/vbscript/release_policy.vbs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 212,
+      "language": "MQL5",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "MetaTrader release gate and motion policy script",
+      "entrypoints": [
+        "polyglot/mql5/SeisReleasePolicy.mq5"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 213,
+      "language": "Puppet",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "infrastructure-as-code release policy and deploy gate",
+      "entrypoints": [
+        "polyglot/puppet/release_policy.pp"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 214,
+      "language": "Structured Text",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "IEC 61131-3 PLC release gate and motion policy program",
+      "entrypoints": [
+        "polyglot/structured-text/release_policy.st"
       ],
       "entrypointCount": 1,
       "requestedCoreStack": false,

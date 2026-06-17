@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SEIS Release Policy — XML Schema Definition (XSD)
+  Defines types for motion policy and release gate configuration
+-->
+<xs:schema
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:seis="https://seis.emirhankudun.com/schema/release"
+  targetNamespace="https://seis.emirhankudun.com/schema/release"
+  elementFormDefault="qualified"
+  attributeFormDefault="unqualified"
+  version="2.4.0">
+
+  <xs:annotation>
+    <xs:documentation>
+      SEIS Release Policy Schema — governs deploy readiness,
+      motion mode configuration, and accessibility standards.
+    </xs:documentation>
+  </xs:annotation>
+
+  <!-- ─── Simple Types ──────────────────────────────────────────────── -->
+
+  <xs:simpleType name="MotionMode">
+    <xs:annotation>
+      <xs:documentation>
+        Motion playback mode for the SEIS surface.
+        'full' = standard cinematic durations;
+        'reduced' = system prefers-reduced-motion detected;
+        'manual-low' = user explicitly toggled off animation.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="full"/>
+      <xs:enumeration value="reduced"/>
+      <xs:enumeration value="manual-low"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ReleaseStatus">
+    <xs:annotation>
+      <xs:documentation>Deploy gate status for a release.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ready"/>
+      <xs:enumeration value="pending"/>
+      <xs:enumeration value="blocked"/>
+      <xs:enumeration value="draft"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MotionToken">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="instant"/>
+      <xs:enumeration value="fast"/>
+      <xs:enumeration value="standard"/>
+      <xs:enumeration value="slow"/>
+      <xs:enumeration value="cinematic"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DurationMs">
+    <xs:restriction base="xs:nonNegativeInteger">
+      <xs:maxInclusive value="10000"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- ─── Complex Types ─────────────────────────────────────────────── -->
+
+  <xs:complexType name="MotionPolicy">
+    <xs:sequence>
+      <xs:element name="mode"              type="seis:MotionMode"/>
+      <xs:element name="durationInstant"   type="seis:DurationMs" default="0"/>
+      <xs:element name="durationFast"      type="seis:DurationMs" default="150"/>
+      <xs:element name="durationStandard"  type="seis:DurationMs" default="300"/>
+      <xs:element name="durationSlow"      type="seis:DurationMs" default="500"/>
+      <xs:element name="durationCinematic" type="seis:DurationMs" default="800"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeployCheck">
+    <xs:sequence>
+      <xs:element name="name"   type="xs:string"/>
+      <xs:element name="passed" type="xs:boolean"/>
+      <xs:element name="detail" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ReleaseGate">
+    <xs:sequence>
+      <xs:element name="version"       type="xs:string"/>
+      <xs:element name="status"        type="seis:ReleaseStatus"/>
+      <xs:element name="branch"        type="xs:string"  minOccurs="0"/>
+      <xs:element name="commitSha"     type="xs:string"  minOccurs="0"/>
+      <xs:element name="deployer"      type="xs:string"  minOccurs="0"/>
+      <xs:element name="environment"   type="xs:string"  minOccurs="0"/>
+      <xs:element name="isoTimestamp"  type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="canDeploy"     type="xs:boolean"/>
+      <xs:element name="blockedReason" type="xs:string"  minOccurs="0"/>
+      <xs:element name="policy"        type="seis:MotionPolicy"/>
+      <xs:element name="checks">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="check" type="seis:DeployCheck"
+                        minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="schemaVersion" type="xs:string" fixed="2.4.0"/>
+  </xs:complexType>
+
+  <!-- ─── Root Element ──────────────────────────────────────────────── -->
+
+  <xs:element name="releaseGate" type="seis:ReleaseGate">
+    <xs:annotation>
+      <xs:documentation>
+        Root element for a SEIS release gate document.
+      </xs:documentation>
+    </xs:annotation>
+  </xs:element>
+
+</xs:schema>

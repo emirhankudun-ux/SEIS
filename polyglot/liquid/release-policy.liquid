@@ -1,0 +1,104 @@
+{%- comment -%}
+  SEIS Release Policy — Liquid Template
+  Motion-aware release gate for Jekyll/Shopify/Eleventy rendering
+{%- endcomment -%}
+
+{%- assign motion_durations = "instant:0,fast:150,standard:300,slow:500,cinematic:800" | split: "," -%}
+
+{%- assign status_classes = "ready:badge--ready,blocked:badge--blocked,pending:badge--pending,draft:badge--draft" -%}
+
+{%- comment -%} Resolve motion duration — collapse to 0 when reduced {%- endcomment -%}
+{%- if reduced_motion -%}
+  {%- assign motion_standard = 0 -%}
+  {%- assign motion_fast = 0 -%}
+  {%- assign motion_slow = 0 -%}
+{%- else -%}
+  {%- assign motion_standard = 300 -%}
+  {%- assign motion_fast = 150 -%}
+  {%- assign motion_slow = 500 -%}
+{%- endif -%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEIS Release Gate — {{ version }}</title>
+  <style>
+    :root {
+      --motion-fast:     {{ motion_fast }}ms;
+      --motion-standard: {{ motion_standard }}ms;
+      --motion-slow:     {{ motion_slow }}ms;
+    }
+  </style>
+  <link rel="stylesheet" href="{{ '/styles/release-policy.css' | relative_url }}">
+</head>
+<body class="{% if reduced_motion %}motion-mode--reduced{% else %}motion-mode--full{% endif %}">
+
+  <main id="main-content" class="page">
+
+    <header class="page__header">
+      <h1 class="page__title">SEIS Release Gate</h1>
+
+      {%- assign badge_class = "badge--draft" -%}
+      {%- case status -%}
+        {%- when "ready"   -%}{%- assign badge_class = "badge--ready"   -%}
+        {%- when "blocked" -%}{%- assign badge_class = "badge--blocked" -%}
+        {%- when "pending" -%}{%- assign badge_class = "badge--pending" -%}
+      {%- endcase -%}
+
+      <span class="release-badge {{ badge_class }}"
+            role="status"
+            aria-label="Release status: {{ status }}">
+        {{ status | upcase }}
+      </span>
+    </header>
+
+    {% if reduced_motion %}
+      <aside class="motion-notice" role="note">
+        Reduced-motion mode — animations suppressed.
+      </aside>
+    {% endif %}
+
+    <section class="release-gate" aria-labelledby="gate-heading">
+      <h2 id="gate-heading">{{ version }} — Deploy Readiness</h2>
+
+      <dl class="release-meta">
+        <dt>Branch</dt>      <dd>{{ branch }}</dd>
+        <dt>Commit</dt>      <dd><code>{{ commit_sha | truncate: 8, "" }}</code></dd>
+        <dt>Environment</dt> <dd>{{ environment | default: "production" }}</dd>
+        <dt>Deployer</dt>    <dd>{{ deployer }}</dd>
+      </dl>
+
+      {%- assign fail_count = 0 -%}
+      <ul class="release-gate__checks" aria-label="Readiness checks">
+        {% for check in checks %}
+          {%- unless check.passed -%}{%- assign fail_count = fail_count | plus: 1 -%}{%- endunless -%}
+          <li class="check check--{% if check.passed %}passed{% else %}failed{% endif %}"
+              aria-label="{{ check.name }}: {% if check.passed %}passed{% else %}failed{% endif %}">
+            <span class="check__icon" aria-hidden="true">{% if check.passed %}✓{% else %}✗{% endif %}</span>
+            <span class="check__name">{{ check.name }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+
+      {% if fail_count == 0 %}
+        <p class="gate-summary gate-summary--ready" role="status">
+          All {{ checks.size }} checks passed — deploy ready.
+        </p>
+      {% else %}
+        <p class="gate-summary gate-summary--blocked" role="alert">
+          {{ fail_count }} check{% if fail_count > 1 %}s{% endif %} failing — deploy blocked.
+        </p>
+      {% endif %}
+
+    </section>
+
+  </main>
+
+  <footer class="page__footer" role="contentinfo">
+    <p>SEIS — cinematic, minimal, accessible.</p>
+  </footer>
+
+</body>
+</html>

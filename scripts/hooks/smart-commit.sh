@@ -3,7 +3,7 @@
 # SEIS Smart Commit Hook
 # Kod değişikliklerini analiz eder ve V14 standartlarına uygun commit mesajı önerir/oluşturur.
 
-set -e
+set -eu
 
 echo "🤖 SEIS Smart Commit: Analiz ediliyor..."
 

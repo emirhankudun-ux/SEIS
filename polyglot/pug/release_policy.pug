@@ -1,0 +1,71 @@
+//- SEIS Release Policy — Pug/Jade Template
+//- Renders a release gate card with motion mode awareness
+
+//- ── Mixins ──────────────────────────────────────────────────────────────
+
+mixin releaseBadge(status)
+  - const colors = { ready: 'badge--ready', blocked: 'badge--blocked', pending: 'badge--pending', draft: 'badge--draft' }
+  span.release-badge(
+    class=colors[status] || 'badge--draft'
+    aria-label=`Release status: ${status}`
+    role='status'
+  )= status.toUpperCase()
+
+mixin motionMode(mode)
+  - const isReduced = mode === 'reduced'
+  div.motion-wrapper(
+    data-motion-mode=mode
+    class=isReduced ? 'motion-mode--reduced' : 'motion-mode--full'
+  )
+    if isReduced
+      p.motion-notice(role='note') Animations disabled — respecting prefers-reduced-motion.
+    block
+
+mixin releaseGate(title, status, checks)
+  article.release-gate(
+    aria-labelledby='release-gate-title'
+    role='region'
+  )
+    header.release-gate__header
+      h2#release-gate-title.release-gate__title= title
+      +releaseBadge(status)
+
+    ul.release-gate__checks(aria-label='Deploy readiness checks')
+      each check in checks
+        li.release-gate__check(
+          class=check.passed ? 'check--passed' : 'check--failed'
+          aria-label=`${check.name}: ${check.passed ? 'passed' : 'failed'}`
+        )
+          span.check__icon(aria-hidden='true')= check.passed ? '✓' : '✗'
+          span.check__label= check.name
+
+//- ── Page Template ───────────────────────────────────────────────────────
+
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    meta(name='color-scheme' content='dark light')
+    title SEIS Release Gate
+    link(rel='stylesheet' href='/styles/release-policy.css')
+
+  body
+    main.page(id='main-content')
+      h1.page__title SEIS Polyglot Surface — Release Gate
+
+      +motionMode(motionMode || 'full')
+        +releaseGate(
+          'v2.4.0 Deploy Gate',
+          releaseStatus || 'pending',
+          [
+            { name: 'Type check', passed: true },
+            { name: 'Lint', passed: true },
+            { name: 'Content validation', passed: true },
+            { name: 'Accessibility audit', passed: false },
+            { name: 'Reduced-motion tests', passed: false }
+          ]
+        )
+
+      footer.page__footer(role='contentinfo')
+        p SEIS — cinematic, minimal, accessible.

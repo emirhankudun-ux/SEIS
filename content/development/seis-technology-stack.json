@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1030005,
+      "githubBytes": 1913055,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -43,7 +43,7 @@
       "label": "TypeScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 28824,
+      "githubBytes": 433045,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 308216,
+      "githubBytes": 312038,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -88,7 +88,7 @@
       "label": "Swift",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 356647,
+      "githubBytes": 361744,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
@@ -100,7 +100,7 @@
       "label": "Go",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 16367,
+      "githubBytes": 17373,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/go/health_contract.go",
@@ -114,7 +114,7 @@
       "label": "Rust",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 11825,
+      "githubBytes": 12687,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/rust/performance_budget.rs",
@@ -127,7 +127,7 @@
       "label": "Java",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 16110,
+      "githubBytes": 16946,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/java/SeisDeployReadiness.java",
@@ -141,7 +141,7 @@
       "label": "Kotlin",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1150,
+      "githubBytes": 1778,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/kotlin/SeisMotionPolicy.kt",
@@ -154,7 +154,7 @@
       "label": "Dart",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 532,
+      "githubBytes": 1064,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/dart/seis_motion_policy.dart"
@@ -166,7 +166,7 @@
       "label": "PHP",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 8471,
+      "githubBytes": 9972,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/php/contact-endpoint.php",
@@ -180,7 +180,7 @@
       "label": "Ruby",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 13442,
+      "githubBytes": 14249,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
@@ -195,7 +195,7 @@
       "label": "C",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 5440,
+      "githubBytes": 6442,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/c/readiness_contract.h",
@@ -208,7 +208,7 @@
       "label": "C++",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 11206,
+      "githubBytes": 11897,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/cpp/readiness_contract.hpp",
@@ -221,7 +221,7 @@
       "label": "C#",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 2731,
+      "githubBytes": 3254,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/csharp/SeisReleaseContract.cs"
@@ -233,7 +233,7 @@
       "label": "SQL",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 8177,
+      "githubBytes": 11471,
       "layer": "database-and-data",
       "entrypoints": [
         "polyglot/sql/audit_ledger.sqlite.sql"
@@ -245,7 +245,7 @@
       "label": "Shell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 67450,
+      "githubBytes": 92234,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
@@ -258,7 +258,7 @@
       "label": "PowerShell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 2427,
+      "githubBytes": 3289,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/powershell/SeisReleasePolicy.ps1"
@@ -270,7 +270,7 @@
       "label": "Lua",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 6948,
+      "githubBytes": 7271,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/lua/seis_i18n_attr_audit.lua"
@@ -282,7 +282,7 @@
       "label": "R",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 7953,
+      "githubBytes": 8477,
       "layer": "database-and-data",
       "entrypoints": [
         "polyglot/r/seis_translation_stats.R"
@@ -294,7 +294,7 @@
       "label": "Julia",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 595,
+      "githubBytes": 1190,
       "layer": "database-and-data",
       "entrypoints": [
         "polyglot/julia/readiness_metrics.jl"
@@ -306,7 +306,7 @@
       "label": "Perl",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 13916,
+      "githubBytes": 15256,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/perl/readiness_guard.pl",
@@ -333,7 +333,7 @@
       "label": "Scala",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 660,
+      "githubBytes": 1320,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/scala/SeisReleasePolicy.scala"
@@ -345,7 +345,7 @@
       "label": "Elixir",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 582,
+      "githubBytes": 1164,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/elixir/calm_release_policy.ex",
@@ -358,7 +358,7 @@
       "label": "Erlang",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 560,
+      "githubBytes": 1120,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/erlang/calm_release_policy.erl"
@@ -370,7 +370,7 @@
       "label": "Clojure",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 569,
+      "githubBytes": 1138,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/clojure/readiness_policy.clj"
@@ -382,7 +382,7 @@
       "label": "F#",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1592,
+      "githubBytes": 2404,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/fsharp/SeisReleasePolicy.fs"
@@ -394,7 +394,7 @@
       "label": "OCaml",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 7550,
+      "githubBytes": 8074,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/ocaml/release_policy.ml",
@@ -407,7 +407,7 @@
       "label": "Nim",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 5452,
+      "githubBytes": 6041,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/nim/readiness_policy.nim",
@@ -420,7 +420,7 @@
       "label": "Zig",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 711,
+      "githubBytes": 1422,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/zig/readiness_contract.zig"
@@ -432,7 +432,7 @@
       "label": "Groovy",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 5362,
+      "githubBytes": 5535,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/groovy/SeisReleasePolicy.groovy",
@@ -445,7 +445,7 @@
       "label": "Crystal",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 594,
+      "githubBytes": 1188,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/crystal/readiness_policy.cr"
@@ -457,7 +457,7 @@
       "label": "D",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 455,
+      "githubBytes": 910,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/d/readiness_policy.d"
@@ -469,7 +469,7 @@
       "label": "V",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 572,
+      "githubBytes": 5991,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/v/readiness_policy.v"
@@ -481,7 +481,7 @@
       "label": "Fortran",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 528,
+      "githubBytes": 1056,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/fortran/readiness_policy.f90"
@@ -493,7 +493,7 @@
       "label": "COBOL",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 723,
+      "githubBytes": 1446,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/cobol/readiness-policy.cob"
@@ -505,7 +505,7 @@
       "label": "Pascal",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 858,
+      "githubBytes": 2832,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/pascal/release_policy.pas"
@@ -517,7 +517,7 @@
       "label": "Racket",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 7245,
+      "githubBytes": 7923,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/racket/readiness-policy.rkt",
@@ -530,7 +530,7 @@
       "label": "Scheme",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 15747,
+      "githubBytes": 16085,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/scheme/readiness-policy.scm"
@@ -555,7 +555,7 @@
       "label": "Tcl",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 7290,
+      "githubBytes": 7662,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/tcl/seis_meta_tags_check.tcl"
@@ -567,7 +567,7 @@
       "label": "AWK",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1595,
+      "githubBytes": 1847,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/awk/css_var_histogram.awk"
@@ -579,7 +579,7 @@
       "label": "Common Lisp",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 5908,
+      "githubBytes": 6810,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/common-lisp/release-policy.lisp",
@@ -592,7 +592,7 @@
       "label": "Emacs Lisp",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 310,
+      "githubBytes": 620,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/emacs-lisp/release-policy.el"
@@ -604,7 +604,7 @@
       "label": "Smalltalk",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 382,
+      "githubBytes": 6472,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/smalltalk/ReleasePolicy.st"
@@ -616,7 +616,7 @@
       "label": "Ada",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 779,
+      "githubBytes": 1558,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/ada/seis_release_policy.ads"
@@ -628,7 +628,7 @@
       "label": "Visual Basic",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 992,
+      "githubBytes": 1405,
       "layer": "research-legacy-and-lab",
       "entrypoints": [
         "polyglot/vb/SeisReleasePolicy.vb"
@@ -640,7 +640,7 @@
       "label": "Batchfile",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 282,
+      "githubBytes": 3599,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/windows/scripting/seis_windows_platform.bat"
@@ -652,7 +652,7 @@
       "label": "MATLAB",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 365,
+      "githubBytes": 4372,
       "layer": "database-and-data",
       "entrypoints": [
         "polyglot/matlab/readiness_policy.m"
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 87594,
+      "githubBytes": 162343,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,11 +677,10 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 99419,
-      "layer": "frontend-and-experience",
+      "githubBytes": 320288,
+      "layer": "research-legacy-and-lab",
       "entrypoints": [
-        "apps/web/style.css",
-        "apps/web/styles.css"
+        "polyglot/css/release_policy.css"
       ]
     },
     {
@@ -690,7 +689,7 @@
       "label": "Solidity",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 869,
+      "githubBytes": 1738,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/solidity/SeisReleasePolicy.sol"
@@ -702,7 +701,7 @@
       "label": "Move",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 843,
+      "githubBytes": 1686,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/move/release_policy.move"
@@ -714,7 +713,7 @@
       "label": "Cairo",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 649,
+      "githubBytes": 1298,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/cairo/release_policy.cairo"
@@ -726,7 +725,7 @@
       "label": "Hack",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 772,
+      "githubBytes": 1544,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/hack/SeisReleasePolicy.hack"
@@ -750,7 +749,7 @@
       "label": "ABAP",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 778,
+      "githubBytes": 1556,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/abap/readiness_policy.abap"
@@ -762,7 +761,7 @@
       "label": "Q#",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 594,
+      "githubBytes": 1188,
       "layer": "security-policy-and-governance",
       "entrypoints": [
         "polyglot/qsharp/ReleasePolicy.qs"
@@ -774,7 +773,7 @@
       "label": "Make",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 246,
+      "githubBytes": 492,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/make/release-policy.mk"

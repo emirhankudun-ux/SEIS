@@ -1,0 +1,120 @@
+// SEIS Release Policy — Vale Language
+// Motion policy and deploy gate using Vale's region-based memory safety
+
+import stdlib.collections.List;
+
+// ─── Motion Mode Enum ──────────────────────────────────────────────────────
+sealed interface MotionMode { }
+struct Full impl MotionMode { }
+struct Reduced impl MotionMode { }
+struct ManualLow impl MotionMode { }
+
+// ─── Release Status Enum ──────────────────────────────────────────────────
+sealed interface ReleaseStatus { }
+struct Ready impl ReleaseStatus { }
+struct Pending impl ReleaseStatus { }
+struct Blocked impl ReleaseStatus { }
+struct Draft impl ReleaseStatus { }
+
+// ─── Deploy Check Struct ──────────────────────────────────────────────────
+struct DeployCheck {
+  name:   str;
+  passed: bool;
+}
+
+fn marker(check: &DeployCheck) str {
+  if check.passed {
+    return "PASS";
+  } else {
+    return "FAIL";
+  }
+}
+
+// ─── Motion Duration Ms ───────────────────────────────────────────────────
+fn motion_duration_ms(token: str, mode: &MotionMode) int {
+  let base int =
+    if token == "instant"   { 0   }
+    else if token == "fast"      { 150 }
+    else if token == "standard"  { 300 }
+    else if token == "slow"      { 500 }
+    else if token == "cinematic" { 800 }
+    else                         { 300 };
+
+  match mode {
+    &Full      => base,
+    &Reduced   => 0,
+    &ManualLow => 0,
+  }
+}
+
+// ─── Gate Status ──────────────────────────────────────────────────────────
+fn gate_status(checks: &List<DeployCheck>) ReleaseStatus {
+  let fail_count = 0;
+  foreach check in checks.iter() {
+    if not check.passed {
+      mut fail_count = fail_count + 1;
+    }
+  }
+  if fail_count == 0 {
+    return Ready{};
+  } else {
+    return Blocked{};
+  }
+}
+
+// ─── Can Deploy ───────────────────────────────────────────────────────────
+fn can_deploy(checks: &List<DeployCheck>) bool {
+  match gate_status(checks) {
+    Ready   => true,
+    _       => false,
+  }
+}
+
+// ─── Status String ────────────────────────────────────────────────────────
+fn status_string(status: &ReleaseStatus) str {
+  match status {
+    &Ready   => "READY",
+    &Pending => "PENDING",
+    &Blocked => "BLOCKED",
+    &Draft   => "DRAFT",
+  }
+}
+
+// ─── Release Gate Struct ──────────────────────────────────────────────────
+struct ReleaseGate {
+  version: str;
+  mode:    MotionMode;
+}
+
+fn print_report(gate: &ReleaseGate, checks: &List<DeployCheck>) {
+  let status = gate_status(checks);
+  println("SEIS Release Gate — " + gate.version);
+  println(str_repeat("-", 40));
+  println("Status:       " + status_string(&status));
+  println("Fast (ms):    " + int_to_str(motion_duration_ms("fast",     &gate.mode)));
+  println("Standard (ms):" + int_to_str(motion_duration_ms("standard", &gate.mode)));
+  println(str_repeat("-", 40));
+  foreach check in checks.iter() {
+    println("  [" + marker(check) + "]  " + check.name);
+  }
+  println(str_repeat("-", 40));
+  if can_deploy(checks) {
+    println("Deploy: AUTHORISED");
+  } else {
+    println("Deploy: BLOCKED");
+  }
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────
+exported fn main() {
+  let mode   = Full{};
+  let gate   = ReleaseGate{ version: "v2.4.0", mode: mode };
+  let checks = List<DeployCheck>[
+    DeployCheck{ name: "typecheck",          passed: true  },
+    DeployCheck{ name: "lint",               passed: true  },
+    DeployCheck{ name: "content validation", passed: true  },
+    DeployCheck{ name: "accessibility",      passed: false },
+  ];
+
+  print_report(&gate, &checks);
+}

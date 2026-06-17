@@ -1,0 +1,37 @@
+// SEIS Release Policy — Pkl (Apple Structured Config Language)
+
+module seis.ReleasePolicy
+
+typealias MotionMode = "cinematic" | "balanced" | "reduced"
+typealias ReleaseStatus = "ready" | "blocked" | "pending"
+
+class MotionConfig {
+  mode: MotionMode
+  durationMs: Int
+  reducedMotionSafe: Boolean
+}
+
+cinematic: MotionConfig = new {
+  mode = "cinematic"
+  durationMs = 600
+  reducedMotionSafe = false
+}
+
+balanced: MotionConfig = new {
+  mode = "balanced"
+  durationMs = 300
+  reducedMotionSafe = true
+}
+
+reduced: MotionConfig = new {
+  mode = "reduced"
+  durationMs = 0
+  reducedMotionSafe = true
+}
+
+releaseGate = new {
+  requiresQualityPass = true
+  requiresMotionDoc = true
+  requiresServerTarget = true
+  requiresA11yPass = true
+}

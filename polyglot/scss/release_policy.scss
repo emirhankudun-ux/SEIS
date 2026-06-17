@@ -1,0 +1,33 @@
+// SEIS Release Policy — motion and theme tokens
+
+$motion-duration-cinematic: 0.6s;
+$motion-duration-balanced: 0.3s;
+$motion-duration-reduced: 0s;
+
+$color-ready:   #22c55e;
+$color-blocked: #ef4444;
+$color-pending: #f59e0b;
+
+@mixin seis-transition($duration: $motion-duration-balanced) {
+  transition: opacity $duration ease, transform $duration ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.seis-release-badge {
+  @include seis-transition;
+
+  &--ready   { color: $color-ready; }
+  &--blocked { color: $color-blocked; }
+  &--pending { color: $color-pending; }
+}
+
+[data-motion-mode="cinematic"] .seis-release-badge {
+  @include seis-transition($motion-duration-cinematic);
+}
+
+[data-motion-mode="reduced"] .seis-release-badge {
+  transition: none;
+}

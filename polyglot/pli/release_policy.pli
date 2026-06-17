@@ -1,0 +1,111 @@
+ /* SEIS Release Policy — PL/I                                              */
+ /* Motion policy resolution and deploy gate validation                     */
+
+ RELEASE_POLICY: PROCEDURE OPTIONS(MAIN);
+
+   /* ─── Declarations ──────────────────────────────────────────────────── */
+   DECLARE VERSION         CHARACTER(20) VARYING INITIAL('v2.4.0');
+   DECLARE MOTION_MODE     CHARACTER(10) VARYING;
+   DECLARE STATUS          CHARACTER(10) VARYING;
+   DECLARE FAIL_COUNT      FIXED BINARY(15) INITIAL(0);
+   DECLARE ENV_MODE        CHARACTER(10) VARYING;
+
+   /* Motion duration variables */
+   DECLARE DURATION_INSTANT    FIXED BINARY(15) INITIAL(0);
+   DECLARE DURATION_FAST       FIXED BINARY(15) INITIAL(150);
+   DECLARE DURATION_STANDARD   FIXED BINARY(15) INITIAL(300);
+   DECLARE DURATION_SLOW       FIXED BINARY(15) INITIAL(500);
+   DECLARE DURATION_CINEMATIC  FIXED BINARY(15) INITIAL(800);
+
+   /* Check result array */
+   DECLARE 1 CHECK_RESULTS(4),
+             2 CHECK_NAME   CHARACTER(30) VARYING,
+             2 CHECK_PASSED BIT(1);
+
+   /* ─── Initialise Checks ─────────────────────────────────────────────── */
+   CHECK_RESULTS(1).CHECK_NAME   = 'typecheck';
+   CHECK_RESULTS(1).CHECK_PASSED = '1'B;  /* passed */
+
+   CHECK_RESULTS(2).CHECK_NAME   = 'lint';
+   CHECK_RESULTS(2).CHECK_PASSED = '1'B;
+
+   CHECK_RESULTS(3).CHECK_NAME   = 'content validation';
+   CHECK_RESULTS(3).CHECK_PASSED = '1'B;
+
+   CHECK_RESULTS(4).CHECK_NAME   = 'accessibility';
+   CHECK_RESULTS(4).CHECK_PASSED = '0'B;  /* failed */
+
+   /* ─── Resolve Motion Mode ───────────────────────────────────────────── */
+   CALL RESOLVE_MOTION_MODE(MOTION_MODE);
+
+   /* Apply reduced durations */
+   SELECT (MOTION_MODE);
+     WHEN ('reduced')
+       DO;
+         DURATION_FAST      = 0;
+         DURATION_STANDARD  = 0;
+         DURATION_SLOW      = 0;
+         DURATION_CINEMATIC = 0;
+       END;
+     WHEN ('manual-low')
+       DO;
+         DURATION_FAST      = 0;
+         DURATION_STANDARD  = 0;
+         DURATION_SLOW      = 0;
+         DURATION_CINEMATIC = 0;
+       END;
+     OTHERWISE
+       /* full mode — durations already set to defaults */;
+   END;
+
+   PUT LIST('SEIS Release Policy');
+   PUT SKIP;
+   PUT LIST('Motion mode:    ', MOTION_MODE);
+   PUT LIST('Standard dur:   ', DURATION_STANDARD, 'ms');
+   PUT LIST('Fast dur:       ', DURATION_FAST, 'ms');
+   PUT SKIP;
+
+   /* ─── Run Release Gate ──────────────────────────────────────────────── */
+   CALL RUN_RELEASE_GATE(VERSION, CHECK_RESULTS, FAIL_COUNT, STATUS);
+
+   PUT LIST('');
+   PUT LIST('Release Gate — ', VERSION);
+   PUT LIST('Status:  ', STATUS);
+   IF STATUS = 'blocked' THEN
+     PUT LIST('Deploy:  PROHIBITED');
+   ELSE
+     PUT LIST('Deploy:  AUTHORISED');
+
+   RETURN;
+
+   /* ══════════════════════════════════════════════════════════════════ */
+   /* RESOLVE_MOTION_MODE — Sets mode based on environment variable     */
+   RESOLVE_MOTION_MODE: PROCEDURE(MODE);
+     DECLARE MODE CHARACTER(10) VARYING;
+     /* In real PL/I, FETCH ENV variable via system call */
+     /* Default to 'full' for this example */
+     MODE = 'full';
+   END RESOLVE_MOTION_MODE;
+
+   /* ══════════════════════════════════════════════════════════════════ */
+   /* RUN_RELEASE_GATE — Evaluates checks and sets status               */
+   RUN_RELEASE_GATE: PROCEDURE(VER, CHECKS, FAILS, STATUS_OUT);
+     DECLARE VER        CHARACTER(20) VARYING;
+     DECLARE CHECKS(4) LIKE CHECK_RESULTS;
+     DECLARE FAILS      FIXED BINARY(15);
+     DECLARE STATUS_OUT CHARACTER(10) VARYING;
+     DECLARE I          FIXED BINARY(15);
+
+     FAILS = 0;
+     DO I = 1 TO 4;
+       IF ¬CHECKS(I).CHECK_PASSED THEN
+         FAILS = FAILS + 1;
+     END;
+
+     IF FAILS = 0 THEN
+       STATUS_OUT = 'ready';
+     ELSE
+       STATUS_OUT = 'blocked';
+   END RUN_RELEASE_GATE;
+
+ END RELEASE_POLICY;
