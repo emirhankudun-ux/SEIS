@@ -1,0 +1,22 @@
+# Cloud SSH Toolkit - Hardened SSH Configuration
+Port 22
+Protocol 2
+
+# Authentication
+PubkeyAuthentication yes
+PasswordAuthentication no
+PermitRootLogin no
+ChallengeResponseAuthentication no
+UsePAM yes
+
+# Security
+MaxAuthTries 3
+LoginGraceTime 60s
+ClientAliveInterval 300
+ClientAliveCountMax 2
+X11Forwarding no
+PrintMotd no
+AcceptEnv LANG LC_*
+
+# Subsystem
+Subsystem sftp /usr/lib/openssh/sftp-server
