@@ -26,7 +26,7 @@ WEB_ROOT  = Path("apps/web")
 
 def extract_precache(source: str) -> list[str]:
     """Return the list of path strings from the PRECACHE array."""
-    m = re.search(r'var\s+PRECACHE\s*=\s*\[([^\]]*)\]', source, re.DOTALL)
+    m = re.search(r'(?:var|const|let)\s+PRECACHE\s*=\s*\[([^\]]*)\]', source, re.DOTALL)
     if not m:
         return []
     block = m.group(1)

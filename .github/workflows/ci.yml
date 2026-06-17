@@ -70,6 +70,7 @@ jobs:
   gate:
     name: All checks passed
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: [governance, unit, schema]
     if: always()
     steps:
