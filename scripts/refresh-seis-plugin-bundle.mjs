@@ -35,10 +35,10 @@ const localRoot = resolveLocalPluginRoot(args.local);
 const marketplace = args.marketplace || "personal";
 const plugin = args.plugin || "seis";
 
-const doSync = !Boolean(args["check-only"]) && args["no-sync"] !== true;
+const doSync = !args["check-only"] && args["no-sync"] !== true;
 const doCheck = Boolean(args.check) || args["no-check"] !== true;
-const doInstall = Boolean(args.install) && !Boolean(args["check-only"]);
-const doCacheBuster = !Boolean(args["check-only"]) && args["no-cachebuster"] !== true;
+const doInstall = Boolean(args.install) && !args["check-only"];
+const doCacheBuster = !args["check-only"] && args["no-cachebuster"] !== true;
 const strict = Boolean(args.strict);
 const errors = [];
 
