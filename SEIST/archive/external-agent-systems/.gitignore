@@ -1,0 +1,9 @@
+# Keep bulky third-party intake artifacts local by default.
+# The README and manifest are the intended lightweight records.
+/openclaw/
+/hermes-agent/
+/apps/
+/docs/
+/installers/
+/metadata/
+

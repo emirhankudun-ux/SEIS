@@ -1,0 +1,33 @@
+{
+  "name": "SEIS CLOSED CODE Google Workspace",
+  "date": "2026-06-05",
+  "drive": {
+    "operating_plan": {
+      "title": "SEIS CLOSED CODE Operating Plan",
+      "document_id": "1EvyhGA4ulJHsEB2DCzZAYxDrUv1X6dGj0PFa0splrps",
+      "url": "https://docs.google.com/document/d/1EvyhGA4ulJHsEB2DCzZAYxDrUv1X6dGj0PFa0splrps"
+    },
+    "platform_backlog": {
+      "title": "SEIS CLOSED CODE Platform Backlog",
+      "spreadsheet_id": "1sxnxOz9ZRzwZAz2FmHt_3YzAhQjKL2sQbYR1uWdGsaQ",
+      "url": "https://docs.google.com/spreadsheets/d/1sxnxOz9ZRzwZAz2FmHt_3YzAhQjKL2sQbYR1uWdGsaQ"
+    },
+    "installed_plugin_operating_model": {
+      "title": "SEIS Installed Plugin Operating Model",
+      "document_id": "10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64",
+      "url": "https://docs.google.com/document/d/10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64"
+    }
+  },
+  "calendar": {
+    "weekly_build_review": {
+      "title": "SEIS CLOSED CODE - Weekly Build Review",
+      "event_id": "eh9v8mjdctvchf6i9cs4j02df4",
+      "start": "2026-06-08T10:00:00+03:00",
+      "end": "2026-06-08T11:00:00+03:00",
+      "timezone": "Europe/Istanbul",
+      "recurrence": "RRULE:FREQ=WEEKLY;COUNT=12",
+      "url": "https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0"
+    }
+  },
+  "sync_rule": "Update this file whenever Drive or Calendar artifacts change."
+}

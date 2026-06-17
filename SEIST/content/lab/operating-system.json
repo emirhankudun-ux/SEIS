@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "name": "UI-UX Digital Lab",
+  "ecosystem": "SEIS",
+  "status": "foundation-operating-model",
+  "mission": "Provide a calm, enterprise-ready creative experience operating system for premium UI/UX, cinematic interfaces, AI-native workflows, accessibility, and sustainable digital product evolution.",
+  "principles": [
+    "human-centered clarity before visual spectacle",
+    "accessibility and reduced-motion support before immersive depth",
+    "modular static foundations before dependency-heavy frameworks",
+    "documentation and governance as product infrastructure",
+    "rollback-safe evolution through small reversible layers"
+  ],
+  "experienceModes": [
+    {
+      "id": "minimal",
+      "purpose": "editorial portfolios, accessibility-first surfaces, lightweight review",
+      "guardrail": "typography, semantic structure, and speed remain dominant"
+    },
+    {
+      "id": "balanced",
+      "purpose": "premium portfolios, scalable product interfaces, calm SaaS shells",
+      "guardrail": "polish increases only when comprehension stays stable"
+    },
+    {
+      "id": "cinematic",
+      "purpose": "immersive storytelling, showcases, guided presentations",
+      "guardrail": "motion remains optional, subtle, and frame-budget aware"
+    },
+    {
+      "id": "experimental",
+      "purpose": "AI-native tools, creative coding, generative interface research",
+      "guardrail": "experiments stay isolated from core navigation and content access"
+    }
+  ],
+  "operatingDomains": [
+    "design-system-governance",
+    "frontend-foundation",
+    "ai-workflow-readiness",
+    "accessibility-quality",
+    "content-architecture",
+    "release-governance",
+    "observability-awareness"
+  ],
+  "nextReadinessGates": [
+    "confirm production domain before enabling indexable SEO",
+    "keep future AI automations human-reviewed and auditable",
+    "add heavier rendering only as progressive enhancement",
+    "validate language, keyboard, contrast, and motion behavior before release"
+  ]
+}

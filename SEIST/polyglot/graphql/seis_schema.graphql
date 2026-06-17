@@ -1,0 +1,18 @@
+type SeisRelease {
+  packagePath: String!
+  sha256: String!
+  liveUploadBlocked: Boolean!
+  supportedLocales: [String!]!
+}
+
+type SeisMotionPolicy {
+  supportsReducedMotion: Boolean!
+  mobileParticleLimit: Int!
+  desktopParticleLimit: Int!
+  continuousSceneLimit: Int!
+}
+
+type Query {
+  release: SeisRelease!
+  motionPolicy: SeisMotionPolicy!
+}

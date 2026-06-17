@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "id": "seis-connector-capability-registry",
+  "mode": "explicit-auth-only",
+  "policy": {
+    "default": "available_when_authenticated",
+    "secretHandling": "never_commit_tokens",
+    "execution": "use_only_when_relevant_to_the_current_task",
+    "mcp": "prefer_official_or_project_configured_servers",
+    "plugins": "route_by_capability_family_before_live_use",
+    "skills": "load_only_the_minimal_skill_set_for_the_current_task"
+  },
+  "ecosystemActivation": {
+    "intent": "Expose every available plugin, MCP server, connector, and skill through a governed activation hub without blanket live calls.",
+    "defaultMode": "registry-first",
+    "pluginCatalog": "content/development/plugin-capability-catalog.json",
+    "routingOrder": [
+      "task_intent",
+      "repo_surface",
+      "capability_family",
+      "auth_and_target",
+      "quality_gate",
+      "live_action"
+    ],
+    "blockedByDefault": [
+      "credentialed_writes",
+      "blanket_oauth_calls",
+      "broad_scans_without_scope",
+      "unreviewed_remote_mutations",
+      "unbounded_browser_or_indexing_runs"
+    ]
+  },
+  "connectors": [
+    {
+      "id": "github",
+      "surface": "repository",
+      "status": "ready-if-authenticated",
+      "activationPolicy": "bounded-preflight-before-push",
+      "blockedWithout": ["clean_worktree", "publish_readiness_pass", "github_auth"],
+      "qualityCommands": ["npm run automation:publish-readiness"]
+    },
+    {
+      "id": "vercel",
+      "surface": "cloud-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_site_selection",
+      "blockedWithout": ["provider_token", "site_selection", "SEIS_SITE_URL"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "cloudflare",
+      "surface": "edge-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_route_selection",
+      "blockedWithout": ["provider_token", "route_selection", "SEIS_SITE_URL"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "netlify",
+      "surface": "static-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_site_selection",
+      "blockedWithout": ["provider_token", "site_selection", "SEIS_SITE_URL"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "sentry",
+      "surface": "observability",
+      "status": "candidate",
+      "activationPolicy": "quiet_error_signal_only_after_project_selection",
+      "blockedWithout": ["project_selection", "auth_scope"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "slack",
+      "surface": "release-notifications",
+      "status": "candidate",
+      "activationPolicy": "notify_only_after_user_approval",
+      "blockedWithout": ["user_approval", "channel_scope"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "google-drive",
+      "surface": "handoff-archive",
+      "status": "candidate",
+      "activationPolicy": "archive_only_after_user_approval",
+      "blockedWithout": ["user_approval", "destination_selection"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "output-ai",
+      "surface": "durable-workflow",
+      "status": "candidate",
+      "activationPolicy": "use_for_new_outputai_workflows_only",
+      "blockedWithout": ["workflow_scope", "outputai_task_fit"],
+      "qualityCommands": ["npm run check:cloud-environment"]
+    },
+    {
+      "id": "public-equity-investing",
+      "surface": "public-equity-research",
+      "status": "requested-blocked",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_financial_provider_is_available",
+      "blockedWithout": ["public_equity_plugin_available", "financial_data_auth", "target_company_scope", "user_approval"],
+      "qualityCommands": ["npm run check:requested-plugin-trace"]
+    },
+    {
+      "id": "product-design",
+      "surface": "product-design-strategy",
+      "status": "requested-blocked",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_design_surface_is_available",
+      "blockedWithout": ["product_design_plugin_available", "product_design_auth", "product_design_scope", "user_approval"],
+      "qualityCommands": ["npm run check:requested-plugin-trace"]
+    },
+    {
+      "id": "investment-banking",
+      "surface": "investment-banking-analysis",
+      "status": "requested-blocked",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_deal_data_provider_is_available",
+      "blockedWithout": ["investment_banking_plugin_available", "investment_banking_auth", "deal_scope", "user_approval"],
+      "qualityCommands": ["npm run check:requested-plugin-trace"]
+    },
+    {
+      "id": "figma",
+      "surface": "design-handoff",
+      "status": "candidate",
+      "activationPolicy": "read_design_context_only_after_file_or_node_is_explicit",
+      "blockedWithout": ["figma_file_or_node", "user_approval", "design_scope"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "browser",
+      "surface": "local-ui-validation",
+      "status": "candidate",
+      "activationPolicy": "use_for_known_local_or_file_url_smoke_checks_only",
+      "blockedWithout": ["known_local_url_or_file", "ui_change_scope", "low_power_browser_budget"],
+      "qualityCommands": ["npm run check:release-sync"]
+    },
+    {
+      "id": "playwright",
+      "surface": "e2e-render-validation",
+      "status": "candidate",
+      "activationPolicy": "run_only_for_ui_or_canvas_behavior_changes",
+      "blockedWithout": ["ui_or_canvas_change", "test_target_url", "browser_budget"],
+      "qualityCommands": ["npm run check:mobile-ergonomics"]
+    },
+    {
+      "id": "semgrep",
+      "surface": "static-security-review",
+      "status": "candidate",
+      "activationPolicy": "run_for_security_sensitive_code_paths_without_autofix",
+      "blockedWithout": ["security_sensitive_change", "scan_scope", "no_autofix_confirmation"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "linear",
+      "surface": "issue-planning",
+      "status": "candidate",
+      "activationPolicy": "create_or_update_issues_only_after_user_confirms_destination",
+      "blockedWithout": ["workspace_auth", "project_destination", "user_approval"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "notion",
+      "surface": "knowledge-base-handoff",
+      "status": "candidate",
+      "activationPolicy": "write_docs_only_after_workspace_and_page_are_confirmed",
+      "blockedWithout": ["workspace_auth", "page_destination", "user_approval"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "google-drive-artifact-archive",
+      "surface": "artifact-archive",
+      "status": "candidate",
+      "activationPolicy": "archive_release_artifacts_only_after_user_approval",
+      "blockedWithout": ["drive_auth", "folder_destination", "user_approval"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "plugin-capability-router",
+      "surface": "plugin-orchestration",
+      "status": "registry-ready",
+      "activationPolicy": "select_plugin_by_task_family_from_plugin_catalog_then_request_auth_or_install_only_if_needed",
+      "blockedWithout": ["task_scope", "plugin_target", "user_approval"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "mcp-tool-router",
+      "surface": "mcp-orchestration",
+      "status": "registry-ready",
+      "activationPolicy": "discover_mcp_tools_for_the_task_then_call_the_smallest_safe_tool_set",
+      "blockedWithout": ["task_scope", "mcp_target", "write_scope"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    },
+    {
+      "id": "skill-router",
+      "surface": "skill-orchestration",
+      "status": "registry-ready",
+      "activationPolicy": "load_only_named_or_task_matched_skills_and_keep_context_small",
+      "blockedWithout": ["task_scope", "skill_target"],
+      "qualityCommands": ["npm run check:aggressive-capability-map"]
+    }
+  ],
+  "skills": [
+    "42crunch-api-security-testing",
+    "Adobe Acrobat",
+    "Adobe Express",
+    "Adobe Photoshop",
+    "Airtable",
+    "Asana",
+    "Atlassian Rovo",
+    "Browser",
+    "Build Web Apps",
+    "Canva",
+    "Cloudinary",
+    "Conductor",
+    "Convex",
+    "Documents",
+    "Figma",
+    "GitHub",
+    "Gmail",
+    "Google Calendar",
+    "Google Drive",
+    "Linear",
+    "Notion",
+    "OpenAI Developers",
+    "Presentations",
+    "Semrush",
+    "Slack",
+    "Spreadsheets",
+    "Supabase",
+    "Vercel",
+    "frontend-design",
+    "github",
+    "vercel",
+    "cloudflare",
+    "sentry",
+    "outputai",
+    "public-equity-investing",
+    "product-design",
+    "investment-banking",
+    "semgrep",
+    "sonarqube",
+    "playwright",
+    "aikido",
+    "figma",
+    "output-meta-project-context",
+    "netlify-skills",
+    "Cloudflare",
+    "Netlify",
+    "Sentry",
+    "plugin-creator",
+    "skill-creator",
+    "skill-installer"
+  ],
+  "capabilityFamilies": [
+    {
+      "id": "repo-governance",
+      "includes": ["GitHub", "CodeRabbit", "Linear", "Notion"],
+      "defaultAction": "read_status_then_plan",
+      "liveWriteGate": "user_approval"
+    },
+    {
+      "id": "design-ui-ux",
+      "includes": ["Figma", "Canva", "Adobe Express", "Adobe Photoshop", "frontend-design", "Browser", "Playwright"],
+      "defaultAction": "inspect_or_validate_known_target",
+      "liveWriteGate": "explicit_design_target"
+    },
+    {
+      "id": "cloud-deploy-observability",
+      "includes": ["Vercel", "Cloudflare", "Netlify", "Supabase", "Sentry", "Datadog"],
+      "defaultAction": "preflight_only",
+      "liveWriteGate": "provider_token_and_rollback_owner"
+    },
+    {
+      "id": "knowledge-handoff",
+      "includes": ["Google Drive", "Gmail", "Google Calendar", "Slack", "Documents", "Spreadsheets", "Presentations"],
+      "defaultAction": "draft_local_artifact",
+      "liveWriteGate": "destination_and_audience"
+    },
+    {
+      "id": "security-quality",
+      "includes": ["Semgrep", "SonarQube", "Aikido", "42crunch-api-security-testing"],
+      "defaultAction": "scoped_static_review",
+      "liveWriteGate": "scan_scope"
+    },
+    {
+      "id": "market-research-and-seo",
+      "includes": ["Semrush", "Conductor", "Quartr", "Web search"],
+      "defaultAction": "official_or_primary_source_lookup",
+      "liveWriteGate": "research_question"
+    },
+    {
+      "id": "agent-skill-development",
+      "includes": ["OpenAI Developers", "plugin-creator", "skill-creator", "skill-installer", "MCP server dev"],
+      "defaultAction": "local_spec_or_registry_update",
+      "liveWriteGate": "target_runtime"
+    }
+  ],
+  "automationRules": [
+    "Use one connector only when it directly advances the requested task.",
+    "Treat requests to use every plugin, MCP server, and skill as activation-hub work, not blanket live execution.",
+    "Run local contract checks before any remote connector action.",
+    "Stop before credentialed deployment if provider secrets or target URL are missing.",
+    "Report connector status separately from source quality."
+  ]
+}

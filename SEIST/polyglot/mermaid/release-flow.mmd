@@ -1,0 +1,6 @@
+flowchart TD
+  A[Build static package] --> B[Prepare server manifest]
+  B --> C[Write release ledger]
+  C --> D{Server target confirmed?}
+  D -- No --> E[Keep live upload blocked]
+  D -- Yes --> F[Allow guarded upload]

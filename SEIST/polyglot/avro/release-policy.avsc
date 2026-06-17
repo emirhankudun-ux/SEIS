@@ -1,0 +1,22 @@
+{
+  "type": "record",
+  "name": "ReleasePolicy",
+  "namespace": "seis.release",
+  "fields": [
+    { "name": "requiresDomainBeforeLiveDeploy", "type": "boolean", "default": true },
+    { "name": "releaseLedger", "type": "string", "default": "releases/latest.json" },
+    { "name": "requiredArtifacts", "type": { "type": "array", "items": "string" } },
+    {
+      "name": "motion",
+      "type": {
+        "type": "record",
+        "name": "MotionPolicy",
+        "fields": [
+          { "name": "supportsReducedMotion", "type": "boolean", "default": true },
+          { "name": "mobileParticleLimit", "type": "int", "default": 24 },
+          { "name": "desktopParticleLimit", "type": "int", "default": 64 }
+        ]
+      }
+    }
+  ]
+}

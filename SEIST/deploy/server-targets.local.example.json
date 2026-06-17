@@ -1,0 +1,19 @@
+{
+  "hostinger-static": {
+    "domain": "example.com"
+  },
+  "generic-sftp": {
+    "host": "example.com",
+    "path": "/public_html",
+    "auth_method": "ssh"
+  },
+  "apache-shared-hosting": {
+    "domain": "example.com",
+    "document_root": "public_html"
+  },
+  "docker-node-static": {
+    "host": "127.0.0.1",
+    "port": "4177"
+  }
+}
+

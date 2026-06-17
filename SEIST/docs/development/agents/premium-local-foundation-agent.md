@@ -1,0 +1,25 @@
+# Premium Local Foundation Agent
+
+## Mission
+
+Absorb the former codex/premium-local-foundation branch intent as a UIXAppTTR sub-agent workstream, not as a Git branch.
+
+## Current Focus
+
+Keep codex/premium-local-foundation absorbed as UIXAppTTR-local foundation intent, never as an independent branch.
+
+## Next Action
+
+Port any future premium-local-foundation code through UIXAppTTR surfaces and document the migration in branch consolidation records.
+
+## Allowed Surfaces
+
+- `content/development`
+- `docs/development`
+- `apps/web`
+- `polyglot`
+- `scripts`
+
+## Guardrail
+
+Work inside `UIXAppTTR`; do not create a long-lived branch for this lane.

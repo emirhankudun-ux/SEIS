@@ -1,0 +1,82 @@
+{
+  "id": "seis-accessibility-review",
+  "name": "SEIS Manual Accessibility Review",
+  "mode": "manual-plus-lightweight-automation",
+  "requiredBeforeRelease": true,
+  "reviewAreas": [
+    {
+      "id": "keyboard",
+      "label": "Keyboard and focus",
+      "checks": [
+        "skip link reaches the main content",
+        "navigation, language switcher, motion toggle, filters, and links are keyboard reachable",
+        "focus states remain visible against the dark interface"
+      ]
+    },
+    {
+      "id": "motion",
+      "label": "Motion comfort",
+      "checks": [
+        "prefers-reduced-motion disables non-essential animation",
+        "low-motion toggle is visible and persistent",
+        "canvas motion does not block content comprehension"
+      ]
+    },
+    {
+      "id": "language",
+      "label": "Language and direction",
+      "checks": [
+        "all localized keys are present",
+        "Arabic mode switches document direction to rtl",
+        "static roadmap text is reviewed before production localization"
+      ]
+    },
+    {
+      "id": "cognitive-load",
+      "label": "Cognitive load",
+      "checks": [
+        "sections remain scannable",
+        "development and roadmap content do not overload the first viewport",
+        "cards use concise proof-oriented copy"
+      ]
+    },
+    {
+      "id": "responsive",
+      "label": "Responsive structure",
+      "checks": [
+        "cards collapse to one column on small screens",
+        "touch targets remain at least 44px",
+        "text does not overlap controls or media"
+      ]
+    }
+  ],
+  "releaseBlockers": [
+    "missing visible focus state",
+    "unreachable interactive control",
+    "motion that ignores reduced-motion preference",
+    "text overlap on mobile",
+    "language direction mismatch"
+  ],
+  "reviewEvidenceTemplate": {
+    "requiredFields": [
+      "reviewDate",
+      "reviewer",
+      "viewportCoverage",
+      "keyboardResult",
+      "motionResult",
+      "languageDirectionResult",
+      "blockers",
+      "releaseDecision"
+    ],
+    "acceptedReleaseDecisions": [
+      "blocked",
+      "approved-for-local-demo",
+      "approved-for-server-upload"
+    ],
+    "minimumViewportCoverage": [
+      "mobile",
+      "tablet",
+      "desktop"
+    ]
+  }
+}

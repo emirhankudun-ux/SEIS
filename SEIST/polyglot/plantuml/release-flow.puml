@@ -1,0 +1,12 @@
+@startuml
+start
+:Build static package;
+:Prepare server manifest;
+:Write release ledger;
+if (Server target confirmed?) then (yes)
+  :Allow guarded upload;
+else (no)
+  :Keep live upload blocked;
+endif
+stop
+@enduml

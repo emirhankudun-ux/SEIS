@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "status": "blocked_until_target_confirmed",
+  "activeTarget": null,
+  "liveUploadBlocked": true,
+  "package": {
+    "path": "dist/seis-static.zip",
+    "bytes": 4671598,
+    "sha256": "d701446f5d69eef763ef683c06261540f4adb200abfad656297ba64546926b30"
+  },
+  "latestRelease": "releases/2026-05-25T09-00-07-271Z",
+  "providerCount": 7,
+  "requiredBeforeUpload": [
+    "confirmed_domain_or_server",
+    "confirmed_upload_path",
+    "checksum_match",
+    "rollback_package_available"
+  ]
+}

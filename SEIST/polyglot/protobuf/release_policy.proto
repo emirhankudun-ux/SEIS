@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package seis.release;
+
+message MotionPolicy {
+  bool supports_reduced_motion = 1;
+  uint32 mobile_particle_limit = 2;
+  uint32 desktop_particle_limit = 3;
+}
+
+message ReleasePolicy {
+  bool requires_domain_before_live_deploy = 1;
+  string release_ledger = 2;
+  repeated string required_artifacts = 3;
+  MotionPolicy motion = 4;
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seisDeployGovernance version="1">
+  <package>dist/seis-static.zip</package>
+  <liveUpload blocked="true">
+    <requirement>confirmed_domain_or_server</requirement>
+    <requirement>confirmed_upload_path</requirement>
+    <requirement>checksum_match</requirement>
+    <requirement>rollback_package_available</requirement>
+  </liveUpload>
+</seisDeployGovernance>

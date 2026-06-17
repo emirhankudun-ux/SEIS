@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "package": "dist/seis-static.zip",
+  "manifest": "dist/server-upload-manifest.json",
+  "providers": [
+    {
+      "id": "hostinger-static",
+      "uploadModel": "zip_extract_at_document_root",
+      "requiredFiles": ["dist/seis-static.zip", "dist/server-upload-manifest.json"],
+      "verifyRoutes": ["/health.json", "/tr/", "/en/", "/ar/"],
+      "rollback": "restore_previous_zip_from_releases_latest"
+    },
+    {
+      "id": "github-pages",
+      "uploadModel": "publish_dist_seis_static_to_pages_source",
+      "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],
+      "verifyRoutes": ["/", "/tr/", "/sitemap.xml"],
+      "rollback": "revert_pages_publish_commit"
+    },
+    {
+      "id": "generic-sftp",
+      "uploadModel": "checksum_then_sftp_upload",
+      "requiredFiles": ["dist/seis-static.zip", "dist/server-upload-manifest.json"],
+      "verifyRoutes": ["/health.json", "/manifest.webmanifest"],
+      "rollback": "reupload_previous_release_zip"
+    },
+    {
+      "id": "node-vps",
+      "uploadModel": "copy_zip_extract_and_run_node_static_server",
+      "requiredFiles": ["dist/seis-static.zip", "server/node/static-server.mjs"],
+      "verifyRoutes": ["/_server/health", "/health.json"],
+      "rollback": "switch_symlink_to_previous_release"
+    },
+    {
+      "id": "apache-shared-hosting",
+      "uploadModel": "zip_extract_with_htaccess_fallback",
+      "requiredFiles": ["dist/seis-static.zip", "server/apache/.htaccess"],
+      "verifyRoutes": ["/health.json", "/fr/", "/de/"],
+      "rollback": "restore_previous_public_html_snapshot"
+    },
+    {
+      "id": "cloudflare-worker-origin",
+      "uploadModel": "edge_proxy_to_confirmed_static_origin",
+      "requiredFiles": ["server/edge/cloudflare-worker.js", "dist/server-upload-manifest.json"],
+      "verifyRoutes": ["/health.json", "/_edge/health"],
+      "rollback": "restore_previous_worker_route_or_origin"
+    },
+    {
+      "id": "docker-node-static",
+      "uploadModel": "container_build_from_static_package",
+      "requiredFiles": ["server/docker/Dockerfile", "dist/seis-static.zip"],
+      "verifyRoutes": ["/_server/health", "/health.json"],
+      "rollback": "redeploy_previous_container_image"
+    },
+    {
+      "id": "azure-static-web-apps",
+      "uploadModel": "upload_dist_static_site_to_selected_azure_static_web_app",
+      "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],
+      "verifyRoutes": ["/", "/health.json", "/sitemap.xml"],
+      "rollback": "promote_previous_static_web_apps_deployment"
+    },
+    {
+      "id": "aws-amplify-static",
+      "uploadModel": "amplify_static_artifact_release",
+      "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],
+      "verifyRoutes": ["/", "/health.json", "/manifest.webmanifest"],
+      "rollback": "redeploy_previous_amplify_job"
+    },
+    {
+      "id": "firebase-hosting",
+      "uploadModel": "firebase_hosting_release_channel",
+      "requiredFiles": ["dist/seis-static/index.html", "dist/seis-static/health.json"],
+      "verifyRoutes": ["/", "/health.json", "/sitemap.xml"],
+      "rollback": "rollback_to_previous_firebase_release"
+    }
+  ]
+}

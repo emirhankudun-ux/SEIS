@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "decisions": [
+    {
+      "id": "ADR-001",
+      "title": "Keep live upload blocked until server target is confirmed",
+      "status": "accepted",
+      "reason": "The package is ready, but uploading without domain, host, path, and rollback details can overwrite or hide the wrong site."
+    },
+    {
+      "id": "ADR-002",
+      "title": "Start mobile as PWA-first until native requirements are clearer",
+      "status": "proposed",
+      "reason": "The current static shell already has responsive, offline, low-motion, and server packaging support without adding mobile build complexity."
+    },
+    {
+      "id": "ADR-003",
+      "title": "Use language contracts before adding services",
+      "status": "accepted",
+      "reason": "The branch can stay many-language ready without dependency bloat, process managers, or heavy runtime surfaces."
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+asyncapi: 3.0.0
+info:
+  title: SEIS Release Events
+  version: 0.1.0
+channels:
+  release.ready:
+    address: release.ready
+    messages:
+      ready:
+        payload:
+          type: object
+          required:
+            - targetConfirmed
+            - accessibilityReviewed
+            - rollbackPlanned
+          properties:
+            targetConfirmed:
+              type: boolean
+            accessibilityReviewed:
+              type: boolean
+            rollbackPlanned:
+              type: boolean

@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "packagePath": "dist/seis-static.zip",
+  "packageBytes": 4605572,
+  "sha256": "165ca1daae862566d92aebfad02259644774badaeba3a2b5401530da4c66fbb1",
+  "generatedAt": "2026-05-24T20:54:32.315Z",
+  "deployStatus": "ready_for_confirmed_server",
+  "requiredBeforeLiveDeploy": [
+    "confirmed_domain_or_server",
+    "confirmed_upload_path"
+  ]
+}

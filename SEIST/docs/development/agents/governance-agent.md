@@ -1,0 +1,23 @@
+# Governance Agent
+
+## Mission
+
+Maintain backlog, decisions, summaries, and branch policy.
+
+## Current Focus
+
+Keep backlog, ADRs, branch policy, and summaries aligned.
+
+## Next Action
+
+Regenerate development summary and verify UIXAppTTR guard before each commit.
+
+## Allowed Surfaces
+
+- `content/development`
+- `docs/development`
+- `scripts/check-development-state.mjs`
+
+## Guardrail
+
+Work inside `UIXAppTTR`; do not create a long-lived branch for this lane.

@@ -1,0 +1,77 @@
+{
+  "date": "2026-06-05",
+  "owner": "emirhankudun-ux",
+  "canonical_repository": "emirhankudun-ux/SEIS",
+  "connector_visible_repositories": [
+    {
+      "repository": "emirhankudun-ux/SEIS",
+      "visibility": "public",
+      "default_branch": "UIXAppTTR",
+      "status": "visible"
+    },
+    {
+      "repository": "emirhankudun-ux/docs",
+      "visibility": "public",
+      "default_branch": "main",
+      "status": "visible"
+    },
+    {
+      "repository": "emirhankudun-ux/emirhan-kudun-portfolio",
+      "visibility": "private",
+      "default_branch": "codex/seis-ux-cinematic-premium-foundation",
+      "status": "visible"
+    },
+    {
+      "repository": "emirhankudun-ux/github-unified-source",
+      "visibility": "private",
+      "default_branch": "main",
+      "status": "visible"
+    },
+    {
+      "repository": "emirhankudun-ux/seis-trusted-marketplace-plugin",
+      "visibility": "private",
+      "default_branch": "main",
+      "status": "visible"
+    }
+  ],
+  "connector_not_found_or_not_visible_repositories": [
+    "emirhankudun-ux/UIX-Apps",
+    "emirhankudun-ux/gemini-cli",
+    "emirhankudun-ux/DeepSeek-Coder",
+    "emirhankudun-ux/claude-code",
+    "emirhankudun-ux/awesome-deepseek-agent"
+  ],
+  "seis_branch_count": 36,
+  "seis_source_branch_count": 26,
+  "seis_source_branches": [
+    "sources/DeepSeek-Coder/dependabot/pip/pip-19adfad5d4",
+    "sources/DeepSeek-Coder/main",
+    "sources/UIX-Apps/UIXAppTTR",
+    "sources/UIX-Apps/claude/claude-md-docs-A72cU",
+    "sources/UIX-Apps/claude/ecstatic-darwin-fuoHJ",
+    "sources/UIX-Apps/claude/github-branch-repo-dev-SFUpD",
+    "sources/UIX-Apps/claude/3d-animated-portfolio-POXSm",
+    "sources/UIX-Apps/codex/requested-plugin-governance-20260602",
+    "sources/UIX-Apps/codex/seis-ux-cinematic-premium-foundation",
+    "sources/UIX-Apps/main",
+    "sources/UIX-Apps/seis/server-cloud-activation-20260602-2",
+    "sources/UIX-Apps/seis/server-cloud-activation-20260602",
+    "sources/awesome-deepseek-agent/main",
+    "sources/claude-code/main",
+    "sources/docs/main",
+    "sources/emirhan-kudun-portfolio/codex/seis-ux-cinematic-premium-foundation",
+    "sources/emirhan-kudun-portfolio/feature/seis-ecosystem-integration",
+    "sources/emirhan-kudun-portfolio/seis-concept",
+    "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-05b1f1d78b",
+    "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-da0aa30ced",
+    "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-e5a46ec0e1",
+    "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-e9ce4f7be9",
+    "sources/gemini-cli/main",
+    "sources/github-unified-source/full-icloud-archive-20260604",
+    "sources/github-unified-source/main",
+    "sources/seis-trusted-marketplace-plugin/main"
+  ],
+  "main_branch_before_sync": "c9566327e4a52492f590def3f59f6788a9a1568f",
+  "canonical_branch_before_sync": "cc027b6eebbe00cb788484a4480c30f0b849bb32",
+  "decision": "Make main mirror the canonical SEIS branch so the visible single branch path carries the latest SEIS hub and plugin work. Keep sources/* refs as recovery/index refs."
+}

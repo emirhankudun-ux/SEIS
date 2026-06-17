@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "packagePath": "dist/seis-static.zip",
+  "packageBytes": 4631124,
+  "sha256": "689e77f9a1988c48c56a38043949321c67f79a889e34f74f9a7d84e17cd3d3d3",
+  "generatedAt": "2026-05-24T21:26:50.183Z",
+  "deployStatus": "ready_for_confirmed_server",
+  "activeTarget": null,
+  "liveUploadBlocked": true,
+  "preservation": {
+    "backupCommand": "npm run backup:release",
+    "releaseLedger": "releases/latest.json"
+  },
+  "contents": [
+    "static web shell",
+    "localized routes",
+    "curated artwork",
+    "UI-UX Digital Lab operating model",
+    "deployment runbooks",
+    "polyglot experience contract"
+  ],
+  "requiredBeforeLiveDeploy": [
+    "confirmed_domain_or_server",
+    "confirmed_upload_path"
+  ]
+}

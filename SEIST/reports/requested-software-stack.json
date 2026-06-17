@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "id": "seis-requested-software-stack-report",
+  "generatedAt": "2026-06-03",
+  "sourceId": "seis-requested-software-stack",
+  "sourcePath": "content/development/requested-software-stack.json",
+  "summary": {
+    "technologyCount": 6,
+    "entrypointCount": 10,
+    "uniqueSubmittedPlugins": 300,
+    "capabilityLaneCount": 12,
+    "polyglotLanguageSurfaces": 108,
+    "missingEntrypoints": []
+  },
+  "technologies": [
+    {
+      "id": "javascript",
+      "label": "JavaScript",
+      "runtimeRole": "Browser interaction, source-summary helpers, and dependency-free runtime checks.",
+      "primaryLane": "builder-and-prototyping",
+      "entrypoints": [
+        "apps/web/app.js",
+        "polyglot/javascript/plugin-source-runtime.js"
+      ],
+      "supportingPlugins": [
+        "base44",
+        "wix",
+        "lovable",
+        "replit",
+        "build-web-apps",
+        "frontend-design"
+      ],
+      "supportingPluginUris": [
+        "plugin://base44@claude-plugins-official",
+        "plugin://wix@openai-curated",
+        "plugin://lovable@openai-curated",
+        "plugin://replit@openai-curated",
+        "plugin://build-web-apps@openai-curated",
+        "plugin://frontend-design@claude-plugins-official"
+      ]
+    },
+    {
+      "id": "nodejs",
+      "label": "Node.js",
+      "runtimeRole": "Local automation, static server endpoints, and source-readiness validation.",
+      "primaryLane": "cloud-devops-and-release",
+      "entrypoints": [
+        "server/node/static-server.mjs",
+        "polyglot/node/requested_stack_readiness.mjs",
+        "scripts/create-requested-software-stack.cjs"
+      ],
+      "supportingPlugins": [
+        "render",
+        "vercel",
+        "netlify",
+        "cloudflare",
+        "github",
+        "replit"
+      ],
+      "supportingPluginUris": [
+        "plugin://render@openai-curated",
+        "plugin://vercel@claude-plugins-official",
+        "plugin://netlify@openai-curated",
+        "plugin://cloudflare@claude-plugins-official",
+        "plugin://github@claude-plugins-official",
+        "plugin://replit@openai-curated"
+      ]
+    },
+    {
+      "id": "mysql",
+      "label": "MySQL",
+      "runtimeRole": "Future plugin source ledger and requested-stack registry schema.",
+      "primaryLane": "backend-data-and-api",
+      "entrypoints": [
+        "polyglot/mysql/plugin_source_registry.mysql.sql"
+      ],
+      "supportingPlugins": [
+        "planetscale",
+        "prisma",
+        "supabase",
+        "quicknode",
+        "oracle-ai-data-platform-workbench-spark-connectors"
+      ],
+      "supportingPluginUris": [
+        "plugin://planetscale@claude-plugins-official",
+        "plugin://prisma@claude-plugins-official",
+        "plugin://supabase@claude-plugins-official",
+        "plugin://quicknode@openai-curated",
+        "plugin://oracle-ai-data-platform-workbench-spark-connectors@claude-plugins-official"
+      ]
+    },
+    {
+      "id": "react",
+      "label": "React",
+      "runtimeRole": "Typed UI component contract for source-visible plugin stack dashboards.",
+      "primaryLane": "creative-production-and-design",
+      "entrypoints": [
+        "polyglot/react/PluginSourceDashboard.tsx"
+      ],
+      "supportingPlugins": [
+        "figma",
+        "canva",
+        "product-design",
+        "build-web-apps",
+        "frontend-design",
+        "lovable"
+      ],
+      "supportingPluginUris": [
+        "plugin://figma@claude-plugins-official",
+        "plugin://canva@openai-curated",
+        "plugin://product-design@openai-curated-remote",
+        "plugin://build-web-apps@openai-curated",
+        "plugin://frontend-design@claude-plugins-official",
+        "plugin://lovable@openai-curated"
+      ]
+    },
+    {
+      "id": "expressjs",
+      "label": "Express.js",
+      "runtimeRole": "Express-compatible route adapter for plugin source and software stack endpoints.",
+      "primaryLane": "backend-data-and-api",
+      "entrypoints": [
+        "server/express/plugin-source-routes.mjs"
+      ],
+      "supportingPlugins": [
+        "postman",
+        "render",
+        "vercel",
+        "twilio-developer-kit",
+        "datadog",
+        "sentry"
+      ],
+      "supportingPluginUris": [
+        "plugin://postman@claude-plugins-official",
+        "plugin://render@openai-curated",
+        "plugin://vercel@claude-plugins-official",
+        "plugin://twilio-developer-kit@claude-plugins-official",
+        "plugin://datadog@claude-plugins-official",
+        "plugin://sentry@openai-curated"
+      ]
+    },
+    {
+      "id": "typescript",
+      "label": "TypeScript",
+      "runtimeRole": "Source contracts for requested stack payloads and release integration.",
+      "primaryLane": "platform-native-and-polyglot",
+      "entrypoints": [
+        "polyglot/typescript/release-contract.ts",
+        "polyglot/typescript/fullstack-plugin-contract.ts"
+      ],
+      "supportingPlugins": [
+        "openai-developers",
+        "convex",
+        "supabase",
+        "ui5-typescript-conversion",
+        "apollo-skills"
+      ],
+      "supportingPluginUris": [
+        "plugin://openai-developers@openai-curated",
+        "plugin://convex@claude-plugins-official",
+        "plugin://supabase@claude-plugins-official",
+        "plugin://ui5-typescript-conversion@claude-plugins-official",
+        "plugin://apollo-skills@claude-plugins-official"
+      ]
+    }
+  ]
+}

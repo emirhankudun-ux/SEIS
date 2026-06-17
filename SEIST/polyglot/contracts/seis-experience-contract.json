@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "motion": {
+    "supportsReducedMotion": true,
+    "continuousAnimationBudget": "one visible scene",
+    "mobileParticleLimit": 24,
+    "desktopParticleLimit": 64
+  },
+  "i18n": {
+    "locales": ["tr", "en", "fr", "it", "de", "es", "ar"],
+    "rtlLocales": ["ar"],
+    "fallbackLocale": "tr"
+  },
+  "assets": {
+    "curatedDrawingCount": 20,
+    "publicAssetBudgetBytes": 7000000
+  },
+  "deployment": {
+    "package": "dist/seis-static.zip",
+    "requiresDomainBeforeLiveDeploy": true,
+    "healthPaths": ["/health.json", "/_server/health"],
+    "releaseLedger": "releases/latest.json",
+    "serverAdapters": ["node", "php", "nginx", "apache", "python-verify", "ruby-verify", "cloudflare-worker", "docker", "java-contract", "csharp-contract", "sql-ledger", "lua-policy", "yaml-governance", "c-contract", "cpp-contract", "elixir-policy", "erlang-policy", "haskell-policy", "scala-policy", "r-metrics", "julia-metrics", "perl-guard", "zig-contract", "clojure-policy", "fsharp-policy", "powershell-policy", "toml-governance", "xml-policy", "graphql-schema", "openapi-contract", "json-schema-policy", "wat-proof", "hcl-governance", "protobuf-contract", "avro-schema", "asyncapi-events", "jsonld-metadata", "ini-config", "turtle-rdf", "sparql-check", "mermaid-diagram", "plantuml-diagram", "csv-policy", "starlark-policy", "kdl-policy", "hocon-config", "properties-config", "dotenv-config", "make-recipe", "cmake-config", "meson-config", "just-recipe", "taskfile-recipe"]
+  }
+}

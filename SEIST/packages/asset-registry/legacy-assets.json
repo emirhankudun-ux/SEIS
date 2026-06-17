@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "generatedAt": "2026-05-24",
+  "sourceArchives": [
+    "/Users/emirhan/Downloads/PortfolioWebsite/emirhan-kudun-fullstack-portfolio-fullstack-v4.zip",
+    "/Users/emirhan/Downloads/PortfolioWebsite/emirhan-kudun-fullstack-portfolio-fullstack-infra-v1.zip"
+  ],
+  "migrationPolicy": "curate-metadata-first-no-direct-copy",
+  "selectedPublicAssets": {
+    "path": "apps/web/public/media/drawings",
+    "count": 20,
+    "sizeBudgetBytes": 7000000,
+    "actualPolicy": "selected drawing assets only; no legacy source code copied"
+  },
+  "valuableAssets": [
+    {
+      "group": "karakalem",
+      "sourcePattern": "images/drawings/karakalem-01.jpg..karakalem-09.jpg",
+      "alternatePattern": "assets/drawings/karakalem-01.jpg..karakalem-09.jpg",
+      "action": "preserve_source_and_compare_optimized_variant"
+    },
+    {
+      "group": "renk",
+      "sourcePattern": "images/drawings/renk-01.jpg..renk-11.jpg",
+      "alternatePattern": "assets/drawings/renk-01.jpg..renk-10.jpg",
+      "action": "preserve_source_and_compare_optimized_variant"
+    },
+    {
+      "group": "seo-pwa",
+      "sourceFiles": ["manifest.json", "robots.txt", "sitemap.xml", "index.html"],
+      "action": "migrate_patterns_not_files"
+    },
+    {
+      "group": "i18n",
+      "sourceFiles": ["translations.json"],
+      "action": "convert_to_typed_content_registry"
+    }
+  ],
+  "archiveCandidates": [
+    {
+      "path": "/Users/emirhan/Downloads/iLoveZIP_Create.zip",
+      "reason": "contains no usable files"
+    },
+    {
+      "path": "/Users/emirhan/Downloads/Yapılacak olanlar/files.zip",
+      "reason": "superseded by fullstack v4 unless unique copy is manually confirmed"
+    },
+    {
+      "path": "/Users/emirhan/Downloads/PortfolioWebsite/emirhan-kudun-fullstack-portfolio-fullstack-v2.zip",
+      "reason": "older same-file-set version"
+    },
+    {
+      "path": "/Users/emirhan/Downloads/PortfolioWebsite/emirhan-kudun-fullstack-portfolio-fullstack-v3.zip",
+      "reason": "older same-file-set version"
+    }
+  ]
+}

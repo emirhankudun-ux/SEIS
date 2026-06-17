@@ -1,0 +1,22 @@
+asyncapi: 3.0.0
+info:
+  title: SEIS Release Events
+  version: "1.0.0"
+channels:
+  release.prepared:
+    address: release.prepared
+    messages:
+      releasePrepared:
+        payload:
+          type: object
+          required:
+            - packagePath
+            - releaseLedger
+            - liveUploadBlocked
+          properties:
+            packagePath:
+              type: string
+            releaseLedger:
+              type: string
+            liveUploadBlocked:
+              type: boolean

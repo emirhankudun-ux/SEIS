@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "source": "seis-local-foundation",
+  "updatedAt": "2026-05-26",
+  "mode": "productive-weekly-usage",
+  "summaryKey": "weekly.status.ready",
+  "signals": [
+    {
+      "id": "reasoning-budget",
+      "status": "active",
+      "value": "deep",
+      "labelKey": "weekly.card.reasoning.label",
+      "titleKey": "weekly.card.reasoning.title",
+      "copyKey": "weekly.card.reasoning.copy"
+    },
+    {
+      "id": "machine-load",
+      "status": "protected",
+      "value": "low",
+      "labelKey": "weekly.card.machine.label",
+      "titleKey": "weekly.card.machine.title",
+      "copyKey": "weekly.card.machine.copy"
+    },
+    {
+      "id": "shipping-proof",
+      "status": "synced",
+      "value": "iCloud",
+      "labelKey": "weekly.card.shipment.label",
+      "titleKey": "weekly.card.shipment.title",
+      "copyKey": "weekly.card.shipment.copy"
+    },
+    {
+      "id": "remote-publish",
+      "status": "blocked",
+      "value": "auth",
+      "labelKey": "weekly.card.github.label",
+      "titleKey": "weekly.card.github.title",
+      "copyKey": "weekly.card.github.copy"
+    }
+  ]
+}

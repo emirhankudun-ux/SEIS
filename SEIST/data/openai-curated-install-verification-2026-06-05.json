@@ -1,0 +1,15 @@
+{
+  "date": "2026-06-05",
+  "source": "/Applications/Codex.app/Contents/Resources/codex plugin list",
+  "marketplace_family": "openai-curated",
+  "openai_curated_count": 172,
+  "installed_enabled_count": 172,
+  "missing_count": 0,
+  "attempted_installs": 0,
+  "successful_installs": 0,
+  "failed_installs": 0,
+  "summary_file": "/tmp/seis-openai-curated-install-check/summary.json",
+  "status": "all currently visible openai-curated plugins are installed and enabled",
+  "note": "The broader SEIS plugin registry records 179 installed and enabled plugins because it also includes openai-bundled, openai-primary-runtime, and the local seis@personal plugin.",
+  "rule": "Use openai-curated plugins first for SEIS Design, Developer Tools, Productivity, Research, and Security workflows."
+}

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "seis-local-foundation",
+  "updatedAt": "2026-05-26",
+  "mode": "development-continuation",
+  "stages": [
+    {
+      "id": "source-editing",
+      "status": "active",
+      "value": "code",
+      "labelKey": "devmode.card.source.label",
+      "titleKey": "devmode.card.source.title",
+      "copyKey": "devmode.card.source.copy"
+    },
+    {
+      "id": "static-package",
+      "status": "ready",
+      "value": "zip",
+      "labelKey": "devmode.card.package.label",
+      "titleKey": "devmode.card.package.title",
+      "copyKey": "devmode.card.package.copy"
+    },
+    {
+      "id": "icloud-sync",
+      "status": "synced",
+      "value": "iCloud",
+      "labelKey": "devmode.card.icloud.label",
+      "titleKey": "devmode.card.icloud.title",
+      "copyKey": "devmode.card.icloud.copy"
+    },
+    {
+      "id": "github-auth",
+      "status": "blocked",
+      "value": "auth",
+      "labelKey": "devmode.card.github.label",
+      "titleKey": "devmode.card.github.title",
+      "copyKey": "devmode.card.github.copy"
+    }
+  ]
+}

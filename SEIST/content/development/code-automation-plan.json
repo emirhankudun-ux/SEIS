@@ -1,0 +1,263 @@
+{
+  "version": 1,
+  "id": "seis-code-automation-plan",
+  "generatedAt": "2026-06-01T21:56:16.219Z",
+  "branchTarget": "UIXAppTTR",
+  "remoteTarget": "origin",
+  "cloudMode": "provider-neutral-preflight",
+  "connectorMode": "explicit-auth-only",
+  "policy": {
+    "executionMode": "high-efficiency-machine-light",
+    "changeScope": "one-small-reversible-source-improvement",
+    "connectorActivation": "use_only_when_relevant_to_the_current_task",
+    "pushRule": "fast-forward-safe-only-after-clean-publish-readiness"
+  },
+  "nextCodingLoop": [
+    "Inspect current dirty files and keep unrelated changes untouched.",
+    "Pick one reversible product, cloud, governance, or quality slice.",
+    "Run local static checks before remote actions.",
+    "Refresh release artifacts only after source changes.",
+    "Push only when publish readiness is clean."
+  ],
+  "validationCommands": [
+    "npm run check:branch",
+    "npm run check:software-languages",
+    "npm run check:seis-cloud-environment",
+    "npm run check:server-target",
+    "npm run quality",
+    "npm run publish:preflight"
+  ],
+  "connectorCandidates": [
+    {
+      "id": "github",
+      "surface": "repository",
+      "status": "ready-if-authenticated",
+      "activationPolicy": "bounded-preflight-before-push",
+      "qualityCommands": [
+        "npm run automation:publish-readiness"
+      ]
+    },
+    {
+      "id": "vercel",
+      "surface": "cloud-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_site_selection",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "cloudflare",
+      "surface": "edge-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_route_selection",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "netlify",
+      "surface": "static-deploy",
+      "status": "candidate",
+      "activationPolicy": "requires_provider_token_and_site_selection",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "sentry",
+      "surface": "observability",
+      "status": "candidate",
+      "activationPolicy": "quiet_error_signal_only_after_project_selection",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "slack",
+      "surface": "release-notifications",
+      "status": "candidate",
+      "activationPolicy": "notify_only_after_user_approval",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "google-drive",
+      "surface": "handoff-archive",
+      "status": "candidate",
+      "activationPolicy": "archive_only_after_user_approval",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "output-ai",
+      "surface": "durable-workflow",
+      "status": "candidate",
+      "activationPolicy": "use_for_new_outputai_workflows_only",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "figma",
+      "surface": "design-handoff",
+      "status": "candidate",
+      "activationPolicy": "read_design_context_only_after_file_or_node_is_explicit",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map"
+      ]
+    },
+    {
+      "id": "browser",
+      "surface": "local-ui-validation",
+      "status": "candidate",
+      "activationPolicy": "use_for_known_local_or_file_url_smoke_checks_only",
+      "qualityCommands": [
+        "npm run check:release-sync"
+      ]
+    },
+    {
+      "id": "playwright",
+      "surface": "e2e-render-validation",
+      "status": "candidate",
+      "activationPolicy": "run_only_for_ui_or_canvas_behavior_changes",
+      "qualityCommands": [
+        "npm run check:mobile-ergonomics"
+      ]
+    },
+    {
+      "id": "semgrep",
+      "surface": "static-security-review",
+      "status": "candidate",
+      "activationPolicy": "run_for_security_sensitive_code_paths_without_autofix",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map"
+      ]
+    },
+    {
+      "id": "linear",
+      "surface": "issue-planning",
+      "status": "candidate",
+      "activationPolicy": "create_or_update_issues_only_after_user_confirms_destination",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map"
+      ]
+    },
+    {
+      "id": "notion",
+      "surface": "knowledge-base-handoff",
+      "status": "candidate",
+      "activationPolicy": "write_docs_only_after_workspace_and_page_are_confirmed",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map"
+      ]
+    },
+    {
+      "id": "google-drive-artifact-archive",
+      "surface": "artifact-archive",
+      "status": "candidate",
+      "activationPolicy": "archive_release_artifacts_only_after_user_approval",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map"
+      ]
+    }
+  ],
+  "cloudProviderCandidates": [
+    {
+      "id": "github-pages",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "github-actions-pages-artifact",
+      "rollback": "revert_pages_publish_commit",
+      "qualityCommands": [
+        "npm run automation:publish-readiness",
+        "npm run check:cloud-environment"
+      ]
+    },
+    {
+      "id": "cloudflare-pages",
+      "kind": "edge-static-site",
+      "status": "candidate",
+      "uploadModel": "pages_project_artifact_upload",
+      "rollback": "promote_previous_pages_deployment",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ]
+    },
+    {
+      "id": "vercel-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "vercel_prebuilt_static_output",
+      "rollback": "promote_previous_vercel_deployment",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:workspace"
+      ]
+    },
+    {
+      "id": "netlify-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "netlify_site_deploy_artifact",
+      "rollback": "restore_previous_netlify_deploy",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ]
+    },
+    {
+      "id": "docker-node-static",
+      "kind": "container",
+      "status": "candidate",
+      "uploadModel": "container_build_from_static_package",
+      "rollback": "redeploy_previous_container_image",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "node scripts/check-server-adapters.mjs"
+      ]
+    },
+    {
+      "id": "azure-static-web-apps",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "azure_static_web_apps_artifact_upload",
+      "rollback": "promote_previous_static_web_apps_deployment",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ]
+    },
+    {
+      "id": "aws-amplify-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "amplify_hosting_static_artifact",
+      "rollback": "redeploy_previous_amplify_job",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run publish:preflight"
+      ]
+    },
+    {
+      "id": "firebase-hosting",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "firebase_hosting_release_channel",
+      "rollback": "rollback_to_previous_firebase_release",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ]
+    }
+  ],
+  "guardrails": [
+    "Do not commit secrets.",
+    "Do not deploy without a selected provider, site URL, rollback owner, and clean publish readiness.",
+    "Do not invoke external connectors unless authentication and scope are explicit.",
+    "Keep observability quiet, actionable, and privacy-conscious."
+  ]
+}

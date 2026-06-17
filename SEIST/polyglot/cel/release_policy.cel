@@ -1,0 +1,4 @@
+server_target_confirmed == true &&
+accessibility_reviewed == true &&
+rollback_planned == true &&
+reduced_motion_supported == true
