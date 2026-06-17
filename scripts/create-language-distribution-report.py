@@ -633,17 +633,28 @@ def build_language_balance(by_language, total_bytes):
 def runtime_readiness():
     runtimes = []
     for runtime_id, command in RUNTIME_COMMANDS:
-        result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
-        output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
-        runtimes.append(
-            {
-                "id": runtime_id,
-                "command": " ".join(command),
-                "available": result.returncode == 0,
-                "exitCode": result.returncode,
-                "version": output[:300] if output else None,
-            }
-        )
+        try:
+            result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
+            output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
+            runtimes.append(
+                {
+                    "id": runtime_id,
+                    "command": " ".join(command),
+                    "available": result.returncode == 0,
+                    "exitCode": result.returncode,
+                    "version": output[:300] if output else None,
+                }
+            )
+        except FileNotFoundError:
+            runtimes.append(
+                {
+                    "id": runtime_id,
+                    "command": " ".join(command),
+                    "available": False,
+                    "exitCode": None,
+                    "version": None,
+                }
+            )
     return runtimes
 
 
