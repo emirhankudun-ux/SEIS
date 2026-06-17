@@ -1,0 +1,25 @@
+{
+  "name": "UI-UX Digital Lab",
+  "short_name": "UI-UX Lab",
+  "description": "A calm SEIS creative experience operating system for premium UI/UX, cinematic interfaces, AI-native workflows, and accessible digital products.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#080a0c",
+  "theme_color": "#080a0c",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "./public/icons/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["design", "portfolio", "productivity"]
+}

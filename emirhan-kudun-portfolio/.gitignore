@@ -1,0 +1,49 @@
+# Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+dist/
+build/
+.next/
+apps/*/.next/
+*.tsbuildinfo
+
+# Deployment
+.vercel/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.*
+!.env.example
+
+# Local runtime data
+runtime/
+.serena/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+__MACOSX/
+
+# Archives and sensitive material
+*.zip
+*.key
+*.enc
+
+# Testing
+coverage/
+playwright-report/
+*.lcov
+.nyc_output/
+
+# OS
+Thumbs.db

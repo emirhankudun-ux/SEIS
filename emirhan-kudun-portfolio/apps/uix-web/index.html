@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="UI-UX Digital Lab is a calm SEIS workspace foundation for premium UI/UX systems, accessible motion, and low-pressure creative engineering.">
+    <meta name="theme-color" content="#f3efe7">
+    <meta name="color-scheme" content="light">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:title" content="UI-UX Digital Lab">
+    <meta property="og:description" content="A calm SEIS workspace foundation for premium UI/UX systems, accessible motion, and low-pressure creative engineering.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://emirhankudun-ux.github.io/UIX-Apps/">
+    <meta name="twitter:card" content="summary">
+    <title>UI-UX Digital Lab</title>
+    <link rel="canonical" href="https://emirhankudun-ux.github.io/UIX-Apps/">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.svg">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="#top">UI-UX Digital Lab</a>
+      <nav aria-label="Primary">
+        <a href="#modes">Modes</a>
+        <a href="#development">Develop</a>
+        <a href="#pulse">Pulse</a>
+        <a href="#archive">Archive</a>
+        <a href="#roadmap">Roadmap</a>
+      </nav>
+      <div class="header-actions">
+        <div class="locale-switcher" data-locale-switcher aria-label="Language">
+          <button class="locale-chip is-active" type="button" aria-pressed="true">EN</button>
+          <button class="locale-chip" type="button" aria-pressed="false">TR</button>
+        </div>
+        <button id="motion-mode" class="mode-button" data-motion-toggle type="button" aria-pressed="true">
+          Cinematic
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero section-reveal is-visible" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">AI-native creative engineering</p>
+          <h1>Calm systems with cinematic clarity.</h1>
+          <p>
+            A lightweight workspace for premium UI/UX production that protects accessibility,
+            performance, and long-term maintainability.
+          </p>
+        </div>
+        <div class="hero-panel hero-panel--visual" data-depth-card>
+          <canvas class="cinematic-field" data-cinematic-field width="640" height="360" aria-hidden="true"></canvas>
+          <div>
+            <h2>Operating Mode</h2>
+            <p id="mode-label">Cinematic</p>
+            <p id="mode-detail">Layered motion with reduced-motion fallback.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="modes" class="section-reveal">
+        <h2>Experience Modes</h2>
+        <div class="mode-grid">
+          <article>
+            <h3>Minimal</h3>
+            <p>Typography-first and low motion.</p>
+          </article>
+          <article>
+            <h3>Balanced</h3>
+            <p>Measured transitions and practical polish.</p>
+          </article>
+          <article>
+            <h3>Cinematic</h3>
+            <p>Layered reveals, depth, and optional intensity.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="gaps" class="section-reveal">
+        <h2>Gap Closure Register</h2>
+        <div id="gap-board" class="gap-grid" aria-live="polite"></div>
+      </section>
+
+      <section id="development" class="section-reveal system-section">
+        <div id="development-mode" data-development-mode>
+          <p class="eyebrow">Development mode</p>
+          <h2>Develop locally, publish honestly.</h2>
+          <p class="section-copy">
+            The active path keeps source edits modular, local checks visible, and GitHub publishing
+            blocked until remote configuration and authentication are real.
+          </p>
+          <p class="status-line" data-development-mode-status>Static development mode view active.</p>
+          <div class="system-grid" data-development-mode-grid>
+            <article class="system-card status-active">
+              <span>Source</span>
+              <strong>code</strong>
+              <h3>Modular edits</h3>
+              <p>HTML, CSS, JavaScript, and JSON changes stay small enough to review and reverse.</p>
+            </article>
+            <article class="system-card status-ready">
+              <span>Package</span>
+              <strong>zip</strong>
+              <h3>Static release</h3>
+              <p>The server-ready package refreshes only after source changes need shipment proof.</p>
+            </article>
+            <article class="system-card status-synced">
+              <span>Sync</span>
+              <strong>local</strong>
+              <h3>Workspace first</h3>
+              <p>Local progress remains distinct from confirmed GitHub publication.</p>
+            </article>
+            <article class="system-card status-blocked">
+              <span>GitHub</span>
+              <strong>auth</strong>
+              <h3>Publish gated</h3>
+              <p>Remote upload waits for a configured origin and authenticated GitHub CLI session.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="pulse" class="section-reveal system-section" data-system-pulse>
+        <p class="eyebrow">System pulse</p>
+        <h2>Live readiness without noisy dashboards.</h2>
+        <p class="section-copy">
+          A compact pulse keeps release, locale, and handoff signals readable without turning the
+          workspace into an attention-heavy operations wall.
+        </p>
+        <p class="status-line" data-system-pulse-status>Static system pulse view active.</p>
+        <div class="system-grid" data-system-pulse-grid>
+          <article class="system-card status-ready">
+            <span>Release</span>
+            <strong>ready</strong>
+            <h3>Static package</h3>
+            <p>Server packaging remains lightweight and rollback-aware.</p>
+          </article>
+          <article class="system-card status-active">
+            <span>Locales</span>
+            <strong>7</strong>
+            <h3>Language shell</h3>
+            <p>Core locale coverage stays contract-driven and easy to verify.</p>
+          </article>
+          <article class="system-card status-watch">
+            <span>Server</span>
+            <strong>pending</strong>
+            <h3>Handoff waiting</h3>
+            <p>Deploy waits for explicit domain, host, path, and rollback ownership.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="efficiency" class="section-reveal system-section" data-efficiency-governor>
+        <p class="eyebrow">Efficiency governor</p>
+        <h2>High cognition, low machine pressure.</h2>
+        <p class="section-copy">
+          The work mode spends attention on architecture, UX, and governance while keeping local
+          execution targeted and calm.
+        </p>
+        <p class="status-line" data-efficiency-status>Static efficiency view active.</p>
+        <div class="system-grid" data-efficiency-grid>
+          <article class="system-card status-active">
+            <span>AI depth</span>
+            <strong>full</strong>
+            <h3>Strategic reasoning</h3>
+            <p>Design, risk, and architecture receive attention before heavier local execution.</p>
+          </article>
+          <article class="system-card status-ready">
+            <span>Machine load</span>
+            <strong>low</strong>
+            <h3>Protected runtime</h3>
+            <p>No broad rebuild loops, unnecessary installs, or heavy browser automation by default.</p>
+          </article>
+          <article class="system-card status-watch">
+            <span>Validation</span>
+            <strong>targeted</strong>
+            <h3>Proportional checks</h3>
+            <p>Static and focused checks run when they protect the changed surface.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="weekly-usage" class="section-reveal system-section" data-weekly-usage>
+        <p class="eyebrow">Weekly usage governor</p>
+        <h2>Spend the week on useful progress.</h2>
+        <p class="section-copy">
+          Weekly capacity favors durable design decisions, small implementation slices, and honest
+          shipment state over repeated local churn.
+        </p>
+        <p class="status-line" data-weekly-usage-status>Static weekly usage view active.</p>
+        <div class="system-grid" data-weekly-usage-grid>
+          <article class="system-card status-active">
+            <span>Reasoning</span>
+            <strong>deep</strong>
+            <h3>Architecture first</h3>
+            <p>Planning effort goes into governance, implementation choices, and review quality.</p>
+          </article>
+          <article class="system-card status-ready">
+            <span>Machine</span>
+            <strong>low</strong>
+            <h3>Calm execution</h3>
+            <p>Local runs stay bounded to preserve performance and thermal headroom.</p>
+          </article>
+          <article class="system-card status-blocked">
+            <span>Remote</span>
+            <strong>auth</strong>
+            <h3>Publish blocked</h3>
+            <p>GitHub remains gated until origin and CLI authentication are restored.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="handoff" class="section-reveal system-section" data-handoff-system>
+        <p class="eyebrow">Release handoff</p>
+        <h2>Calm checks before live upload.</h2>
+        <p class="section-copy">
+          The release path keeps target confirmation, package verification, rollback, and quiet
+          observability visible before any live server action.
+        </p>
+        <p class="status-line" data-handoff-summary>Local review 0/4 - blocked 1</p>
+        <div class="system-grid" data-handoff-list>
+          <article class="system-card status-blocked">
+            <span>Target</span>
+            <h3>Confirm server</h3>
+            <p>Domain, host, upload path, and rollback owner must be explicit.</p>
+          </article>
+          <article class="system-card status-ready">
+            <span>Package</span>
+            <h3>Verify static zip</h3>
+            <p>The package stays compact and reproducible from source.</p>
+          </article>
+          <article class="system-card status-ready">
+            <span>Rollback</span>
+            <h3>Protect recovery</h3>
+            <p>Backup and restore steps remain local, documented, and reversible.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="archive" class="section-reveal">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Curated archive</p>
+            <h2>Legacy drawings stay calm, inspectable, and lightweight.</h2>
+          </div>
+          <div class="artwork-toolbar" aria-label="Artwork filters">
+            <button class="locale-chip is-active" data-artwork-filter="all" type="button" aria-pressed="true">All</button>
+            <button class="locale-chip" data-artwork-filter="karakalem" type="button" aria-pressed="false">Pencil</button>
+            <button class="locale-chip" data-artwork-filter="renk" type="button" aria-pressed="false">Color</button>
+          </div>
+        </div>
+        <div class="artwork-grid" data-artwork-grid>
+          <article class="artwork-card">
+            <img src="./public/media/drawings/karakalem-01.jpg" width="787" height="1400" loading="lazy" decoding="async" alt="Monochrome pencil drawing from the SEIS legacy portfolio archive.">
+            <h3>Karakalem Study 01</h3>
+          </article>
+          <article class="artwork-card">
+            <img src="./public/media/drawings/renk-01.jpg" width="787" height="1400" loading="lazy" decoding="async" alt="Color drawing from the SEIS legacy portfolio archive.">
+            <h3>Color Study 01</h3>
+          </article>
+          <article class="artwork-card">
+            <img src="./public/media/drawings/renk-11.jpg" width="1012" height="1800" loading="lazy" decoding="async" alt="Color drawing selected from the source legacy image archive.">
+            <h3>Color Study 11</h3>
+          </article>
+        </div>
+      </section>
+
+      <section id="roadmap" class="section-reveal system-section">
+        <p class="eyebrow">Long-run roadmap</p>
+        <h2>Phased growth without framework pressure.</h2>
+        <div class="timeline">
+          <article>
+            <span>Active</span>
+            <h3>Foundation hardening</h3>
+            <p>Keep the static shell, quality gates, and governance documents coherent.</p>
+          </article>
+          <article>
+            <span>Queued</span>
+            <h3>Experience expansion</h3>
+            <p>Make the lab richer while preserving mobile clarity and reduced-motion behavior.</p>
+          </article>
+          <article>
+            <span>Deferred</span>
+            <h3>Framework decision</h3>
+            <p>Choose a framework only when static constraints justify the added complexity.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="principles" class="section-reveal">
+        <h2>Non-Negotiables</h2>
+        <ul class="principle-list">
+          <li>Accessibility before spectacle.</li>
+          <li>Small reversible changes.</li>
+          <li>Low machine pressure by default.</li>
+          <li>Clear branch and publish governance.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
