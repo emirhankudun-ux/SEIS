@@ -1,0 +1,36 @@
+{
+  "id": "seis-case-study-content-quality-review",
+  "name": "SEIS Case Study Content Quality Review",
+  "mode": "manual-editorial-review",
+  "requiredBeforeDetailRoute": true,
+  "reviewSequence": [
+    {
+      "step": "narrative",
+      "question": "Does the case study explain context, challenge, response, and next step without vague hype?"
+    },
+    {
+      "step": "evidence",
+      "question": "Does every major claim point to a visible surface, registry, or lightweight check?"
+    },
+    {
+      "step": "accessibility",
+      "question": "Are motion, keyboard, language, and cognitive-load concerns stated before release?"
+    },
+    {
+      "step": "search",
+      "question": "Are keywords, audience, and canonical theme clear enough for future discovery?"
+    },
+    {
+      "step": "rollback",
+      "question": "Can the case study stay useful if framework migration is deferred?"
+    }
+  ],
+  "releaseBlockers": [
+    "missing narrative block",
+    "claim without proof",
+    "accessibility notes absent",
+    "search metadata too vague",
+    "framework-specific dependency before model stability"
+  ],
+  "nextEditorialSurface": "case study detail route proposal after model stability"
+}

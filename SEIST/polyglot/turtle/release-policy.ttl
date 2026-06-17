@@ -1,0 +1,10 @@
+@prefix seis: <https://ui-ux-digital-lab.local/vocab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+seis:releasePolicy
+  a seis:ReleasePolicy ;
+  seis:requiresDomainBeforeLiveDeploy true ;
+  seis:releaseLedger "releases/latest.json" ;
+  seis:supportsReducedMotion true ;
+  seis:mobileParticleLimit "24"^^xsd:integer ;
+  seis:desktopParticleLimit "64"^^xsd:integer .

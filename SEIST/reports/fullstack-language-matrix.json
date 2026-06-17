@@ -1,0 +1,1591 @@
+{
+  "version": 1,
+  "id": "seis-fullstack-language-matrix-report",
+  "generatedAt": "2026-06-03",
+  "sourceId": "seis-fullstack-language-matrix",
+  "sourcePath": "content/development/fullstack-language-matrix.json",
+  "summary": {
+    "languageCount": 108,
+    "layerCount": 7,
+    "entrypointCount": 119,
+    "requestedCoreStackCount": 6,
+    "pluginCapabilityLaneCount": 12,
+    "missingEntrypoints": []
+  },
+  "layers": [
+    {
+      "id": "frontend-and-experience",
+      "label": "Frontend and Experience",
+      "languageCount": 10,
+      "languages": [
+        "JavaScript",
+        "TypeScript",
+        "React",
+        "ReasonML",
+        "Elm",
+        "PureScript",
+        "ReScript",
+        "GDScript",
+        "GLSL",
+        "WGSL"
+      ]
+    },
+    {
+      "id": "backend-and-api",
+      "label": "Backend and API",
+      "languageCount": 19,
+      "languages": [
+        "Node.js",
+        "Express.js",
+        "Python",
+        "Ruby",
+        "PHP",
+        "Go",
+        "Java",
+        "C#",
+        "Elixir",
+        "Erlang",
+        "Scala",
+        "Clojure",
+        "F#",
+        "Groovy",
+        "GraphQL",
+        "OpenAPI",
+        "Protocol Buffers",
+        "Avro",
+        "AsyncAPI"
+      ]
+    },
+    {
+      "id": "database-and-data",
+      "label": "Database and Data",
+      "languageCount": 12,
+      "languages": [
+        "MySQL",
+        "SQL",
+        "R",
+        "Julia",
+        "MATLAB",
+        "JSON Schema",
+        "JSON-LD",
+        "PL/SQL",
+        "T-SQL",
+        "Turtle",
+        "SPARQL",
+        "CSV"
+      ]
+    },
+    {
+      "id": "mobile-and-native",
+      "label": "Mobile and Native",
+      "languageCount": 14,
+      "languages": [
+        "Rust",
+        "Swift",
+        "Kotlin",
+        "Dart",
+        "C",
+        "C++",
+        "Zig",
+        "Nim",
+        "Crystal",
+        "Objective-C",
+        "D",
+        "V",
+        "Ada",
+        "Pascal"
+      ]
+    },
+    {
+      "id": "cloud-devops-and-config",
+      "label": "Cloud, DevOps, and Config",
+      "languageCount": 25,
+      "languages": [
+        "Bash",
+        "YAML",
+        "Cloudflare Worker",
+        "Docker",
+        "Nginx/Apache config",
+        "PowerShell",
+        "TOML",
+        "XML",
+        "HCL",
+        "INI",
+        "Bicep",
+        "Nix",
+        "CUE",
+        "Jsonnet",
+        "Dhall",
+        "Starlark",
+        "KDL",
+        "HOCON",
+        "Java Properties",
+        "dotenv",
+        "Make",
+        "CMake",
+        "Meson",
+        "Just",
+        "Taskfile"
+      ]
+    },
+    {
+      "id": "security-policy-and-governance",
+      "label": "Security, Policy, and Governance",
+      "languageCount": 14,
+      "languages": [
+        "Lua",
+        "Perl",
+        "WebAssembly Text",
+        "Solidity",
+        "Move",
+        "Cairo",
+        "Hack",
+        "Q#",
+        "Apex",
+        "ABAP",
+        "Mermaid",
+        "PlantUML",
+        "Rego",
+        "CEL"
+      ]
+    },
+    {
+      "id": "research-legacy-and-lab",
+      "label": "Research, Legacy, and Lab",
+      "languageCount": 14,
+      "languages": [
+        "Haskell",
+        "OCaml",
+        "Visual Basic",
+        "Fortran",
+        "COBOL",
+        "Racket",
+        "Scheme",
+        "Prolog",
+        "Tcl",
+        "AWK",
+        "Forth",
+        "Common Lisp",
+        "Emacs Lisp",
+        "Smalltalk"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "order": 1,
+      "language": "JavaScript",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "browser interaction, cinematic motion, gallery, i18n",
+      "entrypoints": [
+        "apps/web/src/scripts/motion-system.js",
+        "apps/web/src/scripts/gallery-system.js",
+        "apps/web/src/scripts/i18n-system.js",
+        "polyglot/javascript/plugin-source-runtime.js"
+      ],
+      "entrypointCount": 4,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 2,
+      "language": "TypeScript",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "release contract typing and requested plugin stack contracts",
+      "entrypoints": [
+        "polyglot/typescript/release-contract.ts",
+        "polyglot/typescript/fullstack-plugin-contract.ts"
+      ],
+      "entrypointCount": 2,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 3,
+      "language": "Node.js",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "packaging, quality checks, and requested stack readiness",
+      "entrypoints": [
+        "scripts/check-foundation.mjs",
+        "scripts/prepare-server-upload.mjs",
+        "scripts/create-requested-software-stack.cjs",
+        "polyglot/node/requested_stack_readiness.mjs"
+      ],
+      "entrypointCount": 4,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 4,
+      "language": "MySQL",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "plugin source registry and requested software stack ledger schema",
+      "entrypoints": [
+        "polyglot/mysql/plugin_source_registry.mysql.sql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 5,
+      "language": "React",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "typed plugin source dashboard component contract",
+      "entrypoints": [
+        "polyglot/react/PluginSourceDashboard.tsx"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 6,
+      "language": "Express.js",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "Express-compatible plugin source and software stack route adapter",
+      "entrypoints": [
+        "server/express/plugin-source-routes.mjs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": true,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 7,
+      "language": "Python",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "asset/deploy metadata inspection",
+      "entrypoints": [
+        "polyglot/python/seis_manifest.py",
+        "server/python/verify_release.py"
+      ],
+      "entrypointCount": 2,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 8,
+      "language": "Ruby",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "alternate release hash verification",
+      "entrypoints": [
+        "polyglot/ruby/verify_release.rb"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 9,
+      "language": "PHP",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "shared-hosting health fallback",
+      "entrypoints": [
+        "server/php/health.php",
+        "server/php/router.php"
+      ],
+      "entrypointCount": 2,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 10,
+      "language": "Go",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future service health contract",
+      "entrypoints": [
+        "polyglot/go/health_contract.go"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 11,
+      "language": "Rust",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "performance budget contract",
+      "entrypoints": [
+        "polyglot/rust/performance_budget.rs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 12,
+      "language": "Swift",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "iOS motion/accessibility policy",
+      "entrypoints": [
+        "polyglot/swift/SEISMotionPolicy.swift"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 13,
+      "language": "Kotlin",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "Android motion/accessibility policy",
+      "entrypoints": [
+        "polyglot/kotlin/SeisMotionPolicy.kt"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 14,
+      "language": "Dart",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "Flutter motion/accessibility policy",
+      "entrypoints": [
+        "polyglot/dart/seis_motion_policy.dart"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 15,
+      "language": "Bash",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "portable deploy guard",
+      "entrypoints": [
+        "polyglot/bash/deploy_guard.sh"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 16,
+      "language": "Java",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "JVM release readiness contract",
+      "entrypoints": [
+        "polyglot/java/SeisDeployReadiness.java"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 17,
+      "language": "C#",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": ".NET release preservation contract",
+      "entrypoints": [
+        "polyglot/csharp/SeisReleaseContract.cs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 18,
+      "language": "SQL",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "future release ledger schema",
+      "entrypoints": [
+        "polyglot/sql/release_readiness_schema.sql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 19,
+      "language": "Lua",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "tiny edge/device calm-mode policy",
+      "entrypoints": [
+        "polyglot/lua/calm_motion_policy.lua"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 20,
+      "language": "YAML",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "portable deploy governance configuration",
+      "entrypoints": [
+        "polyglot/yaml/deploy-governance.yml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 21,
+      "language": "Cloudflare Worker",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "edge health and origin proxy adapter",
+      "entrypoints": [
+        "server/edge/cloudflare-worker.js"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 22,
+      "language": "Docker",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "containerized static serving",
+      "entrypoints": [
+        "server/docker/Dockerfile",
+        "server/docker/compose.yaml"
+      ],
+      "entrypointCount": 2,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 23,
+      "language": "Nginx/Apache config",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "static hosting rewrite and cache policy",
+      "entrypoints": [
+        "server/nginx/seis-static.conf",
+        "server/apache/.htaccess"
+      ],
+      "entrypointCount": 2,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 24,
+      "language": "C",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "portable embedded readiness contract",
+      "entrypoints": [
+        "polyglot/c/readiness_contract.h"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 25,
+      "language": "C++",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "native application readiness contract",
+      "entrypoints": [
+        "polyglot/cpp/readiness_contract.hpp"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 26,
+      "language": "Elixir",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "calm release policy for concurrent service experiments",
+      "entrypoints": [
+        "polyglot/elixir/calm_release_policy.ex"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 27,
+      "language": "Erlang",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "fault-tolerant release policy sketch",
+      "entrypoints": [
+        "polyglot/erlang/calm_release_policy.erl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 28,
+      "language": "Haskell",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "pure release policy model",
+      "entrypoints": [
+        "polyglot/haskell/CalmReleasePolicy.hs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 29,
+      "language": "Scala",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "JVM typed release policy model",
+      "entrypoints": [
+        "polyglot/scala/SeisReleasePolicy.scala"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 30,
+      "language": "R",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "readiness metrics sketch for analysis notebooks",
+      "entrypoints": [
+        "polyglot/r/readiness_metrics.R"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 31,
+      "language": "Julia",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "readiness metrics sketch for numerical analysis",
+      "entrypoints": [
+        "polyglot/julia/readiness_metrics.jl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 32,
+      "language": "Perl",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "portable readiness guard for legacy hosting scripts",
+      "entrypoints": [
+        "polyglot/perl/readiness_guard.pl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 33,
+      "language": "Zig",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "systems-level readiness contract",
+      "entrypoints": [
+        "polyglot/zig/readiness_contract.zig"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 34,
+      "language": "Clojure",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "data-first release policy map",
+      "entrypoints": [
+        "polyglot/clojure/readiness_policy.clj"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 35,
+      "language": "F#",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": ".NET functional release policy model",
+      "entrypoints": [
+        "polyglot/fsharp/SeisReleasePolicy.fs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 36,
+      "language": "PowerShell",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "Windows operations release policy guard",
+      "entrypoints": [
+        "polyglot/powershell/SeisReleasePolicy.ps1"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 37,
+      "language": "TOML",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "portable governance configuration for future tooling",
+      "entrypoints": [
+        "polyglot/toml/deploy-governance.toml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 38,
+      "language": "XML",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "enterprise interchange release policy contract",
+      "entrypoints": [
+        "polyglot/xml/release-policy.xml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 39,
+      "language": "OCaml",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "typed functional release policy model",
+      "entrypoints": [
+        "polyglot/ocaml/release_policy.ml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 40,
+      "language": "ReasonML",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "JavaScript-adjacent typed policy model",
+      "entrypoints": [
+        "polyglot/reason/ReleasePolicy.re"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 41,
+      "language": "Nim",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "compact systems readiness policy",
+      "entrypoints": [
+        "polyglot/nim/readiness_policy.nim"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 42,
+      "language": "Crystal",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "Ruby-like compiled readiness policy",
+      "entrypoints": [
+        "polyglot/crystal/readiness_policy.cr"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 43,
+      "language": "Groovy",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "JVM scripting release policy guard",
+      "entrypoints": [
+        "polyglot/groovy/SeisReleasePolicy.groovy"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 44,
+      "language": "Objective-C",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "Apple native release policy bridge",
+      "entrypoints": [
+        "polyglot/objective-c/SEISReleasePolicy.h"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 45,
+      "language": "Visual Basic",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "legacy .NET release policy model",
+      "entrypoints": [
+        "polyglot/vb/SeisReleasePolicy.vb"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 46,
+      "language": "MATLAB",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "analysis-oriented readiness policy",
+      "entrypoints": [
+        "polyglot/matlab/readiness_policy.m"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 47,
+      "language": "Fortran",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "scientific legacy readiness policy",
+      "entrypoints": [
+        "polyglot/fortran/readiness_policy.f90"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 48,
+      "language": "COBOL",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "enterprise legacy readiness policy",
+      "entrypoints": [
+        "polyglot/cobol/readiness-policy.cob"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 49,
+      "language": "Racket",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "language-lab readiness policy",
+      "entrypoints": [
+        "polyglot/racket/readiness-policy.rkt"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 50,
+      "language": "Scheme",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "minimal Lisp readiness policy",
+      "entrypoints": [
+        "polyglot/scheme/readiness-policy.scm"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 51,
+      "language": "Prolog",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "logic-programming readiness proof sketch",
+      "entrypoints": [
+        "polyglot/prolog/readiness_policy.pl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 52,
+      "language": "D",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "systems readiness policy model",
+      "entrypoints": [
+        "polyglot/d/readiness_policy.d"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 53,
+      "language": "V",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "small systems readiness policy",
+      "entrypoints": [
+        "polyglot/v/readiness_policy.v"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 54,
+      "language": "GraphQL",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future API release policy schema",
+      "entrypoints": [
+        "polyglot/graphql/release-policy.graphql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 55,
+      "language": "OpenAPI",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future release health API contract",
+      "entrypoints": [
+        "polyglot/openapi/release-health.openapi.yaml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 56,
+      "language": "JSON Schema",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "machine-readable release policy validation contract",
+      "entrypoints": [
+        "polyglot/json-schema/release-policy.schema.json"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 57,
+      "language": "WebAssembly Text",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "portable low-level deploy safety proof sketch",
+      "entrypoints": [
+        "polyglot/wat/readiness_policy.wat"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 58,
+      "language": "HCL",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "infrastructure governance policy sketch",
+      "entrypoints": [
+        "polyglot/hcl/release-governance.hcl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 59,
+      "language": "Protocol Buffers",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future service message release policy contract",
+      "entrypoints": [
+        "polyglot/protobuf/release_policy.proto"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 60,
+      "language": "Avro",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future analytics and event schema contract",
+      "entrypoints": [
+        "polyglot/avro/release-policy.avsc"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 61,
+      "language": "AsyncAPI",
+      "layer": "backend-and-api",
+      "layerLabel": "Backend and API",
+      "role": "future release event contract",
+      "entrypoints": [
+        "polyglot/asyncapi/release-events.asyncapi.yaml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 62,
+      "language": "JSON-LD",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "semantic release policy metadata",
+      "entrypoints": [
+        "polyglot/jsonld/release-policy.jsonld"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 63,
+      "language": "INI",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "legacy-compatible release policy configuration",
+      "entrypoints": [
+        "polyglot/ini/release-policy.ini"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 64,
+      "language": "Solidity",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "future on-chain release policy contract",
+      "entrypoints": [
+        "polyglot/solidity/SeisReleasePolicy.sol"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 65,
+      "language": "Move",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "resource-oriented release policy contract",
+      "entrypoints": [
+        "polyglot/move/release_policy.move"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 66,
+      "language": "Cairo",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "zero-knowledge ecosystem release policy sketch",
+      "entrypoints": [
+        "polyglot/cairo/release_policy.cairo"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 67,
+      "language": "Hack",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "typed PHP-family release policy model",
+      "entrypoints": [
+        "polyglot/hack/SeisReleasePolicy.hack"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 68,
+      "language": "Elm",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "calm frontend state policy model",
+      "entrypoints": [
+        "polyglot/elm/ReleasePolicy.elm"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 69,
+      "language": "PureScript",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "strongly typed UI policy model",
+      "entrypoints": [
+        "polyglot/purescript/ReleasePolicy.purs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 70,
+      "language": "ReScript",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "typed JavaScript-adjacent release policy",
+      "entrypoints": [
+        "polyglot/rescript/ReleasePolicy.res"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 71,
+      "language": "Q#",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "quantum-readiness release policy placeholder",
+      "entrypoints": [
+        "polyglot/qsharp/ReleasePolicy.qs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 72,
+      "language": "Apex",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "enterprise CRM release policy contract",
+      "entrypoints": [
+        "polyglot/apex/SeisReleasePolicy.cls"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 73,
+      "language": "ABAP",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "enterprise ERP readiness policy",
+      "entrypoints": [
+        "polyglot/abap/readiness_policy.abap"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 74,
+      "language": "PL/SQL",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "database release readiness policy",
+      "entrypoints": [
+        "polyglot/plsql/readiness_policy.sql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 75,
+      "language": "T-SQL",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "SQL Server release readiness policy",
+      "entrypoints": [
+        "polyglot/tsql/readiness_policy.sql"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 76,
+      "language": "Bicep",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "Azure infrastructure release governance sketch",
+      "entrypoints": [
+        "polyglot/bicep/release-governance.bicep"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 77,
+      "language": "Nix",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "reproducible environment release policy",
+      "entrypoints": [
+        "polyglot/nix/release-policy.nix"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 78,
+      "language": "CUE",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "configuration schema release policy",
+      "entrypoints": [
+        "polyglot/cue/release_policy.cue"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 79,
+      "language": "Turtle",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "RDF semantic release policy graph",
+      "entrypoints": [
+        "polyglot/turtle/release-policy.ttl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 80,
+      "language": "SPARQL",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "semantic release policy validation query",
+      "entrypoints": [
+        "polyglot/sparql/release-policy-check.rq"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 81,
+      "language": "Mermaid",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "lightweight release flow diagram source",
+      "entrypoints": [
+        "polyglot/mermaid/release-flow.mmd"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 82,
+      "language": "PlantUML",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "enterprise-friendly release flow diagram source",
+      "entrypoints": [
+        "polyglot/plantuml/release-flow.puml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 83,
+      "language": "CSV",
+      "layer": "database-and-data",
+      "layerLabel": "Database and Data",
+      "role": "minimal operations release policy table",
+      "entrypoints": [
+        "polyglot/csv/release-policy.csv"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 84,
+      "language": "Ada",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "high-integrity readiness policy contract",
+      "entrypoints": [
+        "polyglot/ada/seis_release_policy.ads"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 85,
+      "language": "Pascal",
+      "layer": "mobile-and-native",
+      "layerLabel": "Mobile and Native",
+      "role": "classic application readiness policy",
+      "entrypoints": [
+        "polyglot/pascal/release_policy.pas"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 86,
+      "language": "Tcl",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "portable scripting release policy",
+      "entrypoints": [
+        "polyglot/tcl/release_policy.tcl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 87,
+      "language": "AWK",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "minimal text-ops release policy guard",
+      "entrypoints": [
+        "polyglot/awk/release_policy.awk"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 88,
+      "language": "Forth",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "tiny stack-language readiness policy",
+      "entrypoints": [
+        "polyglot/forth/release_policy.fs"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 89,
+      "language": "Common Lisp",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "durable Lisp release policy model",
+      "entrypoints": [
+        "polyglot/common-lisp/release-policy.lisp"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 90,
+      "language": "Emacs Lisp",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "editor-automation release policy guard",
+      "entrypoints": [
+        "polyglot/emacs-lisp/release-policy.el"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 91,
+      "language": "Smalltalk",
+      "layer": "research-legacy-and-lab",
+      "layerLabel": "Research, Legacy, and Lab",
+      "role": "object-oriented release policy sketch",
+      "entrypoints": [
+        "polyglot/smalltalk/ReleasePolicy.st"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 92,
+      "language": "GDScript",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "interactive scene readiness policy",
+      "entrypoints": [
+        "polyglot/gdscript/release_policy.gd"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 93,
+      "language": "GLSL",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "GPU-safe visual readiness constants",
+      "entrypoints": [
+        "polyglot/glsl/release_policy.glsl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 94,
+      "language": "WGSL",
+      "layer": "frontend-and-experience",
+      "layerLabel": "Frontend and Experience",
+      "role": "WebGPU visual readiness constants",
+      "entrypoints": [
+        "polyglot/wgsl/release_policy.wgsl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 95,
+      "language": "Rego",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "policy-as-code release gate",
+      "entrypoints": [
+        "polyglot/rego/release_policy.rego"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 96,
+      "language": "CEL",
+      "layer": "security-policy-and-governance",
+      "layerLabel": "Security, Policy, and Governance",
+      "role": "portable expression release gate",
+      "entrypoints": [
+        "polyglot/cel/release_policy.cel"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 97,
+      "language": "Jsonnet",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "composable configuration release policy",
+      "entrypoints": [
+        "polyglot/jsonnet/release-policy.jsonnet"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 98,
+      "language": "Dhall",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "typed configuration release policy",
+      "entrypoints": [
+        "polyglot/dhall/release-policy.dhall"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 99,
+      "language": "Starlark",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "build-system policy extension sketch",
+      "entrypoints": [
+        "polyglot/starlark/release_policy.star"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 100,
+      "language": "KDL",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "human-readable structured release policy",
+      "entrypoints": [
+        "polyglot/kdl/release-policy.kdl"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 101,
+      "language": "HOCON",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "service configuration release policy",
+      "entrypoints": [
+        "polyglot/hocon/release-policy.conf"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 102,
+      "language": "Java Properties",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "JVM-era release policy configuration",
+      "entrypoints": [
+        "polyglot/properties/release-policy.properties"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 103,
+      "language": "dotenv",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "environment-style release policy configuration",
+      "entrypoints": [
+        "polyglot/dotenv/release-policy.env"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 104,
+      "language": "Make",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "portable build recipe release policy",
+      "entrypoints": [
+        "polyglot/make/release-policy.mk"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 105,
+      "language": "CMake",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "native build configuration release policy",
+      "entrypoints": [
+        "polyglot/cmake/release-policy.cmake"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 106,
+      "language": "Meson",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "modern build configuration release policy",
+      "entrypoints": [
+        "polyglot/meson/release-policy.meson"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 107,
+      "language": "Just",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "developer task recipe release policy",
+      "entrypoints": [
+        "polyglot/just/release-policy.just"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 108,
+      "language": "Taskfile",
+      "layer": "cloud-devops-and-config",
+      "layerLabel": "Cloud, DevOps, and Config",
+      "role": "cross-platform task runner release policy",
+      "entrypoints": [
+        "polyglot/taskfile/release-policy.taskfile.yml"
+      ],
+      "entrypointCount": 1,
+      "requestedCoreStack": false,
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    }
+  ]
+}

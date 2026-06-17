@@ -1,0 +1,129 @@
+{
+  "generated_at": "2026-06-05",
+  "owner": "emirhankudun-ux",
+  "canonical_repository": "emirhankudun-ux/SEIS",
+  "canonical_default_branch": "UIXAppTTR",
+  "canonical_status": "general_github_center_and_general_depot",
+  "strategy": "Use SEIS as the canonical GitHub hub and general repository. Source branch names are centralized under sources/<repo>/<branch>. Preserve full source history under those refs once git push authentication is available.",
+  "github_setup_completed": {
+    "seis_readme_declares_canonical_hub": true,
+    "project_registry_updated": true,
+    "branch_registry_added": true,
+    "central_runbook_added": true,
+    "migration_audit_added": true,
+    "migration_runner_added": true,
+    "source_repository_markers_added": true,
+    "source_tracking_refs_created": true
+  },
+  "source_tracking_refs": {
+    "count": 26,
+    "registry": "BRANCHES.md",
+    "ref_pattern": "refs/heads/sources/<repo>/<branch>",
+    "status": "created_as_seis_tracking_refs",
+    "history_status": "full source history pending authenticated git push"
+  },
+  "repository_actions": [
+    {
+      "repository": "emirhankudun-ux/SEIS",
+      "role": "canonical_hub_and_general_depot",
+      "default_branch": "UIXAppTTR",
+      "status": "active_canonical_center",
+      "central_files": [
+        "README.md",
+        "PROJECTS.md",
+        "BRANCHES.md",
+        "docs/seis-canonical-github-hub.md",
+        "docs/github-branch-migration-audit.md",
+        "scripts/migrate-github-branches-to-seis.sh"
+      ]
+    },
+    {
+      "repository": "emirhankudun-ux/UIX-Apps",
+      "role": "source_repository",
+      "default_branch": "UIXAppTTR",
+      "target_namespace": "sources/UIX-Apps/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/emirhan-kudun-portfolio",
+      "role": "source_repository",
+      "default_branch": "codex/seis-ux-cinematic-premium-foundation",
+      "target_namespace": "sources/emirhan-kudun-portfolio/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/github-unified-source",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/github-unified-source/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/seis-trusted-marketplace-plugin",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/seis-trusted-marketplace-plugin/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/gemini-cli",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/gemini-cli/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/DeepSeek-Coder",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/DeepSeek-Coder/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/claude-code",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/claude-code/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/docs",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/docs/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    },
+    {
+      "repository": "emirhankudun-ux/awesome-deepseek-agent",
+      "role": "source_repository",
+      "default_branch": "main",
+      "target_namespace": "sources/awesome-deepseek-agent/*",
+      "status": "marked_for_consolidation",
+      "marker_file": "MOVED_TO_SEIS.md"
+    }
+  ],
+  "automation": {
+    "migration_script": "scripts/migrate-github-branches-to-seis.sh",
+    "branch_registry": "BRANCHES.md",
+    "audit_document": "docs/github-branch-migration-audit.md",
+    "runbook": "docs/seis-canonical-github-hub.md",
+    "dry_run_default": true,
+    "deletion_requires": [
+      "GitHub CLI authentication",
+      "DELETE_SOURCE_REPOS=1",
+      "verified sources/* refs in SEIS"
+    ]
+  },
+  "blocked_operations": [
+    "Whole repository deletion/archive/private visibility is not available through the current GitHub connector tools.",
+    "Cross-repository full-history branch creation requires git push authentication because GitHub refs can only point to objects already present in the target repository."
+  ]
+}

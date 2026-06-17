@@ -1,0 +1,220 @@
+{
+  "version": 1,
+  "id": "seis-trusted-marketplace-intake",
+  "mode": "curated-marketplace-readiness",
+  "branch": "UIXAppTTR",
+  "audience": "designer-friendly marketplace curation with engineering gates",
+  "lastReviewed": "2026-06-04",
+  "summary": "Track trusted GitHub, MCP, Copilot, and model marketplace channels before any live install, listing, or credentialed write.",
+  "localCodexPlugin": "content/development/seis-trusted-marketplace-plugin.json",
+  "nonCoderWorkflow": [
+    "Choose the marketplace card or source family that feels useful for SEIS.",
+    "Check the trust posture, visual fit, and user-facing value before technical activation.",
+    "Ask engineering automation to run the listed quality command.",
+    "Only publish or install live when target, auth, rollback owner, and user approval are explicit."
+  ],
+  "trustSignals": [
+    "official_or_verified_publisher",
+    "public_source_or_clear_documentation",
+    "active_maintenance_signal",
+    "minimal_permissions",
+    "clear_install_or_publish_path",
+    "rollback_or_removal_path"
+  ],
+  "blockedSignals": [
+    "unknown_publisher",
+    "unclear_permissions",
+    "credentialed_write_without_target",
+    "deprecated_github_app_based_copilot_extension",
+    "no_rollback_path"
+  ],
+  "marketplaceChannels": [
+    {
+      "id": "github-mcp-registry",
+      "label": "GitHub MCP Registry",
+      "status": "preferred-seis-channel",
+      "bestFor": [
+        "AI tool integrations",
+        "official service connectors",
+        "cross-agent compatibility"
+      ],
+      "gate": "use only the smallest task-matched MCP server after target and permissions are known",
+      "nextAction": "shortlist official or high-trust MCP servers into the SEIS marketplace view",
+      "sourceUrl": "https://github.com/mcp"
+    },
+    {
+      "id": "github-marketplace-actions",
+      "label": "GitHub Marketplace Actions",
+      "status": "publishable-after-action-repo",
+      "bestFor": [
+        "repeatable repository automation",
+        "quality checks",
+        "release helpers"
+      ],
+      "gate": "requires a public single-action repository with root action.yml or action.yaml and a release",
+      "nextAction": "promote only small reusable automation into a separate action repository",
+      "sourceUrl": "https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace"
+    },
+    {
+      "id": "github-marketplace-apps",
+      "label": "GitHub Marketplace Apps",
+      "status": "candidate-after-productization",
+      "bestFor": [
+        "GitHub App experiences",
+        "paid plans",
+        "organization-level integrations"
+      ],
+      "gate": "requires app listing requirements, publisher verification for paid plans, support details, and permission review",
+      "nextAction": "use only after SEIS has a clear app surface, support model, and install flow",
+      "sourceUrl": "https://docs.github.com/en/apps/github-marketplace/github-marketplace-overview/about-github-marketplace-for-apps"
+    },
+    {
+      "id": "github-models",
+      "label": "GitHub Models",
+      "status": "reference-catalog",
+      "bestFor": [
+        "model discovery",
+        "AI provider comparison",
+        "prototype model selection"
+      ],
+      "gate": "treat as model sourcing, not a SEIS marketplace listing target",
+      "nextAction": "map trusted model providers to AI architecture notes when a workflow needs a model",
+      "sourceUrl": "https://github.com/marketplace?type=models"
+    },
+    {
+      "id": "awesome-github-copilot",
+      "label": "Awesome GitHub Copilot",
+      "status": "plugin-packaging-candidate",
+      "bestFor": [
+        "agents",
+        "instructions",
+        "skills",
+        "hooks",
+        "workflow prompts"
+      ],
+      "gate": "package only clean, reusable SEIS instructions or skills with clear scope and no secrets",
+      "nextAction": "shape SEIS marketplace entries as plugin-ready resources before proposing upstream contribution",
+      "sourceUrl": "https://github.com/github/awesome-copilot"
+    },
+    {
+      "id": "github-app-copilot-extensions",
+      "label": "GitHub App-based Copilot Extensions",
+      "status": "do-not-build-new",
+      "bestFor": [
+        "legacy review only"
+      ],
+      "gate": "blocked for new SEIS work because GitHub sunset this server-side extension path in favor of MCP",
+      "nextAction": "replace extension ideas with MCP server or plugin marketplace packaging",
+      "sourceUrl": "https://github.blog/changelog/2025-09-24-deprecate-github-copilot-extensions-github-apps/"
+    }
+  ],
+  "trustedSourceShortlist": [
+    {
+      "id": "microsoft-markitdown",
+      "publisher": "microsoft",
+      "channel": "github-mcp-registry",
+      "family": "collaboration-knowledge-docs",
+      "designerValue": "Convert documents and assets into Markdown for clean handoff and content operations.",
+      "activationPosture": "candidate-after-file-scope"
+    },
+    {
+      "id": "github-mcp-server",
+      "publisher": "github",
+      "channel": "github-mcp-registry",
+      "family": "repo-devops-quality-security",
+      "designerValue": "Connect repo issues, pull requests, and workflow status to natural-language governance.",
+      "activationPosture": "candidate-after-repo-scope"
+    },
+    {
+      "id": "figma-mcp-server",
+      "publisher": "figma",
+      "channel": "github-mcp-registry",
+      "family": "design-media-creative",
+      "designerValue": "Bring Figma design context into implementation without losing design-system intent.",
+      "activationPosture": "candidate-after-figma-target"
+    },
+    {
+      "id": "notion-mcp-server",
+      "publisher": "makenotion",
+      "channel": "github-mcp-registry",
+      "family": "collaboration-knowledge-docs",
+      "designerValue": "Move curated marketplace notes into a team knowledge base after destination approval.",
+      "activationPosture": "approval-gated"
+    },
+    {
+      "id": "supabase-mcp-server",
+      "publisher": "supabase",
+      "channel": "github-mcp-registry",
+      "family": "data-db-ai-infra",
+      "designerValue": "Support future marketplace data storage when the product surface needs real records.",
+      "activationPosture": "database-target-gated"
+    },
+    {
+      "id": "stripe-mcp-server",
+      "publisher": "stripe",
+      "channel": "github-mcp-registry",
+      "family": "app-platform-commerce-mobile",
+      "designerValue": "Prepare paid marketplace thinking without touching payments until product scope is clear.",
+      "activationPosture": "commerce-sandbox-gated"
+    },
+    {
+      "id": "github-marketplace-gitguardian",
+      "publisher": "GitGuardian",
+      "channel": "github-marketplace-apps",
+      "family": "repo-devops-quality-security",
+      "designerValue": "Protect source code from leaked secrets before public marketplace growth.",
+      "activationPosture": "security-scope-gated"
+    },
+    {
+      "id": "github-marketplace-render",
+      "publisher": "Render",
+      "channel": "github-marketplace-apps",
+      "family": "builder-and-hosting",
+      "designerValue": "Candidate hosting/deploy lane for polished public product surfaces.",
+      "activationPosture": "provider-target-gated"
+    },
+    {
+      "id": "github-marketplace-circleci",
+      "publisher": "CircleCI",
+      "channel": "github-marketplace-apps",
+      "family": "repo-devops-quality-security",
+      "designerValue": "Candidate CI lane when marketplace packaging needs stronger release verification.",
+      "activationPosture": "ci-scope-gated"
+    },
+    {
+      "id": "github-models-openai",
+      "publisher": "OpenAI",
+      "channel": "github-models",
+      "family": "data-db-ai-infra",
+      "designerValue": "Reference provider for future AI-assisted marketplace descriptions and content QA.",
+      "activationPosture": "model-selection-only"
+    }
+  ],
+  "publishingPath": [
+    {
+      "phase": "local-marketplace-view",
+      "ownerAction": "Curate cards, categories, descriptions, trust posture, and visual priority.",
+      "engineeringGate": "npm run check:trusted-marketplace-intake"
+    },
+    {
+      "phase": "plugin-ready-package",
+      "ownerAction": "Choose which SEIS instruction, skill, or agent should become reusable.",
+      "engineeringGate": "package manifest, license, no secrets, scoped docs"
+    },
+    {
+      "phase": "mcp-ready-integration",
+      "ownerAction": "Choose the external system that genuinely improves the user workflow.",
+      "engineeringGate": "target, auth, permissions, rollback owner, low-power test"
+    },
+    {
+      "phase": "github-marketplace-publication",
+      "ownerAction": "Approve public brand, support copy, screenshots, and pricing or free positioning.",
+      "engineeringGate": "separate public repo or app listing, publisher requirements, release process"
+    }
+  ],
+  "qualityCommands": [
+    "npm run check:trusted-marketplace-intake",
+    "npm run check:seis-trusted-marketplace-plugin",
+    "npm run check:aggressive-capability-map"
+  ]
+}

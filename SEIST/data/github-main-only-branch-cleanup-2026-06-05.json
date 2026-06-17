@@ -1,0 +1,205 @@
+{
+  "date": "2026-06-05",
+  "repository": "emirhankudun-ux/SEIS",
+  "goal": "Keep only the main branch on GitHub.",
+  "default_branch": {
+    "before": "UIXAppTTR",
+    "after": "main",
+    "update_status": "success"
+  },
+  "summary": {
+    "initial_test_delete_count": 1,
+    "bulk_delete_attempt_count": 34,
+    "deleted_count": 35,
+    "failed_count": 0,
+    "remaining_branch_count_before_record_commit": 1,
+    "remaining_branch_before_record_commit": "main"
+  },
+  "deleted_branches": [
+    {
+      "branch": "claude/3d-animated-portfolio-POXSm",
+      "sha": "46857dba34ea18ee3f654b16e87ed1ba64fe0233",
+      "phase": "initial_delete_probe"
+    },
+    {
+      "branch": "UIXAppTTR",
+      "sha": "de90cc41f682d71852cd29a814c088ba33b1930e",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "claude/claude-md-docs-A72cU",
+      "sha": "8a577f5e35bf416cc1f39afa190239f24fa6e7c0",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "claude/ecstatic-darwin-fuoHJ",
+      "sha": "d1411311291dc57d7486a7056739528928be0ca5",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "claude/github-branch-repo-dev-SFUpD",
+      "sha": "64d7d3fa91e06dd923a88771ec8dce1395217384",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "codex/requested-plugin-governance-20260602",
+      "sha": "8081667196cdf5dfbc66e8c17be068ed97eef71b",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "codex/seis-ux-cinematic-premium-foundation",
+      "sha": "834613d0eee6aa84704cde2e9221b74e5105b17c",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "seis/server-cloud-activation-20260602",
+      "sha": "e30f54e611a023ba1cf4333456c6761c0dee496c",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "seis/server-cloud-activation-20260602-2",
+      "sha": "f28f0248ff893f5da72e05fbde45a3f0f2840d7e",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/DeepSeek-Coder/dependabot/pip/pip-19adfad5d4",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/DeepSeek-Coder/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/UIXAppTTR",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/claude/3d-animated-portfolio-POXSm",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/claude/claude-md-docs-A72cU",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/claude/ecstatic-darwin-fuoHJ",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/claude/github-branch-repo-dev-SFUpD",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/codex/requested-plugin-governance-20260602",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/codex/seis-ux-cinematic-premium-foundation",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/seis/server-cloud-activation-20260602",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/UIX-Apps/seis/server-cloud-activation-20260602-2",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/awesome-deepseek-agent/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/claude-code/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/docs/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/emirhan-kudun-portfolio/codex/seis-ux-cinematic-premium-foundation",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/emirhan-kudun-portfolio/feature/seis-ecosystem-integration",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/emirhan-kudun-portfolio/seis-concept",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-05b1f1d78b",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-da0aa30ced",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-e5a46ec0e1",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/gemini-cli/dependabot/npm_and_yarn/npm_and_yarn-e9ce4f7be9",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/gemini-cli/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/github-unified-source/full-icloud-archive-20260604",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/github-unified-source/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    },
+    {
+      "branch": "sources/seis-trusted-marketplace-plugin/main",
+      "sha": "61642493b89b35829457a1e476b65150465b99dc",
+      "phase": "bulk_cleanup"
+    }
+  ],
+  "verification": {
+    "method": "git ls-remote --heads https://github.com/emirhankudun-ux/SEIS.git",
+    "remaining_before_record_commit": [
+      {
+        "branch": "main",
+        "sha": "de90cc41f682d71852cd29a814c088ba33b1930e"
+      }
+    ]
+  },
+  "rule": "GitHub should expose main as the only branch for SEIS. Historical branch cleanup is recorded here on main."
+}

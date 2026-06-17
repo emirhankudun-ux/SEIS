@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "source": "curated from legacy PortfolioWebsite zip archives",
+  "count": 20,
+  "categories": {
+    "karakalem": 9,
+    "renk": 11
+  },
+  "publicPath": "apps/web/public/media/drawings",
+  "policy": "selected asset migration only; legacy source files are not copied into the app"
+}
+

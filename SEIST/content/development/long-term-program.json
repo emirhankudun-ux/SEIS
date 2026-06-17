@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "branch": "UIXAppTTR",
+  "horizon": "long-term",
+  "operatingMode": "low-power modular development",
+  "cadence": {
+    "unit": "small reversible increments",
+    "reviewRhythm": "quality gates before expansion",
+    "releaseRhythm": "package hash backup handoff before upload"
+  },
+  "phases": [
+    {
+      "id": "phase-01-foundation",
+      "name": "Foundation Integrity",
+      "status": "active",
+      "focus": "Keep the static web surface stable, accessible, responsive, and explainable.",
+      "exitGate": "foundation, locale, experience budget, and release checks pass together"
+    },
+    {
+      "id": "phase-02-cinematic-interface",
+      "name": "Cinematic Interface System",
+      "status": "planned",
+      "focus": "Deepen hero, section rhythm, scroll reveals, and tactile states without overstimulation.",
+      "exitGate": "reduced-motion behavior and mobile frame budget remain protected"
+    },
+    {
+      "id": "phase-03-mobile-product-path",
+      "name": "Mobile Product Path",
+      "status": "planned",
+      "focus": "Promote the PWA-first surface into a durable mobile path before native expansion.",
+      "exitGate": "touch targets, installability, offline behavior, and responsive routes are verified"
+    },
+    {
+      "id": "phase-04-server-preservation",
+      "name": "Server Preservation",
+      "status": "blocked",
+      "focus": "Move package candidates to the selected server only after domain, host, path, and rollback are known.",
+      "exitGate": "server target confirmed and checksum match recorded"
+    },
+    {
+      "id": "phase-05-polyglot-services",
+      "name": "Polyglot Service Promotion",
+      "status": "active",
+      "focus": "Keep 64 language and configuration surfaces as lightweight contracts before any service promotion.",
+      "exitGate": "service contract, owner, runtime cost, and rollback path are documented"
+    },
+    {
+      "id": "phase-06-observability-governance",
+      "name": "Observability And Governance",
+      "status": "planned",
+      "focus": "Add humane telemetry, release ledgers, decision logs, and agent accountability without dashboard overload.",
+      "exitGate": "signals are useful, minimal, privacy-aware, and tied to decisions"
+    }
+  ],
+  "standingRules": [
+    "main stays protected",
+    "UIXAppTTR remains the single active development branch",
+    "sub-agents operate as workstreams inside UIXAppTTR",
+    "no heavy dependency without a documented promotion gate",
+    "server upload remains blocked until the active target is confirmed",
+    "reduced-motion and mobile performance remain mandatory"
+  ],
+  "nextLongRunMoves": [
+    "expand the visible cockpit with phase progress",
+    "turn release guardrails into server-specific handoff steps after target selection",
+    "keep the 64-surface polyglot atlas dependency-free while one language at a time earns promotion",
+    "promote the mobile path from decision matrix into installable PWA hardening",
+    "add visual QA snapshots only when a page surface materially changes"
+  ]
+}

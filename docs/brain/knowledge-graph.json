@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "graph": {
+    "nodes": [
+      {
+        "id": "v14-constitution",
+        "type": "document",
+        "title": "SEIS V14 Master Prompt",
+        "path": "SEIS_SUPREME_PROMPT.md",
+        "tags": ["constitution", "governance", "v14"]
+      },
+      {
+        "id": "apple-first",
+        "type": "principle",
+        "title": "Apple-First Strategy",
+        "description": "iOS/macOS öncelikli geliştirme, SwiftUI/UIKit zihniyeti",
+        "related": ["v14-constitution", "ios-widget"]
+      },
+      {
+        "id": "security-zero-trust",
+        "type": "policy",
+        "title": "Sıfır Güvenlik Politikası",
+        "description": "Asla sırları commit etme, Ed25519 SSH, otomatik tarama",
+        "related": ["gitleaks", "guardian-agent"]
+      },
+      {
+        "id": "design-system-premium",
+        "type": "system",
+        "title": "Premium Minimal Tasarım",
+        "description": "Apple/Vercel/Linear esintili, sinematik arayüz",
+        "path": "apps/web/src/styles/design-system.css"
+      },
+      {
+        "id": "guardian-agent",
+        "type": "agent",
+        "title": "SEIS-Guardian",
+        "description": "Otonom güvenlik ve kalite denetçisi",
+        "config": "config/agents/guardian.config.json"
+      },
+      {
+        "id": "ios-widget",
+        "type": "product",
+        "title": "SEIS iOS Widget",
+        "description": "SwiftUI Dashboard prototipi",
+        "path": "ios/SEISWidget/"
+      },
+      {
+        "id": "edge-security",
+        "type": "infrastructure",
+        "title": "Edge Security Gateway",
+        "description": "Cloudflare Workers tabanlı güvenlik katmanı",
+        "path": "edge-workers/security-gateway.js"
+      }
+    ],
+    "edges": [
+      {"source": "guardian-agent", "target": "security-zero-trust", "relation": "enforces"},
+      {"source": "guardian-agent", "target": "design-system-premium", "relation": "validates"},
+      {"source": "ios-widget", "target": "apple-first", "relation": "implements"},
+      {"source": "edge-security", "target": "security-zero-trust", "relation": "implements"},
+      {"source": "apple-first", "target": "v14-constitution", "relation": "derived_from"},
+      {"source": "design-system-premium", "target": "v14-constitution", "relation": "derived_from"}
+    ]
+  },
+  "metadata": {
+    "lastUpdated": "2024-01-01T00:00:00Z",
+    "totalNodes": 7,
+    "totalEdges": 6,
+    "coverage": "core"
+  }
+}

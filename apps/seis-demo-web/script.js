@@ -64,7 +64,7 @@ const FALLBACK_CONTRACT = {
   ]
 };
 
-let state = {
+const state = {
   contract: FALLBACK_CONTRACT,
   events: loadEvents(),
   activeRunId: null,

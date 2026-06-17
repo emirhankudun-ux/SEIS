@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "branch": "UIXAppTTR",
+  "recommendedPath": "pwa-first",
+  "reason": "The current SEIS shell already supports responsive layout, offline readiness, reduced motion, static hosting, and server handoff without adding native build complexity.",
+  "options": [
+    {
+      "id": "pwa-first",
+      "label": "PWA-first",
+      "fit": "high",
+      "cost": "low",
+      "risk": "low",
+      "strengths": [
+        "uses current static foundation",
+        "preserves low-power development",
+        "keeps release and server packaging simple"
+      ],
+      "tradeoffs": [
+        "limited native device APIs",
+        "app-store presence comes later"
+      ]
+    },
+    {
+      "id": "expo",
+      "label": "Expo / React Native",
+      "fit": "medium",
+      "cost": "medium",
+      "risk": "medium",
+      "strengths": [
+        "single JavaScript product team path",
+        "faster native prototyping than fully native"
+      ],
+      "tradeoffs": [
+        "adds dependency and build-service complexity",
+        "requires separate motion and accessibility QA"
+      ]
+    },
+    {
+      "id": "native-swift-kotlin",
+      "label": "Native Swift + Kotlin",
+      "fit": "low-now-high-later",
+      "cost": "high",
+      "risk": "high",
+      "strengths": [
+        "best long-term native performance ceiling",
+        "deepest OS-level interaction control"
+      ],
+      "tradeoffs": [
+        "highest implementation cost",
+        "duplicates UI and motion decisions across platforms"
+      ]
+    }
+  ],
+  "decisionGate": "Keep PWA-first until native-only capabilities become a product requirement."
+}

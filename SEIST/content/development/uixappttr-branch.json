@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "repositoryName": "UIXApps",
+  "branch": "UIXAppTTR",
+  "role": "single active development branch",
+  "policy": {
+    "main": "protected",
+    "featureBranches": "absorbed_as_sub_agent_workstreams",
+    "localBranchCount": "UIXAppTTR_only",
+    "releaseFlow": "package_hash_backup_handoff_before_upload",
+    "liveUpload": "blocked_until_server_target_confirmed"
+  },
+  "subAgents": [
+    {
+      "id": "interface-agent",
+      "lane": "interface-polish",
+      "mission": "Keep UI hierarchy, responsive rhythm, and accessibility calm and premium.",
+      "allowedSurfaces": ["apps/web", "packages/design-tokens", "content/site"]
+    },
+    {
+      "id": "motion-agent",
+      "lane": "motion-tuning",
+      "mission": "Tune cinematic motion without breaking reduced-motion or mobile frame budgets.",
+      "allowedSurfaces": ["apps/web/src/scripts", "apps/web/src/styles", "docs/quality"]
+    },
+    {
+      "id": "release-agent",
+      "lane": "release-safety",
+      "mission": "Preserve server packages, manifests, handoff outputs, and rollback paths.",
+      "allowedSurfaces": ["deploy", "handoff", "releases", "server", "scripts"]
+    },
+    {
+      "id": "polyglot-agent",
+      "lane": "polyglot-growth",
+      "mission": "Keep many-language contracts lightweight until a service is justified.",
+      "allowedSurfaces": ["polyglot", "docs/polyglot", "scripts/check-polyglot.mjs"]
+    },
+    {
+      "id": "governance-agent",
+      "lane": "development-governance",
+      "mission": "Maintain backlog, decisions, summaries, and branch policy.",
+      "allowedSurfaces": ["content/development", "docs/development", "scripts/check-development-state.mjs"]
+    },
+    {
+      "id": "premium-local-foundation-agent",
+      "lane": "premium-local-foundation",
+      "mission": "Absorb the former codex/premium-local-foundation branch intent as a UIXAppTTR sub-agent workstream, not as a Git branch.",
+      "allowedSurfaces": ["content/development", "docs/development", "apps/web", "polyglot", "scripts"]
+    }
+  ],
+  "nextMove": "Use sub-agent workstreams inside UIXAppTTR instead of creating new long-lived feature branches, including codex/premium-local-foundation."
+}

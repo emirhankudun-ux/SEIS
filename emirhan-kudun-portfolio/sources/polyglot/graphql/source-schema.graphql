@@ -1,0 +1,27 @@
+enum SourceStatus {
+  LIVE
+  CONTRACT
+  NEEDS_CREDENTIALS
+}
+
+type EcosystemSource {
+  id: ID!
+  label: String!
+  pluginRef: String!
+  role: String!
+}
+
+type PolyglotSourceContract {
+  id: ID!
+  language: String!
+  extension: String!
+  layer: String!
+  path: String!
+  role: String!
+  status: SourceStatus!
+}
+
+type Query {
+  ecosystemSources: [EcosystemSource!]!
+  polyglotSourceContracts: [PolyglotSourceContract!]!
+}

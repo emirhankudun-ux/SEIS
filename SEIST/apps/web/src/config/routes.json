@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "path": "/",
+      "sections": ["hero", "system", "lab", "development", "plugins", "marketplace", "pulse", "efficiency", "development-mode", "weekly-usage", "roadmap", "motion", "archive", "quality", "handoff", "deploy"],
+      "status": "static-foundation"
+    }
+  ]
+}

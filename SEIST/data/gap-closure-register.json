@@ -1,0 +1,130 @@
+{
+  "summary": {
+    "gaps": 8,
+    "ready": 8,
+    "watch": 0,
+    "blocked": 0,
+    "mode": "small-reversible-slices"
+  },
+  "gaps": [
+    {
+      "id": "workspace-git-init",
+      "label": "Workspace git foundation",
+      "status": "ready",
+      "priority": "P1",
+      "surface": "governance",
+      "impact": "Branch-aware checks are now available because the workspace is a git repository on UIXAppTTR.",
+      "nextAction": "Keep branch policy visible and preserve non-destructive publish flow.",
+      "closureMetric": "Publish readiness reports the expected UIXAppTTR branch.",
+      "qualityCommands": [
+        "npm run automation:publish-readiness"
+      ],
+      "rollback": "Keep source edits local and avoid remote operations."
+    },
+    {
+      "id": "publish-auth",
+      "label": "GitHub publication authentication",
+      "status": "ready",
+      "priority": "P0",
+      "surface": "shipment",
+      "impact": "Remote publication remains unsafe while authentication and remote mapping are unresolved.",
+      "nextAction": "Run bounded publish preflight and push only intended changes.",
+      "closureMetric": "Publish readiness reports clean branch, remote visibility, and GitHub CLI authentication without auth blockers.",
+      "qualityCommands": [
+        "npm run automation:publish-readiness"
+      ],
+      "rollback": "Keep iCloud/local copy as source of truth until auth is valid."
+    },
+    {
+      "id": "motion-evidence",
+      "label": "Visual runtime evidence",
+      "status": "ready",
+      "priority": "P2",
+      "surface": "motion",
+      "impact": "Cinematic layering exists but needs repeatable review criteria.",
+      "nextAction": "Keep motion evidence checks active before adding heavier cinematic layers.",
+      "closureMetric": "Static motion evidence verifies reduced-motion, balanced, and cinematic hooks.",
+      "qualityCommands": [
+        "npm run check:motion-evidence"
+      ],
+      "rollback": "Lock to reduced motion defaults if instability appears."
+    },
+    {
+      "id": "mobile-ergonomics",
+      "label": "Mobile ergonomics",
+      "status": "ready",
+      "priority": "P1",
+      "surface": "mobile",
+      "impact": "Touch and layout stability still need periodic checks as sections grow.",
+      "nextAction": "Keep mobile ergonomics checks active before adding denser sections.",
+      "closureMetric": "Static mobile ergonomics verifies breakpoint, wrapping, touch sizing, and overflow guards.",
+      "qualityCommands": [
+        "npm run check:mobile-ergonomics"
+      ],
+      "rollback": "Reduce section density before adding new motion."
+    },
+    {
+      "id": "accessibility-coverage",
+      "label": "Accessibility and reduced motion coverage",
+      "status": "ready",
+      "priority": "P1",
+      "surface": "accessibility",
+      "impact": "The base experience can stay premium while preserving cognitive comfort.",
+      "nextAction": "Keep reduced-motion checks active in every workspace quality pass.",
+      "closureMetric": "check-workspace validates prefers-reduced-motion support in CSS and JS.",
+      "qualityCommands": [
+        "npm run check:workspace"
+      ],
+      "rollback": "Disable nonessential transitions and parallax."
+    },
+    {
+      "id": "release-refresh",
+      "label": "Release artifact freshness",
+      "status": "ready",
+      "priority": "P1",
+      "surface": "release",
+      "impact": "A stale release package creates drift between source and shipment.",
+      "nextAction": "Refresh release folder only after source changes.",
+      "closureMetric": "release/web contains current index, style, and script files.",
+      "qualityCommands": [
+        "npm run automation:refresh-release"
+      ],
+      "rollback": "Pause release refresh when source checks are failing."
+    },
+    {
+      "id": "cloud-environment",
+      "label": "Cloud environment contract",
+      "status": "ready",
+      "priority": "P0",
+      "surface": "cloud",
+      "impact": "Server and cloud shipment can be planned without committing secrets or selecting the wrong provider.",
+      "nextAction": "Pick one provider, set deploy-time environment values, then rerun cloud and publish readiness checks.",
+      "closureMetric": "check-cloud-environment validates providers, secrets policy, polyglot runtime, and rollback guardrails.",
+      "qualityCommands": [
+        "npm run check:cloud-environment"
+      ],
+      "rollback": "Remove provider candidate or pause deployment until target ownership is confirmed."
+    },
+    {
+      "id": "connector-capability-registry",
+      "label": "Connector and MCP capability registry",
+      "status": "ready",
+      "priority": "P1",
+      "surface": "automation",
+      "impact": "Skills, plugins, MCP servers, and connectors are visible without being invoked chaotically.",
+      "nextAction": "Use only the connector that directly supports the active coding, deploy, observability, or handoff task.",
+      "closureMetric": "Connector registry lists activation policy and quality command for every candidate connector.",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run automation:code-plan"
+      ],
+      "rollback": "Disable connector usage by leaving candidate status and requiring explicit approval."
+    }
+  ],
+  "rules": [
+    "Each gap must include priority, closureMetric, and at least one quality command.",
+    "Blocked gaps must stop before remote push or deployment.",
+    "Ready gaps can be implemented in one reversible slice.",
+    "Watch gaps require periodic review and evidence logging."
+  ]
+}

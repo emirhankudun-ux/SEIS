@@ -1,0 +1,164 @@
+{
+  "date": "2026-06-05",
+  "name": "SEIS OpenAI-curated build workbench",
+  "policy": "Use openai-curated, openai-bundled, and openai-primary-runtime plugins first for core SEIS build work.",
+  "source_policy_files": [
+    "docs/platform/openai-first-plugin-policy.md",
+    "data/openai-plugin-priority-2026-06-05.json",
+    "data/installed-codex-plugins-2026-06-05.json"
+  ],
+  "active_counts": {
+    "installed_enabled_plugins": 179,
+    "not_installed_plugins": 0
+  },
+  "sprint_1": {
+    "goal": "Turn SEIS from a repository hub into a usable closed-code operating cockpit.",
+    "modules": [
+      {
+        "id": "web_cockpit",
+        "lane": "design",
+        "owner_path": "apps/web",
+        "primary_plugins": [
+          "build-web-apps@openai-curated",
+          "browser@openai-bundled",
+          "chrome@openai-bundled",
+          "figma@openai-curated",
+          "canva@openai-curated",
+          "magicpath@openai-curated"
+        ],
+        "deliverable": "Browser-first SEIS cockpit with repo, plugin, workspace, security, and build status panels.",
+        "first_actions": [
+          "Create a Vite or Next.js shell under apps/web.",
+          "Add operational navigation for Repository, Plugins, Workspace, Data, Security, and Build lanes.",
+          "Render plugin registry and policy data from data/*.json."
+        ],
+        "status": "ready_to_build"
+      },
+      {
+        "id": "backend_state",
+        "lane": "developer_tools",
+        "owner_path": "apps/fullstack",
+        "primary_plugins": [
+          "convex@openai-curated",
+          "supabase@openai-curated",
+          "neon-postgres@openai-curated",
+          "vercel@openai-curated",
+          "netlify@openai-curated",
+          "cloudflare@openai-curated",
+          "render@openai-curated",
+          "temporal@openai-curated"
+        ],
+        "deliverable": "Backend decision record and first state model for plugin registry, repo visibility, and workspace links.",
+        "first_actions": [
+          "Use Convex-first for reactive cockpit state unless SQL/reporting becomes dominant.",
+          "Keep Supabase or Neon as Postgres lane for durable analytics and reporting.",
+          "Document environment variables before deployment work."
+        ],
+        "status": "ready_to_decide"
+      },
+      {
+        "id": "mobile_shell",
+        "lane": "developer_tools",
+        "owner_path": "apps/android",
+        "primary_plugins": [
+          "expo@openai-curated",
+          "test-android-apps@openai-curated",
+          "build-ios-apps@openai-curated"
+        ],
+        "deliverable": "Expo mobile shell for SEIS status, build review, and plugin health.",
+        "first_actions": [
+          "Choose Expo template and navigation style.",
+          "Reuse cockpit data contracts from packages/core.",
+          "Add Android smoke test path before release decisions."
+        ],
+        "status": "ready_to_plan"
+      },
+      {
+        "id": "macos_inspector",
+        "lane": "developer_tools",
+        "owner_path": "apps/macos",
+        "primary_plugins": [
+          "build-macos-apps@openai-curated"
+        ],
+        "deliverable": "SwiftUI desktop inspector for local SEIS repo, plugin cache, zip audits, and branch sync.",
+        "first_actions": [
+          "Define a small SwiftUI app shell.",
+          "Expose read-only status commands first.",
+          "Keep destructive repo actions behind verification gates."
+        ],
+        "status": "ready_to_plan"
+      },
+      {
+        "id": "workspace_ops",
+        "lane": "productivity",
+        "owner_path": "integrations",
+        "primary_plugins": [
+          "google-drive@openai-curated",
+          "google-calendar@openai-curated",
+          "gmail@openai-curated",
+          "slack@openai-curated",
+          "teams@openai-curated",
+          "notion@openai-curated",
+          "documents@openai-primary-runtime",
+          "spreadsheets@openai-primary-runtime",
+          "presentations@openai-primary-runtime"
+        ],
+        "deliverable": "Workspace operating layer for docs, backlog, calendar, mail, and team updates.",
+        "first_actions": [
+          "Keep Drive and Calendar IDs mirrored in integrations/google-workspace.json.",
+          "Use the Google Sheet backlog as planning input.",
+          "Write every external workspace outcome back into SEIS docs or data."
+        ],
+        "status": "active"
+      },
+      {
+        "id": "research_memory",
+        "lane": "research",
+        "owner_path": "docs/research",
+        "primary_plugins": [
+          "hugging-face@openai-curated",
+          "zotero@openai-curated",
+          "life-science-research@openai-curated",
+          "scite@openai-curated",
+          "deepnote@openai-curated"
+        ],
+        "deliverable": "Research notebook lane for model, citation, dataset, and technical reference decisions.",
+        "first_actions": [
+          "Create source-backed decision notes before importing research into product code.",
+          "Keep citations and dataset links separate from implementation claims.",
+          "Use Deepnote or data notebooks only when executable analysis is needed."
+        ],
+        "status": "ready_to_create"
+      },
+      {
+        "id": "security_quality_gate",
+        "lane": "security",
+        "owner_path": "docs/security",
+        "primary_plugins": [
+          "codex-security@openai-curated",
+          "sentry@openai-curated",
+          "datadog@openai-curated",
+          "coderabbit@openai-curated",
+          "jam@openai-curated"
+        ],
+        "deliverable": "Security and quality gate before source repo deletion, deployment, or automation expansion.",
+        "first_actions": [
+          "Add threat model for SEIS repo consolidation and plugin routing.",
+          "Run code review/security workflows before deploy work.",
+          "Keep Sentry/Datadog setup separate until app runtime exists."
+        ],
+        "status": "ready_to_create"
+      }
+    ]
+  },
+  "next_build_order": [
+    "web_cockpit",
+    "backend_state",
+    "workspace_ops",
+    "security_quality_gate",
+    "mobile_shell",
+    "macos_inspector",
+    "research_memory"
+  ],
+  "rule": "Build from the OpenAI-curated route first, keep outputs in SEIS, and keep main mirrored with UIXAppTTR."
+}

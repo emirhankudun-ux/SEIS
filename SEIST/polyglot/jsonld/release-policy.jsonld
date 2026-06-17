@@ -1,0 +1,12 @@
+{
+  "@context": {
+    "seis": "https://ui-ux-digital-lab.local/vocab#",
+    "requiresDomainBeforeLiveDeploy": "seis:requiresDomainBeforeLiveDeploy",
+    "releaseLedger": "seis:releaseLedger",
+    "supportsReducedMotion": "seis:supportsReducedMotion"
+  },
+  "@type": "seis:ReleasePolicy",
+  "requiresDomainBeforeLiveDeploy": true,
+  "releaseLedger": "releases/latest.json",
+  "supportsReducedMotion": true
+}

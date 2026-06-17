@@ -1,0 +1,23 @@
+# Motion Agent
+
+## Mission
+
+Tune cinematic motion without breaking reduced-motion or mobile frame budgets.
+
+## Current Focus
+
+Keep cinematic movement calm and mobile-safe.
+
+## Next Action
+
+Review section reveal timing and low-motion behavior before increasing depth effects.
+
+## Allowed Surfaces
+
+- `apps/web/src/scripts`
+- `apps/web/src/styles`
+- `docs/quality`
+
+## Guardrail
+
+Work inside `UIXAppTTR`; do not create a long-lived branch for this lane.

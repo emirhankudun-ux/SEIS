@@ -1,66 +1,125 @@
-# Node.js / npm
+```
+# Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.npm
-.eslintcache
+
+# Build artifacts
 dist/
 build/
-.build/
-packages/*/.build/
+target/
 
-# Environment variables
+# Environment files
 .env
 .env.local
-.env.*.local
+*.env.*
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+coverage/
+.nyc_output/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-.DS_Store
 
-# Testing
-coverage/
-*.lcov
-.nyc_output/
+# Temporary files
+*.tmp
+*.temp
 
-# Generated local cloud/static check scratch
-.dist.seis-cloud-check.*/
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 
-# OS
-Thumbs.db
+# MyPy
+.mypy_cache/
 
-# Local sync safety
-.sync-backups/
-.serena/
-logs/
-UIX-Apps-codex-delivery/
-reports/automation-refresh-seis-surface-summary.json
-reports/icloud-personal-inventory.json
-reports/icloud-personal-inventory.md
+# PyTest
+.pytest_cache/
 
-# Local imported/snapshot copies. Keep them inspectable locally, but do not stage them by accident.
-/SEIS/
-/SE*/
-!/server/
-!/server/cloud/
-!/server/cloud/gcp/
-!/server/cloud/gcp/startup-seis-cloud.sh
+# ESLint
+.eslintcache
 
+# Prettier
+.prettierignore
 
-#Ignore vscode AI rules
-.github/instructions/codacy.instructions.md
+# GitHub
+.github/
 
-# SEIS agent session state
-.seis/
+# Scripts
+scripts/hooks/
+scripts/security/
 
-# Polyglot build artifacts
-polyglot/rust/*/target/
-polyglot/**/*.class
-polyglot/c/seis_utf8_check
-polyglot/cpp/seis_translations_lint
-__pycache__/
+# Edge workers
+edge-workers/
+
+# iOS
+ios/
+
+# Configuration and data files (non-source)
+*.json
+*.config.json
+
+# Package lock files
+package-lock.json
+
+# Test files
+apps/web/test/
+
+# Content files
+apps/web/content/
+
+# Documentation
+docs/
+
+# Local accidental artifacts from monorepo preparation
+SEİS/
+SEİS/
+packages/seis_platform_swift/.build/
+scripts/super-ssh-manager.py
+```

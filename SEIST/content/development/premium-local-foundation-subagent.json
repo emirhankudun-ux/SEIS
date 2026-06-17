@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "repositoryName": "UIXApps",
+  "activeBranch": "UIXAppTTR",
+  "formerBranchName": "codex/premium-local-foundation",
+  "subAgentId": "premium-local-foundation-agent",
+  "lane": "premium-local-foundation",
+  "status": "absorbed_as_sub_agent",
+  "sourceAvailability": "not_present_as_local_branch_or_remote_in_current_workspace",
+  "memoryCommitReference": "2540a1b",
+  "rule": "codex/premium-local-foundation must not exist as an independent long-lived branch; any recovered code is ported through UIXAppTTR.",
+  "allowedActions": [
+    "document former branch intent",
+    "port recovered code into UIXAppTTR surfaces",
+    "record migration notes in branch consolidation",
+    "run lightweight checks before commit"
+  ],
+  "blockedActions": [
+    "create codex/premium-local-foundation as a local branch",
+    "push codex/premium-local-foundation as a separate branch",
+    "bypass UIXAppTTR branch guard"
+  ]
+}

@@ -1,0 +1,167 @@
+{
+  "id": "seis-development-process",
+  "name": "SEIS Development Process",
+  "mode": "high-efficiency-low-power",
+  "activeBranchPolicy": {
+    "githubBranch": "UIXAppTTR",
+    "singleRemoteBranchRequired": true,
+    "mainBranchSacred": true
+  },
+  "workspaceRouting": {
+    "localStagingFolder": "Github/New project",
+    "gitCheckoutBranch": "UIXAppTTR",
+    "rule": "If the current folder is not a Git checkout, treat it as local staging and do not claim remote shipment.",
+    "qualitySignal": "npm run check:workspace",
+    "publishReadinessSignal": "npm run automation:publish-readiness",
+    "remoteShipmentClaimPolicy": {
+      "stagingMode": "local-only",
+      "disallowClaimWhenLocalStaging": true,
+      "claimRequires": [
+        "git checkout detected",
+        "UIXAppTTR active branch",
+        "UIX-Apps remote configured",
+        "clean worktree",
+        "branch upstream configured",
+        "github authentication ready"
+      ]
+    }
+  },
+  "cadence": [
+    {
+      "phase": "orient",
+      "intent": "Read the narrow surface before making changes.",
+      "checks": ["git-state", "nearest-docs", "target-files"]
+    },
+    {
+      "phase": "compose",
+      "intent": "Make one reversible modular improvement.",
+      "checks": ["no-heavy-dependencies", "accessibility-first", "rollback-path"]
+    },
+    {
+      "phase": "verify",
+      "intent": "Run the smallest checks that prove the change.",
+      "checks": ["syntax", "foundation", "development-process", "deploy-readiness"]
+    },
+    {
+      "phase": "publish",
+      "intent": "Ship only after auth, branch, and remote state are explicit.",
+      "checks": ["github-auth", "single-branch-remote", "clean-handoff"]
+    }
+  ],
+  "validationProfiles": {
+    "lowPowerDefault": {
+      "intent": "Use narrow checks for small reversible changes and local staging progress.",
+      "commands": [
+        "npm run check:workspace",
+        "node scripts/check-development-process.mjs",
+        "node --check scripts/check-development-process.mjs",
+        "node --check scripts/check-workspace-routing.mjs"
+      ],
+      "disallow": [
+        "npm install",
+        "npm run build",
+        "playwright"
+      ]
+    },
+    "expandedFoundation": {
+      "intent": "Use the broader contract suite when a change touches multiple governance or runtime surfaces.",
+      "commands": [
+        "npm run check:foundation"
+      ]
+    }
+  },
+  "guardrails": [
+    "avoid dependency bloat",
+    "avoid orchestration saturation",
+    "preserve reduced-motion support",
+    "keep documentation close to runtime behavior",
+    "prefer small reversible updates",
+    "prefer Lovable over Wix for AI-native builder and prototype work unless Wix is explicitly required"
+  ],
+  "builderPlatformPreference": {
+    "primary": "Lovable",
+    "secondary": "Wix",
+    "intent": "Route AI-native app builder, interface draft, and rapid product iteration work through Lovable first while keeping outputs portable back into the SEIS codebase.",
+    "useWixOnlyWhen": [
+      "the task explicitly requires Wix hosting or Wix CMS",
+      "an existing Wix project surface must be maintained",
+      "the user asks for Wix-specific implementation"
+    ],
+    "guardrails": [
+      "builder output must remain modular and reviewable",
+      "accessibility and reduced-motion expectations stay active",
+      "repository governance and rollback safety override builder convenience",
+      "no dependency or platform lock-in without a written decision record"
+    ]
+  },
+  "firstDevelopmentSlice": {
+    "name": "calm foundation hardening",
+    "scope": [
+      "development process registry",
+      "lightweight governance document",
+      "static validation script"
+    ],
+    "excluded": [
+      "new runtime dependencies",
+      "heavy builds",
+      "remote branch deletion without auth"
+    ]
+  },
+  "activeSprint": {
+    "name": "development cockpit and missing-surface closure",
+    "status": "in_progress",
+    "intent": "Make development visible in the public shell while keeping server preservation, polyglot branch growth, and quality gates aligned.",
+    "workstreams": [
+      {
+        "id": "experience",
+        "label": "Experience cockpit",
+        "status": "in_progress",
+        "proof": "public shell exposes the active development cadence"
+      },
+      {
+        "id": "server",
+        "label": "Server handoff",
+        "status": "ready_for_confirmed_target",
+        "proof": "dist package, manifest, confirmation flow, and deploy-readiness check stay aligned"
+      },
+      {
+        "id": "polyglot",
+        "label": "Polyglot branch",
+        "status": "expanded",
+        "proof": "language surfaces remain small contracts without dependency bloat"
+      },
+      {
+        "id": "quality",
+        "label": "Quality gates",
+        "status": "active",
+        "proof": "syntax, foundation, release, history, and server-drop checks stay green"
+      }
+    ]
+  },
+  "openBacklog": [
+    {
+      "id": "dev-002",
+      "title": "Server target confirmation flow",
+      "priority": "high",
+      "reason": "Live upload requires a confirmed domain, host, and path."
+    },
+    {
+      "id": "dev-003",
+      "title": "Case study detail model",
+      "priority": "medium",
+      "reason": "The archive needs deeper editorial storytelling beyond gallery cards."
+    },
+    {
+      "id": "dev-004",
+      "title": "Accessibility review checklist",
+      "priority": "medium",
+      "reason": "Manual accessibility expectations should sit beside automated checks."
+    },
+    {
+      "id": "dev-005",
+      "title": "Framework migration decision record",
+      "priority": "low",
+      "reason": "Next.js, Astro, or another stack should be chosen only when it improves maintainability."
+    }
+  ]
+}

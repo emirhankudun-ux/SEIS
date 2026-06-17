@@ -1,4 +1,33 @@
 const { spawnSync } = require("node:child_process");
+const { readFileSync, existsSync } = require("node:fs");
+
+function readJson(path) {
+  if (!existsSync(path)) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(readFileSync(path, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
+function normalizeWhitespace(value) {
+  return String(value || "").trim();
+}
+
+function inferExpectedBranch(root = process.cwd()) {
+  const remoteConfig = readJson(`${root}/content/development/github-remote-configuration.json`);
+  const gateConfig = readJson(`${root}/content/development/publish-gate-contract.json`);
+
+  return normalizeWhitespace(gateConfig?.remote?.targetBranch || remoteConfig?.repository?.targetBranch || "main");
+}
+
+function inferRemoteName(root = process.cwd()) {
+  const remoteConfig = readJson(`${root}/content/development/github-remote-configuration.json`);
+  return normalizeWhitespace(remoteConfig?.repository?.remoteName || "origin");
+}
 
 function run(root, command, args) {
   return spawnSync(command, args, {
@@ -21,6 +50,8 @@ function parseDirtyFiles(stdout) {
 
 function getPublishReadinessState(root = process.cwd()) {
   const git = (args) => run(root, "git", args);
+  const targetBranch = inferExpectedBranch(root);
+  const remoteName = inferRemoteName(root);
   const inside = git(["rev-parse", "--is-inside-work-tree"]);
   const gitInside = inside.status === 0;
 
@@ -60,8 +91,9 @@ function getPublishReadinessState(root = process.cwd()) {
   const upstreamName = upstream.status === 0 ? trim(upstream.stdout) : "";
   const hasRemote = trim(remote.stdout).length > 0;
   const hasUpstream = upstream.status === 0 && upstreamName.length > 0;
-  const isExpectedBranch = branchName === "UIXAppTTR";
-  const isExpectedUpstream = upstreamName === "origin/UIXAppTTR";
+  const isExpectedBranch = branchName === targetBranch;
+  const expectedUpstream = `${remoteName}/${targetBranch}`;
+  const isExpectedUpstream = upstreamName === expectedUpstream;
   const worktreeClean = dirtyFiles.length === 0;
   const ghAvailable = !ghAuth.error;
   const authReady = hasRemote && ghAvailable && ghAuth.status === 0;
@@ -85,17 +117,17 @@ function getPublishReadinessState(root = process.cwd()) {
     blocker = "git remote is not configured";
     action = "configure the intended origin remote before publish preflight";
   } else if (!isExpectedBranch) {
-    blocker = "active branch is not UIXAppTTR";
-    action = "switch to UIXAppTTR before publish preflight";
+    blocker = `active branch is not ${targetBranch}`;
+    action = `switch to ${targetBranch} before publish preflight`;
   } else if (!worktreeClean) {
     blocker = "working tree must be clean before publish";
     action = "commit intended changes before push and keep unrelated edits out of the publish path";
   } else if (!hasUpstream) {
     blocker = "branch is not tracking a remote upstream";
-    action = "run git branch --set-upstream-to origin/UIXAppTTR UIXAppTTR";
+    action = `run git branch --set-upstream-to ${remoteName}/${targetBranch} ${targetBranch}`;
   } else if (!isExpectedUpstream) {
-    blocker = "branch upstream is not origin/UIXAppTTR";
-    action = "point UIXAppTTR to origin/UIXAppTTR before publish preflight";
+    blocker = `branch upstream is not ${remoteName}/${targetBranch}`;
+    action = `point ${targetBranch} to ${remoteName}/${targetBranch} before publish preflight`;
   } else if (!ghAvailable) {
     blocker = "GitHub CLI is not available in this environment";
     action = "install GitHub CLI before publish preflight";
@@ -103,8 +135,8 @@ function getPublishReadinessState(root = process.cwd()) {
     blocker = "GitHub CLI auth is missing";
     action = "run gh auth login -h github.com";
   } else if (Number.isInteger(behindCount) && behindCount > 0) {
-    blocker = "local branch is behind origin/UIXAppTTR";
-    action = "integrate origin/UIXAppTTR into UIXAppTTR before pushing";
+    blocker = `local branch is behind ${remoteName}/${targetBranch}`;
+    action = `integrate ${remoteName}/${targetBranch} into ${targetBranch} before pushing`;
   }
 
   return {
@@ -123,6 +155,8 @@ function getPublishReadinessState(root = process.cwd()) {
     aheadCount,
     behindCount,
     syncLabel,
+    targetBranch,
+    expectedUpstream,
     blocker,
     action,
     ready: blocker.length === 0

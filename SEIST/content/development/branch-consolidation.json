@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "repositoryName": "UIXApps",
+  "activeBranch": "UIXAppTTR",
+  "branchPolicy": "single-branch-local-development",
+  "consolidationStatus": "completed",
+  "completedAt": "2026-05-25",
+  "localBranchesAfterConsolidation": ["UIXAppTTR"],
+  "absorbedBranches": [
+    {
+      "name": "feature/multilingual-cinematic-foundation",
+      "commit": "17dc917007adc7b4c2689c51977a5f0e47248181",
+      "status": "already_ancestor_of_UIXAppTTR",
+      "action": "deleted_after_verification",
+      "contentState": "included_in_UIXAppTTR_history"
+    },
+    {
+      "name": "codex/premium-local-foundation",
+      "commit": "2540a1b",
+      "status": "not_present_as_local_branch_or_remote_in_current_workspace",
+      "action": "absorbed_as_premium-local-foundation-agent",
+      "contentState": "future_recovered_code_must_land_inside_UIXAppTTR",
+      "source": "memory_reference"
+    }
+  ],
+  "rules": [
+    "UIXAppTTR is the only active local development branch",
+    "new feature lanes become sub-agent workstreams inside UIXAppTTR",
+    "codex/premium-local-foundation is represented only by premium-local-foundation-agent",
+    "no long-lived feature branch is created unless explicitly approved",
+    "all code surfaces are completed through UIXAppTTR",
+    "server upload remains blocked until target confirmation"
+  ],
+  "verification": {
+    "mergeBase": "17dc917007adc7b4c2689c51977a5f0e47248181",
+    "branchListCommand": "git branch --all --verbose --no-abbrev",
+    "expectedLocalBranches": ["UIXAppTTR"]
+  }
+}

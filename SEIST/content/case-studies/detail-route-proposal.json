@@ -1,0 +1,44 @@
+{
+  "id": "seis-case-study-detail-route-proposal",
+  "name": "SEIS Case Study Detail Route Proposal",
+  "mode": "framework-neutral-route-planning",
+  "dependsOn": [
+    "content/case-studies/detail-model.json",
+    "content/case-studies/content-quality-review.json"
+  ],
+  "routeShape": {
+    "staticPathPattern": "case-studies/{id}.html",
+    "futureFrameworkPattern": "/case-studies/[id]",
+    "initialCaseStudyId": "seis-foundation"
+  },
+  "layoutContract": [
+    {
+      "region": "hero",
+      "purpose": "Title, summary, experience mode, and canonical theme."
+    },
+    {
+      "region": "narrative",
+      "purpose": "Context, challenge, response, and next step as readable editorial sections."
+    },
+    {
+      "region": "proof",
+      "purpose": "Quality proof commands, accessibility notes, and rollback constraints."
+    },
+    {
+      "region": "related",
+      "purpose": "Future links to artwork narratives or additional case studies."
+    }
+  ],
+  "accessibilityContract": [
+    "detail pages keep skip links and semantic landmarks",
+    "motion is decorative and removable",
+    "primary narrative remains real text",
+    "future related cards are keyboard reachable"
+  ],
+  "blockedUntil": [
+    "case study content quality review passes",
+    "static route acceptance criteria are documented",
+    "framework decision remains deferred or explicitly approved"
+  ],
+  "rollbackPath": "Keep detail content in portable JSON and remove generated route files without changing the model."
+}

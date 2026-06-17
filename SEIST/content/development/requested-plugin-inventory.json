@@ -1,0 +1,2713 @@
+{
+  "version": 1,
+  "id": "seis-submitted-plugin-inventory",
+  "updatedAt": "2026-06-03",
+  "mode": "source-visible-submitted-plugin-inventory",
+  "extractedFrom": "pasted-text attachment supplied in Codex chat",
+  "summary": {
+    "totalLinks": 301,
+    "uniquePlugins": 300
+  },
+  "plugins": [
+    {
+      "order": 1,
+      "label": "base44",
+      "id": "base44",
+      "source": "openai-curated",
+      "uri": "plugin://base44@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 2,
+      "label": "wix",
+      "id": "wix",
+      "source": "openai-curated",
+      "uri": "plugin://wix@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 3,
+      "label": "fal",
+      "id": "fal",
+      "source": "openai-curated",
+      "uri": "plugin://fal@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 4,
+      "label": "picsart",
+      "id": "picsart",
+      "source": "openai-curated",
+      "uri": "plugin://picsart@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 5,
+      "label": "posthog",
+      "id": "posthog",
+      "source": "openai-curated",
+      "uri": "plugin://posthog@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 6,
+      "label": "nvidia",
+      "id": "nvidia",
+      "source": "openai-curated",
+      "uri": "plugin://nvidia@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 7,
+      "label": "lovable",
+      "id": "lovable",
+      "source": "openai-curated",
+      "uri": "plugin://lovable@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 8,
+      "label": "replit",
+      "id": "replit",
+      "source": "openai-curated",
+      "uri": "plugin://replit@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 9,
+      "label": "shutterstock",
+      "id": "shutterstock",
+      "source": "openai-curated",
+      "uri": "plugin://shutterstock@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 10,
+      "label": "convex",
+      "id": "convex",
+      "source": "openai-curated",
+      "uri": "plugin://convex@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 11,
+      "label": "hg-insights",
+      "id": "hg-insights",
+      "source": "openai-curated",
+      "uri": "plugin://hg-insights@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 12,
+      "label": "rox",
+      "id": "rox",
+      "source": "openai-curated",
+      "uri": "plugin://rox@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 13,
+      "label": "calendly",
+      "id": "calendly",
+      "source": "openai-curated",
+      "uri": "plugin://calendly@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 14,
+      "label": "clay",
+      "id": "clay",
+      "source": "openai-curated",
+      "uri": "plugin://clay@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 15,
+      "label": "thoughtspot",
+      "id": "thoughtspot",
+      "source": "openai-curated",
+      "uri": "plugin://thoughtspot@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 16,
+      "label": "meticulate",
+      "id": "meticulate",
+      "source": "openai-curated",
+      "uri": "plugin://meticulate@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 17,
+      "label": "apollo",
+      "id": "apollo",
+      "source": "openai-curated",
+      "uri": "plugin://apollo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 18,
+      "label": "mixpanel-headless",
+      "id": "mixpanel-headless",
+      "source": "openai-curated",
+      "uri": "plugin://mixpanel-headless@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 19,
+      "label": "close",
+      "id": "close",
+      "source": "openai-curated",
+      "uri": "plugin://close@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 20,
+      "label": "mixpanel",
+      "id": "mixpanel",
+      "source": "openai-curated",
+      "uri": "plugin://mixpanel@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 21,
+      "label": "docusign",
+      "id": "docusign",
+      "source": "openai-curated",
+      "uri": "plugin://docusign@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 22,
+      "label": "zoominfo",
+      "id": "zoominfo",
+      "source": "openai-curated",
+      "uri": "plugin://zoominfo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 23,
+      "label": "datasite",
+      "id": "datasite",
+      "source": "openai-curated",
+      "uri": "plugin://datasite@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 24,
+      "label": "similarweb",
+      "id": "similarweb",
+      "source": "openai-curated",
+      "uri": "plugin://similarweb@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 25,
+      "label": "zoom",
+      "id": "zoom",
+      "source": "openai-curated",
+      "uri": "plugin://zoom@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 26,
+      "label": "datadog",
+      "id": "datadog",
+      "source": "openai-curated",
+      "uri": "plugin://datadog@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 27,
+      "label": "asana",
+      "id": "asana",
+      "source": "openai-curated",
+      "uri": "plugin://asana@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 28,
+      "label": "openai-developers",
+      "id": "openai-developers",
+      "source": "openai-curated",
+      "uri": "plugin://openai-developers@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 29,
+      "label": "twilio-developer-kit",
+      "id": "twilio-developer-kit",
+      "source": "openai-curated",
+      "uri": "plugin://twilio-developer-kit@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 30,
+      "label": "codex-security",
+      "id": "codex-security",
+      "source": "openai-curated",
+      "uri": "plugin://codex-security@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 31,
+      "label": "supabase",
+      "id": "supabase",
+      "source": "openai-curated",
+      "uri": "plugin://supabase@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 32,
+      "label": "heygen",
+      "id": "heygen",
+      "source": "openai-curated",
+      "uri": "plugin://heygen@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 33,
+      "label": "hyperframes",
+      "id": "hyperframes",
+      "source": "openai-curated",
+      "uri": "plugin://hyperframes@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 34,
+      "label": "temporal",
+      "id": "temporal",
+      "source": "openai-curated",
+      "uri": "plugin://temporal@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 35,
+      "label": "render",
+      "id": "render",
+      "source": "openai-curated",
+      "uri": "plugin://render@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 36,
+      "label": "yepcode",
+      "id": "yepcode",
+      "source": "openai-curated",
+      "uri": "plugin://yepcode@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 37,
+      "label": "windsor-ai",
+      "id": "windsor-ai",
+      "source": "openai-curated",
+      "uri": "plugin://windsor-ai@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 38,
+      "label": "waldo",
+      "id": "waldo",
+      "source": "openai-curated",
+      "uri": "plugin://waldo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 39,
+      "label": "vantage",
+      "id": "vantage",
+      "source": "openai-curated",
+      "uri": "plugin://vantage@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 40,
+      "label": "streak",
+      "id": "streak",
+      "source": "openai-curated",
+      "uri": "plugin://streak@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 41,
+      "label": "statsig",
+      "id": "statsig",
+      "source": "openai-curated",
+      "uri": "plugin://statsig@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 42,
+      "label": "skywatch",
+      "id": "skywatch",
+      "source": "openai-curated",
+      "uri": "plugin://skywatch@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 43,
+      "label": "signnow",
+      "id": "signnow",
+      "source": "openai-curated",
+      "uri": "plugin://signnow@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 44,
+      "label": "semrush",
+      "id": "semrush",
+      "source": "openai-curated",
+      "uri": "plugin://semrush@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 45,
+      "label": "responsive",
+      "id": "responsive",
+      "source": "openai-curated",
+      "uri": "plugin://responsive@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 46,
+      "label": "readwise",
+      "id": "readwise",
+      "source": "openai-curated",
+      "uri": "plugin://readwise@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 47,
+      "label": "read-ai",
+      "id": "read-ai",
+      "source": "openai-curated",
+      "uri": "plugin://read-ai@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 48,
+      "label": "razorpay",
+      "id": "razorpay",
+      "source": "openai-curated",
+      "uri": "plugin://razorpay@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 49,
+      "label": "ranked-ai",
+      "id": "ranked-ai",
+      "source": "openai-curated",
+      "uri": "plugin://ranked-ai@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 50,
+      "label": "quicknode",
+      "id": "quicknode",
+      "source": "openai-curated",
+      "uri": "plugin://quicknode@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 51,
+      "label": "quartr",
+      "id": "quartr",
+      "source": "openai-curated",
+      "uri": "plugin://quartr@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 52,
+      "label": "pylon",
+      "id": "pylon",
+      "source": "openai-curated",
+      "uri": "plugin://pylon@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 53,
+      "label": "policynote",
+      "id": "policynote",
+      "source": "openai-curated",
+      "uri": "plugin://policynote@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 54,
+      "label": "pitchbook",
+      "id": "pitchbook",
+      "source": "openai-curated",
+      "uri": "plugin://pitchbook@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 55,
+      "label": "particl-market-research",
+      "id": "particl-market-research",
+      "source": "openai-curated",
+      "uri": "plugin://particl-market-research@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 56,
+      "label": "otter-ai",
+      "id": "otter-ai",
+      "source": "openai-curated",
+      "uri": "plugin://otter-ai@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 57,
+      "label": "omni-analytics",
+      "id": "omni-analytics",
+      "source": "openai-curated",
+      "uri": "plugin://omni-analytics@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 58,
+      "label": "network-solutions",
+      "id": "network-solutions",
+      "source": "openai-curated",
+      "uri": "plugin://network-solutions@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 59,
+      "label": "mt-newswires",
+      "id": "mt-newswires",
+      "source": "openai-curated",
+      "uri": "plugin://mt-newswires@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 60,
+      "label": "motherduck",
+      "id": "motherduck",
+      "source": "openai-curated",
+      "uri": "plugin://motherduck@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 61,
+      "label": "moody-s",
+      "id": "moody-s",
+      "source": "openai-curated",
+      "uri": "plugin://moody-s@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 62,
+      "label": "monday-com",
+      "id": "monday-com",
+      "source": "openai-curated",
+      "uri": "plugin://monday-com@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 63,
+      "label": "mem",
+      "id": "mem",
+      "source": "openai-curated",
+      "uri": "plugin://mem@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 64,
+      "label": "marcopolo",
+      "id": "marcopolo",
+      "source": "openai-curated",
+      "uri": "plugin://marcopolo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 65,
+      "label": "keybid-puls",
+      "id": "keybid-puls",
+      "source": "openai-curated",
+      "uri": "plugin://keybid-puls@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 66,
+      "label": "hubspot",
+      "id": "hubspot",
+      "source": "openai-curated",
+      "uri": "plugin://hubspot@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 67,
+      "label": "hostinger",
+      "id": "hostinger",
+      "source": "openai-curated",
+      "uri": "plugin://hostinger@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 68,
+      "label": "highlevel",
+      "id": "highlevel",
+      "source": "openai-curated",
+      "uri": "plugin://highlevel@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 69,
+      "label": "help-scout",
+      "id": "help-scout",
+      "source": "openai-curated",
+      "uri": "plugin://help-scout@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 70,
+      "label": "happenstance",
+      "id": "happenstance",
+      "source": "openai-curated",
+      "uri": "plugin://happenstance@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 71,
+      "label": "granola",
+      "id": "granola",
+      "source": "openai-curated",
+      "uri": "plugin://granola@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 72,
+      "label": "fyxer",
+      "id": "fyxer",
+      "source": "openai-curated",
+      "uri": "plugin://fyxer@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 73,
+      "label": "govtribe",
+      "id": "govtribe",
+      "source": "openai-curated",
+      "uri": "plugin://govtribe@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 74,
+      "label": "fireflies",
+      "id": "fireflies",
+      "source": "openai-curated",
+      "uri": "plugin://fireflies@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 75,
+      "label": "egnyte",
+      "id": "egnyte",
+      "source": "openai-curated",
+      "uri": "plugin://egnyte@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 76,
+      "label": "circleback",
+      "id": "circleback",
+      "source": "openai-curated",
+      "uri": "plugin://circleback@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 77,
+      "label": "channel99",
+      "id": "channel99",
+      "source": "openai-curated",
+      "uri": "plugin://channel99@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 78,
+      "label": "cb-insights",
+      "id": "cb-insights",
+      "source": "openai-curated",
+      "uri": "plugin://cb-insights@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 79,
+      "label": "carta-crm",
+      "id": "carta-crm",
+      "source": "openai-curated",
+      "uri": "plugin://carta-crm@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 80,
+      "label": "brex",
+      "id": "brex",
+      "source": "openai-curated",
+      "uri": "plugin://brex@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 81,
+      "label": "brand24",
+      "id": "brand24",
+      "source": "openai-curated",
+      "uri": "plugin://brand24@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 82,
+      "label": "biorender",
+      "id": "biorender",
+      "source": "openai-curated",
+      "uri": "plugin://biorender@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 83,
+      "label": "binance",
+      "id": "binance",
+      "source": "openai-curated",
+      "uri": "plugin://binance@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 84,
+      "label": "attio",
+      "id": "attio",
+      "source": "openai-curated",
+      "uri": "plugin://attio@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 85,
+      "label": "alpaca",
+      "id": "alpaca",
+      "source": "openai-curated",
+      "uri": "plugin://alpaca@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 86,
+      "label": "plugin-eval",
+      "id": "plugin-eval",
+      "source": "openai-curated",
+      "uri": "plugin://plugin-eval@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 87,
+      "label": "remotion",
+      "id": "remotion",
+      "source": "openai-curated",
+      "uri": "plugin://remotion@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 88,
+      "label": "neon-postgres",
+      "id": "neon-postgres",
+      "source": "openai-curated",
+      "uri": "plugin://neon-postgres@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 89,
+      "label": "coderabbit",
+      "id": "coderabbit",
+      "source": "openai-curated",
+      "uri": "plugin://coderabbit@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 90,
+      "label": "expo",
+      "id": "expo",
+      "source": "openai-curated",
+      "uri": "plugin://expo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 91,
+      "label": "zotero",
+      "id": "zotero",
+      "source": "openai-curated",
+      "uri": "plugin://zotero@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 92,
+      "label": "life-science-research",
+      "id": "life-science-research",
+      "source": "openai-curated",
+      "uri": "plugin://life-science-research@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 93,
+      "label": "test-android-apps",
+      "id": "test-android-apps",
+      "source": "openai-curated",
+      "uri": "plugin://test-android-apps@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 94,
+      "label": "build-web-data-visualization",
+      "id": "build-web-data-visualization",
+      "source": "openai-curated",
+      "uri": "plugin://build-web-data-visualization@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 95,
+      "label": "build-web-apps",
+      "id": "build-web-apps",
+      "source": "openai-curated",
+      "uri": "plugin://build-web-apps@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 96,
+      "label": "build-macos-apps",
+      "id": "build-macos-apps",
+      "source": "openai-curated",
+      "uri": "plugin://build-macos-apps@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 97,
+      "label": "build-ios-apps",
+      "id": "build-ios-apps",
+      "source": "openai-curated",
+      "uri": "plugin://build-ios-apps@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 98,
+      "label": "sentry",
+      "id": "sentry",
+      "source": "openai-curated",
+      "uri": "plugin://sentry@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 99,
+      "label": "cloudflare",
+      "id": "cloudflare",
+      "source": "openai-curated",
+      "uri": "plugin://cloudflare@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 100,
+      "label": "notion",
+      "id": "notion",
+      "source": "openai-curated",
+      "uri": "plugin://notion@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 101,
+      "label": "deepnote",
+      "id": "deepnote",
+      "source": "openai-curated",
+      "uri": "plugin://deepnote@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 102,
+      "label": "google-drive",
+      "id": "google-drive",
+      "source": "openai-curated",
+      "uri": "plugin://google-drive@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 103,
+      "label": "circleci",
+      "id": "circleci",
+      "source": "openai-curated",
+      "uri": "plugin://circleci@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 104,
+      "label": "github",
+      "id": "github",
+      "source": "openai-curated",
+      "uri": "plugin://github@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 105,
+      "label": "box",
+      "id": "box",
+      "source": "openai-curated",
+      "uri": "plugin://box@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 106,
+      "label": "superpowers",
+      "id": "superpowers",
+      "source": "openai-curated",
+      "uri": "plugin://superpowers@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 107,
+      "label": "game-studio",
+      "id": "game-studio",
+      "source": "openai-curated",
+      "uri": "plugin://game-studio@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 108,
+      "label": "vercel",
+      "id": "vercel",
+      "source": "openai-curated",
+      "uri": "plugin://vercel@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 109,
+      "label": "netlify",
+      "id": "netlify",
+      "source": "openai-curated",
+      "uri": "plugin://netlify@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 110,
+      "label": "jam",
+      "id": "jam",
+      "source": "openai-curated",
+      "uri": "plugin://jam@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 111,
+      "label": "hugging-face",
+      "id": "hugging-face",
+      "source": "openai-curated",
+      "uri": "plugin://hugging-face@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 112,
+      "label": "figma",
+      "id": "figma",
+      "source": "openai-curated",
+      "uri": "plugin://figma@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 113,
+      "label": "canva",
+      "id": "canva",
+      "source": "openai-curated",
+      "uri": "plugin://canva@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 114,
+      "label": "outlook-email",
+      "id": "outlook-email",
+      "source": "openai-curated",
+      "uri": "plugin://outlook-email@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 115,
+      "label": "gmail",
+      "id": "gmail",
+      "source": "openai-curated",
+      "uri": "plugin://gmail@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 116,
+      "label": "slack",
+      "id": "slack",
+      "source": "openai-curated",
+      "uri": "plugin://slack@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 117,
+      "label": "google-calendar",
+      "id": "google-calendar",
+      "source": "openai-curated",
+      "uri": "plugin://google-calendar@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 118,
+      "label": "linear",
+      "id": "linear",
+      "source": "openai-curated",
+      "uri": "plugin://linear@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 119,
+      "label": "atlassian-rovo",
+      "id": "atlassian-rovo",
+      "source": "openai-curated",
+      "uri": "plugin://atlassian-rovo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 120,
+      "label": "azure-sdk-rust",
+      "id": "azure-sdk-rust",
+      "source": "skills",
+      "uri": "plugin://azure-sdk-rust@skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 121,
+      "label": "azure-sdk-java",
+      "id": "azure-sdk-java",
+      "source": "skills",
+      "uri": "plugin://azure-sdk-java@skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 122,
+      "label": "azure-sdk-dotnet",
+      "id": "azure-sdk-dotnet",
+      "source": "skills",
+      "uri": "plugin://azure-sdk-dotnet@skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 123,
+      "label": "azure-sdk-python",
+      "id": "azure-sdk-python",
+      "source": "skills",
+      "uri": "plugin://azure-sdk-python@skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 124,
+      "label": "deep-wiki",
+      "id": "deep-wiki",
+      "source": "skills",
+      "uri": "plugin://deep-wiki@skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 125,
+      "label": "codex",
+      "id": "codex",
+      "source": "openai-codex",
+      "uri": "plugin://codex@openai-codex",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 126,
+      "label": "zscaler",
+      "id": "zscaler",
+      "source": "claude-plugins-official",
+      "uri": "plugin://zscaler@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 127,
+      "label": "zoominfo",
+      "id": "zoominfo",
+      "source": "claude-plugins-official",
+      "uri": "plugin://zoominfo@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 128,
+      "label": "zoom-plugin",
+      "id": "zoom-plugin",
+      "source": "claude-plugins-official",
+      "uri": "plugin://zoom-plugin@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 129,
+      "label": "zilliz",
+      "id": "zilliz",
+      "source": "claude-plugins-official",
+      "uri": "plugin://zilliz@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 130,
+      "label": "zapier",
+      "id": "zapier",
+      "source": "claude-plugins-official",
+      "uri": "plugin://zapier@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 131,
+      "label": "workos",
+      "id": "workos",
+      "source": "claude-plugins-official",
+      "uri": "plugin://workos@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 132,
+      "label": "windsor-ai",
+      "id": "windsor-ai",
+      "source": "claude-plugins-official",
+      "uri": "plugin://windsor-ai@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 133,
+      "label": "vercel",
+      "id": "vercel",
+      "source": "claude-plugins-official",
+      "uri": "plugin://vercel@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 134,
+      "label": "ui5-typescript-conversion",
+      "id": "ui5-typescript-conversion",
+      "source": "claude-plugins-official",
+      "uri": "plugin://ui5-typescript-conversion@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 135,
+      "label": "ui5",
+      "id": "ui5",
+      "source": "claude-plugins-official",
+      "uri": "plugin://ui5@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 136,
+      "label": "twilio-developer-kit",
+      "id": "twilio-developer-kit",
+      "source": "claude-plugins-official",
+      "uri": "plugin://twilio-developer-kit@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 137,
+      "label": "togetherai-skills",
+      "id": "togetherai-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://togetherai-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 138,
+      "label": "terraform",
+      "id": "terraform",
+      "source": "claude-plugins-official",
+      "uri": "plugin://terraform@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 139,
+      "label": "teamcity-cli",
+      "id": "teamcity-cli",
+      "source": "claude-plugins-official",
+      "uri": "plugin://teamcity-cli@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 140,
+      "label": "superpowers",
+      "id": "superpowers",
+      "source": "claude-plugins-official",
+      "uri": "plugin://superpowers@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 141,
+      "label": "supabase",
+      "id": "supabase",
+      "source": "claude-plugins-official",
+      "uri": "plugin://supabase@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 142,
+      "label": "sumup",
+      "id": "sumup",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sumup@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 143,
+      "label": "stripe",
+      "id": "stripe",
+      "source": "claude-plugins-official",
+      "uri": "plugin://stripe@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 144,
+      "label": "sonatype-guide",
+      "id": "sonatype-guide",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sonatype-guide@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 145,
+      "label": "sourcegraph",
+      "id": "sourcegraph",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sourcegraph@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 146,
+      "label": "sonarqube",
+      "id": "sonarqube",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sonarqube@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 147,
+      "label": "snowflake-cortex-code",
+      "id": "snowflake-cortex-code",
+      "source": "claude-plugins-official",
+      "uri": "plugin://snowflake-cortex-code@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 148,
+      "label": "slack",
+      "id": "slack",
+      "source": "claude-plugins-official",
+      "uri": "plugin://slack@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 149,
+      "label": "skill-creator",
+      "id": "skill-creator",
+      "source": "claude-plugins-official",
+      "uri": "plugin://skill-creator@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 150,
+      "label": "serena",
+      "id": "serena",
+      "source": "claude-plugins-official",
+      "uri": "plugin://serena@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 151,
+      "label": "sentry-cli",
+      "id": "sentry-cli",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sentry-cli@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 152,
+      "label": "semgrep",
+      "id": "semgrep",
+      "source": "claude-plugins-official",
+      "uri": "plugin://semgrep@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 153,
+      "label": "security-guidance",
+      "id": "security-guidance",
+      "source": "claude-plugins-official",
+      "uri": "plugin://security-guidance@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 154,
+      "label": "sanity",
+      "id": "sanity",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sanity@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 155,
+      "label": "sagemaker-ai",
+      "id": "sagemaker-ai",
+      "source": "claude-plugins-official",
+      "uri": "plugin://sagemaker-ai@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 156,
+      "label": "runway-api",
+      "id": "runway-api",
+      "source": "claude-plugins-official",
+      "uri": "plugin://runway-api@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 157,
+      "label": "rootly",
+      "id": "rootly",
+      "source": "claude-plugins-official",
+      "uri": "plugin://rootly@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 158,
+      "label": "remember",
+      "id": "remember",
+      "source": "claude-plugins-official",
+      "uri": "plugin://remember@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 159,
+      "label": "redis-development",
+      "id": "redis-development",
+      "source": "claude-plugins-official",
+      "uri": "plugin://redis-development@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 160,
+      "label": "railway",
+      "id": "railway",
+      "source": "claude-plugins-official",
+      "uri": "plugin://railway@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 161,
+      "label": "qt-development-skills",
+      "id": "qt-development-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://qt-development-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 162,
+      "label": "qodo-skills",
+      "id": "qodo-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://qodo-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 163,
+      "label": "prisma",
+      "id": "prisma",
+      "source": "claude-plugins-official",
+      "uri": "plugin://prisma@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 164,
+      "label": "postman",
+      "id": "postman",
+      "source": "claude-plugins-official",
+      "uri": "plugin://postman@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 165,
+      "label": "pr-review-toolkit",
+      "id": "pr-review-toolkit",
+      "source": "claude-plugins-official",
+      "uri": "plugin://pr-review-toolkit@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 166,
+      "label": "posthog",
+      "id": "posthog",
+      "source": "claude-plugins-official",
+      "uri": "plugin://posthog@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 167,
+      "label": "plugin-dev",
+      "id": "plugin-dev",
+      "source": "claude-plugins-official",
+      "uri": "plugin://plugin-dev@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 168,
+      "label": "playwright",
+      "id": "playwright",
+      "source": "claude-plugins-official",
+      "uri": "plugin://playwright@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 169,
+      "label": "planetscale",
+      "id": "planetscale",
+      "source": "claude-plugins-official",
+      "uri": "plugin://planetscale@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 170,
+      "label": "playground",
+      "id": "playground",
+      "source": "claude-plugins-official",
+      "uri": "plugin://playground@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 171,
+      "label": "oracle-ai-data-platform-workbench-spark-connectors",
+      "id": "oracle-ai-data-platform-workbench-spark-connectors",
+      "source": "claude-plugins-official",
+      "uri": "plugin://oracle-ai-data-platform-workbench-spark-connectors@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 172,
+      "label": "nvidia-skills",
+      "id": "nvidia-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://nvidia-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 173,
+      "label": "nightvision",
+      "id": "nightvision",
+      "source": "claude-plugins-official",
+      "uri": "plugin://nightvision@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 174,
+      "label": "netlify-skills",
+      "id": "netlify-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://netlify-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 175,
+      "label": "neon",
+      "id": "neon",
+      "source": "claude-plugins-official",
+      "uri": "plugin://neon@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 176,
+      "label": "mongodb",
+      "id": "mongodb",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mongodb@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 177,
+      "label": "miro",
+      "id": "miro",
+      "source": "claude-plugins-official",
+      "uri": "plugin://miro@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 178,
+      "label": "microsoft-docs",
+      "id": "microsoft-docs",
+      "source": "claude-plugins-official",
+      "uri": "plugin://microsoft-docs@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 179,
+      "label": "mercadopago",
+      "id": "mercadopago",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mercadopago@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 180,
+      "label": "mcp-tunnels",
+      "id": "mcp-tunnels",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mcp-tunnels@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 181,
+      "label": "mcp-server-dev",
+      "id": "mcp-server-dev",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mcp-server-dev@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 182,
+      "label": "mcp-apps",
+      "id": "mcp-apps",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mcp-apps@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 183,
+      "label": "math-olympiad",
+      "id": "math-olympiad",
+      "source": "claude-plugins-official",
+      "uri": "plugin://math-olympiad@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 184,
+      "label": "mapbox",
+      "id": "mapbox",
+      "source": "claude-plugins-official",
+      "uri": "plugin://mapbox@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 185,
+      "label": "logfire",
+      "id": "logfire",
+      "source": "claude-plugins-official",
+      "uri": "plugin://logfire@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 186,
+      "label": "liquid-skills",
+      "id": "liquid-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://liquid-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 187,
+      "label": "liquid-lsp",
+      "id": "liquid-lsp",
+      "source": "claude-plugins-official",
+      "uri": "plugin://liquid-lsp@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 188,
+      "label": "linear",
+      "id": "linear",
+      "source": "claude-plugins-official",
+      "uri": "plugin://linear@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 189,
+      "label": "legalzoom",
+      "id": "legalzoom",
+      "source": "claude-plugins-official",
+      "uri": "plugin://legalzoom@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 190,
+      "label": "learning-output-style",
+      "id": "learning-output-style",
+      "source": "claude-plugins-official",
+      "uri": "plugin://learning-output-style@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 191,
+      "label": "laravel-boost",
+      "id": "laravel-boost",
+      "source": "claude-plugins-official",
+      "uri": "plugin://laravel-boost@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 192,
+      "label": "intercom",
+      "id": "intercom",
+      "source": "claude-plugins-official",
+      "uri": "plugin://intercom@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 193,
+      "label": "imessage",
+      "id": "imessage",
+      "source": "claude-plugins-official",
+      "uri": "plugin://imessage@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 194,
+      "label": "hunter",
+      "id": "hunter",
+      "source": "claude-plugins-official",
+      "uri": "plugin://hunter@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 195,
+      "label": "huggingface-skills",
+      "id": "huggingface-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://huggingface-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 196,
+      "label": "hookify",
+      "id": "hookify",
+      "source": "claude-plugins-official",
+      "uri": "plugin://hookify@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 197,
+      "label": "greptile",
+      "id": "greptile",
+      "source": "claude-plugins-official",
+      "uri": "plugin://greptile@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 198,
+      "label": "gitlab",
+      "id": "gitlab",
+      "source": "claude-plugins-official",
+      "uri": "plugin://gitlab@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 199,
+      "label": "github",
+      "id": "github",
+      "source": "claude-plugins-official",
+      "uri": "plugin://github@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 200,
+      "label": "frontend-design",
+      "id": "frontend-design",
+      "source": "claude-plugins-official",
+      "uri": "plugin://frontend-design@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 201,
+      "label": "firebase",
+      "id": "firebase",
+      "source": "claude-plugins-official",
+      "uri": "plugin://firebase@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 202,
+      "label": "forge-skills",
+      "id": "forge-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://forge-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 203,
+      "label": "figma",
+      "id": "figma",
+      "source": "claude-plugins-official",
+      "uri": "plugin://figma@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 204,
+      "label": "feature-dev",
+      "id": "feature-dev",
+      "source": "claude-plugins-official",
+      "uri": "plugin://feature-dev@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 205,
+      "label": "fastly-agent-toolkit",
+      "id": "fastly-agent-toolkit",
+      "source": "claude-plugins-official",
+      "uri": "plugin://fastly-agent-toolkit@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 206,
+      "label": "fakechat",
+      "id": "fakechat",
+      "source": "claude-plugins-official",
+      "uri": "plugin://fakechat@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 207,
+      "label": "expo",
+      "id": "expo",
+      "source": "claude-plugins-official",
+      "uri": "plugin://expo@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 208,
+      "label": "explanatory-output-style",
+      "id": "explanatory-output-style",
+      "source": "claude-plugins-official",
+      "uri": "plugin://explanatory-output-style@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 209,
+      "label": "duckdb-skills",
+      "id": "duckdb-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://duckdb-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 210,
+      "label": "dominodatalab",
+      "id": "dominodatalab",
+      "source": "claude-plugins-official",
+      "uri": "plugin://dominodatalab@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 211,
+      "label": "discord",
+      "id": "discord",
+      "source": "claude-plugins-official",
+      "uri": "plugin://discord@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 212,
+      "label": "deploy-on-aws",
+      "id": "deploy-on-aws",
+      "source": "claude-plugins-official",
+      "uri": "plugin://deploy-on-aws@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 213,
+      "label": "dataverse",
+      "id": "dataverse",
+      "source": "claude-plugins-official",
+      "uri": "plugin://dataverse@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 214,
+      "label": "datarobot-agent-skills",
+      "id": "datarobot-agent-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://datarobot-agent-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 215,
+      "label": "datahub-skills",
+      "id": "datahub-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://datahub-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 216,
+      "label": "datadog",
+      "id": "datadog",
+      "source": "claude-plugins-official",
+      "uri": "plugin://datadog@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 217,
+      "label": "databases-on-aws",
+      "id": "databases-on-aws",
+      "source": "claude-plugins-official",
+      "uri": "plugin://databases-on-aws@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 218,
+      "label": "data-agent-kit-starter-pack",
+      "id": "data-agent-kit-starter-pack",
+      "source": "claude-plugins-official",
+      "uri": "plugin://data-agent-kit-starter-pack@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 219,
+      "label": "cwc-makers",
+      "id": "cwc-makers",
+      "source": "claude-plugins-official",
+      "uri": "plugin://cwc-makers@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 220,
+      "label": "crowdstrike-falcon-foundry",
+      "id": "crowdstrike-falcon-foundry",
+      "source": "claude-plugins-official",
+      "uri": "plugin://crowdstrike-falcon-foundry@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 221,
+      "label": "convex",
+      "id": "convex",
+      "source": "claude-plugins-official",
+      "uri": "plugin://convex@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 222,
+      "label": "context7",
+      "id": "context7",
+      "source": "claude-plugins-official",
+      "uri": "plugin://context7@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 223,
+      "label": "commit-commands",
+      "id": "commit-commands",
+      "source": "claude-plugins-official",
+      "uri": "plugin://commit-commands@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 224,
+      "label": "coderabbit",
+      "id": "coderabbit",
+      "source": "claude-plugins-official",
+      "uri": "plugin://coderabbit@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 225,
+      "label": "code-simplifier",
+      "id": "code-simplifier",
+      "source": "claude-plugins-official",
+      "uri": "plugin://code-simplifier@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 226,
+      "label": "cloudinary",
+      "id": "cloudinary",
+      "source": "claude-plugins-official",
+      "uri": "plugin://cloudinary@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 227,
+      "label": "code-modernization",
+      "id": "code-modernization",
+      "source": "claude-plugins-official",
+      "uri": "plugin://code-modernization@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 228,
+      "label": "cloudflare",
+      "id": "cloudflare",
+      "source": "claude-plugins-official",
+      "uri": "plugin://cloudflare@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 229,
+      "label": "cloud-sql-postgresql",
+      "id": "cloud-sql-postgresql",
+      "source": "claude-plugins-official",
+      "uri": "plugin://cloud-sql-postgresql@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 230,
+      "label": "clickhouse",
+      "id": "clickhouse",
+      "source": "claude-plugins-official",
+      "uri": "plugin://clickhouse@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 231,
+      "label": "claude-md-management",
+      "id": "claude-md-management",
+      "source": "claude-plugins-official",
+      "uri": "plugin://claude-md-management@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 232,
+      "label": "claude-code-setup",
+      "id": "claude-code-setup",
+      "source": "claude-plugins-official",
+      "uri": "plugin://claude-code-setup@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 233,
+      "label": "circleback",
+      "id": "circleback",
+      "source": "claude-plugins-official",
+      "uri": "plugin://circleback@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 234,
+      "label": "cds-mcp",
+      "id": "cds-mcp",
+      "source": "claude-plugins-official",
+      "uri": "plugin://cds-mcp@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 235,
+      "label": "buildkite",
+      "id": "buildkite",
+      "source": "claude-plugins-official",
+      "uri": "plugin://buildkite@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 236,
+      "label": "brightdata-plugin",
+      "id": "brightdata-plugin",
+      "source": "claude-plugins-official",
+      "uri": "plugin://brightdata-plugin@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 237,
+      "label": "box",
+      "id": "box",
+      "source": "claude-plugins-official",
+      "uri": "plugin://box@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 238,
+      "label": "bigdata-com",
+      "id": "bigdata-com",
+      "source": "claude-plugins-official",
+      "uri": "plugin://bigdata-com@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 239,
+      "label": "base44",
+      "id": "base44",
+      "source": "claude-plugins-official",
+      "uri": "plugin://base44@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 240,
+      "label": "azure",
+      "id": "azure",
+      "source": "claude-plugins-official",
+      "uri": "plugin://azure@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 241,
+      "label": "aws-serverless",
+      "id": "aws-serverless",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aws-serverless@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 242,
+      "label": "aws-dev-toolkit",
+      "id": "aws-dev-toolkit",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aws-dev-toolkit@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 243,
+      "label": "aws-core",
+      "id": "aws-core",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aws-core@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 244,
+      "label": "aws-amplify",
+      "id": "aws-amplify",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aws-amplify@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 245,
+      "label": "aws-agents",
+      "id": "aws-agents",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aws-agents@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 246,
+      "label": "auth0",
+      "id": "auth0",
+      "source": "claude-plugins-official",
+      "uri": "plugin://auth0@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 247,
+      "label": "atomic-agents",
+      "id": "atomic-agents",
+      "source": "claude-plugins-official",
+      "uri": "plugin://atomic-agents@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 248,
+      "label": "atlassian",
+      "id": "atlassian",
+      "source": "claude-plugins-official",
+      "uri": "plugin://atlassian@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 249,
+      "label": "atlan",
+      "id": "atlan",
+      "source": "claude-plugins-official",
+      "uri": "plugin://atlan@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 250,
+      "label": "asana",
+      "id": "asana",
+      "source": "claude-plugins-official",
+      "uri": "plugin://asana@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 251,
+      "label": "appwrite",
+      "id": "appwrite",
+      "source": "claude-plugins-official",
+      "uri": "plugin://appwrite@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 252,
+      "label": "apollo-skills",
+      "id": "apollo-skills",
+      "source": "claude-plugins-official",
+      "uri": "plugin://apollo-skills@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 253,
+      "label": "apollo",
+      "id": "apollo",
+      "source": "claude-plugins-official",
+      "uri": "plugin://apollo@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 254,
+      "label": "amplitude",
+      "id": "amplitude",
+      "source": "claude-plugins-official",
+      "uri": "plugin://amplitude@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 255,
+      "label": "amazon-location-service",
+      "id": "amazon-location-service",
+      "source": "claude-plugins-official",
+      "uri": "plugin://amazon-location-service@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 256,
+      "label": "alloydb",
+      "id": "alloydb",
+      "source": "claude-plugins-official",
+      "uri": "plugin://alloydb@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 257,
+      "label": "airtable",
+      "id": "airtable",
+      "source": "claude-plugins-official",
+      "uri": "plugin://airtable@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 258,
+      "label": "aikido",
+      "id": "aikido",
+      "source": "claude-plugins-official",
+      "uri": "plugin://aikido@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 259,
+      "label": "ai-plugins",
+      "id": "ai-plugins",
+      "source": "claude-plugins-official",
+      "uri": "plugin://ai-plugins@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 260,
+      "label": "agentforce-adlc",
+      "id": "agentforce-adlc",
+      "source": "claude-plugins-official",
+      "uri": "plugin://agentforce-adlc@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 261,
+      "label": "agent-sdk-dev",
+      "id": "agent-sdk-dev",
+      "source": "claude-plugins-official",
+      "uri": "plugin://agent-sdk-dev@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 262,
+      "label": "adobe-for-creativity",
+      "id": "adobe-for-creativity",
+      "source": "claude-plugins-official",
+      "uri": "plugin://adobe-for-creativity@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 263,
+      "label": "42crunch-api-security-testing",
+      "id": "42crunch-api-security-testing",
+      "source": "claude-plugins-official",
+      "uri": "plugin://42crunch-api-security-testing@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 264,
+      "label": "azure",
+      "id": "azure",
+      "source": "azure-skills",
+      "uri": "plugin://azure@azure-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 265,
+      "label": "adobe-cja",
+      "id": "adobe-cja",
+      "source": "adobe-skills",
+      "uri": "plugin://adobe-cja@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 266,
+      "label": "adobe-analytics",
+      "id": "adobe-analytics",
+      "source": "adobe-skills",
+      "uri": "plugin://adobe-analytics@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 267,
+      "label": "aem-6-5-lts",
+      "id": "aem-6-5-lts",
+      "source": "adobe-skills",
+      "uri": "plugin://aem-6-5-lts@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 268,
+      "label": "aem-cloud-service",
+      "id": "aem-cloud-service",
+      "source": "adobe-skills",
+      "uri": "plugin://aem-cloud-service@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 269,
+      "label": "aem-edge-delivery-services",
+      "id": "aem-edge-delivery-services",
+      "source": "adobe-skills",
+      "uri": "plugin://aem-edge-delivery-services@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 270,
+      "label": "stardust",
+      "id": "stardust",
+      "source": "adobe-skills",
+      "uri": "plugin://stardust@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 271,
+      "label": "adobe-for-creativity",
+      "id": "adobe-for-creativity",
+      "source": "adobe-skills",
+      "uri": "plugin://adobe-for-creativity@adobe-skills",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 272,
+      "label": "latex",
+      "id": "latex",
+      "source": "openai-bundled",
+      "uri": "plugin://latex@openai-bundled",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 273,
+      "label": "chrome",
+      "id": "chrome",
+      "source": "openai-bundled",
+      "uri": "plugin://chrome@openai-bundled",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 274,
+      "label": "Browser",
+      "id": "browser",
+      "source": "openai-bundled",
+      "uri": "plugin://browser@openai-bundled",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 275,
+      "label": "presentations",
+      "id": "presentations",
+      "source": "openai-primary-runtime",
+      "uri": "plugin://presentations@openai-primary-runtime",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 276,
+      "label": "spreadsheets",
+      "id": "spreadsheets",
+      "source": "openai-primary-runtime",
+      "uri": "plugin://spreadsheets@openai-primary-runtime",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 277,
+      "label": "documents",
+      "id": "documents",
+      "source": "openai-primary-runtime",
+      "uri": "plugin://documents@openai-primary-runtime",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 278,
+      "label": "pinecone",
+      "id": "pinecone",
+      "source": "claude-plugins-official",
+      "uri": "plugin://pinecone@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 279,
+      "label": "pigment",
+      "id": "pigment",
+      "source": "claude-plugins-official",
+      "uri": "plugin://pigment@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 280,
+      "label": "pagerduty",
+      "id": "pagerduty",
+      "source": "claude-plugins-official",
+      "uri": "plugin://pagerduty@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 281,
+      "label": "outputai",
+      "id": "outputai",
+      "source": "claude-plugins-official",
+      "uri": "plugin://outputai@claude-plugins-official",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 282,
+      "label": "dow-jones-factiva",
+      "id": "dow-jones-factiva",
+      "source": "openai-curated",
+      "uri": "plugin://dow-jones-factiva@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 283,
+      "label": "dovetail",
+      "id": "dovetail",
+      "source": "openai-curated",
+      "uri": "plugin://dovetail@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 284,
+      "label": "domotz-preview",
+      "id": "domotz-preview",
+      "source": "openai-curated",
+      "uri": "plugin://domotz-preview@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 285,
+      "label": "docket",
+      "id": "docket",
+      "source": "openai-curated",
+      "uri": "plugin://docket@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 286,
+      "label": "demandbase",
+      "id": "demandbase",
+      "source": "openai-curated",
+      "uri": "plugin://demandbase@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 287,
+      "label": "daloopa",
+      "id": "daloopa",
+      "source": "openai-curated",
+      "uri": "plugin://daloopa@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 288,
+      "label": "coveo",
+      "id": "coveo",
+      "source": "openai-curated",
+      "uri": "plugin://coveo@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 289,
+      "label": "cube",
+      "id": "cube",
+      "source": "openai-curated",
+      "uri": "plugin://cube@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 290,
+      "label": "coupler-io",
+      "id": "coupler-io",
+      "source": "openai-curated",
+      "uri": "plugin://coupler-io@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 291,
+      "label": "conductor",
+      "id": "conductor",
+      "source": "openai-curated",
+      "uri": "plugin://conductor@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 292,
+      "label": "common-room",
+      "id": "common-room",
+      "source": "openai-curated",
+      "uri": "plugin://common-room@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 293,
+      "label": "cloudinary",
+      "id": "cloudinary",
+      "source": "openai-curated",
+      "uri": "plugin://cloudinary@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 294,
+      "label": "clickup",
+      "id": "clickup",
+      "source": "openai-curated",
+      "uri": "plugin://clickup@openai-curated",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 295,
+      "label": "public-equity-investing",
+      "id": "public-equity-investing",
+      "source": "openai-curated-remote",
+      "uri": "plugin://public-equity-investing@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 296,
+      "label": "product-design",
+      "id": "product-design",
+      "source": "openai-curated-remote",
+      "uri": "plugin://product-design@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 297,
+      "label": "investment-banking",
+      "id": "investment-banking",
+      "source": "openai-curated-remote",
+      "uri": "plugin://investment-banking@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 298,
+      "label": "creative-production",
+      "id": "creative-production",
+      "source": "openai-curated-remote",
+      "uri": "plugin://creative-production@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 299,
+      "label": "sales",
+      "id": "sales",
+      "source": "openai-curated-remote",
+      "uri": "plugin://sales@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    },
+    {
+      "order": 300,
+      "label": "data-analytics",
+      "id": "data-analytics",
+      "source": "openai-curated-remote",
+      "uri": "plugin://data-analytics@openai-curated-remote",
+      "status": "submitted-not-activated",
+      "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+type ReleaseArtifact {
+  path: String!
+  required: Boolean!
+}
+
+type MotionPolicy {
+  supportsReducedMotion: Boolean!
+  mobileParticleLimit: Int!
+  desktopParticleLimit: Int!
+}
+
+type ReleasePolicy {
+  requiresDomainBeforeLiveDeploy: Boolean!
+  releaseLedger: String!
+  artifacts: [ReleaseArtifact!]!
+  motion: MotionPolicy!
+}

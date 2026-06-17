@@ -1,0 +1,14 @@
+{
+  "id": "seis-foundation",
+  "title": "SEIS Foundation",
+  "status": "draft",
+  "summary": "Clean architecture, asset curation, calm motion, and mobile-first quality gates for the new SEIS digital experience.",
+  "pillars": [
+    "cinematic minimalism",
+    "curated legacy asset migration",
+    "reduced-motion aware animation",
+    "mobile-first responsive layout",
+    "rollback-safe repository governance"
+  ]
+}
+

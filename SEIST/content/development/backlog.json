@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "branch": "UIXAppTTR",
+  "items": [
+    {
+      "id": "SEIS-001",
+      "lane": "interface-polish",
+      "title": "Refine development cockpit hierarchy",
+      "status": "ready",
+      "priority": "high",
+      "gate": "responsive and accessible before visual density"
+    },
+    {
+      "id": "SEIS-002",
+      "lane": "motion-tuning",
+      "title": "Tune section reveal timing for mobile",
+      "status": "ready",
+      "priority": "high",
+      "gate": "reduced-motion and mobile frame budget first"
+    },
+    {
+      "id": "SEIS-003",
+      "lane": "release-safety",
+      "title": "Confirm first production server target",
+      "status": "blocked",
+      "priority": "critical",
+      "gate": "domain, document root, and rollback path must be known"
+    },
+    {
+      "id": "SEIS-004",
+      "lane": "polyglot-growth",
+      "title": "Promote one contract into a real service only after target is known",
+      "status": "planned",
+      "priority": "medium",
+      "gate": "contracts before services"
+    },
+    {
+      "id": "SEIS-005",
+      "lane": "mobile-path",
+      "title": "Choose PWA-first, Expo, or native mobile starting path",
+      "status": "needs-decision",
+      "priority": "high",
+      "gate": "mobile performance and reduced-motion support stay mandatory"
+    },
+    {
+      "id": "SEIS-006",
+      "lane": "development-governance",
+      "title": "Run sub-agent workstreams inside UIXAppTTR",
+      "status": "active",
+      "priority": "critical",
+      "gate": "no new long-lived feature branch for agent lanes"
+    },
+    {
+      "id": "SEIS-007",
+      "lane": "premium-local-foundation",
+      "title": "Absorb codex/premium-local-foundation as a UIXAppTTR sub-agent",
+      "status": "active",
+      "priority": "critical",
+      "gate": "premium-local-foundation work must land only through UIXAppTTR"
+    }
+  ]
+}

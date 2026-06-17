@@ -1,0 +1,14 @@
+version = 1
+requires_domain_before_live_deploy = true
+release_package = "dist/seis-static.zip"
+release_ledger = "releases/latest.json"
+
+[motion]
+supports_reduced_motion = true
+mobile_particle_limit = 24
+desktop_particle_limit = 64
+
+[quality]
+accessibility_review_required = true
+polyglot_contracts_required = true
+server_drop_required = true

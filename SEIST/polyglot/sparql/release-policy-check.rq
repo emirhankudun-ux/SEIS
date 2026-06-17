@@ -1,0 +1,8 @@
+PREFIX seis: <https://ui-ux-digital-lab.local/vocab#>
+
+ASK {
+  seis:releasePolicy
+    seis:requiresDomainBeforeLiveDeploy true ;
+    seis:releaseLedger "releases/latest.json" ;
+    seis:supportsReducedMotion true .
+}

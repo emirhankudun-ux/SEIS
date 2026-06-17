@@ -5,6 +5,14 @@
   "type": "module",
   "description": "AI-native Apple-first full-stack design and engineering ecosystem.",
   "scripts": {
+    "test": "node --test",
+    "test:web": "node --test apps/web/test/*.test.js",
+    "test:all": "npm test && npm run test:web",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "check:workspace": "node scripts/check-workspace.cjs",
     "check:open-source-governance": "node scripts/check-open-source-governance.mjs",
     "check:foundation": "node scripts/check-foundation.mjs",
@@ -139,13 +147,29 @@
     "packages/*"
   ],
   "devDependencies": {
-    "vitest": "^4.1.0",
-    "@vitest/coverage-v8": "^4.1.0",
-    "zod": "^3.23.8",
+    "@axe-core/playwright": "^4.9.1",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.45.0",
-    "@axe-core/playwright": "^4.9.1"
+    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/parser": "^8.61.1",
+    "@vitest/coverage-v8": "^4.1.0",
+    "eslint": "^10.5.0",
+    "eslint-plugin-security": "^4.0.1",
+    "globals": "^17.6.0",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.8.4",
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.0",
+    "zod": "^3.23.8"
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

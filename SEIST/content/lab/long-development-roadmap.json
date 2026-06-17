@@ -1,0 +1,119 @@
+{
+  "id": "seis-long-development-roadmap",
+  "name": "SEIS Long Development Roadmap",
+  "mode": "phased-low-power",
+  "horizon": "long-running modular development",
+  "principles": [
+    "one reversible slice at a time",
+    "public experience and governance evolve together",
+    "runtime dependencies stay unchanged until a decision record approves them",
+    "remote publishing waits for verified GitHub authentication and branch state",
+    "accessibility and reduced-motion behavior remain non-negotiable"
+  ],
+  "phases": [
+    {
+      "id": "phase-01-foundation",
+      "label": "Foundation hardening",
+      "status": "active",
+      "intent": "Keep the current static shell, development process, and quality gates coherent.",
+      "deliverables": [
+        "development process registry",
+        "long roadmap registry",
+        "focused validation scripts",
+        "visible development cockpit"
+      ],
+      "proof": "check:foundation and roadmap checks pass without heavy builds"
+    },
+    {
+      "id": "phase-02-experience",
+      "label": "Experience expansion",
+      "status": "queued",
+      "intent": "Turn the public shell into a richer lab surface without increasing cognitive load.",
+      "deliverables": [
+        "roadmap section",
+        "case study detail model",
+        "calm interaction states",
+        "manual accessibility checklist"
+      ],
+      "proof": "UI stays readable across mobile and desktop with reduced motion enabled"
+    },
+    {
+      "id": "phase-03-content-intelligence",
+      "label": "Content intelligence",
+      "status": "queued",
+      "intent": "Give artworks, case studies, and lab operations stronger editorial metadata.",
+      "deliverables": [
+        "case study schema",
+        "artwork narrative tags",
+        "content quality rubric",
+        "search-ready metadata"
+      ],
+      "proof": "content registries validate before any framework migration"
+    },
+    {
+      "id": "phase-04-operations",
+      "label": "Operations and server readiness",
+      "status": "blocked_on_input",
+      "intent": "Prepare live upload only after server target and GitHub auth are confirmed.",
+      "deliverables": [
+        "server target confirmation flow",
+        "upload dry-run record",
+        "single remote branch verification",
+        "release rollback note"
+      ],
+      "proof": "UIXAppTTR is the only remote branch and deploy target values are explicit"
+    },
+    {
+      "id": "phase-05-framework-decision",
+      "label": "Framework decision",
+      "status": "deferred",
+      "intent": "Choose a future app framework only when static constraints become limiting.",
+      "deliverables": [
+        "Next.js or Astro decision record",
+        "migration acceptance criteria",
+        "dependency budget",
+        "rollback plan"
+      ],
+      "proof": "migration is justified by maintainability, not hype or visual ambition"
+    },
+    {
+      "id": "phase-06-release-system",
+      "label": "Release system maturity",
+      "status": "deferred",
+      "intent": "Make package, backup, upload, and recovery flows boring, observable, and repeatable.",
+      "deliverables": [
+        "release ledger review",
+        "server drop verification",
+        "post-release checklist",
+        "incident rollback path"
+      ],
+      "proof": "release can be prepared, checked, restored, and explained from docs"
+    }
+  ],
+  "nextLongRunActions": [
+    {
+      "id": "long-001",
+      "title": "Build the roadmap surface into the static app",
+      "owner": "experience",
+      "status": "started"
+    },
+    {
+      "id": "long-002",
+      "title": "Create a manual accessibility review checklist",
+      "owner": "quality",
+      "status": "started"
+    },
+    {
+      "id": "long-003",
+      "title": "Model case study detail pages before choosing a framework",
+      "owner": "content",
+      "status": "route_proposed"
+    },
+    {
+      "id": "long-004",
+      "title": "Resolve GitHub auth and remote branch cleanup outside runtime changes",
+      "owner": "operations",
+      "status": "blocked_on_auth"
+    }
+  ]
+}

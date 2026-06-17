@@ -1,0 +1,36 @@
+{
+  "id": "github-remote-configuration",
+  "version": 1,
+  "status": "configured-local-remote",
+  "configuredAt": "2026-06-06",
+  "repository": {
+    "name": "UIX-Apps",
+    "owner": "emirhankudun-ux",
+    "remoteName": "origin",
+    "remoteUrl": "https://github.com/emirhankudun-ux/UIX-Apps.git",
+    "targetBranch": "UIXAppTTR"
+  },
+  "localBranchMode": {
+    "currentWorkingBranch": "work",
+    "tracks": "origin/UIXAppTTR",
+    "reason": "The execution environment is committing on the current work branch while preserving the SEIS GitHub target branch contract for publication readiness."
+  },
+  "publishReadiness": {
+    "remoteConfigured": true,
+    "networkProbe": "blocked-by-environment-connect-tunnel-403",
+    "pushAllowed": false,
+    "pushRequires": [
+      "switch or publish from UIXAppTTR",
+      "clean worktree",
+      "GitHub authentication ready",
+      "remote branch state reviewed",
+      "target deployment path confirmed when publishing release artifacts"
+    ]
+  },
+  "qualityCommands": [
+    "npm run check:github-remote-configuration",
+    "npm run check:seis-evolution-model",
+    "npm run check:workspace"
+  ],
+  "rollback": "Remove or reset the origin remote and restore branch tracking config if the repository target changes."
+}

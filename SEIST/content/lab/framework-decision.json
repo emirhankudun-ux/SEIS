@@ -1,0 +1,46 @@
+{
+  "id": "seis-framework-decision-record",
+  "name": "SEIS Framework Decision Record",
+  "status": "deferred",
+  "currentSurface": "static-html-css-js",
+  "decisionRule": "Do not migrate to Next.js, Astro, or another framework until static constraints create measurable maintainability risk.",
+  "candidateFrameworks": [
+    {
+      "id": "nextjs",
+      "fit": "application routes, server components, API surfaces, and richer product workflows",
+      "risk": "dependency growth and heavier local development loops"
+    },
+    {
+      "id": "astro",
+      "fit": "content-heavy editorial surfaces, static-first delivery, and island-based interactivity",
+      "risk": "migration work may not pay off until content volume grows"
+    },
+    {
+      "id": "static-plus-modules",
+      "fit": "current low-power portfolio, governance, locale, and release surface",
+      "risk": "manual route maintenance can grow if case studies multiply"
+    }
+  ],
+  "acceptanceCriteria": [
+    "case study count or route complexity exceeds static maintenance comfort",
+    "content loading needs shared templates instead of hand-edited HTML",
+    "3D or cinematic surfaces need isolated progressive enhancement boundaries",
+    "server-side API needs become confirmed rather than speculative",
+    "migration keeps accessibility, reduced motion, and release rollback contracts intact"
+  ],
+  "dependencyBudget": {
+    "default": "no new runtime framework dependency",
+    "approvalRequiredFor": [
+      "framework runtime",
+      "3D rendering engine",
+      "animation timeline engine",
+      "CMS SDK",
+      "server runtime adapter"
+    ]
+  },
+  "rollbackPath": [
+    "keep portable JSON content registries as source of truth",
+    "preserve the static build and server package scripts until replacement checks pass",
+    "ship framework migration on an isolated branch before merging into the protected branch"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "source": "seis-local-foundation",
+  "updatedAt": "2026-05-25",
+  "items": [
+    {
+      "id": "confirm-target",
+      "status": "blocked",
+      "labelKey": "handoff.item.target.label",
+      "titleKey": "handoff.item.target.title",
+      "copyKey": "handoff.item.target.copy"
+    },
+    {
+      "id": "verify-package",
+      "status": "ready",
+      "labelKey": "handoff.item.package.label",
+      "titleKey": "handoff.item.package.title",
+      "copyKey": "handoff.item.package.copy"
+    },
+    {
+      "id": "protect-rollback",
+      "status": "ready",
+      "labelKey": "handoff.item.rollback.label",
+      "titleKey": "handoff.item.rollback.title",
+      "copyKey": "handoff.item.rollback.copy"
+    },
+    {
+      "id": "quiet-observability",
+      "status": "queued",
+      "labelKey": "handoff.item.observability.label",
+      "titleKey": "handoff.item.observability.title",
+      "copyKey": "handoff.item.observability.copy"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SEIS Release Contract",
+  "type": "object",
+  "required": ["packagePath", "sha256", "liveUploadBlocked", "supportedLocales"],
+  "properties": {
+    "packagePath": { "type": "string" },
+    "sha256": { "type": "string", "minLength": 64, "maxLength": 64 },
+    "liveUploadBlocked": { "type": "boolean" },
+    "supportedLocales": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 7
+    }
+  }
+}

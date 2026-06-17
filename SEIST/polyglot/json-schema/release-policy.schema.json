@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ui-ux-digital-lab.local/schemas/release-policy.schema.json",
+  "title": "SEIS Release Policy",
+  "type": "object",
+  "required": ["requiresDomainBeforeLiveDeploy", "releaseLedger", "motion"],
+  "properties": {
+    "requiresDomainBeforeLiveDeploy": { "type": "boolean", "const": true },
+    "releaseLedger": { "type": "string", "minLength": 1 },
+    "motion": {
+      "type": "object",
+      "required": ["supportsReducedMotion", "mobileParticleLimit", "desktopParticleLimit"],
+      "properties": {
+        "supportsReducedMotion": { "type": "boolean", "const": true },
+        "mobileParticleLimit": { "type": "integer", "maximum": 24 },
+        "desktopParticleLimit": { "type": "integer", "maximum": 64 }
+      }
+    }
+  }
+}

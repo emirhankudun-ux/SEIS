@@ -2,9 +2,9 @@
 (function () {
   "use strict";
 
-  var CACHE_NAME = "ek-portfolio-v1";
+  const CACHE_NAME = "ek-portfolio-v1";
 
-  var PRECACHE = [
+  const PRECACHE = [
     "./",
     "./index.html",
     "./style.css",
@@ -38,10 +38,10 @@
   });
 
   self.addEventListener("fetch", function (event) {
-    var request = event.request;
+    const request = event.request;
     if (request.method !== "GET") { return; }
 
-    var url = new URL(request.url);
+    const url = new URL(request.url);
     if (url.origin !== self.location.origin) { return; }
 
     /* Navigation (HTML): network-first, fall back to cached index.html */
@@ -49,7 +49,7 @@
       event.respondWith(
         fetch(request)
           .then(function (response) {
-            var clone = response.clone();
+            const clone = response.clone();
             caches.open(CACHE_NAME).then(function (cache) {
               cache.put(request, clone);
             });
@@ -65,10 +65,10 @@
     /* Static assets: stale-while-revalidate */
     event.respondWith(
       caches.match(request).then(function (cached) {
-        var fetched = fetch(request)
+        const fetched = fetch(request)
           .then(function (response) {
             if (response.ok) {
-              var clone = response.clone();
+              const clone = response.clone();
               caches.open(CACHE_NAME).then(function (cache) {
                 cache.put(request, clone);
               });

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "SEIS Sprint Zero",
+  "branch": "UIXAppTTR",
+  "purpose": "Start product development from a visible, reversible, low-power foundation.",
+  "lanes": [
+    {
+      "id": "interface-polish",
+      "status": "active",
+      "qualityGate": "responsive and accessible before visual density"
+    },
+    {
+      "id": "motion-tuning",
+      "status": "active",
+      "qualityGate": "reduced-motion and mobile frame budget first"
+    },
+    {
+      "id": "release-safety",
+      "status": "active",
+      "qualityGate": "package, hash, backup, handoff before upload"
+    },
+    {
+      "id": "polyglot-growth",
+      "status": "active",
+      "qualityGate": "contracts before services"
+    },
+    {
+      "id": "development-governance",
+      "status": "active",
+      "qualityGate": "sub-agent workstreams stay inside UIXAppTTR"
+    }
+  ],
+  "nextDecisionSlots": [
+    "confirm first production server target",
+    "choose first user-facing product route",
+    "decide whether mobile app begins as Expo, native Swift/Kotlin, or PWA-first"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "source": "seis-local-foundation",
+  "updatedAt": "2026-05-26",
+  "operatingMode": "high-cognition-low-machine-load",
+  "cards": [
+    {
+      "id": "ai-depth",
+      "status": "high",
+      "value": "full",
+      "labelKey": "efficiency.card.ai.label",
+      "titleKey": "efficiency.card.ai.title",
+      "copyKey": "efficiency.card.ai.copy"
+    },
+    {
+      "id": "machine-load",
+      "status": "protected",
+      "value": "low",
+      "labelKey": "efficiency.card.machine.label",
+      "titleKey": "efficiency.card.machine.title",
+      "copyKey": "efficiency.card.machine.copy"
+    },
+    {
+      "id": "validation-budget",
+      "status": "bounded",
+      "value": "targeted",
+      "labelKey": "efficiency.card.validation.label",
+      "titleKey": "efficiency.card.validation.title",
+      "copyKey": "efficiency.card.validation.copy"
+    },
+    {
+      "id": "thermal-pressure",
+      "status": "quiet",
+      "value": "safe",
+      "labelKey": "efficiency.card.thermal.label",
+      "titleKey": "efficiency.card.thermal.title",
+      "copyKey": "efficiency.card.thermal.copy"
+    }
+  ]
+}

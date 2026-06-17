@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "status": "blocked_until_target_confirmed",
+  "activeTarget": null,
+  "targetType": null,
+  "provider": null,
+  "package": {
+    "path": "dist/seis-static.zip",
+    "bytes": 4671598,
+    "sha256": "d701446f5d69eef763ef683c06261540f4adb200abfad656297ba64546926b30"
+  },
+  "steps": [
+    "Confirm hosting provider, domain, and upload path.",
+    "Run scripts/configure-server-target.mjs with the chosen target.",
+    "Run npm run check:deploy-readiness again.",
+    "Upload dist/seis-static.zip only after checksum verification."
+  ],
+  "rollback": {
+    "strategy": "restore_previous_release_zip",
+    "latestPointer": "releases/latest.json",
+    "healthCheck": "/health.json"
+  },
+  "generatedAt": "2026-05-25T09:00:07.881Z"
+}

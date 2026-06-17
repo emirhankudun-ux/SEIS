@@ -1,0 +1,26 @@
+openapi: 3.1.0
+info:
+  title: SEIS Release Health
+  version: "1.0.0"
+paths:
+  /_server/health:
+    get:
+      summary: Read static release health.
+      responses:
+        "200":
+          description: Release health payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ok
+                  - releaseLedger
+                  - reducedMotionSupported
+                properties:
+                  ok:
+                    type: boolean
+                  releaseLedger:
+                    type: string
+                  reducedMotionSupported:
+                    type: boolean

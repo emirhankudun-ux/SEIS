@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "model": "seis-case-study-detail",
+  "purpose": "Define portable case study detail content before any framework migration.",
+  "requiredFields": [
+    "id",
+    "title",
+    "status",
+    "summary",
+    "narrative",
+    "experienceMode",
+    "accessibilityNotes",
+    "qualityProof",
+    "searchMetadata",
+    "contentQualityRubric"
+  ],
+  "caseStudies": [
+    {
+      "id": "seis-foundation",
+      "title": "SEIS Foundation",
+      "status": "draft",
+      "experienceMode": "balanced",
+      "summary": "Clean architecture, asset curation, calm motion, and mobile-first quality gates for the new SEIS digital experience.",
+      "narrative": {
+        "context": "Legacy creative material is preserved as metadata and curated assets before implementation debt enters the clean app surface.",
+        "challenge": "The product needs a premium cinematic identity without dependency bloat, visual chaos, or inaccessible motion.",
+        "response": "A dependency-light static shell, governance registry, curated asset layer, low-motion controls, and release checks establish the foundation.",
+        "nextStep": "Expand this into deeper editorial case study sections after the content model stays stable."
+      },
+      "pillars": [
+        "cinematic minimalism",
+        "curated legacy asset migration",
+        "reduced-motion aware animation",
+        "mobile-first responsive layout",
+        "rollback-safe repository governance"
+      ],
+      "assetStrategy": {
+        "source": "curated drawing archive",
+        "currentSurface": "gallery cards",
+        "futureSurface": "editorial detail pages with narrative tags and accessibility notes"
+      },
+      "searchMetadata": {
+        "keywords": [
+          "SEIS",
+          "UI UX Digital Lab",
+          "cinematic minimalism",
+          "accessibility",
+          "calm technology"
+        ],
+        "audiences": [
+          "creative engineering",
+          "premium UI UX",
+          "humane product systems"
+        ],
+        "canonicalTheme": "calm AI-native creative experience foundation"
+      },
+      "contentQualityRubric": [
+        {
+          "criterion": "clarity",
+          "expectation": "The case study explains what changed without hiding behind abstract branding language."
+        },
+        {
+          "criterion": "evidence",
+          "expectation": "Each claim points to a registry, public surface, or lightweight check."
+        },
+        {
+          "criterion": "accessibility",
+          "expectation": "Motion, language, keyboard, and cognitive-load notes are visible before release."
+        },
+        {
+          "criterion": "rollback",
+          "expectation": "Future framework or route work can be deferred without losing the content model."
+        }
+      ],
+      "accessibilityNotes": [
+        "primary story remains real HTML text",
+        "low-motion mode must preserve full content access",
+        "case study cards and future detail links must stay keyboard reachable"
+      ],
+      "qualityProof": [
+        "npm run check:foundation",
+        "node scripts/check-case-study-detail-model.mjs",
+        "node scripts/check-accessibility-review.mjs"
+      ]
+    }
+  ],
+  "deferredUntilModelStable": [
+    "dynamic routing",
+    "framework-specific loaders",
+    "CMS integration",
+    "heavy visual transitions between case studies"
+  ]
+}

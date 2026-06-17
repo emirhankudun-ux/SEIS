@@ -1,0 +1,4 @@
+release-policy version=1 {
+  deployment requires-domain-before-live-deploy=true package-path="dist/seis-static.zip" release-ledger="releases/latest.json"
+  motion supports-reduced-motion=true mobile-particle-limit=24 desktop-particle-limit=64
+}
