@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1030005,
+      "githubBytes": 1639276,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -34,7 +34,7 @@
       "order": 2,
       "label": "TypeScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 28824,
+      "githubBytes": 411787,
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
         "polyglot/typescript/language-split-contract.ts",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 308216,
+      "githubBytes": 507033,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 356647,
+      "githubBytes": 544124,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]
@@ -79,7 +79,7 @@
       "order": 6,
       "label": "Go",
       "layer": "backend-and-api",
-      "githubBytes": 16367,
+      "githubBytes": 16806,
       "entrypoints": [
         "polyglot/go/health_contract.go",
         "polyglot/go/cmd/seis-serve/main.go",
@@ -90,7 +90,7 @@
       "order": 7,
       "label": "Rust",
       "layer": "mobile-and-native",
-      "githubBytes": 11825,
+      "githubBytes": 12286,
       "entrypoints": [
         "polyglot/rust/performance_budget.rs",
         "polyglot/rust/seis-link-audit/src/main.rs"
@@ -100,7 +100,7 @@
       "order": 8,
       "label": "Java",
       "layer": "backend-and-api",
-      "githubBytes": 16110,
+      "githubBytes": 16392,
       "entrypoints": [
         "polyglot/java/SeisDeployReadiness.java",
         "polyglot/java/DrawingsChecksum.java",
@@ -111,7 +111,7 @@
       "order": 9,
       "label": "Kotlin",
       "layer": "mobile-and-native",
-      "githubBytes": 1150,
+      "githubBytes": 1406,
       "entrypoints": [
         "polyglot/kotlin/SeisMotionPolicy.kt",
         "polyglot/kotlin/seis_css_font_audit.kts"
@@ -130,7 +130,7 @@
       "order": 11,
       "label": "PHP",
       "layer": "backend-and-api",
-      "githubBytes": 8471,
+      "githubBytes": 8768,
       "entrypoints": [
         "polyglot/php/contact-endpoint.php",
         "server/php/health.php",
@@ -141,7 +141,7 @@
       "order": 12,
       "label": "Ruby",
       "layer": "backend-and-api",
-      "githubBytes": 13442,
+      "githubBytes": 13677,
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
         "polyglot/ruby/i18n_stats.rb",
@@ -173,7 +173,7 @@
       "order": 15,
       "label": "C#",
       "layer": "backend-and-api",
-      "githubBytes": 2731,
+      "githubBytes": 2973,
       "entrypoints": [
         "polyglot/csharp/SeisReleaseContract.cs"
       ]
@@ -182,7 +182,7 @@
       "order": 16,
       "label": "SQL",
       "layer": "database-and-data",
-      "githubBytes": 8177,
+      "githubBytes": 8752,
       "entrypoints": [
         "polyglot/sql/audit_ledger.sqlite.sql"
       ]
@@ -191,7 +191,7 @@
       "order": 17,
       "label": "Shell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 67450,
+      "githubBytes": 92418,
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
         "scripts/polyglot-check.sh"
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 87594,
+      "githubBytes": 134954,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -518,7 +518,7 @@
       "order": 52,
       "label": "CSS",
       "layer": "frontend-and-experience",
-      "githubBytes": 99419,
+      "githubBytes": 285328,
       "entrypoints": [
         "apps/web/style.css",
         "apps/web/styles.css"

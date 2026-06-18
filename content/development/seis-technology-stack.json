@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1030005,
+      "githubBytes": 1639276,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -43,7 +43,7 @@
       "label": "TypeScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 28824,
+      "githubBytes": 411787,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 308216,
+      "githubBytes": 507033,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -88,7 +88,7 @@
       "label": "Swift",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 356647,
+      "githubBytes": 544124,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
@@ -100,7 +100,7 @@
       "label": "Go",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 16367,
+      "githubBytes": 16806,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/go/health_contract.go",
@@ -114,7 +114,7 @@
       "label": "Rust",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 11825,
+      "githubBytes": 12286,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/rust/performance_budget.rs",
@@ -127,7 +127,7 @@
       "label": "Java",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 16110,
+      "githubBytes": 16392,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/java/SeisDeployReadiness.java",
@@ -141,7 +141,7 @@
       "label": "Kotlin",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1150,
+      "githubBytes": 1406,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/kotlin/SeisMotionPolicy.kt",
@@ -166,7 +166,7 @@
       "label": "PHP",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 8471,
+      "githubBytes": 8768,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/php/contact-endpoint.php",
@@ -180,7 +180,7 @@
       "label": "Ruby",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 13442,
+      "githubBytes": 13677,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/ruby/verify_release.rb",
@@ -221,7 +221,7 @@
       "label": "C#",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 2731,
+      "githubBytes": 2973,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/csharp/SeisReleaseContract.cs"
@@ -233,7 +233,7 @@
       "label": "SQL",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 8177,
+      "githubBytes": 8752,
       "layer": "database-and-data",
       "entrypoints": [
         "polyglot/sql/audit_ledger.sqlite.sql"
@@ -245,7 +245,7 @@
       "label": "Shell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 67450,
+      "githubBytes": 92418,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 87594,
+      "githubBytes": 134954,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 99419,
+      "githubBytes": 285328,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",
