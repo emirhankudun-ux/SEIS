@@ -142,6 +142,8 @@
     "cloud:ssh-config:install": "node scripts/install-seis-cloud-ssh-config.mjs",
     "cloud:ssh:online": "node scripts/check-seis-cloud-ssh-online.mjs",
     "cloud:ssh:online:strict": "node scripts/check-seis-cloud-ssh-online.mjs --require-ready",
+    "cloud:ssh:mobile-24x7": "node scripts/check-seis-ssh-mobile-24x7.mjs",
+    "cloud:ssh:mobile-24x7:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready",
     "cloud:ssh:ensure-online": "node scripts/ensure-seis-ssh-online.mjs",
     "cloud:ssh:direct-cloud:switch": "node scripts/switch-seis-ssh-direct-cloud.mjs",
     "check:seis-ssh-access-model": "node scripts/check-seis-ssh-access-model.mjs",
