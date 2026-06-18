@@ -6,7 +6,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
-const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true;
+const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && legacyPersonalAvailable();
 const failures = [];
 
 const standaloneLanes = [
@@ -14,6 +14,7 @@ const standaloneLanes = [
     name: "seis-cloud",
     displayName: "SEIS Cloud",
     marketplaceCategory: "Developer",
+    pluginRootEnv: "SEIS_CLOUD_PLUGIN_ROOT",
     mcpServer: "seis-cloud",
     tools: ["seis_cloud_status", "seis_cloud_plan"],
   },
@@ -75,7 +76,7 @@ Options:
 for (const lane of standaloneLanes) {
   validatePluginRoot(path.join(ROOT, "plugins", lane.name), lane, "repo");
   if (checkLocal) {
-    validatePluginRoot(path.join(homeDir(), "plugins", lane.name), lane, "local");
+    validatePluginRoot(localPluginRoot(lane), lane, "local");
   }
 }
 
@@ -497,6 +498,18 @@ function fail(message) {
 
 function homeDir() {
   return process.env.HOME || "/Users/emirhankudun";
+}
+
+function localPluginRoot(lane) {
+  const envRoot = lane.pluginRootEnv ? process.env[lane.pluginRootEnv] : "";
+  return envRoot || path.join(homeDir(), "plugins", lane.name);
+}
+
+function legacyPersonalAvailable() {
+  if (fs.existsSync(path.join(homeDir(), ".agents", "plugins", "marketplace.json"))) {
+    return true;
+  }
+  return standaloneLanes.some((lane) => fs.existsSync(localPluginRoot(lane)));
 }
 
 function readJson(filePath) {
