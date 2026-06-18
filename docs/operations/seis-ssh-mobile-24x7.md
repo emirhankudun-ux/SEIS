@@ -41,7 +41,19 @@ reports/seis-ssh-mobile-direct-cloud-profile.json
 reports/seis-ssh-mobile-direct-cloud-profile.md
 ```
 
-Copy the generated `Host SEIS-SSH` block into `~/.ssh/config`.
+Preview the managed SSH config block:
+
+```bash
+npm run cloud:ssh:mobile-direct:config:plan
+```
+
+Install the managed `Host SEIS-SSH` block into `~/.ssh/config` only after the preview is correct:
+
+```bash
+npm run cloud:ssh:mobile-direct:config:install
+```
+
+The installer only writes a marked SEIS-managed block. It refuses to replace an unmanaged `Host SEIS-SSH` alias unless `--force` is passed explicitly.
 
 ## Remote bootstrap
 

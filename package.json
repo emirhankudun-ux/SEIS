@@ -101,6 +101,8 @@
     "cloud:ssh:online:strict": "node scripts/check-seis-cloud-ssh-online.mjs --require-ready",
     "cloud:ssh:ensure-online": "node scripts/ensure-seis-ssh-online.mjs",
     "cloud:ssh:direct-cloud:switch": "node scripts/switch-seis-ssh-direct-cloud.mjs",
+    "cloud:ssh:mobile-direct:config:plan": "node scripts/install-seis-ssh-mobile-direct-cloud-config.mjs --dry-run",
+    "cloud:ssh:mobile-direct:config:install": "node scripts/install-seis-ssh-mobile-direct-cloud-config.mjs --write",
     "check:seis-ssh-access-model": "node scripts/check-seis-ssh-access-model.mjs",
     "check:seis-ssh-picker-compatibility": "node scripts/check-seis-ssh-picker-compatibility.mjs",
     "cloud:self-hosted:kit": "node scripts/create-self-hosted-seis-cloud-kit.mjs",
