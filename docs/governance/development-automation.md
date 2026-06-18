@@ -150,6 +150,33 @@ JSON örneği almak için:
 npm run quality:governance:publish -- --json
 ```
 
+Dry-run planını görmek için:
+
+```bash
+npm run quality:governance:publish -- --dry-run --json
+```
+
+Örnek dry-run JSON (örnek; gerçek dosya yolları, çalıştırıcının anlık durumuna göre değişir):
+
+```json
+{
+  "ok": true,
+  "mode": "quality:governance:publish",
+  "nextStep": "npm run quality:governance:publish",
+  "dryRun": true,
+  "steps": [
+    { "id": "check:publish-gate-contract", "ok": null },
+    { "id": "check:open-source-governance", "ok": null }
+  ],
+  "blockers": [],
+  "summary": {
+    "total": 16,
+    "failed": 0,
+    "continue": false
+  }
+}
+```
+
 Dil dağılımı eşleşmiyorsa (ör. `check:language-distribution` stale), otomatik düzeltme için:
 
 ```bash
@@ -220,10 +247,26 @@ quality:governance:publish=blocked; blockers=check:open-source-governance; next=
 
 Artifact:
 
-Komut, CI modunda otomatik olarak `reports/quality-governance-publish-report.json` üretir. İsterseniz farklı bir yol verebilirsiniz:
+Komut, CI modunda otomatik olarak hem `reports/quality-governance-publish-report.json` hem de
+`reports/quality-governance-publish-report-summary.json` üretir. İsterseniz farklı bir yol verebilirsiniz:
 
 ```bash
 node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-publish.json --json
+node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-publish.json --summary-artifact reports/custom/quality-publish-summary.json
+```
+
+Özet artifact örneği:
+
+```json
+{
+  "ok": true,
+  "mode": "quality:governance:publish",
+  "generatedAt": "2026-06-18T20:13:55.945Z",
+  "dryRun": false,
+  "nextStep": null,
+  "failedChecks": [],
+  "blockers": []
+}
 ```
 
 Weekly full-efficiency report:

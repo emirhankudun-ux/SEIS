@@ -8,10 +8,16 @@ const root = process.cwd();
 const args = parseArgs(process.argv.slice(2));
 const isCiMode = Boolean(args.ci);
 const autoHealLanguageDistribution = Boolean(args.autoHeal || args.auto_heal || args.auto_heal_language_distribution);
+const isDryRun = Boolean(args.dryRun);
 const emitJson = Boolean(args.json) || Boolean(args.artifact);
 const compact = Boolean(args.compact || isCiMode);
 const writeArtifact = Boolean(args.writeArtifact) || Boolean(args.artifact);
 const artifactPath = resolve(args.artifact || "reports/quality-governance-publish-report.json");
+const summaryArtifactPath = resolve(
+  args.summaryArtifact
+    || deriveSummaryPath(args.artifact ? args.artifact : "reports/quality-governance-publish-report.json")
+);
+const writeSummaryArtifact = Boolean(args.summary || isCiMode);
 
 const checks = [
   "check:publish-gate-contract",
@@ -34,43 +40,72 @@ const checks = [
 
 const steps = [];
 let firstFailure = null;
+const blockers = [];
 
-for (const check of checks) {
-  const checkSteps = runCheckWithHealing(check);
-  for (const result of checkSteps) {
-    steps.push(result);
-    if (!result.ok) {
-      if (!firstFailure || firstFailure.allowContinue) {
-        firstFailure = result;
-      }
-      if (!args.continue && !result.allowContinue) {
-        break;
+if (isDryRun) {
+  for (const check of checks) {
+    steps.push({
+      id: check,
+      command: `npm run ${check}`,
+      ok: null,
+      status: null,
+      mode: "dry-run",
+      reason: "Not executed (dry-run)",
+    });
+  }
+} else {
+  for (const check of checks) {
+    const checkSteps = runCheckWithHealing(check);
+    for (const result of checkSteps) {
+      steps.push(result);
+      if (!result.ok) {
+        if (!firstFailure || firstFailure.allowContinue) {
+          firstFailure = result;
+        }
+        if (!args.continue && !result.allowContinue) {
+          break;
+        }
       }
     }
-  }
-  if (firstFailure && !args.continue && !firstFailure.allowContinue) {
-    break;
+    if (firstFailure && !args.continue && !firstFailure.allowContinue) {
+      break;
+    }
   }
 }
 
-const blockers = steps
-  .filter((step) => !step.ok && !step.allowContinue)
-  .map((step) => ({
-    area: step.id,
-    reason: step.reason,
-    status: step.status,
-    command: step.command,
-  }));
+if (!isDryRun) {
+  blockers.push(...steps
+    .filter((step) => !step.ok && !step.allowContinue)
+    .map((step) => ({
+      area: step.id,
+      reason: step.reason,
+      status: step.status,
+      command: step.command,
+    })));
+} else {
+  const firstDryRunStep = steps[0];
+  blockers.length = 0;
+  firstFailure = firstDryRunStep
+    ? {
+      ...firstDryRunStep,
+      ok: true,
+      reason: "dry-run completed",
+      status: 0,
+      command: firstDryRunStep.command,
+    }
+    : null;
+}
 
 const report = {
-  ok: blockers.length === 0,
+  ok: isDryRun ? true : blockers.length === 0,
   mode: "quality:governance:publish",
   generatedAt: new Date().toISOString(),
   nextStep: blockers.length === 0
-    ? null
+    ? (isDryRun ? "npm run quality:governance:publish" : null)
     : `npm run ${blockers[0].area}`,
   steps,
   blockers,
+  dryRun: isDryRun,
   summary: {
     total: steps.length,
     failed: blockers.length,
@@ -78,12 +113,25 @@ const report = {
   },
 };
 
+const summaryArtifact = {
+  ok: report.ok,
+  mode: report.mode,
+  generatedAt: report.generatedAt,
+  dryRun: report.dryRun,
+  nextStep: report.nextStep,
+  failedChecks: blockers.map((entry) => entry.area),
+  blockers: report.blockers,
+};
+
 if (writeArtifact) {
   mkdirSync(dirname(artifactPath), { recursive: true });
   writeFileSync(artifactPath, `${JSON.stringify(report, null, 2)}\n`);
+  if (writeSummaryArtifact) {
+    writeFileSync(summaryArtifactPath, `${JSON.stringify(summaryArtifact, null, 2)}\n`);
+  }
 }
 
-if (!report.ok) {
+if (!report.ok && !isDryRun) {
   const blockerNames = blockers.map((item) => item.area).join(",");
   const oneLine = `quality:governance:publish=blocked; blockers=${blockerNames}; next=${blockers[0].area}`;
   if (compact) {
@@ -102,6 +150,12 @@ if (!report.ok) {
   }
 } else if (compact) {
   console.log("quality:governance:publish=ok");
+}
+
+if (isDryRun) {
+  console.log("quality:governance:publish=dry-run");
+  const list = steps.map((step) => step.id).join(", ");
+  console.log(`checks=${steps.length}; plan=[${list}]`);
 }
 
 if (emitJson) {
@@ -131,6 +185,14 @@ function parseArgs(tokens) {
       parsed.auto_heal = true;
       continue;
     }
+    if (key === "dry-run") {
+      parsed.dryRun = true;
+      continue;
+    }
+    if (key === "summary") {
+      parsed.summary = true;
+      continue;
+    }
     if (key === "write-artifact") {
       parsed.writeArtifact = true;
       continue;
@@ -144,6 +206,15 @@ function parseArgs(tokens) {
       idx += 1;
       continue;
     }
+    if (key === "summary-artifact") {
+      const value = tokens[idx + 1];
+      if (!value || value.startsWith("--")) {
+        throw new Error(`Missing value for --${key}`);
+      }
+      parsed.summaryArtifact = value;
+      idx += 1;
+      continue;
+    }
     if (key === "compact") {
       parsed.compact = true;
     }
@@ -151,8 +222,9 @@ function parseArgs(tokens) {
 
   if (parsed.help) {
     console.log([
-      "Usage: node scripts/quality-governance-publish.cjs [--json] [--ci] [--compact] [--continue]",
+      "Usage: node scripts/quality-governance-publish.cjs [--json] [--ci] [--compact] [--continue] [--dry-run]",
       "       [--artifact <path>] [--write-artifact] [--auto-heal]",
+      "       [--summary] [--summary-artifact <path>]",
     ].join("\n"));
     process.exit(0);
   }
@@ -225,4 +297,11 @@ function firstNonEmptyLine(text) {
     .split("\n")
     .map((line) => line.trim())
     .find((line) => line.length > 0);
+}
+
+function deriveSummaryPath(pathValue) {
+  if (!pathValue || pathValue.endsWith(".json") === false) {
+    return `${pathValue || "reports/quality-governance-publish-report"}-summary.json`;
+  }
+  return pathValue.replace(/\.json$/, "-summary.json");
 }
