@@ -126,6 +126,124 @@ const agents = [
   }
 ];
 
+const aiSystems = [
+  {
+    name: "OpenAI",
+    role: "Primary execution and repository automation model lane.",
+    mode: "Primary"
+  },
+  {
+    name: "Claude",
+    role: "Architecture review, long-context reasoning, and high-risk critique.",
+    mode: "Review"
+  },
+  {
+    name: "Gemini",
+    role: "Google ecosystem validation, documentation synthesis, and secondary evidence.",
+    mode: "Validation"
+  },
+  {
+    name: "Qwen",
+    role: "Alternative reasoning, counter-analysis, and implementation comparison.",
+    mode: "Optional"
+  },
+  {
+    name: "Local Models",
+    role: "Offline experimentation and private draft workflows when resources allow.",
+    mode: "Experimental"
+  }
+];
+
+const pluginFamilies = [
+  {
+    name: "Builder and Prototyping",
+    health: "Ready",
+    permissions: "Scoped activation",
+    summary: "Lovable, Replit, Base44, Vercel, Cloudflare, Supabase and hosting lanes."
+  },
+  {
+    name: "Creative Production and Design",
+    health: "Ready",
+    permissions: "Asset-gated",
+    summary: "Figma, Canva, Adobe, Fal, Shutterstock and visual production tools."
+  },
+  {
+    name: "Cloud, DevOps and Release",
+    health: "Review",
+    permissions: "Provider-gated",
+    summary: "CI, deploy, cloud readiness, SSH access, rollback and release safety."
+  },
+  {
+    name: "Security, Quality and Governance",
+    health: "Ready",
+    permissions: "Read-first",
+    summary: "Code review, static analysis, dependency review, policy and audit checks."
+  },
+  {
+    name: "AI Workflow, Docs and Knowledge",
+    health: "Active",
+    permissions: "Source-visible",
+    summary: "MCP, skills, browser/document tools, memory systems and knowledge workflow."
+  }
+];
+
+const automationWorkflows = [
+  {
+    name: "Quality Governance",
+    trigger: "Manual or pre-release",
+    status: "Ready",
+    history: "npm run quality"
+  },
+  {
+    name: "Generated Reports",
+    trigger: "Source-surface change",
+    status: "Ready",
+    history: "language distribution and technology stack"
+  },
+  {
+    name: "Plugin Bundle Check",
+    trigger: "Plugin or skill update",
+    status: "Ready",
+    history: "specialist plugin checks"
+  },
+  {
+    name: "Cloud SSH Readiness",
+    trigger: "Remote workspace handoff",
+    status: "Review",
+    history: "SEIS-SSH picker compatibility"
+  }
+];
+
+const securityReports = [
+  {
+    name: "Secrets Boundary",
+    status: "Ready",
+    detail: "No API keys, tokens, certificates or provisioning files should enter the repository."
+  },
+  {
+    name: "SEIS-SSH Access Model",
+    status: "Review",
+    detail: "Single visible cloud alias with terminal-compatible Codespaces transport."
+  },
+  {
+    name: "Plugin Permissions",
+    status: "Ready",
+    detail: "Plugins activate only when relevant, authenticated, scoped and user-approved."
+  },
+  {
+    name: "Dependency Surface",
+    status: "Ready",
+    detail: "Phase 1 stays dependency-free; future frameworks require explicit architecture gates."
+  }
+];
+
+const recommendedActions = [
+  ["Command Center architecture", "Keep Phase 1 static, then promote proven modules to React/Next."],
+  ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
+  ["Automation wiring", "Connect report refresh, quality and release checks to a traceable workflow history."],
+  ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
+];
+
 const architectureNodes = [
   ["Interface", "Static Phase 1 shell with dashboard, goals, repos, docs, agents and architecture modules."],
   ["State", "Local browser state with clear data boundaries and no secret storage."],
@@ -148,6 +266,9 @@ const viewMeta = {
   repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
   documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
   agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Run Agent"],
+  plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Review Plugins"],
+  automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Run Check"],
+  security: ["Security", "Security center", "Track risk reports, permission reviews, dependency scanning, access models, and auditability.", "Review Risk"],
   architecture: ["Architecture", "Architecture tracking", "Map system structure, dependencies, decisions, and technical debt.", "Add ADR"],
   knowledge: ["Knowledge", "Knowledge management", "Keep memory, research, and decisions discoverable.", "Capture Note"]
 };
@@ -186,6 +307,9 @@ function render() {
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderPlugins();
+  renderAutomation();
+  renderSecurity();
   renderArchitecture();
   renderKnowledge();
   renderInspector();
@@ -256,6 +380,13 @@ function renderDashboard() {
     ["Agent modes", "Document role boundaries before automation expansion."]
   ].map(([title, detail]) => `
     <article class="alert-card">
+      <strong>${title}</strong>
+      <p>${detail}</p>
+    </article>
+  `).join("");
+
+  $("#recommended-actions").innerHTML = recommendedActions.map(([title, detail]) => `
+    <article class="action-card">
       <strong>${title}</strong>
       <p>${detail}</p>
     </article>
@@ -338,6 +469,69 @@ function renderAgents() {
       <button class="secondary-button" type="button" data-agent="${agent.name}">Activate</button>
     </article>
   `).join("");
+
+  $("#ai-system-grid").innerHTML = aiSystems.map((system) => `
+    <article class="system-card">
+      <div class="card-topline">
+        <h3>${system.name}</h3>
+        <span class="status-pill ${statusClass(system.mode === "Primary" ? "Ready" : "Review")}">${system.mode}</span>
+      </div>
+      <p>${system.role}</p>
+    </article>
+  `).join("");
+}
+
+function renderPlugins() {
+  $("#plugin-grid").innerHTML = pluginFamilies.map((family) => `
+    <article class="plugin-card">
+      <div class="card-topline">
+        <h3>${family.name}</h3>
+        <span class="status-pill ${statusClass(family.health)}">${family.health}</span>
+      </div>
+      <p>${family.summary}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${family.permissions}</span>
+        <span class="meta-chip">least privilege</span>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderAutomation() {
+  $("#automation-grid").innerHTML = automationWorkflows.map((workflow) => `
+    <article class="automation-card">
+      <div class="card-topline">
+        <h3>${workflow.name}</h3>
+        <span class="status-pill ${statusClass(workflow.status)}">${workflow.status}</span>
+      </div>
+      <p>${workflow.history}</p>
+      <div class="meta-row">
+        <span class="meta-chip">Trigger: ${workflow.trigger}</span>
+        <span class="meta-chip">audit trail</span>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderSecurity() {
+  $("#security-list").innerHTML = securityReports.map((report) => `
+    <article class="security-card">
+      <div class="card-topline">
+        <h3>${report.name}</h3>
+        <span class="status-pill ${statusClass(report.status)}">${report.status}</span>
+      </div>
+      <p>${report.detail}</p>
+    </article>
+  `).join("");
+
+  $("#security-requirements").innerHTML = [
+    "least privilege",
+    "secure defaults",
+    "encrypted storage where needed",
+    "role-based access",
+    "auditability",
+    "no exposed secrets"
+  ].map((item) => `<li>${item}</li>`).join("");
 }
 
 function renderArchitecture() {
@@ -509,6 +703,9 @@ function renderCommandResults(query) {
     ["Repositories", "Inspect repository health", "repositories"],
     ["Documentation", "Review docs and ADR coverage", "documentation"],
     ["Agents", "Switch AI operating mode", "agents"],
+    ["Plugins", "Review plugins, permissions and updates", "plugins"],
+    ["Automation", "Inspect workflows and triggers", "automation"],
+    ["Security", "Review risk and access posture", "security"],
     ["Architecture", "Open system map", "architecture"],
     ["Knowledge", "Open knowledge management", "knowledge"]
   ].filter((command) => command.join(" ").toLowerCase().includes(query.toLowerCase()));

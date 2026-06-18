@@ -1,14 +1,14 @@
 :root {
-  --bg: #f5f4f1;
-  --ink: #111111;
-  --muted: #6f6a63;
-  --faint: #8f8981;
+  --bg: #f6f7f9;
+  --ink: #111318;
+  --muted: #66707d;
+  --faint: #87909c;
   --line: rgba(17, 17, 17, 0.1);
   --line-strong: rgba(17, 17, 17, 0.16);
   --surface: rgba(255, 255, 255, 0.82);
   --surface-solid: #ffffff;
-  --sidebar: #111111;
-  --sidebar-muted: #a8a39a;
+  --sidebar: #101218;
+  --sidebar-muted: #aeb6c2;
   --sidebar-line: rgba(255, 255, 255, 0.1);
   --accent: #4078ff;
   --accent-soft: rgba(64, 120, 255, 0.12);
@@ -36,7 +36,7 @@ body {
 
 body {
   background:
-    linear-gradient(120deg, rgba(255, 255, 255, 0.5), rgba(228, 225, 218, 0.6)),
+    linear-gradient(120deg, rgba(255, 255, 255, 0.68), rgba(226, 233, 242, 0.58)),
     var(--bg);
   color: var(--ink);
   line-height: 1.45;
@@ -382,6 +382,11 @@ h3 {
 .goal-card,
 .repo-card,
 .agent-card,
+.plugin-card,
+.automation-card,
+.security-card,
+.system-card,
+.action-card,
 .knowledge-card,
 .doc-row,
 .architecture-node {
@@ -408,7 +413,8 @@ h3 {
 }
 
 .dashboard-layout,
-.doc-layout {
+.doc-layout,
+.security-layout {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
   gap: 14px;
@@ -502,17 +508,25 @@ h3 {
   gap: 10px;
 }
 
-.alert-card {
+.alert-card,
+.action-card {
   padding: 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.58);
 }
 
-.alert-card p {
+.alert-card p,
+.action-card p {
   margin-bottom: 0;
   color: var(--muted);
   font-size: 13px;
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
 }
 
 .goal-form {
@@ -551,6 +565,9 @@ select {
 .goal-board,
 .repo-grid,
 .agent-grid,
+.plugin-grid,
+.automation-grid,
+.system-grid,
 .knowledge-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -560,10 +577,18 @@ select {
 .goal-card,
 .repo-card,
 .agent-card,
+.plugin-card,
+.automation-card,
+.security-card,
+.system-card,
 .knowledge-card {
   display: grid;
   gap: 12px;
   padding: 15px;
+}
+
+.module-spacer {
+  margin-top: 14px;
 }
 
 .card-topline {
@@ -659,9 +684,18 @@ select {
 .architecture-node p,
 .knowledge-card p,
 .agent-card p,
+.plugin-card p,
+.automation-card p,
+.security-card p,
+.system-card p,
 .goal-card p,
 .repo-card p {
   color: var(--muted);
+}
+
+.security-list {
+  display: grid;
+  gap: 10px;
 }
 
 .command-dialog,
