@@ -165,7 +165,8 @@
     "check:seis-master-objective-coverage-report": "node scripts/create-seis-master-objective-coverage-report.mjs --check",
     "automation:seis-master-objective-coverage-report": "node scripts/create-seis-master-objective-coverage-report.mjs",
     "cloud:ssh:mobile-24x7": "node scripts/check-seis-ssh-mobile-24x7.mjs",
-    "cloud:ssh:mobile-24x7:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready"
+    "cloud:ssh:mobile-24x7:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready",
+    "cloud:ssh:mobile-24x7:report": "node scripts/create-seis-ssh-mobile-24x7-report.mjs"
   },
   "engines": {
     "node": ">=18"

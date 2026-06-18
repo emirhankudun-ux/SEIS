@@ -91,3 +91,21 @@ key on the remote host or fix the remote user before applying the alias.
 - Keep `.gitignore` protecting key material.
 - Do not call `SEIS-SSH` mobile-ready unless
   `npm run cloud:ssh:mobile-24x7:strict` passes.
+
+## Local handoff report
+
+Generate a local, ignored JSON and Markdown handoff report when debugging mobile
+readiness from a laptop, Codex session, or ChatGPT desktop session:
+
+```bash
+npm run cloud:ssh:mobile-24x7:report
+```
+
+Default outputs:
+
+- `reports/seis-ssh-mobile-24x7-readiness.json`
+- `reports/seis-ssh-mobile-24x7-readiness.md`
+
+These files are intentionally git-ignored because they describe the current
+operator machine and SSH alias state. The report redacts the home directory and
+blocks API-key/private-key patterns before writing the artifact.
