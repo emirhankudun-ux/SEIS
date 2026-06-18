@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 856
-- Counted bytes: 4820265
-- JavaScript: 1697306 bytes (35.21%)
+- Counted bytes: 4828920
+- JavaScript: 1703296 bytes (35.27%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3262144
+- Additional non-JavaScript bytes needed for strict target: 3282013
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1697306 | 35.21% | JavaScript |
-| TypeScript | 411787 | 8.54% | TypeScript |
-| Objective-C | 8447 | 0.18% | Objective-C |
-| Other | 2702725 | 56.07% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| JavaScript | 1703296 | 35.27% | JavaScript |
+| TypeScript | 411787 | 8.53% | TypeScript |
+| Objective-C | 8447 | 0.17% | Objective-C |
+| Other | 2705390 | 56.02% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,14 +25,14 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 12.1% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 27.25% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 43.75% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Apple / Swift ecosystem | 12.08% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 27.2% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 43.8% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.49% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.61% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 3.21% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Go / Infrastructure | 3.2% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.17% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 9.01% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 9.05% | 0.0-3.0% | `above_target` | HTML, CSS |
 
 Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
@@ -40,16 +40,16 @@ Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1697306 | 35.21% |
-| JSON | 787726 | 16.34% |
-| Swift | 574078 | 11.91% |
-| Python | 506913 | 10.52% |
-| TypeScript | 411787 | 8.54% |
-| CSS | 291622 | 6.05% |
-| HTML | 142919 | 2.96% |
-| Shell | 92418 | 1.92% |
+| JavaScript | 1703296 | 35.27% |
+| JSON | 787726 | 16.31% |
+| Swift | 574078 | 11.89% |
+| Python | 506913 | 10.5% |
+| TypeScript | 411787 | 8.53% |
+| CSS | 293039 | 6.07% |
+| HTML | 144167 | 2.99% |
+| Shell | 92418 | 1.91% |
 | Other | 41805 | 0.87% |
-| YAML | 37893 | 0.79% |
+| YAML | 37893 | 0.78% |
 | Go | 16806 | 0.35% |
 | Java | 16392 | 0.34% |
 | Scheme | 15747 | 0.33% |
@@ -59,7 +59,7 @@ Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | C++ | 11206 | 0.23% |
 | PHP | 8768 | 0.18% |
 | SQL | 8752 | 0.18% |
-| Objective-C | 8447 | 0.18% |
+| Objective-C | 8447 | 0.17% |
 | R | 7953 | 0.16% |
 | OCaml | 7550 | 0.16% |
 | Tcl | 7290 | 0.15% |
@@ -72,7 +72,7 @@ Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `emirhan-kudun-portfolio/apps/uix-web/src/i18n/locales.js` | 105051 |
 | `emirhan-kudun-portfolio/packages/content/src/uix-static/locales.js` | 105051 |
 | `apps/web/script.js` | 79540 |
-| `apps/seis-core/script.js` | 44990 |
+| `apps/seis-core/script.js` | 50473 |
 | `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
 | `scripts/check-cloud-environment.cjs` | 31248 |
