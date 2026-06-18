@@ -21,6 +21,7 @@ legacy compatibility mirror.
 - SEIS GitHub workflow governance for branch, PR, CODEOWNERS, GitHub Actions, source-of-truth, and no-push handoff decisions
 - SEIS Security Review governance for secret safety, least privilege, SSH/cloud risk, rollback readiness, GitHub readiness, and validation-claim checks
 - SEIS Focus Mode AGI operating lane for app, website, plugin, and AI/AGI work that must stay concentrated, low-noise, evidence-preserving, and long-term oriented
+- SEIS God Mode Developer operating lane for high-agency SEIS architecture, code, docs, security, cloud, plugin, AI, and product improvements with strict evidence and user-work protection
 
 ## Local Paths
 
@@ -97,11 +98,13 @@ MCP plan endpoints:
 - `skills/seis-github-workflow/SKILL.md` routes GitHub source-of-truth work through branch, PR, check-run, CODEOWNERS, workflow, and no-push/no-readiness gates.
 - `skills/seis-security-review/SKILL.md` routes security, privacy, least-privilege, SSH/cloud, rollback, secret-safety, and validation-claim review through the SEIS plugin bundle.
 - `skills/seis-focus-mode/SKILL.md` routes Focus Mode work through the app/website toggle, telemetry contract, AI/AGI learning contract, and dedicated Focus Mode quality check.
+- `skills/seis-god-mode-developer/SKILL.md` routes God Mode Developer work through the Master Prompt, Command Center, operational goal tracker, dedicated contract, and evidence-first quality gate.
 
 Focused Master Prompt checks:
 
 ```bash
 npm run check:seis-focus-mode
+npm run check:seis-god-mode-developer
 npm run check:seis-master-prompt-report
 npm run check:seis-master-prompt
 ```

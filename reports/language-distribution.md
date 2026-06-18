@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 857
-- Counted bytes: 4799513
-- JavaScript: 1684154 bytes (35.09%)
+- Counted bytes: 4800232
+- JavaScript: 1684517 bytes (35.09%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3220267
+- Additional non-JavaScript bytes needed for strict target: 3221277
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1684154 | 35.09% | JavaScript |
+| JavaScript | 1684517 | 35.09% | JavaScript |
 | TypeScript | 411787 | 8.58% | TypeScript |
 | Objective-C | 8447 | 0.18% | Objective-C |
-| Other | 2695125 | 56.15% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2695481 | 56.15% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -40,8 +40,8 @@ Unassigned counted languages: 3.41% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1684154 | 35.09% |
-| JSON | 787817 | 16.41% |
+| JavaScript | 1684517 | 35.09% |
+| JSON | 788173 | 16.42% |
 | Swift | 574078 | 11.96% |
 | Python | 506913 | 10.56% |
 | TypeScript | 411787 | 8.58% |

@@ -9,24 +9,24 @@
   },
   "summary": {
     "countedFileCount": 857,
-    "countedBytes": 4799513,
-    "javascriptBytes": 1684154,
+    "countedBytes": 4800232,
+    "javascriptBytes": 1684517,
     "javascriptPercent": 35.09,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3220267,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3221277,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1684154,
+      "bytes": 1684517,
       "percent": 35.09
     },
     {
       "language": "JSON",
-      "bytes": 787817,
-      "percent": 16.41
+      "bytes": 788173,
+      "percent": 16.42
     },
     {
       "language": "Swift",
@@ -502,7 +502,7 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1684154,
+      "bytes": 1684517,
       "percent": 35.09,
       "sourceLanguages": [
         "JavaScript"
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 2695125,
+      "bytes": 2695481,
       "percent": 56.15,
       "sourceLanguages": [
         "ABAP",
@@ -649,7 +649,7 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1313689,
+        "bytes": 1314045,
         "percent": 27.37,
         "minPercent": 18.0,
         "maxPercent": 22.0,
@@ -671,7 +671,7 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2095941,
+        "bytes": 2096304,
         "percent": 43.67,
         "minPercent": 15.0,
         "maxPercent": 20.0,
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1268824,
+    "documentation": 1269247,
     "linguist-generated": 2974360,
     "linguist-vendored": 2851037
   },
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "2cfc11909037b4ee5e16a411b82f4c3bc4247c56b30230649867bf17e84fea8d",
+    "hash": "07db809baa4af54e022394cd86b28f8b45afb7832490ec2b2dc342d285c37304",
     "algorithm": "sha256"
   }
 }

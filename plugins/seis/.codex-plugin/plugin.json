@@ -43,7 +43,8 @@
       "SEIS Master Prompt governance",
       "SEIS GitHub workflow governance",
       "SEIS Security Review governance",
-      "SEIS Focus Mode AGI operating lane"
+      "SEIS Focus Mode AGI operating lane",
+      "SEIS God Mode Developer operating lane"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
@@ -54,7 +55,8 @@
       "Use SEIS Master Prompt governance for architecture, security, documentation, AI, cloud, product, and quality changes.",
       "Use SEIS GitHub workflow governance to plan branch, PR, checks, CODEOWNERS, and source-of-truth handoff.",
       "Use SEIS Security Review governance to inspect secrets, least privilege, SSH/cloud risk, GitHub readiness, and validation claims.",
-      "Use SEIS Focus Mode to keep app, website, plugin, and AI/AGI work concentrated, low-noise, and evidence-preserving."
+      "Use SEIS Focus Mode to keep app, website, plugin, and AI/AGI work concentrated, low-noise, and evidence-preserving.",
+      "Use SEIS God Mode Developer for high-agency architecture, code, docs, security, cloud, plugin, AI, and product improvements with strict evidence and user-work protection."
     ],
     "brandColor": "#2563EB"
   }
