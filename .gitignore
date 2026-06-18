@@ -147,3 +147,6 @@ scripts/super-ssh-manager.py
 # Local SEIS SSH mobile readiness reports
 reports/seis-ssh-mobile-24x7-readiness.json
 reports/seis-ssh-mobile-24x7-readiness.md
+reports/seis-ssh-mobile-direct-cloud-profile.json
+reports/seis-ssh-mobile-direct-cloud-profile.md
+.seis-secrets/
