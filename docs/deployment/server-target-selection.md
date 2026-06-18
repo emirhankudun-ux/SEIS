@@ -41,6 +41,7 @@ Existing Linux SSH/VPS with WireGuard:
 ```bash
 npm run cloud:ssh-vpn:readiness -- --ssh-target seis@example.com
 npm run cloud:ssh-vpn:server:plan -- --ssh-target seis@example.com --vpn-peer 'admin|CLIENT_PUBLIC_KEY|10.44.0.2/32'
+npm run cloud:self-hosted:kit -- --ssh-target root@example.com --peer-public-key CLIENT_PUBLIC_KEY
 npm run check:deploy-readiness
 ```
 

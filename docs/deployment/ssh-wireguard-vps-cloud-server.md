@@ -113,6 +113,29 @@ The plan is intentionally not a live apply command. Run the generated SSH
 commands only after host ownership, rollback owner, maintenance window, and the
 approved WireGuard peer are confirmed.
 
+## Self-Hosted SEIS Cloud Kit
+
+When SEIS owns the cloud host setup end to end, generate a local operator kit
+instead of writing one-off SSH commands:
+
+```bash
+npm run cloud:self-hosted:kit -- \
+  --ssh-target root@example.com \
+  --peer-public-key CLIENT_PUBLIC_KEY
+```
+
+The kit writes `dist/seis-cloud-self-hosted-kit` with the installer, an apply
+script, an SSH config snippet, a readiness script, and a handoff note. It does
+not generate or store SSH private keys, WireGuard private keys, provider tokens,
+or certificates.
+
+After the host is reachable, run the generated apply script, append the reviewed
+SSH config snippet to `~/.ssh/config`, then validate:
+
+```bash
+npm run cloud:ssh-vpn:readiness:strict -- --ssh-target seis-cloud-vps
+```
+
 ## Safety
 
 - Keep real hostnames, usernames, and credentials out of Git.
