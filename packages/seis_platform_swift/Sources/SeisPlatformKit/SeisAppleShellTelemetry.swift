@@ -1,5 +1,14 @@
 import Foundation
+
+#if canImport(OSLog)
 import OSLog
+#else
+private struct Logger: Sendable {
+    init(subsystem: String, category: String) {}
+
+    func info(_ message: String) {}
+}
+#endif
 
 public enum SeisAppleShellTelemetryEvent: String, Codable, CaseIterable, Sendable {
     case focusCommandReceived = "focus_command_received"
@@ -116,7 +125,11 @@ public struct SeisAppleShellTelemetryLogger {
         let safeDetail = detail
             .replacingOccurrences(of: "\n", with: " ")
             .replacingOccurrences(of: "\r", with: " ")
+        #if canImport(OSLog)
         logger(for: event).info("event=\(event.rawValue, privacy: .public) detail=\(safeDetail, privacy: .public)")
+        #else
+        logger(for: event).info("event=\(event.rawValue) detail=\(safeDetail)")
+        #endif
     }
 
     private func logger(for event: SeisAppleShellTelemetryEvent) -> Logger {
