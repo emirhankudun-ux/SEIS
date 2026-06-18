@@ -32,6 +32,8 @@ const requiredScriptSignals = [
   "automationWorkflows",
   "securityReports",
   "aiSystems",
+  "operatingDomains",
+  "platformPhases",
   "renderCommandResults"
 ];
 
@@ -39,11 +41,28 @@ const requiredDocSections = [
   "Folder Structure",
   "Component Map",
   "Data Model",
+  "Operating Model",
   "API Design",
   "Testing Strategy",
   "Roadmap",
+  "Platform Phases",
   "Deployment Strategy",
   "Security Model"
+];
+
+const requiredOperatingDomains = [
+  "Repositories",
+  "AI Agents",
+  "MCP Systems",
+  "Plugin Systems",
+  "Documentation",
+  "Architecture Decisions",
+  "Roadmap Planning",
+  "Goal Tracking",
+  "Automation Workflows",
+  "Cloud Infrastructure",
+  "Knowledge Systems",
+  "Security Systems"
 ];
 
 function fail(message) {
@@ -83,7 +102,13 @@ for (const signal of requiredScriptSignals) {
   }
 }
 
-for (const selector of [".plugin-card", ".automation-card", ".security-card", ".system-card"]) {
+for (const domain of requiredOperatingDomains) {
+  if (!script.includes(`name: "${domain}"`)) {
+    fail(`missing operating domain: ${domain}`);
+  }
+}
+
+for (const selector of [".plugin-card", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
   }
@@ -99,8 +124,8 @@ if (!manifest.name?.includes("SEIS Command Center")) {
   fail("manifest name must identify SEIS Command Center");
 }
 
-if (!readme.includes("SEIS Command Center") || !readme.includes("Plugins & Extensions")) {
-  fail("README must describe SEIS Command Center and plugin surface");
+if (!readme.includes("SEIS Command Center") || !readme.includes("Plugins & Extensions") || !readme.includes("Operating Model")) {
+  fail("README must describe SEIS Command Center, operating model, and plugin surface");
 }
 
 console.log("SEIS Command Center check passed.");
