@@ -81,19 +81,21 @@ npm run cloud:ssh:mobile-direct:doctor:strict
 
 ## Remote bootstrap
 
-Run this once against the direct-cloud VM:
+Preview the direct-cloud VM bootstrap command from the local repo:
 
 ```bash
-scp scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh root@<public-ip-or-dns>:/tmp/seis-bootstrap.sh
-ssh root@<public-ip-or-dns> 'SEIS_AUTHORIZED_KEY="$(cat ~/.ssh/authorized_keys | tail -n 1)" bash /tmp/seis-bootstrap.sh'
+export SEIS_SSH_HOST="<public-ip-or-dns>"
+export SEIS_SSH_PUBLIC_KEY_FILE="$HOME/.ssh/id_ed25519_seis_codex.pub"
+npm run cloud:ssh:mobile-direct:bootstrap:plan
 ```
 
-For a cleaner local invocation, pass your public key explicitly:
+Apply it only after the preview is correct and root SSH access is available:
 
 ```bash
-export SEIS_AUTHORIZED_KEY="$(cat ~/.ssh/id_ed25519_seis_codex.pub)"
-ssh root@<public-ip-or-dns> 'bash -s' < scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh
+npm run cloud:ssh:mobile-direct:bootstrap:apply
 ```
+
+The runner copies `scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh` to `/tmp/seis-bootstrap.sh`, passes the local public key as `SEIS_AUTHORIZED_KEY`, and keeps private keys and API keys out of git and logs.
 
 ## Mobile/Codex usage
 

@@ -74,6 +74,8 @@ function buildReport(readiness) {
       strictCommand: "npm run cloud:ssh:mobile-24x7:strict",
       reportCommand: "npm run cloud:ssh:mobile-24x7:report",
       directCloudProfileCommand: "npm run cloud:ssh:mobile-direct:profile",
+      directCloudBootstrapPlanCommand: "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+      directCloudBootstrapApplyCommand: "npm run cloud:ssh:mobile-direct:bootstrap:apply",
       directCloudConfigPlanCommand: "npm run cloud:ssh:mobile-direct:config:plan",
       directCloudConfigInstallCommand: "npm run cloud:ssh:mobile-direct:config:install",
       directCloudProbeCommand: "npm run cloud:ssh:mobile-direct:probe",
@@ -165,6 +167,8 @@ ${renderList(report.nextActions, "No next actions.")}
 \`\`\`bash
 ${report.handoff.directCloudSwitchCommand}
 ${report.handoff.directCloudProfileCommand}
+${report.handoff.directCloudBootstrapPlanCommand}
+${report.handoff.directCloudBootstrapApplyCommand}
 ${report.handoff.directCloudConfigPlanCommand}
 ${report.handoff.directCloudConfigInstallCommand}
 ${report.handoff.directCloudProbeCommand}

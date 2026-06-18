@@ -73,6 +73,8 @@ profile.sshConfig = [
 profile.commands = {
   generateProfile: "npm run cloud:ssh:mobile-direct:profile",
   strictProfile: "npm run cloud:ssh:mobile-direct:profile -- --strict",
+  bootstrapPlan: "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+  bootstrapApply: "npm run cloud:ssh:mobile-direct:bootstrap:apply",
   planSshConfig: "npm run cloud:ssh:mobile-direct:config:plan",
   installSshConfig: "npm run cloud:ssh:mobile-direct:config:install",
   probeReadiness: "npm run cloud:ssh:mobile-direct:probe",
