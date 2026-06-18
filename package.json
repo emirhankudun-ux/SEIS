@@ -172,6 +172,8 @@
     "cloud:ssh:mobile-direct:profile": "node scripts/create-seis-ssh-mobile-direct-cloud-profile.mjs",
     "cloud:ssh:mobile-direct:probe": "node scripts/check-seis-ssh-mobile-24x7.mjs",
     "cloud:ssh:mobile-direct:probe:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready",
+    "cloud:ssh:mobile-direct:doctor": "node scripts/create-seis-ssh-mobile-24x7-report.mjs",
+    "cloud:ssh:mobile-direct:doctor:strict": "node scripts/create-seis-ssh-mobile-24x7-report.mjs --require-ready",
     "check:seis-god-mode-developer": "node scripts/check-seis-god-mode-developer.mjs"
   },
   "engines": {

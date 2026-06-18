@@ -67,6 +67,18 @@ Use the strict probe before claiming ChatGPT mobile/Codex 24x7 readiness:
 npm run cloud:ssh:mobile-direct:probe:strict
 ```
 
+Produce a reusable doctor handoff report:
+
+```bash
+npm run cloud:ssh:mobile-direct:doctor
+```
+
+Use the strict doctor in release or mobile-device handoff flows:
+
+```bash
+npm run cloud:ssh:mobile-direct:doctor:strict
+```
+
 ## Remote bootstrap
 
 Run this once against the direct-cloud VM:
@@ -93,6 +105,7 @@ seis
 git pull --ff-only origin main
 npm run cloud:ssh:mobile-24x7:report
 npm run cloud:ssh:mobile-direct:probe
+npm run cloud:ssh:mobile-direct:doctor
 ```
 
 The session remains SSH-based. The 24x7 guarantee comes from the always-on VM and systemd-managed SSH service, not from the local computer.
@@ -125,6 +138,7 @@ The setup is ready only when all of these are true:
 - `systemctl status seis-ssh-mobile-ready` is healthy.
 - `npm run cloud:ssh:mobile-24x7:report` no longer reports a Codespaces-only transport blocker.
 - `npm run cloud:ssh:mobile-direct:probe:strict` succeeds.
+- `npm run cloud:ssh:mobile-direct:doctor:strict` succeeds and writes the handoff report.
 
 ## Fallback policy
 

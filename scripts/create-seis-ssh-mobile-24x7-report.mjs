@@ -14,6 +14,7 @@ if (args.help) {
 
 const jsonOut = args["json-out"] || "reports/seis-ssh-mobile-24x7-readiness.json";
 const mdOut = args["md-out"] || "reports/seis-ssh-mobile-24x7-readiness.md";
+const requireReady = Boolean(args["require-ready"]);
 const checkArgs = ["scripts/check-seis-ssh-mobile-24x7.mjs"];
 for (const key of ["host", "identity-file", "connect-timeout"]) {
   if (args[key]) checkArgs.push(`--${key}`, args[key]);
@@ -49,6 +50,7 @@ console.log(`SEIS SSH mobile 24/7 status: ${report.status}`);
 if (!report.ok) {
   console.log(`Blockers: ${report.blockers.join(", ") || "none"}`);
 }
+if (requireReady && !report.ok) process.exit(1);
 
 function buildReport(readiness) {
   const transport = readiness.checks?.sshConfig?.transport || "unknown";
@@ -71,6 +73,12 @@ function buildReport(readiness) {
     handoff: {
       strictCommand: "npm run cloud:ssh:mobile-24x7:strict",
       reportCommand: "npm run cloud:ssh:mobile-24x7:report",
+      directCloudProfileCommand: "npm run cloud:ssh:mobile-direct:profile",
+      directCloudConfigPlanCommand: "npm run cloud:ssh:mobile-direct:config:plan",
+      directCloudConfigInstallCommand: "npm run cloud:ssh:mobile-direct:config:install",
+      directCloudProbeCommand: "npm run cloud:ssh:mobile-direct:probe",
+      directCloudDoctorCommand: "npm run cloud:ssh:mobile-direct:doctor",
+      directCloudDoctorStrictCommand: "npm run cloud:ssh:mobile-direct:doctor:strict",
       directCloudSwitchCommand: "npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply",
       mobileReadyDefinition: "SEIS-SSH must use direct-cloud transport, prove TCP reachability, pass SSH key auth, and confirm the remote SSH-AI runtime."
     },
@@ -156,6 +164,12 @@ ${renderList(report.nextActions, "No next actions.")}
 
 \`\`\`bash
 ${report.handoff.directCloudSwitchCommand}
+${report.handoff.directCloudProfileCommand}
+${report.handoff.directCloudConfigPlanCommand}
+${report.handoff.directCloudConfigInstallCommand}
+${report.handoff.directCloudProbeCommand}
+${report.handoff.directCloudDoctorCommand}
+${report.handoff.directCloudDoctorStrictCommand}
 ${report.handoff.strictCommand}
 ${report.handoff.reportCommand}
 \`\`\`
@@ -178,7 +192,7 @@ function parseArgs(tokens) {
     if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "help") {
+    if (key === "help" || key === "require-ready") {
       parsed[key] = true;
       continue;
     }
@@ -199,6 +213,7 @@ Options:
   --host HOST             SSH alias. Default: SEIS-SSH.
   --identity-file PATH    Override direct-cloud identity file.
   --connect-timeout SEC   SSH/TCP timeout. Default: 12.
+  --require-ready         Exit non-zero after writing reports unless mobile 24/7 readiness passes.
   --json-out PATH         JSON report path. Default: reports/seis-ssh-mobile-24x7-readiness.json.
   --md-out PATH           Markdown report path. Default: reports/seis-ssh-mobile-24x7-readiness.md.
 `);
