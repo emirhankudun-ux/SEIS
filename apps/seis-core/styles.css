@@ -388,6 +388,8 @@ h3 {
 .system-card,
 .action-card,
 .domain-card,
+.activity-row,
+.dependency-row,
 .phase-row,
 .knowledge-card,
 .doc-row,
@@ -445,6 +447,8 @@ h3 {
 .stack-list,
 .repo-health-list,
 .doc-list,
+.activity-timeline,
+.dependency-overview,
 .mode-list,
 .next-actions,
 .roadmap-list {
@@ -455,6 +459,8 @@ h3 {
 .goal-row,
 .repo-health-row,
 .doc-row,
+.activity-row,
+.dependency-row,
 .mode-button,
 .next-action {
   display: grid;
@@ -469,8 +475,21 @@ h3 {
   align-items: center;
 }
 
+.activity-row,
+.dependency-row {
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  box-shadow: none;
+}
+
+.dependency-row {
+  grid-template-columns: minmax(0, 0.8fr) minmax(180px, 1.2fr);
+}
+
 .goal-row p,
 .repo-health-row p,
+.activity-row p,
+.dependency-row p,
 .doc-row p,
 .mode-button p {
   margin: 0;
@@ -617,6 +636,45 @@ select {
   display: grid;
   gap: 12px;
   padding: 15px;
+}
+
+.agent-card {
+  align-content: start;
+}
+
+.agent-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.agent-detail {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.agent-detail h4 {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.agent-detail ul,
+.dependency-list {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 16px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.risk-note {
+  margin: 0;
+  font-size: 13px;
 }
 
 .module-spacer {
@@ -797,6 +855,8 @@ select {
 .compact .repo-card,
 .compact .agent-card,
 .compact .domain-card,
+.compact .activity-row,
+.compact .dependency-row,
 .compact .phase-row,
 .compact .knowledge-card,
 .compact .metric-card {
@@ -870,6 +930,12 @@ select {
 
   .field-group.wide {
     grid-column: auto;
+  }
+
+  .activity-row,
+  .dependency-row,
+  .agent-detail-grid {
+    grid-template-columns: 1fr;
   }
 
   .view-header,

@@ -16,7 +16,9 @@ The shell is organized around ten persistent modules: Dashboard, Goals, Reposito
 
 ## Data Model
 
-Command Center uses static local datasets in `script.js` for plugin families, automation workflows, security reports, AI systems, architecture signals, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+Command Center uses static local datasets in `script.js` for plugin families, automation workflows, security reports, AI systems, architecture signals, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+
+Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
 ## Operating Model
 

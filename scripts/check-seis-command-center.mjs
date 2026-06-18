@@ -34,6 +34,9 @@ const requiredScriptSignals = [
   "aiSystems",
   "operatingDomains",
   "platformPhases",
+  "recentActivity",
+  "dependencyRisk",
+  "renderAgentDetail",
   "renderCommandResults"
 ];
 
@@ -108,7 +111,23 @@ for (const domain of requiredOperatingDomains) {
   }
 }
 
-for (const selector of [".plugin-card", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
+for (const agentField of ["capabilities", "tasks", "logs", "outputs"]) {
+  if (!script.includes(`${agentField}: [`)) {
+    fail(`missing agent evidence field: ${agentField}`);
+  }
+}
+
+for (const selector of [
+  ".plugin-card",
+  ".automation-card",
+  ".security-card",
+  ".system-card",
+  ".domain-card",
+  ".phase-row",
+  ".activity-row",
+  ".dependency-row",
+  ".agent-detail"
+]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
   }

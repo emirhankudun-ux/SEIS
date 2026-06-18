@@ -41,12 +41,12 @@ apps/seis-core/
 ## Component Structure
 
 - App shell: sidebar, topbar, workspace grid, inspector.
-- Dashboard: metrics, active goals, repository health, architecture alerts.
+- Dashboard: metrics, active goals, recent activity, repository health, architecture alerts, and recommended actions.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
-- Repositories: filter chips, health cards, documentation coverage.
+- Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
-- Agents: mode cards, AI system support, and inspector sync.
+- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, and inspector sync.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
@@ -57,8 +57,9 @@ apps/seis-core/
 
 - Create goals locally.
 - Update goal status to Review or Done.
-- Filter repositories by health.
-- Switch active AI agent mode.
+- Filter repositories by health and inspect dependency risk.
+- Switch active AI agent mode and inspect capabilities, tasks, logs, and outputs.
+- Inspect recent activity across builder, security, architecture, and automation lanes.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.

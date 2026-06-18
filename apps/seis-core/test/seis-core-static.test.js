@@ -37,7 +37,17 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /aiSystems/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
+  assert.match(script, /recentActivity/);
+  assert.match(script, /dependencyRisk/);
+  assert.match(script, /renderAgentDetail/);
   assert.match(script, /openCommandPalette/);
+});
+
+test("SEIS Command Center agents expose operational evidence", async () => {
+  const script = await readFile(new URL("script.js", root), "utf8");
+  for (const field of ["capabilities", "tasks", "logs", "outputs"]) {
+    assert.match(script, new RegExp(`${field}: \\[`));
+  }
 });
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
@@ -70,6 +80,9 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /security-card/);
   assert.match(css, /domain-card/);
   assert.match(css, /phase-row/);
+  assert.match(css, /activity-row/);
+  assert.match(css, /dependency-row/);
+  assert.match(css, /agent-detail/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });

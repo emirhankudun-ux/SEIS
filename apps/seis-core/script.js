@@ -43,7 +43,9 @@ const repositories = [
     health: "Ready",
     docs: 91,
     security: "Review queued",
-    tests: "quality gate"
+    tests: "quality gate",
+    dependencies: ["Node automation", "GitHub checks", "SEIS web surface"],
+    dependencyRisk: "Generated report drift"
   },
   {
     name: "SEIST",
@@ -51,7 +53,9 @@ const repositories = [
     health: "Review",
     docs: 76,
     security: "policy aligned",
-    tests: "smoke checks"
+    tests: "smoke checks",
+    dependencies: ["Shared governance", "Documentation contracts"],
+    dependencyRisk: "Cross-repo release timing"
   },
   {
     name: "seis-trusted-marketplace-plugin",
@@ -59,7 +63,9 @@ const repositories = [
     health: "Ready",
     docs: 84,
     security: "manifest checks",
-    tests: "plugin bundle"
+    tests: "plugin bundle",
+    dependencies: ["Plugin manifest", "Marketplace policy", "Permission model"],
+    dependencyRisk: "Provider capability drift"
   },
   {
     name: "emirhan-kudun-portfolio",
@@ -67,7 +73,9 @@ const repositories = [
     health: "Review",
     docs: 69,
     security: "static surface",
-    tests: "web checks"
+    tests: "web checks",
+    dependencies: ["Static assets", "SEO metadata", "Content publishing"],
+    dependencyRisk: "Public content sync"
   }
 ];
 
@@ -102,27 +110,47 @@ const agents = [
   {
     name: "Architect",
     focus: "System boundaries, ADRs, dependency discipline, long-term structure.",
-    status: "Ready"
+    status: "Ready",
+    capabilities: ["ADR review", "system maps", "dependency boundaries"],
+    tasks: ["Keep Command Center modules aligned with SEIS operating model"],
+    logs: ["Operating model expanded with MCP, cloud and knowledge domains"],
+    outputs: ["Architecture contracts", "phase migration criteria"]
   },
   {
     name: "Builder",
     focus: "Implementation, tests, app surfaces, integration and release readiness.",
-    status: "Ready"
+    status: "Ready",
+    capabilities: ["UI implementation", "test automation", "release checks"],
+    tasks: ["Wire static workflows into verifiable local state"],
+    logs: ["Command Center static gates pass before generated report sync"],
+    outputs: ["HTML/CSS/JS surfaces", "quality evidence"]
   },
   {
     name: "Security",
     focus: "Secrets hygiene, dependency review, access model, policy checks.",
-    status: "Review"
+    status: "Review",
+    capabilities: ["secret boundary", "permission review", "dependency scanning"],
+    tasks: ["Make plugin permissions and SSH posture visible in Security Center"],
+    logs: ["SEIS-SSH remains terminal-compatible with picker warning"],
+    outputs: ["risk reports", "access model notes"]
   },
   {
     name: "Design",
     focus: "Product hierarchy, accessibility, design system, interaction quality.",
-    status: "Ready"
+    status: "Ready",
+    capabilities: ["layout density", "accessibility", "design tokens"],
+    tasks: ["Keep Command Center calm while adding operational density"],
+    logs: ["Existing app shell retained without new visual bloat"],
+    outputs: ["component rules", "responsive interaction guidance"]
   },
   {
     name: "Research",
     focus: "Primary-source research, compatibility checks, technical evidence.",
-    status: "Active"
+    status: "Active",
+    capabilities: ["source review", "compatibility checks", "evidence capture"],
+    tasks: ["Prepare provider adapter evidence before live integrations"],
+    logs: ["Future AI systems kept explicit in AI Systems model"],
+    outputs: ["research notes", "integration assumptions"]
   }
 ];
 
@@ -242,6 +270,37 @@ const recommendedActions = [
   ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
   ["Automation wiring", "Connect report refresh, quality and release checks to a traceable workflow history."],
   ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
+];
+
+const recentActivity = [
+  {
+    time: "Now",
+    actor: "Builder Agent",
+    action: "Updated Command Center operating model gates",
+    module: "Agents",
+    status: "Ready"
+  },
+  {
+    time: "Recent",
+    actor: "Security Agent",
+    action: "Reviewed plugin permissions and SEIS-SSH warning surface",
+    module: "Security",
+    status: "Review"
+  },
+  {
+    time: "Recent",
+    actor: "Architect Agent",
+    action: "Linked roadmap phases to the local-first app architecture",
+    module: "Architecture",
+    status: "Ready"
+  },
+  {
+    time: "Queued",
+    actor: "Automation Center",
+    action: "Refresh generated language and technology reports after source changes",
+    module: "Automation",
+    status: "Active"
+  }
 ];
 
 const operatingDomains = [
@@ -490,10 +549,21 @@ function renderDashboard() {
   $("#dashboard-repos").innerHTML = repositories.map((repo) => `
     <article class="repo-health-row">
       <strong>${repo.name}</strong>
-      <p>${repo.role}</p>
+      <p>${repo.role} · ${repo.dependencies.length} dependencies</p>
       <div class="progress-track" aria-label="${repo.name} documentation coverage">
         <span class="progress-fill" style="width:${repo.docs}%"></span>
       </div>
+    </article>
+  `).join("");
+
+  $("#recent-activity").innerHTML = recentActivity.map((item) => `
+    <article class="activity-row">
+      <span>${item.time}</span>
+      <div>
+        <strong>${item.actor}</strong>
+        <p>${item.action}</p>
+      </div>
+      <span class="status-pill ${statusClass(item.status)}">${item.module}</span>
     </article>
   `).join("");
 
@@ -550,11 +620,26 @@ function renderRepositories() {
           <span class="meta-chip">Docs ${repo.docs}%</span>
           <span class="meta-chip">${repo.security}</span>
           <span class="meta-chip">${repo.tests}</span>
+          <span class="meta-chip">Dependencies ${repo.dependencies.length}</span>
         </div>
       </div>
+      <ul class="dependency-list">
+        ${repo.dependencies.map((dependency) => `<li>${dependency}</li>`).join("")}
+      </ul>
+      <p class="risk-note">Dependency risk: ${repo.dependencyRisk}</p>
       <div class="progress-track">
         <span class="progress-fill" style="width:${repo.docs}%"></span>
       </div>
+    </article>
+  `).join("");
+
+  $("#dependency-overview").innerHTML = repositories.map((repo) => `
+    <article class="dependency-row">
+      <div>
+        <strong>${repo.name}</strong>
+        <p>${repo.dependencyRisk}</p>
+      </div>
+      <span class="meta-chip">${repo.dependencies.join(" / ")}</span>
     </article>
   `).join("");
 
@@ -589,6 +674,12 @@ function renderAgents() {
         <span class="status-pill ${statusClass(agent.status)}">${agent.status}</span>
       </div>
       <p>${agent.focus}</p>
+      <div class="agent-detail-grid">
+        ${renderAgentDetail("Capabilities", agent.capabilities)}
+        ${renderAgentDetail("Tasks", agent.tasks)}
+        ${renderAgentDetail("Logs", agent.logs)}
+        ${renderAgentDetail("Outputs", agent.outputs)}
+      </div>
       <button class="secondary-button" type="button" data-agent="${agent.name}">Activate</button>
     </article>
   `).join("");
@@ -602,6 +693,17 @@ function renderAgents() {
       <p>${system.role}</p>
     </article>
   `).join("");
+}
+
+function renderAgentDetail(label, items) {
+  return `
+    <section class="agent-detail">
+      <h4>${label}</h4>
+      <ul>
+        ${items.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    </section>
+  `;
 }
 
 function renderPlugins() {
