@@ -1,0 +1,106 @@
+{
+  "contract": "SEIS Operational Goal Tracker",
+  "status": "active",
+  "requiredFields": ["goal", "priority", "status", "risks", "validation", "validationStatus", "lastValidation", "successCriteria", "nextStep"],
+  "statusValues": ["active", "blocked", "mapped", "complete"],
+  "validationStatusValues": ["pending", "mapped", "passed", "failed", "waived"],
+  "priorityOrder": ["P0", "P1", "P2", "P3"],
+  "activeTracks": [
+    {
+      "id": "master-prompt-governance",
+      "goal": "Keep the SEIS Master Prompt represented as repository-operational governance.",
+      "priority": "P0",
+      "status": "active",
+      "risks": ["Governance drift", "Unverified readiness claims"],
+      "validation": ["npm run check:seis-master-prompt-report", "npm run check:seis-master-prompt"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Run focused checks after source changes."},
+      "successCriteria": ["Generated report is current", "Dedicated governance check passes"],
+      "nextStep": "Run Master Prompt report and governance checks after every contract change."
+    },
+    {
+      "id": "ssh-hardening-safety",
+      "goal": "Keep SSH hardening safe for live cloud hosts and mobile SSH readiness.",
+      "priority": "P0",
+      "status": "active",
+      "risks": ["Mode drift between harden and full-setup", "UFW and firewalld backend lockout risk", "Direct cloud endpoint unavailable"],
+      "validation": ["npm run check:ssh-hardening-contract", "python3 -m unittest scripts.tests.test_ultra_ssh_manager"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "SSH hardening contract and unit tests must run before live apply."},
+      "successCriteria": ["Harden and full-setup remain separate code paths", "Dry-run, audit, dashboard, and verify modes remain non-mutating", "Live apply requires reviewed plan"],
+      "nextStep": "Review dry-run plan and recovery playbook before any direct-cloud live apply."
+    },
+    {
+      "id": "plugin-skill-governance",
+      "goal": "Keep SEIS plugin skills aligned with GitHub, security, and Master Prompt workflows.",
+      "priority": "P1",
+      "status": "active",
+      "risks": ["Plugin metadata drift", "Legacy personal plugin path assumptions"],
+      "validation": ["npm run check:seis-specialist-plugins -- --include-legacy-personal", "npm run check:seis-master-prompt"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Plugin checks should run after skill or manifest changes."},
+      "successCriteria": ["Repo-contained plugin surfaces remain required", "Legacy personal paths are optional when absent in CI"],
+      "nextStep": "Keep plugin checks CI aware while preserving local personal plugin compatibility."
+    },
+    {
+      "id": "apple-first-platform-foundation",
+      "goal": "Preserve Apple-first direction without breaking Linux CI.",
+      "priority": "P1",
+      "status": "active",
+      "risks": ["Platform-specific Swift targets break Linux CI", "Apple-native shells become untested outside macOS"],
+      "validation": ["npm run check:seis-master-objective-coverage", "npm run check:seis-master-prompt"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Platform checks remain split by host capability."},
+      "successCriteria": ["Apple-first intent remains documented", "Linux CI excludes macOS-only executable targets"],
+      "nextStep": "Keep macOS-specific validation separate from Linux governance checks."
+    },
+    {
+      "id": "design-accessibility-experience",
+      "goal": "Keep design, accessibility, and product experience in the SEIS operating model.",
+      "priority": "P2",
+      "status": "mapped",
+      "risks": ["Design principles stay aspirational", "Accessibility validation gaps"],
+      "validation": ["npm run check:seis-master-objective-coverage", "npm run check:seis-operational-goal-tracker"],
+      "validationStatus": "mapped",
+      "lastValidation": {"status": "mapped", "evidence": "Objective coverage maps design and accessibility surfaces."},
+      "successCriteria": ["Design is treated as infrastructure", "Accessibility remains part of quality gates"],
+      "nextStep": "Attach concrete product-surface checks as SEIS UI surfaces evolve."
+    },
+    {
+      "id": "open-source-readiness",
+      "goal": "Keep README, governance, community health, and CI readiness reviewable.",
+      "priority": "P1",
+      "status": "active",
+      "risks": ["Community health drift", "Branch protection assumed without external verification"],
+      "validation": ["npm run check:open-source-governance", "npm run check:seis-master-prompt"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Open-source governance check must run after governance changes."},
+      "successCriteria": ["README links canonical governance surfaces", "GitHub controls are evidence-backed"],
+      "nextStep": "Verify GitHub check runs and branch settings before claiming protected readiness."
+    },
+    {
+      "id": "ai-data-cloud-strategy",
+      "goal": "Keep AI, data, cloud, SSH, and automation work connected to measurable readiness gates.",
+      "priority": "P1",
+      "status": "active",
+      "risks": ["Codespaces transport mistaken for 24x7 mobile SSH", "Direct cloud endpoint timeout"],
+      "validation": ["npm run cloud:ssh:mobile-24x7", "npm run check:ssh-vpn-cloud-server"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Mobile 24x7 requires direct cloud transport, not Codespaces-only SSH."},
+      "successCriteria": ["Strict mobile SSH readiness passes", "Direct cloud alias remains available from a new machine"],
+      "nextStep": "Provision or repair direct-cloud SSH endpoint, then switch the alias and run strict readiness."
+    },
+    {
+      "id": "governance-long-horizon-throttle",
+      "goal": "Keep long-horizon governance useful without tool inflation or metric drift.",
+      "priority": "P2",
+      "status": "active",
+      "risks": ["metric drift", "Governance noise hides actionable engineering work"],
+      "validation": ["npm run check:seis-long-horizon-throttle", "npm run check:seis-enterprise-gates"],
+      "validationStatus": "pending",
+      "lastValidation": {"status": "pending", "evidence": "Long-horizon throttle and enterprise gates must run before claiming governance maturity."},
+      "successCriteria": ["Governance remains proportional", "Metrics stay tied to actionable SEIS work"],
+      "nextStep": "Run check:seis-long-horizon-throttle with enterprise gates after major governance updates."
+    }
+  ]
+}

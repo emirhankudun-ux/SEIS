@@ -1,0 +1,66 @@
+{
+  "contract": "SEIS Master Prompt",
+  "contractPath": "docs/governance/seis-master-prompt.md",
+  "criteria": [
+    {
+      "id": "user-work-protection",
+      "priority": "P0",
+      "requirement": "Changes protect user work and avoid destructive git or filesystem operations.",
+      "evidence": ["docs/governance/seis-master-prompt-change-checklist.md", ".github/PULL_REQUEST_TEMPLATE.md"],
+      "verification": "Confirm worktree state, review diff, and avoid unrelated overwrites."
+    },
+    {
+      "id": "security-and-privacy",
+      "priority": "P0",
+      "requirement": "Secrets, SSH keys, credentials, lockout-sensitive SSH flows, mode isolation, lockout safety, rollback evidence, and fail-fast expectations are governed.",
+      "evidence": ["data/ssh-hardening-operation-contract.json", "scripts/check-ssh-hardening-contract.mjs", "plugins/seis/skills/seis-security-review/SKILL.md"],
+      "verification": "Run npm run check:ssh-hardening-contract and secret scans before commit."
+    },
+    {
+      "id": "architecture-integrity",
+      "priority": "P1",
+      "requirement": "Governance surfaces remain mapped, maintainable, and source-of-truth oriented.",
+      "evidence": ["data/seis-master-prompt-implementation-map.json", "docs/governance/adr-0001-seis-master-prompt-operating-contract.md"],
+      "verification": "Run npm run check:seis-master-prompt."
+    },
+    {
+      "id": "documentation-and-traceability",
+      "priority": "P1",
+      "requirement": "Documentation links Master Prompt, objective coverage, operational tracking, generated reports, and change checklist.",
+      "evidence": ["reports/seis-master-prompt-governance.md", "reports/seis-master-objective-coverage.md", "data/seis-master-objective-coverage.json"],
+      "verification": "Run report checks and confirm generated reports are current."
+    },
+    {
+      "id": "quality-gate-integration",
+      "priority": "P1",
+      "requirement": "Dedicated checks are wired into governance quality scripts.",
+      "evidence": ["package.json", "scripts/check-seis-master-prompt.mjs", "scripts/check-seis-operational-goal-tracker.mjs"],
+      "verification": "Run npm run check:seis-master-prompt-report and npm run check:seis-master-prompt."
+    },
+    {
+      "id": "ai-cloud-product-coverage",
+      "priority": "P2",
+      "requirement": "AI, cloud, product, design, and mobile SSH readiness stay tracked without overstated readiness claims.",
+      "evidence": ["data/seis-operational-goal-tracker.json", "data/seis-master-objective-coverage.json", "docs/deployment/ssh-wireguard-vps-cloud-server.md"],
+      "verification": "Run objective coverage and operational goal tracker checks before claiming readiness."
+    }
+  ],
+  "requiredCommands": [
+    "npm run check:seis-master-prompt-report",
+    "npm run check:seis-master-prompt",
+    "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-master-objective-coverage",
+    "npm run check:seis-operational-goal-tracker",
+    "npm run check:ssh-hardening-contract",
+    "npm run check:open-source-governance",
+    "npm run quality"
+  ],
+  "trackedEvidence": [
+    "data/ssh-hardening-operation-contract.json",
+    "scripts/check-ssh-hardening-contract.mjs",
+    "data/seis-master-objective-coverage.json",
+    "reports/seis-master-objective-coverage.md",
+    "data/seis-operational-goal-tracker.json",
+    "scripts/check-seis-operational-goal-tracker.mjs"
+  ]
+}

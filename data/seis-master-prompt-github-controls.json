@@ -1,0 +1,38 @@
+{
+  "contract": "SEIS Master Prompt",
+  "contractPath": "docs/governance/seis-master-prompt.md",
+  "controls": [
+    {
+      "id": "main-branch-protection",
+      "required": true,
+      "setting": "Protect main with review and status checks before normal merge.",
+      "reason": "Main is the GitHub source of truth and should stay rollback-ready.",
+      "localEvidence": [".github/CODEOWNERS", ".github/workflows/seis-master-prompt-governance.yml"],
+      "externalEvidence": "Verify branch protection in GitHub before claiming active protection."
+    },
+    {
+      "id": "required-master-prompt-checks",
+      "required": true,
+      "setting": "Require npm run check:seis-master-prompt-report and npm run check:seis-master-prompt for governance changes.",
+      "reason": "Master Prompt changes must stay tied to generated evidence and a dedicated quality gate.",
+      "localEvidence": ["package.json", "scripts/check-seis-master-prompt.mjs"],
+      "externalEvidence": "Verify current GitHub check runs before claiming green readiness."
+    },
+    {
+      "id": "codeowners-review",
+      "required": true,
+      "setting": "CODEOWNERS review covers governance, plugin, workflow, report, and SSH hardening surfaces.",
+      "reason": "Operating-contract changes need explicit maintainer review.",
+      "localEvidence": [".github/CODEOWNERS"],
+      "externalEvidence": "Verify CODEOWNERS review requirement in GitHub branch settings before claiming enforcement."
+    },
+    {
+      "id": "no-direct-deploy-or-push-assumption",
+      "required": true,
+      "setting": "Do not claim pushed, merged, deployed, connected, ready, or protected without current command or GitHub evidence.",
+      "reason": "SEIS readiness claims must match actual observed state.",
+      "localEvidence": ["docs/governance/seis-master-prompt.md", "plugins/seis/skills/seis-security-review/SKILL.md"],
+      "externalEvidence": "Verify deployment, SSH, GitHub, or check-run state before readiness claims."
+    }
+  ]
+}

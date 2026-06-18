@@ -1,0 +1,64 @@
+name: SEIS Master Prompt Governance
+
+on:
+  pull_request:
+    paths:
+      - "docs/governance/**"
+      - "data/seis-master-*.json"
+      - "data/seis-operational-goal-tracker.json"
+      - "data/ssh-hardening-operation-contract.json"
+      - "reports/seis-master-*.md"
+      - "plugins/seis/**"
+      - "scripts/check-seis-master-prompt.mjs"
+      - "scripts/create-seis-master-prompt-governance-report.mjs"
+      - "scripts/check-seis-master-objective-coverage.mjs"
+      - "scripts/create-seis-master-objective-coverage-report.mjs"
+      - "scripts/check-seis-operational-goal-tracker.mjs"
+      - "scripts/check-ssh-hardening-contract.mjs"
+  push:
+    branches: [main]
+    paths:
+      - "docs/governance/**"
+      - "data/seis-master-*.json"
+      - "data/seis-operational-goal-tracker.json"
+      - "data/ssh-hardening-operation-contract.json"
+      - "reports/seis-master-*.md"
+      - "plugins/seis/**"
+      - "scripts/check-seis-master-prompt.mjs"
+      - "scripts/create-seis-master-prompt-governance-report.mjs"
+      - "scripts/check-seis-master-objective-coverage.mjs"
+      - "scripts/create-seis-master-objective-coverage-report.mjs"
+      - "scripts/check-seis-operational-goal-tracker.mjs"
+      - "scripts/check-ssh-hardening-contract.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Verify canonical surfaces
+        run: |
+          test -f data/seis-master-prompt-github-controls.json
+          test -f docs/governance/seis-master-prompt-github-controls.md
+          test -f plugins/seis/.codex-plugin/plugin.json
+          test -f plugins/seis/skills/seis-github-workflow/SKILL.md
+          test -f plugins/seis/skills/seis-github-workflow/agents/openai.yaml
+          test -f plugins/seis/skills/seis-security-review/SKILL.md
+          test -f plugins/seis/skills/seis-security-review/agents/openai.yaml
+          test -f plugins/seis/skills/seis-master-prompt/SKILL.md
+          test -f plugins/seis/skills/seis-master-prompt/agents/openai.yaml
+          test -f docs/deployment/ssh-wireguard-vps-cloud-server.md
+
+      - name: Run Master Prompt governance checks
+        run: |
+          npm run check:seis-master-prompt-report
+          npm run check:seis-master-objective-coverage-report
+          npm run check:seis-master-objective-coverage
+          npm run check:seis-operational-goal-tracker
+          npm run check:ssh-hardening-contract
+          npm run check:seis-master-prompt

@@ -12,6 +12,26 @@ target/
 .env.local
 *.env.*
 
+# Secret and SSH key material
+*.pem
+*.key
+*.p8
+*.p12
+*.crt
+*.csr
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+id_ed25519_*
+id_ed25519_*.pub
+*.private
+*.private.pub
+
 # Python specific
 __pycache__/
 *.pyc

@@ -1,0 +1,74 @@
+{
+  "contract": "SEIS Master Prompt",
+  "contractPath": "docs/governance/seis-master-prompt.md",
+  "decisionRecordPath": "docs/governance/adr-0001-seis-master-prompt-operating-contract.md",
+  "changeChecklistPath": "docs/governance/seis-master-prompt-change-checklist.md",
+  "reviewOwnershipPath": ".github/CODEOWNERS",
+  "githubControlsPath": "data/seis-master-prompt-github-controls.json",
+  "githubControlsDocPath": "docs/governance/seis-master-prompt-github-controls.md",
+  "pluginManifestPath": "plugins/seis/.codex-plugin/plugin.json",
+  "githubWorkflowSkillPath": "plugins/seis/skills/seis-github-workflow/SKILL.md",
+  "githubWorkflowSkillAgentPath": "plugins/seis/skills/seis-github-workflow/agents/openai.yaml",
+  "securityReviewSkillPath": "plugins/seis/skills/seis-security-review/SKILL.md",
+  "securityReviewSkillAgentPath": "plugins/seis/skills/seis-security-review/agents/openai.yaml",
+  "skillPath": "plugins/seis/skills/seis-master-prompt/SKILL.md",
+  "skillAgentPath": "plugins/seis/skills/seis-master-prompt/agents/openai.yaml",
+  "ciWorkflowPath": ".github/workflows/seis-master-prompt-governance.yml",
+  "reportGeneratorPath": "scripts/create-seis-master-prompt-governance-report.mjs",
+  "governanceReportPath": "reports/seis-master-prompt-governance.md",
+  "acceptanceCriteriaPath": "data/seis-master-prompt-acceptance-criteria.json",
+  "githubControlsManifestPath": "data/seis-master-prompt-github-controls.json",
+  "sshHardeningOperationContractPath": "data/ssh-hardening-operation-contract.json",
+  "sshManagerPath": "scripts/ultra_ssh_manager.py",
+  "sshHardeningCheckPath": "scripts/check-ssh-hardening-contract.mjs",
+  "objectiveCoveragePath": "data/seis-master-objective-coverage.json",
+  "objectiveCoverageCheckPath": "scripts/check-seis-master-objective-coverage.mjs",
+  "objectiveCoverageReportPath": "reports/seis-master-objective-coverage.md",
+  "objectiveCoverageReportGeneratorPath": "scripts/create-seis-master-objective-coverage-report.mjs",
+  "goalTrackerPath": "data/seis-operational-goal-tracker.json",
+  "goalTrackerCheckPath": "scripts/check-seis-operational-goal-tracker.mjs",
+  "qualityGate": "npm run check:seis-master-prompt",
+  "sshHardeningContracts": [
+    "SSH hardening mode-isolation contract",
+    "firewall and port-knock lockout safety contract",
+    "rollback, idempotency, and fail-fast operation evidence contract"
+  ],
+  "domains": [
+    {
+      "name": "architecture",
+      "priority": 1,
+      "surfaces": ["docs/governance/seis-master-prompt.md", "docs/governance/adr-0001-seis-master-prompt-operating-contract.md"],
+      "evidence": ["Architecture decisions are captured in ADR and Master Prompt surfaces."]
+    },
+    {
+      "name": "security",
+      "priority": 2,
+      "surfaces": ["data/ssh-hardening-operation-contract.json", "plugins/seis/skills/seis-security-review/SKILL.md"],
+      "evidence": ["SSH hardening, secret handling, and readiness claims are checked by dedicated gates."]
+    },
+    {
+      "name": "documentation",
+      "priority": 3,
+      "surfaces": ["docs/governance/seis-master-prompt-change-checklist.md", "reports/seis-master-prompt-governance.md"],
+      "evidence": ["Source data generates reviewable governance reports."]
+    },
+    {
+      "name": "ai-and-agent-systems",
+      "priority": 4,
+      "surfaces": ["plugins/seis/.codex-plugin/plugin.json", "plugins/seis/skills/seis-master-prompt/SKILL.md"],
+      "evidence": ["Plugin skills expose agent-facing governance instructions."]
+    },
+    {
+      "name": "cloud-and-automation",
+      "priority": 5,
+      "surfaces": ["docs/deployment/ssh-wireguard-vps-cloud-server.md", ".github/workflows/seis-master-prompt-governance.yml"],
+      "evidence": ["Cloud SSH readiness and CI governance are tracked as automated surfaces."]
+    },
+    {
+      "name": "product-and-design",
+      "priority": 6,
+      "surfaces": ["docs/governance/seis-supreme-vision.md", "data/seis-master-objective-coverage.json"],
+      "evidence": ["Product, design, and experience principles are covered by the Supreme Vision and objective coverage matrix."]
+    }
+  ]
+}

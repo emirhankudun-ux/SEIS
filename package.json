@@ -161,7 +161,9 @@
     "check:seis-long-horizon-throttle": "node scripts/check-seis-long-horizon-throttle.mjs",
     "check:seis-master-objective-coverage": "node scripts/check-seis-master-objective-coverage.mjs",
     "check:seis-master-objective-coverage-report": "node scripts/create-seis-master-objective-coverage-report.mjs --check",
-    "automation:seis-master-objective-coverage-report": "node scripts/create-seis-master-objective-coverage-report.mjs"
+    "automation:seis-master-objective-coverage-report": "node scripts/create-seis-master-objective-coverage-report.mjs",
+    "cloud:ssh:mobile-24x7": "node scripts/check-seis-ssh-mobile-24x7.mjs",
+    "cloud:ssh:mobile-24x7:strict": "node scripts/check-seis-ssh-mobile-24x7.mjs --require-ready"
   },
   "engines": {
     "node": ">=18"
