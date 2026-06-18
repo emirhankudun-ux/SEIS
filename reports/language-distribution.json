@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 855,
-    "countedBytes": 4772793,
+    "countedBytes": 4773294,
     "javascriptBytes": 1662494,
     "javascriptPercent": 34.83,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3143845,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3143344,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -30,13 +30,13 @@
     },
     {
       "language": "Swift",
-      "bytes": 573577,
-      "percent": 12.02
+      "bytes": 574078,
+      "percent": 12.03
     },
     {
       "language": "Python",
       "bytes": 507606,
-      "percent": 10.64
+      "percent": 10.63
     },
     {
       "language": "TypeScript",
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2690065,
-      "percent": 56.36,
+      "bytes": 2690566,
+      "percent": 56.37,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -633,8 +633,8 @@
       {
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
-        "bytes": 582878,
-        "percent": 12.21,
+        "bytes": 583379,
+        "percent": 12.22,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1263168,
+    "documentation": 1282677,
     "linguist-generated": 2974360,
     "linguist-vendored": 2851037
   },
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "7300193fbe43e28e9a4d272aad72a1313da7a762ad183467d0f4f3c58ab996d0",
+    "hash": "842a3ee8eb47e696428970bc5c6aa28b0dddc08a8bbd48149e1a5c32033beb09",
     "algorithm": "sha256"
   }
 }

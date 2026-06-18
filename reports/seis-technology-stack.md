@@ -18,7 +18,7 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 2 | TypeScript | frontend-and-experience | 411787 | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Objective-C | mobile-and-native | 8447 | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
 | 4 | Python | backend-and-api | 507606 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
-| 5 | Swift | mobile-and-native | 573577 | polyglot/swift/SEISMotionPolicy.swift |
+| 5 | Swift | mobile-and-native | 574078 | polyglot/swift/SEISMotionPolicy.swift |
 | 6 | Go | backend-and-api | 16806 | polyglot/go/health_contract.go, polyglot/go/cmd/seis-serve/main.go, polyglot/go/cmd/seis-jsonld/main.go |
 | 7 | Rust | mobile-and-native | 12286 | polyglot/rust/performance_budget.rs, polyglot/rust/seis-link-audit/src/main.rs |
 | 8 | Java | backend-and-api | 16392 | polyglot/java/SeisDeployReadiness.java, polyglot/java/DrawingsChecksum.java, polyglot/java/CssMediaQueryAudit.java |

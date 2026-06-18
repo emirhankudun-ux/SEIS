@@ -2,11 +2,11 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 855
-- Counted bytes: 4772793
+- Counted bytes: 4773294
 - JavaScript: 1662494 bytes (34.83%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3143845
+- Additional non-JavaScript bytes needed for strict target: 3143344
 
 ## GitHub Language Panel Split
 
@@ -15,7 +15,7 @@
 | JavaScript | 1662494 | 34.83% | JavaScript |
 | TypeScript | 411787 | 8.63% | TypeScript |
 | Objective-C | 8447 | 0.18% | Objective-C |
-| Other | 2690065 | 56.36% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2690566 | 56.37% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,7 +25,7 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 12.21% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| Apple / Swift ecosystem | 12.22% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
 | AI, Data, Python, SQL | 27.53% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
 | TypeScript / JavaScript tooling | 43.46% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.5% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
@@ -42,8 +42,8 @@ Unassigned counted languages: 3.43% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | --- | ---: | ---: |
 | JavaScript | 1662494 | 34.83% |
 | JSON | 787533 | 16.5% |
-| Swift | 573577 | 12.02% |
-| Python | 507606 | 10.64% |
+| Swift | 574078 | 12.03% |
+| Python | 507606 | 10.63% |
 | TypeScript | 411787 | 8.63% |
 | CSS | 286215 | 6.0% |
 | HTML | 135686 | 2.84% |

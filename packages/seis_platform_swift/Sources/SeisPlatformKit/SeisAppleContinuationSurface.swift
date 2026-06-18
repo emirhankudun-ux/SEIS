@@ -1,5 +1,8 @@
-import Combine
 import Foundation
+
+#if canImport(Combine)
+import Combine
+#endif
 
 #if canImport(AppKit)
 import AppKit
@@ -238,6 +241,7 @@ public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
     }
 }
 
+#if canImport(Combine)
 public final class SeisAppleContinuationModel: ObservableObject {
     @Published public private(set) var snapshot: SeisAppleContinuationSnapshot
 
@@ -250,6 +254,20 @@ public final class SeisAppleContinuationModel: ObservableObject {
         snapshot = SeisAppleContinuationSnapshot.make(platforms: routedPlatforms)
     }
 }
+#else
+public final class SeisAppleContinuationModel {
+    public private(set) var snapshot: SeisAppleContinuationSnapshot
+
+    public init(snapshot: SeisAppleContinuationSnapshot = .current) {
+        self.snapshot = snapshot
+    }
+
+    public func focus(on request: String) {
+        let routedPlatforms = SeisPlatformPolicy.route(request: request)
+        snapshot = SeisAppleContinuationSnapshot.make(platforms: routedPlatforms)
+    }
+}
+#endif
 
 #if canImport(AppKit)
 public extension SeisAppleContinuationSnapshot {
