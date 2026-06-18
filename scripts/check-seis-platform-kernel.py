@@ -134,6 +134,10 @@ def validate_surface_contents() -> list[str]:
 
 
 def run_swift_tests() -> list[str]:
+    if sys.platform != "darwin":
+        print("SEIS platform kernel check: skipping Swift package tests; Apple Combine is only available on Darwin.")
+        return []
+
     if shutil.which("swift") is None:
         print("SEIS platform kernel check: skipping Swift package tests; swift is not installed.")
         return []
