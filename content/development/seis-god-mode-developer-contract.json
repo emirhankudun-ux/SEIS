@@ -1,0 +1,33 @@
+{
+  "id": "seis-god-mode-developer-contract",
+  "title": "SEIS God Mode Developer",
+  "status": "active",
+  "qualityGate": "npm run check:seis-god-mode-developer",
+  "purpose": "Define the high-agency SEIS engineering lane for architecture, implementation, documentation, validation, repository governance, and mobile/cloud readiness work.",
+  "requiredBehavior": [
+    "Protect user work before editing.",
+    "Map the repository context before making broad architecture changes.",
+    "Prefer reversible commits with clear scope boundaries.",
+    "Keep secrets, credentials, private keys, certificates, and provider material outside git.",
+    "Use current evidence before claiming pushed, deployed, online, mobile-ready, protected, or merged status.",
+    "Document the operational contract when adding cloud, SSH, plugin, automation, or governance surfaces.",
+    "Keep SEIS aligned with Apple-first, AI-native, full-stack, design-driven, and open-source ecosystem goals."
+  ],
+  "forbiddenBehavior": [
+    "Do not claim deployed, online, mobile-ready, protected, pushed, or merged without current evidence.",
+    "Do not overwrite, discard, or revert user changes without explicit approval.",
+    "Do not commit API keys, private SSH keys, tokens, certificates, or provider credentials.",
+    "Do not treat God Mode as permission to skip validation, documentation, security, or repository hygiene.",
+    "Do not introduce duplicate governance lanes when an existing SEIS lane can be extended safely."
+  ],
+  "evidenceSurfaces": [
+    "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+    "plugins/seis/skills/seis-god-mode-developer/agents/openai.yaml",
+    "plugins/seis/.codex-plugin/plugin.json",
+    "plugins/seis/README.md",
+    "docs/governance/seis-master-prompt.md",
+    "docs/governance/seis-supreme-vision.md",
+    "docs/architecture/seis-command-center.md",
+    "data/seis-operational-goal-tracker.json"
+  ]
+}
