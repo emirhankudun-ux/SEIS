@@ -16,13 +16,19 @@ The shell is organized around ten persistent modules: Dashboard, Goals, Reposito
 
 ## Data Model
 
-Command Center uses static local datasets in `script.js` for plugin families, automation workflows, security reports, AI systems, architecture signals, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+Command Center uses static local datasets in `script.js` for plugin families, automation workflows, workflow runs, approval gates, rollback evidence, security reports, AI systems, architecture signals, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
 
-Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
+Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
 ## AI Orchestration Model
 
 The agent surface must support OpenAI, Claude, Gemini, Qwen, local models, and future AI systems through explicit orchestration lanes. Each lane records the primary system, collaborating agents, and the expected handoff artifact. Handoff audit records connect Architect, Builder, Security, Research, and Design work so multi-model collaboration remains inspectable instead of becoming hidden chat context.
+
+## Automation Operations Model
+
+The automation surface separates workflow definitions from execution evidence. `automationWorkflows` defines the available lanes and triggers, `workflowRuns` records actor, trigger, duration, evidence, approval, and rollback details, `approvalGates` records required human or agent review points, and `rollbackEvidence` records the latest reversible path for source changes, generated reports, and remote-access workflows.
+
+Automation evidence must stay local-first, auditable, and safe to render without credentials. A workflow is not considered release-ready until its validation evidence and rollback path are visible in the command surface.
 
 ## Operating Model
 

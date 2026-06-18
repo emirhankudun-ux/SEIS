@@ -317,6 +317,101 @@ const automationWorkflows = [
   }
 ];
 
+const workflowRuns = [
+  {
+    workflow: "Quality Governance",
+    trigger: "Pre-release gate",
+    actor: "Builder Agent",
+    started: "Clean detached HEAD",
+    duration: "2m 18s",
+    status: "Ready",
+    evidence: "npm run quality",
+    approval: "Local checks pass before release handoff",
+    rollback: "Revert feature commit and rerun quality gate"
+  },
+  {
+    workflow: "Generated Reports",
+    trigger: "Source-surface change",
+    actor: "Automation Center",
+    started: "After app source commit",
+    duration: "38s",
+    status: "Ready",
+    evidence: "language distribution and technology stack checks",
+    approval: "Reports generated from clean worktree",
+    rollback: "Restore previous generated report commit"
+  },
+  {
+    workflow: "Plugin Bundle Check",
+    trigger: "Plugin or skill update",
+    actor: "Security Agent",
+    started: "Permission review queue",
+    duration: "Queued",
+    status: "Review",
+    evidence: "plugin manifest and bundle validation",
+    approval: "Manual permission review required",
+    rollback: "Disable plugin lane before publish"
+  },
+  {
+    workflow: "Cloud SSH Readiness",
+    trigger: "Remote workspace handoff",
+    actor: "Platform Agent",
+    started: "On demand",
+    duration: "Manual",
+    status: "Review",
+    evidence: "SEIS-SSH picker status and callback-port warning",
+    approval: "User-authenticated session required",
+    rollback: "Use local terminal workflow until callback is free"
+  }
+];
+
+const approvalGates = [
+  {
+    name: "Source Report Gate",
+    owner: "Builder Agent",
+    requirement: "Refresh generated reports whenever Command Center source changes.",
+    status: "Ready",
+    evidence: "check:language-distribution and check:seis-technology-stack"
+  },
+  {
+    name: "Security Permission Gate",
+    owner: "Security Agent",
+    requirement: "Review plugin, SSH, token, and provider permissions before remote write workflows.",
+    status: "Review",
+    evidence: "Security Center risk reports and plugin permission posture"
+  },
+  {
+    name: "Release Handoff Gate",
+    owner: "Architect Agent",
+    requirement: "Keep small reversible commits with documented validation and rollback path.",
+    status: "Ready",
+    evidence: "feature commit, report commit, clean quality run, pushed branch"
+  }
+];
+
+const rollbackEvidence = [
+  {
+    surface: "Static Command Center",
+    strategy: "Feature work stays in small commits on the current branch.",
+    lastVerified: "Clean detached quality",
+    status: "Ready",
+    detail: "Rollback is reverting the app commit and generated report commit without touching unrelated worktree edits."
+  },
+  {
+    surface: "Generated Reports",
+    strategy: "Reports are regenerated from a clean detached worktree after source commits.",
+    lastVerified: "Report checks",
+    status: "Ready",
+    detail: "Rollback restores the previous report commit when report drift is caused by an invalid source change."
+  },
+  {
+    surface: "Remote Access",
+    strategy: "SEIS-SSH stays gated by authenticated user session and visible readiness state.",
+    lastVerified: "Manual review",
+    status: "Review",
+    detail: "Rollback is local terminal fallback until callback-port conflict and remote session state are resolved."
+  }
+];
+
 const securityReports = [
   {
     name: "Secrets Boundary",
@@ -833,6 +928,54 @@ function renderAutomation() {
         <span class="meta-chip">Trigger: ${workflow.trigger}</span>
         <span class="meta-chip">audit trail</span>
       </div>
+    </article>
+  `).join("");
+
+  $("#workflow-run-history").innerHTML = workflowRuns.map((run) => `
+    <article class="workflow-run-row">
+      <div>
+        <strong>${run.workflow}</strong>
+        <span>${run.actor} &middot; ${run.started}</span>
+      </div>
+      <div>
+        <span class="muted">Trigger</span>
+        <strong>${run.trigger}</strong>
+      </div>
+      <div>
+        <span class="muted">Evidence</span>
+        <strong>${run.evidence}</strong>
+      </div>
+      <div class="run-meta">
+        <span class="status-pill ${statusClass(run.status)}">${run.status}</span>
+        <span class="meta-chip">${run.duration}</span>
+      </div>
+      <p>${run.approval}. Rollback: ${run.rollback}.</p>
+    </article>
+  `).join("");
+
+  $("#approval-gates").innerHTML = approvalGates.map((gate) => `
+    <article class="approval-row">
+      <div class="card-topline">
+        <h3>${gate.name}</h3>
+        <span class="status-pill ${statusClass(gate.status)}">${gate.status}</span>
+      </div>
+      <p>${gate.requirement}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${gate.owner}</span>
+        <span class="meta-chip">${gate.evidence}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#rollback-evidence").innerHTML = rollbackEvidence.map((item) => `
+    <article class="rollback-row">
+      <div class="card-topline">
+        <h3>${item.surface}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.strategy}</p>
+      <p>${item.detail}</p>
+      <span class="meta-chip">Verified: ${item.lastVerified}</span>
     </article>
   `).join("");
 }

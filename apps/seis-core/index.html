@@ -269,6 +269,29 @@
               <p>Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.</p>
             </div>
             <div class="automation-grid" id="automation-grid"></div>
+            <section class="panel module-spacer" aria-labelledby="workflow-run-history-title">
+              <div class="panel-header">
+                <h3 id="workflow-run-history-title">Workflow Run History</h3>
+                <span class="status-pill ready">Auditable</span>
+              </div>
+              <div class="workflow-run-list" id="workflow-run-history"></div>
+            </section>
+            <div class="automation-ops-layout module-spacer">
+              <section class="panel" aria-labelledby="approval-gates-title">
+                <div class="panel-header">
+                  <h3 id="approval-gates-title">Approval Gates</h3>
+                  <span class="status-pill attention">Controlled</span>
+                </div>
+                <div class="approval-gates" id="approval-gates"></div>
+              </section>
+              <section class="panel" aria-labelledby="rollback-evidence-title">
+                <div class="panel-header">
+                  <h3 id="rollback-evidence-title">Rollback Evidence</h3>
+                  <span class="status-pill ready">Reversible</span>
+                </div>
+                <div class="rollback-evidence" id="rollback-evidence"></div>
+              </section>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="security" aria-labelledby="security-title">

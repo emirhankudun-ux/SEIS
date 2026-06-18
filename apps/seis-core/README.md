@@ -6,7 +6,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, automation evidence, command palette, settings, and dashboard rendering.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -48,7 +48,7 @@ apps/seis-core/
 - Documentation: index and coverage plan.
 - Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, handoff audit, and inspector sync.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
-- Automation Center: workflows, triggers, history, and execution gates.
+- Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
 - Architecture and Knowledge: system map and knowledge registry surfaces.
 - Platform Phases: Phase 1 static app, Phase 2 TypeScript/React/Next.js, and Phase 3 SwiftUI macOS/iOS.
@@ -62,7 +62,7 @@ apps/seis-core/
 - Inspect multi-model orchestration across OpenAI, Claude, Gemini, Qwen, local models, and future AI systems.
 - Review handoff audit records between Architect, Builder, Security, Research, and Design lanes.
 - Inspect recent activity across builder, security, architecture, and automation lanes.
-- Inspect plugin, automation, security, and AI system surfaces.
+- Inspect plugin, automation run history, approval gate, rollback evidence, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
@@ -81,7 +81,7 @@ apps/seis-core/
 - ADR creation workflow.
 - Agent handoff records.
 - Plugin permission review workflow.
-- Automation history storage.
+- Automation history storage with approval gates and rollback evidence.
 - Security audit exports.
 - Knowledge provenance and source citations.
 - Ecosystem health automation.

@@ -390,6 +390,9 @@ h3 {
 .domain-card,
 .activity-row,
 .dependency-row,
+.workflow-run-row,
+.approval-row,
+.rollback-row,
 .orchestration-card,
 .handoff-row,
 .phase-row,
@@ -687,6 +690,74 @@ select {
   line-height: 1.2;
 }
 
+.automation-ops-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.workflow-run-list,
+.approval-gates,
+.rollback-evidence {
+  display: grid;
+  gap: 10px;
+}
+
+.workflow-run-row {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr 1.2fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.workflow-run-row div,
+.workflow-run-row strong,
+.workflow-run-row span {
+  min-width: 0;
+}
+
+.workflow-run-row strong,
+.approval-row h3,
+.rollback-row h3 {
+  color: var(--ink);
+}
+
+.workflow-run-row span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.workflow-run-row p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+}
+
+.run-meta {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.approval-row,
+.rollback-row {
+  display: grid;
+  gap: 9px;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.approval-row p,
+.rollback-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .agent-detail ul,
 .dependency-list {
   display: grid;
@@ -813,6 +884,9 @@ select {
 .agent-card p,
 .plugin-card p,
 .automation-card p,
+.workflow-run-row p,
+.approval-row p,
+.rollback-row p,
 .security-card p,
 .system-card p,
 .domain-card p,
@@ -882,6 +956,9 @@ select {
 .compact .domain-card,
 .compact .activity-row,
 .compact .dependency-row,
+.compact .workflow-run-row,
+.compact .approval-row,
+.compact .rollback-row,
 .compact .orchestration-card,
 .compact .handoff-row,
 .compact .phase-row,
@@ -948,6 +1025,7 @@ select {
   .architecture-map,
   .architecture-layout,
   .orchestration-layout,
+  .automation-ops-layout,
   .inspector {
     grid-template-columns: 1fr;
   }
@@ -962,8 +1040,13 @@ select {
 
   .activity-row,
   .dependency-row,
+  .workflow-run-row,
   .agent-detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .run-meta {
+    justify-content: start;
   }
 
   .view-header,
