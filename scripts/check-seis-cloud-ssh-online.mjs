@@ -114,7 +114,7 @@ const result = {
   checks,
   blockers,
   warnings,
-  nextActions: nextActions(blockers),
+  nextActions: nextActions(blockers, checks.sshConfig.transport),
   safety: [
     "This check does not print SSH private keys or GitHub tokens.",
     "SEIS-SSH must remain a single cloud-only alias for Codex SSH surfaces.",
@@ -235,14 +235,32 @@ function shellQuote(value) {
   return `'${String(value).replaceAll("'", "'\\''")}'`;
 }
 
-function nextActions(items) {
+function nextActions(items, transport) {
   const actions = [];
   if (items.includes("ssh-config-unavailable")) actions.push("Run npm run cloud:ssh-config:install from the SEIS repo.");
   if (items.includes("ssh-config-not-cloud-only")) actions.push("Reinstall the cloud-only SEIS SSH config and remove local/VPS aliases from the Codex SSH selection.");
   if (items.includes("ssh-picker-not-compatible")) actions.push("Use npm run check:seis-ssh-picker-compatibility, then switch SEIS-SSH to --transport direct-cloud only after the cloud endpoint is reachable.");
-  if (items.includes("ssh-remote-offline")) actions.push("Start the GitHub Codespace or refresh GitHub CLI auth with gh auth refresh -h github.com -s codespace.");
-  if (items.includes("seis-repo-missing")) actions.push("Open or rebuild the SEIS Codespace from emirhankudun-ux/SEIS.");
-  if (items.includes("codex-cli-missing")) actions.push("Install Codex CLI inside the Codespace with CODEX_NON_INTERACTIVE=1 curl -fsSL https://chatgpt.com/codex/install.sh | sh.");
+  if (items.includes("ssh-remote-offline")) {
+    if (transport === "direct-cloud") {
+      actions.push("Fix cloud firewall/security group, public IP route, and sshd listener on port 22.");
+    } else {
+      actions.push("Start the GitHub Codespace or refresh GitHub CLI auth with gh auth refresh -h github.com -s codespace.");
+    }
+  }
+  if (items.includes("seis-repo-missing")) {
+    if (transport === "codespace") {
+      actions.push("Open or rebuild the Codespace from emirhankudun-ux/SEIS.");
+    } else {
+      actions.push("Create/push SEIS checkout at the remote repo path and verify with --repo-path.");
+    }
+  }
+  if (items.includes("codex-cli-missing")) {
+    if (transport === "codespace") {
+      actions.push("Install Codex CLI inside the Codespace with CODEX_NON_INTERACTIVE=1 curl -fsSL https://chatgpt.com/codex/install.sh | sh.");
+    } else {
+      actions.push("Install Codex CLI on the direct-cloud host and confirm PATH/launch permissions.");
+    }
+  }
   return actions;
 }
 
