@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 855,
-    "countedBytes": 4772827,
+    "countedBytes": 4772793,
     "javascriptBytes": 1662494,
     "javascriptPercent": 34.83,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3143811,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3143845,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -35,7 +35,7 @@
     },
     {
       "language": "Python",
-      "bytes": 507640,
+      "bytes": 507606,
       "percent": 10.64
     },
     {
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 2690099,
+      "bytes": 2690065,
       "percent": 56.36,
       "sourceLanguages": [
         "ABAP",
@@ -649,7 +649,7 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1314132,
+        "bytes": 1314098,
         "percent": 27.53,
         "minPercent": 18.0,
         "maxPercent": 22.0,
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "8c2485e62ae207d3cab9ee73659af1f4a6c49791f890975faeed04b580a97a08",
+    "hash": "7300193fbe43e28e9a4d272aad72a1313da7a762ad183467d0f4f3c58ab996d0",
     "algorithm": "sha256"
   }
 }

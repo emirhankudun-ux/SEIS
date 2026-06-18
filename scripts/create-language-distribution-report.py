@@ -472,7 +472,7 @@ def iter_files():
 
 def git_source_paths():
     result = subprocess.run(
-        ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+        ["git", "ls-files", "-z", "--cached"],
         cwd=ROOT,
         text=True,
         capture_output=True,
