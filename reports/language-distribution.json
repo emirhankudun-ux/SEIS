@@ -8,50 +8,50 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 863,
-    "countedBytes": 4826346,
-    "javascriptBytes": 1704556,
-    "javascriptPercent": 35.32,
+    "countedFileCount": 864,
+    "countedBytes": 4831925,
+    "javascriptBytes": 1709992,
+    "javascriptPercent": 35.39,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3290587,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3310894,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1704556,
-      "percent": 35.32
+      "bytes": 1709992,
+      "percent": 35.39
     },
     {
       "language": "JSON",
-      "bytes": 789138,
-      "percent": 16.35
+      "bytes": 789281,
+      "percent": 16.33
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 11.89
+      "percent": 11.88
     },
     {
       "language": "Python",
       "bytes": 506913,
-      "percent": 10.5
+      "percent": 10.49
     },
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.53
+      "percent": 8.52
     },
     {
       "language": "CSS",
       "bytes": 287432,
-      "percent": 5.96
+      "percent": 5.95
     },
     {
       "language": "HTML",
       "bytes": 139289,
-      "percent": 2.89
+      "percent": 2.88
     },
     {
       "language": "Shell",
@@ -116,7 +116,7 @@
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.18
+      "percent": 0.17
     },
     {
       "language": "R",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1704556,
-      "percent": 35.32,
+      "bytes": 1709992,
+      "percent": 35.39,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.53,
+      "percent": 8.52,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -519,15 +519,15 @@
     {
       "language": "Objective-C",
       "bytes": 8447,
-      "percent": 0.18,
+      "percent": 0.17,
       "sourceLanguages": [
         "Objective-C"
       ]
     },
     {
       "language": "Other",
-      "bytes": 2701556,
-      "percent": 55.98,
+      "bytes": 2701699,
+      "percent": 55.91,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 12.09,
+        "percent": 12.07,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1315010,
-        "percent": 27.25,
+        "bytes": 1315153,
+        "percent": 27.22,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2116343,
-        "percent": 43.85,
+        "bytes": 2121779,
+        "percent": 43.91,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -761,7 +761,7 @@
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
         "bytes": 426721,
-        "percent": 8.84,
+        "percent": 8.83,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "d78e9f0e423b9ca8c09d7506233a4accfb8719ac25637bed588edf0bfdd2d1f2",
+    "hash": "4fced34129343a3fb4527c159d116e5043b4aa996ec9ac99a35294c961da6b84",
     "algorithm": "sha256"
   }
 }
