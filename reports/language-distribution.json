@@ -8,60 +8,60 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 855,
-    "countedBytes": 4773294,
-    "javascriptBytes": 1662494,
-    "javascriptPercent": 34.83,
+    "countedFileCount": 856,
+    "countedBytes": 4792420,
+    "javascriptBytes": 1677281,
+    "javascriptPercent": 35.0,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3143344,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3194632,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1662494,
-      "percent": 34.83
+      "bytes": 1677281,
+      "percent": 35.0
     },
     {
       "language": "JSON",
-      "bytes": 787533,
-      "percent": 16.5
+      "bytes": 787726,
+      "percent": 16.44
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 12.03
+      "percent": 11.98
     },
     {
       "language": "Python",
-      "bytes": 507606,
-      "percent": 10.63
+      "bytes": 506913,
+      "percent": 10.58
     },
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.63
+      "percent": 8.59
     },
     {
       "language": "CSS",
-      "bytes": 286215,
+      "bytes": 287432,
       "percent": 6.0
     },
     {
       "language": "HTML",
-      "bytes": 135686,
-      "percent": 2.84
+      "bytes": 139289,
+      "percent": 2.91
     },
     {
       "language": "Shell",
       "bytes": 92418,
-      "percent": 1.94
+      "percent": 1.93
     },
     {
       "language": "Other",
-      "bytes": 41786,
-      "percent": 0.88
+      "bytes": 41805,
+      "percent": 0.87
     },
     {
       "language": "YAML",
@@ -141,7 +141,7 @@
     {
       "language": "Lua",
       "bytes": 6948,
-      "percent": 0.15
+      "percent": 0.14
     },
     {
       "language": "Common Lisp",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1662494,
-      "percent": 34.83,
+      "bytes": 1677281,
+      "percent": 35.0,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.63,
+      "percent": 8.59,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2690566,
-      "percent": 56.37,
+      "bytes": 2694905,
+      "percent": 56.23,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 12.22,
+        "percent": 12.17,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1314098,
-        "percent": 27.53,
+        "bytes": 1313598,
+        "percent": 27.41,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2074281,
-        "percent": 43.46,
+        "bytes": 2089068,
+        "percent": 43.59,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -721,7 +721,7 @@
         "id": "go-infrastructure",
         "label": "Go / Infrastructure",
         "bytes": 154712,
-        "percent": 3.24,
+        "percent": 3.23,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -760,8 +760,8 @@
       {
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
-        "bytes": 421901,
-        "percent": 8.84,
+        "bytes": 426721,
+        "percent": 8.9,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -774,8 +774,8 @@
       }
     ],
     "unassigned": {
-      "bytes": 163567,
-      "percent": 3.43,
+      "bytes": 163586,
+      "percent": 3.41,
       "languages": [
         "ABAP",
         "AWK",
@@ -870,6 +870,11 @@
       "bytes": 31248
     },
     {
+      "path": "apps/seis-core/script.js",
+      "language": "JavaScript",
+      "bytes": 28145
+    },
+    {
       "path": "scripts/sync-plugin-environment-sources.cjs",
       "language": "JavaScript",
       "bytes": 27637
@@ -893,16 +898,11 @@
       "path": "scripts/check-seis-specialist-plugins.mjs",
       "language": "JavaScript",
       "bytes": 22883
-    },
-    {
-      "path": "mcp/seis-mcp-server.mjs",
-      "language": "JavaScript",
-      "bytes": 22803
     }
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1263168,
+    "documentation": 1268264,
     "linguist-generated": 2974360,
     "linguist-vendored": 2851037
   },
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "842a3ee8eb47e696428970bc5c6aa28b0dddc08a8bbd48149e1a5c32033beb09",
+    "hash": "a50886e55bc74be6246836ebf7dd959b1cfeb1611eb886bb614fdcbce1b7fe25",
     "algorithm": "sha256"
   }
 }
