@@ -435,6 +435,111 @@ const securityReports = [
   }
 ];
 
+const permissionReviews = [
+  {
+    surface: "Plugin Activation",
+    permission: "Scoped plugin execution",
+    owner: "Security Agent",
+    scope: "Activate plugins only when user intent and task relevance are explicit.",
+    status: "Ready",
+    evidence: "plugin family permissions and marketplace posture",
+    nextAction: "Keep remote-write plugins behind review gates."
+  },
+  {
+    surface: "SEIS-SSH",
+    permission: "Remote workspace access",
+    owner: "Platform Agent",
+    scope: "Expose only the SEIS-SSH alias and avoid local Mac, LAN, or direct VPS aliases in pickers.",
+    status: "Review",
+    evidence: "SEIS-SSH access model and picker compatibility checks",
+    nextAction: "Use terminal-compatible Codespaces transport until direct cloud endpoint is approved."
+  },
+  {
+    surface: "AI Provider Actions",
+    permission: "Model and tool execution",
+    owner: "Architect Agent",
+    scope: "Route OpenAI, Claude, Gemini, Qwen, local, and future systems through explicit lanes.",
+    status: "Ready",
+    evidence: "agent orchestration lanes and handoff audit",
+    nextAction: "Require provider-specific credentials through secure setup flows."
+  },
+  {
+    surface: "Generated Reports",
+    permission: "Repository write output",
+    owner: "Builder Agent",
+    scope: "Generated files can change only after source-surface commits and clean report checks.",
+    status: "Ready",
+    evidence: "language distribution and technology stack report checks",
+    nextAction: "Continue generating reports from clean detached worktrees."
+  }
+];
+
+const dependencyScans = [
+  {
+    target: "Phase 1 Static App",
+    scanner: "Dependency-free source scan",
+    coverage: "HTML, CSS, JavaScript, manifest, local state",
+    status: "Ready",
+    evidence: "No runtime package added for Command Center Phase 1.",
+    risk: "Low dependency surface, but source size growth must stay visible."
+  },
+  {
+    target: "SEIS Web Surface",
+    scanner: "seis:check web audit",
+    coverage: "SEO, contract, style, performance, accessibility, security",
+    status: "Ready",
+    evidence: "Clean detached quality includes SEIS web audit.",
+    risk: "External resources without integrity remain informational."
+  },
+  {
+    target: "Plugin Bundle",
+    scanner: "plugin bundle and specialist plugin checks",
+    coverage: "Manifest, specialist skills, marketplace policy, legacy personal plugins",
+    status: "Ready",
+    evidence: "check:seis-repo-marketplace and check:seis-specialist-plugins",
+    risk: "Provider capability drift requires periodic review."
+  },
+  {
+    target: "SSH Access Model",
+    scanner: "SSH governance checks",
+    coverage: "Access model, picker compatibility, closed runtime, hardening contract",
+    status: "Review",
+    evidence: "SEIS-SSH is terminal-compatible while some pickers may show offline.",
+    risk: "Callback or picker state can block remote UI session startup."
+  }
+];
+
+const securityAudits = [
+  {
+    audit: "Secrets Hygiene",
+    cadence: "Every repository write",
+    status: "Ready",
+    evidence: "No secrets, tokens, certificates, or private cloud material in Command Center records.",
+    outcome: "Static evidence summaries only."
+  },
+  {
+    audit: "Least Privilege",
+    cadence: "Before remote-write workflows",
+    status: "Ready",
+    evidence: "Plugin and provider actions remain scoped by activation policy and lane ownership.",
+    outcome: "No broad always-on connector posture."
+  },
+  {
+    audit: "Rollback Readiness",
+    cadence: "Before release handoff",
+    status: "Ready",
+    evidence: "Automation Center records rollback evidence for app source and generated reports.",
+    outcome: "Small commits and report commits remain reversible."
+  },
+  {
+    audit: "Authenticated Access",
+    cadence: "Before SSH or cloud handoff",
+    status: "Review",
+    evidence: "SEIS-SSH requires user-authenticated session and keeps local fallback visible.",
+    outcome: "No hidden cloud readiness claim without proof."
+  }
+];
+
 const recommendedActions = [
   ["Command Center architecture", "Keep Phase 1 static, then promote proven modules to React/Next."],
   ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
@@ -1103,6 +1208,49 @@ function renderSecurity() {
     "auditability",
     "no exposed secrets"
   ].map((item) => `<li>${item}</li>`).join("");
+
+  $("#permission-reviews").innerHTML = permissionReviews.map((review) => `
+    <article class="permission-review-row">
+      <div class="card-topline">
+        <h3>${review.surface}</h3>
+        <span class="status-pill ${statusClass(review.status)}">${review.status}</span>
+      </div>
+      <p>${review.permission}</p>
+      <p>${review.scope}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${review.owner}</span>
+        <span class="meta-chip">${review.evidence}</span>
+      </div>
+      <small>${review.nextAction}</small>
+    </article>
+  `).join("");
+
+  $("#dependency-scans").innerHTML = dependencyScans.map((scan) => `
+    <article class="dependency-scan-row">
+      <div>
+        <strong>${scan.target}</strong>
+        <span>${scan.scanner}</span>
+      </div>
+      <p>${scan.coverage}</p>
+      <p>${scan.risk}</p>
+      <span class="status-pill ${statusClass(scan.status)}">${scan.status}</span>
+      <small>${scan.evidence}</small>
+    </article>
+  `).join("");
+
+  $("#security-audits").innerHTML = securityAudits.map((audit) => `
+    <article class="security-audit-row">
+      <div class="card-topline">
+        <h3>${audit.audit}</h3>
+        <span class="status-pill ${statusClass(audit.status)}">${audit.status}</span>
+      </div>
+      <p>${audit.evidence}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${audit.cadence}</span>
+        <span class="meta-chip">${audit.outcome}</span>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderArchitecture() {

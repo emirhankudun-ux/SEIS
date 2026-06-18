@@ -393,6 +393,9 @@ h3 {
 .workflow-run-row,
 .approval-row,
 .rollback-row,
+.permission-review-row,
+.dependency-scan-row,
+.security-audit-row,
 .dependency-edge,
 .relationship-row,
 .debt-row,
@@ -947,6 +950,76 @@ select {
   text-transform: uppercase;
 }
 
+.security-ops-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.permission-reviews,
+.dependency-scans,
+.security-audits {
+  display: grid;
+  gap: 10px;
+}
+
+.permission-review-row,
+.security-audit-row {
+  display: grid;
+  gap: 9px;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.permission-review-row p,
+.security-audit-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.permission-review-row small,
+.dependency-scan-row small {
+  color: var(--muted);
+}
+
+.dependency-scan-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+  align-items: start;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.dependency-scan-row div,
+.dependency-scan-row strong,
+.dependency-scan-row span {
+  min-width: 0;
+}
+
+.dependency-scan-row strong,
+.permission-review-row h3,
+.security-audit-row h3 {
+  color: var(--ink);
+}
+
+.dependency-scan-row span:not(.status-pill) {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.dependency-scan-row p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+}
+
+.dependency-scan-row small {
+  grid-column: 1 / -1;
+}
+
 .phase-list {
   display: grid;
   gap: 10px;
@@ -963,6 +1036,9 @@ select {
 .workflow-run-row p,
 .approval-row p,
 .rollback-row p,
+.permission-review-row p,
+.dependency-scan-row p,
+.security-audit-row p,
 .security-card p,
 .system-card p,
 .domain-card p,
@@ -1035,6 +1111,9 @@ select {
 .compact .workflow-run-row,
 .compact .approval-row,
 .compact .rollback-row,
+.compact .permission-review-row,
+.compact .dependency-scan-row,
+.compact .security-audit-row,
 .compact .dependency-edge,
 .compact .relationship-row,
 .compact .debt-row,
@@ -1106,6 +1185,7 @@ select {
   .orchestration-layout,
   .automation-ops-layout,
   .architecture-ops-layout,
+  .security-ops-layout,
   .inspector {
     grid-template-columns: 1fr;
   }
@@ -1121,6 +1201,7 @@ select {
   .activity-row,
   .dependency-row,
   .workflow-run-row,
+  .dependency-scan-row,
   .dependency-edge,
   .agent-detail-grid {
     grid-template-columns: 1fr;
