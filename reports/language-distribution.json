@@ -9,19 +9,19 @@
   },
   "summary": {
     "countedFileCount": 855,
-    "countedBytes": 4772390,
+    "countedBytes": 4772827,
     "javascriptBytes": 1662494,
-    "javascriptPercent": 34.84,
+    "javascriptPercent": 34.83,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3144248,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3143811,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 1662494,
-      "percent": 34.84
+      "percent": 34.83
     },
     {
       "language": "JSON",
@@ -35,8 +35,8 @@
     },
     {
       "language": "Python",
-      "bytes": 507203,
-      "percent": 10.63
+      "bytes": 507640,
+      "percent": 10.64
     },
     {
       "language": "TypeScript",
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 1662494,
-      "percent": 34.84,
+      "percent": 34.83,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 2689662,
+      "bytes": 2690099,
       "percent": 56.36,
       "sourceLanguages": [
         "ABAP",
@@ -649,7 +649,7 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1313695,
+        "bytes": 1314132,
         "percent": 27.53,
         "minPercent": 18.0,
         "maxPercent": 22.0,
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "90820c7e1350d0de2b0fa87e68377c89bfba2235a3f0d5fb4a4bf8e1173ecc8d",
+    "hash": "8c2485e62ae207d3cab9ee73659af1f4a6c49791f890975faeed04b580a97a08",
     "algorithm": "sha256"
   }
 }

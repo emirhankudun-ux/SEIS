@@ -655,6 +655,17 @@ def runtime_readiness():
                 }
             )
             continue
+        if shutil.which(command[0]) is None:
+            runtimes.append(
+                {
+                    "id": runtime_id,
+                    "command": " ".join(command),
+                    "available": False,
+                    "exitCode": None,
+                    "version": None,
+                }
+            )
+            continue
         result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
         output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
         runtimes.append(
@@ -877,6 +888,8 @@ def canonical_report_json(payload):
 def normalize_runtime_report(payload):
     normalized = json.loads(json.dumps(payload))
     for runtime_entry in normalized.get("localRuntimeReadiness", []):
+        runtime_entry.pop("available", None)
+        runtime_entry.pop("exitCode", None)
         runtime_entry.pop("version", None)
     return normalized
 

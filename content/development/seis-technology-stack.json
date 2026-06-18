@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 507203,
+      "githubBytes": 507640,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
