@@ -590,6 +590,110 @@ const architectureNodes = [
   ["Native", "SwiftUI macOS application after core workflows stabilize in the static MVP."]
 ];
 
+const dependencyGraph = [
+  {
+    node: "Command Shell",
+    dependsOn: ["Design tokens", "Local state", "Render functions"],
+    risk: "Static modules can become hard to split if live adapters are added too early.",
+    mitigation: "Keep Phase 1 dependency-free and define typed adapter seams before Phase 2.",
+    status: "Ready"
+  },
+  {
+    node: "Repository Intelligence",
+    dependsOn: ["Repository records", "Dependency overview", "Generated reports"],
+    risk: "Report drift can hide real ecosystem status.",
+    mitigation: "Regenerate language and technology reports from clean worktrees after source changes.",
+    status: "Ready"
+  },
+  {
+    node: "Agent Orchestration",
+    dependsOn: ["Agent evidence", "AI systems", "Handoff audit"],
+    risk: "Multi-model work can become hidden chat context.",
+    mitigation: "Record lanes, collaborators, handoff artifact, and validation ownership.",
+    status: "Ready"
+  },
+  {
+    node: "Automation Operations",
+    dependsOn: ["Workflow definitions", "Run history", "Approval gates", "Rollback evidence"],
+    risk: "Automations without gates can publish stale or unsafe outputs.",
+    mitigation: "Require validation evidence and rollback path before release handoff.",
+    status: "Review"
+  }
+];
+
+const moduleRelationships = [
+  {
+    from: "Dashboard",
+    to: "Goals",
+    contract: "Dashboard summarizes active goals and recommended actions without owning goal mutation.",
+    owner: "Product lane",
+    status: "Ready"
+  },
+  {
+    from: "Repositories",
+    to: "Automation",
+    contract: "Repository source changes trigger report refresh, quality checks, and generated evidence updates.",
+    owner: "Builder lane",
+    status: "Ready"
+  },
+  {
+    from: "Agents",
+    to: "Architecture",
+    contract: "Agent responsibilities produce ADR candidates, architecture constraints, and handoff audit entries.",
+    owner: "Architect lane",
+    status: "Ready"
+  },
+  {
+    from: "Plugins",
+    to: "Security",
+    contract: "Plugin activation remains permission-gated and visible before remote writes or provider actions.",
+    owner: "Security lane",
+    status: "Review"
+  },
+  {
+    from: "Knowledge",
+    to: "Documentation",
+    contract: "Reusable memory, research notes, and decision history feed the documentation hub.",
+    owner: "Research lane",
+    status: "Active"
+  }
+];
+
+const technicalDebtRegister = [
+  {
+    id: "ARCH-001",
+    area: "Static render module",
+    severity: "Medium",
+    status: "Tracked",
+    owner: "Architect Agent",
+    action: "Split data, render helpers, and interaction handlers before live API adapters land."
+  },
+  {
+    id: "ARCH-002",
+    area: "Mock ecosystem records",
+    severity: "Medium",
+    status: "Review",
+    owner: "Builder Agent",
+    action: "Introduce typed records for GitHub, plugin, security, automation, and knowledge adapters in Phase 2."
+  },
+  {
+    id: "ARCH-003",
+    area: "Local-only persistence",
+    severity: "Low",
+    status: "Tracked",
+    owner: "Security Agent",
+    action: "Define encrypted storage and no-secret boundaries before authenticated provider data is stored."
+  },
+  {
+    id: "ARCH-004",
+    area: "Native bridge contract",
+    severity: "Low",
+    status: "Planned",
+    owner: "Design Agent",
+    action: "Map stable module contracts to SwiftUI macOS and iOS surfaces after Phase 1 workflows stabilize."
+  }
+];
+
 const knowledgeItems = [
   ["Repository Memory", "Workspace defaults, branch governance, and SEIS operating rules."],
   ["Research Log", "Primary-source notes for Apple, OpenAI, GitHub and cloud assumptions."],
@@ -1017,6 +1121,47 @@ function renderArchitecture() {
       </div>
       <p>${phase.stack}</p>
       <small>${phase.outcome}</small>
+    </article>
+  `).join("");
+
+  $("#dependency-graph").innerHTML = dependencyGraph.map((item) => `
+    <article class="dependency-edge">
+      <div>
+        <strong>${item.node}</strong>
+        <span>${item.dependsOn.join(" / ")}</span>
+      </div>
+      <p>${item.risk}</p>
+      <p>${item.mitigation}</p>
+      <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+    </article>
+  `).join("");
+
+  $("#module-relationships").innerHTML = moduleRelationships.map((relationship) => `
+    <article class="relationship-row">
+      <div class="relationship-path">
+        <strong>${relationship.from}</strong>
+        <span>to</span>
+        <strong>${relationship.to}</strong>
+      </div>
+      <p>${relationship.contract}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${relationship.owner}</span>
+        <span class="status-pill ${statusClass(relationship.status)}">${relationship.status}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#technical-debt-register").innerHTML = technicalDebtRegister.map((debt) => `
+    <article class="debt-row">
+      <div class="card-topline">
+        <h3>${debt.id}: ${debt.area}</h3>
+        <span class="status-pill ${statusClass(debt.status)}">${debt.status}</span>
+      </div>
+      <p>${debt.action}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${debt.owner}</span>
+        <span class="meta-chip">Severity: ${debt.severity}</span>
+      </div>
     </article>
   `).join("");
 }

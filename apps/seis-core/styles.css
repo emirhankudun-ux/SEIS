@@ -393,6 +393,9 @@ h3 {
 .workflow-run-row,
 .approval-row,
 .rollback-row,
+.dependency-edge,
+.relationship-row,
+.debt-row,
 .orchestration-card,
 .handoff-row,
 .phase-row,
@@ -857,7 +860,7 @@ select {
 
 .architecture-map {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
   gap: 12px;
 }
 
@@ -874,12 +877,85 @@ select {
   box-shadow: none;
 }
 
+.architecture-ops-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.dependency-graph,
+.module-relationships,
+.technical-debt-register {
+  display: grid;
+  gap: 10px;
+}
+
+.dependency-edge {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.85fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.dependency-edge div,
+.relationship-row div,
+.debt-row div {
+  min-width: 0;
+}
+
+.dependency-edge strong,
+.relationship-row strong,
+.debt-row h3 {
+  color: var(--ink);
+}
+
+.dependency-edge span:not(.status-pill) {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.dependency-edge p,
+.relationship-row p,
+.debt-row p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.relationship-row,
+.debt-row {
+  display: grid;
+  gap: 9px;
+  padding: 13px;
+  box-shadow: none;
+}
+
+.relationship-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.relationship-path span {
+  color: var(--faint);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .phase-list {
   display: grid;
   gap: 10px;
 }
 
 .architecture-node p,
+.dependency-edge p,
+.relationship-row p,
+.debt-row p,
 .knowledge-card p,
 .agent-card p,
 .plugin-card p,
@@ -959,6 +1035,9 @@ select {
 .compact .workflow-run-row,
 .compact .approval-row,
 .compact .rollback-row,
+.compact .dependency-edge,
+.compact .relationship-row,
+.compact .debt-row,
 .compact .orchestration-card,
 .compact .handoff-row,
 .compact .phase-row,
@@ -1026,6 +1105,7 @@ select {
   .architecture-layout,
   .orchestration-layout,
   .automation-ops-layout,
+  .architecture-ops-layout,
   .inspector {
     grid-template-columns: 1fr;
   }
@@ -1041,6 +1121,7 @@ select {
   .activity-row,
   .dependency-row,
   .workflow-run-row,
+  .dependency-edge,
   .agent-detail-grid {
     grid-template-columns: 1fr;
   }
