@@ -149,11 +149,11 @@ def run_command(
         # Loglama
         logging.info(f"Komut çalıştırılıyor: {cmd}")
         result = subprocess.run(
-            cmd, 
-            shell=shell, 
-            capture_output=capture, 
-            text=True, 
-            check=check, 
+            cmd,
+            shell=shell,
+            capture_output=capture,
+            text=True,
+            check=check,
             timeout=timeout
         )
         return result
@@ -177,39 +177,39 @@ def detect_os() -> Tuple[str, str]:
     """İşletim sistemi ve paket yöneticisini tespit et"""
     os_type = "unknown"
     pm = "unknown"
-    
+
     if os.path.exists("/etc/os-release"):
         with open("/etc/os-release") as f:
             content = f.read().lower()
-            if "ubuntu" in content: 
+            if "ubuntu" in content:
                 os_type = "ubuntu"
                 pm = "apt-get"
-            elif "debian" in content: 
+            elif "debian" in content:
                 os_type = "debian"
                 pm = "apt-get"
-            elif "centos" in content: 
+            elif "centos" in content:
                 os_type = "centos"
                 pm = "yum"
-            elif "rocky" in content: 
+            elif "rocky" in content:
                 os_type = "rocky"
                 pm = "dnf"
-            elif "almalinux" in content: 
+            elif "almalinux" in content:
                 os_type = "almalinux"
                 pm = "dnf"
-            elif "fedora" in content: 
+            elif "fedora" in content:
                 os_type = "fedora"
                 pm = "dnf"
-            elif "arch" in content: 
+            elif "arch" in content:
                 os_type = "arch"
                 pm = "pacman"
-    
+
     # Fallback kontrolü
     if os_type == "unknown":
         if os.path.exists("/usr/bin/yum"): pm = "yum"
         elif os.path.exists("/usr/bin/dnf"): pm = "dnf"
         elif os.path.exists("/usr/bin/apt-get"): pm = "apt-get"
         elif os.path.exists("/usr/bin/pacman"): pm = "pacman"
-        
+
     return os_type, pm
 
 def get_cpu_info() -> Dict:
@@ -237,7 +237,7 @@ def get_mem_info() -> Dict:
                 key = parts[0].rstrip(':')
                 val = int(parts[1]) # kB
                 mem_data[key] = val
-            
+
             info["total"] = mem_data.get("MemTotal", 0)
             info["free"] = mem_data.get("MemFree", 0) + mem_data.get("Buffers", 0) + mem_data.get("Cached", 0)
             info["used"] = info["total"] - info["free"]
@@ -297,7 +297,7 @@ class UltraSSHManager:
         self.command_runner = command_runner or run_command
         self._input = input_fn
         self._psutil = None
-        
+
         # Yapılandırma Varsayılanları
         self.mode = "interactive"
         self.ssh_port = None
@@ -324,7 +324,7 @@ class UltraSSHManager:
         os.chmod(self.report_dir, 0o700)
         os.chmod(self.cred_dir, 0o700)
         os.chmod(self.backup_dir, 0o700)
-        
+
         # Loglama Ayarı
         self.logger = logging.getLogger("OmegaManager")
         self.logger.setLevel(logging.INFO)
@@ -1115,7 +1115,7 @@ fail2ban-client status sshd || true
         Colors.clear()
         cpu = get_cpu_info()
         mem = get_mem_info()
-        
+
         banner = f"""
 {Colors.OKCYAN}╔══════════════════════════════════════════════════════════════════╗
 ║{Colors.BOLD}          ULTRA SSH MANAGER v6.0 - SINGULARITY EDITION              {Colors.OKCYAN}║
@@ -1140,7 +1140,7 @@ fail2ban-client status sshd || true
         path = f"{self.backup_dir}/backup_{ts}_{desc}"
         os.makedirs(path, exist_ok=True)
         os.chmod(path, 0o700)
-        
+
         files_to_backup = [
             self.ssh_config_path,
             "/etc/fail2ban/jail.conf",
@@ -1150,7 +1150,7 @@ fail2ban-client status sshd || true
             "/etc/hosts.allow",
             "/etc/hosts.deny"
         ]
-        
+
         manifest = []
         skipped_files = []
         for f in files_to_backup:
@@ -1178,7 +1178,7 @@ fail2ban-client status sshd || true
                     "source": f,
                     "reason": "source_file_missing",
                 })
-        
+
         if manifest and skipped_files:
             manifest_status = "partial"
         elif manifest:
@@ -1202,7 +1202,7 @@ fail2ban-client status sshd || true
         with open(metadata_path, "w") as f:
             json.dump(meta, f, indent=2)
         os.chmod(metadata_path, 0o600)
-            
+
         print(f"{Colors.OKGREEN}✅ Detaylı Yedek Oluşturuldu: {path}{Colors.ENDC}")
         return path
 
@@ -1214,7 +1214,7 @@ fail2ban-client status sshd || true
         if self.audit_pause_seconds > 0:
             time.sleep(min(self.audit_pause_seconds, 1.5))
         spinner.stop()
-        
+
         # Gerçek analiz adımları
         steps = [
             ("CPU Mikromimarisi Kontrolü", "lscpu"),
@@ -1226,7 +1226,7 @@ fail2ban-client status sshd || true
             ("Kullanıcı ve Grup Yetki Analizi", "cat /etc/passwd"),
             ("Fail2Ban ve Log Altyapısı Kontrolü", "systemctl status fail2ban --no-pager")
         ]
-        
+
         results = {}
         for name, cmd in steps:
             spinner = Spinner(f"{name} inceleniyor...")
@@ -1236,7 +1236,7 @@ fail2ban-client status sshd || true
             results[name] = res.stdout if res else "Hata"
             if self.audit_pause_seconds > 0:
                 time.sleep(min(self.audit_pause_seconds, 0.5))
-            
+
         # Raporu kaydet
         report_path = f"{self.backup_dir}/audit_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(report_path, "w") as f:
@@ -1261,7 +1261,7 @@ fail2ban-client status sshd || true
         if not self.config.get("port_knocking", {}).get("enabled", True):
             print(f"{Colors.WARNING}⚠️  Yapılandırmada port-knocking kapalı.{Colors.ENDC}")
             return
-            
+
         print(f"\n{Colors.OKCYAN}🚪 Port Knocking Altyapısı Kuruluyor...{Colors.ENDC}")
         if not self.knock_secret:
             self.generate_knock_sequence()
@@ -1318,7 +1318,7 @@ fail2ban-client status sshd || true
     def harden_kernel(self):
         """Kernel seviyesinde agresif sertleştirme"""
         print(f"\n{Colors.OKCYAN}🛡️  Kernel Seviyesi Sertleştirme (Sysctl)...{Colors.ENDC}")
-        
+
         sysctl_settings = {
             "net.ipv4.tcp_syncookies": "1",
             "net.ipv4.conf.all.accept_redirects": "0",
@@ -1339,12 +1339,12 @@ fail2ban-client status sshd || true
             "kernel.exec-shield": "1",
             "kernel.dmesg_restrict": "1"
         }
-        
+
         config_file = "/etc/sysctl.d/99-ultra-ssh-hardening.conf"
         with open(config_file, "w") as f:
             for key, val in sysctl_settings.items():
                 f.write(f"{key} = {val}\n")
-        
+
         self._safe_run(f"sysctl -p {self._quote(config_file)}", must_succeed=True)
         print(f"   ✅ {len(sysctl_settings)} adet kernel parametresi optimize edildi.")
 
@@ -1352,12 +1352,12 @@ fail2ban-client status sshd || true
         """Akıllı paket kurulumu (OS uyumlu)"""
         if not packages: return
         print(f"\n{Colors.OKCYAN}📦 Paket Yöneticisi ({self.pm}) ile Kurulum Başlatılıyor...{Colors.ENDC}")
-        
+
         update_cmd = ""
         install_cmd = ""
         if not self.pm or self.pm == "unknown":
             raise RuntimeError("Paket yöneticisi tespit edilemedi. --dry-run veya alternatif ortam için pm belirtin.")
-        
+
         if self.pm == "apt-get":
             update_cmd = "apt-get update -y"
             install_cmd = f"apt-get install -y {' '.join(packages)}"
@@ -1367,13 +1367,13 @@ fail2ban-client status sshd || true
         elif self.pm == "pacman":
             update_cmd = "pacman -Sy --noconfirm"
             install_cmd = f"pacman -S --noconfirm {' '.join(packages)}"
-        
+
         if update_cmd:
             spinner = Spinner("Paket listesi güncelleniyor...")
             spinner.start()
             self._run_with_retry(update_cmd, tries=int(self.config.get("package_retry_count", 2)), must_succeed=True)
             spinner.stop()
-            
+
         spinner = Spinner("Paketler kuruluyor...")
         spinner.start()
         res = self._run_with_retry(
@@ -1390,21 +1390,21 @@ fail2ban-client status sshd || true
             users_to_create.append(
                 {"name": self._validate_username(self.create_user), "sudo": self.user_sudo, "rescue": False}
             )
-        
+
         # Acil durum kurtarma kullanıcısı
         if not any(u["name"] == "rescue_admin" for u in users_to_create):
             users_to_create.append({"name": "rescue_admin", "sudo": True, "rescue": True})
-        
+
         for user_data in users_to_create:
             username = user_data["name"]
             is_rescue = user_data["rescue"]
-            
+
             if is_rescue:
                 print(f"\n{Colors.WARNING}🚑 ACİL DURUM KULLANICISI OLUŞTURULUYOR: {username}{Colors.ENDC}")
                 # Rescue kullanıcı sadece konsol odaklı kalacak, SSH erişimi kısıtlanacak.
-            
+
             print(f"\n{Colors.OKCYAN}👤 Kullanıcı Oluşturuluyor: {username}{Colors.ENDC}")
-            
+
             # Var mı?
             exists = self._safe_run(
                 f"id -- {self._quote(username)}",
@@ -1418,7 +1418,7 @@ fail2ban-client status sshd || true
                 if user_data["sudo"]:
                     if self.os_type in ["ubuntu", "debian"]: groups = "sudo"
                     else: groups = "wheel"
-                
+
                 cmd = f"useradd -m -s /bin/bash"
                 if groups: cmd += f" -G {groups}"
                 cmd += f" {self._quote(username)}"
@@ -1431,7 +1431,7 @@ fail2ban-client status sshd || true
                 ssh_dir = f"/home/{username}/.ssh"
                 quoted_ssh_dir = self._quote(ssh_dir)
                 self._safe_run(f"mkdir -p {quoted_ssh_dir}", must_succeed=True)
-                
+
                 # Anahtar Üret
                 key_name = f"ultra_key_{username}"
                 key_dir = f"{self.cred_dir}/keys/{username}"
@@ -1444,27 +1444,27 @@ fail2ban-client status sshd || true
                     must_succeed=True,
                     allow_fail=False
                 )
-                
+
                 if os.path.exists(f"{key_path}.pub"):
                     with open(f"{key_path}.pub", "r") as f:
                         pub_key = f.read().strip()
                     with open(f"{ssh_dir}/authorized_keys", "w") as f:
                         f.write(pub_key + "\n")
-                    
+
                     self._safe_run(
                         f"chown -R {self._quote(username)}:{self._quote(username)} {quoted_ssh_dir}",
                         must_succeed=True
                     )
                     self._safe_run(f"chmod 700 {quoted_ssh_dir}", must_succeed=True)
                     self._safe_run(f"chmod 600 {self._quote(f'{ssh_dir}/authorized_keys')}", must_succeed=True)
-                    
+
                     print(f"   🔑 SSH Anahtarı: {key_path}")
                     if is_rescue:
                         print(
                             f"   {Colors.FAIL}🚨 DİKKAT: Bu anahtarı FİZİKSEL OLARAK GÜVENLİ YERE YEDEKLEYİN!"
                             f"{Colors.ENDC}"
                         )
-                
+
                 # Bilgileri Kaydet
                 info_file = f"{self.cred_dir}/user_{username}_info.json"
                 if is_rescue:
@@ -1493,13 +1493,13 @@ fail2ban-client status sshd || true
         """SSH konfigürasyonunu maksimum güvenlik seviyesine çeker"""
         print(f"\n{Colors.OKCYAN}🔒 SSH Konfigürasyonu Sertleştiriliyor (Agresif Mod)...{Colors.ENDC}")
         self.create_backup("pre_ssh_hardening")
-        
+
         try:
             with open(self.ssh_config_path, "r") as f:
                 lines = f.readlines()
         except FileNotFoundError:
             lines = []
-        
+
         new_lines = []
         settings = {
             "Port": str(port),
@@ -1563,12 +1563,12 @@ fail2ban-client status sshd || true
         # SSHD yapılandırma dosyası idempotent yazımı
         full_lines = new_lines + [f"{line}\n" for line in match_block]
         self._write_validated_ssh_config(full_lines)
-        
+
         self._safe_run("systemctl reload sshd || systemctl reload ssh", must_succeed=False, allow_fail=True)
-        
+
         # Özel MOTD oluştur
         self.create_dynamic_motd()
-        
+
         print(f"   ✅ Port: {port}")
         print(f"   ✅ Root Login: {'KAPALI' if disable_root else 'Sadece Anahtar'}")
         print(f"   ✅ Parola Auth: KAPALI")
@@ -1594,7 +1594,7 @@ echo ""
         with open(motd_script, "w") as f:
             f.write(script_content)
         os.chmod(motd_script, 0o755)
-        
+
         # Eski motd linklerini temizle (opsiyonel)
         # Ubuntu'da /etc/motd genellikle dinamiktir.
 
@@ -1604,7 +1604,7 @@ echo ""
         max_fail = int(self.config.get("max_login_fails", 5))
         aggressive_retry = max(2, int(max_fail / 2))
         self.install_packages(["fail2ban"])
-        
+
         jail_conf = """
 [DEFAULT]
 bantime = 86400
@@ -1648,10 +1648,10 @@ maxretry = 3
 """
         if self.os_type in ["centos", "rocky", "almalinux", "fedora"]:
             jail_conf = jail_conf.replace("/var/log/auth.log", "/var/log/secure")
-            
+
         with open("/etc/fail2ban/jail.local", "w") as f:
             f.write(jail_conf)
-        
+
         self._safe_run("systemctl restart fail2ban", must_succeed=True)
         self._safe_run("systemctl enable fail2ban", must_succeed=True)
         print("   ✅ Fail2Ban Agresif Mod ve Recidive Aktif.")
@@ -1660,7 +1660,7 @@ maxretry = 3
         """Gelişmiş Firewall (UFW/Firewalld + Özel Kurallar)"""
         print(f"\n{Colors.OKCYAN}🔥 Gelişmiş Güvenlik Duvarı Yapılandırması...{Colors.ENDC}")
         strict_knock_guard = bool(self.config.get("port_knocking", {}).get("strict_guard", False))
-        
+
         if self.pm == "apt-get": # UFW
             self.install_packages(["ufw"])
             self._safe_run("ufw --force reset", must_succeed=True)
@@ -1668,7 +1668,7 @@ maxretry = 3
             self._safe_run("ufw default allow outgoing", must_succeed=True)
             if strict_knock_guard and self.enable_knocking:
                 self._safe_run(
-                    f"ufw deny {self._quote(port)}/tcp comment 'SSH-Ultra pending knock'", 
+                    f"ufw deny {self._quote(port)}/tcp comment 'SSH-Ultra pending knock'",
                     must_succeed=True
                 )
             else:
@@ -1689,7 +1689,7 @@ maxretry = 3
                     print("   ℹ️  Port-knocking açık: SSH doğrudan kapalıdır, yalnızca knock başarılı açılır.")
                 else:
                     print("   ℹ️  Port-knocking açık: SSH doğrudan erişime de açık bırakıldı.")
-            
+
         else: # Firewalld
             self.install_packages(["firewalld"])
             self._safe_run("systemctl start firewalld", must_succeed=True)
@@ -1725,14 +1725,14 @@ maxretry = 3
         """Gerçek zamanlı siber savaş dashboard'u"""
         print(f"\n{Colors.OKCYAN}📊 Siber Savaş Dashboard'u Başlatılıyor (Ctrl+C ile çık)...{Colors.ENDC}")
         time.sleep(2)
-        
+
         try:
             while True:
                 Colors.clear()
                 print(f"{Colors.HEADER}╔══════════════════════════════════════════════════════════╗")
                 print(f"║         ULTRA SSH MANAGER - CANLI SAVUNMA PANELİ         ║")
                 print(f"╚══════════════════════════════════════════════════════════╝{Colors.ENDC}\n")
-                
+
                 # Sistem Kaynakları
                 cpu = get_cpu_info()
                 mem = get_mem_info()
@@ -1742,7 +1742,7 @@ maxretry = 3
                     try:
                         disk = psutil_module.disk_usage("/")
                     except: pass
-                
+
                 print(f"{Colors.OKBLUE}💻 Sistem Durumu:{Colors.ENDC}")
                 cpu_bar = '█' * int(cpu['usage'] / 2) + '░' * (50 - int(cpu['usage'] / 2))
                 print(f"   CPU: [{cpu_bar}] %{cpu['usage']:.1f}")
@@ -1751,7 +1751,7 @@ maxretry = 3
                 if disk is not None and hasattr(disk, 'percent'):
                     disk_bar = '█' * int(disk.percent / 2) + '░' * (50 - int(disk.percent / 2))
                     print(f"   DISK:[{disk_bar}] %{disk.percent:.1f}")
-                
+
                 # Ağ ve Saldırı Bilgileri
                 print(f"\n{Colors.FAIL}🛡️  Savunma Durumu:{Colors.ENDC}")
                 try:
@@ -1766,7 +1766,7 @@ maxretry = 3
                     else:
                         print(f"   {Colors.OKGREEN}✅ Son dönemde başarısız deneme yok.{Colors.ENDC}")
                 except: pass
-                
+
                 try:
                     # Banlanan IP sayısı
                     res = self._run_shell("fail2ban-client status sshd", timeout=30)
@@ -1774,7 +1774,7 @@ maxretry = 3
                         banned = len(re.findall(r'\|`(.*)`', res.stdout))
                         print(f"   🚫 Aktif Banlar: {Colors.FAIL}{banned}{Colors.ENDC}")
                 except: pass
-                
+
                 print(f"\n{Colors.OKCYAN}Son Güncelleme: {datetime.now().strftime('%H:%M:%S')}{Colors.ENDC}")
                 refresh_delay = float(self.config.get("dashboard_refresh_seconds", 2.0))
                 time.sleep(max(0.5, refresh_delay))
@@ -1791,7 +1791,7 @@ maxretry = 3
     def interactive_mode(self):
         """Kullanıcıdan adım adım bilgi al"""
         print("\n--- INTERACTIVE SETUP WIZARD ---")
-        
+
         # Mod Seçimi
         print("1. Sadece Güvenlik Sertleştirme (--harden)")
         print("2. Tam Kurulum (Paketler + Kullanıcı + Güvenlik) (--full-setup)")
@@ -1799,17 +1799,17 @@ maxretry = 3
         print("4. Canlı Dashboard (--dashboard)")
         print("5. Doğrulama Raporu (--verify)")
         choice = self._prompt("Seçiminiz (1-5) [2]: ").strip()
-        
+
         if choice == "1": self.mode = "harden"
         elif choice == "3": self.mode = "audit"
         elif choice == "4": self.mode = "dashboard"
         elif choice == "5": self.mode = "verify"
         else: self.mode = "full-setup"
-        
+
         if self.mode == "dashboard":
             # Ana akışta start_dashboard, ancak run_full_setup içinde tek noktadan çalışsın.
             return
-        
+
         if self.mode == "audit":
             # Ana akışta deep audit tek bir doğrulama adımı olarak çalışsın.
             return
@@ -1822,7 +1822,7 @@ maxretry = 3
         if self._prompt("Doğru mu? (e/h) [e]: ").lower() == 'h':
             self.os_type = self._prompt("OS adı (ubuntu/centos/rocky/debian/arch): ").lower()
             self.pm = self.get_package_manager(self.os_type)
-        
+
         # Port
         curr_port = self._prompt("Yeni SSH Portu (Varsayılan: 2222): ").strip()
         try:
@@ -1830,11 +1830,11 @@ maxretry = 3
         except ValueError:
             print(f"{Colors.FAIL}⚠️  Geçersiz port girdisi, varsayılan 2222 kullanılıyor.{Colors.ENDC}")
             self.ssh_port = 2222
-        
+
         # Root
         root_ans = self._prompt("Root SSH girişini tamamen kapat? (e/h) [e]: ").lower()
         self.disable_root = (root_ans != 'h')
-        
+
         # Kullanıcı
         user_ans = self._prompt("Yeni kullanıcı oluşturulsun mu? (e/h) [e]: ").lower()
         if user_ans != 'h':
@@ -1843,15 +1843,15 @@ maxretry = 3
             self.user_sudo = (sudo_ans != 'h')
         else:
             self.create_user = None
-            
+
         # Port Knocking
         knock_ans = self._prompt("Port Knocking (Gizli Kapı) aktif edilsin mi? (e/h) [e]: ").lower()
         self.enable_knocking = (knock_ans != 'h')
-        
+
         # Deep Audit
         audit_ans = self._prompt("Kurulum öncesi Derin Sistem Analizi yapılsın mı? (e/h) [e]: ").lower()
         self.deep_audit = (audit_ans != 'h')
-        
+
         # Email
         self.admin_email = self._prompt("Bildirim E-postası (opsiyonel): ").strip() or "admin@localhost"
 
@@ -1859,7 +1859,7 @@ maxretry = 3
         """Tüm süreci çalıştır"""
         if self.mode == "interactive":
             self.interactive_mode()
-        
+
         self.print_banner()
         self.check_root()
         self.failure = None
@@ -1941,7 +1941,7 @@ maxretry = 3
         print(f"Yeni Kullanıcı: {self.create_user}")
         print(f"Port Knocking: {self.enable_knocking}")
         print(f"Derin Analiz: {self.deep_audit}")
-        
+
         if self.mode in ["harden", "full-setup"]:
             if self.confirm_live_apply_safety:
                 self._log_step(
@@ -1960,7 +1960,7 @@ maxretry = 3
                     {"source": "interactive_prompt"}
                 )
             self._confirm_live_apply_safety()
-        
+
         if self.deep_audit:
             self.deep_system_audit()
 
@@ -2017,7 +2017,7 @@ maxretry = 3
         print(f"{Colors.FAIL}DİKKAT: Bağlantınız kopabilir! Yeni port ve anahtarla bağlanın.{Colors.ENDC}")
         timeout = int(self.config.get("service_restart_timeout_sec", 45))
         time.sleep(min(5, timeout))
-        
+
         if self.os_type in ["ubuntu", "debian"]:
             self._safe_run("systemctl restart ssh", must_succeed=self.config.get("enable_service_restart", True))
         else:
@@ -2029,14 +2029,14 @@ maxretry = 3
         print(f"\n{Colors.OKGREEN}╔══════════════════════════════════════════════════════════╗")
         print(f"║{Colors.BOLD}          İŞLEM TAMAMLANDI! SİSTEM GÜVENLİ.                 {Colors.OKGREEN}║")
         print(f"╚══════════════════════════════════════════════════════════╝{Colors.ENDC}")
-        
+
         user = self.create_user or "rescue_admin"
         credential_manifest = f"{self.cred_dir}/user_{user}_info.json"
         conn_str = f"ssh -i <operator-private-key-path> -p {self.ssh_port} {user}@IP_ADRESI"
         if self.enable_knocking:
             print(f"\n{Colors.WARNING}🚪 PORT KNOCKING AKTİF/AYARLI: Bağlanmadan önce sırayı uygulayın: {self.knock_secret}{Colors.ENDC}")
             print(f"   Örnek: knock IP_ADRESI {' '.join(map(str, self.knock_secret))}")
-        
+
         print(f"\n🔹 Önerilen Bağlantı Komutu:")
         print(f"   {conn_str}")
         print(f"\n🔹 Credential manifest: {credential_manifest}")
@@ -2065,9 +2065,9 @@ if __name__ == "__main__":
     parser.add_argument("--state-base", type=str, help="State, report, backup ve credential taban dizini")
     parser.add_argument("--log-file", type=str, help="Operasyon log dosyası")
     parser.add_argument("--stats-file", type=str, help="Dashboard/statistik JSON dosyası")
-    
+
     args = parser.parse_args()
-    
+
     if args.dry_run:
         default_state_base = str(Path.home() / ".local" / "state" / "ultra_ssh_manager")
     else:
@@ -2079,13 +2079,13 @@ if __name__ == "__main__":
     else:
         default_log_file = "/var/log/ultra_ssh_omega.log"
         default_stats_file = "/var/log/ssh_stats_omega.json"
-    
+
     manager = UltraSSHManager(
         state_base=state_base,
         log_file=args.log_file or default_log_file,
         stats_file=args.stats_file or default_stats_file,
     )
-    
+
     # Argümanları yükle
     manager.mode = args.mode
     if args.port: manager.ssh_port = args.port
@@ -2098,7 +2098,7 @@ if __name__ == "__main__":
     if args.confirm_live_apply_safety: manager.confirm_live_apply_safety = True
     if args.plan_output: manager.dry_run_plan_path = args.plan_output
     if args.recovery_playbook_output: manager.recovery_playbook_path = args.recovery_playbook_output
-    
+
     # Varsayılan port atanmamışsa
     if manager.mode not in ["dashboard", "audit", "verify"] and not manager.ssh_port:
         manager.ssh_port = 2222

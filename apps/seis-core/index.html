@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#111111" />
   <meta
     name="description"
-    content="SEIS Core is the central AI-native operating interface for goals, repositories, documentation, agents, architecture, and ecosystem health."
+    content="SEIS Command Center is the central AI-native operating interface for repositories, agents, plugins, automation, documentation, security, knowledge, and ecosystem health."
   />
-  <title>SEIS Core</title>
+  <title>SEIS Command Center</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="stylesheet" href="styles.css" />
@@ -18,11 +18,11 @@
 
   <div class="app-frame">
     <aside class="sidebar" aria-label="Primary">
-      <a class="brand" href="#dashboard" data-view="dashboard" aria-label="SEIS Core dashboard">
+      <a class="brand" href="#dashboard" data-view="dashboard" aria-label="SEIS Command Center dashboard">
         <span class="brand-mark" aria-hidden="true">S</span>
         <span>
-          <strong>SEIS Core</strong>
-          <small>Operating interface</small>
+          <strong>SEIS Command Center</strong>
+          <small>Ecosystem OS</small>
         </span>
       </a>
 
@@ -46,6 +46,18 @@
         <button class="nav-item" type="button" data-view="agents">
           <span class="nav-icon" aria-hidden="true">A</span>
           <span>Agents</span>
+        </button>
+        <button class="nav-item" type="button" data-view="plugins">
+          <span class="nav-icon" aria-hidden="true">P</span>
+          <span>Plugins</span>
+        </button>
+        <button class="nav-item" type="button" data-view="automation">
+          <span class="nav-icon" aria-hidden="true">W</span>
+          <span>Automation</span>
+        </button>
+        <button class="nav-item" type="button" data-view="security">
+          <span class="nav-icon" aria-hidden="true">S</span>
+          <span>Security</span>
         </button>
         <button class="nav-item" type="button" data-view="architecture">
           <span class="nav-icon" aria-hidden="true">M</span>
@@ -94,6 +106,13 @@
           <section class="dashboard-view view-panel is-active" data-panel="dashboard" aria-labelledby="dashboard-title">
             <h2 id="dashboard-title" class="sr-only">Dashboard</h2>
             <div class="metric-grid" id="metric-grid"></div>
+            <section class="panel operating-model-panel">
+              <div class="panel-header">
+                <h3>Ecosystem Operating Model</h3>
+                <span class="status-pill ready">Unified map</span>
+              </div>
+              <div class="domain-grid" id="operating-domain-grid"></div>
+            </section>
             <div class="dashboard-layout">
               <section class="panel">
                 <div class="panel-header">
@@ -116,6 +135,13 @@
                 <span class="status-pill attention">Review</span>
               </div>
               <div class="architecture-strip" id="architecture-alerts"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Recommended Actions</h3>
+                <span class="status-pill ready">Next best</span>
+              </div>
+              <div class="action-grid" id="recommended-actions"></div>
             </section>
           </section>
 
@@ -193,9 +219,49 @@
           <section class="view-panel" data-panel="agents" aria-labelledby="agents-title">
             <div class="section-heading">
               <h2 id="agents-title">AI Agent Management</h2>
-              <p>Select an operating mode and review the intended responsibility boundary.</p>
+              <p>Select an operating mode, review responsibility boundaries, and keep model support explicit.</p>
             </div>
             <div class="agent-grid" id="agent-grid"></div>
+            <section class="panel module-spacer">
+              <div class="panel-header">
+                <h3>AI Systems</h3>
+                <span class="status-pill ready">Model-ready</span>
+              </div>
+              <div class="system-grid" id="ai-system-grid"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" data-panel="plugins" aria-labelledby="plugins-title">
+            <div class="section-heading">
+              <h2 id="plugins-title">Plugins &amp; Extensions</h2>
+              <p>Review installed plugin families, marketplace posture, permissions, update gates, and activation policy.</p>
+            </div>
+            <div class="plugin-grid" id="plugin-grid"></div>
+          </section>
+
+          <section class="view-panel" data-panel="automation" aria-labelledby="automation-title">
+            <div class="section-heading">
+              <h2 id="automation-title">Automation Center</h2>
+              <p>Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.</p>
+            </div>
+            <div class="automation-grid" id="automation-grid"></div>
+          </section>
+
+          <section class="view-panel" data-panel="security" aria-labelledby="security-title">
+            <div class="section-heading">
+              <h2 id="security-title">Security Center</h2>
+              <p>Track permission reviews, dependency scanning, access models, auditability, and secret-handling posture.</p>
+            </div>
+            <div class="security-layout">
+              <div class="panel">
+                <h3>Risk Reports</h3>
+                <div class="security-list" id="security-list"></div>
+              </div>
+              <div class="panel">
+                <h3>Security Requirements</h3>
+                <ul class="spec-list" id="security-requirements"></ul>
+              </div>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="architecture" aria-labelledby="architecture-title">
@@ -203,7 +269,16 @@
               <h2 id="architecture-title">Architecture</h2>
               <p>Map system structure, dependencies, decisions, and technical debt.</p>
             </div>
-            <div class="architecture-map panel" id="architecture-map"></div>
+            <div class="architecture-layout">
+              <div class="architecture-map panel" id="architecture-map"></div>
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Platform Phases</h3>
+                  <span class="status-pill attention">Roadmap</span>
+                </div>
+                <div class="phase-list" id="phase-list"></div>
+              </section>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="knowledge" aria-labelledby="knowledge-title">
@@ -236,6 +311,7 @@
               <li>Local goal management</li>
               <li>Repo and doc health surfaces</li>
               <li>Agent mode switching</li>
+              <li>Plugin, automation, and security centers</li>
               <li>Architecture and roadmap visibility</li>
             </ul>
           </section>

@@ -126,6 +126,232 @@ const agents = [
   }
 ];
 
+const aiSystems = [
+  {
+    name: "OpenAI",
+    role: "Primary execution and repository automation model lane.",
+    mode: "Primary"
+  },
+  {
+    name: "Claude",
+    role: "Architecture review, long-context reasoning, and high-risk critique.",
+    mode: "Review"
+  },
+  {
+    name: "Gemini",
+    role: "Google ecosystem validation, documentation synthesis, and secondary evidence.",
+    mode: "Validation"
+  },
+  {
+    name: "Qwen",
+    role: "Alternative reasoning, counter-analysis, and implementation comparison.",
+    mode: "Optional"
+  },
+  {
+    name: "Local Models",
+    role: "Offline experimentation and private draft workflows when resources allow.",
+    mode: "Experimental"
+  }
+];
+
+const pluginFamilies = [
+  {
+    name: "Builder and Prototyping",
+    health: "Ready",
+    permissions: "Scoped activation",
+    summary: "Lovable, Replit, Base44, Vercel, Cloudflare, Supabase and hosting lanes."
+  },
+  {
+    name: "Creative Production and Design",
+    health: "Ready",
+    permissions: "Asset-gated",
+    summary: "Figma, Canva, Adobe, Fal, Shutterstock and visual production tools."
+  },
+  {
+    name: "Cloud, DevOps and Release",
+    health: "Review",
+    permissions: "Provider-gated",
+    summary: "CI, deploy, cloud readiness, SSH access, rollback and release safety."
+  },
+  {
+    name: "Security, Quality and Governance",
+    health: "Ready",
+    permissions: "Read-first",
+    summary: "Code review, static analysis, dependency review, policy and audit checks."
+  },
+  {
+    name: "AI Workflow, Docs and Knowledge",
+    health: "Active",
+    permissions: "Source-visible",
+    summary: "MCP, skills, browser/document tools, memory systems and knowledge workflow."
+  }
+];
+
+const automationWorkflows = [
+  {
+    name: "Quality Governance",
+    trigger: "Manual or pre-release",
+    status: "Ready",
+    history: "npm run quality"
+  },
+  {
+    name: "Generated Reports",
+    trigger: "Source-surface change",
+    status: "Ready",
+    history: "language distribution and technology stack"
+  },
+  {
+    name: "Plugin Bundle Check",
+    trigger: "Plugin or skill update",
+    status: "Ready",
+    history: "specialist plugin checks"
+  },
+  {
+    name: "Cloud SSH Readiness",
+    trigger: "Remote workspace handoff",
+    status: "Review",
+    history: "SEIS-SSH picker compatibility"
+  }
+];
+
+const securityReports = [
+  {
+    name: "Secrets Boundary",
+    status: "Ready",
+    detail: "No API keys, tokens, certificates or provisioning files should enter the repository."
+  },
+  {
+    name: "SEIS-SSH Access Model",
+    status: "Review",
+    detail: "Single visible cloud alias with terminal-compatible Codespaces transport."
+  },
+  {
+    name: "Plugin Permissions",
+    status: "Ready",
+    detail: "Plugins activate only when relevant, authenticated, scoped and user-approved."
+  },
+  {
+    name: "Dependency Surface",
+    status: "Ready",
+    detail: "Phase 1 stays dependency-free; future frameworks require explicit architecture gates."
+  }
+];
+
+const recommendedActions = [
+  ["Command Center architecture", "Keep Phase 1 static, then promote proven modules to React/Next."],
+  ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
+  ["Automation wiring", "Connect report refresh, quality and release checks to a traceable workflow history."],
+  ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
+];
+
+const operatingDomains = [
+  {
+    name: "Repositories",
+    lane: "Source control",
+    module: "Repositories",
+    status: "Ready",
+    signal: "Repository health, tests, docs, dependencies and release posture."
+  },
+  {
+    name: "AI Agents",
+    lane: "Intelligence",
+    module: "Agents",
+    status: "Ready",
+    signal: "Architect, Builder, Security, Research and Design responsibilities."
+  },
+  {
+    name: "MCP Systems",
+    lane: "Tooling",
+    module: "Plugins",
+    status: "Review",
+    signal: "Connector availability, capability routing and tool permission boundaries."
+  },
+  {
+    name: "Plugin Systems",
+    lane: "Extensions",
+    module: "Plugins",
+    status: "Ready",
+    signal: "Installed families, marketplace posture, updates and permission gates."
+  },
+  {
+    name: "Documentation",
+    lane: "Knowledge",
+    module: "Documentation",
+    status: "Ready",
+    signal: "Architecture docs, ADRs, roadmap records and source provenance."
+  },
+  {
+    name: "Architecture Decisions",
+    lane: "Governance",
+    module: "Architecture",
+    status: "Ready",
+    signal: "System maps, dependency boundaries, tradeoffs and technical debt."
+  },
+  {
+    name: "Roadmap Planning",
+    lane: "Strategy",
+    module: "Documentation",
+    status: "Active",
+    signal: "Phase 1 static shell, Phase 2 React/Next, Phase 3 SwiftUI native apps."
+  },
+  {
+    name: "Goal Tracking",
+    lane: "Execution",
+    module: "Goals",
+    status: "Ready",
+    signal: "Milestones, priorities, blockers, progress and smallest next actions."
+  },
+  {
+    name: "Automation Workflows",
+    lane: "Operations",
+    module: "Automation",
+    status: "Ready",
+    signal: "Quality gates, generated reports, scheduled checks and audit history."
+  },
+  {
+    name: "Cloud Infrastructure",
+    lane: "Platform",
+    module: "Security",
+    status: "Review",
+    signal: "SEIS-SSH readiness, cloud access policy and remote workspace safety."
+  },
+  {
+    name: "Knowledge Systems",
+    lane: "Memory",
+    module: "Knowledge",
+    status: "Active",
+    signal: "Reusable patterns, memory, decision history and research notes."
+  },
+  {
+    name: "Security Systems",
+    lane: "Trust",
+    module: "Security",
+    status: "Ready",
+    signal: "Risk reports, permission reviews, dependency scanning and audits."
+  }
+];
+
+const platformPhases = [
+  {
+    phase: "Phase 1",
+    stack: "HTML, CSS, JavaScript",
+    status: "Active",
+    outcome: "Dependency-free local operating shell with persistent workflows."
+  },
+  {
+    phase: "Phase 2",
+    stack: "TypeScript, React, Next.js",
+    status: "Planned",
+    outcome: "Routed modules, typed adapters, authenticated APIs and live ecosystem data."
+  },
+  {
+    phase: "Phase 3",
+    stack: "SwiftUI macOS and iOS",
+    status: "Planned",
+    outcome: "Native Apple-first command center with local workspace integration."
+  }
+];
+
 const architectureNodes = [
   ["Interface", "Static Phase 1 shell with dashboard, goals, repos, docs, agents and architecture modules."],
   ["State", "Local browser state with clear data boundaries and no secret storage."],
@@ -148,6 +374,9 @@ const viewMeta = {
   repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
   documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
   agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Run Agent"],
+  plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Review Plugins"],
+  automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Run Check"],
+  security: ["Security", "Security center", "Track risk reports, permission reviews, dependency scanning, access models, and auditability.", "Review Risk"],
   architecture: ["Architecture", "Architecture tracking", "Map system structure, dependencies, decisions, and technical debt.", "Add ADR"],
   knowledge: ["Knowledge", "Knowledge management", "Keep memory, research, and decisions discoverable.", "Capture Note"]
 };
@@ -186,6 +415,9 @@ function render() {
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderPlugins();
+  renderAutomation();
+  renderSecurity();
   renderArchitecture();
   renderKnowledge();
   renderInspector();
@@ -213,20 +445,35 @@ function renderViewHeader() {
 function renderDashboard() {
   const activeGoals = state.goals.filter((goal) => goal.status !== "Done");
   const readyRepos = repositories.filter((repo) => repo.health === "Ready").length;
-  const docsReady = documentation.filter((doc) => doc.status === "Ready").length;
+  const readyDomains = operatingDomains.filter((domain) => domain.status === "Ready").length;
   const reviewCount = state.goals.filter((goal) => goal.status === "Review" || goal.status === "Blocked").length +
-    repositories.filter((repo) => repo.health !== "Ready").length;
+    repositories.filter((repo) => repo.health !== "Ready").length +
+    operatingDomains.filter((domain) => domain.status === "Review").length;
 
   $("#metric-grid").innerHTML = [
     ["Active Goals", activeGoals.length, "tracked outcomes"],
     ["Repos Ready", `${readyRepos}/${repositories.length}`, "source surfaces"],
-    ["Docs Ready", `${docsReady}/${documentation.length}`, "knowledge areas"],
+    ["Domains Ready", `${readyDomains}/${operatingDomains.length}`, "operating map"],
     ["Reviews", reviewCount, "attention signals"]
   ].map(([label, value, detail]) => `
     <article class="metric-card">
       <span>${label}</span>
       <strong>${value}</strong>
       <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#operating-domain-grid").innerHTML = operatingDomains.map((domain) => `
+    <article class="domain-card">
+      <div class="card-topline">
+        <strong>${domain.name}</strong>
+        <span class="status-pill ${statusClass(domain.status)}">${domain.status}</span>
+      </div>
+      <p>${domain.signal}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${domain.lane}</span>
+        <span class="meta-chip">${domain.module}</span>
+      </div>
     </article>
   `).join("");
 
@@ -256,6 +503,13 @@ function renderDashboard() {
     ["Agent modes", "Document role boundaries before automation expansion."]
   ].map(([title, detail]) => `
     <article class="alert-card">
+      <strong>${title}</strong>
+      <p>${detail}</p>
+    </article>
+  `).join("");
+
+  $("#recommended-actions").innerHTML = recommendedActions.map(([title, detail]) => `
+    <article class="action-card">
       <strong>${title}</strong>
       <p>${detail}</p>
     </article>
@@ -338,6 +592,69 @@ function renderAgents() {
       <button class="secondary-button" type="button" data-agent="${agent.name}">Activate</button>
     </article>
   `).join("");
+
+  $("#ai-system-grid").innerHTML = aiSystems.map((system) => `
+    <article class="system-card">
+      <div class="card-topline">
+        <h3>${system.name}</h3>
+        <span class="status-pill ${statusClass(system.mode === "Primary" ? "Ready" : "Review")}">${system.mode}</span>
+      </div>
+      <p>${system.role}</p>
+    </article>
+  `).join("");
+}
+
+function renderPlugins() {
+  $("#plugin-grid").innerHTML = pluginFamilies.map((family) => `
+    <article class="plugin-card">
+      <div class="card-topline">
+        <h3>${family.name}</h3>
+        <span class="status-pill ${statusClass(family.health)}">${family.health}</span>
+      </div>
+      <p>${family.summary}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${family.permissions}</span>
+        <span class="meta-chip">least privilege</span>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderAutomation() {
+  $("#automation-grid").innerHTML = automationWorkflows.map((workflow) => `
+    <article class="automation-card">
+      <div class="card-topline">
+        <h3>${workflow.name}</h3>
+        <span class="status-pill ${statusClass(workflow.status)}">${workflow.status}</span>
+      </div>
+      <p>${workflow.history}</p>
+      <div class="meta-row">
+        <span class="meta-chip">Trigger: ${workflow.trigger}</span>
+        <span class="meta-chip">audit trail</span>
+      </div>
+    </article>
+  `).join("");
+}
+
+function renderSecurity() {
+  $("#security-list").innerHTML = securityReports.map((report) => `
+    <article class="security-card">
+      <div class="card-topline">
+        <h3>${report.name}</h3>
+        <span class="status-pill ${statusClass(report.status)}">${report.status}</span>
+      </div>
+      <p>${report.detail}</p>
+    </article>
+  `).join("");
+
+  $("#security-requirements").innerHTML = [
+    "least privilege",
+    "secure defaults",
+    "encrypted storage where needed",
+    "role-based access",
+    "auditability",
+    "no exposed secrets"
+  ].map((item) => `<li>${item}</li>`).join("");
 }
 
 function renderArchitecture() {
@@ -345,6 +662,17 @@ function renderArchitecture() {
     <article class="architecture-node">
       <h3>${title}</h3>
       <p>${detail}</p>
+    </article>
+  `).join("");
+
+  $("#phase-list").innerHTML = platformPhases.map((phase) => `
+    <article class="phase-row">
+      <div class="card-topline">
+        <strong>${phase.phase}</strong>
+        <span class="status-pill ${statusClass(phase.status === "Active" ? "Active" : "Review")}">${phase.status}</span>
+      </div>
+      <p>${phase.stack}</p>
+      <small>${phase.outcome}</small>
     </article>
   `).join("");
 }
@@ -509,6 +837,9 @@ function renderCommandResults(query) {
     ["Repositories", "Inspect repository health", "repositories"],
     ["Documentation", "Review docs and ADR coverage", "documentation"],
     ["Agents", "Switch AI operating mode", "agents"],
+    ["Plugins", "Review plugins, permissions and updates", "plugins"],
+    ["Automation", "Inspect workflows and triggers", "automation"],
+    ["Security", "Review risk and access posture", "security"],
     ["Architecture", "Open system map", "architecture"],
     ["Knowledge", "Open knowledge management", "knowledge"]
   ].filter((command) => command.join(" ").toLowerCase().includes(query.toLowerCase()));
