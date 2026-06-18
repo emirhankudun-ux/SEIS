@@ -97,6 +97,28 @@ key on the remote host or fix the remote user before applying the alias.
 
 ## One-time runtime hardening after host reachability is fixed
 
+If SSH still times out after `direct-cloud` is configured, run this on the host first to remove common 22/tcp blockers.
+
+```bash
+# For UFW
+sudo ufw status verbose
+sudo ufw allow 22/tcp
+sudo ufw reload
+
+# For firewalld
+sudo firewall-cmd --permanent --add-port=22/tcp
+sudo firewall-cmd --reload
+
+# For sshd
+sudo ss -ltnp | rg ":22\b"
+sudo nano /etc/ssh/sshd_config
+sudo systemctl restart sshd
+sudo systemctl status sshd
+
+# Validate remote host SSH and key auth from local
+ssh -i ~/.ssh/id_ed25519_seis_codex -p 22 root@<PUBLIC_IP> "echo ok"
+```
+
 ```bash
 # 1) Verify SSH port and auth with existing identity
 ssh -i ~/.ssh/id_ed25519_seis_codex -p 22 root@<PUBLIC_IP> "hostname"
