@@ -238,6 +238,8 @@ Hızlı “sadece core” çalıştırma (tek handoff için):
 ```bash
 npm run quality:governance:publish -- --preset core --dry-run --json
 npm run quality:governance:publish -- --preset core --compact
+npm run quality:governance:publish:core
+npm run quality:governance:publish:core:ci
 ```
 
 `core` seti, publish akışında temel güvenlik ve yayın öncesi kontrat kontrollerini tek geçişte çalıştırır:
