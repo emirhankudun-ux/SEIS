@@ -119,6 +119,12 @@ JSON örneği almak için:
 npm run quality:governance:publish -- --json
 ```
 
+Dil dağılımı eşleşmiyorsa (ör. `check:language-distribution` stale), otomatik düzeltme için:
+
+```bash
+npm run quality:governance:publish -- --json --auto-heal
+```
+
 Örnek başarılı çıktı:
 
 ```json

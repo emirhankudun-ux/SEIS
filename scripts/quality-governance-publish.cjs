@@ -7,6 +7,7 @@ const { spawnSync } = require("node:child_process");
 const root = process.cwd();
 const args = parseArgs(process.argv.slice(2));
 const isCiMode = Boolean(args.ci);
+const autoHealLanguageDistribution = Boolean(args.autoHeal || args.auto_heal || args.auto_heal_language_distribution);
 const emitJson = Boolean(args.json) || Boolean(args.artifact);
 const compact = Boolean(args.compact || isCiMode);
 const writeArtifact = Boolean(args.writeArtifact) || Boolean(args.artifact);
@@ -35,18 +36,25 @@ const steps = [];
 let firstFailure = null;
 
 for (const check of checks) {
-  const result = runCheck(check);
-  steps.push(result);
-  if (!result.ok && !firstFailure) {
-    firstFailure = result;
-    if (!args.continue) {
-      break;
+  const checkSteps = runCheckWithHealing(check);
+  for (const result of checkSteps) {
+    steps.push(result);
+    if (!result.ok) {
+      if (!firstFailure || firstFailure.allowContinue) {
+        firstFailure = result;
+      }
+      if (!args.continue && !result.allowContinue) {
+        break;
+      }
     }
+  }
+  if (firstFailure && !args.continue && !firstFailure.allowContinue) {
+    break;
   }
 }
 
 const blockers = steps
-  .filter((step) => !step.ok)
+  .filter((step) => !step.ok && !step.allowContinue)
   .map((step) => ({
     area: step.id,
     reason: step.reason,
@@ -118,6 +126,11 @@ function parseArgs(tokens) {
       parsed[key] = true;
       continue;
     }
+    if (key === "auto-heal" || key === "auto-heal-language-distribution") {
+      parsed.autoHeal = true;
+      parsed.auto_heal = true;
+      continue;
+    }
     if (key === "write-artifact") {
       parsed.writeArtifact = true;
       continue;
@@ -139,7 +152,7 @@ function parseArgs(tokens) {
   if (parsed.help) {
     console.log([
       "Usage: node scripts/quality-governance-publish.cjs [--json] [--ci] [--compact] [--continue]",
-      "       [--artifact <path>] [--write-artifact]",
+      "       [--artifact <path>] [--write-artifact] [--auto-heal]",
     ].join("\n"));
     process.exit(0);
   }
@@ -170,6 +183,35 @@ function runCheck(scriptName) {
     stderrSummary: summarizeText(stderrText),
     reason,
   };
+}
+
+function runCheckWithHealing(scriptName) {
+  const firstRun = runCheck(scriptName);
+  if (firstRun.ok) {
+    return [firstRun];
+  }
+
+  if (!autoHealLanguageDistribution || scriptName !== "check:language-distribution") {
+    return [firstRun];
+  }
+
+  const healRun = runCheck("automation:language-distribution");
+  const healedRun = runCheck(scriptName);
+
+  firstRun.reason = `${firstRun.reason} (auto-heal attempted: ${healRun.command})`;
+  firstRun.allowContinue = true;
+
+  return [
+    firstRun,
+    {
+      ...healRun,
+      id: "check:language-distribution:auto-heal",
+      reason: healRun.ok ? "language distribution regenerated" : null,
+      status: healRun.status,
+      allowContinue: true,
+    },
+    healedRun,
+  ];
 }
 
 function summarizeText(text) {
