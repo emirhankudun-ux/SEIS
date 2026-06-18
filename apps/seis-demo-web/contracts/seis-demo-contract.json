@@ -64,6 +64,10 @@
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "run_id", "details"]
     },
     {
+      "name": "seis_demo_focus_mode_changed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
       "name": "seis_demo_error",
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
     }

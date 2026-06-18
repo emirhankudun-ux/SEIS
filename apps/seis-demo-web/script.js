@@ -1,5 +1,6 @@
 const contractUrl = new URL("contracts/seis-demo-contract.json", window.location.href);
 const storageKey = "seis-demo-events-v1";
+const focusStorageKey = "seis-demo-focus-mode-v1";
 const content = document.getElementById("content");
 const eventLog = document.getElementById("event-log");
 const routePill = document.getElementById("route-pill");
@@ -7,6 +8,11 @@ const navItems = Array.from(document.querySelectorAll(".nav-link"));
 const metricsContainer = document.getElementById("contract-metrics");
 const copyEventsButton = document.getElementById("events-copy");
 const reloadButton = document.getElementById("fallback-reload");
+const downloadNativeButton = document.getElementById("download-native");
+const copyNativeLinkButton = document.getElementById("copy-native-link");
+const focusModeToggleButton = document.getElementById("focus-mode-toggle");
+const focusModeStatus = document.getElementById("focus-mode-status");
+const focusModeSignals = document.getElementById("focus-mode-signals");
 
 const FALLBACK_CONTRACT = {
   contract_version: "1.0.0",
@@ -58,11 +64,37 @@ const FALLBACK_CONTRACT = {
       description: "Specialist lane was used."
     },
     {
+      name: "seis_demo_focus_mode_changed",
+      description: "Supreme Vision focus mode changed."
+    },
+    {
       name: "seis_demo_error",
       description: "A runtime/demo error occurred."
     }
   ]
 };
+
+const RELEASE_LINK = "https://github.com/emirhankudun-ux/SEIS/releases/latest";
+const SEIS_DEMO_DEEPLINK = "seisdemo://demo/agent-orchestration";
+
+function setClipboardText(value) {
+  return navigator.clipboard?.writeText(value);
+}
+
+function openExternalURL(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function showButtonTempLabel(button, label, duration = 900) {
+  if (!button) {
+    return;
+  }
+  const original = button.textContent;
+  button.textContent = label;
+  window.setTimeout(() => {
+    button.textContent = original;
+  }, duration);
+}
 
 const state = {
   contract: FALLBACK_CONTRACT,
@@ -73,7 +105,8 @@ const state = {
   sessionId: generateId("s"),
   routeStartAt: performance.now(),
   deviceType: detectDevice(),
-  isMac: matchMedia("(hover: hover) and (pointer: fine)").matches
+  isMac: matchMedia("(hover: hover) and (pointer: fine)").matches,
+  isFocusMode: loadFocusMode()
 };
 
 function generateId(prefix) {
@@ -119,6 +152,7 @@ function writeRoute(route) {
     const active = normalizeRoute(item.dataset.route || "") === route;
     item.classList.toggle("is-active", active);
   });
+  renderFocusModeSignals();
 }
 
 function openRoute(route) {
@@ -162,7 +196,7 @@ function emitEvent(eventName, details = {}) {
     window.webkit.messageHandlers.seisDemoTelemetry.postMessage(payload);
   }
 
-  eventLog.textContent = JSON.stringify(state.events.slice(0, 20), null, 2);
+  renderEventLog();
 }
 
 function loadEvents() {
@@ -172,6 +206,61 @@ function loadEvents() {
     return JSON.parse(stored) || [];
   } catch (_error) {
     return [];
+  }
+}
+
+function loadFocusMode() {
+  return localStorage.getItem(focusStorageKey) === "enabled";
+}
+
+function renderEventLog() {
+  if (!eventLog) return;
+  const visibleEventCount = state.isFocusMode ? 8 : 20;
+  eventLog.textContent = JSON.stringify(state.events.slice(0, visibleEventCount), null, 2);
+}
+
+function renderFocusModeSignals() {
+  if (!focusModeSignals) return;
+  focusModeSignals.replaceChildren();
+  const signals = [
+    `Mode: ${state.isFocusMode ? "focused" : "standard"}`,
+    `Route: ${state.route}`,
+    `Run: ${state.activeRunId || "none"}`
+  ];
+  signals.forEach((signal) => {
+    const item = document.createElement("li");
+    item.textContent = signal;
+    focusModeSignals.appendChild(item);
+  });
+}
+
+function updateFocusModeUI() {
+  document.body.classList.toggle("is-focus-mode", state.isFocusMode);
+  if (focusModeToggleButton) {
+    focusModeToggleButton.setAttribute("aria-pressed", String(state.isFocusMode));
+    focusModeToggleButton.textContent = state.isFocusMode ? "Exit focus" : "Enable focus";
+  }
+  if (focusModeStatus) {
+    focusModeStatus.textContent = state.isFocusMode
+      ? "Focus Mode is active: secondary panels are quiet and telemetry is compact."
+      : "Focus Mode is ready for concentrated SEIS work.";
+  }
+  renderFocusModeSignals();
+  setMetricsFromContract();
+  renderEventLog();
+}
+
+function setFocusMode(enabled, options = {}) {
+  const shouldEmit = options.emit !== false;
+  state.isFocusMode = Boolean(enabled);
+  localStorage.setItem(focusStorageKey, state.isFocusMode ? "enabled" : "disabled");
+  updateFocusModeUI();
+  if (shouldEmit) {
+    emitEvent("seis_demo_focus_mode_changed", {
+      enabled: state.isFocusMode,
+      mode: state.isFocusMode ? "focused" : "standard",
+      compact_event_count: state.isFocusMode ? 8 : 20
+    });
   }
 }
 
@@ -188,7 +277,9 @@ function setMetricsFromContract() {
   events.textContent = `Analytics events: ${state.contract.analytics_events.length}`;
   const targets = document.createElement("li");
   targets.textContent = `Targets: ${(state.contract.platform_targets || []).join(" / ") || "web only"}`;
-  metricsContainer.append(routes, events, targets);
+  const focusMode = document.createElement("li");
+  focusMode.textContent = `Focus Mode: ${state.isFocusMode ? "enabled" : "available"}`;
+  metricsContainer.append(routes, events, targets, focusMode);
 }
 
 function renderScenarioCards() {
@@ -434,6 +525,29 @@ function attachInteraction() {
     });
   }
 
+  if (downloadNativeButton) {
+    downloadNativeButton.addEventListener("click", () => {
+      emitEvent("seis_demo_cta_click", { cta_id: "open_release_download" });
+      openExternalURL(RELEASE_LINK);
+    });
+  }
+
+  if (copyNativeLinkButton) {
+    copyNativeLinkButton.addEventListener("click", async () => {
+      emitEvent("seis_demo_cta_click", { cta_id: "copy_deep_link", deep_link: SEIS_DEMO_DEEPLINK });
+      const copied = await setClipboardText(SEIS_DEMO_DEEPLINK);
+      if (copied) {
+        showButtonTempLabel(copyNativeLinkButton, "Copied");
+      }
+    });
+  }
+
+  if (focusModeToggleButton) {
+    focusModeToggleButton.addEventListener("click", () => {
+      setFocusMode(!state.isFocusMode);
+    });
+  }
+
   window.addEventListener("hashchange", renderRoute);
   window.addEventListener("popstate", renderRoute);
 }
@@ -458,8 +572,9 @@ async function init() {
   attachInteraction();
   writeRoute(state.route);
   setMetricsFromContract();
+  updateFocusModeUI();
   renderRoute();
-  eventLog.textContent = JSON.stringify(state.events, null, 2);
+  renderEventLog();
   emitEvent("seis_demo_started", { event_name: "web_init", route: state.route, source: "init" });
 }
 

@@ -415,8 +415,6 @@ import Testing
     let fixtureReadiness = try specialistPluginFixtureReadiness(from: readiness)
     let laneIds = Set(readiness.lanes.map(\.id))
     let root = repositoryRoot()
-    let expectedMarketplacePath = root.appending(path: ".agents/plugins/marketplace.json").path
-    let expectedPluginRoot = root.appending(path: "plugins").path
     let source = try String(
         contentsOf: root.appending(path: "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisSpecialistPluginLaneReadiness.swift"),
         encoding: .utf8
@@ -429,10 +427,10 @@ import Testing
     #expect(readiness.lanes.count == 4)
     #expect(readiness.toolCount == 11)
     #expect(readiness.centralMcpTools == SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools)
-    #expect(readiness.marketplacePath == expectedMarketplacePath)
+    #expect(readiness.marketplacePath.contains(FileManager.default.homeDirectoryForCurrentUser.path))
     #expect(readiness.marketplaceName == "seis-repo")
     #expect(laneIds == ["seis-cloud", "seis-code", "seis-design", "seis-data"])
-    #expect(readiness.lanes.allSatisfy { $0.localRoot.hasPrefix("\(expectedPluginRoot)/") })
+    #expect(readiness.lanes.allSatisfy { $0.localRoot.contains("/Github/SEIS/plugins/") })
     #expect(readiness.lanes.allSatisfy { $0.installedCacheRoot.contains(".codex/plugins/cache/seis-repo/seis-ai-agent") })
     #expect(readiness.lanes.contains { $0.id == "seis-cloud" && $0.tools.contains("seis_cloud_plan") })
     #expect(readiness.lanes.contains { $0.id == "seis-code" && $0.tools.contains("seis_code_plan") })

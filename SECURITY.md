@@ -45,6 +45,23 @@ unless a maintainer explicitly announces another supported release line.
   surfaces.
 - Prefer small, auditable fixes with clear validation.
 
+## SSH Hardening Contract
+
+SSH and firewall hardening is safety-critical because a bad sequence can lock
+out the operator. SEIS tracks that contract with:
+
+```bash
+npm run check:ssh-hardening-contract
+```
+
+The check keeps `scripts/ultra_ssh_manager.py`, its unit-test expectations, the
+SEIS security review skill, and the deployment guidance aligned around
+credential redaction, root-owned credential manifests, dry-run/recovery
+playbooks, rescue-account scope, and honest validation claims.
+
+The machine-readable operation contract is maintained at
+`data/ssh-hardening-operation-contract.json`.
+
 ## Automated Security Scanning
 
 SEIS uses GitHub CodeQL code scanning for the repository's JavaScript,

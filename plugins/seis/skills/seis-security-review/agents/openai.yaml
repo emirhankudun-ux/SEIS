@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Security Review"
+  short_description: "Review SEIS security and privacy changes."
+  default_prompt: "Use $seis-security-review to inspect secrets, least privilege, SSH/cloud risk, GitHub readiness, and validation claims."

@@ -3,7 +3,7 @@
 - Generated: 2026-06-09T06:20:32.023Z
 - Source: content/development/ai-release-manifest.json
 - Profile: Büyük Dil Sürümü (v12-seed)
-- Installed tools: 11 / 14
+- Installed tools: 10 / 14
 - Missing required tools: 0
 - Local model count: 0
 - Remote orchestrator: seis-agent
@@ -20,7 +20,7 @@
 | qwen | Qwen | yes | local-helper | installed | qwen cross-check |
 | kimi | Kimi | no | local-helper | missing-optional | translate this interface to turkish |
 | opencode | OpenCode | yes | local-helper | installed | opencode terminal coding |
-| aider | Aider | yes | local-helper | installed | quick repo patch |
+| aider | Aider | no | local-helper | missing-optional | quick repo patch |
 | interpreter | Interpreter | no | local-helper | missing-optional | csv log analysis |
 | ollama | Ollama | yes | local-helper | installed | local offline llama draft |
 | hermes | Hermes Agent | yes | local-helper | installed | hermes mcp gateway |

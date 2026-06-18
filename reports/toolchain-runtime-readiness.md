@@ -2,7 +2,7 @@
 
 Generated: 2026-06-11T08:24:30.321Z
 
-Installed: 27/34
+Installed: 26/34
 
 | Tool | Category | Installed | Path |
 | --- | --- | --- | --- |
@@ -32,7 +32,7 @@ Installed: 27/34
 | gemini | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/gemini |
 | qwen | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/qwen |
 | opencode | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/opencode |
-| aider | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/aider |
+| aider | ai-agent-cli | no |  |
 | ollama | local-model-runtime | yes | /usr/local/bin/ollama |
 | openai | ai-agent-cli | no |  |
 | codex | ai-agent-cli | yes | /Users/emirhankudun/.local/bin/codex |

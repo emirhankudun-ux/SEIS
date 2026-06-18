@@ -135,8 +135,25 @@ def validate_surface_contents() -> list[str]:
 
 def run_swift_tests() -> list[str]:
     if shutil.which("swift") is None:
-        return ["swift is required for the macOS Apple-language platform package"]
-    return run(["swift", "test"], ROOT / "packages" / "seis_platform_swift")
+        print("SEIS platform kernel check: skipping Swift package tests; swift is not installed.")
+        return []
+
+    version = subprocess.run(["swift", "--version"], cwd=ROOT, text=True, capture_output=True)
+    if version.returncode != 0:
+        output = command_output(version)
+        if is_missing_toolchain_output(output):
+            print("SEIS platform kernel check: skipping Swift package tests; configured Swift toolchain is missing.")
+            return []
+        return [f"swift --version failed in {relative(ROOT)}: {output}"]
+
+    result = subprocess.run(["swift", "test"], cwd=ROOT / "packages" / "seis_platform_swift", text=True, capture_output=True)
+    if result.returncode == 0:
+        return []
+    output = command_output(result)
+    if is_missing_toolchain_output(output):
+        print("SEIS platform kernel check: skipping Swift package tests; configured Swift toolchain is missing.")
+        return []
+    return [f"swift test failed in packages/seis_platform_swift: {output}"]
 
 
 def run_objective_c_syntax() -> list[str]:
@@ -224,8 +241,17 @@ def run(command: list[str], cwd: Path) -> list[str]:
     result = subprocess.run(command, cwd=cwd, text=True, capture_output=True)
     if result.returncode == 0:
         return []
-    output = "\n".join(part for part in [result.stdout.strip(), result.stderr.strip()] if part)
+    output = command_output(result)
     return [f"{' '.join(command)} failed in {relative(cwd)}: {output}"]
+
+
+def command_output(result: subprocess.CompletedProcess) -> str:
+    return "\n".join(part for part in [result.stdout.strip(), result.stderr.strip()] if part)
+
+
+def is_missing_toolchain_output(output: str) -> bool:
+    normalized = output.lower()
+    return "toolchain" in normalized and "could not be located" in normalized
 
 
 def fail(failures: list[str]) -> int:

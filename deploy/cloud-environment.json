@@ -9158,9 +9158,9 @@
       "path": "reports/local-ai-tool-readiness.json",
       "generatedAt": "2026-06-10T06:28:42.100Z",
       "helperCount": 13,
-      "readyCount": 8,
+      "readyCount": 7,
       "missingCredentialCount": 2,
-      "missingCommandCount": 3,
+      "missingCommandCount": 4,
       "runtimeNotReadyCount": 0,
       "tools": [
         {
@@ -9296,15 +9296,17 @@
           "id": "aider",
           "label": "Aider",
           "command": "aider",
-          "commandPath": "/Users/emirhankudun/.local/bin/aider",
+          "commandPath": null,
           "launcherCommandPath": null,
           "appPath": null,
-          "installed": true,
+          "installed": false,
           "credentialState": null,
           "runtimeOk": true,
           "offlineFallbackCapable": false,
-          "status": "ready",
-          "issueCodes": []
+          "status": "missing-command",
+          "issueCodes": [
+            "command-not-found"
+          ]
         },
         {
           "id": "interpreter",
@@ -9573,8 +9575,8 @@
       "path": "content/development/toolchain-runtime-readiness.json",
       "generatedAt": "2026-06-11T08:24:30.321Z",
       "toolCount": 34,
-      "installedCount": 27,
-      "missingCount": 7,
+      "installedCount": 26,
+      "missingCount": 8,
       "aiAgentCliCount": 11,
       "languageRuntimeCount": 12,
       "installExecution": "manual_confirmation_required",
@@ -9765,9 +9767,9 @@
         {
           "id": "aider",
           "category": "ai-agent-cli",
-          "installed": true,
-          "commandPath": "/Users/emirhankudun/.local/bin/aider",
-          "installAction": "none"
+          "installed": false,
+          "commandPath": null,
+          "installAction": "manual_install_when_needed"
         },
         {
           "id": "ollama",
@@ -9825,8 +9827,8 @@
       "path": "content/development/desktop-app-integration.json",
       "generatedAt": "2026-06-11T08:24:53.168Z",
       "appCount": 10,
-      "detectedCount": 8,
-      "missingCount": 2,
+      "detectedCount": 7,
+      "missingCount": 3,
       "launchMode": "manual_or_user_requested",
       "defaultIde": "antigravity",
       "apps": [
@@ -9847,9 +9849,9 @@
         {
           "id": "android-studio",
           "role": "android-ide",
-          "detected": true,
-          "appPath": "../../../../../../../Applications/Android Studio.app",
-          "integrationAction": "use_when_task_matches"
+          "detected": false,
+          "appPath": null,
+          "integrationAction": "install_or_configure_when_needed"
         },
         {
           "id": "jetbrains-toolbox",

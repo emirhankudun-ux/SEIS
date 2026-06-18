@@ -22,7 +22,80 @@ GitHub publish preflight:
 npm run automation:publish-readiness
 ```
 
+JSON örnekleri:
+
+Başarılı:
+
+```json
+{
+  "ok": true,
+  "mode": "publish-readiness",
+  "generatedAt": "2026-06-18T08:23:12.101Z",
+  "gitState": {
+    "gitInside": true,
+    "branchName": "main",
+    "isExpectedBranch": true,
+    "worktreeClean": true,
+    "hasUpstream": true,
+    "isExpectedUpstream": true,
+    "behindCount": 0
+  },
+  "github": {
+    "ok": true,
+    "reason": "GitHub CLI authentication is available."
+  },
+  "blockers": [],
+  "nextAction": "GIT_TERMINAL_PROMPT=0 git push origin main"
+}
+```
+
+Başarısız:
+
+```json
+{
+  "ok": false,
+  "mode": "publish-readiness",
+  "generatedAt": "2026-06-18T08:23:12.101Z",
+  "gitState": {
+    "gitInside": true,
+    "branchName": "main",
+    "isExpectedBranch": true,
+    "worktreeClean": true,
+    "hasUpstream": true,
+    "isExpectedUpstream": true,
+    "behindCount": 2
+  },
+  "github": {
+    "ok": false,
+    "reason": "GitHub CLI auth is missing or token scope is insufficient.",
+    "suggestions": [
+      "gh auth refresh -h github.com -s codespace -s repo"
+    ]
+  },
+  "blockers": [
+    {
+      "area": "github-auth",
+      "reason": "GitHub CLI auth is missing or token scope is insufficient.",
+      "nextStep": "gh auth refresh -h github.com -s codespace -s repo"
+    }
+  ],
+  "nextAction": "gh auth refresh -h github.com -s codespace -s repo"
+}
+```
+
 This publish check does not commit or push. It verifies the Git working tree, expected `UIXAppTTR` branch, UIX-Apps remote hint, GitHub CLI authentication, and local automation health before a server-side push is attempted.
+
+CI tek satır özeti:
+
+```bash
+npm run automation:publish-readiness -- --ci
+```
+
+Özet çıktısı (örnek):
+
+```text
+publish-readiness=blocked; blockers=github-auth; next=gh auth refresh -h github.com -s codespace -s repo
+```
 
 Weekly full-efficiency report:
 

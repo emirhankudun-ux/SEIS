@@ -40,6 +40,14 @@ const requiredRepoFiles = [
   path.join(pluginSourceRoot, "skills", "seis-code", "SKILL.md"),
   path.join(pluginSourceRoot, "skills", "seis-design", "SKILL.md"),
   path.join(pluginSourceRoot, "skills", "seis-data", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-github-workflow", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-github-workflow", "agents", "openai.yaml"),
+  path.join(pluginSourceRoot, "skills", "seis-focus-mode", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-focus-mode", "agents", "openai.yaml"),
+  path.join(pluginSourceRoot, "skills", "seis-master-prompt", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-master-prompt", "agents", "openai.yaml"),
+  path.join(pluginSourceRoot, "skills", "seis-security-review", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-security-review", "agents", "openai.yaml"),
 ];
 
 const requiredBundleAssets = [
@@ -98,10 +106,33 @@ if (!sourcePluginManifest) {
     "SEIS-Code engineering lane",
     "SEIS-Design product lane",
     "SEIS-DATA knowledge lane",
+    "SEIS GitHub workflow governance",
+    "SEIS Master Prompt governance",
+    "SEIS Security Review governance",
+    "SEIS Focus Mode AGI operating lane",
   ];
   for (const capability of requiredCapabilities) {
     ensure(sourcePluginManifest.interface.capabilities.includes(capability), `source plugin capability missing: ${capability}`);
   }
+  const defaultPrompt = Array.isArray(sourcePluginManifest.interface?.defaultPrompt)
+    ? sourcePluginManifest.interface.defaultPrompt.join("\n")
+    : "";
+  ensure(
+    defaultPrompt.includes("Use SEIS Master Prompt governance"),
+    "source plugin defaultPrompt must expose SEIS Master Prompt governance"
+  );
+  ensure(
+    defaultPrompt.includes("Use SEIS GitHub workflow governance"),
+    "source plugin defaultPrompt must expose SEIS GitHub workflow governance"
+  );
+  ensure(
+    defaultPrompt.includes("Use SEIS Security Review governance"),
+    "source plugin defaultPrompt must expose SEIS Security Review governance"
+  );
+  ensure(
+    defaultPrompt.includes("Use SEIS Focus Mode"),
+    "source plugin defaultPrompt must expose SEIS Focus Mode"
+  );
 }
 
 const sourceMcpManifest = readJson(path.join(pluginSourceRoot, ".mcp.json"));

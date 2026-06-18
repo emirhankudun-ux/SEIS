@@ -9,7 +9,7 @@ const LANE = {
   toolPrefix: "seis_cloud",
   pluginName: "seis-cloud",
   skillPath: "skills/seis-cloud/SKILL.md",
-  focus: "provider-neutral deployment readiness, public cloud targets for everyone, team/workplace VPN cloud, cloud preflight, rollback planning, and secret-safe infrastructure automation",
+  focus: "provider-neutral deployment readiness, public cloud targets for everyone, self-hosted SEIS Cloud kits, cloud-only SEIS SSH, team/workplace VPN cloud, closed developer cloud systems, cloud preflight, rollback planning, and secret-safe infrastructure automation",
 };
 
 let pending = Buffer.alloc(0);
@@ -64,6 +64,10 @@ function status() {
   const accessPolicy = accessPolicyPath && fs.existsSync(accessPolicyPath)
     ? JSON.parse(fs.readFileSync(accessPolicyPath, "utf8"))
     : null;
+  const sshAccessModelPath = repo ? path.join(repo, "deploy", "seis-ssh-access-model.json") : null;
+  const sshAccessModel = sshAccessModelPath && fs.existsSync(sshAccessModelPath)
+    ? JSON.parse(fs.readFileSync(sshAccessModelPath, "utf8"))
+    : null;
   return {
     status: profile ? "ready" : "partial",
     lane: LANE.id,
@@ -73,6 +77,7 @@ function status() {
     mcpManifestExists: fs.existsSync(path.join(root, ".mcp.json")),
     repoMirrorExists: repo ? fs.existsSync(path.join(repo, "plugins", LANE.pluginName, ".codex-plugin", "plugin.json")) : false,
     accessPolicy,
+    sshAccessModel,
     profile,
   };
 }
@@ -88,12 +93,16 @@ function plan(input) {
     steps: [
       "Inspect git status, branch, remote, and current cloud target records.",
       "Classify access audience: public cloud for everyone or team/workplace VPN cloud for approved peers.",
+      "For SEIS SSH, keep one visible cloud-only alias: SEIS-SSH.",
+      "Route individual users through normal cloud SSH, companies and teams through VPN cloud SSH, and developers through a closed cloud development system.",
+      "For self-hosted SEIS Cloud, generate the local kit with `npm run cloud:self-hosted:kit` before mutating a host.",
       "Classify provider, server target, secrets, public URL, rollback owner, and authentication scope.",
       "Run or update provider-neutral preflight records before provider-specific mutation.",
       "Keep apply/deploy commands behind explicit user confirmation.",
       "Validate cloud access policy, cloud reports, server target checks, rollback notes, and blockers.",
     ],
     accessPolicy: status().accessPolicy,
+    sshAccessModel: status().sshAccessModel,
     defaultChecks: status().profile?.qualityCommands || [],
   };
 }

@@ -7,7 +7,7 @@
     "toolCount": 14,
     "helperToolCount": 13,
     "remoteOrchestratorCount": 1,
-    "installedTools": 11,
+    "installedTools": 10,
     "missingRequiredTools": 0,
     "localModelCount": 0,
     "releasePackageCount": 2,
@@ -72,8 +72,8 @@
     {
       "id": "aider",
       "label": "Aider",
-      "installed": true,
-      "status": "installed",
+      "installed": false,
+      "status": "missing-optional",
       "executionMode": "local-helper"
     },
     {

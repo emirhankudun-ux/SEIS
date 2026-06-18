@@ -11,8 +11,8 @@
   },
   "summary": {
     "appCount": 10,
-    "detectedCount": 8,
-    "missingCount": 2
+    "detectedCount": 7,
+    "missingCount": 3
   },
   "apps": [
     {
@@ -51,8 +51,8 @@
       "id": "android-studio",
       "label": "Android Studio",
       "role": "android-ide",
-      "detected": true,
-      "appPath": "../../../../../../../Applications/Android Studio.app",
+      "detected": false,
+      "appPath": null,
       "bundleNames": [
         "Android Studio.app"
       ],
@@ -61,7 +61,7 @@
         "Emulator/device workflows",
         "Kotlin/Java inspection"
       ],
-      "integrationAction": "use_when_task_matches"
+      "integrationAction": "install_or_configure_when_needed"
     },
     {
       "id": "jetbrains-toolbox",

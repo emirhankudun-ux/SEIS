@@ -35,10 +35,48 @@
       <div class="hero-cta-row">
         <button type="button" class="button" data-route="/demo" data-cta-id="hero_start_demo">Start Demo</button>
         <a href="#/results/demo-home" class="button ghost" data-route="/results/demo-home" data-cta-id="view_default_results">View Sample Result</a>
+        <button type="button" id="download-native" class="button ghost" data-cta-id="open_release_download" title="Download latest macOS package">Download macOS</button>
+        <button type="button" id="copy-native-link" class="button ghost" data-cta-id="copy_deep_link">Copy deep-link demo</button>
       </div>
       <p class="live-hint">
         Active route: <strong id="route-pill"></strong>
       </p>
+    </section>
+
+    <section class="card release-panel">
+      <h2>Apple-first website + native package flow</h2>
+      <p class="release-copy">
+        The landing flow, web demo, and macOS app are built from the same contract.
+        Start in browser, jump to a scenario, then continue in native for a cinematic
+        "single-click story" workflow.
+      </p>
+      <ul class="release-list" id="release-checklist">
+        <li>Route parity: <strong>/demo</strong>, <strong>/demo/:scenario</strong>, <strong>/results/:runId</strong></li>
+        <li>Shared contract metrics and telemetry schema validation</li>
+        <li>Download-ready release surface on GitHub (preview button)</li>
+      </ul>
+    </section>
+
+    <section class="card focus-mode-panel" aria-labelledby="focus-mode-title">
+      <div>
+        <p class="eyebrow">Supreme Vision feature</p>
+        <h2 id="focus-mode-title">Focus Mode</h2>
+        <p id="focus-mode-status" class="focus-mode-status">
+          Focus Mode is ready for concentrated SEIS work.
+        </p>
+      </div>
+      <div class="focus-mode-controls">
+        <button
+          type="button"
+          id="focus-mode-toggle"
+          class="button"
+          aria-pressed="false"
+          data-cta-id="focus_mode_toggle"
+        >
+          Enable focus
+        </button>
+        <ul id="focus-mode-signals" class="focus-mode-signals" aria-label="Focus mode signals"></ul>
+      </div>
     </section>
 
     <section id="content" class="content card" aria-live="polite"></section>

@@ -17,6 +17,10 @@ legacy compatibility mirror.
 - Local-helper build workflow for SEIS cockpit, backend, workspace, security, mobile, desktop, and research lanes
 - SEIS Repos bridge, MCP bundled install, MCP source proof, governed LLM package lanes, LLM adapter readiness, and LLM request planning
 - SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes for cloud readiness, implementation, product design, and data/knowledge work
+- SEIS Master Prompt governance for architecture, security, documentation, AI/agent, cloud/automation, product/design, GitHub controls, and quality-gate changes
+- SEIS GitHub workflow governance for branch, PR, CODEOWNERS, GitHub Actions, source-of-truth, and no-push handoff decisions
+- SEIS Security Review governance for secret safety, least privilege, SSH/cloud risk, rollback readiness, GitHub readiness, and validation-claim checks
+- SEIS Focus Mode AGI operating lane for app, website, plugin, and AI/AGI work that must stay concentrated, low-noise, evidence-preserving, and long-term oriented
 
 ## Local Paths
 
@@ -89,6 +93,18 @@ MCP plan endpoints:
 - `skills/seis-code/SKILL.md` routes implementation, refactor, test, CI, MCP/plugin, platform, and automation work through SEIS engineering guardrails.
 - `skills/seis-design/SKILL.md` routes UI/UX, product surfaces, design systems, accessibility, motion, and visual QA through the SEIS design constitution.
 - `skills/seis-data/SKILL.md` routes data architecture, analytics, generated reports, schemas, knowledge registries, RAG/memory planning, and provenance through SEIS data governance.
+- `skills/seis-master-prompt/SKILL.md` routes Master Prompt operating-contract changes through the canonical governance document, implementation map, acceptance criteria, GitHub controls, generated report, CODEOWNERS, and dedicated quality checks.
+- `skills/seis-github-workflow/SKILL.md` routes GitHub source-of-truth work through branch, PR, check-run, CODEOWNERS, workflow, and no-push/no-readiness gates.
+- `skills/seis-security-review/SKILL.md` routes security, privacy, least-privilege, SSH/cloud, rollback, secret-safety, and validation-claim review through the SEIS plugin bundle.
+- `skills/seis-focus-mode/SKILL.md` routes Focus Mode work through the app/website toggle, telemetry contract, AI/AGI learning contract, and dedicated Focus Mode quality check.
+
+Focused Master Prompt checks:
+
+```bash
+npm run check:seis-focus-mode
+npm run check:seis-master-prompt-report
+npm run check:seis-master-prompt
+```
 
 ## SEIS Build Workflow
 

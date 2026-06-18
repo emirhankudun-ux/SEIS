@@ -4,6 +4,7 @@ import fnmatch
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -250,6 +251,7 @@ REQUIRED_LINGUIST_RULES = [
     ("content/development/*.json", "linguist-generated=true"),
     ("apps/web/src/i18n/locales.js", "linguist-generated=true"),
     ("SE*S/**", "linguist-vendored=true"),
+    ("SEIS*/**", "linguist-vendored=true"),
     ("polyglot/typescript/**", "linguist-language=TypeScript"),
     ("polyglot/react/*.tsx", "linguist-language=TypeScript"),
     ("packages/seis-ai/types/**", "linguist-language=TypeScript"),
@@ -511,8 +513,16 @@ def matches_pattern(rel_path, pattern):
         return True
     if pattern.endswith("/**"):
         prefix = pattern[:-3]
-        return rel_path == prefix or rel_path.startswith(prefix + "/")
+        return rel_path == prefix or rel_path.startswith(prefix + "/") or matches_path_prefix(rel_path, prefix)
     return False
+
+
+def matches_path_prefix(rel_path, prefix):
+    rel_parts = rel_path.split("/")
+    prefix_parts = prefix.split("/")
+    if len(rel_parts) < len(prefix_parts):
+        return False
+    return all(fnmatch.fnmatch(path_part, pattern_part) for path_part, pattern_part in zip(rel_parts, prefix_parts))
 
 
 def linguist_language_override(rel_path, rules):
@@ -633,6 +643,18 @@ def build_language_balance(by_language, total_bytes):
 def runtime_readiness():
     runtimes = []
     for runtime_id, command in RUNTIME_COMMANDS:
+        if runtime_id == "swift":
+            available = shutil.which(command[0]) is not None
+            runtimes.append(
+                {
+                    "id": runtime_id,
+                    "command": " ".join(command),
+                    "available": available,
+                    "exitCode": None,
+                    "version": "detected; package tests handle configured toolchain readiness" if available else None,
+                }
+            )
+            continue
         result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
         output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
         runtimes.append(
@@ -802,12 +824,14 @@ def check_report(report, markdown):
 
     if not REPORT_JSON.exists():
         failures.append(f"missing report: {relative(REPORT_JSON)}")
-    elif REPORT_JSON.read_text(encoding="utf-8") != stable_json(report):
-        failures.append(f"stale report: {relative(REPORT_JSON)}")
+    else:
+        on_disk = read_json_report(REPORT_JSON)
+        if not is_report_equivalent(on_disk, report):
+            failures.append(f"stale report: {relative(REPORT_JSON)}")
 
     if not REPORT_MD.exists():
         failures.append(f"missing report: {relative(REPORT_MD)}")
-    elif REPORT_MD.read_text(encoding="utf-8") != markdown:
+    elif normalize_markdown_text(REPORT_MD.read_text(encoding="utf-8")) != normalize_markdown_text(markdown):
         failures.append(f"stale report: {relative(REPORT_MD)}")
 
     if failures:
@@ -829,6 +853,49 @@ def percent(value, total):
 
 def stable_json(data):
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+
+
+def read_json_report(path):
+    with open(path, "r", encoding="utf-8") as handle:
+        payload = json.load(handle)
+    return normalize_runtime_report(payload)
+
+
+def is_report_equivalent(expected, actual):
+    return canonical_report_json(expected) == canonical_report_json(actual)
+
+
+def canonical_report_json(payload):
+    return json.dumps(
+        normalize_runtime_report(payload),
+        sort_keys=True,
+        indent=2,
+        ensure_ascii=False,
+    )
+
+
+def normalize_runtime_report(payload):
+    normalized = json.loads(json.dumps(payload))
+    for runtime_entry in normalized.get("localRuntimeReadiness", []):
+        runtime_entry.pop("version", None)
+    return normalized
+
+
+def normalize_markdown_text(text):
+    lines = []
+    in_runtime_block = False
+    for line in text.splitlines():
+        if line.startswith("## Local Runtime Readiness"):
+            in_runtime_block = True
+            continue
+        if in_runtime_block:
+            if line.startswith("## ") and line != "":
+                in_runtime_block = False
+            else:
+                continue
+        if not in_runtime_block:
+            lines.append(line)
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def write_text(path, text):

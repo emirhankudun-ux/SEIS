@@ -394,6 +394,16 @@ final class SeisDemoNativeShellState: NSObject, ObservableObject {
         )
     }
 
+    func clearRuns() {
+        runs.removeAll()
+        activeRunId = nil
+        recordTelemetryEvent(
+            eventName: "seis_demo_cta_click",
+            details: ["cta_id": "runs_cleared"],
+            source: "native"
+        )
+    }
+
     func startScenario(_ scenarioId: String) {
         guard let scenario = scenarioById(scenarioId) else {
             recordTelemetryEvent(

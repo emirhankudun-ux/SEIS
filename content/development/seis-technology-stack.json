@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1639276,
+      "githubBytes": 1662036,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -88,7 +88,7 @@
       "label": "Swift",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 544124,
+      "githubBytes": 573503,
       "layer": "mobile-and-native",
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 134954,
+      "githubBytes": 135686,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 285328,
+      "githubBytes": 286215,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",

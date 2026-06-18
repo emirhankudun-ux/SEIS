@@ -16,8 +16,8 @@
   },
   "summary": {
     "toolCount": 34,
-    "installedCount": 27,
-    "missingCount": 7,
+    "installedCount": 26,
+    "missingCount": 8,
     "aiAgentCliCount": 11,
     "languageRuntimeCount": 12
   },
@@ -245,7 +245,7 @@
       "command": "gcloud",
       "commandPath": "/Users/emirhankudun/.local/bin/gcloud",
       "installed": true,
-      "version": "Google Cloud SDK 571.0.0 | bq 2.1.32 | core 2026.05.29",
+      "version": "ERROR: gcloud failed to load. You are running gcloud with Python 3.9, which is no longer supported by gcloud. | Install a compatible version of Python 3.10-3.14 and set the CLOUDSDK_PYTHON environment variable to point to it. | ",
       "use": "Use for Google Cloud checks.",
       "notes": "Do not deploy without explicit deploy request.",
       "installAction": "none"
@@ -339,12 +339,12 @@
       "label": "Aider",
       "category": "ai-agent-cli",
       "command": "aider",
-      "commandPath": "/Users/emirhankudun/.local/bin/aider",
-      "installed": true,
-      "version": "aider 0.86.2",
+      "commandPath": null,
+      "installed": false,
+      "version": null,
       "use": "Use for diff-oriented local edits.",
       "notes": "Optional.",
-      "installAction": "none"
+      "installAction": "manual_install_when_needed"
     },
     {
       "id": "ollama",
@@ -401,7 +401,7 @@
       "command": "hermes",
       "commandPath": "/Users/emirhankudun/.local/bin/hermes",
       "installed": true,
-      "version": "Hermes Agent v0.16.0 (2026.6.5) · upstream 8cf9d868 | Project: /Users/emirhankudun/.hermes/hermes-agent | Python: 3.11.15",
+      "version": "/Users/emirhankudun/.local/bin/hermes: /Users/emirhankudun/.hermes/hermes-agent/venv/bin/hermes: /Users/emirhankudun/.hermes/hermes-agent/venv/bin/python3: bad interpreter: No such file or directory | /Users/emirhankudun/.local/bin/hermes: line 4: /Users/emirhankudun/.hermes/hermes-agent/venv/bin/hermes: Undefined error: 0",
       "use": "Use as a bounded agent gateway and MCP helper.",
       "notes": "Optional; keep under SEIS policy.",
       "installAction": "none"

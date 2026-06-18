@@ -1,21 +1,21 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 844
-- Counted bytes: 4683051
-- JavaScript: 1639276 bytes (35.0%)
+- Counted files: 852
+- Counted bytes: 4766351
+- JavaScript: 1662036 bytes (34.87%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3123025
+- Additional non-JavaScript bytes needed for strict target: 3148106
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1639276 | 35.0% | JavaScript |
-| TypeScript | 411787 | 8.79% | TypeScript |
+| JavaScript | 1662036 | 34.87% | JavaScript |
+| TypeScript | 411787 | 8.64% | TypeScript |
 | Objective-C | 8447 | 0.18% | Objective-C |
-| Other | 2623541 | 56.02% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2684081 | 56.31% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,44 +25,44 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 11.82% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 27.42% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 43.8% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
-| Android / JVM | 0.51% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
-| Rust / C / C++ systems | 0.63% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 3.22% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Apple / Swift ecosystem | 12.23% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 27.55% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 43.51% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Android / JVM | 0.5% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
+| Rust / C / C++ systems | 0.62% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
+| Go / Infrastructure | 3.17% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.17% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 8.97% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 8.85% | 0.0-3.0% | `above_target` | HTML, CSS |
 
-Unassigned counted languages: 3.46% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
+Unassigned counted languages: 3.4% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1639276 | 35.0% |
-| JSON | 758177 | 16.19% |
-| Swift | 544124 | 11.62% |
-| Python | 507033 | 10.83% |
-| TypeScript | 411787 | 8.79% |
-| CSS | 285328 | 6.09% |
-| HTML | 134954 | 2.88% |
-| Shell | 92418 | 1.97% |
-| Other | 40206 | 0.86% |
-| YAML | 33950 | 0.72% |
-| Go | 16806 | 0.36% |
-| Java | 16392 | 0.35% |
-| Scheme | 15747 | 0.34% |
-| Perl | 13916 | 0.3% |
+| JavaScript | 1662036 | 34.87% |
+| JSON | 787358 | 16.52% |
+| Swift | 573503 | 12.03% |
+| Python | 507033 | 10.64% |
+| TypeScript | 411787 | 8.64% |
+| CSS | 286215 | 6.0% |
+| HTML | 135686 | 2.85% |
+| Shell | 92418 | 1.94% |
+| Other | 40297 | 0.85% |
+| YAML | 34220 | 0.72% |
+| Go | 16806 | 0.35% |
+| Java | 16392 | 0.34% |
+| Scheme | 15747 | 0.33% |
+| Perl | 13916 | 0.29% |
 | Ruby | 13677 | 0.29% |
 | Rust | 12286 | 0.26% |
 | C++ | 11206 | 0.24% |
-| PHP | 8768 | 0.19% |
-| SQL | 8752 | 0.19% |
+| PHP | 8768 | 0.18% |
+| SQL | 8752 | 0.18% |
 | Objective-C | 8447 | 0.18% |
 | R | 7953 | 0.17% |
 | OCaml | 7550 | 0.16% |
-| Tcl | 7290 | 0.16% |
+| Tcl | 7290 | 0.15% |
 | Racket | 7245 | 0.15% |
 
 ## Largest JavaScript Files Still Counted
@@ -72,8 +72,8 @@ Unassigned counted languages: 3.46% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `emirhan-kudun-portfolio/apps/uix-web/src/i18n/locales.js` | 105051 |
 | `emirhan-kudun-portfolio/packages/content/src/uix-static/locales.js` | 105051 |
 | `apps/web/script.js` | 79540 |
+| `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
-| `scripts/check-seis-master-prompt.mjs` | 37866 |
 | `scripts/check-cloud-environment.cjs` | 31248 |
 | `scripts/sync-plugin-environment-sources.cjs` | 27637 |
 | `packages/seis-ai/test/checks.test.mjs` | 25298 |

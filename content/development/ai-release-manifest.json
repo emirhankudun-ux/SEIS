@@ -118,15 +118,15 @@
     {
       "id": "aider",
       "label": "Aider",
-      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "commandPath": null,
       "launcherCommandPath": null,
-      "installed": true,
+      "installed": false,
       "gate": "small patch editing",
       "routingIntent": "quick repo patch",
       "executionMode": "local-helper",
       "expectedAutoTool": "aider",
       "routingCoverage": true,
-      "status": "installed"
+      "status": "missing-optional"
     },
     {
       "id": "interpreter",
@@ -332,7 +332,7 @@
     "toolCount": 14,
     "helperToolCount": 13,
     "remoteOrchestratorCount": 1,
-    "installedTools": 11,
+    "installedTools": 10,
     "missingRequiredTools": 0,
     "localModelCount": 0,
     "releasePackageCount": 2,

@@ -1,0 +1,16 @@
+{
+  "name": "SEIS Core",
+  "short_name": "SEIS Core",
+  "description": "Central AI-native operating interface for the SEIS ecosystem.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f4f1",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml"
+    }
+  ]
+}

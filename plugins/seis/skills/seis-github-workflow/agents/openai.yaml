@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS GitHub Workflow"
+  short_description: "Govern SEIS GitHub PR and check workflows."
+  default_prompt: "Use SEIS GitHub workflow governance to plan branch, PR, checks, CODEOWNERS, and source-of-truth handoff."

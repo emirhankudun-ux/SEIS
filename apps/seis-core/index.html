@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111111" />
+  <meta
+    name="description"
+    content="SEIS Core is the central AI-native operating interface for goals, repositories, documentation, agents, architecture, and ecosystem health."
+  />
+  <title>SEIS Core</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="app-frame">
+    <aside class="sidebar" aria-label="Primary">
+      <a class="brand" href="#dashboard" data-view="dashboard" aria-label="SEIS Core dashboard">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>
+          <strong>SEIS Core</strong>
+          <small>Operating interface</small>
+        </span>
+      </a>
+
+      <nav class="sidebar-nav" aria-label="Modules">
+        <button class="nav-item is-active" type="button" data-view="dashboard">
+          <span class="nav-icon" aria-hidden="true">D</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" type="button" data-view="goals">
+          <span class="nav-icon" aria-hidden="true">G</span>
+          <span>Goals</span>
+        </button>
+        <button class="nav-item" type="button" data-view="repositories">
+          <span class="nav-icon" aria-hidden="true">R</span>
+          <span>Repositories</span>
+        </button>
+        <button class="nav-item" type="button" data-view="documentation">
+          <span class="nav-icon" aria-hidden="true">N</span>
+          <span>Documentation</span>
+        </button>
+        <button class="nav-item" type="button" data-view="agents">
+          <span class="nav-icon" aria-hidden="true">A</span>
+          <span>Agents</span>
+        </button>
+        <button class="nav-item" type="button" data-view="architecture">
+          <span class="nav-icon" aria-hidden="true">M</span>
+          <span>Architecture</span>
+        </button>
+        <button class="nav-item" type="button" data-view="knowledge">
+          <span class="nav-icon" aria-hidden="true">K</span>
+          <span>Knowledge</span>
+        </button>
+      </nav>
+
+      <section class="sidebar-card" aria-labelledby="sidebar-health-title">
+        <p id="sidebar-health-title" class="eyebrow">Ecosystem Health</p>
+        <strong id="sidebar-health-score">92%</strong>
+        <span id="sidebar-health-detail">Stable, 2 reviews queued</span>
+      </section>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button sidebar-toggle" type="button" id="sidebar-toggle" aria-label="Toggle navigation">Nav</button>
+        <label class="search" for="global-search">
+          <span aria-hidden="true">/</span>
+          <input id="global-search" type="search" autocomplete="off" placeholder="Search goals, repos, docs, agents..." />
+          <kbd>CMD K</kbd>
+        </label>
+        <div class="topbar-actions">
+          <button class="secondary-button" type="button" id="open-command">Command</button>
+          <button class="icon-button" type="button" id="open-settings" aria-label="Open settings">Set</button>
+        </div>
+      </header>
+
+      <main id="main-content" class="main-grid">
+        <section class="content-surface" aria-live="polite">
+          <div class="view-header">
+            <div>
+              <p class="eyebrow" id="view-kicker">Dashboard</p>
+              <h1 id="view-title">SEIS operating center</h1>
+              <p id="view-summary">
+                Manage goals, repositories, architecture decisions, documentation, agents, and system health from one calm surface.
+              </p>
+            </div>
+            <button class="primary-button" type="button" id="primary-action">New Goal</button>
+          </div>
+
+          <section class="dashboard-view view-panel is-active" data-panel="dashboard" aria-labelledby="dashboard-title">
+            <h2 id="dashboard-title" class="sr-only">Dashboard</h2>
+            <div class="metric-grid" id="metric-grid"></div>
+            <div class="dashboard-layout">
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Active Goals</h3>
+                  <button class="text-button" type="button" data-view="goals">View all</button>
+                </div>
+                <div class="stack-list" id="dashboard-goals"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Repository Health</h3>
+                  <button class="text-button" type="button" data-view="repositories">Inspect</button>
+                </div>
+                <div class="repo-health-list" id="dashboard-repos"></div>
+              </section>
+            </div>
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Architecture Alerts</h3>
+                <span class="status-pill attention">Review</span>
+              </div>
+              <div class="architecture-strip" id="architecture-alerts"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" data-panel="goals" aria-labelledby="goals-title">
+            <div class="section-heading">
+              <h2 id="goals-title">Goals</h2>
+              <p>Create goals, edit priority/status, track risks, and keep next actions explicit.</p>
+            </div>
+            <form class="goal-form panel" id="goal-form">
+              <div class="field-group wide">
+                <label for="goal-title">Goal</label>
+                <input id="goal-title" name="title" type="text" placeholder="Define a SEIS outcome..." required />
+              </div>
+              <div class="field-group">
+                <label for="goal-priority">Priority</label>
+                <select id="goal-priority" name="priority">
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label for="goal-status">Status</label>
+                <select id="goal-status" name="status">
+                  <option>Active</option>
+                  <option>Review</option>
+                  <option>Blocked</option>
+                  <option>Done</option>
+                </select>
+              </div>
+              <div class="field-group wide">
+                <label for="goal-risk">Risk</label>
+                <input id="goal-risk" name="risk" type="text" placeholder="Primary risk or dependency" />
+              </div>
+              <div class="field-group wide">
+                <label for="goal-action">Next action</label>
+                <input id="goal-action" name="nextAction" type="text" placeholder="Smallest useful next action" />
+              </div>
+              <button class="primary-button" type="submit">Create Goal</button>
+            </form>
+            <div class="goal-board" id="goal-board"></div>
+          </section>
+
+          <section class="view-panel" data-panel="repositories" aria-labelledby="repositories-title">
+            <div class="section-heading">
+              <h2 id="repositories-title">Repositories</h2>
+              <p>Scan health, documentation coverage, security posture, and testing status.</p>
+            </div>
+            <div class="toolbar-row">
+              <button class="filter-chip is-active" type="button" data-filter="all">All</button>
+              <button class="filter-chip" type="button" data-filter="Ready">Ready</button>
+              <button class="filter-chip" type="button" data-filter="Review">Review</button>
+              <button class="filter-chip" type="button" data-filter="Blocked">Blocked</button>
+            </div>
+            <div class="repo-grid" id="repository-grid"></div>
+          </section>
+
+          <section class="view-panel" data-panel="documentation" aria-labelledby="documentation-title">
+            <div class="section-heading">
+              <h2 id="documentation-title">Documentation</h2>
+              <p>Track architecture notes, ADRs, roadmap, and knowledge base coverage.</p>
+            </div>
+            <div class="doc-layout">
+              <div class="panel">
+                <h3>Documentation Index</h3>
+                <div class="doc-list" id="documentation-list"></div>
+              </div>
+              <div class="panel">
+                <h3>Coverage Plan</h3>
+                <ol class="roadmap-list" id="documentation-plan"></ol>
+              </div>
+            </div>
+          </section>
+
+          <section class="view-panel" data-panel="agents" aria-labelledby="agents-title">
+            <div class="section-heading">
+              <h2 id="agents-title">AI Agent Management</h2>
+              <p>Select an operating mode and review the intended responsibility boundary.</p>
+            </div>
+            <div class="agent-grid" id="agent-grid"></div>
+          </section>
+
+          <section class="view-panel" data-panel="architecture" aria-labelledby="architecture-title">
+            <div class="section-heading">
+              <h2 id="architecture-title">Architecture</h2>
+              <p>Map system structure, dependencies, decisions, and technical debt.</p>
+            </div>
+            <div class="architecture-map panel" id="architecture-map"></div>
+          </section>
+
+          <section class="view-panel" data-panel="knowledge" aria-labelledby="knowledge-title">
+            <div class="section-heading">
+              <h2 id="knowledge-title">Knowledge</h2>
+              <p>Keep SEIS memory, research, and operating decisions discoverable.</p>
+            </div>
+            <div class="knowledge-grid" id="knowledge-grid"></div>
+          </section>
+        </section>
+
+        <aside class="inspector" aria-label="Inspector">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Agent Modes</h2>
+              <span class="status-pill ready" id="active-agent-label">Architect</span>
+            </div>
+            <div class="mode-list" id="mode-list"></div>
+          </section>
+
+          <section class="panel">
+            <h2>Next Actions</h2>
+            <div class="next-actions" id="next-actions"></div>
+          </section>
+
+          <section class="panel">
+            <h2>MVP Spec</h2>
+            <ul class="spec-list">
+              <li>Phase 1 static HTML/CSS/JS</li>
+              <li>Local goal management</li>
+              <li>Repo and doc health surfaces</li>
+              <li>Agent mode switching</li>
+              <li>Architecture and roadmap visibility</li>
+            </ul>
+          </section>
+        </aside>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="command-dialog" id="command-dialog" aria-labelledby="command-title">
+    <div class="dialog-header">
+      <h2 id="command-title">Command Palette</h2>
+      <button class="icon-button" type="button" data-close-dialog aria-label="Close command palette">x</button>
+    </div>
+    <input id="command-input" type="search" placeholder="Type a module or action..." />
+    <div class="command-results" id="command-results"></div>
+  </dialog>
+
+  <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-title">
+    <div class="dialog-header">
+      <h2 id="settings-title">Settings</h2>
+      <button class="icon-button" type="button" data-close-dialog aria-label="Close settings">x</button>
+    </div>
+    <label class="setting-row">
+      <span>Compact density</span>
+      <input id="density-toggle" type="checkbox" />
+    </label>
+    <label class="setting-row">
+      <span>Reduce motion</span>
+      <input id="motion-toggle" type="checkbox" />
+    </label>
+  </dialog>
+
+  <script src="script.js" defer></script>
+</body>
+</html>

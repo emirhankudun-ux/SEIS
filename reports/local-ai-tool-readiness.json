@@ -3,9 +3,9 @@
   "path": "reports/local-ai-tool-readiness.json",
   "generatedAt": "2026-06-10T06:28:42.100Z",
   "helperCount": 13,
-  "readyCount": 8,
+  "readyCount": 7,
   "missingCredentialCount": 2,
-  "missingCommandCount": 3,
+  "missingCommandCount": 4,
   "runtimeNotReadyCount": 0,
   "tools": [
     {
@@ -141,15 +141,17 @@
       "id": "aider",
       "label": "Aider",
       "command": "aider",
-      "commandPath": "/Users/emirhankudun/.local/bin/aider",
+      "commandPath": null,
       "launcherCommandPath": null,
       "appPath": null,
-      "installed": true,
+      "installed": false,
       "credentialState": null,
       "runtimeOk": true,
       "offlineFallbackCapable": false,
-      "status": "ready",
-      "issueCodes": []
+      "status": "missing-command",
+      "issueCodes": [
+        "command-not-found"
+      ]
     },
     {
       "id": "interpreter",

@@ -5,11 +5,14 @@ import { spawnSync } from "node:child_process";
 
 const failures = [];
 const policy = readJson("deploy/cloud-access-policy.json");
+const sshAccessModel = readJson("deploy/seis-ssh-access-model.json");
 const targets = readJson("deploy/server-targets.json");
 const matrix = readJson("deploy/provider-matrix.json");
 const cloud = readJson("deploy/cloud-environment.json");
 const localExample = readJson("deploy/server-targets.local.example.json");
 const docs = readText("docs/deployment/cloud-access-policy.md")
+  + "\n"
+  + readText("docs/deployment/seis-ssh-access-model.md")
   + "\n"
   + readText("docs/deployment/gcp-compute-cloud-server.md")
   + "\n"
@@ -28,6 +31,12 @@ ensure(policy?.publicCloud?.audience === "everyone", "publicCloud audience must 
 ensure(policy?.publicCloud?.vpnRequired === false, "publicCloud must not require VPN");
 ensure(policy?.teamVpnCloud?.audience === "workplaces-and-teams", "teamVpnCloud audience must be workplaces-and-teams");
 ensure(policy?.teamVpnCloud?.vpnRequired === true, "teamVpnCloud must require VPN");
+ensure(policy?.sshAccessModel?.visibleAlias === "SEIS-SSH", "SSH access model must expose SEIS-SSH");
+ensure(policy?.sshAccessModel?.cloudOnly === true, "SSH access model must be cloud-only");
+ensure(policy?.sshAccessModel?.individualUsers?.vpnRequired === false, "individual SSH users must not require VPN");
+ensure(policy?.sshAccessModel?.companiesAndTeams?.vpnRequired === true, "company/team SSH must require VPN");
+ensure(policy?.sshAccessModel?.developers?.mode === "closed-cloud-development-system", "developer SSH must use closed cloud development system");
+ensure(sshAccessModel?.defaultVisibleAlias === "SEIS-SSH", "SSH access model source must default to SEIS-SSH");
 
 const publicProviders = new Set(policy?.publicCloud?.providers || []);
 for (const id of ["github-pages", "cloudflare-pages", "vercel-static", "netlify-static", "firebase-hosting"]) {
@@ -54,6 +63,8 @@ ensure(packageJson?.scripts?.["cloud:public:readiness"] === "node scripts/check-
 ensure(packageJson?.scripts?.["cloud:public:readiness:strict"] === "node scripts/check-public-cloud-readiness.mjs --require-ready", "missing cloud:public:readiness:strict script");
 ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs", "missing cloud:ssh-vpn:readiness script");
 ensure(packageJson?.scripts?.["cloud:ssh-vpn:readiness:strict"] === "node scripts/check-ssh-wireguard-cloud-readiness.mjs --require-ready", "missing cloud:ssh-vpn:readiness:strict script");
+ensure(packageJson?.scripts?.["check:seis-ssh-access-model"] === "node scripts/check-seis-ssh-access-model.mjs", "missing check:seis-ssh-access-model script");
+ensure(packageJson?.scripts?.["cloud:self-hosted:kit"] === "node scripts/create-self-hosted-seis-cloud-kit.mjs", "missing cloud:self-hosted:kit script");
 ensure(packageJson?.scripts?.["cloud:migration:audit"] === "node scripts/cloud-migration-audit.mjs", "missing cloud:migration:audit script");
 ensure(packageJson?.scripts?.["cloud:migration:audit:json"] === "node scripts/cloud-migration-audit.mjs --json", "missing cloud:migration:audit:json script");
 ensure(packageJson?.scripts?.["cloud:migration:audit:ci"] === "node scripts/cloud-migration-audit.mjs --strict --json --output cloud-migration-audit.ci.json", "missing cloud:migration:audit:ci script");
@@ -97,6 +108,9 @@ ensure(provisioner.includes("hasBroadCidr"), "provisioner must reject broad VPN 
 const sshVpnReadiness = readText("scripts/check-ssh-wireguard-cloud-readiness.mjs");
 ensure(sshVpnReadiness.includes("mode: \"read-only\""), "SSH VPN readiness checker must declare read-only mode");
 ensure(sshVpnReadiness.includes("workplaces-and-teams"), "SSH VPN readiness checker must preserve team/workplace audience");
+const selfHostedKit = readText("scripts/create-self-hosted-seis-cloud-kit.mjs");
+ensure(selfHostedKit.includes("mode: \"self-hosted-kit\""), "self-hosted cloud kit must declare its mode");
+ensure(selfHostedKit.includes("workplaces-and-teams"), "self-hosted cloud kit must preserve team/workplace audience");
 
 const publicReadiness = readText("scripts/check-public-cloud-readiness.mjs");
 ensure(publicReadiness.includes("mode: \"read-only\""), "public readiness checker must declare read-only mode");

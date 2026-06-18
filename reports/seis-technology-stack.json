@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1639276,
+      "githubBytes": 1662036,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -70,7 +70,7 @@
       "order": 5,
       "label": "Swift",
       "layer": "mobile-and-native",
-      "githubBytes": 544124,
+      "githubBytes": 573503,
       "entrypoints": [
         "polyglot/swift/SEISMotionPolicy.swift"
       ]
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 134954,
+      "githubBytes": 135686,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -518,7 +518,7 @@
       "order": 52,
       "label": "CSS",
       "layer": "frontend-and-experience",
-      "githubBytes": 285328,
+      "githubBytes": 286215,
       "entrypoints": [
         "apps/web/style.css",
         "apps/web/styles.css"

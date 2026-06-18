@@ -1,11 +1,5 @@
-import Foundation
-
-#if canImport(Combine)
 import Combine
-typealias SeisAppleContinuationObservationObject = ObservableObject
-#else
-protocol SeisAppleContinuationObservationObject {}
-#endif
+import Foundation
 
 #if canImport(AppKit)
 import AppKit
@@ -244,12 +238,8 @@ public struct SeisAppleContinuationSnapshot: Codable, Equatable, Sendable {
     }
 }
 
-public final class SeisAppleContinuationModel: SeisAppleContinuationObservationObject {
-    #if canImport(Combine)
+public final class SeisAppleContinuationModel: ObservableObject {
     @Published public private(set) var snapshot: SeisAppleContinuationSnapshot
-    #else
-    public private(set) var snapshot: SeisAppleContinuationSnapshot
-    #endif
 
     public init(snapshot: SeisAppleContinuationSnapshot = .current) {
         self.snapshot = snapshot

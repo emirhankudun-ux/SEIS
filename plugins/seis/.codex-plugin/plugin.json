@@ -21,7 +21,7 @@
   "interface": {
     "displayName": "SEIS",
     "shortDescription": "Develop SEIS-centered GitHub and Codex workflows.",
-    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, governed LLM package lanes, and the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes.",
+    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, governed LLM package lanes, security review, Focus Mode AGI operating behavior, and the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes.",
     "developerName": "emirhankudun-ux",
     "category": "Productivity",
     "capabilities": [
@@ -39,14 +39,22 @@
       "SEIS Cloud deployment lane",
       "SEIS-Code engineering lane",
       "SEIS-Design product lane",
-      "SEIS-DATA knowledge lane"
+      "SEIS-DATA knowledge lane",
+      "SEIS Master Prompt governance",
+      "SEIS GitHub workflow governance",
+      "SEIS Security Review governance",
+      "SEIS Focus Mode AGI operating lane"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
       "Use SEIS as the main repo and plan the next step.",
       "Check SEIS migration status before deleting repos.",
       "Help develop the SEIS Codex plugin.",
-      "Connect this work to SEIS Repos and the governed LLM package bridge."
+      "Connect this work to SEIS Repos and the governed LLM package bridge.",
+      "Use SEIS Master Prompt governance for architecture, security, documentation, AI, cloud, product, and quality changes.",
+      "Use SEIS GitHub workflow governance to plan branch, PR, checks, CODEOWNERS, and source-of-truth handoff.",
+      "Use SEIS Security Review governance to inspect secrets, least privilege, SSH/cloud risk, GitHub readiness, and validation claims.",
+      "Use SEIS Focus Mode to keep app, website, plugin, and AI/AGI work concentrated, low-noise, and evidence-preserving."
     ],
     "brandColor": "#2563EB"
   }

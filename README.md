@@ -84,6 +84,95 @@ Run `npm run check:seis-technology-stack` after changing stack categories and
 `npm run check:seis-agi-system` after changing agent, memory, planning,
 research, MCP, skills, plugin, or token-efficiency policy.
 
+## SEIS Master Prompt
+
+SEIS uses a central operating prompt as its ecosystem governance contract. The
+current contract is maintained at
+[`docs/governance/seis-master-prompt.md`](./docs/governance/seis-master-prompt.md)
+and defines how architecture, security, documentation, AI, cloud, design,
+automation, product strategy, validation, and user-work protection should be
+handled across the repository.
+
+The long-term ecosystem vision is maintained at
+[`docs/governance/seis-supreme-vision.md`](./docs/governance/seis-supreme-vision.md).
+It defines SEIS as a human-AI collaborative intelligence ecosystem where the
+ecosystem itself is the product.
+
+Operational GitHub controls for this prompt are documented in
+[`docs/governance/seis-master-prompt-github-controls.md`](./docs/governance/seis-master-prompt-github-controls.md).
+
+The contract is enforced by a dedicated Master Prompt check and is also covered
+by the broader open-source governance check:
+
+```bash
+npm run check:seis-master-prompt-report
+npm run check:seis-master-prompt
+```
+
+The implementation map at
+[`data/seis-master-prompt-implementation-map.json`](./data/seis-master-prompt-implementation-map.json)
+links the Master Prompt principles to concrete architecture, security,
+documentation, AI/agent, cloud/automation, and product/design repository
+surfaces.
+
+The acceptance criteria at
+[`data/seis-master-prompt-acceptance-criteria.json`](./data/seis-master-prompt-acceptance-criteria.json)
+define what evidence is required before Master Prompt alignment can be treated
+as complete.
+
+The operational goal tracker at
+[`data/seis-operational-goal-tracker.json`](./data/seis-operational-goal-tracker.json)
+keeps active SEIS work explicit across goal, priority, status, risks,
+validation, and next step fields.
+
+The objective coverage matrix at
+[`data/seis-master-objective-coverage.json`](./data/seis-master-objective-coverage.json)
+maps the current SEIS Master Prompt objective to concrete evidence, checks,
+status, and remaining gaps.
+
+The generated objective coverage report at
+[`reports/seis-master-objective-coverage.md`](./reports/seis-master-objective-coverage.md)
+makes the same coverage matrix readable for reviews and handoffs.
+
+The decision record at
+[`docs/governance/adr-0001-seis-master-prompt-operating-contract.md`](./docs/governance/adr-0001-seis-master-prompt-operating-contract.md)
+documents why the Master Prompt is treated as an active repository operating
+contract.
+
+The change checklist at
+[`docs/governance/seis-master-prompt-change-checklist.md`](./docs/governance/seis-master-prompt-change-checklist.md)
+turns the workflow into a reusable review path for architecture, security,
+documentation, validation, and handoff.
+
+Use the GitHub issue template at
+[`.github/ISSUE_TEMPLATE/master_prompt_governance.md`](./.github/ISSUE_TEMPLATE/master_prompt_governance.md)
+to propose Master Prompt governance changes with goal, priority, risk,
+validation, and acceptance criteria captured upfront.
+
+The focused GitHub Actions workflow at
+[`.github/workflows/seis-master-prompt-governance.yml`](./.github/workflows/seis-master-prompt-governance.yml)
+runs the generated report and Master Prompt governance checks on relevant
+pull requests and `main` pushes.
+
+The ownership rules at
+[`.github/CODEOWNERS`](./.github/CODEOWNERS) keep Master Prompt operating
+contract changes reviewable by the maintainer on GitHub.
+
+The SEIS plugin skill at
+[`plugins/seis/skills/seis-master-prompt/SKILL.md`](./plugins/seis/skills/seis-master-prompt/SKILL.md)
+connects this operating contract to Codex skill/plugin workflows inside the
+repository.
+
+The SEIS security review skill at
+[`plugins/seis/skills/seis-security-review/SKILL.md`](./plugins/seis/skills/seis-security-review/SKILL.md)
+routes secret-safety, least-privilege, SSH/cloud, rollback, GitHub readiness,
+and validation-claim review through the SEIS plugin bundle.
+
+The governance status report at
+[`reports/seis-master-prompt-governance.md`](./reports/seis-master-prompt-governance.md)
+tracks goal, priority, status, risks, validation, and next step for the active
+contract.
+
 ## AGI System and Three-Month Roadmap
 
 SEIS now tracks its AGI direction as a human-owned, Apple-first assistant
@@ -153,6 +242,56 @@ GitHub Actions also runs CodeQL code scanning for JavaScript, TypeScript, and
 Python on relevant pull requests, `main` pushes, weekly scheduled scans, and
 manual dispatches. This keeps security scanning in GitHub without asking local
 contributors to install every platform SDK.
+
+## Security & Operations Tooling
+
+`scripts/ultra_ssh_manager.py` is SEIS' server-hardening utility for SSH and
+firewall baseline operations. It supports six modes:
+
+- `--mode interactive` (wizard flow, default)
+- `--mode harden` (harden existing host; no new user provisioning)
+- `--mode full-setup` (adds user/provisioning + hardening)
+- `--mode audit` (deep audit report)
+- `--mode dashboard` (runtime security dashboard)
+- `--mode verify` (non-mutating SSH, firewall, service, and Fail2Ban evidence report)
+
+Use `--dry-run` before any live host change. Dry-run mode does not require root,
+does not install packages, does not restart services, and does not write `/etc`;
+it writes a JSON execution plan plus a recovery playbook under the manager report
+directory. By default, dry-run CLI output uses
+`~/.local/state/ultra_ssh_manager`; live runs keep the root-owned `/var/lib` and
+`/var/log` defaults.
+
+```bash
+python3 scripts/ultra_ssh_manager.py --mode full-setup --port 2222 --user deploy --dry-run --no-audit
+```
+
+Design goals for this script:
+
+- mode-specific execution paths are explicit and logged
+- command execution is injected so unit tests can safely validate behavior
+- dry-run output documents planned commands, file writes, warnings, and recovery
+  steps before live execution
+- live hardening writes an apply plan and recovery playbook before mutating SSH,
+  firewall, kernel, or service state
+- SSH config changes are staged as a candidate file and validated with
+  `sshd -t -f` before replacing the active config when `sshd` is available
+- `--mode verify` writes a verification report without package installs, service
+  restarts, account changes, or firewall mutations
+- port-knocking and firewall flows are separated and ordered by explicit config
+- rescue user path is constrained in SSH policy
+- sensitive artifacts (state, credentials, reports, auth helpers) use strict file
+  permissions
+
+Local unit tests for the script are maintained under:
+
+- `scripts/tests/test_ultra_ssh_manager.py`
+
+Run them directly with:
+
+```bash
+python3 -m unittest scripts.tests.test_ultra_ssh_manager
+```
 
 ## Contribution Path
 

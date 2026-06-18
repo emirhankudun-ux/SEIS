@@ -16,6 +16,7 @@ final class SeisAppleNativeShellAppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct SeisAppleNativeShellApp: App {
     @StateObject private var demoShellState = SeisDemoNativeShellState()
+    @State private var activePanel: SeisAppleNativeShellPanel = .demo
     @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.lowMotionKey)
     private var lowMotion = SeisAppleShellSettingsContract.appleNativeShell.defaultLowMotion
     @AppStorage(SeisAppleShellSettingsContract.appleNativeShell.preferredFocusKey)
@@ -29,19 +30,27 @@ struct SeisAppleNativeShellApp: App {
 
     var body: some Scene {
         WindowGroup("SEIS Apple Native") {
-            SeisDemoNativeShellView(state: demoShellState)
-                .onOpenURL { url in
+            SeisAppleNativeShellZeroToDemoView(
+                demoShellState: demoShellState,
+                repositoryPath: repositoryRoot,
+                activePanel: $activePanel
+            )
+            .onOpenURL { url in
+                demoShellState.handleDeepLink(url)
+            }
+            .onAppear {
+                let args = CommandLine.arguments
+                if let index = args.firstIndex(of: "--open-demo-url"),
+                   index + 1 < args.count,
+                   let url = URL(string: args[index + 1]) {
                     demoShellState.handleDeepLink(url)
                 }
-                .onAppear {
-                    let args = CommandLine.arguments
-                    if let index = args.firstIndex(of: "--open-demo-url"),
-                       index + 1 < args.count,
-                       let url = URL(string: args[index + 1]) {
-                        demoShellState.handleDeepLink(url)
-                    }
-                }
+            }
         }
+
+        #if os(macOS)
+        .defaultSize(width: 1280, height: 860)
+        #endif
 
         #if os(macOS)
         .commands {
@@ -49,14 +58,57 @@ struct SeisAppleNativeShellApp: App {
                 Button("Open Demo Home") {
                     demoShellState.applyRoute("/")
                 }
+                .keyboardShortcut("1", modifiers: [.command])
+
+                Button("Open SEIS Website") {
+                    if let url = URL(string: "https://github.com/emirhankudun-ux/SEIS#readme") {
+                        NSWorkspace.shared.open(url)
+                    }
+                }
+                .keyboardShortcut("w", modifiers: [.command])
+
+                Button("Show Demo") {
+                    activePanel = .demo
+                }
+                .keyboardShortcut("2", modifiers: [.command])
+
+                Button("Show Platform") {
+                    activePanel = .applePlatform
+                }
+                .keyboardShortcut("3", modifiers: [.command])
 
                 Button("Open Demo") {
                     demoShellState.applyRoute("/demo")
                 }
+                .keyboardShortcut("4", modifiers: [.command])
 
                 Button("Open Sample Result") {
                     demoShellState.applyRoute("/results/demo-home")
                 }
+                .keyboardShortcut("5", modifiers: [.command])
+
+                Button("Run First Scenario") {
+                    if let firstScenario = demoShellState.contract.scenarios.first {
+                        activePanel = .demo
+                        demoShellState.startScenario(firstScenario.id)
+                    }
+                }
+                .keyboardShortcut("6", modifiers: [.command])
+
+                Button("Open Active Result") {
+                    if let activeRun = demoShellState.activeRun {
+                        activePanel = .demo
+                        demoShellState.applyRoute("/results/\(activeRun.id)")
+                    }
+                }
+                .keyboardShortcut("7", modifiers: [.command])
+                .disabled(demoShellState.activeRun == nil)
+
+                Button("Clear Recent Runs") {
+                    demoShellState.clearRuns()
+                }
+                .keyboardShortcut("8", modifiers: [.command])
+                .disabled(demoShellState.runs.isEmpty)
 
                 Divider()
 
@@ -83,6 +135,21 @@ struct SeisAppleNativeShellApp: App {
         Settings {
             AppleShellSettingsView()
         }
+        #endif
+    }
+
+    private var repositoryRoot: String {
+        #if os(macOS)
+        FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library")
+            .appendingPathComponent("Mobile Documents")
+            .appendingPathComponent("com~apple~CloudDocs")
+            .appendingPathComponent("Github")
+            .appendingPathComponent("SEIS")
+            .path
+        #else
+        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+            .first?.path ?? ""
         #endif
     }
 }

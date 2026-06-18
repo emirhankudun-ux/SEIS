@@ -1,4 +1,4 @@
-const cacheName = "seis-demo-web-v2";
+const cacheName = "seis-demo-web-v3";
 const coreAssets = [
   "/",
   "/index.html",

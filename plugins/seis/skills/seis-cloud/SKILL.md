@@ -25,6 +25,9 @@ Use this skill as the SEIS cloud and deployment lane. It keeps hosting, server, 
 - Provider-neutral readiness: `deploy/cloud-environment.json`, `deploy/provider-matrix.json`, `deploy/server-targets.json`, and generated cloud activation reports.
 - Public cloud: everyone-facing product, documentation, release, preview, and static hosting surfaces that do not require VPN.
 - Team VPN cloud: workplace/team-only cloud workspaces, GCP Compute + WireGuard, private Codex remote hosts, private VPS/container hosts, and approved peer access.
+- Self-hosted SEIS Cloud kit: `npm run cloud:self-hosted:kit -- --ssh-target root@HOST --peer-public-key CLIENT_PUBLIC_KEY` creates a local operator handoff bundle under `dist/` for SSH, WireGuard, Codex, and release roots.
+- Portable cloud-only SSH config: `npm run cloud:ssh-config:install` writes one visible remote alias, `SEIS-SSH`, through GitHub Codespaces only; validate with `npm run cloud:ssh:online:strict`.
+- SSH access profiles: individual users get normal cloud SSH without VPN, companies and teams require VPN cloud SSH, and developers use a closed cloud development system for sensitive work.
 - Server and runtime targets: Node static server, Docker static package, GCP Compute VM, SFTP/VPS, edge worker, and static hosting adapters.
 - Cloud provider helpers: Cloudflare, Vercel, Netlify, Render, Firebase, Supabase, Neon, Convex, GitHub Pages, and Google Cloud when authenticated and scoped.
 - Security and rollback: secret stores, scoped SSH, deployment tokens, rollback owner, release manifest, health routes, and no-secret reporting.
@@ -58,4 +61,6 @@ Prefer checks already wired into SEIS:
 - `npm run check:server-cloud-report`
 - `npm run check:server-target`
 - `npm run check:gcp-cloud-server`
+- `npm run check:ssh-vpn-cloud-server`
+- `npm run check:seis-ssh-access-model`
 - provider-specific CLI dry-runs only after authentication and project scope are explicit

@@ -17,6 +17,26 @@
       "apache-shared-hosting"
     ]
   },
+  "sshAccessModel": {
+    "source": "deploy/seis-ssh-access-model.json",
+    "visibleAlias": "SEIS-SSH",
+    "cloudOnly": true,
+    "individualUsers": {
+      "mode": "normal-cloud-ssh",
+      "vpnRequired": false,
+      "transport": "github-codespaces"
+    },
+    "companiesAndTeams": {
+      "mode": "vpn-cloud-ssh",
+      "vpnRequired": true,
+      "transport": "wireguard-or-equivalent-peer-authenticated-vpn"
+    },
+    "developers": {
+      "mode": "closed-cloud-development-system",
+      "vpnRequiredForSensitiveWork": true,
+      "publicInboundRequired": false
+    }
+  },
   "teamVpnCloud": {
     "audience": "workplaces-and-teams",
     "purpose": "private engineering, Codex remote host, handoff, and operational workspace",

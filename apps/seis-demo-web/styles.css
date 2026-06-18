@@ -174,6 +174,76 @@ nav {
   color: var(--muted);
 }
 
+.release-panel {
+  border-style: dashed;
+  background:
+    linear-gradient(140deg, rgba(19, 26, 42, 0.96), rgba(14, 18, 34, 0.9)),
+    radial-gradient(circle at 20% 15%, rgba(112, 192, 255, 0.18), transparent 32%);
+}
+
+.release-copy {
+  color: var(--muted);
+  margin: 0.45rem 0 0.85rem;
+}
+
+.release-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--text);
+  display: grid;
+  gap: 0.35rem;
+}
+
+.focus-mode-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(240px, 0.9fr);
+  gap: 1rem;
+  align-items: center;
+}
+
+.focus-mode-panel h2 {
+  margin: 0.25rem 0;
+}
+
+.focus-mode-status {
+  color: var(--muted);
+  margin: 0;
+}
+
+.focus-mode-controls {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.focus-mode-signals {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #d6deea;
+}
+
+.focus-mode-signals li {
+  margin-bottom: 0.3rem;
+}
+
+#focus-mode-toggle[aria-pressed="true"] {
+  border-color: rgba(74, 222, 128, 0.72);
+  background: linear-gradient(135deg, #11351f, #0b1b16);
+}
+
+body.is-focus-mode {
+  background:
+    radial-gradient(circle at 20% 5%, rgba(112, 192, 255, 0.1), transparent 22%),
+    #05080d;
+}
+
+body.is-focus-mode .release-panel {
+  display: none;
+}
+
+body.is-focus-mode #event-log {
+  max-height: 180px;
+}
+
 .scenario-grid {
   display: grid;
   gap: 0.8rem;
@@ -289,6 +359,10 @@ nav {
   .nav-link,
   .brand {
     width: 100%;
+  }
+
+  .focus-mode-panel {
+    grid-template-columns: 1fr;
   }
 }
 

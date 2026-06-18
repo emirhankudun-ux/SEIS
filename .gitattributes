@@ -8,6 +8,7 @@ apps/web/src/i18n/locales.js linguist-generated=true
 
 # Local imported/snapshot copies are useful for comparison but not source language signal.
 SE*S/** linguist-vendored=true
+SEIS*/** linguist-vendored=true
 
 # Keep the requested GitHub language split explicit without reclassifying source.
 polyglot/typescript/** linguist-language=TypeScript

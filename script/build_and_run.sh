@@ -6,6 +6,37 @@ APP_NAME="SeisAppleNativeShell"
 BUNDLE_ID="com.seis.apple-native-shell"
 MIN_SYSTEM_VERSION="13.0"
 
+if [[ -n "${SWIFT_BIN:-}" ]] && ! command -v "$SWIFT_BIN" >/dev/null 2>&1; then
+    echo "warning: Provided SWIFT_BIN is not executable: $SWIFT_BIN" >&2
+    SWIFT_BIN=""
+fi
+
+resolve_swift_binary() {
+  local candidate
+  for candidate in "${SWIFT_BIN:-}" /usr/bin/swift swift; do
+    [[ -z "$candidate" ]] && continue
+    if command -v "$candidate" >/dev/null 2>&1; then
+      if "$candidate" --version >/dev/null 2>&1; then
+        echo "$candidate"
+        return 0
+      fi
+    fi
+  done
+
+  return 1
+}
+
+SWIFT_BIN="$(resolve_swift_binary)"
+if [[ -z "$SWIFT_BIN" ]]; then
+  echo "error: Swift toolchain not available" >&2
+  echo "Set SWIFT_BIN env var or install a working Swift executable." >&2
+  exit 1
+fi
+
+swift() {
+  "$SWIFT_BIN" "$@"
+}
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKAGE_DIR="$ROOT_DIR/packages/seis_platform_swift"
 DIST_DIR="$ROOT_DIR/dist"

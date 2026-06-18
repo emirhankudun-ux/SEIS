@@ -55,7 +55,10 @@ Common checks:
 npm run check:seis-operating-identities
 npm run check:seis-ai-agent
 npm run check:ssh-vpn-cloud-server
+npm run check:ssh-hardening-contract
 npm run quality
 ```
 
-Codex may use additional focused checks when the affected files require them.
+SSH hardening behavior is tracked in
+`data/ssh-hardening-operation-contract.json`. Codex may use additional focused
+checks when the affected files require them.
