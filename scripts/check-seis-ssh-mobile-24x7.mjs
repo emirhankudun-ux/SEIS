@@ -154,7 +154,7 @@ function parseArgs(tokens) {
     if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "help" || key === "require-ready") {
+    if (key === "help" || key === "require-ready" || key === "skip-mobile-check" || key === "skip-mobile-ready") {
       parsed[key] = true;
       continue;
     }
