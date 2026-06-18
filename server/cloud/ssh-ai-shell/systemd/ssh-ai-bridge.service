@@ -1,0 +1,34 @@
+[Unit]
+Description=SSH-AI WebSocket Bridge
+After=network.target
+
+[Service]
+Type=simple
+User=aiuser
+Group=aiuser
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=-/etc/ssh-ai/ssh-ai.env
+WorkingDirectory=/opt/ssh-ai
+ExecStart=/opt/ssh-ai/venv/bin/python /opt/ssh-ai/websocket_bridge.py
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateUsers=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+RestrictAddressFamilies=AF_INET AF_INET6
+SystemCallFilter=@system-service
+SystemCallArchitectures=native
+StandardOutput=append:/var/log/ssh-ai/bridge.log
+StandardError=append:/var/log/ssh-ai/bridge.error.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "id": "seis-ssh-closed-runtime-contract",
+  "sourceModel": "deploy/seis-ssh-access-model.json",
+  "sourceRoadmap": "deploy/seis-ssh-cloud-roadmap.json",
+  "targetAlias": "SEIS-SSH",
+  "audience": "developers",
+  "runtimeType": "closed-cloud-development-system",
+  "transport": "cloud-isolated-workspace",
+  "vpnRequiredForSensitiveWork": true,
+  "publicInboundRequired": false,
+  "localFallbackAllowed": false,
+  "directPublicVpsDevelopmentDefaultAllowed": false,
+  "repoVisibility": "open-source-artifacts-only",
+  "privateRuntimeState": {
+    "allowed": true,
+    "storedInRepo": false,
+    "examples": [
+      "runtime environment variables",
+      "SSH private keys",
+      "WireGuard private keys",
+      "GitHub tokens",
+      "temporary build credentials",
+      "long-running agent session state"
+    ]
+  },
+  "requiredRemoteEvidence": [
+    "SEIS-SSH resolves through a cloud transport",
+    "/workspaces/SEIS exists on the remote",
+    "Codex CLI is available on the remote",
+    "remote user is not a local Mac account",
+    "no local Mac or LAN host is required for the SSH picker"
+  ],
+  "handoffManifestSpec": {
+    "artifactPolicy": "write-only-sanitized-status",
+    "requiredFields": [
+      "targetAlias",
+      "runtimeType",
+      "remoteRepoPath",
+      "remoteCodexVersion",
+      "lastValidatedCommand",
+      "workMode",
+      "nextActions",
+      "secretDisclosure"
+    ],
+    "secretDisclosureMustEqual": "none",
+    "forbiddenFields": [
+      "privateKey",
+      "token",
+      "password",
+      "wireguardPrivateKey",
+      "certificate"
+    ]
+  },
+  "promotionGates": [
+    {
+      "id": "online-cloud-codex-ready",
+      "command": "npm run cloud:ssh:online:strict",
+      "required": true
+    },
+    {
+      "id": "closed-runtime-contract-ready",
+      "command": "npm run check:seis-ssh-closed-runtime",
+      "required": true
+    },
+    {
+      "id": "roadmap-ready",
+      "command": "npm run check:seis-ssh-cloud-roadmap",
+      "required": true
+    },
+    {
+      "id": "access-model-ready",
+      "command": "npm run check:seis-ssh-access-model",
+      "required": true
+    }
+  ],
+  "driftSignals": [
+    "SEIS SSH picker exposes more than one SEIS target",
+    "SEIS-SSH stops resolving through a cloud transport",
+    "developer runtime depends on 127.0.0.1 or .local",
+    "team work is allowed without VPN controls",
+    "private runtime state appears in repo artifacts",
+    "remote Codex CLI is missing"
+  ],
+  "requiredControls": [
+    "single-visible-ssh-alias",
+    "cloud-only-transport",
+    "remote-codex-cli-present",
+    "remote-seis-repo-present",
+    "no-local-mac-dependency",
+    "no-lan-hostname-dependency",
+    "no-direct-public-vps-development-default",
+    "secrets-kept-out-of-repo",
+    "vpn-required-for-sensitive-team-developer-work",
+    "sanitized-handoff-manifest-only"
+  ],
+  "validationCommands": [
+    "npm run check:seis-ssh-closed-runtime",
+    "npm run check:seis-ssh-cloud-roadmap",
+    "npm run check:seis-ssh-access-model",
+    "npm run cloud:ssh:online:strict"
+  ]
+}

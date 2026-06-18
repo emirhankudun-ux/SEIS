@@ -125,7 +125,7 @@
     "install:seis-ai-agent": "node scripts/install-seis-ai-agent.mjs",
     "install:seis-repo-plugins": "node scripts/install-seis-ai-agent.mjs",
     "automation:publish-readiness": "node scripts/automation-publish-readiness.cjs",
-    "quality:governance": "npm run check:open-source-governance && npm run check:foundation && npm run check:seis-operating-identities && npm run check:workspace && npm run check:cloud-access-policy && npm run check:ssh-vpn-cloud-server && npm run check:seis-unified-github-visibility && npm run seis:check && npm run check:seis-platform-language-policy && npm run check:seis-platform-kernel && npm run check:seis-agi-system && npm run check:seis-active-mission-board && npm run check:seis-repo-marketplace && npm run check:seis-specialist-plugins -- --include-legacy-personal && npm run check:seis-ai-agent && npm run check:language-distribution && npm run check:fullstack-language-matrix && npm run check:seis-technology-stack",
+    "quality:governance": "npm run check:open-source-governance && npm run check:foundation && npm run check:seis-operating-identities && npm run check:workspace && npm run check:cloud-access-policy && npm run check:ssh-vpn-cloud-server && npm run check:seis-ssh-access-model && npm run check:seis-ssh-picker-compatibility && npm run check:seis-ssh-cloud-roadmap && npm run check:seis-ssh-closed-runtime && npm run check:seis-ssh-enterprise-benchmark && npm run check:seis-unified-github-visibility && npm run seis:check && npm run check:seis-platform-language-policy && npm run check:seis-platform-kernel && npm run check:seis-agi-system && npm run check:seis-active-mission-board && npm run check:seis-repo-marketplace && npm run check:seis-specialist-plugins -- --include-legacy-personal && npm run check:seis-ai-agent && npm run check:language-distribution && npm run check:fullstack-language-matrix && npm run check:seis-technology-stack",
     "quality": "npm run quality:governance",
     "check:seis-evolution-model": "node scripts/check-seis-evolution-model.mjs",
     "check:github-remote-configuration": "node scripts/check-github-remote-configuration.mjs",
@@ -135,7 +135,18 @@
     "seis:watch": "node packages/seis-ai/bin/seis-check.mjs --watch",
     "seis:agent": "node packages/seis-ai/bin/seis-agent.mjs",
     "seis:mcp": "node packages/seis-ai/bin/seis-mcp.mjs",
-    "seis:test": "npm test --prefix packages/seis-ai"
+    "seis:test": "npm test --prefix packages/seis-ai",
+    "check:seis-ssh-cloud-roadmap": "node scripts/check-seis-ssh-cloud-roadmap.mjs",
+    "check:seis-ssh-closed-runtime": "node scripts/check-seis-ssh-closed-runtime.mjs",
+    "check:seis-ssh-enterprise-benchmark": "node scripts/check-seis-ssh-enterprise-benchmark.mjs --json",
+    "cloud:ssh-config:install": "node scripts/install-seis-cloud-ssh-config.mjs",
+    "cloud:ssh:online": "node scripts/check-seis-cloud-ssh-online.mjs",
+    "cloud:ssh:online:strict": "node scripts/check-seis-cloud-ssh-online.mjs --require-ready",
+    "cloud:ssh:ensure-online": "node scripts/ensure-seis-ssh-online.mjs",
+    "cloud:ssh:direct-cloud:switch": "node scripts/switch-seis-ssh-direct-cloud.mjs",
+    "check:seis-ssh-access-model": "node scripts/check-seis-ssh-access-model.mjs",
+    "check:seis-ssh-picker-compatibility": "node scripts/check-seis-ssh-picker-compatibility.mjs",
+    "cloud:self-hosted:kit": "node scripts/create-self-hosted-seis-cloud-kit.mjs"
   },
   "engines": {
     "node": ">=18"

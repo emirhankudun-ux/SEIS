@@ -1,0 +1,120 @@
+{
+  "version": 1,
+  "id": "seis-ssh-access-model",
+  "defaultVisibleAlias": "SEIS-SSH",
+  "visibility": {
+    "activeAliases": ["SEIS-SSH"],
+    "forbiddenVisibleAliases": [
+      "SEIS-CLOUD",
+      "seis-cloud",
+      "seis-cloud-codespace",
+      "seis-cloud-vps",
+      "seis-cloud-root",
+      "seis-cloud-vpn",
+      "seis-local-mac",
+      "seis-lan-mac"
+    ],
+    "localMachineHostsAllowed": false,
+    "directVpsAliasesAllowedInCodexPicker": false
+  },
+  "profiles": [
+    {
+      "id": "individual-cloud",
+      "audience": "individual-users",
+      "label": "Individual Cloud SSH",
+      "transport": "github-codespaces",
+      "visibleAlias": "SEIS-SSH",
+      "vpnRequired": false,
+      "developmentSystem": "cloud-workspace",
+      "publicInboundRequired": false,
+      "requiredControls": [
+        "single-visible-ssh-alias",
+        "github-codespaces-transport",
+        "remote-seis-repo-present",
+        "remote-codex-cli-present"
+      ]
+    },
+    {
+      "id": "organization-vpn-cloud",
+      "audience": "companies-and-teams",
+      "label": "Organization VPN SSH",
+      "transport": "wireguard-vpn-cloud",
+      "visibleAlias": "SEIS-SSH",
+      "vpnRequired": true,
+      "developmentSystem": "private-cloud-workspace",
+      "publicInboundRequired": false,
+      "requiredControls": [
+        "approved-workplace-or-team-peers",
+        "wireguard-or-equivalent-peer-authenticated-vpn",
+        "per-peer-32-addresses",
+        "no-broad-vpn-source-ranges",
+        "no-public-team-workspace-surface"
+      ]
+    },
+    {
+      "id": "developer-closed-system",
+      "audience": "developers",
+      "label": "Closed Developer System",
+      "transport": "cloud-isolated-workspace",
+      "visibleAlias": "SEIS-SSH",
+      "vpnRequired": true,
+      "developmentSystem": "closed-cloud-development-system",
+      "publicInboundRequired": false,
+      "requiredControls": [
+        "no-local-mac-dependency",
+        "no-lan-hostname-dependency",
+        "no-direct-public-vps-development-default",
+        "remote-codex-cli-present",
+        "secrets-kept-out-of-repo",
+        "private-development-runtime-for-sensitive-work"
+      ]
+    }
+  ],
+  "longTermDevelopment": {
+    "cadence": "continuous",
+    "roadmapSource": "deploy/seis-ssh-cloud-roadmap.json",
+    "closedRuntimeContract": "deploy/seis-ssh-closed-runtime-contract.json",
+    "enterpriseBenchmarkSource": "deploy/seis-ssh-5-year-enterprise-benchmark.json",
+    "pickerCompatibilityCheck": "npm run check:seis-ssh-picker-compatibility",
+    "operatingModel": "single-cloud-entrypoint-with-profile-specific-controls",
+    "reviewCadence": "monthly-governance-review-plus-release-gate",
+    "principles": [
+      "Keep the user-facing SSH picker simple with one cloud-only alias.",
+      "Keep individual usage normal and low-friction through cloud SSH.",
+      "Require VPN controls for companies and teams.",
+      "Keep developer work inside a closed cloud development system for sensitive operations.",
+      "Do not reintroduce local Mac, LAN, or direct VPS aliases into the Codex SSH picker."
+    ],
+    "promotionGates": [
+      "SEIS-SSH resolves through GitHub Codespaces or an approved cloud-only broker.",
+      "Individual cloud SSH stays usable without a VPN.",
+      "Company and team workspaces require peer-authenticated VPN controls.",
+      "Developer sensitive work stays inside a closed cloud development system.",
+      "Remote Codex CLI and /workspaces/SEIS are verified before declaring the target online."
+    ],
+    "supportedSingleAliasTransports": [
+      {
+        "id": "codespace",
+        "provider": "github-codespaces",
+        "pickerCompatibility": "terminal-compatible-proxycommand",
+        "default": true
+      },
+      {
+        "id": "direct-cloud",
+        "provider": "direct-cloud-ssh",
+        "pickerCompatibility": "generic-ssh-picker-compatible",
+        "default": false
+      }
+    ],
+    "qualityCommands": [
+      "npm run cloud:ssh:online:strict",
+      "npm run cloud:ssh:ensure-online",
+      "npm run check:seis-ssh-access-model",
+      "npm run check:seis-ssh-picker-compatibility",
+      "npm run check:seis-ssh-enterprise-benchmark",
+      "npm run check:seis-ssh-cloud-roadmap",
+      "npm run check:seis-ssh-closed-runtime",
+      "npm run check:ssh-vpn-cloud-server"
+    ]
+  }
+}
