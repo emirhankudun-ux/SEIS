@@ -55,6 +55,18 @@ npm run cloud:ssh:mobile-direct:config:install
 
 The installer only writes a marked SEIS-managed block. It refuses to replace an unmanaged `Host SEIS-SSH` alias unless `--force` is passed explicitly.
 
+Probe the direct-cloud endpoint after profile/config installation:
+
+```bash
+npm run cloud:ssh:mobile-direct:probe
+```
+
+Use the strict probe before claiming ChatGPT mobile/Codex 24x7 readiness:
+
+```bash
+npm run cloud:ssh:mobile-direct:probe:strict
+```
+
 ## Remote bootstrap
 
 Run this once against the direct-cloud VM:
@@ -80,6 +92,7 @@ ssh SEIS-SSH
 seis
 git pull --ff-only origin main
 npm run cloud:ssh:mobile-24x7:report
+npm run cloud:ssh:mobile-direct:probe
 ```
 
 The session remains SSH-based. The 24x7 guarantee comes from the always-on VM and systemd-managed SSH service, not from the local computer.
@@ -111,6 +124,7 @@ The setup is ready only when all of these are true:
 - `systemctl status ssh` or `systemctl status sshd` is healthy.
 - `systemctl status seis-ssh-mobile-ready` is healthy.
 - `npm run cloud:ssh:mobile-24x7:report` no longer reports a Codespaces-only transport blocker.
+- `npm run cloud:ssh:mobile-direct:probe:strict` succeeds.
 
 ## Fallback policy
 

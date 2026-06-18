@@ -73,6 +73,10 @@ profile.sshConfig = [
 profile.commands = {
   generateProfile: "npm run cloud:ssh:mobile-direct:profile",
   strictProfile: "npm run cloud:ssh:mobile-direct:profile -- --strict",
+  planSshConfig: "npm run cloud:ssh:mobile-direct:config:plan",
+  installSshConfig: "npm run cloud:ssh:mobile-direct:config:install",
+  probeReadiness: "npm run cloud:ssh:mobile-direct:probe",
+  strictProbeReadiness: "npm run cloud:ssh:mobile-direct:probe:strict",
   bootstrapRemote:
     "scp scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh root@HOST:/tmp/seis-bootstrap.sh && ssh root@HOST 'bash /tmp/seis-bootstrap.sh'",
   connectMobile: `ssh ${profile.alias}`,
@@ -132,6 +136,14 @@ ${data.sshConfig}\`\`\`
 
 \`\`\`bash
 ${Object.values(data.commands).join("\n")}
+\`\`\`
+
+## Readiness probe
+
+The profile is only a configuration contract. Treat the setup as mobile-ready only after the strict probe succeeds:
+
+\`\`\`bash
+${data.commands.strictProbeReadiness}
 \`\`\`
 `;
 }
