@@ -22,7 +22,11 @@ GitHub publish preflight:
 npm run automation:publish-readiness
 ```
 
-JSON örnekleri:
+JSON örnekleri (`--json`):
+
+```bash
+npm run automation:publish-readiness -- --json
+```
 
 Başarılı:
 
@@ -83,7 +87,7 @@ Başarısız:
 }
 ```
 
-This publish check does not commit or push. It verifies the Git working tree, expected `UIXAppTTR` branch, UIX-Apps remote hint, GitHub CLI authentication, and local automation health before a server-side push is attempted.
+This publish check does not commit or push. It verifies the Git working tree, expected `main` branch, `origin` remote to the SEIS repository, GitHub CLI authentication, and local automation health before a server-side push is attempted.
 
 CI tek satır özeti:
 
@@ -94,7 +98,95 @@ npm run automation:publish-readiness -- --ci
 Özet çıktısı (örnek):
 
 ```text
+publish-readiness=blocked; blockers=git; next=switch to main before publish preflight
+```
+
+Not: GitHub kimlik doğrulama hattı hâlen fail olduğunda örnek çıktısı:
+
+```text
 publish-readiness=blocked; blockers=github-auth; next=gh auth refresh -h github.com -s codespace -s repo
+```
+
+Quality governance publish (CI):
+
+```bash
+npm run quality:governance:publish:ci
+```
+
+JSON örneği almak için:
+
+```bash
+npm run quality:governance:publish -- --json
+```
+
+Örnek başarılı çıktı:
+
+```json
+{
+  "ok": true,
+  "mode": "quality:governance:publish",
+  "generatedAt": "2026-06-18T11:44:12.101Z",
+  "nextStep": null,
+  "steps": [
+    { "id": "check:publish-gate-contract", "ok": true },
+    { "id": "check:open-source-governance", "ok": true },
+    { "id": "check:seis-master-prompt-report", "ok": true }
+  ],
+  "blockers": [],
+  "summary": {
+    "total": 16,
+    "failed": 0,
+    "continue": false
+  }
+}
+```
+
+Örnek başarısız çıktı (GitHub token eksik):
+
+```json
+{
+  "ok": false,
+  "mode": "quality:governance:publish",
+  "generatedAt": "2026-06-18T11:45:01.101Z",
+  "nextStep": "npm run check:publish-gate-contract",
+  "steps": [
+    { "id": "check:publish-gate-contract", "ok": true },
+    { "id": "check:open-source-governance", "ok": false, "reason": "command failed with exit 1" }
+  ],
+  "blockers": [
+    {
+      "area": "check:open-source-governance",
+      "reason": "gh auth status required: missing scope or login",
+      "status": 1,
+      "command": "npm run check:open-source-governance"
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "failed": 1,
+    "continue": false
+  }
+}
+```
+
+CI'de tek satır özet:
+
+```bash
+npm run quality:governance:publish:ci
+```
+
+Örnek:
+
+```text
+quality:governance:publish=blocked; blockers=check:open-source-governance; next=check:open-source-governance
+```
+
+Artifact:
+
+Komut, CI modunda otomatik olarak `reports/quality-governance-publish-report.json` üretir. İsterseniz farklı bir yol verebilirsiniz:
+
+```bash
+node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-publish.json --json
 ```
 
 Weekly full-efficiency report:
@@ -244,5 +336,5 @@ Use GitHub publishing only after the actual repository is connected and authenti
 
 ```bash
 gh auth login -h github.com
-git push origin UIXAppTTR
+git push origin main
 ```
