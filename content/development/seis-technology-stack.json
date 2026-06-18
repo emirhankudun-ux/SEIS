@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1677281,
+      "githubBytes": 1682245,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 139289,
+      "githubBytes": 139920,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 287432,
+      "githubBytes": 288516,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",
