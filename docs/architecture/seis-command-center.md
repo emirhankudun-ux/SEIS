@@ -18,6 +18,10 @@ The shell is organized around ten persistent modules: Dashboard, Goals, Reposito
 
 Command Center uses static local datasets in `script.js` for plugin families, automation workflows, security reports, AI systems, architecture signals, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
 
+## Operating Model
+
+The core operating model connects repositories, AI agents, MCP systems, plugin systems, documentation, architecture decisions, roadmap planning, goal tracking, automation workflows, cloud infrastructure, knowledge systems, and security systems. Each domain maps to a visible module, a lane, a status, and a concise signal. This keeps the product aligned with the mission: Command Center is the operating system of SEIS, not a loose dashboard of unrelated cards.
+
 ## API Design
 
 The current implementation is intentionally local-first. Browser APIs provide persistence through `localStorage`, while render functions act as the internal interface between data collections and UI sections. Future external APIs should preserve this boundary by returning typed command-center records instead of raw provider payloads.
@@ -29,6 +33,12 @@ The primary check is `npm run test:seis-command-center`, which validates require
 ## Roadmap
 
 The next evolution is to connect the local command model to repository health, plugin bundle status, CI signals, security reports, and AI-agent workflow evidence. These integrations should be added as small, reversible adapters that preserve the local-first shell and keep the command surface usable offline.
+
+## Platform Phases
+
+- Phase 1: HTML, CSS, and JavaScript static command shell with dependency-free local workflows.
+- Phase 2: TypeScript, React, and Next.js modules with typed API adapters and authenticated live data.
+- Phase 3: Native SwiftUI macOS and iOS applications once the workflow model is stable.
 
 ## Deployment Strategy
 

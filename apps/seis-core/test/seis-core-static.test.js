@@ -35,7 +35,29 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /automationWorkflows/);
   assert.match(script, /securityReports/);
   assert.match(script, /aiSystems/);
+  assert.match(script, /operatingDomains/);
+  assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);
+});
+
+test("SEIS Command Center covers the required ecosystem operating domains", async () => {
+  const script = await readFile(new URL("script.js", root), "utf8");
+  for (const domain of [
+    "Repositories",
+    "AI Agents",
+    "MCP Systems",
+    "Plugin Systems",
+    "Documentation",
+    "Architecture Decisions",
+    "Roadmap Planning",
+    "Goal Tracking",
+    "Automation Workflows",
+    "Cloud Infrastructure",
+    "Knowledge Systems",
+    "Security Systems"
+  ]) {
+    assert.match(script, new RegExp(`name: "${domain}"`));
+  }
 });
 
 test("SEIS Command Center design system preserves required tokens", async () => {
@@ -46,6 +68,8 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /plugin-card/);
   assert.match(css, /automation-card/);
   assert.match(css, /security-card/);
+  assert.match(css, /domain-card/);
+  assert.match(css, /phase-row/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });
