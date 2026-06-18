@@ -1,0 +1,43 @@
+name: SEIS System Gates
+
+on:
+  pull_request:
+    paths:
+      - "docs/governance/**"
+      - "docs/architecture/**"
+      - "docs/ai/**"
+      - "docs/decisions/**"
+      - "governance/**"
+      - "ai/**"
+      - "roadmap/**"
+      - "scripts/check-seis-enterprise-gates.mjs"
+  push:
+    branches: [main]
+    paths:
+      - "docs/governance/**"
+      - "docs/architecture/**"
+      - "docs/ai/**"
+      - "docs/decisions/**"
+      - "governance/**"
+      - "ai/**"
+      - "roadmap/**"
+      - "scripts/check-seis-enterprise-gates.mjs"
+
+permissions:
+  contents: read
+
+jobs:
+  enterprise-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Quality gate
+        run: npm run check:seis-enterprise-gates:quality
+
+      - name: Security gate
+        run: npm run check:seis-enterprise-gates:security
+
+      - name: AI gate
+        run: npm run check:seis-enterprise-gates:ai

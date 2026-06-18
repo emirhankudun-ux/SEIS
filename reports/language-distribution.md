@@ -1,21 +1,21 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 852
-- Counted bytes: 4766351
-- JavaScript: 1662036 bytes (34.87%)
+- Counted files: 854
+- Counted bytes: 4771234
+- JavaScript: 1662493 bytes (34.84%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3148106
+- Additional non-JavaScript bytes needed for strict target: 3145399
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1662036 | 34.87% | JavaScript |
-| TypeScript | 411787 | 8.64% | TypeScript |
+| JavaScript | 1662493 | 34.84% | JavaScript |
+| TypeScript | 411787 | 8.63% | TypeScript |
 | Objective-C | 8447 | 0.18% | Objective-C |
-| Other | 2684081 | 56.31% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2688507 | 56.35% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,38 +25,38 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 12.23% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 27.55% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 43.51% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Apple / Swift ecosystem | 12.22% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 27.53% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 43.47% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.5% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.62% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 3.17% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Go / Infrastructure | 3.22% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.17% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 8.85% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 8.84% | 0.0-3.0% | `above_target` | HTML, CSS |
 
-Unassigned counted languages: 3.4% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
+Unassigned counted languages: 3.43% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1662036 | 34.87% |
-| JSON | 787358 | 16.52% |
-| Swift | 573503 | 12.03% |
-| Python | 507033 | 10.64% |
-| TypeScript | 411787 | 8.64% |
+| JavaScript | 1662493 | 34.84% |
+| JSON | 787533 | 16.51% |
+| Swift | 573577 | 12.02% |
+| Python | 507033 | 10.63% |
+| TypeScript | 411787 | 8.63% |
 | CSS | 286215 | 6.0% |
-| HTML | 135686 | 2.85% |
+| HTML | 135686 | 2.84% |
 | Shell | 92418 | 1.94% |
-| Other | 40297 | 0.85% |
-| YAML | 34220 | 0.72% |
+| Other | 41786 | 0.88% |
+| YAML | 36908 | 0.77% |
 | Go | 16806 | 0.35% |
 | Java | 16392 | 0.34% |
 | Scheme | 15747 | 0.33% |
 | Perl | 13916 | 0.29% |
 | Ruby | 13677 | 0.29% |
 | Rust | 12286 | 0.26% |
-| C++ | 11206 | 0.24% |
+| C++ | 11206 | 0.23% |
 | PHP | 8768 | 0.18% |
 | SQL | 8752 | 0.18% |
 | Objective-C | 8447 | 0.18% |
@@ -79,8 +79,8 @@ Unassigned counted languages: 3.4% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake,
 | `packages/seis-ai/test/checks.test.mjs` | 25298 |
 | `scripts/create-seis-ecosystem-intake.cjs` | 25262 |
 | `packages/seis-ai/src/lib/checks.mjs` | 24228 |
+| `scripts/check-seis-specialist-plugins.mjs` | 22882 |
 | `mcp/seis-mcp-server.mjs` | 22803 |
-| `scripts/check-seis-specialist-plugins.mjs` | 22425 |
 
 ## Linguist Controls
 

@@ -423,14 +423,15 @@ import Testing
         contentsOf: root.appending(path: "data/seis-specialist-plugins-2026-06-12.json"),
         encoding: .utf8
     )
+    let repositoryPluginRoot = root.appending(path: "plugins").path
 
     #expect(readiness.lanes.count == 4)
     #expect(readiness.toolCount == 11)
     #expect(readiness.centralMcpTools == SeisSpecialistPluginLaneReadiness.expectedCentralMcpTools)
-    #expect(readiness.marketplacePath.contains(FileManager.default.homeDirectoryForCurrentUser.path))
+    #expect(readiness.marketplacePath == root.appending(path: ".agents/plugins/marketplace.json").path)
     #expect(readiness.marketplaceName == "seis-repo")
     #expect(laneIds == ["seis-cloud", "seis-code", "seis-design", "seis-data"])
-    #expect(readiness.lanes.allSatisfy { $0.localRoot.contains("/Github/SEIS/plugins/") })
+    #expect(readiness.lanes.allSatisfy { $0.localRoot.hasPrefix(repositoryPluginRoot + "/") })
     #expect(readiness.lanes.allSatisfy { $0.installedCacheRoot.contains(".codex/plugins/cache/seis-repo/seis-ai-agent") })
     #expect(readiness.lanes.contains { $0.id == "seis-cloud" && $0.tools.contains("seis_cloud_plan") })
     #expect(readiness.lanes.contains { $0.id == "seis-code" && $0.tools.contains("seis_code_plan") })

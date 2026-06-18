@@ -1,0 +1,23 @@
+{
+  "id": "seis-focus-mode-learning-contract",
+  "name": "SEIS Focus Mode",
+  "status": "active",
+  "feature": {
+    "telemetryEvent": "seis_demo_focus_mode_changed",
+    "purpose": "Reduce unnecessary context switching and tool inflation while preserving SEIS quality gates."
+  },
+  "agiOperatingBehavior": [
+    "Keep the active task bounded to the current SEIS objective.",
+    "Prefer the minimum effective toolset before expanding context.",
+    "Do not claim readiness without current validation evidence.",
+    "Protect user work, secrets, and repository integrity while focused.",
+    "Escalate only when risk, ambiguity, or hidden operational impact requires it."
+  ],
+  "qualityGate": "npm run check:seis-focus-mode",
+  "evidence": [
+    "docs/governance/seis-supreme-vision.md",
+    "apps/seis-demo-web/contracts/seis-demo-contract.json",
+    "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json",
+    "plugins/seis/skills/seis-focus-mode/SKILL.md"
+  ]
+}
