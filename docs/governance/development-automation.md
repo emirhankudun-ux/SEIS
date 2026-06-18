@@ -87,6 +87,31 @@ Başarısız:
 }
 ```
 
+Örnek başarısız `github-cli` durumu (komut bulunamadı):
+
+```json
+{
+  "ok": false,
+  "mode": "publish-readiness-fallback-gh-cli-missing",
+  "status": 1,
+  "reason": "GitHub CLI is missing in this environment.",
+  "nextStep": "brew install gh",
+  "suggestions": ["brew install gh", "gh auth login -h github.com"],
+  "gracefulFallback": {
+    "reasonCode": "github-cli-missing",
+    "recommendedActions": ["brew install gh", "gh auth login -h github.com"],
+    "command": "node scripts/check-github-publish-readiness.mjs --json"
+  },
+  "fallback": {
+    "exitCode": 1,
+    "error": {
+      "code": "ENOENT",
+      "name": "Error"
+    }
+  }
+}
+```
+
 This publish check does not commit or push. It verifies the Git working tree, expected `main` branch, `origin` remote to the SEIS repository, GitHub CLI authentication, and local automation health before a server-side push is attempted.
 
 CI tek satır özeti:
@@ -99,6 +124,12 @@ npm run automation:publish-readiness -- --ci
 
 ```text
 publish-readiness=blocked; blockers=git; next=switch to main before publish preflight
+```
+
+`--ci` fallback örneği (GH CLI yokken):
+
+```text
+publish-readiness=blocked; blockers=github-cli; next=brew install gh
 ```
 
 Not: GitHub kimlik doğrulama hattı hâlen fail olduğunda örnek çıktısı:

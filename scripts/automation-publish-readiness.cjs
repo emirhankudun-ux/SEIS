@@ -58,17 +58,35 @@ if (!readiness.ok) {
 }
 
 function buildGithubFallback(output, status, result) {
-  const suggestions = parseAuthSuggestions(output);
+  const isCliMissing = result?.error?.code === "ENOENT" || /(?:command not found|not found|no such file or directory)/i.test(output || "");
+  const suggestions = parseAuthSuggestions(output, isCliMissing);
+  const reason = isCliMissing
+    ? "GitHub CLI is missing in this environment."
+    : `Unable to parse github readiness output (exit=${status || -1}).`;
+  const nextStep = suggestions[0] || (isCliMissing
+    ? "Install GitHub CLI first, then run: gh auth login -h github.com"
+    : "npm run automation:publish-readiness -- --json");
+  const mode = isCliMissing ? "publish-readiness-fallback-gh-cli-missing" : "publish-readiness-fallback";
+
   return {
     ok: false,
-    mode: "publish-readiness-fallback",
+    mode,
     status,
-    reason: `Unable to parse github readiness output (exit=${status || -1}).`,
-    nextStep: suggestions[0] || "npm run automation:publish-readiness -- --json",
+    reason,
+    nextStep,
     suggestions,
+    gracefulFallback: {
+      reasonCode: isCliMissing ? "github-cli-missing" : "github-readiness-parse-failed",
+      recommendedActions: suggestions,
+      command: "node scripts/check-github-publish-readiness.mjs --json"
+    },
     fallback: {
       stderr: result.stderr,
       stdout: result.stdout,
+      exitCode: status,
+      error: result.error
+        ? { code: result.error.code, message: result.error.message, name: result.error.name }
+        : null
     },
   };
 }
@@ -171,6 +189,14 @@ function getGithubReportBlockers(githubReport) {
     }];
   }
 
+  if (githubReport.mode === "publish-readiness-fallback-gh-cli-missing") {
+    return [{
+      area: "github-cli",
+      reason: githubReport.reason || "GitHub CLI missing.",
+      nextStep: githubReport.nextStep || "brew install gh"
+    }];
+  }
+
   return [];
 }
 
@@ -190,13 +216,22 @@ function isAuthFailure(report) {
   return reason.includes("auth") && reason.includes("github");
 }
 
-function parseAuthSuggestions(output) {
+function parseAuthSuggestions(output, isCliMissing = false) {
   const details = String(output || "").toLowerCase();
   const suggestions = new Set();
 
   if (!details) {
-    suggestions.add("gh auth login -h github.com");
+    if (isCliMissing) {
+      suggestions.add("brew install gh");
+      suggestions.add("gh auth login -h github.com");
+    } else {
+      suggestions.add("gh auth login -h github.com");
+    }
     return Array.from(suggestions);
+  }
+
+  if (isCliMissing) {
+    suggestions.add("brew install gh");
   }
 
   if (details.includes("not logged into any accounts") || details.includes("not logged in") || details.includes("no users logged into") || details.includes("not authenticated")) {
@@ -260,7 +295,8 @@ function run(cwd, command, args) {
   return {
     status: output.status ?? 1,
     stdout: output.stdout || "",
-    stderr: output.stderr || ""
+    stderr: output.stderr || "",
+    error: output.error || null
   };
 }
 
