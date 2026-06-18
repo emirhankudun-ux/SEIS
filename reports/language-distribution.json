@@ -903,7 +903,7 @@
   "excludedBytesByReason": {
     "binary": 241272125,
     "documentation": 1275003,
-    "linguist-generated": 2974360,
+    "linguist-generated": 2976292,
     "linguist-vendored": 2851037
   },
   "requiredLinguistRules": [
