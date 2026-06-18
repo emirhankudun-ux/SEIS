@@ -244,6 +244,114 @@ const recommendedActions = [
   ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
 ];
 
+const operatingDomains = [
+  {
+    name: "Repositories",
+    lane: "Source control",
+    module: "Repositories",
+    status: "Ready",
+    signal: "Repository health, tests, docs, dependencies and release posture."
+  },
+  {
+    name: "AI Agents",
+    lane: "Intelligence",
+    module: "Agents",
+    status: "Ready",
+    signal: "Architect, Builder, Security, Research and Design responsibilities."
+  },
+  {
+    name: "MCP Systems",
+    lane: "Tooling",
+    module: "Plugins",
+    status: "Review",
+    signal: "Connector availability, capability routing and tool permission boundaries."
+  },
+  {
+    name: "Plugin Systems",
+    lane: "Extensions",
+    module: "Plugins",
+    status: "Ready",
+    signal: "Installed families, marketplace posture, updates and permission gates."
+  },
+  {
+    name: "Documentation",
+    lane: "Knowledge",
+    module: "Documentation",
+    status: "Ready",
+    signal: "Architecture docs, ADRs, roadmap records and source provenance."
+  },
+  {
+    name: "Architecture Decisions",
+    lane: "Governance",
+    module: "Architecture",
+    status: "Ready",
+    signal: "System maps, dependency boundaries, tradeoffs and technical debt."
+  },
+  {
+    name: "Roadmap Planning",
+    lane: "Strategy",
+    module: "Documentation",
+    status: "Active",
+    signal: "Phase 1 static shell, Phase 2 React/Next, Phase 3 SwiftUI native apps."
+  },
+  {
+    name: "Goal Tracking",
+    lane: "Execution",
+    module: "Goals",
+    status: "Ready",
+    signal: "Milestones, priorities, blockers, progress and smallest next actions."
+  },
+  {
+    name: "Automation Workflows",
+    lane: "Operations",
+    module: "Automation",
+    status: "Ready",
+    signal: "Quality gates, generated reports, scheduled checks and audit history."
+  },
+  {
+    name: "Cloud Infrastructure",
+    lane: "Platform",
+    module: "Security",
+    status: "Review",
+    signal: "SEIS-SSH readiness, cloud access policy and remote workspace safety."
+  },
+  {
+    name: "Knowledge Systems",
+    lane: "Memory",
+    module: "Knowledge",
+    status: "Active",
+    signal: "Reusable patterns, memory, decision history and research notes."
+  },
+  {
+    name: "Security Systems",
+    lane: "Trust",
+    module: "Security",
+    status: "Ready",
+    signal: "Risk reports, permission reviews, dependency scanning and audits."
+  }
+];
+
+const platformPhases = [
+  {
+    phase: "Phase 1",
+    stack: "HTML, CSS, JavaScript",
+    status: "Active",
+    outcome: "Dependency-free local operating shell with persistent workflows."
+  },
+  {
+    phase: "Phase 2",
+    stack: "TypeScript, React, Next.js",
+    status: "Planned",
+    outcome: "Routed modules, typed adapters, authenticated APIs and live ecosystem data."
+  },
+  {
+    phase: "Phase 3",
+    stack: "SwiftUI macOS and iOS",
+    status: "Planned",
+    outcome: "Native Apple-first command center with local workspace integration."
+  }
+];
+
 const architectureNodes = [
   ["Interface", "Static Phase 1 shell with dashboard, goals, repos, docs, agents and architecture modules."],
   ["State", "Local browser state with clear data boundaries and no secret storage."],
@@ -337,20 +445,35 @@ function renderViewHeader() {
 function renderDashboard() {
   const activeGoals = state.goals.filter((goal) => goal.status !== "Done");
   const readyRepos = repositories.filter((repo) => repo.health === "Ready").length;
-  const docsReady = documentation.filter((doc) => doc.status === "Ready").length;
+  const readyDomains = operatingDomains.filter((domain) => domain.status === "Ready").length;
   const reviewCount = state.goals.filter((goal) => goal.status === "Review" || goal.status === "Blocked").length +
-    repositories.filter((repo) => repo.health !== "Ready").length;
+    repositories.filter((repo) => repo.health !== "Ready").length +
+    operatingDomains.filter((domain) => domain.status === "Review").length;
 
   $("#metric-grid").innerHTML = [
     ["Active Goals", activeGoals.length, "tracked outcomes"],
     ["Repos Ready", `${readyRepos}/${repositories.length}`, "source surfaces"],
-    ["Docs Ready", `${docsReady}/${documentation.length}`, "knowledge areas"],
+    ["Domains Ready", `${readyDomains}/${operatingDomains.length}`, "operating map"],
     ["Reviews", reviewCount, "attention signals"]
   ].map(([label, value, detail]) => `
     <article class="metric-card">
       <span>${label}</span>
       <strong>${value}</strong>
       <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#operating-domain-grid").innerHTML = operatingDomains.map((domain) => `
+    <article class="domain-card">
+      <div class="card-topline">
+        <strong>${domain.name}</strong>
+        <span class="status-pill ${statusClass(domain.status)}">${domain.status}</span>
+      </div>
+      <p>${domain.signal}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${domain.lane}</span>
+        <span class="meta-chip">${domain.module}</span>
+      </div>
     </article>
   `).join("");
 
@@ -539,6 +662,17 @@ function renderArchitecture() {
     <article class="architecture-node">
       <h3>${title}</h3>
       <p>${detail}</p>
+    </article>
+  `).join("");
+
+  $("#phase-list").innerHTML = platformPhases.map((phase) => `
+    <article class="phase-row">
+      <div class="card-topline">
+        <strong>${phase.phase}</strong>
+        <span class="status-pill ${statusClass(phase.status === "Active" ? "Active" : "Review")}">${phase.status}</span>
+      </div>
+      <p>${phase.stack}</p>
+      <small>${phase.outcome}</small>
     </article>
   `).join("");
 }

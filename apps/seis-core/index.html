@@ -106,6 +106,13 @@
           <section class="dashboard-view view-panel is-active" data-panel="dashboard" aria-labelledby="dashboard-title">
             <h2 id="dashboard-title" class="sr-only">Dashboard</h2>
             <div class="metric-grid" id="metric-grid"></div>
+            <section class="panel operating-model-panel">
+              <div class="panel-header">
+                <h3>Ecosystem Operating Model</h3>
+                <span class="status-pill ready">Unified map</span>
+              </div>
+              <div class="domain-grid" id="operating-domain-grid"></div>
+            </section>
             <div class="dashboard-layout">
               <section class="panel">
                 <div class="panel-header">
@@ -262,7 +269,16 @@
               <h2 id="architecture-title">Architecture</h2>
               <p>Map system structure, dependencies, decisions, and technical debt.</p>
             </div>
-            <div class="architecture-map panel" id="architecture-map"></div>
+            <div class="architecture-layout">
+              <div class="architecture-map panel" id="architecture-map"></div>
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Platform Phases</h3>
+                  <span class="status-pill attention">Roadmap</span>
+                </div>
+                <div class="phase-list" id="phase-list"></div>
+              </section>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="knowledge" aria-labelledby="knowledge-title">
