@@ -78,7 +78,7 @@ try {
   fs.chmodSync(path.dirname(configPath), 0o700);
   fs.chmodSync(configPath, 0o600);
 } catch {
-  // chmod can fail on non-POSIX filesystems; the write still remains explicit and local.
+  // chmod can fail on non-POSIX systems; write remains explicit and local.
 }
 
 console.log(`Installed managed ${alias} SSH config block: ${configPath}`);
@@ -91,13 +91,45 @@ function expandHome(value) {
 }
 
 function upsertManagedBlock(existingText, managedBlock) {
-  if (!existingText.trim()) return managedBlock;
+  const cleanedText = removeAliasBlocks(existingText, alias);
+  if (!cleanedText.trim()) return managedBlock;
 
   const pattern = new RegExp(`${escapeRegExp(markerStart)}[\\s\\S]*?${escapeRegExp(markerEnd)}\\n?`, "m");
-  if (pattern.test(existingText)) return existingText.replace(pattern, managedBlock);
+  if (pattern.test(cleanedText)) return cleanedText.replace(pattern, managedBlock);
 
-  const separator = existingText.endsWith("\n") ? "" : "\n";
-  return `${existingText}${separator}\n${managedBlock}`;
+  const separator = cleanedText.endsWith("\n") ? "" : "\n";
+  return `${cleanedText}${separator}\n${managedBlock}`;
+}
+
+function removeAliasBlocks(existingText, targetAlias) {
+  const lines = existingText.split(/\r?\n/);
+  const output = [];
+  const hostRegex = /^\s*Host\s+(.+)$/;
+
+  for (let i = 0; i < lines.length;) {
+    const line = lines[i];
+    const match = line.match(hostRegex);
+    if (!match) {
+      output.push(line);
+      i += 1;
+      continue;
+    }
+
+    const aliasNames = match[1].trim().split(/\s+/);
+    if (!aliasNames.includes(targetAlias)) {
+      output.push(line);
+      i += 1;
+      continue;
+    }
+
+    i += 1;
+    while (i < lines.length) {
+      if (hostRegex.test(lines[i])) break;
+      i += 1;
+    }
+  }
+
+  return output.join("\n");
 }
 
 function unmanagedAliasExists(existingText, sshAlias) {
