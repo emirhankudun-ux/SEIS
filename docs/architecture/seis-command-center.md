@@ -20,6 +20,10 @@ Command Center uses static local datasets in `script.js` for plugin families, au
 
 Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
+## AI Orchestration Model
+
+The agent surface must support OpenAI, Claude, Gemini, Qwen, local models, and future AI systems through explicit orchestration lanes. Each lane records the primary system, collaborating agents, and the expected handoff artifact. Handoff audit records connect Architect, Builder, Security, Research, and Design work so multi-model collaboration remains inspectable instead of becoming hidden chat context.
+
 ## Operating Model
 
 The core operating model connects repositories, AI agents, MCP systems, plugin systems, documentation, architecture decisions, roadmap planning, goal tracking, automation workflows, cloud infrastructure, knowledge systems, and security systems. Each domain maps to a visible module, a lane, a status, and a concise signal. This keeps the product aligned with the mission: Command Center is the operating system of SEIS, not a loose dashboard of unrelated cards.

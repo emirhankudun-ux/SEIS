@@ -46,7 +46,7 @@ apps/seis-core/
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
-- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, and inspector sync.
+- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, handoff audit, and inspector sync.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
@@ -59,6 +59,8 @@ apps/seis-core/
 - Update goal status to Review or Done.
 - Filter repositories by health and inspect dependency risk.
 - Switch active AI agent mode and inspect capabilities, tasks, logs, and outputs.
+- Inspect multi-model orchestration across OpenAI, Claude, Gemini, Qwen, local models, and future AI systems.
+- Review handoff audit records between Architect, Builder, Security, Research, and Design lanes.
 - Inspect recent activity across builder, security, architecture, and automation lanes.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.

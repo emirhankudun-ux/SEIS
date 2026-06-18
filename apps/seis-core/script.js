@@ -179,6 +179,81 @@ const aiSystems = [
     name: "Local Models",
     role: "Offline experimentation and private draft workflows when resources allow.",
     mode: "Experimental"
+  },
+  {
+    name: "Future AI Systems",
+    role: "Provider-neutral adapter lane for models not yet wired into SEIS.",
+    mode: "Reserved"
+  }
+];
+
+const orchestrationLanes = [
+  {
+    lane: "Plan",
+    primary: "Claude",
+    collaborators: ["Architect Agent", "Research Agent"],
+    handoff: "Architecture hypothesis, risk framing, and ADR candidate."
+  },
+  {
+    lane: "Build",
+    primary: "OpenAI",
+    collaborators: ["Builder Agent", "Design Agent"],
+    handoff: "Implementation slice, tests, UI state, and generated report sync."
+  },
+  {
+    lane: "Validate",
+    primary: "Gemini",
+    collaborators: ["Research Agent", "Security Agent"],
+    handoff: "Compatibility review, provider evidence, and policy checks."
+  },
+  {
+    lane: "Counter-Review",
+    primary: "Qwen",
+    collaborators: ["Architect Agent", "Security Agent"],
+    handoff: "Alternative reasoning, failure-mode critique, and tradeoff notes."
+  },
+  {
+    lane: "Private Draft",
+    primary: "Local Models",
+    collaborators: ["Research Agent"],
+    handoff: "Offline experiments, private sketches, and no-secret draft outputs."
+  },
+  {
+    lane: "Future Adapter",
+    primary: "Future AI Systems",
+    collaborators: ["Architect Agent", "Builder Agent"],
+    handoff: "Provider-neutral capability contract before integration."
+  }
+];
+
+const handoffAudit = [
+  {
+    from: "Architect Agent",
+    to: "Builder Agent",
+    system: "Claude -> OpenAI",
+    evidence: "Plan becomes implementation only after module boundary and validation gate are explicit.",
+    status: "Ready"
+  },
+  {
+    from: "Builder Agent",
+    to: "Security Agent",
+    system: "OpenAI -> Gemini",
+    evidence: "Code changes pass local tests before permission, dependency and access checks.",
+    status: "Review"
+  },
+  {
+    from: "Security Agent",
+    to: "Research Agent",
+    system: "Gemini -> Qwen",
+    evidence: "Policy findings can request counter-review when provider assumptions are weak.",
+    status: "Active"
+  },
+  {
+    from: "Research Agent",
+    to: "Architect Agent",
+    system: "Qwen -> Claude",
+    evidence: "Validated assumptions feed back into ADRs, roadmap and architecture notes.",
+    status: "Ready"
   }
 ];
 
@@ -691,6 +766,30 @@ function renderAgents() {
         <span class="status-pill ${statusClass(system.mode === "Primary" ? "Ready" : "Review")}">${system.mode}</span>
       </div>
       <p>${system.role}</p>
+    </article>
+  `).join("");
+
+  $("#orchestration-lanes").innerHTML = orchestrationLanes.map((lane) => `
+    <article class="orchestration-card">
+      <div class="card-topline">
+        <h3>${lane.lane}</h3>
+        <span class="meta-chip">${lane.primary}</span>
+      </div>
+      <p>${lane.handoff}</p>
+      <div class="meta-row">
+        ${lane.collaborators.map((collaborator) => `<span class="meta-chip">${collaborator}</span>`).join("")}
+      </div>
+    </article>
+  `).join("");
+
+  $("#handoff-audit").innerHTML = handoffAudit.map((item) => `
+    <article class="handoff-row">
+      <div class="card-topline">
+        <strong>${item.from} -> ${item.to}</strong>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.system}</p>
+      <small>${item.evidence}</small>
     </article>
   `).join("");
 }

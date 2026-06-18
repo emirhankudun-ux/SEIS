@@ -390,6 +390,8 @@ h3 {
 .domain-card,
 .activity-row,
 .dependency-row,
+.orchestration-card,
+.handoff-row,
 .phase-row,
 .knowledge-card,
 .doc-row,
@@ -449,6 +451,8 @@ h3 {
 .doc-list,
 .activity-timeline,
 .dependency-overview,
+.orchestration-lanes,
+.handoff-audit,
 .mode-list,
 .next-actions,
 .roadmap-list {
@@ -461,6 +465,7 @@ h3 {
 .doc-row,
 .activity-row,
 .dependency-row,
+.handoff-row,
 .mode-button,
 .next-action {
   display: grid;
@@ -561,6 +566,7 @@ h3 {
 }
 
 .domain-card,
+.orchestration-card,
 .phase-row {
   display: grid;
   gap: 8px;
@@ -570,14 +576,33 @@ h3 {
 }
 
 .domain-card p,
+.orchestration-card p,
 .phase-row p,
-.phase-row small {
+.phase-row small,
+.handoff-row p,
+.handoff-row small {
   margin: 0;
   color: var(--muted);
 }
 
 .phase-row small {
   line-height: 1.35;
+}
+
+.orchestration-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.orchestration-card,
+.handoff-row {
+  box-shadow: none;
+}
+
+.handoff-row {
+  gap: 7px;
 }
 
 .goal-form {
@@ -857,6 +882,8 @@ select {
 .compact .domain-card,
 .compact .activity-row,
 .compact .dependency-row,
+.compact .orchestration-card,
+.compact .handoff-row,
 .compact .phase-row,
 .compact .knowledge-card,
 .compact .metric-card {
@@ -920,6 +947,7 @@ select {
   .architecture-strip,
   .architecture-map,
   .architecture-layout,
+  .orchestration-layout,
   .inspector {
     grid-template-columns: 1fr;
   }

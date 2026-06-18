@@ -40,6 +40,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /recentActivity/);
   assert.match(script, /dependencyRisk/);
   assert.match(script, /renderAgentDetail/);
+  assert.match(script, /orchestrationLanes/);
+  assert.match(script, /handoffAudit/);
   assert.match(script, /openCommandPalette/);
 });
 
@@ -49,6 +51,17 @@ test("SEIS Command Center agents expose operational evidence", async () => {
     assert.match(script, new RegExp(`${field}: \\[`));
   }
 });
+
+test("SEIS Command Center supports multi-model orchestration", async () => {
+  const script = await readFile(new URL("script.js", root), "utf8");
+  for (const model of ["OpenAI", "Claude", "Gemini", "Qwen", "Local Models", "Future AI Systems"]) {
+    assert.match(script, new RegExp(`name: "${model}"|primary: "${model}"`));
+  }
+  for (const lane of ["Plan", "Build", "Validate", "Counter-Review", "Private Draft", "Future Adapter"]) {
+    assert.match(script, new RegExp(`lane: "${lane}"`));
+  }
+});
+
 
 test("SEIS Command Center covers the required ecosystem operating domains", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
@@ -83,6 +96,8 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /activity-row/);
   assert.match(css, /dependency-row/);
   assert.match(css, /agent-detail/);
+  assert.match(css, /orchestration-card/);
+  assert.match(css, /handoff-row/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });

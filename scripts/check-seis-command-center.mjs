@@ -37,6 +37,8 @@ const requiredScriptSignals = [
   "recentActivity",
   "dependencyRisk",
   "renderAgentDetail",
+  "orchestrationLanes",
+  "handoffAudit",
   "renderCommandResults"
 ];
 
@@ -45,6 +47,7 @@ const requiredDocSections = [
   "Component Map",
   "Data Model",
   "Operating Model",
+  "AI Orchestration Model",
   "API Design",
   "Testing Strategy",
   "Roadmap",
@@ -66,6 +69,24 @@ const requiredOperatingDomains = [
   "Cloud Infrastructure",
   "Knowledge Systems",
   "Security Systems"
+];
+
+const requiredAiSystems = [
+  "OpenAI",
+  "Claude",
+  "Gemini",
+  "Qwen",
+  "Local Models",
+  "Future AI Systems"
+];
+
+const requiredOrchestrationLanes = [
+  "Plan",
+  "Build",
+  "Validate",
+  "Counter-Review",
+  "Private Draft",
+  "Future Adapter"
 ];
 
 function fail(message) {
@@ -117,6 +138,18 @@ for (const agentField of ["capabilities", "tasks", "logs", "outputs"]) {
   }
 }
 
+for (const system of requiredAiSystems) {
+  if (!script.includes(`name: "${system}"`) && !script.includes(`primary: "${system}"`)) {
+    fail(`missing AI system support: ${system}`);
+  }
+}
+
+for (const lane of requiredOrchestrationLanes) {
+  if (!script.includes(`lane: "${lane}"`)) {
+    fail(`missing orchestration lane: ${lane}`);
+  }
+}
+
 for (const selector of [
   ".plugin-card",
   ".automation-card",
@@ -126,7 +159,9 @@ for (const selector of [
   ".phase-row",
   ".activity-row",
   ".dependency-row",
-  ".agent-detail"
+  ".agent-detail",
+  ".orchestration-card",
+  ".handoff-row"
 ]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
