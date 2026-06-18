@@ -42,6 +42,7 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, active goals, repository health, architecture alerts.
+- Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage.
 - Documentation: index and coverage plan.
@@ -50,6 +51,7 @@ apps/seis-core/
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
 - Architecture and Knowledge: system map and knowledge registry surfaces.
+- Platform Phases: Phase 1 static app, Phase 2 TypeScript/React/Next.js, and Phase 3 SwiftUI macOS/iOS.
 
 ## MVP Specification
 
@@ -58,6 +60,7 @@ apps/seis-core/
 - Filter repositories by health.
 - Switch active AI agent mode.
 - Inspect plugin, automation, security, and AI system surfaces.
+- Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
 - Support desktop and mobile layouts.
@@ -79,6 +82,7 @@ apps/seis-core/
 - Security audit exports.
 - Knowledge provenance and source citations.
 - Ecosystem health automation.
+- Operating model adapters for live GitHub, MCP, plugin, cloud, and knowledge graph signals.
 
 ## Run
 

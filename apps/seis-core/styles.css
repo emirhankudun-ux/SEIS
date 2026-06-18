@@ -387,6 +387,8 @@ h3 {
 .security-card,
 .system-card,
 .action-card,
+.domain-card,
+.phase-row,
 .knowledge-card,
 .doc-row,
 .architecture-node {
@@ -527,6 +529,36 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 10px;
+}
+
+.operating-model-panel {
+  margin-bottom: 14px;
+}
+
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.domain-card,
+.phase-row {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.domain-card p,
+.phase-row p,
+.phase-row small {
+  margin: 0;
+  color: var(--muted);
+}
+
+.phase-row small {
+  line-height: 1.35;
 }
 
 .goal-form {
@@ -675,10 +707,22 @@ select {
   gap: 12px;
 }
 
+.architecture-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 14px;
+  align-items: start;
+}
+
 .architecture-node {
   min-height: 136px;
   padding: 14px;
   box-shadow: none;
+}
+
+.phase-list {
+  display: grid;
+  gap: 10px;
 }
 
 .architecture-node p,
@@ -688,6 +732,7 @@ select {
 .automation-card p,
 .security-card p,
 .system-card p,
+.domain-card p,
 .goal-card p,
 .repo-card p {
   color: var(--muted);
@@ -751,6 +796,8 @@ select {
 .compact .goal-card,
 .compact .repo-card,
 .compact .agent-card,
+.compact .domain-card,
+.compact .phase-row,
 .compact .knowledge-card,
 .compact .metric-card {
   padding: 12px;
@@ -812,6 +859,7 @@ select {
   .doc-layout,
   .architecture-strip,
   .architecture-map,
+  .architecture-layout,
   .inspector {
     grid-template-columns: 1fr;
   }
