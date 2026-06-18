@@ -233,6 +233,35 @@ npm run quality:governance:publish -- --json --auto-heal
 }
 ```
 
+Hızlı “sadece core” çalıştırma (tek handoff için):
+
+```bash
+npm run quality:governance:publish -- --preset core --dry-run --json
+npm run quality:governance:publish -- --preset core --compact
+```
+
+`core` seti, publish akışında temel güvenlik ve yayın öncesi kontrat kontrollerini tek geçişte çalıştırır:
+
+- check:publish-gate-contract  
+- check:open-source-governance  
+- check:seis-master-prompt-report  
+- check:seis-master-prompt  
+- check:seis-operating-identities  
+- check:workspace  
+- check:cloud-access-policy  
+- check:seis-ssh-access-model  
+- check:seis-ssh-picker-compatibility  
+- check:seis-ssh-enterprise-benchmark  
+- check:seis-platform-language-policy  
+- check:seis-platform-kernel  
+- seis:check
+
+Özel set çalıştırmak için:
+
+```bash
+npm run quality:governance:publish -- --checks check:publish-gate-contract,check:open-source-governance --json --dry-run
+```
+
 CI'de tek satır özet:
 
 ```bash

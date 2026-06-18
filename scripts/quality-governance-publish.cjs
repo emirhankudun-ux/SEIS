@@ -19,24 +19,44 @@ const summaryArtifactPath = resolve(
 );
 const writeSummaryArtifact = Boolean(args.summary || isCiMode);
 
-const checks = [
-  "check:publish-gate-contract",
-  "check:open-source-governance",
-  "check:seis-master-prompt-report",
-  "check:seis-master-prompt",
-  "check:seis-operating-identities",
-  "check:workspace",
-  "check:cloud-access-policy",
-  "check:seis-ssh-access-model",
-  "check:seis-ssh-picker-compatibility",
-  "check:seis-ssh-enterprise-benchmark",
-  "check:seis-platform-language-policy",
-  "check:seis-platform-kernel",
-  "seis:check",
-  "check:language-distribution",
-  "check:fullstack-language-matrix",
-  "check:seis-technology-stack",
-];
+const CHECK_PRESETS = {
+  core: [
+    "check:publish-gate-contract",
+    "check:open-source-governance",
+    "check:seis-master-prompt-report",
+    "check:seis-master-prompt",
+    "check:seis-operating-identities",
+    "check:workspace",
+    "check:cloud-access-policy",
+    "check:seis-ssh-access-model",
+    "check:seis-ssh-picker-compatibility",
+    "check:seis-ssh-enterprise-benchmark",
+    "check:seis-platform-language-policy",
+    "check:seis-platform-kernel",
+    "seis:check",
+  ],
+  publish: [
+    "check:publish-gate-contract",
+    "check:open-source-governance",
+    "check:seis-master-prompt-report",
+    "check:seis-master-prompt",
+    "check:seis-operating-identities",
+    "check:workspace",
+    "check:cloud-access-policy",
+    "check:seis-ssh-access-model",
+    "check:seis-ssh-picker-compatibility",
+    "check:seis-ssh-enterprise-benchmark",
+    "check:seis-platform-language-policy",
+    "check:seis-platform-kernel",
+    "seis:check",
+    "check:language-distribution",
+    "check:fullstack-language-matrix",
+    "check:seis-technology-stack",
+  ],
+};
+
+const allChecks = [...new Set([...CHECK_PRESETS.core, ...CHECK_PRESETS.publish])];
+const checks = buildChecks(args.checks, args.preset);
 
 const steps = [];
 let firstFailure = null;
@@ -215,6 +235,24 @@ function parseArgs(tokens) {
       idx += 1;
       continue;
     }
+    if (key === "preset") {
+      const value = tokens[idx + 1];
+      if (!value || value.startsWith("--")) {
+        throw new Error(`Missing value for --${key}`);
+      }
+      parsed.preset = value;
+      idx += 1;
+      continue;
+    }
+    if (key === "checks") {
+      const value = tokens[idx + 1];
+      if (!value || value.startsWith("--")) {
+        throw new Error(`Missing value for --${key}`);
+      }
+      parsed.checks = value;
+      idx += 1;
+      continue;
+    }
     if (key === "compact") {
       parsed.compact = true;
     }
@@ -224,6 +262,7 @@ function parseArgs(tokens) {
     console.log([
       "Usage: node scripts/quality-governance-publish.cjs [--json] [--ci] [--compact] [--continue] [--dry-run]",
       "       [--artifact <path>] [--write-artifact] [--auto-heal]",
+      "       [--preset core|publish] [--checks <check1,check2>]",
       "       [--summary] [--summary-artifact <path>]",
     ].join("\n"));
     process.exit(0);
@@ -297,6 +336,23 @@ function firstNonEmptyLine(text) {
     .split("\n")
     .map((line) => line.trim())
     .find((line) => line.length > 0);
+}
+
+function buildChecks(checksArg, presetArg) {
+  if (checksArg) {
+    const requested = checksArg.split(",").map((value) => value.trim()).filter(Boolean);
+    const unknown = requested.filter((entry) => !allChecks.includes(entry));
+    if (unknown.length > 0) {
+      throw new Error(`Unknown check(s) for quality publish: ${unknown.join(", ")}`);
+    }
+    return requested;
+  }
+
+  const preset = (presetArg || "publish").toLowerCase();
+  if (!CHECK_PRESETS[preset]) {
+    throw new Error(`Unknown preset for quality publish: ${preset}. Available: ${Object.keys(CHECK_PRESETS).join(", ")}`);
+  }
+  return CHECK_PRESETS[preset];
 }
 
 function deriveSummaryPath(pathValue) {
