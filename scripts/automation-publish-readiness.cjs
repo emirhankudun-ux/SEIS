@@ -4,20 +4,13 @@ const { spawnSync } = require("node:child_process");
 const { getPublishReadinessState } = require("./lib/publish-readiness-state.cjs");
 
 const args = parseArgs(process.argv.slice(2));
-const emitJson = true;
+const emitJson = Boolean(args.json);
 const root = process.cwd();
 
 const state = getPublishReadinessState(root);
 const githubResult = run(root, "node", ["scripts/check-github-publish-readiness.mjs", "--json"]);
-const githubReport = parseJson(githubResult.stdout) || {
-  ok: false,
-  mode: "github-readiness",
-  reason: "Unable to parse github readiness output",
-  fallback: {
-    status: githubResult.status,
-    stderr: githubResult.stderr || githubResult.stdout
-  }
-};
+const githubOutput = `${githubResult.stdout || ""}\n${githubResult.stderr || ""}`.trim();
+const githubReport = parseJson(githubOutput) || buildGithubFallback(githubOutput, githubResult.status, githubResult);
 
 const readiness = buildReadiness(state, githubReport);
 
@@ -34,24 +27,29 @@ if (args.writeArtifact && !args.artifact) {
 }
 
 if (args.ci) {
-  const summary = readiness.ok
-    ? "publish-readiness=ok"
-    : "publish-readiness=blocked";
+  const summary = readiness.ok ? "publish-readiness=ok" : "publish-readiness=blocked";
   const blocks = (readiness.blockers || []).map((entry) => entry.area).join(",") || "none";
   const next = readiness.nextAction ? readiness.nextAction : "rerun after resolving blockers";
   console.log(`${summary}; blockers=${blocks}; next=${next}`);
-} else if (args.compact || !emitJson) {
-  // backward-compatible compact text output
-  console.log(readiness.ok ? "Publish readiness: ok" : "Publish readiness: blocked");
-  if (!readiness.ok && readiness.blockers.length > 0) {
+}
+
+if (!args.ci && (args.compact || !emitJson)) {
+  const label = readiness.ok ? "Publish readiness: ready" : "Publish readiness: blocked";
+  console.log(label);
+  if (!readiness.ok) {
     for (const blocker of readiness.blockers) {
-      console.log(`- ${blocker.area}: ${blocker.reason}`);
+      console.log(`- blocker [${blocker.area}]: ${blocker.reason}`);
       if (blocker.nextStep) {
         console.log(`  next: ${blocker.nextStep}`);
       }
+      if (blocker.suggestions?.length > 0) {
+        console.log(`  suggestions: ${blocker.suggestions.join(", ")}`);
+      }
     }
   }
-} else {
+}
+
+if (emitJson) {
   console.log(JSON.stringify(readiness, null, 2));
 }
 
@@ -59,8 +57,25 @@ if (!readiness.ok) {
   process.exit(1);
 }
 
+function buildGithubFallback(output, status, result) {
+  const suggestions = parseAuthSuggestions(output);
+  return {
+    ok: false,
+    mode: "publish-readiness-fallback",
+    status,
+    reason: `Unable to parse github readiness output (exit=${status || -1}).`,
+    nextStep: suggestions[0] || "npm run automation:publish-readiness -- --json",
+    suggestions,
+    fallback: {
+      stderr: result.stderr,
+      stdout: result.stdout,
+    },
+  };
+}
+
 function buildReadiness(state, githubReport) {
   const blockers = [];
+
   if (!state.gitInside) {
     blockers.push({
       area: "git",
@@ -72,54 +87,42 @@ function buildReadiness(state, githubReport) {
       blockers.push({
         area: "git",
         reason: "git remote is not configured",
-        nextStep: "configure the intended origin remote"
+        nextStep: "configure the intended origin remote before publish preflight"
       });
-    }
-    if (!state.isExpectedBranch) {
+    } else if (!state.isExpectedBranch) {
       blockers.push({
         area: "git",
         reason: `active branch is not ${state.targetBranch}`,
-        nextStep: `switch to ${state.targetBranch}`
+        nextStep: `switch to ${state.targetBranch} before publish preflight`
       });
-    }
-    if (!state.worktreeClean) {
+    } else if (!state.worktreeClean) {
       blockers.push({
         area: "git",
         reason: "working tree must be clean before publish",
-        nextStep: "commit intended changes before push"
+        nextStep: "commit intended changes before push and keep unrelated edits out of the publish path"
       });
-    }
-    if (!state.hasUpstream) {
+    } else if (!state.hasUpstream) {
       blockers.push({
         area: "git",
-        reason: "branch is not tracking an upstream",
-        nextStep: `set upstream to ${state.expectedUpstream}`
+        reason: "branch is not tracking a remote upstream",
+        nextStep: `run git branch --set-upstream-to ${state.expectedUpstream} ${state.targetBranch}`
       });
-    }
-    if (!state.isExpectedUpstream) {
+    } else if (!state.isExpectedUpstream) {
       blockers.push({
         area: "git",
-        reason: `upstream mismatch: ${state.hasUpstream ? state.upstreamName : "missing"}`,
-        nextStep: `point branch to ${state.expectedUpstream}`
+        reason: `upstream mismatch: ${state.upstreamName || "missing"}`,
+        nextStep: `point branch to ${state.expectedUpstream} before publish preflight`
       });
-    }
-    if (state.behindCount > 0) {
-      const remoteBase = state.expectedUpstream ? state.expectedUpstream.split("/")[0] : "origin";
+    } else if (state.behindCount > 0) {
       blockers.push({
         area: "git",
-        reason: `local branch is behind ${remoteBase}`,
-        nextStep: `pull/rebase ${remoteBase}/${state.targetBranch}`
+        reason: `local branch is behind ${state.expectedUpstream}`,
+        nextStep: `integrate ${state.expectedUpstream} into ${state.targetBranch} before pushing`
       });
     }
   }
 
-  if (!githubReport.ok) {
-    blockers.push({
-      area: "github-auth",
-      reason: githubReport.reason || "GitHub auth is not ready",
-      nextStep: githubReport.nextStep || "run gh auth login -h github.com"
-    });
-  }
+  blockers.push(...getGithubReportBlockers(githubReport));
 
   return {
     ok: blockers.length === 0,
@@ -133,9 +136,87 @@ function buildReadiness(state, githubReport) {
       : blockers[0].nextStep,
     safety: [
       "This report does not include private keys or OAuth tokens.",
-      "Use short-run command-only checks when preparing from remote-only workspaces."
+      "Use command-only checks from remote-only workspaces."
     ]
   };
+}
+
+function getGithubReportBlockers(githubReport) {
+  if (!githubReport || githubReport.ok) {
+    return [];
+  }
+
+  if (isAuthFailure(githubReport)) {
+    return [{
+      area: "github-auth",
+      reason: githubReport.githubAuth?.reason || githubReport.reason,
+      nextStep: githubReport.githubAuth?.nextStep || githubReport.nextStep || "gh auth login -h github.com",
+      suggestions: githubReport.githubAuth?.suggestions || githubReport.suggestions || []
+    }];
+  }
+
+  if (githubReport.quality && githubReport.quality.ok === false) {
+    return [{
+      area: "github-quality",
+      reason: githubReport.quality.reason || githubReport.reason,
+      nextStep: githubReport.quality.nextStep || "npm run automation:publish-readiness"
+    }];
+  }
+
+  if (githubReport.mode === "publish-readiness-fallback") {
+    return [{
+      area: "github-check",
+      reason: githubReport.reason || "Publish readiness check failed.",
+      nextStep: githubReport.nextStep || "npm run automation:publish-readiness -- --json"
+    }];
+  }
+
+  return [];
+}
+
+function isAuthFailure(report) {
+  if (!report) return false;
+
+  if (report.githubAuth && report.githubAuth.ok === false) return true;
+  if (report.nextStep && /^gh auth /i.test(report.nextStep)) return true;
+  if (Array.isArray(report.suggestions) && report.suggestions.some((entry) => String(entry).toLowerCase().includes("gh auth"))) {
+    return true;
+  }
+  if (report.githubAuth && Array.isArray(report.githubAuth.suggestions) && report.githubAuth.suggestions.some((entry) => String(entry).toLowerCase().includes("gh auth"))) {
+    return true;
+  }
+
+  const reason = String(report.reason || "").toLowerCase();
+  return reason.includes("auth") && reason.includes("github");
+}
+
+function parseAuthSuggestions(output) {
+  const details = String(output || "").toLowerCase();
+  const suggestions = new Set();
+
+  if (!details) {
+    suggestions.add("gh auth login -h github.com");
+    return Array.from(suggestions);
+  }
+
+  if (details.includes("not logged into any accounts") || details.includes("not logged in") || details.includes("no users logged into") || details.includes("not authenticated")) {
+    suggestions.add("gh auth login -h github.com");
+  }
+
+  if (details.includes("must have admin rights") || details.includes("must have write") || details.includes("permission denied") || details.includes("forbidden")) {
+    suggestions.add("gh auth refresh -h github.com -s codespace -s repo");
+    suggestions.add("gh auth refresh -h github.com -s codespace");
+  }
+
+  if (details.includes("scope") && details.includes("missing") && details.includes("codespace")) {
+    suggestions.add("gh auth refresh -h github.com -s codespace");
+  }
+
+  if (suggestions.size === 0) {
+    suggestions.add("gh auth login -h github.com");
+  }
+
+  return Array.from(suggestions);
 }
 
 function parseArgs(tokens) {
@@ -144,10 +225,17 @@ function parseArgs(tokens) {
     const token = tokens[index];
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "ci" || key === "compact" || key === "write-artifact") {
+
+    if (key === "help") {
+      console.log(["Usage: npm run automation:publish-readiness [--json] [--ci] [--compact] [--artifact <path>] [--write-artifact]", "", "Examples:", "  npm run automation:publish-readiness -- --json", "  npm run automation:publish-readiness -- --ci", "  npm run automation:publish-readiness -- --compact", "  npm run automation:publish-readiness -- --artifact reports/publish.json"].join("\n"));
+      process.exit(0);
+    }
+
+    if (key === "json" || key === "ci" || key === "compact" || key === "write-artifact") {
       parsed[key] = true;
       continue;
     }
+
     if (key === "artifact") {
       const value = tokens[index + 1];
       if (!value || value.startsWith("--")) throw new Error(`Missing value for --${key}`);
@@ -155,12 +243,8 @@ function parseArgs(tokens) {
       index += 1;
       continue;
     }
-
-    if (key === "json") {
-      parsed[key] = true;
-      continue;
-    }
   }
+
   return parsed;
 }
 
@@ -171,7 +255,7 @@ function run(cwd, command, args) {
     env: {
       ...process.env,
       GIT_TERMINAL_PROMPT: "0"
-    }
+    },
   });
   return {
     status: output.status ?? 1,
