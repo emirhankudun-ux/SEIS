@@ -1,0 +1,68 @@
+{
+  "id": "seis-ssh-mobile-direct-cloud-contract",
+  "title": "SEIS SSH Mobile Direct Cloud Contract",
+  "status": "active",
+  "qualityGate": "npm run check:seis-ssh-mobile-direct-cloud",
+  "target": "chatgpt-mobile-codex-24x7-ssh",
+  "singleVisibleAlias": "SEIS-SSH",
+  "transport": {
+    "required": "direct-cloud-ssh",
+    "codespacesAllowedFor24x7": false,
+    "localMacAllowedFor24x7": false,
+    "alwaysOnPublicVmRequired": true,
+    "publicSshEndpointRequired": true
+  },
+  "bootstrap": {
+    "planCommand": "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+    "applyCommand": "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+    "publicKeyOnly": true,
+    "privateKeyReadableByBootstrap": false,
+    "runtimeUserDefault": "aiuser",
+    "rootUse": "bootstrap-only"
+  },
+  "configuration": {
+    "profileCommand": "npm run cloud:ssh:mobile-direct:profile",
+    "configPlanCommand": "npm run cloud:ssh:mobile-direct:config:plan",
+    "configInstallCommand": "npm run cloud:ssh:mobile-direct:config:install",
+    "managedConfigBlockRequired": true,
+    "unmanagedAliasOverwriteAllowedByDefault": false
+  },
+  "readiness": {
+    "probeCommand": "npm run cloud:ssh:mobile-direct:probe",
+    "strictProbeCommand": "npm run cloud:ssh:mobile-direct:probe:strict",
+    "doctorCommand": "npm run cloud:ssh:mobile-direct:doctor",
+    "strictDoctorCommand": "npm run cloud:ssh:mobile-direct:doctor:strict",
+    "requiredEvidence": [
+      "direct-cloud transport",
+      "TCP reachability",
+      "SSH key authentication",
+      "remote runtime online",
+      "SEIS repository present",
+      "strict doctor report written"
+    ]
+  },
+  "security": {
+    "secretsInGitAllowed": false,
+    "privateKeysInGitAllowed": false,
+    "apiKeysInGitAllowed": false,
+    "runtimeSecretLocation": "/etc/seis/ssh-ai.env",
+    "ignoredLocalReports": [
+      "reports/seis-ssh-mobile-24x7-readiness.json",
+      "reports/seis-ssh-mobile-24x7-readiness.md",
+      "reports/seis-ssh-mobile-direct-cloud-profile.json",
+      "reports/seis-ssh-mobile-direct-cloud-profile.md"
+    ]
+  },
+  "acceptanceLedger": "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+  "evidenceSurfaces": [
+    "docs/operations/seis-ssh-mobile-24x7.md",
+    "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
+    "scripts/check-seis-ssh-mobile-direct-cloud.mjs",
+    "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
+    "scripts/run-seis-ssh-mobile-direct-cloud-bootstrap.mjs",
+    "scripts/install-seis-ssh-mobile-direct-cloud-config.mjs",
+    "scripts/check-seis-ssh-mobile-24x7.mjs",
+    "scripts/create-seis-ssh-mobile-24x7-report.mjs",
+    "scripts/create-seis-ssh-mobile-direct-cloud-profile.mjs"
+  ]
+}

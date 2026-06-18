@@ -1,0 +1,185 @@
+{
+  "id": "seis-ssh-mobile-direct-cloud-acceptance-ledger",
+  "contract": "content/development/seis-ssh-mobile-direct-cloud-contract.json",
+  "status": "active",
+  "target": "chatgpt-mobile-codex-24x7-ssh",
+  "readyClaim": "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
+  "readyClaimAllowedOnlyWhen": [
+    "SEIS-SSH resolves to direct-cloud SSH without ProxyCommand",
+    "TCP reachability succeeds against the configured public SSH endpoint",
+    "SSH key authentication succeeds in BatchMode",
+    "remote runtime reports online",
+    "SEIS repository is present on the remote host",
+    "strict doctor writes a successful readiness handoff report"
+  ],
+  "blockedClaimWhen": [
+    "SEIS_SSH_HOST is missing",
+    "SEIS-SSH still uses Codespaces transport",
+    "SEIS-SSH points at localhost or the local Mac",
+    "public SSH endpoint is unreachable",
+    "identity file is missing",
+    "SSH authentication fails",
+    "remote runtime or SSH-AI daemon is offline",
+    "strict doctor exits non-zero"
+  ],
+  "evidenceMap": [
+    {
+      "id": "profile-contract",
+      "command": "npm run cloud:ssh:mobile-direct:profile",
+      "proves": "local direct-cloud profile inputs are present",
+      "artifact": "reports/seis-ssh-mobile-direct-cloud-profile.json",
+      "claimScope": "configuration-only"
+    },
+    {
+      "id": "bootstrap-dry-run",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+      "proves": "public-key-only bootstrap command is well formed",
+      "artifact": "stdout-json",
+      "claimScope": "bootstrap-plan-only"
+    },
+    {
+      "id": "bootstrap-apply",
+      "command": "npm run cloud:ssh:mobile-direct:bootstrap:apply",
+      "proves": "remote VM was bootstrapped with the selected public key and runtime user",
+      "artifact": "remote-systemd-state",
+      "claimScope": "remote-bootstrap"
+    },
+    {
+      "id": "ssh-config-plan",
+      "command": "npm run cloud:ssh:mobile-direct:config:plan",
+      "proves": "managed SEIS-SSH block can be rendered without writing local SSH config",
+      "artifact": "stdout-managed-block",
+      "claimScope": "config-plan-only"
+    },
+    {
+      "id": "ssh-config-install",
+      "command": "npm run cloud:ssh:mobile-direct:config:install",
+      "proves": "local SEIS-SSH managed block is installed",
+      "artifact": "~/.ssh/config",
+      "claimScope": "local-client-config"
+    },
+    {
+      "id": "readiness-probe",
+      "command": "npm run cloud:ssh:mobile-direct:probe:strict",
+      "proves": "direct-cloud transport, TCP reachability, SSH auth, and remote runtime readiness",
+      "artifact": "stdout-json",
+      "claimScope": "runtime-readiness"
+    },
+    {
+      "id": "handoff-doctor",
+      "command": "npm run cloud:ssh:mobile-direct:doctor:strict",
+      "proves": "strict readiness report was written and passed",
+      "artifact": "reports/seis-ssh-mobile-24x7-readiness.json",
+      "claimScope": "mobile-24x7-ready"
+    },
+    {
+      "id": "contract-guard",
+      "command": "npm run check:seis-ssh-mobile-direct-cloud",
+      "proves": "repo contract, scripts, docs, ignore rules, and safety invariants are wired",
+      "artifact": "ci-log",
+      "claimScope": "governance-contract"
+    }
+  ],
+  "nonEvidence": [
+    "A generated profile alone does not prove mobile 24x7 readiness.",
+    "A dry-run bootstrap plan alone does not prove remote bootstrap.",
+    "A green governance check alone does not prove the cloud VM is reachable.",
+    "A Codespaces SSH alias does not prove 24x7 mobile readiness."
+  ],
+  "decisionMatrix": [
+    {
+      "state": "missing-host",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:profile",
+      "status": "blocked",
+      "allowedClaim": "configuration is incomplete",
+      "forbiddenClaim": "SEIS-SSH is mobile 24x7 ready",
+      "nextCommand": "export SEIS_SSH_HOST=<public-ip-or-dns>"
+    },
+    {
+      "state": "codespaces-transport",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:probe",
+      "status": "blocked",
+      "allowedClaim": "terminal fallback may work, but it is not mobile 24x7",
+      "forbiddenClaim": "Codespaces is 24x7 direct-cloud SSH",
+      "nextCommand": "npm run cloud:ssh:mobile-direct:config:plan"
+    },
+    {
+      "state": "bootstrap-planned",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:bootstrap:plan",
+      "status": "planned",
+      "allowedClaim": "bootstrap command is ready for review",
+      "forbiddenClaim": "remote VM has been bootstrapped",
+      "nextCommand": "npm run cloud:ssh:mobile-direct:bootstrap:apply"
+    },
+    {
+      "state": "config-installed",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:config:install",
+      "status": "configured",
+      "allowedClaim": "local SSH client has a managed SEIS-SSH block",
+      "forbiddenClaim": "remote runtime is online",
+      "nextCommand": "npm run cloud:ssh:mobile-direct:probe:strict"
+    },
+    {
+      "state": "strict-probe-passed",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:probe:strict",
+      "status": "runtime-ready",
+      "allowedClaim": "runtime readiness evidence passed",
+      "forbiddenClaim": "handoff report has been written",
+      "nextCommand": "npm run cloud:ssh:mobile-direct:doctor:strict"
+    },
+    {
+      "state": "strict-doctor-passed",
+      "detectedBy": "npm run cloud:ssh:mobile-direct:doctor:strict",
+      "status": "mobile-24x7-ready",
+      "allowedClaim": "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready",
+      "forbiddenClaim": "none",
+      "nextCommand": "ssh SEIS-SSH"
+    }
+  ],
+  "remediationOrder": [
+    "Set SEIS_SSH_HOST to the always-on public VM endpoint.",
+    "Run bootstrap:plan and inspect the public key fingerprint before apply.",
+    "Run bootstrap:apply only when root SSH access to the VM is confirmed.",
+    "Install the managed SEIS-SSH config block.",
+    "Run the strict probe to prove transport, TCP, SSH auth, and runtime readiness.",
+    "Run the strict doctor to write the final mobile handoff report."
+  ],
+  "mobileHandoffChecklist": [
+    {
+      "id": "device-independent-entrypoint",
+      "requirement": "ChatGPT mobile/Codex uses the single SEIS-SSH alias and does not depend on the local Mac.",
+      "evidence": "ssh -G SEIS-SSH shows direct-cloud transport without ProxyCommand.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "always-on-cloud-endpoint",
+      "requirement": "The SSH endpoint is an always-on public VM or DNS name.",
+      "evidence": "npm run cloud:ssh:mobile-direct:probe:strict passes TCP reachability and SSH auth.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "remote-runtime-ready",
+      "requirement": "Remote runtime can serve SEIS work after mobile reconnection.",
+      "evidence": "strict probe reports remote runtime online and SEIS repository present.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "handoff-report-written",
+      "requirement": "A reusable readiness report exists for future device migration.",
+      "evidence": "npm run cloud:ssh:mobile-direct:doctor:strict writes reports/seis-ssh-mobile-24x7-readiness.json.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "secret-boundary-preserved",
+      "requirement": "Private keys, API keys, tokens, and runtime secrets remain outside git.",
+      "evidence": "runtime secrets stay in /etc/seis/ssh-ai.env and local readiness reports remain ignored.",
+      "blockingIfMissing": true
+    },
+    {
+      "id": "new-device-replayable",
+      "requirement": "A new computer can recreate the same mobile SSH entrypoint without copying private runtime state from the old Mac.",
+      "evidence": "bootstrap:plan, config:plan, probe:strict, and doctor:strict commands are documented in the runbook.",
+      "blockingIfMissing": true
+    }
+  ]
+}

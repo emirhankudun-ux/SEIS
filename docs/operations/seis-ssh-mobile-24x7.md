@@ -15,6 +15,10 @@ flowchart LR
 
 ## Non-negotiable contract
 
+The machine-readable acceptance contract lives at `content/development/seis-ssh-mobile-direct-cloud-contract.json` and is enforced by `npm run check:seis-ssh-mobile-direct-cloud`.
+
+The acceptance ledger at `content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json` defines which command proves each readiness claim. A green governance check alone is not evidence that the cloud VM is reachable.
+
 - Use direct SSH to an always-on cloud VM with a public IP address or DNS name.
 - Do not use the local Mac as the 24x7 transport.
 - Do not treat GitHub Codespaces as the 24x7 transport; Codespaces can sleep.
@@ -79,6 +83,25 @@ Use the strict doctor in release or mobile-device handoff flows:
 npm run cloud:ssh:mobile-direct:doctor:strict
 ```
 
+## Decision matrix
+
+- Missing `SEIS_SSH_HOST`: blocked. Set the always-on public VM endpoint before claiming readiness.
+- Codespaces transport: blocked for 24x7. Use direct-cloud config before mobile handoff.
+- Bootstrap plan passed: planned only. It does not prove the VM was changed.
+- Config install passed: local client configured only. It does not prove remote runtime readiness.
+- Strict probe passed: runtime evidence passed. Run strict doctor to write the handoff report.
+- Strict doctor passed: mobile 24x7 ready claim is allowed.
+
+## Mobile handoff checklist
+
+- Confirm `SEIS-SSH` is the only user-facing alias and resolves to direct-cloud SSH without `ProxyCommand`.
+- Confirm the always-on public VM endpoint is reachable from the network used by ChatGPT mobile/Codex.
+- Confirm SSH key authentication succeeds in batch mode.
+- Confirm the remote runtime is online and the SEIS repository is present.
+- Confirm `npm run cloud:ssh:mobile-direct:doctor:strict` writes the final readiness report.
+- Confirm private keys, API keys, tokens, and runtime secrets remain outside git.
+- Confirm a new computer can replay bootstrap/config/probe/doctor commands without copying private runtime state from the old Mac.
+
 ## Remote bootstrap
 
 Preview the direct-cloud VM bootstrap command from the local repo:
@@ -141,6 +164,8 @@ The setup is ready only when all of these are true:
 - `npm run cloud:ssh:mobile-24x7:report` no longer reports a Codespaces-only transport blocker.
 - `npm run cloud:ssh:mobile-direct:probe:strict` succeeds.
 - `npm run cloud:ssh:mobile-direct:doctor:strict` succeeds and writes the handoff report.
+- `npm run check:seis-ssh-mobile-direct-cloud` passes against the contract.
+- The acceptance ledger maps every ready claim to a concrete command and artifact.
 
 ## Fallback policy
 

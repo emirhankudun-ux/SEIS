@@ -28,6 +28,7 @@
     "docs/governance/seis-master-prompt.md",
     "docs/governance/seis-supreme-vision.md",
     "docs/architecture/seis-command-center.md",
+    "content/development/seis-ssh-mobile-direct-cloud-contract.json",
     "data/seis-operational-goal-tracker.json"
   ]
 }

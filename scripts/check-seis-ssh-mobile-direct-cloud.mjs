@@ -7,6 +7,8 @@ const root = process.cwd();
 const failures = [];
 
 const files = {
+  contract: "content/development/seis-ssh-mobile-direct-cloud-contract.json",
+  ledger: "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json",
   packageJson: "package.json",
   runbook: "docs/operations/seis-ssh-mobile-24x7.md",
   bootstrapShell: "scripts/bootstrap-seis-ssh-mobile-direct-cloud.sh",
@@ -21,6 +23,8 @@ const files = {
 for (const file of Object.values(files)) read(file);
 
 const packageJson = readJson(files.packageJson);
+const contract = readJson(files.contract);
+const ledger = readJson(files.ledger);
 const scripts = packageJson?.scripts || {};
 
 const requiredScripts = {
@@ -45,8 +49,71 @@ ensure(
   "quality:governance must include check:seis-ssh-mobile-direct-cloud"
 );
 
+if (contract) {
+  ensure(contract.id === "seis-ssh-mobile-direct-cloud-contract", "direct-cloud contract id must be stable");
+  ensure(contract.status === "active", "direct-cloud contract must be active");
+  ensure(contract.qualityGate === "npm run check:seis-ssh-mobile-direct-cloud", "direct-cloud contract must expose qualityGate");
+  ensure(contract.singleVisibleAlias === "SEIS-SSH", "direct-cloud contract must preserve the single SEIS-SSH alias");
+  ensure(contract.transport?.required === "direct-cloud-ssh", "direct-cloud contract must require direct-cloud-ssh transport");
+  ensure(contract.transport?.codespacesAllowedFor24x7 === false, "direct-cloud contract must reject Codespaces for 24x7");
+  ensure(contract.transport?.localMacAllowedFor24x7 === false, "direct-cloud contract must reject local Mac for 24x7");
+  ensure(contract.bootstrap?.publicKeyOnly === true, "direct-cloud contract must require public-key-only bootstrap input");
+  ensure(contract.bootstrap?.privateKeyReadableByBootstrap === false, "direct-cloud contract must reject private-key bootstrap reads");
+  ensure(contract.configuration?.unmanagedAliasOverwriteAllowedByDefault === false, "direct-cloud contract must reject default unmanaged alias overwrites");
+  ensure(contract.security?.secretsInGitAllowed === false, "direct-cloud contract must reject secrets in git");
+  ensure(contract.security?.privateKeysInGitAllowed === false, "direct-cloud contract must reject private keys in git");
+  ensure(contract.security?.apiKeysInGitAllowed === false, "direct-cloud contract must reject API keys in git");
+  ensure(Array.isArray(contract.readiness?.requiredEvidence) && contract.readiness.requiredEvidence.length >= 5, "direct-cloud contract must define readiness evidence");
+  ensure(Array.isArray(contract.evidenceSurfaces) && contract.evidenceSurfaces.includes(files.readinessProbe), "direct-cloud contract must cite readiness probe");
+  ensure(contract.acceptanceLedger === files.ledger, "direct-cloud contract must link acceptance ledger");
+  ensure(Array.isArray(contract.evidenceSurfaces) && contract.evidenceSurfaces.includes(files.ledger), "direct-cloud contract must cite acceptance ledger");
+}
+
+if (ledger) {
+  ensure(ledger.id === "seis-ssh-mobile-direct-cloud-acceptance-ledger", "acceptance ledger id must be stable");
+  ensure(ledger.contract === files.contract, "acceptance ledger must point at the direct-cloud contract");
+  ensure(ledger.status === "active", "acceptance ledger must be active");
+  ensure(ledger.readyClaim === "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready", "acceptance ledger must define ready claim");
+  ensure(Array.isArray(ledger.readyClaimAllowedOnlyWhen) && ledger.readyClaimAllowedOnlyWhen.length >= 6, "acceptance ledger must define ready conditions");
+  ensure(Array.isArray(ledger.blockedClaimWhen) && ledger.blockedClaimWhen.length >= 6, "acceptance ledger must define blocked conditions");
+  ensure(Array.isArray(ledger.nonEvidence) && ledger.nonEvidence.some((item) => item.includes("green governance check")), "acceptance ledger must document non-evidence");
+  ensure(Array.isArray(ledger.decisionMatrix) && ledger.decisionMatrix.length >= 6, "acceptance ledger must define decision matrix");
+  ensure(Array.isArray(ledger.remediationOrder) && ledger.remediationOrder.length >= 6, "acceptance ledger must define remediation order");
+  ensure(Array.isArray(ledger.mobileHandoffChecklist) && ledger.mobileHandoffChecklist.length >= 6, "acceptance ledger must define mobile handoff checklist");
+  const evidenceIds = new Set((ledger.evidenceMap || []).map((entry) => entry.id));
+  for (const id of ["profile-contract", "bootstrap-dry-run", "bootstrap-apply", "ssh-config-install", "readiness-probe", "handoff-doctor", "contract-guard"]) {
+    ensure(evidenceIds.has(id), `acceptance ledger must include evidence id ${id}`);
+  }
+  const matrixStates = new Set(ledger.decisionMatrix.map((entry) => entry.state));
+  for (const state of ["missing-host", "codespaces-transport", "bootstrap-planned", "config-installed", "strict-probe-passed", "strict-doctor-passed"]) {
+    ensure(matrixStates.has(state), `acceptance ledger decision matrix must include state ${state}`);
+  }
+  const handoffIds = new Set(ledger.mobileHandoffChecklist.map((entry) => entry.id));
+  for (const id of ["device-independent-entrypoint", "always-on-cloud-endpoint", "remote-runtime-ready", "handoff-report-written", "secret-boundary-preserved", "new-device-replayable"]) {
+    ensure(handoffIds.has(id), `acceptance ledger mobile handoff checklist must include ${id}`);
+  }
+}
+
 for (const [file, token] of [
+  [files.contract, "seis-ssh-mobile-direct-cloud-contract"],
+  [files.contract, "seis-ssh-mobile-direct-cloud-acceptance-ledger.json"],
+  [files.contract, "npm run cloud:ssh:mobile-direct:bootstrap:plan"],
+  [files.contract, "npm run cloud:ssh:mobile-direct:doctor:strict"],
+  [files.contract, "direct-cloud transport"],
+  [files.contract, "secretsInGitAllowed"],
+  [files.ledger, "SEIS-SSH is ChatGPT mobile/Codex 24x7 ready"],
+  [files.ledger, "npm run cloud:ssh:mobile-direct:doctor:strict"],
+  [files.ledger, "A green governance check alone does not prove the cloud VM is reachable."],
+  [files.ledger, "strict-doctor-passed"],
+  [files.ledger, "Run the strict doctor to write the final mobile handoff report."],
+  [files.ledger, "device-independent-entrypoint"],
+  [files.ledger, "new-device-replayable"],
+  [files.ledger, "Private keys, API keys, tokens, and runtime secrets remain outside git."],
   [files.runbook, "Use direct SSH to an always-on cloud VM"],
+  [files.runbook, "content/development/seis-ssh-mobile-direct-cloud-contract.json"],
+  [files.runbook, "content/development/seis-ssh-mobile-direct-cloud-acceptance-ledger.json"],
+  [files.runbook, "Decision matrix"],
+  [files.runbook, "Mobile handoff checklist"],
   [files.runbook, "npm run cloud:ssh:mobile-direct:bootstrap:plan"],
   [files.runbook, "npm run cloud:ssh:mobile-direct:bootstrap:apply"],
   [files.runbook, "npm run cloud:ssh:mobile-direct:probe:strict"],
