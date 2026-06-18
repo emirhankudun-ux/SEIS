@@ -6,7 +6,6 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const args = parseArgs(process.argv.slice(2));
-const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && legacyPersonalAvailable();
 const failures = [];
 
 const standaloneLanes = [
@@ -57,6 +56,8 @@ const lanes = [
   ...standaloneLanes,
   governanceLane,
 ];
+
+const checkLocal = args["include-legacy-personal"] === true && args["no-local"] !== true && legacyPersonalAvailable();
 
 if (args.help) {
   console.log(`
