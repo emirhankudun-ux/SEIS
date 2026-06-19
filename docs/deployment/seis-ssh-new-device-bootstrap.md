@@ -79,6 +79,14 @@ npm run cloud:ssh:direct-cloud:switch -- --public-ip 203.0.113.10 --direct-user 
 npm run cloud:ssh:direct-cloud:switch -- --provider digitalocean --project seis-prod --public-ip 203.0.113.10 --apply
 npm run cloud:ssh:online:strict -- --require-picker-compatible
 ```
+You can also use a single activation command after provisioning:
+
+```bash
+npm run cloud:ssh:direct-cloud:activate -- --public-ip 203.0.113.10 --direct-user root
+npm run cloud:ssh:direct-cloud:activate -- --direct-host CLOUD_HOST --direct-user root
+npm run cloud:ssh:direct-cloud:activate -- --provider digitalocean --project seis-prod --public-ip 203.0.113.10 --direct-user root
+```
+
 
 Do not create extra aliases to work around picker status. `SEIS-SSH` remains the
 single visible SEIS SSH target.

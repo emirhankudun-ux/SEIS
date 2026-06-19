@@ -1,48 +1,89 @@
+# SEIS Quality + Security + AI Gates Operasyon Rehberi
 # SEIS Quality + Security + AI Gates (Operasyonel Görev Seti)
 
-Bu dosya kalite/safety/AI kontrol listesini tanımlar. Kurumsal 4. kapı için teknik dayanak: [governance/enterprise-change-gates.md](enterprise-change-gates.md)
+Bu belge, teknik ve kurumsal kapıların nasıl uygulanacağını tek yerde toplar.
 
-## Kapı 1 — Kalite (Quality)
+## Teknik Kapılar (CI’da Çalışan 3 Kapı)
 
-Minimumlar:
+## Kalite Kapısı
 
-- `npm run check:workspace`
-- `npm run seis:check`
-- Değişikliği etkileyen modül/test kapsamına göre ek kalite check’i
+## Kalite Kapısı (Quality)
 
-Kabul:
+## Kapı 1 — Kalite
 
-- Metrik kanıtı olmadan ilerleme yok.
+## Güvenlik Kapısı
 
-## Kapı 2 — Güvenlik (Security)
+## Kapı 2 — Güvenlik Kapısı
 
-Minimumlar:
+## AI Kapısı
 
-- `security-guardian` ve CodeQL akışı ilgili yüzeyde çalışır olmalı.
-- `SECURITY.md` ile uyumlu risk ve müdahale planı olmalı.
+## Kapı 3 — AI Kapısı
 
-Kabul:
+### 1. Quality Kapısı
 
-- High/critical risk için düzeltme veya azaltma planı olmadan merge yok.
+- Komut: `npm run check:seis-enterprise-gates:quality`
+- Destek komutları:
+  - `npm run check:workspace`
+  - `npm run seis:check`
+  - `npm run check:seis-enterprise-gates` (tam set)
+- Kabul: kalite ölçümü, lint/test ve doğrulama metrikleri tamamlanmalı.
 
-## Kapı 3 — AI
+### 2. Security Kapısı
 
-Minimumlar:
+- Komut: `npm run check:seis-enterprise-gates:security`
+- Destek komutları/kanıtlar:
+  - security-guardian çıktısı
+  - CodeQL sonuçları (etkileniyorsa)
+  - `security.md` uyum kontrolü veya ek erişim değerlendirmesi
+- Kabul: yüksek riskli kalıntı kalmamalı, yoksa azaltma planı eklenmeli.
 
-- `docs/ai/policy.md` ile uyumlu policy alanları (en az: `intent`, `risk`, `audit`, `rollback`).
-- `npm run check:llm-orchestration-policy`
+### 3. AI Kapısı
 
-Kabul:
+- Komut: `npm run check:seis-enterprise-gates:ai`
+- Komut: `npm run check:llm-orchestration-policy`
+- Kabul: [ai/policy.md](../ai/policy.md) zorunlu alanları doldurulmuş olmalı.
 
-- AI etkili davranışta policy bypass denemesi varsa gerekçesi ve blok planı eksiksiz olmalı.
+## CI Eşleme (`.github/workflows/seis-system-gates.yml`)
 
-## CI Bağlantısı
+- `Quality gate` → `npm run check:seis-enterprise-gates:quality`
+- `Security gate` → `npm run check:seis-enterprise-gates:security`
+- `AI gate` → `npm run check:seis-enterprise-gates:ai`
+- `LLM policy gate` → `npm run check:llm-orchestration-policy`
 
-- `npm run check:seis-enterprise-gates:quality`
-- `npm run check:seis-enterprise-gates:security`
-- `npm run check:seis-enterprise-gates:ai`
+Tek bir teknik kapının `failed` olması `passed` kabulünü engeller.
 
-Kaynak bağları:
-- [docs/governance/quality-gates.md](../docs/governance/quality-gates.md)
-- [docs/governance/enterprise-change-gates.md](../docs/governance/enterprise-change-gates.md)
-- [docs/ai/policy.md](../docs/ai/policy.md)
+## Kurum Seviyeli 4 Kapı (Her PR için Zorunlu)
+
+## Kurumsal 4 Kapı (Her PR için Zorunlu)
+
+Teknik kapılar geçse bile aşağıdaki 4 kapı PR içinde açıkça işaretlenmelidir:
+
+- Doğrulama Metrikleri
+- Güvenlik
+- Dokümantasyon/ADR
+- Rollback
+
+Her kapı için son durum `passed` / `waived` / `blocked` olarak kaydedilir.
+
+Kurumsal form: [enterprise-change-gates.md](./enterprise-change-gates.md)
+
+## Durum Şeması (God Mode)
+
+| Kapı | Durum | Zorunlu mu? |
+| --- | --- | --- |
+| Quality | `passed` / `waived` / `blocked` | Evet |
+| Security | `passed` / `waived` / `blocked` | Evet |
+| AI | `passed` / `waived` / `blocked` | Evet |
+| Docs/ADR | `passed` / `waived` / `blocked` | Evet |
+| Rollback | `passed` / `waived` / `blocked` | Evet |
+| CI | `passed` / `blocked` | Evet |
+
+Tekrarlanan başarısızlık veya drift tespitinde D1/D2/D3 kalite-güvenlik throttle moduna geçilir (detay: [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](../roadmap/seis-18-60-month-long-horizon-ops-blueprint.md)).
+
+## İlişkili Dosyalar
+
+- [goals/architecture.md](../goals/architecture.md)
+- [governance/enterprise-change-gates.md](./enterprise-change-gates.md)
+- [docs/architecture/seis-5-layer-operating-map.md](../docs/architecture/seis-5-layer-operating-map.md)
+- [docs/governance/seis-architecture-manifesto.md](../docs/governance/seis-architecture-manifesto.md)
+- [ai/policy.md](../ai/policy.md)

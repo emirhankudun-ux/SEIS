@@ -1,0 +1,1025 @@
+{
+  "artifactId": "seis-memory-ranker-seed-v0",
+  "artifactType": "seis-owned-local-retrieval-experiment",
+  "dataset": {
+    "datasetId": "seis-memory-ranker-seed-v0",
+    "version": "0.1.0",
+    "sourceClass": "SEIS-owned synthetic examples",
+    "consent": "no-user-private-data"
+  },
+  "model": {
+    "modelId": "seis-memory-ranker-seed-v0",
+    "modelFamily": "seis-memory-ranker",
+    "version": "0.1.0",
+    "datasetId": "seis-memory-ranker-seed-v0",
+    "trainingCaseCount": 5,
+    "vocabulary": [
+      "5-layer",
+      "across",
+      "action",
+      "agents",
+      "ai",
+      "ai-policy",
+      "approval",
+      "architecture",
+      "be",
+      "behaviors",
+      "boundary",
+      "build",
+      "card",
+      "change",
+      "charter",
+      "checks",
+      "class",
+      "clean",
+      "clean-room",
+      "cloud",
+      "command-level",
+      "commands",
+      "completion",
+      "compliance",
+      "connect",
+      "consent",
+      "controls",
+      "core",
+      "coverage",
+      "critic",
+      "dataset",
+      "datasets",
+      "definitions",
+      "dependencies",
+      "design",
+      "deterministic",
+      "docs",
+      "documentation",
+      "energy-aware",
+      "enforcement",
+      "engineering",
+      "enterprise",
+      "enterprise-change-gates",
+      "eval",
+      "evaluation",
+      "evidence",
+      "experiment",
+      "families",
+      "family",
+      "fields",
+      "file",
+      "four-gate",
+      "gates",
+      "goal",
+      "goals",
+      "governance",
+      "governing",
+      "guidance",
+      "implementation",
+      "implementation-gates",
+      "instructions",
+      "json",
+      "layer",
+      "layers",
+      "learned",
+      "licenses",
+      "limits",
+      "linkage",
+      "mandatory",
+      "map",
+      "master",
+      "md",
+      "measured",
+      "memory",
+      "model",
+      "model-card",
+      "model-family",
+      "model-program",
+      "models",
+      "need",
+      "new",
+      "objective",
+      "operating",
+      "operations",
+      "package",
+      "permission",
+      "phase-based",
+      "plan",
+      "planned",
+      "platform",
+      "policy",
+      "priority",
+      "product",
+      "program",
+      "prompts",
+      "provenance",
+      "publish",
+      "quality",
+      "quality-gates",
+      "ranker",
+      "readiness",
+      "receive",
+      "release",
+      "report",
+      "reporting",
+      "repository-level",
+      "required",
+      "research",
+      "review",
+      "rights",
+      "risk",
+      "risks",
+      "roadmap",
+      "rollback",
+      "rules",
+      "running",
+      "safe",
+      "safety",
+      "security",
+      "seis-5-layer-operating-map",
+      "seis-universe",
+      "seis_universe_clean_build",
+      "seis_universe_dataset_card_template",
+      "seis_universe_eval_plan",
+      "seis_universe_model_card_template",
+      "seis_universe_model_family",
+      "seis_universe_permission_policy_model_card",
+      "sense",
+      "sequence",
+      "shipped",
+      "slice",
+      "source",
+      "split",
+      "splits",
+      "status",
+      "strategy",
+      "template",
+      "tracks",
+      "universe",
+      "update",
+      "updates",
+      "usage",
+      "validate",
+      "validation",
+      "verify",
+      "wave",
+      "why",
+      "work",
+      "workflow",
+      "workspace"
+    ],
+    "candidateProfiles": {
+      "check-enterprise-gates": {
+        "title": "Enterprise Change Gates",
+        "source": "docs/governance/enterprise-change-gates.md",
+        "terms": [
+          "change",
+          "completion",
+          "docs",
+          "documentation",
+          "enterprise",
+          "enterprise-change-gates",
+          "four-gate",
+          "gates",
+          "governance",
+          "md",
+          "rollback",
+          "security",
+          "sequence",
+          "validation"
+        ],
+        "titleTerms": [
+          "change",
+          "enterprise",
+          "gates"
+        ],
+        "summaryTerms": [
+          "completion",
+          "documentation",
+          "four-gate",
+          "rollback",
+          "security",
+          "sequence",
+          "validation"
+        ],
+        "topicTerms": [
+          "documentation",
+          "gates",
+          "rollback",
+          "security"
+        ],
+        "sourceTerms": [
+          "docs",
+          "enterprise-change-gates",
+          "governance",
+          "md"
+        ]
+      },
+      "clean-build-charter": {
+        "title": "SEIS Universe Clean Build",
+        "source": "SEIS_UNIVERSE_CLEAN_BUILD.md",
+        "terms": [
+          "ai",
+          "boundary",
+          "build",
+          "clean",
+          "clean-room",
+          "governance",
+          "implementation",
+          "implementation-gates",
+          "md",
+          "model",
+          "permission",
+          "seis_universe_clean_build",
+          "slice",
+          "universe",
+          "work"
+        ],
+        "titleTerms": [
+          "build",
+          "clean",
+          "universe"
+        ],
+        "summaryTerms": [
+          "ai",
+          "boundary",
+          "clean-room",
+          "implementation",
+          "model",
+          "permission",
+          "slice",
+          "work"
+        ],
+        "topicTerms": [
+          "clean-room",
+          "governance",
+          "implementation-gates"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_clean_build"
+        ]
+      },
+      "dataset-guidance": {
+        "title": "Dataset Card Template",
+        "source": "SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md",
+        "terms": [
+          "card",
+          "class",
+          "consent",
+          "dataset",
+          "fields",
+          "governance",
+          "licenses",
+          "md",
+          "required",
+          "rights",
+          "risks",
+          "seis_universe_dataset_card_template",
+          "source",
+          "splits",
+          "template"
+        ],
+        "titleTerms": [
+          "card",
+          "dataset",
+          "template"
+        ],
+        "summaryTerms": [
+          "class",
+          "consent",
+          "dataset",
+          "fields",
+          "licenses",
+          "required",
+          "risks",
+          "source",
+          "splits"
+        ],
+        "topicTerms": [
+          "dataset",
+          "governance",
+          "rights"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_dataset_card_template"
+        ]
+      },
+      "dataset-template": {
+        "title": "Dataset Card Template",
+        "source": "SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md",
+        "terms": [
+          "card",
+          "consent",
+          "dataset",
+          "datasets",
+          "md",
+          "policy",
+          "quality",
+          "review",
+          "risk",
+          "seis_universe_dataset_card_template",
+          "source",
+          "split",
+          "template"
+        ],
+        "titleTerms": [
+          "card",
+          "dataset",
+          "template"
+        ],
+        "summaryTerms": [
+          "consent",
+          "datasets",
+          "policy",
+          "review",
+          "risk",
+          "source",
+          "split"
+        ],
+        "topicTerms": [
+          "dataset",
+          "quality",
+          "risk"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_dataset_card_template"
+        ]
+      },
+      "docs-update-plan": {
+        "title": "SEIS Master Goal Coverage Report",
+        "source": "SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md",
+        "terms": [
+          "coverage",
+          "documentation",
+          "goal",
+          "goals",
+          "governance",
+          "master",
+          "md",
+          "objective",
+          "quality",
+          "report",
+          "seis_universe_permission_policy_model_card",
+          "tracks",
+          "updates"
+        ],
+        "titleTerms": [
+          "coverage",
+          "goal",
+          "master",
+          "report"
+        ],
+        "summaryTerms": [
+          "coverage",
+          "documentation",
+          "governance",
+          "objective",
+          "quality",
+          "tracks",
+          "updates"
+        ],
+        "topicTerms": [
+          "coverage",
+          "documentation",
+          "goals"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_permission_policy_model_card"
+        ]
+      },
+      "eval-plan-doc": {
+        "title": "SEIS Universe Evaluation Plan",
+        "source": "SEIS_UNIVERSE_EVAL_PLAN.md",
+        "terms": [
+          "energy-aware",
+          "engineering",
+          "evaluation",
+          "families",
+          "md",
+          "model",
+          "permission",
+          "plan",
+          "provenance",
+          "quality",
+          "release",
+          "review",
+          "safety",
+          "security",
+          "seis_universe_eval_plan",
+          "universe"
+        ],
+        "titleTerms": [
+          "evaluation",
+          "plan",
+          "universe"
+        ],
+        "summaryTerms": [
+          "energy-aware",
+          "engineering",
+          "families",
+          "model",
+          "permission",
+          "provenance",
+          "quality",
+          "review",
+          "safety"
+        ],
+        "topicTerms": [
+          "evaluation",
+          "quality",
+          "release",
+          "security"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_eval_plan"
+        ]
+      },
+      "five-layer-map": {
+        "title": "SEIS 5-Layer Operating Map",
+        "source": "docs/architecture/seis-5-layer-operating-map.md",
+        "terms": [
+          "5-layer",
+          "ai",
+          "architecture",
+          "cloud",
+          "definitions",
+          "dependencies",
+          "docs",
+          "governance",
+          "layer",
+          "map",
+          "md",
+          "operating",
+          "platform",
+          "product",
+          "seis-5-layer-operating-map",
+          "work"
+        ],
+        "titleTerms": [
+          "5-layer",
+          "map",
+          "operating"
+        ],
+        "summaryTerms": [
+          "ai",
+          "cloud",
+          "definitions",
+          "dependencies",
+          "governance",
+          "layer",
+          "operating",
+          "platform",
+          "product",
+          "work"
+        ],
+        "topicTerms": [
+          "5-layer",
+          "architecture",
+          "governance"
+        ],
+        "sourceTerms": [
+          "architecture",
+          "docs",
+          "md",
+          "seis-5-layer-operating-map"
+        ]
+      },
+      "gov-instructions": {
+        "title": "SEIS Governing Instructions",
+        "source": "AGENTS.md",
+        "terms": [
+          "agents",
+          "architecture",
+          "gates",
+          "governance",
+          "governing",
+          "instructions",
+          "md",
+          "operating",
+          "policy",
+          "prompts",
+          "quality",
+          "repository-level"
+        ],
+        "titleTerms": [
+          "governing",
+          "instructions"
+        ],
+        "summaryTerms": [
+          "architecture",
+          "gates",
+          "operating",
+          "policy",
+          "prompts",
+          "quality",
+          "repository-level"
+        ],
+        "topicTerms": [
+          "architecture",
+          "governance",
+          "instructions"
+        ],
+        "sourceTerms": [
+          "agents",
+          "md"
+        ]
+      },
+      "model-card-guidance": {
+        "title": "Model Card Template",
+        "source": "SEIS_UNIVERSE_MODEL_CARD_TEMPLATE.md",
+        "terms": [
+          "approval",
+          "card",
+          "dataset",
+          "evaluation",
+          "fields",
+          "limits",
+          "linkage",
+          "mandatory",
+          "md",
+          "model",
+          "model-card",
+          "provenance",
+          "seis_universe_model_card_template",
+          "status",
+          "template"
+        ],
+        "titleTerms": [
+          "card",
+          "model",
+          "template"
+        ],
+        "summaryTerms": [
+          "approval",
+          "dataset",
+          "fields",
+          "limits",
+          "linkage",
+          "mandatory",
+          "model",
+          "provenance",
+          "status"
+        ],
+        "topicTerms": [
+          "evaluation",
+          "model-card",
+          "provenance"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_model_card_template"
+        ]
+      },
+      "model-program-doc": {
+        "title": "Model Program Charter",
+        "source": "SEIS_UNIVERSE_CLEAN_BUILD.md",
+        "terms": [
+          "charter",
+          "clean-room",
+          "family",
+          "md",
+          "model",
+          "model-program",
+          "phase-based",
+          "priority",
+          "program",
+          "research",
+          "roadmap",
+          "seis_universe_clean_build",
+          "source",
+          "strategy"
+        ],
+        "titleTerms": [
+          "charter",
+          "model",
+          "program"
+        ],
+        "summaryTerms": [
+          "clean-room",
+          "family",
+          "model",
+          "phase-based",
+          "priority",
+          "research",
+          "roadmap",
+          "source"
+        ],
+        "topicTerms": [
+          "clean-room",
+          "model-program",
+          "strategy"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_clean_build"
+        ]
+      },
+      "policy-card": {
+        "title": "Permission Policy Model Card",
+        "source": "SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md",
+        "terms": [
+          "card",
+          "deterministic",
+          "evidence",
+          "governance",
+          "learned",
+          "md",
+          "model",
+          "permission",
+          "policy",
+          "safety",
+          "seis_universe_permission_policy_model_card"
+        ],
+        "titleTerms": [
+          "card",
+          "model",
+          "permission",
+          "policy"
+        ],
+        "summaryTerms": [
+          "deterministic",
+          "evidence",
+          "learned",
+          "model",
+          "permission"
+        ],
+        "topicTerms": [
+          "governance",
+          "policy",
+          "safety"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_permission_policy_model_card"
+        ]
+      },
+      "policy-reference": {
+        "title": "AI Policy",
+        "source": "docs/ai/policy.md",
+        "terms": [
+          "ai",
+          "ai-policy",
+          "docs",
+          "enforcement",
+          "md",
+          "policy",
+          "reporting",
+          "risk",
+          "rules",
+          "security",
+          "usage"
+        ],
+        "titleTerms": [
+          "ai",
+          "policy"
+        ],
+        "summaryTerms": [
+          "ai",
+          "enforcement",
+          "policy",
+          "reporting",
+          "risk",
+          "rules",
+          "usage"
+        ],
+        "topicTerms": [
+          "ai-policy",
+          "risk",
+          "security"
+        ],
+        "sourceTerms": [
+          "ai",
+          "docs",
+          "md",
+          "policy"
+        ]
+      },
+      "quality-gates": {
+        "title": "Quality and Security Gates",
+        "source": "governance/quality-gates.md",
+        "terms": [
+          "ai",
+          "checks",
+          "command-level",
+          "commands",
+          "gates",
+          "governance",
+          "md",
+          "policy",
+          "quality",
+          "quality-gates",
+          "readiness",
+          "security",
+          "workflow",
+          "workspace"
+        ],
+        "titleTerms": [
+          "gates",
+          "quality",
+          "security"
+        ],
+        "summaryTerms": [
+          "ai",
+          "checks",
+          "command-level",
+          "policy",
+          "readiness",
+          "security",
+          "workflow",
+          "workspace"
+        ],
+        "topicTerms": [
+          "ai",
+          "commands",
+          "quality",
+          "security"
+        ],
+        "sourceTerms": [
+          "governance",
+          "md",
+          "quality-gates"
+        ]
+      },
+      "release-readiness": {
+        "title": "Publish and Release Gates",
+        "source": "package.json",
+        "terms": [
+          "across",
+          "ai",
+          "checks",
+          "compliance",
+          "controls",
+          "gates",
+          "governance",
+          "json",
+          "package",
+          "publish",
+          "quality",
+          "readiness",
+          "release",
+          "security"
+        ],
+        "titleTerms": [
+          "gates",
+          "publish",
+          "release"
+        ],
+        "summaryTerms": [
+          "across",
+          "ai",
+          "checks",
+          "compliance",
+          "controls",
+          "quality",
+          "readiness",
+          "release",
+          "security"
+        ],
+        "topicTerms": [
+          "compliance",
+          "governance",
+          "release"
+        ],
+        "sourceTerms": [
+          "json",
+          "package"
+        ]
+      },
+      "universe-manifesto": {
+        "title": "SEIS Universe Model Family",
+        "source": "SEIS_UNIVERSE_MODEL_FAMILY.md",
+        "terms": [
+          "critic",
+          "design",
+          "eval",
+          "family",
+          "md",
+          "memory",
+          "model",
+          "model-family",
+          "models",
+          "permission",
+          "policy",
+          "ranker",
+          "roadmap",
+          "seis-universe",
+          "seis_universe_model_family",
+          "sense",
+          "universe"
+        ],
+        "titleTerms": [
+          "family",
+          "model",
+          "universe"
+        ],
+        "summaryTerms": [
+          "critic",
+          "design",
+          "eval",
+          "family",
+          "memory",
+          "models",
+          "permission",
+          "policy",
+          "ranker",
+          "roadmap",
+          "sense"
+        ],
+        "topicTerms": [
+          "model-family",
+          "roadmap",
+          "seis-universe"
+        ],
+        "sourceTerms": [
+          "md",
+          "seis_universe_model_family"
+        ]
+      }
+    },
+    "candidateWeights": {
+      "check-enterprise-gates": {
+        "action": 1,
+        "change": 1,
+        "cloud": 1,
+        "commands": 1,
+        "completion": 1,
+        "docs": 1,
+        "documentation": 1,
+        "enterprise": 1,
+        "enterprise-change-gates": 1,
+        "four-gate": 1,
+        "gates": 1,
+        "governance": 1,
+        "md": 1,
+        "operations": 1,
+        "planned": 1,
+        "rollback": 1,
+        "running": 1,
+        "safe": 1,
+        "security": 1,
+        "sequence": 1,
+        "validation": 1,
+        "verify": 1
+      },
+      "eval-plan-doc": {
+        "be": 1,
+        "behaviors": 1,
+        "energy-aware": 1,
+        "engineering": 1,
+        "evaluation": 1,
+        "families": 1,
+        "md": 1,
+        "measured": 1,
+        "model": 2,
+        "permission": 1,
+        "plan": 1,
+        "provenance": 1,
+        "quality": 1,
+        "release": 1,
+        "review": 1,
+        "safety": 1,
+        "security": 1,
+        "seis_universe_eval_plan": 1,
+        "universe": 1,
+        "validate": 1,
+        "wave": 1
+      },
+      "five-layer-map": {
+        "5-layer": 1,
+        "ai": 1,
+        "architecture": 2,
+        "cloud": 1,
+        "connect": 1,
+        "core": 1,
+        "definitions": 1,
+        "dependencies": 1,
+        "docs": 1,
+        "governance": 2,
+        "layer": 1,
+        "layers": 2,
+        "map": 2,
+        "md": 1,
+        "model": 1,
+        "operating": 1,
+        "platform": 1,
+        "product": 2,
+        "seis-5-layer-operating-map": 1,
+        "work": 1
+      },
+      "model-card-guidance": {
+        "approval": 1,
+        "card": 1,
+        "dataset": 1,
+        "evaluation": 1,
+        "experiment": 1,
+        "fields": 1,
+        "gates": 1,
+        "limits": 1,
+        "linkage": 1,
+        "mandatory": 1,
+        "md": 1,
+        "model": 2,
+        "model-card": 1,
+        "new": 1,
+        "provenance": 1,
+        "release": 1,
+        "required": 1,
+        "seis_universe_model_card_template": 1,
+        "shipped": 1,
+        "status": 1,
+        "template": 1
+      },
+      "policy-reference": {
+        "ai": 1,
+        "ai-policy": 1,
+        "docs": 1,
+        "documentation": 1,
+        "enforcement": 1,
+        "file": 1,
+        "guidance": 1,
+        "md": 1,
+        "need": 1,
+        "policy": 1,
+        "receive": 1,
+        "reporting": 1,
+        "risk": 1,
+        "rules": 1,
+        "security": 1,
+        "update": 1,
+        "usage": 1,
+        "why": 1
+      }
+    },
+    "candidatePrior": {
+      "check-enterprise-gates": 2,
+      "clean-build-charter": 1,
+      "dataset-guidance": 1,
+      "dataset-template": 1,
+      "docs-update-plan": 1,
+      "eval-plan-doc": 2,
+      "five-layer-map": 2,
+      "gov-instructions": 1,
+      "model-card-guidance": 2,
+      "model-program-doc": 1,
+      "policy-card": 1,
+      "policy-reference": 2,
+      "quality-gates": 1,
+      "release-readiness": 1,
+      "universe-manifesto": 1
+    },
+    "queryWeights": {
+      "action": 0.5,
+      "architecture": 0.5,
+      "be": 0.5,
+      "behaviors": 0.5,
+      "cloud": 0.5,
+      "commands": 0.5,
+      "connect": 0.5,
+      "core": 0.5,
+      "documentation": 0.5,
+      "experiment": 0.5,
+      "file": 0.5,
+      "gates": 0.5,
+      "governance": 0.5,
+      "guidance": 0.5,
+      "layers": 1,
+      "map": 0.5,
+      "measured": 0.5,
+      "model": 1.5,
+      "need": 0.5,
+      "new": 0.5,
+      "operations": 0.5,
+      "planned": 0.5,
+      "product": 0.5,
+      "receive": 0.5,
+      "release": 0.5,
+      "required": 0.5,
+      "running": 0.5,
+      "safe": 0.5,
+      "shipped": 0.5,
+      "update": 0.5,
+      "validate": 0.5,
+      "verify": 0.5,
+      "wave": 0.5,
+      "why": 0.5
+    }
+  },
+  "eval": {
+    "train": {
+      "ok": false,
+      "total": 5,
+      "passedTop1": 3,
+      "top1Accuracy": 0.6,
+      "averageReciprocalRank": 0.8
+    },
+    "eval": {
+      "ok": true,
+      "total": 3,
+      "passedTop1": 3,
+      "top1Accuracy": 1,
+      "averageReciprocalRank": 1
+    }
+  }
+}

@@ -124,6 +124,10 @@ ios/
 # Configuration and data files (non-source)
 *.json
 *.config.json
+!packages/seis-ai/data/permission-policy-seed.json
+!packages/seis-ai/models/permission-policy-seed-v0.json
+!packages/seis-ai/data/memory-ranker-seed-v0.json
+!packages/seis-ai/models/memory-ranker-seed-v0.json
 
 # Package lock files
 package-lock.json
@@ -136,6 +140,9 @@ apps/web/content/
 
 # Documentation
 docs/
+!docs/governance/
+!docs/governance/*.md
+!docs/governance/**/*.md
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

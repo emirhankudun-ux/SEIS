@@ -31,7 +31,7 @@ export interface ContractCheckReport {
   checkedSelectors: number;
   htmlIds: number;
   htmlClasses: number;
-  missing: { selector: string; kind: "id" | "class" }[];
+  missing: { selector: string; kind: 'id' | 'class' }[];
 }
 
 export interface DrawingsCatalogReport {
@@ -105,31 +105,31 @@ export interface AllChecksReport {
 }
 
 export type CheckScope =
-  | "all"
-  | "i18n"
-  | "seo"
-  | "contract"
-  | "drawings"
-  | "style"
-  | "perf"
-  | "a11y"
-  | "security";
+  | 'all'
+  | 'i18n'
+  | 'seo'
+  | 'contract'
+  | 'drawings'
+  | 'style'
+  | 'perf'
+  | 'a11y'
+  | 'security';
 
-export type ScopedReport<S extends CheckScope> = S extends "all"
+export type ScopedReport<S extends CheckScope> = S extends 'all'
   ? AllChecksReport
-  : S extends "i18n"
+  : S extends 'i18n'
     ? I18nStatusReport
-    : S extends "seo"
+    : S extends 'seo'
       ? SeoAuditReport
-      : S extends "contract"
+      : S extends 'contract'
         ? ContractCheckReport
-        : S extends "drawings"
+        : S extends 'drawings'
           ? DrawingsCatalogReport
-          : S extends "style"
+          : S extends 'style'
             ? StyleAuditReport
-            : S extends "perf"
+            : S extends 'perf'
               ? PerfAuditReport
-              : S extends "a11y"
+              : S extends 'a11y'
                 ? A11yAuditReport
                 : SecurityAuditReport;
 
@@ -147,9 +147,7 @@ export declare function a11yAudit(webRoot: string): A11yAuditReport;
 export declare function securityAudit(webRoot: string): SecurityAuditReport;
 export declare function runAllChecks(webRoot: string): AllChecksReport;
 
-export declare function loadTranslations(
-  webRoot: string
-): Record<string, Record<string, string>>;
+export declare function loadTranslations(webRoot: string): Record<string, Record<string, string>>;
 export declare function collectReferencedI18nKeys(webRoot: string): string[];
 export declare function siteConfig(webRoot: string): {
   contactEndpoint: string;
@@ -172,21 +170,21 @@ export declare function i18nAddKey(
   webRoot: string,
   key: string,
   values: LocaleValues,
-  options?: { overwrite?: boolean }
+  options?: { overwrite?: boolean },
 ): { key: string; added: boolean };
 
 export declare function i18nRenameKey(
   webRoot: string,
   oldKey: string,
   newKey: string,
-  options?: { updateReferences?: boolean }
+  options?: { updateReferences?: boolean },
 ): { renamed: boolean; htmlReferences: number; jsReferences: number };
 
 /* ------------------------------------------------------------------ */
 /* Agent loop (src/agent/loop.mjs)                                     */
 /* ------------------------------------------------------------------ */
 
-export type ModelAlias = "fable" | "opus" | "sonnet" | "haiku";
+export type ModelAlias = 'fable' | 'opus' | 'sonnet' | 'haiku';
 
 export interface RunAgentOptions {
   client: unknown;
@@ -209,3 +207,299 @@ export declare function runAgent(options: RunAgentOptions): Promise<RunAgentResu
 export declare function resolveModel(name?: string): string;
 export declare const MODEL_ALIASES: Record<ModelAlias, string>;
 export declare const DEFAULT_MODEL: string;
+
+/* ------------------------------------------------------------------ */
+/* SEIS Universe seed model surfaces                                   */
+/* ------------------------------------------------------------------ */
+
+export type PermissionDecision = 'allow' | 'gate' | 'approval_required' | 'deny';
+
+export interface PermissionAction {
+  intent?: string;
+  command?: string;
+  path?: string;
+  summary?: string;
+  evidence?: string[];
+  capabilities?: string[];
+  externalWrite?: boolean;
+  workspace?: string;
+}
+
+export interface PermissionPolicyResult {
+  decision: PermissionDecision;
+  reasons: string[];
+  capabilities: string[];
+  workspace: string;
+}
+
+export interface PermissionPolicyEvalCase {
+  id: string;
+  expected: PermissionDecision;
+  action: PermissionAction;
+}
+
+export interface PermissionPolicyEvalReport {
+  ok: boolean;
+  total: number;
+  passed: number;
+  failed: {
+    id: string;
+    expected: PermissionDecision;
+    actual: PermissionDecision;
+    ok: boolean;
+    reasons: string[];
+  }[];
+  results: {
+    id: string;
+    expected: PermissionDecision;
+    actual: PermissionDecision;
+    ok: boolean;
+    reasons: string[];
+  }[];
+}
+
+export declare const PERMISSION_DECISIONS: Readonly<{
+  allow: 'allow';
+  gate: 'gate';
+  approvalRequired: 'approval_required';
+  deny: 'deny';
+}>;
+
+export declare function classifyPermissionAction(action: PermissionAction): PermissionPolicyResult;
+export declare function runPermissionPolicyEval(
+  cases: PermissionPolicyEvalCase[],
+): PermissionPolicyEvalReport;
+
+export type PermissionPolicyDatasetSplit = 'train' | 'eval';
+
+export interface PermissionPolicyDatasetCase {
+  id: string;
+  split: PermissionPolicyDatasetSplit;
+  expected: PermissionDecision;
+  action: PermissionAction;
+}
+
+export interface PermissionPolicyDataset {
+  datasetId: 'seis-permission-policy-seed-eval';
+  version: string;
+  owner: string;
+  sourceClass: string;
+  license: string;
+  consent: string;
+  cases: PermissionPolicyDatasetCase[];
+}
+
+export interface PermissionPolicyLearnedModel {
+  modelId: string;
+  modelFamily: 'seis-permission-policy';
+  version: string;
+  datasetId: string;
+  trainingCaseCount: number;
+  labels: PermissionDecision[];
+  priors: Record<PermissionDecision, number>;
+  features: string[];
+  classFeatureWeights: Record<PermissionDecision, Record<string, number>>;
+  safetyFloor: string;
+}
+
+export interface PermissionPolicyPrediction {
+  decision: PermissionDecision;
+  learnedDecision: PermissionDecision;
+  safetyDecision: PermissionDecision;
+  safetyAdjusted: boolean;
+  scores: Record<PermissionDecision, number>;
+  features: string[];
+}
+
+export interface PermissionPolicyModelEvalReport {
+  ok: boolean;
+  total: number;
+  passed: number;
+  learnedPassed: number;
+  safetyAdjusted: number;
+  failed: {
+    id: string;
+    split: PermissionPolicyDatasetSplit;
+    expected: PermissionDecision;
+    actual: PermissionDecision;
+    learnedDecision: PermissionDecision;
+    safetyDecision: PermissionDecision;
+    ok: boolean;
+    learnedOk: boolean;
+    safetyAdjusted: boolean;
+  }[];
+  results: {
+    id: string;
+    split: PermissionPolicyDatasetSplit;
+    expected: PermissionDecision;
+    actual: PermissionDecision;
+    learnedDecision: PermissionDecision;
+    safetyDecision: PermissionDecision;
+    ok: boolean;
+    learnedOk: boolean;
+    safetyAdjusted: boolean;
+  }[];
+}
+
+export interface PermissionPolicyModelArtifact {
+  artifactId: string;
+  artifactType: string;
+  dataset: {
+    datasetId: string;
+    version: string;
+    sourceClass: string;
+    consent: string;
+  };
+  model: PermissionPolicyLearnedModel;
+  eval: {
+    train: Omit<PermissionPolicyModelEvalReport, 'results'>;
+    eval: Omit<PermissionPolicyModelEvalReport, 'results'>;
+  };
+}
+
+export declare function loadPermissionPolicyDataset(datasetPath: string): PermissionPolicyDataset;
+export declare function trainPermissionPolicyModel(
+  dataset: PermissionPolicyDataset,
+): PermissionPolicyLearnedModel;
+export declare function extractPermissionFeatures(action: PermissionAction): string[];
+export declare function predictPermissionPolicyAction(
+  model: PermissionPolicyLearnedModel,
+  action: PermissionAction,
+  options?: { enforceSafetyFloor?: boolean },
+): PermissionPolicyPrediction;
+export declare function runPermissionPolicyModelEval(
+  model: PermissionPolicyLearnedModel,
+  cases: PermissionPolicyDatasetCase[],
+  options?: { enforceSafetyFloor?: boolean },
+): PermissionPolicyModelEvalReport;
+export declare function buildPermissionPolicyModelArtifact(
+  dataset: PermissionPolicyDataset,
+): PermissionPolicyModelArtifact;
+
+/* ------------------------------------------------------------------ */
+/* Memory-ranker lab surfaces                                          */
+/* ------------------------------------------------------------------ */
+
+export type MemoryRankerSplit = 'train' | 'eval';
+
+export interface MemoryRankerDocument {
+  id: string;
+  title: string;
+  summary: string;
+  topics?: string[];
+  source?: string;
+}
+
+export interface MemoryRankerQuery {
+  id: string;
+  text: string;
+}
+
+export interface MemoryRankerCase {
+  id: string;
+  split: MemoryRankerSplit;
+  query: MemoryRankerQuery;
+  candidates: MemoryRankerDocument[];
+  expectedOrder: string[];
+}
+
+export interface MemoryRankerDataset {
+  datasetId: string;
+  version: string;
+  owner: string;
+  sourceClass: string;
+  license: string;
+  consent: string;
+  cases: MemoryRankerCase[];
+}
+
+export interface MemoryRankerCandidateProfile {
+  title: string;
+  source: string;
+  terms: string[];
+}
+
+export interface MemoryRankerModel {
+  modelId: string;
+  modelFamily: 'seis-memory-ranker';
+  version: string;
+  datasetId: string;
+  trainingCaseCount: number;
+  vocabulary: string[];
+  candidateProfiles: Record<string, MemoryRankerCandidateProfile>;
+  candidateWeights: Record<string, Record<string, number>>;
+  candidatePrior: Record<string, number>;
+  queryWeights: Record<string, number>;
+}
+
+export interface MemoryRankerMatch {
+  candidateId: string;
+  title: string;
+  score: number;
+  matchedTerms: string[];
+  matchedTermCount: number;
+}
+
+export interface MemoryRankerRankingReport {
+  query: MemoryRankerQuery | { id: string; text: string };
+  topK: number;
+  ranking: MemoryRankerMatch[];
+  queryTerms: string[];
+  candidateCount: number;
+}
+
+export interface MemoryRankerModelEvalReport {
+  ok: boolean;
+  top1Accuracy: number;
+  averageReciprocalRank: number;
+  total: number;
+  passedTop1: number;
+  results: {
+    id: string;
+    split: MemoryRankerSplit;
+    expected: string;
+    predicted: string | null;
+    topKPredicted: string[];
+    passedTop1: boolean;
+    precisionAtK: number;
+    reciprocalRank: number;
+  }[];
+  failed: {
+    id: string;
+    split: MemoryRankerSplit;
+    expected: string;
+    actual: string | null;
+    topKPredicted: string[];
+    top1Accuracy: number;
+  }[];
+}
+
+export interface MemoryRankerArtifact {
+  artifactId: string;
+  artifactType: string;
+  dataset: {
+    datasetId: string;
+    version: string;
+    sourceClass: string;
+    consent: string;
+  };
+  model: MemoryRankerModel;
+  eval: {
+    train: Omit<MemoryRankerModelEvalReport, 'results' | 'failed'>;
+    eval: Omit<MemoryRankerModelEvalReport, 'results' | 'failed'>;
+  };
+}
+
+export declare function loadMemoryRankerDataset(datasetPath: string): MemoryRankerDataset;
+export declare function trainMemoryRankerModel(dataset: MemoryRankerDataset): MemoryRankerModel;
+export declare function rankMemoryCandidates(
+  model: MemoryRankerModel,
+  query: string | MemoryRankerQuery,
+  candidates: MemoryRankerDocument[],
+  options?: { topK?: number },
+): MemoryRankerRankingReport;
+export declare function runMemoryRankerModelEval(
+  model: MemoryRankerModel,
+  cases: MemoryRankerCase[],
+): MemoryRankerModelEvalReport;
+export declare function buildMemoryRankerModelArtifact(dataset: MemoryRankerDataset): MemoryRankerArtifact;

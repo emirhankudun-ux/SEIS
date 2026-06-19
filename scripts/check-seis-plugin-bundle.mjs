@@ -44,6 +44,8 @@ const requiredRepoFiles = [
   path.join(pluginSourceRoot, "skills", "seis-github-workflow", "agents", "openai.yaml"),
   path.join(pluginSourceRoot, "skills", "seis-focus-mode", "SKILL.md"),
   path.join(pluginSourceRoot, "skills", "seis-focus-mode", "agents", "openai.yaml"),
+  path.join(pluginSourceRoot, "skills", "seis-god-mode-developer", "SKILL.md"),
+  path.join(pluginSourceRoot, "skills", "seis-god-mode-developer", "agents", "openai.yaml"),
   path.join(pluginSourceRoot, "skills", "seis-master-prompt", "SKILL.md"),
   path.join(pluginSourceRoot, "skills", "seis-master-prompt", "agents", "openai.yaml"),
   path.join(pluginSourceRoot, "skills", "seis-security-review", "SKILL.md"),
@@ -110,6 +112,7 @@ if (!sourcePluginManifest) {
     "SEIS Master Prompt governance",
     "SEIS Security Review governance",
     "SEIS Focus Mode AGI operating lane",
+    "SEIS God Mode Developer cross-layer lane",
   ];
   for (const capability of requiredCapabilities) {
     ensure(sourcePluginManifest.interface.capabilities.includes(capability), `source plugin capability missing: ${capability}`);
@@ -132,6 +135,10 @@ if (!sourcePluginManifest) {
   ensure(
     defaultPrompt.includes("Use SEIS Focus Mode"),
     "source plugin defaultPrompt must expose SEIS Focus Mode"
+  );
+  ensure(
+    defaultPrompt.includes("Use SEIS God Mode Developer"),
+    "source plugin defaultPrompt must expose SEIS God Mode Developer"
   );
 }
 

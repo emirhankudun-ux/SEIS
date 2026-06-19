@@ -1,60 +1,53 @@
 # SEIS 30/90 Gün Uygulanabilir Blueprint
 
-Bu belge, 90 günlük dönemi üç operasyonel sütun üzerinden ilerletir:
+SEIS hedefi bu 90 günlük planda çekirdek stabilizasyon + güvenlik + AI policy seviyelerini birlikte büyütmektir.
 
-- **Çekirdek alan kurulumları (Core Platform)**
-- **Güvenlik kontrol noktaları (Security Gate Mesh)**
-- **AI policy çerçevesi (Policy & Audit)**
+## 1) Çekirdek Alan
 
-## Sprint Planı (30 Günlük Bloğa Ayrılmış)
+- 5-katman haritası tüm modül eşlemeleriyle tutarlılıkta olur.
+- `goals/architecture.md` ile ADR ve CAP dokümanları düzenli güncellenir.
+- Dashboard/Goals/Repos/Docs/Agents için en az birer kapı örneği (contract + proof + rollback) üretilir.
 
-### Sprint 1 (1–2)
+### 30-60-90 Çekirdek Çıktıları
 
-- `docs/governance/seis-architecture-manifesto.md` onayı ve sınırların stabilizasyonu.
-- `docs/architecture/seis-5-layer-operating-map.md` ile Dashboard/Goals/Repos/Docs/Agents boundary eşlemesi.
-- PR kapı formu ve 4 kapı akışının uygulanabilirlik testi.
+| Dönem | Çıktı | Kabul |
+| --- | --- | --- |
+| 0-30 gün | Manifesto, 5-layer map, PR kapıları, CI bağları | Enterprise gate check geçer |
+| 31-60 gün | Her modül için proof-of-run + rollback örneği | Module checker çıktısı var |
+| 61-90 gün | Completion audit kapanışı + CI/handoff kanıtı | Run-state `complete` için kanıt hazır |
 
-### Sprint 2 (3–4)
+## 2) Güvenlik Kontrol Noktaları
 
-- `docs/governance/quality-gates.md` ve `docs/governance/enterprise-change-gates.md` tek formatta eşlenir.
-- `npm run check:seis-enterprise-gates:quality` ve `npm run check:seis-enterprise-gates:security` CI’ye bağlanır.
-- İlk 2 pilot modül için (Dashboard, Goals) rollback dry-run kanıtı toplanır.
+- `check:seis-enterprise-gates:security` ve güvenlik akışları düzenli koşar.
+- Security Guardian + CodeQL + SSH/izin denetimleri yeni değişikliklerin ön koşulu olur.
+- Yüksek riskte D1/D2/D3 throttle ile genişleme durdurma ve kurtarma kuralları devrededir.
 
-### Sprint 3 (5–6)
+### Güvenlik Checkpointleri
 
-- `docs/ai/policy.md` genişletilir: policy field seti (`intent`, `risk`, `rollback` vb.) netleştirilir.
-- `npm run check:llm-orchestration-policy` ve AI policy senaryoları stabilize edilir.
-- `security-guardian` + CodeQL kapsamları kontrol edilir.
+| Checkpoint | Frekans | Kanıt |
+| --- | --- | --- |
+| Secrets ve credential yüzeyi | Her PR | Security gate + PR formu |
+| CodeQL kapsamı | İlgili kod değişiminde | CodeQL workflow sonucu |
+| Deployment/readiness riski | Release adayında | Release readiness manifest |
+| Rollback hazırlığı | Her anlamlı değişiklikte | Enterprise rollback kapısı |
 
-### Sprint 4 (7–8)
+## 3) AI Policy Çerçevesi
 
-- Repos ve Agents modülleri için contract-first geçiş planı.
-- Kurum kapı formunun PR şablonuna bağlandığı kanıtlı akış.
-- 2 yüksek risk senaryosu için “deploy öncesi kontrol + rollback” prova kaydı.
+- `ai/policy.md` alanları (`intent`, `risk`, `audit`, `rollback`, `policyVersion`) zorunlu hale gelir.
+- AI davranışında insana dair onay akışları (`requiresHumanApproval`) açıkça işaretlenir.
+- Policy ihlal simülasyonu en az bir kez koşarak kapanış raporuna dahil edilir.
 
-### Sprint 5 (9–10)
+### AI Policy Checkpointleri
 
-- Kalan modüller için kapı kapsamlı raporları: Docs + Repos + Agents.
-- KPI ölçüm şemasının ilk versiyonu (`roadmap/seis-long-horizon-kpi-framework.md`) ile bağ.
-- 60 gün checkpoint: kapılardan biri kapanıyorsa genişleme durur.
+| Checkpoint | Zorunlu alan | Kapı |
+| --- | --- | --- |
+| Agent intent | `intent`, `scope`, `owner` | AI gate |
+| Risk ve insan onayı | `risk`, `requiresHumanApproval` | AI gate |
+| Audit ve rollback | `audit`, `rollback`, `policyVersion` | LLM policy gate |
+| Policy ihlali | ihlal nedeni + kapanış planı | Enterprise docs/rollback kapısı |
 
-### Sprint 6 (11–12 / 90. Gün)
+## Kabul Kuralları (90. Gün Sonu)
 
-- 30/60/90 kapanış audit’i: 4 kapı, 3 teknik gate, 5 katman haritası birlikte doğrulanır.
-- 90 günlük çıktı paketi:
-  - her modül için örnek karar kaydı,
-  - en az 1 ölçüm kanıtı,
-  - en az 1 rollback dry-run kanıtı.
-
-## Kabul Kriterleri (90. Gün Sonu)
-
-- Her PR en az 1 kez kalite, güvenlik ve AI kapılarından geçtiğinde publish edilir.
-- Modüllerin her biri için 5-katman sınırının birinci kabul kontrolü yapılır.
-- 4 kapının kanıt eksikliği olan modül, sonraki sprintlere bekletilir.
-
-## 30 Günlük Operasyon Modeli
-
-Süreç her güncel değişiklikte:
-1. Doğrulama → 2. Güvenlik → 3. AI policy → 4. Rollback değerlendirmesi.
-2. Hedeflenen her eylemde bir PR notu ve karara bağlantı.
-3. Geriye dönüş adımı olmadan yayın olmaması.
+- 4 kapıdan biri eksikse modül `In Progress` kalır.
+- 3 teknik kapının tamamı kapanmadan module `Complete` vermez.
+- Rollback kanıtı olmayan bir akış yayın adayı olmaz.

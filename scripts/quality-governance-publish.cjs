@@ -11,13 +11,20 @@ const autoHealLanguageDistribution = Boolean(args.autoHeal || args.auto_heal || 
 const isDryRun = Boolean(args.dryRun);
 const emitJson = Boolean(args.json) || Boolean(args.artifact);
 const compact = Boolean(args.compact || isCiMode);
-const writeArtifact = Boolean(args.writeArtifact) || Boolean(args.artifact);
+const strictMode = Boolean(args.strict);
+const safeTrigger = Boolean(args.safe || args.trusted || process.env.SEIS_QUALITY_GOVERNANCE_SAFE_TRIGGER === "1" || isCiMode);
+const writeArtifact = Boolean(args.writeArtifact) || Boolean(args.artifact) || isCiMode;
 const artifactPath = resolve(args.artifact || "reports/quality-governance-publish-report.json");
 const summaryArtifactPath = resolve(
   args.summaryArtifact
     || deriveSummaryPath(args.artifact ? args.artifact : "reports/quality-governance-publish-report.json")
 );
 const writeSummaryArtifact = Boolean(args.summary || isCiMode);
+
+if (strictMode && !safeTrigger) {
+  console.error("strict mode requires a safe trigger (add --safe for release/publish workflows).\nExample: npm run quality:governance:publish -- --preset core --strict --safe");
+  process.exit(64);
+}
 
 const CHECK_PRESETS = {
   core: [
@@ -55,8 +62,10 @@ const CHECK_PRESETS = {
   ],
 };
 
-const allChecks = [...new Set([...CHECK_PRESETS.core, ...CHECK_PRESETS.publish])];
-const checks = buildChecks(args.checks, args.preset);
+CHECK_PRESETS.strict = [...new Set([...CHECK_PRESETS.publish, "check:ssh-hardening-contract"])];
+
+const allChecks = [...new Set(Object.values(CHECK_PRESETS).flat())];
+const checks = buildChecks(args.checks, args.preset, strictMode);
 
 const steps = [];
 let firstFailure = null;
@@ -244,6 +253,14 @@ function parseArgs(tokens) {
       idx += 1;
       continue;
     }
+    if (key === "strict") {
+      parsed.strict = true;
+      continue;
+    }
+    if (key === "safe") {
+      parsed.safe = true;
+      continue;
+    }
     if (key === "checks") {
       const value = tokens[idx + 1];
       if (!value || value.startsWith("--")) {
@@ -262,7 +279,7 @@ function parseArgs(tokens) {
     console.log([
       "Usage: node scripts/quality-governance-publish.cjs [--json] [--ci] [--compact] [--continue] [--dry-run]",
       "       [--artifact <path>] [--write-artifact] [--auto-heal]",
-      "       [--preset core|publish] [--checks <check1,check2>]",
+      "       [--preset core|publish|strict] [--strict] [--safe] [--checks <check1,check2>]",
       "       [--summary] [--summary-artifact <path>]",
     ].join("\n"));
     process.exit(0);
@@ -338,7 +355,7 @@ function firstNonEmptyLine(text) {
     .find((line) => line.length > 0);
 }
 
-function buildChecks(checksArg, presetArg) {
+function buildChecks(checksArg, presetArg, forceStrict) {
   if (checksArg) {
     const requested = checksArg.split(",").map((value) => value.trim()).filter(Boolean);
     const unknown = requested.filter((entry) => !allChecks.includes(entry));
@@ -348,7 +365,9 @@ function buildChecks(checksArg, presetArg) {
     return requested;
   }
 
-  const preset = (presetArg || "publish").toLowerCase();
+  const preset = forceStrict
+    ? "strict"
+    : (presetArg || "publish").toLowerCase();
   if (!CHECK_PRESETS[preset]) {
     throw new Error(`Unknown preset for quality publish: ${preset}. Available: ${Object.keys(CHECK_PRESETS).join(", ")}`);
   }
