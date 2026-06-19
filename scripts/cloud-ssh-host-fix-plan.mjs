@@ -196,6 +196,7 @@ function parseArgs(tokens) {
   const parsed = {};
   for (let index = 0; index < tokens.length; index += 1) {
     const token = tokens[index];
+    if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
     if (key === "help" || key === "json" || key === "live") {
