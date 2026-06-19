@@ -1,6 +1,6 @@
 # SEIS Action Execution Plan
 
-Generated: 2026-06-19T06:11:42.541Z
+Generated: 2026-06-19T07:15:42.273Z
 Contract: seis-action-execution-lane (0.1.0)
 Mode: learned
 Run Mode: dry-run
@@ -20,3 +20,10 @@ Summary: total=5, blocked=1, awaitingApproval=3, ready=1
 - Decision: pass
 - Safety floor: pass
 - Reasons: evidence and sources present; validation evidence present
+
+## Agent Router Advisory
+- action-read: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-write: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-gate: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-deploy: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-secret: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy

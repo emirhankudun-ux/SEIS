@@ -53,6 +53,7 @@ if (existsSync(workspaceRunReportJson)) {
     runMarkdown.includes('# SEIS Action Execution Run'),
     'execution run markdown report missing title',
   );
+  ensure(runMarkdown.includes('## Agent Router Advisory'), 'execution run markdown report missing agent router advisory');
   ensure(runMarkdown.includes('## Eval Critic Advisory'), 'execution run markdown report missing eval critic advisory');
 }
 
@@ -71,6 +72,7 @@ if (existsSync(workspaceReportJson)) {
   const markdown = readText(workspaceReportMd);
   ensure(markdown.includes('# SEIS Action Execution Plan'), 'markdown report missing title');
   ensure(markdown.includes('| id | intent | decision | risk | execution | approval | status | reasons |'), 'markdown table header missing');
+  ensure(markdown.includes('## Agent Router Advisory'), 'execution markdown report missing agent router advisory');
   ensure(markdown.includes('## Eval Critic Advisory'), 'execution markdown report missing eval critic advisory');
 }
 
@@ -170,6 +172,7 @@ function validateReport(report, fileName, contractValue, reportDir, requireModel
   ensure(report.generatedAt && !Number.isNaN(Date.parse(report.generatedAt)), `${fileName}: invalid generatedAt`);
   ensure(report.mode === (requireModelChecks ? 'learned' : report.mode), `${fileName}: mode present`);
   ensure(report.policy?.contractId === (contractValue?.id || 'seis-action-execution-lane'), `${fileName}: contractId mismatch`);
+  validateRouteModel(report.policy?.routeModel, fileName);
   validateCritic(report.critic, fileName);
   ensure(Array.isArray(report.plan), `${fileName}: plan must be an array`);
   ensure(report.plan.length > 0, `${fileName}: plan should contain actions`);
@@ -194,6 +197,7 @@ function validateReport(report, fileName, contractValue, reportDir, requireModel
     ensure(typeof entry.execution.mode === 'string', `${fileName}: execution mode required`);
     ensure(allowedStatuses.has(entry.execution.status), `${fileName}: invalid execution status ${entry.execution.status}`);
     ensure(typeof entry.risk === 'string' && entry.risk.length > 0, `${fileName}: risk required`);
+    validateRoute(entry.route, fileName, entry.id);
 
     if (entry.decision === 'allow') {
       allow += 1;
@@ -290,6 +294,32 @@ function validateCritic(critic, fileName) {
   );
 }
 
+function validateRouteModel(routeModel, fileName) {
+  ensure(routeModel && typeof routeModel === 'object', `${fileName}: route model advisory required`);
+  if (!routeModel || typeof routeModel !== 'object') return;
+  ensure(routeModel.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch`);
+}
+
+function validateRoute(route, fileName, actionId) {
+  ensure(route && typeof route === 'object', `${fileName}: route required for ${actionId}`);
+  if (!route || typeof route !== 'object') return;
+
+  const allowedLanes = new Set([
+    'seis',
+    'seis-governance',
+    'seis-cloud',
+    'seis-code',
+    'seis-design',
+    'seis-data',
+  ]);
+
+  ensure(route.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch for ${actionId}`);
+  ensure(allowedLanes.has(route.laneId), `${fileName}: invalid route lane for ${actionId}`);
+  ensure(route.toolName === 'seis_plugin_integration', `${fileName}: route tool mismatch for ${actionId}`);
+  ensure(typeof route.defaultGate === 'string' && route.defaultGate.startsWith('npm run '), `${fileName}: route gate required for ${actionId}`);
+  ensure(Array.isArray(route.reasons) && route.reasons.length > 0, `${fileName}: route reasons required for ${actionId}`);
+}
+
 function validateExecutionRun(report, fileName, contractValue) {
   ensure(typeof report === 'object' && report !== null, `${fileName}: execution run report must be valid JSON`);
   if (!report) return;
@@ -305,6 +335,7 @@ function validateExecutionRun(report, fileName, contractValue) {
   for (const action of report.actions) {
     ensure(typeof action.id === 'string' && action.id.length > 0, `${fileName}: execution action id required`);
     ensure(action.execution && typeof action.execution === 'object', `${fileName}: execution action.execution required`);
+    validateRoute(action.route, fileName, action.id);
     if (action.execution.attempted) {
       attempted += 1;
     }

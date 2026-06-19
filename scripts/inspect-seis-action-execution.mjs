@@ -8,6 +8,7 @@ import {
 } from '../packages/seis-ai/src/model/permission-policy.mjs';
 import { predictPermissionPolicyAction } from '../packages/seis-ai/src/model/permission-policy-lab.mjs';
 import { predictEvalCriticReview } from '../packages/seis-ai/src/model/eval-critic-lab.mjs';
+import { predictAgentRoute } from '../packages/seis-ai/src/model/agent-router-lab.mjs';
 import { redactSecretText } from '../packages/seis-ai/src/lib/redaction.mjs';
 
 const ROOT = process.cwd();
@@ -16,6 +17,7 @@ const DEFAULT_REPORT_JSON = path.join(ROOT, 'reports', 'seis-action-execution', 
 const DEFAULT_REPORT_MARKDOWN = path.join(ROOT, 'reports', 'seis-action-execution', 'latest.md');
 const DEFAULT_WORKSPACE = ROOT;
 const EVAL_CRITIC_ARTIFACT_PATH = path.join(ROOT, 'packages', 'seis-ai', 'models', 'eval-critic-seed-v0.json');
+const AGENT_ROUTER_ARTIFACT_PATH = path.join(ROOT, 'packages', 'seis-ai', 'models', 'agent-router-seed-v0.json');
 
 const args = parseArgs(process.argv.slice(2));
 const workspace = resolveWorkspace(args.workspace);
@@ -23,6 +25,7 @@ const contract = readJsonOrExit(CONTRACT_PATH, 'missing action execution contrac
 const modelPath = resolveModelPath(args.model, ROOT, args.mode === 'learned');
 const model = modelPath ? readJsonOrExit(modelPath, `missing policy model: ${path.relative(ROOT, modelPath)}`) : null;
 const evalCriticArtifact = readJsonOrExit(EVAL_CRITIC_ARTIFACT_PATH, 'missing eval critic model artifact');
+const agentRouterArtifact = readJsonOrExit(AGENT_ROUTER_ARTIFACT_PATH, 'missing agent router model artifact');
 const approvedSet = new Set(normalizeIds(args.approve));
 const execute = Boolean(args.execute);
 const defaultRunMode = execute ? 'execute' : 'dry-run';
@@ -37,6 +40,7 @@ const decisions = evaluateActions({
   approvedIds: approvedSet,
   approveAll: Boolean(args.approveAll),
   execute,
+  agentRouterArtifact,
 });
 
 const reportJsonPath = args.jsonOut || DEFAULT_REPORT_JSON;
@@ -52,6 +56,11 @@ const report = {
     contractVersion: contract.version,
     decisionSource: model ? 'model+policy' : 'deterministic',
     dryRunDefault: !execute,
+    routeModel: agentRouterArtifact?.model
+      ? {
+          modelId: agentRouterArtifact.model.modelId || agentRouterArtifact.artifactId,
+        }
+      : null,
   },
   plan: decisions,
   input: {
@@ -226,11 +235,13 @@ function evaluateActions({
   const results = [];
   const activeModel = model && (model.modelId ? model : model.model);
   const hasModel = Boolean(activeModel && activeModel.labels);
+  const routeModel = agentRouterArtifact?.model || agentRouterArtifact || null;
 
   for (const action of actions) {
     const actionId = action.id || `action-${results.length + 1}`;
     const normalized = normalizeAction(action);
     const deterministic = classifyPermissionAction(normalized);
+    const route = routeModel ? buildRouteAdvisory(routeModel, normalized) : null;
     let finalDecision = deterministic.decision;
     let decisionSource = 'deterministic';
     let learnedDecision = null;
@@ -294,6 +305,7 @@ function evaluateActions({
       requiresExplicitApproval: requiresExplicit,
       reasons,
       capabilities: deterministic.capabilities || [],
+      route,
       execution: {
         mode: executionMode,
         status,
@@ -345,6 +357,7 @@ function evaluateExecutionReport(report, artifact, outputPaths) {
     evidence: [
       'scripts/inspect-seis-action-execution.mjs',
       'content/development/seis-action-execution-contract.json',
+      'packages/seis-ai/models/agent-router-seed-v0.json',
       path.relative(ROOT, outputPaths.jsonOut),
       path.relative(ROOT, outputPaths.mdOut),
     ],
@@ -424,6 +437,14 @@ function renderMarkdown(report) {
     lines.push(`- Reasons: ${report.critic.reasons.join('; ')}`);
   }
 
+  if (report.plan.length > 0) {
+    lines.push('');
+    lines.push('## Agent Router Advisory');
+    for (const item of report.plan) {
+      lines.push(`- ${item.id}: ${item.route?.laneId || 'unrouted'} via ${item.route?.toolName || 'none'}; gate=${item.route?.defaultGate || 'none'}`);
+    }
+  }
+
   return lines.join('\n');
 }
 
@@ -453,6 +474,24 @@ function normalizeAction(action = {}) {
     capabilities,
     externalWrite: Boolean(action.externalWrite),
     workspace: action.workspace || 'selected',
+  };
+}
+
+function buildRouteAdvisory(model, normalized) {
+  const task = {
+    text: normalized.text,
+    signals: normalized.capabilities,
+  };
+  const prediction = predictAgentRoute(model, task);
+  return {
+    modelId: model.modelId || 'seis-agent-router-seed-v0',
+    laneId: prediction.laneId,
+    learnedLaneId: prediction.learnedLaneId,
+    safetyLaneId: prediction.safetyLaneId,
+    safetyAdjusted: prediction.safetyAdjusted,
+    toolName: prediction.toolName,
+    defaultGate: prediction.defaultGate,
+    reasons: prediction.reasons,
   };
 }
 

@@ -10,6 +10,7 @@ import { redactSecretText } from '../packages/seis-ai/src/lib/redaction.mjs';
 
 import { predictPermissionPolicyAction } from '../packages/seis-ai/src/model/permission-policy-lab.mjs';
 import { predictEvalCriticReview } from '../packages/seis-ai/src/model/eval-critic-lab.mjs';
+import { predictAgentRoute } from '../packages/seis-ai/src/model/agent-router-lab.mjs';
 
 const ROOT = process.cwd();
 const CONTRACT_PATH = path.join(ROOT, 'content', 'development', 'seis-action-decision-contract.json');
@@ -26,6 +27,7 @@ const DEFAULT_REPORT_MARKDOWN = path.join(
   'latest.md',
 );
 const EVAL_CRITIC_ARTIFACT_PATH = path.join(ROOT, 'packages', 'seis-ai', 'models', 'eval-critic-seed-v0.json');
+const AGENT_ROUTER_ARTIFACT_PATH = path.join(ROOT, 'packages', 'seis-ai', 'models', 'agent-router-seed-v0.json');
 
 const args = parseArgs(process.argv.slice(2));
 const workspace = resolveWorkspace(args.workspace);
@@ -34,6 +36,7 @@ const useModel = args.mode === 'learned';
 const modelPath = resolveModelPath(args.model, ROOT, useModel);
 const model = useModel ? readJsonOrExit(modelPath, `missing policy model: ${path.relative(ROOT, modelPath)}`) : null;
 const evalCriticArtifact = readJsonOrExit(EVAL_CRITIC_ARTIFACT_PATH, 'missing eval critic model artifact');
+const agentRouterArtifact = readJsonOrExit(AGENT_ROUTER_ARTIFACT_PATH, 'missing agent router model artifact');
 
 const input = loadInput(args.input, args.intent, args.capabilities, args.summary, args.command, args.path);
 const reportJsonPath = args.jsonOut || DEFAULT_REPORT_JSON;
@@ -42,6 +45,7 @@ const report = evaluateActions(input.actions, input.scope, contract, model, {
   includeModel: useModel && Boolean(model),
   workspaceRoot: workspace,
   inputPath: input.inputPath,
+  agentRouterArtifact,
 });
 report.critic = evaluateDecisionReport(report, evalCriticArtifact, {
   jsonOut: reportJsonPath,
@@ -235,12 +239,14 @@ function evaluateActions(actions, scope, contract, model, options = {}) {
   const mode = options.includeModel ? 'learned' : 'deterministic';
   const activeModel = model && (model.modelId ? model : model.model);
   const hasModel = Boolean(activeModel && activeModel.labels);
+  const routeModel = options.agentRouterArtifact?.model || options.agentRouterArtifact || null;
   const reportScope = options.workspaceRoot || scope || 'local-repo';
 
   for (const action of actions) {
     const actionWorkspace = action.workspace || reportScope;
     const normalized = normalizeAction(action);
     const deterministic = classifyPermissionAction(normalized);
+    const route = routeModel ? buildRouteAdvisory(routeModel, normalized) : null;
     let finalDecision = deterministic.decision;
     let decisionSource = 'deterministic';
     let learnedDecision = null;
@@ -279,6 +285,7 @@ function evaluateActions(actions, scope, contract, model, options = {}) {
       command: redactText(normalized.command || ''),
       path: normalized.path || '',
       capabilities: normalized.capabilities,
+      route,
       externalWrite: Boolean(normalized.externalWrite),
       workspace: actionWorkspace,
       decision: finalDecision,
@@ -308,6 +315,12 @@ function evaluateActions(actions, scope, contract, model, options = {}) {
         ? {
             modelId:
               model.modelId || model.artifactId || model.model?.modelId || activeModel?.modelId || 'unknown',
+          }
+        : null,
+      routeModel: routeModel
+        ? {
+            modelId:
+              routeModel.modelId || options.agentRouterArtifact?.artifactId || 'seis-agent-router-seed-v0',
           }
         : null,
     },
@@ -353,6 +366,7 @@ function evaluateDecisionReport(report, artifact, outputPaths) {
     evidence: [
       'scripts/inspect-seis-action-decision.mjs',
       'content/development/seis-action-decision-contract.json',
+      'packages/seis-ai/models/agent-router-seed-v0.json',
       path.relative(ROOT, outputPaths.jsonOut),
       path.relative(ROOT, outputPaths.mdOut),
     ],
@@ -418,6 +432,16 @@ function renderMarkdownReport(report) {
       `- Safety floor: ${report.critic.safetyDecision}\n` +
       `- Reasons: ${report.critic.reasons.join('; ')}\n`
     : '';
+  const routeLines = report.decisions.length > 0
+    ? `\n\n## Agent Router Advisory\n` +
+      report.decisions
+        .map((item) => {
+          const route = item.route;
+          return `- ${item.id}: ${route?.laneId || 'unrouted'} via ${route?.toolName || 'none'}; gate=${route?.defaultGate || 'none'}`;
+        })
+        .join('\n') +
+      `\n`
+    : '';
 
   return (
     `# SEIS Action Decision Report\n\n` +
@@ -439,6 +463,7 @@ function renderMarkdownReport(report) {
     `| id | intent | decision | risk | approval | source | reasons |\n` +
     `| --- | --- | --- | --- | --- | --- | --- |\n` +
     `${decisionRows || '- | none | none | none | none | none | none |'}\n` +
+    routeLines +
     criticLines
   );
 }
@@ -455,6 +480,30 @@ function normalizeAction(item) {
     capabilities: [...new Set((asObject.capabilities || []).map(item => String(item).toLowerCase()).filter(Boolean))],
     externalWrite: Boolean(asObject.externalWrite),
     workspace: asObject.workspace || 'local-repo',
+  };
+}
+
+function buildRouteAdvisory(model, normalized) {
+  const task = {
+    text: [
+      normalized.intent,
+      normalized.summary,
+      normalized.command,
+      normalized.path,
+      normalized.capabilities.join(' '),
+    ].filter(Boolean).join(' '),
+    signals: normalized.capabilities,
+  };
+  const prediction = predictAgentRoute(model, task);
+  return {
+    modelId: model.modelId || 'seis-agent-router-seed-v0',
+    laneId: prediction.laneId,
+    learnedLaneId: prediction.learnedLaneId,
+    safetyLaneId: prediction.safetyLaneId,
+    safetyAdjusted: prediction.safetyAdjusted,
+    toolName: prediction.toolName,
+    defaultGate: prediction.defaultGate,
+    reasons: prediction.reasons,
   };
 }
 

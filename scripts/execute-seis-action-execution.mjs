@@ -237,6 +237,7 @@ function normalizeActionForExecution(action, workspaceRoot) {
     command,
     path: actionPath,
     capabilities: Array.isArray(action.capabilities) ? action.capabilities : [],
+    route: action.route || null,
     risk: action.risk || 'low',
     executionStatus: action.execution ? action.execution.status : 'unknown',
     executionReady: Boolean(action.execution?.ready),
@@ -331,6 +332,7 @@ function runAction(action, canRun, hasExplicitApproval, maxCommandSeconds) {
     path: action.path,
     command: action.command,
     capabilitySummary: [...new Set(action.capabilities || [])].sort().join(', ') || 'none',
+    route: action.route,
     execution: {
       mode: 'dry-run',
       status: action.executionStatus,
@@ -459,6 +461,7 @@ function makeDryRunResult(action, canRun, hasExplicitApproval) {
     path: action.path,
     command: action.command,
     capabilitySummary: [...new Set(action.capabilities || [])].sort().join(', ') || 'none',
+    route: action.route,
     execution: {
       mode: 'dry-run',
       status: action.blocked
@@ -529,6 +532,14 @@ function renderMarkdown(report) {
     lines.push(`- Decision: ${report.critic.decision}`);
     lines.push(`- Safety floor: ${report.critic.safetyDecision}`);
     lines.push(`- Reasons: ${report.critic.reasons.join('; ')}`);
+    lines.push('');
+  }
+
+  if (report.actions.length > 0) {
+    lines.push('## Agent Router Advisory');
+    for (const action of report.actions) {
+      lines.push(`- ${action.id}: ${action.route?.laneId || 'unrouted'} via ${action.route?.toolName || 'none'}; gate=${action.route?.defaultGate || 'none'}`);
+    }
     lines.push('');
   }
 

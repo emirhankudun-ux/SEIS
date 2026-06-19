@@ -1,6 +1,6 @@
 # SEIS Action Decision Report
 
-Generated at: 2026-06-19T06:11:37.835Z
+Generated at: 2026-06-19T07:15:42.036Z
 
 ## Context
 - Scope: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS
@@ -23,6 +23,14 @@ Generated at: 2026-06-19T06:11:37.835Z
 | action-shell | Run deterministic quality check | gate | medium | yes | model+policy | scoped_privileged_action; capabilities: shell |
 | action-deploy | Publish candidate package | approval_required | high | yes | model+policy | external_write; capabilities: deploy, network |
 | action-secret | Expose [REDACTED_TOKEN] sample | deny | critical | no | model+policy | secret_access_or_secret_like_content; capabilities: secret; model-adjusted from deny -> deny; policy safety floor enforced |
+
+
+## Agent Router Advisory
+- action-read: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-write: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-shell: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-deploy: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-secret: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
 
 
 ## Eval Critic Advisory

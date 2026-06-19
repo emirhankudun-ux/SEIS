@@ -1,0 +1,44 @@
+{
+  "id": "seis-security",
+  "displayName": "SEIS Security",
+  "version": 1,
+  "lane": "security",
+  "intent": "Threat modeling, secret-safety review, dependency and permission risk, CI/security gates, cloud access safety, SSH/VPN hardening, and release-blocking security checks.",
+  "activationPolicy": "use_when_task_requires_security_review_secret_safety_access_control_or_release_risk_under_seis",
+  "sourceEvidence": [
+    "AGENTS.md",
+    "docs/governance/seis-supreme-v12-constitution.md",
+    "content/development/seis-agent-plugin-integration.json"
+  ],
+  "helperFamilies": [
+    "Codex Security",
+    "GitHub",
+    "Cloudflare",
+    "Vercel",
+    "Supabase"
+  ],
+  "primaryPaths": [
+    "SECURITY.md",
+    ".github/workflows",
+    "scripts",
+    "plugins",
+    "docs/deployment",
+    "content/development",
+    "package.json"
+  ],
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:cloud-access-policy",
+    "npm run check:ssh-hardening-contract",
+    "npm run check:seis-ssh-access-model",
+    "npm run check:seis-god-mode-release-readiness"
+  ],
+  "guardrails": [
+    "never expose secrets or private keys",
+    "separate public cloud from team/workplace VPN cloud",
+    "keep mutating cloud or security actions behind explicit approval",
+    "prefer least privilege and reversible changes",
+    "record unresolved risks and validation gaps"
+  ]
+}

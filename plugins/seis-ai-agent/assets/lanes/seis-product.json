@@ -1,0 +1,42 @@
+{
+  "id": "seis-product",
+  "displayName": "SEIS Product",
+  "version": 1,
+  "lane": "product",
+  "intent": "Scoped SEIS product requirements, roadmap slices, acceptance criteria, UX outcomes, launch readiness, open-source positioning, and validation-backed delivery plans.",
+  "activationPolicy": "use_when_task_requires_product_scoping_roadmap_launch_or_acceptance_criteria_under_seis",
+  "sourceEvidence": [
+    "AGENTS.md",
+    "docs/governance/seis-supreme-vision.md",
+    "content/development/seis-agent-plugin-integration.json"
+  ],
+  "helperFamilies": [
+    "GitHub",
+    "Figma",
+    "Notion",
+    "Canva",
+    "Vercel"
+  ],
+  "primaryPaths": [
+    "docs",
+    "docs/platform",
+    "docs/governance",
+    "content/development",
+    "apps",
+    "plugins",
+    "reports"
+  ],
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-governance-index",
+    "npm run check:seis-god-mode-work-package"
+  ],
+  "guardrails": [
+    "turn ideas into bounded deliverable slices",
+    "define acceptance criteria and non-goals",
+    "avoid fake launch readiness claims",
+    "connect product work to real SEIS surfaces",
+    "preserve accessibility, maintainability, and open-source clarity"
+  ]
+}

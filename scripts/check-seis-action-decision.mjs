@@ -68,6 +68,7 @@ if (existsSync(workspaceReportJson)) {
     'deterministic markdown report must include title',
   );
   ensure(markdown.includes('| id | intent | decision | risk | approval | source | reasons |'), 'decision table header missing');
+  ensure(markdown.includes('## Agent Router Advisory'), 'decision markdown report missing agent router advisory');
   ensure(markdown.includes('## Eval Critic Advisory'), 'decision markdown report missing eval critic advisory');
 }
 
@@ -145,6 +146,7 @@ function validateLatestReport(report, fileName, contractValue, mode) {
     report.policy?.contractId === (contractValue?.id || 'seis-action-decision-kernel'),
     `${fileName}: contractId must match action decision contract`,
   );
+  validateRouteModel(report.policy?.routeModel, fileName);
   validateCritic(report.critic, fileName);
 
   ensure(Array.isArray(report.decisions), `${fileName}: decisions must be an array`);
@@ -160,6 +162,7 @@ function validateLatestReport(report, fileName, contractValue, mode) {
     ensure(typeof decision.id === 'string' && decision.id.length > 0, `${fileName}: decision id required`);
     ensure(typeof decision.intent === 'string', `${fileName}: decision intent required`);
     ensure(Array.isArray(decision.capabilities), `${fileName}: decision capabilities array required`);
+    validateRoute(decision.route, fileName, decision.id);
     ensure(allowedDecisions.has(decision.decision), `${fileName}: invalid decision ${decision.decision}`);
     ensure(['deterministic', 'model+policy'].includes(decision.decisionSource), `${fileName}: invalid decisionSource`);
 
@@ -253,6 +256,32 @@ function validateCritic(critic, fileName) {
     Array.isArray(critic.review?.validation) && critic.review.validation.some((item) => item.status === 'passed'),
     `${fileName}: eval critic review must include passed validation evidence`,
   );
+}
+
+function validateRouteModel(routeModel, fileName) {
+  ensure(routeModel && typeof routeModel === 'object', `${fileName}: route model advisory required`);
+  if (!routeModel || typeof routeModel !== 'object') return;
+  ensure(routeModel.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch`);
+}
+
+function validateRoute(route, fileName, actionId) {
+  ensure(route && typeof route === 'object', `${fileName}: route required for ${actionId}`);
+  if (!route || typeof route !== 'object') return;
+
+  const allowedLanes = new Set([
+    'seis',
+    'seis-governance',
+    'seis-cloud',
+    'seis-code',
+    'seis-design',
+    'seis-data',
+  ]);
+
+  ensure(route.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch for ${actionId}`);
+  ensure(allowedLanes.has(route.laneId), `${fileName}: invalid route lane for ${actionId}`);
+  ensure(route.toolName === 'seis_plugin_integration', `${fileName}: route tool mismatch for ${actionId}`);
+  ensure(typeof route.defaultGate === 'string' && route.defaultGate.startsWith('npm run '), `${fileName}: route gate required for ${actionId}`);
+  ensure(Array.isArray(route.reasons) && route.reasons.length > 0, `${fileName}: route reasons required for ${actionId}`);
 }
 
 function writeSampleInput(targetPath) {
