@@ -19,7 +19,7 @@ small PRs with clear evidence over broad rewrites.
 
 | ID | Priority | Lane | Work | Acceptance Evidence |
 | --- | --- | --- | --- | --- |
-| `SEIS-BL-001` | P0 | Repository hygiene | Review pre-existing deleted files and decide restore, replace, or intentional removal. | `git status` no longer contains unexplained deletions; decision recorded in review docs. |
+| `SEIS-BL-001` | P0 | Repository hygiene | Review pre-existing deleted files and decide restore, replace, or intentional removal. | `docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md` records current classification; final acceptance requires `git status` no longer contain unexplained deletions. |
 | `SEIS-BL-002` | P0 | Governance | Restore or replace the AGENTS-linked constitution and governance docs if still official. | `AGENTS.md` links resolve; governance docs match current `main`/SEIS direction. |
 | `SEIS-BL-003` | P0 | Validation | Restore or update deleted validation scripts without weakening checks. | `npm run check:foundation` can run to a meaningful pass/fail state. |
 | `SEIS-BL-004` | P0 | Repository hygiene | Classify untracked `apps/SEIS/` nested repo copy. | Folder is excluded, archived, or selectively integrated through review; no nested `.git` is staged. |

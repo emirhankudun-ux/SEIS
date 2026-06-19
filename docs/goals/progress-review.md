@@ -23,7 +23,7 @@ does not claim that the full Goal Tracking OS has been implemented.
 
 | Blocker | Impact | Next safe action |
 | --- | --- | --- |
-| Pre-existing tracked deletions | Foundation checks and public/release readiness remain blocked. | Resolve in a repository hygiene PR. |
+| Pre-existing tracked deletions | Foundation checks and public/release readiness remain blocked. | Use [`../reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md`](../reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md) to drive a repository hygiene PR. |
 | Missing governance docs and validation scripts | `npm run check:foundation` cannot pass. | Restore, replace, or intentionally remove with review. |
 | No Goal Tracking Center implementation | Goal Tracking OS is docs/planning only for now. | Build static/manual view and fixture records later. |
 | Live GitHub PR state unknown | PR recovery and current PR status cannot be shown as verified. | Query GitHub only after approval. |

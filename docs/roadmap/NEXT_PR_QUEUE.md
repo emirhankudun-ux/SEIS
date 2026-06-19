@@ -13,7 +13,7 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Type | Docs and repository hygiene |
 | Priority | P0 |
 | Goal | Resolve pre-existing deletions or record intentional removals, then make foundation checks runnable. |
-| Include | Review deleted governance docs, deleted scripts, deleted package files, and missing root source-of-truth docs. |
+| Include | Use `docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md` to review deleted governance docs, deleted scripts, deleted package files, and missing root source-of-truth docs. |
 | Exclude | Push, merge, branch deletion, generated archives, nested repo import. |
 | Validation | `git status --short`, `npm run check:foundation`, `npm run seis:check` when scripts are restored or replaced. |
 | Approval needed | File deletion, if any deleted files are intentionally removed instead of restored. |

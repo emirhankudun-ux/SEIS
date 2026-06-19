@@ -26,6 +26,7 @@ broad file search.
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Full foundation review from the current inspection pass. | Active |
 | [product/SEIS_NON_LLM_PLATFORM_MISSION.md](product/SEIS_NON_LLM_PLATFORM_MISSION.md) | Non-LLM Command Center and Platform OS mission. | Active |
 | [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
+| [reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md](reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md) | Classification of unresolved tracked deletions and safe recovery actions. | Active |
 
 ## Goal Tracking OS
 

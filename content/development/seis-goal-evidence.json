@@ -154,6 +154,30 @@
         "Known hardcoded local plugin path cleanup remains tracked in the backlog."
       ],
       "next_action": "Run full public-readiness security scan after repository hygiene blockers are resolved."
+    },
+    {
+      "id": "SEIS-EVID-007",
+      "title": "Tracked deletion set classified for recovery",
+      "type": "review",
+      "status": "partial",
+      "observed_at": "2026-06-19",
+      "command": "manual deletion review from git status and git ls-tree",
+      "supports_goal_ids": [
+        "SEIS-GOAL-004",
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007"
+      ],
+      "related_paths": [
+        "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "The 47 deleted tracked paths were classified by role, validation impact, and next safe recovery action without staging or committing deletions.",
+      "limitations": [
+        "Review does not approve deletion, restoration, or replacement.",
+        "Foundation validation remains blocked until P0 governance files are restored or replaced."
+      ],
+      "next_action": "Use the deletion review to drive a focused repository hygiene PR."
     }
   ]
 }

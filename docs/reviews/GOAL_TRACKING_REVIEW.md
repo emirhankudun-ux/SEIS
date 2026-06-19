@@ -30,6 +30,8 @@ progress review, review cadence, and Command Center product planning.
 - Goal Tracking OS now has structured local JSON records and a non-LLM validator.
 - Goal Tracking OS now has a structured evidence ledger for validation,
   blocker, repository-state, commit, review, and scoped security-scan records.
+- Repository hygiene deletion blocker now has a classified review record:
+  [`REPOSITORY_HYGIENE_DELETION_REVIEW.md`](REPOSITORY_HYGIENE_DELETION_REVIEW.md).
 - Goal statuses are evidence-aware and avoid fake completion.
 - Goal Tracking Center is connected to Command Center as a planned module.
 
