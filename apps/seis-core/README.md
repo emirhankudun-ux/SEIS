@@ -6,7 +6,8 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, 10-lane SEIS router visibility, architecture evidence, automation evidence, security evidence, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, command palette, settings, and dashboard rendering.
+- `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -60,6 +61,7 @@ apps/seis-core/
 - Create goals locally.
 - Compose God Mode missions and route them through Plan, Build, Review, and Validate lanes.
 - Inspect the 10-lane SEIS router output as `tool`, `seisLane`, and `defaultGate` before handoff.
+- Regenerate the router ledger with `npm run automation:seis-command-center-router` when CLI routing policy changes.
 - Inspect SEIS AI setup for permission policy, memory ranking, agent routing, and local draft model work.
 - Inspect feature growth coverage across Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff before any completion claim.
 - Inspect Operations Readiness across release, CI, security, rollback, and handoff evidence before treating work as shippable.
@@ -109,4 +111,5 @@ Open `http://127.0.0.1:4174/`.
 
 ```bash
 node --test apps/seis-core/test/*.test.js
+npm run check:seis-command-center-router
 ```

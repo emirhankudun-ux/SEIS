@@ -306,7 +306,7 @@ const seisAiSetup = [
   }
 ];
 
-const seisRouterLanes = [
+const fallbackSeisRouterLanes = [
   {
     laneId: "seis",
     label: "SEIS Hub",
@@ -418,6 +418,19 @@ const seisRouterLanes = [
     status: "Active"
   }
 ];
+
+let seisRouterArtifact = {
+  artifactId: "seis-command-center-router-fallback",
+  sourcePolicy: "embedded fallback",
+  routeCount: fallbackSeisRouterLanes.length,
+  summary: {
+    lanes: fallbackSeisRouterLanes.length,
+    ready: fallbackSeisRouterLanes.filter((lane) => lane.status === "Ready").length,
+    safetyFloor: "seis-security",
+    routeSources: ["fallback"]
+  },
+  routes: fallbackSeisRouterLanes
+};
 
 const godModeGuardrails = [
   {
@@ -1570,12 +1583,14 @@ function renderGodMode() {
 }
 
 function renderSeisRouter() {
-  const readyLanes = seisRouterLanes.filter((lane) => lane.status === "Ready").length;
+  const lanes = getSeisRouterLanes();
+  const readyLanes = lanes.filter((lane) => lane.status === "Ready").length;
+  const routeSource = seisRouterArtifact.summary?.routeSources?.join(" / ") || seisRouterArtifact.sourcePolicy || "fallback";
   $("#seis-router-summary").innerHTML = [
-    ["Lanes", seisRouterLanes.length, "SEIS router labels"],
+    ["Lanes", lanes.length, "SEIS router labels"],
     ["Ready", readyLanes, "lanes with visible gates"],
     ["Safety Floor", "seis-security", "secret and vulnerability intents"],
-    ["Default Source", "agent-router-seed-v0", "packages/seis-ai/models"]
+    ["Policy Source", routeSource, seisRouterArtifact.sourcePolicy || "embedded fallback"]
   ].map(([label, value, detail]) => `
     <article class="router-summary-card">
       <span>${label}</span>
@@ -1584,7 +1599,7 @@ function renderSeisRouter() {
     </article>
   `).join("");
 
-  $("#seis-router-lanes").innerHTML = seisRouterLanes.map((lane) => `
+  $("#seis-router-lanes").innerHTML = lanes.map((lane) => `
     <article class="router-lane-card">
       <div class="card-topline">
         <h3>${lane.label}</h3>
@@ -1611,6 +1626,34 @@ function renderSeisRouter() {
       </div>
     </article>
   `).join("");
+}
+
+function getSeisRouterLanes() {
+  return Array.isArray(seisRouterArtifact.routes) && seisRouterArtifact.routes.length > 0
+    ? seisRouterArtifact.routes
+    : fallbackSeisRouterLanes;
+}
+
+async function loadSeisRouterArtifact() {
+  try {
+    const response = await fetch("data/seis-router-routes.json", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`artifact request failed with ${response.status}`);
+    }
+    const artifact = await response.json();
+    if (!Array.isArray(artifact.routes) || artifact.routes.length === 0) {
+      throw new Error("artifact has no routes");
+    }
+    seisRouterArtifact = artifact;
+  } catch (error) {
+    seisRouterArtifact = {
+      ...seisRouterArtifact,
+      loadError: error.message,
+      sourcePolicy: `${seisRouterArtifact.sourcePolicy} (fallback active)`
+    };
+  }
+  renderSeisRouter();
+  renderAgentRoutingMatrix();
 }
 
 function renderFeatureGrowthLedger() {
@@ -1785,7 +1828,11 @@ function renderAgents() {
     </article>
   `).join("");
 
-  $("#agent-routing-matrix").innerHTML = seisRouterLanes.map((lane) => `
+  renderAgentRoutingMatrix();
+}
+
+function renderAgentRoutingMatrix() {
+  $("#agent-routing-matrix").innerHTML = getSeisRouterLanes().map((lane) => `
     <article class="routing-matrix-row">
       <div>
         <strong>${lane.laneId}</strong>
@@ -2225,3 +2272,4 @@ $("#density-toggle").checked = state.settings.compact;
 $("#motion-toggle").checked = state.settings.reduceMotion;
 bindEvents();
 render();
+loadSeisRouterArtifact();

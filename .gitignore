@@ -133,7 +133,11 @@ ios/
 !packages/seis-ai/models/eval-critic-seed-v0.json
 !packages/seis-ai/data/agent-router-seed-v0.json
 !packages/seis-ai/models/agent-router-seed-v0.json
+!apps/seis-core/data/seis-router-routes.json
 !packages/seis-ai/models/seis-model-family-registry.json
+!packages/seis-ai/models/seis-model-promotion-policy.json
+!apps/seis-core/data/seis-router-routes.json
+!apps/seis-core/data/seis-router-routes.json
 !content/development/seis-god-mode-runtime-evidence.json
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json

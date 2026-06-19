@@ -1,0 +1,246 @@
+{
+  "artifactId": "seis-command-center-router-routes",
+  "schemaVersion": "1.0.0",
+  "generatedBy": "scripts/create-seis-command-center-router-artifact.cjs",
+  "sourcePolicy": "scripts/ai-routing-policy.cjs#chooseAutoRoute",
+  "sourceModel": "packages/seis-ai/models/agent-router-seed-v0.json",
+  "routeCount": 10,
+  "summary": {
+    "lanes": 10,
+    "ready": 7,
+    "safetyFloor": "seis-security",
+    "routeSources": [
+      "seis-agent-router-seed-v0"
+    ]
+  },
+  "routes": [
+    {
+      "laneId": "seis",
+      "expectedLaneId": "seis",
+      "label": "SEIS Hub",
+      "owner": "Architect Agent",
+      "status": "Ready",
+      "intent": "Create the God Mode architecture roadmap scope ecosystem coordination plan.",
+      "signal": "Architecture, roadmap, ecosystem coordination, and God Mode scope.",
+      "handoff": "Frame the mission, risk boundary, validation evidence, and rollback path.",
+      "tool": "openai",
+      "selectedTool": "openai",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis",
+      "safetyLaneId": "seis",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis",
+        "matched seis"
+      ]
+    },
+    {
+      "laneId": "seis-governance",
+      "expectedLaneId": "seis-governance",
+      "label": "Governance",
+      "owner": "Documentation Agent",
+      "status": "Ready",
+      "intent": "Prepare release quality license governance policy handoff evidence.",
+      "signal": "Release readiness, quality gates, license posture, and handoff evidence.",
+      "handoff": "Attach governance proof before commit, push, or completion claims.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-specialist-plugins",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-governance",
+      "safetyLaneId": "seis-governance",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-governance",
+        "matched release_sensitive",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-cloud",
+      "expectedLaneId": "seis-cloud",
+      "label": "Cloud",
+      "owner": "DevOps Agent",
+      "status": "Review",
+      "intent": "Check cloud deployment provider ssh vpn rollback cost readiness.",
+      "signal": "Cloud, SSH, VPN, deployment, rollback, cost, and provider readiness.",
+      "handoff": "Keep local, GitHub, and SEIS Cloud boundaries explicit before access changes.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:cloud-access-policy",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-cloud",
+      "safetyLaneId": "seis-cloud",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-cloud",
+        "matched external_runtime",
+        "matched seis-cloud",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-code",
+      "expectedLaneId": "seis-code",
+      "label": "Code",
+      "owner": "Frontend Agent",
+      "status": "Ready",
+      "intent": "Use codex primary execution for code MCP tool runtime bug tests package patch.",
+      "signal": "Code changes, MCP tools, runtime fixes, tests, and package scripts.",
+      "handoff": "Implement the smallest durable slice and leave validation hooks visible.",
+      "tool": "codex",
+      "selectedTool": "codex",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-plugin-bundle",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-code",
+      "safetyLaneId": "seis-code",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-code",
+        "matched seis-code"
+      ]
+    },
+    {
+      "laneId": "seis-design",
+      "expectedLaneId": "seis-design",
+      "label": "Design",
+      "owner": "Design System Agent",
+      "status": "Ready",
+      "intent": "Open design visual prototype for UI UX accessibility responsive motion layout.",
+      "signal": "UI hierarchy, accessibility, motion, responsive behavior, and design tokens.",
+      "handoff": "Preserve calm density while making the operational state easier to scan.",
+      "tool": "open-design",
+      "selectedTool": "open-design",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:motion-evidence",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-design",
+      "safetyLaneId": "seis-design",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-design",
+        "matched seis-design"
+      ]
+    },
+    {
+      "laneId": "seis-data",
+      "expectedLaneId": "seis-data",
+      "label": "Data",
+      "owner": "AI Systems Agent",
+      "status": "Ready",
+      "intent": "Transform dataset memory schema provenance training report RAG quality evidence.",
+      "signal": "Datasets, memory, provenance, schemas, training evidence, and quality signals.",
+      "handoff": "Keep synthetic data, source policy, and redaction boundaries attached.",
+      "tool": "interpreter",
+      "selectedTool": "interpreter",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:plugin-capability-lanes",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-data",
+      "safetyLaneId": "seis-data",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-data",
+        "matched seis-data",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-security",
+      "expectedLaneId": "seis-security",
+      "label": "Security",
+      "owner": "Security Agent",
+      "status": "Ready",
+      "intent": "Audit secret token credential redaction vulnerability permission hardening exposure security risk.",
+      "signal": "Secrets, private keys, vulnerabilities, hardening, permissions, and risk.",
+      "handoff": "Apply the safety floor before any lower-risk lane can execute.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-security",
+      "safetyLaneId": "seis-security",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-security",
+        "matched secret_sensitive",
+        "matched seis-governance",
+        "matched seis-security"
+      ]
+    },
+    {
+      "laneId": "seis-research",
+      "expectedLaneId": "seis-research",
+      "label": "Research",
+      "owner": "Research Agent",
+      "status": "Active",
+      "intent": "Browser research official documentation standards version compatibility source quality.",
+      "signal": "Official docs, standards, compatibility, source quality, and evidence checks.",
+      "handoff": "Convert external assumptions into cited evidence before architecture decisions.",
+      "tool": "gemini",
+      "selectedTool": "gemini",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-research",
+      "safetyLaneId": "seis-research",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-research",
+        "matched seis-governance",
+        "matched seis-research"
+      ]
+    },
+    {
+      "laneId": "seis-automation",
+      "expectedLaneId": "seis-automation",
+      "label": "Automation",
+      "owner": "DevOps Agent",
+      "status": "Ready",
+      "intent": "Prepare idempotent dry-run automation workflow scheduled runbook generator repeatable failure-handling validation output.",
+      "signal": "Idempotent workflows, schedules, runbooks, dry-runs, and rollback steps.",
+      "handoff": "Make every automated action explainable, reversible, and evidence-producing.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-automation",
+      "safetyLaneId": "seis-automation",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-automation",
+        "matched seis-automation",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-product",
+      "expectedLaneId": "seis-product",
+      "label": "Product",
+      "owner": "Architect Agent",
+      "status": "Active",
+      "intent": "Define product requirements acceptance launch outcome milestone roadmap-slice user-jobs non-goals.",
+      "signal": "Requirements, acceptance criteria, launch readiness, user outcomes, and non-goals.",
+      "handoff": "Translate strategy into one shippable roadmap slice with explicit boundaries.",
+      "tool": "openai",
+      "selectedTool": "openai",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-product",
+      "safetyLaneId": "seis-product",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-product",
+        "matched seis-product"
+      ]
+    }
+  ]
+}
