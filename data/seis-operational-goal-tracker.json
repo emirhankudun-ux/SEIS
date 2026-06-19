@@ -36,7 +36,7 @@
       "priority": "P1",
       "status": "active",
       "risks": ["Plugin metadata drift", "Legacy personal plugin path assumptions"],
-      "validation": ["npm run check:seis-specialist-plugins -- --include-legacy-personal", "npm run check:seis-master-prompt"],
+      "validation": ["npm run check:seis-specialist-plugins", "npm run check:seis-master-prompt"],
       "validationStatus": "pending",
       "lastValidation": {"status": "pending", "evidence": "Plugin checks should run after skill or manifest changes."},
       "successCriteria": ["Repo-contained plugin surfaces remain required", "Legacy personal paths are optional when absent in CI"],

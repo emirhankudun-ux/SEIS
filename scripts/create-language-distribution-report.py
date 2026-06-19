@@ -668,11 +668,22 @@ def runtime_readiness():
             continue
         result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
         output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
+        if result.returncode != 0:
+            runtimes.append(
+                {
+                    "id": runtime_id,
+                    "command": " ".join(command),
+                    "available": False,
+                    "exitCode": result.returncode,
+                    "version": f"command failed with exit code {result.returncode}; verify local {runtime_id} toolchain configuration",
+                }
+            )
+            continue
         runtimes.append(
             {
                 "id": runtime_id,
                 "command": " ".join(command),
-                "available": result.returncode == 0,
+                "available": True,
                 "exitCode": result.returncode,
                 "version": output[:300] if output else None,
             }

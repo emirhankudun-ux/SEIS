@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1715982,
+      "githubBytes": 1716677,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 506913,
+      "githubBytes": 507345,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",

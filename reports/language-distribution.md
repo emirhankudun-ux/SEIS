@@ -1,21 +1,21 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 864
-- Counted bytes: 4837915
-- JavaScript: 1715982 bytes (35.47%)
+- Counted files: 865
+- Counted bytes: 4839256
+- JavaScript: 1716677 bytes (35.47%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 3333427
+- Additional non-JavaScript bytes needed for strict target: 3335396
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 1715982 | 35.47% | JavaScript |
+| JavaScript | 1716677 | 35.47% | JavaScript |
 | TypeScript | 411787 | 8.51% | TypeScript |
 | Objective-C | 8447 | 0.17% | Objective-C |
-| Other | 2701699 | 55.84% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2702345 | 55.84% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -30,26 +30,26 @@
 | TypeScript / JavaScript tooling | 43.98% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.49% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.61% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 3.3% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
-| Windows / .NET | 0.17% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
+| Go / Infrastructure | 3.32% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Windows / .NET | 0.16% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
 | HTML / CSS previews | 8.82% | 0.0-3.0% | `above_target` | HTML, CSS |
 
-Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
+Unassigned counted languages: 3.38% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 1715982 | 35.47% |
-| JSON | 789281 | 16.31% |
-| Swift | 574078 | 11.87% |
-| Python | 506913 | 10.48% |
+| JavaScript | 1716677 | 35.47% |
+| JSON | 789211 | 16.31% |
+| Swift | 574078 | 11.86% |
+| Python | 507345 | 10.48% |
 | TypeScript | 411787 | 8.51% |
 | CSS | 287432 | 5.94% |
 | HTML | 139289 | 2.88% |
 | Shell | 97083 | 2.01% |
-| Other | 42047 | 0.87% |
-| YAML | 38225 | 0.79% |
+| Other | 41564 | 0.86% |
+| YAML | 38303 | 0.79% |
 | Go | 16806 | 0.35% |
 | Java | 16392 | 0.34% |
 | Scheme | 15747 | 0.33% |
@@ -105,10 +105,10 @@ Unassigned counted languages: 3.39% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `node` | yes | `v24.16.0` |
 | `python3` | yes | `Python 3.9.6` |
 | `go` | yes | `go version go1.26.4 darwin/amd64` |
-| `rustc` | no | `error: Missing manifest in toolchain 'stable-x86_64-apple-darwin'` |
+| `rustc` | no | `command failed with exit code 1; verify local rustc toolchain configuration` |
 | `swift` | yes | `detected; package tests handle configured toolchain readiness` |
 | `javac` | yes | `javac 21.0.11` |
-| `dart` | yes | `Dart SDK version: 3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on "macos_x64"` |
+| `dart` | no | `command failed with exit code 1; verify local dart toolchain configuration` |
 
 ## Next Migration Order
 
