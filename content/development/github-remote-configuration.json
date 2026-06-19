@@ -17,7 +17,7 @@
   },
   "publishReadiness": {
     "remoteConfigured": true,
-    "networkProbe": "blocked-by-environment-connect-tunnel-403",
+    "networkProbe": "Branch protection and signature rules can still block or warn on direct pushes",
     "pushAllowed": false,
     "pushRequires": [
       "switch or publish from main",
