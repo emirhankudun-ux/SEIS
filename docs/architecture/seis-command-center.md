@@ -34,6 +34,18 @@ The primary check is `npm run test:seis-command-center`, which validates require
 
 The next evolution is to connect the local command model to repository health, plugin bundle status, CI signals, security reports, and AI-agent workflow evidence. These integrations should be added as small, reversible adapters that preserve the local-first shell and keep the command surface usable offline.
 
+## AI Core And App Contracts
+
+Command Center and SEIS AI Core share the same operational objects: model
+routes, prompt versions, agent tasks, approval requests, evaluation results,
+audit events, repository findings, documentation status, security findings,
+roadmap items, and module maturity levels. The contract map is maintained at
+`docs/architecture/ai-core-app-shared-contracts.md`.
+
+The app-facing product foundation is maintained under `docs/product/`. These
+documents describe intended Command Center views without claiming those views
+are fully implemented in the current shell.
+
 ## Platform Phases
 
 - Phase 1: HTML, CSS, and JavaScript static command shell with dependency-free local workflows.

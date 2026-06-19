@@ -192,6 +192,12 @@ read/write workflows are routed through explicit safety gates.
 | Path | Purpose |
 | --- | --- |
 | [`packages/seis-ai`](./packages/seis-ai) | AI agent CLI, MCP server, audit tools, prompts, resources, and tests |
+| [`packages/model-router`](./packages/model-router) | Foundation contract for provider-neutral model routing and privacy modes |
+| [`packages/prompt-engine`](./packages/prompt-engine) | Foundation contract for prompt versioning, metadata, and regression support |
+| [`packages/agent-runtime`](./packages/agent-runtime) | Foundation contract for supervised agent roles, approvals, and audit state |
+| [`packages/evals`](./packages/evals) | Foundation contract for prompt, route, agent, app-state, and future model evaluations |
+| [`packages/tool-registry`](./packages/tool-registry) | Foundation contract for tools, plugins, permissions, and risk classes |
+| [`packages/shared-types`](./packages/shared-types) | Foundation contract for shared AI Core and Command Center data shapes |
 | [`mcp`](./mcp) | SEIS MCP server entrypoints and integration surface |
 | [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
 | [`plugins/seis-ai-agent`](./plugins/seis-ai-agent) | SEIS-Agent unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation |
@@ -205,6 +211,7 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go governance and readiness policy contracts |
 | [`polyglot`](./polyglot) | Cross-language audit lanes and platform proof-of-concept surfaces |
 | [`apps/web`](./apps/web) | Browser-facing product and documentation surface |
+| [`apps/command-center`](./apps/command-center) | Command Center documentation placeholder; current implementation evidence remains in `apps/seis-core` |
 | [`apps/android`](./apps/android) | Android direction and validation notes |
 | [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |
 | [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
