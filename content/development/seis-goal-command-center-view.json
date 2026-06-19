@@ -17,9 +17,9 @@
       "active": 4,
       "blocked": 3
     },
-    "totalEvidenceRecords": 9,
+    "totalEvidenceRecords": 10,
     "evidenceByStatus": {
-      "passed": 5,
+      "passed": 6,
       "blocked": 2,
       "observed": 1,
       "partial": 1
@@ -62,7 +62,7 @@
     {
       "id": "evidence-records",
       "label": "Evidence records",
-      "value": 9,
+      "value": 10,
       "status": "active",
       "description": "Structured proof, blocker, validation, and review records."
     },
@@ -102,13 +102,14 @@
           "content/development/seis-goal-execution.json",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html",
           "docs/reviews/GOAL_TRACKING_REVIEW.md"
         ],
         "blockers": [
           "Command Center UI implementation is not built yet"
         ],
         "validationMethod": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
-        "nextAction": "Keep structured goal data in sync with docs and add Command Center fixture rendering."
+        "nextAction": "Keep structured goal data, generated view model, and static Command Center page in sync."
       },
       {
         "id": "SEIS-GOAL-004",
@@ -260,7 +261,8 @@
         "evidenceLinks": [
           "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
           "docs/goals/command-center-view-model.md",
-          "content/development/seis-goal-command-center-view.json"
+          "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html"
         ],
         "nextAction": "Build static/manual Command Center views from docs and fixture data."
       },
@@ -281,9 +283,10 @@
           "content/development/seis-goal-execution.json",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html",
           "docs/reviews/GOAL_TRACKING_REVIEW.md"
         ],
-        "nextAction": "Keep structured goal data in sync with docs and add Command Center fixture rendering."
+        "nextAction": "Keep structured goal data, generated view model, and static Command Center page in sync."
       },
       {
         "category": "Repository Intelligence",
@@ -572,9 +575,10 @@
         ],
         "evidenceIds": [
           "SEIS-EVID-001",
-          "SEIS-EVID-009"
+          "SEIS-EVID-009",
+          "SEIS-EVID-010"
         ],
-        "nextAction": "Render the generated view model in a static/manual Command Center Goal Tracking surface."
+        "nextAction": "Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated."
       },
       {
         "id": "SEIS-TASK-004",
@@ -786,6 +790,22 @@
           "Does not resolve repository hygiene blockers or foundation validation failures."
         ],
         "nextAction": "Render the generated view model in the Command Center Goal Tracking Center."
+      },
+      {
+        "id": "SEIS-EVID-010",
+        "title": "Static Goal Tracking Center page generated",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "summary": "A static, non-LLM Goal Tracking Center page was generated from the Command Center view model and passed the local freshness check.",
+        "limitations": [
+          "Does not prove deployment or live application routing.",
+          "Does not resolve repository hygiene blockers or foundation validation failures."
+        ],
+        "nextAction": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
       }
     ],
     "decisions": [
@@ -873,7 +893,8 @@
         "evidenceLinks": [
           "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
           "docs/goals/command-center-view-model.md",
-          "content/development/seis-goal-command-center-view.json"
+          "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html"
         ],
         "nextAction": "Build static/manual Command Center views from docs and fixture data."
       },

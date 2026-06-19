@@ -55,6 +55,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-007` | partial | Repository hygiene | Tracked deletion set classified for recovery without approving deletion. |
 | `SEIS-EVID-008` | passed | Goal execution | Execution registry validates tasks, subtasks, blockers, decisions, and references. |
 | `SEIS-EVID-009` | passed | Command Center view | Generated Command Center view model passed freshness validation. |
+| `SEIS-EVID-010` | passed | Command Center static page | Generated static Goal Tracking Center page passed freshness validation. |
 
 ## Validation
 
@@ -65,4 +66,4 @@ npm run check:goal-tracking
 ```
 
 The validator checks the goal registry, required goal docs, evidence ledger,
-execution board, and generated Command Center view model.
+execution board, generated Command Center view model, and generated static page.

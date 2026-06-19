@@ -4,6 +4,7 @@ const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
 const commandCenterViewPath = "content/development/seis-goal-command-center-view.json";
+const commandCenterStaticPath = "apps/command-center/goal-tracking/index.html";
 const sensitiveTextPatterns = [
   new RegExp(["/", "Users"].join(""), "i"),
   new RegExp(`file:${"/".repeat(2)}|vscode:${"/".repeat(2)}`, "i"),
@@ -103,6 +104,10 @@ if (!existsSync(executionPath)) {
 
 if (!existsSync(commandCenterViewPath)) {
   failures.push(`missing Goal Command Center view: ${commandCenterViewPath}`);
+}
+
+if (!existsSync(commandCenterStaticPath)) {
+  failures.push(`missing Goal Command Center static surface: ${commandCenterStaticPath}`);
 }
 
 const registry = existsSync(registryPath)
@@ -351,6 +356,10 @@ if (commandCenterView) {
   validateCommandCenterView(commandCenterView);
 }
 
+if (existsSync(commandCenterStaticPath)) {
+  validateCommandCenterStatic(readFileSync(commandCenterStaticPath, "utf8"));
+}
+
 if (failures.length > 0) {
   console.error("SEIS goal tracking check failed:");
   for (const failure of failures) {
@@ -375,7 +384,8 @@ console.log(JSON.stringify({
   executionTasks: executionRegistry.tasks.length,
   executionBlockers: executionRegistry.blockers.length,
   executionDecisions: executionRegistry.decisions.length,
-  commandCenterView: commandCenterView.id
+  commandCenterView: commandCenterView.id,
+  commandCenterStatic: commandCenterStaticPath
 }, null, 2));
 
 function hasUnavailableEvidence(goal) {
@@ -713,6 +723,30 @@ function validateCommandCenterView(view) {
 
   if (!view.uxGuards?.some((guard) => guard.id === "completed-needs-evidence")) {
     failures.push(`${label} must expose completed-needs-evidence UX guard`);
+  }
+}
+
+function validateCommandCenterStatic(html) {
+  const requiredText = [
+    "data-seis-goal-center",
+    "Goal Tracking Center",
+    "Next Action Queue",
+    "Active Blockers",
+    "Validation Status",
+    "Readiness Connections",
+    "UX Guardrails",
+    "SEIS-BLOCKER-001",
+    "SEIS-TASK-001"
+  ];
+
+  for (const text of requiredText) {
+    if (!html.includes(text)) {
+      failures.push(`static Goal Tracking Center missing: ${text}`);
+    }
+  }
+
+  if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {
+    failures.push("static Goal Tracking Center must not render fake progress bars or percentages");
   }
 }
 

@@ -13,6 +13,10 @@ It is generated from:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 
+The first generated static page is:
+
+[`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html)
+
 ## Purpose
 
 The view model gives Command Center a non-LLM Goal Tracking Center data surface.
@@ -49,6 +53,18 @@ Check:
 npm run check:goal-command-center-view
 ```
 
+Generate the static page:
+
+```bash
+npm run automation:goal-command-center-static
+```
+
+Check the static page:
+
+```bash
+npm run check:goal-command-center-static
+```
+
 Full Goal Tracking OS check:
 
 ```bash
@@ -63,7 +79,7 @@ view must surface blockers rather than hide them.
 
 ## Non-Goals
 
-- This is not a full UI implementation.
+- This is not a full routed Command Center application.
 - This is not a live GitHub integration.
 - This is not release or public readiness.
 - This is not LLM-generated status.

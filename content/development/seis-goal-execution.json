@@ -142,7 +142,8 @@
       ],
       "evidence_ids": [
         "SEIS-EVID-001",
-        "SEIS-EVID-009"
+        "SEIS-EVID-009",
+        "SEIS-EVID-010"
       ],
       "related_paths": [
         "docs/product/goal-tracking-center.md",
@@ -150,7 +151,9 @@
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-command-center-view.json",
-        "scripts/create-goal-command-center-view.mjs"
+        "apps/command-center/goal-tracking/index.html",
+        "scripts/create-goal-command-center-view.mjs",
+        "scripts/create-goal-command-center-static.mjs"
       ],
       "subtasks": [
         {
@@ -162,12 +165,12 @@
         {
           "id": "SEIS-SUBTASK-007",
           "title": "Render blocked items visibly",
-          "status": "planned",
-          "next_action": "Ensure blocked goals show blocker id, evidence id, and required next action."
+          "status": "active",
+          "next_action": "Keep blocker ids, evidence ids, and required next actions visible in the generated static page."
         }
       ],
-      "next_action": "Render the generated view model in a static/manual Command Center Goal Tracking surface.",
-      "notes": "A generated view model exists; no UI implementation is claimed yet."
+      "next_action": "Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated.",
+      "notes": "A generated static page exists; deployment and live app routing are not claimed."
     },
     {
       "id": "SEIS-TASK-004",

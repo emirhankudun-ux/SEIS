@@ -1,0 +1,1034 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>SEIS Goal Tracking Center</title>
+  <style>
+    :root {
+      --bg: #f4f3ef;
+      --panel: #ffffff;
+      --panel-2: #f8f9f7;
+      --line: #d7dcd6;
+      --text: #202326;
+      --muted: #626b72;
+      --soft: #8b949b;
+      --blue: #2f6fed;
+      --green: #248a52;
+      --yellow: #9a6500;
+      --red: #c2413c;
+      --focus: #7656d6;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      border-right: 1px solid var(--line);
+      background: #111315;
+      color: #f5f3ee;
+      padding: 20px 16px;
+      overflow: auto;
+    }
+
+    .brand {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .brand strong {
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .brand span,
+    .nav-label,
+    .meta-label,
+    .card-label,
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .sidebar .brand span {
+      color: #aeb7b2;
+    }
+
+    .nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav a {
+      color: #c9d0cc;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+
+    .nav a:focus-visible,
+    .nav a:hover {
+      color: #ffffff;
+      background: #242928;
+      outline: 2px solid transparent;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 28px;
+      line-height: 1.15;
+      font-weight: 680;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .status-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 3px 8px;
+      color: var(--muted);
+      background: var(--panel);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--soft);
+    }
+
+    .badge.active::before,
+    .badge.passed::before {
+      background: var(--green);
+    }
+
+    .badge.planned::before,
+    .badge.partial::before,
+    .badge.observed::before {
+      background: var(--yellow);
+    }
+
+    .badge.blocked::before {
+      background: var(--red);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .cards {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      margin: 18px 0;
+    }
+
+    .card,
+    .row,
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .card {
+      min-height: 112px;
+      padding: 14px;
+      display: grid;
+      align-content: space-between;
+      gap: 10px;
+    }
+
+    .card-value {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .section-grid {
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
+      align-items: start;
+      margin-top: 18px;
+    }
+
+    .panel {
+      padding: 12px 0;
+    }
+
+    .stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row {
+      padding: 12px;
+      background: var(--panel-2);
+    }
+
+    .row-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .row-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .next-action {
+      color: var(--text);
+      margin-top: 8px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .table-wrap {
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--line);
+      padding: 10px;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      background: #eef1ed;
+      position: sticky;
+      top: 0;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 1120px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .cards {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .section-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .main {
+        padding: 18px;
+      }
+
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" data-seis-goal-center data-state="blocked_by_repository_hygiene">
+    <aside class="sidebar" aria-label="Goal Tracking Center navigation">
+      <div class="brand">
+        <strong>SEIS Command Center</strong>
+        <span>Goal Tracking OS</span>
+      </div>
+      <nav class="nav" aria-label="Goal Tracking sections">
+        <a href="#overview">Overview</a>
+        <a href="#next-actions">Next Actions</a>
+        <a href="#blockers">Blockers</a>
+        <a href="#goals">Goals</a>
+        <a href="#validation">Validation</a>
+        <a href="#decisions">Decisions</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar" id="overview">
+        <div>
+          <p class="eyebrow">Generated static surface</p>
+          <h1>Goal Tracking Center</h1>
+        </div>
+        <div class="status-line">
+          <span class="badge blocked">blocked_by_repository_hygiene</span>
+          <span class="badge observed">2026-06-19</span>
+        </div>
+      </header>
+
+      <section class="panel">
+        <h2>Current Next Safe Action</h2>
+        <p>Resolve P0 repository hygiene blockers before public or release readiness claims.</p>
+      </section>
+
+      <section class="grid cards" aria-label="Progress cards">
+        <article class="card">
+  <div>
+    <p class="card-label">Active goals</p>
+    <div class="card-value">4</div>
+  </div>
+  <p class="muted">Goals currently carrying foundation work.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Planned goals</p>
+    <div class="card-value">13</div>
+  </div>
+  <p class="muted">Goals visible but not claimed complete.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Blocked goals</p>
+    <div class="card-value">3</div>
+  </div>
+  <p class="muted">Goals blocked by named conditions.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Evidence records</p>
+    <div class="card-value">10</div>
+  </div>
+  <p class="muted">Structured proof, blocker, validation, and review records.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Execution tasks</p>
+    <div class="card-value">5</div>
+  </div>
+  <p class="muted">Structured tasks and subtasks backing next actions.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Active blockers</p>
+    <div class="card-value">3</div>
+  </div>
+  <p class="muted">Blockers that must remain visible.</p>
+</article>
+      </section>
+
+      <section class="grid section-grid">
+        <div class="panel" id="next-actions">
+          <h2>Next Action Queue</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Restore or replace P0 governance validation surface</h3>
+      <p class="muted">SEIS-TASK-001 · Repository Governance</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Use the deletion review as the recovery checklist in a focused repository hygiene PR.</p>
+  <div class="row-meta">
+    <span class="badge">P0 critical</span>
+    <span class="badge">Goals: SEIS-GOAL-006, SEIS-GOAL-007, SEIS-GOAL-008</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Maintain structured Goal Tracking OS registries</h3>
+      <p class="muted">SEIS-TASK-002 · Product Architecture</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Keep `npm run check:goal-tracking` as the local non-LLM integrity gate.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Goals: SEIS-GOAL-002, SEIS-GOAL-019</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Render Goal Tracking Center from structured records</h3>
+      <p class="muted">SEIS-TASK-003 · Command Center Product</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Goals: SEIS-GOAL-001, SEIS-GOAL-002</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Connect repository intelligence output to goal evidence</h3>
+      <p class="muted">SEIS-TASK-004 · Repository Intelligence</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Define read-only repository intelligence output records before implementing scanner automation.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Goals: SEIS-GOAL-003, SEIS-GOAL-004</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Perform real weekly and monthly goal reviews</h3>
+      <p class="muted">SEIS-TASK-005 · Product Governance</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Do not create fake review records; wait for actual review cadence.</p>
+  <div class="row-meta">
+    <span class="badge">P2 medium</span>
+    <span class="badge">Goals: SEIS-GOAL-019</span>
+  </div>
+</article>
+          </div>
+        </div>
+
+        <div class="panel" id="blockers">
+          <h2>Active Blockers</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Unresolved tracked deletion set</h3>
+      <p class="muted">SEIS-BLOCKER-001 · critical</p>
+    </div>
+    <span class="badge blocked">active</span>
+  </div>
+  <p class="next-action">Use the deletion review to drive restore, replace, archive, or approved deletion decisions.</p>
+  <p class="muted">Human approval required for intentional file deletion.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Foundation governance files missing</h3>
+      <p class="muted">SEIS-BLOCKER-002 · critical</p>
+    </div>
+    <span class="badge blocked">active</span>
+  </div>
+  <p class="next-action">Restore or replace the required governance docs and open-source governance validator.</p>
+  <p class="muted">None for documentation-only replacement; approval required for intentional deletion.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking Center UI not implemented</h3>
+      <p class="muted">SEIS-BLOCKER-003 · medium</p>
+    </div>
+    <span class="badge blocked">active</span>
+  </div>
+  <p class="next-action">Build static/manual view after data contract is stable.</p>
+  <p class="muted">None for static/manual UI work; approval required for dependency installation or deployment.</p>
+</article>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid section-grid" id="goals">
+        <div class="panel">
+          <h2>Active Goals</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Establish SEIS Goal Tracking OS</h3>
+      <p class="muted">SEIS-GOAL-002 · Goal Tracking OS</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Keep structured goal data, generated view model, and static Command Center page in sync.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-001</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Maintain official documentation and source-of-truth navigation</h3>
+      <p class="muted">SEIS-GOAL-004 · Documentation System</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Keep docs index, status, backlog, and PR queue current.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-001</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Enforce security and governance through platform rules</h3>
+      <p class="muted">SEIS-GOAL-005 · Security and Governance</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Add deeper local-only security checks and approval ledger.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-006</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Maintain long-term product vision and review cadence</h3>
+      <p class="muted">SEIS-GOAL-019 · Long-Term Product Vision</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Use weekly and monthly review templates only when reviews are actually performed.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-001</span>
+  </div>
+</article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Blocked Goals</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Stabilize GitHub workflow and PR rescue</h3>
+      <p class="muted">SEIS-GOAL-006 · GitHub Workflow</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Resolve local deletion set, then inspect GitHub PRs after approval.</p>
+  <div class="row-meta">
+    <span class="badge">P0 critical</span>
+    <span class="badge">SEIS-MS-005</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Prepare public repository readiness</h3>
+      <p class="muted">SEIS-GOAL-007 · Public Readiness</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Complete repo hygiene and validation recovery first.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-007</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Prepare release readiness without unsafe deployment</h3>
+      <p class="muted">SEIS-GOAL-008 · Release Readiness</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Define changelog/artifact policy and run dry-runs after validation recovery.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-007</span>
+  </div>
+</article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Category Status</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Next Milestone</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+  <td>SEIS AI Core</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>none</td>
+  <td>Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit.</td>
+</tr>
+              <tr>
+  <td>SEIS App / Command Center</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-003</td>
+  <td>Build static/manual Command Center views from docs and fixture data.</td>
+</tr>
+              <tr>
+  <td>Goal Tracking OS</td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-001</td>
+  <td>Keep structured goal data, generated view model, and static Command Center page in sync.</td>
+</tr>
+              <tr>
+  <td>Repository Intelligence</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-005</td>
+  <td>Implement read-only scanner outputs after current repo hygiene blockers are resolved.</td>
+</tr>
+              <tr>
+  <td>Documentation System</td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-001</td>
+  <td>Keep docs index, status, backlog, and PR queue current.</td>
+</tr>
+              <tr>
+  <td>Security and Governance</td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-006</td>
+  <td>Add deeper local-only security checks and approval ledger.</td>
+</tr>
+              <tr>
+  <td>GitHub Workflow</td>
+  <td><span class="badge blocked">blocked</span></td>
+  <td>P0 critical</td>
+  <td>SEIS-MS-005</td>
+  <td>Resolve local deletion set, then inspect GitHub PRs after approval.</td>
+</tr>
+              <tr>
+  <td>Public Readiness</td>
+  <td><span class="badge blocked">blocked</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-007</td>
+  <td>Complete repo hygiene and validation recovery first.</td>
+</tr>
+              <tr>
+  <td>Release Readiness</td>
+  <td><span class="badge blocked">blocked</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-007</td>
+  <td>Define changelog/artifact policy and run dry-runs after validation recovery.</td>
+</tr>
+              <tr>
+  <td>Design System</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-004</td>
+  <td>Create fixture-driven component/state demo.</td>
+</tr>
+              <tr>
+  <td>Agent Runtime</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>none</td>
+  <td>Add agent runtime specification before privileged actions.</td>
+</tr>
+              <tr>
+  <td>Automation Queue</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-006</td>
+  <td>Add static approval ledger and queue schema.</td>
+</tr>
+              <tr>
+  <td>Model Router</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>none</td>
+  <td>Add model-router provider interface and routing policy docs.</td>
+</tr>
+              <tr>
+  <td>Prompt Engine</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>none</td>
+  <td>Add prompt format/versioning and template rules.</td>
+</tr>
+              <tr>
+  <td>Evaluation Lab</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P2 medium</td>
+  <td>none</td>
+  <td>Add evaluation smoke plan after validation scripts are recovered.</td>
+</tr>
+              <tr>
+  <td>Knowledge Graph</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P2 medium</td>
+  <td>none</td>
+  <td>Define knowledge records and archive separation rules.</td>
+</tr>
+              <tr>
+  <td>SSH / Cloud Workspace</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P2 medium</td>
+  <td>none</td>
+  <td>Add workspace policy doc; do not run SSH.</td>
+</tr>
+              <tr>
+  <td>SEIS Universe Research</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P2 medium</td>
+  <td>none</td>
+  <td>Add model baseline and research roadmap docs later.</td>
+</tr>
+              <tr>
+  <td>Portfolio / Creative Systems</td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P3 low</td>
+  <td>none</td>
+  <td>Classify creative and portfolio surfaces after repo hygiene recovery.</td>
+</tr>
+              <tr>
+  <td>Long-Term Product Vision</td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-MS-001</td>
+  <td>Use weekly and monthly review templates only when reviews are actually performed.</td>
+</tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="grid section-grid" id="validation">
+        <div class="panel">
+          <h2>Validation Status</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal tracking registry validates</h3>
+      <p class="muted">SEIS-EVID-001 · validation</p>
+    </div>
+    <span class="badge active">passed</span>
+  </div>
+  <p>Goal Tracking OS validator passed for 20 goals across 20 strategic categories.</p>
+  <p class="muted">Does not prove Command Center UI implementation. Does not prove live GitHub, SSH, release, or public readiness integrations.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Existing web audit passes</h3>
+      <p class="muted">SEIS-EVID-002 · validation</p>
+    </div>
+    <span class="badge active">passed</span>
+  </div>
+  <p>Existing web audit reported passing i18n, SEO, contract, drawings, style, performance, accessibility, and basic security checks.</p>
+  <p class="muted">Audit output includes informational findings for lazy image loading, explicit image dimensions, CSP, and external resource integrity. Does not prove Goal Tracking Center UI exists.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Foundation check blocked by missing governance files</h3>
+      <p class="muted">SEIS-EVID-003 · blocker</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p>Foundation validation failed because required governance docs and an open-source governance validator are missing in the current worktree.</p>
+  <p class="muted">This evidence records the blocker; it does not approve restoring, deleting, or replacing files.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Tracked deletion set remains unresolved</h3>
+      <p class="muted">SEIS-EVID-004 · repository-state</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p>Current worktree still shows 47 pre-existing unstaged tracked deletions. No deletion was staged or committed in the Goal Tracking OS evidence pass.</p>
+  <p class="muted">Does not determine whether each deleted file should be restored, replaced, archived, or intentionally removed.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS scoped sensitive-pattern scan passes</h3>
+      <p class="muted">SEIS-EVID-006 · security-scan</p>
+    </div>
+    <span class="badge active">passed</span>
+  </div>
+  <p>Scoped scan found no private-path, private-key, token, credential, file URI, or editor URI hits in Goal Tracking OS files.</p>
+  <p class="muted">This was a scoped scan, not a full repository secret scan. Known hardcoded local plugin path cleanup remains tracked in the backlog.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Tracked deletion set classified for recovery</h3>
+      <p class="muted">SEIS-EVID-007 · review</p>
+    </div>
+    <span class="badge planned">partial</span>
+  </div>
+  <p>The 47 deleted tracked paths were classified by role, validation impact, and next safe recovery action without staging or committing deletions.</p>
+  <p class="muted">Review does not approve deletion, restoration, or replacement. Foundation validation remains blocked until P0 governance files are restored or replaced.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal execution registry validates</h3>
+      <p class="muted">SEIS-EVID-008 · validation</p>
+    </div>
+    <span class="badge active">passed</span>
+  </div>
+  <p>Goal Tracking OS execution records are covered by the local validator, including tasks, subtasks, blockers, decisions, references, paths, and safe text checks.</p>
+  <p class="muted">Does not prove Command Center UI implementation. Does not resolve the active repository hygiene blockers.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Command Center goal view model generated</h3>
+      <p class="muted">SEIS-EVID-009 · validation</p>
+    </div>
+    <span class="badge active">passed</span>
+  </div>
+  <p>A deterministic Command Center view model was generated from the goal, evidence, and execution registries and passed the local freshness check.</p>
+  <p class="muted">Does not prove a rendered UI exists. Does not resolve repository hygiene blockers or foundation validation failures.</p>
+</article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Readiness Connections</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <h3>Public Readiness</h3>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Complete repo hygiene and validation recovery first.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <h3>Release Readiness</h3>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Define changelog/artifact policy and run dry-runs after validation recovery.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <h3>SEIS AI Core</h3>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <h3>SEIS App / Command Center</h3>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Build static/manual Command Center views from docs and fixture data.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <h3>SEIS Universe Research</h3>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Add model baseline and research roadmap docs later.</p>
+</article>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid section-grid" id="decisions">
+        <div class="panel">
+          <h2>Decisions</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS is non-LLM-first</h3>
+      <p class="muted">SEIS-DEC-001</p>
+    </div>
+    <span class="badge active">accepted</span>
+  </div>
+  <p>Goal, evidence, task, blocker, and decision state must be stored in structured local records before LLM assistance is treated as useful.</p>
+  <p class="muted">LLM summaries can assist, but local records and validators remain the source of truth.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Do not resolve tracked deletions implicitly</h3>
+      <p class="muted">SEIS-DEC-002</p>
+    </div>
+    <span class="badge active">accepted</span>
+  </div>
+  <p>Tracked deletions must be reviewed and resolved in a focused repository hygiene PR rather than silently restored, staged, or committed.</p>
+  <p class="muted">Foundation remains blocked until explicit restore, replace, archive, or approved deletion decisions are made.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Repository intelligence should be read-only first</h3>
+      <p class="muted">SEIS-DEC-003</p>
+    </div>
+    <span class="badge active">accepted</span>
+  </div>
+  <p>Repository intelligence should emit findings and evidence before it performs cleanup, mutation, or external calls.</p>
+  <p class="muted">Initial scanner work should create local records, not modify repository state.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Review cadence records must be real</h3>
+      <p class="muted">SEIS-DEC-004</p>
+    </div>
+    <span class="badge active">accepted</span>
+  </div>
+  <p>Weekly and monthly review records must only be created when those reviews are actually performed with current evidence.</p>
+  <p class="muted">Templates remain templates until a real review cadence event occurs.</p>
+</article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>UX Guardrails</h2>
+          <div class="stack">
+            <article class="row">
+  <h3>Do not show fake progress bars.</h3>
+  <p class="muted">no-fake-progress-bars · enforced_by_numeric_cards</p>
+</article>
+            <article class="row">
+  <h3>Completed goals must show evidence.</h3>
+  <p class="muted">completed-needs-evidence · validated_by_goal_check</p>
+</article>
+            <article class="row">
+  <h3>Blocked goals and blockers must remain visible.</h3>
+  <p class="muted">blocked-items-visible · enforced_by_blocked_panels</p>
+</article>
+            <article class="row">
+  <h3>Planned goals must remain labeled planned.</h3>
+  <p class="muted">planned-labeled-planned · enforced_by_status_fields</p>
+</article>
+            <article class="row">
+  <h3>Validation status must be clear and limitation-aware.</h3>
+  <p class="muted">validation-clear · enforced_by_evidence_panel</p>
+</article>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>.
+        This static page is generated and should not be edited by hand.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

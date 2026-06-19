@@ -84,7 +84,8 @@
       ],
       "related_files": [
         "apps/web/README.md",
-        "content/development/seis-goal-command-center-view.json"
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html"
       ],
       "related_milestone": "SEIS-MS-003",
       "related_epic": "SEIS-EPIC-GOALS-002",
@@ -102,7 +103,8 @@
       "evidence_links": [
         "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
         "docs/goals/command-center-view-model.md",
-        "content/development/seis-goal-command-center-view.json"
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html"
       ],
       "validation_method": "Static/manual Command Center views render evidence-backed states without LLM or live integrations.",
       "validation_evidence": [],
@@ -136,6 +138,7 @@
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-execution.json",
         "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
         "scripts/check-goal-tracking.mjs"
       ],
       "related_milestone": "SEIS-MS-001",
@@ -160,11 +163,12 @@
         "content/development/seis-goal-execution.json",
         "docs/goals/command-center-view-model.md",
         "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
         "docs/reviews/GOAL_TRACKING_REVIEW.md"
       ],
       "validation_method": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
       "validation_evidence": [],
-      "next_action": "Keep structured goal data in sync with docs and add Command Center fixture rendering.",
+      "next_action": "Keep structured goal data, generated view model, and static Command Center page in sync.",
       "last_reviewed": "2026-06-19",
       "review_cadence": "weekly",
       "notes": "Documentation and data foundation active; application module remains planned."

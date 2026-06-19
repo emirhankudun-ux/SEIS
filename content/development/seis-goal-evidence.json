@@ -224,6 +224,29 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Render the generated view model in the Command Center Goal Tracking Center."
+    },
+    {
+      "id": "SEIS-EVID-010",
+      "title": "Static Goal Tracking Center page generated",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:goal-command-center-static",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "apps/command-center/goal-tracking/index.html",
+        "scripts/create-goal-command-center-static.mjs",
+        "content/development/seis-goal-command-center-view.json"
+      ],
+      "summary": "A static, non-LLM Goal Tracking Center page was generated from the Command Center view model and passed the local freshness check.",
+      "limitations": [
+        "Does not prove deployment or live application routing.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
     }
   ]
 }

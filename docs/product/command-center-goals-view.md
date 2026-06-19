@@ -53,6 +53,8 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 
 The first generated Command Center view source is
 [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json).
+The first generated static page is
+[`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html).
 It is derived from the structured source records:
 
 - [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)

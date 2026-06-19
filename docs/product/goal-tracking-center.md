@@ -6,6 +6,12 @@ Goal Tracking Center is the Command Center module for long-term goals,
 milestones, weekly priorities, blockers, validation, evidence, and next safe
 actions.
 
+The first generated static surface is
+[`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html).
+It renders from
+[`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
+without an LLM or external API.
+
 ## Mission
 
 Make SEIS progress visible without exaggeration. The module must show what is
@@ -62,6 +68,7 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
+- [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)
 - [`../goals/milestone-map.md`](../goals/milestone-map.md)
 - [`../goals/progress-review.md`](../goals/progress-review.md)
