@@ -9,18 +9,18 @@
   },
   "summary": {
     "countedFileCount": 912,
-    "countedBytes": 5352157,
-    "javascriptBytes": 2095802,
+    "countedBytes": 5352458,
+    "javascriptBytes": 2096103,
     "javascriptPercent": 39.16,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 4627852,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4628984,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 2095802,
+      "bytes": 2096103,
       "percent": 39.16
     },
     {
@@ -46,7 +46,7 @@
     {
       "language": "CSS",
       "bytes": 318194,
-      "percent": 5.95
+      "percent": 5.94
     },
     {
       "language": "HTML",
@@ -502,7 +502,7 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 2095802,
+      "bytes": 2096103,
       "percent": 39.16,
       "sourceLanguages": [
         "JavaScript"
@@ -671,7 +671,7 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2520241,
+        "bytes": 2520542,
         "percent": 47.09,
         "minPercent": 15.0,
         "maxPercent": 20.0,
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1483834,
-    "linguist-generated": 3095697,
+    "documentation": 1478621,
+    "linguist-generated": 3086340,
     "linguist-vendored": 2851037
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "b3b06bd4192824736abb3a84409c97628a990f36bd3c47579a595fa0cca626b3",
+    "hash": "189fe97494c4f52b79a19ca4a3307502f04ca0a802f364b714ed112639e6ba43",
     "algorithm": "sha256"
   }
 }
