@@ -339,17 +339,20 @@ function runCheck(scriptName) {
 function runCheckWithHealing(scriptName) {
   const healScript = getAutoHealScript(scriptName);
   if (healScript) {
-    const healRun = runCheck(healScript.script);
+    const healRuns = Array.from({ length: healScript.repeat || 1 }, (_, index) => {
+      const run = runCheck(healScript.script);
+      return {
+        ...run,
+        id: index === 0 ? healScript.id : `${healScript.id}:${index + 1}`,
+        reason: run.ok ? healScript.reason : null,
+        status: run.status,
+        allowContinue: run.ok,
+      };
+    });
     const healedRun = runCheck(scriptName);
 
     return [
-      {
-        ...healRun,
-        id: healScript.id,
-        reason: healRun.ok ? healScript.reason : null,
-        status: healRun.status,
-        allowContinue: healRun.ok,
-      },
+      ...healRuns,
       healedRun,
     ];
   }
@@ -368,6 +371,7 @@ function getAutoHealScript(scriptName) {
       id: "check:language-distribution:auto-heal",
       script: "automation:language-distribution",
       reason: "language distribution regenerated",
+      repeat: 2,
     };
   }
   if (autoHealTechnologyStack && scriptName === "check:seis-technology-stack") {

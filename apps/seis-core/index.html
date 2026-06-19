@@ -110,6 +110,24 @@
           <section class="dashboard-view view-panel is-active" data-panel="dashboard" aria-labelledby="dashboard-title">
             <h2 id="dashboard-title" class="sr-only">Dashboard</h2>
             <div class="metric-grid" id="metric-grid"></div>
+            <section class="panel operations-readiness-panel" aria-labelledby="operations-readiness-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="operations-readiness-title">Operations Readiness</h3>
+                  <p class="panel-summary">Unify release, CI, security, rollback, and handoff evidence before SEIS work is treated as shippable.</p>
+                </div>
+                <span class="status-pill attention" id="operations-readiness-state">Review</span>
+              </div>
+              <div class="readiness-summary-grid" id="readiness-summary"></div>
+              <div class="operations-readiness-layout">
+                <div class="readiness-queue" id="readiness-queue" aria-label="Operations readiness checks"></div>
+                <aside class="decision-summary-card" aria-labelledby="decision-summary-title">
+                  <h4 id="decision-summary-title">Decision Summary</h4>
+                  <div id="readiness-decision"></div>
+                  <button class="secondary-button" type="button" data-view="automation">Open Handoff</button>
+                </aside>
+              </div>
+            </section>
             <section class="panel operating-model-panel">
               <div class="panel-header">
                 <h3>Ecosystem Operating Model</h3>

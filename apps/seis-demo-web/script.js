@@ -522,6 +522,11 @@ function renderGodModeReleaseReadiness() {
       evidence: "goals evidence ledger"
     },
     {
+      name: "Feature Growth",
+      rule: "Every required God Mode topic needs feature or governance improvement evidence and visible remaining gaps.",
+      evidence: "feature growth ledger + Command Center surface"
+    },
+    {
       name: "Rollback",
       rule: "Every meaningful slice needs a reversible rollback path.",
       evidence: "repo health manifest + goals ledger"
@@ -643,6 +648,11 @@ function renderGodModeValidationPlan() {
       label: "Changelog",
       command: "npm run check:seis-god-mode-changelog",
       proves: "Added features are recorded as draft-unverified release notes without claiming release readiness."
+    },
+    {
+      label: "Feature growth ledger",
+      command: "npm run check:seis-god-mode-feature-growth-ledger",
+      proves: "Every required topic has feature or governance improvement evidence plus remaining gaps."
     },
     {
       label: "Full governance",

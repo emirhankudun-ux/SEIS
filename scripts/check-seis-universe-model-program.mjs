@@ -14,6 +14,8 @@ const files = {
   evalPlan: 'SEIS_UNIVERSE_EVAL_PLAN.md',
   evalCriticDatasetCard: 'SEIS_UNIVERSE_EVAL_CRITIC_DATASET_CARD.md',
   evalCriticModelCard: 'SEIS_UNIVERSE_EVAL_CRITIC_MODEL_CARD.md',
+  agentRouterDatasetCard: 'SEIS_UNIVERSE_AGENT_ROUTER_DATASET_CARD.md',
+  agentRouterModelCard: 'SEIS_UNIVERSE_AGENT_ROUTER_MODEL_CARD.md',
 };
 
 for (const file of Object.values(files)) {
@@ -32,8 +34,10 @@ for (const [file, token] of [
   [files.modelFamily, '`seis-permission-policy`'],
   [files.modelFamily, '`seis-memory-ranker`'],
   [files.modelFamily, '`seis-eval-critic`'],
+  [files.modelFamily, '`seis-agent-router`'],
   [files.modelFamily, '`seis-design-sense`'],
   [files.modelFamily, 'seis-eval-critic-seed-v0'],
+  [files.modelFamily, 'seis-agent-router-seed-v0'],
   [files.modelFamily, '## Data Policy'],
   [files.modelFamily, '## Training Strategy'],
   [files.modelFamily, '## Evaluation Gates'],
@@ -51,6 +55,10 @@ for (const [file, token] of [
   [files.evalCriticDatasetCard, '`seis-eval-critic-seed-v0`'],
   [files.evalCriticModelCard, '# SEIS Universe Eval Critic Model Card'],
   [files.evalCriticModelCard, '`seis-eval-critic-seed-v0`'],
+  [files.agentRouterDatasetCard, '# SEIS Universe Agent Router Dataset Card'],
+  [files.agentRouterDatasetCard, '`seis-agent-router-seed-v0`'],
+  [files.agentRouterModelCard, '# SEIS Universe Agent Router Model Card'],
+  [files.agentRouterModelCard, '`seis-agent-router-seed-v0`'],
 ]) {
   requireIncludes(file, token);
 }

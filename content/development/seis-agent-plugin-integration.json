@@ -3,7 +3,7 @@
   "version": "2026.06.19",
   "status": "active",
   "updatedAt": "2026-06-19",
-  "purpose": "Bind the personal SEIS plugin family and the submitted plugin universe into the repo-contained SEIS-Agent, the SEIS AI runtime, the demo application surface, and SEIS repository governance without publishing standalone lane cards.",
+  "purpose": "Bind the personal SEIS plugin family, the new embedded specialist skills, and the submitted plugin universe into the repo-contained SEIS-Agent, the SEIS AI runtime, the demo application surface, and SEIS repository governance without publishing standalone lane cards.",
   "primaryInstallId": "seis-ai-agent@seis-repo",
   "canonicalAgent": {
     "identity": "SEIS-Agent",
@@ -151,6 +151,54 @@
         "seis_data_plan"
       ],
       "defaultGate": "npm run check:plugin-capability-lanes"
+    },
+    {
+      "id": "seis-security",
+      "displayName": "SEIS Security",
+      "role": "threat modeling, secret-safety review, dependency and permission risk, SSH/VPN hardening, and release-blocking security checks",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_security_status",
+        "seis_security_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-research",
+      "displayName": "SEIS Research",
+      "role": "official source review, version checks, evidence synthesis, and research-backed technical decisions",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_research_status",
+        "seis_research_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-automation",
+      "displayName": "SEIS Automation",
+      "role": "repeatable scripts, checks, CI steps, runbooks, scheduled jobs, and human-approved agent automation",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_automation_status",
+        "seis_automation_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-product",
+      "displayName": "SEIS Product",
+      "role": "roadmap slices, requirements, acceptance criteria, launch readiness, and product scope",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_product_status",
+        "seis_product_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
     }
   ],
   "helperPluginUniverse": {

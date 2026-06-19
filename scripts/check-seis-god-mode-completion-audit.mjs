@@ -15,6 +15,7 @@ const webStylesPath = path.join(root, "apps", "seis-demo-web", "styles.css");
 
 const requiredAuditItems = [
   "new-features",
+  "feature-growth-ledger",
   "dashboard",
   "goals",
   "repos",
@@ -71,6 +72,7 @@ if (docs) {
   for (const phrase of [
     "not-complete",
     "New Features",
+    "Feature Growth Ledger",
     "Dashboard",
     "Goals",
     "Repos",

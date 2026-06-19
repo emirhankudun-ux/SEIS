@@ -356,6 +356,79 @@ const godModeArtifacts = [
   }
 ];
 
+const operationsReadiness = {
+  decision: "Review",
+  decisionState: "review-before-release",
+  qualityGate: "check:seis-command-center-operations-readiness",
+  lastEvidence: "local quality passed, external CI still required",
+  summary: [
+    {
+      area: "Release",
+      status: "Ready",
+      signal: "Work package, handoff, changelog, and source boundary are visible."
+    },
+    {
+      area: "CI",
+      status: "Review",
+      signal: "Local gates pass; GitHub code scanning and branch protection remain external evidence."
+    },
+    {
+      area: "Security",
+      status: "Ready",
+      signal: "No-secret policy, permission review, and access model checks stay attached to release decisions."
+    },
+    {
+      area: "Rollback",
+      status: "Ready",
+      signal: "Rollback path is tied to commit scope, generated reports, and adapter boundaries."
+    }
+  ],
+  checks: [
+    {
+      name: "Source boundary",
+      owner: "Builder Agent",
+      evidence: "git status --short and reversible commit scope",
+      gate: "clean worktree",
+      status: "Ready"
+    },
+    {
+      name: "Command Center contract",
+      owner: "Architect Agent",
+      evidence: "apps/seis-core plus architecture docs",
+      gate: "check:seis-command-center",
+      status: "Ready"
+    },
+    {
+      name: "Quality governance",
+      owner: "Automation Center",
+      evidence: "npm run quality",
+      gate: "local quality",
+      status: "Ready"
+    },
+    {
+      name: "Security posture",
+      owner: "Security Agent",
+      evidence: "enterprise gates, access model, dependency scan records",
+      gate: "least privilege",
+      status: "Ready"
+    },
+    {
+      name: "External CI",
+      owner: "GitHub Workflow",
+      evidence: "remote checks and code scanning results",
+      gate: "external evidence",
+      status: "Review"
+    },
+    {
+      name: "Handoff proof",
+      owner: "Research Agent",
+      evidence: "commit hash, push result, next command, and rollback note",
+      gate: "handoff audit",
+      status: "Review"
+    }
+  ]
+};
+
 const featureGrowthLedger = {
   completionState: "not-complete",
   coverage: "10/10 topics mapped",
@@ -1177,6 +1250,8 @@ function renderDashboard() {
     </article>
   `).join("");
 
+  renderOperationsReadiness();
+
   $("#operating-domain-grid").innerHTML = operatingDomains.map((domain) => `
     <article class="domain-card">
       <div class="card-topline">
@@ -1239,6 +1314,52 @@ function renderDashboard() {
       <p>${detail}</p>
     </article>
   `).join("");
+}
+
+function renderOperationsReadiness() {
+  const readyCount = operationsReadiness.checks.filter((item) => item.status === "Ready").length;
+  const reviewCount = operationsReadiness.checks.length - readyCount;
+  $("#operations-readiness-state").textContent = operationsReadiness.decision;
+  $("#readiness-summary").innerHTML = operationsReadiness.summary.map((item) => `
+    <article class="readiness-card">
+      <div class="card-topline">
+        <strong>${item.area}</strong>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.signal}</p>
+    </article>
+  `).join("");
+
+  $("#readiness-queue").innerHTML = operationsReadiness.checks.map((item, index) => `
+    <article class="readiness-row">
+      <span class="readiness-index">${index + 1}</span>
+      <div>
+        <div class="card-topline">
+          <strong>${item.name}</strong>
+          <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+        </div>
+        <p>${item.evidence}</p>
+        <div class="meta-row">
+          <span class="meta-chip">${item.owner}</span>
+          <span class="meta-chip">${item.gate}</span>
+        </div>
+      </div>
+    </article>
+  `).join("");
+
+  $("#readiness-decision").innerHTML = `
+    <div class="decision-stat">
+      <strong>${readyCount}/${operationsReadiness.checks.length}</strong>
+      <span>ready checks</span>
+    </div>
+    <div class="decision-stat">
+      <strong>${reviewCount}</strong>
+      <span>external evidence gaps</span>
+    </div>
+    <p>${operationsReadiness.lastEvidence}</p>
+    <span class="meta-chip">${operationsReadiness.decisionState}</span>
+    <span class="meta-chip">${operationsReadiness.qualityGate}</span>
+  `;
 }
 
 function renderGodMode() {

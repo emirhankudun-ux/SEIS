@@ -17,7 +17,8 @@
     "handoff",
     "completion-audit",
     "run-state",
-    "staging-manifest"
+    "staging-manifest",
+    "feature-growth-ledger"
   ],
   "entries": [
     {
@@ -163,12 +164,25 @@
         "scripts/check-seis-god-mode-staging-manifest.mjs"
       ],
       "validationGate": "npm run check:seis-god-mode-staging-manifest"
+    },
+    {
+      "id": "feature-growth-ledger",
+      "title": "Feature Growth Ledger",
+      "type": "governance-feature",
+      "summary": "Adds topic-by-topic God Mode improvement evidence for Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff.",
+      "evidence": [
+        "content/development/seis-god-mode-feature-growth-ledger.json",
+        "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "docs/governance/seis-command-center-feature-growth-integration-plan.md",
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs"
+      ],
+      "validationGate": "npm run check:seis-god-mode-feature-growth-ledger"
     }
   ],
   "releaseBlockers": [
-    "Validation commands have not been run.",
-    "Full quality governance has not passed.",
-    "Commit staging has not been reviewed.",
+    "Validation commands have not been refreshed after the feature growth ledger addition.",
+    "Full quality governance has not been rerun after the feature growth ledger addition.",
+    "Commit staging has not been finalized.",
     "Changes have not been committed.",
     "Changes have not been pushed or verified by CI."
   ],

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Research"
+  short_description: "Research, sources, and evidence lane"
+  default_prompt: "Use $seis-research to investigate this SEIS question with source quality, provenance, and decision evidence."

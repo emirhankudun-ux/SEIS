@@ -211,6 +211,7 @@
       "primaryFiles": [
         "content/development/seis-god-mode-feature-growth-ledger.json",
         "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "docs/governance/seis-command-center-feature-growth-integration-plan.md",
         "scripts/check-seis-god-mode-feature-growth-ledger.mjs",
         "apps/seis-core/index.html",
         "apps/seis-core/script.js",

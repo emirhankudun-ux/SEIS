@@ -39,6 +39,7 @@ training or implementation sources.
 | `seis-permission-policy` | classify safe, gated, denied, and approval-required actions       | deterministic labels plus policy model experiment | learned seed active |
 | `seis-memory-ranker`     | rank SEIS memory, docs, decisions, and evidence for retrieval     | embedding/reranking experiment                    | learned seed active |
 | `seis-eval-critic`       | evaluate answers, diffs, claims, and release readiness            | rubric-driven evaluator                           | learned seed active |
+| `seis-agent-router`      | route tasks to SEIS agent/plugin lanes and integration gates      | agent/plugin lane router                          | learned seed active |
 | `seis-design-sense`      | reason about UI, accessibility, motion, and design-system quality | multimodal research track                         | not started         |
 
 These names are SEIS-owned research names. They do not imply compatibility with
@@ -181,3 +182,16 @@ Evidence:
 - Eval: `packages/seis-ai/test/eval-critic-lab.test.mjs`
 - Generator: `npm run automation:seis-eval-critic-model`
 - Gate: `npm run check:seis-universe-eval-critic-model`
+
+The first learned agent/plugin routing experiment is `seis-agent-router-seed-v0`.
+
+Evidence:
+
+- Dataset card: `SEIS_UNIVERSE_AGENT_ROUTER_DATASET_CARD.md`
+- Model card: `SEIS_UNIVERSE_AGENT_ROUTER_MODEL_CARD.md`
+- Dataset: `packages/seis-ai/data/agent-router-seed-v0.json`
+- Learning runtime: `packages/seis-ai/src/model/agent-router-lab.mjs`
+- Artifact: `packages/seis-ai/models/agent-router-seed-v0.json`
+- Eval: `packages/seis-ai/test/agent-router-lab.test.mjs`
+- Generator: `npm run automation:seis-agent-router-model`
+- Gate: `npm run check:seis-universe-agent-router-model`

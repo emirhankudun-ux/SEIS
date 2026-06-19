@@ -395,6 +395,9 @@ h3 {
 .run-step,
 .guardrail-row,
 .artifact-card,
+.readiness-card,
+.readiness-row,
+.decision-summary-card,
 .ledger-summary-card,
 .ledger-row,
 .blocker-row,
@@ -683,6 +686,95 @@ h3 {
   display: block;
   margin: 8px 0 3px;
   font-size: 30px;
+  line-height: 1;
+}
+
+.operations-readiness-panel {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.readiness-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.readiness-card {
+  display: grid;
+  gap: 8px;
+  min-height: 124px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.readiness-card p,
+.readiness-row p,
+.decision-summary-card p,
+.decision-stat span {
+  margin: 0;
+  color: var(--muted);
+}
+
+.operations-readiness-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(250px, 0.34fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.readiness-queue,
+.decision-summary-card,
+#readiness-decision {
+  display: grid;
+  gap: 10px;
+}
+
+.readiness-row {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.readiness-index {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.decision-summary-card {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.decision-summary-card h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.decision-stat {
+  display: grid;
+  gap: 2px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.decision-stat strong {
+  font-size: 22px;
   line-height: 1;
 }
 
@@ -1453,6 +1545,8 @@ select {
   .automation-ops-layout,
   .architecture-ops-layout,
   .security-ops-layout,
+  .readiness-summary-grid,
+  .operations-readiness-layout,
   .ledger-summary-grid,
   .feature-growth-grid,
   .inspector {
@@ -1472,6 +1566,7 @@ select {
   .workflow-run-row,
   .composer-row,
   .run-step,
+  .readiness-row,
   .dependency-scan-row,
   .dependency-edge,
   .agent-detail-grid {

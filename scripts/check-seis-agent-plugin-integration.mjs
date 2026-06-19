@@ -23,7 +23,18 @@ const requiredPersonalPlugins = [
   "seis-design@personal",
   "seis-data@personal"
 ];
-const requiredLanes = ["seis", "seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data"];
+const requiredLanes = [
+  "seis",
+  "seis-governance",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product",
+];
 
 for (const [filePath, label] of [
   [manifestPath, "plugin integration manifest"],
@@ -108,7 +119,11 @@ for (const token of [
   "seis-cloud@personal",
   "seis-code@personal",
   "seis-design@personal",
-  "seis-data@personal"
+  "seis-data@personal",
+  "seis-security",
+  "seis-research",
+  "seis-automation",
+  "seis-product"
 ]) {
   ensure(docs.includes(token), `docs missing ${token}`);
 }

@@ -21,6 +21,7 @@ This is intentional. Local governance validation, local browser runtime verifica
 | Item | Rule |
 | --- | --- |
 | New Features | Visible feature work must have UI, contracts, validation, and handoff evidence. |
+| Feature Growth Ledger | Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff must each have explicit improvement evidence and remaining gaps. |
 | Dashboard | Dashboard panels must render and expose telemetry. |
 | Goals | Goals require acceptance criteria, validation commands, rollback, and evidence links. |
 | Repos | Repos require health lanes, publish safety, security gates, and protected user work. |

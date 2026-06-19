@@ -17,6 +17,8 @@ const architectureDocPath = path.join(root, "docs", "architecture", "seis-comman
 const completionAuditPath = path.join(root, "content", "development", "seis-god-mode-completion-audit.json");
 const workPackagePath = path.join(root, "content", "development", "seis-god-mode-work-package.json");
 const objectiveCoveragePath = path.join(root, "data", "seis-master-objective-coverage.json");
+const releaseReadinessPath = path.join(root, "content", "development", "seis-god-mode-release-readiness.json");
+const integrationPlanPath = path.join(root, "docs", "governance", "seis-command-center-feature-growth-integration-plan.md");
 
 const requiredTopics = [
   "dashboard",
@@ -50,6 +52,8 @@ for (const [filePath, label] of [
   [completionAuditPath, "God Mode completion audit contract"],
   [workPackagePath, "God Mode work package contract"],
   [objectiveCoveragePath, "SEIS master objective coverage contract"],
+  [releaseReadinessPath, "God Mode release readiness contract"],
+  [integrationPlanPath, "Command Center feature growth integration plan"],
 ]) {
   ensureFile(filePath, label);
 }
@@ -65,6 +69,8 @@ const architectureDoc = readText(architectureDocPath, "Command Center architectu
 const completionAudit = readText(completionAuditPath, "God Mode completion audit contract");
 const workPackage = readText(workPackagePath, "God Mode work package contract");
 const objectiveCoverage = readText(objectiveCoveragePath, "SEIS master objective coverage contract");
+const releaseReadiness = readText(releaseReadinessPath, "God Mode release readiness contract");
+const integrationPlan = readText(integrationPlanPath, "Command Center feature growth integration plan");
 
 if (ledger) {
   ensure(ledger.id === "seis-god-mode-feature-growth-ledger", "ledger id must be seis-god-mode-feature-growth-ledger");
@@ -150,9 +156,13 @@ for (const phrase of ["featureGrowthLedger", "renderFeatureGrowthLedger", "featu
 
 ensure(architectureDoc.includes("feature growth ledger"), "architecture doc must describe feature growth ledger");
 ensure(completionAudit.includes("content/development/seis-god-mode-feature-growth-ledger.json"), "completion audit must cite feature growth ledger");
+ensure(completionAudit.includes("\"feature-growth-ledger\""), "completion audit must include feature-growth-ledger as an audit item");
 ensure(workPackage.includes("feature-growth-ledger"), "work package must include feature-growth-ledger section");
 ensure(objectiveCoverage.includes("god-mode-every-topic-feature-growth"), "objective coverage must include God Mode every-topic growth");
 ensure(objectiveCoverage.includes("content/development/seis-god-mode-feature-growth-ledger.json"), "objective coverage must cite feature growth ledger");
+ensure(releaseReadiness.includes("\"feature-growth\""), "release readiness must include feature-growth gate");
+ensure(releaseReadiness.includes("content/development/seis-god-mode-feature-growth-ledger.json"), "release readiness must cite feature growth ledger");
+ensure(integrationPlan.includes("Safe Integration Sequence"), "integration plan must include safe integration sequence");
 
 for (const file of [
   ledgerPath,
@@ -163,6 +173,8 @@ for (const file of [
   completionAuditPath,
   workPackagePath,
   objectiveCoveragePath,
+  releaseReadinessPath,
+  integrationPlanPath,
 ]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");

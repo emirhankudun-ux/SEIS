@@ -266,6 +266,9 @@ SELF_REPORT_PATHS = {
 VOLATILE_REPORT_PATHS = {
     "reports/automation-refresh-seis-surface-summary.json",
     "cloud-migration-audit.ci.json",
+    "content/development/seis-technology-stack.json",
+    "reports/seis-technology-stack.json",
+    "reports/seis-technology-stack.md",
 }
 
 RUNTIME_COMMANDS = [

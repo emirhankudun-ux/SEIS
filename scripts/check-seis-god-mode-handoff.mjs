@@ -71,6 +71,7 @@ if (contract) {
       "npm run check:seis-god-mode-run-state",
       "npm run check:seis-god-mode-staging-manifest",
       "npm run check:seis-god-mode-changelog",
+      "npm run check:seis-god-mode-feature-growth-ledger",
       "npm run quality:governance",
     ],
     "nextCommands.commands"

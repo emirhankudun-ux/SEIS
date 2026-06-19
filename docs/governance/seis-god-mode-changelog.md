@@ -22,12 +22,13 @@ The God Mode changelog records what was added without claiming release readiness
 | Completion Audit | Evidence-based not-complete audit. |
 | Run State | Pending-validation execution state. |
 | Staging Manifest | Planned-not-staged commit boundary. |
+| Feature Growth Ledger | Topic-by-topic God Mode improvement evidence across Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff. |
 
 ## Release blockers
 
-- Validation commands have not been run.
-- Full quality governance has not passed.
-- Commit staging has not been reviewed.
+- Validation commands have not been refreshed after the feature growth ledger addition.
+- Full quality governance has not been rerun after the feature growth ledger addition.
+- Commit staging has not been finalized.
 - Changes have not been committed.
 - Changes have not been pushed or verified by CI.
 

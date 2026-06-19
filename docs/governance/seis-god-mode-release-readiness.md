@@ -9,12 +9,13 @@ God Mode development is not complete when code is added. It becomes release-read
 | Security | No secrets, credentials, tokens, weakened access controls, or unsafe operational instructions. |
 | AI Policy | Agent behavior must declare scope, autonomy boundary, safety boundary, tool boundary, and validation duty. |
 | Quality Evidence | Every module improvement must have acceptance criteria, evidence links, and a checker. |
+| Feature Growth | Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff must each have explicit improvement evidence and visible remaining gaps. |
 | Rollback | Every meaningful change must identify a reversible rollback path. |
 | CI Readiness | Release claims require quality governance to include the relevant God Mode gates. |
 
 ## Completion rule
 
-Do not mark God Mode work complete until all required gates have evidence and the relevant validation commands have been run successfully.
+Do not mark God Mode work complete until all required gates have evidence, feature growth is current, the relevant validation commands have been run successfully, and commit/push/CI or explicit handoff evidence exists.
 
 ## Canonical contract
 

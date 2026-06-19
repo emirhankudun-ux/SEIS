@@ -1,14 +1,16 @@
 # SEIS-Agent
 
-Date: 2026-06-15
+Date: 2026-06-19
 
 SEIS-Agent is the combined agent direction for the repo-contained SEIS plugin
 family. Its stable package id is `seis-ai-agent`; its operating identity is
 `SEIS-Agent`.
 
-It orchestrates `seis-governance`, `seis`, `seis-cloud`, `seis-code`, `seis-design`, and
-`seis-data` as one long-running ecosystem system across AI, memory, context,
-MCP, skills, plugins, automation, cloud, code, design, and data.
+It orchestrates `seis-governance`, `seis`, `seis-cloud`, `seis-code`,
+`seis-design`, `seis-data`, `seis-security`, `seis-research`,
+`seis-automation`, and `seis-product` as one long-running ecosystem system
+across AI, memory, context, MCP, skills, plugins, automation, cloud, code,
+design, data, security, research, and product.
 
 ## Development Rule
 
@@ -22,13 +24,23 @@ SEIS-Agent development stays directly inside the SEIS repository:
 ## Consolidation Rule
 
 `seis-ai-agent@seis-repo` is the canonical user-facing SEIS plugin. It composes
-the SEIS governance lane, SEIS Hub, and SEIS Cloud, SEIS-Code, SEIS-Design, and
-SEIS-DATA as repo-contained lanes.
+the SEIS governance lane, SEIS Hub, SEIS Cloud, SEIS-Code, SEIS-Design,
+SEIS-DATA, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product as
+repo-contained lanes.
 
 The old `personal` marketplace is a compatibility mirror only. The `seis`,
 `seis-cloud`, `seis-code`, `seis-design`, and `seis-data` directories remain
 source mirrors for lane development, but the repo marketplace publishes only the
 single `seis-ai-agent` plugin card.
+
+## Embedded Specialist Lanes
+
+| Lane | Responsibility |
+| --- | --- |
+| `seis-security` | Threat modeling, secret-safety review, access control, SSH/VPN hardening, and release risk. |
+| `seis-research` | Evidence-led source review, official documentation checks, version context, and decision synthesis. |
+| `seis-automation` | Repeatable scripts, CI checks, runbooks, scheduled jobs, and human-approved agent workflows. |
+| `seis-product` | Roadmap slices, requirements, acceptance criteria, launch readiness, and product scope. |
 
 The active integration contract is
 [`content/development/seis-agent-plugin-integration.json`](../../content/development/seis-agent-plugin-integration.json).

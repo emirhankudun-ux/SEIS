@@ -7,6 +7,7 @@
   "qualityGate": "npm run check:seis-god-mode-completion-audit",
   "requiredAuditItems": [
     "new-features",
+    "feature-growth-ledger",
     "dashboard",
     "goals",
     "repos",
@@ -33,6 +34,22 @@
         "commit/push/CI handoff evidence"
       ],
       "completionRule": "New features require visible UI, source-controlled contracts, validation output, and handoff evidence."
+    },
+    {
+      "id": "feature-growth-ledger",
+      "displayName": "Feature Growth Ledger",
+      "state": "implemented-unverified",
+      "evidenceStatus": "source-controlled",
+      "evidence": [
+        "content/development/seis-god-mode-feature-growth-ledger.json",
+        "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs"
+      ],
+      "missingEvidence": [
+        "fresh feature growth ledger check output",
+        "commit/push/CI evidence"
+      ],
+      "completionRule": "The broad God Mode objective cannot complete unless every required topic has feature or governance growth evidence and remaining gaps are explicit."
     },
     {
       "id": "dashboard",

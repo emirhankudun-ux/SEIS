@@ -62,7 +62,8 @@
         "content/development/seis-god-mode-completion-audit.json",
         "content/development/seis-god-mode-run-state.json",
         "content/development/seis-god-mode-staging-manifest.json",
-        "content/development/seis-god-mode-changelog.json"
+        "content/development/seis-god-mode-changelog.json",
+        "content/development/seis-god-mode-feature-growth-ledger.json"
       ],
       "reviewRule": "Stage contracts together because validation, audit, handoff, and run state reference each other."
     },
@@ -86,6 +87,9 @@
         "docs/governance/seis-god-mode-completion-audit.md",
         "docs/governance/seis-god-mode-run-state.md",
         "docs/governance/seis-god-mode-staging-manifest.md",
+        "docs/governance/seis-god-mode-changelog.md",
+        "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "docs/governance/seis-command-center-feature-growth-integration-plan.md",
         "docs/adr/0001-seis-god-mode-operating-system.md"
       ],
       "reviewRule": "Stage governance docs with the contracts they explain."
@@ -109,6 +113,8 @@
         "scripts/check-seis-god-mode-completion-audit.mjs",
         "scripts/check-seis-god-mode-run-state.mjs",
         "scripts/check-seis-god-mode-staging-manifest.mjs",
+        "scripts/check-seis-god-mode-changelog.mjs",
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs",
         "scripts/check-seis-plugin-bundle.mjs"
       ],
       "reviewRule": "Stage checkers after they pass locally or are explicitly handed off as pending validation."

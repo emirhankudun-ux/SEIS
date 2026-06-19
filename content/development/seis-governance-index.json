@@ -99,6 +99,16 @@
       "id": "god-mode-changelog",
       "path": "docs/governance/seis-god-mode-changelog.md",
       "purpose": "Record added God Mode features as draft-unverified release notes without claiming release readiness."
+    },
+    {
+      "id": "god-mode-feature-growth-ledger",
+      "path": "docs/governance/seis-god-mode-feature-growth-ledger.md",
+      "purpose": "Track topic-by-topic God Mode feature or governance improvements across Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff."
+    },
+    {
+      "id": "command-center-feature-growth-integration-plan",
+      "path": "docs/governance/seis-command-center-feature-growth-integration-plan.md",
+      "purpose": "Define the safe integration path for accepted Command Center feature growth changes before validation, commit, push, CI, or completion claims."
     }
   ]
 }

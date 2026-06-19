@@ -27,7 +27,9 @@ const requiredDocIds = [
   "god-mode-completion-audit",
   "god-mode-run-state",
   "god-mode-staging-manifest",
-  "god-mode-changelog"
+  "god-mode-changelog",
+  "god-mode-feature-growth-ledger",
+  "command-center-feature-growth-integration-plan"
 ];
 
 ensureFile(contractPath, "governance index contract");
@@ -55,7 +57,7 @@ if (contract) {
 }
 
 if (docs) {
-  for (const phrase of ["Architecture", "Quality gates", "God Mode Developer", "Module coverage", "Goals evidence", "Repo health", "Agent lanes", "Release readiness", "Validation plan", "Work package", "ADR template", "ADR workflow", "ADR-0001", "Handoff", "Completion audit", "Run state", "Staging manifest", "Changelog", "npm run check:seis-governance-index"]) {
+  for (const phrase of ["Architecture", "Quality gates", "God Mode Developer", "Module coverage", "Goals evidence", "Repo health", "Agent lanes", "Release readiness", "Validation plan", "Work package", "ADR template", "ADR workflow", "ADR-0001", "Handoff", "Completion audit", "Run state", "Staging manifest", "Changelog", "Feature growth ledger", "Command Center feature growth integration plan", "npm run check:seis-governance-index"]) {
     ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
   }
 }

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Product"
+  short_description: "Product strategy and roadmap lane"
+  default_prompt: "Use $seis-product to turn this SEIS idea into scoped product requirements, risks, milestones, and validation."

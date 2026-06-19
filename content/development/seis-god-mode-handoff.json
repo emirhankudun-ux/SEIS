@@ -29,9 +29,11 @@
       "id": "changedSurfaces",
       "title": "Changed Surfaces",
       "required": true,
-      "content": "Product surface, goals, repos, docs, agents, security and AI readiness, validation, architecture decisions, and handoff have dedicated artifacts.",
+      "content": "Product surface, Command Center feature growth, goals, repos, docs, agents, security and AI readiness, validation, architecture decisions, and handoff have dedicated artifacts.",
       "evidence": [
         "content/development/seis-god-mode-module-coverage.json",
+        "content/development/seis-god-mode-feature-growth-ledger.json",
+        "docs/governance/seis-command-center-feature-growth-integration-plan.md",
         "content/development/seis-goals-evidence-ledger.json",
         "content/development/seis-repo-health-manifest.json",
         "content/development/seis-agent-lane-status.json"
@@ -53,10 +55,11 @@
       "id": "risks",
       "title": "Risks",
       "required": true,
-      "content": "Primary risks are commit staging not yet reviewed, unpushed branch state, missing CI pass evidence, and unrelated user work that must not be overwritten.",
+      "content": "Primary risks are commit staging not yet finalized, unpushed branch state, missing CI pass evidence, and unrelated user work that must not be overwritten.",
       "evidence": [
         "content/development/seis-god-mode-work-package.json",
-        "docs/governance/seis-god-mode-work-package.md"
+        "docs/governance/seis-god-mode-work-package.md",
+        "docs/governance/seis-command-center-feature-growth-integration-plan.md"
       ]
     },
     {

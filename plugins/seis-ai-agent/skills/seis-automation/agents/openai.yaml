@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Automation"
+  short_description: "Automation, workflows, and runbooks lane"
+  default_prompt: "Use $seis-automation to design or validate a SEIS automation workflow with gates, rollback, and observability."

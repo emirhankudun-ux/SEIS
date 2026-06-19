@@ -16,9 +16,9 @@ The shell is organized around eleven persistent modules: Dashboard, God Mode, Go
 
 ## Data Model
 
-Command Center uses static local datasets in `script.js` for plugin families, automation workflows, workflow runs, approval gates, rollback evidence, God Mode lanes, God Mode protocol steps, SEIS AI setup records, God Mode guardrails, God Mode artifacts, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+Command Center uses static local datasets in `script.js` for operations readiness, plugin families, automation workflows, workflow runs, approval gates, rollback evidence, God Mode lanes, God Mode protocol steps, SEIS AI setup records, God Mode guardrails, God Mode artifacts, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
 
-Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Architecture records must expose dependency graph nodes, module contracts, and technical debt actions. Security records must expose risk posture, permission review scope, dependency scan coverage, audit cadence, evidence, and next actions. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
+Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Operations readiness records must expose release, CI, security, rollback, handoff, owner, gate, evidence, and current decision state. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Architecture records must expose dependency graph nodes, module contracts, and technical debt actions. Security records must expose risk posture, permission review scope, dependency scan coverage, audit cadence, evidence, and next actions. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
 ## God Mode Operations Model
 
@@ -29,6 +29,12 @@ God Mode records must expose the mission, lane, owner, model role, safety gate, 
 The first implementation remains local-first and static. Future provider-backed or local-model execution must preserve the visible lane, evidence, and security boundary before a tool action can execute.
 
 The feature growth ledger keeps the broad objective honest. It maps Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff to improvement evidence, quality gates, and remaining gaps. A topic can be visible in the UI without being complete; completion still requires commit, push, CI or explicit handoff evidence, and protected-user-work proof.
+
+## Operations Readiness Model
+
+Operations readiness is the Command Center release-decision surface. It connects release scope, local quality, external CI, security posture, rollback, and handoff evidence in the Dashboard before the operator treats a SEIS change as shippable.
+
+The model is intentionally `review-before-release` until local quality, clean source boundary, push evidence, external CI or explicit no-CI handoff evidence, and rollback proof are all visible. The canonical contract is `content/development/seis-command-center-operations-readiness.json`, and the gate is `npm run check:seis-command-center-operations-readiness`.
 
 ## AI Orchestration Model
 

@@ -1,12 +1,15 @@
 # SEIS
 
-SEIS is an AI-native open source platform for building, governing, and evolving
-software, design, data, automation, and agent systems as one sustainable digital
-ecosystem.
+SEIS is an AI-native open source platform and creative engineering ecosystem
+designed to unify software repositories, AI agents, documentation, automation,
+design systems, cloud workflows, MCP systems, plugins, and long-term product
+intelligence.
 
-It is not just an application repository. SEIS is a living platform layer for AI
-systems, AI agents, MCP servers, skills, plugins, LLM workflows, full-stack
-products, design systems, data systems, and long-term engineering governance.
+It is not only a project or application repository. SEIS is a calm, modular,
+and premium operating layer for building, managing, and evolving
+creative-engineering systems. It is also a living platform layer for AI systems,
+AI agents, MCP servers, skills, plugins, LLM workflows, full-stack products,
+design systems, data systems, and long-term engineering governance.
 
 ## Mission
 
@@ -23,15 +26,32 @@ The repository optimizes for:
 - high-quality open source adoption over noisy growth
 - AI-assisted engineering with human review and accountable decisions
 
+## Vision
+
+SEIS exists to become a world-class AI-native command center for modern
+software, design, documentation, automation, GitHub, cloud, SSH/VPN, security,
+roadmap, and knowledge workflows.
+
+The goal is not to create another generic dashboard. The goal is to build the
+operating layer of the SEIS ecosystem: calm, intelligent, modular,
+maintainable, and future-ready.
+
+Root system documents:
+
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) defines the conceptual layers and
+  operating flow.
+- [`ROADMAP.md`](./ROADMAP.md) defines the staged evolution from foundation to
+  professional, enterprise, and supreme capability levels.
+
 ## Core Scope
 
-| Area | SEIS covers |
-| --- | --- |
-| AI systems | AI agents, agent orchestration, MCP, skills, plugins, LLM routing, memory, RAG, model evaluation, AI safety |
+| Area        | SEIS covers                                                                                                                                                                        |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AI systems  | AI agents, agent orchestration, MCP, skills, plugins, LLM routing, memory, RAG, model evaluation, AI safety                                                                        |
 | Engineering | algorithms, data structures, full stack, frontend, backend, mobile, desktop, game systems, embedded, robotics, compilers, architecture, testing, SRE, DevOps, cloud, cybersecurity |
-| Data and ML | data engineering, big data, ML, deep learning, generative AI, NLP, computer vision, knowledge graphs, governance, ethics |
-| Design | product design, design systems, UX engineering, UI engineering, interaction, motion, branding, typography, accessibility, calm technology |
-| Open source | main-centered governance, contribution quality, security reporting, documentation, discoverability, community growth |
+| Data and ML | data engineering, big data, ML, deep learning, generative AI, NLP, computer vision, knowledge graphs, governance, ethics                                                           |
+| Design      | product design, design systems, UX engineering, UI engineering, interaction, motion, branding, typography, accessibility, calm technology                                          |
+| Open source | main-centered governance, contribution quality, security reporting, documentation, discoverability, community growth                                                               |
 
 ## Repository Model
 
@@ -50,12 +70,12 @@ remaining strong across Windows, Android, Web, AI, data, and infrastructure.
 Languages and frameworks are included when they strengthen a platform lane or a
 quality gate.
 
-| Platform | Priority languages |
-| --- | --- |
-| Apple first | Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, CloudKit |
-| Windows | C#, .NET, C++, Rust, WinUI, TypeScript, Go, Zig, Python when needed |
-| Android | Kotlin, Java, Jetpack Compose, C++, Rust, TypeScript, Go, Python when needed |
-| Web and AI tooling | TypeScript, HTML, CSS, Go, Rust, Python when needed, JavaScript when needed |
+| Platform           | Priority languages                                                              |
+| ------------------ | ------------------------------------------------------------------------------- |
+| Apple first        | Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, CloudKit |
+| Windows            | C#, .NET, C++, Rust, WinUI, TypeScript, Go, Zig, Python when needed             |
+| Android            | Kotlin, Java, Jetpack Compose, C++, Rust, TypeScript, Go, Python when needed    |
+| Web and AI tooling | TypeScript, HTML, CSS, Go, Rust, Python when needed, JavaScript when needed     |
 
 Unused SDKs, runtimes, and language toolchains are not installed by default.
 Local development should stay fast, simple, and reversible. CI may install
@@ -67,12 +87,12 @@ SEIS keeps the GitHub language surface honest: real source languages are counted
 from real files, while frameworks, SDKs, cloud products, databases, IDEs, design
 tools, and productivity systems live in a separate ecosystem stack.
 
-| Surface | Canonical record | Rule |
-| --- | --- | --- |
-| GitHub source languages | [`reports/language-distribution.md`](./reports/language-distribution.md) | Count real source languages only and track platform-family balance without filler code. |
-| Full-stack language matrix | [`reports/fullstack-language-matrix.md`](./reports/fullstack-language-matrix.md) | Route source/config languages by platform layer. |
-| SEIS ecosystem stack | [`reports/seis-technology-stack.md`](./reports/seis-technology-stack.md) | Show frameworks, tools, clouds, databases, and design systems outside the language bar. |
-| SEIS AGI system | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Govern agent systems, memory, planning, research automation, MCP, skills, plugins, token efficiency, and the 90-day release window. |
+| Surface                    | Canonical record                                                                 | Rule                                                                                                                                |
+| -------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| GitHub source languages    | [`reports/language-distribution.md`](./reports/language-distribution.md)         | Count real source languages only and track platform-family balance without filler code.                                             |
+| Full-stack language matrix | [`reports/fullstack-language-matrix.md`](./reports/fullstack-language-matrix.md) | Route source/config languages by platform layer.                                                                                    |
+| SEIS ecosystem stack       | [`reports/seis-technology-stack.md`](./reports/seis-technology-stack.md)         | Show frameworks, tools, clouds, databases, and design systems outside the language bar.                                             |
+| SEIS AGI system            | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md)                     | Govern agent systems, memory, planning, research automation, MCP, skills, plugins, token efficiency, and the 90-day release window. |
 
 The long-term GitHub language profile should signal a real multi-platform
 ecosystem: Apple/Swift 25-30%, AI/Data/Python/SQL 18-22%,
@@ -180,35 +200,35 @@ architecture: advanced agents, memory systems, planning systems, research
 automation, MCP, skills, plugins, data, design, development, and interactive
 read/write workflows are routed through explicit safety gates.
 
-| Surface | Canonical record | Rule |
-| --- | --- | --- |
-| AGI system contract | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window. |
-| Active mission board | [`reports/seis-active-mission-board.md`](./reports/seis-active-mission-board.md) | Convert the three-month goal into Month 1/2/3 execution lanes with acceptance gates and evidence paths. |
-| Apple-first Swift contract | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
-| Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md) | Explain implementation roots, token efficiency, plugin use, and visual source policy. |
+| Surface                      | Canonical record                                                                                                                                                         | Rule                                                                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| AGI system contract          | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md)                                                                                                             | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window.                     |
+| Active mission board         | [`reports/seis-active-mission-board.md`](./reports/seis-active-mission-board.md)                                                                                         | Convert the three-month goal into Month 1/2/3 execution lanes with acceptance gates and evidence paths.                   |
+| Apple-first Swift contract   | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
+| Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md)                                                                                                           | Explain implementation roots, token efficiency, plugin use, and visual source policy.                                     |
 
 ## Architecture Map
 
-| Path | Purpose |
-| --- | --- |
-| [`packages/seis-ai`](./packages/seis-ai) | AI agent CLI, MCP server, audit tools, prompts, resources, and tests |
-| [`mcp`](./mcp) | SEIS MCP server entrypoints and integration surface |
-| [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
-| [`plugins/seis-ai-agent`](./plugins/seis-ai-agent) | SEIS-Agent unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation |
-| [`plugins/seis-cloud`](./plugins/seis-cloud) | Dedicated SEIS Cloud deployment, server-target, and cloud-readiness plugin package |
-| [`plugins/seis-code`](./plugins/seis-code) | Dedicated SEIS-Code engineering plugin package |
-| [`plugins/seis-design`](./plugins/seis-design) | Dedicated SEIS-Design product and design-system plugin package |
-| [`plugins/seis-data`](./plugins/seis-data) | Dedicated SEIS-DATA analytics and knowledge-governance plugin package |
-| [`packages/seis_platform_swift`](./packages/seis_platform_swift) | Apple platform policy package |
-| [`packages/seis_windows_csharp`](./packages/seis_windows_csharp) | Windows platform policy package |
-| [`packages/seis_kernel`](./packages/seis_kernel) | Capability, language, plugin, platform, and AGI-system contract builders |
-| [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go governance and readiness policy contracts |
-| [`polyglot`](./polyglot) | Cross-language audit lanes and platform proof-of-concept surfaces |
-| [`apps/web`](./apps/web) | Browser-facing product and documentation surface |
-| [`apps/android`](./apps/android) | Android direction and validation notes |
-| [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |
-| [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
-| [`reports`](./reports) | Generated ecosystem, language, capability, and readiness reports |
+| Path                                                             | Purpose                                                                                                                  |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| [`packages/seis-ai`](./packages/seis-ai)                         | AI agent CLI, MCP server, audit tools, prompts, resources, and tests                                                     |
+| [`mcp`](./mcp)                                                   | SEIS MCP server entrypoints and integration surface                                                                      |
+| [`plugins/seis`](./plugins/seis)                                 | Codex plugin bundle, scripts, and SEIS skill entrypoints                                                                 |
+| [`plugins/seis-ai-agent`](./plugins/seis-ai-agent)               | SEIS-Agent unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation |
+| [`plugins/seis-cloud`](./plugins/seis-cloud)                     | Dedicated SEIS Cloud deployment, server-target, and cloud-readiness plugin package                                       |
+| [`plugins/seis-code`](./plugins/seis-code)                       | Dedicated SEIS-Code engineering plugin package                                                                           |
+| [`plugins/seis-design`](./plugins/seis-design)                   | Dedicated SEIS-Design product and design-system plugin package                                                           |
+| [`plugins/seis-data`](./plugins/seis-data)                       | Dedicated SEIS-DATA analytics and knowledge-governance plugin package                                                    |
+| [`packages/seis_platform_swift`](./packages/seis_platform_swift) | Apple platform policy package                                                                                            |
+| [`packages/seis_windows_csharp`](./packages/seis_windows_csharp) | Windows platform policy package                                                                                          |
+| [`packages/seis_kernel`](./packages/seis_kernel)                 | Capability, language, plugin, platform, and AGI-system contract builders                                                 |
+| [`packages/seis_kernel_go`](./packages/seis_kernel_go)           | Go governance and readiness policy contracts                                                                             |
+| [`polyglot`](./polyglot)                                         | Cross-language audit lanes and platform proof-of-concept surfaces                                                        |
+| [`apps/web`](./apps/web)                                         | Browser-facing product and documentation surface                                                                         |
+| [`apps/android`](./apps/android)                                 | Android direction and validation notes                                                                                   |
+| [`apps/macos`](./apps/macos)                                     | macOS direction and Apple-native notes                                                                                   |
+| [`docs`](./docs)                                                 | Architecture, governance, deployment, strategy, quality, and research records                                            |
+| [`reports`](./reports)                                           | Generated ecosystem, language, capability, and readiness reports                                                         |
 
 ## AI-Assisted Development
 

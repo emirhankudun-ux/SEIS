@@ -29,6 +29,7 @@ const requiredCommands = [
   "npm run check:seis-god-mode-run-state",
   "npm run check:seis-god-mode-staging-manifest",
   "npm run check:seis-god-mode-changelog",
+  "npm run check:seis-god-mode-feature-growth-ledger",
   "npm run quality:governance",
 ];
 
@@ -87,6 +88,7 @@ if (docs) {
     "Run state",
     "Staging manifest",
     "Changelog",
+    "Feature growth ledger",
     "Full governance",
     "npm run check:seis-god-mode-validation-plan",
   ]) {

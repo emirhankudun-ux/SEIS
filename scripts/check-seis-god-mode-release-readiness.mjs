@@ -13,7 +13,7 @@ const webIndexPath = path.join(root, "apps", "seis-demo-web", "index.html");
 const webScriptPath = path.join(root, "apps", "seis-demo-web", "script.js");
 const webStylesPath = path.join(root, "apps", "seis-demo-web", "styles.css");
 
-const requiredGates = ["security", "ai-policy", "quality-evidence", "rollback", "ci-readiness"];
+const requiredGates = ["security", "ai-policy", "quality-evidence", "feature-growth", "rollback", "ci-readiness"];
 
 ensureFile(contractPath, "God Mode release readiness contract");
 ensureFile(docsPath, "God Mode release readiness docs");
@@ -59,6 +59,7 @@ if (docs) {
     "Security",
     "AI Policy",
     "Quality Evidence",
+    "Feature Growth",
     "Rollback",
     "CI Readiness",
     "npm run check:seis-god-mode-release-readiness",
@@ -87,7 +88,7 @@ if (webIndex) {
 if (webScript) {
   ensure(webScript.includes("renderGodModeReleaseReadiness"), "web script must render release readiness");
   ensure(webScript.includes("seis_demo_release_readiness_viewed"), "web script must emit release readiness telemetry");
-  for (const label of ["Security", "AI Policy", "Quality Evidence", "Rollback", "CI Readiness"]) {
+  for (const label of ["Security", "AI Policy", "Quality Evidence", "Feature Growth", "Rollback", "CI Readiness"]) {
     ensure(webScript.includes(label), `web script must expose release gate: ${label}`);
   }
 }

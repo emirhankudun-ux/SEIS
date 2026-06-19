@@ -21,6 +21,7 @@
     "npm run check:seis-god-mode-run-state",
     "npm run check:seis-god-mode-staging-manifest",
     "npm run check:seis-god-mode-changelog",
+    "npm run check:seis-god-mode-feature-growth-ledger",
     "npm run quality:governance"
   ],
   "commandGroups": [
@@ -203,6 +204,18 @@
         "scripts/check-seis-god-mode-changelog.mjs"
       ],
       "failureMode": "Release notes are unsafe if added features are incomplete, untracked, or claimed release-ready before validation."
+    },
+    {
+      "id": "feature-growth-ledger",
+      "displayName": "Feature Growth Ledger",
+      "command": "npm run check:seis-god-mode-feature-growth-ledger",
+      "proofTarget": "Proves Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff each have feature or governance improvement evidence plus remaining gaps.",
+      "evidence": [
+        "content/development/seis-god-mode-feature-growth-ledger.json",
+        "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs"
+      ],
+      "failureMode": "The broad God Mode objective is unsafe if topic-by-topic feature growth evidence is missing."
     },
     {
       "id": "full-governance",

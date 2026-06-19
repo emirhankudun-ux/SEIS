@@ -21,6 +21,7 @@ The validation plan defines the command sequence required to prove God Mode deve
 | Run state | `npm run check:seis-god-mode-run-state` |
 | Staging manifest | `npm run check:seis-god-mode-staging-manifest` |
 | Changelog | `npm run check:seis-god-mode-changelog` |
+| Feature growth ledger | `npm run check:seis-god-mode-feature-growth-ledger` |
 | Full governance | `npm run quality:governance` |
 
 ## Operating rule

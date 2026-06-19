@@ -35,6 +35,8 @@ Evidence:
 | Plugin Skill | God Mode plugin capability and agent skill. |
 | Package Quality Chain | Package scripts and governance chain. |
 
+The current God Mode contract, governance-docs, and quality-checkers groups include the feature growth ledger so topic-by-topic improvement evidence is staged with the rest of the package.
+
 ## Protected paths
 
 `apps/seis-core/index.html` is protected from this package unless explicitly reviewed and included.

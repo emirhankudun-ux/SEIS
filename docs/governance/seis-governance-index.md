@@ -25,6 +25,8 @@ This is the living documentation index for God Mode development. It connects arc
 | Run state | `docs/governance/seis-god-mode-run-state.md` |
 | Staging manifest | `docs/governance/seis-god-mode-staging-manifest.md` |
 | Changelog | `docs/governance/seis-god-mode-changelog.md` |
+| Feature growth ledger | `docs/governance/seis-god-mode-feature-growth-ledger.md` |
+| Command Center feature growth integration plan | `docs/governance/seis-command-center-feature-growth-integration-plan.md` |
 
 ## Operating rule
 

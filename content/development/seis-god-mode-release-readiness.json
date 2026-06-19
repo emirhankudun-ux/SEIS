@@ -8,6 +8,7 @@
     "security",
     "ai-policy",
     "quality-evidence",
+    "feature-growth",
     "rollback",
     "ci-readiness"
   ],
@@ -41,9 +42,22 @@
       "rule": "Every module improvement must have acceptance criteria, evidence links, and a checker.",
       "evidence": [
         "content/development/seis-goals-evidence-ledger.json",
-        "scripts/check-seis-goals-evidence-ledger.mjs"
+        "scripts/check-seis-goals-evidence-ledger.mjs",
+        "content/development/seis-god-mode-feature-growth-ledger.json"
       ],
       "failureMode": "A feature is not release-ready if claims are not backed by contract, doc, and checker evidence."
+    },
+    {
+      "id": "feature-growth",
+      "displayName": "Feature Growth",
+      "status": "required",
+      "rule": "Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff must each have explicit improvement evidence and visible remaining gaps.",
+      "evidence": [
+        "content/development/seis-god-mode-feature-growth-ledger.json",
+        "docs/governance/seis-god-mode-feature-growth-ledger.md",
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs"
+      ],
+      "failureMode": "God Mode is not release-ready if topic-by-topic growth evidence is missing, stale, or disconnected from the Command Center surface."
     },
     {
       "id": "rollback",
@@ -70,5 +84,5 @@
       "failureMode": "A feature is not release-ready if CI cannot enforce the new governance gates."
     }
   ],
-  "completionRule": "Do not mark God Mode work complete until all required gates have evidence and the relevant validation commands have been run successfully."
+  "completionRule": "Do not mark God Mode work complete until all required gates have evidence, feature growth is current, relevant validation commands have been run successfully, and commit/push/CI or explicit handoff evidence exists."
 }
