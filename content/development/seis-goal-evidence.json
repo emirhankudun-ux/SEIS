@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-evidence-ledger",
+  "updated": "2026-06-19",
+  "mode": "non_llm_goal_evidence_foundation",
+  "allowedStatuses": [
+    "passed",
+    "failed",
+    "blocked",
+    "observed",
+    "partial"
+  ],
+  "allowedTypes": [
+    "validation",
+    "repository-state",
+    "blocker",
+    "security-scan",
+    "commit",
+    "review"
+  ],
+  "records": [
+    {
+      "id": "SEIS-EVID-001",
+      "title": "Goal tracking registry validates",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-evidence.json",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "Goal Tracking OS validator passed for 20 goals across 20 strategic categories.",
+      "limitations": [
+        "Does not prove Command Center UI implementation.",
+        "Does not prove live GitHub, SSH, release, or public readiness integrations."
+      ],
+      "next_action": "Keep the validator in the local foundation validation flow."
+    },
+    {
+      "id": "SEIS-EVID-002",
+      "title": "Existing web audit passes",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run seis:check",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-010"
+      ],
+      "related_paths": [
+        "apps/web",
+        "packages/seis-ai/bin/seis-check.mjs"
+      ],
+      "summary": "Existing web audit reported passing i18n, SEO, contract, drawings, style, performance, accessibility, and basic security checks.",
+      "limitations": [
+        "Audit output includes informational findings for lazy image loading, explicit image dimensions, CSP, and external resource integrity.",
+        "Does not prove Goal Tracking Center UI exists."
+      ],
+      "next_action": "Connect future Goal Tracking Center UI work to the same validation discipline."
+    },
+    {
+      "id": "SEIS-EVID-003",
+      "title": "Foundation check blocked by missing governance files",
+      "type": "blocker",
+      "status": "blocked",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:foundation",
+      "supports_goal_ids": [
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-008",
+        "SEIS-GOAL-009"
+      ],
+      "related_paths": [
+        "docs/governance/branch-policy.md",
+        "docs/governance/open-source-governance.md",
+        "docs/governance/seis-supreme-v12-constitution.md",
+        "scripts/check-open-source-governance.mjs"
+      ],
+      "summary": "Foundation validation failed because required governance docs and an open-source governance validator are missing in the current worktree.",
+      "limitations": [
+        "This evidence records the blocker; it does not approve restoring, deleting, or replacing files."
+      ],
+      "next_action": "Resolve governance file state in a focused repository hygiene PR."
+    },
+    {
+      "id": "SEIS-EVID-004",
+      "title": "Tracked deletion set remains unresolved",
+      "type": "repository-state",
+      "status": "blocked",
+      "observed_at": "2026-06-19",
+      "command": "git status --short --branch",
+      "supports_goal_ids": [
+        "SEIS-GOAL-004",
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007"
+      ],
+      "related_paths": [
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md"
+      ],
+      "summary": "Current worktree still shows 47 pre-existing unstaged tracked deletions. No deletion was staged or committed in the Goal Tracking OS evidence pass.",
+      "limitations": [
+        "Does not determine whether each deleted file should be restored, replaced, archived, or intentionally removed."
+      ],
+      "next_action": "Create a deletion review table before any file deletion or restoration decision."
+    },
+    {
+      "id": "SEIS-EVID-005",
+      "title": "Foundation commits are local only",
+      "type": "commit",
+      "status": "observed",
+      "observed_at": "2026-06-19",
+      "command": "git log --oneline --decorate -4",
+      "supports_goal_ids": [
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "Branch contains four local foundation commits ahead of origin. No push, merge, tag, release, or deployment was performed.",
+      "limitations": [
+        "Local commits do not prove GitHub PR state or remote CI status."
+      ],
+      "next_action": "Push or open a PR only after explicit approval if required by policy."
+    },
+    {
+      "id": "SEIS-EVID-006",
+      "title": "Goal Tracking OS scoped sensitive-pattern scan passes",
+      "type": "security-scan",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "rg scoped sensitive patterns over goal tracking files",
+      "supports_goal_ids": [
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-008"
+      ],
+      "related_paths": [
+        "docs/goals",
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-evidence.json",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "Scoped scan found no private-path, private-key, token, credential, file URI, or editor URI hits in Goal Tracking OS files.",
+      "limitations": [
+        "This was a scoped scan, not a full repository secret scan.",
+        "Known hardcoded local plugin path cleanup remains tracked in the backlog."
+      ],
+      "next_action": "Run full public-readiness security scan after repository hygiene blockers are resolved."
+    }
+  ]
+}

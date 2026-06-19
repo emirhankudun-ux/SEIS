@@ -1,6 +1,14 @@
 import { existsSync, readFileSync } from "node:fs";
 
 const registryPath = "content/development/seis-goal-tracking.json";
+const evidencePath = "content/development/seis-goal-evidence.json";
+const sensitiveTextPatterns = [
+  new RegExp(["/", "Users"].join(""), "i"),
+  new RegExp(`file:${"/".repeat(2)}|vscode:${"/".repeat(2)}`, "i"),
+  new RegExp(`${["BEGIN", ".*KEY"].join(" ")}|${["PRIVATE", "KEY"].join(" ")}`, "i"),
+  new RegExp(["token", "="].join(""), "i"),
+  new RegExp(["api", "[_-]?", "key"].join(""), "i")
+];
 
 const requiredDocs = [
   "docs/goals/seis-vision.md",
@@ -9,6 +17,7 @@ const requiredDocs = [
   "docs/goals/goal-schema.md",
   "docs/goals/milestone-map.md",
   "docs/goals/progress-review.md",
+  "docs/goals/evidence-ledger.md",
   "docs/goals/weekly-priorities-template.md",
   "docs/goals/monthly-review-template.md",
   "docs/roadmap/MASTER_BACKLOG.md",
@@ -80,9 +89,19 @@ if (!existsSync(registryPath)) {
   failures.push(`missing goal registry: ${registryPath}`);
 }
 
+if (!existsSync(evidencePath)) {
+  failures.push(`missing goal evidence ledger: ${evidencePath}`);
+}
+
 const registry = existsSync(registryPath)
   ? JSON.parse(readFileSync(registryPath, "utf8"))
   : null;
+
+const evidenceLedger = existsSync(evidencePath)
+  ? JSON.parse(readFileSync(evidencePath, "utf8"))
+  : null;
+
+let knownGoalIds = new Set();
 
 if (registry) {
   if (registry.schemaVersion !== 1) {
@@ -105,6 +124,7 @@ if (registry) {
   const categories = new Set(registry.categories || []);
   const goals = registry.goals || [];
   const ids = new Set();
+  knownGoalIds = new Set(goals.map((goal) => goal.id));
 
   if (goals.length < requiredCategories.length) {
     failures.push("goal registry should cover the strategic categories");
@@ -182,6 +202,94 @@ if (registry) {
   }
 }
 
+if (evidenceLedger) {
+  if (evidenceLedger.schemaVersion !== 1) {
+    failures.push("goal evidence ledger schemaVersion must be 1");
+  }
+
+  if (evidenceLedger.mode !== "non_llm_goal_evidence_foundation") {
+    failures.push("goal evidence ledger mode must be non_llm_goal_evidence_foundation");
+  }
+
+  const allowedStatuses = new Set(evidenceLedger.allowedStatuses || []);
+  const allowedTypes = new Set(evidenceLedger.allowedTypes || []);
+  const records = evidenceLedger.records || [];
+  const ids = new Set();
+
+  if (!Array.isArray(records) || records.length === 0) {
+    failures.push("goal evidence ledger must contain records");
+  }
+
+  for (const record of records) {
+    const label = record.id || "(missing evidence id)";
+    for (const field of [
+      "id",
+      "title",
+      "type",
+      "status",
+      "observed_at",
+      "command",
+      "supports_goal_ids",
+      "related_paths",
+      "summary",
+      "limitations",
+      "next_action"
+    ]) {
+      if (!(field in record)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (ids.has(record.id)) {
+      failures.push(`duplicate evidence id: ${record.id}`);
+    }
+    ids.add(record.id);
+
+    if (!/^SEIS-EVID-\d{3}$/.test(record.id || "")) {
+      failures.push(`${label} id must match SEIS-EVID-000 format`);
+    }
+
+    if (!allowedTypes.has(record.type)) {
+      failures.push(`${label} has invalid type: ${record.type}`);
+    }
+
+    if (!allowedStatuses.has(record.status)) {
+      failures.push(`${label} has invalid status: ${record.status}`);
+    }
+
+    for (const field of ["supports_goal_ids", "related_paths", "limitations"]) {
+      if (!Array.isArray(record[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const goalId of record.supports_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const relatedPath of record.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths", {
+        allowMissing: record.status === "blocked" || record.status === "failed"
+      });
+    }
+
+    for (const [field, value] of Object.entries({
+      title: record.title,
+      command: record.command,
+      summary: record.summary,
+      next_action: record.next_action
+    })) {
+      validateSafeText(label, field, value);
+    }
+
+    for (const limitation of record.limitations || []) {
+      validateSafeText(label, "limitations", limitation);
+    }
+  }
+}
+
 if (failures.length > 0) {
   console.error("SEIS goal tracking check failed:");
   for (const failure of failures) {
@@ -201,7 +309,8 @@ console.log(JSON.stringify({
   categories: Object.keys(byCategory).length,
   byStatus,
   byPriority,
-  docs: requiredDocs.length
+  docs: requiredDocs.length,
+  evidenceRecords: evidenceLedger.records.length
 }, null, 2));
 
 function hasUnavailableEvidence(goal) {
@@ -215,7 +324,7 @@ function validateEvidenceLink(label, link) {
   validateRelativePath(label, link, "evidence_links");
 }
 
-function validateRelativePath(label, link, field) {
+function validateRelativePath(label, link, field, options = {}) {
   if (typeof link !== "string" || link.length === 0) {
     failures.push(`${label} ${field} contains an empty link`);
     return;
@@ -224,8 +333,19 @@ function validateRelativePath(label, link, field) {
     failures.push(`${label} ${field} must use repo-relative paths only: ${link}`);
     return;
   }
-  if (!existsSync(link)) {
+  if (!options.allowMissing && !existsSync(link)) {
     failures.push(`${label} ${field} points to missing path: ${link}`);
+  }
+}
+
+function validateSafeText(label, field, value) {
+  if (typeof value !== "string" || value.trim().length === 0) {
+    failures.push(`${label} ${field} must be a non-empty string`);
+    return;
+  }
+
+  if (sensitiveTextPatterns.some((pattern) => pattern.test(value))) {
+    failures.push(`${label} ${field} contains a private path or sensitive-looking pattern`);
   }
 }
 

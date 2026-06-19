@@ -93,6 +93,12 @@ It is validated by `npm run check:goal-tracking`, which enforces required
 fields, allowed statuses, evidence-link safety, blocked-goal blockers, and
 validation evidence rules.
 
+The current structured evidence ledger lives at
+[`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
+and is documented in [`evidence-ledger.md`](evidence-ledger.md). It stores
+validation, blocker, repository-state, commit, review, and security-scan
+records without requiring an LLM.
+
 ## Command Center Connection
 
 The Goal Tracking Center should render:

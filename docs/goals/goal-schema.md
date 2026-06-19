@@ -121,3 +121,25 @@ npm run check:goal-tracking
   "notes": ""
 }
 ```
+
+## Evidence Object
+
+The first structured evidence ledger is
+[`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json).
+Each evidence record should use this lightweight shape:
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | Yes | Stable evidence id such as `SEIS-EVID-001`. |
+| `title` | Yes | Short evidence title. |
+| `type` | Yes | `validation`, `repository-state`, `blocker`, `security-scan`, `commit`, or `review`. |
+| `status` | Yes | `passed`, `failed`, `blocked`, `observed`, or `partial`. |
+| `observed_at` | Yes | Date the evidence was observed. |
+| `command` | Yes | Command or review action, summarized without private paths. |
+| `supports_goal_ids` | Yes | Goal ids supported by this evidence. |
+| `related_paths` | Yes | Repo-relative files or directories. |
+| `summary` | Yes | Evidence summary without secrets or private paths. |
+| `limitations` | Yes | What the evidence does not prove. |
+| `next_action` | Yes | Next safe action implied by the evidence. |
+
+Evidence records are validated by `npm run check:goal-tracking`.

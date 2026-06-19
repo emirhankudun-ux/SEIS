@@ -38,6 +38,8 @@ broad file search.
 | [goals/milestone-map.md](goals/milestone-map.md) | Roadmap phases, milestones, epics, validation steps, and follow-ups. | Active |
 | [goals/progress-review.md](goals/progress-review.md) | Current Goal Tracking OS progress review. | Active |
 | [../content/development/seis-goal-tracking.json](../content/development/seis-goal-tracking.json) | Structured non-LLM goal records. | Active |
+| [goals/evidence-ledger.md](goals/evidence-ledger.md) | Evidence rules and current evidence snapshot for Goal Tracking OS. | Active |
+| [../content/development/seis-goal-evidence.json](../content/development/seis-goal-evidence.json) | Structured non-LLM evidence records. | Active |
 | [goals/weekly-priorities-template.md](goals/weekly-priorities-template.md) | Weekly review template; use only for real weekly reviews. | Template |
 | [goals/monthly-review-template.md](goals/monthly-review-template.md) | Monthly review template; use only for real monthly reviews. | Template |
 

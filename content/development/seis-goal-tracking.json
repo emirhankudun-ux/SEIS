@@ -10,6 +10,7 @@
     "docs/goals/goal-schema.md",
     "docs/goals/milestone-map.md",
     "docs/goals/progress-review.md",
+    "docs/goals/evidence-ledger.md",
     "docs/product/goal-tracking-center.md",
     "docs/product/command-center-goals-view.md",
     "docs/reviews/GOAL_TRACKING_REVIEW.md"
@@ -120,10 +121,12 @@
         "docs/goals/goal-tracking-system.md",
         "docs/goals/goal-schema.md",
         "docs/goals/milestone-map.md",
+        "docs/goals/evidence-ledger.md",
         "docs/reviews/GOAL_TRACKING_REVIEW.md"
       ],
       "related_files": [
         "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-evidence.json",
         "scripts/check-goal-tracking.mjs"
       ],
       "related_milestone": "SEIS-MS-001",
@@ -142,6 +145,8 @@
       "evidence_links": [
         "docs/goals/goal-tracking-system.md",
         "docs/goals/goal-schema.md",
+        "docs/goals/evidence-ledger.md",
+        "content/development/seis-goal-evidence.json",
         "docs/reviews/GOAL_TRACKING_REVIEW.md"
       ],
       "validation_method": "Goal docs exist, structured goal records validate, and local checks record known blockers.",

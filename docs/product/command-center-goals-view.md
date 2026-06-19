@@ -53,6 +53,8 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 
 The first structured source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
+Evidence and validation summaries should come from
+[`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json).
 The compact view model can be derived from each goal record:
 
 ```json

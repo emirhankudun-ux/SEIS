@@ -24,10 +24,11 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-MS-001` | `SEIS-PHASE-1` | Goal docs foundation | active | Required `docs/goals/` files and product docs exist. |
 | `SEIS-MS-002` | `SEIS-PHASE-1` | Goal evidence rules | active | Goal schema and review docs require evidence for completion/validation. |
 | `SEIS-MS-003` | `SEIS-PHASE-2` | Goal Tracking Center product plan | active | Product docs define Goal Tracking Center and Command Center goals view. |
-| `SEIS-MS-004` | `SEIS-PHASE-2` | Static goal data for UI | planned | Fixture/manual goal records exist and render in Command Center. |
+| `SEIS-MS-004` | `SEIS-PHASE-2` | Static goal data for UI | active | Structured goal records exist; Command Center rendering is still planned. |
 | `SEIS-MS-005` | `SEIS-PHASE-3` | Repository intelligence report | planned | Read-only scanner emits missing docs, risky files, deleted files, and validation gaps. |
 | `SEIS-MS-006` | `SEIS-PHASE-4` | Approval and evidence records | planned | Approval requests and evidence records have schema and UI surface. |
 | `SEIS-MS-007` | `SEIS-PHASE-5` | Public/release readiness dry-runs | planned | Dry-run reports exist without deployment or release actions. |
+| `SEIS-MS-008` | `SEIS-PHASE-1` | Goal evidence ledger | active | Structured evidence ledger exists and is validated with the goal registry. |
 
 ## Epics
 
@@ -35,8 +36,9 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | --- | --- | --- | --- | --- |
 | `SEIS-EPIC-GOALS-001` | `SEIS-MS-001` | Goal hierarchy and schema | active | Maintain goal docs and review report. |
 | `SEIS-EPIC-GOALS-002` | `SEIS-MS-003` | Goal Tracking Center UX | planned | Build static/manual product view docs and fixture data. |
-| `SEIS-EPIC-GOALS-003` | `SEIS-MS-004` | Goal data extraction | planned | Define JSON representation after Markdown foundation stabilizes. |
+| `SEIS-EPIC-GOALS-003` | `SEIS-MS-004` | Goal data extraction | active | Keep JSON goal records aligned with docs and evidence. |
 | `SEIS-EPIC-GOALS-004` | `SEIS-MS-005` | Repo-evidence connection | planned | Link scanner outputs to goals and blockers. |
+| `SEIS-EPIC-GOALS-005` | `SEIS-MS-008` | Evidence ledger | active | Maintain validation, blocker, repository-state, commit, review, and security-scan records. |
 
 ## Validation Steps
 
@@ -46,11 +48,12 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | Links use relative paths | Docs remain portable. | active |
 | `git diff --check` | No whitespace issues in scoped diff. | passed on 2026-06-19 |
 | `npm run seis:check` | Existing web audit still passes. | passed on 2026-06-19 |
+| `npm run check:goal-tracking` | Goal registry and evidence ledger validate. | passed on 2026-06-19 |
 | `npm run check:foundation` | Foundation validators pass. | blocked by pre-existing deleted files |
 
 ## Follow-Up Actions
 
-1. Add static goal records or fixture JSON after repo hygiene is resolved.
+1. Render existing structured goal and evidence records in Command Center.
 2. Add read-only scanner output for goal evidence and validation gaps.
 3. Render Goal Tracking Center in Command Center without LLM dependency.
 4. Add weekly/monthly review records only when reviews are actually performed.
