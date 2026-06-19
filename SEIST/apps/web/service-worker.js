@@ -66,7 +66,7 @@ async function cacheFirst(request) {
       cache.put(request, response.clone());
     }
     return response;
-  } catch (_error) {
+  } catch {
     return caches.match(new URL("./index.html", self.registration.scope).toString());
   }
 }

@@ -43,7 +43,7 @@ initCinematicField();
 function readMotionMode() {
   try {
     return window.localStorage.getItem("seis-motion-mode") === "low" ? "low" : "standard";
-  } catch (_error) {
+  } catch {
     return "standard";
   }
 }
@@ -51,7 +51,7 @@ function readMotionMode() {
 function persistMotionMode(mode) {
   try {
     window.localStorage.setItem("seis-motion-mode", mode);
-  } catch (_error) {
+  } catch {
     /* localStorage can be unavailable in strict browser modes. */
   }
 }

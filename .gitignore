@@ -2,151 +2,32 @@
 # Dependencies
 node_modules/
 
-# Build artifacts
-dist/
-build/
-target/
+# Logs and temp files
+*.log
+*.tmp
 
-# Environment files
+# Environment variables
 .env
 .env.local
-*.env.*
+.env.*
 
-# Secret and SSH key material
-*.pem
-*.key
-*.p8
-*.p12
-*.crt
-*.csr
-id_rsa
-id_rsa.pub
-id_dsa
-id_dsa.pub
-id_ecdsa
-id_ecdsa.pub
-id_ed25519
-id_ed25519.pub
-id_ed25519_*
-id_ed25519_*.pub
-*.private
-*.private.pub
+# IDE and editor settings
+.vscode/
+.idea/
 
-# Python specific
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
 
-# Logs
-*.log
+# Build outputs
+dist/
+build/
+target/
 
 # OS generated files
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Testing
-.coverage
-htmlcov/
-coverage/
-.nyc_output/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Temporary files
-*.tmp
-*.temp
-
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
-
-# MyPy
-.mypy_cache/
-
-# PyTest
-.pytest_cache/
-
-# ESLint
-.eslintcache
-
-# Prettier
-.prettierignore
-
-# GitHub
-.github/
-
-# Scripts
-scripts/hooks/
-scripts/security/
-
-# Edge workers
-edge-workers/
-
-# iOS
-ios/
-
-# Configuration and data files (non-source)
-*.json
-*.config.json
-
-# Package lock files
-package-lock.json
-
-# Test files
-apps/web/test/
-
-# Content files
-apps/web/content/
-
-# Documentation
-docs/
-
-# Local accidental artifacts from monorepo preparation
-SEİS/
-SEİS/
-packages/seis_platform_swift/.build/
-scripts/super-ssh-manager.py
 ```
-
-# Local SEIS SSH mobile readiness reports
-reports/seis-ssh-mobile-24x7-readiness.json
-reports/seis-ssh-mobile-24x7-readiness.md
-reports/seis-ssh-mobile-direct-cloud-profile.json
-reports/seis-ssh-mobile-direct-cloud-profile.md
-.seis-secrets/
