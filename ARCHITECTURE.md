@@ -1,318 +1,90 @@
 # SEIS Architecture
 
-This document describes the high-level architecture of the SEIS ecosystem.
-
-SEIS is an AI-native creative engineering operating system that connects
-repositories, agents, automation, documentation, cloud infrastructure, design
-systems, security boundaries, and knowledge workflows into one coherent
-ecosystem.
-
-## Architectural Goal
-
-The goal of SEIS architecture is to create a modular, secure, and scalable
-ecosystem that can evolve from a clean repository foundation into a full
-AI-native command center.
-
-SEIS must support:
-
-- human developers
-- AI coding agents
-- design workflows
-- documentation systems
-- automation pipelines
-- GitHub operations
-- cloud environments
-- security boundaries
-- future product interfaces
-
-The architecture must remain understandable, maintainable, extensible, and
-safe for long-term AI-assisted development.
-
-## Core Layers
-
-SEIS is organized as a set of conceptual layers. These layers can evolve into
-code, documentation, workflows, product modules, and agent responsibilities
-without becoming isolated systems.
-
-## Interface Layer
-
-The interface layer represents the user-facing SEIS Command Center.
-
-Responsibilities:
-
-- navigation
-- dashboard views
-- command palette
-- module switching
-- design system presentation
-- status cards
-- system health visibility
-- agent activity visibility
-- roadmap visibility
-
-Expected qualities:
-
-- minimal
-- fast
-- premium
-- responsive
-- accessible
-- keyboard-friendly
-- calm and structured
-
-Planned interface modules:
-
-- Command Center
-- Repository Intelligence
-- Agent Center
-- MCP / Plugin Hub
-- Documentation Library
-- Roadmap Board
-- Automation Center
-- Cloud & SSH Center
-- Security Center
-- Design System Viewer
-- Knowledge Center
-- Deployment Center
-- System Health Monitor
-
-## Repository Intelligence Layer
-
-This layer helps SEIS understand and improve repositories as long-lived
-systems.
-
-Responsibilities:
-
-- repository structure analysis
-- file inventory
-- documentation detection
-- dependency awareness
-- branch and commit awareness
-- issue and pull request awareness
-- quality checks
-- release readiness
-- missing-file detection
-
-The layer should make it clear whether a repository is clean, documented,
-secure, maintainable, and scalable.
-
-## Agent Orchestration Layer
-
-This layer coordinates AI-agent workflows.
-
-Agent roles may include:
-
-- Architect Agent
-- Design System Agent
-- Frontend Agent
-- Backend Agent
-- AI Systems Agent
-- Documentation Agent
-- Security Agent
-- DevOps Agent
-- QA Agent
-
-Responsibilities:
-
-- role separation
-- task routing
-- context management
-- prompt discipline
-- output validation
-- safety boundaries
-- documentation alignment
-- avoidance of conflicting edits
-
-All agents must follow [`AGENTS.md`](./AGENTS.md).
-
-## Local AI Workbench Layer
-
-This layer connects installed local tools to SEIS without making any editor or
-desktop app the source of truth.
-
-Responsibilities:
-
-- route Codex, Antigravity, Antigravity IDE, Cursor, Xcode, Ollama, JetBrains
-  IDEs, Air, Gateway, Open Design, and Figma by task type
-- keep one AI/editor surface in writer mode at a time
-- expose local app readiness through generated reports
-- prevent private app state, credentials, caches, and proprietary bundle
-  contents from entering the repository
-- preserve Git and SEIS docs as canonical handoff surfaces
-
-The operating contract is documented in
-[`docs/development/local-ai-workbench.md`](./docs/development/local-ai-workbench.md).
-
-## Automation Layer
-
-This layer manages repeatable system workflows.
-
-Responsibilities:
-
-- GitHub Actions
-- CI/CD
-- formatting checks
-- tests
-- link checks
-- documentation checks
-- deployment workflows
-- release preparation
-- repository health checks
-
-Automation must be useful, understandable, and quiet. It should not hide
-errors, create noise, expose secrets, or make the repository harder to reason
-about.
-
-## Documentation Layer
-
-Documentation is treated as a core architectural component, not a side effect.
-
-Core documents:
-
-- [`AGENTS.md`](./AGENTS.md)
-- [`README.md`](./README.md)
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md)
-- [`ROADMAP.md`](./ROADMAP.md)
-- [`CONTRIBUTING.md`](./CONTRIBUTING.md)
-- [`SECURITY.md`](./SECURITY.md)
-- `CHANGELOG.md`
-
-Documentation directories should stay structured around:
-
-- `docs/decisions`
-- `docs/prompts`
-- `docs/design-system`
-- `docs/architecture`
-- `docs/operations`
-
-Documentation must help both humans and AI agents understand, run, improve,
-and maintain SEIS.
-
-## Security Layer
-
-The security layer protects the ecosystem.
-
-Responsibilities:
-
-- secrets hygiene
-- SSH key safety
-- environment variable usage
-- GitHub security settings
-- dependency risk awareness
-- private data protection
-- clean-room development rules
-- safe automation boundaries
-
-Rules:
-
-- never commit secrets
-- never expose private keys
-- prefer Ed25519 SSH keys
-- keep private keys with the user
-- avoid public SSH exposure when possible
-- prefer VPN or private-network access
-- document access rules clearly
-
-## Cloud and Environment Layer
-
-SEIS should support three main environments.
-
-| Environment                   | Purpose                                                     |
-| ----------------------------- | ----------------------------------------------------------- |
-| Local environment             | Direct development and maximum user control.                |
-| GitHub Codespaces / Cloud IDE | Stable cloud-based development and remote workflows.        |
-| SEIS Cloud                    | Private, controlled, always-available ecosystem operations. |
-
-The three environments must work together instead of competing with each other:
-local is for control, GitHub is for collaboration, and cloud is for stability.
-
-## Knowledge Layer
-
-The knowledge layer stores reusable project intelligence.
-
-It may include:
-
-- prompt libraries
-- architecture notes
-- design references
-- technical decisions
-- roadmap notes
-- learning notes
-- project memory
-- research summaries
-
-The knowledge layer should help SEIS improve over time without becoming messy,
-unsafe, or dependent on private implementation details.
-
-## Data Flow
-
-A typical SEIS workflow should follow this pattern:
-
-1. User goal.
-2. Agent reads [`AGENTS.md`](./AGENTS.md).
-3. Repository inspection.
-4. Architecture and risk analysis.
-5. Prioritized plan.
-6. Safe implementation.
-7. Validation.
-8. Documentation update.
-9. Summary and next step.
-
-This flow keeps the system controlled and prevents random, disconnected
-changes.
+SEIS is an AI-native creative engineering operating system and operating layer.
+Its architecture is organized around calm coordination: repository governance,
+command center experience, AI-agent workflows, documentation, automation, cloud
+operations, security, and long-term product intelligence.
+
+The architecture should stay modular, inspectable, and reversible. SEIS should
+gain capability through clear layers and contracts, not through disconnected
+files or hidden automation.
 
 ## Architecture Principles
 
-SEIS architecture must remain:
+- Keep the repository understandable before making it larger.
+- Treat documentation, checks, scripts, and UI surfaces as one operating system.
+- Prefer small contracts that can be validated over broad claims.
+- Keep local, GitHub, and cloud workflows compatible.
+- Never allow automation or AI-agent behavior to bypass security review.
+- Preserve user work and make changes that can be reviewed independently.
 
-- modular
-- secure
-- understandable
-- scalable
-- documented
-- AI-agent friendly
-- GitHub compatible
-- cloud-ready
-- design-system aware
-- easy to extend
+## Layers
 
-Avoid:
+| Layer | Purpose | Current Surface |
+| --- | --- | --- |
+| Command Center Layer | Product and operational interface for SEIS modules | `apps/`, `docs/`, roadmap modules |
+| Repository Governance Layer | Rules for structure, contribution, quality, releases, and GitHub use | `AGENTS.md`, `README.md`, `ROADMAP.md`, governance docs |
+| Agent Orchestration Layer | AI-agent roles, routing, skills, MCP, prompts, and evidence capture | `plugins/`, `mcp/`, `packages/seis-ai`, agent docs |
+| Automation Layer | Checks, reports, generated records, and repeatable maintenance workflows | `scripts/`, `reports/`, GitHub Actions |
+| Cloud and Environment Layer | Local, Codespaces, SSH/VPN, deployment, and private runtime strategy | `deploy/`, cloud docs, server scripts |
+| Knowledge Layer | Decisions, memory boundaries, prompts, architecture notes, and research records | `docs/`, `content/`, `roadmap/`, `goals/` |
+| Security Layer | Secret hygiene, access control, clean-room rules, dependency risk, and release safety | `SECURITY.md`, security docs, validation scripts |
 
-- unnecessary rewrites
-- dependency bloat
-- unclear abstractions
-- duplicated systems
-- hidden complexity
-- undocumented behavior
-- fragile automation
+## Data Flow
 
-## Current Architecture Phase
+SEIS work should move through a traceable flow:
 
-SEIS is currently in a foundation and ecosystem-design phase.
+1. User goal or repository signal enters the operating layer.
+2. Agent or maintainer inspects the relevant repository surface.
+3. A narrow change package is selected with a clear owner and risk profile.
+4. Implementation updates code, docs, checks, or generated evidence.
+5. Validation records what was checked and what remains unverified.
+6. Changelog, roadmap, or governance docs capture meaningful state changes.
+7. GitHub remains the collaboration and review boundary.
 
-Current architectural priorities:
+This flow keeps SEIS from turning into a loose collection of dashboards,
+scripts, and documents. Every change should strengthen the same operating
+model.
 
-1. Establish repository governance.
-2. Create core documentation.
-3. Define agent operating rules.
-4. Design the Command Center structure.
-5. Prepare GitHub workflows.
-6. Prepare cloud and SSH strategy.
-7. Build safely in progressive versions.
+## God Mode Operating Discipline
 
-## Future Direction
+God Mode in SEIS means high-leverage, cross-layer development. It does not mean
+unbounded edits or bypassed review.
 
-SEIS should evolve toward a full AI-native command center with:
+A God Mode slice should normally improve at least two layers and leave evidence
+for the rest. Example layer pairs:
 
-- multi-repository intelligence
-- AI-agent orchestration
-- MCP and plugin management
-- cloud control
-- security monitoring
-- design system governance
-- automation workflows
-- knowledge search
-- roadmap intelligence
-- deployment visibility
+- governance plus validation
+- command center behavior plus documentation
+- agent routing plus security policy
+- cloud readiness plus rollback notes
+- roadmap planning plus repository health evidence
 
-The final goal is a coherent operating system for the entire SEIS ecosystem.
+God Mode changes must remain small enough to review. If the worktree already has
+large unrelated changes, create a narrow package and document the repo-state
+risk instead of mixing everything into one commit.
+
+## Operating Boundaries
+
+- Local development is for direct control.
+- GitHub is for collaboration, review, issues, pull requests, releases, and
+  branch governance.
+- Cloud and Codespaces are for stable remote work, controlled deployment, and
+  always-available operations.
+- MCP and plugin systems are integration surfaces, not places to hide
+  irreversible behavior.
+- Security and clean-room rules apply to every layer.
+
+## Evolution Rule
+
+SEIS should grow by validated capability levels:
+
+- foundation before scale
+- contracts before automation
+- checks before release claims
+- documentation before handoff
+- human review before public readiness
+
+Architecture is considered healthy when a future agent can inspect the
+repository, understand the active operating model, make a narrow improvement,
+validate it, and leave a clear handoff without needing private context.

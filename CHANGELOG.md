@@ -12,6 +12,8 @@ agents and maintainers need.
 
 - Added root architecture and roadmap entry documents for the SEIS foundation.
 - Added README vision links for architecture and staged ecosystem evolution.
+- Added the God Mode governance lane with architecture discipline, run-state
+  handoff, and a lightweight `check:seis-god-mode-developer` gate.
 
 ### Notes
 

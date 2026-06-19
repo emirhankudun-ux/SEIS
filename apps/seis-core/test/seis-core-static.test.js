@@ -41,6 +41,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /godModeArtifacts/);
   assert.match(script, /godModeRuns/);
   assert.match(script, /renderGodMode/);
+  assert.match(script, /seisRouterLanes/);
+  assert.match(script, /renderSeisRouter/);
   assert.match(script, /operationsReadiness/);
   assert.match(script, /renderOperationsReadiness/);
   assert.match(script, /featureGrowthLedger/);
@@ -63,7 +65,33 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /renderAgentDetail/);
   assert.match(script, /orchestrationLanes/);
   assert.match(script, /handoffAudit/);
+  assert.match(script, /agent-routing-matrix/);
   assert.match(script, /openCommandPalette/);
+});
+
+test("SEIS Command Center exposes 10-lane router contract", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  assert.match(html, /10-Lane SEIS Router/);
+  assert.match(html, /id="seis-router-lanes"/);
+  assert.match(html, /id="agent-routing-matrix"/);
+  for (const lane of [
+    "seis",
+    "seis-governance",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
+  ]) {
+    assert.match(script, new RegExp(`laneId: "${lane}"`));
+  }
+  for (const field of ["tool", "defaultGate", "integrationTool"]) {
+    assert.match(script, new RegExp(`${field}:`));
+  }
 });
 
 test("SEIS Command Center agents expose operational evidence", async () => {
@@ -118,6 +146,9 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /run-step/);
   assert.match(css, /guardrail-row/);
   assert.match(css, /artifact-card/);
+  assert.match(css, /router-lane-card/);
+  assert.match(css, /router-facts/);
+  assert.match(css, /routing-matrix-row/);
   assert.match(css, /operations-readiness-panel/);
   assert.match(css, /readiness-card/);
   assert.match(css, /readiness-row/);

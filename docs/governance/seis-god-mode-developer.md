@@ -1,56 +1,82 @@
 # SEIS God Mode Developer
 
-Status: Active cross-layer operating lane
+Status: Active governance lane
 
-God Mode Developer is a SEIS execution mode for work that cannot be treated as a single isolated feature. It requires every meaningful change to produce cross-layer lift across product experience, application/platform behavior, AI/AGI learning, cloud/security posture, and governance/quality evidence.
+God Mode Developer is the SEIS operating mode for high-leverage development
+that spans more than one repository layer. It is not permission to make broad,
+unreviewable rewrites. It is a stricter mode for producing integrated progress
+with explicit evidence.
 
-## Rules
+## Definition
 
-- Improve at least two SEIS layers immediately and leave evidence for all five layers.
-- Never use God Mode as permission to bypass security, privacy, rollback, or validation.
-- Prefer durable contracts, checks, and observable behavior over untracked prose.
-- Keep changes reversible and compatible with main-only GitHub governance.
-- Do not call a broad SEIS goal complete while named layers remain unverified.
-- Her modülde (Dashboard/Goals/Repos/Docs/Agents) en az bir kanıtı olmayan özellik eklenmesi tamamlanmış sayılamaz.
+God Mode work must connect implementation, documentation, validation, and
+handoff. A change is only God Mode when it improves the system as a whole
+instead of adding an isolated artifact.
 
-## Strict Mode Workflow
+## Required Discipline
 
-Use this sequence for cross-layer slices and broad repository changes:
+- Inspect repository state before editing.
+- Keep user work and unrelated dirty files intact.
+- Choose a narrow slice with visible value.
+- Improve at least two SEIS layers directly.
+- Leave evidence for affected layers.
+- Update documentation when behavior or operating rules change.
+- State validation honestly.
+- Do not claim GitHub, cloud, security, or release readiness without checks.
 
-1. `npm run check:seis-god-mode-developer`
-2. `npm run check:seis-god-mode-module-coverage`
-3. `npm run check:seis-god-mode-validation-plan`
-4. `npm run check:seis-god-mode-release-readiness`
-5. `npm run quality:governance`
+## Layer Lift
 
-The strict sequence is complete only when:
-- contracts are in parity (web + native)
-- telemetry event schema is explicit and shared
-- 5-layer required lift is defined in `content/development/seis-god-mode-developer-contract.json`
-- no security, rollback, or evidence path is downgraded to complete status without checks.
+Every God Mode slice should name which layers it touches:
 
-## Required Evidence
-
-| Layer | Evidence |
+| Layer | Evidence Examples |
 | --- | --- |
-| Product experience | Visible app or website behavior |
-| Application/platform | Contract, route, native, or runtime parity |
-| AI/AGI learning | `content/development/seis-god-mode-developer-contract.json` |
-| Cloud/security | No secret exposure and no weakened quality gates |
-| Governance/quality | `npm run check:seis-god-mode-developer` |
+| Product experience | Command Center behavior, demo surface, user workflow, UX note |
+| Repository governance | `AGENTS.md`, roadmap, architecture, issue/PR rules, changelog |
+| Agent orchestration | skill, MCP, routing policy, prompt contract, agent lane |
+| Automation and quality | check script, generated report, CI workflow, test command |
+| Cloud and security | SSH/VPN rule, secret boundary, deploy gate, rollback path |
+| Knowledge system | decision record, prompt library, operations note, run-state doc |
 
-## Acceptance Criteria
+Two-layer minimum is required for the implementation. The remaining affected
+layers must be acknowledged in the handoff when they are not changed.
 
-- God Mode telemetry is present in the shared web/native contract.
-- Telemetry event schema is explicit and shared (including stable base fields).
-- The demo website exposes a user-facing God Mode control.
-- The SEIS plugin exposes a God Mode Developer skill.
-- Learning contract defines `requiredLayerLift` and operating behavior.
-- The dedicated check is part of `quality:governance`.
+## Hard Gates
 
-## Contract Enforcement
+- No secrets, tokens, private keys, private endpoints, or credentials may be
+  added to the repository.
+- No generated readiness claim is valid without the matching command or manual
+  evidence.
+- No broad deletion, restore, rebase, or branch cleanup is allowed without a
+  clear owner decision.
+- No framework, dependency, MCP surface, or plugin should be added without a
+  specific reason.
+- No God Mode package should hide unrelated worktree changes.
 
-- Canonical contract: `content/development/seis-god-mode-developer-contract.json`
-- `requiredLayerLift` must include all five layers: `product-experience`, `application-platform`, `ai-agi-learning`, `cloud-security`, `governance-quality`.
-- The contract must bind `telemetryEvent` to `seis_demo_god_mode_changed`.
-- Modüller (`dashboard`, `goals`, `repos`, `docs`, `agents`) için kanıt durumu kapı kontrolünden geçmeden `complete` dönemez.
+## Recommended Workflow
+
+1. Inspect `git status`, branch, and remotes.
+2. Identify the highest-value narrow slice.
+3. Write the intended files before editing.
+4. Implement the slice.
+5. Update the relevant operating docs.
+6. Run the smallest meaningful check when appropriate.
+7. Summarize findings, changes, validation, risks, and the next best step.
+
+## Current Quality Gate
+
+Use this lightweight check for the God Mode governance surface:
+
+```bash
+npm run check:seis-god-mode-developer
+```
+
+This check does not replace the full governance quality suite. It confirms that
+the God Mode development lane has a discoverable architecture, governance doc,
+run-state doc, changelog entry, and package script.
+
+## Completion Standard
+
+A God Mode change is complete only when the repository is easier to operate
+after the change than before it. If the worktree has unrelated or risky pending
+changes, the correct output is a narrow improvement plus a clear no-push or
+no-commit note.

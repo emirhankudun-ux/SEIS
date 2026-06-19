@@ -6,7 +6,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, architecture evidence, automation evidence, security evidence, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, 10-lane SEIS router visibility, architecture evidence, automation evidence, security evidence, command palette, settings, and dashboard rendering.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
 ## Folder Structure
@@ -42,12 +42,12 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, operations readiness, active goals, recent activity, repository health, architecture alerts, and recommended actions.
-- God Mode: mission composer, SEIS AI setup matrix, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
+- God Mode: mission composer, SEIS AI setup matrix, 10-lane router ledger, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
-- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, handoff audit, and inspector sync.
+- Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
@@ -59,6 +59,7 @@ apps/seis-core/
 
 - Create goals locally.
 - Compose God Mode missions and route them through Plan, Build, Review, and Validate lanes.
+- Inspect the 10-lane SEIS router output as `tool`, `seisLane`, and `defaultGate` before handoff.
 - Inspect SEIS AI setup for permission policy, memory ranking, agent routing, and local draft model work.
 - Inspect feature growth coverage across Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff before any completion claim.
 - Inspect Operations Readiness across release, CI, security, rollback, and handoff evidence before treating work as shippable.

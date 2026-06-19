@@ -9,54 +9,54 @@
   },
   "summary": {
     "countedFileCount": 934,
-    "countedBytes": 5521206,
-    "javascriptBytes": 2210558,
-    "javascriptPercent": 40.04,
+    "countedBytes": 5527697,
+    "javascriptBytes": 2214086,
+    "javascriptPercent": 40.05,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 5005260,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 5015569,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 2210558,
-      "percent": 40.04
+      "bytes": 2214086,
+      "percent": 40.05
     },
     {
       "language": "JSON",
-      "bytes": 903854,
-      "percent": 16.37
+      "bytes": 904099,
+      "percent": 16.36
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 10.4
+      "percent": 10.39
     },
     {
       "language": "Python",
       "bytes": 507065,
-      "percent": 9.18
+      "percent": 9.17
     },
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 7.69
+      "percent": 7.68
     },
     {
       "language": "CSS",
-      "bytes": 321721,
-      "percent": 5.83
+      "bytes": 323104,
+      "percent": 5.85
     },
     {
       "language": "HTML",
-      "bytes": 158454,
-      "percent": 2.87
+      "bytes": 159732,
+      "percent": 2.89
     },
     {
       "language": "Shell",
       "bytes": 97489,
-      "percent": 1.77
+      "percent": 1.76
     },
     {
       "language": "YAML",
@@ -65,7 +65,7 @@
     },
     {
       "language": "Other",
-      "bytes": 42807,
+      "bytes": 42864,
       "percent": 0.78
     },
     {
@@ -81,7 +81,7 @@
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.29
+      "percent": 0.28
     },
     {
       "language": "Perl",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 2210558,
-      "percent": 40.04,
+      "bytes": 2214086,
+      "percent": 40.05,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 7.69,
+      "percent": 7.68,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2877762,
-      "percent": 52.12,
+      "bytes": 2880725,
+      "percent": 52.11,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 10.57,
+        "percent": 10.55,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1429878,
-        "percent": 25.9,
+        "bytes": 1430123,
+        "percent": 25.87,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,7 +671,7 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2634997,
+        "bytes": 2638525,
         "percent": 47.73,
         "minPercent": 15.0,
         "maxPercent": 20.0,
@@ -760,8 +760,8 @@
       {
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
-        "bytes": 480175,
-        "percent": 8.7,
+        "bytes": 482836,
+        "percent": 8.73,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -774,7 +774,7 @@
       }
     ],
     "unassigned": {
-      "bytes": 164588,
+      "bytes": 164645,
       "percent": 2.98,
       "languages": [
         "ABAP",
@@ -857,7 +857,7 @@
     {
       "path": "apps/seis-core/script.js",
       "language": "JavaScript",
-      "bytes": 69635
+      "bytes": 75659
     },
     {
       "path": "apps/seis-demo-web/script.js",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1533634,
+    "documentation": 1531612,
     "linguist-generated": 3054381,
     "linguist-vendored": 2851037
   },
@@ -998,9 +998,9 @@
     {
       "id": "dart",
       "command": "dart --version",
-      "available": true,
-      "exitCode": 0,
-      "version": "Dart SDK version: 3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on \"macos_x64\""
+      "available": false,
+      "exitCode": 1,
+      "version": "/Users/emirhankudun/Developer/flutter/bin/internal/shared.sh: line 122: /Users/emirhankudun/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory"
     }
   ],
   "nextMigrationOrder": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "004f633ec52cecf53968ec54c53474fd4bb4e1f430f43a0c974fa6281127cb67",
+    "hash": "22c24266d51f3dadadafc0965f04884248b9d029f803b182438b312f3eb8dead",
     "algorithm": "sha256"
   }
 }

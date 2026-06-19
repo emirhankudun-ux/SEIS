@@ -677,6 +677,83 @@ h3 {
   font-weight: 800;
 }
 
+.router-ledger-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.router-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.router-summary-card,
+.router-lane-card,
+.routing-matrix-row {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.router-summary-card span,
+.router-summary-card small,
+.router-lane-card p,
+.routing-matrix-row p,
+.router-facts dt {
+  margin: 0;
+  color: var(--muted);
+}
+
+.router-summary-card strong {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.router-lane-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.router-facts {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.router-facts div {
+  display: grid;
+  grid-template-columns: minmax(86px, 0.34fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.router-facts dt {
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.router-facts dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.routing-matrix {
+  display: grid;
+  gap: 10px;
+}
+
+.routing-matrix-row {
+  grid-template-columns: minmax(0, 1.2fr) minmax(130px, 0.36fr) minmax(210px, 0.64fr) auto;
+  align-items: center;
+}
+
 .metric-card span,
 .muted {
   color: var(--muted);
@@ -1462,6 +1539,9 @@ select {
 .compact .run-step,
 .compact .guardrail-row,
 .compact .artifact-card,
+.compact .router-summary-card,
+.compact .router-lane-card,
+.compact .routing-matrix-row,
 .compact .domain-card,
 .compact .activity-row,
 .compact .dependency-row,
@@ -1548,6 +1628,8 @@ select {
   .readiness-summary-grid,
   .operations-readiness-layout,
   .ledger-summary-grid,
+  .router-summary-grid,
+  .routing-matrix-row,
   .feature-growth-grid,
   .inspector {
     grid-template-columns: 1fr;

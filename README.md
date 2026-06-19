@@ -42,6 +42,8 @@ Root system documents:
   operating flow.
 - [`ROADMAP.md`](./ROADMAP.md) defines the staged evolution from foundation to
   professional, enterprise, and supreme capability levels.
+- [`docs/governance/seis-god-mode-developer.md`](./docs/governance/seis-god-mode-developer.md)
+  defines the SEIS God Mode Developer lane for high-leverage, cross-layer work.
 
 ## Core Scope
 

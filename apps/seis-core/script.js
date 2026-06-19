@@ -293,7 +293,7 @@ const seisAiSetup = [
     type: "Orchestration policy",
     status: "Ready",
     data: "Agent lane status, tool permissions, task type, and evidence needs.",
-    output: "Route work to Architect, Builder, Security, Design, or Research lanes.",
+    output: "Route work across the 10-lane SEIS agent taxonomy before launcher execution.",
     gate: "Human-visible lane, owner, and rollback path."
   },
   {
@@ -303,6 +303,119 @@ const seisAiSetup = [
     data: "Redacted local prompts and synthetic examples only.",
     output: "Offline draft reasoning before provider-backed execution.",
     gate: "No secrets, no unpublished credentials, no blind autonomous writes."
+  }
+];
+
+const seisRouterLanes = [
+  {
+    laneId: "seis",
+    label: "SEIS Hub",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "Architect Agent",
+    defaultGate: "npm run check:seis-ai-agent",
+    signal: "Architecture, roadmap, ecosystem coordination, and God Mode scope.",
+    handoff: "Frame the mission, risk boundary, validation evidence, and rollback path.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-governance",
+    label: "Governance",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "Documentation Agent",
+    defaultGate: "npm run check:seis-specialist-plugins",
+    signal: "Release readiness, quality gates, license posture, and handoff evidence.",
+    handoff: "Attach governance proof before commit, push, or completion claims.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-cloud",
+    label: "Cloud",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "DevOps Agent",
+    defaultGate: "npm run check:cloud-access-policy",
+    signal: "Cloud, SSH, VPN, deployment, rollback, cost, and provider readiness.",
+    handoff: "Keep local, GitHub, and SEIS Cloud boundaries explicit before access changes.",
+    status: "Review"
+  },
+  {
+    laneId: "seis-code",
+    label: "Code",
+    tool: "codex",
+    integrationTool: "seis_plugin_integration",
+    owner: "Frontend Agent",
+    defaultGate: "npm run check:seis-plugin-bundle",
+    signal: "Code changes, MCP tools, runtime fixes, tests, and package scripts.",
+    handoff: "Implement the smallest durable slice and leave validation hooks visible.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-design",
+    label: "Design",
+    tool: "open-design",
+    integrationTool: "seis_plugin_integration",
+    owner: "Design System Agent",
+    defaultGate: "npm run check:motion-evidence",
+    signal: "UI hierarchy, accessibility, motion, responsive behavior, and design tokens.",
+    handoff: "Preserve calm density while making the operational state easier to scan.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-data",
+    label: "Data",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "AI Systems Agent",
+    defaultGate: "npm run check:plugin-capability-lanes",
+    signal: "Datasets, memory, provenance, schemas, training evidence, and quality signals.",
+    handoff: "Keep synthetic data, source policy, and redaction boundaries attached.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-security",
+    label: "Security",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "Security Agent",
+    defaultGate: "npm run check:seis-ai-agent",
+    signal: "Secrets, private keys, vulnerabilities, hardening, permissions, and risk.",
+    handoff: "Apply the safety floor before any lower-risk lane can execute.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-research",
+    label: "Research",
+    tool: "gemini",
+    integrationTool: "seis_plugin_integration",
+    owner: "Research Agent",
+    defaultGate: "npm run check:seis-ai-agent",
+    signal: "Official docs, standards, compatibility, source quality, and evidence checks.",
+    handoff: "Convert external assumptions into cited evidence before architecture decisions.",
+    status: "Active"
+  },
+  {
+    laneId: "seis-automation",
+    label: "Automation",
+    tool: "seis-agent",
+    integrationTool: "seis_plugin_integration",
+    owner: "DevOps Agent",
+    defaultGate: "npm run check:seis-ai-agent",
+    signal: "Idempotent workflows, schedules, runbooks, dry-runs, and rollback steps.",
+    handoff: "Make every automated action explainable, reversible, and evidence-producing.",
+    status: "Ready"
+  },
+  {
+    laneId: "seis-product",
+    label: "Product",
+    tool: "openai",
+    integrationTool: "seis_plugin_integration",
+    owner: "Architect Agent",
+    defaultGate: "npm run check:seis-ai-agent",
+    signal: "Requirements, acceptance criteria, launch readiness, user outcomes, and non-goals.",
+    handoff: "Translate strategy into one shippable roadmap slice with explicit boundaries.",
+    status: "Active"
   }
 ];
 
@@ -1452,7 +1565,52 @@ function renderGodMode() {
     </article>
   `).join("");
 
+  renderSeisRouter();
   renderFeatureGrowthLedger();
+}
+
+function renderSeisRouter() {
+  const readyLanes = seisRouterLanes.filter((lane) => lane.status === "Ready").length;
+  $("#seis-router-summary").innerHTML = [
+    ["Lanes", seisRouterLanes.length, "SEIS router labels"],
+    ["Ready", readyLanes, "lanes with visible gates"],
+    ["Safety Floor", "seis-security", "secret and vulnerability intents"],
+    ["Default Source", "agent-router-seed-v0", "packages/seis-ai/models"]
+  ].map(([label, value, detail]) => `
+    <article class="router-summary-card">
+      <span>${label}</span>
+      <strong>${value}</strong>
+      <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#seis-router-lanes").innerHTML = seisRouterLanes.map((lane) => `
+    <article class="router-lane-card">
+      <div class="card-topline">
+        <h3>${lane.label}</h3>
+        <span class="status-pill ${statusClass(lane.status)}">${lane.status}</span>
+      </div>
+      <p>${lane.signal}</p>
+      <dl class="router-facts">
+        <div>
+          <dt>Tool</dt>
+          <dd>${lane.tool}</dd>
+        </div>
+        <div>
+          <dt>SEIS Lane</dt>
+          <dd>${lane.laneId}</dd>
+        </div>
+        <div>
+          <dt>Default Gate</dt>
+          <dd>${lane.defaultGate}</dd>
+        </div>
+      </dl>
+      <div class="meta-row">
+        <span class="meta-chip">${lane.owner}</span>
+        <span class="meta-chip">${lane.integrationTool}</span>
+      </div>
+    </article>
+  `).join("");
 }
 
 function renderFeatureGrowthLedger() {
@@ -1624,6 +1782,18 @@ function renderAgents() {
       </div>
       <p>${item.system}</p>
       <small>${item.evidence}</small>
+    </article>
+  `).join("");
+
+  $("#agent-routing-matrix").innerHTML = seisRouterLanes.map((lane) => `
+    <article class="routing-matrix-row">
+      <div>
+        <strong>${lane.laneId}</strong>
+        <p>${lane.handoff}</p>
+      </div>
+      <span class="meta-chip">tool: ${lane.tool}</span>
+      <span class="meta-chip">gate: ${lane.defaultGate}</span>
+      <span class="status-pill ${statusClass(lane.status)}">${lane.owner}</span>
     </article>
   `).join("");
 }

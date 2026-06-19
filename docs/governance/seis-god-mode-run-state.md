@@ -1,47 +1,46 @@
 # SEIS God Mode Run State
 
-The run-state ledger tracks the current God Mode package before validation, commit, push, and CI evidence exist.
+Status: Guarded development mode
 
-## Current state
+This document records the operating state for God Mode work. It is intentionally
+short: the purpose is to keep broad development from becoming untraceable.
 
-`pending-validation`
+## Current State
 
-## Required states
+- Date: 2026-06-19
+- Mode: God Mode Developer
+- Repo posture: guarded, because the working tree contains broad tracked
+  deletions outside the current slice.
+- Commit posture: do not create a broad commit that mixes this slice with
+  unrelated deletions.
+- Push posture: no push should happen until the deletion set is reviewed and
+  intentionally accepted or separated.
 
-| State | Meaning |
-| --- | --- |
-| Source-controlled artifacts | Contracts, docs, scripts, and package gates exist with local validation output. |
-| Runtime surfaces | Dashboard panels were verified through headless Chrome/CDP runtime evidence. |
-| Telemetry contracts | Web/native shared contracts contain telemetry events and checker output. |
-| Validation commands | Core validation commands and full quality governance passed locally. |
-| Commit boundary | Commit package boundary is reviewed but no files are staged. |
-| Push and CI | Push and CI evidence do not exist yet. |
-| Protected user work | Unrelated user work remains protected until explicit final staging and commit approval. |
-| Eval critic advisory | SEIS-owned eval critic aggregate verdict is captured in runtime evidence. |
+## Active Slice
 
-## Completion rule
+Re-establish the God Mode governance lane as a small, reviewable package:
 
-Run state remains `pending-validation` until the reviewed boundary is staged intentionally and push or CI evidence is captured.
+- root architecture document
+- God Mode developer policy
+- God Mode run-state handoff
+- dedicated lightweight check
+- changelog entry
 
-## Eval critic advisory
+## Dirty Tree Policy
 
-The run-state ledger includes the `seis-eval-critic-seed-v0` aggregate verdict
-from `reports/seis-eval-critic-advisory/latest.json`. The verdict must remain
-`pass` across action decision, execution plan, and execution run reports before
-God Mode runtime evidence can be treated as current.
+When `git status` shows broad unrelated deletions or generated report churn:
 
-## Validation log
+- do not revert user work automatically
+- do not stage the entire tree
+- do not mix unrelated deletions with a governance or feature commit
+- document the risk in the run-state handoff
+- ask for an explicit repo-state decision before destructive cleanup
 
-`content/development/seis-god-mode-validation-log.md`
+## Next Decision
 
-## Canonical contract
+Before a publish or merge handoff, decide whether the broad deletion set is:
 
-```text
-content/development/seis-god-mode-run-state.json
-```
-
-## Quality gate
-
-```bash
-npm run check:seis-god-mode-run-state
-```
+- intentional cleanup to keep
+- accidental local or iCloud state to restore
+- generated output that should be regenerated
+- unrelated work that needs a separate commit package

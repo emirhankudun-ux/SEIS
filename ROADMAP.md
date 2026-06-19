@@ -26,6 +26,17 @@ Each stage should improve:
 Do not jump directly into unnecessary complexity. Build the foundation first,
 then scale.
 
+## God Mode Development Rule
+
+God Mode means high-leverage, cross-layer development with tighter evidence
+requirements. It must not bypass security, validation, review, or user-work
+protection.
+
+Use God Mode only when a slice improves more than one SEIS layer, such as
+architecture plus validation, command center behavior plus documentation, or
+agent routing plus security policy. Keep the slice small enough to review and
+record any dirty-tree risk before commit or push.
+
 ## Phase 1: Foundation
 
 Goal: create the minimum serious SEIS repository foundation.

@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 934
-- Counted bytes: 5521206
-- JavaScript: 2210558 bytes (40.04%)
+- Counted bytes: 5527697
+- JavaScript: 2214086 bytes (40.05%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 5005260
+- Additional non-JavaScript bytes needed for strict target: 5015569
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 2210558 | 40.04% | JavaScript |
-| TypeScript | 424439 | 7.69% | TypeScript |
+| JavaScript | 2214086 | 40.05% | JavaScript |
+| TypeScript | 424439 | 7.68% | TypeScript |
 | Objective-C | 8447 | 0.15% | Objective-C |
-| Other | 2877762 | 52.12% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2880725 | 52.11% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,14 +25,14 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 10.57% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 25.9% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| Apple / Swift ecosystem | 10.55% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 25.87% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
 | TypeScript / JavaScript tooling | 47.73% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.43% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.54% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
 | Go / Infrastructure | 3.02% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.14% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 8.7% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 8.73% | 0.0-3.0% | `above_target` | HTML, CSS |
 
 Unassigned counted languages: 2.98% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
@@ -40,19 +40,19 @@ Unassigned counted languages: 2.98% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 2210558 | 40.04% |
-| JSON | 903854 | 16.37% |
-| Swift | 574078 | 10.4% |
-| Python | 507065 | 9.18% |
-| TypeScript | 424439 | 7.69% |
-| CSS | 321721 | 5.83% |
-| HTML | 158454 | 2.87% |
-| Shell | 97489 | 1.77% |
+| JavaScript | 2214086 | 40.05% |
+| JSON | 904099 | 16.36% |
+| Swift | 574078 | 10.39% |
+| Python | 507065 | 9.17% |
+| TypeScript | 424439 | 7.68% |
+| CSS | 323104 | 5.85% |
+| HTML | 159732 | 2.89% |
+| Shell | 97489 | 1.76% |
 | YAML | 44523 | 0.81% |
-| Other | 42807 | 0.78% |
+| Other | 42864 | 0.78% |
 | Go | 16806 | 0.3% |
 | Java | 16392 | 0.3% |
-| Scheme | 15747 | 0.29% |
+| Scheme | 15747 | 0.28% |
 | Perl | 13916 | 0.25% |
 | Ruby | 13677 | 0.25% |
 | Rust | 12286 | 0.22% |
@@ -72,7 +72,7 @@ Unassigned counted languages: 2.98% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `emirhan-kudun-portfolio/apps/uix-web/src/i18n/locales.js` | 105051 |
 | `emirhan-kudun-portfolio/packages/content/src/uix-static/locales.js` | 105051 |
 | `apps/web/script.js` | 79540 |
-| `apps/seis-core/script.js` | 69635 |
+| `apps/seis-core/script.js` | 75659 |
 | `apps/seis-demo-web/script.js` | 51680 |
 | `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
@@ -108,7 +108,7 @@ Unassigned counted languages: 2.98% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `rustc` | no | `error: Missing manifest in toolchain 'stable-x86_64-apple-darwin'` |
 | `swift` | yes | `detected; package tests handle configured toolchain readiness` |
 | `javac` | yes | `javac 21.0.11` |
-| `dart` | yes | `Dart SDK version: 3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on "macos_x64"` |
+| `dart` | no | `/Users/emirhankudun/Developer/flutter/bin/internal/shared.sh: line 122: /Users/emirhankudun/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory` |
 
 ## Next Migration Order
 
