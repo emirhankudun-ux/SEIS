@@ -46,6 +46,19 @@ npm run cloud:ssh:mobile-24x7:strict
 The strict check exits non-zero until the alias is direct-cloud, SSH key auth
 works, and the remote runtime is active.
 
+### One-command host remediation planner
+
+If `cloud:ssh:mobile-24x7:strict` fails on network reachability or transport,
+run the triage planner with live probe and then iterate the generated command list:
+
+```bash
+npm run cloud:ssh:host-fix-plan -- --public-ip 21.0.3.171 --user root --live
+npm run cloud:ssh:host-fix-plan -- --public-ip 21.0.3.171 --user root --json
+```
+
+Use `--json` output when you want machine-consumable artifacts for automation
+or bugreport sharing. Re-run after each blocker is fixed and continue with:
+
 ## Direct-cloud setup flow
 
 1. Provision or select an always-on VM.
