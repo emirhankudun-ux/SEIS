@@ -1,19 +1,43 @@
 {
   "id": "seis-commit-package-plan",
-  "generatedAt": "2026-06-19T06:04:37.362Z",
+  "generatedAt": "2026-06-19T06:17:32.925Z",
   "mode": "read-only-git-status",
   "branch": "codex/publish-local-seis-20260618-163043",
   "upstream": "origin/codex/publish-local-seis-20260618-163043",
-  "statusLine": "## codex/publish-local-seis-20260618-163043...origin/codex/publish-local-seis-20260618-163043 [ahead 1, behind 2]",
+  "statusLine": "## codex/publish-local-seis-20260618-163043...origin/codex/publish-local-seis-20260618-163043 [ahead 5]",
   "summary": {
     "packageCount": 8,
-    "fileCount": 118,
+    "fileCount": 23,
     "selfGeneratedExcluded": [
       "reports/seis-commit-packages.json",
       "reports/seis-commit-packages.md"
     ]
   },
   "packages": [
+    {
+      "id": "ci-publish-governance",
+      "title": "CI Publish Governance",
+      "priority": 10,
+      "commitMessage": "chore(ci): add publish governance reporting gates",
+      "rationale": "Workflow, publish readiness, and quality publish reporting should ship as one auditable CI change.",
+      "validation": [
+        "npm run check:open-source-governance",
+        "node --check scripts/automation-publish-readiness.cjs",
+        "node --check scripts/quality-governance-publish.cjs",
+        "npm run quality:governance:publish:ci"
+      ],
+      "files": [
+        {
+          "path": "scripts/quality-governance-publish.cjs",
+          "status": "M",
+          "raw": " M scripts/quality-governance-publish.cjs",
+          "kind": "automation"
+        }
+      ],
+      "fileCount": 1,
+      "staged": false,
+      "action": "review-validate-stage-commit-as-unit"
+    },
     {
       "id": "generated-language-stack-reports",
       "title": "Generated Language And Stack Reports",
@@ -75,57 +99,39 @@
       ],
       "files": [
         {
-          "path": "packages/seis-ai/data",
-          "status": "??",
-          "raw": "?? packages/seis-ai/data/",
-          "kind": "directory"
-        },
-        {
-          "path": "packages/seis-ai/models",
-          "status": "??",
-          "raw": "?? packages/seis-ai/models/",
-          "kind": "directory"
-        },
-        {
-          "path": "packages/seis-ai/src/lib/redaction.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/src/lib/redaction.mjs",
+          "path": "packages/seis-ai/src/agent/loop.mjs",
+          "status": "M",
+          "raw": " M packages/seis-ai/src/agent/loop.mjs",
           "kind": "source"
         },
         {
-          "path": "packages/seis-ai/src/model",
-          "status": "??",
-          "raw": "?? packages/seis-ai/src/model/",
-          "kind": "directory"
-        },
-        {
-          "path": "packages/seis-ai/test/eval-critic-lab.test.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/test/eval-critic-lab.test.mjs",
+          "path": "packages/seis-ai/src/agent/tools.mjs",
+          "status": "M",
+          "raw": " M packages/seis-ai/src/agent/tools.mjs",
           "kind": "source"
         },
         {
-          "path": "packages/seis-ai/test/memory-ranker-lab.test.mjs",
+          "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
           "status": "??",
-          "raw": "?? packages/seis-ai/test/memory-ranker-lab.test.mjs",
+          "raw": "?? packages/seis-ai/src/lib/plugin-integration.mjs",
           "kind": "source"
         },
         {
-          "path": "packages/seis-ai/test/permission-policy-lab.test.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/test/permission-policy-lab.test.mjs",
+          "path": "packages/seis-ai/src/mcp/server.mjs",
+          "status": "M",
+          "raw": " M packages/seis-ai/src/mcp/server.mjs",
           "kind": "source"
         },
         {
-          "path": "packages/seis-ai/test/permission-policy.test.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/test/permission-policy.test.mjs",
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "status": "M",
+          "raw": " M packages/seis-ai/test/agent.test.mjs",
           "kind": "source"
         },
         {
-          "path": "packages/seis-ai/test/redaction.test.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/test/redaction.test.mjs",
+          "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
+          "status": "M",
+          "raw": " M packages/seis-ai/test/mcp-smoke.test.mjs",
           "kind": "source"
         },
         {
@@ -133,440 +139,9 @@
           "status": "M",
           "raw": " M packages/seis-ai/types/seis-ai.d.ts",
           "kind": "source"
-        },
-        {
-          "path": "scripts/build-seis-eval-critic-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/build-seis-eval-critic-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/build-seis-memory-ranker-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/build-seis-memory-ranker-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/build-seis-permission-policy-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/build-seis-permission-policy-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-clean-build.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-clean-build.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-eval-critic-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-eval-critic-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-memory-ranker-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-memory-ranker-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-model-lab.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-model-lab.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-model-program.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-model-program.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-universe-seed-model.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-universe-seed-model.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "SEIS_UNIVERSE_CLEAN_BUILD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_CLEAN_BUILD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_EVAL_CRITIC_DATASET_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_EVAL_CRITIC_DATASET_CARD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_EVAL_CRITIC_MODEL_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_EVAL_CRITIC_MODEL_CARD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_EVAL_PLAN.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_EVAL_PLAN.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_MEMORY_RANKER_DATASET_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_MEMORY_RANKER_DATASET_CARD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_MEMORY_RANKER_MODEL_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_MEMORY_RANKER_MODEL_CARD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_MODEL_CARD_TEMPLATE.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_MODEL_CARD_TEMPLATE.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_MODEL_FAMILY.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_MODEL_FAMILY.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_PERMISSION_POLICY_DATASET_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_PERMISSION_POLICY_DATASET_CARD.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md",
-          "status": "??",
-          "raw": "?? SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md",
-          "kind": "repository-file"
         }
       ],
-      "fileCount": 30,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
-      "id": "god-mode-governance-contracts",
-      "title": "God Mode Governance Contracts",
-      "priority": 40,
-      "commitMessage": "feat(governance): expand god-mode operating contracts",
-      "rationale": "God Mode governance docs, roadmap, decisions, and contract checks should be reviewed as a governance unit.",
-      "validation": [
-        "npm run quality:governance",
-        "npm run check:seis-god-mode-staging-manifest",
-        "npm run check:seis-god-mode-completion-audit"
-      ],
-      "files": [
-        {
-          "path": "content/development/seis-god-mode-runtime-evidence.json",
-          "status": "??",
-          "raw": "?? content/development/seis-god-mode-runtime-evidence.json",
-          "kind": "generated-report"
-        },
-        {
-          "path": "content/development/seis-god-mode-validation-log.md",
-          "status": "??",
-          "raw": "?? content/development/seis-god-mode-validation-log.md",
-          "kind": "generated-report"
-        },
-        {
-          "path": "docs/architecture/seis-5-layer-operating-map.md",
-          "status": "M",
-          "raw": " M docs/architecture/seis-5-layer-operating-map.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/decisions/adr-0002-seis-5-layer-operating-manifesto.md",
-          "status": "M",
-          "raw": " M docs/decisions/adr-0002-seis-5-layer-operating-manifesto.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/decisions/adr-0004-seis-next-steps-implementation-pack.md",
-          "status": "??",
-          "raw": "?? docs/decisions/adr-0004-seis-next-steps-implementation-pack.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/enterprise-change-gates.md",
-          "status": "M",
-          "raw": " M docs/governance/enterprise-change-gates.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/quality-gates.md",
-          "status": "M",
-          "raw": " M docs/governance/quality-gates.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-adr-template.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-adr-template.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-agent-lane-status.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-agent-lane-status.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-architecture-manifesto.md",
-          "status": "M",
-          "raw": " M docs/governance/seis-architecture-manifesto.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-goals-evidence-ledger.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-goals-evidence-ledger.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-adr-workflow.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-adr-workflow.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-changelog.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-changelog.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-completion-audit.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-completion-audit.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-developer.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-developer.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-handoff.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-handoff.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-module-coverage.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-module-coverage.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-release-readiness.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-release-readiness.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-run-state.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-run-state.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-staging-manifest.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-staging-manifest.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-validation-plan.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-validation-plan.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-god-mode-work-package.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-god-mode-work-package.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-governance-index.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-governance-index.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-phase-2-clean-room-architecture.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-phase-2-clean-room-architecture.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-repo-health-manifest.md",
-          "status": "??",
-          "raw": "?? docs/governance/seis-repo-health-manifest.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/governance/seis-supreme-vision.md",
-          "status": "M",
-          "raw": " M docs/governance/seis-supreme-vision.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "goals/architecture.md",
-          "status": "M",
-          "raw": " M goals/architecture.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "governance/enterprise-change-gates.md",
-          "status": "M",
-          "raw": " M governance/enterprise-change-gates.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "governance/quality-gates.md",
-          "status": "M",
-          "raw": " M governance/quality-gates.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "roadmap/seis-30-90-operating-template.md",
-          "status": "M",
-          "raw": " M roadmap/seis-30-90-operating-template.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "roadmap/seis-90-day-blueprint.md",
-          "status": "M",
-          "raw": " M roadmap/seis-90-day-blueprint.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "roadmap/seis-god-mode-clean-room-implementation-brief.md",
-          "status": "??",
-          "raw": "?? roadmap/seis-god-mode-clean-room-implementation-brief.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "roadmap/seis-next-steps-implementation-pack.md",
-          "status": "??",
-          "raw": "?? roadmap/seis-next-steps-implementation-pack.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "scripts/check-seis-goals-evidence-ledger.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-goals-evidence-ledger.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-adr-workflow.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-adr-workflow.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-changelog.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-changelog.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-completion-audit.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-completion-audit.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-developer.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-developer.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-handoff.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-handoff.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-module-coverage.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-module-coverage.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-release-readiness.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-release-readiness.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-run-state.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-run-state.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-staging-manifest.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-staging-manifest.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-validation-plan.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-validation-plan.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-god-mode-work-package.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-god-mode-work-package.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-governance-index.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-governance-index.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-project-intake.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-project-intake.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-repo-health-manifest.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-repo-health-manifest.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/inspect-seis-project-intake.mjs",
-          "status": "??",
-          "raw": "?? scripts/inspect-seis-project-intake.mjs",
-          "kind": "automation"
-        }
-      ],
-      "fileCount": 49,
+      "fileCount": 7,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     },
@@ -582,12 +157,6 @@
         "npm run check:seis-command-center"
       ],
       "files": [
-        {
-          "path": "apps/seis-demo-web/contracts/seis-demo-contract.json",
-          "status": "M",
-          "raw": " M apps/seis-demo-web/contracts/seis-demo-contract.json",
-          "kind": "source"
-        },
         {
           "path": "apps/seis-demo-web/index.html",
           "status": "M",
@@ -605,21 +174,9 @@
           "status": "M",
           "raw": " M apps/seis-demo-web/service-worker.js",
           "kind": "source"
-        },
-        {
-          "path": "apps/seis-demo-web/styles.css",
-          "status": "M",
-          "raw": " M apps/seis-demo-web/styles.css",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json",
-          "status": "M",
-          "raw": " M packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json",
-          "kind": "source"
         }
       ],
-      "fileCount": 6,
+      "fileCount": 3,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     },
@@ -636,37 +193,31 @@
       ],
       "files": [
         {
-          "path": "plugins/seis/.codex-plugin/plugin.json",
-          "status": "M",
-          "raw": " M plugins/seis/.codex-plugin/plugin.json",
-          "kind": "repository-file"
-        },
-        {
-          "path": "plugins/seis/README.md",
-          "status": "M",
-          "raw": " M plugins/seis/README.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "plugins/seis/skills/seis-god-mode-developer",
+          "path": "content/development/seis-agent-plugin-integration.json",
           "status": "??",
-          "raw": "?? plugins/seis/skills/seis-god-mode-developer/",
-          "kind": "directory"
+          "raw": "?? content/development/seis-agent-plugin-integration.json",
+          "kind": "generated-report"
         },
         {
-          "path": "scripts/check-seis-plugin-bundle.mjs",
+          "path": "docs/platform/seis-ai-agent.md",
           "status": "M",
-          "raw": " M scripts/check-seis-plugin-bundle.mjs",
+          "raw": " M docs/platform/seis-ai-agent.md",
+          "kind": "documentation"
+        },
+        {
+          "path": "docs/platform/seis-specialist-plugins.md",
+          "status": "M",
+          "raw": " M docs/platform/seis-specialist-plugins.md",
+          "kind": "documentation"
+        },
+        {
+          "path": "scripts/check-seis-agent-plugin-integration.mjs",
+          "status": "??",
+          "raw": "?? scripts/check-seis-agent-plugin-integration.mjs",
           "kind": "automation"
-        },
-        {
-          "path": "seis-trusted-marketplace-plugin/docs",
-          "status": "??",
-          "raw": "?? seis-trusted-marketplace-plugin/docs/",
-          "kind": "directory"
         }
       ],
-      "fileCount": 5,
+      "fileCount": 4,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     },
@@ -684,25 +235,13 @@
       ],
       "files": [
         {
-          "path": "ai/policy.md",
-          "status": "M",
-          "raw": " M ai/policy.md",
-          "kind": "repository-file"
-        },
-        {
           "path": "cloud-migration-audit.ci.json",
           "status": "M",
           "raw": " M cloud-migration-audit.ci.json",
           "kind": "repository-file"
-        },
-        {
-          "path": "docs/deployment/seis-ssh-new-device-bootstrap.md",
-          "status": "M",
-          "raw": " M docs/deployment/seis-ssh-new-device-bootstrap.md",
-          "kind": "documentation"
         }
       ],
-      "fileCount": 3,
+      "fileCount": 1,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     },
@@ -718,31 +257,13 @@
       ],
       "files": [
         {
-          "path": ".github/PULL_REQUEST_TEMPLATE.md",
-          "status": "M",
-          "raw": " M .github/PULL_REQUEST_TEMPLATE.md",
-          "kind": "github-workflow"
-        },
-        {
-          "path": ".github/workflows/seis-system-gates.yml",
-          "status": "M",
-          "raw": " M .github/workflows/seis-system-gates.yml",
-          "kind": "github-workflow"
-        },
-        {
-          "path": ".gitignore",
-          "status": "M",
-          "raw": " M .gitignore",
-          "kind": "repository-file"
-        },
-        {
           "path": "package.json",
           "status": "M",
           "raw": " M package.json",
           "kind": "repository-file"
         }
       ],
-      "fileCount": 4,
+      "fileCount": 1,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     },
@@ -757,103 +278,13 @@
       ],
       "files": [
         {
-          "path": "emirhan-kudun-portfolio/docs",
-          "status": "??",
-          "raw": "?? emirhan-kudun-portfolio/docs/",
-          "kind": "directory"
-        },
-        {
-          "path": "REFERENCE_REQUIREMENTS.md",
-          "status": "??",
-          "raw": "?? REFERENCE_REQUIREMENTS.md",
-          "kind": "repository-file"
-        },
-        {
-          "path": "reports/seis-action-decisions",
-          "status": "??",
-          "raw": "?? reports/seis-action-decisions/",
-          "kind": "directory"
-        },
-        {
-          "path": "reports/seis-action-execution",
-          "status": "??",
-          "raw": "?? reports/seis-action-execution/",
-          "kind": "directory"
-        },
-        {
-          "path": "reports/seis-eval-critic-advisory",
-          "status": "??",
-          "raw": "?? reports/seis-eval-critic-advisory/",
-          "kind": "directory"
-        },
-        {
-          "path": "reports/seis-project-intake",
-          "status": "??",
-          "raw": "?? reports/seis-project-intake/",
-          "kind": "directory"
-        },
-        {
-          "path": "scripts/check-seis-action-decision.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-action-decision.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-action-execution.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-action-execution.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-agent-lane-status.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-agent-lane-status.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-enterprise-gates.mjs",
+          "path": "reports/seis-eval-critic-advisory/latest.md",
           "status": "M",
-          "raw": " M scripts/check-seis-enterprise-gates.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/check-seis-eval-critic-advisory.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-eval-critic-advisory.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/create-seis-commit-packages.cjs",
-          "status": "??",
-          "raw": "?? scripts/create-seis-commit-packages.cjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/execute-seis-action-execution.mjs",
-          "status": "??",
-          "raw": "?? scripts/execute-seis-action-execution.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/inspect-seis-action-decision.mjs",
-          "status": "??",
-          "raw": "?? scripts/inspect-seis-action-decision.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "scripts/inspect-seis-action-execution.mjs",
-          "status": "??",
-          "raw": "?? scripts/inspect-seis-action-execution.mjs",
-          "kind": "automation"
-        },
-        {
-          "path": "SEIS_PHASE_2_CLEAN_ROOM_ARCHITECTURE.md",
-          "status": "??",
-          "raw": "?? SEIS_PHASE_2_CLEAN_ROOM_ARCHITECTURE.md",
-          "kind": "repository-file"
+          "raw": " M reports/seis-eval-critic-advisory/latest.md",
+          "kind": "generated-report"
         }
       ],
-      "fileCount": 16,
+      "fileCount": 1,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     }

@@ -80,6 +80,16 @@ describe("executeTool", () => {
     makeRepo({
       "apps/web/index.html": "<html><body id=\"app\">hello world</body></html>",
       "apps/web/script.js": "var app = document.querySelector(\"#app\");",
+      "content/development/seis-agent-plugin-integration.json": JSON.stringify({
+        id: "seis-agent-plugin-integration",
+        status: "active",
+        primaryInstallId: "seis-ai-agent@seis-repo",
+        auditedSnapshot: { installedEnabledCount: 185, notInstalledCount: 5 },
+        personalPlugins: [{ id: "seis@personal", status: "installed-enabled-audited", embeddedAs: "seis" }],
+        lanes: [{ id: "seis", displayName: "SEIS Hub", role: "repo governance", mcpTools: ["seis_hub_status"], defaultGate: "npm run check:seis-ai-agent" }],
+        helperPluginUniverse: { uniquePlugins: 300 },
+        qualityCommands: ["npm run check:seis-agent-plugin-integration"]
+      }),
       "notes.md": "alpha\nbeta needle gamma\ndelta",
     })
   );
@@ -229,6 +239,15 @@ describe("executeTool", () => {
     assert.ok(typeof out === "string");
     const lines = out.trim().split("\n").filter(Boolean);
     assert.ok(lines.length <= 3);
+  });
+
+  it("seis_plugin_integration returns the compact integration manifest", () => {
+    const out = executeTool("seis_plugin_integration", {}, ctx());
+    const payload = JSON.parse(out);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-agent-plugin-integration");
+    assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
+    assert.equal(payload.personalPlugins[0].id, "seis@personal");
   });
 
   it("run_checks accepts the a11y scope", () => {
@@ -429,6 +448,7 @@ describe("runAgent", () => {
     await runAgent(opts(client));
     const names = client.requests[0].tools.map((t) => t.name);
     assert.ok(!names.includes("write_file"));
+    assert.ok(names.includes("seis_plugin_integration"));
 
     const client2 = mockClient([textMsg("ok")]);
     await runAgent(opts(client2, { allowWrite: true }));

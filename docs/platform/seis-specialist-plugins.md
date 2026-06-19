@@ -47,6 +47,11 @@ The central `seis` MCP server also exposes:
 - `seis_specialist_lane_status`
 - `seis_specialist_lane_plan`
 
+The SEIS AI runtime and app shell consume the same lane fabric through
+`content/development/seis-agent-plugin-integration.json`, the
+`seis_plugin_integration` tool, and the
+`seis://agent/plugin-integration.json` MCP resource.
+
 SEIS Cloud additionally carries the cloud access policy: public cloud is for
 everyone-facing surfaces, while VPN cloud is only for workplaces and teams with
 approved peer access.
@@ -64,6 +69,7 @@ exactly one canonical entry:
 npm run check:seis-specialist-plugins
 npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
+npm run check:seis-agent-plugin-integration
 npm run quality:governance
 ```
 

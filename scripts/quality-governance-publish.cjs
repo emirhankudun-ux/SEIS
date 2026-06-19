@@ -7,7 +7,17 @@ const { spawnSync } = require("node:child_process");
 const root = process.cwd();
 const args = parseArgs(process.argv.slice(2));
 const isCiMode = Boolean(args.ci);
-const autoHealLanguageDistribution = Boolean(args.autoHeal || args.auto_heal || args.auto_heal_language_distribution);
+const autoHealGeneratedReports = Boolean(args.autoHeal || args.auto_heal);
+const autoHealLanguageDistribution = Boolean(
+  autoHealGeneratedReports
+  || args.autoHealLanguageDistribution
+  || args.auto_heal_language_distribution
+);
+const autoHealTechnologyStack = Boolean(
+  autoHealGeneratedReports
+  || args.autoHealTechnologyStack
+  || args.auto_heal_technology_stack
+);
 const isDryRun = Boolean(args.dryRun);
 const emitJson = Boolean(args.json) || Boolean(args.artifact);
 const compact = Boolean(args.compact || isCiMode);
@@ -212,9 +222,19 @@ function parseArgs(tokens) {
       parsed[key] = true;
       continue;
     }
-    if (key === "auto-heal" || key === "auto-heal-language-distribution") {
+    if (key === "auto-heal") {
       parsed.autoHeal = true;
       parsed.auto_heal = true;
+      continue;
+    }
+    if (key === "auto-heal-language-distribution") {
+      parsed.autoHealLanguageDistribution = true;
+      parsed.auto_heal_language_distribution = true;
+      continue;
+    }
+    if (key === "auto-heal-technology-stack") {
+      parsed.autoHealTechnologyStack = true;
+      parsed.auto_heal_technology_stack = true;
       continue;
     }
     if (key === "dry-run") {
@@ -317,32 +337,47 @@ function runCheck(scriptName) {
 }
 
 function runCheckWithHealing(scriptName) {
+  const healScript = getAutoHealScript(scriptName);
+  if (healScript) {
+    const healRun = runCheck(healScript.script);
+    const healedRun = runCheck(scriptName);
+
+    return [
+      {
+        ...healRun,
+        id: healScript.id,
+        reason: healRun.ok ? healScript.reason : null,
+        status: healRun.status,
+        allowContinue: healRun.ok,
+      },
+      healedRun,
+    ];
+  }
+
   const firstRun = runCheck(scriptName);
   if (firstRun.ok) {
     return [firstRun];
   }
 
-  if (!autoHealLanguageDistribution || scriptName !== "check:language-distribution") {
-    return [firstRun];
-  }
+  return [firstRun];
+}
 
-  const healRun = runCheck("automation:language-distribution");
-  const healedRun = runCheck(scriptName);
-
-  firstRun.reason = `${firstRun.reason} (auto-heal attempted: ${healRun.command})`;
-  firstRun.allowContinue = true;
-
-  return [
-    firstRun,
-    {
-      ...healRun,
+function getAutoHealScript(scriptName) {
+  if (autoHealLanguageDistribution && scriptName === "check:language-distribution") {
+    return {
       id: "check:language-distribution:auto-heal",
-      reason: healRun.ok ? "language distribution regenerated" : null,
-      status: healRun.status,
-      allowContinue: true,
-    },
-    healedRun,
-  ];
+      script: "automation:language-distribution",
+      reason: "language distribution regenerated",
+    };
+  }
+  if (autoHealTechnologyStack && scriptName === "check:seis-technology-stack") {
+    return {
+      id: "check:seis-technology-stack:auto-heal",
+      script: "automation:seis-technology-stack",
+      reason: "technology stack regenerated",
+    };
+  }
+  return null;
 }
 
 function summarizeText(text) {

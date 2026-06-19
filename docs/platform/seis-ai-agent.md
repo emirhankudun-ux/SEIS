@@ -30,6 +30,12 @@ The old `personal` marketplace is a compatibility mirror only. The `seis`,
 source mirrors for lane development, but the repo marketplace publishes only the
 single `seis-ai-agent` plugin card.
 
+The active integration contract is
+[`content/development/seis-agent-plugin-integration.json`](../../content/development/seis-agent-plugin-integration.json).
+It binds the installed personal plugin family into SEIS-Agent, exposes the
+`seis_plugin_integration` tool in the SEIS AI runtime, and connects the demo app
+God Mode ecosystem lanes to the same source of truth.
+
 Use the single-agent install for normal work:
 
 ```bash
@@ -67,6 +73,7 @@ design system showcase.
 
 ```bash
 npm run quality:governance
+npm run check:seis-agent-plugin-integration
 ```
 
 ## Cloud Access and Migration Quality

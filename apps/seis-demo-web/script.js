@@ -352,6 +352,7 @@ function renderGodModeSignals() {
     "Product: visible demo behavior must improve",
     "Engineering: code changes must stay reversible",
     "AI/AGI: learning contracts must capture behavior",
+    "Plugins: SEIS-Agent plugin integration must stay manifest-backed",
     "Security: no secrets or weakened gates",
     "Governance: quality evidence stays attached"
   ];
@@ -594,6 +595,11 @@ function renderGodModeValidationPlan() {
       proves: "Skills, autonomy boundaries, tool boundaries, safety boundaries, and validation duties."
     },
     {
+      label: "SEIS-Agent plugin integration",
+      command: "npm run check:seis-agent-plugin-integration",
+      proves: "Personal SEIS plugins, embedded lanes, seis_plugin_integration, MCP resource, app surface, and repo docs are connected."
+    },
+    {
       label: "Release readiness",
       command: "npm run check:seis-god-mode-release-readiness",
       proves: "Security, AI policy, quality evidence, rollback, and CI readiness."
@@ -706,6 +712,12 @@ function renderGodModeWorkPackage() {
       rollback: "Remove agent lane status artifacts and God Mode skill references."
     },
     {
+      name: "SEIS-Agent Plugin Integration",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-agent-plugin-integration",
+      rollback: "Remove plugin integration manifest, AI helper, MCP tool/resource, app panel entries, docs, checker, and package script."
+    },
+    {
       name: "Security + AI + Rollback",
       status: "Implemented / unverified",
       gate: "npm run check:seis-god-mode-release-readiness",
@@ -805,7 +817,8 @@ function renderGodModeChangelog() {
     "Handoff",
     "Completion Audit",
     "Run State",
-    "Staging Manifest"
+    "Staging Manifest",
+    "Plugin Integration"
   ];
 
   changelogGrid.innerHTML = entries
@@ -839,6 +852,7 @@ function renderGodModeStagingManifest() {
     { name: "Dashboard Runtime", state: "include after validation", note: "panels + renderers + styles + cache" },
     { name: "Shared Contracts", state: "include after validation", note: "web/native telemetry parity" },
     { name: "God Mode Contracts", state: "include after validation", note: "source of truth package" },
+    { name: "Agent Plugin Integration", state: "include after validation", note: "manifest + AI tool + MCP resource + demo panel" },
     { name: "Governance Docs", state: "include after validation", note: "operating docs + ADRs" },
     { name: "Quality Checkers", state: "include after validation", note: "CI-linked gates" },
     { name: "Plugin Skill", state: "include after validation", note: "manifest + skill + agent" },
@@ -961,7 +975,7 @@ function renderGodModeHandoff() {
   const sections = [
     {
       label: "Summary",
-      detail: "God Mode added dashboard surfaces, contracts, docs, quality gates, telemetry, ADR workflow, validation plan, and handoff tracking."
+      detail: "God Mode added dashboard surfaces, contracts, docs, quality gates, telemetry, ADR workflow, plugin integration, validation plan, and handoff tracking."
     },
     {
       label: "Changed Surfaces",
@@ -1100,6 +1114,48 @@ function renderGodModeEcosystemLanes() {
       source: "content/development/seis-agent-lane-status.json",
       gate: "npm run check:seis-agent-lane-status",
       next: "Keep every active agent lane observable, controllable, and validation-bound."
+    },
+    {
+      name: "SEIS-Agent",
+      status: "Plugin integration active",
+      source: "content/development/seis-agent-plugin-integration.json",
+      gate: "npm run check:seis-agent-plugin-integration",
+      next: "Route seis_plugin_integration while keeping seis@personal and specialist plugins embedded under seis-ai-agent@seis-repo."
+    },
+    {
+      name: "SEIS Hub",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      gate: "npm run check:seis-ai-agent",
+      next: "Route repository governance, architecture, migration safety, and quality policy through SEIS-Agent."
+    },
+    {
+      name: "SEIS Cloud",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      gate: "npm run check:cloud-access-policy",
+      next: "Keep public cloud and team/workplace VPN cloud paths explicit, scoped, and rollback-ready."
+    },
+    {
+      name: "SEIS-Code",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      gate: "npm run check:seis-plugin-bundle",
+      next: "Route implementation, tests, CI, MCP/plugin code, and automation through the code lane."
+    },
+    {
+      name: "SEIS-Design",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      gate: "npm run check:motion-evidence",
+      next: "Keep product UI, design systems, accessibility, motion, and visual QA connected to implementation."
+    },
+    {
+      name: "SEIS-DATA",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      gate: "npm run check:plugin-capability-lanes",
+      next: "Keep reports, schemas, memory, context, plugin inventory, and provenance tied to generated sources."
     }
   ];
 
@@ -1156,7 +1212,9 @@ function setMetricsFromContract() {
   focusMode.textContent = `Focus Mode: ${state.isFocusMode ? "enabled" : "available"}`;
   const godMode = document.createElement("li");
   godMode.textContent = `God Mode Developer: ${state.isGodMode ? "active" : "available"}`;
-  metricsContainer.append(routes, events, targets, focusMode, godMode);
+  const pluginFabric = document.createElement("li");
+  pluginFabric.textContent = "Plugin fabric: seis@personal + cloud/code/design/data embedded in SEIS-Agent";
+  metricsContainer.append(routes, events, targets, focusMode, godMode, pluginFabric);
 }
 
 function renderScenarioCards() {

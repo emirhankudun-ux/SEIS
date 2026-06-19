@@ -209,6 +209,40 @@ export declare const MODEL_ALIASES: Record<ModelAlias, string>;
 export declare const DEFAULT_MODEL: string;
 
 /* ------------------------------------------------------------------ */
+/* SEIS-Agent plugin integration                                      */
+/* ------------------------------------------------------------------ */
+
+export interface SeisPluginIntegrationStatus {
+  ok: boolean;
+  manifestPath: string;
+  id?: string;
+  status?: string;
+  primaryInstallId?: string;
+  installedEnabledCount?: number | null;
+  notInstalledCount?: number | null;
+  personalPluginCount?: number;
+  personalPlugins?: { id: string; status: string; embeddedAs: string }[];
+  laneCount?: number;
+  lanes?: {
+    id: string;
+    displayName: string;
+    role: string;
+    mcpTools: string[];
+    defaultGate: string;
+  }[];
+  helperPluginUniverse?: unknown;
+  qualityCommands?: string[];
+  manifest?: unknown;
+  error?: string;
+}
+
+export declare const PLUGIN_INTEGRATION_PATH: string;
+export declare function pluginIntegrationStatus(
+  repoRoot: string,
+  options?: { includeFullManifest?: boolean },
+): SeisPluginIntegrationStatus;
+
+/* ------------------------------------------------------------------ */
 /* SEIS Universe seed model surfaces                                   */
 /* ------------------------------------------------------------------ */
 

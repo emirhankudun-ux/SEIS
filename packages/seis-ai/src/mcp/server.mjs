@@ -22,6 +22,7 @@ import {
   styleAudit,
 } from "../lib/checks.mjs";
 import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
+import { PLUGIN_INTEGRATION_PATH, pluginIntegrationStatus } from "../lib/plugin-integration.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
@@ -249,6 +250,21 @@ export function buildServer() {
   );
 
   server.tool(
+    "seis_plugin_integration",
+    "Read the canonical SEIS-Agent plugin integration manifest for personal SEIS plugins, embedded lanes, helper plugin universe, quality gates, and runtime/app integration surfaces.",
+    {
+      includeFullManifest: z.boolean().optional().describe("Return the full manifest in addition to the compact status summary"),
+    },
+    async ({ includeFullManifest }) => {
+      try {
+        return jsonResult(pluginIntegrationStatus(repoRoot, { includeFullManifest: includeFullManifest === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "a11y_check",
     "Static accessibility audit of index.html: FAILS when an <img> is missing alt=, an interactive input/select/textarea has no associated label, or a <button> has no accessible name (text, aria-label, data-i18n, etc.). Advisory: positive tabindex values.",
     {},
@@ -387,6 +403,21 @@ Steps:
           uri: "seis://web/site-config.json",
           mimeType: "application/json",
           text: readFileSync(path.join(webRoot, "site-config.json"), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "plugin-integration",
+    "seis://agent/plugin-integration.json",
+    { description: "SEIS-Agent plugin integration manifest", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://agent/plugin-integration.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...PLUGIN_INTEGRATION_PATH.split("/")), "utf8"),
         },
       ],
     })
