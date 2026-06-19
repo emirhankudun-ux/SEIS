@@ -1,5 +1,15 @@
 const storageKey = "seis-core-state-v1";
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  })[character]);
+}
+
 const seedState = {
   activeView: "dashboard",
   activeAgent: "Architect",
@@ -1397,10 +1407,10 @@ function renderDashboard() {
   $("#dashboard-goals").innerHTML = activeGoals.slice(0, 4).map((goal) => `
     <article class="goal-row">
       <div>
-        <strong>${goal.title}</strong>
-        <p>${goal.nextAction}</p>
+        <strong>${escapeHtml(goal.title)}</strong>
+        <p>${escapeHtml(goal.nextAction)}</p>
       </div>
-      <span class="status-pill ${statusClass(goal.status)}">${goal.status}</span>
+      <span class="status-pill ${statusClass(goal.status)}">${escapeHtml(goal.status)}</span>
     </article>
   `).join("");
 
@@ -1558,12 +1568,12 @@ function renderGodMode() {
     return `
       <article class="run-step">
         <div>
-          <strong>${run.mission}</strong>
-          <p>${run.evidence}</p>
+          <strong>${escapeHtml(run.mission)}</strong>
+          <p>${escapeHtml(run.evidence)}</p>
         </div>
         <div class="run-meta run-route-meta">
-          ${routeMeta.map((item) => `<span class="meta-chip">${item}</span>`).join("")}
-          <span class="status-pill ${statusClass(run.status)}">${run.status}</span>
+          ${routeMeta.map((item) => `<span class="meta-chip">${escapeHtml(item)}</span>`).join("")}
+          <span class="status-pill ${statusClass(run.status)}">${escapeHtml(run.status)}</span>
         </div>
       </article>
     `;
@@ -1917,14 +1927,14 @@ function renderGoals() {
   $("#goal-board").innerHTML = state.goals.map((goal) => `
     <article class="goal-card">
       <div class="card-topline">
-        <h3>${goal.title}</h3>
-        <span class="status-pill ${statusClass(goal.status)}">${goal.status}</span>
+        <h3>${escapeHtml(goal.title)}</h3>
+        <span class="status-pill ${statusClass(goal.status)}">${escapeHtml(goal.status)}</span>
       </div>
       <div class="meta-row">
-        <span class="meta-chip">${goal.priority}</span>
-        <span class="meta-chip">Risk: ${goal.risk || "None logged"}</span>
+        <span class="meta-chip">${escapeHtml(goal.priority)}</span>
+        <span class="meta-chip">Risk: ${escapeHtml(goal.risk || "None logged")}</span>
       </div>
-      <p>${goal.nextAction || "No next action yet."}</p>
+      <p>${escapeHtml(goal.nextAction || "No next action yet.")}</p>
       <div class="meta-row">
         <button class="secondary-button" type="button" data-goal-status="${goal.id}" data-next="Review">Review</button>
         <button class="secondary-button" type="button" data-goal-status="${goal.id}" data-next="Done">Done</button>
@@ -2299,7 +2309,7 @@ function renderInspector() {
   const actions = state.goals
     .filter((goal) => goal.status !== "Done")
     .slice(0, 4)
-    .map((goal) => `<article class="next-action"><strong>${goal.title}</strong><p>${goal.nextAction}</p></article>`);
+    .map((goal) => `<article class="next-action"><strong>${escapeHtml(goal.title)}</strong><p>${escapeHtml(goal.nextAction)}</p></article>`);
   $("#next-actions").innerHTML = actions.join("");
 }
 
