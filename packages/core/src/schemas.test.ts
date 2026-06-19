@@ -4,6 +4,8 @@ import { join } from "node:path";
 import {
   GapRegisterSchema,
   TrustedMarketplaceIntakeSchema,
+  ConnectorRegistrySchema,
+  ConnectorSchema,
   GapSchema,
   MarketplaceChannelSchema,
 } from "./schemas";
@@ -72,5 +74,33 @@ describe("TrustedMarketplaceIntakeSchema", () => {
   it("rejects a channel missing the label field", () => {
     const bad = { id: "x", status: "active" };
     expect(MarketplaceChannelSchema.safeParse(bad).success).toBe(false);
+  });
+});
+
+// ── ConnectorRegistrySchema ──────────────────────────────────────────────────
+
+describe("ConnectorRegistrySchema", () => {
+  it("validates the live content/development/connector-capability-registry.json file", () => {
+    const raw = readJSON("content/development/connector-capability-registry.json");
+    const result = ConnectorRegistrySchema.safeParse(raw);
+    expect(result.success, result.error?.message).toBe(true);
+  });
+
+  it("requires at least one connector", () => {
+    const invalid = {
+      version: 1, id: "x", mode: "x", policy: {}, ecosystemActivation: {},
+      connectors: [], skills: [], capabilityFamilies: [], automationRules: [],
+    };
+    expect(ConnectorRegistrySchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("rejects a connector missing the surface field", () => {
+    const bad = { id: "c", status: "ready", activationPolicy: "bounded", blockedWithout: [], qualityCommands: [] };
+    expect(ConnectorSchema.safeParse(bad).success).toBe(false);
+  });
+
+  it("rejects a connector with a non-string id", () => {
+    const bad = { id: 42, surface: "repo", status: "ready", activationPolicy: "bounded", blockedWithout: [], qualityCommands: [] };
+    expect(ConnectorSchema.safeParse(bad).success).toBe(false);
   });
 });
