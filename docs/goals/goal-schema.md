@@ -143,3 +143,59 @@ Each evidence record should use this lightweight shape:
 | `next_action` | Yes | Next safe action implied by the evidence. |
 
 Evidence records are validated by `npm run check:goal-tracking`.
+
+## Execution Object
+
+The first structured execution registry is
+[`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json).
+It contains tasks, subtasks, blockers, and decisions.
+
+### Task Fields
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | Yes | Stable task id such as `SEIS-TASK-001`. |
+| `title` | Yes | Short task title. |
+| `status` | Yes | `planned`, `active`, `blocked`, `in-review`, `completed`, or `deferred`. |
+| `priority` | Yes | Same priority values as goals. |
+| `owner_role` | Yes | Responsible role. |
+| `supports_goal_ids` | Yes | Goal ids this task advances. |
+| `related_milestone` | Yes | Milestone id or `none`. |
+| `related_epic` | Yes | Epic id or `none`. |
+| `blocker_ids` | Yes | Related blocker ids. |
+| `decision_ids` | Yes | Related decision ids. |
+| `evidence_ids` | Yes | Related evidence ids. |
+| `related_paths` | Yes | Repo-relative paths. |
+| `subtasks` | Yes | Subtask records with id, title, status, and next action. |
+| `next_action` | Yes | Next safe action. |
+| `notes` | Yes | Context and limitations. |
+
+### Blocker Fields
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | Yes | Stable blocker id such as `SEIS-BLOCKER-001`. |
+| `title` | Yes | Short blocker title. |
+| `status` | Yes | `active`, `mitigated`, `resolved`, or `deferred`. |
+| `severity` | Yes | `critical`, `high`, `medium`, `low`, or `unknown`. |
+| `supports_goal_ids` | Yes | Goal ids affected by the blocker. |
+| `evidence_ids` | Yes | Evidence records proving the blocker. |
+| `related_paths` | Yes | Repo-relative paths. |
+| `required_approval` | Yes | Human approval requirement, if any. |
+| `next_action` | Yes | Next safe action. |
+
+### Decision Fields
+
+| Field | Required | Description |
+| --- | --- | --- |
+| `id` | Yes | Stable decision id such as `SEIS-DEC-001`. |
+| `title` | Yes | Short decision title. |
+| `status` | Yes | `proposed`, `accepted`, `deferred`, or `superseded`. |
+| `date` | Yes | Decision date. |
+| `supports_goal_ids` | Yes | Goal ids affected by the decision. |
+| `evidence_ids` | Yes | Evidence supporting the decision. |
+| `related_paths` | Yes | Repo-relative paths. |
+| `decision` | Yes | Decision statement. |
+| `consequence` | Yes | Practical consequence of the decision. |
+
+Execution records are validated by `npm run check:goal-tracking`.

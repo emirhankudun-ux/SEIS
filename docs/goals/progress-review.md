@@ -14,6 +14,7 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Goal schema | active | [`goal-schema.md`](goal-schema.md) | Convert to JSON schema only after Markdown foundation stabilizes. |
 | Structured goal registry | active | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) | Keep records validated with `npm run check:goal-tracking`. |
 | Structured evidence ledger | active | [`evidence-ledger.md`](evidence-ledger.md), [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) | Keep evidence records scoped, current, and limitation-aware. |
+| Structured execution board | active | [`execution-board.md`](execution-board.md), [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) | Keep tasks, subtasks, blockers, decisions, and next actions validated. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
 | Goal Tracking Center | planned | [`../product/goal-tracking-center.md`](../product/goal-tracking-center.md) | Build fixture/manual UI data next. |
 | Command Center goals view | planned | [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) | Add static views after design-system demo. |
@@ -45,6 +46,8 @@ implementation:
 - Structured goal registry and non-LLM validator created.
 - Structured evidence ledger created for validation, blocker, repository-state,
   commit, review, and scoped security-scan records.
+- Structured execution board created for tasks, subtasks, blockers, decisions,
+  and next safe actions.
 
 ## Deferred Work
 

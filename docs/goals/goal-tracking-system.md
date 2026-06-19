@@ -99,6 +99,12 @@ and is documented in [`evidence-ledger.md`](evidence-ledger.md). It stores
 validation, blocker, repository-state, commit, review, and security-scan
 records without requiring an LLM.
 
+The current structured execution registry lives at
+[`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
+and is documented in [`execution-board.md`](execution-board.md). It stores
+tasks, subtasks, blockers, decisions, and next safe actions without requiring an
+LLM.
+
 ## Command Center Connection
 
 The Goal Tracking Center should render:

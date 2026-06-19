@@ -53,6 +53,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-005` | observed | GitHub workflow | Foundation commits are local only; no push was performed. |
 | `SEIS-EVID-006` | passed | Security/public readiness | Scoped sensitive-pattern scan passed for Goal Tracking OS files. |
 | `SEIS-EVID-007` | partial | Repository hygiene | Tracked deletion set classified for recovery without approving deletion. |
+| `SEIS-EVID-008` | passed | Goal execution | Execution registry validates tasks, subtasks, blockers, decisions, and references. |
 
 ## Validation
 

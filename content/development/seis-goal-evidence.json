@@ -178,6 +178,29 @@
         "Foundation validation remains blocked until P0 governance files are restored or replaced."
       ],
       "next_action": "Use the deletion review to drive a focused repository hygiene PR."
+    },
+    {
+      "id": "SEIS-EVID-008",
+      "title": "Goal execution registry validates",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-execution.json",
+        "docs/goals/execution-board.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "Goal Tracking OS execution records are covered by the local validator, including tasks, subtasks, blockers, decisions, references, paths, and safe text checks.",
+      "limitations": [
+        "Does not prove Command Center UI implementation.",
+        "Does not resolve the active repository hygiene blockers."
+      ],
+      "next_action": "Use execution tasks as the next-action queue for Goal Tracking OS."
     }
   ]
 }

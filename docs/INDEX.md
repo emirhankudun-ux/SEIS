@@ -41,6 +41,8 @@ broad file search.
 | [../content/development/seis-goal-tracking.json](../content/development/seis-goal-tracking.json) | Structured non-LLM goal records. | Active |
 | [goals/evidence-ledger.md](goals/evidence-ledger.md) | Evidence rules and current evidence snapshot for Goal Tracking OS. | Active |
 | [../content/development/seis-goal-evidence.json](../content/development/seis-goal-evidence.json) | Structured non-LLM evidence records. | Active |
+| [goals/execution-board.md](goals/execution-board.md) | Task, subtask, blocker, decision, and next-action records. | Active |
+| [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Structured non-LLM execution records. | Active |
 | [goals/weekly-priorities-template.md](goals/weekly-priorities-template.md) | Weekly review template; use only for real weekly reviews. | Template |
 | [goals/monthly-review-template.md](goals/monthly-review-template.md) | Monthly review template; use only for real monthly reviews. | Template |
 

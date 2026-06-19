@@ -91,7 +91,7 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Type | Goal, roadmap, product, and review docs |
 | Priority | P1 |
 | Goal | Make SEIS Goal Tracking OS explicit as the long-term progress and execution layer. |
-| Include | `docs/goals/*`, structured goal records, structured evidence records, local goal validator, Goal Tracking Center product docs, Command Center goals view, goal review report, backlog and index updates. |
+| Include | `docs/goals/*`, structured goal records, structured evidence records, structured execution records, local goal validator, Goal Tracking Center product docs, Command Center goals view, goal review report, backlog and index updates. |
 | Exclude | UI implementation, fake reviews, fake completion, GitHub API calls, SSH, deployment, model-provider calls. |
 | Validation | `npm run check:goal-tracking`, `git diff --check`, `npm run seis:check`, `npm run check:foundation` with known blocker notes. |
 | Approval needed | None for docs-only work; approval required for live integrations or destructive cleanup. |

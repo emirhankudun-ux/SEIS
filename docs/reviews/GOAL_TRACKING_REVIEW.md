@@ -20,6 +20,7 @@ progress review, review cadence, and Command Center product planning.
 | Connect goals to roadmap and Command Center. | Documented | [`../roadmap/MASTER_BACKLOG.md`](../roadmap/MASTER_BACKLOG.md), [`../roadmap/NEXT_PR_QUEUE.md`](../roadmap/NEXT_PR_QUEUE.md), [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) |
 | Store structured non-LLM goal records. | Implemented as local JSON | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
 | Store structured non-LLM evidence records. | Implemented as local JSON | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
+| Store structured non-LLM execution records. | Implemented as local JSON | [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) |
 | Validate goal records without LLM. | Implemented as local check | [`../../scripts/check-goal-tracking.mjs`](../../scripts/check-goal-tracking.mjs) |
 | Keep LLM optional. | Documented | [`../goals/goal-tracking-system.md`](../goals/goal-tracking-system.md) |
 
@@ -30,6 +31,8 @@ progress review, review cadence, and Command Center product planning.
 - Goal Tracking OS now has structured local JSON records and a non-LLM validator.
 - Goal Tracking OS now has a structured evidence ledger for validation,
   blocker, repository-state, commit, review, and scoped security-scan records.
+- Goal Tracking OS now has a structured execution board for tasks, subtasks,
+  blockers, decisions, and next safe actions.
 - Repository hygiene deletion blocker now has a classified review record:
   [`REPOSITORY_HYGIENE_DELETION_REVIEW.md`](REPOSITORY_HYGIENE_DELETION_REVIEW.md).
 - Goal statuses are evidence-aware and avoid fake completion.
@@ -66,7 +69,7 @@ progress review, review cadence, and Command Center product planning.
 | --- | --- | --- |
 | Required deliverable file check | Passed | All required Goal Tracking OS docs and product/review files exist. |
 | Scoped sensitive-pattern check | Passed | No private path, key, token, or API-key pattern was found in the scoped docs. |
-| `npm run check:goal-tracking` | Passed | Structured goal registry, evidence ledger, required docs, statuses, blockers, evidence links, and validation rules passed. |
+| `npm run check:goal-tracking` | Passed | Structured goal registry, evidence ledger, execution board, required docs, statuses, blockers, references, and validation rules passed. |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
 | `npm run seis:check` | Passed | Existing web audit still passes. |
 | `npm run check:foundation` | Failed | Fails on pre-existing missing governance docs and `scripts/check-open-source-governance.mjs`. |

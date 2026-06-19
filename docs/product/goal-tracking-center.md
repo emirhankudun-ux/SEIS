@@ -20,7 +20,7 @@ what needs evidence, and what should happen next.
 | Milestone Timeline | Show phases, milestones, epics, and validation steps. | [`../goals/milestone-map.md`](../goals/milestone-map.md) |
 | Progress Cards | Summarize active, blocked, planned, validated, and completed goals. | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
 | Blocked Items | Make blockers and required approvals visible. | [`../goals/progress-review.md`](../goals/progress-review.md) |
-| Next Safe Action Panel | Show the next safe action per active goal and roadmap queue. | [`../roadmap/NEXT_PR_QUEUE.md`](../roadmap/NEXT_PR_QUEUE.md) |
+| Next Safe Action Panel | Show the next safe action per active goal and roadmap queue. | [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) |
 | Evidence Links | Link each status to docs, reviews, validation, files, or PRs. | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
 | Readiness Connections | Show public/release readiness status for relevant goals. | [`../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md`](../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md) |
 
@@ -60,6 +60,7 @@ Create a static/manual data file or fixture derived from:
 
 - [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
+- [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)
 - [`../goals/milestone-map.md`](../goals/milestone-map.md)
 - [`../goals/progress-review.md`](../goals/progress-review.md)

@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
+const executionPath = "content/development/seis-goal-execution.json";
 const sensitiveTextPatterns = [
   new RegExp(["/", "Users"].join(""), "i"),
   new RegExp(`file:${"/".repeat(2)}|vscode:${"/".repeat(2)}`, "i"),
@@ -18,6 +19,7 @@ const requiredDocs = [
   "docs/goals/milestone-map.md",
   "docs/goals/progress-review.md",
   "docs/goals/evidence-ledger.md",
+  "docs/goals/execution-board.md",
   "docs/goals/weekly-priorities-template.md",
   "docs/goals/monthly-review-template.md",
   "docs/roadmap/MASTER_BACKLOG.md",
@@ -93,6 +95,10 @@ if (!existsSync(evidencePath)) {
   failures.push(`missing goal evidence ledger: ${evidencePath}`);
 }
 
+if (!existsSync(executionPath)) {
+  failures.push(`missing goal execution registry: ${executionPath}`);
+}
+
 const registry = existsSync(registryPath)
   ? JSON.parse(readFileSync(registryPath, "utf8"))
   : null;
@@ -101,7 +107,12 @@ const evidenceLedger = existsSync(evidencePath)
   ? JSON.parse(readFileSync(evidencePath, "utf8"))
   : null;
 
+const executionRegistry = existsSync(executionPath)
+  ? JSON.parse(readFileSync(executionPath, "utf8"))
+  : null;
+
 let knownGoalIds = new Set();
+let knownEvidenceIds = new Set();
 
 if (registry) {
   if (registry.schemaVersion !== 1) {
@@ -215,6 +226,7 @@ if (evidenceLedger) {
   const allowedTypes = new Set(evidenceLedger.allowedTypes || []);
   const records = evidenceLedger.records || [];
   const ids = new Set();
+  knownEvidenceIds = new Set(records.map((record) => record.id));
 
   if (!Array.isArray(records) || records.length === 0) {
     failures.push("goal evidence ledger must contain records");
@@ -290,6 +302,41 @@ if (evidenceLedger) {
   }
 }
 
+if (executionRegistry) {
+  if (executionRegistry.schemaVersion !== 1) {
+    failures.push("goal execution registry schemaVersion must be 1");
+  }
+
+  if (executionRegistry.mode !== "non_llm_goal_execution_foundation") {
+    failures.push("goal execution registry mode must be non_llm_goal_execution_foundation");
+  }
+
+  const allowedTaskStatuses = new Set(executionRegistry.allowedTaskStatuses || []);
+  const allowedDecisionStatuses = new Set(executionRegistry.allowedDecisionStatuses || []);
+  const allowedBlockerStatuses = new Set(executionRegistry.allowedBlockerStatuses || []);
+  const tasks = executionRegistry.tasks || [];
+  const blockers = executionRegistry.blockers || [];
+  const decisions = executionRegistry.decisions || [];
+  const blockerIds = new Set(blockers.map((blocker) => blocker.id));
+  const decisionIds = new Set(decisions.map((decision) => decision.id));
+
+  if (!Array.isArray(tasks) || tasks.length === 0) {
+    failures.push("goal execution registry must contain tasks");
+  }
+
+  if (!Array.isArray(blockers) || blockers.length === 0) {
+    failures.push("goal execution registry must contain blockers");
+  }
+
+  if (!Array.isArray(decisions) || decisions.length === 0) {
+    failures.push("goal execution registry must contain decisions");
+  }
+
+  validateExecutionTasks(tasks, allowedTaskStatuses, blockerIds, decisionIds);
+  validateExecutionBlockers(blockers, allowedBlockerStatuses);
+  validateExecutionDecisions(decisions, allowedDecisionStatuses);
+}
+
 if (failures.length > 0) {
   console.error("SEIS goal tracking check failed:");
   for (const failure of failures) {
@@ -310,7 +357,10 @@ console.log(JSON.stringify({
   byStatus,
   byPriority,
   docs: requiredDocs.length,
-  evidenceRecords: evidenceLedger.records.length
+  evidenceRecords: evidenceLedger.records.length,
+  executionTasks: executionRegistry.tasks.length,
+  executionBlockers: executionRegistry.blockers.length,
+  executionDecisions: executionRegistry.decisions.length
 }, null, 2));
 
 function hasUnavailableEvidence(goal) {
@@ -346,6 +396,258 @@ function validateSafeText(label, field, value) {
 
   if (sensitiveTextPatterns.some((pattern) => pattern.test(value))) {
     failures.push(`${label} ${field} contains a private path or sensitive-looking pattern`);
+  }
+}
+
+function validateExecutionTasks(tasks, allowedStatuses, blockerIds, decisionIds) {
+  const taskIds = new Set();
+  const subtaskIds = new Set();
+
+  for (const task of tasks) {
+    const label = task.id || "(missing task id)";
+    for (const field of [
+      "id",
+      "title",
+      "status",
+      "priority",
+      "owner_role",
+      "supports_goal_ids",
+      "related_milestone",
+      "related_epic",
+      "blocker_ids",
+      "decision_ids",
+      "evidence_ids",
+      "related_paths",
+      "subtasks",
+      "next_action",
+      "notes"
+    ]) {
+      if (!(field in task)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (taskIds.has(task.id)) {
+      failures.push(`duplicate task id: ${task.id}`);
+    }
+    taskIds.add(task.id);
+
+    if (!/^SEIS-TASK-\d{3}$/.test(task.id || "")) {
+      failures.push(`${label} id must match SEIS-TASK-000 format`);
+    }
+
+    if (!allowedStatuses.has(task.status)) {
+      failures.push(`${label} has invalid status: ${task.status}`);
+    }
+
+    if (!new Set(registry.allowedPriorities || []).has(task.priority)) {
+      failures.push(`${label} has invalid priority: ${task.priority}`);
+    }
+
+    for (const field of ["supports_goal_ids", "blocker_ids", "decision_ids", "evidence_ids", "related_paths", "subtasks"]) {
+      if (!Array.isArray(task[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const goalId of task.supports_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const blockerId of task.blocker_ids || []) {
+      if (!blockerIds.has(blockerId)) {
+        failures.push(`${label} references unknown blocker id: ${blockerId}`);
+      }
+    }
+
+    for (const decisionId of task.decision_ids || []) {
+      if (!decisionIds.has(decisionId)) {
+        failures.push(`${label} references unknown decision id: ${decisionId}`);
+      }
+    }
+
+    for (const evidenceId of task.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+
+    for (const relatedPath of task.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths");
+    }
+
+    for (const [field, value] of Object.entries({
+      title: task.title,
+      owner_role: task.owner_role,
+      next_action: task.next_action,
+      notes: task.notes
+    })) {
+      validateSafeText(label, field, value);
+    }
+
+    for (const subtask of task.subtasks || []) {
+      const subtaskLabel = subtask.id || `${label} subtask`;
+      for (const field of ["id", "title", "status", "next_action"]) {
+        if (!(field in subtask)) {
+          failures.push(`${subtaskLabel} missing field: ${field}`);
+        }
+      }
+
+      if (subtaskIds.has(subtask.id)) {
+        failures.push(`duplicate subtask id: ${subtask.id}`);
+      }
+      subtaskIds.add(subtask.id);
+
+      if (!/^SEIS-SUBTASK-\d{3}$/.test(subtask.id || "")) {
+        failures.push(`${subtaskLabel} id must match SEIS-SUBTASK-000 format`);
+      }
+
+      if (!allowedStatuses.has(subtask.status)) {
+        failures.push(`${subtaskLabel} has invalid status: ${subtask.status}`);
+      }
+
+      validateSafeText(subtaskLabel, "title", subtask.title);
+      validateSafeText(subtaskLabel, "next_action", subtask.next_action);
+    }
+  }
+}
+
+function validateExecutionBlockers(blockers, allowedStatuses) {
+  const ids = new Set();
+  const allowedSeverities = new Set(["critical", "high", "medium", "low", "unknown"]);
+
+  for (const blocker of blockers) {
+    const label = blocker.id || "(missing blocker id)";
+    for (const field of [
+      "id",
+      "title",
+      "status",
+      "severity",
+      "supports_goal_ids",
+      "evidence_ids",
+      "related_paths",
+      "required_approval",
+      "next_action"
+    ]) {
+      if (!(field in blocker)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (ids.has(blocker.id)) {
+      failures.push(`duplicate blocker id: ${blocker.id}`);
+    }
+    ids.add(blocker.id);
+
+    if (!/^SEIS-BLOCKER-\d{3}$/.test(blocker.id || "")) {
+      failures.push(`${label} id must match SEIS-BLOCKER-000 format`);
+    }
+
+    if (!allowedStatuses.has(blocker.status)) {
+      failures.push(`${label} has invalid status: ${blocker.status}`);
+    }
+
+    if (!allowedSeverities.has(blocker.severity)) {
+      failures.push(`${label} has invalid severity: ${blocker.severity}`);
+    }
+
+    for (const field of ["supports_goal_ids", "evidence_ids", "related_paths"]) {
+      if (!Array.isArray(blocker[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const goalId of blocker.supports_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const evidenceId of blocker.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+
+    for (const relatedPath of blocker.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths");
+    }
+
+    for (const [field, value] of Object.entries({
+      title: blocker.title,
+      required_approval: blocker.required_approval,
+      next_action: blocker.next_action
+    })) {
+      validateSafeText(label, field, value);
+    }
+  }
+}
+
+function validateExecutionDecisions(decisions, allowedStatuses) {
+  const ids = new Set();
+
+  for (const decision of decisions) {
+    const label = decision.id || "(missing decision id)";
+    for (const field of [
+      "id",
+      "title",
+      "status",
+      "date",
+      "supports_goal_ids",
+      "evidence_ids",
+      "related_paths",
+      "decision",
+      "consequence"
+    ]) {
+      if (!(field in decision)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (ids.has(decision.id)) {
+      failures.push(`duplicate decision id: ${decision.id}`);
+    }
+    ids.add(decision.id);
+
+    if (!/^SEIS-DEC-\d{3}$/.test(decision.id || "")) {
+      failures.push(`${label} id must match SEIS-DEC-000 format`);
+    }
+
+    if (!allowedStatuses.has(decision.status)) {
+      failures.push(`${label} has invalid status: ${decision.status}`);
+    }
+
+    for (const field of ["supports_goal_ids", "evidence_ids", "related_paths"]) {
+      if (!Array.isArray(decision[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const goalId of decision.supports_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const evidenceId of decision.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+
+    for (const relatedPath of decision.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths");
+    }
+
+    for (const [field, value] of Object.entries({
+      title: decision.title,
+      decision: decision.decision,
+      consequence: decision.consequence
+    })) {
+      validateSafeText(label, field, value);
+    }
   }
 }
 
