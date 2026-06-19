@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute, chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const tools = [
   { id: "seis-agent", command: "npm", optional: false, runtimeCheck: checkSeisAgentEntrypoint },
@@ -121,6 +121,25 @@ for (const [intent, expected] of routingExpectations) {
   console.log(`[${status}] ${intent} -> ${actual}`);
   if (actual !== expected) {
     routingFailures.push(`${intent} expected ${expected} but got ${actual}`);
+  }
+}
+
+const laneExpectations = [
+  ["audit token redaction vulnerability exposure", "seis-security"],
+  ["browser research for docs mcp", "seis-research"],
+  ["idempotent automation workflow dry-run runbook", "seis-automation"],
+  ["product requirements acceptance launch readiness", "seis-product"]
+];
+
+console.log("");
+console.log("SEIS lane routing check");
+
+for (const [intent, expected] of laneExpectations) {
+  const actual = chooseAutoRoute(intent).laneId;
+  const status = actual === expected ? "ok" : "mismatch";
+  console.log(`[${status}] ${intent} -> ${actual}`);
+  if (actual !== expected) {
+    routingFailures.push(`${intent} expected SEIS lane ${expected} but got ${actual}`);
   }
 }
 

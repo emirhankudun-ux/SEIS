@@ -134,7 +134,7 @@ const ROLE_HINTS = {
   },
   software: {
     tool: "openai",
-    hints: ["software", "yazılım", "mimari", "plan", "requirement", "roadmap", "performans", "scalability"]
+    hints: ["software", "yazılım", "mimari", "plan", "requirement", "requirements", "product", "roadmap", "performans", "scalability"]
   }
 };
 
@@ -151,6 +151,14 @@ function normalizeRoleHint(roleHint) {
   return null;
 }
 
+function roleHintMatches(text, hint) {
+  const normalizedHint = normalizeIntent(hint);
+  if (!normalizedHint) return false;
+  if (/\s/.test(normalizedHint)) return text.includes(normalizedHint);
+  const escaped = normalizedHint.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^|[^a-z0-9_-])${escaped}($|[^a-z0-9_-])`).test(text);
+}
+
 function matchRoleFromIntent(text, preferredRole) {
   const normalized = normalizeIntent(text);
   const preferred = normalizeRoleHint(preferredRole);
@@ -161,7 +169,7 @@ function matchRoleFromIntent(text, preferredRole) {
   const scores = { designer: 0, engineer: 0, software: 0 };
   for (const [role, config] of Object.entries(ROLE_HINTS)) {
     for (const hint of config.hints) {
-      if (normalized.includes(hint)) scores[role] += 1;
+      if (roleHintMatches(normalized, hint)) scores[role] += 1;
     }
   }
 

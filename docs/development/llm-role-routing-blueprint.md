@@ -36,10 +36,11 @@ Ek özel yol:
 
 1. İstek metni normalize edilir (lowercase + anahtar eşleme)
 2. Rol sinyalleri puanlanır ve `roleProfile` çıkarılır
-3. Lane adayları hesaplanır
-4. Remote orkestrasyon gerekiyorsa `seis-agent` zorunlu kalır
+3. `packages/seis-ai/models/agent-router-seed-v0.json` üzerinden 10 SEIS lane çıktısı hesaplanır: `seis`, `seis-governance`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, `seis-product`
+4. Helper tool adayı hesaplanır; remote orkestrasyon gerekiyorsa `seis-agent` zorunlu kalır
 5. Plan objesi şu alanlarla döner:
    - `suggestedLane`
+   - `seisLane`
    - `laneType`
    - `role`, `roleConfidence`, `roleSignals`
    - `routerRationale`, `suggestedAlternatives`

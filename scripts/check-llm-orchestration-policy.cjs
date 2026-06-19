@@ -2,7 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute, chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const ROOT = process.cwd();
 const POLICY_PATH = path.join(ROOT, "content", "development", "llm-task-routing-policy.json");
@@ -109,6 +109,10 @@ if (!policy) {
   ensure(chooseAutoTool("translate") === "kimi", "auto routing should map translation intents to kimi");
   ensure(chooseAutoTool("research") === "gemini", "auto routing should map research intents to gemini");
   ensure(chooseAutoTool("özet") === "openai", "auto routing should map translation-aware summary intents to openai");
+  ensure(chooseAutoRoute("audit token redaction vulnerability exposure").laneId === "seis-security", "SEIS router should map security-sensitive intents to seis-security");
+  ensure(chooseAutoRoute("browser research for docs mcp").laneId === "seis-research", "SEIS router should map research intents to seis-research");
+  ensure(chooseAutoRoute("idempotent automation workflow dry-run runbook").laneId === "seis-automation", "SEIS router should map automation intents to seis-automation");
+  ensure(chooseAutoRoute("product requirements acceptance launch readiness").laneId === "seis-product", "SEIS router should map product intents to seis-product");
 }
 
 if (!registry) {
