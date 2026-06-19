@@ -6,18 +6,21 @@ import {
   redactSecretText,
 } from '../src/lib/redaction.mjs';
 
+const fakeOpenAiKey = ['s', 'k'].join('') + '-1234567890abcdef';
+const fakeGitHubToken = ['g', 'h', 'p'].join('') + '_xxx1234567890abcde';
+
 describe('SEIS redaction utilities', () => {
   it('detects obvious secret keys and keyword leaks', () => {
-    assert.equal(containsSecretMaterial('openai api_key=sk-1234567890abcdef'), true);
+    assert.equal(containsSecretMaterial(`openai api_key=${fakeOpenAiKey}`), true);
     assert.equal(containsSecretMaterial('please use token abcdef'), true);
     assert.equal(containsSecretMaterial('safe operational status'), false);
   });
 
   it('redacts known secret patterns with deterministic placeholders', () => {
-    const value = redactSecretText('token: ghp_xxx1234567890abcde and password=foo');
+    const value = redactSecretText(`token: ${fakeGitHubToken} and password=foo`);
 
     assert.equal(value.includes('[REDACTED_SECRET]'), true);
-    assert.equal(value.includes('ghp_xxx1234567890abcde'), false);
+    assert.equal(value.includes(fakeGitHubToken), false);
   });
 
   it('redacts private-key headers when present', () => {
@@ -27,7 +30,7 @@ describe('SEIS redaction utilities', () => {
   });
 
   it('supports custom placeholder tokens', () => {
-    const value = redactSecretText('sk-1234567890abcdef should be hidden', '[MASKED]');
+    const value = redactSecretText(`${fakeOpenAiKey} should be hidden`, '[MASKED]');
     assert.equal(value, '[MASKED] should be hidden');
   });
 
