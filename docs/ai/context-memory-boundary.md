@@ -37,3 +37,13 @@ Memory and context surfaces should render as:
 - blocked
 
 Unknown state must not be shown as ready.
+
+## Repository Intelligence Boundary
+
+Repository intelligence may provide file structure, official docs, review
+reports, roadmap items, security findings, validation status, PR status, branch
+status, module maturity, evidence links, and stale-data warnings.
+
+It must label each source as official, review, archive, mock, scan-generated,
+live, planned, or unknown. Archive material is historical reference and must not
+override official docs.

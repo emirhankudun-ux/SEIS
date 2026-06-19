@@ -32,6 +32,7 @@ SEIS AI Core should support:
 
 | Layer | Responsibility | Current rule |
 | --- | --- | --- |
+| AI App API boundary | Connect app surfaces to AI Core without exposing raw credentials. | Browser clients never receive provider keys or SSH private keys. |
 | Model router | Select provider profile and privacy mode for a task. | No provider keys in browser clients or docs. |
 | Prompt engine | Store versioned prompts, behavior packs, review prompts, and safety prompts. | No copied proprietary prompts or secrets. |
 | Agent runtime | Run supervised roles with permission boundaries and approval gates. | Agents do not expand their own authority. |
@@ -39,6 +40,19 @@ SEIS AI Core should support:
 | Knowledge layer | Provide retrieval and project context with provenance. | Secrets and restricted material are excluded. |
 | Evaluation lab | Test prompts, routing, regression, safety, and task quality. | No benchmark claims without measured runs. |
 | Audit layer | Record safe metadata, decisions, approvals, and validation evidence. | Logs redact secrets and private data. |
+
+The intended app operating chain is:
+
+```text
+SEIS AI App / Command Center
+  -> AI App API Boundary
+  -> Model Router
+  -> Prompt Engine
+  -> Agent Runtime
+  -> Knowledge / Retrieval System
+  -> Tool and Plugin Registry
+  -> Evaluation / Audit / Approval Layer
+```
 
 ## Current Evidence
 
@@ -67,9 +81,17 @@ repository findings, documentation status, security findings, roadmap items,
 and module maturity. The app exposes the AI Core safely; the AI Core interprets
 app states and actions through typed contracts.
 
+## App Execution Requirements
+
+Every AI action in the app should expose data mode, privacy mode, selected
+route, prompt version, context source, assumptions, tools used, approval state,
+evidence, and validation status where possible. Dangerous actions must be
+converted into approval requests rather than executed directly by the LLM.
+
 See also:
 
 - `docs/architecture/ai-core-app-shared-contracts.md`
+- `docs/product/seis-ai-app.md`
 - `docs/product/ai-core-center.md`
 - `docs/security/model-provider-data-policy.md`
 - `docs/evals/evaluation-strategy.md`

@@ -17,5 +17,9 @@ This package will hold shared AI Core and Command Center type contracts.
 - `SecurityFinding`
 - `RoadmapItem`
 - `ModuleMaturity`
+- `LlmExecutionMode`
+- `AiSurface`
+- `RepositoryIntelligence`
+- `GoalTrackingState`
 
 See `docs/architecture/ai-core-app-shared-contracts.md`.

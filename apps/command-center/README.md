@@ -11,6 +11,7 @@ already exists.
 
 - Use `apps/seis-core` for the current local-first shell.
 - Use `docs/product/*` for product contracts.
+- Use `docs/product/seis-ai-app.md` for the LLM operating layer inside the app.
 - Use `docs/architecture/ai-core-app-shared-contracts.md` for shared AI/app
   contracts.
 - Do not add fake controls or live provider status.

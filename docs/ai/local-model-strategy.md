@@ -22,6 +22,12 @@ not the default proof that SEIS owns a model.
 | Local retrieval | Query local approved knowledge. | Provenance required. |
 | Local experiment | Test small models, prompts, or adapters. | Logs and configs required. |
 
+## App Execution Modes
+
+Local model support maps to `local-only`, `local-preferred`, `offline`, and
+`research-only` app modes. These modes must be visible in the AI chat,
+model-router view, and AI Core Center when active.
+
 ## Boundaries
 
 - Local model output is not trusted automatically.

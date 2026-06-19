@@ -215,6 +215,7 @@ read/write workflows are routed through explicit safety gates.
 | [`apps/android`](./apps/android) | Android direction and validation notes |
 | [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |
 | [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
+| [`docs/product`](./docs/product) | SEIS App, AI App, Command Center, LLM surfaces, assistants, approvals, and evidence contracts |
 | [`reports`](./reports) | Generated ecosystem, language, capability, and readiness reports |
 
 ## AI-Assisted Development

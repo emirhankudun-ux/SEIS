@@ -33,6 +33,19 @@ Approval is required before:
 - Unknown data class defaults to blocked or local-only.
 - Provider errors produce degraded or blocked state, not fabricated success.
 
+## Execution Modes
+
+| Mode | Rule |
+| --- | --- |
+| `local-only` | Must not call external providers. |
+| `local-preferred` | Try local route first; external fallback requires policy fit. |
+| `external-provider-allowed` | Provider call allowed for approved data class and route. |
+| `external-provider-redacted` | Sensitive fields must be redacted before provider use. |
+| `metadata-only` | Only safe metadata may be routed; no raw content. |
+| `offline` | No network or provider call; do not fake AI output. |
+| `disabled` | AI unavailable; app must explain disabled state. |
+| `research-only` | For experiments; not for production decisions. |
+
 ## Audit Requirements
 
 Safe metadata should include route id, task class, provider id, model profile,
