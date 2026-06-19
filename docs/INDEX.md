@@ -45,6 +45,8 @@ broad file search.
 | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Structured non-LLM execution records. | Active |
 | [goals/review-cadence.md](goals/review-cadence.md) | Daily, weekly, and monthly review cadence rules. | Active |
 | [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Structured non-LLM review cadence records. | Active |
+| [goals/planning-horizons.md](goals/planning-horizons.md) | Yearly, quarterly, monthly, weekly, and active-project planning horizons. | Active |
+| [../content/development/seis-goal-planning-horizons.json](../content/development/seis-goal-planning-horizons.json) | Structured non-LLM planning horizon and active project records. | Active |
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Static non-LLM Command Center view data. | Active |
 | [../apps/command-center/goal-tracking/index.html](../apps/command-center/goal-tracking/index.html) | Generated static Goal Tracking Center page. | Active |

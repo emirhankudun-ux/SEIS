@@ -364,6 +364,7 @@
         <a href="#goals">Goals</a>
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
+        <a href="#planning">Planning</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -376,7 +377,7 @@
         </div>
         <div class="status-line">
           <span class="badge blocked">blocked_by_repository_hygiene</span>
-          <span class="badge observed">2026-06-19</span>
+          <span class="badge observed">2026-06-20</span>
         </div>
       </header>
 
@@ -410,7 +411,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">11</div>
+    <div class="card-value">12</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -434,6 +435,13 @@
     <div class="card-value">3</div>
   </div>
   <p class="muted">Planned daily, weekly, and monthly review records.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Active projects</p>
+    <div class="card-value">3</div>
+  </div>
+  <p class="muted">Current project lanes linked to goals and evidence.</p>
 </article>
       </section>
 
@@ -566,7 +574,7 @@
     </div>
     <span class="badge active">active</span>
   </div>
-  <p class="next-action">Keep structured goal data, generated view model, and static Command Center page in sync.</p>
+  <p class="next-action">Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync.</p>
   <div class="row-meta">
     <span class="badge">P1 high</span>
     <span class="badge">SEIS-MS-001</span>
@@ -608,7 +616,7 @@
     </div>
     <span class="badge active">active</span>
   </div>
-  <p class="next-action">Keep planned cadence records visible and use review templates only when reviews are actually performed.</p>
+  <p class="next-action">Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed.</p>
   <div class="row-meta">
     <span class="badge">P1 high</span>
     <span class="badge">SEIS-MS-001</span>
@@ -699,7 +707,7 @@
   <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-001</td>
-  <td>Keep structured goal data, generated view model, and static Command Center page in sync.</td>
+  <td>Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync.</td>
 </tr>
               <tr>
   <td>Repository Intelligence</td>
@@ -818,7 +826,7 @@
   <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-001</td>
-  <td>Keep planned cadence records visible and use review templates only when reviews are actually performed.</td>
+  <td>Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed.</td>
 </tr>
             </tbody>
           </table>
@@ -1013,6 +1021,122 @@
         </div>
       </section>
 
+      <section class="grid section-grid" id="planning">
+        <div class="panel">
+          <h2>Planning Horizons</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>2026 foundation year</h3>
+      <p class="muted">SEIS-HORIZON-001 · yearly · 2026</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p>Establish the repository foundation, Goal Tracking OS, non-LLM Command Center foundation, and evidence-backed governance path.</p>
+  <p class="next-action">Resolve repository hygiene blockers, then keep the yearly foundation horizon updated through monthly reviews.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-008, SEIS-EVID-009, SEIS-EVID-010, SEIS-EVID-011</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Foundation recovery quarter</h3>
+      <p class="muted">SEIS-HORIZON-002 · quarterly · Current foundation quarter</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p>Recover the missing governance validation surface and keep Goal Tracking records current.</p>
+  <p class="next-action">Use the repository hygiene deletion review to drive the next focused recovery PR.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Evidence: SEIS-EVID-003, SEIS-EVID-004, SEIS-EVID-007, SEIS-EVID-011</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Current monthly foundation review lane</h3>
+      <p class="muted">SEIS-HORIZON-003 · monthly · Current month</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p>Run the monthly review only when current month evidence is available.</p>
+  <p class="next-action">Keep monthly review planned until actual review evidence exists.</p>
+  <div class="row-meta">
+    <span class="badge">P2 medium</span>
+    <span class="badge">Evidence: SEIS-EVID-011</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Current weekly priorities lane</h3>
+      <p class="muted">SEIS-HORIZON-004 · weekly · Current week</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p>Use the weekly priorities template only for the actual current week.</p>
+  <p class="next-action">Keep weekly priorities planned until actual weekly review evidence exists.</p>
+  <div class="row-meta">
+    <span class="badge">P2 medium</span>
+    <span class="badge">Evidence: SEIS-EVID-011</span>
+  </div>
+</article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Active Projects</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Repository hygiene recovery</h3>
+      <p class="muted">SEIS-PROJECT-001 · Repository Governance</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Restore, replace, or explicitly approve removal of missing governance files in a dedicated hygiene PR.</p>
+  <div class="row-meta">
+    <span class="badge">P0 critical</span>
+    <span class="badge">Horizons: SEIS-HORIZON-001, SEIS-HORIZON-002</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS structured foundation</h3>
+      <p class="muted">SEIS-PROJECT-002 · Product Architecture</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Keep structured records validated and limitation-aware while repository hygiene is recovered.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Horizons: SEIS-HORIZON-001, SEIS-HORIZON-004</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Command Center Goal Tracking surface</h3>
+      <p class="muted">SEIS-PROJECT-003 · Command Center Product</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">Horizons: SEIS-HORIZON-001</span>
+  </div>
+</article>
+          </div>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="decisions">
         <div class="panel">
           <h2>Decisions</h2>
@@ -1092,7 +1216,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>

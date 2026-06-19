@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-planning-horizons",
+  "updated": "2026-06-20",
+  "mode": "non_llm_goal_planning_horizons",
+  "allowedHorizons": [
+    "yearly",
+    "quarterly",
+    "monthly",
+    "weekly"
+  ],
+  "allowedStatuses": [
+    "planned",
+    "active",
+    "blocked",
+    "deferred",
+    "completed"
+  ],
+  "horizons": [
+    {
+      "id": "SEIS-HORIZON-001",
+      "title": "2026 foundation year",
+      "horizon": "yearly",
+      "timeframe": "2026",
+      "status": "active",
+      "priority": "P1 high",
+      "owner_role": "Product Architecture",
+      "related_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-003",
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001",
+        "SEIS-TASK-002",
+        "SEIS-TASK-003",
+        "SEIS-TASK-004",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-008",
+        "SEIS-EVID-009",
+        "SEIS-EVID-010",
+        "SEIS-EVID-011"
+      ],
+      "related_paths": [
+        "docs/goals/planning-horizons.md",
+        "docs/goals/milestone-map.md",
+        "docs/roadmap/MASTER_BACKLOG.md"
+      ],
+      "focus": "Establish the repository foundation, Goal Tracking OS, non-LLM Command Center foundation, and evidence-backed governance path.",
+      "success_signal": "Foundation checks are recoverable, Goal Tracking records validate, and Command Center can render current status without LLM dependency.",
+      "blockers": [
+        "Repository hygiene blockers prevent public or release readiness claims."
+      ],
+      "next_action": "Resolve repository hygiene blockers, then keep the yearly foundation horizon updated through monthly reviews."
+    },
+    {
+      "id": "SEIS-HORIZON-002",
+      "title": "Foundation recovery quarter",
+      "horizon": "quarterly",
+      "timeframe": "Current foundation quarter",
+      "status": "active",
+      "priority": "P1 high",
+      "owner_role": "Repository Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-008"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001",
+        "SEIS-TASK-002",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004",
+        "SEIS-EVID-007",
+        "SEIS-EVID-011"
+      ],
+      "related_paths": [
+        "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "docs/goals/review-cadence.md"
+      ],
+      "focus": "Recover the missing governance validation surface and keep Goal Tracking records current.",
+      "success_signal": "`npm run check:foundation` is no longer blocked by missing governance docs or checker scripts.",
+      "blockers": [
+        "Missing governance docs and open-source governance checker remain unresolved."
+      ],
+      "next_action": "Use the repository hygiene deletion review to drive the next focused recovery PR."
+    },
+    {
+      "id": "SEIS-HORIZON-003",
+      "title": "Current monthly foundation review lane",
+      "horizon": "monthly",
+      "timeframe": "Current month",
+      "status": "planned",
+      "priority": "P2 medium",
+      "owner_role": "Product Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-011"
+      ],
+      "related_paths": [
+        "docs/goals/monthly-review-template.md",
+        "docs/goals/review-cadence.md",
+        "content/development/seis-goal-review-cadence.json"
+      ],
+      "focus": "Run the monthly review only when current month evidence is available.",
+      "success_signal": "A completed monthly review record exists with evidence-backed changes and no fake completion claims.",
+      "blockers": [
+        "No monthly review has been performed yet."
+      ],
+      "next_action": "Keep monthly review planned until actual review evidence exists."
+    },
+    {
+      "id": "SEIS-HORIZON-004",
+      "title": "Current weekly priorities lane",
+      "horizon": "weekly",
+      "timeframe": "Current week",
+      "status": "planned",
+      "priority": "P2 medium",
+      "owner_role": "Product Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-011"
+      ],
+      "related_paths": [
+        "docs/goals/weekly-priorities-template.md",
+        "docs/goals/daily-review-template.md",
+        "content/development/seis-goal-review-cadence.json"
+      ],
+      "focus": "Use the weekly priorities template only for the actual current week.",
+      "success_signal": "A weekly review exists with updated priorities, blockers, validation needs, and next safe actions.",
+      "blockers": [
+        "No weekly review has been performed yet."
+      ],
+      "next_action": "Keep weekly priorities planned until actual weekly review evidence exists."
+    }
+  ],
+  "activeProjects": [
+    {
+      "id": "SEIS-PROJECT-001",
+      "title": "Repository hygiene recovery",
+      "status": "blocked",
+      "priority": "P0 critical",
+      "owner_role": "Repository Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-008"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004",
+        "SEIS-EVID-007"
+      ],
+      "related_horizon_ids": [
+        "SEIS-HORIZON-001",
+        "SEIS-HORIZON-002"
+      ],
+      "related_paths": [
+        "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "blockers": [
+        "Tracked deletion set remains unresolved."
+      ],
+      "next_action": "Restore, replace, or explicitly approve removal of missing governance files in a dedicated hygiene PR."
+    },
+    {
+      "id": "SEIS-PROJECT-002",
+      "title": "Goal Tracking OS structured foundation",
+      "status": "active",
+      "priority": "P1 high",
+      "owner_role": "Product Architecture",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-002",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-008",
+        "SEIS-EVID-011"
+      ],
+      "related_horizon_ids": [
+        "SEIS-HORIZON-001",
+        "SEIS-HORIZON-004"
+      ],
+      "related_paths": [
+        "docs/goals/goal-tracking-system.md",
+        "docs/goals/planning-horizons.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "blockers": [],
+      "next_action": "Keep structured records validated and limitation-aware while repository hygiene is recovered."
+    },
+    {
+      "id": "SEIS-PROJECT-003",
+      "title": "Command Center Goal Tracking surface",
+      "status": "planned",
+      "priority": "P1 high",
+      "owner_role": "Command Center Product",
+      "related_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-003"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-009",
+        "SEIS-EVID-010"
+      ],
+      "related_horizon_ids": [
+        "SEIS-HORIZON-001"
+      ],
+      "related_paths": [
+        "apps/command-center/goal-tracking/index.html",
+        "content/development/seis-goal-command-center-view.json",
+        "docs/product/goal-tracking-center.md"
+      ],
+      "blockers": [
+        "Static page is not wired into a routed Command Center shell."
+      ],
+      "next_action": "Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated."
+    }
+  ]
+}

@@ -61,6 +61,7 @@ It is derived from the structured source records:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
+- [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 
 The raw goal source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
@@ -71,6 +72,8 @@ Tasks, subtasks, blockers, decisions, and next safe actions should come from
 Daily, weekly, and monthly review cadence should come from
 [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 and stay planned until current-period review evidence exists.
+Yearly, quarterly, monthly, weekly, and active project lanes should come from
+[`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json).
 The compact view model can be derived from each goal record:
 
 ```json

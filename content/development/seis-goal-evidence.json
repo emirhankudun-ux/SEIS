@@ -271,6 +271,29 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Keep cadence records planned until current-period review evidence exists."
+    },
+    {
+      "id": "SEIS-EVID-012",
+      "title": "Goal planning horizons registry validates",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-planning-horizons.json",
+        "docs/goals/planning-horizons.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "The yearly, quarterly, monthly, and weekly planning horizons plus active project records are structured and covered by the local goal tracking validator.",
+      "limitations": [
+        "Does not prove any yearly, quarterly, monthly, or weekly horizon is completed.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Keep planning horizons current through actual daily, weekly, and monthly reviews."
     }
   ]
 }

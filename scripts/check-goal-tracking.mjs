@@ -4,6 +4,7 @@ const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
 const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
+const planningHorizonsPath = "content/development/seis-goal-planning-horizons.json";
 const commandCenterViewPath = "content/development/seis-goal-command-center-view.json";
 const commandCenterStaticPath = "apps/command-center/goal-tracking/index.html";
 const sensitiveTextPatterns = [
@@ -24,6 +25,7 @@ const requiredDocs = [
   "docs/goals/evidence-ledger.md",
   "docs/goals/execution-board.md",
   "docs/goals/review-cadence.md",
+  "docs/goals/planning-horizons.md",
   "docs/goals/command-center-view-model.md",
   "docs/goals/daily-review-template.md",
   "docs/goals/weekly-priorities-template.md",
@@ -109,6 +111,10 @@ if (!existsSync(reviewCadencePath)) {
   failures.push(`missing goal review cadence registry: ${reviewCadencePath}`);
 }
 
+if (!existsSync(planningHorizonsPath)) {
+  failures.push(`missing goal planning horizons registry: ${planningHorizonsPath}`);
+}
+
 if (!existsSync(commandCenterViewPath)) {
   failures.push(`missing Goal Command Center view: ${commandCenterViewPath}`);
 }
@@ -131,6 +137,10 @@ const executionRegistry = existsSync(executionPath)
 
 const reviewCadenceRegistry = existsSync(reviewCadencePath)
   ? JSON.parse(readFileSync(reviewCadencePath, "utf8"))
+  : null;
+
+const planningHorizonsRegistry = existsSync(planningHorizonsPath)
+  ? JSON.parse(readFileSync(planningHorizonsPath, "utf8"))
   : null;
 
 const commandCenterView = existsSync(commandCenterViewPath)
@@ -369,6 +379,10 @@ if (reviewCadenceRegistry) {
   validateReviewCadence(reviewCadenceRegistry);
 }
 
+if (planningHorizonsRegistry) {
+  validatePlanningHorizons(planningHorizonsRegistry);
+}
+
 if (commandCenterView) {
   validateCommandCenterView(commandCenterView);
 }
@@ -402,6 +416,8 @@ console.log(JSON.stringify({
   executionBlockers: executionRegistry.blockers.length,
   executionDecisions: executionRegistry.decisions.length,
   reviewRecords: reviewCadenceRegistry.records.length,
+  planningHorizons: planningHorizonsRegistry.horizons.length,
+  activeProjects: planningHorizonsRegistry.activeProjects.length,
   commandCenterView: commandCenterView.id,
   commandCenterStatic: commandCenterStaticPath
 }, null, 2));
@@ -804,9 +820,168 @@ function validateReviewCadence(cadenceRegistry) {
   }
 }
 
+function validatePlanningHorizons(horizonRegistry) {
+  if (horizonRegistry.schemaVersion !== 1) {
+    failures.push("goal planning horizons registry schemaVersion must be 1");
+  }
+
+  if (horizonRegistry.mode !== "non_llm_goal_planning_horizons") {
+    failures.push("goal planning horizons registry mode must be non_llm_goal_planning_horizons");
+  }
+
+  const allowedHorizons = new Set(horizonRegistry.allowedHorizons || []);
+  const allowedStatuses = new Set(horizonRegistry.allowedStatuses || []);
+  const horizons = horizonRegistry.horizons || [];
+  const projects = horizonRegistry.activeProjects || [];
+  const horizonIds = new Set(horizons.map((horizon) => horizon.id));
+  const ids = new Set();
+
+  if (!Array.isArray(horizons) || horizons.length < 4) {
+    failures.push("goal planning horizons registry must include yearly, quarterly, monthly, and weekly horizons");
+  }
+
+  for (const horizon of ["yearly", "quarterly", "monthly", "weekly"]) {
+    if (!horizons.some((record) => record.horizon === horizon)) {
+      failures.push(`goal planning horizons registry missing horizon: ${horizon}`);
+    }
+  }
+
+  for (const record of horizons) {
+    validatePlanningRecord(record, {
+      idPattern: /^SEIS-HORIZON-\d{3}$/,
+      idDescription: "SEIS-HORIZON-000",
+      ids,
+      allowedStatuses,
+      allowedHorizons
+    });
+  }
+
+  if (!Array.isArray(projects) || projects.length === 0) {
+    failures.push("goal planning horizons registry must include activeProjects");
+  }
+
+  const projectIds = new Set();
+  for (const project of projects) {
+    validatePlanningRecord(project, {
+      idPattern: /^SEIS-PROJECT-\d{3}$/,
+      idDescription: "SEIS-PROJECT-000",
+      ids: projectIds,
+      allowedStatuses,
+      allowedHorizons: null,
+      horizonIds
+    });
+  }
+}
+
+function validatePlanningRecord(record, options) {
+  const label = record.id || "(missing planning id)";
+  const requiredFields = [
+    "id",
+    "title",
+    "status",
+    "priority",
+    "owner_role",
+    "related_goal_ids",
+    "related_task_ids",
+    "evidence_ids",
+    "related_paths",
+    "blockers",
+    "next_action"
+  ];
+
+  if (options.allowedHorizons) {
+    requiredFields.push("horizon", "timeframe", "focus", "success_signal");
+  } else {
+    requiredFields.push("related_horizon_ids");
+  }
+
+  for (const field of requiredFields) {
+    if (!(field in record)) {
+      failures.push(`${label} missing field: ${field}`);
+    }
+  }
+
+  if (options.ids.has(record.id)) {
+    failures.push(`duplicate planning id: ${record.id}`);
+  }
+  options.ids.add(record.id);
+
+  if (!options.idPattern.test(record.id || "")) {
+    failures.push(`${label} id must match ${options.idDescription} format`);
+  }
+
+  if (!options.allowedStatuses.has(record.status)) {
+    failures.push(`${label} has invalid status: ${record.status}`);
+  }
+
+  if (!new Set(registry.allowedPriorities || []).has(record.priority)) {
+    failures.push(`${label} has invalid priority: ${record.priority}`);
+  }
+
+  if (options.allowedHorizons && !options.allowedHorizons.has(record.horizon)) {
+    failures.push(`${label} has invalid horizon: ${record.horizon}`);
+  }
+
+  for (const field of ["related_goal_ids", "related_task_ids", "evidence_ids", "related_paths", "blockers"]) {
+    if (!Array.isArray(record[field])) {
+      failures.push(`${label} ${field} must be an array`);
+    }
+  }
+
+  if (record.related_horizon_ids && !Array.isArray(record.related_horizon_ids)) {
+    failures.push(`${label} related_horizon_ids must be an array`);
+  }
+
+  for (const goalId of record.related_goal_ids || []) {
+    if (!knownGoalIds.has(goalId)) {
+      failures.push(`${label} references unknown goal id: ${goalId}`);
+    }
+  }
+
+  for (const taskId of record.related_task_ids || []) {
+    if (!knownTaskIds.has(taskId)) {
+      failures.push(`${label} references unknown task id: ${taskId}`);
+    }
+  }
+
+  for (const evidenceId of record.evidence_ids || []) {
+    if (!knownEvidenceIds.has(evidenceId)) {
+      failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+    }
+  }
+
+  for (const horizonId of record.related_horizon_ids || []) {
+    if (!options.horizonIds?.has(horizonId)) {
+      failures.push(`${label} references unknown horizon id: ${horizonId}`);
+    }
+  }
+
+  for (const relatedPath of record.related_paths || []) {
+    validateRelativePath(label, relatedPath, "related_paths");
+  }
+
+  for (const [field, value] of Object.entries({
+    title: record.title,
+    owner_role: record.owner_role,
+    next_action: record.next_action,
+    focus: record.focus || "not applicable",
+    success_signal: record.success_signal || "not applicable"
+  })) {
+    validateSafeText(label, field, value);
+  }
+
+  for (const blocker of record.blockers || []) {
+    validateSafeText(label, "blockers", blocker);
+  }
+
+  if (record.status === "completed" && !record.evidence_ids?.length) {
+    failures.push(`${label} cannot be completed without evidence_ids`);
+  }
+}
+
 function validateCommandCenterView(view) {
   const label = view.id || "(missing command center view id)";
-  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry) {
+  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry) {
     failures.push(`${label} cannot be validated until source registries load`);
     return;
   }
@@ -819,7 +994,7 @@ function validateCommandCenterView(view) {
     failures.push(`${label} mode must be non_llm_command_center_goal_view`);
   }
 
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath]) {
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath]) {
     if (!view.sourceRecords?.includes(source)) {
       failures.push(`${label} missing source record: ${source}`);
     }
@@ -841,6 +1016,14 @@ function validateCommandCenterView(view) {
     failures.push(`${label} totalReviewRecords does not match review cadence registry`);
   }
 
+  if (view.summary?.totalPlanningHorizons !== planningHorizonsRegistry.horizons.length) {
+    failures.push(`${label} totalPlanningHorizons does not match planning horizons registry`);
+  }
+
+  if (view.summary?.totalActiveProjects !== planningHorizonsRegistry.activeProjects.length) {
+    failures.push(`${label} totalActiveProjects does not match planning horizons registry`);
+  }
+
   if (!Array.isArray(view.progressCards) || view.progressCards.length < 6) {
     failures.push(`${label} must expose core progress cards`);
   }
@@ -857,6 +1040,14 @@ function validateCommandCenterView(view) {
     failures.push(`${label} must expose review cadence`);
   }
 
+  if (!view.panels?.planningHorizons?.length) {
+    failures.push(`${label} must expose planning horizons`);
+  }
+
+  if (!view.panels?.activeProjects?.length) {
+    failures.push(`${label} must expose active projects`);
+  }
+
   if (!view.uxGuards?.some((guard) => guard.id === "completed-needs-evidence")) {
     failures.push(`${label} must expose completed-needs-evidence UX guard`);
   }
@@ -870,11 +1061,15 @@ function validateCommandCenterStatic(html) {
     "Active Blockers",
     "Validation Status",
     "Review Cadence",
+    "Planning Horizons",
+    "Active Projects",
     "Readiness Connections",
     "UX Guardrails",
     "SEIS-BLOCKER-001",
     "SEIS-TASK-001",
-    "SEIS-REVIEW-001"
+    "SEIS-REVIEW-001",
+    "SEIS-HORIZON-001",
+    "SEIS-PROJECT-001"
   ];
 
   for (const text of requiredText) {

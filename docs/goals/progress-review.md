@@ -16,6 +16,7 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Structured evidence ledger | active | [`evidence-ledger.md`](evidence-ledger.md), [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) | Keep evidence records scoped, current, and limitation-aware. |
 | Structured execution board | active | [`execution-board.md`](execution-board.md), [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) | Keep tasks, subtasks, blockers, decisions, and next actions validated. |
 | Structured review cadence | active | [`review-cadence.md`](review-cadence.md), [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) | Keep daily, weekly, and monthly records planned until real review evidence exists. |
+| Structured planning horizons | active | [`planning-horizons.md`](planning-horizons.md), [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) | Keep yearly, quarterly, monthly, weekly, and active project lanes evidence-linked. |
 | Command Center view model | active | [`command-center-view-model.md`](command-center-view-model.md), [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) | Keep generated view data fresh with `npm run check:goal-command-center-view`. |
 | Static Goal Tracking page | active | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) | Keep generated static page fresh with `npm run check:goal-command-center-static`. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
@@ -53,6 +54,8 @@ implementation:
   and next safe actions.
 - Structured review cadence created for daily, weekly, and monthly review
   checklists without claiming performed reviews.
+- Structured planning horizons created for yearly, quarterly, monthly, weekly,
+  and active project lanes without claiming completion.
 - Static Command Center view model generated from goal, evidence, and execution
   records.
 - Static Goal Tracking Center page generated from the view model.

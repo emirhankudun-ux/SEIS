@@ -111,6 +111,12 @@ and is documented in [`review-cadence.md`](review-cadence.md). It stores daily,
 weekly, and monthly review checklists as planned records until actual
 current-period review evidence exists.
 
+The current structured planning horizon registry lives at
+[`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
+and is documented in [`planning-horizons.md`](planning-horizons.md). It stores
+yearly, quarterly, monthly, and weekly planning lanes plus active projects
+without claiming completion ahead of evidence.
+
 The review templates are:
 
 - [`daily-review-template.md`](daily-review-template.md)

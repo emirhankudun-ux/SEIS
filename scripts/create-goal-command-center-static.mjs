@@ -68,6 +68,8 @@ function buildHtml(model) {
   const validation = panels.validationStatus || [];
   const decisions = panels.decisions || [];
   const reviewCadence = panels.reviewCadence || [];
+  const planningHorizons = panels.planningHorizons || [];
+  const activeProjects = panels.activeProjects || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -438,6 +440,7 @@ function buildHtml(model) {
         <a href="#goals">Goals</a>
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
+        <a href="#planning">Planning</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -535,6 +538,22 @@ function buildHtml(model) {
         <h2>Review Cadence</h2>
         <div class="grid review-grid">
           ${reviewCadence.map(renderReviewCadence).join("\n          ")}
+        </div>
+      </section>
+
+      <section class="grid section-grid" id="planning">
+        <div class="panel">
+          <h2>Planning Horizons</h2>
+          <div class="stack">
+            ${planningHorizons.map(renderPlanningHorizon).join("\n            ")}
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Active Projects</h2>
+          <div class="stack">
+            ${activeProjects.map(renderActiveProject).join("\n            ")}
+          </div>
         </div>
       </section>
 
@@ -689,6 +708,41 @@ function renderReviewCadence(item) {
 </article>`;
 }
 
+function renderPlanningHorizon(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.horizon)} · ${escapeHtml(item.timeframe)}</p>
+    </div>
+    <span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+  </div>
+  <p>${escapeHtml(item.focus)}</p>
+  <p class="next-action">${escapeHtml(item.nextAction)}</p>
+  <div class="row-meta">
+    <span class="badge">${escapeHtml(item.priority)}</span>
+    <span class="badge">Evidence: ${escapeHtml((item.evidenceIds || []).join(", ") || "none")}</span>
+  </div>
+</article>`;
+}
+
+function renderActiveProject(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.ownerRole)}</p>
+    </div>
+    <span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+  </div>
+  <p class="next-action">${escapeHtml(item.nextAction)}</p>
+  <div class="row-meta">
+    <span class="badge">${escapeHtml(item.priority)}</span>
+    <span class="badge">Horizons: ${escapeHtml((item.relatedHorizonIds || []).join(", ") || "none")}</span>
+  </div>
+</article>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -706,6 +760,8 @@ function validateHtml(html, model) {
     "Active Blockers",
     "Validation Status",
     "Review Cadence",
+    "Planning Horizons",
+    "Active Projects",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -728,6 +784,14 @@ function validateHtml(html, model) {
 
   if ((model.panels?.reviewCadence || []).length > 0 && !html.includes("SEIS-REVIEW-001")) {
     failures.push("static surface must expose review cadence ids");
+  }
+
+  if ((model.panels?.planningHorizons || []).length > 0 && !html.includes("SEIS-HORIZON-001")) {
+    failures.push("static surface must expose planning horizon ids");
+  }
+
+  if ((model.panels?.activeProjects || []).length > 0 && !html.includes("SEIS-PROJECT-001")) {
+    failures.push("static surface must expose active project ids");
   }
 
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {

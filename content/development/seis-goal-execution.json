@@ -96,12 +96,15 @@
       "evidence_ids": [
         "SEIS-EVID-001",
         "SEIS-EVID-006",
-        "SEIS-EVID-008"
+        "SEIS-EVID-008",
+        "SEIS-EVID-012"
       ],
       "related_paths": [
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-execution.json",
+        "content/development/seis-goal-planning-horizons.json",
+        "docs/goals/planning-horizons.md",
         "scripts/check-goal-tracking.mjs"
       ],
       "subtasks": [
