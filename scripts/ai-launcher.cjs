@@ -4,7 +4,7 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawn, spawnSync } = require("node:child_process");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute } = require("./ai-routing-policy.cjs");
 
 const ROUTES = {
   "seis-agent": { command: "npm", argsPrefix: [ "run", "seis:agent", "--" ], aliases: [ "seis", "agent", "policy" ] },
@@ -145,23 +145,32 @@ if ( !target || target === "list" || target === "--help" || target === "-h" ) {
 }
 
 let resolvedTarget = target;
+let autoRoute = null;
 if ( target === "auto" ) {
   const separatorIndex = rest.indexOf( "::" );
   const intentParts = separatorIndex >= 0 ? rest.slice( 0, separatorIndex ) : rest;
   forwardArgs = separatorIndex >= 0 ? rest.slice( separatorIndex + 1 ) : [];
   const intentText = intentParts.join( " " );
-  resolvedTarget = chooseAutoTool( intentText );
+  autoRoute = chooseAutoRoute( intentText );
+  resolvedTarget = autoRoute.tool;
   isPolicySelected = true;
 } else if ( ROLE_TARGETS.has( target ) ) {
   const intentText = `${target}: ${rest.join( " " )}`;
   forwardArgs = rest;
-  resolvedTarget = chooseAutoTool( intentText, { preferredRole: target } );
+  autoRoute = chooseAutoRoute( intentText, { preferredRole: target } );
+  resolvedTarget = autoRoute.tool;
   isPolicySelected = true;
 }
 
 if ( isPolicySelected ) {
   resolvedTarget = resolveAutoFallback( resolvedTarget );
   console.log( `auto selected: ${resolvedTarget}` );
+  if ( autoRoute?.laneId ) {
+    console.log( `seis lane: ${autoRoute.laneId}` );
+  }
+  if ( resolvedTarget === "seis-agent" && autoRoute?.intent && forwardArgs.length === 0 ) {
+    forwardArgs = [ formatSeisAgentIntent( autoRoute ) ];
+  }
 }
 
 const route = resolveRoute( resolvedTarget );
@@ -180,3 +189,13 @@ if ( issue ) {
 }
 
 launch( route, forwardArgs );
+
+function formatSeisAgentIntent( route ) {
+  const details = [
+    `SEIS lane: ${route.laneId}`,
+    route.defaultGate ? `default gate: ${route.defaultGate}` : null,
+    route.integrationTool ? `integration tool: ${route.integrationTool}` : null
+  ].filter( Boolean ).join( "; " );
+
+  return `[${details}] ${route.intent}`;
+}
