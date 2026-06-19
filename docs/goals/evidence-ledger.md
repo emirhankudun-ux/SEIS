@@ -56,6 +56,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-008` | passed | Goal execution | Execution registry validates tasks, subtasks, blockers, decisions, and references. |
 | `SEIS-EVID-009` | passed | Command Center view | Generated Command Center view model passed freshness validation. |
 | `SEIS-EVID-010` | passed | Command Center static page | Generated static Goal Tracking Center page passed freshness validation. |
+| `SEIS-EVID-011` | passed | Review cadence | Daily, weekly, and monthly cadence records validate without claiming performed reviews. |
 
 ## Validation
 
@@ -66,4 +67,5 @@ npm run check:goal-tracking
 ```
 
 The validator checks the goal registry, required goal docs, evidence ledger,
-execution board, generated Command Center view model, and generated static page.
+execution board, review cadence, generated Command Center view model, and
+generated static page.

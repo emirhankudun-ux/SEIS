@@ -43,6 +43,8 @@ broad file search.
 | [../content/development/seis-goal-evidence.json](../content/development/seis-goal-evidence.json) | Structured non-LLM evidence records. | Active |
 | [goals/execution-board.md](goals/execution-board.md) | Task, subtask, blocker, decision, and next-action records. | Active |
 | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Structured non-LLM execution records. | Active |
+| [goals/review-cadence.md](goals/review-cadence.md) | Daily, weekly, and monthly review cadence rules. | Active |
+| [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Structured non-LLM review cadence records. | Active |
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Static non-LLM Command Center view data. | Active |
 | [../apps/command-center/goal-tracking/index.html](../apps/command-center/goal-tracking/index.html) | Generated static Goal Tracking Center page. | Active |

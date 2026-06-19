@@ -11,6 +11,7 @@ const paths = {
   goals: "content/development/seis-goal-tracking.json",
   evidence: "content/development/seis-goal-evidence.json",
   execution: "content/development/seis-goal-execution.json",
+  reviewCadence: "content/development/seis-goal-review-cadence.json",
   output: "content/development/seis-goal-command-center-view.json"
 };
 
@@ -22,7 +23,7 @@ Commands:
   node scripts/create-goal-command-center-view.mjs --check
 
 Builds the static non-LLM Command Center Goal Tracking view model from the
-goal, evidence, and execution registries.
+goal, evidence, execution, and review cadence registries.
 `);
   process.exit(0);
 }
@@ -30,8 +31,9 @@ goal, evidence, and execution registries.
 const goals = readJson(paths.goals);
 const evidence = readJson(paths.evidence);
 const execution = readJson(paths.execution);
-const view = buildView(goals, evidence, execution);
-const failures = validateView(view, goals, evidence, execution);
+const reviewCadence = readJson(paths.reviewCadence);
+const view = buildView(goals, evidence, execution, reviewCadence);
+const failures = validateView(view, goals, evidence, execution, reviewCadence);
 
 if (failures.length > 0) {
   console.error("SEIS Goal Command Center view is invalid:");
@@ -65,18 +67,20 @@ mkdirSync(path.dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, output, "utf8");
 console.log(`SEIS Goal Command Center view written: ${paths.output}`);
 
-function buildView(goalRegistry, evidenceLedger, executionRegistry) {
+function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const taskRecords = executionRegistry.tasks || [];
   const blockerRecords = executionRegistry.blockers || [];
   const decisionRecords = executionRegistry.decisions || [];
+  const reviewRecords = reviewCadenceRegistry.records || [];
 
   const goalsByStatus = countBy(goalRecords, "status");
   const goalsByCategory = countBy(goalRecords, "category");
   const tasksByStatus = countBy(taskRecords, "status");
   const blockersByStatus = countBy(blockerRecords, "status");
   const evidenceByStatus = countBy(evidenceRecords, "status");
+  const reviewsByStatus = countBy(reviewRecords, "status");
 
   const activeCriticalBlockers = blockerRecords.filter((blocker) => blocker.status === "active" && blocker.severity === "critical");
   const finalState = activeCriticalBlockers.length > 0
@@ -91,7 +95,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry) {
     sourceRecords: [
       paths.goals,
       paths.evidence,
-      paths.execution
+      paths.execution,
+      paths.reviewCadence
     ],
     summary: {
       finalState,
@@ -105,6 +110,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry) {
       totalBlockers: blockerRecords.length,
       blockersByStatus,
       totalDecisions: decisionRecords.length,
+      totalReviewRecords: reviewRecords.length,
+      reviewsByStatus,
       nextSafeAction: activeCriticalBlockers.length > 0
         ? "Resolve P0 repository hygiene blockers before public or release readiness claims."
         : "Render the static Goal Tracking Center from the generated view model."
@@ -115,7 +122,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry) {
       card("blocked-goals", "Blocked goals", goalsByStatus.blocked || 0, "blocked", "Goals blocked by named conditions."),
       card("evidence-records", "Evidence records", evidenceRecords.length, "active", "Structured proof, blocker, validation, and review records."),
       card("execution-tasks", "Execution tasks", taskRecords.length, "active", "Structured tasks and subtasks backing next actions."),
-      card("active-blockers", "Active blockers", blockersByStatus.active || 0, "blocked", "Blockers that must remain visible.")
+      card("active-blockers", "Active blockers", blockersByStatus.active || 0, "blocked", "Blockers that must remain visible."),
+      card("review-cadence", "Review cadence", reviewRecords.length, "planned", "Planned daily, weekly, and monthly review records.")
     ],
     panels: {
       activeGoals: goalRecords
@@ -183,6 +191,20 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry) {
         decision: decision.decision,
         consequence: decision.consequence
       })),
+      reviewCadence: reviewRecords.map((record) => ({
+        id: record.id,
+        title: record.title,
+        cadence: record.cadence,
+        status: record.status,
+        ownerRole: record.owner_role,
+        relatedGoalIds: record.related_goal_ids,
+        relatedTaskIds: record.related_task_ids,
+        evidenceIds: record.evidence_ids,
+        checklist: record.checklist,
+        requiredEvidence: record.required_evidence,
+        completionRule: record.completion_rule,
+        nextAction: record.next_action
+      })),
       readinessConnections: [
         "Public Readiness",
         "Release Readiness",
@@ -209,11 +231,13 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry) {
   };
 }
 
-function validateView(view, goalRegistry, evidenceLedger, executionRegistry) {
+function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry) {
   const failures = [];
   const goalIds = new Set((goalRegistry.goals || []).map((goal) => goal.id));
   const evidenceIds = new Set((evidenceLedger.records || []).map((record) => record.id));
   const blockerIds = new Set((executionRegistry.blockers || []).map((blocker) => blocker.id));
+  const taskIds = new Set((executionRegistry.tasks || []).map((task) => task.id));
+  const reviewIds = new Set((reviewCadenceRegistry.records || []).map((record) => record.id));
 
   if (view.schemaVersion !== 1) {
     failures.push("view schemaVersion must be 1");
@@ -223,7 +247,7 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry) {
     failures.push("view mode must be non_llm_command_center_goal_view");
   }
 
-  for (const source of [paths.goals, paths.evidence, paths.execution]) {
+  for (const source of [paths.goals, paths.evidence, paths.execution, paths.reviewCadence]) {
     if (!view.sourceRecords.includes(source)) {
       failures.push(`view missing source record: ${source}`);
     }
@@ -241,6 +265,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry) {
     failures.push("view summary totalTasks does not match execution registry");
   }
 
+  if (view.summary.totalReviewRecords !== (reviewCadenceRegistry.records || []).length) {
+    failures.push("view summary totalReviewRecords does not match review cadence registry");
+  }
+
   if (view.progressCards.length < 6) {
     failures.push("view should expose the core progress cards");
   }
@@ -251,6 +279,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry) {
 
   if (!view.panels.nextActionQueue.length) {
     failures.push("view must expose next action queue");
+  }
+
+  if (!view.panels.reviewCadence.length) {
+    failures.push("view must expose review cadence");
   }
 
   for (const panelName of ["activeGoals", "blockedGoals"]) {
@@ -282,6 +314,30 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry) {
   for (const item of view.panels.validationStatus) {
     if (!evidenceIds.has(item.id)) {
       failures.push(`validationStatus references unknown evidence id: ${item.id}`);
+    }
+  }
+
+  for (const item of view.panels.reviewCadence) {
+    if (!reviewIds.has(item.id)) {
+      failures.push(`reviewCadence references unknown review id: ${item.id}`);
+    }
+    if (item.status === "performed" && !item.evidenceIds?.length) {
+      failures.push(`${item.id} must not be marked performed without review evidence`);
+    }
+    for (const goalId of item.relatedGoalIds || []) {
+      if (!goalIds.has(goalId)) {
+        failures.push(`${item.id} references unknown goal id: ${goalId}`);
+      }
+    }
+    for (const taskId of item.relatedTaskIds || []) {
+      if (!taskIds.has(taskId)) {
+        failures.push(`${item.id} references unknown task id: ${taskId}`);
+      }
+    }
+    for (const evidenceId of item.evidenceIds || []) {
+      if (!evidenceIds.has(evidenceId)) {
+        failures.push(`${item.id} references unknown evidence id: ${evidenceId}`);
+      }
     }
   }
 

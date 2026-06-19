@@ -12,6 +12,7 @@ It is generated from:
 - [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
+- [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 
 The first generated static page is:
 
@@ -21,8 +22,8 @@ The first generated static page is:
 
 The view model gives Command Center a non-LLM Goal Tracking Center data surface.
 It can render progress cards, active goals, blocked goals, category status,
-next actions, blockers, validation status, decisions, readiness connections,
-and UX guardrails without any model provider or external API.
+next actions, blockers, validation status, review cadence, decisions, readiness
+connections, and UX guardrails without any model provider or external API.
 
 ## Generated Panels
 
@@ -35,6 +36,7 @@ and UX guardrails without any model provider or external API.
 | `nextActionQueue` | Tasks ordered by priority with blockers and evidence ids. |
 | `blockedItems` | Active blockers with required approval and next action. |
 | `validationStatus` | Evidence records and limitations. |
+| `reviewCadence` | Planned daily, weekly, and monthly review records. |
 | `decisions` | Accepted/proposed/deferred/superseded decisions. |
 | `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |
 | `uxGuards` | Rules that prevent fake progress and hidden blockers. |

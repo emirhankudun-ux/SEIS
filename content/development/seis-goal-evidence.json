@@ -247,6 +247,29 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+    },
+    {
+      "id": "SEIS-EVID-011",
+      "title": "Goal review cadence registry validates",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-cadence.json",
+        "docs/goals/review-cadence.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "The daily, weekly, and monthly Goal Tracking OS review cadence records are structured and covered by the local goal tracking validator.",
+      "limitations": [
+        "Does not prove any daily, weekly, or monthly review has been performed.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Keep cadence records planned until current-period review evidence exists."
     }
   ]
 }

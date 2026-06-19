@@ -218,6 +218,10 @@
       margin-top: 18px;
     }
 
+    .review-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .panel {
       padding: 12px 0;
     }
@@ -321,6 +325,10 @@
       .section-grid {
         grid-template-columns: 1fr;
       }
+
+      .review-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 720px) {
@@ -355,6 +363,7 @@
         <a href="#blockers">Blockers</a>
         <a href="#goals">Goals</a>
         <a href="#validation">Validation</a>
+        <a href="#reviews">Reviews</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -401,7 +410,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">10</div>
+    <div class="card-value">11</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -418,6 +427,13 @@
     <div class="card-value">3</div>
   </div>
   <p class="muted">Blockers that must remain visible.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Review cadence</p>
+    <div class="card-value">3</div>
+  </div>
+  <p class="muted">Planned daily, weekly, and monthly review records.</p>
 </article>
       </section>
 
@@ -489,10 +505,10 @@
     </div>
     <span class="badge planned">planned</span>
   </div>
-  <p class="next-action">Do not create fake review records; wait for actual review cadence.</p>
+  <p class="next-action">Keep daily, weekly, and monthly cadence records planned until real review evidence exists.</p>
   <div class="row-meta">
     <span class="badge">P2 medium</span>
-    <span class="badge">Goals: SEIS-GOAL-019</span>
+    <span class="badge">Goals: SEIS-GOAL-002, SEIS-GOAL-019</span>
   </div>
 </article>
           </div>
@@ -592,7 +608,7 @@
     </div>
     <span class="badge active">active</span>
   </div>
-  <p class="next-action">Use weekly and monthly review templates only when reviews are actually performed.</p>
+  <p class="next-action">Keep planned cadence records visible and use review templates only when reviews are actually performed.</p>
   <div class="row-meta">
     <span class="badge">P1 high</span>
     <span class="badge">SEIS-MS-001</span>
@@ -802,7 +818,7 @@
   <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-001</td>
-  <td>Use weekly and monthly review templates only when reviews are actually performed.</td>
+  <td>Keep planned cadence records visible and use review templates only when reviews are actually performed.</td>
 </tr>
             </tbody>
           </table>
@@ -946,6 +962,57 @@
         </div>
       </section>
 
+      <section class="panel" id="reviews">
+        <h2>Review Cadence</h2>
+        <div class="grid review-grid">
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Daily goal operations review</h3>
+      <p class="muted">SEIS-REVIEW-001 · daily</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p>Mark performed only when a real daily review is run with current-day evidence.</p>
+  <p class="next-action">Use this checklist at the next real daily review; do not backfill a fake review.</p>
+  <div class="row-meta">
+    <span class="badge">Product Governance</span>
+    <span class="badge">Evidence: none</span>
+  </div>
+</article>
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Weekly goal and PR queue review</h3>
+      <p class="muted">SEIS-REVIEW-002 · weekly</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p>Mark performed only when the weekly template is completed for the current week.</p>
+  <p class="next-action">Run only after the repository hygiene blocker is either resolved or explicitly carried into the week.</p>
+  <div class="row-meta">
+    <span class="badge">Product Governance</span>
+    <span class="badge">Evidence: none</span>
+  </div>
+</article>
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Monthly strategic goal review</h3>
+      <p class="muted">SEIS-REVIEW-003 · monthly</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p>Mark performed only when the monthly review is completed for the current month with evidence-backed updates.</p>
+  <p class="next-action">Keep monthly review planned until an actual month-end review is performed.</p>
+  <div class="row-meta">
+    <span class="badge">Product Architecture</span>
+    <span class="badge">Evidence: none</span>
+  </div>
+</article>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="decisions">
         <div class="panel">
           <h2>Decisions</h2>
@@ -1025,7 +1092,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>

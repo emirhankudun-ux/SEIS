@@ -105,6 +105,12 @@ and is documented in [`execution-board.md`](execution-board.md). It stores
 tasks, subtasks, blockers, decisions, and next safe actions without requiring an
 LLM.
 
+The current structured review cadence registry lives at
+[`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
+and is documented in [`review-cadence.md`](review-cadence.md). It stores daily,
+weekly, and monthly review checklists as planned records until actual
+current-period review evidence exists.
+
 The current generated Command Center view model lives at
 [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 and is documented in

@@ -32,6 +32,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-MS-009` | `SEIS-PHASE-1` | Goal execution board | active | Structured tasks, subtasks, blockers, and decisions exist and validate. |
 | `SEIS-MS-010` | `SEIS-PHASE-2` | Command Center goal view model | active | Generated static view model exists and validates against source records. |
 | `SEIS-MS-011` | `SEIS-PHASE-2` | Static Goal Tracking Center page | active | Generated static page exists and validates against the view model. |
+| `SEIS-MS-012` | `SEIS-PHASE-1` | Goal review cadence records | active | Daily, weekly, and monthly cadence records exist and validate without fake performed reviews. |
 
 ## Epics
 
@@ -45,6 +46,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-EPIC-GOALS-006` | `SEIS-MS-009` | Execution board | active | Maintain task, subtask, blocker, decision, and next-action records. |
 | `SEIS-EPIC-GOALS-007` | `SEIS-MS-010` | Command Center view model | active | Keep generated Goal Tracking Center panels fresh from source records. |
 | `SEIS-EPIC-GOALS-008` | `SEIS-MS-011` | Static Goal Tracking Center page | active | Keep the generated static page fresh and blocker-visible. |
+| `SEIS-EPIC-GOALS-009` | `SEIS-MS-012` | Review cadence | active | Keep planned daily, weekly, and monthly review records visible until performed with evidence. |
 
 ## Validation Steps
 
@@ -54,7 +56,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | Links use relative paths | Docs remain portable. | active |
 | `git diff --check` | No whitespace issues in scoped diff. | passed on 2026-06-19 |
 | `npm run seis:check` | Existing web audit still passes. | passed on 2026-06-19 |
-| `npm run check:goal-tracking` | Goal registry, evidence ledger, and execution board validate. | passed on 2026-06-19 |
+| `npm run check:goal-tracking` | Goal registry, evidence ledger, execution board, and review cadence validate. | passed on 2026-06-19 |
 | `npm run check:goal-command-center-view` | Generated Command Center view model is fresh. | passed on 2026-06-19 |
 | `npm run check:goal-command-center-static` | Generated static Goal Tracking Center page is fresh. | passed on 2026-06-19 |
 | `npm run check:foundation` | Foundation validators pass. | blocked by pre-existing deleted files |

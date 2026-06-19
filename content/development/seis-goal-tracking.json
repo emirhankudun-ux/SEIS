@@ -130,6 +130,7 @@
         "docs/goals/milestone-map.md",
         "docs/goals/evidence-ledger.md",
         "docs/goals/execution-board.md",
+        "docs/goals/review-cadence.md",
         "docs/goals/command-center-view-model.md",
         "docs/reviews/GOAL_TRACKING_REVIEW.md"
       ],
@@ -137,6 +138,7 @@
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-execution.json",
+        "content/development/seis-goal-review-cadence.json",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html",
         "scripts/check-goal-tracking.mjs"
@@ -161,6 +163,8 @@
         "content/development/seis-goal-evidence.json",
         "docs/goals/execution-board.md",
         "content/development/seis-goal-execution.json",
+        "docs/goals/review-cadence.md",
+        "content/development/seis-goal-review-cadence.json",
         "docs/goals/command-center-view-model.md",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html",
@@ -831,11 +835,13 @@
       "related_roadmap_item": "SEIS-BL-031",
       "related_docs": [
         "docs/goals/seis-vision.md",
+        "docs/goals/review-cadence.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md"
       ],
       "related_files": [
-        "content/development/seis-goal-tracking.json"
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-review-cadence.json"
       ],
       "related_milestone": "SEIS-MS-001",
       "related_epic": "SEIS-EPIC-GOALS-001",
@@ -851,12 +857,14 @@
       ],
       "evidence_links": [
         "docs/goals/seis-vision.md",
+        "docs/goals/review-cadence.md",
+        "content/development/seis-goal-review-cadence.json",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md"
       ],
       "validation_method": "Review records contain date, scope, evidence, blockers, and validation output.",
       "validation_evidence": [],
-      "next_action": "Use weekly and monthly review templates only when reviews are actually performed.",
+      "next_action": "Keep planned cadence records visible and use review templates only when reviews are actually performed.",
       "last_reviewed": "2026-06-19",
       "review_cadence": "weekly",
       "notes": "Active governance goal."

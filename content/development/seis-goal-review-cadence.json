@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-review-cadence",
+  "updated": "2026-06-19",
+  "mode": "non_llm_goal_review_cadence",
+  "allowedCadences": [
+    "daily",
+    "weekly",
+    "monthly"
+  ],
+  "allowedStatuses": [
+    "planned",
+    "performed",
+    "blocked",
+    "deferred",
+    "skipped"
+  ],
+  "records": [
+    {
+      "id": "SEIS-REVIEW-001",
+      "title": "Daily goal operations review",
+      "cadence": "daily",
+      "status": "planned",
+      "owner_role": "Product Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [],
+      "related_paths": [
+        "docs/goals/review-cadence.md",
+        "docs/goals/progress-review.md",
+        "content/development/seis-goal-execution.json"
+      ],
+      "checklist": [
+        "Record what changed since the previous review.",
+        "Record active blockers and required approvals.",
+        "Record validation that needs to be run.",
+        "Record the next safe action."
+      ],
+      "required_evidence": [
+        "Current-day review note or progress-review update.",
+        "Validation output when a status changes.",
+        "Evidence record when the review proves a claim."
+      ],
+      "completion_rule": "Mark performed only when a real daily review is run with current-day evidence.",
+      "next_action": "Use this checklist at the next real daily review; do not backfill a fake review."
+    },
+    {
+      "id": "SEIS-REVIEW-002",
+      "title": "Weekly goal and PR queue review",
+      "cadence": "weekly",
+      "status": "planned",
+      "owner_role": "Product Governance",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [],
+      "related_paths": [
+        "docs/goals/weekly-priorities-template.md",
+        "docs/goals/progress-review.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "content/development/seis-goal-execution.json"
+      ],
+      "checklist": [
+        "Review active goals.",
+        "Review milestone progress.",
+        "Review the next PR queue.",
+        "Review blockers and completed work.",
+        "Update weekly priorities only with current evidence."
+      ],
+      "required_evidence": [
+        "Completed weekly-priorities record for the actual week.",
+        "Updated blocker or task evidence when queue status changes.",
+        "Validation output for any changed structured records."
+      ],
+      "completion_rule": "Mark performed only when the weekly template is completed for the current week.",
+      "next_action": "Run only after the repository hygiene blocker is either resolved or explicitly carried into the week."
+    },
+    {
+      "id": "SEIS-REVIEW-003",
+      "title": "Monthly strategic goal review",
+      "cadence": "monthly",
+      "status": "planned",
+      "owner_role": "Product Architecture",
+      "related_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-008",
+        "SEIS-GOAL-009",
+        "SEIS-GOAL-018",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [],
+      "related_paths": [
+        "docs/goals/monthly-review-template.md",
+        "docs/goals/milestone-map.md",
+        "docs/goals/progress-review.md",
+        "docs/roadmap/MASTER_BACKLOG.md"
+      ],
+      "checklist": [
+        "Review long-term direction.",
+        "Review roadmap phases and architecture alignment.",
+        "Review AI Core, Command Center, public readiness, and release readiness.",
+        "Review SEIS Universe research direction.",
+        "Update deferred work and next safe actions."
+      ],
+      "required_evidence": [
+        "Completed monthly-review record for the actual month.",
+        "Updated milestone or backlog records when direction changes.",
+        "Evidence records for any new completion or validation claim."
+      ],
+      "completion_rule": "Mark performed only when the monthly review is completed for the current month with evidence-backed updates.",
+      "next_action": "Keep monthly review planned until an actual month-end review is performed."
+    }
+  ]
+}

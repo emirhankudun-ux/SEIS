@@ -222,6 +222,7 @@
       "priority": "P2 medium",
       "owner_role": "Product Governance",
       "supports_goal_ids": [
+        "SEIS-GOAL-002",
         "SEIS-GOAL-019"
       ],
       "related_milestone": "SEIS-MS-001",
@@ -230,11 +231,15 @@
       "decision_ids": [
         "SEIS-DEC-004"
       ],
-      "evidence_ids": [],
+      "evidence_ids": [
+        "SEIS-EVID-011"
+      ],
       "related_paths": [
+        "docs/goals/review-cadence.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md",
-        "docs/goals/progress-review.md"
+        "docs/goals/progress-review.md",
+        "content/development/seis-goal-review-cadence.json"
       ],
       "subtasks": [
         {
@@ -250,8 +255,8 @@
           "next_action": "Fill the monthly template only when a real monthly review is performed."
         }
       ],
-      "next_action": "Do not create fake review records; wait for actual review cadence.",
-      "notes": "Templates exist, but no review cadence completion is claimed."
+      "next_action": "Keep daily, weekly, and monthly cadence records planned until real review evidence exists.",
+      "notes": "Cadence records exist and validate, but no performed review is claimed."
     }
   ],
   "blockers": [

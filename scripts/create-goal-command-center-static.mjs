@@ -67,6 +67,7 @@ function buildHtml(model) {
   const blockers = panels.blockedItems || [];
   const validation = panels.validationStatus || [];
   const decisions = panels.decisions || [];
+  const reviewCadence = panels.reviewCadence || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -291,6 +292,10 @@ function buildHtml(model) {
       margin-top: 18px;
     }
 
+    .review-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     .panel {
       padding: 12px 0;
     }
@@ -394,6 +399,10 @@ function buildHtml(model) {
       .section-grid {
         grid-template-columns: 1fr;
       }
+
+      .review-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 720px) {
@@ -428,6 +437,7 @@ function buildHtml(model) {
         <a href="#blockers">Blockers</a>
         <a href="#goals">Goals</a>
         <a href="#validation">Validation</a>
+        <a href="#reviews">Reviews</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -518,6 +528,13 @@ function buildHtml(model) {
           <div class="stack">
             ${readiness.map(renderReadiness).join("\n            ")}
           </div>
+        </div>
+      </section>
+
+      <section class="panel" id="reviews">
+        <h2>Review Cadence</h2>
+        <div class="grid review-grid">
+          ${reviewCadence.map(renderReviewCadence).join("\n          ")}
         </div>
       </section>
 
@@ -654,6 +671,24 @@ function renderReadiness(item) {
 </article>`;
 }
 
+function renderReviewCadence(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.cadence)}</p>
+    </div>
+    <span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+  </div>
+  <p>${escapeHtml(item.completionRule)}</p>
+  <p class="next-action">${escapeHtml(item.nextAction)}</p>
+  <div class="row-meta">
+    <span class="badge">${escapeHtml(item.ownerRole)}</span>
+    <span class="badge">Evidence: ${escapeHtml((item.evidenceIds || []).join(", ") || "none")}</span>
+  </div>
+</article>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -670,6 +705,7 @@ function validateHtml(html, model) {
     "Next Action Queue",
     "Active Blockers",
     "Validation Status",
+    "Review Cadence",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -688,6 +724,10 @@ function validateHtml(html, model) {
 
   if ((model.panels?.nextActionQueue || []).length > 0 && !html.includes("SEIS-TASK-001")) {
     failures.push("static surface must expose task ids");
+  }
+
+  if ((model.panels?.reviewCadence || []).length > 0 && !html.includes("SEIS-REVIEW-001")) {
+    failures.push("static surface must expose review cadence ids");
   }
 
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {

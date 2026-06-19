@@ -56,6 +56,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-035` | P1 | Goal execution | Maintain structured tasks, subtasks, blockers, decisions, and next safe actions without LLM dependency. | Execution registry validates, links tasks to goal ids/evidence ids/blocker ids/decision ids, and keeps dangerous actions approval-gated. |
 | `SEIS-BL-036` | P1 | Command Center goal view | Generate a non-LLM Command Center Goal Tracking view model from structured records. | `npm run check:goal-command-center-view` passes and generated view exposes progress cards, blockers, next actions, evidence, decisions, and UX guardrails. |
 | `SEIS-BL-037` | P1 | Static Goal Tracking UI | Generate a static Goal Tracking Center page from the Command Center view model. | `npm run check:goal-command-center-static` passes and the page exposes progress cards, blockers, next actions, validation, decisions, readiness, and UX guardrails. |
+| `SEIS-BL-038` | P1 | Goal review cadence records | Maintain structured daily, weekly, and monthly review cadence without fake performed reviews. | `npm run check:goal-tracking` validates planned cadence records and the static page exposes review cadence. |
 
 ## Deferred Dangerous Work
 

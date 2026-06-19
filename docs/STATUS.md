@@ -26,7 +26,7 @@ readiness claim.
 | --- | --- | --- | --- | --- |
 | Repository hygiene | Dirty worktree with many deletions and untracked nested repository material. | Observed locally | High | Review deletions, nested `apps/SEIS/`, and archive intent before commit/PR. |
 | Documentation navigation | Improved by this pass with a documentation index and status file. | Updated locally | Medium | Keep `docs/INDEX.md` current when adding official docs. |
-| Goal Tracking OS | Goal docs, structured goal/evidence/execution records, local validators, generated Command Center view model, and static Goal Tracking page exist. | Validated local records and static page | Medium | Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated. |
+| Goal Tracking OS | Goal docs, structured goal/evidence/execution/review-cadence records, local validators, generated Command Center view model, and static Goal Tracking page exist. | Validated local records and static page | Medium | Keep planned cadence visible and wire the static page into a broader Command Center shell after repository hygiene blockers are isolated. |
 | Governance | Strong rules exist, but some historical docs conflict with current `main`/SEIS direction. | Observed docs | High | Align old `UIXAppTTR` references in a dedicated governance cleanup PR. |
 | Security | Policy exists; baseline needs deeper non-secret scan and artifact cleanup plan. | Partial path-only scan | Medium | Add security baseline review and run approved scanners when available. |
 | Command Center | Conceptual direction exists; implementation status needs evidence mapping. | Partial repo evidence | Medium | Create a Command Center requirements/evidence map before UI expansion. |
@@ -80,7 +80,7 @@ Deleted in the current worktree before this pass:
 | Command | Result | Notes |
 | --- | --- | --- |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
-| `npm run check:goal-tracking` | Passed | Goal registry, evidence ledger, execution board, and generated Command Center view model validate locally. |
+| `npm run check:goal-tracking` | Passed | Goal registry, evidence ledger, execution board, review cadence, generated Command Center view model, and static page validate locally. |
 | `npm run check:goal-command-center-view` | Passed | Generated Command Center view model is fresh against source records. |
 | `npm run check:goal-command-center-static` | Passed | Generated static Goal Tracking Center page is fresh against the view model. |
 | `npm run seis:check` | Passed | Web audit passed; reported informational notes for missing CSP meta and one external resource without integrity. |
