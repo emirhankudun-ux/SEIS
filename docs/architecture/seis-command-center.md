@@ -22,11 +22,13 @@ Agent records must expose capabilities, tasks, logs, and outputs. Repository rec
 
 ## God Mode Operations Model
 
-God Mode is the controlled SEIS AI operating lane. It is not an unrestricted automation switch. It exposes a mission composer, lane selector, execution protocol, custom SEIS AI setup matrix, run timeline, guardrails, and traceable artifacts.
+God Mode is the controlled SEIS AI operating lane. It is not an unrestricted automation switch. It exposes a mission composer, lane selector, execution protocol, custom SEIS AI setup matrix, run timeline, guardrails, traceable artifacts, and feature growth ledger.
 
 God Mode records must expose the mission, lane, owner, model role, safety gate, evidence requirement, and rollback posture. The SEIS AI setup matrix tracks permission policy, memory ranking, agent routing, and local draft model work as separate governed capabilities. No God Mode record may contain API keys, tokens, SSH material, provider credentials, or private cloud material.
 
 The first implementation remains local-first and static. Future provider-backed or local-model execution must preserve the visible lane, evidence, and security boundary before a tool action can execute.
+
+The feature growth ledger keeps the broad objective honest. It maps Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff to improvement evidence, quality gates, and remaining gaps. A topic can be visible in the UI without being complete; completion still requires commit, push, CI or explicit handoff evidence, and protected-user-work proof.
 
 ## AI Orchestration Model
 

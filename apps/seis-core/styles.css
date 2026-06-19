@@ -395,6 +395,9 @@ h3 {
 .run-step,
 .guardrail-row,
 .artifact-card,
+.ledger-summary-card,
+.ledger-row,
+.blocker-row,
 .domain-card,
 .activity-row,
 .dependency-row,
@@ -501,7 +504,9 @@ h3 {
 .ai-setup-card small,
 .run-step p,
 .guardrail-row p,
-.artifact-card p {
+.artifact-card p,
+.ledger-row p,
+.blocker-row p {
   margin: 0;
   color: var(--muted);
 }
@@ -561,6 +566,112 @@ h3 {
 
 .artifact-grid {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.feature-growth-ledger {
+  display: grid;
+  gap: 14px;
+}
+
+.panel-summary {
+  max-width: 680px;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.ledger-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ledger-summary-card {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.ledger-summary-card span,
+.ledger-summary-card small,
+.ledger-row small {
+  color: var(--muted);
+}
+
+.ledger-summary-card strong {
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.feature-growth-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.34fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.ledger-list,
+.completion-blockers,
+#feature-growth-blockers {
+  display: grid;
+  gap: 10px;
+}
+
+.completion-blockers {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.completion-blockers h4 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.ledger-row {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.ledger-topic,
+.ledger-row-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ledger-row-footer small {
+  flex: 1 1 240px;
+}
+
+.blocker-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 9px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
+}
+
+.blocker-row span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(185, 109, 0, 0.12);
+  color: var(--warn);
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .metric-card span,
@@ -1342,6 +1453,8 @@ select {
   .automation-ops-layout,
   .architecture-ops-layout,
   .security-ops-layout,
+  .ledger-summary-grid,
+  .feature-growth-grid,
   .inspector {
     grid-template-columns: 1fr;
   }

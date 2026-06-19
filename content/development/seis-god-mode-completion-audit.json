@@ -41,6 +41,9 @@
       "evidenceStatus": "source-controlled",
       "evidence": [
         "apps/seis-demo-web/index.html",
+        "apps/seis-core/index.html",
+        "apps/seis-core/script.js",
+        "apps/seis-core/styles.css",
         "apps/seis-demo-web/script.js",
         "apps/seis-demo-web/styles.css",
         "content/development/seis-god-mode-runtime-evidence.json"

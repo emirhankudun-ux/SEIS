@@ -9,7 +9,13 @@ const failures = [];
 const ledgerPath = path.join(root, "content", "development", "seis-god-mode-feature-growth-ledger.json");
 const docsPath = path.join(root, "docs", "governance", "seis-god-mode-feature-growth-ledger.md");
 const packagePath = path.join(root, "package.json");
+const commandCenterIndexPath = path.join(root, "apps", "seis-core", "index.html");
+const commandCenterScriptPath = path.join(root, "apps", "seis-core", "script.js");
+const commandCenterStylesPath = path.join(root, "apps", "seis-core", "styles.css");
+const commandCenterTestPath = path.join(root, "apps", "seis-core", "test", "seis-core-static.test.js");
+const architectureDocPath = path.join(root, "docs", "architecture", "seis-command-center.md");
 const completionAuditPath = path.join(root, "content", "development", "seis-god-mode-completion-audit.json");
+const workPackagePath = path.join(root, "content", "development", "seis-god-mode-work-package.json");
 const objectiveCoveragePath = path.join(root, "data", "seis-master-objective-coverage.json");
 
 const requiredTopics = [
@@ -32,16 +38,32 @@ const requiredEvidenceKinds = [
   "remaining-gap",
 ];
 
-ensureFile(ledgerPath, "God Mode feature growth ledger contract");
-ensureFile(docsPath, "God Mode feature growth ledger docs");
-ensureFile(packagePath, "package.json");
-ensureFile(completionAuditPath, "God Mode completion audit contract");
-ensureFile(objectiveCoveragePath, "SEIS master objective coverage contract");
+for (const [filePath, label] of [
+  [ledgerPath, "God Mode feature growth ledger contract"],
+  [docsPath, "God Mode feature growth ledger docs"],
+  [packagePath, "package.json"],
+  [commandCenterIndexPath, "Command Center index"],
+  [commandCenterScriptPath, "Command Center script"],
+  [commandCenterStylesPath, "Command Center styles"],
+  [commandCenterTestPath, "Command Center static test"],
+  [architectureDocPath, "Command Center architecture doc"],
+  [completionAuditPath, "God Mode completion audit contract"],
+  [workPackagePath, "God Mode work package contract"],
+  [objectiveCoveragePath, "SEIS master objective coverage contract"],
+]) {
+  ensureFile(filePath, label);
+}
 
 const ledger = readJson(ledgerPath, "God Mode feature growth ledger contract");
 const docs = readText(docsPath, "God Mode feature growth ledger docs");
 const packageJson = readJson(packagePath, "package.json");
+const index = readText(commandCenterIndexPath, "Command Center index");
+const script = readText(commandCenterScriptPath, "Command Center script");
+const styles = readText(commandCenterStylesPath, "Command Center styles");
+const test = readText(commandCenterTestPath, "Command Center static test");
+const architectureDoc = readText(architectureDocPath, "Command Center architecture doc");
 const completionAudit = readText(completionAuditPath, "God Mode completion audit contract");
+const workPackage = readText(workPackagePath, "God Mode work package contract");
 const objectiveCoverage = readText(objectiveCoveragePath, "SEIS master objective coverage contract");
 
 if (ledger) {
@@ -49,6 +71,7 @@ if (ledger) {
   ensure(ledger.status === "active", "ledger status must be active");
   ensure(ledger.completionState === "not-complete", "ledger completionState must remain not-complete until commit, push, and CI evidence exist");
   ensure(ledger.qualityGate === "npm run check:seis-god-mode-feature-growth-ledger", "ledger must declare quality gate");
+  ensure(ledger.commandCenterSurface === "apps/seis-core", "ledger must point to apps/seis-core as the command center surface");
   ensureArrayIncludesAll(ledger.requiredTopics, requiredTopics, "ledger.requiredTopics");
   ensureArrayIncludesAll(ledger.requiredEvidenceKinds, requiredEvidenceKinds, "ledger.requiredEvidenceKinds");
   ensure(Array.isArray(ledger.topics), "ledger.topics must be an array");
@@ -79,23 +102,22 @@ if (ledger) {
   }
 }
 
-if (docs) {
-  for (const phrase of [
-    "Dashboard",
-    "Goals",
-    "Repos",
-    "Docs",
-    "Agents",
-    "Security",
-    "AI Policy",
-    "Rollback",
-    "Validation",
-    "Handoff",
-    "not-complete",
-    "npm run check:seis-god-mode-feature-growth-ledger",
-  ]) {
-    ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
-  }
+for (const phrase of [
+  "Dashboard",
+  "Goals",
+  "Repos",
+  "Docs",
+  "Agents",
+  "Security",
+  "AI Policy",
+  "Rollback",
+  "Validation",
+  "Handoff",
+  "not-complete",
+  "apps/seis-core",
+  "npm run check:seis-god-mode-feature-growth-ledger",
+]) {
+  ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
 }
 
 if (packageJson) {
@@ -110,11 +132,38 @@ if (packageJson) {
   );
 }
 
+for (const phrase of ["feature-growth-ledger", "Feature Growth Ledger", "feature-growth-summary", "feature-growth-blockers"]) {
+  ensure(index.includes(phrase), `Command Center index missing ${phrase}`);
+}
+
+for (const phrase of ["featureGrowthLedger", "renderFeatureGrowthLedger", "completionState", "qualityGate"]) {
+  ensure(script.includes(phrase), `Command Center script missing ${phrase}`);
+}
+
+for (const selector of [".feature-growth-ledger", ".ledger-summary-card", ".ledger-row", ".blocker-row"]) {
+  ensure(styles.includes(selector), `Command Center styles missing ${selector}`);
+}
+
+for (const phrase of ["featureGrowthLedger", "renderFeatureGrowthLedger", "feature-growth-ledger", "ledger-row", "blocker-row"]) {
+  ensure(test.includes(phrase), `Command Center static test missing ${phrase}`);
+}
+
+ensure(architectureDoc.includes("feature growth ledger"), "architecture doc must describe feature growth ledger");
 ensure(completionAudit.includes("content/development/seis-god-mode-feature-growth-ledger.json"), "completion audit must cite feature growth ledger");
+ensure(workPackage.includes("feature-growth-ledger"), "work package must include feature-growth-ledger section");
 ensure(objectiveCoverage.includes("god-mode-every-topic-feature-growth"), "objective coverage must include God Mode every-topic growth");
 ensure(objectiveCoverage.includes("content/development/seis-god-mode-feature-growth-ledger.json"), "objective coverage must cite feature growth ledger");
 
-for (const file of [ledgerPath, docsPath, completionAuditPath, objectiveCoveragePath]) {
+for (const file of [
+  ledgerPath,
+  docsPath,
+  commandCenterIndexPath,
+  commandCenterScriptPath,
+  commandCenterStylesPath,
+  completionAuditPath,
+  workPackagePath,
+  objectiveCoveragePath,
+]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /\b(?:password|token|secret)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");
@@ -174,5 +223,7 @@ function ensureNonEmptyString(candidate, label) {
 
 function requireNotMatches(filePath, pattern, reason) {
   const text = readText(filePath, path.relative(root, filePath));
-  if (pattern.test(text)) failures.push(`${path.relative(root, filePath)} must not include ${reason}`);
+  if (pattern.test(text)) {
+    failures.push(`${path.relative(root, filePath)} may contain ${reason}`);
+  }
 }

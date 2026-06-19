@@ -356,6 +356,111 @@ const godModeArtifacts = [
   }
 ];
 
+const featureGrowthLedger = {
+  completionState: "not-complete",
+  coverage: "10/10 topics mapped",
+  qualityGate: "check:seis-god-mode-feature-growth-ledger",
+  evidenceState: "source-controlled evidence, CI gap open",
+  topics: [
+    {
+      id: "dashboard",
+      name: "Dashboard",
+      status: "Review",
+      evidence: 3,
+      gate: "module coverage",
+      improvement: "Operating overview now exposes God Mode state, module coverage and evidence-led next actions.",
+      gap: "Needs committed screenshot and CI handoff evidence."
+    },
+    {
+      id: "goals",
+      name: "Goals",
+      status: "Ready",
+      evidence: 3,
+      gate: "goals evidence ledger",
+      improvement: "Goal work is tied to acceptance evidence, validation duty, risk and rollback posture.",
+      gap: "Needs final commit boundary proof."
+    },
+    {
+      id: "repos",
+      name: "Repositories",
+      status: "Review",
+      evidence: 3,
+      gate: "repo health manifest",
+      improvement: "Repo health now tracks publish safety, plugin posture, CI posture and protected work boundaries.",
+      gap: "Local branch divergence must stay isolated."
+    },
+    {
+      id: "docs",
+      name: "Docs",
+      status: "Ready",
+      evidence: 3,
+      gate: "governance index",
+      improvement: "Docs connect architecture, ADR, quality, release readiness and God Mode governance surfaces.",
+      gap: "Generated reports must remain current after source changes."
+    },
+    {
+      id: "agents",
+      name: "Agents",
+      status: "Ready",
+      evidence: 3,
+      gate: "agent lane status",
+      improvement: "Agent lanes expose owner, safety boundary, quality duty and handoff expectations.",
+      gap: "Provider-backed execution still requires secure credential flow."
+    },
+    {
+      id: "security",
+      name: "Security",
+      status: "Review",
+      evidence: 3,
+      gate: "enterprise security gate",
+      improvement: "Security work is visible through permission review, no-secret policy and access model checks.",
+      gap: "External Code Scanning and protected-branch evidence remain outside local proof."
+    },
+    {
+      id: "ai-policy",
+      name: "AI Policy",
+      status: "Ready",
+      evidence: 3,
+      gate: "enterprise AI gate",
+      improvement: "AI actions expose intent, risk, owner, audit, rollback and human approval needs.",
+      gap: "Live provider adapters still need least-privilege setup."
+    },
+    {
+      id: "rollback",
+      name: "Rollback",
+      status: "Ready",
+      evidence: 3,
+      gate: "release readiness",
+      improvement: "Rollback paths are attached to work package, release readiness and automation evidence.",
+      gap: "Rollback proof should cite the final pushed commit."
+    },
+    {
+      id: "validation",
+      name: "Validation",
+      status: "Review",
+      evidence: 4,
+      gate: "validation plan",
+      improvement: "Validation maps command evidence, runtime proof, report freshness and quality gates.",
+      gap: "CI evidence is still required before completion."
+    },
+    {
+      id: "handoff",
+      name: "Handoff",
+      status: "Review",
+      evidence: 3,
+      gate: "handoff audit",
+      improvement: "Handoff records changed surfaces, risk, rollback, next commands and protected user work.",
+      gap: "Needs final push confirmation and CI result."
+    }
+  ],
+  blockers: [
+    "Commit hash for this exact Command Center ledger slice",
+    "Push confirmation on the protected branch workflow",
+    "CI or explicit no-CI handoff evidence",
+    "Final staged-boundary proof that unrelated user work stayed protected"
+  ]
+};
+
 const orchestrationLanes = [
   {
     lane: "Plan",
@@ -1223,6 +1328,48 @@ function renderGodMode() {
       </div>
       <p>${artifact.detail}</p>
       <span class="meta-chip">${artifact.owner}</span>
+    </article>
+  `).join("");
+
+  renderFeatureGrowthLedger();
+}
+
+function renderFeatureGrowthLedger() {
+  const readyTopics = featureGrowthLedger.topics.filter((topic) => topic.status === "Ready").length;
+  const reviewTopics = featureGrowthLedger.topics.length - readyTopics;
+  $("#feature-growth-state").textContent = featureGrowthLedger.completionState;
+  $("#feature-growth-summary").innerHTML = [
+    ["Coverage", featureGrowthLedger.coverage, "required topics"],
+    ["Ready", readyTopics, "topics with governed evidence"],
+    ["Review", reviewTopics, "topics awaiting handoff proof"],
+    ["Gate", "Feature growth", `${featureGrowthLedger.qualityGate} · ${featureGrowthLedger.evidenceState}`]
+  ].map(([label, value, detail]) => `
+    <article class="ledger-summary-card">
+      <span>${label}</span>
+      <strong>${value}</strong>
+      <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#feature-growth-ledger").innerHTML = featureGrowthLedger.topics.map((topic) => `
+    <article class="ledger-row">
+      <div class="ledger-topic">
+        <strong>${topic.name}</strong>
+        <span class="meta-chip">${topic.gate}</span>
+      </div>
+      <p>${topic.improvement}</p>
+      <div class="ledger-row-footer">
+        <span class="status-pill ${statusClass(topic.status)}">${topic.status}</span>
+        <span class="meta-chip">${topic.evidence} evidence links</span>
+        <small>${topic.gap}</small>
+      </div>
+    </article>
+  `).join("");
+
+  $("#feature-growth-blockers").innerHTML = featureGrowthLedger.blockers.map((blocker, index) => `
+    <article class="blocker-row">
+      <span>${index + 1}</span>
+      <p>${blocker}</p>
     </article>
   `).join("");
 }

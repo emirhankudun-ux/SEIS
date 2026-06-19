@@ -42,7 +42,7 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, active goals, recent activity, repository health, architecture alerts, and recommended actions.
-- God Mode: mission composer, SEIS AI setup matrix, execution protocol, run timeline, guardrails, and artifacts for controlled custom AI development.
+- God Mode: mission composer, SEIS AI setup matrix, execution protocol, run timeline, guardrails, artifacts, and feature growth ledger for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
@@ -60,6 +60,7 @@ apps/seis-core/
 - Create goals locally.
 - Compose God Mode missions and route them through Plan, Build, Review, and Validate lanes.
 - Inspect SEIS AI setup for permission policy, memory ranking, agent routing, and local draft model work.
+- Inspect feature growth coverage across Dashboard, Goals, Repositories, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff before any completion claim.
 - Update goal status to Review or Done.
 - Filter repositories by health and inspect dependency risk.
 - Switch active AI agent mode and inspect capabilities, tasks, logs, and outputs.

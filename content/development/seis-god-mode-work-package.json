@@ -207,14 +207,17 @@
       "id": "feature-growth-ledger",
       "displayName": "Feature Growth Ledger",
       "status": "implemented-unverified",
-      "changeSummary": "Adds a topic-by-topic ledger proving whether Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff received feature or governance improvement evidence.",
+      "changeSummary": "Adds a Command Center God Mode ledger that maps Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff to improvement evidence, quality gates, and remaining gaps.",
       "primaryFiles": [
         "content/development/seis-god-mode-feature-growth-ledger.json",
         "docs/governance/seis-god-mode-feature-growth-ledger.md",
-        "scripts/check-seis-god-mode-feature-growth-ledger.mjs"
+        "scripts/check-seis-god-mode-feature-growth-ledger.mjs",
+        "apps/seis-core/index.html",
+        "apps/seis-core/script.js",
+        "apps/seis-core/styles.css"
       ],
       "qualityGate": "npm run check:seis-god-mode-feature-growth-ledger",
-      "rollbackPlan": "Remove the feature growth ledger contract, docs, checker, package script, and objective coverage references."
+      "rollbackPlan": "Remove the feature growth ledger panel, contract, docs, checker, package script, Command Center test expectations, and objective coverage references."
     }
   ],
   "blockedCompletionReasons": [

@@ -41,6 +41,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /godModeArtifacts/);
   assert.match(script, /godModeRuns/);
   assert.match(script, /renderGodMode/);
+  assert.match(script, /featureGrowthLedger/);
+  assert.match(script, /renderFeatureGrowthLedger/);
   assert.match(script, /workflowRuns/);
   assert.match(script, /approvalGates/);
   assert.match(script, /rollbackEvidence/);
@@ -114,6 +116,9 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /run-step/);
   assert.match(css, /guardrail-row/);
   assert.match(css, /artifact-card/);
+  assert.match(css, /feature-growth-ledger/);
+  assert.match(css, /ledger-row/);
+  assert.match(css, /blocker-row/);
   assert.match(css, /automation-card/);
   assert.match(css, /automation-ops-layout/);
   assert.match(css, /workflow-run-row/);

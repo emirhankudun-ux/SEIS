@@ -27,6 +27,7 @@ const requiredSections = [
   "run-state",
   "staging-manifest",
   "changelog",
+  "feature-growth-ledger",
 ];
 
 ensureFile(contractPath, "God Mode work package contract");
@@ -86,6 +87,7 @@ if (docs) {
     "Run State",
     "Staging Manifest",
     "Changelog",
+    "Feature Growth Ledger",
     "npm run check:seis-god-mode-work-package",
   ]) {
     ensure(docs.includes(phrase), `docs missing phrase: ${phrase}`);
