@@ -51,9 +51,8 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add prompt regression fixtures for the named assistant surfaces.
-2. Add local read-only repository assistant prototype.
-3. Add evaluation report generation for prompt and app-state fixtures.
+1. Add local read-only repository assistant prototype.
+2. Add evaluation report generation for prompt and app-state fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -90,3 +89,21 @@ agent tasks, approvals, evaluation results, audit events, security boundaries,
 roadmap evidence, and goal state. It remains local static UI and does not enable
 live provider routing, provider keys, model training, SSH execution, deployment,
 or GitHub write behavior.
+
+## Follow-Up Prompt Regression Slice
+
+Status: Added after the Command Center fixture slice.
+
+Evidence:
+
+- `packages/prompt-engine/schemas/prompt-regression-suite.schema.json`
+- `packages/prompt-engine/fixtures/assistant-surface-regression-suite.json`
+- `scripts/check-prompt-regression-fixtures.mjs`
+- `npm run check:prompt-regression-fixtures`
+
+This slice completes the prompt regression fixture slice from the five-year
+program for repository, documentation, architecture, security, PR, roadmap, and
+research assistant surfaces. It remains fixture-only and does not add live model
+execution, provider routing, provider keys, GitHub write actions, SSH execution,
+deployment, training, benchmark claims, model safety claims, checkpoints, or
+model cards.

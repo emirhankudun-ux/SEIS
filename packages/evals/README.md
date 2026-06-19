@@ -13,6 +13,13 @@ routes, agent tasks, app states, and future model experiments.
 - app state contract checks
 - benchmark metadata validation
 
-No benchmark result is claimed by this placeholder.
+## Current Links
+
+The first prompt regression fixture pack lives in
+`packages/prompt-engine/fixtures/assistant-surface-regression-suite.json` and is
+validated by `npm run check:prompt-regression-fixtures`.
+
+No benchmark result, live model score, provider performance result, safety
+certification, or trained SEIS model claim is created by this package.
 
 See `docs/evals/evaluation-strategy.md`.

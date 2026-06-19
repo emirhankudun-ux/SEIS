@@ -31,6 +31,17 @@ Each evaluation run should capture:
 - reviewer
 - timestamp
 
+## Prompt Regression Fixture Evidence
+
+The first prompt regression fixture suite is
+`packages/prompt-engine/fixtures/assistant-surface-regression-suite.json`, with
+its schema in `packages/prompt-engine/schemas/prompt-regression-suite.schema.json`.
+It is validated by `npm run check:prompt-regression-fixtures`.
+
+This suite is a fixture-backed readiness check for prompt behavior contracts. It
+does not produce live evaluation scores, benchmark claims, provider performance
+claims, model safety claims, or trained SEIS model evidence.
+
 ## Non-Claims
 
 SEIS must not publish benchmark, safety, or model capability claims without

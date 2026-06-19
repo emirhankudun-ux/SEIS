@@ -240,6 +240,7 @@ Use the lightest reliable check first, then scale validation with risk:
 ```bash
 npm run check:open-source-governance
 npm run check:ai-core-app-contracts
+npm run check:prompt-regression-fixtures
 npm run seis:check
 npm run check:seis-platform-language-policy
 npm run check:seis-platform-kernel

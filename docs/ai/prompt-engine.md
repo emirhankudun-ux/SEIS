@@ -51,6 +51,24 @@ Each prompt should define:
   system prompts.
 - Prompt packs are application-layer assets, not trained model weights.
 
+## Regression Fixture Evidence
+
+The first prompt regression fixture pack is checked in under
+`packages/prompt-engine/`:
+
+- `schemas/prompt-regression-suite.schema.json`
+- `fixtures/assistant-surface-regression-suite.json`
+- `npm run check:prompt-regression-fixtures`
+
+The fixture pack covers repository, documentation, architecture, security, PR,
+roadmap, and research assistant surfaces. It verifies expected output fields,
+approval triggers, forbidden context boundaries, evidence requirements, and
+non-claims for fixture-only prompt behavior.
+
+This evidence does not imply live provider execution, provider routing,
+benchmark performance, model safety certification, fine-tuning, or SEIS-owned
+model training.
+
 ## First Implementation Shape
 
 Start with Markdown prompt templates plus metadata headers. Add a loader only

@@ -1,6 +1,6 @@
 # Prompt Regression Suite
 
-Status: Foundation test plan
+Status: Fixture-backed foundation
 
 Prompt regression tests make SEIS prompt behavior reviewable before prompts are
 treated as stable AI Core assets.
@@ -24,6 +24,30 @@ treated as stable AI Core assets.
   references.
 - Label expected behavior clearly.
 - Keep fixtures small enough for fast local and CI checks.
+
+## Fixture Evidence
+
+The first fixture-backed prompt regression pack lives under
+`packages/prompt-engine/`:
+
+- `schemas/prompt-regression-suite.schema.json`
+- `fixtures/assistant-surface-regression-suite.json`
+- `npm run check:prompt-regression-fixtures`
+
+The assistant surface suite covers:
+
+- repository assistant
+- documentation assistant
+- architecture reviewer
+- security reviewer
+- PR reviewer
+- roadmap assistant
+- research assistant
+
+The suite is local and fixture-only. It does not execute live model calls,
+benchmark provider or model quality, start training, publish model safety
+claims, route sensitive data to external providers, or enable GitHub, SSH,
+deployment, or privileged automation writes.
 
 ## Promotion Gate
 

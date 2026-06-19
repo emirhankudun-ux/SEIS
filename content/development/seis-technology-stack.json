@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1719560,
+      "githubBytes": 1750251,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 507293,
+      "githubBytes": 566785,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 139289,
+      "githubBytes": 142030,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 287432,
+      "githubBytes": 287825,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",

@@ -292,11 +292,9 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add prompt regression fixtures for repository, documentation, architecture,
-   security, PR, roadmap, and research assistants.
-2. Add read-only local repository assistant prototype with source links and no
+1. Add read-only local repository assistant prototype with source links and no
    external provider routing.
-3. Add evaluation report generation for prompt and app-state fixtures.
+2. Add evaluation report generation for prompt and app-state fixtures.
 
 Completed foundation slice:
 
@@ -306,6 +304,10 @@ Completed foundation slice:
 - Fixture-backed Command Center AI Core views now render route, prompt, agent,
   approval, evaluation, audit, security, roadmap, and goal-state records from
   `apps/seis-core/ai-core-contract-fixture.js`.
+- Prompt regression fixtures for repository, documentation, architecture,
+  security, PR, roadmap, and research assistant surfaces now live under
+  `packages/prompt-engine/` and are checked by
+  `npm run check:prompt-regression-fixtures`.
 
 ## Relationship to Existing Roadmaps
 
