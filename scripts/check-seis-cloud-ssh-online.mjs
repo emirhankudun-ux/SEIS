@@ -242,7 +242,7 @@ function nextActions(items, transport) {
   if (items.includes("ssh-picker-not-compatible")) actions.push("Use npm run check:seis-ssh-picker-compatibility, then switch SEIS-SSH to --transport direct-cloud only after the cloud endpoint is reachable.");
   if (items.includes("ssh-remote-offline")) {
     if (transport === "direct-cloud") {
-      actions.push("Fix cloud firewall/security group, public IP route, and sshd listener on port 22.");
+      actions.push("Run host triage on the resolved direct-cloud VM:\n  1) Verify sshd is listening: sudo ss -ltnp | rg ':22\\b'\n  2) Verify firewall allowlist: sudo ufw status verbose || sudo firewall-cmd --list-all\n  3) Ensure 22/tcp is open (ufw allow 22/tcp or firewall-cmd --permanent --add-port=22/tcp)\n  4) Restart sshd: sudo systemctl restart sshd\n  5) Check service: sudo systemctl status sshd\nThen rerun this check.");
     } else {
       actions.push("Start the GitHub Codespace or refresh GitHub CLI auth with gh auth refresh -h github.com -s codespace.");
     }
