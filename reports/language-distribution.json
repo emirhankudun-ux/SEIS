@@ -8,20 +8,20 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 864,
-    "countedBytes": 4837915,
-    "javascriptBytes": 1715982,
-    "javascriptPercent": 35.47,
+    "countedFileCount": 865,
+    "countedBytes": 4838559,
+    "javascriptBytes": 1716677,
+    "javascriptPercent": 35.48,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3333427,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3336093,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1715982,
-      "percent": 35.47
+      "bytes": 1716677,
+      "percent": 35.48
     },
     {
       "language": "JSON",
@@ -31,7 +31,7 @@
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 11.87
+      "percent": 11.86
     },
     {
       "language": "Python",
@@ -60,12 +60,12 @@
     },
     {
       "language": "Other",
-      "bytes": 42047,
-      "percent": 0.87
+      "bytes": 41564,
+      "percent": 0.86
     },
     {
       "language": "YAML",
-      "bytes": 38225,
+      "bytes": 38248,
       "percent": 0.79
     },
     {
@@ -165,8 +165,8 @@
     },
     {
       "language": "TOML",
-      "bytes": 2978,
-      "percent": 0.06
+      "bytes": 3387,
+      "percent": 0.07
     },
     {
       "language": "C#",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1715982,
-      "percent": 35.47,
+      "bytes": 1716677,
+      "percent": 35.48,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 2701699,
+      "bytes": 2701648,
       "percent": 55.84,
       "sourceLanguages": [
         "ABAP",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2127769,
-        "percent": 43.98,
+        "bytes": 2128464,
+        "percent": 43.99,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -720,8 +720,8 @@
       {
         "id": "go-infrastructure",
         "label": "Go / Infrastructure",
-        "bytes": 159709,
-        "percent": 3.3,
+        "bytes": 160141,
+        "percent": 3.31,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -774,8 +774,8 @@
       }
     ],
     "unassigned": {
-      "bytes": 163828,
-      "percent": 3.39,
+      "bytes": 163345,
+      "percent": 3.38,
       "languages": [
         "ABAP",
         "AWK",
@@ -902,9 +902,9 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1277907,
+    "documentation": 1348491,
     "linguist-generated": 2986842,
-    "linguist-vendored": 2851037
+    "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
     {
@@ -998,9 +998,9 @@
     {
       "id": "dart",
       "command": "dart --version",
-      "available": true,
-      "exitCode": 0,
-      "version": "Dart SDK version: 3.12.1 (stable) (Tue May 26 01:02:21 2026 -0700) on \"macos_x64\""
+      "available": false,
+      "exitCode": 1,
+      "version": "unavailable in local environment; runtime readiness is informational"
     }
   ],
   "nextMigrationOrder": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "e1f9af9392d93f89848d4af0911e664de8ead7689f371b0cc00e07e68d2521a6",
+    "hash": "b19c105f26c983a201901e6a5e209850c572a206af58b572051a34515499fe25",
     "algorithm": "sha256"
   }
 }
