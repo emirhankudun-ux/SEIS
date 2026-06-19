@@ -90,7 +90,7 @@ function readReviewedItems() {
   try {
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) || "[]");
     return new Set(Array.isArray(parsed) ? parsed : []);
-  } catch (_error) {
+  } catch {
     return new Set();
   }
 }
@@ -98,7 +98,7 @@ function readReviewedItems() {
 function persistReviewedItems() {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(reviewedItems)));
-  } catch (_error) {
+  } catch {
     /* localStorage can be unavailable in strict browser modes. */
   }
 }

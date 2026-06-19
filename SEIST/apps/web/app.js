@@ -555,7 +555,7 @@ async function loadCapabilities() {
   try {
     const payload = await fetchJson("../../content/development/plugin-skill-capability-map.json");
     state.capabilities = payload.capabilities || fallbackCapabilities;
-  } catch (_error) {
+  } catch {
     state.capabilities = fallbackCapabilities;
   }
 }
@@ -563,7 +563,7 @@ async function loadCapabilities() {
 async function loadMarketplace() {
   try {
     state.marketplace = await fetchJson("../../content/development/trusted-marketplace-intake.json");
-  } catch (_error) {
+  } catch {
     state.marketplace = fallbackMarketplace;
   }
 }
@@ -572,7 +572,7 @@ async function loadCinematicEngine() {
   try {
     const payload = await fetchJson("../../content/lab/cinematic-engine.json");
     state.commands = payload.commandDeck || [];
-  } catch (_error) {
+  } catch {
     state.commands = [
       {
         id: "local-fallback",
@@ -588,7 +588,7 @@ async function loadCinematicEngine() {
 async function loadPublishGate() {
   try {
     state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
-  } catch (_error) {
+  } catch {
     state.publishGate = {
       remote: { name: "origin", targetBranch: "UIXAppTTR" },
       currentEnvironmentPolicy: { expectedResult: "publish gated" },
@@ -611,7 +611,7 @@ async function loadQualityConsole() {
     const payload = await fetchJson("../../content/lab/quality-console.json");
     state.qualitySignals = payload.signals || [];
     state.thresholds = payload.thresholds || [];
-  } catch (_error) {
+  } catch {
     state.qualitySignals = [
       {
         id: "quality-fallback",

@@ -30,7 +30,7 @@ function resolveInitialLocale() {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (supportedLocales.includes(stored)) return stored;
-  } catch (_error) {
+  } catch {
     /* ignored */
   }
 
@@ -71,7 +71,7 @@ function applyLocale(locale, persist) {
   if (persist) {
     try {
       window.localStorage.setItem(STORAGE_KEY, activeLocale);
-    } catch (_error) {
+    } catch {
       /* ignored */
     }
   }
