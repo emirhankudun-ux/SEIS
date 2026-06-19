@@ -62,9 +62,15 @@ exactly one canonical entry:
 
 ```bash
 npm run check:seis-specialist-plugins
-npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
 npm run quality:governance
+```
+
+Legacy personal marketplace mirrors are optional local compatibility evidence.
+Check them separately when the matching personal plugin roots are present:
+
+```bash
+npm run check:seis-specialist-plugins -- --include-legacy-personal
 ```
 
 For plugin ingestion checks:

@@ -12,6 +12,18 @@ paths = [
 regexTarget = "line"
 regexes = [
   '''api_key=sk-[0-9a-f]{16}''',
+  '''openai api_key=msk-1234567890abcdef''',
   '''token: ghp_xxx[0-9a-z]{15}''',
   '''sk-[0-9a-f]{16} should be hidden''',
+]
+
+[[allowlists]]
+description = "Synthetic i18n key fixture that is not credential material"
+condition = "AND"
+paths = [
+  '''apps/web/test/scripts\.test\.js''',
+]
+regexTarget = "line"
+regexes = [
+  '''labelKey: "weekly\.signal\.1"'''
 ]
