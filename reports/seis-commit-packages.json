@@ -1,226 +1,19 @@
 {
   "id": "seis-commit-package-plan",
-  "generatedAt": "2026-06-19T06:17:32.925Z",
+  "generatedAt": "2026-06-19T06:20:31.565Z",
   "mode": "read-only-git-status",
   "branch": "codex/publish-local-seis-20260618-163043",
   "upstream": "origin/codex/publish-local-seis-20260618-163043",
-  "statusLine": "## codex/publish-local-seis-20260618-163043...origin/codex/publish-local-seis-20260618-163043 [ahead 5]",
+  "statusLine": "## codex/publish-local-seis-20260618-163043...origin/codex/publish-local-seis-20260618-163043 [ahead 7]",
   "summary": {
-    "packageCount": 8,
-    "fileCount": 23,
+    "packageCount": 2,
+    "fileCount": 4,
     "selfGeneratedExcluded": [
       "reports/seis-commit-packages.json",
       "reports/seis-commit-packages.md"
     ]
   },
   "packages": [
-    {
-      "id": "ci-publish-governance",
-      "title": "CI Publish Governance",
-      "priority": 10,
-      "commitMessage": "chore(ci): add publish governance reporting gates",
-      "rationale": "Workflow, publish readiness, and quality publish reporting should ship as one auditable CI change.",
-      "validation": [
-        "npm run check:open-source-governance",
-        "node --check scripts/automation-publish-readiness.cjs",
-        "node --check scripts/quality-governance-publish.cjs",
-        "npm run quality:governance:publish:ci"
-      ],
-      "files": [
-        {
-          "path": "scripts/quality-governance-publish.cjs",
-          "status": "M",
-          "raw": " M scripts/quality-governance-publish.cjs",
-          "kind": "automation"
-        }
-      ],
-      "fileCount": 1,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
-      "id": "generated-language-stack-reports",
-      "title": "Generated Language And Stack Reports",
-      "priority": 20,
-      "commitMessage": "chore(reports): refresh language and technology stack reports",
-      "rationale": "Generated reports should stay separate from handwritten governance and runtime changes.",
-      "validation": [
-        "npm run check:language-distribution",
-        "npm run check:seis-technology-stack",
-        "npm run quality:governance:publish:ci"
-      ],
-      "files": [
-        {
-          "path": "content/development/seis-technology-stack.json",
-          "status": "M",
-          "raw": " M content/development/seis-technology-stack.json",
-          "kind": "generated-report"
-        },
-        {
-          "path": "reports/language-distribution.json",
-          "status": "M",
-          "raw": " M reports/language-distribution.json",
-          "kind": "generated-report"
-        },
-        {
-          "path": "reports/language-distribution.md",
-          "status": "M",
-          "raw": " M reports/language-distribution.md",
-          "kind": "generated-report"
-        },
-        {
-          "path": "reports/seis-technology-stack.json",
-          "status": "M",
-          "raw": " M reports/seis-technology-stack.json",
-          "kind": "generated-report"
-        },
-        {
-          "path": "reports/seis-technology-stack.md",
-          "status": "M",
-          "raw": " M reports/seis-technology-stack.md",
-          "kind": "generated-report"
-        }
-      ],
-      "fileCount": 5,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
-      "id": "god-mode-model-lab",
-      "title": "God Mode Model Lab",
-      "priority": 30,
-      "commitMessage": "feat(ai): add god-mode model lab assets",
-      "rationale": "Model cards, generated model/data artifacts, redaction, and lab tests form one AI evaluation surface.",
-      "validation": [
-        "npm test --prefix packages/seis-ai",
-        "npm run check:seis-universe-model-lab",
-        "npm run check:seis-universe-memory-ranker-model",
-        "npm run check:seis-universe-eval-critic-model"
-      ],
-      "files": [
-        {
-          "path": "packages/seis-ai/src/agent/loop.mjs",
-          "status": "M",
-          "raw": " M packages/seis-ai/src/agent/loop.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/src/agent/tools.mjs",
-          "status": "M",
-          "raw": " M packages/seis-ai/src/agent/tools.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "status": "??",
-          "raw": "?? packages/seis-ai/src/lib/plugin-integration.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/src/mcp/server.mjs",
-          "status": "M",
-          "raw": " M packages/seis-ai/src/mcp/server.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/test/agent.test.mjs",
-          "status": "M",
-          "raw": " M packages/seis-ai/test/agent.test.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "status": "M",
-          "raw": " M packages/seis-ai/test/mcp-smoke.test.mjs",
-          "kind": "source"
-        },
-        {
-          "path": "packages/seis-ai/types/seis-ai.d.ts",
-          "status": "M",
-          "raw": " M packages/seis-ai/types/seis-ai.d.ts",
-          "kind": "source"
-        }
-      ],
-      "fileCount": 7,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
-      "id": "demo-runtime-contracts",
-      "title": "Demo Runtime Contracts",
-      "priority": 50,
-      "commitMessage": "feat(demo): align SEIS demo runtime contracts",
-      "rationale": "Web demo, core demo, service worker, and platform contract mirrors move together.",
-      "validation": [
-        "npm run seis:check",
-        "npm run check:workspace",
-        "npm run check:seis-command-center"
-      ],
-      "files": [
-        {
-          "path": "apps/seis-demo-web/index.html",
-          "status": "M",
-          "raw": " M apps/seis-demo-web/index.html",
-          "kind": "source"
-        },
-        {
-          "path": "apps/seis-demo-web/script.js",
-          "status": "M",
-          "raw": " M apps/seis-demo-web/script.js",
-          "kind": "source"
-        },
-        {
-          "path": "apps/seis-demo-web/service-worker.js",
-          "status": "M",
-          "raw": " M apps/seis-demo-web/service-worker.js",
-          "kind": "source"
-        }
-      ],
-      "fileCount": 3,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
-      "id": "plugin-agent-surface",
-      "title": "Plugin And Agent Surface",
-      "priority": 60,
-      "commitMessage": "feat(plugins): refresh SEIS plugin and agent surfaces",
-      "rationale": "Plugin metadata, requested skills, and agent checks should stay in one review lane.",
-      "validation": [
-        "npm run check:seis-plugin-bundle",
-        "npm run check:seis-ai-agent",
-        "npm run check:seis-specialist-plugins -- --include-legacy-personal"
-      ],
-      "files": [
-        {
-          "path": "content/development/seis-agent-plugin-integration.json",
-          "status": "??",
-          "raw": "?? content/development/seis-agent-plugin-integration.json",
-          "kind": "generated-report"
-        },
-        {
-          "path": "docs/platform/seis-ai-agent.md",
-          "status": "M",
-          "raw": " M docs/platform/seis-ai-agent.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "docs/platform/seis-specialist-plugins.md",
-          "status": "M",
-          "raw": " M docs/platform/seis-specialist-plugins.md",
-          "kind": "documentation"
-        },
-        {
-          "path": "scripts/check-seis-agent-plugin-integration.mjs",
-          "status": "??",
-          "raw": "?? scripts/check-seis-agent-plugin-integration.mjs",
-          "kind": "automation"
-        }
-      ],
-      "fileCount": 4,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
     {
       "id": "ssh-cloud-security",
       "title": "SSH Cloud Security",
@@ -246,28 +39,6 @@
       "action": "review-validate-stage-commit-as-unit"
     },
     {
-      "id": "repo-metadata-and-community",
-      "title": "Repository Metadata And Community Health",
-      "priority": 80,
-      "commitMessage": "chore(repo): update repository metadata and community health",
-      "rationale": "GitHub templates, gitignore, and repository metadata are a separate maintenance lane.",
-      "validation": [
-        "npm run check:open-source-governance",
-        "npm run check:publish-gate-contract"
-      ],
-      "files": [
-        {
-          "path": "package.json",
-          "status": "M",
-          "raw": " M package.json",
-          "kind": "repository-file"
-        }
-      ],
-      "fileCount": 1,
-      "staged": false,
-      "action": "review-validate-stage-commit-as-unit"
-    },
-    {
       "id": "manual-review",
       "title": "Manual Review",
       "priority": 999,
@@ -278,13 +49,25 @@
       ],
       "files": [
         {
-          "path": "reports/seis-eval-critic-advisory/latest.md",
+          "path": "docs/deployment/github-remote-configuration.md",
           "status": "M",
-          "raw": " M reports/seis-eval-critic-advisory/latest.md",
+          "raw": " M docs/deployment/github-remote-configuration.md",
+          "kind": "documentation"
+        },
+        {
+          "path": "reports/seis-project-intake/latest.md",
+          "status": "M",
+          "raw": " M reports/seis-project-intake/latest.md",
           "kind": "generated-report"
+        },
+        {
+          "path": "scripts/check-github-remote-configuration.mjs",
+          "status": "M",
+          "raw": " M scripts/check-github-remote-configuration.mjs",
+          "kind": "automation"
         }
       ],
-      "fileCount": 1,
+      "fileCount": 3,
       "staged": false,
       "action": "review-validate-stage-commit-as-unit"
     }

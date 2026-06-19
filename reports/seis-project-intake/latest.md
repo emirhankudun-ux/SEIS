@@ -1,6 +1,6 @@
 # SEIS Project Intake Report
 
-Generated at: 2026-06-19T06:12:02.112Z
+Generated at: 2026-06-19T06:20:19.734Z
 
 ## Repository
 - Root: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS
@@ -34,8 +34,8 @@ Generated at: 2026-06-19T06:12:02.112Z
 ## Capability Model
 - Policy ID: seis-project-intake-policy-v0
 - Default decision: read-only
-- Secret-hit count: 417
+- Secret-hit count: 420
 
 ## Warnings
 - Working tree has uncommitted changes.
-- Potentially sensitive token-like patterns in 417 file(s). Redacted for output.
+- Potentially sensitive token-like patterns in 420 file(s). Redacted for output.
