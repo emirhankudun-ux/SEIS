@@ -1,6 +1,6 @@
 # SEIS Command Center Architecture
 
-SEIS Command Center is the local-first operating surface for the SEIS ecosystem. It consolidates dashboard status, goals, repositories, documentation, agents, plugins, automation, security, architecture, and knowledge signals into one inspectable web application.
+SEIS Command Center is the local-first operating surface for the SEIS ecosystem. It consolidates dashboard status, God Mode missions, goals, repositories, documentation, agents, plugins, automation, security, architecture, and knowledge signals into one inspectable web application.
 
 ## Folder Structure
 
@@ -12,17 +12,25 @@ SEIS Command Center is the local-first operating surface for the SEIS ecosystem.
 
 ## Component Map
 
-The shell is organized around ten persistent modules: Dashboard, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge. Cards are reserved for repeated operational entities such as plugins, automation workflows, security reports, and system signals. Navigation changes state locally and re-renders the active command context without a backend dependency.
+The shell is organized around eleven persistent modules: Dashboard, God Mode, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge. Cards are reserved for repeated operational entities such as plugins, automation workflows, security reports, model setup records, and system signals. Navigation changes state locally and re-renders the active command context without a backend dependency.
 
 ## Data Model
 
-Command Center uses static local datasets in `script.js` for plugin families, automation workflows, workflow runs, approval gates, rollback evidence, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+Command Center uses static local datasets in `script.js` for plugin families, automation workflows, workflow runs, approval gates, rollback evidence, God Mode lanes, God Mode protocol steps, SEIS AI setup records, God Mode guardrails, God Mode artifacts, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
 
 Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Architecture records must expose dependency graph nodes, module contracts, and technical debt actions. Security records must expose risk posture, permission review scope, dependency scan coverage, audit cadence, evidence, and next actions. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
+## God Mode Operations Model
+
+God Mode is the controlled SEIS AI operating lane. It is not an unrestricted automation switch. It exposes a mission composer, lane selector, execution protocol, custom SEIS AI setup matrix, run timeline, guardrails, and traceable artifacts.
+
+God Mode records must expose the mission, lane, owner, model role, safety gate, evidence requirement, and rollback posture. The SEIS AI setup matrix tracks permission policy, memory ranking, agent routing, and local draft model work as separate governed capabilities. No God Mode record may contain API keys, tokens, SSH material, provider credentials, or private cloud material.
+
+The first implementation remains local-first and static. Future provider-backed or local-model execution must preserve the visible lane, evidence, and security boundary before a tool action can execute.
+
 ## AI Orchestration Model
 
-The agent surface must support OpenAI, Claude, Gemini, Qwen, local models, and future AI systems through explicit orchestration lanes. Each lane records the primary system, collaborating agents, and the expected handoff artifact. Handoff audit records connect Architect, Builder, Security, Research, and Design work so multi-model collaboration remains inspectable instead of becoming hidden chat context.
+The agent surface must support OpenAI, Claude, Gemini, Qwen, local models, and future AI systems through explicit orchestration lanes. Each lane records the primary system, collaborating agents, and the expected handoff artifact. Handoff audit records connect Architect, Builder, Security, Research, and Design work so multi-model collaboration remains inspectable instead of becoming hidden chat context. God Mode builds on this model by selecting a lane for each mission and requiring evidence before release handoff.
 
 ## Automation Operations Model
 

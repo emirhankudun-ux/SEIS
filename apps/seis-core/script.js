@@ -3,11 +3,31 @@ const storageKey = "seis-core-state-v1";
 const seedState = {
   activeView: "dashboard",
   activeAgent: "Architect",
+  godModeLane: "Build",
+  godModeMission: "Build the next safe SEIS AI operating slice with clear evidence, rollback, and no-secret boundaries.",
   repositoryFilter: "all",
   settings: {
     compact: false,
     reduceMotion: false
   },
+  godModeRuns: [
+    {
+      id: "godmode-run-setup",
+      mission: "Bootstrap SEIS God Mode as a governed AI operating lane.",
+      lane: "Plan",
+      owner: "Architect Agent",
+      status: "Ready",
+      evidence: "Architecture model, permission gates, run timeline, and rollback notes."
+    },
+    {
+      id: "godmode-run-ai",
+      mission: "Prepare SEIS-owned AI model program without storing provider secrets.",
+      lane: "Build",
+      owner: "Builder Agent",
+      status: "Active",
+      evidence: "Permission policy model, memory ranker model, agent router, and evaluation loop."
+    }
+  ],
   goals: [
     {
       id: "goal-core-interface",
@@ -184,6 +204,155 @@ const aiSystems = [
     name: "Future AI Systems",
     role: "Provider-neutral adapter lane for models not yet wired into SEIS.",
     mode: "Reserved"
+  }
+];
+
+const godModeLanes = [
+  {
+    name: "Plan",
+    owner: "Architect Agent",
+    model: "Claude + OpenAI",
+    purpose: "Turn broad SEIS intent into architecture, risk boundaries, acceptance evidence, and rollout order.",
+    gate: "Architecture note and rollback path required before implementation."
+  },
+  {
+    name: "Build",
+    owner: "Builder Agent",
+    model: "OpenAI + local tools",
+    purpose: "Implement scoped SEIS artifacts, static workflows, local model scaffolds, and quality checks.",
+    gate: "No dependency bloat, no secrets, small reversible changes."
+  },
+  {
+    name: "Review",
+    owner: "Security Agent",
+    model: "Gemini + Qwen",
+    purpose: "Pressure-test permissions, provider assumptions, access boundaries, and hidden operational risk.",
+    gate: "Least privilege and audit evidence must be visible."
+  },
+  {
+    name: "Validate",
+    owner: "Research Agent",
+    model: "OpenAI + future AI systems",
+    purpose: "Verify evidence, model readiness, data quality, benchmark fit, and documentation coverage.",
+    gate: "Validation must cite concrete files, checks, or rendered behavior."
+  }
+];
+
+const godModeProtocol = [
+  {
+    step: "Intake",
+    owner: "Architect Agent",
+    status: "Ready",
+    command: "Convert the request into mission, scope, risk, evidence, and rollback requirements."
+  },
+  {
+    step: "AI Setup",
+    owner: "Builder Agent",
+    status: "Active",
+    command: "Prepare SEIS-owned model lanes for permission policy, memory ranking, routing, and evaluation."
+  },
+  {
+    step: "Execution",
+    owner: "Builder Agent",
+    status: "Ready",
+    command: "Ship one bounded artifact at a time with local state and testable evidence."
+  },
+  {
+    step: "Security Gate",
+    owner: "Security Agent",
+    status: "Review",
+    command: "Block hidden credentials, broad permissions, provider drift, and unsafe automation."
+  },
+  {
+    step: "Learning Loop",
+    owner: "Research Agent",
+    status: "Active",
+    command: "Capture reusable patterns, model cards, dataset cards, eval plans, and decision history."
+  }
+];
+
+const seisAiSetup = [
+  {
+    name: "Permission Policy Model",
+    type: "Safety classifier",
+    status: "Active",
+    data: "SEIS permission-policy dataset",
+    output: "Approve, review, or deny actions before tools execute.",
+    gate: "No credential material in training or UI records."
+  },
+  {
+    name: "Memory Ranker Model",
+    type: "Knowledge retriever",
+    status: "Active",
+    data: "SEIS memory ranking examples",
+    output: "Rank relevant repo, architecture, and operating-memory context.",
+    gate: "Source citations and stale-memory warnings required."
+  },
+  {
+    name: "Agent Router",
+    type: "Orchestration policy",
+    status: "Ready",
+    data: "Agent lane status, tool permissions, task type, and evidence needs.",
+    output: "Route work to Architect, Builder, Security, Design, or Research lanes.",
+    gate: "Human-visible lane, owner, and rollback path."
+  },
+  {
+    name: "Local Draft Model",
+    type: "Private experimentation",
+    status: "Review",
+    data: "Redacted local prompts and synthetic examples only.",
+    output: "Offline draft reasoning before provider-backed execution.",
+    gate: "No secrets, no unpublished credentials, no blind autonomous writes."
+  }
+];
+
+const godModeGuardrails = [
+  {
+    rule: "No secrets in state",
+    status: "Ready",
+    detail: "God Mode stores mission summaries, not API keys, tokens, private SSH material, or provider credentials."
+  },
+  {
+    rule: "Evidence before release",
+    status: "Ready",
+    detail: "Every mission keeps a validation artifact, owner, rollback note, and status before handoff."
+  },
+  {
+    rule: "Least privilege tools",
+    status: "Review",
+    detail: "Remote writes, plugins, cloud actions, and AI providers remain gated by explicit lane ownership."
+  },
+  {
+    rule: "Human-visible autonomy",
+    status: "Ready",
+    detail: "Agent routing, model role, task boundary, and current decision are visible in the Command Center."
+  }
+];
+
+const godModeArtifacts = [
+  {
+    name: "Model Card",
+    status: "Active",
+    owner: "Research Agent",
+    detail: "Captures intended use, limits, evaluation plan, and safety posture for SEIS-owned AI models."
+  },
+  {
+    name: "Dataset Card",
+    status: "Active",
+    owner: "Security Agent",
+    detail: "Documents source policy, redaction boundary, license posture, and excluded secret-bearing data."
+  },
+  {
+    name: "Eval Plan",
+    status: "Ready",
+    owner: "Builder Agent",
+    detail: "Defines acceptance checks for routing, permission policy, memory ranking, and tool safety."
+  },
+  {
+    name: "Run State",
+    status: "Review",
+    owner: "Architect Agent",
+    detail: "Records current mission, lane, evidence, blocker, rollback, and next action."
   }
 ];
 
@@ -808,6 +977,7 @@ const knowledgeItems = [
 
 const viewMeta = {
   dashboard: ["Dashboard", "SEIS operating center", "Manage goals, repositories, architecture decisions, documentation, agents, and system health from one calm surface.", "New Goal"],
+  godmode: ["God Mode", "SEIS AI mission control", "Coordinate custom SEIS AI setup, agent lanes, evidence gates, and controlled execution.", "Run Mission"],
   goals: ["Goals", "Goal tracking", "Create goals, edit priority/status, add risks, and keep next actions visible.", "Create Goal"],
   repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
   documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
@@ -849,6 +1019,7 @@ function render() {
   renderNavigation();
   renderViewHeader();
   renderDashboard();
+  renderGodMode();
   renderGoals();
   renderRepositories();
   renderDocumentation();
@@ -961,6 +1132,97 @@ function renderDashboard() {
     <article class="action-card">
       <strong>${title}</strong>
       <p>${detail}</p>
+    </article>
+  `).join("");
+}
+
+function renderGodMode() {
+  const activeLane = godModeLanes.find((lane) => lane.name === state.godModeLane) || godModeLanes[0];
+  $("#godmode-lane-select").innerHTML = godModeLanes.map((lane) => `
+    <option ${lane.name === state.godModeLane ? "selected" : ""}>${lane.name}</option>
+  `).join("");
+  $("#godmode-mission-input").value = state.godModeMission;
+
+  $("#godmode-lane-switcher").innerHTML = godModeLanes.map((lane) => `
+    <button class="lane-chip ${lane.name === state.godModeLane ? "is-active" : ""}" type="button" data-godmode-lane="${lane.name}">
+      <strong>${lane.name}</strong>
+      <span>${lane.owner}</span>
+    </button>
+  `).join("");
+
+  $("#godmode-mission-brief").innerHTML = `
+    <div class="card-topline">
+      <h3>${activeLane.name} Lane</h3>
+      <span class="meta-chip">${activeLane.model}</span>
+    </div>
+    <p>${activeLane.purpose}</p>
+    <div class="mission-gate">
+      <strong>Gate</strong>
+      <span>${activeLane.gate}</span>
+    </div>
+  `;
+
+  $("#godmode-protocol").innerHTML = godModeProtocol.map((item) => `
+    <article class="protocol-step">
+      <div class="protocol-marker">${item.step.slice(0, 2).toUpperCase()}</div>
+      <div>
+        <div class="card-topline">
+          <h3>${item.step}</h3>
+          <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+        </div>
+        <p>${item.command}</p>
+        <span class="meta-chip">${item.owner}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#seis-ai-setup").innerHTML = seisAiSetup.map((item) => `
+    <article class="ai-setup-card">
+      <div class="card-topline">
+        <h3>${item.name}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.output}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${item.type}</span>
+        <span class="meta-chip">${item.data}</span>
+      </div>
+      <small>${item.gate}</small>
+    </article>
+  `).join("");
+
+  $("#godmode-run-timeline").innerHTML = state.godModeRuns.map((run) => `
+    <article class="run-step">
+      <div>
+        <strong>${run.mission}</strong>
+        <p>${run.evidence}</p>
+      </div>
+      <div class="run-meta">
+        <span class="meta-chip">${run.lane}</span>
+        <span class="meta-chip">${run.owner}</span>
+        <span class="status-pill ${statusClass(run.status)}">${run.status}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#godmode-guardrails").innerHTML = godModeGuardrails.map((item) => `
+    <article class="guardrail-row">
+      <div class="card-topline">
+        <h3>${item.rule}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.detail}</p>
+    </article>
+  `).join("");
+
+  $("#godmode-artifacts").innerHTML = godModeArtifacts.map((artifact) => `
+    <article class="artifact-card">
+      <div class="card-topline">
+        <h3>${artifact.name}</h3>
+        <span class="status-pill ${statusClass(artifact.status)}">${artifact.status}</span>
+      </div>
+      <p>${artifact.detail}</p>
+      <span class="meta-chip">${artifact.owner}</span>
     </article>
   `).join("");
 }
@@ -1380,6 +1642,12 @@ function bindEvents() {
       render();
     }
 
+    const godModeLaneButton = event.target.closest("[data-godmode-lane]");
+    if (godModeLaneButton) {
+      state.godModeLane = godModeLaneButton.dataset.godmodeLane;
+      render();
+    }
+
     const closeButton = event.target.closest("[data-close-dialog]");
     if (closeButton) {
       closeButton.closest("dialog").close();
@@ -1398,6 +1666,26 @@ function bindEvents() {
       nextAction: data.get("nextAction").toString().trim()
     });
     event.currentTarget.reset();
+    render();
+  });
+
+  $("#godmode-mission-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const mission = data.get("mission").toString().trim();
+    const lane = data.get("lane").toString();
+    if (!mission) return;
+    state.godModeMission = mission;
+    state.godModeLane = lane;
+    const activeLane = godModeLanes.find((item) => item.name === lane) || godModeLanes[0];
+    state.godModeRuns.unshift({
+      id: `godmode-run-${Date.now()}`,
+      mission,
+      lane,
+      owner: activeLane.owner,
+      status: lane === "Review" ? "Review" : "Active",
+      evidence: `${activeLane.gate} Evidence must be attached before release handoff.`
+    });
     render();
   });
 
@@ -1425,7 +1713,9 @@ function bindEvents() {
   });
 
   $("#primary-action").addEventListener("click", () => {
-    if (state.activeView !== "goals") {
+    if (state.activeView === "godmode") {
+      $("#godmode-mission-input").focus();
+    } else if (state.activeView !== "goals") {
       setView("goals");
       $("#goal-title").focus();
     } else {
@@ -1470,6 +1760,8 @@ function openCommandPalette() {
 function renderCommandResults(query) {
   const commands = [
     ["Dashboard", "Open ecosystem overview", "dashboard"],
+    ["God Mode", "Open SEIS AI mission control", "godmode"],
+    ["Run Mission", "Focus God Mode mission composer", "godmode"],
     ["Goals", "Create or review goal status", "goals"],
     ["Repositories", "Inspect repository health", "repositories"],
     ["Documentation", "Review docs and ADR coverage", "documentation"],

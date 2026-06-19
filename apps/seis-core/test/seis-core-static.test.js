@@ -8,6 +8,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
   const html = await readFile(new URL("index.html", root), "utf8");
   for (const label of [
     "Dashboard",
+    "God Mode",
     "Goals",
     "Repositories",
     "Documentation",
@@ -33,6 +34,13 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /activeAgent/);
   assert.match(script, /pluginFamilies/);
   assert.match(script, /automationWorkflows/);
+  assert.match(script, /godModeLanes/);
+  assert.match(script, /godModeProtocol/);
+  assert.match(script, /seisAiSetup/);
+  assert.match(script, /godModeGuardrails/);
+  assert.match(script, /godModeArtifacts/);
+  assert.match(script, /godModeRuns/);
+  assert.match(script, /renderGodMode/);
   assert.match(script, /workflowRuns/);
   assert.match(script, /approvalGates/);
   assert.match(script, /rollbackEvidence/);
@@ -98,6 +106,14 @@ test("SEIS Command Center design system preserves required tokens", async () => 
     assert.match(css, new RegExp(token));
   }
   assert.match(css, /plugin-card/);
+  assert.match(css, /godmode-workbench/);
+  assert.match(css, /mission-composer/);
+  assert.match(css, /lane-chip/);
+  assert.match(css, /protocol-step/);
+  assert.match(css, /ai-setup-card/);
+  assert.match(css, /run-step/);
+  assert.match(css, /guardrail-row/);
+  assert.match(css, /artifact-card/);
   assert.match(css, /automation-card/);
   assert.match(css, /automation-ops-layout/);
   assert.match(css, /workflow-run-row/);

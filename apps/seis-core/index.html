@@ -31,6 +31,10 @@
           <span class="nav-icon" aria-hidden="true">D</span>
           <span>Dashboard</span>
         </button>
+        <button class="nav-item" type="button" data-view="godmode">
+          <span class="nav-icon" aria-hidden="true">X</span>
+          <span>God Mode</span>
+        </button>
         <button class="nav-item" type="button" data-view="goals">
           <span class="nav-icon" aria-hidden="true">G</span>
           <span>Goals</span>
@@ -149,6 +153,71 @@
                 <span class="status-pill ready">Next best</span>
               </div>
               <div class="action-grid" id="recommended-actions"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" data-panel="godmode" aria-labelledby="godmode-title">
+            <div class="section-heading">
+              <h2 id="godmode-title">God Mode</h2>
+              <p>Coordinate SEIS-specific AI setup, agent execution, evidence gates, and custom model development from one controlled surface.</p>
+            </div>
+            <section class="panel godmode-workbench" aria-labelledby="godmode-workbench-title">
+              <div class="mission-composer">
+                <div class="panel-header">
+                  <h3 id="godmode-workbench-title">Mission Composer</h3>
+                  <span class="status-pill ready">Local-first</span>
+                </div>
+                <form id="godmode-mission-form" class="godmode-form">
+                  <label for="godmode-mission-input">Mission</label>
+                  <textarea id="godmode-mission-input" name="mission" placeholder="Define the SEIS mission, expected artifact, risk boundary, and validation evidence..."></textarea>
+                  <div class="composer-row">
+                    <label for="godmode-lane-select">Lane</label>
+                    <select id="godmode-lane-select" name="lane"></select>
+                    <button class="primary-button" type="submit">Run Mission</button>
+                  </div>
+                </form>
+                <div class="lane-switcher" id="godmode-lane-switcher" aria-label="God Mode lanes"></div>
+              </div>
+              <div class="mission-brief" id="godmode-mission-brief"></div>
+            </section>
+            <div class="godmode-layout module-spacer">
+              <section class="panel" aria-labelledby="godmode-protocol-title">
+                <div class="panel-header">
+                  <h3 id="godmode-protocol-title">Execution Protocol</h3>
+                  <span class="status-pill attention">Gated</span>
+                </div>
+                <div class="godmode-protocol" id="godmode-protocol"></div>
+              </section>
+              <section class="panel" aria-labelledby="seis-ai-setup-title">
+                <div class="panel-header">
+                  <h3 id="seis-ai-setup-title">SEIS AI Setup</h3>
+                  <span class="status-pill ready">Model program</span>
+                </div>
+                <div class="ai-setup-grid" id="seis-ai-setup"></div>
+              </section>
+            </div>
+            <div class="godmode-layout module-spacer">
+              <section class="panel" aria-labelledby="godmode-run-title">
+                <div class="panel-header">
+                  <h3 id="godmode-run-title">Run Timeline</h3>
+                  <span class="status-pill ready">Evidence-led</span>
+                </div>
+                <div class="run-timeline" id="godmode-run-timeline"></div>
+              </section>
+              <section class="panel" aria-labelledby="godmode-guardrails-title">
+                <div class="panel-header">
+                  <h3 id="godmode-guardrails-title">Guardrails</h3>
+                  <span class="status-pill ready">No secrets</span>
+                </div>
+                <div class="guardrail-list" id="godmode-guardrails"></div>
+              </section>
+            </div>
+            <section class="panel module-spacer" aria-labelledby="godmode-artifacts-title">
+              <div class="panel-header">
+                <h3 id="godmode-artifacts-title">Artifacts</h3>
+                <span class="status-pill ready">Traceable</span>
+              </div>
+              <div class="artifact-grid" id="godmode-artifacts"></div>
             </section>
           </section>
 
@@ -404,6 +473,7 @@
               <li>Local goal management</li>
               <li>Repo and doc health surfaces</li>
               <li>Agent mode switching</li>
+              <li>God Mode mission orchestration</li>
               <li>Plugin, automation, and security centers</li>
               <li>Architecture and roadmap visibility</li>
             </ul>

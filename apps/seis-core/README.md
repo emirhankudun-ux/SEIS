@@ -25,7 +25,7 @@ apps/seis-core/
 
 ## UI Wireframe Plan
 
-1. Sidebar: persistent module navigation for Dashboard, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge.
+1. Sidebar: persistent module navigation for Dashboard, God Mode, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge.
 2. Top navigation: global search, command palette, settings.
 3. Main workspace: selected module content with clear page header and primary action.
 4. Right inspector: active agent mode, next actions, and MVP specification.
@@ -42,6 +42,7 @@ apps/seis-core/
 
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, active goals, recent activity, repository health, architecture alerts, and recommended actions.
+- God Mode: mission composer, SEIS AI setup matrix, execution protocol, run timeline, guardrails, and artifacts for controlled custom AI development.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
 - Goals: creation form, editable status actions, risk and next-action fields.
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
@@ -57,6 +58,8 @@ apps/seis-core/
 ## MVP Specification
 
 - Create goals locally.
+- Compose God Mode missions and route them through Plan, Build, Review, and Validate lanes.
+- Inspect SEIS AI setup for permission policy, memory ranking, agent routing, and local draft model work.
 - Update goal status to Review or Done.
 - Filter repositories by health and inspect dependency risk.
 - Switch active AI agent mode and inspect capabilities, tasks, logs, and outputs.
