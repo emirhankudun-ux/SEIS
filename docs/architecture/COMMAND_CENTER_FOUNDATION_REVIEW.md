@@ -6,6 +6,12 @@ SEIS Command Center is the central operating interface direction for the SEIS
 ecosystem. This review defines what can be claimed now, what is planned, and
 what must be proven before implementation expands.
 
+Command Center is a non-LLM product foundation first. It must remain useful in
+static/manual, scan-generated, mock, and future live modes even when no LLM
+provider is connected. LLMs may summarize evidence, draft recommendations, and
+assist review, but they are not required for the core platform to show status,
+queues, blockers, approvals, or readiness.
+
 ## Current Evidence
 
 | Evidence | Status |
@@ -31,6 +37,23 @@ what must be proven before implementation expands.
 | Security Center | Improved | Security baseline exists, but deeper scans are deferred. |
 | Remote Infrastructure And SSH Center | Planned | Must be approval-gated and never expose private keys. |
 | SEIS AI Center | Partial | Needs AI Core architecture docs and provider-neutral routing contract. |
+| Evidence Locker | Planned | Needs deterministic evidence records for validation, readiness, review, and approvals. |
+| Module Health View | Planned | Needs explicit healthy, warning, blocked, unknown, stale, and approval-needed states. |
+
+## Non-LLM Product Modules
+
+| Module | Required non-LLM behavior |
+| --- | --- |
+| Dashboard | Render current status, blockers, stale data, and next safe actions from docs and scan outputs. |
+| Repository Center | Show Git state, deleted files, missing docs, risky paths, validation gaps, and unmerged local work. |
+| PR Recovery Center | Show approved PR rescue evidence when available; otherwise show unknown/approval-needed state. |
+| Documentation Hub | Separate official docs from archives and generated reports. |
+| Roadmap Center | Render backlog, next PR queue, blocked actions, and acceptance evidence. |
+| Architecture Center | Track modules, decisions, implementation status, and unknowns. |
+| Security Center | Track sensitive-file scans, approval gates, findings, and public exposure blockers. |
+| Approval Center | List dangerous actions, required approval, scope, and rollback requirements. |
+| Release Center | Show public/release readiness dry-runs, changelog state, artifact state, and blockers. |
+| Settings Center | Show environment, integration modes, emergency stop, and feature flags. |
 
 ## UX Rules
 
@@ -58,3 +81,4 @@ Command Center Alpha planning is appropriate after:
 - No fake GitHub, cloud, SSH, or security status.
 - No automatic merge, push, branch deletion, or release action.
 - No broad dashboard expansion before evidence contracts exist.
+- No LLM dependency for core status, safety gates, or readiness decisions.

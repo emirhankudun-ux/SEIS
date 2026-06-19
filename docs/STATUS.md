@@ -29,6 +29,7 @@ readiness claim.
 | Governance | Strong rules exist, but some historical docs conflict with current `main`/SEIS direction. | Observed docs | High | Align old `UIXAppTTR` references in a dedicated governance cleanup PR. |
 | Security | Policy exists; baseline needs deeper non-secret scan and artifact cleanup plan. | Partial path-only scan | Medium | Add security baseline review and run approved scanners when available. |
 | Command Center | Conceptual direction exists; implementation status needs evidence mapping. | Partial repo evidence | Medium | Create a Command Center requirements/evidence map before UI expansion. |
+| Non-LLM Platform OS | Product mission and architecture are now documented as a deterministic platform foundation. | Updated docs | Medium | Build scanner outputs, approval queue, evidence locker, design system demo, and static/manual Command Center views. |
 | AI Core | Some package and routing artifacts exist; model-router/prompt-engine/agent-runtime boundaries are not yet fully documented as official current architecture. | Partial repo evidence | Medium | Add provider-neutral architecture docs before adding integrations. |
 | GitHub governance | Remote configured; live PR/branch protection state not verified. | Local-only | High | Use GitHub API/CLI only after approval and record results. |
 | Public readiness | Blocked by dirty worktree and inconsistent docs. | Observed locally | High | Run foundation checks after recovery. |

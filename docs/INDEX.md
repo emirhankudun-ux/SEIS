@@ -22,12 +22,15 @@ broad file search.
 | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) | Consolidated backlog across security, docs, architecture, AI Core, Command Center, GitHub governance, public readiness, and release readiness. | Active |
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Ordered next PR queue, including blocked dangerous actions that need approval. | Active |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Full foundation review from the current inspection pass. | Active |
+| [product/SEIS_NON_LLM_PLATFORM_MISSION.md](product/SEIS_NON_LLM_PLATFORM_MISSION.md) | Non-LLM Command Center and Platform OS mission. | Active |
 
 ## Architecture And Product Direction
 
 | Area | Current Documents |
 | --- | --- |
 | Command Center foundation | [architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md](architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md) |
+| Platform OS architecture | [architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md](architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) |
+| Repository intelligence | [architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md](architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md) |
 | Web and mobile foundation | [architecture/web-mobile-foundation.md](architecture/web-mobile-foundation.md) |
 | 3D decision record | [decisions/3d-rendering-approach.md](decisions/3d-rendering-approach.md) |
 | SEIS evolution model | [strategy/seis-evolution-model.md](strategy/seis-evolution-model.md) |
@@ -43,7 +46,10 @@ broad file search.
 | iCloud workspace ingestion | [governance/icloud-github-workspace-ingestion.md](governance/icloud-github-workspace-ingestion.md) |
 | Low-pressure mode | [governance/full-efficiency-low-pressure-mode.md](governance/full-efficiency-low-pressure-mode.md) |
 | GitHub governance review | [governance/GITHUB_GOVERNANCE_REVIEW.md](governance/GITHUB_GOVERNANCE_REVIEW.md) |
+| Approval and workflow platform | [governance/APPROVAL_WORKFLOW_PLATFORM.md](governance/APPROVAL_WORKFLOW_PLATFORM.md) |
 | Security baseline | [security/SECURITY_BASELINE.md](security/SECURITY_BASELINE.md) |
+| Design system foundation | [design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md](design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md) |
+| Release and public readiness | [readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md](readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md) |
 | GitHub remote configuration | [deployment/github-remote-configuration.md](deployment/github-remote-configuration.md) |
 | Publish gate | [deployment/publish-gate-contract.md](deployment/publish-gate-contract.md) |
 | Lightweight checks | [testing/lightweight-checks.md](testing/lightweight-checks.md) |

@@ -70,7 +70,20 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Validation | Docs review, no-secret scan by path, `npm run check:foundation` if available. |
 | Approval needed | External API calls, dependency installation, model training. |
 
-## PR 6: Release Readiness Dry Run
+## PR 6: Non-LLM Platform OS Foundation
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/non-llm-platform-os-foundation` |
+| Type | Product, architecture, governance, design-system docs |
+| Priority | P1 |
+| Goal | Make SEIS Command Center and Platform OS explicit as useful without any LLM connection. |
+| Include | Non-LLM product mission, Platform OS architecture, repository intelligence plan, approval/workflow platform, design system foundation, release/public readiness system. |
+| Exclude | UI implementation, live GitHub API calls, SSH, deployment, dependency installation, LLM provider calls. |
+| Validation | `git diff --check`, `npm run seis:check`, docs review; record known foundation check failures separately. |
+| Approval needed | None for docs-only work; approval required for live integrations or external scans. |
+
+## PR 7: Release Readiness Dry Run
 
 | Field | Value |
 | --- | --- |

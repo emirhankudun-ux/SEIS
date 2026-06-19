@@ -41,6 +41,11 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-020` | P2 | Provenance | Add source-basis and archive-review docs. | Historical AI archives are classified as reference, duplicate, unsafe, or promoted intent. |
 | `SEIS-BL-021` | P3 | Contributor experience | Add issue forms or templates for governance, security-adjacent reports, and architecture proposals. | Templates route sensitive items away from public issues. |
 | `SEIS-BL-022` | P3 | Release notes | Add CHANGELOG discipline and release note template. | Future release PRs update changelog consistently. |
+| `SEIS-BL-023` | P1 | Non-LLM platform | Build Command Center and Platform OS foundations that work without an LLM. | Product mission, Platform OS architecture, and module contracts are documented. |
+| `SEIS-BL-024` | P1 | Repository intelligence | Define deterministic repository scanners for docs, links, risky files, generated folders, stale docs, validation gaps, and readiness blockers. | Repository intelligence plan exists with output records and safe scan rules. |
+| `SEIS-BL-025` | P1 | Workflow platform | Define task queues, review queues, approval queues, validation queues, and emergency stop behavior. | Approval/workflow platform doc exists and dangerous actions are gated. |
+| `SEIS-BL-026` | P1 | Design system | Define Command Center design tokens, component states, accessibility rules, and localization readiness. | Design-system foundation exists and supports non-LLM Command Center UI. |
+| `SEIS-BL-027` | P1 | Readiness system | Define public-readiness and release-readiness dry-runs with evidence records. | Readiness system doc exists with states, evidence fields, and dry-run principles. |
 
 ## Deferred Dangerous Work
 

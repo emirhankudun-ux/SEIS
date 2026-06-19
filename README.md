@@ -123,6 +123,9 @@ For the current foundation status and roadmap, start with:
 
 - [`docs/INDEX.md`](./docs/INDEX.md) for the documentation map
 - [`docs/STATUS.md`](./docs/STATUS.md) for current repository readiness
+- [`docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md`](./docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md) for the non-LLM Command Center and Platform OS mission
+- [`docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md`](./docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) for the deterministic platform architecture
+- [`docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md`](./docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md) for the repository intelligence plan
 - [`docs/roadmap/MASTER_BACKLOG.md`](./docs/roadmap/MASTER_BACKLOG.md) for the consolidated backlog
 - [`docs/roadmap/NEXT_PR_QUEUE.md`](./docs/roadmap/NEXT_PR_QUEUE.md) for the next safe PR sequence
 - [`docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md`](./docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) for the latest foundation review
@@ -144,3 +147,7 @@ The GitHub surface should continuously improve through:
 SEIS is actively evolving. Some historical documents still record earlier
 private or consolidation phases. The current direction is open source,
 main-centered, AI-native, security-conscious, and architecture-led.
+
+SEIS is also a non-LLM platform mission: Command Center and Platform OS must be
+useful with static/manual data, deterministic scans, mock data, and future
+approved live integrations even when no model provider is connected.
