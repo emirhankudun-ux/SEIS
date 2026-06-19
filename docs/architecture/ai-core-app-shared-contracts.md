@@ -65,6 +65,24 @@ Repository intelligence must distinguish official docs, review reports, archive
 material, mock data, scan-generated data, live data, planned data, and unknown
 status. Archive or mock material must not be treated as official source of truth.
 
+## Schema And Fixture Evidence
+
+The first shared contract implementation is fixture-backed:
+
+- `packages/shared-types/schemas/ai-core-app-contract.schema.json`
+- `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `npm run check:ai-core-app-contracts`
+
+The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
+`approvalRequest`, `evaluationResult`, `auditEvent`, `repositoryFinding`,
+`documentationStatus`, `securityFinding`, `roadmapItem`, `moduleMaturity`,
+`llmExecutionMode`, `aiSurface`, `repositoryIntelligence`, and
+`goalTrackingState`.
+
+The fixture is intentionally local and metadata-only. It does not enable live
+provider routing, expose provider secrets, store raw prompts, perform GitHub
+write actions, execute SSH commands, or claim model training.
+
 ## First Implementation Shape
 
 Start with JSON fixtures and typed interfaces before live data adapters. The

@@ -292,14 +292,19 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add schema-backed shared contracts for AI Core and Command Center objects.
-2. Add fixture data for AI Core Center, model-router view, prompt-engine view,
+1. Add fixture data for AI Core Center, model-router view, prompt-engine view,
    agent-task center, approval center, and evidence locker.
-3. Add prompt regression fixtures for repository, documentation, architecture,
+2. Add prompt regression fixtures for repository, documentation, architecture,
    security, PR, roadmap, and research assistants.
-4. Add read-only local repository assistant prototype with source links and no
+3. Add read-only local repository assistant prototype with source links and no
    external provider routing.
-5. Add evaluation report generation for prompt and app-state fixtures.
+4. Add evaluation report generation for prompt and app-state fixtures.
+
+Completed foundation slice:
+
+- Schema-backed shared contracts for AI Core and Command Center objects now live
+  under `packages/shared-types/` and are checked by
+  `npm run check:ai-core-app-contracts`.
 
 ## Relationship to Existing Roadmaps
 

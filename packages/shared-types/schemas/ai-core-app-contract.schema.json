@@ -1,0 +1,477 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/ai-core-app-contract.schema.json",
+  "title": "SEIS AI Core and Command Center Shared Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "status",
+    "sourceDocuments",
+    "stateVocabulary",
+    "llmExecutionModes",
+    "moduleMaturities",
+    "modelRoutes",
+    "promptVersions",
+    "agentTasks",
+    "approvalRequests",
+    "evaluationResults",
+    "auditEvents",
+    "repositoryFindings",
+    "documentationStatuses",
+    "securityFindings",
+    "roadmapItems",
+    "aiSurfaces",
+    "repositoryIntelligence",
+    "goalTrackingStates"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "status": {
+      "enum": ["draft", "fixture-backed", "blocked"]
+    },
+    "sourceDocuments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidenceLink"
+      }
+    },
+    "stateVocabulary": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "$ref": "#/$defs/state"
+      },
+      "uniqueItems": true
+    },
+    "llmExecutionModes": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "$ref": "#/$defs/llmExecutionMode"
+      },
+      "uniqueItems": true
+    },
+    "moduleMaturities": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "$ref": "#/$defs/moduleMaturity"
+      },
+      "uniqueItems": true
+    },
+    "modelRoutes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/modelRoute"
+      }
+    },
+    "promptVersions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/promptVersion"
+      }
+    },
+    "agentTasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/agentTask"
+      }
+    },
+    "approvalRequests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/approvalRequest"
+      }
+    },
+    "evaluationResults": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evaluationResult"
+      }
+    },
+    "auditEvents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/auditEvent"
+      }
+    },
+    "repositoryFindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repositoryFinding"
+      }
+    },
+    "documentationStatuses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/documentationStatus"
+      }
+    },
+    "securityFindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/securityFinding"
+      }
+    },
+    "roadmapItems": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/roadmapItem"
+      }
+    },
+    "aiSurfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/aiSurface"
+      }
+    },
+    "repositoryIntelligence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repositoryIntelligence"
+      }
+    },
+    "goalTrackingStates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/goalTrackingState"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "state": {
+      "enum": [
+        "ready",
+        "draft",
+        "planned",
+        "blocked",
+        "approval-needed",
+        "degraded",
+        "unknown",
+        "running",
+        "failed",
+        "validated"
+      ]
+    },
+    "llmExecutionMode": {
+      "enum": [
+        "local-only",
+        "local-preferred",
+        "external-provider-allowed",
+        "external-provider-redacted",
+        "metadata-only",
+        "offline",
+        "disabled",
+        "research-only"
+      ]
+    },
+    "moduleMaturity": {
+      "enum": [
+        "planned",
+        "draft",
+        "fixture-backed",
+        "local-alpha",
+        "provider-alpha",
+        "beta",
+        "stable",
+        "research-only",
+        "blocked"
+      ]
+    },
+    "sourceClass": {
+      "enum": [
+        "official",
+        "review",
+        "archive",
+        "mock",
+        "scan-generated",
+        "live",
+        "planned",
+        "unknown"
+      ]
+    },
+    "evidenceLink": {
+      "type": "string",
+      "pattern": "^(docs|packages|roadmap|reports|apps|content|data|scripts)/"
+    },
+    "modelRoute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "taskType",
+        "dataClass",
+        "privacyMode",
+        "providerProfile",
+        "modelProfile",
+        "promptVersionId",
+        "approvalState",
+        "evaluationProfile",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "taskType": { "type": "string" },
+        "dataClass": {
+          "enum": ["public", "repository", "sensitive", "secret", "research"]
+        },
+        "privacyMode": { "$ref": "#/$defs/llmExecutionMode" },
+        "providerProfile": { "type": "string" },
+        "modelProfile": { "type": "string" },
+        "promptVersionId": { "$ref": "#/$defs/id" },
+        "approvalState": {
+          "enum": ["not-required", "approval-needed", "approved", "denied", "blocked"]
+        },
+        "blockedReason": { "type": "string" },
+        "evaluationProfile": { "type": "string" },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "promptVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "scope",
+        "status",
+        "maturity",
+        "regressionSuite",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "scope": { "type": "string" },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "regressionSuite": { "type": "string" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "agentTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "agentRole",
+        "intent",
+        "allowedActions",
+        "forbiddenActions",
+        "approvalState",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "agentRole": { "type": "string" },
+        "intent": { "type": "string" },
+        "allowedActions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "forbiddenActions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "approvalState": {
+          "enum": ["not-required", "approval-needed", "approved", "denied", "blocked"]
+        },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "approvalRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "requestType", "riskClass", "decisionState", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "requestType": { "type": "string" },
+        "riskClass": { "enum": ["low", "medium", "high", "critical"] },
+        "decisionState": {
+          "enum": ["not-required", "approval-needed", "approved", "denied", "blocked"]
+        },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "evaluationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "targetType", "targetId", "result", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "targetType": {
+          "enum": ["prompt", "route", "agent", "app-state", "retrieval", "model-research"]
+        },
+        "targetId": { "$ref": "#/$defs/id" },
+        "result": { "enum": ["pass", "fail", "blocked", "unknown"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "auditEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "actor", "action", "redactionState", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "actor": { "type": "string" },
+        "action": { "type": "string" },
+        "redactionState": { "enum": ["redacted", "metadata-only", "not-sensitive"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "repositoryFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "repository", "findingType", "severity", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "repository": { "type": "string" },
+        "findingType": { "type": "string" },
+        "severity": { "enum": ["info", "low", "medium", "high", "critical"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "documentationStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "document", "freshness", "sourceClass", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "document": { "$ref": "#/$defs/evidenceLink" },
+        "freshness": { "enum": ["current", "needs-review", "stale", "unknown"] },
+        "sourceClass": { "$ref": "#/$defs/sourceClass" },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "securityFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "category", "riskClass", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "category": { "type": "string" },
+        "riskClass": { "enum": ["low", "medium", "high", "critical"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "roadmapItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "horizon", "track", "status", "maturity", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "horizon": {
+          "enum": ["now", "30-day", "90-day", "year-1", "year-2", "year-3", "year-4", "year-5"]
+        },
+        "track": { "type": "string" },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "aiSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "surface",
+        "allowedContext",
+        "forbiddenContext",
+        "approvalRequired",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "surface": { "type": "string" },
+        "allowedContext": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "forbiddenContext": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "approvalRequired": { "type": "boolean" },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "repositoryIntelligence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "sourceClass", "privacyMode", "freshness", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "sourceClass": { "$ref": "#/$defs/sourceClass" },
+        "privacyMode": { "$ref": "#/$defs/llmExecutionMode" },
+        "freshness": { "enum": ["current", "needs-review", "stale", "unknown"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "goalTrackingState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "goal", "progressState", "completionEvidence", "status", "evidence"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "goal": { "type": "string" },
+        "progressState": {
+          "enum": ["not-started", "in-progress", "blocked", "validated", "complete"]
+        },
+        "completionEvidence": { "enum": ["missing", "partial", "validated"] },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    }
+  }
+}

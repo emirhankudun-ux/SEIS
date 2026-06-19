@@ -51,8 +51,23 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add schema-backed shared contracts for AI Core and Command Center objects.
-2. Add fixture-backed Command Center AI Core views.
-3. Add prompt regression fixtures for the named assistant surfaces.
-4. Add local read-only repository assistant prototype.
-5. Add evaluation report generation for prompt and app-state fixtures.
+1. Add fixture-backed Command Center AI Core views.
+2. Add prompt regression fixtures for the named assistant surfaces.
+3. Add local read-only repository assistant prototype.
+4. Add evaluation report generation for prompt and app-state fixtures.
+
+## Follow-Up Contract Slice
+
+Status: Added after the initial five-year program review.
+
+Evidence:
+
+- `packages/shared-types/schemas/ai-core-app-contract.schema.json`
+- `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `scripts/check-ai-core-app-contracts.mjs`
+- `npm run check:ai-core-app-contracts`
+
+This slice completes the first immediate PR slice from the five-year program:
+schema-backed shared contracts for AI Core and Command Center objects. It is
+still fixture-only and does not add live provider routing, provider keys, model
+training, GitHub write actions, SSH execution, or deployment behavior.
