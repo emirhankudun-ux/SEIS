@@ -25,6 +25,7 @@ const requiredDocs = [
   "docs/goals/execution-board.md",
   "docs/goals/review-cadence.md",
   "docs/goals/command-center-view-model.md",
+  "docs/goals/daily-review-template.md",
   "docs/goals/weekly-priorities-template.md",
   "docs/goals/monthly-review-template.md",
   "docs/roadmap/MASTER_BACKLOG.md",

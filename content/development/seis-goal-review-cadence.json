@@ -32,6 +32,7 @@
       "evidence_ids": [],
       "related_paths": [
         "docs/goals/review-cadence.md",
+        "docs/goals/daily-review-template.md",
         "docs/goals/progress-review.md",
         "content/development/seis-goal-execution.json"
       ],

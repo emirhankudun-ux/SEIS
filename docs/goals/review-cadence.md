@@ -35,6 +35,12 @@ Each performed review needs at least one of:
 - Validation output for changed structured records.
 - A new evidence record when the review proves a claim.
 
+## Templates
+
+- [`daily-review-template.md`](daily-review-template.md)
+- [`weekly-priorities-template.md`](weekly-priorities-template.md)
+- [`monthly-review-template.md`](monthly-review-template.md)
+
 ## Validation
 
 The cadence registry is validated by:

@@ -41,7 +41,7 @@ implementation:
 - Long-term goal registry created.
 - Goal schema defined.
 - Milestone map created.
-- Review cadence and templates created.
+- Review cadence and daily/weekly/monthly templates created.
 - Product docs for Goal Tracking Center and Command Center goals view created.
 - Goal Tracking OS review created.
 - Scoped docs had no private-path or secret-pattern hits in the local `rg`

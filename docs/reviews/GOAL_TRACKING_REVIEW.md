@@ -16,7 +16,7 @@ progress review, review cadence, and Command Center product planning.
 | Define Goal Tracking Center. | Documented | [`../product/goal-tracking-center.md`](../product/goal-tracking-center.md) |
 | Define goal schema. | Documented | [`../goals/goal-schema.md`](../goals/goal-schema.md) |
 | Create milestone map. | Documented | [`../goals/milestone-map.md`](../goals/milestone-map.md) |
-| Create progress review and cadence templates. | Documented | [`../goals/progress-review.md`](../goals/progress-review.md), [`../goals/weekly-priorities-template.md`](../goals/weekly-priorities-template.md), [`../goals/monthly-review-template.md`](../goals/monthly-review-template.md) |
+| Create progress review and cadence templates. | Documented | [`../goals/progress-review.md`](../goals/progress-review.md), [`../goals/daily-review-template.md`](../goals/daily-review-template.md), [`../goals/weekly-priorities-template.md`](../goals/weekly-priorities-template.md), [`../goals/monthly-review-template.md`](../goals/monthly-review-template.md) |
 | Connect goals to roadmap and Command Center. | Documented | [`../roadmap/MASTER_BACKLOG.md`](../roadmap/MASTER_BACKLOG.md), [`../roadmap/NEXT_PR_QUEUE.md`](../roadmap/NEXT_PR_QUEUE.md), [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) |
 | Store structured non-LLM goal records. | Implemented as local JSON | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
 | Store structured non-LLM evidence records. | Implemented as local JSON | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
@@ -52,7 +52,7 @@ progress review, review cadence, and Command Center product planning.
 
 - Repository intelligence scanner outputs connected to goal evidence.
 - Command Center UI implementation.
-- Weekly/monthly reviews with actual period evidence.
+- Daily/weekly/monthly reviews with actual period evidence.
 
 ## What Is Blocked
 

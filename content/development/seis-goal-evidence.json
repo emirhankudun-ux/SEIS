@@ -262,6 +262,7 @@
       "related_paths": [
         "content/development/seis-goal-review-cadence.json",
         "docs/goals/review-cadence.md",
+        "docs/goals/daily-review-template.md",
         "scripts/check-goal-tracking.mjs"
       ],
       "summary": "The daily, weekly, and monthly Goal Tracking OS review cadence records are structured and covered by the local goal tracking validator.",

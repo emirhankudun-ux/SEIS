@@ -111,6 +111,12 @@ and is documented in [`review-cadence.md`](review-cadence.md). It stores daily,
 weekly, and monthly review checklists as planned records until actual
 current-period review evidence exists.
 
+The review templates are:
+
+- [`daily-review-template.md`](daily-review-template.md)
+- [`weekly-priorities-template.md`](weekly-priorities-template.md)
+- [`monthly-review-template.md`](monthly-review-template.md)
+
 The current generated Command Center view model lives at
 [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 and is documented in

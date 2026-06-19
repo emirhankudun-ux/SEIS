@@ -48,6 +48,7 @@ broad file search.
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Static non-LLM Command Center view data. | Active |
 | [../apps/command-center/goal-tracking/index.html](../apps/command-center/goal-tracking/index.html) | Generated static Goal Tracking Center page. | Active |
+| [goals/daily-review-template.md](goals/daily-review-template.md) | Daily review template; use only for real daily reviews. | Template |
 | [goals/weekly-priorities-template.md](goals/weekly-priorities-template.md) | Weekly review template; use only for real weekly reviews. | Template |
 | [goals/monthly-review-template.md](goals/monthly-review-template.md) | Monthly review template; use only for real monthly reviews. | Template |
 
