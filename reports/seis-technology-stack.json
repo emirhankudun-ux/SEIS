@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1703296,
+      "githubBytes": 1777877,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -34,7 +34,7 @@
       "order": 2,
       "label": "TypeScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 411787,
+      "githubBytes": 423427,
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
         "polyglot/typescript/language-split-contract.ts",
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 144167,
+      "githubBytes": 156078,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -518,7 +518,7 @@
       "order": 52,
       "label": "CSS",
       "layer": "frontend-and-experience",
-      "githubBytes": 293039,
+      "githubBytes": 318194,
       "entrypoints": [
         "apps/web/style.css",
         "apps/web/styles.css"

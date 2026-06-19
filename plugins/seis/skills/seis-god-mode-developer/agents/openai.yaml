@@ -1,0 +1,7 @@
+agent:
+  display_name: "SEIS God Mode Developer"
+  default_prompt: "Use SEIS God Mode Developer to improve product, app, AI/AGI, cloud/security, and governance layers together without bypassing evidence or quality gates."
+  required_sources:
+    - "docs/governance/seis-god-mode-developer.md"
+    - "content/development/seis-god-mode-developer-contract.json"
+    - "scripts/check-seis-god-mode-developer.mjs"

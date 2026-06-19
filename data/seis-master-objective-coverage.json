@@ -8,6 +8,9 @@
   "requiredCommands": [
     "npm run check:seis-master-objective-coverage",
     "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-god-mode-module-coverage",
+    "npm run check:seis-god-mode-work-package",
+    "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
@@ -77,6 +80,14 @@
       "evidence": ["data/seis-master-prompt-github-controls.json", ".github/workflows/seis-master-prompt-governance.yml"],
       "checks": ["npm run check:open-source-governance", "npm run check:seis-master-prompt"],
       "gap": "External GitHub branch settings must be verified before claiming enforcement."
+    },
+    {
+      "id": "god-mode-every-topic-feature-growth",
+      "requirement": "Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence.",
+      "status": "active",
+      "evidence": ["content/development/seis-god-mode-module-coverage.json", "content/development/seis-god-mode-completion-audit.json", "roadmap/seis-next-steps-implementation-pack.md", "docs/governance/seis-god-mode-module-coverage.md"],
+      "checks": ["npm run check:seis-god-mode-module-coverage", "npm run check:seis-god-mode-completion-audit", "npm run check:seis-god-mode-work-package"],
+      "gap": "Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete."
     }
   ]
 }

@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1703296,
+      "githubBytes": 1777877,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -43,7 +43,7 @@
       "label": "TypeScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 411787,
+      "githubBytes": 423427,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 144167,
+      "githubBytes": 156078,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 293039,
+      "githubBytes": 318194,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",

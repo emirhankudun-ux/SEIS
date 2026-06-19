@@ -18,6 +18,10 @@ Protect user work. Protect privacy. Protect security. Preserve architectural int
 
 SEIS uses focus mode to reduce unnecessary context switching and tool inflation. Focus mode is not a shortcut. It is a way to keep attention on the next high-value, validated system improvement.
 
+## God Mode Developer
+
+SEIS uses God Mode Developer as a cross-layer operating lane for work that must improve more than one surface at once. It is not permission to skip boundaries. It requires product experience, application behavior, AI/AGI learning, cloud/security posture, and governance evidence to move together.
+
 ## Intelligence Layer
 
 SEIS should support future AI systems that understand, reason, plan, organize, document, automate, learn, and collaborate. The objective is not replacing humans; the objective is better human-AI systems that can understand, reason, plan, and execute safely.
