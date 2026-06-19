@@ -141,7 +141,7 @@ function buildHealthPayload() {
   try {
     const release = JSON.parse(readText(releasePath));
     return { ...release, source: "node-server" };
-  } catch (_error) {
+  } catch {
     return { ok: true, name: "seis-static", source: "node-server", releaseReadable: false };
   }
 }
@@ -155,7 +155,7 @@ function buildHandoffPayload() {
   try {
     const handoff = JSON.parse(readText(handoffPath));
     return { ok: true, source: "node-server", ...handoff };
-  } catch (_error) {
+  } catch {
     return { ok: false, source: "node-server", error: "handoff_checklist_unreadable" };
   }
 }
@@ -169,7 +169,7 @@ function buildEfficiencyPayload() {
   try {
     const efficiency = JSON.parse(readText(efficiencyPath));
     return { ok: true, source: "node-server", ...efficiency };
-  } catch (_error) {
+  } catch {
     return { ok: false, source: "node-server", error: "efficiency_governor_unreadable" };
   }
 }
@@ -183,7 +183,7 @@ function buildDevelopmentModePayload() {
   try {
     const developmentMode = JSON.parse(readText(developmentModePath));
     return { ok: true, source: "node-server", ...developmentMode };
-  } catch (_error) {
+  } catch {
     return { ok: false, source: "node-server", error: "development_mode_unreadable" };
   }
 }
@@ -197,7 +197,7 @@ function buildWeeklyUsagePayload() {
   try {
     const weeklyUsage = JSON.parse(readText(weeklyUsagePath));
     return { ok: true, source: "node-server", ...weeklyUsage };
-  } catch (_error) {
+  } catch {
     return { ok: false, source: "node-server", error: "weekly_usage_governor_unreadable" };
   }
 }
@@ -219,7 +219,7 @@ function buildPluginSourcesPayload() {
       capabilityLanes: sources.submittedPluginCapabilityLanes?.laneCount || 0,
       requestedTechnologies: sources.requestedSoftwareStack?.technologyCount || 0
     };
-  } catch (_error) {
+  } catch {
     return { ok: false, source: "node-server", error: "cloud_environment_unreadable" };
   }
 }
