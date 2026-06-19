@@ -52,6 +52,29 @@ describe('SEIS Universe agent router learning lab', () => {
     assert.equal(data.laneId, 'seis-data');
   });
 
+  it('routes specialist SEIS-Agent lanes for security, research, automation, and product work', () => {
+    const dataset = loadAgentRouterDataset(datasetPath);
+    const model = trainAgentRouterModel(dataset);
+
+    const security = predictAgentRoute(model, {
+      text: 'Review token redaction, vulnerability exposure, permission hardening, and security rollback risk.',
+    });
+    const research = predictAgentRoute(model, {
+      text: 'Research official documentation, standards, source provenance, and version compatibility.',
+    });
+    const automation = predictAgentRoute(model, {
+      text: 'Create an idempotent automation workflow with dry-run mode and runbook ownership.',
+    });
+    const product = predictAgentRoute(model, {
+      text: 'Define product requirements, acceptance criteria, launch readiness, and user outcomes.',
+    });
+
+    assert.equal(security.laneId, 'seis-security');
+    assert.equal(research.laneId, 'seis-research');
+    assert.equal(automation.laneId, 'seis-automation');
+    assert.equal(product.laneId, 'seis-product');
+  });
+
   it('passes eval split with expected lane predictions for all seed cases', () => {
     const dataset = loadAgentRouterDataset(datasetPath);
     const model = trainAgentRouterModel(dataset);

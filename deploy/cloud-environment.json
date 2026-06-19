@@ -8741,8 +8741,8 @@
       "id": "seis-llm-package-registry",
       "path": "content/development/llm-package-registry.json",
       "generatedAt": "2026-06-13",
-      "providerCount": 13,
-      "activePackageCount": 1,
+      "providerCount": 17,
+      "activePackageCount": 5,
       "packages": [
         {
           "id": "seis-agent",
@@ -8766,6 +8766,51 @@
             "bounded-task-runner"
           ],
           "status": "planned"
+        },
+        {
+          "id": "antigravity-helper",
+          "provider": "google",
+          "mode": "desktop-helper",
+          "scope": [
+            "agentic-workspace",
+            "manual-launch",
+            "ai-native-ideation"
+          ],
+          "status": "ready"
+        },
+        {
+          "id": "antigravity-ide-helper",
+          "provider": "jetbrains-google",
+          "mode": "desktop-helper",
+          "scope": [
+            "repo-workspace",
+            "agentic-ide",
+            "review-surface"
+          ],
+          "status": "ready"
+        },
+        {
+          "id": "cursor-helper",
+          "provider": "cursor",
+          "mode": "desktop-helper",
+          "scope": [
+            "secondary-ai-editor",
+            "diff-review",
+            "manual-launch"
+          ],
+          "status": "ready"
+        },
+        {
+          "id": "xcode-helper",
+          "provider": "apple",
+          "mode": "desktop-helper",
+          "scope": [
+            "swift",
+            "swiftui",
+            "apple-signing",
+            "simulator"
+          ],
+          "status": "ready"
         },
         {
           "id": "openai-helper",
@@ -8898,6 +8943,10 @@
       "remoteOrchestrator": "seis-agent",
       "localHelpers": [
         "codex",
+        "antigravity",
+        "antigravity-ide",
+        "cursor",
+        "xcode",
         "openai",
         "claude",
         "gemini",
@@ -8917,11 +8966,27 @@
         "governance check",
         "cross-tool orchestration"
       ],
-      "routingRuleCount": 12,
+      "routingRuleCount": 16,
       "routingRules": [
         {
           "keyword": "codex|primary execution|repo execution lane",
           "primary": "codex"
+        },
+        {
+          "keyword": "antigravity ide|ag ide|agentic ide workspace",
+          "primary": "antigravity-ide"
+        },
+        {
+          "keyword": "antigravity 2.0|antigravity app|google antigravity|agentic workspace",
+          "primary": "antigravity"
+        },
+        {
+          "keyword": "cursor|cursor editor|cursor review|secondary ai editor",
+          "primary": "cursor"
+        },
+        {
+          "keyword": "xcode|swiftui|apple signing|ios simulator|macos build",
+          "primary": "xcode"
         },
         {
           "keyword": "local",
@@ -8973,8 +9038,8 @@
       "id": "seis-llm-adapter-readiness",
       "path": "content/development/llm-adapter-readiness.json",
       "generatedAt": "2026-06-13",
-      "adapterCount": 14,
-      "readyAdapterCount": 1,
+      "adapterCount": 18,
+      "readyAdapterCount": 5,
       "adapters": [
         {
           "id": "seis-agent",
@@ -8996,6 +9061,47 @@
             "repo-execution",
             "automation",
             "bounded-task-running"
+          ]
+        },
+        {
+          "id": "antigravity",
+          "status": "ready",
+          "mode": "desktop-helper",
+          "capabilities": [
+            "agentic-workspace",
+            "ai-native-ideation",
+            "manual-launch"
+          ]
+        },
+        {
+          "id": "antigravity-ide",
+          "status": "ready",
+          "mode": "desktop-helper",
+          "capabilities": [
+            "repo-workspace",
+            "agentic-ide",
+            "review-surface"
+          ]
+        },
+        {
+          "id": "cursor",
+          "status": "ready",
+          "mode": "desktop-helper",
+          "capabilities": [
+            "secondary-ai-editor",
+            "diff-review",
+            "manual-launch"
+          ]
+        },
+        {
+          "id": "xcode",
+          "status": "ready",
+          "mode": "desktop-helper",
+          "capabilities": [
+            "swift",
+            "swiftui",
+            "apple-signing",
+            "simulator"
           ]
         },
         {
@@ -9157,8 +9263,8 @@
       "id": "seis-local-ai-tool-readiness",
       "path": "reports/local-ai-tool-readiness.json",
       "generatedAt": "2026-06-10T06:28:42.100Z",
-      "helperCount": 13,
-      "readyCount": 7,
+      "helperCount": 17,
+      "readyCount": 11,
       "missingCredentialCount": 2,
       "missingCommandCount": 4,
       "runtimeNotReadyCount": 0,
@@ -9170,6 +9276,62 @@
           "commandPath": "/Users/emirhankudun/.local/bin/codex",
           "launcherCommandPath": null,
           "appPath": null,
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "antigravity",
+          "label": "Antigravity",
+          "command": "open",
+          "commandPath": "/Applications/Antigravity.app",
+          "launcherCommandPath": "/usr/bin/open",
+          "appPath": "/Applications/Antigravity.app",
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "antigravity-ide",
+          "label": "Antigravity IDE",
+          "command": "open",
+          "commandPath": "/Applications/Antigravity IDE.app",
+          "launcherCommandPath": "/usr/bin/open",
+          "appPath": "/Applications/Antigravity IDE.app",
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "cursor",
+          "label": "Cursor",
+          "command": "open",
+          "commandPath": "/Applications/Cursor.app",
+          "launcherCommandPath": "/usr/bin/open",
+          "appPath": "/Applications/Cursor.app",
+          "installed": true,
+          "credentialState": null,
+          "runtimeOk": true,
+          "offlineFallbackCapable": false,
+          "status": "ready",
+          "issueCodes": []
+        },
+        {
+          "id": "xcode",
+          "label": "Xcode",
+          "command": "open",
+          "commandPath": "/Applications/Xcode.app",
+          "launcherCommandPath": "/usr/bin/open",
+          "appPath": "/Applications/Xcode.app",
           "installed": true,
           "credentialState": null,
           "runtimeOk": true,
@@ -9826,79 +9988,270 @@
       "id": "seis-desktop-app-integration",
       "path": "content/development/desktop-app-integration.json",
       "generatedAt": "2026-06-11T08:24:53.168Z",
-      "appCount": 10,
-      "detectedCount": 7,
+      "appCount": 28,
+      "detectedCount": 25,
       "missingCount": 3,
       "launchMode": "manual_or_user_requested",
-      "defaultIde": "antigravity",
+      "defaultIde": "antigravity-ide",
+      "antigravity2Surface": "antigravity",
+      "secondaryAiEditor": "cursor",
+      "primaryAgentExecution": "codex",
+      "localModelRuntime": "ollama",
+      "appleWork": "xcode",
+      "androidWork": "android-studio",
+      "jetbrainsWork": "task_specific_jetbrains_ide",
+      "oneWriterAtATime": true,
+      "noPrivateAppStateInRepo": true,
       "apps": [
         {
           "id": "antigravity",
-          "role": "preferred-agentic-ide",
+          "label": "Antigravity",
+          "role": "antigravity-2-agent-surface",
           "detected": true,
+          "version": "2.0.11",
           "appPath": "../../../../../../../Applications/Antigravity.app",
           "integrationAction": "use_when_task_matches"
         },
         {
+          "id": "antigravity-ide",
+          "label": "Antigravity IDE",
+          "role": "preferred-agentic-ide",
+          "detected": true,
+          "version": "2.0.4",
+          "appPath": "../../../../../../../Applications/Antigravity IDE.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "cursor",
+          "label": "Cursor",
+          "role": "secondary-ai-editor",
+          "detected": true,
+          "version": "3.7.21",
+          "appPath": "../../../../../../../Applications/Cursor.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
           "id": "xcode",
+          "label": "Xcode",
           "role": "apple-platform-ide",
           "detected": true,
+          "version": "16.0",
           "appPath": "../../../../../../../Applications/Xcode.app",
           "integrationAction": "use_when_task_matches"
         },
         {
           "id": "android-studio",
+          "label": "Android Studio",
           "role": "android-ide",
           "detected": false,
+          "version": null,
           "appPath": null,
           "integrationAction": "install_or_configure_when_needed"
         },
         {
           "id": "jetbrains-toolbox",
+          "label": "JetBrains Toolbox",
           "role": "ide-manager",
           "detected": true,
+          "version": "3.5.0.84344",
           "appPath": "../../../../../../../Applications/JetBrains Toolbox.app",
           "integrationAction": "use_when_task_matches"
         },
         {
+          "id": "intellij-idea",
+          "label": "IntelliJ IDEA",
+          "role": "jvm-and-polyglot-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/IntelliJ IDEA.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "webstorm",
+          "label": "WebStorm",
+          "role": "web-typescript-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/WebStorm.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "pycharm",
+          "label": "PyCharm",
+          "role": "python-ide",
+          "detected": true,
+          "version": "2026.1.2",
+          "appPath": "../../../../../Applications/PyCharm.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "datagrip",
+          "label": "DataGrip",
+          "role": "database-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/DataGrip.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "goland",
+          "label": "GoLand",
+          "role": "go-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/GoLand.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "rustrover",
+          "label": "RustRover",
+          "role": "rust-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/RustRover.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "clion",
+          "label": "CLion",
+          "role": "c-cpp-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/CLion.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "rider",
+          "label": "Rider",
+          "role": "dotnet-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/Rider.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "phpstorm",
+          "label": "PhpStorm",
+          "role": "php-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/PhpStorm.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "rubymine",
+          "label": "RubyMine",
+          "role": "ruby-ide",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/RubyMine.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "dataspell",
+          "label": "DataSpell",
+          "role": "data-science-ide",
+          "detected": true,
+          "version": "2026.1.2",
+          "appPath": "../../../../../Applications/DataSpell.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "mps",
+          "label": "MPS",
+          "role": "language-workbench",
+          "detected": true,
+          "version": "2025.3",
+          "appPath": "../../../../../Applications/MPS.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "dottrace",
+          "label": "dotTrace",
+          "role": "performance-profiler",
+          "detected": true,
+          "version": null,
+          "appPath": "../../../../../Applications/dotTrace.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "dotmemory",
+          "label": "dotMemory",
+          "role": "memory-profiler",
+          "detected": true,
+          "version": null,
+          "appPath": "../../../../../Applications/dotMemory.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
           "id": "codex",
+          "label": "Codex",
           "role": "primary-agent-execution",
           "detected": true,
+          "version": "26.616.31447",
           "appPath": "../../../../../../../Applications/Codex.app",
           "integrationAction": "use_when_task_matches"
         },
         {
+          "id": "air",
+          "label": "Air",
+          "role": "ai-native-workspace-experiment",
+          "detected": true,
+          "version": "262.43.15",
+          "appPath": "../../../../../Applications/Air.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
+          "id": "gateway",
+          "label": "Gateway",
+          "role": "remote-development-gateway",
+          "detected": true,
+          "version": "2026.1.3",
+          "appPath": "../../../../../Applications/Gateway.app",
+          "integrationAction": "use_when_task_matches"
+        },
+        {
           "id": "open-design",
+          "label": "Open Design",
           "role": "design-agent-workflow",
           "detected": true,
+          "version": "0.10.1",
           "appPath": "../../../../../Applications/Open Design.app",
           "integrationAction": "use_when_task_matches"
         },
         {
           "id": "ollama",
+          "label": "Ollama",
           "role": "local-model-runtime",
           "detected": true,
+          "version": "0.30.10",
           "appPath": "../../../../../../../Applications/Ollama.app",
           "integrationAction": "use_when_task_matches"
         },
         {
           "id": "docker",
+          "label": "Docker Desktop",
           "role": "container-runtime",
           "detected": false,
+          "version": null,
           "appPath": null,
           "integrationAction": "install_or_configure_when_needed"
         },
         {
           "id": "figma",
+          "label": "Figma",
           "role": "design-workflow",
           "detected": true,
+          "version": "126.5.6",
           "appPath": "../../../../../../../Applications/Figma.app",
           "integrationAction": "use_when_task_matches"
         },
         {
           "id": "adobe-creative-cloud",
+          "label": "Adobe Creative Cloud",
           "role": "creative-app-manager",
           "detected": false,
+          "version": null,
           "appPath": null,
           "integrationAction": "install_or_configure_when_needed"
         }

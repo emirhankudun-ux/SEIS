@@ -8,22 +8,34 @@ const LABELS = Object.freeze([
   'seis-code',
   'seis-design',
   'seis-data',
+  'seis-security',
+  'seis-research',
+  'seis-automation',
+  'seis-product',
 ]);
 
 const LANE_RISK_ORDER = Object.freeze({
   'seis': 0,
   'seis-design': 1,
   'seis-data': 2,
-  'seis-code': 3,
-  'seis-governance': 4,
-  'seis-cloud': 5,
+  'seis-product': 3,
+  'seis-research': 4,
+  'seis-automation': 5,
+  'seis-code': 6,
+  'seis-governance': 7,
+  'seis-security': 8,
+  'seis-cloud': 9,
 });
 
 const SAFETY_KEYWORDS = Object.freeze({
   'seis-cloud': ['cloud', 'deploy', 'deployment', 'provider', 'ssh', 'vpn', 'wireguard', 'bootstrap', 'rollback', 'cost'],
-  'seis-governance': ['release', 'security', 'license', 'quality', 'ci', 'github', 'handoff', 'policy', 'governance'],
+  'seis-governance': ['release', 'security', 'license', 'quality', 'ci', 'github', 'handoff', 'policy', 'governance', 'status', 'check', 'validation'],
   'seis-design': ['design', 'ui', 'ux', 'accessibility', 'responsive', 'motion', 'visual', 'layout'],
   'seis-data': ['data', 'dataset', 'schema', 'memory', 'provenance', 'training', 'report', 'rag'],
+  'seis-security': ['threat', 'vulnerability', 'secret', 'secrets', 'credential', 'token', 'redaction', 'permission', 'permissions', 'hardening', 'exposure', 'risk', 'private-key', 'access-control'],
+  'seis-research': ['research', 'official', 'source', 'sources', 'standards', 'version', 'compatibility', 'documentation', 'docs', 'api-docs'],
+  'seis-automation': ['automation', 'workflow', 'workflows', 'runbook', 'scheduled', 'idempotent', 'dry-run', 'generator', 'repeatable', 'failure-handling'],
+  'seis-product': ['requirements', 'acceptance', 'launch', 'outcome', 'milestone', 'roadmap-slice', 'user-jobs', 'non-goals'],
   'seis-code': ['code', 'script', 'runtime', 'test', 'tests', 'mcp', 'tool', 'bug', 'package', 'node'],
   'seis': ['architecture', 'roadmap', 'scope', 'plan', 'ecosystem', 'model-family', 'universe'],
 });
@@ -106,6 +118,8 @@ export function extractAgentRouteFeatures(task = {}) {
 
   if (/\b(secret|credential|token|key|redaction)\b/.test(text)) {
     flagFeatures.push('flag:secret_sensitive');
+    flagFeatures.push('flag:seis-security');
+    flagFeatures.push('flag:seis-governance');
   }
   if (/\b(push|release|publish|ci)\b/.test(text)) {
     flagFeatures.push('flag:release_sensitive');
@@ -124,7 +138,7 @@ export function predictAgentRoute(model, task, options = {}) {
   const learnedLaneId = maxScoreLane(scores);
   const safetyLaneId = classifyTaskWithSafetyFloor(task);
   const laneId = enforceSafetyFloor
-    ? boundedLaneDecision(learnedLaneId, safetyLaneId)
+    ? boundedLaneDecision(learnedLaneId, safetyLaneId, features)
     : learnedLaneId;
   const defaults = model.laneDefaults[laneId] || {};
 
@@ -208,6 +222,9 @@ function scoreTask(model, features) {
       if (label === 'seis-governance' && features.includes('flag:release_sensitive')) {
         score += 2;
       }
+      if (label === 'seis-security' && features.includes('flag:secret_sensitive')) {
+        score += 2;
+      }
       return [label, Number(score.toFixed(6))];
     }),
   );
@@ -230,15 +247,34 @@ function classifyTaskWithSafetyFloor(task = {}) {
     .toLowerCase();
 
   const tokenSet = new Set((text.match(TOKEN_PATTERN) || []));
+  const cloudMatched = ['cloud', 'deploy', 'deployment', 'provider', 'ssh', 'vpn', 'wireguard', 'bootstrap', 'cost']
+    .some(keyword => tokenSet.has(keyword));
+  const securityHardMatched = /\b(threat|vulnerability|permission|permissions|hardening|exposure|redaction)\b/.test(text)
+    || /\bsecurity[- ]risk\b/.test(text)
+    || tokenSet.has('private-key')
+    || tokenSet.has('access-control');
+  const secretMatched = /\b(secret|credential|token|key)\b/.test(text);
 
-  if (SAFETY_KEYWORDS['seis-cloud'].some(keyword => tokenSet.has(keyword))) {
+  if (securityHardMatched || (secretMatched && !cloudMatched)) {
+    return 'seis-security';
+  }
+  if (cloudMatched) {
     return 'seis-cloud';
   }
-  if (SAFETY_KEYWORDS['seis-design'].some(keyword => tokenSet.has(keyword))) {
-    return 'seis-design';
+  if (SAFETY_KEYWORDS['seis-research'].some(keyword => tokenSet.has(keyword))) {
+    return 'seis-research';
   }
   if (SAFETY_KEYWORDS['seis-data'].some(keyword => tokenSet.has(keyword))) {
     return 'seis-data';
+  }
+  if (SAFETY_KEYWORDS['seis-automation'].some(keyword => tokenSet.has(keyword))) {
+    return 'seis-automation';
+  }
+  if (SAFETY_KEYWORDS['seis-product'].some(keyword => tokenSet.has(keyword))) {
+    return 'seis-product';
+  }
+  if (SAFETY_KEYWORDS['seis-design'].some(keyword => tokenSet.has(keyword))) {
+    return 'seis-design';
   }
   if (/\b(release|security|license|quality|ci|github|handoff|policy|governance)\b/.test(text)) {
     return 'seis-governance';
@@ -249,11 +285,14 @@ function classifyTaskWithSafetyFloor(task = {}) {
   return 'seis';
 }
 
-function boundedLaneDecision(learnedLaneId, safetyLaneId) {
+function boundedLaneDecision(learnedLaneId, safetyLaneId, features = []) {
   if (learnedLaneId === safetyLaneId) {
     return learnedLaneId;
   }
-  return safetyLaneId === 'seis' ? learnedLaneId : safetyLaneId;
+  if (safetyLaneId === 'seis') {
+    return features.includes(`flag:${learnedLaneId}`) ? learnedLaneId : safetyLaneId;
+  }
+  return safetyLaneId;
 }
 
 function buildReasons(task, laneId, safetyLaneId) {

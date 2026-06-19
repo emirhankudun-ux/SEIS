@@ -1,6 +1,6 @@
 # SEIS Action Execution Run
 
-Generated: 2026-06-19T07:15:42.104Z
+Generated: 2026-06-19T07:24:21.937Z
 Contract: seis-action-execution-lane (0.1.0)
 Run Mode: dry-run
 Source Plan: reports/seis-action-execution/latest.json
@@ -22,8 +22,8 @@ Total: 5 | Executed: 0 | Skipped: 5 | Failed: 0 | Blocked: 1
 - Reasons: evidence and sources present; validation evidence present
 
 ## Agent Router Advisory
-- action-read: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
-- action-write: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
-- action-gate: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-read: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-write: seis-research via seis_plugin_integration; gate=npm run check:seis-ai-agent
+- action-gate: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
 - action-deploy: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
-- action-secret: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-secret: seis-security via seis_plugin_integration; gate=npm run check:seis-ai-agent

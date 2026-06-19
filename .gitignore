@@ -148,6 +148,8 @@ apps/web/content/
 
 # Documentation
 docs/*
+!docs/development/
+!docs/development/local-ai-workbench.md
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md

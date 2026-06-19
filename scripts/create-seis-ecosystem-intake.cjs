@@ -342,11 +342,29 @@ function createDesktopAppIntegration() {
   const existing = readJsonIfExists(DESKTOP_PATH);
   const generatedAt = existing?.generatedAt || new Date().toISOString();
   const apps = [
-    app("antigravity", "Antigravity IDE", ["Antigravity.app"], "preferred-agentic-ide", ["Open repo/worktree", "Run agent workflows", "Review SEIS plans"]),
+    app("antigravity", "Antigravity", ["Antigravity.app"], "antigravity-2-agent-surface", ["Run agentic workspace sessions", "Coordinate AI-native ideation", "Use as Antigravity 2.x surface when task matches"]),
+    app("antigravity-ide", "Antigravity IDE", ["Antigravity IDE.app"], "preferred-agentic-ide", ["Open repo/worktree", "Run agent workflows", "Review SEIS plans"]),
+    app("cursor", "Cursor", ["Cursor.app"], "secondary-ai-editor", ["Review focused diffs", "Open repo/worktree on request", "Use as a secondary editor with one writer active"]),
     app("xcode", "Xcode", ["Xcode.app"], "apple-platform-ide", ["Build iOS/macOS", "Inspect signing", "Use simulators"]),
     app("android-studio", "Android Studio", ["Android Studio.app"], "android-ide", ["Gradle projects", "Emulator/device workflows", "Kotlin/Java inspection"]),
     app("jetbrains-toolbox", "JetBrains Toolbox", ["JetBrains Toolbox.app"], "ide-manager", ["Manage JetBrains IDEs", "Open JVM/backend projects"]),
+    app("intellij-idea", "IntelliJ IDEA", ["IntelliJ IDEA.app"], "jvm-and-polyglot-ide", ["JVM backend work", "Large project navigation", "Refactor review when task matches"]),
+    app("webstorm", "WebStorm", ["WebStorm.app"], "web-typescript-ide", ["TypeScript and frontend inspection", "Web refactor review", "JavaScript project navigation"]),
+    app("pycharm", "PyCharm", ["PyCharm.app"], "python-ide", ["Python data and automation work", "Virtual environment inspection", "Python test review"]),
+    app("datagrip", "DataGrip", ["DataGrip.app"], "database-ide", ["SQL/schema inspection", "Database query review", "Data model exploration"]),
+    app("goland", "GoLand", ["GoLand.app"], "go-ide", ["Go services", "CLI tooling", "Go test and module inspection"]),
+    app("rustrover", "RustRover", ["RustRover.app"], "rust-ide", ["Rust systems work", "Cargo project inspection", "Performance-oriented tooling review"]),
+    app("clion", "CLion", ["CLion.app"], "c-cpp-ide", ["C/C++ and systems work", "CMake project inspection", "Native debugging when needed"]),
+    app("rider", "Rider", ["Rider.app"], "dotnet-ide", [".NET and C# work", "Unity/desktop project inspection", "Rider-specific refactor review"]),
+    app("phpstorm", "PhpStorm", ["PhpStorm.app"], "php-ide", ["PHP project inspection", "Composer workflow review", "Legacy web maintenance when needed"]),
+    app("rubymine", "RubyMine", ["RubyMine.app"], "ruby-ide", ["Ruby/Rails inspection", "Gem workflow review", "Legacy scripting work when needed"]),
+    app("dataspell", "DataSpell", ["DataSpell.app"], "data-science-ide", ["Notebook/data-science inspection", "Python analytics review", "Data exploration when task matches"]),
+    app("mps", "MPS", ["MPS.app"], "language-workbench", ["Language workbench experiments", "DSL review", "Advanced modeling when justified"]),
+    app("dottrace", "dotTrace", ["dotTrace.app"], "performance-profiler", ["Performance profiling", "Runtime bottleneck analysis", "Use only for targeted diagnostics"]),
+    app("dotmemory", "dotMemory", ["dotMemory.app"], "memory-profiler", ["Memory diagnostics", "Leak investigation", "Use only for targeted diagnostics"]),
     app("codex", "Codex", ["Codex.app"], "primary-agent-execution", ["Repo edits", "Terminal automation", "Validation"]),
+    app("air", "Air", ["Air.app"], "ai-native-workspace-experiment", ["Experimental agent workspace", "Review only when explicitly selected", "Do not treat as repository source of truth"]),
+    app("gateway", "Gateway", ["Gateway.app"], "remote-development-gateway", ["Remote IDE access", "Gateway-managed project access", "Use with explicit workspace target"]),
     app("open-design", "Open Design", ["Open Design.app"], "design-agent-workflow", ["Design artifacts", "Prototype previews", "Design-system generation"]),
     app("ollama", "Ollama", ["Ollama.app"], "local-model-runtime", ["Offline fallback", "Local model experiments"]),
     app("docker", "Docker Desktop", ["Docker.app"], "container-runtime", ["Container validation when explicitly needed"]),
@@ -360,9 +378,15 @@ function createDesktopAppIntegration() {
     generatedAt,
     policy: {
       launchMode: "manual_or_user_requested",
-      defaultIde: "antigravity",
+      defaultIde: "antigravity-ide",
+      antigravity2Surface: "antigravity",
+      secondaryAiEditor: "cursor",
+      primaryAgentExecution: "codex",
+      localModelRuntime: "ollama",
       appleWork: "xcode",
       androidWork: "android-studio",
+      jetbrainsWork: "task_specific_jetbrains_ide",
+      oneWriterAtATime: true,
       noPrivateAppStateInRepo: true
     },
     summary: {
@@ -382,6 +406,7 @@ function app(id, label, bundleNames, role, workflows) {
     role,
     detected: Boolean(foundPath),
     appPath: foundPath ? relative(foundPath) : null,
+    version: foundPath ? readAppVersion(foundPath) : null,
     bundleNames,
     workflows,
     integrationAction: foundPath ? "use_when_task_matches" : "install_or_configure_when_needed"
@@ -446,12 +471,12 @@ function renderDesktopMarkdown(integration) {
     "",
     `Detected: ${integration.summary.detectedCount}/${integration.summary.appCount}`,
     "",
-    "| App | Role | Detected | Path |",
-    "| --- | --- | --- | --- |"
+    "| App | Label | Role | Detected | Version | Path |",
+    "| --- | --- | --- | --- | --- | --- |"
   ];
 
   for (const item of integration.apps) {
-    lines.push(`| ${item.id} | ${item.role} | ${item.detected ? "yes" : "no"} | ${item.appPath || ""} |`);
+    lines.push(`| ${item.id} | ${item.label} | ${item.role} | ${item.detected ? "yes" : "no"} | ${item.version || ""} | ${item.appPath || ""} |`);
   }
 
   return `${lines.join("\n")}\n`;

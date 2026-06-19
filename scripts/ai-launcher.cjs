@@ -9,6 +9,10 @@ const { chooseAutoTool } = require("./ai-routing-policy.cjs");
 const ROUTES = {
   "seis-agent": { command: "npm", argsPrefix: [ "run", "seis:agent", "--" ], aliases: [ "seis", "agent", "policy" ] },
   codex: { command: "codex", aliases: [ "code" ] },
+  antigravity: { command: "open", appPath: appBundlePath( "Antigravity.app" ), aliases: [ "antigravity-2", "antigravity2" ], healthCheck: () => checkAppBundle( "Antigravity.app" ) },
+  "antigravity-ide": { command: "open", appPath: appBundlePath( "Antigravity IDE.app" ), aliases: [ "ag-ide" ], healthCheck: () => checkAppBundle( "Antigravity IDE.app" ) },
+  cursor: { command: "open", appPath: appBundlePath( "Cursor.app" ), aliases: [ "cursor-editor" ], healthCheck: () => checkAppBundle( "Cursor.app" ) },
+  xcode: { command: "open", appPath: appBundlePath( "Xcode.app" ), aliases: [ "apple-ide" ], healthCheck: () => checkAppBundle( "Xcode.app" ) },
   openai: { command: "openai", aliases: [ "gpt" ], credential: "OPENAI_API_KEY", online: true },
   claude: { command: "claude", aliases: [ "anthropic" ], credential: "ANTHROPIC_API_KEY", online: true },
   gemini: { command: "gemini", aliases: [ "google" ], credential: "GEMINI_API_KEY", online: true },
@@ -40,10 +44,18 @@ function checkOllamaHealth() {
   return result.status === 0;
 }
 
-function openDesignAppPath() {
-  const homeCandidate = path.join( os.homedir(), "Applications", "Open Design.app" );
+function appBundlePath( bundleName ) {
+  const homeCandidate = path.join( os.homedir(), "Applications", bundleName );
   if ( fs.existsSync( homeCandidate ) ) return homeCandidate;
-  return "/Applications/Open Design.app";
+  return path.join( "/Applications", bundleName );
+}
+
+function checkAppBundle( bundleName ) {
+  return fs.existsSync( appBundlePath( bundleName ) );
+}
+
+function openDesignAppPath() {
+  return appBundlePath( "Open Design.app" );
 }
 
 function checkOpenDesignApp() {

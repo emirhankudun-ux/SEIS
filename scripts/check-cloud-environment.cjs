@@ -37,7 +37,34 @@ const REQUIRED_ENVIRONMENT_SOURCE_KEYS = [
   "llmRequestBlueprints",
   "llmBridge"
 ];
-const REQUIRED_LOCAL_AI_TOOL_IDS = ["codex", "openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter", "hermes", "goose", "open-design"];
+const REQUIRED_LOCAL_AI_TOOL_IDS = ["codex", "antigravity", "antigravity-ide", "cursor", "xcode", "openai", "claude", "gemini", "qwen", "kimi", "ollama", "opencode", "aider", "interpreter", "hermes", "goose", "open-design"];
+const REQUIRED_DESKTOP_APP_IDS = [
+  "antigravity",
+  "antigravity-ide",
+  "cursor",
+  "xcode",
+  "android-studio",
+  "jetbrains-toolbox",
+  "intellij-idea",
+  "webstorm",
+  "pycharm",
+  "datagrip",
+  "goland",
+  "rustrover",
+  "clion",
+  "rider",
+  "phpstorm",
+  "rubymine",
+  "dataspell",
+  "mps",
+  "dottrace",
+  "dotmemory",
+  "codex",
+  "air",
+  "gateway",
+  "open-design",
+  "ollama"
+];
 const REQUIRED_THIRD_PARTY_AI_HELPER_IDS = ["claude-code", "gemini-cli", "antigravity", "deepseek-coder", "awesome-deepseek-agent", "open-design"];
 const REQUIRED_ECOSYSTEM_CANDIDATE_IDS = ["claude-code", "gemini-cli", "deepseek-coder", "awesome-deepseek-agent", "open-design", "antigravity-desktop", "desktop-bundle-root"];
 const REQUIRED_REQUESTED_PLUGIN_IDS = [
@@ -439,8 +466,15 @@ if (desktopAppIntegration) {
   ensure(source?.path === "content/development/desktop-app-integration.json", "desktopAppIntegration path must point to integration file");
   ensure(source?.appCount === apps.length, "desktopAppIntegration appCount must match apps");
   ensure(source?.launchMode === "manual_or_user_requested", "desktopAppIntegration launch mode must stay manual/user requested");
-  ensure(source?.defaultIde === "antigravity", "desktopAppIntegration default IDE must be antigravity");
-  for (const appId of ["antigravity", "xcode", "android-studio", "jetbrains-toolbox", "codex", "open-design"]) {
+  ensure(source?.defaultIde === "antigravity-ide", "desktopAppIntegration default IDE must be antigravity-ide");
+  ensure(source?.antigravity2Surface === "antigravity", "desktopAppIntegration must expose Antigravity 2.x surface");
+  ensure(source?.secondaryAiEditor === "cursor", "desktopAppIntegration must expose Cursor as the secondary AI editor");
+  ensure(source?.primaryAgentExecution === "codex", "desktopAppIntegration must preserve Codex as primary agent execution");
+  ensure(source?.localModelRuntime === "ollama", "desktopAppIntegration must preserve Ollama as local model runtime");
+  ensure(source?.appleWork === "xcode", "desktopAppIntegration must route Apple work to Xcode");
+  ensure(source?.oneWriterAtATime === true, "desktopAppIntegration must enforce one writer at a time");
+  ensure(source?.noPrivateAppStateInRepo === true, "desktopAppIntegration must forbid private app state in repo");
+  for (const appId of REQUIRED_DESKTOP_APP_IDS) {
     ensure(appIds.has(appId), `desktopAppIntegration missing app ${appId}`);
   }
 }

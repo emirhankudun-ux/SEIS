@@ -11,6 +11,10 @@ npm run ai -- auto "quick repo patch" :: --help
 npm run ai -- seis-agent
 npm run ai -- openai
 npm run ai -- codex
+npm run ai -- antigravity
+npm run ai -- antigravity-ide
+npm run ai -- cursor
+npm run ai -- xcode
 npm run ai -- claude
 npm run ai -- gemini
 npm run ai -- qwen
@@ -35,6 +39,10 @@ Current routing intent:
 
 - `seis-agent`: default orchestration for repo governance, release, and policy-sensitive work.
 - `codex`: primary repo execution lane when explicitly requested.
+- `antigravity`: Antigravity 2.x desktop surface for AI-native workspace sessions.
+- `antigravity-ide`: preferred local IDE surface for SEIS repo/worktree work.
+- `cursor`: secondary AI editor/review surface; keep one writer active.
+- `xcode`: Apple platform IDE for Swift, SwiftUI, signing, simulators, and macOS/iOS builds.
 - `aider`: small existing-file patches, refactors, and diff-oriented edits.
 - `openai`: local analysis and summarization on demand.
 - `gemini`: browser-led research, source lookup, and documentation comparison.
@@ -68,6 +76,9 @@ Duruma göre otomatik yönlendirme:
 npm run ai -- auto "browser research for docs mcp"    # → gemini (anahtarlar varsa) / yoksa fallback: seis-agent
 npm run ai -- auto "local offline llama draft"        # → ollama (daemon açıksa) / yoksa fallback: seis-agent
 npm run ai -- auto "quick repo patch with internet down" # → ollama (eğer açık) / yoksa fallback: seis-agent
+npm run ai -- auto "antigravity ide workspace"      # → antigravity-ide / yoksa fallback: seis-agent
+npm run ai -- auto "cursor review"                  # → cursor / yoksa fallback: seis-agent
+npm run ai -- auto "xcode swiftui signing"          # → xcode / yoksa fallback: seis-agent
 npm run ai -- auto "hermes mcp gateway"               # → hermes / yoksa fallback: seis-agent
 npm run ai -- auto "goose general agent"              # → goose / yoksa fallback: seis-agent
 npm run ai -- auto "open design prototype"            # → open-design desktop app / yoksa fallback: seis-agent
@@ -97,6 +108,9 @@ Not: Bu kısa yollarda router önce rol önceliğini alır:
 - `AI_FORCE_OFFLINE=1` ile `auto` modu offline-first çalışır; bu durumda openai/claude/gemini/kimi gibi online odaklı yardımcılar eksikse önce `ollama` denenir.
 - `AI_FORCE_ONLINE=1` ile offline fallback atlanır; normal kullanılabilirlik kontrolü uygulanır.
 
+- `antigravity`, `antigravity-ide`, `cursor` ve `xcode`: masaüstü uygulama
+  rotalarıdır; CLI command yoksa bile `open` üzerinden manuel/istek bazlı açılır.
+  Bu rotalar repo hakikati değildir; Git durumu ve SEIS dokümanları kaynak kabul edilir.
 - `interpreter`: dataset, CSV, JSON transform, and log/trace analysis.
 - `claude`: narrative, UX copy, naming, and strategy memo shaping.
 - `kimi`: translation, localization, and multilingual surface work.

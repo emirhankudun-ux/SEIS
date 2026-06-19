@@ -1,6 +1,6 @@
 # SEIS Action Decision Report
 
-Generated at: 2026-06-19T07:15:41.801Z
+Generated at: 2026-06-19T07:24:17.765Z
 
 ## Context
 - Scope: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS
@@ -26,11 +26,11 @@ Generated at: 2026-06-19T07:15:41.801Z
 
 
 ## Agent Router Advisory
-- action-read: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
-- action-write: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-read: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
+- action-write: seis-research via seis_plugin_integration; gate=npm run check:seis-ai-agent
 - action-shell: seis-governance via seis_plugin_integration; gate=npm run check:seis-specialist-plugins
 - action-deploy: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
-- action-secret: seis-cloud via seis_plugin_integration; gate=npm run check:cloud-access-policy
+- action-secret: seis-security via seis_plugin_integration; gate=npm run check:seis-ai-agent
 
 
 ## Eval Critic Advisory

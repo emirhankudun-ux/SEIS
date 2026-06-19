@@ -63,6 +63,7 @@ const report = {
     contractId: contract.id,
     contractVersion: contract.version,
     policy: executionPolicy,
+    routeModel: plan.policy?.routeModel || null,
   },
   input: {
     execute: executeRequested,

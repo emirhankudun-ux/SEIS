@@ -125,6 +125,24 @@ Responsibilities:
 
 All agents must follow [`AGENTS.md`](./AGENTS.md).
 
+## Local AI Workbench Layer
+
+This layer connects installed local tools to SEIS without making any editor or
+desktop app the source of truth.
+
+Responsibilities:
+
+- route Codex, Antigravity, Antigravity IDE, Cursor, Xcode, Ollama, JetBrains
+  IDEs, Air, Gateway, Open Design, and Figma by task type
+- keep one AI/editor surface in writer mode at a time
+- expose local app readiness through generated reports
+- prevent private app state, credentials, caches, and proprietary bundle
+  contents from entering the repository
+- preserve Git and SEIS docs as canonical handoff surfaces
+
+The operating contract is documented in
+[`docs/development/local-ai-workbench.md`](./docs/development/local-ai-workbench.md).
+
 ## Automation Layer
 
 This layer manages repeatable system workflows.

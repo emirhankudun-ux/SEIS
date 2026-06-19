@@ -20,6 +20,14 @@ FINDINGS=()
 
 fail() { FINDINGS+=("$1"); }
 
+require_yq() {
+  if command -v yq >/dev/null 2>&1; then
+    return 0
+  fi
+  echo "[SKIP] yq-workflow-lint  yq not installed"
+  return 1
+}
+
 check_workflow() {
   local file="$1"
   local base
@@ -33,7 +41,9 @@ check_workflow() {
 
   # 2. Has 'on:' trigger section
   local has_triggers
-  has_triggers=$(yq -r 'has("on")' "$file" 2>/dev/null)
+  # Some yq builds parse GitHub's unquoted "on" key as YAML 1.1 boolean true.
+  # Accept both key shapes so the lint remains portable across yq variants.
+  has_triggers=$(yq -r 'has("on") or has("true")' "$file" 2>/dev/null)
   if [ "$has_triggers" != "true" ]; then
     fail "$base: missing 'on:' trigger section"
   fi
@@ -58,6 +68,8 @@ check_workflow() {
 }
 
 self_test() {
+  require_yq || return 0
+
   local pass=0
   local total=0
 
@@ -153,6 +165,8 @@ main() {
     self_test
     return
   fi
+
+  require_yq || return 0
 
   if [ ! -d "$WORKFLOW_DIR" ]; then
     echo "[SKIP] yq-workflow-lint  no .github/workflows/ directory"

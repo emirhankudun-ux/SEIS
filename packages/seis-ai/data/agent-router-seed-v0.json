@@ -11,7 +11,11 @@
     "seis-cloud",
     "seis-code",
     "seis-design",
-    "seis-data"
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
   ],
   "cases": [
     {
@@ -119,6 +123,58 @@
       }
     },
     {
+      "id": "train-security-release-risk",
+      "split": "train",
+      "task": {
+        "text": "Review private key exposure, permission risk, dependency vulnerability, SSH hardening, and rollback security gates.",
+        "signals": ["security", "private-key", "permission", "vulnerability", "hardening", "risk"]
+      },
+      "expected": {
+        "laneId": "seis-security",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-research-official-docs",
+      "split": "train",
+      "task": {
+        "text": "Research official documentation, standards, version compatibility, source quality, and evidence before an architecture decision.",
+        "signals": ["research", "official", "documentation", "standards", "version", "sources"]
+      },
+      "expected": {
+        "laneId": "seis-research",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-automation-runbook",
+      "split": "train",
+      "task": {
+        "text": "Design an idempotent dry-run automation workflow, scheduled check, runbook, rollback step, and validation output.",
+        "signals": ["automation", "workflow", "scheduled", "runbook", "idempotent", "dry-run"]
+      },
+      "expected": {
+        "laneId": "seis-automation",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-product-launch-slice",
+      "split": "train",
+      "task": {
+        "text": "Define product requirements, acceptance criteria, user outcome, launch readiness, non-goals, and roadmap slice.",
+        "signals": ["product", "requirements", "acceptance", "outcome", "launch", "roadmap-slice"]
+      },
+      "expected": {
+        "laneId": "seis-product",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
       "id": "eval-design-system",
       "split": "eval",
       "task": {
@@ -192,6 +248,58 @@
       },
       "expected": {
         "laneId": "seis",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-security-permissions",
+      "split": "eval",
+      "task": {
+        "text": "Audit token redaction, dependency vulnerability, access-control exposure, and security rollback risk.",
+        "signals": ["token", "redaction", "vulnerability", "access-control", "security-risk"]
+      },
+      "expected": {
+        "laneId": "seis-security",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-research-versions",
+      "split": "eval",
+      "task": {
+        "text": "Compare official API docs, version support, source provenance, standards notes, and implementation constraints.",
+        "signals": ["official", "api-docs", "version", "source", "standards"]
+      },
+      "expected": {
+        "laneId": "seis-research",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-automation-ci-runbook",
+      "split": "eval",
+      "task": {
+        "text": "Create a repeatable CI automation workflow with dry-run mode, runbook ownership, and failure handling.",
+        "signals": ["automation", "ci-workflow", "dry-run", "runbook", "failure-handling"]
+      },
+      "expected": {
+        "laneId": "seis-automation",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-product-acceptance",
+      "split": "eval",
+      "task": {
+        "text": "Scope the product milestone with acceptance criteria, launch readiness, user jobs, risks, and non-goals.",
+        "signals": ["product", "milestone", "acceptance", "launch", "user-jobs"]
+      },
+      "expected": {
+        "laneId": "seis-product",
         "toolName": "seis_plugin_integration",
         "defaultGate": "npm run check:seis-ai-agent"
       }

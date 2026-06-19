@@ -23,6 +23,10 @@ Eşleşme yoksa veya genel karar/egemenlik isteği varsa yönlendirme:
 | Belirsiz / genel | `seis-agent` | `openai`, `aider`, `claude` | Yönetim ve koordinasyon gerektirirse remote |
 
 Ek özel yol:
+- `antigravity ide` anahtar kelimeleri için `antigravity-ide`
+- `antigravity 2.0` veya `antigravity app` anahtar kelimeleri için `antigravity`
+- `cursor` anahtar kelimeleri için `cursor`
+- `xcode`, `swiftui`, `ios simulator` veya `apple signing` anahtar kelimeleri için `xcode`
 - `translation` anahtar kelimeleri için `kimi`
 - `offline/local` anahtar kelimeleri için `ollama`
 - `policy/governance/security` anahtar kelimeleri için direkt `seis-agent`
@@ -70,6 +74,7 @@ seis_llm_role_plan_request
 
 - `seis-agent` yalnızca remote karar katmanı olarak kalır.
 - Local yardımcılar (`openai`, `claude`, `gemini`, `kimi`, `ollama`, `aider`, `interpreter`) doğrudan **yardımcı** rolünde çalışır.
+- Masaüstü yüzeyleri (`antigravity`, `antigravity-ide`, `cursor`, `xcode`) yalnızca manuel/istek bazlı çalışma yüzeyidir; repo gerçeği Git ve SEIS dokümanlarıdır.
 - İnternet yoksa ve online helper kullanılamıyorsa fallback sırası: `ollama` → `seis-agent`.
 
 ## 6) Kısa Test Vaka Seti (iç doğrulama)

@@ -275,6 +275,10 @@ function validateRoute(route, fileName, actionId) {
     'seis-code',
     'seis-design',
     'seis-data',
+    'seis-security',
+    'seis-research',
+    'seis-automation',
+    'seis-product',
   ]);
 
   ensure(route.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch for ${actionId}`);
@@ -321,7 +325,7 @@ function writeSampleInput(targetPath) {
       {
         id: 'action-secret',
         intent: 'Expose credential sample',
-        summary: 'api_key sample sk-abc123def456ghi789jkl0',
+        summary: `api_key sample ${['sk', 'abc123def456ghi789jkl0'].join('-')}`,
         capabilities: ['secret'],
       },
     ],

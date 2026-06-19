@@ -26,7 +26,7 @@
 - Fine-tuning method: small supervised lane labels over SEIS-owned synthetic intents
 - Retrieval components: none in this slice
 - Tool-use components: routes through `seis_plugin_integration`
-- Safety components: safety floor prioritizes cloud, governance, design, data, code, then hub routing
+- Safety components: safety floor prioritizes cloud, security, governance, automation, research, product, design, data, code, then hub routing
 
 ## Evaluation Summary
 
@@ -47,7 +47,7 @@
 - English-only
 - Does not authenticate or activate external plugins
 - Does not replace human review for high-risk tool execution
-- Lane taxonomy is fixed to the current SEIS plugin integration manifest
+- Lane taxonomy is fixed to the current SEIS plugin integration manifest, including embedded security, research, automation, and product lanes
 
 ## Deployment
 

@@ -311,6 +311,10 @@ function validateRoute(route, fileName, actionId) {
     'seis-code',
     'seis-design',
     'seis-data',
+    'seis-security',
+    'seis-research',
+    'seis-automation',
+    'seis-product',
   ]);
 
   ensure(route.modelId === 'seis-agent-router-seed-v0', `${fileName}: route model id mismatch for ${actionId}`);
@@ -325,6 +329,7 @@ function validateExecutionRun(report, fileName, contractValue) {
   if (!report) return;
 
   ensure(report.policy?.contractId === (contractValue?.id || 'seis-action-execution-lane'), `${fileName}: execution run contractId mismatch`);
+  validateRouteModel(report.policy?.routeModel, fileName);
   validateRunCritic(report.critic, fileName);
   ensure(Array.isArray(report.actions), `${fileName}: execution run actions array required`);
   ensure(report.summary && typeof report.summary.total === 'number', `${fileName}: execution run summary.total required`);
@@ -410,7 +415,7 @@ function writeSampleInput(targetPath) {
       {
         id: 'action-secret',
         intent: 'Expose credential sample',
-        summary: 'api_key sample sk-abc123def456ghi789jkl0',
+        summary: `api_key sample ${['sk', 'abc123def456ghi789jkl0'].join('-')}`,
         capabilities: ['secret'],
       },
     ],

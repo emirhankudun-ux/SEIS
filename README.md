@@ -237,6 +237,10 @@ SEIS is built with human ownership and AI assistance.
 - Maintainer: Emirhan Kudun ([@emirhankudun-ux](https://github.com/emirhankudun-ux))
 - Primary execution assistant: OpenAI Codex / ChatGPT
 - Architecture and review assistant: Claude
+- Local workbench: Codex, Antigravity, Antigravity IDE, Cursor, Xcode,
+  Ollama, JetBrains IDEs, Air, Gateway, Open Design, and Figma are coordinated
+  through [`docs/development/local-ai-workbench.md`](./docs/development/local-ai-workbench.md)
+  and the generated desktop/readiness reports.
 
 Technology names in this repository may appear as platform references,
 compatibility targets, or tool integrations. They do not imply endorsement,

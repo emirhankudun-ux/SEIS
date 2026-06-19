@@ -95,16 +95,23 @@ Canonical identity records live in
 
 ## Aktif Lokal IDE / Design/Creator Stack
 
+- Codex / ChatGPT — birincil repo yürütme, terminal otomasyonu ve doğrulama
+- Antigravity — Antigravity 2.x AI-native çalışma yüzeyi
 - Antigravity IDE — öncelikli çalışma yüzeyi
-- Antigravity 2.0 — yardımcı/ikincil çalışma yüzeyi
+- Cursor — ikincil AI editor/review yüzeyi; aynı anda yalnızca tek writer aktif kalır
 - Xcode — Apple platformları için öncelikli
 - Android Studio — Android geliştirme için
+- JetBrains IDE ailesi — görev özelinde WebStorm, IntelliJ IDEA, PyCharm, DataGrip, GoLand, RustRover, CLion, Rider, PhpStorm, RubyMine, DataSpell, MPS, dotTrace ve dotMemory
+- Ollama — lokal/offline model denemeleri ve gizlilik odaklı taslaklar için
+- Air / Gateway — açıkça seçildiğinde yardımcı desktop/remote workspace yüzeyleri
 - Figma — ana UI/design sistemi yüzeyi
 
 ## Bağlama Kuralı (Depolama Dostu)
 
 - Yalnızca yerel olarak kurulu olan uygulamalar bağlanır.
 - Kurulu olmayan uygulamalar için otomatik kurulum/indirme yapılmaz.
+- Masaüstü uygulama durumları, tokenlar, workspace cache dosyaları ve özel ayarlar repoya yazılmaz.
+- Codex, Antigravity IDE, Cursor veya başka bir AI editor arasında geçiş yapılırken önce `git status --short` kontrol edilir ve aktif writer açıkça korunur.
 
 ## Büyük Dil Modeli Stratejisi
 

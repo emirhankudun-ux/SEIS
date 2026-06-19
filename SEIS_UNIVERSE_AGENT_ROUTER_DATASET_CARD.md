@@ -23,7 +23,7 @@
 ## Contents
 
 - Data type: labeled SEIS task intents mapped to agent/plugin lanes
-- Approximate size: eight train and six eval routing cases
+- Approximate size: twelve train and ten eval routing cases
 - Languages: English
 - Modalities: text only
 - Time range: 2026-06-19
@@ -49,7 +49,7 @@
 - Bias or coverage risks: medium due small seed taxonomy
 - License risks: low
 - Contamination risks: low; no restricted references
-- Mitigations: deterministic safety floor routes cloud/security/release-sensitive work to higher-control lanes
+- Mitigations: deterministic safety floor routes cloud, security, research, automation, product, and release-sensitive work to higher-control lanes
 
 ## Evaluation Link
 
