@@ -114,7 +114,7 @@ const result = {
   checks,
   blockers,
   warnings,
-  nextActions: nextActions(blockers, checks.sshConfig.transport),
+  nextActions: nextActions(blockers, checks.sshConfig.transport, checks.sshConfig.hostname, checks.sshConfig.user),
   safety: [
     "This check does not print SSH private keys or GitHub tokens.",
     "SEIS-SSH must remain a single cloud-only alias for Codex SSH surfaces.",
@@ -235,14 +235,14 @@ function shellQuote(value) {
   return `'${String(value).replaceAll("'", "'\\''")}'`;
 }
 
-function nextActions(items, transport) {
+function nextActions(items, transport, directHost = null, directUser = "root") {
   const actions = [];
   if (items.includes("ssh-config-unavailable")) actions.push("Run npm run cloud:ssh-config:install from the SEIS repo.");
   if (items.includes("ssh-config-not-cloud-only")) actions.push("Reinstall the cloud-only SEIS SSH config and remove local/VPS aliases from the Codex SSH selection.");
   if (items.includes("ssh-picker-not-compatible")) actions.push("Use npm run check:seis-ssh-picker-compatibility, then switch SEIS-SSH to --transport direct-cloud only after the cloud endpoint is reachable.");
   if (items.includes("ssh-remote-offline")) {
     if (transport === "direct-cloud") {
-      actions.push("Run host triage on the resolved direct-cloud VM:\n  1) Verify sshd is listening: sudo ss -ltnp | rg ':22\\b'\n  2) Verify firewall allowlist: sudo ufw status verbose || sudo firewall-cmd --list-all\n  3) Ensure 22/tcp is open (ufw allow 22/tcp or firewall-cmd --permanent --add-port=22/tcp)\n  4) Restart sshd: sudo systemctl restart sshd\n  5) Check service: sudo systemctl status sshd\nThen rerun this check.");
+      actions.push(`Run host remediation planner then recheck:\n  npm run cloud:ssh:host-fix-plan -- --public-ip ${shellQuote(directHost || "<direct-host>")} --user ${shellQuote(directUser || "root")} --live --json`);
     } else {
       actions.push("Start the GitHub Codespace or refresh GitHub CLI auth with gh auth refresh -h github.com -s codespace.");
     }
