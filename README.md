@@ -117,6 +117,16 @@ Start with:
 Good contributions are small, reviewed, reversible, documented, and aligned with
 the long-term platform model.
 
+## Documentation Navigation
+
+For the current foundation status and roadmap, start with:
+
+- [`docs/INDEX.md`](./docs/INDEX.md) for the documentation map
+- [`docs/STATUS.md`](./docs/STATUS.md) for current repository readiness
+- [`docs/roadmap/MASTER_BACKLOG.md`](./docs/roadmap/MASTER_BACKLOG.md) for the consolidated backlog
+- [`docs/roadmap/NEXT_PR_QUEUE.md`](./docs/roadmap/NEXT_PR_QUEUE.md) for the next safe PR sequence
+- [`docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md`](./docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) for the latest foundation review
+
 ## GitHub Growth Strategy
 
 SEIS should be discoverable, useful, and trustworthy before it tries to be loud.
