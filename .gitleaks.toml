@@ -11,7 +11,7 @@ paths = [
 ]
 regexTarget = "line"
 regexes = [
-  '''api_key=sk-1234567890abcdef''',
-  '''token: ghp_xxx1234567890abcde''',
-  '''sk-1234567890abcdef should be hidden''',
+  '''api_key=sk-[0-9a-f]{16}''',
+  '''token: ghp_xxx[0-9a-z]{15}''',
+  '''sk-[0-9a-f]{16} should be hidden''',
 ]

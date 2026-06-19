@@ -1,32 +1,71 @@
 # Dependencies
 node_modules/
+packages/*/node_modules/
 
-# Logs and temp files
-*.log
-*.tmp
+# Build artifacts
+dist/
+build/
+target/
+coverage/
+.cache/
+.turbo/
+.next/
+**/.build/
+**/.swiftpm/
 
-# Environment variables
+# Environment files and local secrets
 .env
 .env.local
 .env.*
+!.env.example
+.seis-secrets/
 
-# IDE and editor settings
-.vscode/
-.idea/
+# Secret and SSH key material
+*.pem
+*.key
+*.p8
+*.p12
+*.crt
+*.csr
+id_rsa
+id_rsa.pub
+id_dsa
+id_dsa.pub
+id_ecdsa
+id_ecdsa.pub
+id_ed25519
+id_ed25519.pub
+id_ed25519_*
+id_ed25519_*.pub
+*.private
+*.private.pub
 
 # Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.Python
+env/
+venv/
+.venv/
+.mypy_cache/
+.pytest_cache/
 
-# Build outputs
-dist/
-build/
-target/
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+.eslintcache
 
 # OS generated files
 .DS_Store
+.DS_Store?
+._*
+__MACOSX/
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
 # Testing
@@ -35,17 +74,13 @@ htmlcov/
 coverage/
 .nyc_output/
 
-# IDE
+# IDE and editor settings
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Temporary files
-*.tmp
-*.temp
-
-# Compressed files
+# Archives and bundled binary packages
 *.zip
 *.gz
 *.tar
@@ -61,6 +96,7 @@ coverage/
 *.arj
 *.rpm
 *.deb
+*.pkg
 *.Z
 *.lz
 *.lzo
@@ -111,7 +147,6 @@ ios/
 !packages/seis-ai/data/model-benchmark-suite-v0.json
 !packages/seis-ai/models/seis-model-benchmark-suite.json
 !packages/seis-ai/models/seis-model-promotion-policy.json
-!apps/seis-core/data/seis-router-routes.json
 !content/development/seis-god-mode-runtime-evidence.json
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json
@@ -144,8 +179,9 @@ packages/seis_platform_swift/.build/
 scripts/super-ssh-manager.py
 
 # Local SEIS SSH mobile readiness reports
+# Local generated reports
+reports/tmp/
 reports/seis-ssh-mobile-24x7-readiness.json
 reports/seis-ssh-mobile-24x7-readiness.md
 reports/seis-ssh-mobile-direct-cloud-profile.json
 reports/seis-ssh-mobile-direct-cloud-profile.md
-.seis-secrets/
