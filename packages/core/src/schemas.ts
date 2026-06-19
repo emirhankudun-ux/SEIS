@@ -52,15 +52,23 @@ export const CapabilityFamilySchema = z.object({
   id: z.string().min(1),
   includes: z.array(z.string()),
   defaultAction: z.string().min(1),
-  liveWriteGate: z.union([z.boolean(), z.string()]),
+  liveWriteGate: z.string().min(1),
 });
+
+export const EcosystemActivationSchema = z.object({
+  intent: z.string().min(1),
+  defaultMode: z.string().min(1),
+  pluginCatalog: z.string().min(1),
+  routingOrder: z.array(z.string()),
+  blockedByDefault: z.array(z.string()),
+}).passthrough();
 
 export const ConnectorRegistrySchema = z.object({
   version: z.number().int().positive(),
   id: z.string().min(1),
   mode: z.string().min(1),
-  policy: z.record(z.unknown()),
-  ecosystemActivation: z.record(z.unknown()),
+  policy: z.record(z.string()),
+  ecosystemActivation: EcosystemActivationSchema,
   connectors: z.array(ConnectorSchema).min(1),
   skills: z.array(z.string()),
   capabilityFamilies: z.array(CapabilityFamilySchema),
