@@ -72,8 +72,8 @@ npm run cloud:ssh:direct-cloud:activate -- --public-ip <PUBLIC_IP> --direct-user
 ```
 
    The activator automatically runs `cloud:ssh:mobile-24x7:strict` at the end.
-   Use `--skip-mobile-check` to run endpoint/auth checks without the final
-   readiness gate (useful for staged rollout).
+   Use `--skip-mobile-check` to complete direct-cloud switch verification
+   (reachable + SSH auth) and skip the final mobile-24x7 strict gate.
 
 7. Require the mobile gate to pass:
 
