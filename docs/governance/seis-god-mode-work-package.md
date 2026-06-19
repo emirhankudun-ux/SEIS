@@ -19,6 +19,7 @@ The work package describes the current God Mode slice as a bounded, reviewable, 
 | Run State | Current source, runtime, telemetry, validation, commit, push, CI, and protected-user-work state. |
 | Staging Manifest | Intended staging groups, protected paths, excluded categories, and commit-readiness boundaries. |
 | Changelog | Draft-unverified release notes for every added God Mode feature group. |
+| Feature Growth Ledger | Topic-by-topic proof that Dashboard, Goals, Repos, Docs, Agents, Security, AI Policy, Rollback, Validation, and Handoff have improvement evidence. |
 
 ## Completion rule
 
@@ -28,6 +29,7 @@ Local governance validation and local browser runtime verification have passed, 
 
 - `content/development/seis-god-mode-validation-log.md`
 - `content/development/seis-god-mode-runtime-evidence.json`
+- `content/development/seis-god-mode-feature-growth-ledger.json`
 - `reports/seis-commit-packages.md`
 
 ## Canonical contract

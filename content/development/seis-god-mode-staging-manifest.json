@@ -1,0 +1,148 @@
+{
+  "id": "seis-god-mode-staging-manifest",
+  "version": "2026.06.18",
+  "status": "active",
+  "stagingState": "planned-not-staged",
+  "purpose": "Define the intended God Mode staging boundary before validation, commit, push, or CI evidence exists.",
+  "qualityGate": "npm run check:seis-god-mode-staging-manifest",
+  "stagingPrinciples": [
+    "Stage only files that belong to the bounded God Mode work package.",
+    "Protect unrelated user work and existing dirty files.",
+    "Do not claim commit readiness until validation passes and staging has been reviewed.",
+    "Keep rollback possible by grouping contracts, docs, checkers, dashboard surfaces, telemetry, and package scripts as one feature slice."
+  ],
+  "requiredGroups": [
+    "dashboard-runtime",
+    "shared-contracts",
+    "god-mode-contracts",
+    "governance-docs",
+    "quality-checkers",
+    "plugin-skill",
+    "package-quality-chain"
+  ],
+  "groups": [
+    {
+      "id": "dashboard-runtime",
+      "displayName": "Dashboard Runtime",
+      "state": "include-after-validation",
+      "paths": [
+        "apps/seis-demo-web/index.html",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/styles.css",
+        "apps/seis-demo-web/service-worker.js"
+      ],
+      "reviewRule": "Stage together because panels, renderers, styles, cache version, and telemetry behavior are coupled."
+    },
+    {
+      "id": "shared-contracts",
+      "displayName": "Shared Contracts",
+      "state": "include-after-validation",
+      "paths": [
+        "apps/seis-demo-web/contracts/seis-demo-contract.json",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json"
+      ],
+      "reviewRule": "Stage web and native contract changes together to preserve telemetry parity."
+    },
+    {
+      "id": "god-mode-contracts",
+      "displayName": "God Mode Contracts",
+      "state": "include-after-validation",
+      "paths": [
+        "content/development/seis-god-mode-developer-contract.json",
+        "content/development/seis-god-mode-module-coverage.json",
+        "content/development/seis-goals-evidence-ledger.json",
+        "content/development/seis-repo-health-manifest.json",
+        "content/development/seis-governance-index.json",
+        "content/development/seis-agent-lane-status.json",
+        "content/development/seis-god-mode-release-readiness.json",
+        "content/development/seis-god-mode-validation-plan.json",
+        "content/development/seis-god-mode-work-package.json",
+        "content/development/seis-god-mode-adr-workflow.json",
+        "content/development/seis-god-mode-handoff.json",
+        "content/development/seis-god-mode-completion-audit.json",
+        "content/development/seis-god-mode-run-state.json",
+        "content/development/seis-god-mode-staging-manifest.json",
+        "content/development/seis-god-mode-changelog.json"
+      ],
+      "reviewRule": "Stage contracts together because validation, audit, handoff, and run state reference each other."
+    },
+    {
+      "id": "governance-docs",
+      "displayName": "Governance Docs",
+      "state": "include-after-validation",
+      "paths": [
+        "docs/governance/seis-god-mode-developer.md",
+        "docs/governance/seis-god-mode-module-coverage.md",
+        "docs/governance/seis-goals-evidence-ledger.md",
+        "docs/governance/seis-repo-health-manifest.md",
+        "docs/governance/seis-governance-index.md",
+        "docs/governance/seis-agent-lane-status.md",
+        "docs/governance/seis-god-mode-release-readiness.md",
+        "docs/governance/seis-god-mode-validation-plan.md",
+        "docs/governance/seis-god-mode-work-package.md",
+        "docs/governance/seis-adr-template.md",
+        "docs/governance/seis-god-mode-adr-workflow.md",
+        "docs/governance/seis-god-mode-handoff.md",
+        "docs/governance/seis-god-mode-completion-audit.md",
+        "docs/governance/seis-god-mode-run-state.md",
+        "docs/governance/seis-god-mode-staging-manifest.md",
+        "docs/adr/0001-seis-god-mode-operating-system.md"
+      ],
+      "reviewRule": "Stage governance docs with the contracts they explain."
+    },
+    {
+      "id": "quality-checkers",
+      "displayName": "Quality Checkers",
+      "state": "include-after-validation",
+      "paths": [
+        "scripts/check-seis-god-mode-developer.mjs",
+        "scripts/check-seis-god-mode-module-coverage.mjs",
+        "scripts/check-seis-goals-evidence-ledger.mjs",
+        "scripts/check-seis-repo-health-manifest.mjs",
+        "scripts/check-seis-governance-index.mjs",
+        "scripts/check-seis-agent-lane-status.mjs",
+        "scripts/check-seis-god-mode-release-readiness.mjs",
+        "scripts/check-seis-god-mode-validation-plan.mjs",
+        "scripts/check-seis-god-mode-work-package.mjs",
+        "scripts/check-seis-god-mode-adr-workflow.mjs",
+        "scripts/check-seis-god-mode-handoff.mjs",
+        "scripts/check-seis-god-mode-completion-audit.mjs",
+        "scripts/check-seis-god-mode-run-state.mjs",
+        "scripts/check-seis-god-mode-staging-manifest.mjs",
+        "scripts/check-seis-plugin-bundle.mjs"
+      ],
+      "reviewRule": "Stage checkers after they pass locally or are explicitly handed off as pending validation."
+    },
+    {
+      "id": "plugin-skill",
+      "displayName": "Plugin Skill",
+      "state": "include-after-validation",
+      "paths": [
+        "plugins/seis/.codex-plugin/plugin.json",
+        "plugins/seis/README.md",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+        "plugins/seis/skills/seis-god-mode-developer/agents/openai.yaml"
+      ],
+      "reviewRule": "Stage plugin manifest, README, skill, and agent manifest together."
+    },
+    {
+      "id": "package-quality-chain",
+      "displayName": "Package Quality Chain",
+      "state": "include-after-validation",
+      "paths": [
+        "package.json"
+      ],
+      "reviewRule": "Stage package script changes only with the checker files they invoke."
+    }
+  ],
+  "protectedPaths": [
+    "apps/seis-core/index.html"
+  ],
+  "excludedUntilExplicitReview": [
+    "unrelated generated reports",
+    "unrelated cloud migration audit files",
+    "unrelated local scratch/reference files",
+    "any user-edited file outside the God Mode work package"
+  ],
+  "completionRule": "Staging is not ready until validation passes, current git status is reviewed, unrelated user work is protected, and the intended paths are staged intentionally."
+}

@@ -145,3 +145,4 @@ jobs:
 | Agents | `content/development/seis-agent-lane-status.json` | `check:seis-agent-lane-status` |
 | Release | `content/development/seis-god-mode-release-readiness.json` | `check:seis-god-mode-release-readiness` |
 | Completion | `content/development/seis-god-mode-completion-audit.json` | `check:seis-god-mode-completion-audit` |
+| Feature Growth | `content/development/seis-god-mode-feature-growth-ledger.json` | `check:seis-god-mode-feature-growth-ledger` |

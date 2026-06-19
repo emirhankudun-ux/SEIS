@@ -48,8 +48,8 @@
       "id": "god-mode-every-topic-feature-growth",
       "priority": "P1",
       "requirement": "The active God Mode objective is incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all have explicit feature or governance improvement evidence.",
-      "evidence": ["data/seis-master-objective-coverage.json", "content/development/seis-god-mode-module-coverage.json", "content/development/seis-god-mode-completion-audit.json", "roadmap/seis-next-steps-implementation-pack.md"],
-      "verification": "Run God Mode module coverage, work package, and completion audit checks before claiming the broad objective is complete."
+      "evidence": ["data/seis-master-objective-coverage.json", "content/development/seis-god-mode-feature-growth-ledger.json", "content/development/seis-god-mode-module-coverage.json", "content/development/seis-god-mode-completion-audit.json", "roadmap/seis-next-steps-implementation-pack.md"],
+      "verification": "Run God Mode feature growth ledger, module coverage, work package, and completion audit checks before claiming the broad objective is complete."
     }
   ],
   "requiredCommands": [
@@ -57,6 +57,7 @@
     "npm run check:seis-master-prompt",
     "npm run check:seis-master-objective-coverage-report",
     "npm run check:seis-master-objective-coverage",
+    "npm run check:seis-god-mode-feature-growth-ledger",
     "npm run check:seis-god-mode-module-coverage",
     "npm run check:seis-god-mode-work-package",
     "npm run check:seis-god-mode-completion-audit",
@@ -70,6 +71,7 @@
     "scripts/check-ssh-hardening-contract.mjs",
     "data/seis-master-objective-coverage.json",
     "reports/seis-master-objective-coverage.md",
+    "content/development/seis-god-mode-feature-growth-ledger.json",
     "content/development/seis-god-mode-module-coverage.json",
     "content/development/seis-god-mode-completion-audit.json",
     "data/seis-operational-goal-tracker.json",

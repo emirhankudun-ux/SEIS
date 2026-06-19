@@ -1,0 +1,220 @@
+{
+  "id": "seis-god-mode-validation-plan",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Define the ordered validation commands required to prove God Mode development across product, platform, AI, security, governance, rollback, and CI readiness.",
+  "qualityGate": "npm run check:seis-god-mode-validation-plan",
+  "executionMode": "manual-or-ci",
+  "requiredCommands": [
+    "npm run check:seis-god-mode-developer",
+    "npm run check:seis-god-mode-module-coverage",
+    "npm run check:seis-goals-evidence-ledger",
+    "npm run check:seis-repo-health-manifest",
+    "npm run check:seis-governance-index",
+    "npm run check:seis-agent-lane-status",
+    "npm run check:seis-god-mode-release-readiness",
+    "npm run check:seis-god-mode-validation-plan",
+    "npm run check:seis-god-mode-work-package",
+    "npm run check:seis-god-mode-adr-workflow",
+    "npm run check:seis-god-mode-handoff",
+    "npm run check:seis-god-mode-completion-audit",
+    "npm run check:seis-god-mode-run-state",
+    "npm run check:seis-god-mode-staging-manifest",
+    "npm run check:seis-god-mode-changelog",
+    "npm run quality:governance"
+  ],
+  "commandGroups": [
+    {
+      "id": "god-mode-foundation",
+      "displayName": "God Mode Foundation",
+      "command": "npm run check:seis-god-mode-developer",
+      "proofTarget": "Proves God Mode skill, plugin capability, governance doc, and operating contract exist.",
+      "evidence": [
+        "content/development/seis-god-mode-developer-contract.json",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+        "docs/governance/seis-god-mode-developer.md"
+      ],
+      "failureMode": "God Mode cannot be treated as an operating mode if the skill, policy, or contract is missing."
+    },
+    {
+      "id": "module-coverage",
+      "displayName": "Module Coverage",
+      "command": "npm run check:seis-god-mode-module-coverage",
+      "proofTarget": "Proves Dashboard, Goals, Repos, Docs, and Agents are mapped to five required layers.",
+      "evidence": [
+        "content/development/seis-god-mode-module-coverage.json",
+        "apps/seis-demo-web/script.js",
+        "docs/governance/seis-god-mode-module-coverage.md"
+      ],
+      "failureMode": "The ecosystem is not improved across modules if a required module or layer is missing."
+    },
+    {
+      "id": "goal-evidence",
+      "displayName": "Goal Evidence",
+      "command": "npm run check:seis-goals-evidence-ledger",
+      "proofTarget": "Proves active goals include acceptance criteria, validation commands, rollback, and evidence links.",
+      "evidence": [
+        "content/development/seis-goals-evidence-ledger.json",
+        "docs/governance/seis-goals-evidence-ledger.md",
+        "scripts/check-seis-goals-evidence-ledger.mjs"
+      ],
+      "failureMode": "A goal cannot be complete if its evidence or rollback path is missing."
+    },
+    {
+      "id": "repo-health",
+      "displayName": "Repo Health",
+      "command": "npm run check:seis-repo-health-manifest",
+      "proofTarget": "Proves repository lanes track app, package, plugin, docs, agents, CI, security, and rollback posture.",
+      "evidence": [
+        "content/development/seis-repo-health-manifest.json",
+        "docs/governance/seis-repo-health-manifest.md",
+        "scripts/check-seis-repo-health-manifest.mjs"
+      ],
+      "failureMode": "A repo slice cannot be release-ready if health lanes or publish safety are missing."
+    },
+    {
+      "id": "governance-index",
+      "displayName": "Governance Index",
+      "command": "npm run check:seis-governance-index",
+      "proofTarget": "Proves architecture, quality, AI policy, module coverage, goals, repos, agents, release readiness, and validation docs are indexed.",
+      "evidence": [
+        "content/development/seis-governance-index.json",
+        "docs/governance/seis-governance-index.md",
+        "scripts/check-seis-governance-index.mjs"
+      ],
+      "failureMode": "Governance is not durable if documentation is not indexed and source-controlled."
+    },
+    {
+      "id": "agent-lanes",
+      "displayName": "Agent Lanes",
+      "command": "npm run check:seis-agent-lane-status",
+      "proofTarget": "Proves agent lanes declare skill source, autonomy, tool boundaries, safety boundaries, and validation duties.",
+      "evidence": [
+        "content/development/seis-agent-lane-status.json",
+        "docs/governance/seis-agent-lane-status.md",
+        "scripts/check-seis-agent-lane-status.mjs"
+      ],
+      "failureMode": "Agentic behavior is not safe if autonomy and validation duties are not explicit."
+    },
+    {
+      "id": "release-readiness",
+      "displayName": "Release Readiness",
+      "command": "npm run check:seis-god-mode-release-readiness",
+      "proofTarget": "Proves security, AI policy, quality evidence, rollback, and CI readiness gates exist.",
+      "evidence": [
+        "content/development/seis-god-mode-release-readiness.json",
+        "docs/governance/seis-god-mode-release-readiness.md",
+        "scripts/check-seis-god-mode-release-readiness.mjs"
+      ],
+      "failureMode": "A feature is not release-ready if security, AI, rollback, or CI evidence is missing."
+    },
+    {
+      "id": "validation-plan",
+      "displayName": "Validation Plan",
+      "command": "npm run check:seis-god-mode-validation-plan",
+      "proofTarget": "Proves the validation sequence, proof targets, dashboard visibility, and governance link are source-controlled.",
+      "evidence": [
+        "content/development/seis-god-mode-validation-plan.json",
+        "docs/governance/seis-god-mode-validation-plan.md",
+        "scripts/check-seis-god-mode-validation-plan.mjs"
+      ],
+      "failureMode": "Validation cannot be trusted if the proof sequence itself is not checked."
+    },
+    {
+      "id": "work-package",
+      "displayName": "Work Package",
+      "command": "npm run check:seis-god-mode-work-package",
+      "proofTarget": "Proves the current God Mode slice is bounded by module, gate, primary files, rollback, and pending validation state.",
+      "evidence": [
+        "content/development/seis-god-mode-work-package.json",
+        "docs/governance/seis-god-mode-work-package.md",
+        "scripts/check-seis-god-mode-work-package.mjs"
+      ],
+      "failureMode": "Commit readiness cannot be assessed if the work package is not explicit and reversible."
+    },
+    {
+      "id": "adr-workflow",
+      "displayName": "ADR Workflow",
+      "command": "npm run check:seis-god-mode-adr-workflow",
+      "proofTarget": "Proves architecture decisions have a template, example ADR, workflow doc, dashboard visibility, and quality gate.",
+      "evidence": [
+        "content/development/seis-god-mode-adr-workflow.json",
+        "docs/governance/seis-adr-template.md",
+        "docs/adr/0001-seis-god-mode-operating-system.md"
+      ],
+      "failureMode": "Durable architecture changes cannot be trusted if decision capture is missing."
+    },
+    {
+      "id": "handoff",
+      "displayName": "Handoff",
+      "command": "npm run check:seis-god-mode-handoff",
+      "proofTarget": "Proves summary, changed surfaces, validation status, risks, rollback, next commands, and protected user work are explicit.",
+      "evidence": [
+        "content/development/seis-god-mode-handoff.json",
+        "docs/governance/seis-god-mode-handoff.md",
+        "scripts/check-seis-god-mode-handoff.mjs"
+      ],
+      "failureMode": "Repo handoff is unsafe if validation status, risks, rollback, or protected user work are not explicit."
+    },
+    {
+      "id": "completion-audit",
+      "displayName": "Completion Audit",
+      "command": "npm run check:seis-god-mode-completion-audit",
+      "proofTarget": "Proves completion remains blocked until every required item has current validation, commit, push, CI, and protected-user-work evidence.",
+      "evidence": [
+        "content/development/seis-god-mode-completion-audit.json",
+        "docs/governance/seis-god-mode-completion-audit.md",
+        "scripts/check-seis-god-mode-completion-audit.mjs"
+      ],
+      "failureMode": "Completion claims are unsafe if missing evidence is not tracked explicitly."
+    },
+    {
+      "id": "run-state",
+      "displayName": "Run State",
+      "command": "npm run check:seis-god-mode-run-state",
+      "proofTarget": "Proves the current God Mode package remains pending until source, runtime, telemetry, validation, commit, push, CI, and protected-user-work states are explicit.",
+      "evidence": [
+        "content/development/seis-god-mode-run-state.json",
+        "docs/governance/seis-god-mode-run-state.md",
+        "scripts/check-seis-god-mode-run-state.mjs"
+      ],
+      "failureMode": "Execution state is unsafe if pending validation and missing CI evidence are not visible."
+    },
+    {
+      "id": "staging-manifest",
+      "displayName": "Staging Manifest",
+      "command": "npm run check:seis-god-mode-staging-manifest",
+      "proofTarget": "Proves the intended staging boundary, protected paths, excluded categories, and quality-chain grouping are source-controlled.",
+      "evidence": [
+        "content/development/seis-god-mode-staging-manifest.json",
+        "docs/governance/seis-god-mode-staging-manifest.md",
+        "scripts/check-seis-god-mode-staging-manifest.mjs"
+      ],
+      "failureMode": "Commit preparation is unsafe if staging boundaries and protected paths are not explicit."
+    },
+    {
+      "id": "changelog",
+      "displayName": "Changelog",
+      "command": "npm run check:seis-god-mode-changelog",
+      "proofTarget": "Proves all added God Mode feature groups are captured as draft-unverified release notes with evidence and validation gates.",
+      "evidence": [
+        "content/development/seis-god-mode-changelog.json",
+        "docs/governance/seis-god-mode-changelog.md",
+        "scripts/check-seis-god-mode-changelog.mjs"
+      ],
+      "failureMode": "Release notes are unsafe if added features are incomplete, untracked, or claimed release-ready before validation."
+    },
+    {
+      "id": "full-governance",
+      "displayName": "Full Governance",
+      "command": "npm run quality:governance",
+      "proofTarget": "Proves the repo-level governance chain includes all required God Mode gates.",
+      "evidence": [
+        "package.json",
+        ".github/workflows/ci.yml"
+      ],
+      "failureMode": "Completion cannot be claimed if the full governance chain has not passed."
+    }
+  ],
+  "completionRule": "Completion requires successful execution evidence for the relevant feature gates and full quality governance before commit, push, release, or completion claims."
+}

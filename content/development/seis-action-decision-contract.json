@@ -1,0 +1,108 @@
+{
+  "id": "seis-action-decision-kernel",
+  "name": "SEIS Action Decision Kernel",
+  "version": "0.1.0",
+  "status": "active",
+  "scope": "local-repo",
+  "qualityGate": "npm run check:seis-action-decision",
+  "policyVersion": "seis-action-decision-v0",
+  "defaultDecision": "read-only",
+  "operatingModel": "deterministic-first with optional learned override",
+  "requiredArtifacts": [
+    "scripts/inspect-seis-action-decision.mjs",
+    "scripts/check-seis-action-decision.mjs",
+    "packages/seis-ai/src/model/permission-policy.mjs",
+    "packages/seis-ai/src/model/permission-policy-lab.mjs",
+    "reports/seis-action-decisions/latest.json",
+    "reports/seis-action-decisions/latest.md"
+  ],
+  "requiredEvidence": [
+    "REFERENCE_REQUIREMENTS.md",
+    "SEIS_PHASE_2_CLEAN_ROOM_ARCHITECTURE.md",
+    "SEIS_UNIVERSE_CLEAN_BUILD.md",
+    "content/development/seis-project-intake-contract.json"
+  ],
+  "capabilityDecisionRules": [
+    {
+      "capability": "read",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "status",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "search",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "summarize",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "write",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "shell",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "git",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "network",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "secret",
+      "decision": "deny",
+      "requiresApproval": false,
+      "risk": "critical"
+    },
+    {
+      "capability": "deploy",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "model",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "data",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    }
+  ],
+  "redaction": {
+    "enabled": true,
+    "patterns": [
+      "(?i)\\b(api[_-]?key|token|password|credential|secret)\\b",
+      "\\b(sk-[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{12,})\\b",
+      "BEGIN [A-Z ]*PRIVATE KEY"
+    ]
+  },
+  "secretPolicy": "never include secret-like text in report fields; replace with [REDACTED_SECRET]"
+}

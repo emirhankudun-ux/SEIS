@@ -22,6 +22,7 @@ Validation status is backed by:
 - `content/development/seis-god-mode-completion-audit.json`
 - `content/development/seis-god-mode-run-state.json`
 - `content/development/seis-god-mode-runtime-evidence.json`
+- `content/development/seis-god-mode-feature-growth-ledger.json`
 - `reports/seis-commit-packages.md`
 
 ## Staging review

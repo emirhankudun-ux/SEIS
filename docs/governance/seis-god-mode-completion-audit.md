@@ -13,6 +13,7 @@ This is intentional. Local governance validation, local browser runtime verifica
 - `content/development/seis-god-mode-validation-log.md`
 - `npm run quality:governance` (passed locally)
 - `content/development/seis-god-mode-runtime-evidence.json`
+- `content/development/seis-god-mode-feature-growth-ledger.json`
 - `reports/seis-commit-packages.md`
 
 ## Required audit items

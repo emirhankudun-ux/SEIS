@@ -1,0 +1,105 @@
+{
+  "id": "seis-god-mode-handoff",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Standardize God Mode handoff before validation, commit, push, PR, or release claims.",
+  "qualityGate": "npm run check:seis-god-mode-handoff",
+  "handoffState": "pending-validation",
+  "requiredSections": [
+    "summary",
+    "changedSurfaces",
+    "validationStatus",
+    "risks",
+    "rollback",
+    "nextCommands",
+    "protectedUserWork"
+  ],
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Summary",
+      "required": true,
+      "content": "God Mode adds visible dashboard surfaces, source-controlled contracts, governance docs, quality gates, telemetry, ADR workflow, validation plan, release readiness, and work package tracking.",
+      "evidence": [
+        "content/development/seis-god-mode-work-package.json",
+        "apps/seis-demo-web/index.html"
+      ]
+    },
+    {
+      "id": "changedSurfaces",
+      "title": "Changed Surfaces",
+      "required": true,
+      "content": "Product surface, goals, repos, docs, agents, security and AI readiness, validation, architecture decisions, and handoff have dedicated artifacts.",
+      "evidence": [
+        "content/development/seis-god-mode-module-coverage.json",
+        "content/development/seis-goals-evidence-ledger.json",
+        "content/development/seis-repo-health-manifest.json",
+        "content/development/seis-agent-lane-status.json"
+      ]
+    },
+    {
+      "id": "validationStatus",
+      "title": "Validation Status",
+      "required": true,
+      "content": "Core God Mode validation commands, full quality:governance, and local headless Chrome runtime verification have run and passed. Remaining blockers are commit boundary review and push/CI evidence.",
+      "evidence": [
+        "content/development/seis-god-mode-validation-plan.json",
+        "scripts/check-seis-god-mode-validation-plan.mjs",
+        "content/development/seis-god-mode-validation-log.md",
+        "content/development/seis-god-mode-runtime-evidence.json"
+      ]
+    },
+    {
+      "id": "risks",
+      "title": "Risks",
+      "required": true,
+      "content": "Primary risks are commit staging not yet reviewed, unpushed branch state, missing CI pass evidence, and unrelated user work that must not be overwritten.",
+      "evidence": [
+        "content/development/seis-god-mode-work-package.json",
+        "docs/governance/seis-god-mode-work-package.md"
+      ]
+    },
+    {
+      "id": "rollback",
+      "title": "Rollback",
+      "required": true,
+      "content": "Rollback must remove the relevant bounded slice: dashboard panels, contracts, docs, checkers, package scripts, telemetry, and governance index entries.",
+      "evidence": [
+        "content/development/seis-repo-health-manifest.json",
+        "content/development/seis-god-mode-work-package.json"
+      ]
+    },
+    {
+      "id": "nextCommands",
+      "title": "Next Commands",
+      "required": true,
+      "content": "Run the handoff check, validation plan check, work package check, ADR workflow check, completion audit check, run-state check, staging manifest check, changelog check, feature growth ledger check, and full quality governance before commit or push.",
+      "commands": [
+        "npm run check:seis-god-mode-handoff",
+        "npm run check:seis-god-mode-validation-plan",
+        "npm run check:seis-god-mode-work-package",
+        "npm run check:seis-god-mode-adr-workflow",
+        "npm run check:seis-god-mode-completion-audit",
+        "npm run check:seis-god-mode-run-state",
+        "npm run check:seis-god-mode-staging-manifest",
+        "npm run check:seis-god-mode-changelog",
+        "npm run check:seis-god-mode-feature-growth-ledger",
+        "npm run quality:governance"
+      ],
+      "evidence": [
+        "package.json",
+        "content/development/seis-god-mode-validation-plan.json"
+      ]
+    },
+    {
+      "id": "protectedUserWork",
+      "title": "Protected User Work",
+      "required": true,
+      "content": "Unrelated user or system changes must be preserved during validation, commit preparation, and push handoff.",
+      "evidence": [
+        "content/development/seis-god-mode-work-package.json"
+      ]
+    }
+  ],
+  "completionRule": "A handoff is complete only when validation status, risks, rollback, next commands, and protected user work are explicit and current."
+}

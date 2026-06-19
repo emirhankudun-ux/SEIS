@@ -1,0 +1,104 @@
+{
+  "id": "seis-governance-index",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Provide a living documentation index for architecture, quality gates, AI policy, God Mode coverage, goals, repos, and agents.",
+  "qualityGate": "npm run check:seis-governance-index",
+  "requiredDocs": [
+    {
+      "id": "architecture-manifesto",
+      "path": "docs/governance/seis-architecture-manifesto.md",
+      "purpose": "Define architectural rules, limits, and acceptance principles."
+    },
+    {
+      "id": "quality-gates",
+      "path": "docs/governance/quality-gates.md",
+      "purpose": "Define enterprise quality, security, documentation, and rollback gates."
+    },
+    {
+      "id": "supreme-vision",
+      "path": "docs/governance/seis-supreme-vision.md",
+      "purpose": "Preserve long-term SEIS operating vision and God Mode rule."
+    },
+    {
+      "id": "god-mode-developer",
+      "path": "docs/governance/seis-god-mode-developer.md",
+      "purpose": "Define God Mode Developer behavior, evidence, and acceptance criteria."
+    },
+    {
+      "id": "god-mode-module-coverage",
+      "path": "docs/governance/seis-god-mode-module-coverage.md",
+      "purpose": "Map Dashboard, Goals, Repos, Docs, and Agents to five-layer coverage."
+    },
+    {
+      "id": "goals-evidence-ledger",
+      "path": "docs/governance/seis-goals-evidence-ledger.md",
+      "purpose": "Track active goals with acceptance evidence, validation, and rollback."
+    },
+    {
+      "id": "repo-health-manifest",
+      "path": "docs/governance/seis-repo-health-manifest.md",
+      "purpose": "Track repository health, publish safety, and CI governance posture."
+    },
+    {
+      "id": "agent-lane-status",
+      "path": "docs/governance/seis-agent-lane-status.md",
+      "purpose": "Track safe autonomy, skill scope, tool boundaries, and validation duties."
+    },
+    {
+      "id": "god-mode-release-readiness",
+      "path": "docs/governance/seis-god-mode-release-readiness.md",
+      "purpose": "Track security, AI policy, quality evidence, rollback, and CI readiness before completion claims."
+    },
+    {
+      "id": "god-mode-validation-plan",
+      "path": "docs/governance/seis-god-mode-validation-plan.md",
+      "purpose": "Define the ordered validation commands and proof targets required before completion claims."
+    },
+    {
+      "id": "god-mode-work-package",
+      "path": "docs/governance/seis-god-mode-work-package.md",
+      "purpose": "Describe the current God Mode slice as a bounded, reviewable, reversible work package."
+    },
+    {
+      "id": "adr-template",
+      "path": "docs/governance/seis-adr-template.md",
+      "purpose": "Define the minimum ADR fields required for durable SEIS architecture decisions."
+    },
+    {
+      "id": "god-mode-adr-workflow",
+      "path": "docs/governance/seis-god-mode-adr-workflow.md",
+      "purpose": "Define the scope, decision, implementation, validation, and handoff workflow for God Mode architecture decisions."
+    },
+    {
+      "id": "adr-0001-god-mode-operating-system",
+      "path": "docs/adr/0001-seis-god-mode-operating-system.md",
+      "purpose": "Record the accepted decision to treat God Mode as a source-controlled SEIS operating layer."
+    },
+    {
+      "id": "god-mode-handoff",
+      "path": "docs/governance/seis-god-mode-handoff.md",
+      "purpose": "Standardize summary, validation status, risks, rollback, next commands, and protected user work before handoff."
+    },
+    {
+      "id": "god-mode-completion-audit",
+      "path": "docs/governance/seis-god-mode-completion-audit.md",
+      "purpose": "Audit whether the God Mode objective has current evidence for features, modules, validation, commit, push, CI, and protected user work."
+    },
+    {
+      "id": "god-mode-run-state",
+      "path": "docs/governance/seis-god-mode-run-state.md",
+      "purpose": "Track current source-controlled, runtime, telemetry, validation, commit, push, CI, and protected-user-work state before completion."
+    },
+    {
+      "id": "god-mode-staging-manifest",
+      "path": "docs/governance/seis-god-mode-staging-manifest.md",
+      "purpose": "Define intended staging groups, protected paths, excluded categories, and commit-readiness boundaries."
+    },
+    {
+      "id": "god-mode-changelog",
+      "path": "docs/governance/seis-god-mode-changelog.md",
+      "purpose": "Record added God Mode features as draft-unverified release notes without claiming release readiness."
+    }
+  ]
+}

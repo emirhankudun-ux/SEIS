@@ -32,7 +32,7 @@ firewall changes are lockout-sensitive security operations.
 | design-accessibility-experience | mapped | Treat design, accessibility, and product experience as engineering systems. | docs/governance/seis-supreme-vision.md; data/seis-operational-goal-tracker.json | npm run check:seis-operational-goal-tracker | Needs ongoing product-surface validation. |
 | ai-data-cloud-automation | active | Keep AI, data, cloud, SSH, and automation work governed and measurable. | data/ssh-hardening-operation-contract.json; docs/deployment/ssh-wireguard-vps-cloud-server.md | npm run check:ssh-vpn-cloud-server; npm run check:seis-master-prompt | Direct cloud mobile SSH remains blocked until strict readiness passes. |
 | open-source-github-readiness | active | Keep GitHub, community, governance, and CI readiness visible. | data/seis-master-prompt-github-controls.json; .github/workflows/seis-master-prompt-governance.yml | npm run check:open-source-governance; npm run check:seis-master-prompt | External GitHub branch settings must be verified before claiming enforcement. |
-| god-mode-every-topic-feature-growth | active | Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence. | content/development/seis-god-mode-module-coverage.json; content/development/seis-god-mode-completion-audit.json; roadmap/seis-next-steps-implementation-pack.md; docs/governance/seis-god-mode-module-coverage.md | npm run check:seis-god-mode-module-coverage; npm run check:seis-god-mode-completion-audit; npm run check:seis-god-mode-work-package | Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete. |
+| god-mode-every-topic-feature-growth | active | Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence. | content/development/seis-god-mode-feature-growth-ledger.json; content/development/seis-god-mode-module-coverage.json; content/development/seis-god-mode-completion-audit.json; roadmap/seis-next-steps-implementation-pack.md; docs/governance/seis-god-mode-module-coverage.md | npm run check:seis-god-mode-feature-growth-ledger; npm run check:seis-god-mode-module-coverage; npm run check:seis-god-mode-completion-audit; npm run check:seis-god-mode-work-package | Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete. |
 
 ## SSH Hardening Operation Coverage
 
@@ -47,6 +47,7 @@ firewall changes are lockout-sensitive security operations.
 ```bash
 npm run check:seis-master-objective-coverage
 npm run check:seis-master-objective-coverage-report
+npm run check:seis-god-mode-feature-growth-ledger
 npm run check:seis-god-mode-module-coverage
 npm run check:seis-god-mode-work-package
 npm run check:seis-god-mode-completion-audit

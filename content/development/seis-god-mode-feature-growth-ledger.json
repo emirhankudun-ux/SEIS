@@ -1,0 +1,165 @@
+{
+  "id": "seis-god-mode-feature-growth-ledger",
+  "version": "2026.06.19",
+  "status": "active",
+  "completionState": "not-complete",
+  "purpose": "Track whether the active God Mode objective has real feature or governance improvement evidence across every required topic before completion is claimed.",
+  "qualityGate": "npm run check:seis-god-mode-feature-growth-ledger",
+  "requiredTopics": [
+    "dashboard",
+    "goals",
+    "repos",
+    "docs",
+    "agents",
+    "security",
+    "ai-policy",
+    "rollback",
+    "validation",
+    "handoff"
+  ],
+  "requiredEvidenceKinds": [
+    "feature-or-governance-improvement",
+    "source-controlled-evidence",
+    "quality-gate",
+    "remaining-gap"
+  ],
+  "topics": [
+    {
+      "id": "dashboard",
+      "displayName": "Dashboard",
+      "growthState": "improved-unverified",
+      "newImprovement": "God Mode dashboard surfaces expose completion audit, run state, handoff, staging, changelog, module coverage, and ecosystem lanes.",
+      "evidence": [
+        "apps/seis-demo-web/index.html",
+        "apps/seis-demo-web/script.js",
+        "content/development/seis-god-mode-runtime-evidence.json"
+      ],
+      "qualityGate": "npm run check:seis-god-mode-module-coverage",
+      "remainingGap": "Commit, push, and CI evidence are still missing."
+    },
+    {
+      "id": "goals",
+      "displayName": "Goals",
+      "growthState": "improved-unverified",
+      "newImprovement": "Goals now have a governance evidence ledger that requires acceptance evidence, validation duties, evidence links, and rollback posture.",
+      "evidence": [
+        "content/development/seis-goals-evidence-ledger.json",
+        "docs/governance/seis-goals-evidence-ledger.md",
+        "scripts/check-seis-goals-evidence-ledger.mjs"
+      ],
+      "qualityGate": "npm run check:seis-goals-evidence-ledger",
+      "remainingGap": "Final staged commit evidence and CI pass evidence are still missing."
+    },
+    {
+      "id": "repos",
+      "displayName": "Repos",
+      "growthState": "improved-unverified",
+      "newImprovement": "Repos now have a health manifest that tracks repo lanes, publish safety, plugin posture, CI posture, and protected work boundaries.",
+      "evidence": [
+        "content/development/seis-repo-health-manifest.json",
+        "docs/governance/seis-repo-health-manifest.md",
+        "scripts/check-seis-repo-health-manifest.mjs"
+      ],
+      "qualityGate": "npm run check:seis-repo-health-manifest",
+      "remainingGap": "Branch integration, commit boundary staging, push, and CI evidence are still missing."
+    },
+    {
+      "id": "docs",
+      "displayName": "Docs",
+      "growthState": "improved-unverified",
+      "newImprovement": "Docs now connect architecture manifesto, five-layer operating map, ADR workflow, quality gates, release readiness, and God Mode governance surfaces.",
+      "evidence": [
+        "content/development/seis-governance-index.json",
+        "docs/governance/seis-governance-index.md",
+        "docs/decisions/adr-0004-seis-next-steps-implementation-pack.md"
+      ],
+      "qualityGate": "npm run check:seis-governance-index",
+      "remainingGap": "Generated reports and governance docs must remain current after final staging."
+    },
+    {
+      "id": "agents",
+      "displayName": "Agents",
+      "growthState": "improved-unverified",
+      "newImprovement": "Agents now have lane status for God Mode Developer, Focus Mode, Master Prompt, Security Review, and GitHub Workflow capability boundaries.",
+      "evidence": [
+        "content/development/seis-agent-lane-status.json",
+        "docs/governance/seis-agent-lane-status.md",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md"
+      ],
+      "qualityGate": "npm run check:seis-agent-lane-status",
+      "remainingGap": "Agent changes still need commit, push, and CI evidence."
+    },
+    {
+      "id": "security",
+      "displayName": "Security",
+      "growthState": "improved-unverified",
+      "newImprovement": "Security is represented through enterprise gates, release readiness, SSH/cloud safety contracts, and no-secret/no-destruction policy constraints.",
+      "evidence": [
+        "governance/enterprise-change-gates.md",
+        "content/development/seis-god-mode-release-readiness.json",
+        "data/seis-master-objective-coverage.json"
+      ],
+      "qualityGate": "npm run check:seis-enterprise-gates:security",
+      "remainingGap": "CI security evidence and external GitHub enforcement evidence are still missing."
+    },
+    {
+      "id": "ai-policy",
+      "displayName": "AI Policy",
+      "growthState": "improved-unverified",
+      "newImprovement": "AI policy requires intent, risk, owner, audit, rollback, policyVersion, and human approval markers for high-risk automation.",
+      "evidence": [
+        "ai/policy.md",
+        "content/development/seis-agent-lane-status.json",
+        "data/seis-master-objective-coverage.json"
+      ],
+      "qualityGate": "npm run check:seis-enterprise-gates:ai",
+      "remainingGap": "AI policy still needs current CI evidence before completion claims."
+    },
+    {
+      "id": "rollback",
+      "displayName": "Rollback",
+      "growthState": "improved-unverified",
+      "newImprovement": "Rollback is required by enterprise gates, work-package sections, release readiness, and completion audit blockers.",
+      "evidence": [
+        "governance/enterprise-change-gates.md",
+        "content/development/seis-god-mode-work-package.json",
+        "content/development/seis-god-mode-release-readiness.json"
+      ],
+      "qualityGate": "npm run check:seis-god-mode-release-readiness",
+      "remainingGap": "Rollback has governance evidence, but no final commit or CI rollback-readiness proof."
+    },
+    {
+      "id": "validation",
+      "displayName": "Validation",
+      "growthState": "improved-unverified",
+      "newImprovement": "Validation now has a plan, local validation log, run state, runtime evidence, and quality governance linkage.",
+      "evidence": [
+        "content/development/seis-god-mode-validation-plan.json",
+        "content/development/seis-god-mode-validation-log.md",
+        "content/development/seis-god-mode-run-state.json"
+      ],
+      "qualityGate": "npm run check:seis-god-mode-validation-plan",
+      "remainingGap": "Validation remains incomplete until final staged checks and CI evidence exist."
+    },
+    {
+      "id": "handoff",
+      "displayName": "Handoff",
+      "growthState": "improved-unverified",
+      "newImprovement": "Handoff now records changed surfaces, validation status, risks, rollback, next commands, protected user work, and staging review posture.",
+      "evidence": [
+        "content/development/seis-god-mode-handoff.json",
+        "docs/governance/seis-god-mode-handoff.md",
+        "content/development/seis-god-mode-staging-manifest.json"
+      ],
+      "qualityGate": "npm run check:seis-god-mode-handoff",
+      "remainingGap": "Handoff remains open until commit hash, push result, and CI pass evidence exist."
+    }
+  ],
+  "completionBlockers": [
+    "No commit hash exists for the full reviewed package.",
+    "No push evidence exists.",
+    "No CI pass evidence exists.",
+    "No final staged-boundary evidence exists."
+  ],
+  "completionRule": "The broad God Mode objective remains not-complete until every topic has improvement evidence, required gates pass, unrelated user work is protected, and commit/push/CI evidence exists."
+}

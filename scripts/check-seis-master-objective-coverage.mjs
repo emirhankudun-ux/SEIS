@@ -78,6 +78,7 @@ if (coverage) {
   for (const command of [
     "npm run check:seis-master-objective-coverage",
     "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-god-mode-feature-growth-ledger",
     "npm run check:seis-god-mode-module-coverage",
     "npm run check:seis-god-mode-work-package",
     "npm run check:seis-god-mode-completion-audit",
@@ -114,6 +115,12 @@ if (coverage) {
     requireCoverageIncludes(
       godModeGrowthCoverage,
       "evidence",
+      "content/development/seis-god-mode-feature-growth-ledger.json",
+      "God Mode growth coverage must cite the feature growth ledger"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "evidence",
       "content/development/seis-god-mode-module-coverage.json",
       "God Mode growth coverage must cite the module coverage contract"
     );
@@ -128,6 +135,12 @@ if (coverage) {
       "evidence",
       "roadmap/seis-next-steps-implementation-pack.md",
       "God Mode growth coverage must cite the next steps implementation pack"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "checks",
+      "npm run check:seis-god-mode-feature-growth-ledger",
+      "God Mode growth coverage must require feature growth ledger validation"
     );
     requireCoverageIncludes(
       godModeGrowthCoverage,

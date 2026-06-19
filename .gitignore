@@ -124,6 +124,7 @@ ios/
 # Configuration and data files (non-source)
 *.json
 *.config.json
+!content/development/seis-*.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json
 !packages/seis-ai/data/memory-ranker-seed-v0.json
@@ -147,6 +148,8 @@ docs/*
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md
+!docs/adr/
+!docs/adr/*.md
 !docs/decisions/
 !docs/decisions/*.md
 
@@ -155,4 +158,3 @@ SEİS/
 SEİS/
 packages/seis_platform_swift/.build/
 scripts/super-ssh-manager.py
-```
