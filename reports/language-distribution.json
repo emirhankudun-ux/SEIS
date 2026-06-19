@@ -9,12 +9,12 @@
   },
   "summary": {
     "countedFileCount": 865,
-    "countedBytes": 4838559,
+    "countedBytes": 4838939,
     "javascriptBytes": 1716677,
     "javascriptPercent": 35.48,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3336093,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3335713,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
@@ -35,7 +35,7 @@
     },
     {
       "language": "Python",
-      "bytes": 506913,
+      "bytes": 507293,
       "percent": 10.48
     },
     {
@@ -526,7 +526,7 @@
     },
     {
       "language": "Other",
-      "bytes": 2701648,
+      "bytes": 2702028,
       "percent": 55.84,
       "sourceLanguages": [
         "ABAP",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1315153,
-        "percent": 27.18,
+        "bytes": 1315533,
+        "percent": 27.19,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -744,7 +744,7 @@
         "id": "windows-dotnet",
         "label": "Windows / .NET",
         "bytes": 7984,
-        "percent": 0.17,
+        "percent": 0.16,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1348491,
+    "documentation": 1355536,
     "linguist-generated": 2986842,
     "linguist-vendored": 2888366
   },
@@ -1000,7 +1000,7 @@
       "command": "dart --version",
       "available": false,
       "exitCode": 1,
-      "version": "unavailable in local environment; runtime readiness is informational"
+      "version": "$HOME/Developer/flutter/bin/internal/shared.sh: line 122: $HOME/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory"
     }
   ],
   "nextMigrationOrder": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "b19c105f26c983a201901e6a5e209850c572a206af58b572051a34515499fe25",
+    "hash": "8f2fc379b245effc9d4de31903c73398eace624e460a2a29a3962412382d7a98",
     "algorithm": "sha256"
   }
 }

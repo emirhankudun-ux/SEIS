@@ -668,6 +668,7 @@ def runtime_readiness():
             continue
         result = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
         output = " ".join((result.stdout + "\n" + result.stderr).strip().split())
+        output = sanitize_runtime_output(output)
         runtimes.append(
             {
                 "id": runtime_id,
@@ -678,6 +679,19 @@ def runtime_readiness():
             }
         )
     return runtimes
+
+
+def sanitize_runtime_output(output):
+    if not output:
+        return output
+    replacements = {
+        str(Path.home()): "$HOME",
+        str(ROOT): "$SEIS_ROOT",
+    }
+    sanitized = output
+    for source, replacement in replacements.items():
+        sanitized = sanitized.replace(source, replacement)
+    return sanitized
 
 
 def hash_counted_files(files):
