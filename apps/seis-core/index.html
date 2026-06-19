@@ -47,6 +47,10 @@
           <span class="nav-icon" aria-hidden="true">A</span>
           <span>Agents</span>
         </button>
+        <button class="nav-item" type="button" data-view="ai-core">
+          <span class="nav-icon" aria-hidden="true">I</span>
+          <span>AI Core</span>
+        </button>
         <button class="nav-item" type="button" data-view="plugins">
           <span class="nav-icon" aria-hidden="true">P</span>
           <span>Plugins</span>
@@ -231,6 +235,59 @@
             </section>
           </section>
 
+          <section class="view-panel" data-panel="ai-core" aria-labelledby="ai-core-title">
+            <div class="section-heading">
+              <h2 id="ai-core-title">AI Core</h2>
+              <p>Inspect fixture-backed model routes, prompt versions, agent tasks, approvals, evaluation evidence, and safety boundaries.</p>
+            </div>
+            <section class="panel">
+              <div class="panel-header">
+                <h3>Contract Summary</h3>
+                <span class="status-pill ready" id="ai-core-contract-status">Fixture backed</span>
+              </div>
+              <div class="ai-core-summary-grid" id="ai-core-summary-grid"></div>
+            </section>
+            <div class="ai-core-layout module-spacer">
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Model Routes</h3>
+                  <span class="status-pill attention">No live providers</span>
+                </div>
+                <div class="contract-grid" id="ai-core-routes"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Prompt Versions</h3>
+                  <span class="status-pill attention">Draft</span>
+                </div>
+                <div class="contract-grid" id="ai-core-prompts"></div>
+              </section>
+            </div>
+            <div class="ai-core-layout module-spacer">
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Agent Tasks</h3>
+                  <span class="status-pill ready">Supervised</span>
+                </div>
+                <div class="contract-grid" id="ai-core-agent-tasks"></div>
+              </section>
+              <section class="panel">
+                <div class="panel-header">
+                  <h3>Approvals</h3>
+                  <span class="status-pill attention">Human gate</span>
+                </div>
+                <div class="contract-grid" id="ai-core-approvals"></div>
+              </section>
+            </div>
+            <section class="panel module-spacer">
+              <div class="panel-header">
+                <h3>Evaluation, Audit, And Boundary Evidence</h3>
+                <span class="status-pill ready">Metadata only</span>
+              </div>
+              <div class="evidence-grid" id="ai-core-evidence"></div>
+            </section>
+          </section>
+
           <section class="view-panel" data-panel="plugins" aria-labelledby="plugins-title">
             <div class="section-heading">
               <h2 id="plugins-title">Plugins &amp; Extensions</h2>
@@ -311,6 +368,7 @@
               <li>Local goal management</li>
               <li>Repo and doc health surfaces</li>
               <li>Agent mode switching</li>
+              <li>AI Core contract fixture views</li>
               <li>Plugin, automation, and security centers</li>
               <li>Architecture and roadmap visibility</li>
             </ul>
@@ -344,6 +402,7 @@
     </label>
   </dialog>
 
+  <script src="ai-core-contract-fixture.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

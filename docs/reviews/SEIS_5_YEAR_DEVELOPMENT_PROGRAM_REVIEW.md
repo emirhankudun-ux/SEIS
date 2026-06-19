@@ -51,10 +51,9 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add fixture-backed Command Center AI Core views.
-2. Add prompt regression fixtures for the named assistant surfaces.
-3. Add local read-only repository assistant prototype.
-4. Add evaluation report generation for prompt and app-state fixtures.
+1. Add prompt regression fixtures for the named assistant surfaces.
+2. Add local read-only repository assistant prototype.
+3. Add evaluation report generation for prompt and app-state fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -71,3 +70,23 @@ This slice completes the first immediate PR slice from the five-year program:
 schema-backed shared contracts for AI Core and Command Center objects. It is
 still fixture-only and does not add live provider routing, provider keys, model
 training, GitHub write actions, SSH execution, or deployment behavior.
+
+## Follow-Up Command Center Slice
+
+Status: Added after the shared contract slice.
+
+Evidence:
+
+- `apps/seis-core/ai-core-contract-fixture.js`
+- `apps/seis-core/index.html`
+- `apps/seis-core/script.js`
+- `apps/seis-core/styles.css`
+- `apps/seis-core/test/seis-core-static.test.js`
+- `scripts/check-seis-command-center.mjs`
+
+This slice completes the second immediate PR slice from the five-year program:
+fixture-backed Command Center AI Core views for model routes, prompt versions,
+agent tasks, approvals, evaluation results, audit events, security boundaries,
+roadmap evidence, and goal state. It remains local static UI and does not enable
+live provider routing, provider keys, model training, SSH execution, deployment,
+or GitHub write behavior.

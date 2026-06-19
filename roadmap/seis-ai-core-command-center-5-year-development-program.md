@@ -292,19 +292,20 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add fixture data for AI Core Center, model-router view, prompt-engine view,
-   agent-task center, approval center, and evidence locker.
-2. Add prompt regression fixtures for repository, documentation, architecture,
+1. Add prompt regression fixtures for repository, documentation, architecture,
    security, PR, roadmap, and research assistants.
-3. Add read-only local repository assistant prototype with source links and no
+2. Add read-only local repository assistant prototype with source links and no
    external provider routing.
-4. Add evaluation report generation for prompt and app-state fixtures.
+3. Add evaluation report generation for prompt and app-state fixtures.
 
 Completed foundation slice:
 
 - Schema-backed shared contracts for AI Core and Command Center objects now live
   under `packages/shared-types/` and are checked by
   `npm run check:ai-core-app-contracts`.
+- Fixture-backed Command Center AI Core views now render route, prompt, agent,
+  approval, evaluation, audit, security, roadmap, and goal-state records from
+  `apps/seis-core/ai-core-contract-fixture.js`.
 
 ## Relationship to Existing Roadmaps
 

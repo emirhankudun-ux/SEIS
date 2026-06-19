@@ -382,6 +382,7 @@ h3 {
 .goal-card,
 .repo-card,
 .agent-card,
+.contract-card,
 .plugin-card,
 .automation-card,
 .security-card,
@@ -597,6 +598,7 @@ select {
 .goal-board,
 .repo-grid,
 .agent-grid,
+.ai-core-summary-grid,
 .plugin-grid,
 .automation-grid,
 .system-grid,
@@ -609,6 +611,7 @@ select {
 .goal-card,
 .repo-card,
 .agent-card,
+.contract-card,
 .plugin-card,
 .automation-card,
 .security-card,
@@ -617,6 +620,24 @@ select {
   display: grid;
   gap: 12px;
   padding: 15px;
+}
+
+.ai-core-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.contract-grid,
+.evidence-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.contract-card {
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
 }
 
 .module-spacer {
@@ -728,6 +749,7 @@ select {
 .architecture-node p,
 .knowledge-card p,
 .agent-card p,
+.contract-card p,
 .plugin-card p,
 .automation-card p,
 .security-card p,
@@ -796,6 +818,7 @@ select {
 .compact .goal-card,
 .compact .repo-card,
 .compact .agent-card,
+.compact .contract-card,
 .compact .domain-card,
 .compact .phase-row,
 .compact .knowledge-card,
@@ -857,6 +880,7 @@ select {
   .metric-grid,
   .dashboard-layout,
   .doc-layout,
+  .ai-core-layout,
   .architecture-strip,
   .architecture-map,
   .architecture-layout,

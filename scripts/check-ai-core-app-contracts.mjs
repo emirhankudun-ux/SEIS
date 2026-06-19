@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 const schemaPath = "packages/shared-types/schemas/ai-core-app-contract.schema.json";
 const fixturePath = "packages/shared-types/fixtures/ai-core-command-center-foundation.json";
+const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const docsPath = "docs/architecture/ai-core-app-shared-contracts.md";
 
 const failures = [];
@@ -35,6 +36,7 @@ function readText(filePath) {
 
 const schema = readJson(schemaPath);
 const fixture = readJson(fixturePath);
+const appFixtureText = readText(appFixturePath);
 const docs = readText(docsPath);
 
 const requiredTopLevel = [
@@ -120,6 +122,23 @@ const secretPatterns = [
   /id_ed25519/,
   /id_rsa/
 ];
+
+function readAppFixture(text) {
+  const match = text.match(/window\.seisAiCoreContractFixture\s*=\s*(\{[\s\S]*\});?\s*$/);
+  if (!match) {
+    fail(`missing window.seisAiCoreContractFixture assignment in ${appFixturePath}`);
+    return {};
+  }
+
+  try {
+    return Function(`"use strict"; return (${match[1]});`)();
+  } catch (error) {
+    fail(`invalid app fixture projection in ${appFixturePath}: ${error.message}`);
+    return {};
+  }
+}
+
+const appFixture = readAppFixture(appFixtureText);
 
 function assertArrayIncludesAll(name, actual, expected) {
   if (!Array.isArray(actual)) {
@@ -253,6 +272,42 @@ const fixtureText = JSON.stringify(fixture);
 for (const pattern of secretPatterns) {
   if (pattern.test(fixtureText)) {
     fail(`fixture appears to contain sensitive material matching ${pattern}`);
+  }
+}
+
+const appFixtureJson = JSON.stringify(appFixture);
+for (const pattern of secretPatterns) {
+  if (pattern.test(appFixtureJson)) {
+    fail(`app fixture appears to contain sensitive material matching ${pattern}`);
+  }
+}
+
+if (appFixture.sourceFixture !== fixturePath) {
+  fail(`app fixture must reference ${fixturePath}`);
+}
+
+for (const key of [
+  "id",
+  "status",
+  "stateVocabulary",
+  "llmExecutionModes",
+  "moduleMaturities",
+  "modelRoutes",
+  "promptVersions",
+  "agentTasks",
+  "approvalRequests",
+  "evaluationResults",
+  "auditEvents",
+  "repositoryFindings",
+  "documentationStatuses",
+  "securityFindings",
+  "roadmapItems",
+  "aiSurfaces",
+  "repositoryIntelligence",
+  "goalTrackingStates"
+]) {
+  if (JSON.stringify(appFixture[key]) !== JSON.stringify(fixture[key])) {
+    fail(`app fixture projection is out of sync for ${key}`);
   }
 }
 

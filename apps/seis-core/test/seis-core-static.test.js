@@ -12,6 +12,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
     "Repositories",
     "Documentation",
     "Agents",
+    "AI Core",
     "Plugins",
     "Automation",
     "Security",
@@ -21,6 +22,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
     assert.match(html, new RegExp(`>${label}<`));
   }
   assert.match(html, /SEIS Command Center/);
+  assert.match(html, /ai-core-contract-fixture\.js/);
   assert.match(html, /id="command-dialog"/);
   assert.match(html, /id="settings-dialog"/);
 });
@@ -35,6 +37,9 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /automationWorkflows/);
   assert.match(script, /securityReports/);
   assert.match(script, /aiSystems/);
+  assert.match(script, /aiCoreContract/);
+  assert.match(script, /renderAiCore/);
+  assert.match(script, /seisAiCoreContractFixture/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);
@@ -66,6 +71,8 @@ test("SEIS Command Center design system preserves required tokens", async () => 
     assert.match(css, new RegExp(token));
   }
   assert.match(css, /plugin-card/);
+  assert.match(css, /contract-card/);
+  assert.match(css, /ai-core-layout/);
   assert.match(css, /automation-card/);
   assert.match(css, /security-card/);
   assert.match(css, /domain-card/);

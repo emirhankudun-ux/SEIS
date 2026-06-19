@@ -8,6 +8,7 @@ const requiredFiles = [
   "index.html",
   "styles.css",
   "script.js",
+  "ai-core-contract-fixture.js",
   "manifest.webmanifest",
   "README.md",
   "test/seis-core-static.test.js"
@@ -19,6 +20,7 @@ const requiredModules = [
   "Repositories",
   "Documentation",
   "Agents",
+  "AI Core",
   "Plugins",
   "Automation",
   "Security",
@@ -32,6 +34,9 @@ const requiredScriptSignals = [
   "automationWorkflows",
   "securityReports",
   "aiSystems",
+  "aiCoreContract",
+  "renderAiCore",
+  "seisAiCoreContractFixture",
   "operatingDomains",
   "platformPhases",
   "renderCommandResults"
@@ -108,7 +113,7 @@ for (const domain of requiredOperatingDomains) {
   }
 }
 
-for (const selector of [".plugin-card", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
+for (const selector of [".plugin-card", ".contract-card", ".ai-core-layout", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
   }
