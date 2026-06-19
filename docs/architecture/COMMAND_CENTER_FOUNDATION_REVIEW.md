@@ -31,6 +31,7 @@ queues, blockers, approvals, or readiness.
 | Agent Center | Planned/partial | Needs agent roles, permissions, approval gates, and run history. |
 | Plugins And Extensions | Partial | Needs installed-plugin evidence, permissions, and trust boundaries. |
 | Goal And Roadmap Center | Improved | Backlog and next PR queue now exist under `docs/roadmap/`. |
+| Goal Tracking Center | Improved/planned | Goal hierarchy, schema, milestones, review cadence, product view, and review report now exist under `docs/goals/` and `docs/product/`. |
 | Documentation Hub | Improved | `docs/INDEX.md` and `docs/STATUS.md` now provide navigation. |
 | Architecture Center | Partial | Needs root architecture and component map. |
 | Automation Center | Partial | Scripts exist, but deleted validators block readiness claims. |
@@ -49,6 +50,7 @@ queues, blockers, approvals, or readiness.
 | PR Recovery Center | Show approved PR rescue evidence when available; otherwise show unknown/approval-needed state. |
 | Documentation Hub | Separate official docs from archives and generated reports. |
 | Roadmap Center | Render backlog, next PR queue, blocked actions, and acceptance evidence. |
+| Goal Tracking Center | Render active goals, milestones, blocked items, evidence links, validation state, and next safe actions. |
 | Architecture Center | Track modules, decisions, implementation status, and unknowns. |
 | Security Center | Track sensitive-file scans, approval gates, findings, and public exposure blockers. |
 | Approval Center | List dangerous actions, required approval, scope, and rollback requirements. |

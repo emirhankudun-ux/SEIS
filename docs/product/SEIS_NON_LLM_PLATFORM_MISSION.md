@@ -11,6 +11,10 @@ the central operating layer for repository governance, documentation workflows,
 security, automation, evidence, release readiness, design systems, and
 ecosystem control.
 
+Goal Tracking OS is the long-term progress layer inside this mission. It tracks
+vision, strategic themes, goals, milestones, blockers, validation evidence, and
+next safe actions without requiring an LLM connection.
+
 ## Product Rule
 
 SEIS must work in these modes:
@@ -35,6 +39,7 @@ SEIS Platform OS should unify:
 - Documentation, roadmap, architecture decisions, security reviews, and
   validation records.
 - Release readiness, public readiness, evidence records, and module health.
+- Long-term goals, milestones, blockers, validation, and progress reviews.
 - Automation tasks, workflow queues, approval queues, and dry-run results.
 - Plugin/tool registry, SSH/cloud workspace status, design system status, and
   contributor workflows.

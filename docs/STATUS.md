@@ -26,6 +26,7 @@ readiness claim.
 | --- | --- | --- | --- | --- |
 | Repository hygiene | Dirty worktree with many deletions and untracked nested repository material. | Observed locally | High | Review deletions, nested `apps/SEIS/`, and archive intent before commit/PR. |
 | Documentation navigation | Improved by this pass with a documentation index and status file. | Updated locally | Medium | Keep `docs/INDEX.md` current when adding official docs. |
+| Goal Tracking OS | Goal vision, registry, schema, milestone map, review cadence, product views, and review report are documented. | Updated docs | Medium | Create static/manual goal records and Command Center fixture view after repo hygiene is resolved. |
 | Governance | Strong rules exist, but some historical docs conflict with current `main`/SEIS direction. | Observed docs | High | Align old `UIXAppTTR` references in a dedicated governance cleanup PR. |
 | Security | Policy exists; baseline needs deeper non-secret scan and artifact cleanup plan. | Partial path-only scan | Medium | Add security baseline review and run approved scanners when available. |
 | Command Center | Conceptual direction exists; implementation status needs evidence mapping. | Partial repo evidence | Medium | Create a Command Center requirements/evidence map before UI expansion. |

@@ -14,6 +14,8 @@ broad file search.
 | [../SECURITY.md](../SECURITY.md) | Vulnerability reporting and security rules. | Active |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | Contribution rules and PR expectations. | Active |
 | [STATUS.md](STATUS.md) | Current repository condition and readiness matrix. | Active |
+| [goals/seis-vision.md](goals/seis-vision.md) | Long-term SEIS vision and strategic themes. | Active |
+| [goals/long-term-goals.md](goals/long-term-goals.md) | Evidence-aware long-term goal registry. | Active |
 
 ## Foundation Planning
 
@@ -23,12 +25,28 @@ broad file search.
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Ordered next PR queue, including blocked dangerous actions that need approval. | Active |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Full foundation review from the current inspection pass. | Active |
 | [product/SEIS_NON_LLM_PLATFORM_MISSION.md](product/SEIS_NON_LLM_PLATFORM_MISSION.md) | Non-LLM Command Center and Platform OS mission. | Active |
+| [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
+
+## Goal Tracking OS
+
+| Document | Purpose | Status |
+| --- | --- | --- |
+| [goals/seis-vision.md](goals/seis-vision.md) | SEIS vision, strategic themes, and guardrails. | Active |
+| [goals/long-term-goals.md](goals/long-term-goals.md) | Goal hierarchy, goal registry, and category status matrix. | Active |
+| [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS mission, concepts, status rules, and cadence. | Active |
+| [goals/goal-schema.md](goals/goal-schema.md) | Lightweight goal object and allowed status/priority/risk values. | Active |
+| [goals/milestone-map.md](goals/milestone-map.md) | Roadmap phases, milestones, epics, validation steps, and follow-ups. | Active |
+| [goals/progress-review.md](goals/progress-review.md) | Current Goal Tracking OS progress review. | Active |
+| [goals/weekly-priorities-template.md](goals/weekly-priorities-template.md) | Weekly review template; use only for real weekly reviews. | Template |
+| [goals/monthly-review-template.md](goals/monthly-review-template.md) | Monthly review template; use only for real monthly reviews. | Template |
 
 ## Architecture And Product Direction
 
 | Area | Current Documents |
 | --- | --- |
 | Command Center foundation | [architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md](architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md) |
+| Goal Tracking Center | [product/goal-tracking-center.md](product/goal-tracking-center.md) |
+| Command Center goals view | [product/command-center-goals-view.md](product/command-center-goals-view.md) |
 | Platform OS architecture | [architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md](architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) |
 | Repository intelligence | [architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md](architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md) |
 | Web and mobile foundation | [architecture/web-mobile-foundation.md](architecture/web-mobile-foundation.md) |

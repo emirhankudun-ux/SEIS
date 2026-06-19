@@ -21,6 +21,7 @@ evidence.
 | Repository Intelligence | Scan repo shape, docs, risky files, validation gaps, stale records. | Local filesystem and Git metadata |
 | Documentation Hub | Separate official docs, reviews, archives, handoffs, and generated reports. | `docs/INDEX.md` |
 | Roadmap Center | Track backlog, next PR queue, blockers, and readiness sequence. | `docs/roadmap/` |
+| Goal Tracking OS | Track vision, goals, milestones, blockers, evidence, validation, and next actions. | `docs/goals/` |
 | Architecture Center | Track component maps, decisions, module maturity, and implementation evidence. | `docs/architecture/` |
 | Security Center | Track findings, sensitive-file checks, approval gates, and exposure blockers. | `docs/security/SECURITY_BASELINE.md` |
 | Approval Center | Record blocked dangerous actions and human approval requirements. | `docs/governance/APPROVAL_WORKFLOW_PLATFORM.md` |
@@ -51,6 +52,9 @@ JSON when app implementation needs stronger contracts:
 - `RecoveryCandidate`
 - `DocumentationRecord`
 - `RoadmapItem`
+- `GoalRecord`
+- `MilestoneRecord`
+- `ProgressReview`
 - `ArchitectureDecision`
 - `SecurityFinding`
 - `ValidationRun`

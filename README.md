@@ -123,6 +123,9 @@ For the current foundation status and roadmap, start with:
 
 - [`docs/INDEX.md`](./docs/INDEX.md) for the documentation map
 - [`docs/STATUS.md`](./docs/STATUS.md) for current repository readiness
+- [`docs/goals/seis-vision.md`](./docs/goals/seis-vision.md) for the long-term vision
+- [`docs/goals/long-term-goals.md`](./docs/goals/long-term-goals.md) for the goal registry
+- [`docs/goals/goal-tracking-system.md`](./docs/goals/goal-tracking-system.md) for the Goal Tracking OS foundation
 - [`docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md`](./docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md) for the non-LLM Command Center and Platform OS mission
 - [`docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md`](./docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) for the deterministic platform architecture
 - [`docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md`](./docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md) for the repository intelligence plan

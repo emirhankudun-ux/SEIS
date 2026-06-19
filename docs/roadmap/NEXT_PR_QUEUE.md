@@ -83,7 +83,20 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Validation | `git diff --check`, `npm run seis:check`, docs review; record known foundation check failures separately. |
 | Approval needed | None for docs-only work; approval required for live integrations or external scans. |
 
-## PR 7: Release Readiness Dry Run
+## PR 7: Goal Tracking OS Foundation
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
+| Type | Goal, roadmap, product, and review docs |
+| Priority | P1 |
+| Goal | Make SEIS Goal Tracking OS explicit as the long-term progress and execution layer. |
+| Include | `docs/goals/*`, Goal Tracking Center product docs, Command Center goals view, goal review report, backlog and index updates. |
+| Exclude | UI implementation, fake reviews, fake completion, GitHub API calls, SSH, deployment, model-provider calls. |
+| Validation | `git diff --check`, `npm run seis:check`, `npm run check:foundation` with known blocker notes. |
+| Approval needed | None for docs-only work; approval required for live integrations or destructive cleanup. |
+
+## PR 8: Release Readiness Dry Run
 
 | Field | Value |
 | --- | --- |

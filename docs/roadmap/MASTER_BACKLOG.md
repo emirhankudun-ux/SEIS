@@ -46,6 +46,10 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-025` | P1 | Workflow platform | Define task queues, review queues, approval queues, validation queues, and emergency stop behavior. | Approval/workflow platform doc exists and dangerous actions are gated. |
 | `SEIS-BL-026` | P1 | Design system | Define Command Center design tokens, component states, accessibility rules, and localization readiness. | Design-system foundation exists and supports non-LLM Command Center UI. |
 | `SEIS-BL-027` | P1 | Readiness system | Define public-readiness and release-readiness dry-runs with evidence records. | Readiness system doc exists with states, evidence fields, and dry-run principles. |
+| `SEIS-BL-028` | P1 | Goal Tracking OS | Define SEIS vision, long-term goals, schema, milestone map, review cadence, and product view. | `docs/goals/` docs, Goal Tracking Center product docs, and review report exist. |
+| `SEIS-BL-029` | P1 | Goal evidence | Connect each active/planned goal to evidence, validation method, blockers, and next safe action. | Long-term goal registry uses relative evidence links or marks `evidence unavailable`. |
+| `SEIS-BL-030` | P2 | Goal data model | Convert Markdown goal registry into static JSON fixture data for Command Center. | Fixture data validates against goal schema and renders without LLM. |
+| `SEIS-BL-031` | P2 | Goal review cadence | Perform real weekly/monthly reviews using templates. | Review records include date, scope, evidence, blockers, and validation output. |
 
 ## Deferred Dangerous Work
 
