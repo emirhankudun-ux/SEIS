@@ -74,6 +74,11 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /handoffAudit/);
   assert.match(script, /agent-routing-matrix/);
   assert.match(script, /renderAgentRoutingMatrix/);
+  assert.match(script, /knowledgeGraphNodes/);
+  assert.match(script, /knowledgeEdges/);
+  assert.match(script, /memoryEvidence/);
+  assert.match(script, /decisionHistory/);
+  assert.match(script, /reusablePatterns/);
   assert.match(script, /openCommandPalette/);
 });
 
@@ -197,6 +202,36 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /agent-detail/);
   assert.match(css, /orchestration-card/);
   assert.match(css, /handoff-row/);
+  assert.match(css, /knowledge-map-panel/);
+  assert.match(css, /knowledge-node-card/);
+  assert.match(css, /knowledge-edge-row/);
+  assert.match(css, /memory-evidence-row/);
+  assert.match(css, /decision-history-row/);
+  assert.match(css, /pattern-card/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
+});
+
+test("SEIS Command Center knowledge system exposes graph and memory evidence", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  for (const id of [
+    "knowledge-node-grid",
+    "knowledge-edge-list",
+    "memory-evidence-list",
+    "decision-history-list",
+    "pattern-library"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of [
+    "Repository Memory",
+    "Research Sources",
+    "Decision History",
+    "Reusable Patterns",
+    "Security Policy",
+    "AI Agent Handoffs"
+  ]) {
+    assert.match(script, new RegExp(signal));
+  }
 });

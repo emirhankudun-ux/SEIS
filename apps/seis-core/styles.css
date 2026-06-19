@@ -415,6 +415,11 @@ h3 {
 .debt-row,
 .orchestration-card,
 .handoff-row,
+.knowledge-node-card,
+.knowledge-edge-row,
+.memory-evidence-row,
+.decision-history-row,
+.pattern-card,
 .phase-row,
 .knowledge-card,
 .doc-row,
@@ -1131,7 +1136,9 @@ select {
 .plugin-grid,
 .automation-grid,
 .system-grid,
-.knowledge-grid {
+.knowledge-grid,
+.knowledge-node-grid,
+.pattern-library {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 12px;
@@ -1144,10 +1151,57 @@ select {
 .automation-card,
 .security-card,
 .system-card,
+.knowledge-node-card,
+.memory-evidence-row,
+.decision-history-row,
+.pattern-card,
 .knowledge-card {
   display: grid;
   gap: 12px;
   padding: 15px;
+}
+
+.knowledge-map-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.knowledge-map-layout,
+.knowledge-ops-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.45fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.knowledge-edge-list,
+.memory-evidence-list,
+.decision-history-list {
+  display: grid;
+  gap: 10px;
+}
+
+.knowledge-edge-list {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.knowledge-edge-list h4 {
+  margin: 0;
+}
+
+.knowledge-node-card small {
+  color: var(--muted);
+}
+
+.knowledge-edge-row {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: none;
 }
 
 .agent-card {
@@ -1507,6 +1561,11 @@ select {
 .dependency-edge p,
 .relationship-row p,
 .debt-row p,
+.knowledge-node-card p,
+.knowledge-edge-row p,
+.memory-evidence-row p,
+.decision-history-row p,
+.pattern-card p,
 .knowledge-card p,
 .agent-card p,
 .plugin-card p,
@@ -1608,6 +1667,11 @@ select {
 .compact .debt-row,
 .compact .orchestration-card,
 .compact .handoff-row,
+.compact .knowledge-node-card,
+.compact .knowledge-edge-row,
+.compact .memory-evidence-row,
+.compact .decision-history-row,
+.compact .pattern-card,
 .compact .phase-row,
 .compact .knowledge-card,
 .compact .metric-card {
@@ -1680,6 +1744,8 @@ select {
   .security-ops-layout,
   .readiness-summary-grid,
   .operations-readiness-layout,
+  .knowledge-map-layout,
+  .knowledge-ops-layout,
   .ledger-summary-grid,
   .router-summary-grid,
   .routing-matrix-row,

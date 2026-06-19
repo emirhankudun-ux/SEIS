@@ -16,9 +16,9 @@ The shell is organized around eleven persistent modules: Dashboard, God Mode, Go
 
 ## Data Model
 
-Command Center uses static local datasets in `script.js` for operations readiness, plugin families, automation workflows, workflow runs, approval gates, rollback evidence, God Mode lanes, God Mode protocol steps, SEIS AI setup records, God Mode guardrails, God Mode artifacts, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
+Command Center uses static local datasets in `script.js` for operations readiness, plugin families, automation workflows, workflow runs, approval gates, rollback evidence, God Mode lanes, God Mode protocol steps, SEIS AI setup records, God Mode guardrails, God Mode artifacts, security reports, permission reviews, dependency scans, security audits, AI systems, architecture signals, dependency graphs, module relationships, technical debt records, recent activity, repository dependencies, agent evidence, knowledge graph nodes, memory evidence, decision history, reusable patterns, and knowledge records. Each record keeps a stable label, status, owner or lane, and a concise operating signal so the UI can be scanned quickly and tested without network access.
 
-Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Operations readiness records must expose release, CI, security, rollback, handoff, owner, gate, evidence, and current decision state. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Architecture records must expose dependency graph nodes, module contracts, and technical debt actions. Security records must expose risk posture, permission review scope, dependency scan coverage, audit cadence, evidence, and next actions. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
+Agent records must expose capabilities, tasks, logs, and outputs. Repository records must expose dependency overview and dependency risk. Operations readiness records must expose release, CI, security, rollback, handoff, owner, gate, evidence, and current decision state. Automation records must expose run history, approval requirements, validation evidence, and rollback paths. Architecture records must expose dependency graph nodes, module contracts, and technical debt actions. Security records must expose risk posture, permission review scope, dependency scan coverage, audit cadence, evidence, and next actions. Knowledge records must expose graph nodes, relationship contracts, memory freshness, decision impact, reusable patterns, evidence paths, and owners. Dashboard records must expose recent activity so the command surface can tell the operator what changed, who changed it, and which module owns the next review.
 
 ## God Mode Operations Model
 
@@ -57,6 +57,14 @@ Architecture evidence must stay close to implementation changes. Any future live
 The security surface separates security posture from secret-bearing data. `securityReports` records summary posture, `permissionReviews` records scoped access decisions, `dependencyScans` records supply-chain findings, and `securityAudits` records review evidence. These records must stay evidence-led, redact sensitive material at the boundary, and expose enough status for operators to decide whether a workflow can continue.
 
 Security operations are approval-aware. Any action that changes permissions, publishes artifacts, touches external systems, or handles model/data governance must show review status, owner, evidence, and rollback path before it is treated as release-ready.
+
+## Knowledge System Model
+
+The knowledge surface separates searchable knowledge from loose notes. `knowledgeGraphNodes` records repository memory, research sources, decision history, reusable patterns, security policy, and AI agent handoffs as first-class nodes with owner, type, status, signal, and links. `knowledgeEdges` records the relationship contracts between nodes so memory, research, security, automation, and plugin work remain connected instead of becoming isolated cards.
+
+Memory evidence records source, scope, freshness, status, and evidence path. This keeps memory-derived guidance staleness-aware and prevents old assumptions from being treated as current proof. Decision history records the owner, status, evidence, and impact of key architectural choices. Reusable patterns capture repeatable implementation and validation habits that can later become automation or typed adapters.
+
+The first implementation stays static and credential-free. Future live knowledge adapters should return typed knowledge nodes, edges, memory evidence, decisions, and patterns rather than raw note or provider payloads.
 
 ## Operating Model
 

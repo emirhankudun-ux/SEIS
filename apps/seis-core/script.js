@@ -1291,6 +1291,166 @@ const knowledgeItems = [
   ["System Health", "Quality, docs, security, tests and ecosystem readiness indicators."]
 ];
 
+const knowledgeGraphNodes = [
+  {
+    name: "Repository Memory",
+    type: "Memory",
+    owner: "Architect Agent",
+    status: "Ready",
+    signal: "Workspace defaults, branch governance, repo boundaries, and SEIS operating rules.",
+    links: ["Decision History", "Reusable Patterns", "Security Policy"]
+  },
+  {
+    name: "Research Sources",
+    type: "Research",
+    owner: "Research Agent",
+    status: "Active",
+    signal: "Primary-source notes for Apple, OpenAI, GitHub, cloud, platform, and compatibility assumptions.",
+    links: ["Decision History", "AI Agent Handoffs"]
+  },
+  {
+    name: "Decision History",
+    type: "Governance",
+    owner: "Architect Agent",
+    status: "Ready",
+    signal: "ADR candidates, accepted tradeoffs, rejected shortcuts, and migration triggers.",
+    links: ["Repository Memory", "Architecture Decisions", "Reusable Patterns"]
+  },
+  {
+    name: "Reusable Patterns",
+    type: "Practice",
+    owner: "Builder Agent",
+    status: "Ready",
+    signal: "Repeatable implementation, validation, rollback, and report-refresh patterns.",
+    links: ["Automation Workflows", "Security Policy"]
+  },
+  {
+    name: "Security Policy",
+    type: "Trust",
+    owner: "Security Agent",
+    status: "Review",
+    signal: "No-secret boundaries, least-privilege rules, permission scopes, and external access notes.",
+    links: ["Repository Memory", "AI Agent Handoffs"]
+  },
+  {
+    name: "AI Agent Handoffs",
+    type: "Orchestration",
+    owner: "Research Agent",
+    status: "Active",
+    signal: "Model lane handoffs, validation ownership, source provenance, and stale-memory warnings.",
+    links: ["Research Sources", "Decision History"]
+  }
+];
+
+const knowledgeEdges = [
+  {
+    from: "Repository Memory",
+    to: "Decision History",
+    contract: "Repo defaults and branch constraints must be cited when architecture decisions change.",
+    status: "Ready"
+  },
+  {
+    from: "Research Sources",
+    to: "AI Agent Handoffs",
+    contract: "Provider assumptions move to agent work only with source provenance and staleness notes.",
+    status: "Active"
+  },
+  {
+    from: "Reusable Patterns",
+    to: "Automation Workflows",
+    contract: "Repeated checks become automation candidates only after a manual validation pattern is stable.",
+    status: "Ready"
+  },
+  {
+    from: "Security Policy",
+    to: "Plugin Systems",
+    contract: "Plugin and remote-write workflows inherit least-privilege and no-secret boundaries.",
+    status: "Review"
+  }
+];
+
+const memoryEvidence = [
+  {
+    source: "SEIS SUPREME V12 defaults",
+    scope: "Workspace, tool hierarchy, git hygiene, output reporting",
+    freshness: "Durable",
+    status: "Ready",
+    evidence: "Memory registry and AGENTS operating contract"
+  },
+  {
+    source: "Command Center architecture",
+    scope: "Module map, data model, testing strategy, platform phases",
+    freshness: "Current branch",
+    status: "Ready",
+    evidence: "docs/architecture/seis-command-center.md"
+  },
+  {
+    source: "Operations Readiness",
+    scope: "Release, CI, security, rollback, and handoff evidence",
+    freshness: "Review before release",
+    status: "Review",
+    evidence: "content/development/seis-command-center-operations-readiness.json"
+  },
+  {
+    source: "Generated Reports",
+    scope: "Language distribution and technology stack freshness",
+    freshness: "Source-sensitive",
+    status: "Active",
+    evidence: "reports/language-distribution.md and reports/seis-technology-stack.md"
+  }
+];
+
+const decisionHistory = [
+  {
+    decision: "Keep Phase 1 dependency-free",
+    owner: "Architect Agent",
+    status: "Ready",
+    evidence: "Static HTML, CSS, JavaScript shell",
+    impact: "Fast startup, low dependency surface, simple rollback."
+  },
+  {
+    decision: "Expose AI systems through visible lanes",
+    owner: "Research Agent",
+    status: "Ready",
+    evidence: "OpenAI, Claude, Gemini, Qwen, local, and future adapters",
+    impact: "Multi-model collaboration stays inspectable."
+  },
+  {
+    decision: "Treat completion as evidence-gated",
+    owner: "Security Agent",
+    status: "Review",
+    evidence: "Operations Readiness and feature growth ledger",
+    impact: "Local implementation cannot masquerade as release readiness."
+  }
+];
+
+const reusablePatterns = [
+  {
+    name: "Clean worktree release slice",
+    reuse: "Use detached worktrees for risky UI and report changes when the main worktree is dirty.",
+    status: "Ready",
+    evidence: "Small commits, generated report refresh, visual QA"
+  },
+  {
+    name: "Evidence-first agent handoff",
+    reuse: "Every agent lane hands off owner, validation command, rollback path, and residual risk.",
+    status: "Ready",
+    evidence: "handoffAudit and operations readiness records"
+  },
+  {
+    name: "Staleness-aware memory",
+    reuse: "Memory-derived facts require current verification or a visible stale-context warning.",
+    status: "Review",
+    evidence: "memoryEvidence records"
+  },
+  {
+    name: "No-secret render model",
+    reuse: "Command Center renders summaries and evidence paths, never credentials or private material.",
+    status: "Ready",
+    evidence: "Security operations model"
+  }
+];
+
 const viewMeta = {
   dashboard: ["Dashboard", "SEIS operating center", "Manage goals, repositories, architecture decisions, documentation, agents, and system health from one calm surface.", "New Goal"],
   godmode: ["God Mode", "SEIS AI mission control", "Coordinate custom SEIS AI setup, agent lanes, evidence gates, and controlled execution.", "Run Mission"],
@@ -2289,6 +2449,72 @@ function renderArchitecture() {
 }
 
 function renderKnowledge() {
+  $("#knowledge-node-grid").innerHTML = knowledgeGraphNodes.map((node) => `
+    <article class="knowledge-node-card">
+      <div class="card-topline">
+        <h3>${node.name}</h3>
+        <span class="status-pill ${statusClass(node.status)}">${node.status}</span>
+      </div>
+      <p>${node.signal}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${node.type}</span>
+        <span class="meta-chip">${node.owner}</span>
+      </div>
+      <small>Links: ${node.links.join(" / ")}</small>
+    </article>
+  `).join("");
+
+  $("#knowledge-edge-list").innerHTML = knowledgeEdges.map((edge) => `
+    <article class="knowledge-edge-row">
+      <div class="relationship-path">
+        <strong>${edge.from}</strong>
+        <span>to</span>
+        <strong>${edge.to}</strong>
+      </div>
+      <p>${edge.contract}</p>
+      <span class="status-pill ${statusClass(edge.status)}">${edge.status}</span>
+    </article>
+  `).join("");
+
+  $("#memory-evidence-list").innerHTML = memoryEvidence.map((item) => `
+    <article class="memory-evidence-row">
+      <div class="card-topline">
+        <h3>${item.source}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.scope}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${item.freshness}</span>
+        <span class="meta-chip">${item.evidence}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#decision-history-list").innerHTML = decisionHistory.map((item) => `
+    <article class="decision-history-row">
+      <div class="card-topline">
+        <h3>${item.decision}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+      </div>
+      <p>${item.impact}</p>
+      <div class="meta-row">
+        <span class="meta-chip">${item.owner}</span>
+        <span class="meta-chip">${item.evidence}</span>
+      </div>
+    </article>
+  `).join("");
+
+  $("#pattern-library").innerHTML = reusablePatterns.map((pattern) => `
+    <article class="pattern-card">
+      <div class="card-topline">
+        <h3>${pattern.name}</h3>
+        <span class="status-pill ${statusClass(pattern.status)}">${pattern.status}</span>
+      </div>
+      <p>${pattern.reuse}</p>
+      <span class="meta-chip">${pattern.evidence}</span>
+    </article>
+  `).join("");
+
   $("#knowledge-grid").innerHTML = knowledgeItems.map(([title, detail]) => `
     <article class="knowledge-card">
       <h3>${title}</h3>

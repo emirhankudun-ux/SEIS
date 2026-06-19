@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 2214086,
+      "githubBytes": 2301475,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 159732,
+      "githubBytes": 161998,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -518,7 +518,7 @@
       "order": 52,
       "label": "CSS",
       "layer": "frontend-and-experience",
-      "githubBytes": 323104,
+      "githubBytes": 325296,
       "entrypoints": [
         "apps/web/style.css",
         "apps/web/styles.css"

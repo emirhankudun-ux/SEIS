@@ -6,7 +6,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
@@ -53,7 +53,7 @@ apps/seis-core/
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
-- Knowledge: knowledge registry surfaces.
+- Knowledge: knowledge graph, relationship contracts, memory evidence, decision history, reusable patterns, and knowledge registry surfaces.
 - Platform Phases: Phase 1 static app, Phase 2 TypeScript/React/Next.js, and Phase 3 SwiftUI macOS/iOS.
 
 ## MVP Specification
@@ -76,6 +76,7 @@ apps/seis-core/
 - Inspect plugin, automation run history, approval gate, rollback evidence, security operations, and AI system surfaces.
 - Inspect permission reviews, dependency scans, and security audit evidence.
 - Inspect architecture dependency graph, module contracts, and technical debt register.
+- Inspect knowledge graph nodes, memory freshness, decision history, and reusable implementation patterns.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.
 - Persist state in `localStorage`.
@@ -96,7 +97,7 @@ apps/seis-core/
 - Plugin permission review workflow.
 - Automation history storage with approval gates and rollback evidence.
 - Security audit exports.
-- Knowledge provenance and source citations.
+- Knowledge graph adapters, memory provenance, source citations, and staleness scoring.
 - Ecosystem health automation.
 - Operations readiness adapters for GitHub checks, security gates, rollback manifests, and handoff evidence.
 - Operating model adapters for live GitHub, MCP, plugin, cloud, and knowledge graph signals.

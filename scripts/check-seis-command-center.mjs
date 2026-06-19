@@ -60,6 +60,11 @@ const requiredScriptSignals = [
   "renderAgentDetail",
   "orchestrationLanes",
   "handoffAudit",
+  "knowledgeGraphNodes",
+  "knowledgeEdges",
+  "memoryEvidence",
+  "decisionHistory",
+  "reusablePatterns",
   "renderCommandResults"
 ];
 
@@ -74,6 +79,7 @@ const requiredDocSections = [
   "Automation Operations Model",
   "Architecture Operations Model",
   "Security Operations Model",
+  "Knowledge System Model",
   "API Design",
   "Testing Strategy",
   "Roadmap",
@@ -214,7 +220,13 @@ for (const selector of [
   ".dependency-row",
   ".agent-detail",
   ".orchestration-card",
-  ".handoff-row"
+  ".handoff-row",
+  ".knowledge-map-panel",
+  ".knowledge-node-card",
+  ".knowledge-edge-row",
+  ".memory-evidence-row",
+  ".decision-history-row",
+  ".pattern-card"
 ]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
