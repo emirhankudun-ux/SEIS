@@ -30,6 +30,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-MS-007` | `SEIS-PHASE-5` | Public/release readiness dry-runs | planned | Dry-run reports exist without deployment or release actions. |
 | `SEIS-MS-008` | `SEIS-PHASE-1` | Goal evidence ledger | active | Structured evidence ledger exists and is validated with the goal registry. |
 | `SEIS-MS-009` | `SEIS-PHASE-1` | Goal execution board | active | Structured tasks, subtasks, blockers, and decisions exist and validate. |
+| `SEIS-MS-010` | `SEIS-PHASE-2` | Command Center goal view model | active | Generated static view model exists and validates against source records. |
 
 ## Epics
 
@@ -41,6 +42,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-EPIC-GOALS-004` | `SEIS-MS-005` | Repo-evidence connection | planned | Link scanner outputs to goals and blockers. |
 | `SEIS-EPIC-GOALS-005` | `SEIS-MS-008` | Evidence ledger | active | Maintain validation, blocker, repository-state, commit, review, and security-scan records. |
 | `SEIS-EPIC-GOALS-006` | `SEIS-MS-009` | Execution board | active | Maintain task, subtask, blocker, decision, and next-action records. |
+| `SEIS-EPIC-GOALS-007` | `SEIS-MS-010` | Command Center view model | active | Keep generated Goal Tracking Center panels fresh from source records. |
 
 ## Validation Steps
 
@@ -51,6 +53,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `git diff --check` | No whitespace issues in scoped diff. | passed on 2026-06-19 |
 | `npm run seis:check` | Existing web audit still passes. | passed on 2026-06-19 |
 | `npm run check:goal-tracking` | Goal registry, evidence ledger, and execution board validate. | passed on 2026-06-19 |
+| `npm run check:goal-command-center-view` | Generated Command Center view model is fresh. | passed on 2026-06-19 |
 | `npm run check:foundation` | Foundation validators pass. | blocked by pre-existing deleted files |
 
 ## Follow-Up Actions

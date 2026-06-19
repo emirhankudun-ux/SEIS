@@ -51,7 +51,15 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 
 ## First UI Data Contract
 
-The first structured source is
+The first generated Command Center view source is
+[`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json).
+It is derived from the structured source records:
+
+- [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
+- [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
+- [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
+
+The raw goal source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
 Evidence and validation summaries should come from
 [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json).

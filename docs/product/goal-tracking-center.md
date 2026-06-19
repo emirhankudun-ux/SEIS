@@ -18,7 +18,7 @@ what needs evidence, and what should happen next.
 | --- | --- | --- |
 | Goal List | List goals with category, priority, status, owner role, evidence, blockers, and next action. | [`../goals/long-term-goals.md`](../goals/long-term-goals.md) |
 | Milestone Timeline | Show phases, milestones, epics, and validation steps. | [`../goals/milestone-map.md`](../goals/milestone-map.md) |
-| Progress Cards | Summarize active, blocked, planned, validated, and completed goals. | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
+| Progress Cards | Summarize active, blocked, planned, validated, and completed goals. | [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) |
 | Blocked Items | Make blockers and required approvals visible. | [`../goals/progress-review.md`](../goals/progress-review.md) |
 | Next Safe Action Panel | Show the next safe action per active goal and roadmap queue. | [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) |
 | Evidence Links | Link each status to docs, reviews, validation, files, or PRs. | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
@@ -61,6 +61,7 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
+- [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)
 - [`../goals/milestone-map.md`](../goals/milestone-map.md)
 - [`../goals/progress-review.md`](../goals/progress-review.md)

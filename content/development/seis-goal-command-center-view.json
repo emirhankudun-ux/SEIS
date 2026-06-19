@@ -1,0 +1,917 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-command-center-view",
+  "updated": "2026-06-19",
+  "mode": "non_llm_command_center_goal_view",
+  "sourceRecords": [
+    "content/development/seis-goal-tracking.json",
+    "content/development/seis-goal-evidence.json",
+    "content/development/seis-goal-execution.json"
+  ],
+  "summary": {
+    "finalState": "blocked_by_repository_hygiene",
+    "totalGoals": 20,
+    "totalCategories": 20,
+    "goalsByStatus": {
+      "planned": 13,
+      "active": 4,
+      "blocked": 3
+    },
+    "totalEvidenceRecords": 9,
+    "evidenceByStatus": {
+      "passed": 5,
+      "blocked": 2,
+      "observed": 1,
+      "partial": 1
+    },
+    "totalTasks": 5,
+    "tasksByStatus": {
+      "blocked": 1,
+      "active": 1,
+      "planned": 3
+    },
+    "totalBlockers": 3,
+    "blockersByStatus": {
+      "active": 3
+    },
+    "totalDecisions": 4,
+    "nextSafeAction": "Resolve P0 repository hygiene blockers before public or release readiness claims."
+  },
+  "progressCards": [
+    {
+      "id": "active-goals",
+      "label": "Active goals",
+      "value": 4,
+      "status": "active",
+      "description": "Goals currently carrying foundation work."
+    },
+    {
+      "id": "planned-goals",
+      "label": "Planned goals",
+      "value": 13,
+      "status": "planned",
+      "description": "Goals visible but not claimed complete."
+    },
+    {
+      "id": "blocked-goals",
+      "label": "Blocked goals",
+      "value": 3,
+      "status": "blocked",
+      "description": "Goals blocked by named conditions."
+    },
+    {
+      "id": "evidence-records",
+      "label": "Evidence records",
+      "value": 9,
+      "status": "active",
+      "description": "Structured proof, blocker, validation, and review records."
+    },
+    {
+      "id": "execution-tasks",
+      "label": "Execution tasks",
+      "value": 5,
+      "status": "active",
+      "description": "Structured tasks and subtasks backing next actions."
+    },
+    {
+      "id": "active-blockers",
+      "label": "Active blockers",
+      "value": 3,
+      "status": "blocked",
+      "description": "Blockers that must remain visible."
+    }
+  ],
+  "panels": {
+    "activeGoals": [
+      {
+        "id": "SEIS-GOAL-002",
+        "title": "Establish SEIS Goal Tracking OS",
+        "category": "Goal Tracking OS",
+        "priority": "P1 high",
+        "status": "active",
+        "ownerRole": "Product Architecture",
+        "targetPhase": "Goal foundation",
+        "relatedRoadmapItem": "SEIS-BL-028",
+        "relatedMilestone": "SEIS-MS-001",
+        "evidenceLinks": [
+          "docs/goals/goal-tracking-system.md",
+          "docs/goals/goal-schema.md",
+          "docs/goals/evidence-ledger.md",
+          "content/development/seis-goal-evidence.json",
+          "docs/goals/execution-board.md",
+          "content/development/seis-goal-execution.json",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json",
+          "docs/reviews/GOAL_TRACKING_REVIEW.md"
+        ],
+        "blockers": [
+          "Command Center UI implementation is not built yet"
+        ],
+        "validationMethod": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
+        "nextAction": "Keep structured goal data in sync with docs and add Command Center fixture rendering."
+      },
+      {
+        "id": "SEIS-GOAL-004",
+        "title": "Maintain official documentation and source-of-truth navigation",
+        "category": "Documentation System",
+        "priority": "P1 high",
+        "status": "active",
+        "ownerRole": "Documentation",
+        "targetPhase": "Foundation",
+        "relatedRoadmapItem": "SEIS-BL-005",
+        "relatedMilestone": "SEIS-MS-001",
+        "evidenceLinks": [
+          "docs/INDEX.md",
+          "docs/STATUS.md"
+        ],
+        "blockers": [
+          "Root architecture, roadmap, and changelog docs are still missing"
+        ],
+        "validationMethod": "Docs index links current source-of-truth docs and known blockers are visible.",
+        "nextAction": "Keep docs index, status, backlog, and PR queue current."
+      },
+      {
+        "id": "SEIS-GOAL-005",
+        "title": "Enforce security and governance through platform rules",
+        "category": "Security and Governance",
+        "priority": "P1 high",
+        "status": "active",
+        "ownerRole": "Security Governance",
+        "targetPhase": "Foundation",
+        "relatedRoadmapItem": "SEIS-BL-006",
+        "relatedMilestone": "SEIS-MS-006",
+        "evidenceLinks": [
+          "docs/security/SECURITY_BASELINE.md",
+          "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+        ],
+        "blockers": [
+          "Live GitHub security status is unknown"
+        ],
+        "validationMethod": "Security and approval docs exist; scans record exact commands and missing checks.",
+        "nextAction": "Add deeper local-only security checks and approval ledger."
+      },
+      {
+        "id": "SEIS-GOAL-019",
+        "title": "Maintain long-term product vision and review cadence",
+        "category": "Long-Term Product Vision",
+        "priority": "P1 high",
+        "status": "active",
+        "ownerRole": "Product Governance",
+        "targetPhase": "Foundation",
+        "relatedRoadmapItem": "SEIS-BL-031",
+        "relatedMilestone": "SEIS-MS-001",
+        "evidenceLinks": [
+          "docs/goals/seis-vision.md",
+          "docs/goals/weekly-priorities-template.md",
+          "docs/goals/monthly-review-template.md"
+        ],
+        "blockers": [
+          "Weekly and monthly reviews must be performed before they can be marked complete"
+        ],
+        "validationMethod": "Review records contain date, scope, evidence, blockers, and validation output.",
+        "nextAction": "Use weekly and monthly review templates only when reviews are actually performed."
+      }
+    ],
+    "blockedGoals": [
+      {
+        "id": "SEIS-GOAL-006",
+        "title": "Stabilize GitHub workflow and PR rescue",
+        "category": "GitHub Workflow",
+        "priority": "P0 critical",
+        "status": "blocked",
+        "ownerRole": "Repository Governance",
+        "targetPhase": "Recovery",
+        "relatedRoadmapItem": "SEIS-BL-007",
+        "relatedMilestone": "SEIS-MS-005",
+        "evidenceLinks": [
+          "docs/governance/GITHUB_GOVERNANCE_REVIEW.md"
+        ],
+        "blockers": [
+          "External GitHub PR state was not queried",
+          "Dirty worktree contains pre-existing deletions"
+        ],
+        "validationMethod": "GitHub CLI/API evidence is captured after approval and each PR is classified.",
+        "nextAction": "Resolve local deletion set, then inspect GitHub PRs after approval."
+      },
+      {
+        "id": "SEIS-GOAL-007",
+        "title": "Prepare public repository readiness",
+        "category": "Public Readiness",
+        "priority": "P1 high",
+        "status": "blocked",
+        "ownerRole": "Public Readiness",
+        "targetPhase": "Readiness",
+        "relatedRoadmapItem": "SEIS-BL-008",
+        "relatedMilestone": "SEIS-MS-007",
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+          "docs/STATUS.md"
+        ],
+        "blockers": [
+          "Foundation check fails",
+          "Source-of-truth docs are missing"
+        ],
+        "validationMethod": "Public readiness dry-run records exact checks and blockers.",
+        "nextAction": "Complete repo hygiene and validation recovery first."
+      },
+      {
+        "id": "SEIS-GOAL-008",
+        "title": "Prepare release readiness without unsafe deployment",
+        "category": "Release Readiness",
+        "priority": "P1 high",
+        "status": "blocked",
+        "ownerRole": "Release Governance",
+        "targetPhase": "Readiness",
+        "relatedRoadmapItem": "SEIS-BL-009",
+        "relatedMilestone": "SEIS-MS-007",
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+        ],
+        "blockers": [
+          "Release artifacts exist but release sync was not validated",
+          "Deployment is approval-gated"
+        ],
+        "validationMethod": "Release dry-run records artifact inventory, validation, rollback, and blocked deployment actions.",
+        "nextAction": "Define changelog/artifact policy and run dry-runs after validation recovery."
+      }
+    ],
+    "categoryStatus": [
+      {
+        "category": "SEIS AI Core",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "none",
+        "blockers": [
+          "Deleted package and validation files block implementation readiness claims"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit."
+      },
+      {
+        "category": "SEIS App / Command Center",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-003",
+        "blockers": [
+          "Complete app shell is not proven"
+        ],
+        "evidenceLinks": [
+          "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json"
+        ],
+        "nextAction": "Build static/manual Command Center views from docs and fixture data."
+      },
+      {
+        "category": "Goal Tracking OS",
+        "status": "active",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-001",
+        "blockers": [
+          "Command Center UI implementation is not built yet"
+        ],
+        "evidenceLinks": [
+          "docs/goals/goal-tracking-system.md",
+          "docs/goals/goal-schema.md",
+          "docs/goals/evidence-ledger.md",
+          "content/development/seis-goal-evidence.json",
+          "docs/goals/execution-board.md",
+          "content/development/seis-goal-execution.json",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json",
+          "docs/reviews/GOAL_TRACKING_REVIEW.md"
+        ],
+        "nextAction": "Keep structured goal data in sync with docs and add Command Center fixture rendering."
+      },
+      {
+        "category": "Repository Intelligence",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-005",
+        "blockers": [
+          "Missing validation scripts remain unresolved"
+        ],
+        "evidenceLinks": [
+          "docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md"
+        ],
+        "nextAction": "Implement read-only scanner outputs after current repo hygiene blockers are resolved."
+      },
+      {
+        "category": "Documentation System",
+        "status": "active",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-001",
+        "blockers": [
+          "Root architecture, roadmap, and changelog docs are still missing"
+        ],
+        "evidenceLinks": [
+          "docs/INDEX.md",
+          "docs/STATUS.md"
+        ],
+        "nextAction": "Keep docs index, status, backlog, and PR queue current."
+      },
+      {
+        "category": "Security and Governance",
+        "status": "active",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-006",
+        "blockers": [
+          "Live GitHub security status is unknown"
+        ],
+        "evidenceLinks": [
+          "docs/security/SECURITY_BASELINE.md",
+          "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+        ],
+        "nextAction": "Add deeper local-only security checks and approval ledger."
+      },
+      {
+        "category": "GitHub Workflow",
+        "status": "blocked",
+        "priority": "P0 critical",
+        "nextMilestone": "SEIS-MS-005",
+        "blockers": [
+          "External GitHub PR state was not queried",
+          "Dirty worktree contains pre-existing deletions"
+        ],
+        "evidenceLinks": [
+          "docs/governance/GITHUB_GOVERNANCE_REVIEW.md"
+        ],
+        "nextAction": "Resolve local deletion set, then inspect GitHub PRs after approval."
+      },
+      {
+        "category": "Public Readiness",
+        "status": "blocked",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-007",
+        "blockers": [
+          "Foundation check fails",
+          "Source-of-truth docs are missing"
+        ],
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+          "docs/STATUS.md"
+        ],
+        "nextAction": "Complete repo hygiene and validation recovery first."
+      },
+      {
+        "category": "Release Readiness",
+        "status": "blocked",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-007",
+        "blockers": [
+          "Release artifacts exist but release sync was not validated",
+          "Deployment is approval-gated"
+        ],
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+        ],
+        "nextAction": "Define changelog/artifact policy and run dry-runs after validation recovery."
+      },
+      {
+        "category": "Design System",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-004",
+        "blockers": [
+          "No component demo yet"
+        ],
+        "evidenceLinks": [
+          "docs/design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md"
+        ],
+        "nextAction": "Create fixture-driven component/state demo."
+      },
+      {
+        "category": "Agent Runtime",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "none",
+        "blockers": [
+          "Agent runtime spec is not written yet"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add agent runtime specification before privileged actions."
+      },
+      {
+        "category": "Automation Queue",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-006",
+        "blockers": [
+          "No approval ledger implementation yet"
+        ],
+        "evidenceLinks": [
+          "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+        ],
+        "nextAction": "Add static approval ledger and queue schema."
+      },
+      {
+        "category": "Model Router",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "none",
+        "blockers": [
+          "No model-router contract docs yet"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add model-router provider interface and routing policy docs."
+      },
+      {
+        "category": "Prompt Engine",
+        "status": "planned",
+        "priority": "P1 high",
+        "nextMilestone": "none",
+        "blockers": [
+          "No prompt-engine docs yet"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add prompt format/versioning and template rules."
+      },
+      {
+        "category": "Evaluation Lab",
+        "status": "planned",
+        "priority": "P2 medium",
+        "nextMilestone": "none",
+        "blockers": [
+          "Foundation validation blockers remain"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add evaluation smoke plan after validation scripts are recovered."
+      },
+      {
+        "category": "Knowledge Graph",
+        "status": "planned",
+        "priority": "P2 medium",
+        "nextMilestone": "none",
+        "blockers": [
+          "Knowledge record model is not designed yet"
+        ],
+        "evidenceLinks": [
+          "evidence unavailable"
+        ],
+        "nextAction": "Define knowledge records and archive separation rules."
+      },
+      {
+        "category": "SSH / Cloud Workspace",
+        "status": "planned",
+        "priority": "P2 medium",
+        "nextMilestone": "none",
+        "blockers": [
+          "SSH operations require explicit approval"
+        ],
+        "evidenceLinks": [
+          "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md",
+          "docs/security/SECURITY_BASELINE.md"
+        ],
+        "nextAction": "Add workspace policy doc; do not run SSH."
+      },
+      {
+        "category": "SEIS Universe Research",
+        "status": "planned",
+        "priority": "P2 medium",
+        "nextMilestone": "none",
+        "blockers": [
+          "No training, checkpoint, tokenizer, dataset, or evaluation evidence was reviewed"
+        ],
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add model baseline and research roadmap docs later."
+      },
+      {
+        "category": "Portfolio / Creative Systems",
+        "status": "planned",
+        "priority": "P3 low",
+        "nextMilestone": "none",
+        "blockers": [
+          "Creative/portfolio surfaces are not classified yet"
+        ],
+        "evidenceLinks": [
+          "evidence unavailable"
+        ],
+        "nextAction": "Classify creative and portfolio surfaces after repo hygiene recovery."
+      },
+      {
+        "category": "Long-Term Product Vision",
+        "status": "active",
+        "priority": "P1 high",
+        "nextMilestone": "SEIS-MS-001",
+        "blockers": [
+          "Weekly and monthly reviews must be performed before they can be marked complete"
+        ],
+        "evidenceLinks": [
+          "docs/goals/seis-vision.md",
+          "docs/goals/weekly-priorities-template.md",
+          "docs/goals/monthly-review-template.md"
+        ],
+        "nextAction": "Use weekly and monthly review templates only when reviews are actually performed."
+      }
+    ],
+    "nextActionQueue": [
+      {
+        "id": "SEIS-TASK-001",
+        "title": "Restore or replace P0 governance validation surface",
+        "status": "blocked",
+        "priority": "P0 critical",
+        "ownerRole": "Repository Governance",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008"
+        ],
+        "blockerIds": [
+          "SEIS-BLOCKER-001",
+          "SEIS-BLOCKER-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-003",
+          "SEIS-EVID-004",
+          "SEIS-EVID-007"
+        ],
+        "nextAction": "Use the deletion review as the recovery checklist in a focused repository hygiene PR."
+      },
+      {
+        "id": "SEIS-TASK-002",
+        "title": "Maintain structured Goal Tracking OS registries",
+        "status": "active",
+        "priority": "P1 high",
+        "ownerRole": "Product Architecture",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "blockerIds": [],
+        "evidenceIds": [
+          "SEIS-EVID-001",
+          "SEIS-EVID-006",
+          "SEIS-EVID-008"
+        ],
+        "nextAction": "Keep `npm run check:goal-tracking` as the local non-LLM integrity gate."
+      },
+      {
+        "id": "SEIS-TASK-003",
+        "title": "Render Goal Tracking Center from structured records",
+        "status": "planned",
+        "priority": "P1 high",
+        "ownerRole": "Command Center Product",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "blockerIds": [
+          "SEIS-BLOCKER-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-001",
+          "SEIS-EVID-009"
+        ],
+        "nextAction": "Render the generated view model in a static/manual Command Center Goal Tracking surface."
+      },
+      {
+        "id": "SEIS-TASK-004",
+        "title": "Connect repository intelligence output to goal evidence",
+        "status": "planned",
+        "priority": "P1 high",
+        "ownerRole": "Repository Intelligence",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-004"
+        ],
+        "blockerIds": [
+          "SEIS-BLOCKER-001"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-004",
+          "SEIS-EVID-007"
+        ],
+        "nextAction": "Define read-only repository intelligence output records before implementing scanner automation."
+      },
+      {
+        "id": "SEIS-TASK-005",
+        "title": "Perform real weekly and monthly goal reviews",
+        "status": "planned",
+        "priority": "P2 medium",
+        "ownerRole": "Product Governance",
+        "supportsGoalIds": [
+          "SEIS-GOAL-019"
+        ],
+        "blockerIds": [],
+        "evidenceIds": [],
+        "nextAction": "Do not create fake review records; wait for actual review cadence."
+      }
+    ],
+    "blockedItems": [
+      {
+        "id": "SEIS-BLOCKER-001",
+        "title": "Unresolved tracked deletion set",
+        "severity": "critical",
+        "supportsGoalIds": [
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-004",
+          "SEIS-EVID-007"
+        ],
+        "requiredApproval": "Human approval required for intentional file deletion.",
+        "nextAction": "Use the deletion review to drive restore, replace, archive, or approved deletion decisions."
+      },
+      {
+        "id": "SEIS-BLOCKER-002",
+        "title": "Foundation governance files missing",
+        "severity": "critical",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-003"
+        ],
+        "requiredApproval": "None for documentation-only replacement; approval required for intentional deletion.",
+        "nextAction": "Restore or replace the required governance docs and open-source governance validator."
+      },
+      {
+        "id": "SEIS-BLOCKER-003",
+        "title": "Goal Tracking Center UI not implemented",
+        "severity": "medium",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-001"
+        ],
+        "requiredApproval": "None for static/manual UI work; approval required for dependency installation or deployment.",
+        "nextAction": "Build static/manual view after data contract is stable."
+      }
+    ],
+    "validationStatus": [
+      {
+        "id": "SEIS-EVID-001",
+        "title": "Goal tracking registry validates",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002"
+        ],
+        "summary": "Goal Tracking OS validator passed for 20 goals across 20 strategic categories.",
+        "limitations": [
+          "Does not prove Command Center UI implementation.",
+          "Does not prove live GitHub, SSH, release, or public readiness integrations."
+        ],
+        "nextAction": "Keep the validator in the local foundation validation flow."
+      },
+      {
+        "id": "SEIS-EVID-002",
+        "title": "Existing web audit passes",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-010"
+        ],
+        "summary": "Existing web audit reported passing i18n, SEO, contract, drawings, style, performance, accessibility, and basic security checks.",
+        "limitations": [
+          "Audit output includes informational findings for lazy image loading, explicit image dimensions, CSP, and external resource integrity.",
+          "Does not prove Goal Tracking Center UI exists."
+        ],
+        "nextAction": "Connect future Goal Tracking Center UI work to the same validation discipline."
+      },
+      {
+        "id": "SEIS-EVID-003",
+        "title": "Foundation check blocked by missing governance files",
+        "type": "blocker",
+        "status": "blocked",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009"
+        ],
+        "summary": "Foundation validation failed because required governance docs and an open-source governance validator are missing in the current worktree.",
+        "limitations": [
+          "This evidence records the blocker; it does not approve restoring, deleting, or replacing files."
+        ],
+        "nextAction": "Resolve governance file state in a focused repository hygiene PR."
+      },
+      {
+        "id": "SEIS-EVID-004",
+        "title": "Tracked deletion set remains unresolved",
+        "type": "repository-state",
+        "status": "blocked",
+        "supportsGoalIds": [
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007"
+        ],
+        "summary": "Current worktree still shows 47 pre-existing unstaged tracked deletions. No deletion was staged or committed in the Goal Tracking OS evidence pass.",
+        "limitations": [
+          "Does not determine whether each deleted file should be restored, replaced, archived, or intentionally removed."
+        ],
+        "nextAction": "Create a deletion review table before any file deletion or restoration decision."
+      },
+      {
+        "id": "SEIS-EVID-006",
+        "title": "Goal Tracking OS scoped sensitive-pattern scan passes",
+        "type": "security-scan",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-008"
+        ],
+        "summary": "Scoped scan found no private-path, private-key, token, credential, file URI, or editor URI hits in Goal Tracking OS files.",
+        "limitations": [
+          "This was a scoped scan, not a full repository secret scan.",
+          "Known hardcoded local plugin path cleanup remains tracked in the backlog."
+        ],
+        "nextAction": "Run full public-readiness security scan after repository hygiene blockers are resolved."
+      },
+      {
+        "id": "SEIS-EVID-007",
+        "title": "Tracked deletion set classified for recovery",
+        "type": "review",
+        "status": "partial",
+        "supportsGoalIds": [
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007"
+        ],
+        "summary": "The 47 deleted tracked paths were classified by role, validation impact, and next safe recovery action without staging or committing deletions.",
+        "limitations": [
+          "Review does not approve deletion, restoration, or replacement.",
+          "Foundation validation remains blocked until P0 governance files are restored or replaced."
+        ],
+        "nextAction": "Use the deletion review to drive a focused repository hygiene PR."
+      },
+      {
+        "id": "SEIS-EVID-008",
+        "title": "Goal execution registry validates",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "summary": "Goal Tracking OS execution records are covered by the local validator, including tasks, subtasks, blockers, decisions, references, paths, and safe text checks.",
+        "limitations": [
+          "Does not prove Command Center UI implementation.",
+          "Does not resolve the active repository hygiene blockers."
+        ],
+        "nextAction": "Use execution tasks as the next-action queue for Goal Tracking OS."
+      },
+      {
+        "id": "SEIS-EVID-009",
+        "title": "Command Center goal view model generated",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "summary": "A deterministic Command Center view model was generated from the goal, evidence, and execution registries and passed the local freshness check.",
+        "limitations": [
+          "Does not prove a rendered UI exists.",
+          "Does not resolve repository hygiene blockers or foundation validation failures."
+        ],
+        "nextAction": "Render the generated view model in the Command Center Goal Tracking Center."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "SEIS-DEC-001",
+        "title": "Goal Tracking OS is non-LLM-first",
+        "status": "accepted",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-001"
+        ],
+        "decision": "Goal, evidence, task, blocker, and decision state must be stored in structured local records before LLM assistance is treated as useful.",
+        "consequence": "LLM summaries can assist, but local records and validators remain the source of truth."
+      },
+      {
+        "id": "SEIS-DEC-002",
+        "title": "Do not resolve tracked deletions implicitly",
+        "status": "accepted",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-007"
+        ],
+        "decision": "Tracked deletions must be reviewed and resolved in a focused repository hygiene PR rather than silently restored, staged, or committed.",
+        "consequence": "Foundation remains blocked until explicit restore, replace, archive, or approved deletion decisions are made."
+      },
+      {
+        "id": "SEIS-DEC-003",
+        "title": "Repository intelligence should be read-only first",
+        "status": "accepted",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-007"
+        ],
+        "decision": "Repository intelligence should emit findings and evidence before it performs cleanup, mutation, or external calls.",
+        "consequence": "Initial scanner work should create local records, not modify repository state."
+      },
+      {
+        "id": "SEIS-DEC-004",
+        "title": "Review cadence records must be real",
+        "status": "accepted",
+        "supportsGoalIds": [
+          "SEIS-GOAL-019"
+        ],
+        "evidenceIds": [],
+        "decision": "Weekly and monthly review records must only be created when those reviews are actually performed with current evidence.",
+        "consequence": "Templates remain templates until a real review cadence event occurs."
+      }
+    ],
+    "readinessConnections": [
+      {
+        "category": "Public Readiness",
+        "status": "blocked",
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+          "docs/STATUS.md"
+        ],
+        "nextAction": "Complete repo hygiene and validation recovery first."
+      },
+      {
+        "category": "Release Readiness",
+        "status": "blocked",
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+        ],
+        "nextAction": "Define changelog/artifact policy and run dry-runs after validation recovery."
+      },
+      {
+        "category": "SEIS AI Core",
+        "status": "planned",
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit."
+      },
+      {
+        "category": "SEIS App / Command Center",
+        "status": "planned",
+        "evidenceLinks": [
+          "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json"
+        ],
+        "nextAction": "Build static/manual Command Center views from docs and fixture data."
+      },
+      {
+        "category": "SEIS Universe Research",
+        "status": "planned",
+        "evidenceLinks": [
+          "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+        ],
+        "nextAction": "Add model baseline and research roadmap docs later."
+      }
+    ]
+  },
+  "uxGuards": [
+    {
+      "id": "no-fake-progress-bars",
+      "rule": "Do not show fake progress bars.",
+      "enforcement": "enforced_by_numeric_cards"
+    },
+    {
+      "id": "completed-needs-evidence",
+      "rule": "Completed goals must show evidence.",
+      "enforcement": "validated_by_goal_check"
+    },
+    {
+      "id": "blocked-items-visible",
+      "rule": "Blocked goals and blockers must remain visible.",
+      "enforcement": "enforced_by_blocked_panels"
+    },
+    {
+      "id": "planned-labeled-planned",
+      "rule": "Planned goals must remain labeled planned.",
+      "enforcement": "enforced_by_status_fields"
+    },
+    {
+      "id": "validation-clear",
+      "rule": "Validation status must be clear and limitation-aware.",
+      "enforcement": "enforced_by_evidence_panel"
+    }
+  ]
+}

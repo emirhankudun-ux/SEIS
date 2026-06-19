@@ -15,10 +15,11 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Structured goal registry | active | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) | Keep records validated with `npm run check:goal-tracking`. |
 | Structured evidence ledger | active | [`evidence-ledger.md`](evidence-ledger.md), [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) | Keep evidence records scoped, current, and limitation-aware. |
 | Structured execution board | active | [`execution-board.md`](execution-board.md), [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) | Keep tasks, subtasks, blockers, decisions, and next actions validated. |
+| Command Center view model | active | [`command-center-view-model.md`](command-center-view-model.md), [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) | Keep generated view data fresh with `npm run check:goal-command-center-view`. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
 | Goal Tracking Center | planned | [`../product/goal-tracking-center.md`](../product/goal-tracking-center.md) | Build fixture/manual UI data next. |
 | Command Center goals view | planned | [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) | Add static views after design-system demo. |
-| Validation | partial | `git diff --check`, `npm run seis:check`, and `npm run check:goal-tracking` passed on 2026-06-19; `npm run check:foundation` is blocked. | Resolve deleted validator blockers later. |
+| Validation | partial | `git diff --check`, `npm run seis:check`, `npm run check:goal-tracking`, and `npm run check:goal-command-center-view` passed on 2026-06-19; `npm run check:foundation` is blocked. | Resolve deleted validator blockers later. |
 
 ## Blockers
 
@@ -48,10 +49,13 @@ implementation:
   commit, review, and scoped security-scan records.
 - Structured execution board created for tasks, subtasks, blockers, decisions,
   and next safe actions.
+- Static Command Center view model generated from goal, evidence, and execution
+  records.
 
 ## Deferred Work
 
 - Command Center UI implementation.
+- Live rendered Goal Tracking Center UI.
 - Scanner-generated goal evidence.
 - Live GitHub PR integration.
 - Weekly/monthly reviews with actual period evidence.
@@ -59,5 +63,5 @@ implementation:
 
 ## Next Safe Action
 
-Create a static/manual Goal Tracking Center fixture data plan after repository
-hygiene blockers are triaged.
+Render the generated Goal Tracking Center view model after repository hygiene
+blockers are triaged.

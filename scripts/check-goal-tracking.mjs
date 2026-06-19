@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
+const commandCenterViewPath = "content/development/seis-goal-command-center-view.json";
 const sensitiveTextPatterns = [
   new RegExp(["/", "Users"].join(""), "i"),
   new RegExp(`file:${"/".repeat(2)}|vscode:${"/".repeat(2)}`, "i"),
@@ -20,6 +21,7 @@ const requiredDocs = [
   "docs/goals/progress-review.md",
   "docs/goals/evidence-ledger.md",
   "docs/goals/execution-board.md",
+  "docs/goals/command-center-view-model.md",
   "docs/goals/weekly-priorities-template.md",
   "docs/goals/monthly-review-template.md",
   "docs/roadmap/MASTER_BACKLOG.md",
@@ -99,6 +101,10 @@ if (!existsSync(executionPath)) {
   failures.push(`missing goal execution registry: ${executionPath}`);
 }
 
+if (!existsSync(commandCenterViewPath)) {
+  failures.push(`missing Goal Command Center view: ${commandCenterViewPath}`);
+}
+
 const registry = existsSync(registryPath)
   ? JSON.parse(readFileSync(registryPath, "utf8"))
   : null;
@@ -109,6 +115,10 @@ const evidenceLedger = existsSync(evidencePath)
 
 const executionRegistry = existsSync(executionPath)
   ? JSON.parse(readFileSync(executionPath, "utf8"))
+  : null;
+
+const commandCenterView = existsSync(commandCenterViewPath)
+  ? JSON.parse(readFileSync(commandCenterViewPath, "utf8"))
   : null;
 
 let knownGoalIds = new Set();
@@ -337,6 +347,10 @@ if (executionRegistry) {
   validateExecutionDecisions(decisions, allowedDecisionStatuses);
 }
 
+if (commandCenterView) {
+  validateCommandCenterView(commandCenterView);
+}
+
 if (failures.length > 0) {
   console.error("SEIS goal tracking check failed:");
   for (const failure of failures) {
@@ -360,7 +374,8 @@ console.log(JSON.stringify({
   evidenceRecords: evidenceLedger.records.length,
   executionTasks: executionRegistry.tasks.length,
   executionBlockers: executionRegistry.blockers.length,
-  executionDecisions: executionRegistry.decisions.length
+  executionDecisions: executionRegistry.decisions.length,
+  commandCenterView: commandCenterView.id
 }, null, 2));
 
 function hasUnavailableEvidence(goal) {
@@ -648,6 +663,56 @@ function validateExecutionDecisions(decisions, allowedStatuses) {
     })) {
       validateSafeText(label, field, value);
     }
+  }
+}
+
+function validateCommandCenterView(view) {
+  const label = view.id || "(missing command center view id)";
+  if (!registry || !evidenceLedger || !executionRegistry) {
+    failures.push(`${label} cannot be validated until source registries load`);
+    return;
+  }
+
+  if (view.schemaVersion !== 1) {
+    failures.push(`${label} schemaVersion must be 1`);
+  }
+
+  if (view.mode !== "non_llm_command_center_goal_view") {
+    failures.push(`${label} mode must be non_llm_command_center_goal_view`);
+  }
+
+  for (const source of [registryPath, evidencePath, executionPath]) {
+    if (!view.sourceRecords?.includes(source)) {
+      failures.push(`${label} missing source record: ${source}`);
+    }
+  }
+
+  if (view.summary?.totalGoals !== registry.goals.length) {
+    failures.push(`${label} totalGoals does not match goal registry`);
+  }
+
+  if (view.summary?.totalEvidenceRecords !== evidenceLedger.records.length) {
+    failures.push(`${label} totalEvidenceRecords does not match evidence ledger`);
+  }
+
+  if (view.summary?.totalTasks !== executionRegistry.tasks.length) {
+    failures.push(`${label} totalTasks does not match execution registry`);
+  }
+
+  if (!Array.isArray(view.progressCards) || view.progressCards.length < 6) {
+    failures.push(`${label} must expose core progress cards`);
+  }
+
+  if (!view.panels?.blockedItems?.length) {
+    failures.push(`${label} must expose blocked items`);
+  }
+
+  if (!view.panels?.nextActionQueue?.length) {
+    failures.push(`${label} must expose next action queue`);
+  }
+
+  if (!view.uxGuards?.some((guard) => guard.id === "completed-needs-evidence")) {
+    failures.push(`${label} must expose completed-needs-evidence UX guard`);
   }
 }
 

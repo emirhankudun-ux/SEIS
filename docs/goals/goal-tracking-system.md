@@ -105,6 +105,13 @@ and is documented in [`execution-board.md`](execution-board.md). It stores
 tasks, subtasks, blockers, decisions, and next safe actions without requiring an
 LLM.
 
+The current generated Command Center view model lives at
+[`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
+and is documented in
+[`command-center-view-model.md`](command-center-view-model.md). It converts the
+structured registries into renderable Goal Tracking Center panels without an
+LLM.
+
 ## Command Center Connection
 
 The Goal Tracking Center should render:

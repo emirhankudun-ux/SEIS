@@ -1,0 +1,69 @@
+# SEIS Goal Command Center View Model
+
+Date: 2026-06-19
+
+This document defines the first static Command Center-facing view model for
+Goal Tracking OS. The generated view is:
+
+[`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
+
+It is generated from:
+
+- [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
+- [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
+- [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
+
+## Purpose
+
+The view model gives Command Center a non-LLM Goal Tracking Center data surface.
+It can render progress cards, active goals, blocked goals, category status,
+next actions, blockers, validation status, decisions, readiness connections,
+and UX guardrails without any model provider or external API.
+
+## Generated Panels
+
+| Panel | Purpose |
+| --- | --- |
+| `progressCards` | Numeric status cards without fake percentages. |
+| `activeGoals` | Active goals with evidence links and next actions. |
+| `blockedGoals` | Blocked goals with blockers and validation method. |
+| `categoryStatus` | One status row per strategic category. |
+| `nextActionQueue` | Tasks ordered by priority with blockers and evidence ids. |
+| `blockedItems` | Active blockers with required approval and next action. |
+| `validationStatus` | Evidence records and limitations. |
+| `decisions` | Accepted/proposed/deferred/superseded decisions. |
+| `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |
+| `uxGuards` | Rules that prevent fake progress and hidden blockers. |
+
+## Commands
+
+Generate:
+
+```bash
+npm run automation:goal-command-center-view
+```
+
+Check:
+
+```bash
+npm run check:goal-command-center-view
+```
+
+Full Goal Tracking OS check:
+
+```bash
+npm run check:goal-tracking
+```
+
+## Current Status
+
+The current generated view state is `blocked_by_repository_hygiene`, because
+critical repository hygiene blockers remain active. This is intentional: the
+view must surface blockers rather than hide them.
+
+## Non-Goals
+
+- This is not a full UI implementation.
+- This is not a live GitHub integration.
+- This is not release or public readiness.
+- This is not LLM-generated status.

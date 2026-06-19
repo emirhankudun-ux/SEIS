@@ -201,6 +201,29 @@
         "Does not resolve the active repository hygiene blockers."
       ],
       "next_action": "Use execution tasks as the next-action queue for Goal Tracking OS."
+    },
+    {
+      "id": "SEIS-EVID-009",
+      "title": "Command Center goal view model generated",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-19",
+      "command": "npm run check:goal-command-center-view",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-command-center-view.json",
+        "docs/goals/command-center-view-model.md",
+        "scripts/create-goal-command-center-view.mjs"
+      ],
+      "summary": "A deterministic Command Center view model was generated from the goal, evidence, and execution registries and passed the local freshness check.",
+      "limitations": [
+        "Does not prove a rendered UI exists.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Render the generated view model in the Command Center Goal Tracking Center."
     }
   ]
 }

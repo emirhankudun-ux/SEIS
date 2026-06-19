@@ -54,6 +54,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-033` | P1 | Public readiness | Remove or parameterize hardcoded local machine paths in plugin bundle scripts. | Package/scripts use documented environment variables or repo-relative defaults and public-readiness scan has no machine-specific path hits. |
 | `SEIS-BL-034` | P1 | Goal evidence | Maintain structured evidence records for validation, blockers, repository state, commits, reviews, and scoped security scans. | Evidence ledger validates, uses relative paths, records limitations, and links records to goal ids. |
 | `SEIS-BL-035` | P1 | Goal execution | Maintain structured tasks, subtasks, blockers, decisions, and next safe actions without LLM dependency. | Execution registry validates, links tasks to goal ids/evidence ids/blocker ids/decision ids, and keeps dangerous actions approval-gated. |
+| `SEIS-BL-036` | P1 | Command Center goal view | Generate a non-LLM Command Center Goal Tracking view model from structured records. | `npm run check:goal-command-center-view` passes and generated view exposes progress cards, blockers, next actions, evidence, decisions, and UX guardrails. |
 
 ## Deferred Dangerous Work
 
