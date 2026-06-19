@@ -1393,13 +1393,13 @@ function renderDashboard() {
   $("#operating-domain-grid").innerHTML = operatingDomains.map((domain) => `
     <article class="domain-card">
       <div class="card-topline">
-        <strong>${domain.name}</strong>
-        <span class="status-pill ${statusClass(domain.status)}">${domain.status}</span>
+        <strong>${escapeHtml(domain.name)}</strong>
+        <span class="status-pill ${statusClass(domain.status)}">${escapeHtml(domain.status)}</span>
       </div>
-      <p>${domain.signal}</p>
+      <p>${escapeHtml(domain.signal)}</p>
       <div class="meta-row">
-        <span class="meta-chip">${domain.lane}</span>
-        <span class="meta-chip">${domain.module}</span>
+        <span class="meta-chip">${escapeHtml(domain.lane)}</span>
+        <span class="meta-chip">${escapeHtml(domain.module)}</span>
       </div>
     </article>
   `).join("");
@@ -1543,15 +1543,15 @@ function renderGodMode() {
   $("#seis-ai-setup").innerHTML = seisAiSetup.map((item) => `
     <article class="ai-setup-card">
       <div class="card-topline">
-        <h3>${item.name}</h3>
-        <span class="status-pill ${statusClass(item.status)}">${item.status}</span>
+        <h3>${escapeHtml(item.name)}</h3>
+        <span class="status-pill ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
       </div>
-      <p>${item.output}</p>
+      <p>${escapeHtml(item.output)}</p>
       <div class="meta-row">
-        <span class="meta-chip">${item.type}</span>
-        <span class="meta-chip">${item.data}</span>
+        <span class="meta-chip">${escapeHtml(item.type)}</span>
+        <span class="meta-chip">${escapeHtml(item.data)}</span>
       </div>
-      <small>${item.gate}</small>
+      <small>${escapeHtml(item.gate)}</small>
     </article>
   `).join("");
 
@@ -1918,7 +1918,7 @@ function renderFeatureGrowthLedger() {
   $("#feature-growth-blockers").innerHTML = featureGrowthLedger.blockers.map((blocker, index) => `
     <article class="blocker-row">
       <span>${index + 1}</span>
-      <p>${blocker}</p>
+      <p>${escapeHtml(blocker)}</p>
     </article>
   `).join("");
 }
@@ -2301,8 +2301,8 @@ function renderInspector() {
   $("#active-agent-label").textContent = state.activeAgent;
   $("#mode-list").innerHTML = agents.map((agent) => `
     <button class="mode-button ${agent.name === state.activeAgent ? "is-active" : ""}" type="button" data-agent="${agent.name}">
-      <strong>${agent.name}</strong>
-      <p>${agent.focus}</p>
+      <strong>${escapeHtml(agent.name)}</strong>
+      <p>${escapeHtml(agent.focus)}</p>
     </button>
   `).join("");
 
