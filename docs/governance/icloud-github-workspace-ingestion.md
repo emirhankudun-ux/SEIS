@@ -6,7 +6,7 @@ This document defines how the SEIS iCloud Drive `Github` workspace is merged int
 
 The current ingestion pass combines these inputs:
 
-- Root workspace instructions from `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/AGENTS.md`.
+- Root workspace instructions from the source SEIS workspace `AGENTS.md`.
 - The SEIS Supreme operating-system directive and repository governance docs.
 - The iCloud Drive `Github` workspace inventory.
 - The existing SEIS `AGENTS.md`, branch governance, and focus-mode development process.
@@ -44,7 +44,7 @@ Broad instructions, operating-system language, workspace routing, and repository
 | Personal media | photos, PDFs, resumes, portfolio source media | Do not bulk-commit. Route selected public assets through an asset manifest. |
 | System files | `.DS_Store`, `__MACOSX`, cache folders | Exclude from Git. |
 | Symlink mirrors | `Website 2`, `Website copy`, `UX 2`, `New project copy` | Resolve to real project paths before review. |
-| Duplicate SEIS checkouts | `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/SEIS`, `SEIST/` | Treat as intake/archive material until individual files are reviewed. |
+| Duplicate SEIS checkouts | iCloud Drive `SEIS` checkout, `SEIST/` | Treat as intake/archive material until individual files are reviewed. |
 | Assistant outputs | Qwen, Codex, Claude, Gemini, and other generated output folders | Keep as archive or future-phase material unless promoted through review. |
 
 ## Safety Rules

@@ -124,6 +124,7 @@ Kapı şartnamesi: herhangi bir katmanda kritik gerileme (`-20%`) varsa yeni öz
 - `roadmap/seis-365-day-blueprint.md`: kısa dönem tamamlanma planı
 - `roadmap/seis-long-horizon-strategy.md`: 10 yıllık vizyon hattı
 - `roadmap/seis-long-horizon-kpi-framework.md`: eşik ölçüm dili
+- `roadmap/seis-ai-core-command-center-5-year-development-program.md`: AI Core ve Command Center dual-build programı
 - `docs/governance/quality-gates.md`, `docs/governance/enterprise-change-gates.md`: teknik kapılar
 - `docs/architecture/seis-5-layer-operating-map.md`: katman haritalama referansı
 

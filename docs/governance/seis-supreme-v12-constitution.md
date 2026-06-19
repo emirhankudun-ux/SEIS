@@ -214,10 +214,9 @@ What the constitution already governs in `emirhankudun-ux/SEIS` today:
 
 The constitution applies across two execution environments:
 
-**Local workstation (owner's Mac):** primary universe at
-`/Library/Mobile Documents/com~apple~CloudDocs/Github`; IDEs: Antigravity IDE,
-Xcode, Android Studio, JetBrains. Local agents (Ollama) permitted for
-experimentation.
+**Local workstation (owner's Mac):** primary universe in the maintainer's
+iCloud Drive `Github` workspace; IDEs: Antigravity IDE, Xcode, Android Studio,
+JetBrains. Local agents (Ollama) permitted for experimentation.
 
 **Remote AI sessions (Claude Code cloud, CI):** ephemeral container, fresh
 clone, repository-scoped GitHub access, MCP-based GitHub operations, no local

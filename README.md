@@ -184,6 +184,7 @@ read/write workflows are routed through explicit safety gates.
 | --- | --- | --- |
 | AGI system contract | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window. |
 | Active mission board | [`reports/seis-active-mission-board.md`](./reports/seis-active-mission-board.md) | Convert the three-month goal into Month 1/2/3 execution lanes with acceptance gates and evidence paths. |
+| AI Core and Command Center five-year program | [`roadmap/seis-ai-core-command-center-5-year-development-program.md`](./roadmap/seis-ai-core-command-center-5-year-development-program.md) | Govern the AI Core and app dual-build from foundation contracts to evidence-backed product and research maturity. |
 | Apple-first Swift contract | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
 | Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md) | Explain implementation roots, token efficiency, plugin use, and visual source policy. |
 
@@ -216,6 +217,7 @@ read/write workflows are routed through explicit safety gates.
 | [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |
 | [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
 | [`docs/product`](./docs/product) | SEIS App, AI App, Command Center, LLM surfaces, assistants, approvals, and evidence contracts |
+| [`roadmap`](./roadmap) | 30/90/365-day, 18-60-month, five-year AI Core/App, native demo, and long-horizon operating plans |
 | [`reports`](./reports) | Generated ecosystem, language, capability, and readiness reports |
 
 ## AI-Assisted Development

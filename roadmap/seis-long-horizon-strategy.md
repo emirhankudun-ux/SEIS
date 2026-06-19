@@ -1,6 +1,6 @@
 # SEIS Long Horizon Strategy (0–10 Year View)
 
-Uygulama hızından önce sürdürülebilirlik odaklı ilerlemek için, taktik 90/365 gün planlarını bu ana çerçeveye bağlayan ayrıntılı operasyon modeli için: [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/roadmap/seis-18-60-month-long-horizon-ops-blueprint.md)
+Uygulama hızından önce sürdürülebilirlik odaklı ilerlemek için, taktik 90/365 gün planlarını bu ana çerçeveye bağlayan ayrıntılı operasyon modeli için: [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](./seis-18-60-month-long-horizon-ops-blueprint.md)
 
 ## 1) Temel Varsayım
 
