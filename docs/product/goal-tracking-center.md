@@ -30,6 +30,7 @@ what needs evidence, and what should happen next.
 | Evidence Links | Link each status to docs, reviews, validation, files, or PRs. | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
 | Review Cadence | Show planned daily, weekly, and monthly reviews without claiming completion. | [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) |
 | Planning Horizons | Show yearly, quarterly, monthly, weekly, and active project lanes. | [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) |
+| Progress Ledger | Show completed, deferred, and follow-up work with evidence and limitations. | [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) |
 | Readiness Connections | Show public/release readiness status for relevant goals. | [`../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md`](../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md) |
 
 ## UX Rules
@@ -71,6 +72,7 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
+- [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 - [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)

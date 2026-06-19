@@ -70,6 +70,9 @@ function buildHtml(model) {
   const reviewCadence = panels.reviewCadence || [];
   const planningHorizons = panels.planningHorizons || [];
   const activeProjects = panels.activeProjects || [];
+  const completedItems = panels.completedItems || [];
+  const deferredItems = panels.deferredItems || [];
+  const followUpActions = panels.followUpActions || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -441,6 +444,7 @@ function buildHtml(model) {
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
         <a href="#planning">Planning</a>
+        <a href="#progress">Progress</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -554,6 +558,29 @@ function buildHtml(model) {
           <div class="stack">
             ${activeProjects.map(renderActiveProject).join("\n            ")}
           </div>
+        </div>
+      </section>
+
+      <section class="grid section-grid" id="progress">
+        <div class="panel">
+          <h2>Completed Work</h2>
+          <div class="stack">
+            ${completedItems.map(renderCompletedItem).join("\n            ")}
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Deferred Work</h2>
+          <div class="stack">
+            ${deferredItems.map(renderDeferredItem).join("\n            ")}
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Follow-Up Actions</h2>
+        <div class="grid review-grid">
+          ${followUpActions.map(renderFollowUpAction).join("\n          ")}
         </div>
       </section>
 
@@ -743,6 +770,55 @@ function renderActiveProject(item) {
 </article>`;
 }
 
+function renderCompletedItem(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.completedAt)}</p>
+    </div>
+    <span class="badge active">${escapeHtml(item.status)}</span>
+  </div>
+  <p>${escapeHtml(item.summary)}</p>
+  <p class="muted">${escapeHtml((item.limitations || []).join(" "))}</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: ${escapeHtml((item.evidenceIds || []).join(", "))}</span>
+  </div>
+</article>`;
+}
+
+function renderDeferredItem(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)}</p>
+    </div>
+    <span class="badge planned">${escapeHtml(item.status)}</span>
+  </div>
+  <p>${escapeHtml(item.reason)}</p>
+  <p class="muted">${escapeHtml(item.approvalRequired)}</p>
+  <p class="next-action">${escapeHtml(item.nextAction)}</p>
+</article>`;
+}
+
+function renderFollowUpAction(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)}</p>
+    </div>
+    <span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+  </div>
+  <p class="next-action">${escapeHtml(item.nextAction)}</p>
+  <div class="row-meta">
+    <span class="badge">Tasks: ${escapeHtml((item.relatedTaskIds || []).join(", ") || "none")}</span>
+    <span class="badge">Evidence: ${escapeHtml((item.evidenceIds || []).join(", ") || "none")}</span>
+  </div>
+</article>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -762,6 +838,9 @@ function validateHtml(html, model) {
     "Review Cadence",
     "Planning Horizons",
     "Active Projects",
+    "Completed Work",
+    "Deferred Work",
+    "Follow-Up Actions",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -792,6 +871,18 @@ function validateHtml(html, model) {
 
   if ((model.panels?.activeProjects || []).length > 0 && !html.includes("SEIS-PROJECT-001")) {
     failures.push("static surface must expose active project ids");
+  }
+
+  if ((model.panels?.completedItems || []).length > 0 && !html.includes("SEIS-COMPLETE-001")) {
+    failures.push("static surface must expose completed item ids");
+  }
+
+  if ((model.panels?.deferredItems || []).length > 0 && !html.includes("SEIS-DEFER-001")) {
+    failures.push("static surface must expose deferred item ids");
+  }
+
+  if ((model.panels?.followUpActions || []).length > 0 && !html.includes("SEIS-FOLLOWUP-001")) {
+    failures.push("static surface must expose follow-up action ids");
   }
 
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {

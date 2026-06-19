@@ -13,6 +13,7 @@ const paths = {
   execution: "content/development/seis-goal-execution.json",
   reviewCadence: "content/development/seis-goal-review-cadence.json",
   planningHorizons: "content/development/seis-goal-planning-horizons.json",
+  progressLedger: "content/development/seis-goal-progress-ledger.json",
   output: "content/development/seis-goal-command-center-view.json"
 };
 
@@ -24,7 +25,8 @@ Commands:
   node scripts/create-goal-command-center-view.mjs --check
 
 Builds the static non-LLM Command Center Goal Tracking view model from the
-goal, evidence, execution, review cadence, and planning horizon registries.
+goal, evidence, execution, review cadence, planning horizon, and progress
+ledger registries.
 `);
   process.exit(0);
 }
@@ -34,8 +36,9 @@ const evidence = readJson(paths.evidence);
 const execution = readJson(paths.execution);
 const reviewCadence = readJson(paths.reviewCadence);
 const planningHorizons = readJson(paths.planningHorizons);
-const view = buildView(goals, evidence, execution, reviewCadence, planningHorizons);
-const failures = validateView(view, goals, evidence, execution, reviewCadence, planningHorizons);
+const progressLedger = readJson(paths.progressLedger);
+const view = buildView(goals, evidence, execution, reviewCadence, planningHorizons, progressLedger);
+const failures = validateView(view, goals, evidence, execution, reviewCadence, planningHorizons, progressLedger);
 
 if (failures.length > 0) {
   console.error("SEIS Goal Command Center view is invalid:");
@@ -69,7 +72,7 @@ mkdirSync(path.dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, output, "utf8");
 console.log(`SEIS Goal Command Center view written: ${paths.output}`);
 
-function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, planningHorizonsRegistry) {
+function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, planningHorizonsRegistry, progressLedger) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const taskRecords = executionRegistry.tasks || [];
@@ -78,6 +81,9 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   const reviewRecords = reviewCadenceRegistry.records || [];
   const horizonRecords = planningHorizonsRegistry.horizons || [];
   const projectRecords = planningHorizonsRegistry.activeProjects || [];
+  const completedItems = progressLedger.completedItems || [];
+  const deferredItems = progressLedger.deferredItems || [];
+  const followUpActions = progressLedger.followUpActions || [];
 
   const goalsByStatus = countBy(goalRecords, "status");
   const goalsByCategory = countBy(goalRecords, "category");
@@ -103,7 +109,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       paths.evidence,
       paths.execution,
       paths.reviewCadence,
-      paths.planningHorizons
+      paths.planningHorizons,
+      paths.progressLedger
     ],
     summary: {
       finalState,
@@ -123,6 +130,9 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       horizonsByStatus,
       totalActiveProjects: projectRecords.length,
       projectsByStatus,
+      totalCompletedItems: completedItems.length,
+      totalDeferredItems: deferredItems.length,
+      totalFollowUpActions: followUpActions.length,
       nextSafeAction: activeCriticalBlockers.length > 0
         ? "Resolve P0 repository hygiene blockers before public or release readiness claims."
         : "Render the static Goal Tracking Center from the generated view model."
@@ -135,7 +145,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       card("execution-tasks", "Execution tasks", taskRecords.length, "active", "Structured tasks and subtasks backing next actions."),
       card("active-blockers", "Active blockers", blockersByStatus.active || 0, "blocked", "Blockers that must remain visible."),
       card("review-cadence", "Review cadence", reviewRecords.length, "planned", "Planned daily, weekly, and monthly review records."),
-      card("active-projects", "Active projects", projectRecords.length, "active", "Current project lanes linked to goals and evidence.")
+      card("active-projects", "Active projects", projectRecords.length, "active", "Current project lanes linked to goals and evidence."),
+      card("completed-items", "Completed items", completedItems.length, "active", "Scoped completed work with evidence and limitations.")
     ],
     panels: {
       activeGoals: goalRecords
@@ -246,6 +257,36 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
         blockers: record.blockers,
         nextAction: record.next_action
       })),
+      completedItems: completedItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        completedAt: item.completed_at,
+        supportsGoalIds: item.supports_goal_ids,
+        evidenceIds: item.evidence_ids,
+        summary: item.summary,
+        limitations: item.limitations,
+        nextAction: item.next_action
+      })),
+      deferredItems: deferredItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        reason: item.reason,
+        supportsGoalIds: item.supports_goal_ids,
+        approvalRequired: item.approval_required,
+        nextAction: item.next_action
+      })),
+      followUpActions: followUpActions.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        priority: item.priority,
+        supportsGoalIds: item.supports_goal_ids,
+        relatedTaskIds: item.related_task_ids,
+        evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
+      })),
       readinessConnections: [
         "Public Readiness",
         "Release Readiness",
@@ -272,7 +313,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   };
 }
 
-function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, planningHorizonsRegistry) {
+function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, planningHorizonsRegistry, progressLedger) {
   const failures = [];
   const goalIds = new Set((goalRegistry.goals || []).map((goal) => goal.id));
   const evidenceIds = new Set((evidenceLedger.records || []).map((record) => record.id));
@@ -290,7 +331,7 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
     failures.push("view mode must be non_llm_command_center_goal_view");
   }
 
-  for (const source of [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.planningHorizons]) {
+  for (const source of [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.planningHorizons, paths.progressLedger]) {
     if (!view.sourceRecords.includes(source)) {
       failures.push(`view missing source record: ${source}`);
     }
@@ -320,6 +361,18 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
     failures.push("view summary totalActiveProjects does not match planning horizons registry");
   }
 
+  if (view.summary.totalCompletedItems !== (progressLedger.completedItems || []).length) {
+    failures.push("view summary totalCompletedItems does not match progress ledger");
+  }
+
+  if (view.summary.totalDeferredItems !== (progressLedger.deferredItems || []).length) {
+    failures.push("view summary totalDeferredItems does not match progress ledger");
+  }
+
+  if (view.summary.totalFollowUpActions !== (progressLedger.followUpActions || []).length) {
+    failures.push("view summary totalFollowUpActions does not match progress ledger");
+  }
+
   if (view.progressCards.length < 6) {
     failures.push("view should expose the core progress cards");
   }
@@ -342,6 +395,18 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
 
   if (!view.panels.activeProjects.length) {
     failures.push("view must expose active projects");
+  }
+
+  if (!view.panels.completedItems.length) {
+    failures.push("view must expose completed items");
+  }
+
+  if (!view.panels.deferredItems.length) {
+    failures.push("view must expose deferred items");
+  }
+
+  if (!view.panels.followUpActions.length) {
+    failures.push("view must expose follow-up actions");
   }
 
   for (const panelName of ["activeGoals", "blockedGoals"]) {
@@ -417,6 +482,17 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
         failures.push(`${item.id} references unknown horizon id: ${horizonId}`);
       }
     }
+  }
+
+  for (const item of view.panels.completedItems) {
+    validateGoalTaskEvidenceRefs(item, goalIds, taskIds, evidenceIds, failures);
+    if (!item.evidenceIds?.length) {
+      failures.push(`${item.id} completed item must expose evidence ids`);
+    }
+  }
+
+  for (const item of view.panels.followUpActions) {
+    validateGoalTaskEvidenceRefs(item, goalIds, taskIds, evidenceIds, failures);
   }
 
   return failures;

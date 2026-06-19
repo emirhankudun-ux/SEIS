@@ -5,6 +5,7 @@ const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
 const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
 const planningHorizonsPath = "content/development/seis-goal-planning-horizons.json";
+const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
 const commandCenterViewPath = "content/development/seis-goal-command-center-view.json";
 const commandCenterStaticPath = "apps/command-center/goal-tracking/index.html";
 const sensitiveTextPatterns = [
@@ -26,6 +27,7 @@ const requiredDocs = [
   "docs/goals/execution-board.md",
   "docs/goals/review-cadence.md",
   "docs/goals/planning-horizons.md",
+  "docs/goals/progress-ledger.md",
   "docs/goals/command-center-view-model.md",
   "docs/goals/daily-review-template.md",
   "docs/goals/weekly-priorities-template.md",
@@ -115,6 +117,10 @@ if (!existsSync(planningHorizonsPath)) {
   failures.push(`missing goal planning horizons registry: ${planningHorizonsPath}`);
 }
 
+if (!existsSync(progressLedgerPath)) {
+  failures.push(`missing goal progress ledger: ${progressLedgerPath}`);
+}
+
 if (!existsSync(commandCenterViewPath)) {
   failures.push(`missing Goal Command Center view: ${commandCenterViewPath}`);
 }
@@ -141,6 +147,10 @@ const reviewCadenceRegistry = existsSync(reviewCadencePath)
 
 const planningHorizonsRegistry = existsSync(planningHorizonsPath)
   ? JSON.parse(readFileSync(planningHorizonsPath, "utf8"))
+  : null;
+
+const progressLedger = existsSync(progressLedgerPath)
+  ? JSON.parse(readFileSync(progressLedgerPath, "utf8"))
   : null;
 
 const commandCenterView = existsSync(commandCenterViewPath)
@@ -383,6 +393,10 @@ if (planningHorizonsRegistry) {
   validatePlanningHorizons(planningHorizonsRegistry);
 }
 
+if (progressLedger) {
+  validateProgressLedger(progressLedger);
+}
+
 if (commandCenterView) {
   validateCommandCenterView(commandCenterView);
 }
@@ -418,6 +432,9 @@ console.log(JSON.stringify({
   reviewRecords: reviewCadenceRegistry.records.length,
   planningHorizons: planningHorizonsRegistry.horizons.length,
   activeProjects: planningHorizonsRegistry.activeProjects.length,
+  completedItems: progressLedger.completedItems.length,
+  deferredItems: progressLedger.deferredItems.length,
+  followUpActions: progressLedger.followUpActions.length,
   commandCenterView: commandCenterView.id,
   commandCenterStatic: commandCenterStaticPath
 }, null, 2));
@@ -979,9 +996,200 @@ function validatePlanningRecord(record, options) {
   }
 }
 
+function validateProgressLedger(ledger) {
+  if (ledger.schemaVersion !== 1) {
+    failures.push("goal progress ledger schemaVersion must be 1");
+  }
+
+  if (ledger.mode !== "non_llm_goal_progress_ledger") {
+    failures.push("goal progress ledger mode must be non_llm_goal_progress_ledger");
+  }
+
+  validateCompletedItems(ledger.completedItems || []);
+  validateDeferredItems(ledger.deferredItems || []);
+  validateFollowUpActions(ledger.followUpActions || []);
+}
+
+function validateCompletedItems(items) {
+  const ids = new Set();
+  if (!Array.isArray(items) || items.length === 0) {
+    failures.push("goal progress ledger must include completedItems");
+  }
+
+  for (const item of items) {
+    const label = item.id || "(missing completed id)";
+    validateProgressFields(item, label, [
+      "id",
+      "title",
+      "completed_at",
+      "status",
+      "supports_goal_ids",
+      "evidence_ids",
+      "related_paths",
+      "summary",
+      "limitations",
+      "next_action"
+    ]);
+
+    if (ids.has(item.id)) {
+      failures.push(`duplicate completed item id: ${item.id}`);
+    }
+    ids.add(item.id);
+
+    if (!/^SEIS-COMPLETE-\d{3}$/.test(item.id || "")) {
+      failures.push(`${label} id must match SEIS-COMPLETE-000 format`);
+    }
+
+    if (item.status !== "completed") {
+      failures.push(`${label} status must be completed`);
+    }
+
+    if (!item.evidence_ids?.length) {
+      failures.push(`${label} completed item requires evidence_ids`);
+    }
+
+    validateProgressRefs(item, label);
+    validateSafeText(label, "summary", item.summary);
+    validateSafeText(label, "next_action", item.next_action);
+    for (const limitation of item.limitations || []) {
+      validateSafeText(label, "limitations", limitation);
+    }
+  }
+}
+
+function validateDeferredItems(items) {
+  const ids = new Set();
+  if (!Array.isArray(items) || items.length === 0) {
+    failures.push("goal progress ledger must include deferredItems");
+  }
+
+  for (const item of items) {
+    const label = item.id || "(missing deferred id)";
+    validateProgressFields(item, label, [
+      "id",
+      "title",
+      "status",
+      "reason",
+      "supports_goal_ids",
+      "related_paths",
+      "approval_required",
+      "next_action"
+    ]);
+
+    if (ids.has(item.id)) {
+      failures.push(`duplicate deferred item id: ${item.id}`);
+    }
+    ids.add(item.id);
+
+    if (!/^SEIS-DEFER-\d{3}$/.test(item.id || "")) {
+      failures.push(`${label} id must match SEIS-DEFER-000 format`);
+    }
+
+    if (item.status !== "deferred") {
+      failures.push(`${label} status must be deferred`);
+    }
+
+    validateProgressRefs(item, label, { evidenceOptional: true, tasksOptional: true });
+    validateSafeText(label, "reason", item.reason);
+    validateSafeText(label, "approval_required", item.approval_required);
+    validateSafeText(label, "next_action", item.next_action);
+  }
+}
+
+function validateFollowUpActions(items) {
+  const ids = new Set();
+  const allowedStatuses = new Set(["planned", "active", "blocked", "deferred", "completed"]);
+  if (!Array.isArray(items) || items.length === 0) {
+    failures.push("goal progress ledger must include followUpActions");
+  }
+
+  for (const item of items) {
+    const label = item.id || "(missing follow-up id)";
+    validateProgressFields(item, label, [
+      "id",
+      "title",
+      "status",
+      "priority",
+      "supports_goal_ids",
+      "related_task_ids",
+      "evidence_ids",
+      "related_paths",
+      "next_action"
+    ]);
+
+    if (ids.has(item.id)) {
+      failures.push(`duplicate follow-up id: ${item.id}`);
+    }
+    ids.add(item.id);
+
+    if (!/^SEIS-FOLLOWUP-\d{3}$/.test(item.id || "")) {
+      failures.push(`${label} id must match SEIS-FOLLOWUP-000 format`);
+    }
+
+    if (!allowedStatuses.has(item.status)) {
+      failures.push(`${label} has invalid status: ${item.status}`);
+    }
+
+    if (!new Set(registry.allowedPriorities || []).has(item.priority)) {
+      failures.push(`${label} has invalid priority: ${item.priority}`);
+    }
+
+    validateProgressRefs(item, label);
+    validateSafeText(label, "next_action", item.next_action);
+  }
+}
+
+function validateProgressFields(item, label, fields) {
+  for (const field of fields) {
+    if (!(field in item)) {
+      failures.push(`${label} missing field: ${field}`);
+    }
+  }
+}
+
+function validateProgressRefs(item, label, options = {}) {
+  for (const field of ["supports_goal_ids", "related_paths"]) {
+    if (!Array.isArray(item[field])) {
+      failures.push(`${label} ${field} must be an array`);
+    }
+  }
+
+  for (const field of ["evidence_ids", "related_task_ids", "limitations"]) {
+    if (field in item && !Array.isArray(item[field])) {
+      failures.push(`${label} ${field} must be an array`);
+    }
+  }
+
+  for (const goalId of item.supports_goal_ids || []) {
+    if (!knownGoalIds.has(goalId)) {
+      failures.push(`${label} references unknown goal id: ${goalId}`);
+    }
+  }
+
+  if (!options.tasksOptional) {
+    for (const taskId of item.related_task_ids || []) {
+      if (!knownTaskIds.has(taskId)) {
+        failures.push(`${label} references unknown task id: ${taskId}`);
+      }
+    }
+  }
+
+  if (!options.evidenceOptional) {
+    for (const evidenceId of item.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+  }
+
+  for (const relatedPath of item.related_paths || []) {
+    validateRelativePath(label, relatedPath, "related_paths");
+  }
+}
+
 function validateCommandCenterView(view) {
   const label = view.id || "(missing command center view id)";
-  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry) {
+  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry || !progressLedger) {
     failures.push(`${label} cannot be validated until source registries load`);
     return;
   }
@@ -994,7 +1202,7 @@ function validateCommandCenterView(view) {
     failures.push(`${label} mode must be non_llm_command_center_goal_view`);
   }
 
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath]) {
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath, progressLedgerPath]) {
     if (!view.sourceRecords?.includes(source)) {
       failures.push(`${label} missing source record: ${source}`);
     }
@@ -1024,6 +1232,18 @@ function validateCommandCenterView(view) {
     failures.push(`${label} totalActiveProjects does not match planning horizons registry`);
   }
 
+  if (view.summary?.totalCompletedItems !== progressLedger.completedItems.length) {
+    failures.push(`${label} totalCompletedItems does not match progress ledger`);
+  }
+
+  if (view.summary?.totalDeferredItems !== progressLedger.deferredItems.length) {
+    failures.push(`${label} totalDeferredItems does not match progress ledger`);
+  }
+
+  if (view.summary?.totalFollowUpActions !== progressLedger.followUpActions.length) {
+    failures.push(`${label} totalFollowUpActions does not match progress ledger`);
+  }
+
   if (!Array.isArray(view.progressCards) || view.progressCards.length < 6) {
     failures.push(`${label} must expose core progress cards`);
   }
@@ -1048,6 +1268,18 @@ function validateCommandCenterView(view) {
     failures.push(`${label} must expose active projects`);
   }
 
+  if (!view.panels?.completedItems?.length) {
+    failures.push(`${label} must expose completed items`);
+  }
+
+  if (!view.panels?.deferredItems?.length) {
+    failures.push(`${label} must expose deferred items`);
+  }
+
+  if (!view.panels?.followUpActions?.length) {
+    failures.push(`${label} must expose follow-up actions`);
+  }
+
   if (!view.uxGuards?.some((guard) => guard.id === "completed-needs-evidence")) {
     failures.push(`${label} must expose completed-needs-evidence UX guard`);
   }
@@ -1063,13 +1295,19 @@ function validateCommandCenterStatic(html) {
     "Review Cadence",
     "Planning Horizons",
     "Active Projects",
+    "Completed Work",
+    "Deferred Work",
+    "Follow-Up Actions",
     "Readiness Connections",
     "UX Guardrails",
     "SEIS-BLOCKER-001",
     "SEIS-TASK-001",
     "SEIS-REVIEW-001",
     "SEIS-HORIZON-001",
-    "SEIS-PROJECT-001"
+    "SEIS-PROJECT-001",
+    "SEIS-COMPLETE-001",
+    "SEIS-DEFER-001",
+    "SEIS-FOLLOWUP-001"
   ];
 
   for (const text of requiredText) {

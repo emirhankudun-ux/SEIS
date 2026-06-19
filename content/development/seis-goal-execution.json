@@ -97,14 +97,17 @@
         "SEIS-EVID-001",
         "SEIS-EVID-006",
         "SEIS-EVID-008",
-        "SEIS-EVID-012"
+        "SEIS-EVID-012",
+        "SEIS-EVID-013"
       ],
       "related_paths": [
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-execution.json",
         "content/development/seis-goal-planning-horizons.json",
+        "content/development/seis-goal-progress-ledger.json",
         "docs/goals/planning-horizons.md",
+        "docs/goals/progress-ledger.md",
         "scripts/check-goal-tracking.mjs"
       ],
       "subtasks": [

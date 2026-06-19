@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-progress-ledger",
+  "updated": "2026-06-20",
+  "mode": "non_llm_goal_progress_ledger",
+  "completedItems": [
+    {
+      "id": "SEIS-COMPLETE-001",
+      "title": "Goal Tracking OS documentation foundation",
+      "completed_at": "2026-06-19",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-001"
+      ],
+      "related_paths": [
+        "docs/goals/goal-tracking-system.md",
+        "docs/goals/goal-schema.md",
+        "docs/goals/long-term-goals.md",
+        "docs/goals/milestone-map.md"
+      ],
+      "summary": "The first required Goal Tracking OS documentation foundation exists and is covered by the local goal validator.",
+      "limitations": [
+        "Does not prove a full application module exists.",
+        "Does not resolve repository hygiene blockers."
+      ],
+      "next_action": "Keep the documentation aligned with structured records."
+    },
+    {
+      "id": "SEIS-COMPLETE-002",
+      "title": "Structured Goal Tracking OS records",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-008",
+        "SEIS-EVID-011",
+        "SEIS-EVID-012"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-evidence.json",
+        "content/development/seis-goal-execution.json",
+        "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-planning-horizons.json"
+      ],
+      "summary": "The structured goal, evidence, execution, review cadence, and planning horizon records validate locally.",
+      "limitations": [
+        "Does not claim weekly, monthly, or daily reviews were performed.",
+        "Does not claim any horizon is completed."
+      ],
+      "next_action": "Keep these records in sync with each follow-up change."
+    },
+    {
+      "id": "SEIS-COMPLETE-003",
+      "title": "Static Goal Tracking Center surface",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-009",
+        "SEIS-EVID-010"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
+        "scripts/create-goal-command-center-view.mjs",
+        "scripts/create-goal-command-center-static.mjs"
+      ],
+      "summary": "A deterministic view model and generated static HTML surface render Goal Tracking OS data without an LLM or external API.",
+      "limitations": [
+        "Does not prove a routed Command Center shell exists.",
+        "Does not prove deployment or live integration."
+      ],
+      "next_action": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+    }
+  ],
+  "deferredItems": [
+    {
+      "id": "SEIS-DEFER-001",
+      "title": "Routed Command Center Goal Tracking module",
+      "status": "deferred",
+      "reason": "Repository hygiene blockers should be isolated before expanding the application shell.",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "docs/product/goal-tracking-center.md",
+        "apps/command-center/goal-tracking/index.html"
+      ],
+      "approval_required": "No approval required for local app work, but live integrations or deployment require approval.",
+      "next_action": "Plan a routed shell after foundation validation blockers are handled."
+    },
+    {
+      "id": "SEIS-DEFER-002",
+      "title": "Live GitHub PR and branch state integration",
+      "status": "deferred",
+      "reason": "External GitHub API/CLI inspection requires explicit approval for this foundation pass.",
+      "supports_goal_ids": [
+        "SEIS-GOAL-007"
+      ],
+      "related_paths": [
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md"
+      ],
+      "approval_required": "External GitHub API/CLI connection approval.",
+      "next_action": "Run GitHub PR inspection only after approval."
+    },
+    {
+      "id": "SEIS-DEFER-003",
+      "title": "Public and release readiness claims",
+      "status": "deferred",
+      "reason": "Foundation validation remains blocked by unresolved tracked deletions and missing governance files.",
+      "supports_goal_ids": [
+        "SEIS-GOAL-008",
+        "SEIS-GOAL-009"
+      ],
+      "related_paths": [
+        "docs/STATUS.md",
+        "docs/roadmap/MASTER_BACKLOG.md"
+      ],
+      "approval_required": "Deployment, release, and public visibility changes require explicit approval.",
+      "next_action": "Resolve repository hygiene and rerun foundation validation before readiness claims."
+    }
+  ],
+  "followUpActions": [
+    {
+      "id": "SEIS-FOLLOWUP-001",
+      "title": "Recover foundation validation surface",
+      "status": "blocked",
+      "priority": "P0 critical",
+      "supports_goal_ids": [
+        "SEIS-GOAL-006",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-008"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004",
+        "SEIS-EVID-007"
+      ],
+      "related_paths": [
+        "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+        "scripts/check-foundation.mjs"
+      ],
+      "next_action": "Restore, replace, or intentionally approve removal of missing governance docs and checker script."
+    },
+    {
+      "id": "SEIS-FOLLOWUP-002",
+      "title": "Keep Goal Tracking records fresh",
+      "status": "active",
+      "priority": "P1 high",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-002",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-011",
+        "SEIS-EVID-012"
+      ],
+      "related_paths": [
+        "scripts/check-goal-tracking.mjs",
+        "content/development/seis-goal-tracking.json"
+      ],
+      "next_action": "Run goal validation after every structured record update."
+    },
+    {
+      "id": "SEIS-FOLLOWUP-003",
+      "title": "Connect static Goal Tracking Center to Command Center shell",
+      "status": "planned",
+      "priority": "P1 high",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-003"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-009",
+        "SEIS-EVID-010"
+      ],
+      "related_paths": [
+        "apps/command-center/goal-tracking/index.html",
+        "docs/product/command-center-goals-view.md"
+      ],
+      "next_action": "Create a routed local Command Center shell only after the repository hygiene blocker is isolated."
+    }
+  ]
+}

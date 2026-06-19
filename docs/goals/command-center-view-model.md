@@ -14,6 +14,7 @@ It is generated from:
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
+- [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 
 The first generated static page is:
 
@@ -41,6 +42,9 @@ model provider or external API.
 | `reviewCadence` | Planned daily, weekly, and monthly review records. |
 | `planningHorizons` | Yearly, quarterly, monthly, and weekly planning lanes. |
 | `activeProjects` | Active project lanes linked to goals, tasks, horizons, and evidence. |
+| `completedItems` | Scoped completed work with evidence and limitations. |
+| `deferredItems` | Deferred work with reasons, approval needs, and next actions. |
+| `followUpActions` | Follow-up actions linked to goals, tasks, and evidence. |
 | `decisions` | Accepted/proposed/deferred/superseded decisions. |
 | `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |
 | `uxGuards` | Rules that prevent fake progress and hidden blockers. |

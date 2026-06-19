@@ -58,6 +58,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-037` | P1 | Static Goal Tracking UI | Generate a static Goal Tracking Center page from the Command Center view model. | `npm run check:goal-command-center-static` passes and the page exposes progress cards, blockers, next actions, validation, decisions, readiness, and UX guardrails. |
 | `SEIS-BL-038` | P1 | Goal review cadence records | Maintain structured daily, weekly, and monthly review cadence without fake performed reviews. | `npm run check:goal-tracking` validates planned cadence records and the static page exposes review cadence. |
 | `SEIS-BL-039` | P1 | Goal planning horizons | Maintain structured yearly, quarterly, monthly, weekly, and active-project planning horizons. | `npm run check:goal-tracking` validates horizon/project records and the static page exposes planning horizons plus active projects. |
+| `SEIS-BL-040` | P1 | Goal progress ledger | Maintain structured completed, deferred, and follow-up records with evidence and limitations. | `npm run check:goal-tracking` validates progress ledger records and the static page exposes completed, deferred, and follow-up sections. |
 
 ## Deferred Dangerous Work
 

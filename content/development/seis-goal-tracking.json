@@ -132,6 +132,7 @@
         "docs/goals/execution-board.md",
         "docs/goals/review-cadence.md",
         "docs/goals/planning-horizons.md",
+        "docs/goals/progress-ledger.md",
         "docs/goals/command-center-view-model.md",
         "docs/reviews/GOAL_TRACKING_REVIEW.md"
       ],
@@ -141,6 +142,7 @@
         "content/development/seis-goal-execution.json",
         "content/development/seis-goal-review-cadence.json",
         "content/development/seis-goal-planning-horizons.json",
+        "content/development/seis-goal-progress-ledger.json",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html",
         "scripts/check-goal-tracking.mjs"
@@ -169,6 +171,8 @@
         "content/development/seis-goal-review-cadence.json",
         "docs/goals/planning-horizons.md",
         "content/development/seis-goal-planning-horizons.json",
+        "docs/goals/progress-ledger.md",
+        "content/development/seis-goal-progress-ledger.json",
         "docs/goals/command-center-view-model.md",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html",
@@ -176,7 +180,7 @@
       ],
       "validation_method": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
       "validation_evidence": [],
-      "next_action": "Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync.",
+      "next_action": "Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync.",
       "last_reviewed": "2026-06-19",
       "review_cadence": "weekly",
       "notes": "Documentation and data foundation active; application module remains planned."
@@ -841,6 +845,7 @@
         "docs/goals/seis-vision.md",
         "docs/goals/review-cadence.md",
         "docs/goals/planning-horizons.md",
+        "docs/goals/progress-ledger.md",
         "docs/goals/daily-review-template.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md"
@@ -848,7 +853,8 @@
       "related_files": [
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-review-cadence.json",
-        "content/development/seis-goal-planning-horizons.json"
+        "content/development/seis-goal-planning-horizons.json",
+        "content/development/seis-goal-progress-ledger.json"
       ],
       "related_milestone": "SEIS-MS-001",
       "related_epic": "SEIS-EPIC-GOALS-001",
@@ -868,13 +874,15 @@
         "content/development/seis-goal-review-cadence.json",
         "docs/goals/planning-horizons.md",
         "content/development/seis-goal-planning-horizons.json",
+        "docs/goals/progress-ledger.md",
+        "content/development/seis-goal-progress-ledger.json",
         "docs/goals/daily-review-template.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md"
       ],
       "validation_method": "Review records contain date, scope, evidence, blockers, and validation output.",
       "validation_evidence": [],
-      "next_action": "Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed.",
+      "next_action": "Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed.",
       "last_reviewed": "2026-06-19",
       "review_cadence": "weekly",
       "notes": "Active governance goal."

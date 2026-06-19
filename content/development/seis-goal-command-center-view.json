@@ -8,7 +8,8 @@
     "content/development/seis-goal-evidence.json",
     "content/development/seis-goal-execution.json",
     "content/development/seis-goal-review-cadence.json",
-    "content/development/seis-goal-planning-horizons.json"
+    "content/development/seis-goal-planning-horizons.json",
+    "content/development/seis-goal-progress-ledger.json"
   ],
   "summary": {
     "finalState": "blocked_by_repository_hygiene",
@@ -19,9 +20,9 @@
       "active": 4,
       "blocked": 3
     },
-    "totalEvidenceRecords": 12,
+    "totalEvidenceRecords": 13,
     "evidenceByStatus": {
-      "passed": 8,
+      "passed": 9,
       "blocked": 2,
       "observed": 1,
       "partial": 1
@@ -52,6 +53,9 @@
       "active": 1,
       "planned": 1
     },
+    "totalCompletedItems": 3,
+    "totalDeferredItems": 3,
+    "totalFollowUpActions": 3,
     "nextSafeAction": "Resolve P0 repository hygiene blockers before public or release readiness claims."
   },
   "progressCards": [
@@ -79,7 +83,7 @@
     {
       "id": "evidence-records",
       "label": "Evidence records",
-      "value": 12,
+      "value": 13,
       "status": "active",
       "description": "Structured proof, blocker, validation, and review records."
     },
@@ -110,6 +114,13 @@
       "value": 3,
       "status": "active",
       "description": "Current project lanes linked to goals and evidence."
+    },
+    {
+      "id": "completed-items",
+      "label": "Completed items",
+      "value": 3,
+      "status": "active",
+      "description": "Scoped completed work with evidence and limitations."
     }
   ],
   "panels": {
@@ -135,6 +146,8 @@
           "content/development/seis-goal-review-cadence.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
+          "docs/goals/progress-ledger.md",
+          "content/development/seis-goal-progress-ledger.json",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html",
@@ -144,7 +157,7 @@
           "Command Center UI implementation is not built yet"
         ],
         "validationMethod": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
-        "nextAction": "Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync."
+        "nextAction": "Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync."
       },
       {
         "id": "SEIS-GOAL-004",
@@ -202,6 +215,8 @@
           "content/development/seis-goal-review-cadence.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
+          "docs/goals/progress-ledger.md",
+          "content/development/seis-goal-progress-ledger.json",
           "docs/goals/daily-review-template.md",
           "docs/goals/weekly-priorities-template.md",
           "docs/goals/monthly-review-template.md"
@@ -210,7 +225,7 @@
           "Weekly and monthly reviews must be performed before they can be marked complete"
         ],
         "validationMethod": "Review records contain date, scope, evidence, blockers, and validation output.",
-        "nextAction": "Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed."
+        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed."
       }
     ],
     "blockedGoals": [
@@ -325,12 +340,14 @@
           "content/development/seis-goal-review-cadence.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
+          "docs/goals/progress-ledger.md",
+          "content/development/seis-goal-progress-ledger.json",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html",
           "docs/reviews/GOAL_TRACKING_REVIEW.md"
         ],
-        "nextAction": "Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync."
+        "nextAction": "Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync."
       },
       {
         "category": "Repository Intelligence",
@@ -561,11 +578,13 @@
           "content/development/seis-goal-review-cadence.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
+          "docs/goals/progress-ledger.md",
+          "content/development/seis-goal-progress-ledger.json",
           "docs/goals/daily-review-template.md",
           "docs/goals/weekly-priorities-template.md",
           "docs/goals/monthly-review-template.md"
         ],
-        "nextAction": "Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed."
+        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed."
       }
     ],
     "nextActionQueue": [
@@ -606,7 +625,8 @@
           "SEIS-EVID-001",
           "SEIS-EVID-006",
           "SEIS-EVID-008",
-          "SEIS-EVID-012"
+          "SEIS-EVID-012",
+          "SEIS-EVID-013"
         ],
         "nextAction": "Keep `npm run check:goal-tracking` as the local non-LLM integrity gate."
       },
@@ -891,6 +911,22 @@
           "Does not resolve repository hygiene blockers or foundation validation failures."
         ],
         "nextAction": "Keep planning horizons current through actual daily, weekly, and monthly reviews."
+      },
+      {
+        "id": "SEIS-EVID-013",
+        "title": "Goal progress ledger validates",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "summary": "The completed work, deferred work, and follow-up action records are structured and covered by the local goal tracking validator.",
+        "limitations": [
+          "Completed items are scoped to the named artifacts only.",
+          "Does not resolve repository hygiene blockers or foundation validation failures."
+        ],
+        "nextAction": "Keep completed, deferred, and follow-up records current with each Goal Tracking OS change."
       }
     ],
     "decisions": [
@@ -1240,6 +1276,164 @@
           "Static page is not wired into a routed Command Center shell."
         ],
         "nextAction": "Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated."
+      }
+    ],
+    "completedItems": [
+      {
+        "id": "SEIS-COMPLETE-001",
+        "title": "Goal Tracking OS documentation foundation",
+        "status": "completed",
+        "completedAt": "2026-06-19",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-001"
+        ],
+        "summary": "The first required Goal Tracking OS documentation foundation exists and is covered by the local goal validator.",
+        "limitations": [
+          "Does not prove a full application module exists.",
+          "Does not resolve repository hygiene blockers."
+        ],
+        "nextAction": "Keep the documentation aligned with structured records."
+      },
+      {
+        "id": "SEIS-COMPLETE-002",
+        "title": "Structured Goal Tracking OS records",
+        "status": "completed",
+        "completedAt": "2026-06-20",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-008",
+          "SEIS-EVID-011",
+          "SEIS-EVID-012"
+        ],
+        "summary": "The structured goal, evidence, execution, review cadence, and planning horizon records validate locally.",
+        "limitations": [
+          "Does not claim weekly, monthly, or daily reviews were performed.",
+          "Does not claim any horizon is completed."
+        ],
+        "nextAction": "Keep these records in sync with each follow-up change."
+      },
+      {
+        "id": "SEIS-COMPLETE-003",
+        "title": "Static Goal Tracking Center surface",
+        "status": "completed",
+        "completedAt": "2026-06-20",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-009",
+          "SEIS-EVID-010"
+        ],
+        "summary": "A deterministic view model and generated static HTML surface render Goal Tracking OS data without an LLM or external API.",
+        "limitations": [
+          "Does not prove a routed Command Center shell exists.",
+          "Does not prove deployment or live integration."
+        ],
+        "nextAction": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+      }
+    ],
+    "deferredItems": [
+      {
+        "id": "SEIS-DEFER-001",
+        "title": "Routed Command Center Goal Tracking module",
+        "status": "deferred",
+        "reason": "Repository hygiene blockers should be isolated before expanding the application shell.",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "approvalRequired": "No approval required for local app work, but live integrations or deployment require approval.",
+        "nextAction": "Plan a routed shell after foundation validation blockers are handled."
+      },
+      {
+        "id": "SEIS-DEFER-002",
+        "title": "Live GitHub PR and branch state integration",
+        "status": "deferred",
+        "reason": "External GitHub API/CLI inspection requires explicit approval for this foundation pass.",
+        "supportsGoalIds": [
+          "SEIS-GOAL-007"
+        ],
+        "approvalRequired": "External GitHub API/CLI connection approval.",
+        "nextAction": "Run GitHub PR inspection only after approval."
+      },
+      {
+        "id": "SEIS-DEFER-003",
+        "title": "Public and release readiness claims",
+        "status": "deferred",
+        "reason": "Foundation validation remains blocked by unresolved tracked deletions and missing governance files.",
+        "supportsGoalIds": [
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009"
+        ],
+        "approvalRequired": "Deployment, release, and public visibility changes require explicit approval.",
+        "nextAction": "Resolve repository hygiene and rerun foundation validation before readiness claims."
+      }
+    ],
+    "followUpActions": [
+      {
+        "id": "SEIS-FOLLOWUP-001",
+        "title": "Recover foundation validation surface",
+        "status": "blocked",
+        "priority": "P0 critical",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008"
+        ],
+        "relatedTaskIds": [
+          "SEIS-TASK-001"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-003",
+          "SEIS-EVID-004",
+          "SEIS-EVID-007"
+        ],
+        "nextAction": "Restore, replace, or intentionally approve removal of missing governance docs and checker script."
+      },
+      {
+        "id": "SEIS-FOLLOWUP-002",
+        "title": "Keep Goal Tracking records fresh",
+        "status": "active",
+        "priority": "P1 high",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "relatedTaskIds": [
+          "SEIS-TASK-002",
+          "SEIS-TASK-005"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-001",
+          "SEIS-EVID-011",
+          "SEIS-EVID-012"
+        ],
+        "nextAction": "Run goal validation after every structured record update."
+      },
+      {
+        "id": "SEIS-FOLLOWUP-003",
+        "title": "Connect static Goal Tracking Center to Command Center shell",
+        "status": "planned",
+        "priority": "P1 high",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002"
+        ],
+        "relatedTaskIds": [
+          "SEIS-TASK-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-009",
+          "SEIS-EVID-010"
+        ],
+        "nextAction": "Create a routed local Command Center shell only after the repository hygiene blocker is isolated."
       }
     ],
     "readinessConnections": [

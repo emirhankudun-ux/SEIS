@@ -294,6 +294,29 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Keep planning horizons current through actual daily, weekly, and monthly reviews."
+    },
+    {
+      "id": "SEIS-EVID-013",
+      "title": "Goal progress ledger validates",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-progress-ledger.json",
+        "docs/goals/progress-ledger.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "The completed work, deferred work, and follow-up action records are structured and covered by the local goal tracking validator.",
+      "limitations": [
+        "Completed items are scoped to the named artifacts only.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Keep completed, deferred, and follow-up records current with each Goal Tracking OS change."
     }
   ]
 }

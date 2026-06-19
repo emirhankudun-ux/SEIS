@@ -365,6 +365,7 @@
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
         <a href="#planning">Planning</a>
+        <a href="#progress">Progress</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -411,7 +412,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">12</div>
+    <div class="card-value">13</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -442,6 +443,13 @@
     <div class="card-value">3</div>
   </div>
   <p class="muted">Current project lanes linked to goals and evidence.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Completed items</p>
+    <div class="card-value">3</div>
+  </div>
+  <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
       </section>
 
@@ -574,7 +582,7 @@
     </div>
     <span class="badge active">active</span>
   </div>
-  <p class="next-action">Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync.</p>
+  <p class="next-action">Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync.</p>
   <div class="row-meta">
     <span class="badge">P1 high</span>
     <span class="badge">SEIS-MS-001</span>
@@ -616,7 +624,7 @@
     </div>
     <span class="badge active">active</span>
   </div>
-  <p class="next-action">Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed.</p>
+  <p class="next-action">Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed.</p>
   <div class="row-meta">
     <span class="badge">P1 high</span>
     <span class="badge">SEIS-MS-001</span>
@@ -707,7 +715,7 @@
   <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-001</td>
-  <td>Keep structured goal data, planning horizons, generated view model, and static Command Center page in sync.</td>
+  <td>Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync.</td>
 </tr>
               <tr>
   <td>Repository Intelligence</td>
@@ -826,7 +834,7 @@
   <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-001</td>
-  <td>Keep cadence and planning horizon records visible and use review templates only when reviews are actually performed.</td>
+  <td>Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed.</td>
 </tr>
             </tbody>
           </table>
@@ -1137,6 +1145,146 @@
         </div>
       </section>
 
+      <section class="grid section-grid" id="progress">
+        <div class="panel">
+          <h2>Completed Work</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS documentation foundation</h3>
+      <p class="muted">SEIS-COMPLETE-001 · 2026-06-19</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>The first required Goal Tracking OS documentation foundation exists and is covered by the local goal validator.</p>
+  <p class="muted">Does not prove a full application module exists. Does not resolve repository hygiene blockers.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-001</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Structured Goal Tracking OS records</h3>
+      <p class="muted">SEIS-COMPLETE-002 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>The structured goal, evidence, execution, review cadence, and planning horizon records validate locally.</p>
+  <p class="muted">Does not claim weekly, monthly, or daily reviews were performed. Does not claim any horizon is completed.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-008, SEIS-EVID-011, SEIS-EVID-012</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Static Goal Tracking Center surface</h3>
+      <p class="muted">SEIS-COMPLETE-003 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>A deterministic view model and generated static HTML surface render Goal Tracking OS data without an LLM or external API.</p>
+  <p class="muted">Does not prove a routed Command Center shell exists. Does not prove deployment or live integration.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-009, SEIS-EVID-010</span>
+  </div>
+</article>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Deferred Work</h2>
+          <div class="stack">
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Routed Command Center Goal Tracking module</h3>
+      <p class="muted">SEIS-DEFER-001</p>
+    </div>
+    <span class="badge planned">deferred</span>
+  </div>
+  <p>Repository hygiene blockers should be isolated before expanding the application shell.</p>
+  <p class="muted">No approval required for local app work, but live integrations or deployment require approval.</p>
+  <p class="next-action">Plan a routed shell after foundation validation blockers are handled.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Live GitHub PR and branch state integration</h3>
+      <p class="muted">SEIS-DEFER-002</p>
+    </div>
+    <span class="badge planned">deferred</span>
+  </div>
+  <p>External GitHub API/CLI inspection requires explicit approval for this foundation pass.</p>
+  <p class="muted">External GitHub API/CLI connection approval.</p>
+  <p class="next-action">Run GitHub PR inspection only after approval.</p>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Public and release readiness claims</h3>
+      <p class="muted">SEIS-DEFER-003</p>
+    </div>
+    <span class="badge planned">deferred</span>
+  </div>
+  <p>Foundation validation remains blocked by unresolved tracked deletions and missing governance files.</p>
+  <p class="muted">Deployment, release, and public visibility changes require explicit approval.</p>
+  <p class="next-action">Resolve repository hygiene and rerun foundation validation before readiness claims.</p>
+</article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Follow-Up Actions</h2>
+        <div class="grid review-grid">
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Recover foundation validation surface</h3>
+      <p class="muted">SEIS-FOLLOWUP-001 · P0 critical</p>
+    </div>
+    <span class="badge blocked">blocked</span>
+  </div>
+  <p class="next-action">Restore, replace, or intentionally approve removal of missing governance docs and checker script.</p>
+  <div class="row-meta">
+    <span class="badge">Tasks: SEIS-TASK-001</span>
+    <span class="badge">Evidence: SEIS-EVID-003, SEIS-EVID-004, SEIS-EVID-007</span>
+  </div>
+</article>
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Keep Goal Tracking records fresh</h3>
+      <p class="muted">SEIS-FOLLOWUP-002 · P1 high</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Run goal validation after every structured record update.</p>
+  <div class="row-meta">
+    <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012</span>
+  </div>
+</article>
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Connect static Goal Tracking Center to Command Center shell</h3>
+      <p class="muted">SEIS-FOLLOWUP-003 · P1 high</p>
+    </div>
+    <span class="badge planned">planned</span>
+  </div>
+  <p class="next-action">Create a routed local Command Center shell only after the repository hygiene blocker is isolated.</p>
+  <div class="row-meta">
+    <span class="badge">Tasks: SEIS-TASK-003</span>
+    <span class="badge">Evidence: SEIS-EVID-009, SEIS-EVID-010</span>
+  </div>
+</article>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="decisions">
         <div class="panel">
           <h2>Decisions</h2>
@@ -1216,7 +1364,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>

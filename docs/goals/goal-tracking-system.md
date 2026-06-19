@@ -117,6 +117,12 @@ and is documented in [`planning-horizons.md`](planning-horizons.md). It stores
 yearly, quarterly, monthly, and weekly planning lanes plus active projects
 without claiming completion ahead of evidence.
 
+The current structured progress ledger lives at
+[`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
+and is documented in [`progress-ledger.md`](progress-ledger.md). It stores
+scoped completed work, deferred work, and follow-up actions with evidence and
+limitations.
+
 The review templates are:
 
 - [`daily-review-template.md`](daily-review-template.md)

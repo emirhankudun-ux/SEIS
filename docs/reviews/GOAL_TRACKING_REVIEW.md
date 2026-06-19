@@ -23,6 +23,7 @@ progress review, review cadence, and Command Center product planning.
 | Store structured non-LLM execution records. | Implemented as local JSON | [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) |
 | Store structured non-LLM review cadence records. | Implemented as local JSON | [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) |
 | Store structured non-LLM planning horizon records. | Implemented as local JSON | [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) |
+| Store structured non-LLM progress ledger records. | Implemented as local JSON | [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) |
 | Generate non-LLM Command Center view model. | Implemented as local JSON | [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) |
 | Generate static Goal Tracking Center page. | Implemented as local HTML | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) |
 | Validate goal records without LLM. | Implemented as local check | [`../../scripts/check-goal-tracking.mjs`](../../scripts/check-goal-tracking.mjs) |
@@ -41,10 +42,12 @@ progress review, review cadence, and Command Center product planning.
   records that remain planned until real review evidence exists.
 - Goal Tracking OS now has structured yearly, quarterly, monthly, weekly, and
   active-project planning horizon records.
+- Goal Tracking OS now has structured completed, deferred, and follow-up action
+  records.
 - Goal Tracking OS now has a generated static Command Center view model for
   progress cards, active goals, blocked items, next actions, evidence, review
-  cadence, planning horizons, active projects, decisions, readiness
-  connections, and UX guardrails.
+  cadence, planning horizons, active projects, completed work, deferred work,
+  follow-up actions, decisions, readiness connections, and UX guardrails.
 - Goal Tracking OS now has a generated static Goal Tracking Center page that
   renders those panels without an LLM or external API.
 - Repository hygiene deletion blocker now has a classified review record:
@@ -81,8 +84,8 @@ progress review, review cadence, and Command Center product planning.
 | --- | --- | --- |
 | Required deliverable file check | Passed | All required Goal Tracking OS docs and product/review files exist. |
 | Scoped sensitive-pattern check | Passed | No private path, key, token, or API-key pattern was found in the scoped docs. |
-| `npm run check:goal-tracking` | Passed | Structured goal registry, evidence ledger, execution board, review cadence, planning horizons, required docs, statuses, blockers, references, and validation rules passed. |
-| `npm run check:goal-command-center-view` | Passed | Generated view model is fresh against goal, evidence, execution, review cadence, and planning horizon sources. |
+| `npm run check:goal-tracking` | Passed | Structured goal registry, evidence ledger, execution board, review cadence, planning horizons, progress ledger, required docs, statuses, blockers, references, and validation rules passed. |
+| `npm run check:goal-command-center-view` | Passed | Generated view model is fresh against goal, evidence, execution, review cadence, planning horizon, and progress ledger sources. |
 | `npm run check:goal-command-center-static` | Passed | Generated static page is fresh against the Command Center view model. |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
 | `npm run seis:check` | Passed | Existing web audit still passes. |
