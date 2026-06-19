@@ -37,6 +37,7 @@ broad file search.
 | [goals/goal-schema.md](goals/goal-schema.md) | Lightweight goal object and allowed status/priority/risk values. | Active |
 | [goals/milestone-map.md](goals/milestone-map.md) | Roadmap phases, milestones, epics, validation steps, and follow-ups. | Active |
 | [goals/progress-review.md](goals/progress-review.md) | Current Goal Tracking OS progress review. | Active |
+| [../content/development/seis-goal-tracking.json](../content/development/seis-goal-tracking.json) | Structured non-LLM goal records. | Active |
 | [goals/weekly-priorities-template.md](goals/weekly-priorities-template.md) | Weekly review template; use only for real weekly reviews. | Template |
 | [goals/monthly-review-template.md](goals/monthly-review-template.md) | Monthly review template; use only for real monthly reviews. | Template |
 

@@ -50,6 +50,8 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-029` | P1 | Goal evidence | Connect each active/planned goal to evidence, validation method, blockers, and next safe action. | Long-term goal registry uses relative evidence links or marks `evidence unavailable`. |
 | `SEIS-BL-030` | P2 | Goal data model | Convert Markdown goal registry into static JSON fixture data for Command Center. | Fixture data validates against goal schema and renders without LLM. |
 | `SEIS-BL-031` | P2 | Goal review cadence | Perform real weekly/monthly reviews using templates. | Review records include date, scope, evidence, blockers, and validation output. |
+| `SEIS-BL-032` | P1 | Goal validator | Keep structured goal records machine-checkable without LLM. | `npm run check:goal-tracking` validates required docs, fields, statuses, blockers, and evidence links. |
+| `SEIS-BL-033` | P1 | Public readiness | Remove or parameterize hardcoded local machine paths in plugin bundle scripts. | Package/scripts use documented environment variables or repo-relative defaults and public-readiness scan has no machine-specific path hits. |
 
 ## Deferred Dangerous Work
 

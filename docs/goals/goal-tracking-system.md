@@ -87,6 +87,12 @@ The first version is Markdown-first:
 Future versions may add JSON records generated from these docs or maintained
 directly by Command Center.
 
+The current structured registry lives at
+[`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
+It is validated by `npm run check:goal-tracking`, which enforces required
+fields, allowed statuses, evidence-link safety, blocked-goal blockers, and
+validation evidence rules.
+
 ## Command Center Connection
 
 The Goal Tracking Center should render:

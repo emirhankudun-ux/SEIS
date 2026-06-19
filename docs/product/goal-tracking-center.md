@@ -18,7 +18,7 @@ what needs evidence, and what should happen next.
 | --- | --- | --- |
 | Goal List | List goals with category, priority, status, owner role, evidence, blockers, and next action. | [`../goals/long-term-goals.md`](../goals/long-term-goals.md) |
 | Milestone Timeline | Show phases, milestones, epics, and validation steps. | [`../goals/milestone-map.md`](../goals/milestone-map.md) |
-| Progress Cards | Summarize active, blocked, planned, validated, and completed goals. | Goal records |
+| Progress Cards | Summarize active, blocked, planned, validated, and completed goals. | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
 | Blocked Items | Make blockers and required approvals visible. | [`../goals/progress-review.md`](../goals/progress-review.md) |
 | Next Safe Action Panel | Show the next safe action per active goal and roadmap queue. | [`../roadmap/NEXT_PR_QUEUE.md`](../roadmap/NEXT_PR_QUEUE.md) |
 | Evidence Links | Link each status to docs, reviews, validation, files, or PRs. | Goal records and evidence locker |
@@ -58,6 +58,7 @@ no LLM connected. LLMs may summarize or recommend only after evidence exists.
 
 Create a static/manual data file or fixture derived from:
 
+- [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)
 - [`../goals/milestone-map.md`](../goals/milestone-map.md)
 - [`../goals/progress-review.md`](../goals/progress-review.md)

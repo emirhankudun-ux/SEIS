@@ -52,7 +52,7 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Type | Security docs and safe scans |
 | Priority | P1 |
 | Goal | Create a deeper security/public-readiness baseline without exposing secret values. |
-| Include | Secret-pattern scan by path only, dependency/license scan plan, artifact cleanup plan, public-readiness dry run. |
+| Include | Secret-pattern scan by path only, dependency/license scan plan, hardcoded local path cleanup plan, artifact cleanup plan, public-readiness dry run. |
 | Exclude | Secret rotation, repo visibility change, external production scans. |
 | Validation | Path-only sensitive-file scan, `git diff --check`, available local checks. |
 | Approval needed | Secret rotation, public visibility changes, external scanners, destructive cleanup. |
@@ -91,9 +91,9 @@ stay small, avoid unrelated cleanup, and list exact validation performed.
 | Type | Goal, roadmap, product, and review docs |
 | Priority | P1 |
 | Goal | Make SEIS Goal Tracking OS explicit as the long-term progress and execution layer. |
-| Include | `docs/goals/*`, Goal Tracking Center product docs, Command Center goals view, goal review report, backlog and index updates. |
+| Include | `docs/goals/*`, structured goal records, local goal validator, Goal Tracking Center product docs, Command Center goals view, goal review report, backlog and index updates. |
 | Exclude | UI implementation, fake reviews, fake completion, GitHub API calls, SSH, deployment, model-provider calls. |
-| Validation | `git diff --check`, `npm run seis:check`, `npm run check:foundation` with known blocker notes. |
+| Validation | `npm run check:goal-tracking`, `git diff --check`, `npm run seis:check`, `npm run check:foundation` with known blocker notes. |
 | Approval needed | None for docs-only work; approval required for live integrations or destructive cleanup. |
 
 ## PR 8: Release Readiness Dry Run

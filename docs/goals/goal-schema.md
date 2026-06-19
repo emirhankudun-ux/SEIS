@@ -6,6 +6,14 @@ This schema defines the lightweight non-LLM goal object for SEIS Goal Tracking
 OS. It can be represented in Markdown tables first, then migrated to JSON when
 the Command Center app needs structured records.
 
+The first structured registry is
+[`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
+Validate it with:
+
+```bash
+npm run check:goal-tracking
+```
+
 ## Required Fields
 
 | Field | Required | Description |
@@ -23,7 +31,8 @@ the Command Center app needs structured records.
 | `related_epic` | Yes | Epic id or `none`. |
 | `dependencies` | Yes | Required prerequisites or `none`. |
 | `blockers` | Yes | Blocking conditions or `none`. |
-| `risks` | Yes | Risks or `unknown`. |
+| `risk_level` | Yes | `low`, `medium`, `high`, `critical`, or `unknown`. |
+| `risks` | Yes | Risk notes or `unknown`. |
 | `evidence_links` | Yes | Relative links or `evidence unavailable`. |
 | `validation_method` | Yes | How completion/validation is proven. |
 | `next_action` | Yes | Next safe action. |
@@ -102,6 +111,7 @@ the Command Center app needs structured records.
   "related_epic": "SEIS-EPIC-GOALS-001",
   "dependencies": ["Foundation docs", "Roadmap queue"],
   "blockers": ["App implementation not built yet"],
+  "risk_level": "medium",
   "risks": ["medium"],
   "evidence_links": ["docs/goals/goal-tracking-system.md"],
   "validation_method": "Required docs exist, review doc exists, validation output recorded",

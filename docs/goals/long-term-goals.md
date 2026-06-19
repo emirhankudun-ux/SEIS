@@ -43,6 +43,7 @@ deferred, archived, or deprecated based on evidence.
 | `SEIS-GOAL-017` | Establish SEIS Universe research direction without overclaiming. | SEIS Universe Research | P2 medium | planned | Research foundation | [`../ai/AI_CORE_FOUNDATION_REVIEW.md`](../ai/AI_CORE_FOUNDATION_REVIEW.md) | Add model baseline and research roadmap docs later. |
 | `SEIS-GOAL-018` | Keep portfolio and creative systems aligned with SEIS product direction. | Portfolio / Creative Systems | P3 low | planned | Creative platform | evidence unavailable | Classify creative/portfolio surfaces after repo hygiene recovery. |
 | `SEIS-GOAL-019` | Maintain long-term product vision and review cadence. | Long-Term Product Vision | P1 high | active | Foundation | [`seis-vision.md`](seis-vision.md) | Use weekly/monthly review templates and update evidence. |
+| `SEIS-GOAL-020` | Define SEIS AI Core as an application layer without overclaiming model ownership. | SEIS AI Core | P1 high | planned | AI Core foundation | [`../ai/AI_CORE_FOUNDATION_REVIEW.md`](../ai/AI_CORE_FOUNDATION_REVIEW.md) | Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit. |
 
 ## Category Status Matrix
 

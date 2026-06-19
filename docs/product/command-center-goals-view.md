@@ -51,6 +51,10 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 
 ## First UI Data Contract
 
+The first structured source is
+[`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
+The compact view model can be derived from each goal record:
+
 ```json
 {
   "goal_id": "SEIS-GOAL-002",

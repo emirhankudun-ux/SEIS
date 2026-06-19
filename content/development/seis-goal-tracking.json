@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-tracking-os",
+  "updated": "2026-06-19",
+  "mode": "non_llm_goal_tracking_foundation",
+  "sourceDocs": [
+    "docs/goals/seis-vision.md",
+    "docs/goals/long-term-goals.md",
+    "docs/goals/goal-tracking-system.md",
+    "docs/goals/goal-schema.md",
+    "docs/goals/milestone-map.md",
+    "docs/goals/progress-review.md",
+    "docs/product/goal-tracking-center.md",
+    "docs/product/command-center-goals-view.md",
+    "docs/reviews/GOAL_TRACKING_REVIEW.md"
+  ],
+  "allowedStatuses": [
+    "idea",
+    "proposed",
+    "planned",
+    "active",
+    "blocked",
+    "in-review",
+    "validated",
+    "completed",
+    "deferred",
+    "archived",
+    "deprecated"
+  ],
+  "allowedPriorities": [
+    "P0 critical",
+    "P1 high",
+    "P2 medium",
+    "P3 low",
+    "P4 future"
+  ],
+  "allowedRiskLevels": [
+    "low",
+    "medium",
+    "high",
+    "critical",
+    "unknown"
+  ],
+  "categories": [
+    "SEIS AI Core",
+    "SEIS App / Command Center",
+    "Goal Tracking OS",
+    "Repository Intelligence",
+    "Documentation System",
+    "Security and Governance",
+    "GitHub Workflow",
+    "Public Readiness",
+    "Release Readiness",
+    "Design System",
+    "Agent Runtime",
+    "Automation Queue",
+    "Model Router",
+    "Prompt Engine",
+    "Evaluation Lab",
+    "Knowledge Graph",
+    "SSH / Cloud Workspace",
+    "SEIS Universe Research",
+    "Portfolio / Creative Systems",
+    "Long-Term Product Vision"
+  ],
+  "goals": [
+    {
+      "id": "SEIS-GOAL-001",
+      "title": "Build SEIS Command Center as the central operating interface",
+      "description": "Create the core operating interface for repository status, docs, roadmap, security, approvals, evidence, and readiness.",
+      "category": "SEIS App / Command Center",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "Product Architecture",
+      "created_date": "2026-06-19",
+      "target_phase": "Platform foundation",
+      "related_roadmap_item": "SEIS-BL-023",
+      "related_docs": [
+        "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+        "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md"
+      ],
+      "related_files": [
+        "apps/web/README.md"
+      ],
+      "related_milestone": "SEIS-MS-003",
+      "related_epic": "SEIS-EPIC-GOALS-002",
+      "dependencies": [
+        "Repository hygiene recovery",
+        "Static/manual fixture data"
+      ],
+      "blockers": [
+        "Complete app shell is not proven"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "UI could overstate implementation status if evidence states are not enforced"
+      ],
+      "evidence_links": [
+        "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Static/manual Command Center views render evidence-backed states without LLM or live integrations.",
+      "validation_evidence": [],
+      "next_action": "Build static/manual Command Center views from docs and fixture data.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Planned product work; not complete."
+    },
+    {
+      "id": "SEIS-GOAL-002",
+      "title": "Establish SEIS Goal Tracking OS",
+      "description": "Create the long-term goal, milestone, blocker, evidence, validation, and next-action system.",
+      "category": "Goal Tracking OS",
+      "priority": "P1 high",
+      "status": "active",
+      "owner_role": "Product Architecture",
+      "created_date": "2026-06-19",
+      "target_phase": "Goal foundation",
+      "related_roadmap_item": "SEIS-BL-028",
+      "related_docs": [
+        "docs/goals/goal-tracking-system.md",
+        "docs/goals/goal-schema.md",
+        "docs/goals/milestone-map.md",
+        "docs/reviews/GOAL_TRACKING_REVIEW.md"
+      ],
+      "related_files": [
+        "content/development/seis-goal-tracking.json",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "related_milestone": "SEIS-MS-001",
+      "related_epic": "SEIS-EPIC-GOALS-001",
+      "dependencies": [
+        "Foundation docs",
+        "Roadmap queue"
+      ],
+      "blockers": [
+        "Command Center UI implementation is not built yet"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Goal records can drift unless validated against evidence links"
+      ],
+      "evidence_links": [
+        "docs/goals/goal-tracking-system.md",
+        "docs/goals/goal-schema.md",
+        "docs/reviews/GOAL_TRACKING_REVIEW.md"
+      ],
+      "validation_method": "Goal docs exist, structured goal records validate, and local checks record known blockers.",
+      "validation_evidence": [],
+      "next_action": "Keep structured goal data in sync with docs and add Command Center fixture rendering.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Documentation and data foundation active; application module remains planned."
+    },
+    {
+      "id": "SEIS-GOAL-003",
+      "title": "Build deterministic Repository Intelligence",
+      "description": "Create local read-only scanners for missing docs, risky files, stale records, validation gaps, and readiness blockers.",
+      "category": "Repository Intelligence",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "Repository Intelligence",
+      "created_date": "2026-06-19",
+      "target_phase": "Scanner foundation",
+      "related_roadmap_item": "SEIS-BL-024",
+      "related_docs": [
+        "docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md"
+      ],
+      "related_files": [
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "related_milestone": "SEIS-MS-005",
+      "related_epic": "SEIS-EPIC-GOALS-004",
+      "dependencies": [
+        "Repository hygiene recovery"
+      ],
+      "blockers": [
+        "Missing validation scripts remain unresolved"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Scanner output could become noisy if it is not bounded"
+      ],
+      "evidence_links": [
+        "docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md"
+      ],
+      "validation_method": "Read-only scanner emits stable findings and does not perform destructive cleanup.",
+      "validation_evidence": [],
+      "next_action": "Implement read-only scanner outputs after current repo hygiene blockers are resolved.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Planned; goal validator is a first narrow scanner."
+    },
+    {
+      "id": "SEIS-GOAL-004",
+      "title": "Maintain official documentation and source-of-truth navigation",
+      "description": "Keep official documentation, roadmap, status, and review records navigable and distinct from archives.",
+      "category": "Documentation System",
+      "priority": "P1 high",
+      "status": "active",
+      "owner_role": "Documentation",
+      "created_date": "2026-06-19",
+      "target_phase": "Foundation",
+      "related_roadmap_item": "SEIS-BL-005",
+      "related_docs": [
+        "docs/INDEX.md",
+        "docs/STATUS.md",
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "related_files": [
+        "README.md"
+      ],
+      "related_milestone": "SEIS-MS-001",
+      "related_epic": "SEIS-EPIC-GOALS-001",
+      "dependencies": [
+        "Source-of-truth docs"
+      ],
+      "blockers": [
+        "Root architecture, roadmap, and changelog docs are still missing"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Historical docs can conflict with active status"
+      ],
+      "evidence_links": [
+        "docs/INDEX.md",
+        "docs/STATUS.md"
+      ],
+      "validation_method": "Docs index links current source-of-truth docs and known blockers are visible.",
+      "validation_evidence": [],
+      "next_action": "Keep docs index, status, backlog, and PR queue current.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Active documentation foundation."
+    },
+    {
+      "id": "SEIS-GOAL-005",
+      "title": "Enforce security and governance through platform rules",
+      "description": "Track secret handling, approval gates, action risk, security findings, and public exposure blockers.",
+      "category": "Security and Governance",
+      "priority": "P1 high",
+      "status": "active",
+      "owner_role": "Security Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Foundation",
+      "related_roadmap_item": "SEIS-BL-006",
+      "related_docs": [
+        "docs/security/SECURITY_BASELINE.md",
+        "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+      ],
+      "related_files": [
+        ".gitignore",
+        "SECURITY.md"
+      ],
+      "related_milestone": "SEIS-MS-006",
+      "related_epic": "SEIS-EPIC-GOALS-004",
+      "dependencies": [
+        "Repository hygiene recovery"
+      ],
+      "blockers": [
+        "Live GitHub security status is unknown"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Security readiness could be overstated without scans"
+      ],
+      "evidence_links": [
+        "docs/security/SECURITY_BASELINE.md",
+        "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+      ],
+      "validation_method": "Security and approval docs exist; scans record exact commands and missing checks.",
+      "validation_evidence": [],
+      "next_action": "Add deeper local-only security checks and approval ledger.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Active governance foundation; not a full security audit."
+    },
+    {
+      "id": "SEIS-GOAL-006",
+      "title": "Stabilize GitHub workflow and PR rescue",
+      "description": "Recover and classify open/closed PR work safely without pushing, merging, or deleting without approval.",
+      "category": "GitHub Workflow",
+      "priority": "P0 critical",
+      "status": "blocked",
+      "owner_role": "Repository Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Recovery",
+      "related_roadmap_item": "SEIS-BL-007",
+      "related_docs": [
+        "docs/governance/GITHUB_GOVERNANCE_REVIEW.md",
+        "docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        ".github/PULL_REQUEST_TEMPLATE.md"
+      ],
+      "related_milestone": "SEIS-MS-005",
+      "related_epic": "SEIS-EPIC-GOALS-004",
+      "dependencies": [
+        "Human approval for live GitHub inspection",
+        "Repository hygiene recovery"
+      ],
+      "blockers": [
+        "External GitHub PR state was not queried",
+        "Dirty worktree contains pre-existing deletions"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Recovering PRs without classification could revive unsafe work"
+      ],
+      "evidence_links": [
+        "docs/governance/GITHUB_GOVERNANCE_REVIEW.md"
+      ],
+      "validation_method": "GitHub CLI/API evidence is captured after approval and each PR is classified.",
+      "validation_evidence": [],
+      "next_action": "Resolve local deletion set, then inspect GitHub PRs after approval.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "per PR",
+      "notes": "Blocked by approval and local hygiene."
+    },
+    {
+      "id": "SEIS-GOAL-007",
+      "title": "Prepare public repository readiness",
+      "description": "Establish public-readiness checks for docs, security, provenance, templates, validation, and blockers.",
+      "category": "Public Readiness",
+      "priority": "P1 high",
+      "status": "blocked",
+      "owner_role": "Public Readiness",
+      "created_date": "2026-06-19",
+      "target_phase": "Readiness",
+      "related_roadmap_item": "SEIS-BL-008",
+      "related_docs": [
+        "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+      ],
+      "related_files": [
+        "README.md",
+        "LICENSE",
+        "SECURITY.md",
+        "CONTRIBUTING.md"
+      ],
+      "related_milestone": "SEIS-MS-007",
+      "related_epic": "none",
+      "dependencies": [
+        "Validation recovery",
+        "Repository hygiene recovery"
+      ],
+      "blockers": [
+        "Foundation check fails",
+        "Source-of-truth docs are missing"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Public readiness claim would be misleading before blockers are resolved"
+      ],
+      "evidence_links": [
+        "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+        "docs/STATUS.md"
+      ],
+      "validation_method": "Public readiness dry-run records exact checks and blockers.",
+      "validation_evidence": [],
+      "next_action": "Complete repo hygiene and validation recovery first.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Blocked."
+    },
+    {
+      "id": "SEIS-GOAL-008",
+      "title": "Prepare release readiness without unsafe deployment",
+      "description": "Define release dry-runs, changelog policy, artifact state, rollback, and post-release follow-up.",
+      "category": "Release Readiness",
+      "priority": "P1 high",
+      "status": "blocked",
+      "owner_role": "Release Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Readiness",
+      "related_roadmap_item": "SEIS-BL-009",
+      "related_docs": [
+        "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+      ],
+      "related_files": [
+        "releases"
+      ],
+      "related_milestone": "SEIS-MS-007",
+      "related_epic": "none",
+      "dependencies": [
+        "Validation recovery",
+        "Changelog policy"
+      ],
+      "blockers": [
+        "Release artifacts exist but release sync was not validated",
+        "Deployment is approval-gated"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Release claim without validation could expose broken artifacts"
+      ],
+      "evidence_links": [
+        "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md"
+      ],
+      "validation_method": "Release dry-run records artifact inventory, validation, rollback, and blocked deployment actions.",
+      "validation_evidence": [],
+      "next_action": "Define changelog/artifact policy and run dry-runs after validation recovery.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Blocked."
+    },
+    {
+      "id": "SEIS-GOAL-009",
+      "title": "Build SEIS design system foundation",
+      "description": "Create calm, premium, accessible tokens, components, status states, and UI patterns for Command Center.",
+      "category": "Design System",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "Design System",
+      "created_date": "2026-06-19",
+      "target_phase": "UI foundation",
+      "related_roadmap_item": "SEIS-BL-026",
+      "related_docs": [
+        "docs/design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md"
+      ],
+      "related_files": [
+        "packages/design-tokens/seis.tokens.css"
+      ],
+      "related_milestone": "SEIS-MS-004",
+      "related_epic": "SEIS-EPIC-GOALS-002",
+      "dependencies": [
+        "Static/manual Command Center fixture data"
+      ],
+      "blockers": [
+        "No component demo yet"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "UI may become decorative unless evidence states are enforced"
+      ],
+      "evidence_links": [
+        "docs/design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md"
+      ],
+      "validation_method": "Fixture-driven component demo renders required states accessibly.",
+      "validation_evidence": [],
+      "next_action": "Create fixture-driven component/state demo.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-010",
+      "title": "Define agent runtime permission model",
+      "description": "Define human-supervised agent roles, allowed actions, forbidden actions, validation, and approvals.",
+      "category": "Agent Runtime",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "AI Systems Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "AI Core foundation",
+      "related_roadmap_item": "SEIS-BL-012",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        "packages/seis-ai/package.json"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "AI Core foundation docs"
+      ],
+      "blockers": [
+        "Agent runtime spec is not written yet"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Agents could be over-permissioned without explicit boundaries"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Agent runtime spec defines permissions and approval boundaries before privileged actions exist.",
+      "validation_evidence": [],
+      "next_action": "Add agent runtime specification before privileged actions.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-011",
+      "title": "Create safe automation queues and approval workflows",
+      "description": "Track task, review, approval, validation, evidence, and release queues with safe defaults.",
+      "category": "Automation Queue",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "Workflow Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Workflow foundation",
+      "related_roadmap_item": "SEIS-BL-025",
+      "related_docs": [
+        "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+      ],
+      "related_files": [
+        "content/development/seis-goal-tracking.json"
+      ],
+      "related_milestone": "SEIS-MS-006",
+      "related_epic": "SEIS-EPIC-GOALS-004",
+      "dependencies": [
+        "Approval schema"
+      ],
+      "blockers": [
+        "No approval ledger implementation yet"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Automation could run actions before approval gates are enforced"
+      ],
+      "evidence_links": [
+        "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+      ],
+      "validation_method": "Static approval ledger and queue schema exist before live automations.",
+      "validation_evidence": [],
+      "next_action": "Add static approval ledger and queue schema.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-012",
+      "title": "Define provider-neutral model router",
+      "description": "Define replaceable provider interfaces, routing policies, model profiles, and privacy-aware logging.",
+      "category": "Model Router",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "AI Core Architecture",
+      "created_date": "2026-06-19",
+      "target_phase": "AI Core foundation",
+      "related_roadmap_item": "SEIS-BL-014",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        "content/development/llm-task-routing-policy.json"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Provider boundary docs"
+      ],
+      "blockers": [
+        "No model-router contract docs yet"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Provider routing could leak secrets if browser/server boundaries are unclear"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Provider interface docs exist and no provider keys are exposed.",
+      "validation_evidence": [],
+      "next_action": "Add model-router provider interface and routing policy docs.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-013",
+      "title": "Define prompt engine and versioning",
+      "description": "Define prompt format, versioning, templates, provenance, safety, and clean-room restrictions.",
+      "category": "Prompt Engine",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "Prompt Architecture",
+      "created_date": "2026-06-19",
+      "target_phase": "AI Core foundation",
+      "related_roadmap_item": "SEIS-BL-013",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        "packages/seis-ai"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Prompt governance docs"
+      ],
+      "blockers": [
+        "No prompt-engine docs yet"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Prompts could become unreviewable without versioning"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Prompt format/versioning docs exist and contain no secrets or proprietary prompts.",
+      "validation_evidence": [],
+      "next_action": "Add prompt format/versioning and template rules.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-014",
+      "title": "Define evaluation lab for prompts, routing, agents, and model claims",
+      "description": "Create evaluation smoke gates and regression checks that prevent unsupported AI capability claims.",
+      "category": "Evaluation Lab",
+      "priority": "P2 medium",
+      "status": "planned",
+      "owner_role": "Evaluation",
+      "created_date": "2026-06-19",
+      "target_phase": "Evaluation foundation",
+      "related_roadmap_item": "SEIS-BL-019",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        "reports/ai-release-manifest.md"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Validation recovery"
+      ],
+      "blockers": [
+        "Foundation validation blockers remain"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Evaluation claims could be overstated without measured runs"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Evaluation smoke plan and measured outputs exist before capability claims.",
+      "validation_evidence": [],
+      "next_action": "Add evaluation smoke plan after validation scripts are recovered.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned."
+    },
+    {
+      "id": "SEIS-GOAL-015",
+      "title": "Build provenance-aware knowledge system",
+      "description": "Create knowledge records that distinguish official docs, generated reports, archives, and evidence.",
+      "category": "Knowledge Graph",
+      "priority": "P2 medium",
+      "status": "planned",
+      "owner_role": "Knowledge System",
+      "created_date": "2026-06-19",
+      "target_phase": "Knowledge foundation",
+      "related_roadmap_item": "SEIS-BL-020",
+      "related_docs": [
+        "docs/INDEX.md"
+      ],
+      "related_files": [
+        "docs"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Archive classification"
+      ],
+      "blockers": [
+        "Knowledge record model is not designed yet"
+      ],
+      "risk_level": "unknown",
+      "risks": [
+        "Archives could be mistaken for official direction"
+      ],
+      "evidence_links": [
+        "evidence unavailable"
+      ],
+      "validation_method": "Knowledge records classify source, status, provenance, and archive boundaries.",
+      "validation_evidence": [],
+      "next_action": "Define knowledge records and archive separation rules.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Evidence unavailable; planned only."
+    },
+    {
+      "id": "SEIS-GOAL-016",
+      "title": "Define SSH/cloud workspace policy",
+      "description": "Document local, GitHub, Codespaces, SSH/cloud, backup, sync, key boundaries, and approval-gated remote operations.",
+      "category": "SSH / Cloud Workspace",
+      "priority": "P2 medium",
+      "status": "planned",
+      "owner_role": "Workspace Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Workspace foundation",
+      "related_roadmap_item": "SEIS-BL-016",
+      "related_docs": [
+        "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md",
+        "docs/security/SECURITY_BASELINE.md"
+      ],
+      "related_files": [
+        "deploy"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Human approval for live SSH operations"
+      ],
+      "blockers": [
+        "SSH operations require explicit approval"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Private keys or host details could be exposed if boundaries are weak"
+      ],
+      "evidence_links": [
+        "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md",
+        "docs/security/SECURITY_BASELINE.md"
+      ],
+      "validation_method": "Workspace policy exists; no SSH command is run without approval.",
+      "validation_evidence": [],
+      "next_action": "Add workspace policy doc; do not run SSH.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned; no live SSH."
+    },
+    {
+      "id": "SEIS-GOAL-017",
+      "title": "Establish SEIS Universe research direction without overclaiming",
+      "description": "Document model research direction while distinguishing provider models, prompts, routing, memory, and future SEIS-owned weights.",
+      "category": "SEIS Universe Research",
+      "priority": "P2 medium",
+      "status": "planned",
+      "owner_role": "AI Research Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Research foundation",
+      "related_roadmap_item": "SEIS-BL-019",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "related_files": [
+        "research"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Model baseline docs"
+      ],
+      "blockers": [
+        "No training, checkpoint, tokenizer, dataset, or evaluation evidence was reviewed"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "Model capability or ownership could be overclaimed"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "Research docs separate future model work from provider routing and measured evidence.",
+      "validation_evidence": [],
+      "next_action": "Add model baseline and research roadmap docs later.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned; no training performed."
+    },
+    {
+      "id": "SEIS-GOAL-018",
+      "title": "Keep portfolio and creative systems aligned with SEIS product direction",
+      "description": "Classify creative and portfolio surfaces so they support the SEIS ecosystem without becoming unrelated clutter.",
+      "category": "Portfolio / Creative Systems",
+      "priority": "P3 low",
+      "status": "planned",
+      "owner_role": "Creative Systems",
+      "created_date": "2026-06-19",
+      "target_phase": "Creative platform",
+      "related_roadmap_item": "none",
+      "related_docs": [
+        "docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md"
+      ],
+      "related_files": [
+        "apps",
+        "content"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Repository hygiene recovery"
+      ],
+      "blockers": [
+        "Creative/portfolio surfaces are not classified yet"
+      ],
+      "risk_level": "unknown",
+      "risks": [
+        "Creative assets could drift away from platform goals"
+      ],
+      "evidence_links": [
+        "evidence unavailable"
+      ],
+      "validation_method": "Creative surfaces are classified and linked to product goals.",
+      "validation_evidence": [],
+      "next_action": "Classify creative and portfolio surfaces after repo hygiene recovery.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Evidence unavailable; planned only."
+    },
+    {
+      "id": "SEIS-GOAL-019",
+      "title": "Maintain long-term product vision and review cadence",
+      "description": "Keep SEIS direction, review cadence, and next priorities visible without creating fake reviews.",
+      "category": "Long-Term Product Vision",
+      "priority": "P1 high",
+      "status": "active",
+      "owner_role": "Product Governance",
+      "created_date": "2026-06-19",
+      "target_phase": "Foundation",
+      "related_roadmap_item": "SEIS-BL-031",
+      "related_docs": [
+        "docs/goals/seis-vision.md",
+        "docs/goals/weekly-priorities-template.md",
+        "docs/goals/monthly-review-template.md"
+      ],
+      "related_files": [
+        "content/development/seis-goal-tracking.json"
+      ],
+      "related_milestone": "SEIS-MS-001",
+      "related_epic": "SEIS-EPIC-GOALS-001",
+      "dependencies": [
+        "Review cadence discipline"
+      ],
+      "blockers": [
+        "Weekly and monthly reviews must be performed before they can be marked complete"
+      ],
+      "risk_level": "medium",
+      "risks": [
+        "Review templates could be mistaken for completed reviews"
+      ],
+      "evidence_links": [
+        "docs/goals/seis-vision.md",
+        "docs/goals/weekly-priorities-template.md",
+        "docs/goals/monthly-review-template.md"
+      ],
+      "validation_method": "Review records contain date, scope, evidence, blockers, and validation output.",
+      "validation_evidence": [],
+      "next_action": "Use weekly and monthly review templates only when reviews are actually performed.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "weekly",
+      "notes": "Active governance goal."
+    },
+    {
+      "id": "SEIS-GOAL-020",
+      "title": "Define SEIS AI Core as an application layer without overclaiming model ownership",
+      "description": "Define AI Core as provider-neutral routing, prompts, agent runtime, memory, evaluation, and audit infrastructure without claiming frontier model ownership.",
+      "category": "SEIS AI Core",
+      "priority": "P1 high",
+      "status": "planned",
+      "owner_role": "AI Core Architecture",
+      "created_date": "2026-06-19",
+      "target_phase": "AI Core foundation",
+      "related_roadmap_item": "SEIS-BL-011",
+      "related_docs": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md",
+        "docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md"
+      ],
+      "related_files": [
+        "packages/seis-ai",
+        "content/development/llm-adapter-readiness.json",
+        "content/development/llm-task-routing-policy.json"
+      ],
+      "related_milestone": "none",
+      "related_epic": "none",
+      "dependencies": [
+        "Provider-neutral model-router docs",
+        "Prompt-engine docs",
+        "Agent-runtime docs"
+      ],
+      "blockers": [
+        "Deleted package and validation files block implementation readiness claims"
+      ],
+      "risk_level": "high",
+      "risks": [
+        "SEIS AI Core could be mistaken for a trained foundation model without clear boundaries"
+      ],
+      "evidence_links": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "validation_method": "AI Core contracts define provider, prompt, runtime, memory, evaluation, and audit boundaries without secrets or model ownership claims.",
+      "validation_evidence": [],
+      "next_action": "Add AI Core contracts for router, prompt engine, runtime, memory, evals, and audit.",
+      "last_reviewed": "2026-06-19",
+      "review_cadence": "monthly",
+      "notes": "Planned; no provider call or model training performed."
+    }
+  ]
+}

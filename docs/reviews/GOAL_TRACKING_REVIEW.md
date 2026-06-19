@@ -18,12 +18,15 @@ progress review, review cadence, and Command Center product planning.
 | Create milestone map. | Documented | [`../goals/milestone-map.md`](../goals/milestone-map.md) |
 | Create progress review and cadence templates. | Documented | [`../goals/progress-review.md`](../goals/progress-review.md), [`../goals/weekly-priorities-template.md`](../goals/weekly-priorities-template.md), [`../goals/monthly-review-template.md`](../goals/monthly-review-template.md) |
 | Connect goals to roadmap and Command Center. | Documented | [`../roadmap/MASTER_BACKLOG.md`](../roadmap/MASTER_BACKLOG.md), [`../roadmap/NEXT_PR_QUEUE.md`](../roadmap/NEXT_PR_QUEUE.md), [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) |
+| Store structured non-LLM goal records. | Implemented as local JSON | [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json) |
+| Validate goal records without LLM. | Implemented as local check | [`../../scripts/check-goal-tracking.mjs`](../../scripts/check-goal-tracking.mjs) |
 | Keep LLM optional. | Documented | [`../goals/goal-tracking-system.md`](../goals/goal-tracking-system.md) |
 
 ## What Is Real Now
 
 - Goal Tracking OS has a documented vision, schema, long-term goal registry,
   milestone map, review cadence, product view, and review record.
+- Goal Tracking OS now has structured local JSON records and a non-LLM validator.
 - Goal statuses are evidence-aware and avoid fake completion.
 - Goal Tracking Center is connected to Command Center as a planned module.
 
@@ -58,6 +61,7 @@ progress review, review cadence, and Command Center product planning.
 | --- | --- | --- |
 | Required deliverable file check | Passed | All required Goal Tracking OS docs and product/review files exist. |
 | Scoped sensitive-pattern check | Passed | No private path, key, token, or API-key pattern was found in the scoped docs. |
+| `npm run check:goal-tracking` | Passed | Structured goal registry, required docs, statuses, blockers, evidence links, and validation rules passed. |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
 | `npm run seis:check` | Passed | Existing web audit still passes. |
 | `npm run check:foundation` | Failed | Fails on pre-existing missing governance docs and `scripts/check-open-source-governance.mjs`. |
