@@ -31,7 +31,7 @@ jobs:
       - name: Run GitLeaks Scan
         run: |
           echo "🔍 SEIS Guardian: Tüm geçmiş taranıyor..."
-          if gitleaks detect --source . --verbose --exit-code 2; then
+          if gitleaks detect --source . --config .gitleaks.toml --redact --exit-code 2; then
             echo "✅ Güvenlik Taraması Başarılı!"
           else
             echo "🚨 Kritik Güvenlik İhlali Tespit Edildi!"
