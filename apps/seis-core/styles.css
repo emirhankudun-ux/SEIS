@@ -441,6 +441,7 @@ h3 {
 
 .mission-composer,
 .godmode-form,
+.mission-route-preview,
 .mission-brief,
 .godmode-protocol,
 .ai-setup-grid,
@@ -463,6 +464,51 @@ h3 {
   grid-template-columns: auto minmax(140px, 1fr) auto;
   gap: 10px;
   align-items: end;
+}
+
+.mission-route-preview {
+  padding: 12px;
+  border: 1px solid rgba(64, 120, 255, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.mission-route-preview p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.route-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.route-preview-card {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.route-preview-card span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 720;
+}
+
+.route-preview-card strong {
+  min-width: 0;
+  color: var(--ink);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.route-preview-reasons {
+  align-items: start;
 }
 
 .lane-switcher {
@@ -565,6 +611,10 @@ h3 {
 
 .run-step .run-meta {
   justify-content: start;
+}
+
+.run-route-meta .meta-chip {
+  overflow-wrap: anywhere;
 }
 
 .artifact-grid {
@@ -1536,6 +1586,8 @@ select {
 .compact .mission-brief,
 .compact .protocol-step,
 .compact .ai-setup-card,
+.compact .mission-route-preview,
+.compact .route-preview-card,
 .compact .run-step,
 .compact .guardrail-row,
 .compact .artifact-card,
@@ -1617,6 +1669,7 @@ select {
   .dashboard-layout,
   .godmode-workbench,
   .godmode-layout,
+  .route-preview-grid,
   .doc-layout,
   .architecture-strip,
   .architecture-map,

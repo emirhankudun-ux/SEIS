@@ -423,6 +423,8 @@ let seisRouterArtifact = {
   artifactId: "seis-command-center-router-fallback",
   sourcePolicy: "embedded fallback",
   routeCount: fallbackSeisRouterLanes.length,
+  policy: null,
+  model: null,
   summary: {
     lanes: fallbackSeisRouterLanes.length,
     ready: fallbackSeisRouterLanes.filter((lane) => lane.status === "Ready").length,
@@ -1543,19 +1545,29 @@ function renderGodMode() {
     </article>
   `).join("");
 
-  $("#godmode-run-timeline").innerHTML = state.godModeRuns.map((run) => `
-    <article class="run-step">
-      <div>
-        <strong>${run.mission}</strong>
-        <p>${run.evidence}</p>
-      </div>
-      <div class="run-meta">
-        <span class="meta-chip">${run.lane}</span>
-        <span class="meta-chip">${run.owner}</span>
-        <span class="status-pill ${statusClass(run.status)}">${run.status}</span>
-      </div>
-    </article>
-  `).join("");
+  $("#godmode-run-timeline").innerHTML = state.godModeRuns.map((run) => {
+    const routeMeta = [
+      run.lane ? `god mode: ${run.lane}` : null,
+      run.laneId ? `route: ${run.laneId}` : null,
+      run.tool ? `tool: ${run.tool}` : null,
+      run.defaultGate ? `gate: ${run.defaultGate}` : null,
+      run.routeSource ? `source: ${run.routeSource}` : null,
+      run.owner || null
+    ].filter(Boolean);
+
+    return `
+      <article class="run-step">
+        <div>
+          <strong>${run.mission}</strong>
+          <p>${run.evidence}</p>
+        </div>
+        <div class="run-meta run-route-meta">
+          ${routeMeta.map((item) => `<span class="meta-chip">${item}</span>`).join("")}
+          <span class="status-pill ${statusClass(run.status)}">${run.status}</span>
+        </div>
+      </article>
+    `;
+  }).join("");
 
   $("#godmode-guardrails").innerHTML = godModeGuardrails.map((item) => `
     <article class="guardrail-row">
@@ -1579,7 +1591,211 @@ function renderGodMode() {
   `).join("");
 
   renderSeisRouter();
+  renderMissionRoutePreview();
   renderFeatureGrowthLedger();
+}
+
+function renderMissionRoutePreview() {
+  const input = $("#godmode-mission-input");
+  const mission = input?.value || state.godModeMission || "";
+  const route = predictMissionRoute(mission);
+  const lane = getSeisRouterLanes().find((item) => item.laneId === route.laneId) || getSeisRouterLanes()[0];
+  $("#mission-route-preview").innerHTML = `
+    <div class="card-topline">
+      <h3>Route Preview</h3>
+      <span class="status-pill ${route.safetyAdjusted ? "attention" : statusClass(lane.status)}">${route.safetyAdjusted ? "Safety adjusted" : lane.status}</span>
+    </div>
+    <div class="route-preview-grid">
+      <article class="route-preview-card">
+        <span>Tool</span>
+        <strong>${route.tool}</strong>
+      </article>
+      <article class="route-preview-card">
+        <span>SEIS Lane</span>
+        <strong>${route.laneId}</strong>
+      </article>
+      <article class="route-preview-card">
+        <span>Default Gate</span>
+        <strong>${route.defaultGate || lane.defaultGate}</strong>
+      </article>
+    </div>
+    <p>${lane.handoff}</p>
+    <div class="meta-row route-preview-reasons">
+      <span class="meta-chip">${route.routeSource}</span>
+      ${route.reasons.slice(0, 3).map((reason) => `<span class="meta-chip">${reason}</span>`).join("")}
+    </div>
+  `;
+}
+
+function predictMissionRoute(mission) {
+  const text = String(mission || "").trim();
+  if (!text || !seisRouterArtifact.model || !seisRouterArtifact.policy) {
+    const fallbackLane = getSeisRouterLanes().find((lane) => lane.laneId === "seis") || getSeisRouterLanes()[0];
+    return {
+      tool: fallbackLane.tool,
+      laneId: fallbackLane.laneId,
+      defaultGate: fallbackLane.defaultGate,
+      routeSource: seisRouterArtifact.artifactId,
+      safetyAdjusted: false,
+      reasons: ["empty mission uses SEIS Hub fallback"]
+    };
+  }
+
+  const features = extractMissionRouteFeatures(text);
+  const scores = scoreMissionRoute(seisRouterArtifact.model, features);
+  const learnedLaneId = maxMissionScoreLane(scores);
+  const safetyLaneId = classifyMissionRouteWithSafetyFloor(text);
+  const laneId = boundedMissionLaneDecision(learnedLaneId, safetyLaneId, features);
+  const defaults = seisRouterArtifact.model.laneDefaults?.[laneId] || {};
+
+  return {
+    tool: chooseMissionTool(text),
+    laneId,
+    learnedLaneId,
+    safetyLaneId,
+    safetyAdjusted: laneId !== learnedLaneId,
+    defaultGate: defaults.defaultGate,
+    integrationTool: defaults.toolName,
+    routeSource: seisRouterArtifact.artifactId || seisRouterArtifact.sourcePolicy || "artifact",
+    reasons: buildMissionRouteReasons(laneId, safetyLaneId, features)
+  };
+}
+
+function tokenPattern() {
+  return new RegExp(seisRouterArtifact.policy?.tokenPattern || "[a-z0-9_-]{2,}", "g");
+}
+
+function normalizeRouteText(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function chooseMissionTool(mission) {
+  const text = normalizeRouteText(mission);
+  for (const route of seisRouterArtifact.policy?.routeHints || []) {
+    if (route.hints.some((hint) => text.includes(hint))) {
+      return route.tool;
+    }
+  }
+
+  const role = matchMissionRole(text);
+  if (role && seisRouterArtifact.policy?.roleHints?.[role]?.tool) {
+    return seisRouterArtifact.policy.roleHints[role].tool;
+  }
+
+  return "seis-agent";
+}
+
+function matchMissionRole(text) {
+  const roleAliasMatch = /^(designer|engineer|software)\s*:\s*/.exec(text);
+  if (roleAliasMatch) return roleAliasMatch[1];
+
+  const scores = { designer: 0, engineer: 0, software: 0 };
+  for (const [role, config] of Object.entries(seisRouterArtifact.policy?.roleHints || {})) {
+    for (const hint of config.hints) {
+      if (missionRoleHintMatches(text, hint)) scores[role] += 1;
+    }
+  }
+
+  const ordered = Object.entries(scores).sort((left, right) => right[1] - left[1]);
+  return ordered[0][1] === 0 ? null : ordered[0][0];
+}
+
+function missionRoleHintMatches(text, hint) {
+  const normalizedHint = normalizeRouteText(hint);
+  if (!normalizedHint) return false;
+  if (/\s/.test(normalizedHint)) return text.includes(normalizedHint);
+  const escaped = normalizedHint.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(^|[^a-z0-9_-])${escaped}($|[^a-z0-9_-])`).test(text);
+}
+
+function extractMissionRouteFeatures(mission) {
+  const text = normalizeRouteText(mission);
+  const tokens = (text.match(tokenPattern()) || []).map((token) => `text:${token}`);
+  const tokenSet = new Set(tokens.map((token) => token.replace(/^text:/, "")));
+  const flagFeatures = [];
+
+  for (const [laneId, keywords] of Object.entries(seisRouterArtifact.policy?.safetyKeywords || {})) {
+    if (keywords.some((keyword) => tokenSet.has(keyword))) {
+      flagFeatures.push(`flag:${laneId}`);
+    }
+  }
+
+  if (/\b(secret|credential|token|key|redaction)\b/.test(text)) {
+    flagFeatures.push("flag:secret_sensitive", "flag:seis-security", "flag:seis-governance");
+  }
+  if (/\b(push|release|publish|ci)\b/.test(text)) {
+    flagFeatures.push("flag:release_sensitive");
+  }
+  if (/\b(external|provider|cloud|deploy|ssh|vpn)\b/.test(text)) {
+    flagFeatures.push("flag:external_runtime");
+  }
+
+  return [...new Set(["bias", ...tokens, ...flagFeatures])].sort();
+}
+
+function scoreMissionRoute(model, features) {
+  return Object.fromEntries(
+    model.labels.map((label) => {
+      const weights = model.classFeatureWeights?.[label] || {};
+      let score = features.reduce(
+        (sum, feature) => sum + (weights[feature] || 0),
+        model.priors?.[label] || 0
+      );
+      if (features.includes(`flag:${label}`)) score += 6;
+      if (label === "seis-cloud" && features.includes("flag:external_runtime")) score += 2;
+      if (label === "seis-governance" && features.includes("flag:release_sensitive")) score += 2;
+      if (label === "seis-security" && features.includes("flag:secret_sensitive")) score += 2;
+      return [label, Number(score.toFixed(6))];
+    })
+  );
+}
+
+function maxMissionScoreLane(scores) {
+  const riskOrder = seisRouterArtifact.policy?.laneRiskOrder || {};
+  return Object.entries(scores).sort((left, right) => {
+    const delta = right[1] - left[1];
+    if (delta !== 0) return delta;
+    return (riskOrder[right[0]] || 0) - (riskOrder[left[0]] || 0);
+  })[0][0];
+}
+
+function classifyMissionRouteWithSafetyFloor(mission) {
+  const text = normalizeRouteText(mission);
+  const keywords = seisRouterArtifact.policy?.safetyKeywords || {};
+  const tokenSet = new Set(text.match(tokenPattern()) || []);
+  const cloudMatched = (keywords["seis-cloud"] || []).some((keyword) => tokenSet.has(keyword));
+  const securityHardMatched = /\b(threat|vulnerability|permission|permissions|hardening|exposure|redaction)\b/.test(text)
+    || /\bsecurity[- ]risk\b/.test(text)
+    || tokenSet.has("private-key")
+    || tokenSet.has("access-control");
+  const secretMatched = /\b(secret|credential|token|key)\b/.test(text);
+
+  if (securityHardMatched || (secretMatched && !cloudMatched)) return "seis-security";
+  if (cloudMatched) return "seis-cloud";
+  for (const laneId of ["seis-design", "seis-research", "seis-data", "seis-automation", "seis-product", "seis-code"]) {
+    if ((keywords[laneId] || []).some((keyword) => tokenSet.has(keyword))) return laneId;
+  }
+  if (/\b(release|security|license|quality|ci|github|handoff|policy|governance)\b/.test(text)) return "seis-governance";
+  return "seis";
+}
+
+function boundedMissionLaneDecision(learnedLaneId, safetyLaneId, features = []) {
+  if (learnedLaneId === safetyLaneId) return learnedLaneId;
+  if (safetyLaneId === "seis") {
+    return features.includes(`flag:${learnedLaneId}`) ? learnedLaneId : safetyLaneId;
+  }
+  return safetyLaneId;
+}
+
+function buildMissionRouteReasons(laneId, safetyLaneId, features = []) {
+  const reasons = [`selected ${laneId}`];
+  for (const feature of features.filter((item) => item.startsWith("flag:"))) {
+    reasons.push(feature.replace("flag:", "matched "));
+  }
+  if (laneId !== safetyLaneId) {
+    reasons.push(`learned route retained over safety floor ${safetyLaneId}`);
+  }
+  return [...new Set(reasons)];
 }
 
 function renderSeisRouter() {
@@ -1653,6 +1869,7 @@ async function loadSeisRouterArtifact() {
     };
   }
   renderSeisRouter();
+  renderMissionRoutePreview();
   renderAgentRoutingMatrix();
 }
 
@@ -2163,15 +2380,31 @@ function bindEvents() {
     state.godModeMission = mission;
     state.godModeLane = lane;
     const activeLane = godModeLanes.find((item) => item.name === lane) || godModeLanes[0];
+    const route = predictMissionRoute(mission);
+    const routeLane = getSeisRouterLanes().find((item) => item.laneId === route.laneId) || getSeisRouterLanes()[0];
+    const defaultGate = route.defaultGate || routeLane.defaultGate || activeLane.gate;
     state.godModeRuns.unshift({
       id: `godmode-run-${Date.now()}`,
       mission,
       lane,
-      owner: activeLane.owner,
-      status: lane === "Review" ? "Review" : "Active",
-      evidence: `${activeLane.gate} Evidence must be attached before release handoff.`
+      laneId: route.laneId,
+      tool: route.tool,
+      defaultGate,
+      routeSource: route.routeSource,
+      integrationTool: route.integrationTool,
+      learnedLaneId: route.learnedLaneId,
+      safetyLaneId: route.safetyLaneId,
+      safetyAdjusted: route.safetyAdjusted,
+      owner: routeLane.owner || activeLane.owner,
+      status: route.safetyAdjusted || lane === "Review" ? "Review" : "Active",
+      evidence: `${defaultGate} Route ${route.laneId} through ${route.tool}; evidence must be attached before release handoff.`
     });
     render();
+  });
+
+  $("#godmode-mission-input").addEventListener("input", (event) => {
+    state.godModeMission = event.target.value;
+    renderMissionRoutePreview();
   });
 
   $$(".filter-chip").forEach((chip) => {

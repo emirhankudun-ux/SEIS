@@ -2,10 +2,11 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { chooseAutoRoute } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute, getSeisAutoRoutePolicyMetadata } = require("./ai-routing-policy.cjs");
 
 const root = path.join(__dirname, "..");
 const outputPath = path.join(root, "apps", "seis-core", "data", "seis-router-routes.json");
+const routerModelPath = path.join(root, "packages", "seis-ai", "models", "agent-router-seed-v0.json");
 const checkOnly = process.argv.includes("--check");
 
 const laneProfiles = [
@@ -102,6 +103,7 @@ const laneProfiles = [
 ];
 
 function buildArtifact() {
+  const routerModelArtifact = JSON.parse(fs.readFileSync(routerModelPath, "utf8"));
   const routes = laneProfiles.map((profile) => {
     const route = chooseAutoRoute(profile.sampleIntent);
     return {
@@ -140,6 +142,8 @@ function buildArtifact() {
     generatedBy: "scripts/create-seis-command-center-router-artifact.cjs",
     sourcePolicy: "scripts/ai-routing-policy.cjs#chooseAutoRoute",
     sourceModel: "packages/seis-ai/models/agent-router-seed-v0.json",
+    policy: getSeisAutoRoutePolicyMetadata(),
+    model: routerModelArtifact.model,
     routeCount: routes.length,
     summary: {
       lanes: routes.length,

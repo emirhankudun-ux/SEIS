@@ -44,6 +44,12 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /fallbackSeisRouterLanes/);
   assert.match(script, /renderSeisRouter/);
   assert.match(script, /loadSeisRouterArtifact/);
+  assert.match(script, /renderMissionRoutePreview/);
+  assert.match(script, /predictMissionRoute/);
+  assert.match(script, /laneId: route\.laneId/);
+  assert.match(script, /tool: route\.tool/);
+  assert.match(script, /defaultGate,/);
+  assert.match(script, /routeSource: route\.routeSource/);
   assert.match(script, /operationsReadiness/);
   assert.match(script, /renderOperationsReadiness/);
   assert.match(script, /featureGrowthLedger/);
@@ -76,10 +82,15 @@ test("SEIS Command Center exposes 10-lane router contract", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
   const artifact = JSON.parse(await readFile(new URL("data/seis-router-routes.json", root), "utf8"));
   assert.match(html, /10-Lane SEIS Router/);
+  assert.match(html, /id="mission-route-preview"/);
   assert.match(html, /id="seis-router-lanes"/);
   assert.match(html, /id="agent-routing-matrix"/);
   assert.match(script, /data\/seis-router-routes\.json/);
+  assert.match(script, /extractMissionRouteFeatures/);
+  assert.match(script, /scoreMissionRoute/);
   assert.equal(artifact.sourcePolicy, "scripts/ai-routing-policy.cjs#chooseAutoRoute");
+  assert.ok(artifact.policy?.routeHints?.length > 0);
+  assert.ok(artifact.model?.labels?.length >= 10);
   assert.equal(artifact.routes.length, 10);
   for (const lane of [
     "seis",
@@ -146,10 +157,13 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /plugin-card/);
   assert.match(css, /godmode-workbench/);
   assert.match(css, /mission-composer/);
+  assert.match(css, /mission-route-preview/);
+  assert.match(css, /route-preview-card/);
   assert.match(css, /lane-chip/);
   assert.match(css, /protocol-step/);
   assert.match(css, /ai-setup-card/);
   assert.match(css, /run-step/);
+  assert.match(css, /run-route-meta/);
   assert.match(css, /guardrail-row/);
   assert.match(css, /artifact-card/);
   assert.match(css, /router-lane-card/);

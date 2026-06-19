@@ -1,19 +1,25 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import {
   buildSeisModelFamilyRegistry,
   validateSeisModelFamilyRegistry,
 } from './model-family-registry.mjs';
+import { validateSeisModelBenchmarkArtifact } from './model-benchmark-suite.mjs';
 
 export const SEIS_MODEL_PROMOTION_POLICY_ID = 'seis-model-promotion-policy-v0';
 
 const MIN_BENCHMARK_EVAL_CASES = 5;
+const BENCHMARK_ARTIFACT_PATH = 'packages/seis-ai/models/seis-model-benchmark-suite.json';
 
 export function buildSeisModelPromotionPolicy(root = process.cwd()) {
   const registry = buildSeisModelFamilyRegistry(root);
   const registryValidation = validateSeisModelFamilyRegistry(registry, root);
-  const models = registry.models.map(model => evaluateModelPromotion(root, model));
+  const benchmarkArtifact = loadBenchmarkArtifact(root);
+  const benchmarkValidation = benchmarkArtifact
+    ? validateSeisModelBenchmarkArtifact(benchmarkArtifact, root)
+    : { ok: false, failures: ['benchmark artifact missing'] };
+  const models = registry.models.map(model => evaluateModelPromotion(root, model, benchmarkArtifact));
 
   return {
     policyId: SEIS_MODEL_PROMOTION_POLICY_ID,
@@ -67,6 +73,10 @@ export function buildSeisModelPromotionPolicy(root = process.cwd()) {
       ok: registryValidation.ok,
       failures: registryValidation.failures,
     },
+    benchmarkValidation: {
+      ok: benchmarkValidation.ok,
+      failures: benchmarkValidation.failures,
+    },
     models,
   };
 }
@@ -83,6 +93,7 @@ export function validateSeisModelPromotionPolicy(policy, root = process.cwd()) {
   ensure(policy.appliesTo?.registryId === 'seis-model-family-registry-v0', 'promotion policy registry id mismatch', failures);
   ensure(policy.authority?.modelDirection?.includes('SEIS-owned'), 'promotion policy must declare SEIS-owned model direction', failures);
   ensure(policy.registryValidation?.ok === true, 'promotion policy requires a valid model family registry', failures);
+  ensure(policy.benchmarkValidation?.ok === true, 'promotion policy requires a valid benchmark suite artifact', failures);
   ensure(Array.isArray(policy.stagePolicy) && policy.stagePolicy.length === 3, 'promotion policy must declare three stages', failures);
   ensure(Array.isArray(policy.models) && policy.models.length > 0, 'promotion policy must include model decisions', failures);
 
@@ -98,7 +109,10 @@ export function validateSeisModelPromotionPolicy(policy, root = process.cwd()) {
   return { ok: failures.length === 0, failures };
 }
 
-function evaluateModelPromotion(root, model) {
+function evaluateModelPromotion(root, model, benchmarkArtifact) {
+  const benchmark = benchmarkArtifact?.models?.find(item => item.id === model.id) || null;
+  const benchmarkArtifactOk = benchmarkArtifact?.totals?.ok === true;
+
   const gates = [
     makeGate('registry-valid', true, 'model is included in a validated SEIS model family registry'),
     makeGate(
@@ -124,13 +138,15 @@ function evaluateModelPromotion(root, model) {
     ),
     makeGate(
       'minimum-eval-case-count',
-      Number(model.eval?.eval?.total || 0) >= MIN_BENCHMARK_EVAL_CASES,
-      `eval split has at least ${MIN_BENCHMARK_EVAL_CASES} cases`,
+      Number(benchmark?.total || 0) >= MIN_BENCHMARK_EVAL_CASES,
+      `independent benchmark has at least ${MIN_BENCHMARK_EVAL_CASES} cases`,
+      BENCHMARK_ARTIFACT_PATH,
     ),
     makeGate(
       'independent-benchmark-suite',
-      false,
-      'independent benchmark suite is not yet attached to this seed model',
+      benchmarkArtifactOk && benchmark?.ok === true,
+      'independent benchmark suite passes for this model',
+      BENCHMARK_ARTIFACT_PATH,
     ),
     makeGate(
       'runtime-observability-present',
@@ -173,6 +189,8 @@ function evaluateModelPromotion(root, model) {
       evalCaseCount: model.eval?.eval?.total || 0,
       evalPassed: model.eval?.eval?.passed || 0,
       trainMetricCount: model.eval?.train?.total || 0,
+      benchmarkCaseCount: benchmark?.total || 0,
+      benchmarkPassed: benchmark?.passed || 0,
     },
     gates,
   };
@@ -186,15 +204,24 @@ function validatePromotionDecision(model, root, failures) {
   ensure(model.runtimeAuthority === false, `${model.id}: runtime authority must be false`, failures);
   ensure(model.productionBlocked === true, `${model.id}: production must remain blocked`, failures);
   ensure(Array.isArray(model.gates) && model.gates.length >= 8, `${model.id}: promotion gates missing`, failures);
-  ensure(model.gates.some(gate => gate.id === 'independent-benchmark-suite' && gate.passed === false), `${model.id}: independent benchmark gate must remain explicit`, failures);
+  ensure(model.gates.some(gate => gate.id === 'independent-benchmark-suite'), `${model.id}: independent benchmark gate must remain explicit`, failures);
   ensure(model.gates.some(gate => gate.id === 'runtime-observability-present' && gate.passed === false), `${model.id}: runtime observability gate must remain explicit`, failures);
   ensure(model.metrics?.evalCaseCount > 0, `${model.id}: eval metrics required`, failures);
+  ensure(model.metrics?.benchmarkCaseCount >= MIN_BENCHMARK_EVAL_CASES, `${model.id}: benchmark metrics required`, failures);
 
   const specializedTestGate = model.gates.find(gate => gate.id === 'specialized-test-present');
   ensure(Boolean(specializedTestGate), `${model.id}: specialized test gate required`, failures);
   if (specializedTestGate?.evidencePath) {
     ensure(existsSync(path.join(root, specializedTestGate.evidencePath)), `${model.id}: specialized test evidence missing`, failures);
   }
+}
+
+function loadBenchmarkArtifact(root) {
+  const artifactPath = path.join(root, BENCHMARK_ARTIFACT_PATH);
+  if (!existsSync(artifactPath)) {
+    return null;
+  }
+  return JSON.parse(readFileSync(artifactPath, 'utf8'));
 }
 
 function summarizePromotionTotals(models) {

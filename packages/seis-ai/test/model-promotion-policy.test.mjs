@@ -30,7 +30,6 @@ describe('SEIS model promotion policy', () => {
       assert.equal(model.currentStage, 'seed-local-lab');
       assert.equal(model.runtimeAuthority, false);
       assert.equal(model.productionBlocked, true);
-      assert.ok(model.blockedReasons.includes('independent-benchmark-suite'));
       assert.ok(model.blockedReasons.includes('runtime-observability-present'));
     }
   });
@@ -39,8 +38,8 @@ describe('SEIS model promotion policy', () => {
     const policy = buildSeisModelPromotionPolicy(root);
 
     assert.equal(policy.totals.labReadyCount, 4);
-    assert.equal(policy.totals.benchmarkReadyCount, 0);
-    assert.equal(policy.totals.statuses['needs-benchmark-expansion'], 4);
+    assert.equal(policy.totals.benchmarkReadyCount, 4);
+    assert.equal(policy.totals.statuses['benchmark-ready-no-runtime-authority'], 4);
   });
 
   it('validates the promotion policy artifact contract', () => {

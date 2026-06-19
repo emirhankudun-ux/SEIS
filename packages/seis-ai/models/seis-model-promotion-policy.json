@@ -48,14 +48,18 @@
   "totals": {
     "modelCount": 4,
     "labReadyCount": 4,
-    "benchmarkReadyCount": 0,
+    "benchmarkReadyCount": 4,
     "runtimeAuthorityCount": 0,
     "productionBlockedCount": 4,
     "statuses": {
-      "needs-benchmark-expansion": 4
+      "benchmark-ready-no-runtime-authority": 4
     }
   },
   "registryValidation": {
+    "ok": true,
+    "failures": []
+  },
+  "benchmarkValidation": {
     "ok": true,
     "failures": []
   },
@@ -66,21 +70,22 @@
       "modelFamily": "seis-permission-policy",
       "role": "permission_decision",
       "currentStage": "seed-local-lab",
-      "nextStage": "benchmark-expansion",
+      "nextStage": "runtime-candidate",
       "labReady": true,
-      "benchmarkReady": false,
+      "benchmarkReady": true,
       "runtimeAuthority": false,
       "productionBlocked": true,
-      "promotionStatus": "needs-benchmark-expansion",
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
       "blockedReasons": [
-        "independent-benchmark-suite",
         "runtime-observability-present"
       ],
       "metrics": {
         "trainingCaseCount": 12,
         "evalCaseCount": 8,
         "evalPassed": 8,
-        "trainMetricCount": 12
+        "trainMetricCount": 12,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
       },
       "gates": [
         {
@@ -112,12 +117,14 @@
         {
           "id": "minimum-eval-case-count",
           "passed": true,
-          "rationale": "eval split has at least 5 cases"
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "independent-benchmark-suite",
-          "passed": false,
-          "rationale": "independent benchmark suite is not yet attached to this seed model"
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "runtime-observability-present",
@@ -132,22 +139,22 @@
       "modelFamily": "seis-memory-ranker",
       "role": "memory_retrieval",
       "currentStage": "seed-local-lab",
-      "nextStage": "benchmark-expansion",
+      "nextStage": "runtime-candidate",
       "labReady": true,
-      "benchmarkReady": false,
+      "benchmarkReady": true,
       "runtimeAuthority": false,
       "productionBlocked": true,
-      "promotionStatus": "needs-benchmark-expansion",
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
       "blockedReasons": [
-        "minimum-eval-case-count",
-        "independent-benchmark-suite",
         "runtime-observability-present"
       ],
       "metrics": {
         "trainingCaseCount": 5,
         "evalCaseCount": 3,
         "evalPassed": 3,
-        "trainMetricCount": 5
+        "trainMetricCount": 5,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
       },
       "gates": [
         {
@@ -178,13 +185,15 @@
         },
         {
           "id": "minimum-eval-case-count",
-          "passed": false,
-          "rationale": "eval split has at least 5 cases"
+          "passed": true,
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "independent-benchmark-suite",
-          "passed": false,
-          "rationale": "independent benchmark suite is not yet attached to this seed model"
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "runtime-observability-present",
@@ -199,21 +208,22 @@
       "modelFamily": "seis-eval-critic",
       "role": "evaluation_advisory",
       "currentStage": "seed-local-lab",
-      "nextStage": "benchmark-expansion",
+      "nextStage": "runtime-candidate",
       "labReady": true,
-      "benchmarkReady": false,
+      "benchmarkReady": true,
       "runtimeAuthority": false,
       "productionBlocked": true,
-      "promotionStatus": "needs-benchmark-expansion",
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
       "blockedReasons": [
-        "independent-benchmark-suite",
         "runtime-observability-present"
       ],
       "metrics": {
         "trainingCaseCount": 8,
         "evalCaseCount": 5,
         "evalPassed": 5,
-        "trainMetricCount": 8
+        "trainMetricCount": 8,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
       },
       "gates": [
         {
@@ -245,12 +255,14 @@
         {
           "id": "minimum-eval-case-count",
           "passed": true,
-          "rationale": "eval split has at least 5 cases"
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "independent-benchmark-suite",
-          "passed": false,
-          "rationale": "independent benchmark suite is not yet attached to this seed model"
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "runtime-observability-present",
@@ -265,21 +277,22 @@
       "modelFamily": "seis-agent-router",
       "role": "agent_lane_routing",
       "currentStage": "seed-local-lab",
-      "nextStage": "benchmark-expansion",
+      "nextStage": "runtime-candidate",
       "labReady": true,
-      "benchmarkReady": false,
+      "benchmarkReady": true,
       "runtimeAuthority": false,
       "productionBlocked": true,
-      "promotionStatus": "needs-benchmark-expansion",
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
       "blockedReasons": [
-        "independent-benchmark-suite",
         "runtime-observability-present"
       ],
       "metrics": {
         "trainingCaseCount": 12,
         "evalCaseCount": 10,
         "evalPassed": 10,
-        "trainMetricCount": 12
+        "trainMetricCount": 12,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
       },
       "gates": [
         {
@@ -311,12 +324,14 @@
         {
           "id": "minimum-eval-case-count",
           "passed": true,
-          "rationale": "eval split has at least 5 cases"
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "independent-benchmark-suite",
-          "passed": false,
-          "rationale": "independent benchmark suite is not yet attached to this seed model"
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
         },
         {
           "id": "runtime-observability-present",

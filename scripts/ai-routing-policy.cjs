@@ -375,4 +375,26 @@ function buildSeisRouteReasons(laneId, safetyLaneId, features = []) {
   return [...new Set(reasons)];
 }
 
-module.exports = { chooseAutoTool, chooseAutoRoute, predictSeisAgentLane };
+function getSeisAutoRoutePolicyMetadata() {
+  return {
+    tokenPattern: TOKEN_PATTERN.source,
+    laneRiskOrder: { ...SEIS_LANE_RISK_ORDER },
+    safetyKeywords: Object.fromEntries(
+      Object.entries(SEIS_SAFETY_KEYWORDS).map(([laneId, keywords]) => [laneId, [...keywords]])
+    ),
+    routeHints: ROUTE_HINTS.map(route => ({ tool: route.tool, hints: [...route.hints] })),
+    roleHints: Object.fromEntries(
+      Object.entries(ROLE_HINTS).map(([role, config]) => [
+        role,
+        { tool: config.tool, hints: [...config.hints] }
+      ])
+    )
+  };
+}
+
+module.exports = {
+  chooseAutoTool,
+  chooseAutoRoute,
+  predictSeisAgentLane,
+  getSeisAutoRoutePolicyMetadata
+};
