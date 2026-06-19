@@ -41,11 +41,8 @@ check_workflow() {
 
   # 2. Has 'on:' trigger section
   local has_triggers
-<<<<<<< HEAD
   # Some yq builds parse GitHub's unquoted "on" key as YAML 1.1 boolean true.
   # Accept both key shapes so the lint remains portable across yq variants.
-=======
->>>>>>> 7a23028 (fix(polyglot): accept workflow trigger key normalization)
   has_triggers=$(yq -r 'has("on") or has("true")' "$file" 2>/dev/null)
   if [ "$has_triggers" != "true" ]; then
     fail "$base: missing 'on:' trigger section"
