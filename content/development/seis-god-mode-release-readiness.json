@@ -1,0 +1,74 @@
+{
+  "id": "seis-god-mode-release-readiness",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Make God Mode changes release-aware by requiring security, AI policy, quality evidence, rollback, and CI readiness before completion claims.",
+  "qualityGate": "npm run check:seis-god-mode-release-readiness",
+  "requiredGates": [
+    "security",
+    "ai-policy",
+    "quality-evidence",
+    "rollback",
+    "ci-readiness"
+  ],
+  "gates": [
+    {
+      "id": "security",
+      "displayName": "Security",
+      "status": "required",
+      "rule": "No secrets, credentials, tokens, weakened access controls, or unsafe operational instructions.",
+      "evidence": [
+        "docs/governance/seis-repo-health-manifest.md",
+        "docs/governance/seis-agent-lane-status.md"
+      ],
+      "failureMode": "A feature is not release-ready if it introduces secret exposure, unclear permissions, or destructive behavior."
+    },
+    {
+      "id": "ai-policy",
+      "displayName": "AI Policy",
+      "status": "required",
+      "rule": "Agent behavior must declare scope, autonomy boundary, safety boundary, tool boundary, and validation duty.",
+      "evidence": [
+        "content/development/seis-agent-lane-status.json",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md"
+      ],
+      "failureMode": "A feature is not release-ready if AI or agent behavior is not observable, controllable, and source-controlled."
+    },
+    {
+      "id": "quality-evidence",
+      "displayName": "Quality Evidence",
+      "status": "required",
+      "rule": "Every module improvement must have acceptance criteria, evidence links, and a checker.",
+      "evidence": [
+        "content/development/seis-goals-evidence-ledger.json",
+        "scripts/check-seis-goals-evidence-ledger.mjs"
+      ],
+      "failureMode": "A feature is not release-ready if claims are not backed by contract, doc, and checker evidence."
+    },
+    {
+      "id": "rollback",
+      "displayName": "Rollback",
+      "status": "required",
+      "rule": "Every meaningful change must identify a reversible rollback path.",
+      "evidence": [
+        "content/development/seis-repo-health-manifest.json",
+        "content/development/seis-goals-evidence-ledger.json"
+      ],
+      "failureMode": "A feature is not release-ready if it cannot be safely backed out as a bounded slice."
+    },
+    {
+      "id": "ci-readiness",
+      "displayName": "CI Readiness",
+      "status": "required",
+      "rule": "Release claims require quality governance to include the relevant God Mode gates.",
+      "evidence": [
+        "content/development/seis-god-mode-validation-plan.json",
+        "content/development/seis-god-mode-work-package.json",
+        "package.json",
+        ".github/workflows/ci.yml"
+      ],
+      "failureMode": "A feature is not release-ready if CI cannot enforce the new governance gates."
+    }
+  ],
+  "completionRule": "Do not mark God Mode work complete until all required gates have evidence and the relevant validation commands have been run successfully."
+}

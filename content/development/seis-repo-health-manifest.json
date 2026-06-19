@@ -1,0 +1,74 @@
+{
+  "id": "seis-repo-health-manifest",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Make repository health, plugin readiness, CI posture, documentation coverage, and rollback safety visible for God Mode development.",
+  "qualityGate": "npm run check:seis-repo-health-manifest",
+  "publishSafety": {
+    "sourceOfTruth": "GitHub",
+    "mainBranchRule": "Main is sacred; ship through checked, reversible changes.",
+    "requiredBeforePush": [
+      "quality:governance",
+      "security-sensitive checks",
+      "documentation evidence",
+      "rollback plan"
+    ],
+    "rollbackMinimum": "Every meaningful change must identify files changed and the command or commit strategy required to reverse it."
+  },
+  "lanes": [
+    {
+      "id": "apps",
+      "displayName": "Applications",
+      "status": "active",
+      "healthSignal": "User-visible behavior, accessibility, cache safety, and shared contract parity.",
+      "qualityGate": "npm run check:seis-god-mode-module-coverage",
+      "securityGate": "No secrets, no unsafe runtime side effects, no weakened deployment posture.",
+      "rollbackPlan": "Revert app UI, script, styles, service worker, and shared contract changes as one feature slice."
+    },
+    {
+      "id": "packages",
+      "displayName": "Packages",
+      "status": "active",
+      "healthSignal": "Cross-platform shared contracts and package APIs remain aligned.",
+      "qualityGate": "npm run check:seis-platform-kernel",
+      "securityGate": "Package changes must not expose credentials or weaken local/runtime boundaries.",
+      "rollbackPlan": "Revert package contract or API changes with dependent app changes."
+    },
+    {
+      "id": "plugins",
+      "displayName": "Plugins",
+      "status": "active",
+      "healthSignal": "Plugin manifest, skills, agent files, and bundle checker stay synchronized.",
+      "qualityGate": "npm run check:seis-plugin-bundle -- --no-local",
+      "securityGate": "Plugin capabilities must stay explicit and least-privilege.",
+      "rollbackPlan": "Remove plugin skill, manifest capability, default prompt, and checker requirements together."
+    },
+    {
+      "id": "docs",
+      "displayName": "Documentation",
+      "status": "active",
+      "healthSignal": "Architecture, quality, AI policy, module coverage, goals, repos, and agents remain documented.",
+      "qualityGate": "npm run check:seis-governance-index",
+      "securityGate": "Docs must not contain secrets, private tokens, or unsafe operational instructions.",
+      "rollbackPlan": "Revert documentation contract, index, and linked governance file changes."
+    },
+    {
+      "id": "agents",
+      "displayName": "Agents",
+      "status": "active",
+      "healthSignal": "Agent lanes define skill source, autonomy limits, tool boundaries, and validation duties.",
+      "qualityGate": "npm run check:seis-agent-lane-status",
+      "securityGate": "Agents must be observable, controllable, and non-destructive by default.",
+      "rollbackPlan": "Disable the agent lane by removing skill references and checker requirements."
+    },
+    {
+      "id": "ci-governance",
+      "displayName": "CI Governance",
+      "status": "active",
+      "healthSignal": "The main CI workflow executes quality governance gates.",
+      "qualityGate": "npm run quality:governance",
+      "securityGate": "CI must preserve security, documentation, and rollback checks before release claims.",
+      "rollbackPlan": "Remove only the failing new gate after documenting why it is unsafe, then restore coverage with a corrected gate."
+    }
+  ]
+}

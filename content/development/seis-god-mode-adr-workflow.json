@@ -1,0 +1,55 @@
+{
+  "id": "seis-god-mode-adr-workflow",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Standardize God Mode architecture decisions and development workflow through ADR, evidence, validation, rollback, and governance handoff.",
+  "qualityGate": "npm run check:seis-god-mode-adr-workflow",
+  "requiredArtifacts": [
+    "docs/governance/seis-adr-template.md",
+    "docs/governance/seis-god-mode-adr-workflow.md",
+    "docs/adr/0001-seis-god-mode-operating-system.md"
+  ],
+  "workflow": [
+    {
+      "id": "scope",
+      "displayName": "Scope",
+      "rule": "Define which SEIS modules, layers, and user outcomes are affected before editing.",
+      "evidence": "Work package section and module coverage contract."
+    },
+    {
+      "id": "decision",
+      "displayName": "Decision",
+      "rule": "Record architectural decisions when the change affects governance, platform boundaries, agent behavior, security, release readiness, or long-term maintainability.",
+      "evidence": "ADR file using the SEIS ADR template."
+    },
+    {
+      "id": "implementation",
+      "displayName": "Implementation",
+      "rule": "Implement bounded, reversible slices with source-controlled contracts, docs, scripts, and UI when user-visible.",
+      "evidence": "Primary files listed in the work package."
+    },
+    {
+      "id": "validation",
+      "displayName": "Validation",
+      "rule": "Run or request the relevant validation plan commands before completion, commit, push, or release claims.",
+      "evidence": "Validation plan command group and command output."
+    },
+    {
+      "id": "handoff",
+      "displayName": "Handoff",
+      "rule": "Report changes, validation status, risks, rollback, and next steps without hiding unverified work.",
+      "evidence": "Final response, commit message, PR body, or release note."
+    }
+  ],
+  "adrMinimumFields": [
+    "status",
+    "context",
+    "decision",
+    "consequences",
+    "security",
+    "aiPolicy",
+    "validation",
+    "rollback"
+  ],
+  "completionRule": "A God Mode architectural change is incomplete unless its decision path is either captured in an ADR or explicitly identified as not requiring one."
+}

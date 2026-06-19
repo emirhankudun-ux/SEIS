@@ -1,0 +1,80 @@
+{
+  "id": "seis-project-intake-contract",
+  "name": "SEIS Project Intake",
+  "status": "active",
+  "version": "0.2.0",
+  "scope": "local-repo",
+  "qualityGate": "npm run check:seis-project-intake",
+  "inputPolicy": {
+    "read": "allowed",
+    "write": "requires-user-approval",
+    "shell": "requires-user-approval",
+    "network": "disabled-by-default",
+    "secretCapture": "forbidden"
+  },
+  "scopeRecommendation": {
+    "primary": "cli-first",
+    "secondary": "macos-native-aware",
+    "target": "local-repo-safe-intake"
+  },
+  "requiredEvidence": [
+    "AGENTS.md",
+    "REFERENCE_REQUIREMENTS.md",
+    "SEIS_UNIVERSE_CLEAN_BUILD.md",
+    "SEIS_UNIVERSE_MODEL_FAMILY.md"
+  ],
+  "requiredArtifacts": [
+    "scripts/inspect-seis-project-intake.mjs",
+    "scripts/check-seis-project-intake.mjs",
+    "content/development/seis-project-intake-contract.json",
+    "reports/seis-project-intake/latest.json",
+    "reports/seis-project-intake/latest.md"
+  ],
+  "reportShape": {
+    "topLevelKeys": [
+      "generatedAt",
+      "repository",
+      "intake",
+      "technology",
+      "capabilityModel",
+      "warnings"
+    ],
+    "intakeRequiredFields": [
+      "workspaceRoot",
+      "isGitRepo",
+      "hasAgents",
+      "instructionFiles",
+      "commandPolicy"
+    ]
+  },
+  "commandPolicy": {
+    "default": "read-only",
+    "scopedActions": [
+      {
+        "capability": "read",
+        "decision": "allow"
+      },
+      {
+        "capability": "write",
+        "decision": "gate"
+      },
+      {
+        "capability": "shell",
+        "decision": "gate"
+      },
+      {
+        "capability": "network",
+        "decision": "deny"
+      },
+      {
+        "capability": "secret",
+        "decision": "deny"
+      }
+    ]
+  },
+  "nextPhaseSuggestions": [
+    "build deterministic permission gating telemetry",
+    "add project-intake evidence ledger record",
+    "start phase-3 model family preflight with dataset/model cards"
+  ]
+}

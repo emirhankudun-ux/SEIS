@@ -1,0 +1,35 @@
+{
+  "id": "seis-god-mode-developer-contract",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Define required 5-layer lifts and module evidence gates for true SEIS-level progress in God Mode development.",
+  "qualityGate": "npm run check:seis-god-mode-developer",
+  "requiredLayerLift": [
+    "product-experience",
+    "application-platform",
+    "ai-agi-learning",
+    "cloud-security",
+    "governance-quality"
+  ],
+  "feature": {
+    "telemetryEvent": "seis_demo_god_mode_changed",
+    "name": "God Mode cross-layer operating mode"
+  },
+  "operatingBehavior": [
+    "Cross-layer module evidence must exist for Dashboard/Goals/Repos/Docs/Agents before any completion claim.",
+    "No claim of feature completeness without validation + security + rollback proof.",
+    "No public release posture without commit/push/CI evidence or an explicit handoff waiver.",
+    "Every active module lane must keep an auditable rollback slice.",
+    "CI-triggered changes must remain gate-consistent across quality, security, AI, and docs layers."
+  ],
+  "featureScope": {
+    "modules": [
+      "dashboard",
+      "goals",
+      "repos",
+      "docs",
+      "agents"
+    ],
+    "newFeatureRule": "If any module lacks evidence, required layer lift, or verification, the project state is not-complete and no God Mode completion claim is valid."
+  }
+}
