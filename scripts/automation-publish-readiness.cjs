@@ -4,8 +4,19 @@ const { spawnSync } = require("node:child_process");
 const { getPublishReadinessState } = require("./lib/publish-readiness-state.cjs");
 
 const args = parseArgs(process.argv.slice(2));
+const isCiMode = Boolean(args.ci);
 const emitJson = Boolean(args.json);
 const root = process.cwd();
+const writeArtifact = Boolean(args.writeArtifact) || Boolean(args.artifact) || isCiMode;
+const defaultArtifactPath = isCiMode
+  ? "reports/publish-readiness-report.json"
+  : "dist/publish-readiness-report.json";
+const artifactPath = resolve(args.artifact || defaultArtifactPath);
+const summaryArtifactPath = resolve(
+  args.summaryArtifact
+    || deriveSummaryPath(args.artifact ? args.artifact : defaultArtifactPath)
+);
+const writeSummaryArtifact = Boolean(args.summary || isCiMode);
 
 const state = getPublishReadinessState(root);
 const githubResult = run(root, "node", ["scripts/check-github-publish-readiness.mjs", "--json"]);
@@ -13,27 +24,32 @@ const githubOutput = `${githubResult.stdout || ""}\n${githubResult.stderr || ""}
 const githubReport = parseJson(githubOutput) || buildGithubFallback(githubOutput, githubResult.status, githubResult);
 
 const readiness = buildReadiness(state, githubReport);
+const readinessSummary = buildSummaryArtifact(readiness);
 
-if (args.artifact) {
-  const outputPath = resolve(args.artifact);
-  mkdirSync(dirname(outputPath), { recursive: true });
-  writeFileSync(outputPath, `${JSON.stringify(readiness, null, 2)}\n`);
+if (writeArtifact) {
+  mkdirSync(dirname(artifactPath), { recursive: true });
+  writeFileSync(artifactPath, `${JSON.stringify(readiness, null, 2)}\n`);
+  if (writeSummaryArtifact) {
+    mkdirSync(dirname(summaryArtifactPath), { recursive: true });
+    writeFileSync(summaryArtifactPath, `${JSON.stringify(readinessSummary, null, 2)}\n`);
+  }
 }
 
-if (args.writeArtifact && !args.artifact) {
-  const outputPath = resolve("dist/publish-readiness-report.json");
-  mkdirSync(dirname(outputPath), { recursive: true });
-  writeFileSync(outputPath, `${JSON.stringify(readiness, null, 2)}\n`);
-}
-
-if (args.ci) {
+if (isCiMode) {
   const summary = readiness.ok ? "publish-readiness=ok" : "publish-readiness=blocked";
   const blocks = (readiness.blockers || []).map((entry) => entry.area).join(",") || "none";
   const next = readiness.nextAction ? readiness.nextAction : "rerun after resolving blockers";
-  console.log(`${summary}; blockers=${blocks}; next=${next}`);
+  const firstBlocker = (readiness.blockers || [])[0] || {};
+  const suggestions = Array.isArray(firstBlocker.suggestions) ? firstBlocker.suggestions : [];
+  const suggestionText = suggestions.length > 0 ? `; suggestions=${suggestions.join("|")}` : "";
+  const fallback = readiness.github?.gracefulFallback;
+  const fallbackText = fallback?.recommendedActions?.length > 0
+    ? `; fallback=${fallback.command}`
+    : "";
+  console.log(`${summary}; blockers=${blocks}; next=${next}${suggestionText}${fallbackText}`);
 }
 
-if (!args.ci && (args.compact || !emitJson)) {
+if (!isCiMode && (args.compact || !emitJson)) {
   const label = readiness.ok ? "Publish readiness: ready" : "Publish readiness: blocked";
   console.log(label);
   if (!readiness.ok) {
@@ -159,6 +175,29 @@ function buildReadiness(state, githubReport) {
   };
 }
 
+function buildSummaryArtifact(readiness) {
+  const blockers = readiness.blockers || [];
+  const suggestions = [...new Set(blockers.flatMap((blocker) => blocker.suggestions || []))];
+  const gracefulFallback = readiness.github?.gracefulFallback
+    ? {
+      reasonCode: readiness.github.gracefulFallback.reasonCode,
+      recommendedActions: readiness.github.gracefulFallback.recommendedActions || [],
+      command: readiness.github.gracefulFallback.command,
+    }
+    : null;
+
+  return {
+    ok: readiness.ok,
+    mode: readiness.mode,
+    generatedAt: readiness.generatedAt,
+    nextAction: readiness.nextAction,
+    blockerAreas: blockers.map((blocker) => blocker.area),
+    blockers,
+    suggestions,
+    gracefulFallback,
+  };
+}
+
 function getGithubReportBlockers(githubReport) {
   if (!githubReport || githubReport.ok) {
     return [];
@@ -262,11 +301,11 @@ function parseArgs(tokens) {
     const key = token.slice(2);
 
     if (key === "help") {
-      console.log(["Usage: npm run automation:publish-readiness [--json] [--ci] [--compact] [--artifact <path>] [--write-artifact]", "", "Examples:", "  npm run automation:publish-readiness -- --json", "  npm run automation:publish-readiness -- --ci", "  npm run automation:publish-readiness -- --compact", "  npm run automation:publish-readiness -- --artifact reports/publish.json"].join("\n"));
+      console.log(["Usage: npm run automation:publish-readiness [--json] [--ci] [--compact] [--artifact <path>] [--write-artifact]", "       [--summary] [--summary-artifact <path>]", "", "Examples:", "  npm run automation:publish-readiness -- --json", "  npm run automation:publish-readiness -- --ci", "  npm run automation:publish-readiness -- --compact", "  npm run automation:publish-readiness -- --artifact reports/publish.json"].join("\n"));
       process.exit(0);
     }
 
-    if (key === "json" || key === "ci" || key === "compact" || key === "write-artifact") {
+    if (key === "json" || key === "ci" || key === "compact" || key === "write-artifact" || key === "summary") {
       parsed[key] = true;
       continue;
     }
@@ -275,6 +314,14 @@ function parseArgs(tokens) {
       const value = tokens[index + 1];
       if (!value || value.startsWith("--")) throw new Error(`Missing value for --${key}`);
       parsed[key] = value;
+      index += 1;
+      continue;
+    }
+
+    if (key === "summary-artifact") {
+      const value = tokens[index + 1];
+      if (!value || value.startsWith("--")) throw new Error(`Missing value for --${key}`);
+      parsed.summaryArtifact = value;
       index += 1;
       continue;
     }
@@ -306,4 +353,11 @@ function parseJson(text) {
   } catch {
     return null;
   }
+}
+
+function deriveSummaryPath(pathValue) {
+  if (!pathValue || pathValue.endsWith(".json") === false) {
+    return `${pathValue || "reports/publish-readiness-report"}-summary.json`;
+  }
+  return pathValue.replace(/\.json$/, "-summary.json");
 }

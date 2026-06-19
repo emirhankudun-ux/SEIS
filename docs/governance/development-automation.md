@@ -34,19 +34,30 @@ Başarılı:
 {
   "ok": true,
   "mode": "publish-readiness",
-  "generatedAt": "2026-06-18T08:23:12.101Z",
+  "generatedAt": "2026-06-19T05:35:08.921Z",
   "gitState": {
     "gitInside": true,
     "branchName": "main",
+    "statusLine": "## main...origin/main",
     "isExpectedBranch": true,
     "worktreeClean": true,
+    "hasRemote": true,
+    "upstreamName": "origin/main",
     "hasUpstream": true,
     "isExpectedUpstream": true,
-    "behindCount": 0
+    "aheadCount": 0,
+    "behindCount": 0,
+    "targetBranch": "main",
+    "expectedUpstream": "origin/main"
   },
   "github": {
     "ok": true,
-    "reason": "GitHub CLI authentication is available."
+    "mode": "publish-readiness-preflight",
+    "qualityMode": "quick",
+    "quality": {
+      "ok": true,
+      "reason": "Quick publish readiness checks passed."
+    }
   },
   "blockers": [],
   "nextAction": "GIT_TERMINAL_PROMPT=0 git push origin main"
@@ -59,31 +70,48 @@ Başarısız:
 {
   "ok": false,
   "mode": "publish-readiness",
-  "generatedAt": "2026-06-18T08:23:12.101Z",
+  "generatedAt": "2026-06-19T05:35:08.921Z",
   "gitState": {
     "gitInside": true,
-    "branchName": "main",
-    "isExpectedBranch": true,
-    "worktreeClean": true,
+    "branchName": "codex/publish-local-seis-20260618-163043",
+    "isExpectedBranch": false,
+    "worktreeClean": false,
+    "hasRemote": true,
+    "upstreamName": "origin/codex/publish-local-seis-20260618-163043",
     "hasUpstream": true,
-    "isExpectedUpstream": true,
-    "behindCount": 2
+    "isExpectedUpstream": false,
+    "aheadCount": 0,
+    "behindCount": 0,
+    "targetBranch": "main",
+    "expectedUpstream": "origin/main"
   },
   "github": {
     "ok": false,
-    "reason": "GitHub CLI auth is missing or token scope is insufficient.",
-    "suggestions": [
-      "gh auth refresh -h github.com -s codespace -s repo"
-    ]
+    "mode": "publish-readiness-preflight",
+    "qualityMode": "quick",
+    "git": {
+      "ok": false,
+      "branch": "codex/publish-local-seis-20260618-163043",
+      "reason": "expected branch main, got codex/publish-local-seis-20260618-163043",
+      "nextStep": "Switch to main before publishing SEIS."
+    },
+    "githubAuth": {
+      "ok": true,
+      "reason": "GitHub CLI authentication is available."
+    },
+    "quality": {
+      "ok": true,
+      "reason": "Quick publish readiness checks passed."
+    }
   },
   "blockers": [
     {
-      "area": "github-auth",
-      "reason": "GitHub CLI auth is missing or token scope is insufficient.",
-      "nextStep": "gh auth refresh -h github.com -s codespace -s repo"
+      "area": "git",
+      "reason": "active branch is not main",
+      "nextStep": "switch to main before publish preflight"
     }
   ],
-  "nextAction": "gh auth refresh -h github.com -s codespace -s repo"
+  "nextAction": "switch to main before publish preflight"
 }
 ```
 
@@ -114,6 +142,23 @@ Başarısız:
 
 This publish check does not commit or push. It verifies the Git working tree, expected `main` branch, `origin` remote to the SEIS repository, GitHub CLI authentication, and local automation health before a server-side push is attempted.
 
+Commit package planning:
+
+```bash
+npm run automation:seis-commit-packages
+npm run check:seis-commit-packages
+```
+
+The commit package planner reads `git status --short` and writes:
+
+- `reports/seis-commit-packages.json`
+- `reports/seis-commit-packages.md`
+
+This planner does not stage, commit, push, delete, or rewrite files. It groups the dirty worktree into reversible commit
+lanes such as CI publish governance, generated language/stack reports, God Mode model lab, demo runtime contracts,
+plugin/agent surfaces, SSH/cloud security, and repository metadata. Use it before manual commit staging when the worktree
+contains many unrelated surfaces.
+
 CI tek satır özeti:
 
 ```bash
@@ -126,6 +171,74 @@ npm run automation:publish-readiness -- --ci
 publish-readiness=blocked; blockers=git; next=switch to main before publish preflight
 ```
 
+`--ci --json` ile detaylı CI raporu:
+
+```bash
+npm run automation:publish-readiness -- --ci --json
+```
+
+Örnek (özellikle GitHub token/kapsam eksikliği için önerili aksiyonlu):
+
+```json
+{
+  "ok": false,
+  "mode": "publish-readiness",
+  "gitState": {
+    "gitInside": true,
+    "branchName": "main",
+    "statusLine": "## main...origin/main",
+    "isExpectedBranch": true,
+    "worktreeClean": true,
+    "hasRemote": true,
+    "upstreamName": "origin/main",
+    "hasUpstream": true,
+    "isExpectedUpstream": true,
+    "aheadCount": 0,
+    "behindCount": 0,
+    "targetBranch": "main",
+    "expectedUpstream": "origin/main"
+  },
+  "github": {
+    "ok": false,
+    "mode": "publish-readiness-preflight",
+    "qualityMode": "quick",
+    "quality": {
+      "ok": true,
+      "reason": "Quick publish readiness checks passed."
+    },
+    "githubAuth": {
+      "ok": false,
+      "reason": "GitHub CLI auth is missing or token scope is insufficient.",
+      "nextStep": "gh auth refresh -h github.com -s codespace -s repo",
+      "suggestions": [
+        "gh auth refresh -h github.com -s codespace -s repo",
+        "gh auth refresh -h github.com -s codespace"
+      ]
+    },
+    "gracefulFallback": {
+      "reasonCode": "github-readiness-parse-failed",
+      "recommendedActions": [
+        "gh auth refresh -h github.com -s codespace -s repo",
+        "gh auth refresh -h github.com -s codespace"
+      ],
+      "command": "node scripts/check-github-publish-readiness.mjs --json"
+    }
+  },
+  "blockers": [
+    {
+      "area": "github-auth",
+      "reason": "GitHub CLI auth is missing or token scope is insufficient.",
+      "nextStep": "gh auth refresh -h github.com -s codespace -s repo",
+      "suggestions": [
+        "gh auth refresh -h github.com -s codespace -s repo",
+        "gh auth refresh -h github.com -s codespace"
+      ]
+    }
+  ],
+  "nextAction": "gh auth refresh -h github.com -s codespace -s repo"
+}
+```
+
 `--ci` fallback örneği (GH CLI yokken):
 
 ```text
@@ -136,6 +249,48 @@ Not: GitHub kimlik doğrulama hattı hâlen fail olduğunda örnek çıktısı:
 
 ```text
 publish-readiness=blocked; blockers=github-auth; next=gh auth refresh -h github.com -s codespace -s repo
+```
+
+`--ci --json` ile fallback/öneri alanları (`suggestions`, `gracefulFallback`) raporda görünür.
+
+CI artifact:
+
+`automation:publish-readiness` CI modunda otomatik olarak iki rapor üretir:
+
+- `reports/publish-readiness-report.json`
+- `reports/publish-readiness-report-summary.json`
+
+The main CI workflow uploads these files as the `publish-readiness-reports` artifact and appends a compact
+`SEIS publish readiness` section to the GitHub Actions job summary. The workflow keeps this report advisory for pull
+requests so review branches can expose publish blockers without hiding the core quality signal. On `push` to `main`, the
+same report becomes a hard gate after artifact and summary generation.
+
+Özel rapor yolu için:
+
+```bash
+npm run automation:publish-readiness -- --artifact reports/custom/publish-readiness.json --summary-artifact reports/custom/publish-readiness-summary.json
+```
+
+Özet artifact örneği:
+
+```json
+{
+  "ok": false,
+  "mode": "publish-readiness",
+  "generatedAt": "2026-06-19T05:36:01.124Z",
+  "nextAction": "gh auth refresh -h github.com -s codespace -s repo",
+  "blockerAreas": ["github-auth"],
+  "blockers": [
+    {
+      "area": "github-auth",
+      "reason": "GitHub CLI auth is missing or token scope is insufficient.",
+      "nextStep": "gh auth refresh -h github.com -s codespace -s repo",
+      "suggestions": ["gh auth refresh -h github.com -s codespace -s repo"]
+    }
+  ],
+  "suggestions": ["gh auth refresh -h github.com -s codespace -s repo"],
+  "gracefulFallback": null
+}
 ```
 
 Quality governance publish (CI):
@@ -158,10 +313,16 @@ npm run quality:governance:publish -- --dry-run --json
 
 Örnek dry-run JSON (örnek; gerçek dosya yolları, çalıştırıcının anlık durumuna göre değişir):
 
+```text
+quality:governance:publish=dry-run
+checks=16; plan=[check:publish-gate-contract, check:open-source-governance, check:seis-master-prompt-report, check:seis-master-prompt, check:seis-operating-identities, check:workspace, check:cloud-access-policy, check:seis-ssh-access-model, check:seis-ssh-picker-compatibility, check:seis-ssh-enterprise-benchmark, check:seis-platform-language-policy, check:seis-platform-kernel, seis:check, check:language-distribution, check:fullstack-language-matrix, check:seis-technology-stack]
+```
+
 ```json
 {
   "ok": true,
   "mode": "quality:governance:publish",
+  "generatedAt": "2026-06-19T05:34:53.743Z",
   "nextStep": "npm run quality:governance:publish",
   "dryRun": true,
   "steps": [
@@ -242,6 +403,12 @@ npm run quality:governance:publish:core
 npm run quality:governance:publish:core:ci
 ```
 
+Release/publish akışı için strict mod:
+
+```bash
+npm run quality:governance:publish -- --preset strict --strict --safe
+```
+
 `core` seti, publish akışında temel güvenlik ve yayın öncesi kontrat kontrollerini tek geçişte çalıştırır:
 
 - check:publish-gate-contract  
@@ -281,6 +448,11 @@ Artifact:
 Komut, CI modunda otomatik olarak hem `reports/quality-governance-publish-report.json` hem de
 `reports/quality-governance-publish-report-summary.json` üretir. İsterseniz farklı bir yol verebilirsiniz:
 
+The main CI workflow uploads these files as the `quality-governance-publish-reports` artifact and appends a compact
+`SEIS quality governance publish` section to the GitHub Actions job summary. Like publish readiness, this workflow job is
+advisory for pull requests and a hard gate on `push` to `main`, with artifact and summary generation preserved in both
+modes.
+
 ```bash
 node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-publish.json --json
 node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-publish.json --summary-artifact reports/custom/quality-publish-summary.json
@@ -295,6 +467,9 @@ node scripts/quality-governance-publish.cjs --artifact reports/custom/quality-pu
   "generatedAt": "2026-06-18T20:13:55.945Z",
   "dryRun": false,
   "nextStep": null,
+  "totalChecks": 16,
+  "failedCount": 0,
+  "continue": false,
   "failedChecks": [],
   "blockers": []
 }
