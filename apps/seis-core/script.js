@@ -1936,8 +1936,8 @@ function renderGoals() {
       </div>
       <p>${escapeHtml(goal.nextAction || "No next action yet.")}</p>
       <div class="meta-row">
-        <button class="secondary-button" type="button" data-goal-status="${goal.id}" data-next="Review">Review</button>
-        <button class="secondary-button" type="button" data-goal-status="${goal.id}" data-next="Done">Done</button>
+        <button class="secondary-button" type="button" data-goal-status="${escapeHtml(goal.id)}" data-next="Review">Review</button>
+        <button class="secondary-button" type="button" data-goal-status="${escapeHtml(goal.id)}" data-next="Done">Done</button>
       </div>
     </article>
   `).join("");
