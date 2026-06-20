@@ -74,6 +74,7 @@ npm run quality:governance
 Before handoff to team/private cloud operations, run the cloud access gate and migration audit:
 
 ```bash
+npm run check:seis-specialist-ai-mcp-ssh-integration
 npm run check:cloud-access-policy
 npm run cloud:migration:audit:ci
 npm run cloud:migration:audit -- --strict
@@ -84,3 +85,8 @@ Use the local-to-cloud playbooks when converting legacy SSH-centric paths:
 - `docs/deployment/local-to-cloud-ssh-playbook.md`
 - `docs/deployment/server-target-selection.md`
 - `docs/deployment/server-upload-runbook.md`
+
+The combined specialist AI, MCP, and SSH integration contract is documented in
+`docs/platform/seis-specialist-ai-mcp-ssh-integration.md`. That contract keeps
+SEIS-Agent planning, central MCP specialist tools, and SSH dry-run workflows
+connected without allowing live remote mutation before approval.

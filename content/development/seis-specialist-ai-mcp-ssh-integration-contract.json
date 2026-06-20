@@ -1,0 +1,139 @@
+{
+  "id": "seis-specialist-ai-mcp-ssh-integration",
+  "version": 1,
+  "updatedAt": "2026-06-20",
+  "status": "foundation-active",
+  "branch": "seis/specialist-ai-mcp-ssh-integration",
+  "qualityGate": "npm run check:seis-specialist-ai-mcp-ssh-integration",
+  "purpose": "Bind the canonical SEIS-Agent plugin, specialist lanes, central MCP server, SEIS AI planning surface, GitHub governance, and SSH dry-run execution model into one reviewable foundation before any live remote mutation.",
+  "sourceOfTruth": {
+    "github": "origin/main",
+    "canonicalPlugin": "plugins/seis-ai-agent",
+    "specialistManifest": "data/seis-specialist-plugins-2026-06-12.json",
+    "aiAgentDoc": "docs/platform/seis-ai-agent.md",
+    "specialistPluginDoc": "docs/platform/seis-specialist-plugins.md",
+    "integrationDoc": "docs/platform/seis-specialist-ai-mcp-ssh-integration.md",
+    "centralMcpServer": "mcp/seis-mcp-server.mjs",
+    "llmBridge": "data/seis-repos-llm-bridge-2026-06-08.json",
+    "sshContract": "content/development/seis-ssh-mobile-direct-cloud-contract.json",
+    "sshRunbook": "docs/operations/seis-ssh-mobile-24x7.md"
+  },
+  "canonicalPluginPolicy": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "marketplace": ".agents/plugins/marketplace.json",
+    "publishedPluginCount": 1,
+    "standaloneLaneInstallMode": "disabled",
+    "legacyPersonalMarketplace": "compatibility-mirror-only"
+  },
+  "requiredLanes": ["seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data"],
+  "centralMcpTools": [
+    "seis_specialist_lanes",
+    "seis_specialist_lane_status",
+    "seis_specialist_lane_plan"
+  ],
+  "aiPlanningSurfaces": [
+    "seis_llm_plan_request",
+    "seis_llm_role_plan_request",
+    "seis_ai_agent_plan",
+    "seis_agent_lanes"
+  ],
+  "sshExecutionModel": {
+    "modeBeforeHumanApproval": "dry-run-only",
+    "liveSshAllowedByDefault": false,
+    "bootstrapApplyRequiresHumanApproval": true,
+    "sshConfigInstallRequiresHumanApproval": true,
+    "cloudMutationRequiresHumanApproval": true,
+    "privateKeyLeavesUserControl": false,
+    "privateKeyMayEnterRepo": false,
+    "privateKeyMayEnterPrompt": false,
+    "runtimeSecretLocation": "/etc/seis/ssh-ai.env",
+    "singleVisibleAlias": "SEIS-SSH"
+  },
+  "integrationStages": [
+    {
+      "id": "stage-0-foundation",
+      "status": "this-pr",
+      "allowedActions": [
+        "document contract",
+        "validate repo-contained plugin and MCP surfaces",
+        "validate SSH dry-run gates"
+      ],
+      "forbiddenActions": ["live SSH connection", "cloud mutation", "branch merge", "PR closure"]
+    },
+    {
+      "id": "stage-1-readonly-mcp",
+      "status": "next",
+      "allowedActions": [
+        "call status tools",
+        "call plan tools",
+        "render Command Center read-only status"
+      ],
+      "forbiddenActions": ["remote command execution", "credential handling", "SSH config writes"]
+    },
+    {
+      "id": "stage-2-command-center-adapter",
+      "status": "planned",
+      "allowedActions": [
+        "add local adapters for MCP status payloads",
+        "show blocked/planned/ready states",
+        "surface approval requirements"
+      ],
+      "forbiddenActions": [
+        "fake ready states",
+        "unverified cloud availability claims",
+        "browser-side provider keys"
+      ]
+    },
+    {
+      "id": "stage-3-ssh-dry-run",
+      "status": "planned",
+      "allowedActions": [
+        "generate local SSH profile reports",
+        "preview managed SSH config block",
+        "preview direct-cloud bootstrap command"
+      ],
+      "forbiddenActions": [
+        "bootstrap apply",
+        "firewall mutation",
+        "authorized_keys mutation",
+        "sudo mutation"
+      ]
+    },
+    {
+      "id": "stage-4-live-ssh-approval",
+      "status": "blocked-until-explicit-approval",
+      "allowedActions": [
+        "run strict probe after credentials and host are supplied",
+        "write readiness report after observed success"
+      ],
+      "forbiddenActions": [
+        "invent host",
+        "invent credentials",
+        "disable host key checking",
+        "copy private key"
+      ]
+    }
+  ],
+  "acceptanceCommands": [
+    "npm run check:seis-specialist-ai-mcp-ssh-integration",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-ssh-mobile-direct-cloud",
+    "npm run check:seis-repos-llm-bridge",
+    "npm run seis:check"
+  ],
+  "blockedUntilEvidence": [
+    "SEIS_SSH_HOST is supplied by the user",
+    "host fingerprint is verified",
+    "public key is approved for the server",
+    "strict SSH probe succeeds",
+    "strict doctor report is written"
+  ],
+  "forbiddenClaims": [
+    "SEIS created a frontier base model",
+    "SSH is connected without observed probe output",
+    "cloud is ready without strict doctor evidence",
+    "all old PRs were merged wholesale",
+    "qlty passed without a returned qlty check context"
+  ]
+}

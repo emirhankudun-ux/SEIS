@@ -20,14 +20,14 @@ The canonical local marketplace is repo-contained at `.agents/plugins/marketplac
 
 ## Embedded Lanes
 
-| Lane | Purpose | Embedded skill | Source mirror |
-|---|---|---|---|
-| `seis` | Repository governance, architecture documentation alignment, migration safety, and quality-forward policy coordination. | `plugins/seis-ai-agent/skills/seis-hub/SKILL.md` | `plugins/seis` |
-| `seis-governance` | Release readiness, marketplace policy validation, identity checks, branch discipline, and operating contract evidence. | `plugins/seis-ai-agent/skills/seis-governance/SKILL.md` | `plugins/seis` |
-| `seis-cloud` | Public cloud for everyone, team/workplace VPN cloud, provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation. | `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md` | `plugins/seis-cloud` |
-| `seis-code` | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation. | `plugins/seis-ai-agent/skills/seis-code/SKILL.md` | `plugins/seis-code` |
-| `seis-design` | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff. | `plugins/seis-ai-agent/skills/seis-design/SKILL.md` | `plugins/seis-design` |
-| `seis-data` | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance. | `plugins/seis-ai-agent/skills/seis-data/SKILL.md` | `plugins/seis-data` |
+| Lane              | Purpose                                                                                                                                                                                             | Embedded skill                                          | Source mirror         |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- | --------------------- |
+| `seis`            | Repository governance, architecture documentation alignment, migration safety, and quality-forward policy coordination.                                                                             | `plugins/seis-ai-agent/skills/seis-hub/SKILL.md`        | `plugins/seis`        |
+| `seis-governance` | Release readiness, marketplace policy validation, identity checks, branch discipline, and operating contract evidence.                                                                              | `plugins/seis-ai-agent/skills/seis-governance/SKILL.md` | `plugins/seis`        |
+| `seis-cloud`      | Public cloud for everyone, team/workplace VPN cloud, provider-neutral deployment readiness, server target selection, cloud preflight, rollback planning, and secret-safe infrastructure automation. | `plugins/seis-ai-agent/skills/seis-cloud/SKILL.md`      | `plugins/seis-cloud`  |
+| `seis-code`       | Architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation.                                                                                                      | `plugins/seis-ai-agent/skills/seis-code/SKILL.md`       | `plugins/seis-code`   |
+| `seis-design`     | Product design, UI/UX, design systems, accessibility, motion, visual QA, and design handoff.                                                                                                        | `plugins/seis-ai-agent/skills/seis-design/SKILL.md`     | `plugins/seis-design` |
+| `seis-data`       | Data architecture, analytics, reports, schemas, knowledge registries, RAG/memory planning, and provenance.                                                                                          | `plugins/seis-ai-agent/skills/seis-data/SKILL.md`       | `plugins/seis-data`   |
 
 ## Contract
 
@@ -47,6 +47,12 @@ The central `seis` MCP server also exposes:
 - `seis_specialist_lane_status`
 - `seis_specialist_lane_plan`
 
+The first combined SEIS AI, MCP, specialist lane, and SSH foundation contract is
+tracked in
+[`seis-specialist-ai-mcp-ssh-integration.md`](./seis-specialist-ai-mcp-ssh-integration.md).
+It keeps live SSH and cloud mutation blocked until explicit approval and strict
+readiness evidence exist.
+
 SEIS Cloud additionally carries the cloud access policy: public cloud is for
 everyone-facing surfaces, while VPN cloud is only for workplaces and teams with
 approved peer access.
@@ -62,6 +68,7 @@ exactly one canonical entry:
 
 ```bash
 npm run check:seis-specialist-plugins
+npm run check:seis-specialist-ai-mcp-ssh-integration
 npm run check:seis-specialist-plugins -- --include-legacy-personal
 npm run check:seis-ai-agent
 npm run quality:governance
