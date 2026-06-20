@@ -22,12 +22,12 @@ Please include:
 
 ## Response Targets
 
-| Step | Target |
-| --- | --- |
-| Initial acknowledgement | within 48 hours |
-| Triage and severity review | within 5 business days |
-| Fix plan | depends on severity and blast radius |
-| Public disclosure | after a fix or mitigation is available |
+| Step                       | Target                                 |
+| -------------------------- | -------------------------------------- |
+| Initial acknowledgement    | within 48 hours                        |
+| Triage and severity review | within 5 business days                 |
+| Fix plan                   | depends on severity and blast radius   |
+| Public disclosure          | after a fix or mitigation is available |
 
 ## Supported Versions
 
@@ -65,13 +65,16 @@ The machine-readable operation contract is maintained at
 ## Automated Security Scanning
 
 SEIS uses GitHub CodeQL code scanning for the repository's JavaScript,
-TypeScript, and Python surfaces. These lanes cover the web app, MCP entrypoints,
-AI package, kernel builders, and automation scripts without requiring
-contributors to install extra local SDKs.
+TypeScript, and Python surfaces, plus the Swift lane, when GitHub Code Security
+or GitHub Advanced Security is enabled for the private repository.
 
-CodeQL runs on relevant pull requests, `main` pushes, weekly scheduled scans,
-and manual dispatches. Findings should be triaged as security work, not as
-general feature backlog.
+Until that repository setting is available, the CodeQL workflow still runs
+mandatory CodeQL analysis on relevant pull requests, `main` pushes, weekly
+scheduled scans, and manual dispatches. The workflow validates generated SARIF
+and preserves the SARIF output as a GitHub Actions artifact instead of claiming
+code-scanning alert upload succeeded.
+
+Findings should be triaged as security work, not as general feature backlog.
 
 ## Dependency and Toolchain Policy
 

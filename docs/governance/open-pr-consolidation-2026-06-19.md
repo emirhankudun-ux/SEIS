@@ -1,6 +1,7 @@
 # Open PR Consolidation Review
 
 Date: 2026-06-19
+Last updated: 2026-06-20
 
 This review turns the current open pull request backlog into one controlled
 replacement path before SEIS starts the next specialist plugins, SEIS AI, MCP,
@@ -18,14 +19,14 @@ dedicated follow-up PR exists.
 
 ## Baseline
 
-| Item | Current state |
-|---|---|
-| Base branch | `main` |
-| Replacement branch | `seis/open-pr-consolidation-20260619` |
-| Repository | `emirhankudun-ux/SEIS` |
-| Live SSH operations | Excluded |
-| Deployment operations | Excluded |
-| Main branch merge | Requires review and explicit approval |
+| Item                  | Current state                         |
+| --------------------- | ------------------------------------- |
+| Base branch           | `main`                                |
+| Replacement branch    | `seis/open-pr-consolidation-20260619` |
+| Repository            | `emirhankudun-ux/SEIS`                |
+| Live SSH operations   | Excluded                              |
+| Deployment operations | Excluded                              |
+| Main branch merge     | Requires review and explicit approval |
 
 ## Consolidation Policy
 
@@ -42,30 +43,30 @@ dedicated follow-up PR exists.
 
 ## Open PR Decisions
 
-| PR | Title | Decision | Reason |
-|---:|---|---|---|
-| #37 | `ci: stabilize main governance and secret scans` | Supersede through this consolidation path; extract conflict-free security changes later if still needed. | Small and useful, but currently `DIRTY`; direct cherry-pick conflicts in generated language reports. |
-| #33 | `Codex/sync icloud seis 20260619` | Supersede; do not merge wholesale. | Very large PR; CodeRabbit skipped review because it exceeded file limits. |
-| #32 | `Codex/publish local seis 20260618 163043` | Supersede after diffing against merged foundation work. | Older publish/local SEIS work overlaps with merged foundation branches. |
-| #28 | `Update from task 03e00d7b-7588-43dc-b46c-c02de97972b8` | Keep separate; SSH/cloud follow-up only. | SSH/cloud work is high risk and requires an approval-gated implementation lane. |
-| #27 | `Main-first governance, language-boundary policy, and polyglot capability kernel` | Supersede after checking for unique docs or validators. | Foundation, governance, and polyglot areas now overlap with merged main. |
-| #24 | `feat(seis): stabilize swift diagnostics and align language-governance artifacts` | Supersede after checking for unique Swift/language governance changes. | Likely overlapped by current Apple-first platform and language policy records. |
-| #23 | `feat: portfolio as app + website - installable PWA + macOS demo` | Keep separate as draft app/portfolio work. | Portfolio/PWA work should not block core foundation cleanup. |
-| #22 | `Harden SEIS cloud readiness guards` | Supersede or extract into later cloud readiness PR. | Cloud readiness belongs in a scoped, provider-neutral follow-up. |
-| #20 | `Consolidate all open PRs` | Supersede with this PR. | Too broad to merge as-is; useful only as an index signal. |
-| #19 | `Codex/seis platform polyglot kernel` | Supersede after checking for unique polyglot changes. | Older branch overlaps with merged polyglot/foundation work. |
-| #16 | `Add SEIS evolution model, publish-gate, and aggressive execution safety tooling + UI` | Supersede with a canonical evolution-model follow-up if needed. | Duplicate evolution-model family. |
-| #12 | `feat: register all 179 installed Codex plugins across lanes and categories` | Extract only if it matches current installed-plugin audit records. | Plugin registry data must be evidence-backed and current. |
-| #11 | `Add CLAUDE.md: operating instructions + test improvement roadmap` | Summarize into governance docs only if still needed. | AGENTS and SEIS governance docs remain authoritative. |
-| #10 | `Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts` | Supersede with the duplicate evolution-model group. | Duplicate of #16/#9/#8/#7/#6/#5/#2/#1 family. |
-| #9 | `Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #8 | `Add SEIS evolution model, publish-gate & aggressive execution plan with UI and validation scripts` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #7 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #6 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #5 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #3 | `Add portfolio content and UI, resilient JSON loading, service-worker cache bump, and build fallback` | Keep separate as app/portfolio work. | Portfolio content should not be merged into the foundation cleanup PR. |
-| #2 | `Add SEIS evolution model, documentation, and validation script` | Supersede with the duplicate evolution-model group. | Duplicate evolution-model family. |
-| #1 | `Add GitHub SEIS operating model` | Supersede with current governance docs. | Current main already contains newer governance material. |
+|  PR | Title                                                                                                       | Decision                                                                                                 | Reason                                                                                               |
+| --: | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| #37 | `ci: stabilize main governance and secret scans`                                                            | Supersede through this consolidation path; extract conflict-free security changes later if still needed. | Small and useful, but currently `DIRTY`; direct cherry-pick conflicts in generated language reports. |
+| #33 | `Codex/sync icloud seis 20260619`                                                                           | Supersede; do not merge wholesale.                                                                       | Very large PR; CodeRabbit skipped review because it exceeded file limits.                            |
+| #32 | `Codex/publish local seis 20260618 163043`                                                                  | Supersede after diffing against merged foundation work.                                                  | Older publish/local SEIS work overlaps with merged foundation branches.                              |
+| #28 | `Update from task 03e00d7b-7588-43dc-b46c-c02de97972b8`                                                     | Keep separate; SSH/cloud follow-up only.                                                                 | SSH/cloud work is high risk and requires an approval-gated implementation lane.                      |
+| #27 | `Main-first governance, language-boundary policy, and polyglot capability kernel`                           | Supersede after checking for unique docs or validators.                                                  | Foundation, governance, and polyglot areas now overlap with merged main.                             |
+| #24 | `feat(seis): stabilize swift diagnostics and align language-governance artifacts`                           | Supersede after checking for unique Swift/language governance changes.                                   | Likely overlapped by current Apple-first platform and language policy records.                       |
+| #23 | `feat: portfolio as app + website - installable PWA + macOS demo`                                           | Keep separate as draft app/portfolio work.                                                               | Portfolio/PWA work should not block core foundation cleanup.                                         |
+| #22 | `Harden SEIS cloud readiness guards`                                                                        | Supersede or extract into later cloud readiness PR.                                                      | Cloud readiness belongs in a scoped, provider-neutral follow-up.                                     |
+| #20 | `Consolidate all open PRs`                                                                                  | Supersede with this PR.                                                                                  | Too broad to merge as-is; useful only as an index signal.                                            |
+| #19 | `Codex/seis platform polyglot kernel`                                                                       | Supersede after checking for unique polyglot changes.                                                    | Older branch overlaps with merged polyglot/foundation work.                                          |
+| #16 | `Add SEIS evolution model, publish-gate, and aggressive execution safety tooling + UI`                      | Supersede with a canonical evolution-model follow-up if needed.                                          | Duplicate evolution-model family.                                                                    |
+| #12 | `feat: register all 179 installed Codex plugins across lanes and categories`                                | Extract only if it matches current installed-plugin audit records.                                       | Plugin registry data must be evidence-backed and current.                                            |
+| #11 | `Add CLAUDE.md: operating instructions + test improvement roadmap`                                          | Summarize into governance docs only if still needed.                                                     | AGENTS and SEIS governance docs remain authoritative.                                                |
+| #10 | `Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts` | Supersede with the duplicate evolution-model group.                                                      | Duplicate of #16/#9/#8/#7/#6/#5/#2/#1 family.                                                        |
+|  #9 | `Introduce SEIS evolution model, publish-gate, aggressive execution plan, UI panels and validation scripts` | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #8 | `Add SEIS evolution model, publish-gate & aggressive execution plan with UI and validation scripts`         | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #7 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks`          | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #6 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks`          | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #5 | `Add SEIS evolution model, publish-gate and GitHub-remote artifacts with UI and validation checks`          | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #3 | `Add portfolio content and UI, resilient JSON loading, service-worker cache bump, and build fallback`       | Keep separate as app/portfolio work.                                                                     | Portfolio content should not be merged into the foundation cleanup PR.                               |
+|  #2 | `Add SEIS evolution model, documentation, and validation script`                                            | Supersede with the duplicate evolution-model group.                                                      | Duplicate evolution-model family.                                                                    |
+|  #1 | `Add GitHub SEIS operating model`                                                                           | Supersede with current governance docs.                                                                  | Current main already contains newer governance material.                                             |
 
 ## Follow-Up PR Sequence
 
@@ -90,6 +91,22 @@ dedicated follow-up PR exists.
 - No dependency installation.
 - No generated report conflict resolution from stale branches.
 
+## CI Stabilization Notes
+
+- CodeQL failed on the first #39 run because the repository is private and
+  GitHub code scanning is not enabled for this repository. The failure occurred
+  during SARIF upload, not because CodeQL found a code vulnerability.
+- GitHub API returned HTTP 422 when enabling `code_security` directly because
+  bundled billing requires Advanced Security first. Advanced Security was not
+  enabled automatically because that may affect repository security/billing
+  policy.
+- This PR keeps CodeQL analysis mandatory, disables code-scanning upload until
+  the repository setting exists, validates generated SARIF, and preserves SARIF
+  as an Actions artifact.
+- qlty still requires external service access for full logs. The visible status
+  only reports `Build errored`, so this PR records local repo validation instead
+  of inventing a qlty root cause.
+
 ## Validation Plan
 
 Run the lightest reliable checks:
@@ -98,6 +115,7 @@ Run the lightest reliable checks:
 npm run check:foundation
 npm run seis:check
 npm run check:open-source-governance
+npx --no-install prettier --check .github/workflows/codeql.yml SECURITY.md scripts/check-codeql-sarif.mjs docs/governance/open-pr-consolidation-2026-06-19.md
 git diff --check
 ```
 
