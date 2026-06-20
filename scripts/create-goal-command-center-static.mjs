@@ -76,6 +76,7 @@ function buildHtml(model) {
   const followUpActions = panels.followUpActions || [];
   const objectiveCoverage = panels.objectiveCoverage || [];
   const completionGate = panels.completionGate || [];
+  const requirementMatrix = panels.requirementMatrix || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -449,6 +450,7 @@ function buildHtml(model) {
         <a href="#planning">Planning</a>
         <a href="#progress">Progress</a>
         <a href="#coverage">Coverage</a>
+        <a href="#matrix">Matrix</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -610,6 +612,26 @@ function buildHtml(model) {
             </thead>
             <tbody>
               ${objectiveCoverage.map(renderObjectiveCoverageRow).join("\n              ")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Requirement Matrix</h2>
+        <div class="table-wrap" id="matrix">
+          <table>
+            <thead>
+              <tr>
+                <th>Requirement</th>
+                <th>Status</th>
+                <th>Proof</th>
+                <th>Gaps</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${requirementMatrix.map(renderRequirementMatrixRow).join("\n              ")}
             </tbody>
           </table>
         </div>
@@ -908,6 +930,16 @@ function renderCompletionGateRow(item) {
 </tr>`;
 }
 
+function renderRequirementMatrixRow(item) {
+  return `<tr>
+  <td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.requirementGroup)}<br><span class="muted">${escapeHtml(item.requirement)}</span></td>
+  <td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td>
+  <td>${escapeHtml(item.proof)}</td>
+  <td>${escapeHtml((item.gaps || []).join(" "))}</td>
+  <td>${escapeHtml(item.nextAction)}</td>
+</tr>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -933,6 +965,7 @@ function validateHtml(html, model) {
     "Follow-Up Actions",
     "Objective Coverage",
     "Completion Gate",
+    "Requirement Matrix",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -987,6 +1020,10 @@ function validateHtml(html, model) {
 
   if ((model.panels?.completionGate || []).length > 0 && !html.includes("SEIS-GATE-001")) {
     failures.push("static surface must expose completion gate ids");
+  }
+
+  if ((model.panels?.requirementMatrix || []).length > 0 && !html.includes("SEIS-REQ-001")) {
+    failures.push("static surface must expose requirement matrix ids");
   }
 
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {

@@ -18,6 +18,7 @@ It is generated from:
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 - [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json)
+- [`../../content/development/seis-goal-requirement-matrix.json`](../../content/development/seis-goal-requirement-matrix.json)
 
 The first generated static page is:
 
@@ -29,8 +30,8 @@ The view model gives Command Center a non-LLM Goal Tracking Center data surface.
 It can render progress cards, active goals, blocked goals, category status,
 next actions, blockers, validation status, review cadence, performed review
 logs, planning horizons, active projects, objective coverage, decisions,
-completion gates, readiness connections, and UX guardrails without any model
-provider or external API.
+requirement matrix, completion gates, readiness connections, and UX guardrails
+without any model provider or external API.
 
 ## Generated Panels
 
@@ -51,6 +52,7 @@ provider or external API.
 | `deferredItems` | Deferred work with reasons, approval needs, and next actions. |
 | `followUpActions` | Follow-up actions linked to goals, tasks, and evidence. |
 | `objectiveCoverage` | Goal Tracking OS mission requirements mapped to evidence and limitations. |
+| `requirementMatrix` | Requirement-level proof, gaps, evidence, and next safe actions. |
 | `completionGate` | Strict full-objective completion gate and remaining gaps. |
 | `decisions` | Accepted/proposed/deferred/superseded decisions. |
 | `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |

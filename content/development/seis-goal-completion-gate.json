@@ -28,7 +28,8 @@
         "SEIS-EVID-014",
         "SEIS-EVID-015",
         "SEIS-EVID-017",
-        "SEIS-EVID-018"
+        "SEIS-EVID-018",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -38,9 +39,10 @@
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-execution.json",
         "content/development/seis-goal-progress-ledger.json",
-        "content/development/seis-goal-objective-coverage.json"
+        "content/development/seis-goal-objective-coverage.json",
+        "content/development/seis-goal-requirement-matrix.json"
       ],
-      "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and performed daily, weekly, and monthly reviews.",
+      "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, requirement coverage, and performed daily, weekly, and monthly reviews.",
       "gap": "Routed app integration and live repository intelligence remain incomplete.",
       "next_action": "Keep structured records current and add live/static integration only after repository hygiene is isolated."
     },
@@ -94,7 +96,8 @@
         "SEIS-EVID-010",
         "SEIS-EVID-014",
         "SEIS-EVID-015",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -106,9 +109,11 @@
         "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html",
         "docs/product/goal-tracking-center.md",
-        "docs/product/command-center-shell.md"
+        "docs/product/command-center-shell.md",
+        "content/development/seis-goal-requirement-matrix.json",
+        "docs/reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md"
       ],
-      "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
+      "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.",
       "gap": "The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.",
       "next_action": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery."
     },
@@ -200,7 +205,8 @@
         "SEIS-EVID-009",
         "SEIS-EVID-010",
         "SEIS-EVID-014",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -213,10 +219,11 @@
         "docs/roadmap/NEXT_PR_QUEUE.md",
         "content/development/seis-goal-command-center-view.json",
         "content/development/seis-command-center-shell.json",
+        "content/development/seis-goal-requirement-matrix.json",
         "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, static Goal Tracking surface, and static Command Center shell.",
+      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated view data, static Goal Tracking surface, and static Command Center shell.",
       "gap": "Dynamic Command Center routing and repository hygiene recovery remain unfinished.",
       "next_action": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
     }

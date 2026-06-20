@@ -367,6 +367,7 @@
         <a href="#planning">Planning</a>
         <a href="#progress">Progress</a>
         <a href="#coverage">Coverage</a>
+        <a href="#matrix">Matrix</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -413,7 +414,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">19</div>
+    <div class="card-value">20</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -455,7 +456,7 @@
         <article class="card">
   <div>
     <p class="card-label">Completed items</p>
-    <div class="card-value">9</div>
+    <div class="card-value">10</div>
   </div>
   <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
@@ -465,6 +466,13 @@
     <div class="card-value">11</div>
   </div>
   <p class="muted">Mission requirements mapped to evidence and limitations.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Requirement matrix</p>
+    <div class="card-value">22</div>
+  </div>
+  <p class="muted">Requirement-level coverage records with proof, gaps, and next actions.</p>
 </article>
         <article class="card">
   <div>
@@ -1362,6 +1370,20 @@
     <span class="badge">Evidence: SEIS-EVID-019</span>
   </div>
 </article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS requirement matrix</h3>
+      <p class="muted">SEIS-COMPLETE-010 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>A structured requirement matrix now maps Goal Tracking OS objective requirements to proof, gaps, evidence ids, related goals, and next safe actions.</p>
+  <p class="muted">Does not mark the full Goal Tracking OS objective complete. Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state. Does not replace the strict completion gate.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-020</span>
+  </div>
+</article>
           </div>
         </div>
 
@@ -1436,7 +1458,7 @@
   <p class="next-action">Run goal validation after every structured record update.</p>
   <div class="row-meta">
     <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
-    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018, SEIS-EVID-019</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018, SEIS-EVID-019, SEIS-EVID-020</span>
   </div>
 </article>
           <article class="row">
@@ -1473,7 +1495,7 @@
               <tr>
   <td><strong>SEIS-OBJ-001</strong><br>Goal Tracking Mission<br><span class="muted">Track long-term vision, goals, projects, milestones, tasks, decisions, blockers, progress evidence, completed work, deferred work, and next safe actions.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The repo now has structured goals, execution records, blockers, decisions, completed items, deferred items, follow-up actions, and evidence records.</td>
+  <td>The repo now has structured goals, execution records, blockers, decisions, completed items, deferred items, follow-up actions, evidence records, and a requirement-level matrix.</td>
   <td>The full routed Command Center module is not implemented. Repository hygiene blockers still prevent foundation readiness claims.</td>
   <td>Keep mission coverage visible in the static Goal Tracking Center while the routed Command Center shell remains planned.</td>
 </tr>
@@ -1494,7 +1516,7 @@
               <tr>
   <td><strong>SEIS-OBJ-004</strong><br>Goal Tracking App Foundation<br><span class="muted">Command Center should include a Goal Tracking Center that shows active goals, roadmap, blockers, evidence, validation, readiness, and platform progress.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.</td>
+  <td>A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, progress records, and requirement coverage.</td>
   <td>The shell is static and is not a dynamic routed application runtime. No live GitHub, release, or SSH integration is claimed.</td>
   <td>Keep the static shell evidence-backed and defer dynamic routing until repository hygiene blockers are isolated.</td>
 </tr>
@@ -1529,7 +1551,7 @@
               <tr>
   <td><strong>SEIS-OBJ-009</strong><br>Command Center Goal UX<br><span class="muted">Show goal list, milestone progress, blockers, next actions, evidence, roadmap, readiness, AI Core, Command Center, and research progress without fake progress bars.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.</td>
+  <td>The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.</td>
   <td>The broader app navigation is static and not a dynamic routed runtime. Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component.</td>
   <td>Add dynamic routing and a milestone timeline only after the current static contract remains stable.</td>
 </tr>
@@ -1543,9 +1565,182 @@
               <tr>
   <td><strong>SEIS-OBJ-011</strong><br>First Implementation Priority<br><span class="muted">Prioritize goal structure, milestone map, backlog, next PR queue, schema, product doc, progress template, evidence, roadmap connection, and Command Center connection.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, static page, and static Command Center shell.</td>
+  <td>The foundation priority list is represented across docs, backlog, PR queue, structured records, requirement matrix, validator, view model, static page, and static Command Center shell.</td>
   <td>The dynamic Command Center application runtime is planned, not complete. Repository hygiene blockers still control the next safe PR.</td>
   <td>Resolve repository hygiene blockers, then promote the static shell toward a dynamic Command Center runtime.</td>
+</tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Requirement Matrix</h2>
+        <div class="table-wrap" id="matrix">
+          <table>
+            <thead>
+              <tr>
+                <th>Requirement</th>
+                <th>Status</th>
+                <th>Proof</th>
+                <th>Gaps</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+  <td><strong>SEIS-REQ-001</strong><br>Mission entities<br><span class="muted">Track long-term vision and strategic direction.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The vision document, long-term goal registry, and structured goal records define the direction and keep it tied to evidence-backed goals.</td>
+  <td>Future strategy changes still need dated review records.</td>
+  <td>Keep vision changes tied to review logs, evidence records, and roadmap updates.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-002</strong><br>Planning horizons<br><span class="muted">Track yearly, quarterly, monthly, and weekly planning horizons.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Planning horizon records validate yearly, quarterly, monthly, and weekly lanes, and the monthly review checks long-term alignment.</td>
+  <td>Horizon records are static local records, not a live calendar or scheduling system.</td>
+  <td>Keep horizon records current during real review cadence updates.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-003</strong><br>Projects and milestones<br><span class="muted">Track active projects, milestones, and epics.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Goal records include milestone and epic fields, the milestone map documents the hierarchy, and active project records link to horizons and goals.</td>
+  <td>Milestones are foundation records, not a fully interactive timeline.</td>
+  <td>Use the same milestone and epic ids when adding future routed Command Center views.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-004</strong><br>Execution hierarchy<br><span class="muted">Track tasks and subtasks as separate execution records.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The execution registry validates task ids, subtask ids, statuses, blockers, decisions, evidence references, and next actions.</td>
+  <td>This is a local fixture contract, not a task database.</td>
+  <td>Keep the task registry as the source for static views until a database or live adapter is designed.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-005</strong><br>Risk and blockers<br><span class="muted">Track blockers, risks, and their required next actions.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Blocked goals and execution blockers expose repository hygiene, governance, and validation blockers with severity, evidence, and next action.</td>
+  <td>Repository hygiene blockers remain unresolved.</td>
+  <td>Resolve the tracked deletion set through a focused repository hygiene PR before readiness claims.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-006</strong><br>Decisions<br><span class="muted">Track architecture and governance decisions that affect goal execution.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The execution registry stores accepted decisions for non-LLM-first goals, deletion handling, read-only repository intelligence, and real review cadence.</td>
+  <td>Future high-impact decisions still need ADR-level documentation when they change architecture.</td>
+  <td>Promote durable architecture decisions into ADRs when implementation scope expands.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-007</strong><br>Review cadence<br><span class="muted">Track daily, weekly, and monthly reviews without faking performed reviews.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Cadence records define daily, weekly, and monthly review rules, while performed review logs remain separate and evidence-backed.</td>
+  <td>Future periods still need current evidence before they can be marked performed.</td>
+  <td>Create new review log records only when the actual review is performed.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-008</strong><br>Validation evidence<br><span class="muted">Track validation evidence, limitations, and failed or blocked checks.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The evidence ledger records passed, failed, blocked, observed, and partial evidence with limitations and next actions.</td>
+  <td>No full secret-history, dependency, or public-readiness scan has been performed.</td>
+  <td>Keep validation scope explicit and run broader scans only when repository hygiene is isolated.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-009</strong><br>Progress ledger<br><span class="muted">Track completed work, deferred work, and follow-up actions with evidence.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The progress ledger validates completed, deferred, and follow-up items, and the completion gate prevents full-objective completion claims.</td>
+  <td>Completed items prove only their named scope.</td>
+  <td>Keep adding completed items only when evidence and limitations are recorded.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-010</strong><br>Next safe actions<br><span class="muted">Expose next safe actions for goals, tasks, blockers, reviews, and follow-ups.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The execution registry, generated view model, and progress ledger expose next-action fields throughout the Goal Tracking OS foundation.</td>
+  <td>Live queue assignment and notifications are not implemented.</td>
+  <td>Use the static next-action queue until a safe workflow queue is designed.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-011</strong><br>Archive separation<br><span class="muted">Distinguish active official goals from deferred, archived, deprecated, and historical material.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>Goal statuses include deferred, archived, and deprecated states, and the docs index separates active docs from historical evidence records.</td>
+  <td>No dedicated archived-goal ledger or archive review registry exists yet.</td>
+  <td>Add an archive review registry only after the active foundation remains stable.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-012</strong><br>Strategic categories<br><span class="muted">Track all required strategic categories with status, evidence, blockers, and next action.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The goal registry validates 20 required categories and the generated Command Center view exposes category status.</td>
+  <td>Several categories remain planned or blocked because implementation evidence is not present.</td>
+  <td>Keep planned and blocked categories visible until evidence changes.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-013</strong><br>Goal object<br><span class="muted">Define and validate the lightweight goal object fields.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The schema doc and validator enforce id, title, category, priority, status, owner role, target phase, dependencies, blockers, risks, evidence, validation, review cadence, and next action fields.</td>
+  <td>The object is a file-backed contract, not persistent application storage.</td>
+  <td>Keep the file-backed contract stable before adding storage adapters.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-014</strong><br>Command Center app foundation<br><span class="muted">Expose a Goal Tracking Center with active goals, blockers, next actions, validation, readiness, and platform progress.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>The generated static Goal Tracking Center and Command Center shell expose the main foundation panels without LLM or external API dependency.</td>
+  <td>The app surface is static and not a routed runtime. Live GitHub, release, public-readiness, and SSH integrations are not connected.</td>
+  <td>Keep static contracts stable before adding dynamic routing or live adapters.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-015</strong><br>Command Center UX<br><span class="muted">Show milestone timeline, progress cards, blocker view, next safe action panel, evidence links, and readiness connections without fake progress bars.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>The static page renders progress cards, blockers, next actions, validation, planning, readiness, objective coverage, and completion gates without fake percentages.</td>
+  <td>Milestone timeline exists as planning and milestone fields, not a dedicated interactive timeline.</td>
+  <td>Add a dedicated timeline component only after the static contract remains validated.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-016</strong><br>Evidence rules<br><span class="muted">Prevent fake progress, fake completion, fake validation, private data, unsupported claims, and private paths.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Evidence records include limitations, completion gates keep partial requirements partial, and scoped sensitive-pattern checks passed for edited Goal Tracking files.</td>
+  <td>Scoped checks are not a full history or dependency security scan.</td>
+  <td>Run broader scans after repository hygiene recovery.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-017</strong><br>LLM independence<br><span class="muted">Keep goal tracking useful without an LLM connection.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Structured records, validators, generators, and static pages run locally without model-provider state.</td>
+  <td>Future LLM assistance still needs evidence-aware routing and permission boundaries.</td>
+  <td>Keep LLM summaries optional and subordinate to structured records.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-018</strong><br>Implementation priority<br><span class="muted">Connect goals to evidence, roadmap, backlog, next PR queue, schema, product docs, progress reviews, and Command Center.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>The foundation connects records to docs, roadmap, backlog, PR queue, generated view data, static Goal Tracking Center, and static Command Center shell.</td>
+  <td>Dynamic Command Center runtime and repository hygiene recovery remain unfinished.</td>
+  <td>Resolve repository hygiene blockers before promoting the static shell into a broader app runtime.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-019</strong><br>Repository intelligence<br><span class="muted">Connect repository intelligence, governance, public readiness, and release readiness blockers to Goal Tracking OS.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>Known repository hygiene, governance, public-readiness, and release-readiness blockers are visible in status, backlog, PR queue, and execution records.</td>
+  <td>No live repository intelligence scanner or GitHub PR integration has been connected.</td>
+  <td>Build read-only scanner outputs after the P0 deletion set is resolved or isolated.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-020</strong><br>Approval boundaries<br><span class="muted">Keep dangerous actions approval-gated and documented as deferred.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Deferred items and the next PR queue list approval-needed work, including GitHub inspection, file deletion, deployment, SSH, releases, and live integrations.</td>
+  <td>Approval workflow UI is documented but not implemented as a live queue.</td>
+  <td>Keep approval-needed items visible until a formal approval center exists.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-021</strong><br>Live integrations<br><span class="muted">Track live GitHub PR, release, public-readiness, SSH, deployment, model-provider, benchmark, and dataset states only when verified.</span></td>
+  <td><span class="badge planned">planned</span></td>
+  <td>Current reports explicitly mark these states as unverified or deferred rather than inventing successful integrations.</td>
+  <td>No external GitHub, SSH, deployment, model-provider, benchmark, or dataset operation was performed.</td>
+  <td>Only promote live integration states after approved execution and recorded evidence.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-REQ-022</strong><br>Requirement matrix<br><span class="muted">Maintain an inspectable requirement-by-requirement matrix for the Goal Tracking OS objective.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>This matrix records requirement groups, status, evidence, gaps, and next action in a structured file and a review document.</td>
+  <td>The matrix reflects current local evidence and must be refreshed when source records change.</td>
+  <td>Regenerate the Goal Tracking Command Center view whenever requirement matrix records change.</td>
 </tr>
             </tbody>
           </table>
@@ -1569,7 +1764,7 @@
               <tr>
   <td><strong>SEIS-GATE-001</strong><br><span class="muted">Goal Tracking OS must track the mission-level entities named by the objective.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and performed daily, weekly, and monthly reviews.</td>
+  <td>Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, requirement coverage, and performed daily, weekly, and monthly reviews.</td>
   <td>Routed app integration and live repository intelligence remain incomplete.</td>
   <td>Keep structured records current and add live/static integration only after repository hygiene is isolated.</td>
 </tr>
@@ -1590,7 +1785,7 @@
               <tr>
   <td><strong>SEIS-GATE-004</strong><br><span class="muted">Goal Tracking Center should show goal, blocker, evidence, readiness, progress, and next-action state without exaggeration.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.</td>
+  <td>The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.</td>
   <td>The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.</td>
   <td>Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery.</td>
 </tr>
@@ -1618,7 +1813,7 @@
               <tr>
   <td><strong>SEIS-GATE-008</strong><br><span class="muted">First implementation priorities must connect goals to evidence, roadmap, backlog, PR queue, and Command Center.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, static Goal Tracking surface, and static Command Center shell.</td>
+  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated view data, static Goal Tracking surface, and static Command Center shell.</td>
   <td>Dynamic Command Center routing and repository hygiene recovery remain unfinished.</td>
   <td>Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR.</td>
 </tr>
@@ -1706,7 +1901,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-review-log.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>, <code>content/development/seis-goal-completion-gate.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-review-log.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>, <code>content/development/seis-goal-completion-gate.json</code>, <code>content/development/seis-goal-requirement-matrix.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>

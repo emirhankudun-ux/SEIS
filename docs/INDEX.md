@@ -29,6 +29,7 @@ broad file search.
 | [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
 | [reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md](reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md) | Goal Tracking OS mission-to-evidence coverage audit. | Active |
 | [reviews/GOAL_TRACKING_COMPLETION_AUDIT.md](reviews/GOAL_TRACKING_COMPLETION_AUDIT.md) | Strict Goal Tracking OS completion gate audit. | Active |
+| [reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md](reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md) | Requirement-level Goal Tracking OS proof, gaps, and next safe actions. | Active |
 | [reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md](reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md) | Performed weekly Goal Tracking OS review for ISO week 2026-W25. | Active |
 | [reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md](reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md) | Performed monthly Goal Tracking OS review for June 2026. | Active |
 | [reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md](reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md) | Classification of unresolved tracked deletions and safe recovery actions. | Active |
@@ -62,6 +63,8 @@ broad file search.
 | [../content/development/seis-goal-objective-coverage.json](../content/development/seis-goal-objective-coverage.json) | Structured non-LLM objective coverage records. | Active |
 | [reviews/GOAL_TRACKING_COMPLETION_AUDIT.md](reviews/GOAL_TRACKING_COMPLETION_AUDIT.md) | Completion gate audit distinguishing proved, partial, blocked, and unverified requirements. | Active |
 | [../content/development/seis-goal-completion-gate.json](../content/development/seis-goal-completion-gate.json) | Structured non-LLM completion gate records. | Active |
+| [reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md](reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md) | Requirement-level Goal Tracking OS matrix for proof, gaps, and next safe actions. | Active |
+| [../content/development/seis-goal-requirement-matrix.json](../content/development/seis-goal-requirement-matrix.json) | Structured non-LLM requirement matrix records. | Active |
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
 | [product/command-center-shell.md](product/command-center-shell.md) | Static Command Center shell for non-LLM module navigation. | Active |
 | [../content/development/seis-command-center-shell.json](../content/development/seis-command-center-shell.json) | Structured non-LLM Command Center shell records. | Active |

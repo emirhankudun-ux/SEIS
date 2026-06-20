@@ -241,6 +241,34 @@
         "Does not mark the full Goal Tracking OS objective complete."
       ],
       "next_action": "Use the shell as the local app root while repository hygiene recovery remains the first safe PR."
+    },
+    {
+      "id": "SEIS-COMPLETE-010",
+      "title": "Goal Tracking OS requirement matrix",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-003",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-020"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-requirement-matrix.json",
+        "docs/reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md",
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html"
+      ],
+      "summary": "A structured requirement matrix now maps Goal Tracking OS objective requirements to proof, gaps, evidence ids, related goals, and next safe actions.",
+      "limitations": [
+        "Does not mark the full Goal Tracking OS objective complete.",
+        "Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state.",
+        "Does not replace the strict completion gate."
+      ],
+      "next_action": "Keep the matrix visible in the generated Goal Tracking Center and update it whenever source requirements or evidence change."
     }
   ],
   "deferredItems": [
@@ -339,12 +367,14 @@
         "SEIS-EVID-016",
         "SEIS-EVID-017",
         "SEIS-EVID-018",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-objective-coverage.json",
+        "content/development/seis-goal-requirement-matrix.json",
         "content/development/seis-goal-review-log.json",
         "content/development/seis-goal-completion-gate.json"
       ],

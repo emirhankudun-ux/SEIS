@@ -17,6 +17,7 @@ const paths = {
   progressLedger: "content/development/seis-goal-progress-ledger.json",
   objectiveCoverage: "content/development/seis-goal-objective-coverage.json",
   completionGate: "content/development/seis-goal-completion-gate.json",
+  requirementMatrix: "content/development/seis-goal-requirement-matrix.json",
   output: "content/development/seis-goal-command-center-view.json"
 };
 
@@ -30,7 +31,7 @@ Commands:
 Builds the static non-LLM Command Center Goal Tracking view model from the
 goal, evidence, execution, review cadence, planning horizon, and progress
 ledger registries, plus performed review logs, objective coverage, and the
-completion gate.
+completion gate and requirement matrix.
 `);
   process.exit(0);
 }
@@ -44,8 +45,9 @@ const planningHorizons = readJson(paths.planningHorizons);
 const progressLedger = readJson(paths.progressLedger);
 const objectiveCoverage = readJson(paths.objectiveCoverage);
 const completionGate = readJson(paths.completionGate);
-const view = buildView(goals, evidence, execution, reviewCadence, reviewLog, planningHorizons, progressLedger, objectiveCoverage, completionGate);
-const failures = validateView(view, goals, evidence, execution, reviewCadence, reviewLog, planningHorizons, progressLedger, objectiveCoverage, completionGate);
+const requirementMatrix = readJson(paths.requirementMatrix);
+const view = buildView(goals, evidence, execution, reviewCadence, reviewLog, planningHorizons, progressLedger, objectiveCoverage, completionGate, requirementMatrix);
+const failures = validateView(view, goals, evidence, execution, reviewCadence, reviewLog, planningHorizons, progressLedger, objectiveCoverage, completionGate, requirementMatrix);
 
 if (failures.length > 0) {
   console.error("SEIS Goal Command Center view is invalid:");
@@ -79,7 +81,7 @@ mkdirSync(path.dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, output, "utf8");
 console.log(`SEIS Goal Command Center view written: ${paths.output}`);
 
-function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, reviewLogRegistry, planningHorizonsRegistry, progressLedger, objectiveCoverageRegistry, completionGateRegistry) {
+function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, reviewLogRegistry, planningHorizonsRegistry, progressLedger, objectiveCoverageRegistry, completionGateRegistry, requirementMatrixRegistry) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const taskRecords = executionRegistry.tasks || [];
@@ -94,6 +96,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   const followUpActions = progressLedger.followUpActions || [];
   const objectiveCoverageRecords = objectiveCoverageRegistry.records || [];
   const completionGateRecords = completionGateRegistry.records || [];
+  const requirementMatrixRecords = requirementMatrixRegistry.records || [];
 
   const goalsByStatus = countBy(goalRecords, "status");
   const goalsByCategory = countBy(goalRecords, "category");
@@ -106,6 +109,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   const projectsByStatus = countBy(projectRecords, "status");
   const objectiveCoverageByStatus = countBy(objectiveCoverageRecords, "status");
   const completionGateByStatus = countBy(completionGateRecords, "status");
+  const requirementMatrixByStatus = countBy(requirementMatrixRecords, "status");
 
   const activeCriticalBlockers = blockerRecords.filter((blocker) => blocker.status === "active" && blocker.severity === "critical");
   const finalState = activeCriticalBlockers.length > 0
@@ -126,7 +130,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       paths.planningHorizons,
       paths.progressLedger,
       paths.objectiveCoverage,
-      paths.completionGate
+      paths.completionGate,
+      paths.requirementMatrix
     ],
     summary: {
       finalState,
@@ -155,6 +160,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       objectiveCoverageByStatus,
       totalCompletionGateRecords: completionGateRecords.length,
       completionGateByStatus,
+      totalRequirementMatrixRecords: requirementMatrixRecords.length,
+      requirementMatrixByStatus,
       completionGateDecision: completionGateRegistry.finalDecision,
       nextSafeAction: activeCriticalBlockers.length > 0
         ? "Resolve P0 repository hygiene blockers before public or release readiness claims."
@@ -172,6 +179,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       card("active-projects", "Active projects", projectRecords.length, "active", "Current project lanes linked to goals and evidence."),
       card("completed-items", "Completed items", completedItems.length, "active", "Scoped completed work with evidence and limitations."),
       card("objective-coverage", "Objective coverage", objectiveCoverageRecords.length, "active", "Mission requirements mapped to evidence and limitations."),
+      card("requirement-matrix", "Requirement matrix", requirementMatrixRecords.length, "active", "Requirement-level coverage records with proof, gaps, and next actions."),
       card("completion-gate", "Completion gate", completionGateRegistry.finalDecision, "blocked", "Strict final-state audit for the Goal Tracking OS objective.")
     ],
     panels: {
@@ -354,6 +362,18 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
         gap: record.gap,
         nextAction: record.next_action
       })),
+      requirementMatrix: requirementMatrixRecords.map((record) => ({
+        id: record.id,
+        requirementGroup: record.requirement_group,
+        requirement: record.requirement,
+        status: record.status,
+        evidenceIds: record.evidence_ids,
+        relatedGoalIds: record.related_goal_ids,
+        relatedPaths: record.related_paths,
+        proof: record.proof,
+        gaps: record.gaps,
+        nextAction: record.next_action
+      })),
       readinessConnections: [
         "Public Readiness",
         "Release Readiness",
@@ -380,7 +400,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   };
 }
 
-function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, reviewLogRegistry, planningHorizonsRegistry, progressLedger, objectiveCoverageRegistry, completionGateRegistry) {
+function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, reviewLogRegistry, planningHorizonsRegistry, progressLedger, objectiveCoverageRegistry, completionGateRegistry, requirementMatrixRegistry) {
   const failures = [];
   const goalIds = new Set((goalRegistry.goals || []).map((goal) => goal.id));
   const evidenceIds = new Set((evidenceLedger.records || []).map((record) => record.id));
@@ -392,6 +412,7 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
   const projectIds = new Set((planningHorizonsRegistry.activeProjects || []).map((record) => record.id));
   const objectiveCoverageIds = new Set((objectiveCoverageRegistry.records || []).map((record) => record.id));
   const completionGateIds = new Set((completionGateRegistry.records || []).map((record) => record.id));
+  const requirementMatrixIds = new Set((requirementMatrixRegistry.records || []).map((record) => record.id));
 
   if (view.schemaVersion !== 1) {
     failures.push("view schemaVersion must be 1");
@@ -401,7 +422,7 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
     failures.push("view mode must be non_llm_command_center_goal_view");
   }
 
-  for (const source of [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.reviewLog, paths.planningHorizons, paths.progressLedger, paths.objectiveCoverage, paths.completionGate]) {
+  for (const source of [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.reviewLog, paths.planningHorizons, paths.progressLedger, paths.objectiveCoverage, paths.completionGate, paths.requirementMatrix]) {
     if (!view.sourceRecords.includes(source)) {
       failures.push(`view missing source record: ${source}`);
     }
@@ -455,6 +476,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
     failures.push("view summary totalCompletionGateRecords does not match completion gate registry");
   }
 
+  if (view.summary.totalRequirementMatrixRecords !== (requirementMatrixRegistry.records || []).length) {
+    failures.push("view summary totalRequirementMatrixRecords does not match requirement matrix");
+  }
+
   if (view.summary.completionGateDecision !== completionGateRegistry.finalDecision) {
     failures.push("view summary completionGateDecision does not match completion gate registry");
   }
@@ -505,6 +530,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
 
   if (!view.panels.completionGate.length) {
     failures.push("view must expose completion gate");
+  }
+
+  if (!view.panels.requirementMatrix.length) {
+    failures.push("view must expose requirement matrix");
   }
 
   for (const panelName of ["activeGoals", "blockedGoals"]) {
@@ -635,6 +664,25 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
       if (!evidenceIds.has(evidenceId)) {
         failures.push(`${item.id} references unknown evidence id: ${evidenceId}`);
       }
+    }
+  }
+
+  for (const item of view.panels.requirementMatrix) {
+    if (!requirementMatrixIds.has(item.id)) {
+      failures.push(`requirementMatrix references unknown requirement id: ${item.id}`);
+    }
+    for (const goalId of item.relatedGoalIds || []) {
+      if (!goalIds.has(goalId)) {
+        failures.push(`${item.id} references unknown goal id: ${goalId}`);
+      }
+    }
+    for (const evidenceId of item.evidenceIds || []) {
+      if (!evidenceIds.has(evidenceId)) {
+        failures.push(`${item.id} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+    if (["partial", "blocked", "planned"].includes(item.status) && !item.gaps?.length) {
+      failures.push(`${item.id} must expose gaps for non-proved status`);
     }
   }
 

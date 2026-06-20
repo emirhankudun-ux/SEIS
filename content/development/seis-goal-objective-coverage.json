@@ -20,7 +20,8 @@
         "SEIS-EVID-001",
         "SEIS-EVID-008",
         "SEIS-EVID-013",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -30,9 +31,10 @@
         "docs/goals/goal-tracking-system.md",
         "docs/goals/progress-ledger.md",
         "content/development/seis-goal-execution.json",
-        "content/development/seis-goal-progress-ledger.json"
+        "content/development/seis-goal-progress-ledger.json",
+        "content/development/seis-goal-requirement-matrix.json"
       ],
-      "proof": "The repo now has structured goals, execution records, blockers, decisions, completed items, deferred items, follow-up actions, and evidence records.",
+      "proof": "The repo now has structured goals, execution records, blockers, decisions, completed items, deferred items, follow-up actions, evidence records, and a requirement-level matrix.",
       "limitations": [
         "The full routed Command Center module is not implemented.",
         "Repository hygiene blockers still prevent foundation readiness claims."
@@ -98,7 +100,8 @@
         "SEIS-EVID-009",
         "SEIS-EVID-010",
         "SEIS-EVID-014",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -113,7 +116,7 @@
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.",
+      "proof": "A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, progress records, and requirement coverage.",
       "limitations": [
         "The shell is static and is not a dynamic routed application runtime.",
         "No live GitHub, release, or SSH integration is claimed."
@@ -127,7 +130,8 @@
       "status": "passed",
       "evidence_ids": [
         "SEIS-EVID-001",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -160,7 +164,8 @@
       "evidence_ids": [
         "SEIS-EVID-001",
         "SEIS-EVID-006",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -242,7 +247,8 @@
         "SEIS-EVID-009",
         "SEIS-EVID-010",
         "SEIS-EVID-014",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -256,7 +262,7 @@
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.",
+      "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.",
       "limitations": [
         "The broader app navigation is static and not a dynamic routed runtime.",
         "Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component."
@@ -273,7 +279,8 @@
         "SEIS-EVID-009",
         "SEIS-EVID-010",
         "SEIS-EVID-014",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -302,7 +309,8 @@
         "SEIS-EVID-008",
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-020"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -319,9 +327,10 @@
         "docs/goals/progress-review.md",
         "content/development/seis-goal-command-center-view.json",
         "content/development/seis-command-center-shell.json",
+        "content/development/seis-goal-requirement-matrix.json",
         "apps/command-center/index.html"
       ],
-      "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, static page, and static Command Center shell.",
+      "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, requirement matrix, validator, view model, static page, and static Command Center shell.",
       "limitations": [
         "The dynamic Command Center application runtime is planned, not complete.",
         "Repository hygiene blockers still control the next safe PR."
