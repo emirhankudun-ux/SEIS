@@ -81,10 +81,64 @@ const knowledgeBase = [
     title: "AI Core contract spine",
     trust: "Fixture contract",
     summary: "The demo is linked to restored model-router, prompt-engine, agent-runtime, tool-registry, knowledge, and repository-assistant fixtures."
+  },
+  {
+    id: "unified-agent-plugin-ssh-fabric",
+    title: "Unified agent, plugin, and SSH fabric",
+    trust: "Integration contract",
+    summary: "SEIS AI now connects controlled agents, specialist plugin feeds, SSH approval boundaries, and AI websites through one local fixture-backed fabric."
   }
 ];
 
 const agentCatalog = [
+  {
+    id: "seis-assistant",
+    name: "SEIS Assistant",
+    role: "Coordinates user intent, routes work, and keeps SEIS AI boundaries visible.",
+    lane: "Plan"
+  },
+  {
+    id: "repository-analyst",
+    name: "Repository Analyst",
+    role: "Reads repository metadata, source documents, and validation state without mutating work.",
+    lane: "Review"
+  },
+  {
+    id: "goal-architect",
+    name: "Goal Architect",
+    role: "Turns ambitions into goals, milestones, blockers, and reviewable next actions.",
+    lane: "Plan"
+  },
+  {
+    id: "research-synthesizer",
+    name: "Research Synthesizer",
+    role: "Summarizes approved sources with citations and provenance boundaries.",
+    lane: "Review"
+  },
+  {
+    id: "model-evaluator",
+    name: "Model Evaluator",
+    role: "Runs fixture-backed prompt, route, agent, retrieval, and evaluation checks.",
+    lane: "Review"
+  },
+  {
+    id: "workflow-operator",
+    name: "Workflow Operator",
+    role: "Runs approved local workflows with visible state, cancellation, and audit boundaries.",
+    lane: "Build"
+  },
+  {
+    id: "plugin-steward",
+    name: "Plugin Steward",
+    role: "Feeds SEIS specialist plugin lanes into SEIS AI as metadata and reviewable plans.",
+    lane: "Plan"
+  },
+  {
+    id: "ssh-operations-reviewer",
+    name: "SSH Operations Reviewer",
+    role: "Reviews SSH plans and stops before live host mutation without explicit approval.",
+    lane: "Security"
+  },
   {
     id: "architect",
     name: "Architect Agent",
@@ -147,6 +201,18 @@ const providerReadinessCatalog = [
     name: "Browser secret entry",
     state: "Blocked",
     boundary: "The demo never asks the browser to store provider API keys."
+  },
+  {
+    id: "seis-plugin-feed",
+    name: "SEIS plugin feed",
+    state: "Fixture backed",
+    boundary: "Specialist plugins feed metadata, lane profiles, MCP tool names, and plans into SEIS AI without permission expansion."
+  },
+  {
+    id: "ssh-execution-plane",
+    name: "SSH execution plane",
+    state: "Approval gated",
+    boundary: "SSH remains audit, verify, or dry-run only until host, fingerprint, public key, rollback, and human approval are present."
   }
 ];
 

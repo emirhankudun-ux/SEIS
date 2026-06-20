@@ -8,6 +8,12 @@
       "title": "SEIS AI Command Core",
       "path": "../seis-ai-demo/",
       "mode": "local-deterministic"
+    },
+    {
+      "id": "seis-ai-unified-integration-fabric",
+      "title": "SEIS AI Unified Integration Fabric",
+      "path": "../../data/seis-ai-unified-integration-fabric.json",
+      "mode": "local-fixture-backed"
     }
   ],
   "routes": [
@@ -63,6 +69,18 @@
         "Open the local AI Command Core surface",
         "Inspect restored AI Core contract fixtures",
         "Confirm provider-free approval and audit boundaries"
+      ]
+    },
+    {
+      "id": "seis-ai-unified-integration-fabric",
+      "title": "Unified Agent, Plugin, SSH and Website Fabric",
+      "summary": "Shows how controlled agents, embedded SEIS plugin lanes, SSH approval gates, and AI website surfaces feed one local SEIS AI contract.",
+      "specialist": "SEIS AI",
+      "defaultPrompt": "Review the unified SEIS AI fabric and confirm agents, plugins, SSH boundaries, and AI websites are linked without live mutation.",
+      "steps": [
+        "Read the unified integration fabric",
+        "Map plugin feed lanes to controlled agents",
+        "Confirm SSH remains audit, verify, or dry-run until approval"
       ]
     }
   ],

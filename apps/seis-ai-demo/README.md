@@ -38,6 +38,14 @@ It links the web demo, `apps/seis-demo-web`, `apps/seis-core`, and the SwiftUI
 Command Core surface without enabling live provider calls, browser API-key
 storage, SSH, deployment, payment, database, or production behavior.
 
+The broader agent/plugin/SSH fabric lives at
+[`data/seis-ai-unified-integration-fabric.json`](../../data/seis-ai-unified-integration-fabric.json).
+It connects controlled SEIS AI agents, embedded specialist plugin lanes,
+approval-gated SSH execution boundaries, and AI website surfaces as local
+fixture-backed metadata. Plugins feed SEIS AI through declared lane profiles,
+MCP tool names, source mirrors, and reviewable plans only; they do not silently
+install themselves, expand permissions, read secrets, run live SSH, or deploy.
+
 ## Run Locally
 
 From the repository root:
@@ -112,6 +120,12 @@ Run the local-only AI Core/web contract gate when Swift is not needed:
 
 ```bash
 npm run check:seis-ai-local-integration
+```
+
+Run only the agent/plugin/SSH fabric contract:
+
+```bash
+npm run check:seis-ai-unified-integration-fabric
 ```
 
 Release boundaries and publish blockers are documented in

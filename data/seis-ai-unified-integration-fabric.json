@@ -1,0 +1,241 @@
+{
+  "id": "seis-ai-unified-integration-fabric",
+  "version": 1,
+  "updatedAt": "2026-06-20",
+  "status": "local-fixture-backed",
+  "mode": "plan-first-no-live-mutation",
+  "purpose": "Connect SEIS AI agents, plugin lanes, SSH execution boundaries, AI Core contracts, and browser-facing AI websites through one auditable local integration fabric.",
+  "sourceBasis": [
+    "AGENTS.md",
+    "docs/governance/seis-master-prompt.md",
+    "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json",
+    "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
+    "packages/tool-registry/fixtures/tool-registry-permissions.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "data/seis-specialist-plugins-2026-06-12.json",
+    "data/seis-child-agent-intake.json",
+    "data/ssh-hardening-operation-contract.json"
+  ],
+  "coreBoundaries": [
+    "Agents are controlled workflows around known tools and contracts, not uncontrolled autonomous owners.",
+    "Plugins feed SEIS AI through declared lane profiles, MCP tool names, fixture metadata, and reviewable plans only.",
+    "SSH is a controlled execution plane and remains plan-only, verify-only, or audit-only unless explicit human approval and rollback evidence exist.",
+    "No browser surface may request, store, or forward provider API keys, SSH private keys, passwords, service accounts, cookies, or production secrets.",
+    "No live provider call, SSH mutation, deployment, database migration, payment action, branch deletion, force push, or model training is enabled by this fabric."
+  ],
+  "agentCatalog": [
+    {
+      "id": "seis-assistant",
+      "displayName": "SEIS Assistant",
+      "purpose": "Coordinate user intent, route to the right SEIS surface, and keep boundaries visible.",
+      "allowedTools": ["model-router", "prompt-engine", "knowledge-read", "goal-read", "command-center-view"],
+      "deniedTools": ["ssh-live-mutation", "secret-read", "deployment-apply", "git-push-main"],
+      "approvalPolicy": "approval-before-write-or-external-communication",
+      "memoryScope": "working-session-and-approved-project-memory",
+      "maxSteps": 8,
+      "timeLimitSeconds": 120,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "repository-analyst",
+      "displayName": "Repository Analyst",
+      "purpose": "Read repository metadata, source-of-truth documents, validation outputs, and risk signals.",
+      "allowedTools": ["repository-assistant", "file-search-readonly", "git-status-readonly", "validation-summary"],
+      "deniedTools": ["stage-files", "commit-files", "push-branches", "delete-files-without-approval"],
+      "approvalPolicy": "no-approval-for-read-only-low-risk",
+      "memoryScope": "metadata-only-by-default",
+      "maxSteps": 10,
+      "timeLimitSeconds": 180,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "goal-architect",
+      "displayName": "Goal Architect",
+      "purpose": "Convert long-horizon SEIS goals into milestones, tasks, blockers, and reviewable next actions.",
+      "allowedTools": ["goal-read", "goal-plan", "roadmap-read", "command-center-view"],
+      "deniedTools": ["goal-auto-complete", "delete-roadmap", "deploy-workflow"],
+      "approvalPolicy": "approval-before-status-change",
+      "memoryScope": "goal-and-roadmap-records",
+      "maxSteps": 8,
+      "timeLimitSeconds": 120,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "research-synthesizer",
+      "displayName": "Research Synthesizer",
+      "purpose": "Summarize approved sources with citations and provenance while excluding unsafe archives.",
+      "allowedTools": ["knowledge-read", "source-classification", "citation-summary"],
+      "deniedTools": ["restricted-source-copy", "private-archive-merge", "secret-indexing"],
+      "approvalPolicy": "approval-before-sensitive-source-use",
+      "memoryScope": "approved-source-metadata",
+      "maxSteps": 8,
+      "timeLimitSeconds": 180,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "documentation-maintainer",
+      "displayName": "Documentation Maintainer",
+      "purpose": "Keep official docs aligned with implementation, validation, and source-of-truth status.",
+      "allowedTools": ["docs-read", "docs-plan", "validator-output-read", "pr-description-draft"],
+      "deniedTools": ["overwrite-official-docs-with-archive", "claim-unrun-validation"],
+      "approvalPolicy": "approval-before-official-doc-rewrite",
+      "memoryScope": "docs-and-review-records",
+      "maxSteps": 8,
+      "timeLimitSeconds": 120,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "model-evaluator",
+      "displayName": "Model Evaluator",
+      "purpose": "Run fixture-backed prompt, route, agent, retrieval, and evaluation checks without claiming live model performance.",
+      "allowedTools": ["prompt-regression", "route-contract-check", "fixture-evaluation-report", "benchmark-integrity-read"],
+      "deniedTools": ["invent-benchmark-score", "publish-model-version", "start-training-job"],
+      "approvalPolicy": "approval-before-live-provider-or-training",
+      "memoryScope": "evaluation-metadata-only",
+      "maxSteps": 6,
+      "timeLimitSeconds": 180,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "workflow-operator",
+      "displayName": "Workflow Operator",
+      "purpose": "Execute approved local workflows with visible state, retries, cancellation boundaries, and audit records.",
+      "allowedTools": ["workflow-read", "local-check-run", "audit-event-write", "rollback-plan-read"],
+      "deniedTools": ["unapproved-ssh-apply", "production-deploy", "database-migration", "secret-exfiltration"],
+      "approvalPolicy": "approval-before-sensitive-read-write-or-external-action",
+      "memoryScope": "workflow-run-metadata",
+      "maxSteps": 12,
+      "timeLimitSeconds": 300,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "plugin-steward",
+      "displayName": "Plugin Steward",
+      "purpose": "Feed installed SEIS specialist plugin lanes into SEIS AI as capability metadata and plan suggestions.",
+      "allowedTools": ["plugin-lane-read", "mcp-tool-catalog-read", "permission-review", "plugin-plan"],
+      "deniedTools": ["install-unapproved-plugin", "publish-plugin", "expand-plugin-permissions"],
+      "approvalPolicy": "approval-before-install-publish-or-permission-expansion",
+      "memoryScope": "plugin-metadata-only",
+      "maxSteps": 8,
+      "timeLimitSeconds": 180,
+      "enabledState": "enabled-local-fixture"
+    },
+    {
+      "id": "ssh-operations-reviewer",
+      "displayName": "SSH Operations Reviewer",
+      "purpose": "Prepare SSH plans, verify hardening contracts, and stop before live host mutation.",
+      "allowedTools": ["ssh-contract-read", "ssh-plan-review", "dry-run-report-read", "rollback-plan-read"],
+      "deniedTools": ["private-key-read", "authorized-keys-write", "firewall-apply", "sudo-live-mutation"],
+      "approvalPolicy": "always-approval-before-live-host-change",
+      "memoryScope": "ssh-metadata-and-redacted-evidence",
+      "maxSteps": 6,
+      "timeLimitSeconds": 180,
+      "enabledState": "enabled-local-fixture"
+    }
+  ],
+  "pluginFeedLanes": [
+    {
+      "id": "seis-governance",
+      "sourceMirror": "plugins/seis",
+      "installId": "seis-ai-agent@seis-repo#seis-governance",
+      "feeds": ["documentation-maintainer", "repository-analyst", "goal-architect"],
+      "mcpTools": ["seis_governance_status", "seis_governance_plan"],
+      "permissionPosture": "read-plan-review"
+    },
+    {
+      "id": "seis-cloud",
+      "sourceMirror": "plugins/seis-cloud",
+      "installId": "seis-ai-agent@seis-repo#seis-cloud",
+      "feeds": ["workflow-operator", "ssh-operations-reviewer"],
+      "mcpTools": ["seis_cloud_status", "seis_cloud_plan"],
+      "permissionPosture": "plan-only-until-approved"
+    },
+    {
+      "id": "seis-code",
+      "sourceMirror": "plugins/seis-code",
+      "installId": "seis-ai-agent@seis-repo#seis-code",
+      "feeds": ["repository-analyst", "model-evaluator"],
+      "mcpTools": ["seis_code_status", "seis_code_plan"],
+      "permissionPosture": "read-plan-local-check"
+    },
+    {
+      "id": "seis-design",
+      "sourceMirror": "plugins/seis-design",
+      "installId": "seis-ai-agent@seis-repo#seis-design",
+      "feeds": ["seis-assistant", "documentation-maintainer"],
+      "mcpTools": ["seis_design_status", "seis_design_plan"],
+      "permissionPosture": "read-plan-ui-review"
+    },
+    {
+      "id": "seis-data",
+      "sourceMirror": "plugins/seis-data",
+      "installId": "seis-ai-agent@seis-repo#seis-data",
+      "feeds": ["research-synthesizer", "model-evaluator"],
+      "mcpTools": ["seis_data_status", "seis_data_plan"],
+      "permissionPosture": "metadata-only-source-governed"
+    }
+  ],
+  "sshExecutionPlanes": [
+    {
+      "id": "ssh-hardening-contract",
+      "contractPath": "data/ssh-hardening-operation-contract.json",
+      "docs": [
+        "docs/deployment/seis-ssh-access-model.md",
+        "docs/deployment/seis-ssh-cloud-roadmap.md",
+        "docs/deployment/seis-ssh-closed-developer-runtime.md",
+        "docs/deployment/local-to-cloud-ssh-playbook.md"
+      ],
+      "allowedModes": ["audit", "dashboard", "verify", "dry-run"],
+      "blockedWithoutApproval": ["harden", "full-setup", "firewall-apply", "authorized-keys-write", "sudo-live-mutation"],
+      "requiredHumanInputs": ["target-host", "approved-public-key", "host-fingerprint", "rollback-plan", "maintenance-window"],
+      "privateKeyRule": "private key remains exclusively under operator control and is never copied into SEIS AI, browser state, prompts, logs, docs, or commits"
+    }
+  ],
+  "aiWebsites": [
+    {
+      "id": "seis-ai-demo",
+      "path": "apps/seis-ai-demo",
+      "role": "AI Command Core local web app",
+      "entrypoint": "apps/seis-ai-demo/index.html",
+      "contract": "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json"
+    },
+    {
+      "id": "seis-demo-web",
+      "path": "apps/seis-demo-web",
+      "role": "Contract-first AI/native demo website",
+      "entrypoint": "apps/seis-demo-web/index.html",
+      "contract": "apps/seis-demo-web/contracts/seis-demo-contract.json"
+    },
+    {
+      "id": "seis-command-center",
+      "path": "apps/seis-core",
+      "role": "Command Center web shell with AI Core fixture view",
+      "entrypoint": "apps/seis-core/index.html",
+      "contract": "apps/seis-core/ai-core-contract-fixture.js"
+    },
+    {
+      "id": "portfolio-ai-website",
+      "path": "apps/web",
+      "role": "Browser-facing website surface with future SEIS AI routing points",
+      "entrypoint": "apps/web/index.html",
+      "contract": "apps/web/site-config.json"
+    }
+  ],
+  "validation": [
+    "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-local-integration",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-ai-agent",
+    "npm run check:ssh-hardening-contract"
+  ],
+  "activationBlockedUntil": [
+    "human approval for live SSH host changes",
+    "server-side provider adapter with credential isolation",
+    "plugin permission expansion review",
+    "deployment target approval",
+    "production rollback plan"
+  ]
+}

@@ -166,7 +166,9 @@ test("SEIS AI demo documents local-only execution", async () => {
   assert.match(readme, /local, deterministic demo application/);
   assert.match(readme, /AI Core Integration/);
   assert.match(readme, /contracts\/seis-ai-command-core-integration\.json/);
+  assert.match(readme, /data\/seis-ai-unified-integration-fabric\.json/);
   assert.match(readme, /npm run check:seis-ai-local-integration/);
+  assert.match(readme, /npm run check:seis-ai-unified-integration-fabric/);
   assert.match(readme, /does not request, store, or use provider API keys/);
   assert.match(readme, /python3 -m http\.server 4177/);
 });
@@ -175,6 +177,7 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   const integration = JSON.parse(
     await readFile(new URL("contracts/seis-ai-command-core-integration.json", root), "utf8")
   );
+  const unifiedFabric = JSON.parse(await readFile(new URL("../../data/seis-ai-unified-integration-fabric.json", root), "utf8"));
   const packageJson = JSON.parse(await readFile(new URL("../../package.json", root), "utf8"));
   const script = await readFile(new URL("script.js", root), "utf8");
   const serializedIntegration = JSON.stringify(integration);
@@ -192,15 +195,32 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
     "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
     "packages/tool-registry/fixtures/tool-registry-permissions.json",
     "packages/data/fixtures/knowledge-source-classification.json",
-    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
+    "data/seis-ai-unified-integration-fabric.json"
   ]) {
     assert.ok(serializedIntegration.includes(expectedPath), `missing contract path: ${expectedPath}`);
   }
 
   assert.match(script, /AI Core contract spine/);
+  assert.match(script, /Unified agent, plugin, and SSH fabric/);
+  assert.match(script, /Plugin Steward/);
+  assert.match(script, /SSH Operations Reviewer/);
+  assert.match(script, /SEIS plugin feed/);
+  assert.match(script, /SSH execution plane/);
   assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:model-router-contracts/);
+  assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-unified-integration-fabric/);
   assert.match(packageJson.scripts["check:seis-ai-command-core"], /check:seis-ai-local-integration/);
+  assert.equal(packageJson.scripts["check:seis-ai-unified-integration-fabric"], "node scripts/check-seis-ai-unified-integration-fabric.mjs");
+
+  assert.equal(unifiedFabric.status, "local-fixture-backed");
+  assert.ok(unifiedFabric.agentCatalog.some(agent => agent.id === "plugin-steward"));
+  assert.ok(unifiedFabric.agentCatalog.some(agent => agent.id === "ssh-operations-reviewer"));
+  assert.ok(unifiedFabric.pluginFeedLanes.some(lane => lane.id === "seis-cloud" && lane.feeds.includes("ssh-operations-reviewer")));
+  assert.ok(unifiedFabric.sshExecutionPlanes.some(plane => plane.allowedModes.includes("dry-run")));
+  assert.ok(unifiedFabric.aiWebsites.some(website => website.id === "seis-demo-web"));
+  assert.ok(unifiedFabric.coreBoundaries.some(boundary => boundary.includes("No live provider call")));
   assert.doesNotMatch(serializedIntegration, /\/Users\//);
+  assert.doesNotMatch(JSON.stringify(unifiedFabric), /\/Users\//);
 });
 
 test("SEIS demo website links into the local AI Command Core surface", async () => {
@@ -212,11 +232,16 @@ test("SEIS demo website links into the local AI Command Core surface", async () 
   );
 
   assert.match(websiteHtml, /Open AI Command Core/);
+  assert.match(websiteHtml, /Unified agent, plugin, SSH, and AI website fabric/);
   assert.match(websiteHtml, /\.\.\/seis-ai-demo\//);
   assert.match(websiteReadme, /seis-ai-command-core-integration\.json/);
+  assert.match(websiteReadme, /seis-ai-unified-integration-fabric\.json/);
   assert.doesNotMatch(websiteReadme, /\/Users\//);
 
   assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-command-core"));
+  assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-unified-integration-fabric"));
   assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-command-core"));
+  assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-unified-integration-fabric"));
   assert.match(websiteScript, /SEIS AI Command Core Bridge/);
+  assert.match(websiteScript, /Unified Agent, Plugin, SSH and Website Fabric/);
 });

@@ -64,8 +64,25 @@
       "id": "repository-assistant",
       "path": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
       "validation": "npm run check:repository-assistant-prototype"
+    },
+    {
+      "id": "unified-agent-plugin-ssh-fabric",
+      "path": "data/seis-ai-unified-integration-fabric.json",
+      "validation": "npm run check:seis-ai-unified-integration-fabric"
     }
   ],
+  "plugin_feed_policy": {
+    "source": "data/seis-specialist-plugins-2026-06-12.json",
+    "mode": "single-seis-agent-embedded-lanes",
+    "allowedFeed": "plugins provide lane metadata, MCP tool names, source mirrors, and reviewable plans to SEIS AI",
+    "blockedFeed": "plugins may not silently expand permissions, install themselves, publish, read secrets, or run live SSH/deploy actions"
+  },
+  "ssh_execution_policy": {
+    "source": "data/ssh-hardening-operation-contract.json",
+    "allowedModes": ["audit", "dashboard", "verify", "dry-run"],
+    "blockedWithoutApproval": ["harden", "full-setup", "firewall-apply", "authorized-keys-write", "sudo-live-mutation"],
+    "privateKeyRule": "private keys remain exclusively under operator control"
+  },
   "boundaries": [
     "No browser provider API key entry or storage.",
     "No live OpenAI, Anthropic, Google, Qwen, local model, SSH, deployment, payment, database, or production action.",
@@ -73,6 +90,7 @@
     "External provider routing remains server-side only and approval-gated until separate credentials, redaction, audit, and deployment policy are reviewed."
   ],
   "local_validation": [
+    "npm run check:seis-ai-unified-integration-fabric",
     "npm run check:seis-ai-local-integration",
     "npm run check:seis-ai-command-core"
   ],

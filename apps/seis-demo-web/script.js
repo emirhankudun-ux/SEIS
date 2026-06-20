@@ -23,6 +23,12 @@ const FALLBACK_CONTRACT = {
       title: "SEIS AI Command Core",
       path: "../seis-ai-demo/",
       mode: "local-deterministic"
+    },
+    {
+      id: "seis-ai-unified-integration-fabric",
+      title: "SEIS AI Unified Integration Fabric",
+      path: "../../data/seis-ai-unified-integration-fabric.json",
+      mode: "local-fixture-backed"
     }
   ],
   routes: [
@@ -59,6 +65,13 @@ const FALLBACK_CONTRACT = {
       summary: "Links the website demo to the local AI Core workflow for routing, agents, prompts, evals, approvals, and audit review.",
       specialist: "AI Core",
       steps: ["Open local AI Command Core", "Inspect restored contract fixtures", "Confirm provider-free boundaries"]
+    },
+    {
+      id: "seis-ai-unified-integration-fabric",
+      title: "Unified Agent, Plugin, SSH and Website Fabric",
+      summary: "Shows how controlled agents, embedded SEIS plugin lanes, SSH approval gates, and AI website surfaces feed one local SEIS AI contract.",
+      specialist: "SEIS AI",
+      steps: ["Read unified fabric", "Map plugin lanes to agents", "Confirm SSH dry-run boundary"]
     }
   ],
   analytics_events: [
