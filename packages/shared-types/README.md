@@ -18,6 +18,9 @@ runtime SDK and not a live provider integration.
 - `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` supplies
   the current task lifecycle and approval-state evidence projected into the
   shared fixture.
+- `packages/tool-registry/fixtures/tool-registry-permissions.json` supplies the
+  current tool/plugin permission and risk-class evidence projected into the
+  shared fixture.
 - `npm run check:ai-core-app-contracts` validates the schema and fixture without
   installing another runtime or provider SDK.
 
@@ -26,6 +29,7 @@ runtime SDK and not a live provider integration.
 - `ModelRoute`
 - `PromptVersion`
 - `AgentTask`
+- `ToolRegistryEntry`
 - `ApprovalRequest`
 - `EvaluationResult`
 - `AuditEvent`

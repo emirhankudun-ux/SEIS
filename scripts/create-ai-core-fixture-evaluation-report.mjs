@@ -176,6 +176,7 @@ for (const key of [
   "modelRoutes",
   "promptVersions",
   "agentTasks",
+  "toolRegistryEntries",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -251,7 +252,7 @@ const appStateEvaluations = [
       "app projection matches shared fixture",
       "evaluation results have evidence links"
     ],
-    observedOutputSummary: "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
+    observedOutputSummary: "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, tool registry, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
     limitations: [
       "Static app-state fixture validation only; no browser interaction or live backend is measured.",
       "Pass does not imply production deployment or live provider readiness."
@@ -325,11 +326,11 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add tool/plugin registry permission and risk-class fixtures.",
+    summary: "Add retrieval and knowledge source classification fixtures.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
-      "docs/ai/tool-use-policy.md",
-      "packages/tool-registry/README.md"
+      "docs/ai/context-memory-boundary.md",
+      "docs/evals/evaluation-strategy.md"
     ]
   }
 };

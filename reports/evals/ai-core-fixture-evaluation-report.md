@@ -33,10 +33,10 @@
 
 ## Next Recommended Slice
 
-Add tool/plugin registry permission and risk-class fixtures.
+Add retrieval and knowledge source classification fixtures.
 
 Source links:
 
 - `roadmap/seis-ai-core-command-center-5-year-development-program.md`
-- `docs/ai/tool-use-policy.md`
-- `packages/tool-registry/README.md`
+- `docs/ai/context-memory-boundary.md`
+- `docs/evals/evaluation-strategy.md`

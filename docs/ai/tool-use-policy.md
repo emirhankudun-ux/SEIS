@@ -1,6 +1,6 @@
 # Tool Use Policy
 
-Status: Foundation policy
+Status: Fixture-backed foundation policy
 
 SEIS tools include CLI commands, MCP servers, plugins, scripts, provider APIs,
 local runtimes, GitHub, SSH, cloud services, and repository automation.
@@ -29,3 +29,17 @@ local runtimes, GitHub, SSH, cloud services, and repository automation.
 
 Command Center may display tool status and approval requests, but privileged
 actions must be disabled or routed through explicit human approval.
+
+## Current Fixture Evidence
+
+Tool and plugin permission boundaries are represented under
+`packages/tool-registry/`:
+
+- `schemas/tool-registry-permissions.schema.json`
+- `fixtures/tool-registry-permissions.json`
+- `npm run check:tool-registry-permissions`
+
+The fixture pack covers read-only, local-write, external-write, and privileged
+tool classes. Approval-needed and blocked tools remain non-executing metadata
+records and do not imply plugin installation, GitHub write access, SSH
+execution, deployment authority, provider calls, or secret access.

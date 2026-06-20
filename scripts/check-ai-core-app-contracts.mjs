@@ -50,6 +50,7 @@ const requiredTopLevel = [
   "modelRoutes",
   "promptVersions",
   "agentTasks",
+  "toolRegistryEntries",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -102,6 +103,7 @@ const expectedEvaluationTargetTypes = [
   "prompt",
   "route",
   "agent",
+  "tool",
   "app-state",
   "retrieval",
   "model-research"
@@ -117,6 +119,7 @@ const objectToArray = {
   modelRoute: "modelRoutes",
   promptVersion: "promptVersions",
   agentTask: "agentTasks",
+  toolRegistryEntry: "toolRegistryEntries",
   approvalRequest: "approvalRequests",
   evaluationResult: "evaluationResults",
   auditEvent: "auditEvents",
@@ -277,6 +280,17 @@ for (const approval of fixture.approvalRequests || []) {
   }
 }
 
+for (const tool of fixture.toolRegistryEntries || []) {
+  if (["external-write", "privileged", "destructive"].includes(tool.riskClass)) {
+    if (!["approval-needed", "blocked"].includes(tool.permissionState)) {
+      fail(`toolRegistryEntry ${tool.id} high-risk tool must be approval-needed or blocked`);
+    }
+    if (!["approval-needed", "blocked"].includes(tool.approvalState)) {
+      fail(`toolRegistryEntry ${tool.id} high-risk tool must require or block approval`);
+    }
+  }
+}
+
 for (const evaluation of fixture.evaluationResults || []) {
   assertAllowed(
     `evaluationResult.${evaluation.id}.targetType`,
@@ -326,6 +340,7 @@ for (const key of [
   "modelRoutes",
   "promptVersions",
   "agentTasks",
+  "toolRegistryEntries",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",

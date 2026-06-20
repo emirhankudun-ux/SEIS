@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 1800442,
+      "githubBytes": 1815742,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",

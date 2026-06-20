@@ -29,6 +29,7 @@ usable AI-native operating platform.
 | Model router | Foundation documented | `docs/ai/model-router.md`, `packages/model-router/README.md` |
 | Prompt engine | Foundation documented | `docs/ai/prompt-engine.md`, `packages/prompt-engine/README.md` |
 | Agent runtime | Fixture-backed contract | `docs/ai/agent-runtime.md`, `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` |
+| Tool registry | Fixture-backed contract | `docs/ai/tool-use-policy.md`, `packages/tool-registry/fixtures/tool-registry-permissions.json` |
 | AI App / Command Center | Foundation documented | `docs/product/seis-ai-app.md`, `docs/product/command-center.md` |
 | Shared contracts | Foundation documented | `docs/architecture/ai-core-app-shared-contracts.md`, `packages/shared-types/README.md` |
 | Evaluation strategy | Foundation documented | `docs/evals/evaluation-strategy.md`, `docs/testing/prompt-regression-suite.md` |
@@ -292,7 +293,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add tool/plugin registry permission and risk-class fixtures.
+1. Add retrieval and knowledge source classification fixtures.
 
 Completed foundation slice:
 
@@ -319,6 +320,9 @@ Completed foundation slice:
 - Agent-runtime task lifecycle and approval-state fixtures now live under
   `packages/agent-runtime/` and are checked by
   `npm run check:agent-runtime-lifecycle`.
+- Tool and plugin registry permission and risk-class fixtures now live under
+  `packages/tool-registry/` and are checked by
+  `npm run check:tool-registry-permissions`.
 
 ## Relationship to Existing Roadmaps
 

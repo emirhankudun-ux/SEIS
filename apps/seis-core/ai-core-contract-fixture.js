@@ -11,10 +11,12 @@ window.seisAiCoreContractFixture = {
     "docs/ai/model-router.md",
     "docs/ai/provider-routing-policy.md",
     "docs/ai/agent-runtime.md",
+    "docs/ai/tool-use-policy.md",
     "docs/product/repository-assistant.md",
     "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
     "packages/model-router/fixtures/model-router-route-contracts.json",
-    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
+    "packages/tool-registry/fixtures/tool-registry-permissions.json"
   ],
   stateVocabulary: [
     "ready",
@@ -201,6 +203,101 @@ window.seisAiCoreContractFixture = {
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
+  toolRegistryEntries: [
+    {
+      id: "tool-local-repository-inspection",
+      toolName: "Local Repository Inspection",
+      surfaceType: "cli-script",
+      riskClass: "read-only",
+      permissionState: "allowed",
+      approvalState: "not-required",
+      allowedActions: [
+        "read repository status metadata",
+        "read official docs",
+        "read validation summaries"
+      ],
+      forbiddenActions: [
+        "write files",
+        "stage files",
+        "commit files",
+        "print secrets",
+        "call external providers"
+      ],
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      id: "tool-scoped-local-file-edit",
+      toolName: "Scoped Local File Edit",
+      surfaceType: "cli-script",
+      riskClass: "local-write",
+      permissionState: "scoped",
+      approvalState: "not-required",
+      allowedActions: [
+        "edit scoped repository files",
+        "update source-linked docs",
+        "update fixture-backed contracts"
+      ],
+      forbiddenActions: [
+        "overwrite unrelated work",
+        "edit secrets",
+        "commit unrelated files",
+        "rewrite git history",
+        "self-approve privileged scope"
+      ],
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      id: "tool-github-pr-publish",
+      toolName: "GitHub PR Publish",
+      surfaceType: "plugin",
+      riskClass: "external-write",
+      permissionState: "approval-needed",
+      approvalState: "approval-needed",
+      allowedActions: [
+        "prepare PR summary",
+        "collect validation evidence",
+        "identify publish blockers"
+      ],
+      forbiddenActions: [
+        "push without approval",
+        "merge pull requests",
+        "close pull requests",
+        "expose secrets",
+        "bypass branch protections"
+      ],
+      status: "approval-needed",
+      maturity: "fixture-backed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      id: "tool-ssh-deployment-command",
+      toolName: "SSH Deployment Command",
+      surfaceType: "ssh-operation",
+      riskClass: "privileged",
+      permissionState: "blocked",
+      approvalState: "blocked",
+      allowedActions: [
+        "document missing approval",
+        "prepare dry-run checklist",
+        "summarize rollback requirements"
+      ],
+      forbiddenActions: [
+        "execute SSH commands",
+        "modify firewall",
+        "modify sudo configuration",
+        "deploy services",
+        "access private keys",
+        "self-approve infrastructure changes"
+      ],
+      status: "blocked",
+      maturity: "blocked",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    }
+  ],
   approvalRequests: [
     {
       id: "approval-external-provider-route",
@@ -225,6 +322,22 @@ window.seisAiCoreContractFixture = {
       decisionState: "blocked",
       status: "blocked",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "approval-tool-github-pr-publish",
+      requestType: "tool-external-write-github-publish",
+      riskClass: "high",
+      decisionState: "approval-needed",
+      status: "approval-needed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      id: "approval-tool-ssh-deployment",
+      requestType: "tool-privileged-ssh-deployment",
+      riskClass: "critical",
+      decisionState: "blocked",
+      status: "blocked",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   evaluationResults: [
@@ -275,6 +388,14 @@ window.seisAiCoreContractFixture = {
       result: "pass",
       status: "validated",
       evidence: "scripts/check-agent-runtime-lifecycle.mjs"
+    },
+    {
+      id: "eval-tool-registry-permissions",
+      targetType: "tool",
+      targetId: "tool-registry-permissions",
+      result: "pass",
+      status: "validated",
+      evidence: "scripts/check-tool-registry-permissions.mjs"
     }
   ],
   auditEvents: [
@@ -317,6 +438,14 @@ window.seisAiCoreContractFixture = {
       redactionState: "metadata-only",
       status: "validated",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "audit-tool-registry-permissions",
+      actor: "codex",
+      action: "added tool and plugin registry permission fixtures",
+      redactionState: "metadata-only",
+      status: "validated",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   repositoryFindings: [
@@ -351,6 +480,14 @@ window.seisAiCoreContractFixture = {
       severity: "info",
       status: "validated",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "finding-tool-registry-permissions",
+      repository: "SEIS",
+      findingType: "fixture-backed-tool-registry-permissions",
+      severity: "info",
+      status: "validated",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   documentationStatuses: [
@@ -385,6 +522,14 @@ window.seisAiCoreContractFixture = {
       sourceClass: "official",
       status: "validated",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "doc-tool-registry-permissions",
+      document: "docs/ai/tool-use-policy.md",
+      freshness: "current",
+      sourceClass: "official",
+      status: "validated",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   securityFindings: [
@@ -394,6 +539,13 @@ window.seisAiCoreContractFixture = {
       riskClass: "high",
       status: "validated",
       evidence: "docs/security/model-provider-data-policy.md"
+    },
+    {
+      id: "security-tool-permission-boundary",
+      category: "tool-permission-and-secret-boundary",
+      riskClass: "high",
+      status: "validated",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   roadmapItems: [
@@ -436,6 +588,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "roadmap-year-1-tool-registry-permissions",
+      horizon: "year-1",
+      track: "Tool and plugin registry permissions and risk classes",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   aiSurfaces: [
@@ -495,6 +655,26 @@ window.seisAiCoreContractFixture = {
       status: "planned",
       maturity: "fixture-backed",
       evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "surface-tool-registry-center",
+      surface: "Tool Registry Center",
+      allowedContext: [
+        "official docs",
+        "tool registry fixtures",
+        "permission metadata",
+        "risk-class metadata"
+      ],
+      forbiddenContext: [
+        "provider API keys",
+        "SSH private keys",
+        "GitHub tokens",
+        "privileged execution without approval"
+      ],
+      approvalRequired: true,
+      status: "planned",
+      maturity: "fixture-backed",
+      evidence: "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
   repositoryIntelligence: [

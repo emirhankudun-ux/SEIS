@@ -659,6 +659,7 @@ function renderContractCard(item, title, detail, chips = []) {
 function renderAiCore() {
   const contract = aiCoreContract;
   const routeCount = contract.modelRoutes.length;
+  const toolCount = contract.toolRegistryEntries.length;
   const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
     contract.modelRoutes.filter((route) => route.approvalState === "approval-needed").length;
   const validatedEvidence = [
@@ -676,6 +677,7 @@ function renderAiCore() {
   $("#ai-core-summary-grid").innerHTML = [
     ["Contract", labelFromId(contract.status), contract.sourceFixture],
     ["Routes", routeCount, "model-router fixtures"],
+    ["Tools", toolCount, "permission registry"],
     ["Execution Modes", contract.llmExecutionModes.length, "privacy modes"],
     ["Approvals", approvalNeeded, "human gates"],
     ["Evidence", validatedEvidence, "validated metadata records"]
@@ -718,6 +720,7 @@ function renderAiCore() {
   const evidenceItems = [
     ...contract.evaluationResults.map((item) => ({ ...item, group: "Evaluation", title: item.targetType, detail: item.result })),
     ...contract.auditEvents.map((item) => ({ ...item, group: "Audit", title: item.actor, detail: item.action })),
+    ...contract.toolRegistryEntries.map((item) => ({ ...item, group: "Tool", title: item.riskClass, detail: `${item.toolName}: ${item.permissionState}` })),
     ...contract.securityFindings.map((item) => ({ ...item, group: "Security", title: item.category, detail: item.riskClass })),
     ...contract.roadmapItems.map((item) => ({ ...item, group: "Roadmap", title: item.horizon, detail: item.track })),
     ...contract.goalTrackingStates.map((item) => ({ ...item, group: "Goal", title: item.progressState, detail: item.goal }))

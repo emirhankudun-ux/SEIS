@@ -51,7 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add tool/plugin registry permission and risk-class fixtures.
+1. Add retrieval and knowledge source classification fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -178,3 +178,21 @@ blocked SSH/deployment review. It remains fixture-backed and does not add live
 autonomous orchestration, agent self-approval, provider calls, provider keys,
 GitHub write actions, SSH execution, deployment, model training, checkpoints,
 or model cards.
+
+## Follow-Up Tool Registry Permission Slice
+
+Status: Added after the agent-runtime lifecycle slice.
+
+Evidence:
+
+- `packages/tool-registry/schemas/tool-registry-permissions.schema.json`
+- `packages/tool-registry/fixtures/tool-registry-permissions.json`
+- `scripts/check-tool-registry-permissions.mjs`
+- `npm run check:tool-registry-permissions`
+
+This slice completes tool and plugin registry permission and risk-class
+fixtures for read-only local inspection, scoped local edits, approval-needed
+GitHub publishing, and blocked SSH/deployment execution. It remains
+fixture-backed and does not execute tools, install plugins, mutate GitHub,
+run SSH commands, deploy services, call providers, expose secrets, or grant
+browser clients privileged execution authority.
