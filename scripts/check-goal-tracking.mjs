@@ -30,6 +30,7 @@ const requiredDocs = [
   "docs/goals/execution-board.md",
   "docs/goals/review-cadence.md",
   "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+  "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
   "docs/goals/planning-horizons.md",
   "docs/goals/progress-ledger.md",
   "docs/goals/command-center-view-model.md",

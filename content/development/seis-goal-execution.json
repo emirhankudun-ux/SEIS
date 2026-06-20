@@ -223,8 +223,8 @@
     },
     {
       "id": "SEIS-TASK-005",
-      "title": "Perform real weekly and monthly goal reviews",
-      "status": "planned",
+      "title": "Maintain real weekly and monthly goal reviews",
+      "status": "active",
       "priority": "P2 medium",
       "owner_role": "Product Governance",
       "supports_goal_ids": [
@@ -238,21 +238,24 @@
         "SEIS-DEC-004"
       ],
       "evidence_ids": [
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-017"
       ],
       "related_paths": [
         "docs/goals/review-cadence.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
         "docs/goals/progress-review.md",
-        "content/development/seis-goal-review-cadence.json"
+        "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-review-log.json"
       ],
       "subtasks": [
         {
           "id": "SEIS-SUBTASK-010",
-          "title": "Run weekly review only with current period evidence",
-          "status": "planned",
-          "next_action": "Fill the weekly template only when a real weekly review is performed."
+          "title": "Keep weekly reviews evidence-backed",
+          "status": "active",
+          "next_action": "Create weekly review records only when the actual weekly review is performed."
         },
         {
           "id": "SEIS-SUBTASK-011",
@@ -261,8 +264,8 @@
           "next_action": "Fill the monthly template only when a real monthly review is performed."
         }
       ],
-      "next_action": "Keep daily, weekly, and monthly cadence records planned until real review evidence exists.",
-      "notes": "Cadence records exist and validate, but no performed review is claimed."
+      "next_action": "Keep weekly review recurrence evidence-backed and perform monthly review only with current period evidence.",
+      "notes": "Daily and weekly review logs exist; monthly review remains planned."
     }
   ],
   "blockers": [
@@ -389,13 +392,16 @@
       "supports_goal_ids": [
         "SEIS-GOAL-019"
       ],
-      "evidence_ids": [],
+      "evidence_ids": [
+        "SEIS-EVID-017"
+      ],
       "related_paths": [
         "docs/goals/weekly-priorities-template.md",
-        "docs/goals/monthly-review-template.md"
+        "docs/goals/monthly-review-template.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md"
       ],
       "decision": "Weekly and monthly review records must only be created when those reviews are actually performed with current evidence.",
-      "consequence": "Templates remain templates until a real review cadence event occurs."
+      "consequence": "The 2026-W25 weekly review is recorded from current evidence; templates remain templates until each real cadence event occurs."
     }
   ]
 }

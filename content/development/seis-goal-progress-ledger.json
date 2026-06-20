@@ -125,7 +125,7 @@
       ],
       "summary": "A current daily Goal Tracking OS review was performed and recorded from observed repository state and local validation output.",
       "limitations": [
-        "Does not mark weekly or monthly reviews performed.",
+        "Does not mark broader cadence complete.",
         "Does not resolve repository hygiene blockers."
       ],
       "next_action": "Continue using dated review logs for real performed reviews."
@@ -154,6 +154,33 @@
         "Does not resolve repository hygiene blockers."
       ],
       "next_action": "Use the completion gate before any full-completion or readiness claim."
+    },
+    {
+      "id": "SEIS-COMPLETE-007",
+      "title": "Weekly Goal Tracking OS review for 2026-W25",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-017"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-log.json",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+        "docs/goals/review-cadence.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "A current weekly Goal Tracking OS review was performed for ISO week 2026-W25 and tied to the next PR queue, blockers, and evidence ledger.",
+      "limitations": [
+        "Does not mark monthly reviews performed.",
+        "Does not resolve repository hygiene blockers or foundation validation failures.",
+        "Does not prove live GitHub PR integration."
+      ],
+      "next_action": "Keep repository hygiene recovery as the first safe PR and continue monthly review only when real period evidence exists."
     }
   ],
   "deferredItems": [
@@ -249,7 +276,8 @@
         "SEIS-EVID-012",
         "SEIS-EVID-014",
         "SEIS-EVID-015",
-        "SEIS-EVID-016"
+        "SEIS-EVID-016",
+        "SEIS-EVID-017"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",

@@ -361,7 +361,7 @@
       ],
       "summary": "A real daily Goal Tracking OS review was performed for 2026-06-20 using observed repository state and local validation output.",
       "limitations": [
-        "Does not prove weekly or monthly review completion.",
+        "Does not prove broader cadence completion by itself.",
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Keep daily review logs current when Goal Tracking OS state changes."
@@ -389,6 +389,32 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Use the completion gate before any future full-completion, merge-readiness, public-readiness, or release-readiness claim."
+    },
+    {
+      "id": "SEIS-EVID-017",
+      "title": "Weekly Goal Tracking OS review performed",
+      "type": "review",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "manual weekly review plus local validation evidence",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-log.json",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+        "docs/goals/review-cadence.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "A real weekly Goal Tracking OS review was performed for ISO week 2026-W25 using observed repository state, current blockers, and the next PR queue.",
+      "limitations": [
+        "Does not prove monthly review completion.",
+        "Does not resolve repository hygiene blockers, foundation validation failures, or live GitHub PR state.",
+        "Does not prove the routed Command Center shell is implemented."
+      ],
+      "next_action": "Keep monthly review planned and prioritize repository hygiene before readiness claims."
     }
   ]
 }

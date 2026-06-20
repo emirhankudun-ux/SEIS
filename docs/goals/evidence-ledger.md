@@ -62,6 +62,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-014` | passed | Objective coverage | Goal Tracking OS mission requirements are mapped to evidence, limitations, and next safe actions. |
 | `SEIS-EVID-015` | passed | Review log | Daily Goal Tracking OS review for 2026-06-20 was performed from current evidence. |
 | `SEIS-EVID-016` | passed | Completion gate | Strict completion gate distinguishes proved foundation work from partial and blocked full-objective requirements. |
+| `SEIS-EVID-017` | passed | Review log | Weekly Goal Tracking OS review for 2026-W25 was performed from current evidence and next PR queue state. |
 
 ## Validation
 

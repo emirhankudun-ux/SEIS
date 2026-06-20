@@ -70,4 +70,4 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 1. Render existing structured goal and evidence records in Command Center.
 2. Add read-only scanner output for goal evidence and validation gaps.
 3. Render Goal Tracking Center in Command Center without LLM dependency.
-4. Add weekly/monthly review records only when reviews are actually performed.
+4. Keep weekly review records evidence-backed and add monthly review records only when reviews are actually performed.

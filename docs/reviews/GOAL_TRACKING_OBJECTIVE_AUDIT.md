@@ -22,7 +22,7 @@ Completion gate:
 | `SEIS-OBJ-004` Goal Tracking App Foundation | partial | View model and static Goal Tracking Center page exist. | Static page is not a routed application shell. |
 | `SEIS-OBJ-005` Required Deliverables | passed | Required docs and product/review files exist and are checked. | Document existence does not prove product completion. |
 | `SEIS-OBJ-006` Evidence Rules | passed | Evidence ledger and validator enforce evidence, limitations, and relative paths. | Scoped checks are not a full repository security audit. |
-| `SEIS-OBJ-007` Review Cadence | partial | Daily, weekly, and monthly review records and templates exist; one daily review was performed for 2026-06-20. | Weekly and monthly reviews remain planned. |
+| `SEIS-OBJ-007` Review Cadence | partial | Daily, weekly, and monthly review records and templates exist; daily and weekly reviews were performed for the current period. | Monthly review remains planned. |
 | `SEIS-OBJ-008` Data Model | passed | Goal schema and JSON registry validate required fields. | The model is a fixture contract, not a database schema. |
 | `SEIS-OBJ-009` Command Center Goal UX | partial | Static page exposes cards, blockers, next actions, validation, readiness, and guardrails. | Milestone timeline is not a dedicated routed component. |
 | `SEIS-OBJ-010` Relationship With LLM | passed | Registry, validator, generator, and static page run without a model connection. | Future LLM assistance must remain evidence-aware. |
@@ -47,7 +47,7 @@ Completion gate:
 - It does not prove live GitHub, release, public-readiness, SSH, deployment, or
   provider integrations.
 - It does not resolve the pre-existing tracked deletion set.
-- It does not mark weekly or monthly reviews as performed.
+- It does not mark monthly review as performed.
 - It does not make a release or public-readiness claim.
 
 ## Current Blockers

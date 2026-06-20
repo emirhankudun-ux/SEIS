@@ -68,10 +68,75 @@
       ],
       "limitations": [
         "This daily review proves only the current local review event.",
-        "It does not prove weekly or monthly review completion.",
+        "It does not prove broader cadence completion by itself.",
         "It does not resolve repository hygiene blockers."
       ],
       "next_safe_action": "Resolve P0 repository hygiene blockers before public, release, or merge readiness claims."
+    },
+    {
+      "id": "SEIS-REVIEW-LOG-002",
+      "title": "Weekly Goal Tracking OS review for 2026-W25",
+      "cadence": "weekly",
+      "status": "performed",
+      "review_date": "2026-06-20",
+      "owner_role": "Product Governance",
+      "related_review_id": "SEIS-REVIEW-002",
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-007",
+        "SEIS-GOAL-019"
+      ],
+      "related_task_ids": [
+        "SEIS-TASK-001",
+        "SEIS-TASK-002",
+        "SEIS-TASK-005"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004",
+        "SEIS-EVID-014",
+        "SEIS-EVID-015",
+        "SEIS-EVID-016",
+        "SEIS-EVID-017"
+      ],
+      "related_paths": [
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "docs/goals/progress-ledger.md",
+        "content/development/seis-goal-review-log.json",
+        "content/development/seis-goal-evidence.json"
+      ],
+      "what_changed": [
+        "A current weekly Goal Tracking OS review was created for ISO week 2026-W25 using observed repository state, goal records, evidence records, and validation blockers.",
+        "The weekly review confirms that the next PR queue remains dominated by repository hygiene before routed Command Center expansion."
+      ],
+      "active_blockers": [
+        "Pre-existing tracked deletions remain unresolved in the worktree.",
+        "Foundation validation still fails because governance docs and an open-source governance checker are missing.",
+        "The Goal Tracking Center is still a generated static page, not a routed Command Center shell.",
+        "Live GitHub PR state remains unverified because no external GitHub API or CLI inspection was performed."
+      ],
+      "validation_performed": [
+        "Weekly review evidence was recorded in docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md.",
+        "Goal Tracking OS source records parsed as valid JSON.",
+        "npm run check:goal-tracking passed after the weekly review update.",
+        "npm run check:goal-command-center-view passed after regenerating the view model.",
+        "npm run check:goal-command-center-static passed after regenerating the static page.",
+        "git diff --check passed.",
+        "Refined scoped sensitive-pattern scan passed for the edited Goal Tracking files.",
+        "npm run seis:check passed with informational notes.",
+        "npm run check:foundation failed on known missing governance files and checker script."
+      ],
+      "validation_needed": [
+        "Rerun foundation validation after repository hygiene recovery.",
+        "Inspect GitHub PR state only after approval for external GitHub access."
+      ],
+      "limitations": [
+        "This weekly review proves only the 2026-W25 local review event.",
+        "It does not prove monthly review completion.",
+        "It does not resolve repository hygiene blockers, merge readiness, public readiness, release readiness, or live Command Center integration."
+      ],
+      "next_safe_action": "Keep the P0 repository hygiene recovery PR ahead of routed Command Center expansion and readiness claims."
     }
   ]
 }

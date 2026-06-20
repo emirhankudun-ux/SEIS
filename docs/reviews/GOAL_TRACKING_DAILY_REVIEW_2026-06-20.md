@@ -3,7 +3,7 @@
 Date: 2026-06-20
 
 This is a performed daily Goal Tracking OS review based on current local
-repository evidence. It does not mark weekly or monthly reviews as performed.
+repository evidence. It does not mark broader review cadence complete.
 
 Structured source:
 [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json).
@@ -56,7 +56,7 @@ Structured source:
 
 | Evidence id | What it proves | Limitation |
 | --- | --- | --- |
-| `SEIS-EVID-015` | A real daily review was performed for 2026-06-20 using current local evidence. | Does not prove weekly or monthly review completion and does not resolve hygiene blockers. |
+| `SEIS-EVID-015` | A real daily review was performed for 2026-06-20 using current local evidence. | Does not prove broader cadence completion by itself and does not resolve hygiene blockers. |
 
 ## Next Safe Action
 

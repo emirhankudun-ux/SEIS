@@ -28,6 +28,7 @@ broad file search.
 | [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
 | [reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md](reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md) | Goal Tracking OS mission-to-evidence coverage audit. | Active |
 | [reviews/GOAL_TRACKING_COMPLETION_AUDIT.md](reviews/GOAL_TRACKING_COMPLETION_AUDIT.md) | Strict Goal Tracking OS completion gate audit. | Active |
+| [reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md](reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md) | Performed weekly Goal Tracking OS review for ISO week 2026-W25. | Active |
 | [reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md](reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md) | Classification of unresolved tracked deletions and safe recovery actions. | Active |
 
 ## Goal Tracking OS
@@ -49,6 +50,7 @@ broad file search.
 | [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Structured non-LLM review cadence records. | Active |
 | [../content/development/seis-goal-review-log.json](../content/development/seis-goal-review-log.json) | Structured non-LLM performed review log. | Active |
 | [reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md](reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md) | First performed daily Goal Tracking OS review. | Active |
+| [reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md](reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md) | First performed weekly Goal Tracking OS review. | Active |
 | [goals/planning-horizons.md](goals/planning-horizons.md) | Yearly, quarterly, monthly, weekly, and active-project planning horizons. | Active |
 | [../content/development/seis-goal-planning-horizons.json](../content/development/seis-goal-planning-horizons.json) | Structured non-LLM planning horizon and active project records. | Active |
 | [goals/progress-ledger.md](goals/progress-ledger.md) | Completed work, deferred work, and follow-up action rules. | Active |

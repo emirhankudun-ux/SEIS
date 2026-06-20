@@ -26,6 +26,7 @@ The structured performed review log is
 | Review | Cadence | Date | Status | Evidence |
 | --- | --- | --- | --- | --- |
 | `SEIS-REVIEW-LOG-001` | daily | 2026-06-20 | performed | [`../reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md`](../reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md), `SEIS-EVID-015` |
+| `SEIS-REVIEW-LOG-002` | weekly | 2026-06-20 | performed | [`../reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md`](../reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md), `SEIS-EVID-017` |
 
 ## Completion Rules
 

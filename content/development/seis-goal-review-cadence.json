@@ -70,8 +70,10 @@
       "evidence_ids": [],
       "related_paths": [
         "docs/goals/weekly-priorities-template.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
         "docs/goals/progress-review.md",
         "docs/roadmap/NEXT_PR_QUEUE.md",
+        "content/development/seis-goal-review-log.json",
         "content/development/seis-goal-execution.json"
       ],
       "checklist": [
@@ -87,7 +89,7 @@
         "Validation output for any changed structured records."
       ],
       "completion_rule": "Mark performed only when the weekly template is completed for the current week.",
-      "next_action": "Run only after the repository hygiene blocker is either resolved or explicitly carried into the week."
+      "next_action": "Use weekly review logs only for actual weeks and keep unresolved repository hygiene blockers visible until resolved."
     },
     {
       "id": "SEIS-REVIEW-003",

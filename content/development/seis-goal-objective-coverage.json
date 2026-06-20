@@ -181,7 +181,8 @@
       "evidence_ids": [
         "SEIS-EVID-011",
         "SEIS-EVID-015",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-017"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -191,14 +192,15 @@
         "docs/goals/review-cadence.md",
         "docs/goals/daily-review-template.md",
         "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md",
         "content/development/seis-goal-review-cadence.json",
         "content/development/seis-goal-review-log.json"
       ],
-      "proof": "Daily, weekly, and monthly review cadence records and templates exist, and one current daily review log was performed on 2026-06-20.",
+      "proof": "Daily, weekly, and monthly review cadence records and templates exist, one current daily review log was performed on 2026-06-20, and one current weekly review log was performed for 2026-W25.",
       "limitations": [
-        "Weekly and monthly reviews remain planned and are not marked performed."
+        "Monthly review remains planned and is not marked performed."
       ],
       "next_action": "Continue adding dated review logs only when current-period evidence exists."
     },

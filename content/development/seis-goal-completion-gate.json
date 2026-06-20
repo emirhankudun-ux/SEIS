@@ -26,7 +26,8 @@
         "SEIS-EVID-008",
         "SEIS-EVID-013",
         "SEIS-EVID-014",
-        "SEIS-EVID-015"
+        "SEIS-EVID-015",
+        "SEIS-EVID-017"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -38,8 +39,8 @@
         "content/development/seis-goal-progress-ledger.json",
         "content/development/seis-goal-objective-coverage.json"
       ],
-      "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and one performed daily review.",
-      "gap": "Weekly and monthly review occurrences, routed app integration, and live repository intelligence remain incomplete.",
+      "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, one performed daily review, and one performed weekly review.",
+      "gap": "Monthly review occurrence, routed app integration, and live repository intelligence remain incomplete.",
       "next_action": "Keep structured records current and add live/static integration only after repository hygiene is isolated."
     },
     {
@@ -166,7 +167,8 @@
       "status": "partial",
       "evidence_ids": [
         "SEIS-EVID-011",
-        "SEIS-EVID-015"
+        "SEIS-EVID-015",
+        "SEIS-EVID-017"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -175,11 +177,12 @@
       "related_paths": [
         "content/development/seis-goal-review-cadence.json",
         "content/development/seis-goal-review-log.json",
-        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md"
+        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md"
       ],
-      "proof": "Cadence definitions exist for daily, weekly, and monthly reviews, and one actual daily review log is recorded with evidence.",
-      "gap": "Weekly and monthly reviews are not performed and remain planned.",
-      "next_action": "Add weekly and monthly logs only when actual period evidence exists."
+      "proof": "Cadence definitions exist for daily, weekly, and monthly reviews, and actual daily and weekly review logs are recorded with evidence.",
+      "gap": "Monthly review is not performed and remains planned.",
+      "next_action": "Add monthly logs only when actual period evidence exists."
     },
     {
       "id": "SEIS-GATE-008",

@@ -23,9 +23,9 @@
       "active": 4,
       "blocked": 3
     },
-    "totalEvidenceRecords": 16,
+    "totalEvidenceRecords": 17,
     "evidenceByStatus": {
-      "passed": 12,
+      "passed": 13,
       "blocked": 2,
       "observed": 1,
       "partial": 1
@@ -33,8 +33,8 @@
     "totalTasks": 5,
     "tasksByStatus": {
       "blocked": 1,
-      "active": 1,
-      "planned": 3
+      "active": 2,
+      "planned": 2
     },
     "totalBlockers": 3,
     "blockersByStatus": {
@@ -45,9 +45,9 @@
     "reviewsByStatus": {
       "planned": 3
     },
-    "totalReviewLogRecords": 1,
+    "totalReviewLogRecords": 2,
     "reviewLogByStatus": {
-      "performed": 1
+      "performed": 2
     },
     "totalPlanningHorizons": 4,
     "horizonsByStatus": {
@@ -60,7 +60,7 @@
       "active": 1,
       "planned": 1
     },
-    "totalCompletedItems": 6,
+    "totalCompletedItems": 7,
     "totalDeferredItems": 3,
     "totalFollowUpActions": 3,
     "totalObjectiveCoverageRecords": 11,
@@ -101,7 +101,7 @@
     {
       "id": "evidence-records",
       "label": "Evidence records",
-      "value": 16,
+      "value": 17,
       "status": "active",
       "description": "Structured proof, blocker, validation, and review records."
     },
@@ -129,7 +129,7 @@
     {
       "id": "performed-reviews",
       "label": "Performed reviews",
-      "value": 1,
+      "value": 2,
       "status": "active",
       "description": "Actual review records backed by current evidence."
     },
@@ -143,7 +143,7 @@
     {
       "id": "completed-items",
       "label": "Completed items",
-      "value": 6,
+      "value": 7,
       "status": "active",
       "description": "Scoped completed work with evidence and limitations."
     },
@@ -184,6 +184,7 @@
           "docs/goals/review-cadence.md",
           "content/development/seis-goal-review-cadence.json",
           "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
           "content/development/seis-goal-review-log.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
@@ -264,13 +265,14 @@
           "content/development/seis-goal-progress-ledger.json",
           "docs/goals/daily-review-template.md",
           "docs/goals/weekly-priorities-template.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
           "docs/goals/monthly-review-template.md"
         ],
         "blockers": [
-          "Weekly and monthly reviews must be performed before they can be marked complete"
+          "Monthly review must be performed before cadence can be marked complete"
         ],
         "validationMethod": "Review records contain date, scope, evidence, blockers, and validation output.",
-        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed."
+        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible; perform monthly review only when current-period evidence exists."
       }
     ],
     "blockedGoals": [
@@ -384,6 +386,7 @@
           "docs/goals/review-cadence.md",
           "content/development/seis-goal-review-cadence.json",
           "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
           "content/development/seis-goal-review-log.json",
           "docs/goals/planning-horizons.md",
           "content/development/seis-goal-planning-horizons.json",
@@ -621,7 +624,7 @@
         "priority": "P1 high",
         "nextMilestone": "SEIS-MS-001",
         "blockers": [
-          "Weekly and monthly reviews must be performed before they can be marked complete"
+          "Monthly review must be performed before cadence can be marked complete"
         ],
         "evidenceLinks": [
           "docs/goals/seis-vision.md",
@@ -633,9 +636,10 @@
           "content/development/seis-goal-progress-ledger.json",
           "docs/goals/daily-review-template.md",
           "docs/goals/weekly-priorities-template.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
           "docs/goals/monthly-review-template.md"
         ],
-        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible and use review templates only when reviews are actually performed."
+        "nextAction": "Keep cadence, planning horizon, and progress ledger records visible; perform monthly review only when current-period evidence exists."
       }
     ],
     "nextActionQueue": [
@@ -722,8 +726,8 @@
       },
       {
         "id": "SEIS-TASK-005",
-        "title": "Perform real weekly and monthly goal reviews",
-        "status": "planned",
+        "title": "Maintain real weekly and monthly goal reviews",
+        "status": "active",
         "priority": "P2 medium",
         "ownerRole": "Product Governance",
         "supportsGoalIds": [
@@ -732,9 +736,10 @@
         ],
         "blockerIds": [],
         "evidenceIds": [
-          "SEIS-EVID-011"
+          "SEIS-EVID-011",
+          "SEIS-EVID-017"
         ],
-        "nextAction": "Keep daily, weekly, and monthly cadence records planned until real review evidence exists."
+        "nextAction": "Keep weekly review recurrence evidence-backed and perform monthly review only with current period evidence."
       }
     ],
     "blockedItems": [
@@ -1008,7 +1013,7 @@
         ],
         "summary": "A real daily Goal Tracking OS review was performed for 2026-06-20 using observed repository state and local validation output.",
         "limitations": [
-          "Does not prove weekly or monthly review completion.",
+          "Does not prove broader cadence completion by itself.",
           "Does not resolve repository hygiene blockers or foundation validation failures."
         ],
         "nextAction": "Keep daily review logs current when Goal Tracking OS state changes."
@@ -1029,6 +1034,24 @@
           "Does not resolve repository hygiene blockers or foundation validation failures."
         ],
         "nextAction": "Use the completion gate before any future full-completion, merge-readiness, public-readiness, or release-readiness claim."
+      },
+      {
+        "id": "SEIS-EVID-017",
+        "title": "Weekly Goal Tracking OS review performed",
+        "type": "review",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-019"
+        ],
+        "summary": "A real weekly Goal Tracking OS review was performed for ISO week 2026-W25 using observed repository state, current blockers, and the next PR queue.",
+        "limitations": [
+          "Does not prove monthly review completion.",
+          "Does not resolve repository hygiene blockers, foundation validation failures, or live GitHub PR state.",
+          "Does not prove the routed Command Center shell is implemented."
+        ],
+        "nextAction": "Keep monthly review planned and prioritize repository hygiene before readiness claims."
       }
     ],
     "decisions": [
@@ -1079,9 +1102,11 @@
         "supportsGoalIds": [
           "SEIS-GOAL-019"
         ],
-        "evidenceIds": [],
+        "evidenceIds": [
+          "SEIS-EVID-017"
+        ],
         "decision": "Weekly and monthly review records must only be created when those reviews are actually performed with current evidence.",
-        "consequence": "Templates remain templates until a real review cadence event occurs."
+        "consequence": "The 2026-W25 weekly review is recorded from current evidence; templates remain templates until each real cadence event occurs."
       }
     ],
     "reviewCadence": [
@@ -1142,7 +1167,7 @@
           "Validation output for any changed structured records."
         ],
         "completionRule": "Mark performed only when the weekly template is completed for the current week.",
-        "nextAction": "Run only after the repository hygiene blocker is either resolved or explicitly carried into the week."
+        "nextAction": "Use weekly review logs only for actual weeks and keep unresolved repository hygiene blockers visible until resolved."
       },
       {
         "id": "SEIS-REVIEW-003",
@@ -1227,10 +1252,68 @@
         ],
         "limitations": [
           "This daily review proves only the current local review event.",
-          "It does not prove weekly or monthly review completion.",
+          "It does not prove broader cadence completion by itself.",
           "It does not resolve repository hygiene blockers."
         ],
         "nextSafeAction": "Resolve P0 repository hygiene blockers before public, release, or merge readiness claims."
+      },
+      {
+        "id": "SEIS-REVIEW-LOG-002",
+        "title": "Weekly Goal Tracking OS review for 2026-W25",
+        "cadence": "weekly",
+        "status": "performed",
+        "reviewDate": "2026-06-20",
+        "ownerRole": "Product Governance",
+        "relatedReviewId": "SEIS-REVIEW-002",
+        "relatedGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-019"
+        ],
+        "relatedTaskIds": [
+          "SEIS-TASK-001",
+          "SEIS-TASK-002",
+          "SEIS-TASK-005"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-003",
+          "SEIS-EVID-004",
+          "SEIS-EVID-014",
+          "SEIS-EVID-015",
+          "SEIS-EVID-016",
+          "SEIS-EVID-017"
+        ],
+        "whatChanged": [
+          "A current weekly Goal Tracking OS review was created for ISO week 2026-W25 using observed repository state, goal records, evidence records, and validation blockers.",
+          "The weekly review confirms that the next PR queue remains dominated by repository hygiene before routed Command Center expansion."
+        ],
+        "activeBlockers": [
+          "Pre-existing tracked deletions remain unresolved in the worktree.",
+          "Foundation validation still fails because governance docs and an open-source governance checker are missing.",
+          "The Goal Tracking Center is still a generated static page, not a routed Command Center shell.",
+          "Live GitHub PR state remains unverified because no external GitHub API or CLI inspection was performed."
+        ],
+        "validationPerformed": [
+          "Weekly review evidence was recorded in docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md.",
+          "Goal Tracking OS source records parsed as valid JSON.",
+          "npm run check:goal-tracking passed after the weekly review update.",
+          "npm run check:goal-command-center-view passed after regenerating the view model.",
+          "npm run check:goal-command-center-static passed after regenerating the static page.",
+          "git diff --check passed.",
+          "Refined scoped sensitive-pattern scan passed for the edited Goal Tracking files.",
+          "npm run seis:check passed with informational notes.",
+          "npm run check:foundation failed on known missing governance files and checker script."
+        ],
+        "validationNeeded": [
+          "Rerun foundation validation after repository hygiene recovery.",
+          "Inspect GitHub PR state only after approval for external GitHub access."
+        ],
+        "limitations": [
+          "This weekly review proves only the 2026-W25 local review event.",
+          "It does not prove monthly review completion.",
+          "It does not resolve repository hygiene blockers, merge readiness, public readiness, release readiness, or live Command Center integration."
+        ],
+        "nextSafeAction": "Keep the P0 repository hygiene recovery PR ahead of routed Command Center expansion and readiness claims."
       }
     ],
     "planningHorizons": [
@@ -1528,7 +1611,7 @@
         ],
         "summary": "A current daily Goal Tracking OS review was performed and recorded from observed repository state and local validation output.",
         "limitations": [
-          "Does not mark weekly or monthly reviews performed.",
+          "Does not mark broader cadence complete.",
           "Does not resolve repository hygiene blockers."
         ],
         "nextAction": "Continue using dated review logs for real performed reviews."
@@ -1552,6 +1635,27 @@
           "Does not resolve repository hygiene blockers."
         ],
         "nextAction": "Use the completion gate before any full-completion or readiness claim."
+      },
+      {
+        "id": "SEIS-COMPLETE-007",
+        "title": "Weekly Goal Tracking OS review for 2026-W25",
+        "status": "completed",
+        "completedAt": "2026-06-20",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-019"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-017"
+        ],
+        "summary": "A current weekly Goal Tracking OS review was performed for ISO week 2026-W25 and tied to the next PR queue, blockers, and evidence ledger.",
+        "limitations": [
+          "Does not mark monthly reviews performed.",
+          "Does not resolve repository hygiene blockers or foundation validation failures.",
+          "Does not prove live GitHub PR integration."
+        ],
+        "nextAction": "Keep repository hygiene recovery as the first safe PR and continue monthly review only when real period evidence exists."
       }
     ],
     "deferredItems": [
@@ -1631,7 +1735,8 @@
           "SEIS-EVID-012",
           "SEIS-EVID-014",
           "SEIS-EVID-015",
-          "SEIS-EVID-016"
+          "SEIS-EVID-016",
+          "SEIS-EVID-017"
         ],
         "nextAction": "Run goal validation after every structured record update."
       },
@@ -1825,7 +1930,8 @@
         "evidenceIds": [
           "SEIS-EVID-011",
           "SEIS-EVID-015",
-          "SEIS-EVID-014"
+          "SEIS-EVID-014",
+          "SEIS-EVID-017"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-002",
@@ -1835,14 +1941,15 @@
           "docs/goals/review-cadence.md",
           "docs/goals/daily-review-template.md",
           "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
           "docs/goals/weekly-priorities-template.md",
           "docs/goals/monthly-review-template.md",
           "content/development/seis-goal-review-cadence.json",
           "content/development/seis-goal-review-log.json"
         ],
-        "proof": "Daily, weekly, and monthly review cadence records and templates exist, and one current daily review log was performed on 2026-06-20.",
+        "proof": "Daily, weekly, and monthly review cadence records and templates exist, one current daily review log was performed on 2026-06-20, and one current weekly review log was performed for 2026-W25.",
         "limitations": [
-          "Weekly and monthly reviews remain planned and are not marked performed."
+          "Monthly review remains planned and is not marked performed."
         ],
         "nextAction": "Continue adding dated review logs only when current-period evidence exists."
       },
@@ -1968,7 +2075,8 @@
           "SEIS-EVID-008",
           "SEIS-EVID-013",
           "SEIS-EVID-014",
-          "SEIS-EVID-015"
+          "SEIS-EVID-015",
+          "SEIS-EVID-017"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-002",
@@ -1980,8 +2088,8 @@
           "content/development/seis-goal-progress-ledger.json",
           "content/development/seis-goal-objective-coverage.json"
         ],
-        "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and one performed daily review.",
-        "gap": "Weekly and monthly review occurrences, routed app integration, and live repository intelligence remain incomplete.",
+        "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, one performed daily review, and one performed weekly review.",
+        "gap": "Monthly review occurrence, routed app integration, and live repository intelligence remain incomplete.",
         "nextAction": "Keep structured records current and add live/static integration only after repository hygiene is isolated."
       },
       {
@@ -2108,7 +2216,8 @@
         "status": "partial",
         "evidenceIds": [
           "SEIS-EVID-011",
-          "SEIS-EVID-015"
+          "SEIS-EVID-015",
+          "SEIS-EVID-017"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-002",
@@ -2117,11 +2226,12 @@
         "relatedPaths": [
           "content/development/seis-goal-review-cadence.json",
           "content/development/seis-goal-review-log.json",
-          "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md"
+          "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md"
         ],
-        "proof": "Cadence definitions exist for daily, weekly, and monthly reviews, and one actual daily review log is recorded with evidence.",
-        "gap": "Weekly and monthly reviews are not performed and remain planned.",
-        "nextAction": "Add weekly and monthly logs only when actual period evidence exists."
+        "proof": "Cadence definitions exist for daily, weekly, and monthly reviews, and actual daily and weekly review logs are recorded with evidence.",
+        "gap": "Monthly review is not performed and remains planned.",
+        "nextAction": "Add monthly logs only when actual period evidence exists."
       },
       {
         "id": "SEIS-GATE-008",
