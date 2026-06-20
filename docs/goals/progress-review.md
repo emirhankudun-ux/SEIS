@@ -20,6 +20,7 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Structured planning horizons | active | [`planning-horizons.md`](planning-horizons.md), [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) | Keep yearly, quarterly, monthly, weekly, and active project lanes evidence-linked. |
 | Structured progress ledger | active | [`progress-ledger.md`](progress-ledger.md), [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) | Keep completed, deferred, and follow-up records scoped and evidence-backed. |
 | Structured objective coverage | active | [`../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md`](../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md), [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) | Keep mission coverage statuses evidence-backed and limitation-aware. |
+| Structured completion gate | active | [`../reviews/GOAL_TRACKING_COMPLETION_AUDIT.md`](../reviews/GOAL_TRACKING_COMPLETION_AUDIT.md), [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json) | Keep full-completion claims blocked until every requirement is proved. |
 | Command Center view model | active | [`command-center-view-model.md`](command-center-view-model.md), [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) | Keep generated view data fresh with `npm run check:goal-command-center-view`. |
 | Static Goal Tracking page | active | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) | Keep generated static page fresh with `npm run check:goal-command-center-static`. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
@@ -65,6 +66,8 @@ implementation:
   and follow-up actions.
 - Structured objective coverage created to map mission requirements to
   evidence, limitations, and next safe actions.
+- Structured completion gate created to prevent full-objective completion claims
+  while app integration and repository hygiene remain incomplete.
 - Static Command Center view model generated from goal, evidence, and execution
   records, including objective coverage.
 - Static Goal Tracking Center page generated from the view model.

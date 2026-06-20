@@ -61,6 +61,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-040` | P1 | Goal progress ledger | Maintain structured completed, deferred, and follow-up records with evidence and limitations. | `npm run check:goal-tracking` validates progress ledger records and the static page exposes completed, deferred, and follow-up sections. |
 | `SEIS-BL-041` | P1 | Goal objective coverage | Maintain structured coverage records mapping the Goal Tracking OS mission to evidence, limitations, and next safe actions. | `npm run check:goal-tracking` validates objective coverage records and the static page exposes objective coverage. |
 | `SEIS-BL-042` | P1 | Goal review log | Maintain performed daily, weekly, and monthly review logs only when current-period evidence exists. | `npm run check:goal-tracking` validates review log records and the static page exposes performed reviews separately from cadence. |
+| `SEIS-BL-043` | P1 | Goal completion gate | Maintain a strict completion gate that prevents full Goal Tracking OS completion claims until every requirement is proved. | `npm run check:goal-tracking` validates completion gate records and the static page exposes the final completion decision. |
 
 ## Deferred Dangerous Work
 

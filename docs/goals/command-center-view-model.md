@@ -17,6 +17,7 @@ It is generated from:
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
+- [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json)
 
 The first generated static page is:
 
@@ -28,8 +29,8 @@ The view model gives Command Center a non-LLM Goal Tracking Center data surface.
 It can render progress cards, active goals, blocked goals, category status,
 next actions, blockers, validation status, review cadence, performed review
 logs, planning horizons, active projects, objective coverage, decisions,
-readiness connections, and UX guardrails without any model provider or external
-API.
+completion gates, readiness connections, and UX guardrails without any model
+provider or external API.
 
 ## Generated Panels
 
@@ -50,6 +51,7 @@ API.
 | `deferredItems` | Deferred work with reasons, approval needs, and next actions. |
 | `followUpActions` | Follow-up actions linked to goals, tasks, and evidence. |
 | `objectiveCoverage` | Goal Tracking OS mission requirements mapped to evidence and limitations. |
+| `completionGate` | Strict full-objective completion gate and remaining gaps. |
 | `decisions` | Accepted/proposed/deferred/superseded decisions. |
 | `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |
 | `uxGuards` | Rules that prevent fake progress and hidden blockers. |

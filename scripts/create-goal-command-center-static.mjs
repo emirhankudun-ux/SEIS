@@ -75,6 +75,7 @@ function buildHtml(model) {
   const deferredItems = panels.deferredItems || [];
   const followUpActions = panels.followUpActions || [];
   const objectiveCoverage = panels.objectiveCoverage || [];
+  const completionGate = panels.completionGate || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -614,6 +615,26 @@ function buildHtml(model) {
         </div>
       </section>
 
+      <section class="panel">
+        <h2>Completion Gate</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Gate</th>
+                <th>Status</th>
+                <th>Proof</th>
+                <th>Gap</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${completionGate.map(renderCompletionGateRow).join("\n              ")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="decisions">
         <div class="panel">
           <h2>Decisions</h2>
@@ -877,6 +898,16 @@ function renderObjectiveCoverageRow(item) {
 </tr>`;
 }
 
+function renderCompletionGateRow(item) {
+  return `<tr>
+  <td><strong>${escapeHtml(item.id)}</strong><br><span class="muted">${escapeHtml(item.requirement)}</span></td>
+  <td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td>
+  <td>${escapeHtml(item.proof)}</td>
+  <td>${escapeHtml(item.gap)}</td>
+  <td>${escapeHtml(item.nextAction)}</td>
+</tr>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -901,6 +932,7 @@ function validateHtml(html, model) {
     "Deferred Work",
     "Follow-Up Actions",
     "Objective Coverage",
+    "Completion Gate",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -953,6 +985,10 @@ function validateHtml(html, model) {
     failures.push("static surface must expose objective coverage ids");
   }
 
+  if ((model.panels?.completionGate || []).length > 0 && !html.includes("SEIS-GATE-001")) {
+    failures.push("static surface must expose completion gate ids");
+  }
+
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {
     failures.push("static surface must not render fake progress bars or percentages");
   }
@@ -973,10 +1009,16 @@ function statusClass(status) {
   if (["active", "passed", "accepted", "completed", "validated"].includes(normalized)) {
     return "active";
   }
+  if (["proved"].includes(normalized)) {
+    return "active";
+  }
   if (["blocked", "failed", "critical"].includes(normalized)) {
     return "blocked";
   }
-  if (["planned", "partial", "observed", "proposed", "deferred"].includes(normalized)) {
+  if (["not_complete"].includes(normalized)) {
+    return "blocked";
+  }
+  if (["planned", "partial", "observed", "proposed", "deferred", "unverified"].includes(normalized)) {
     return "planned";
   }
   return "";

@@ -20,6 +20,7 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 | Review Cadence Panel | Daily, weekly, and monthly review templates and last review dates. |
 | Performed Reviews Panel | Actual review occurrences backed by evidence records. |
 | Objective Coverage Panel | Mission requirements mapped to evidence, limitations, and next safe actions. |
+| Completion Gate Panel | Strict full-objective completion decision and remaining gaps. |
 
 ## Filters
 
@@ -67,6 +68,7 @@ It is derived from the structured source records:
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
+- [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json)
 
 The raw goal source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
@@ -85,6 +87,8 @@ Completed, deferred, and follow-up work should come from
 [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json).
 Mission-to-evidence coverage should come from
 [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json).
+Full-objective completion gates should come from
+[`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json).
 The compact view model can be derived from each goal record:
 
 ```json

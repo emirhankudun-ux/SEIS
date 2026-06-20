@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-completion-gate",
+  "updated": "2026-06-20",
+  "mode": "non_llm_goal_completion_gate",
+  "finalDecision": "not_complete",
+  "allowedStatuses": [
+    "proved",
+    "partial",
+    "blocked",
+    "unverified"
+  ],
+  "allowedDecisions": [
+    "complete",
+    "not_complete",
+    "blocked_by_repository_hygiene",
+    "blocked_by_missing_evidence"
+  ],
+  "records": [
+    {
+      "id": "SEIS-GATE-001",
+      "requirement": "Goal Tracking OS must track the mission-level entities named by the objective.",
+      "status": "partial",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-008",
+        "SEIS-EVID-013",
+        "SEIS-EVID-014",
+        "SEIS-EVID-015"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-execution.json",
+        "content/development/seis-goal-progress-ledger.json",
+        "content/development/seis-goal-objective-coverage.json"
+      ],
+      "proof": "Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and one performed daily review.",
+      "gap": "Weekly and monthly review occurrences, routed app integration, and live repository intelligence remain incomplete.",
+      "next_action": "Keep structured records current and add live/static integration only after repository hygiene is isolated."
+    },
+    {
+      "id": "SEIS-GATE-002",
+      "requirement": "Goal hierarchy and goal object fields must be defined and machine-checkable.",
+      "status": "proved",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-014"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "docs/goals/goal-schema.md",
+        "content/development/seis-goal-tracking.json",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "proof": "The goal schema and validator enforce required goal fields, statuses, priorities, risks, blockers, evidence links, and next actions.",
+      "gap": "This is a local fixture contract, not a persisted app database.",
+      "next_action": "Keep the lightweight contract stable before adding storage or live adapters."
+    },
+    {
+      "id": "SEIS-GATE-003",
+      "requirement": "All strategic categories must have current status, evidence, blockers, and next action.",
+      "status": "proved",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-009",
+        "SEIS-EVID-014"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-command-center-view.json"
+      ],
+      "proof": "The registry validates 20 goals across the required 20 strategic categories and the generated view exposes category status.",
+      "gap": "Several categories are correctly planned or blocked because implementation evidence is not present.",
+      "next_action": "Do not promote planned or blocked categories until evidence changes."
+    },
+    {
+      "id": "SEIS-GATE-004",
+      "requirement": "Goal Tracking Center should show goal, blocker, evidence, readiness, progress, and next-action state without exaggeration.",
+      "status": "partial",
+      "evidence_ids": [
+        "SEIS-EVID-009",
+        "SEIS-EVID-010",
+        "SEIS-EVID-014",
+        "SEIS-EVID-015"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
+        "docs/product/goal-tracking-center.md"
+      ],
+      "proof": "The generated view and static page expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
+      "gap": "The page is not a routed Command Center application module and has no live GitHub, release, public-readiness, or SSH integration.",
+      "next_action": "Promote the generated static contract into the Command Center shell after repository hygiene recovery."
+    },
+    {
+      "id": "SEIS-GATE-005",
+      "requirement": "Required Goal Tracking deliverables must exist and remain discoverable.",
+      "status": "proved",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-014",
+        "SEIS-EVID-015"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-004"
+      ],
+      "related_paths": [
+        "docs/INDEX.md",
+        "docs/goals/seis-vision.md",
+        "docs/goals/long-term-goals.md",
+        "docs/goals/goal-tracking-system.md",
+        "docs/goals/goal-schema.md",
+        "docs/goals/milestone-map.md",
+        "docs/goals/progress-review.md",
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "docs/product/goal-tracking-center.md",
+        "docs/product/command-center-goals-view.md",
+        "docs/reviews/GOAL_TRACKING_REVIEW.md"
+      ],
+      "proof": "The required deliverables exist, are linked from the docs index, and are included in the Goal Tracking validator.",
+      "gap": "Docs prove the foundation and navigation, not the full application runtime.",
+      "next_action": "Keep the docs index current when adding new Goal Tracking records."
+    },
+    {
+      "id": "SEIS-GATE-006",
+      "requirement": "Evidence rules must prevent fake progress, fake completion, fake validation, private data, and unsupported claims.",
+      "status": "proved",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-006",
+        "SEIS-EVID-014",
+        "SEIS-EVID-015"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-005"
+      ],
+      "related_paths": [
+        "docs/goals/evidence-ledger.md",
+        "content/development/seis-goal-evidence.json",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "proof": "Evidence records include limitations, relative paths, supported goal ids, safe text checks, and scoped sensitive-pattern validation.",
+      "gap": "A full repository secret-history scan and public-readiness review remain unperformed.",
+      "next_action": "Run broader security/public-readiness checks only after repository hygiene is resolved."
+    },
+    {
+      "id": "SEIS-GATE-007",
+      "requirement": "Daily, weekly, and monthly review cadence must exist, and performed reviews must not be faked.",
+      "status": "partial",
+      "evidence_ids": [
+        "SEIS-EVID-011",
+        "SEIS-EVID-015"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-review-log.json",
+        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md"
+      ],
+      "proof": "Cadence definitions exist for daily, weekly, and monthly reviews, and one actual daily review log is recorded with evidence.",
+      "gap": "Weekly and monthly reviews are not performed and remain planned.",
+      "next_action": "Add weekly and monthly logs only when actual period evidence exists."
+    },
+    {
+      "id": "SEIS-GATE-008",
+      "requirement": "First implementation priorities must connect goals to evidence, roadmap, backlog, PR queue, and Command Center.",
+      "status": "partial",
+      "evidence_ids": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-009",
+        "SEIS-EVID-010",
+        "SEIS-EVID-014"
+      ],
+      "related_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-004",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html"
+      ],
+      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, and static Command Center surface.",
+      "gap": "The routed Command Center shell and repository hygiene recovery remain unfinished.",
+      "next_action": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
+    }
+  ]
+}

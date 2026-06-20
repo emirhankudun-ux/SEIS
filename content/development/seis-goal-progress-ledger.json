@@ -129,6 +129,31 @@
         "Does not resolve repository hygiene blockers."
       ],
       "next_action": "Continue using dated review logs for real performed reviews."
+    },
+    {
+      "id": "SEIS-COMPLETE-006",
+      "title": "Goal Tracking OS completion gate audit",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-016"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-completion-gate.json",
+        "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "A strict completion gate now separates proved foundation work from partial or blocked full-objective requirements.",
+      "limitations": [
+        "Does not mark the full Goal Tracking OS objective complete.",
+        "Does not resolve repository hygiene blockers."
+      ],
+      "next_action": "Use the completion gate before any full-completion or readiness claim."
     }
   ],
   "deferredItems": [
@@ -223,13 +248,15 @@
         "SEIS-EVID-011",
         "SEIS-EVID-012",
         "SEIS-EVID-014",
-        "SEIS-EVID-015"
+        "SEIS-EVID-015",
+        "SEIS-EVID-016"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",
         "content/development/seis-goal-tracking.json",
         "content/development/seis-goal-objective-coverage.json",
-        "content/development/seis-goal-review-log.json"
+        "content/development/seis-goal-review-log.json",
+        "content/development/seis-goal-completion-gate.json"
       ],
       "next_action": "Run goal validation after every structured record update."
     },

@@ -9,6 +9,9 @@ is complete.
 Structured source:
 [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json).
 
+Completion gate:
+[`GOAL_TRACKING_COMPLETION_AUDIT.md`](GOAL_TRACKING_COMPLETION_AUDIT.md).
+
 ## Coverage Summary
 
 | Objective | Status | Evidence | Limitation |
@@ -29,6 +32,8 @@ Structured source:
 
 - SEIS Goal Tracking OS now has a non-LLM structure for goals, evidence,
   execution, cadence, horizons, progress, and objective coverage.
+- SEIS Goal Tracking OS now has a strict completion gate that keeps the full
+  objective decision at `not_complete` until remaining gaps are proved.
 - The static Goal Tracking Center has a generated data source and a generated
   HTML surface.
 - The validator can detect missing required Goal Tracking deliverables and

@@ -413,7 +413,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">15</div>
+    <div class="card-value">16</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -455,7 +455,7 @@
         <article class="card">
   <div>
     <p class="card-label">Completed items</p>
-    <div class="card-value">5</div>
+    <div class="card-value">6</div>
   </div>
   <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
@@ -465,6 +465,13 @@
     <div class="card-value">11</div>
   </div>
   <p class="muted">Mission requirements mapped to evidence and limitations.</p>
+</article>
+        <article class="card">
+  <div>
+    <p class="card-label">Completion gate</p>
+    <div class="card-value">not_complete</div>
+  </div>
+  <p class="muted">Strict final-state audit for the Goal Tracking OS objective.</p>
 </article>
       </section>
 
@@ -1255,6 +1262,20 @@
     <span class="badge">Evidence: SEIS-EVID-015</span>
   </div>
 </article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Goal Tracking OS completion gate audit</h3>
+      <p class="muted">SEIS-COMPLETE-006 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>A strict completion gate now separates proved foundation work from partial or blocked full-objective requirements.</p>
+  <p class="muted">Does not mark the full Goal Tracking OS objective complete. Does not resolve repository hygiene blockers.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-016</span>
+  </div>
+</article>
           </div>
         </div>
 
@@ -1329,7 +1350,7 @@
   <p class="next-action">Run goal validation after every structured record update.</p>
   <div class="row-meta">
     <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
-    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016</span>
   </div>
 </article>
           <article class="row">
@@ -1445,6 +1466,81 @@
         </div>
       </section>
 
+      <section class="panel">
+        <h2>Completion Gate</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Gate</th>
+                <th>Status</th>
+                <th>Proof</th>
+                <th>Gap</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+  <td><strong>SEIS-GATE-001</strong><br><span class="muted">Goal Tracking OS must track the mission-level entities named by the objective.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>Structured records exist for goals, projects, milestones, tasks, blockers, decisions, evidence, completed work, deferred work, follow-up actions, objective coverage, and one performed daily review.</td>
+  <td>Weekly and monthly review occurrences, routed app integration, and live repository intelligence remain incomplete.</td>
+  <td>Keep structured records current and add live/static integration only after repository hygiene is isolated.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-002</strong><br><span class="muted">Goal hierarchy and goal object fields must be defined and machine-checkable.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The goal schema and validator enforce required goal fields, statuses, priorities, risks, blockers, evidence links, and next actions.</td>
+  <td>This is a local fixture contract, not a persisted app database.</td>
+  <td>Keep the lightweight contract stable before adding storage or live adapters.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-003</strong><br><span class="muted">All strategic categories must have current status, evidence, blockers, and next action.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The registry validates 20 goals across the required 20 strategic categories and the generated view exposes category status.</td>
+  <td>Several categories are correctly planned or blocked because implementation evidence is not present.</td>
+  <td>Do not promote planned or blocked categories until evidence changes.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-004</strong><br><span class="muted">Goal Tracking Center should show goal, blocker, evidence, readiness, progress, and next-action state without exaggeration.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>The generated view and static page expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.</td>
+  <td>The page is not a routed Command Center application module and has no live GitHub, release, public-readiness, or SSH integration.</td>
+  <td>Promote the generated static contract into the Command Center shell after repository hygiene recovery.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-005</strong><br><span class="muted">Required Goal Tracking deliverables must exist and remain discoverable.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>The required deliverables exist, are linked from the docs index, and are included in the Goal Tracking validator.</td>
+  <td>Docs prove the foundation and navigation, not the full application runtime.</td>
+  <td>Keep the docs index current when adding new Goal Tracking records.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-006</strong><br><span class="muted">Evidence rules must prevent fake progress, fake completion, fake validation, private data, and unsupported claims.</span></td>
+  <td><span class="badge active">proved</span></td>
+  <td>Evidence records include limitations, relative paths, supported goal ids, safe text checks, and scoped sensitive-pattern validation.</td>
+  <td>A full repository secret-history scan and public-readiness review remain unperformed.</td>
+  <td>Run broader security/public-readiness checks only after repository hygiene is resolved.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-007</strong><br><span class="muted">Daily, weekly, and monthly review cadence must exist, and performed reviews must not be faked.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>Cadence definitions exist for daily, weekly, and monthly reviews, and one actual daily review log is recorded with evidence.</td>
+  <td>Weekly and monthly reviews are not performed and remain planned.</td>
+  <td>Add weekly and monthly logs only when actual period evidence exists.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-GATE-008</strong><br><span class="muted">First implementation priorities must connect goals to evidence, roadmap, backlog, PR queue, and Command Center.</span></td>
+  <td><span class="badge planned">partial</span></td>
+  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, and static Command Center surface.</td>
+  <td>The routed Command Center shell and repository hygiene recovery remain unfinished.</td>
+  <td>Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR.</td>
+</tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="decisions">
         <div class="panel">
           <h2>Decisions</h2>
@@ -1524,7 +1620,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-review-log.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-review-log.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>, <code>content/development/seis-goal-completion-gate.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>
