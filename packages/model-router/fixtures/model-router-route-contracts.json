@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "id": "model-router-route-contracts",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/ai/model-router.md",
+    "docs/ai/provider-routing-policy.md",
+    "docs/security/model-provider-data-policy.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+  ],
+  "routeModes": [
+    "local-only",
+    "metadata-only",
+    "approval-needed"
+  ],
+  "routes": [
+    {
+      "id": "route-contract-local-repository-review",
+      "status": "validated",
+      "maturity": "local-alpha",
+      "request": {
+        "taskType": "repository-review",
+        "dataClass": "repository",
+        "privacyMode": "local-only",
+        "requiredCapabilities": [
+          "repository-state-summary",
+          "source-linked-evidence",
+          "validation-summary"
+        ],
+        "approvalState": "not-required",
+        "costBudget": {
+          "maxTokens": 0,
+          "maxUsd": 0
+        },
+        "evaluationProfile": "repository-assistant-local-readonly",
+        "sourceLinks": [
+          "docs/product/repository-assistant.md",
+          "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+        ]
+      },
+      "decision": {
+        "routeMode": "local-only",
+        "allowed": true,
+        "providerProfile": "none-local-prototype",
+        "modelProfile": "no-model-local-summary",
+        "promptVersionId": "prompt-repository-assistant-v0-1",
+        "approvalRequired": false,
+        "redactionRequired": false,
+        "blockedReason": "not-blocked"
+      },
+      "response": {
+        "routeId": "route-local-repo-review",
+        "providerId": "none-local-prototype",
+        "modelProfileId": "no-model-local-summary",
+        "promptVersionId": "prompt-repository-assistant-v0-1",
+        "privacyMode": "local-only",
+        "blockedReason": "not-blocked",
+        "auditEventId": "audit-route-local-repository-review",
+        "evaluationProfile": "repository-assistant-local-readonly",
+        "sourceLinks": [
+          "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+          "packages/model-router/fixtures/model-router-route-contracts.json"
+        ]
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "promptContentStored": false,
+        "secretMaterialStored": false,
+        "providerCallPerformed": false,
+        "browserReceivesProviderKey": false,
+        "safeMetadata": [
+          "route id",
+          "task type",
+          "data class",
+          "privacy mode",
+          "approval state",
+          "evaluation profile"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/model-router.md",
+        "docs/ai/provider-routing-policy.md"
+      ]
+    },
+    {
+      "id": "route-contract-metadata-documentation-summary",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "request": {
+        "taskType": "documentation-assistance",
+        "dataClass": "metadata",
+        "privacyMode": "metadata-only",
+        "requiredCapabilities": [
+          "document-status-summary",
+          "source-classification",
+          "roadmap-linking"
+        ],
+        "approvalState": "not-required",
+        "costBudget": {
+          "maxTokens": 0,
+          "maxUsd": 0
+        },
+        "evaluationProfile": "metadata-only-routing-fixture",
+        "sourceLinks": [
+          "docs/ai/provider-routing-policy.md",
+          "docs/architecture/ai-core-app-shared-contracts.md"
+        ]
+      },
+      "decision": {
+        "routeMode": "metadata-only",
+        "allowed": true,
+        "providerProfile": "metadata-only-no-provider",
+        "modelProfile": "no-model-metadata-summary",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "approvalRequired": false,
+        "redactionRequired": true,
+        "blockedReason": "raw content not routed; metadata-only summary allowed"
+      },
+      "response": {
+        "routeId": "route-metadata-doc-summary",
+        "providerId": "metadata-only-no-provider",
+        "modelProfileId": "no-model-metadata-summary",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "privacyMode": "metadata-only",
+        "blockedReason": "raw content not routed; metadata-only summary allowed",
+        "auditEventId": "audit-route-metadata-documentation-summary",
+        "evaluationProfile": "metadata-only-routing-fixture",
+        "sourceLinks": [
+          "packages/model-router/fixtures/model-router-route-contracts.json",
+          "reports/evals/ai-core-fixture-evaluation-report.json"
+        ]
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "promptContentStored": false,
+        "secretMaterialStored": false,
+        "providerCallPerformed": false,
+        "browserReceivesProviderKey": false,
+        "safeMetadata": [
+          "route id",
+          "task type",
+          "source class",
+          "privacy mode",
+          "approval state",
+          "evaluation profile"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/model-router.md",
+        "docs/ai/provider-routing-policy.md"
+      ]
+    },
+    {
+      "id": "route-contract-provider-redacted-approval-needed",
+      "status": "approval-needed",
+      "maturity": "draft",
+      "request": {
+        "taskType": "documentation-assistance",
+        "dataClass": "sensitive",
+        "privacyMode": "external-provider-redacted",
+        "requiredCapabilities": [
+          "long-context-review",
+          "provider-quality-fallback",
+          "redacted-documentation-help"
+        ],
+        "approvalState": "approval-needed",
+        "costBudget": {
+          "maxTokens": 0,
+          "maxUsd": 0
+        },
+        "evaluationProfile": "provider-redaction-fixture",
+        "sourceLinks": [
+          "docs/security/model-provider-data-policy.md",
+          "docs/ai/provider-routing-policy.md"
+        ]
+      },
+      "decision": {
+        "routeMode": "approval-needed",
+        "allowed": false,
+        "providerProfile": "provider-placeholder-server-side-only",
+        "modelProfile": "quality-balanced-placeholder",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "approvalRequired": true,
+        "redactionRequired": true,
+        "blockedReason": "external provider routing is blocked until human approval, server-side credential handling, and redaction policy are verified"
+      },
+      "response": {
+        "routeId": "route-external-redacted-docs",
+        "providerId": "provider-placeholder-server-side-only",
+        "modelProfileId": "quality-balanced-placeholder",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "privacyMode": "external-provider-redacted",
+        "blockedReason": "external provider routing is blocked until human approval, server-side credential handling, and redaction policy are verified",
+        "auditEventId": "audit-route-provider-redacted-approval-needed",
+        "evaluationProfile": "provider-redaction-fixture",
+        "sourceLinks": [
+          "packages/model-router/fixtures/model-router-route-contracts.json",
+          "docs/security/model-provider-data-policy.md"
+        ]
+      },
+      "auditMetadata": {
+        "redactionState": "redacted",
+        "promptContentStored": false,
+        "secretMaterialStored": false,
+        "providerCallPerformed": false,
+        "browserReceivesProviderKey": false,
+        "safeMetadata": [
+          "route id",
+          "task type",
+          "data class",
+          "privacy mode",
+          "approval state",
+          "blocked reason",
+          "evaluation profile"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/model-router.md",
+        "docs/security/model-provider-data-policy.md"
+      ]
+    }
+  ],
+  "nonClaims": [
+    "No live provider adapter is implemented.",
+    "No provider API key, local model secret, SSH private key, or credential is included.",
+    "No provider call, model call, benchmark, training, fine-tune, checkpoint, or model-card claim is created.",
+    "Approval-needed routes are blocked fixtures, not approved external provider integrations.",
+    "Browser clients do not receive provider keys or provider configuration secrets."
+  ]
+}

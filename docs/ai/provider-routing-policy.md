@@ -1,6 +1,6 @@
 # Provider Routing Policy
 
-Status: Foundation policy
+Status: Fixture-backed foundation policy
 
 Provider routing decides when SEIS may use an external model provider, a local
 model, or no model call.
@@ -10,6 +10,7 @@ model, or no model call.
 | Data class | Provider routing |
 | --- | --- |
 | Public | Standard provider allowed when cost and quality fit. |
+| Metadata | Metadata-only routing allowed when raw content is excluded. |
 | Internal | Provider use requires policy fit and task necessity. |
 | Sensitive | Private-provider or local-only, with approval. |
 | Secret | Blocked from model providers. |
@@ -51,3 +52,14 @@ Approval is required before:
 Safe metadata should include route id, task class, provider id, model profile,
 privacy mode, approval state, timestamp, and validation outcome. It must not
 include prompts containing secrets or private data.
+
+## Fixture Evidence
+
+Provider-routing boundaries are represented in
+`packages/model-router/fixtures/model-router-route-contracts.json` and checked
+by `npm run check:model-router-contracts`.
+
+The fixture pack keeps local-only and metadata-only routes provider-free, and
+keeps the external-provider-redacted route in `approval-needed` state. It does
+not create live provider credentials, provider API calls, benchmark claims, or
+model-readiness claims.

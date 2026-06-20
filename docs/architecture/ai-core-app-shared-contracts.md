@@ -71,6 +71,7 @@ The first shared contract implementation is fixture-backed:
 
 - `packages/shared-types/schemas/ai-core-app-contract.schema.json`
 - `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `packages/model-router/fixtures/model-router-route-contracts.json`
 - `npm run check:ai-core-app-contracts`
 
 The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
@@ -78,6 +79,10 @@ The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
 `documentationStatus`, `securityFinding`, `roadmapItem`, `moduleMaturity`,
 `llmExecutionMode`, `aiSurface`, `repositoryIntelligence`, and
 `goalTrackingState`.
+
+The shared fixture now includes model-router contract evidence for local-only,
+metadata-only, and approval-needed provider routes. Provider-backed routes remain
+approval-needed and do not imply live provider readiness.
 
 The fixture is intentionally local and metadata-only. It does not enable live
 provider routing, expose provider secrets, store raw prompts, perform GitHub

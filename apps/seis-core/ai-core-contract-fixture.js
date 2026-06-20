@@ -8,8 +8,11 @@ window.seisAiCoreContractFixture = {
     "roadmap/seis-ai-core-command-center-5-year-development-program.md",
     "docs/product/seis-ai-app.md",
     "docs/ai/seis-ai-core.md",
+    "docs/ai/model-router.md",
+    "docs/ai/provider-routing-policy.md",
     "docs/product/repository-assistant.md",
-    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json"
   ],
   stateVocabulary: [
     "ready",
@@ -52,34 +55,49 @@ window.seisAiCoreContractFixture = {
       privacyMode: "local-only",
       providerProfile: "none-local-prototype",
       modelProfile: "no-model-local-summary",
-      promptVersionId: "prompt-repository-review-v0-1",
+      promptVersionId: "prompt-repository-assistant-v0-1",
       approvalState: "not-required",
       blockedReason: "External provider routing remains disabled; the prototype summarizes local source-linked evidence only.",
       evaluationProfile: "repository-assistant-local-readonly",
       status: "validated",
       maturity: "local-alpha",
-      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "route-metadata-doc-summary",
+      taskType: "documentation-assistance",
+      dataClass: "public",
+      privacyMode: "metadata-only",
+      providerProfile: "metadata-only-no-provider",
+      modelProfile: "no-model-metadata-summary",
+      promptVersionId: "prompt-documentation-assistant-v0-1",
+      approvalState: "not-required",
+      blockedReason: "Raw content is not routed; only source-linked metadata may be summarized.",
+      evaluationProfile: "metadata-only-routing-fixture",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     },
     {
       id: "route-external-redacted-docs",
       taskType: "documentation-assistance",
-      dataClass: "public",
+      dataClass: "sensitive",
       privacyMode: "external-provider-redacted",
-      providerProfile: "provider-placeholder",
+      providerProfile: "provider-placeholder-server-side-only",
       modelProfile: "quality-balanced-placeholder",
       promptVersionId: "prompt-documentation-assistant-v0-1",
       approvalState: "approval-needed",
-      blockedReason: "External provider use requires explicit approval and server-side credential handling.",
+      blockedReason: "External provider routing is blocked until human approval, server-side credential handling, and redaction policy are verified.",
       evaluationProfile: "provider-redaction-fixture",
       status: "approval-needed",
       maturity: "draft",
-      evidence: "docs/security/model-provider-data-policy.md"
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     }
   ],
   promptVersions: [
     {
-      id: "prompt-repository-review-v0-1",
-      name: "Repository Review Assistant",
+      id: "prompt-repository-assistant-v0-1",
+      name: "Repository Assistant",
       version: "0.1",
       scope: "Read-only repository review with evidence links and no write actions.",
       status: "validated",
@@ -183,6 +201,14 @@ window.seisAiCoreContractFixture = {
       result: "pass",
       status: "validated",
       evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      id: "eval-model-router-contracts",
+      targetType: "route",
+      targetId: "model-router-route-contracts",
+      result: "pass",
+      status: "validated",
+      evidence: "scripts/check-model-router-contracts.mjs"
     }
   ],
   auditEvents: [
@@ -209,6 +235,14 @@ window.seisAiCoreContractFixture = {
       redactionState: "metadata-only",
       status: "validated",
       evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      id: "audit-model-router-contracts",
+      actor: "codex",
+      action: "added model-router request and response contract fixtures",
+      redactionState: "metadata-only",
+      status: "validated",
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     }
   ],
   repositoryFindings: [
@@ -227,6 +261,14 @@ window.seisAiCoreContractFixture = {
       severity: "info",
       status: "validated",
       evidence: "packages/repository-assistant/README.md"
+    },
+    {
+      id: "finding-model-router-route-contracts",
+      repository: "SEIS",
+      findingType: "fixture-backed-model-router-route-contracts",
+      severity: "info",
+      status: "validated",
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     }
   ],
   documentationStatuses: [
@@ -245,6 +287,14 @@ window.seisAiCoreContractFixture = {
       sourceClass: "scan-generated",
       status: "validated",
       evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      id: "doc-model-router-route-contracts",
+      document: "docs/ai/model-router.md",
+      freshness: "current",
+      sourceClass: "official",
+      status: "validated",
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     }
   ],
   securityFindings: [
@@ -280,6 +330,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      id: "roadmap-year-1-model-router-contracts",
+      horizon: "year-1",
+      track: "Model-router request and response route contracts",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
     }
   ],
   aiSurfaces: [

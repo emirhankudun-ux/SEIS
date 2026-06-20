@@ -33,9 +33,9 @@
 
 ## Next Recommended Slice
 
-Add model-router request and response contract fixtures for local-only, metadata-only, and approval-needed provider routes.
+Add agent-runtime task lifecycle and approval-state fixtures.
 
 Source links:
 
 - `roadmap/seis-ai-core-command-center-5-year-development-program.md`
-- `docs/ai/model-router.md`
+- `docs/ai/agent-runtime.md`

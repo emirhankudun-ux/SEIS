@@ -51,8 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add model-router request and response contract fixtures for local-only,
-   metadata-only, and approval-needed provider routes.
+1. Add agent-runtime task lifecycle and approval-state fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -144,3 +143,20 @@ evaluation records for prompt regression and app-state fixtures. It does not run
 live models, enable external provider routing, compare provider quality, publish
 benchmark scores, certify safety, train models, create checkpoints, or create
 model cards.
+
+## Follow-Up Model Router Contract Slice
+
+Status: Added after the fixture evaluation report slice.
+
+Evidence:
+
+- `packages/model-router/schemas/model-router-route-contract.schema.json`
+- `packages/model-router/fixtures/model-router-route-contracts.json`
+- `scripts/check-model-router-contracts.mjs`
+- `npm run check:model-router-contracts`
+
+This slice completes model-router request and response contract fixtures for
+local-only, metadata-only, and approval-needed provider routes. It remains
+fixture-backed and does not add live provider routing, provider keys,
+browser-side provider secrets, model calls, benchmark claims, model training,
+checkpoints, or model cards.

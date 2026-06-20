@@ -1,0 +1,317 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/model-router-route-contract.schema.json",
+  "title": "SEIS Model Router Route Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "status",
+    "sourceDocuments",
+    "routeModes",
+    "routes",
+    "nonClaims"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "status": {
+      "enum": ["fixture-backed", "blocked"]
+    },
+    "sourceDocuments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repoPath"
+      }
+    },
+    "routeModes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "enum": [
+          "local-only",
+          "metadata-only",
+          "approval-needed"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "nonClaims": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "repoPath": {
+      "type": "string",
+      "pattern": "^(docs|packages|roadmap|reports|apps|content|data|scripts)/"
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "maturity",
+        "request",
+        "decision",
+        "response",
+        "auditMetadata",
+        "sourceLinks"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "status": {
+          "enum": ["validated", "approval-needed", "blocked"]
+        },
+        "maturity": {
+          "enum": ["fixture-backed", "local-alpha", "draft"]
+        },
+        "request": {
+          "$ref": "#/$defs/request"
+        },
+        "decision": {
+          "$ref": "#/$defs/decision"
+        },
+        "response": {
+          "$ref": "#/$defs/response"
+        },
+        "auditMetadata": {
+          "$ref": "#/$defs/auditMetadata"
+        },
+        "sourceLinks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskType",
+        "dataClass",
+        "privacyMode",
+        "requiredCapabilities",
+        "approvalState",
+        "costBudget",
+        "evaluationProfile",
+        "sourceLinks"
+      ],
+      "properties": {
+        "taskType": {
+          "enum": [
+            "repository-review",
+            "documentation-assistance",
+            "architecture-review",
+            "security-review",
+            "roadmap-planning"
+          ]
+        },
+        "dataClass": {
+          "enum": ["public", "repository", "metadata", "sensitive", "secret"]
+        },
+        "privacyMode": {
+          "enum": [
+            "local-only",
+            "metadata-only",
+            "external-provider-redacted",
+            "disabled",
+            "blocked"
+          ]
+        },
+        "requiredCapabilities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "approvalState": {
+          "enum": ["not-required", "approval-needed", "approved", "denied", "blocked"]
+        },
+        "costBudget": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["maxTokens", "maxUsd"],
+          "properties": {
+            "maxTokens": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxUsd": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "evaluationProfile": {
+          "type": "string"
+        },
+        "sourceLinks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routeMode",
+        "allowed",
+        "providerProfile",
+        "modelProfile",
+        "promptVersionId",
+        "approvalRequired",
+        "redactionRequired",
+        "blockedReason"
+      ],
+      "properties": {
+        "routeMode": {
+          "enum": ["local-only", "metadata-only", "approval-needed"]
+        },
+        "allowed": {
+          "type": "boolean"
+        },
+        "providerProfile": {
+          "type": "string"
+        },
+        "modelProfile": {
+          "type": "string"
+        },
+        "promptVersionId": {
+          "$ref": "#/$defs/id"
+        },
+        "approvalRequired": {
+          "type": "boolean"
+        },
+        "redactionRequired": {
+          "type": "boolean"
+        },
+        "blockedReason": {
+          "type": "string"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "routeId",
+        "providerId",
+        "modelProfileId",
+        "promptVersionId",
+        "privacyMode",
+        "blockedReason",
+        "auditEventId",
+        "evaluationProfile",
+        "sourceLinks"
+      ],
+      "properties": {
+        "routeId": {
+          "$ref": "#/$defs/id"
+        },
+        "providerId": {
+          "type": "string"
+        },
+        "modelProfileId": {
+          "type": "string"
+        },
+        "promptVersionId": {
+          "$ref": "#/$defs/id"
+        },
+        "privacyMode": {
+          "enum": [
+            "local-only",
+            "metadata-only",
+            "external-provider-redacted",
+            "disabled",
+            "blocked"
+          ]
+        },
+        "blockedReason": {
+          "type": "string"
+        },
+        "auditEventId": {
+          "$ref": "#/$defs/id"
+        },
+        "evaluationProfile": {
+          "type": "string"
+        },
+        "sourceLinks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        }
+      }
+    },
+    "auditMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "redactionState",
+        "promptContentStored",
+        "secretMaterialStored",
+        "providerCallPerformed",
+        "browserReceivesProviderKey",
+        "safeMetadata"
+      ],
+      "properties": {
+        "redactionState": {
+          "enum": ["metadata-only", "redacted", "not-sensitive"]
+        },
+        "promptContentStored": {
+          "const": false
+        },
+        "secretMaterialStored": {
+          "const": false
+        },
+        "providerCallPerformed": {
+          "const": false
+        },
+        "browserReceivesProviderKey": {
+          "const": false
+        },
+        "safeMetadata": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

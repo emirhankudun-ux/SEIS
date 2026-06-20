@@ -292,8 +292,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add model-router request and response contract fixtures for local-only,
-   metadata-only, and approval-needed provider routes.
+1. Add agent-runtime task lifecycle and approval-state fixtures.
 
 Completed foundation slice:
 
@@ -313,6 +312,10 @@ Completed foundation slice:
 - Prompt and app-state fixture evaluation report generation now lives under
   `packages/evals/` and `reports/evals/`, and is checked by
   `npm run check:ai-core-fixture-evaluation-report`.
+- Model-router request and response contract fixtures for local-only,
+  metadata-only, and approval-needed provider routes now live under
+  `packages/model-router/` and are checked by
+  `npm run check:model-router-contracts`.
 
 ## Relationship to Existing Roadmaps
 

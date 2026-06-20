@@ -13,6 +13,8 @@ runtime SDK and not a live provider integration.
   object definitions.
 - `fixtures/ai-core-command-center-foundation.json` provides the first
   fixture-backed contract bundle for Command Center AI Core views.
+- `packages/model-router/fixtures/model-router-route-contracts.json` supplies the
+  current route evidence projected into the shared fixture.
 - `npm run check:ai-core-app-contracts` validates the schema and fixture without
   installing another runtime or provider SDK.
 

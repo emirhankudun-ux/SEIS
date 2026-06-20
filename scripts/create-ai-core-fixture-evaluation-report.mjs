@@ -325,10 +325,10 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add model-router request and response contract fixtures for local-only, metadata-only, and approval-needed provider routes.",
+    summary: "Add agent-runtime task lifecycle and approval-state fixtures.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
-      "docs/ai/model-router.md"
+      "docs/ai/agent-runtime.md"
     ]
   }
 };
