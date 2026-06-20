@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-goal-evidence-ledger",
-  "updated": "2026-06-19",
+  "updated": "2026-06-20",
   "mode": "non_llm_goal_evidence_foundation",
   "allowedStatuses": [
     "passed",
@@ -317,6 +317,31 @@
         "Does not resolve repository hygiene blockers or foundation validation failures."
       ],
       "next_action": "Keep completed, deferred, and follow-up records current with each Goal Tracking OS change."
+    },
+    {
+      "id": "SEIS-EVID-014",
+      "title": "Goal objective coverage audit validates",
+      "type": "review",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "manual objective coverage audit plus npm run check:goal-tracking",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-004",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-objective-coverage.json",
+        "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "The Goal Tracking OS mission requirements are mapped to structured objective coverage records with statuses, evidence ids, limitations, and next safe actions.",
+      "limitations": [
+        "Does not prove the routed Command Center shell is implemented.",
+        "Does not resolve repository hygiene blockers or foundation validation failures."
+      ],
+      "next_action": "Keep objective coverage records visible in the generated Command Center view and static Goal Tracking Center page."
     }
   ]
 }

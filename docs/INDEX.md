@@ -26,6 +26,7 @@ broad file search.
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Full foundation review from the current inspection pass. | Active |
 | [product/SEIS_NON_LLM_PLATFORM_MISSION.md](product/SEIS_NON_LLM_PLATFORM_MISSION.md) | Non-LLM Command Center and Platform OS mission. | Active |
 | [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
+| [reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md](reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md) | Goal Tracking OS mission-to-evidence coverage audit. | Active |
 | [reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md](reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md) | Classification of unresolved tracked deletions and safe recovery actions. | Active |
 
 ## Goal Tracking OS
@@ -49,6 +50,8 @@ broad file search.
 | [../content/development/seis-goal-planning-horizons.json](../content/development/seis-goal-planning-horizons.json) | Structured non-LLM planning horizon and active project records. | Active |
 | [goals/progress-ledger.md](goals/progress-ledger.md) | Completed work, deferred work, and follow-up action rules. | Active |
 | [../content/development/seis-goal-progress-ledger.json](../content/development/seis-goal-progress-ledger.json) | Structured non-LLM progress ledger records. | Active |
+| [reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md](reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md) | Objective coverage audit mapping mission requirements to evidence and limitations. | Active |
+| [../content/development/seis-goal-objective-coverage.json](../content/development/seis-goal-objective-coverage.json) | Structured non-LLM objective coverage records. | Active |
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Static non-LLM Command Center view data. | Active |
 | [../apps/command-center/goal-tracking/index.html](../apps/command-center/goal-tracking/index.html) | Generated static Goal Tracking Center page. | Active |

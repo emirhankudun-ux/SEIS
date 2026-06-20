@@ -1,6 +1,6 @@
 # SEIS Goal Tracking Center
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 Goal Tracking Center is the Command Center module for long-term goals,
 milestones, weekly priorities, blockers, validation, evidence, and next safe
@@ -31,6 +31,7 @@ what needs evidence, and what should happen next.
 | Review Cadence | Show planned daily, weekly, and monthly reviews without claiming completion. | [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) |
 | Planning Horizons | Show yearly, quarterly, monthly, weekly, and active project lanes. | [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) |
 | Progress Ledger | Show completed, deferred, and follow-up work with evidence and limitations. | [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) |
+| Objective Coverage | Show mission requirements with status, proof, limitations, and next safe action. | [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) |
 | Readiness Connections | Show public/release readiness status for relevant goals. | [`../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md`](../readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md) |
 
 ## UX Rules
@@ -73,6 +74,7 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
+- [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 - [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 - [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)

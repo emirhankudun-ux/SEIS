@@ -1,6 +1,6 @@
 # SEIS Goal Command Center View Model
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This document defines the first static Command Center-facing view model for
 Goal Tracking OS. The generated view is:
@@ -15,6 +15,7 @@ It is generated from:
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
+- [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 
 The first generated static page is:
 
@@ -25,8 +26,8 @@ The first generated static page is:
 The view model gives Command Center a non-LLM Goal Tracking Center data surface.
 It can render progress cards, active goals, blocked goals, category status,
 next actions, blockers, validation status, review cadence, planning horizons,
-active projects, decisions, readiness connections, and UX guardrails without any
-model provider or external API.
+active projects, objective coverage, decisions, readiness connections, and UX
+guardrails without any model provider or external API.
 
 ## Generated Panels
 
@@ -45,6 +46,7 @@ model provider or external API.
 | `completedItems` | Scoped completed work with evidence and limitations. |
 | `deferredItems` | Deferred work with reasons, approval needs, and next actions. |
 | `followUpActions` | Follow-up actions linked to goals, tasks, and evidence. |
+| `objectiveCoverage` | Goal Tracking OS mission requirements mapped to evidence and limitations. |
 | `decisions` | Accepted/proposed/deferred/superseded decisions. |
 | `readinessConnections` | Public readiness, release readiness, AI Core, Command Center, and SEIS Universe status. |
 | `uxGuards` | Rules that prevent fake progress and hidden blockers. |

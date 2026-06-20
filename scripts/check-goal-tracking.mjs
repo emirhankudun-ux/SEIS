@@ -6,6 +6,7 @@ const executionPath = "content/development/seis-goal-execution.json";
 const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
 const planningHorizonsPath = "content/development/seis-goal-planning-horizons.json";
 const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
+const objectiveCoveragePath = "content/development/seis-goal-objective-coverage.json";
 const commandCenterViewPath = "content/development/seis-goal-command-center-view.json";
 const commandCenterStaticPath = "apps/command-center/goal-tracking/index.html";
 const sensitiveTextPatterns = [
@@ -36,7 +37,8 @@ const requiredDocs = [
   "docs/roadmap/NEXT_PR_QUEUE.md",
   "docs/product/goal-tracking-center.md",
   "docs/product/command-center-goals-view.md",
-  "docs/reviews/GOAL_TRACKING_REVIEW.md"
+  "docs/reviews/GOAL_TRACKING_REVIEW.md",
+  "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md"
 ];
 
 const requiredCategories = [
@@ -121,6 +123,10 @@ if (!existsSync(progressLedgerPath)) {
   failures.push(`missing goal progress ledger: ${progressLedgerPath}`);
 }
 
+if (!existsSync(objectiveCoveragePath)) {
+  failures.push(`missing goal objective coverage registry: ${objectiveCoveragePath}`);
+}
+
 if (!existsSync(commandCenterViewPath)) {
   failures.push(`missing Goal Command Center view: ${commandCenterViewPath}`);
 }
@@ -151,6 +157,10 @@ const planningHorizonsRegistry = existsSync(planningHorizonsPath)
 
 const progressLedger = existsSync(progressLedgerPath)
   ? JSON.parse(readFileSync(progressLedgerPath, "utf8"))
+  : null;
+
+const objectiveCoverage = existsSync(objectiveCoveragePath)
+  ? JSON.parse(readFileSync(objectiveCoveragePath, "utf8"))
   : null;
 
 const commandCenterView = existsSync(commandCenterViewPath)
@@ -397,6 +407,10 @@ if (progressLedger) {
   validateProgressLedger(progressLedger);
 }
 
+if (objectiveCoverage) {
+  validateObjectiveCoverage(objectiveCoverage);
+}
+
 if (commandCenterView) {
   validateCommandCenterView(commandCenterView);
 }
@@ -435,6 +449,7 @@ console.log(JSON.stringify({
   completedItems: progressLedger.completedItems.length,
   deferredItems: progressLedger.deferredItems.length,
   followUpActions: progressLedger.followUpActions.length,
+  objectiveCoverageRecords: objectiveCoverage.records.length,
   commandCenterView: commandCenterView.id,
   commandCenterStatic: commandCenterStaticPath
 }, null, 2));
@@ -1010,6 +1025,96 @@ function validateProgressLedger(ledger) {
   validateFollowUpActions(ledger.followUpActions || []);
 }
 
+function validateObjectiveCoverage(coverage) {
+  if (coverage.schemaVersion !== 1) {
+    failures.push("goal objective coverage registry schemaVersion must be 1");
+  }
+
+  if (coverage.mode !== "non_llm_goal_objective_coverage") {
+    failures.push("goal objective coverage registry mode must be non_llm_goal_objective_coverage");
+  }
+
+  const allowedStatuses = new Set(coverage.allowedStatuses || []);
+  const records = coverage.records || [];
+  const ids = new Set();
+
+  if (!Array.isArray(records) || records.length < 10) {
+    failures.push("goal objective coverage registry must include objective coverage records");
+  }
+
+  for (const record of records) {
+    const label = record.id || "(missing objective coverage id)";
+    for (const field of [
+      "id",
+      "objective_section",
+      "requirement",
+      "status",
+      "evidence_ids",
+      "related_goal_ids",
+      "related_paths",
+      "proof",
+      "limitations",
+      "next_action"
+    ]) {
+      if (!(field in record)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (ids.has(record.id)) {
+      failures.push(`duplicate objective coverage id: ${record.id}`);
+    }
+    ids.add(record.id);
+
+    if (!/^SEIS-OBJ-\d{3}$/.test(record.id || "")) {
+      failures.push(`${label} id must match SEIS-OBJ-000 format`);
+    }
+
+    if (!allowedStatuses.has(record.status)) {
+      failures.push(`${label} has invalid status: ${record.status}`);
+    }
+
+    for (const field of ["evidence_ids", "related_goal_ids", "related_paths", "limitations"]) {
+      if (!Array.isArray(record[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const evidenceId of record.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+
+    for (const goalId of record.related_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const relatedPath of record.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths");
+    }
+
+    for (const [field, value] of Object.entries({
+      objective_section: record.objective_section,
+      requirement: record.requirement,
+      proof: record.proof,
+      next_action: record.next_action
+    })) {
+      validateSafeText(label, field, value);
+    }
+
+    for (const limitation of record.limitations || []) {
+      validateSafeText(label, "limitations", limitation);
+    }
+
+    if (record.status === "passed" && !record.evidence_ids?.length) {
+      failures.push(`${label} cannot be passed without evidence_ids`);
+    }
+  }
+}
+
 function validateCompletedItems(items) {
   const ids = new Set();
   if (!Array.isArray(items) || items.length === 0) {
@@ -1189,7 +1294,7 @@ function validateProgressRefs(item, label, options = {}) {
 
 function validateCommandCenterView(view) {
   const label = view.id || "(missing command center view id)";
-  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry || !progressLedger) {
+  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry || !progressLedger || !objectiveCoverage) {
     failures.push(`${label} cannot be validated until source registries load`);
     return;
   }
@@ -1202,7 +1307,7 @@ function validateCommandCenterView(view) {
     failures.push(`${label} mode must be non_llm_command_center_goal_view`);
   }
 
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath, progressLedgerPath]) {
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath, progressLedgerPath, objectiveCoveragePath]) {
     if (!view.sourceRecords?.includes(source)) {
       failures.push(`${label} missing source record: ${source}`);
     }
@@ -1244,6 +1349,10 @@ function validateCommandCenterView(view) {
     failures.push(`${label} totalFollowUpActions does not match progress ledger`);
   }
 
+  if (view.summary?.totalObjectiveCoverageRecords !== objectiveCoverage.records.length) {
+    failures.push(`${label} totalObjectiveCoverageRecords does not match objective coverage registry`);
+  }
+
   if (!Array.isArray(view.progressCards) || view.progressCards.length < 6) {
     failures.push(`${label} must expose core progress cards`);
   }
@@ -1280,6 +1389,10 @@ function validateCommandCenterView(view) {
     failures.push(`${label} must expose follow-up actions`);
   }
 
+  if (!view.panels?.objectiveCoverage?.length) {
+    failures.push(`${label} must expose objective coverage`);
+  }
+
   if (!view.uxGuards?.some((guard) => guard.id === "completed-needs-evidence")) {
     failures.push(`${label} must expose completed-needs-evidence UX guard`);
   }
@@ -1298,6 +1411,7 @@ function validateCommandCenterStatic(html) {
     "Completed Work",
     "Deferred Work",
     "Follow-Up Actions",
+    "Objective Coverage",
     "Readiness Connections",
     "UX Guardrails",
     "SEIS-BLOCKER-001",
@@ -1307,7 +1421,8 @@ function validateCommandCenterStatic(html) {
     "SEIS-PROJECT-001",
     "SEIS-COMPLETE-001",
     "SEIS-DEFER-001",
-    "SEIS-FOLLOWUP-001"
+    "SEIS-FOLLOWUP-001",
+    "SEIS-OBJ-001"
   ];
 
   for (const text of requiredText) {

@@ -73,6 +73,7 @@ function buildHtml(model) {
   const completedItems = panels.completedItems || [];
   const deferredItems = panels.deferredItems || [];
   const followUpActions = panels.followUpActions || [];
+  const objectiveCoverage = panels.objectiveCoverage || [];
   const readiness = panels.readinessConnections || [];
   const categoryStatus = panels.categoryStatus || [];
   const uxGuards = model.uxGuards || [];
@@ -445,6 +446,7 @@ function buildHtml(model) {
         <a href="#reviews">Reviews</a>
         <a href="#planning">Planning</a>
         <a href="#progress">Progress</a>
+        <a href="#coverage">Coverage</a>
         <a href="#decisions">Decisions</a>
       </nav>
     </aside>
@@ -581,6 +583,26 @@ function buildHtml(model) {
         <h2>Follow-Up Actions</h2>
         <div class="grid review-grid">
           ${followUpActions.map(renderFollowUpAction).join("\n          ")}
+        </div>
+      </section>
+
+      <section class="panel" id="coverage">
+        <h2>Objective Coverage</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Objective</th>
+                <th>Status</th>
+                <th>Proof</th>
+                <th>Limitations</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${objectiveCoverage.map(renderObjectiveCoverageRow).join("\n              ")}
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -819,6 +841,16 @@ function renderFollowUpAction(item) {
 </article>`;
 }
 
+function renderObjectiveCoverageRow(item) {
+  return `<tr>
+  <td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.objectiveSection)}<br><span class="muted">${escapeHtml(item.requirement)}</span></td>
+  <td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td>
+  <td>${escapeHtml(item.proof)}</td>
+  <td>${escapeHtml((item.limitations || []).join(" "))}</td>
+  <td>${escapeHtml(item.nextAction)}</td>
+</tr>`;
+}
+
 function renderGuard(guard) {
   return `<article class="row">
   <h3>${escapeHtml(guard.rule)}</h3>
@@ -841,6 +873,7 @@ function validateHtml(html, model) {
     "Completed Work",
     "Deferred Work",
     "Follow-Up Actions",
+    "Objective Coverage",
     "Readiness Connections",
     "UX Guardrails"
   ]) {
@@ -883,6 +916,10 @@ function validateHtml(html, model) {
 
   if ((model.panels?.followUpActions || []).length > 0 && !html.includes("SEIS-FOLLOWUP-001")) {
     failures.push("static surface must expose follow-up action ids");
+  }
+
+  if ((model.panels?.objectiveCoverage || []).length > 0 && !html.includes("SEIS-OBJ-001")) {
+    failures.push("static surface must expose objective coverage ids");
   }
 
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {

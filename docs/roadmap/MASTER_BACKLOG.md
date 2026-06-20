@@ -1,6 +1,6 @@
 # SEIS Master Backlog
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This backlog consolidates the next safe work needed to turn SEIS into a
 coherent, reviewable, public-ready AI-native engineering ecosystem. It favors
@@ -59,6 +59,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-038` | P1 | Goal review cadence records | Maintain structured daily, weekly, and monthly review cadence without fake performed reviews. | `npm run check:goal-tracking` validates planned cadence records and the static page exposes review cadence. |
 | `SEIS-BL-039` | P1 | Goal planning horizons | Maintain structured yearly, quarterly, monthly, weekly, and active-project planning horizons. | `npm run check:goal-tracking` validates horizon/project records and the static page exposes planning horizons plus active projects. |
 | `SEIS-BL-040` | P1 | Goal progress ledger | Maintain structured completed, deferred, and follow-up records with evidence and limitations. | `npm run check:goal-tracking` validates progress ledger records and the static page exposes completed, deferred, and follow-up sections. |
+| `SEIS-BL-041` | P1 | Goal objective coverage | Maintain structured coverage records mapping the Goal Tracking OS mission to evidence, limitations, and next safe actions. | `npm run check:goal-tracking` validates objective coverage records and the static page exposes objective coverage. |
 
 ## Deferred Dangerous Work
 

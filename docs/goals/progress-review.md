@@ -1,6 +1,6 @@
 # SEIS Goal Progress Review
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This is the first Goal Tracking OS progress review. It records current state and
 does not claim that the full Goal Tracking OS has been implemented.
@@ -18,12 +18,13 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Structured review cadence | active | [`review-cadence.md`](review-cadence.md), [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) | Keep daily, weekly, and monthly records planned until real review evidence exists. |
 | Structured planning horizons | active | [`planning-horizons.md`](planning-horizons.md), [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) | Keep yearly, quarterly, monthly, weekly, and active project lanes evidence-linked. |
 | Structured progress ledger | active | [`progress-ledger.md`](progress-ledger.md), [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) | Keep completed, deferred, and follow-up records scoped and evidence-backed. |
+| Structured objective coverage | active | [`../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md`](../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md), [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) | Keep mission coverage statuses evidence-backed and limitation-aware. |
 | Command Center view model | active | [`command-center-view-model.md`](command-center-view-model.md), [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) | Keep generated view data fresh with `npm run check:goal-command-center-view`. |
 | Static Goal Tracking page | active | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) | Keep generated static page fresh with `npm run check:goal-command-center-static`. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
 | Goal Tracking Center | planned | [`../product/goal-tracking-center.md`](../product/goal-tracking-center.md) | Build fixture/manual UI data next. |
 | Command Center goals view | planned | [`../product/command-center-goals-view.md`](../product/command-center-goals-view.md) | Add static views after design-system demo. |
-| Validation | partial | `git diff --check`, `npm run seis:check`, `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, and `npm run check:goal-command-center-static` passed on 2026-06-19; `npm run check:foundation` is blocked. | Resolve deleted validator blockers later. |
+| Validation | partial | `git diff --check`, `npm run seis:check`, `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, and `npm run check:goal-command-center-static` passed on 2026-06-20; `npm run check:foundation` is blocked. | Resolve deleted validator blockers later. |
 
 ## Blockers
 
@@ -59,8 +60,10 @@ implementation:
   and active project lanes without claiming completion.
 - Structured progress ledger created for scoped completed work, deferred work,
   and follow-up actions.
+- Structured objective coverage created to map mission requirements to
+  evidence, limitations, and next safe actions.
 - Static Command Center view model generated from goal, evidence, and execution
-  records.
+  records, including objective coverage.
 - Static Goal Tracking Center page generated from the view model.
 
 ## Deferred Work

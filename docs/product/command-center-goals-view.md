@@ -1,6 +1,6 @@
 # Command Center Goals View
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 The Command Center Goals View is the UI expression of SEIS Goal Tracking OS. It
 connects long-term goals to roadmap, validation, blockers, evidence, public
@@ -18,6 +18,7 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 | Next Safe Action Panel | What should happen next, grouped by PR queue and goal. |
 | Evidence Drawer | Links to docs, validation output, reviews, files, and PR records. |
 | Review Cadence Panel | Daily, weekly, and monthly review templates and last review dates. |
+| Objective Coverage Panel | Mission requirements mapped to evidence, limitations, and next safe actions. |
 
 ## Filters
 
@@ -63,6 +64,7 @@ It is derived from the structured source records:
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
+- [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 
 The raw goal source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).
@@ -77,6 +79,8 @@ Yearly, quarterly, monthly, weekly, and active project lanes should come from
 [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json).
 Completed, deferred, and follow-up work should come from
 [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json).
+Mission-to-evidence coverage should come from
+[`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json).
 The compact view model can be derived from each goal record:
 
 ```json

@@ -18,6 +18,7 @@ listed scope is complete, not that the whole SEIS ecosystem is complete.
 | `SEIS-COMPLETE-001` Goal Tracking OS documentation foundation | `SEIS-EVID-001` | Does not prove an app module exists. |
 | `SEIS-COMPLETE-002` Structured Goal Tracking OS records | `SEIS-EVID-008`, `SEIS-EVID-011`, `SEIS-EVID-012` | Does not claim reviews or horizons are complete. |
 | `SEIS-COMPLETE-003` Static Goal Tracking Center surface | `SEIS-EVID-009`, `SEIS-EVID-010` | Does not prove routed app shell, deployment, or live integration. |
+| `SEIS-COMPLETE-004` Goal Tracking OS objective coverage audit | `SEIS-EVID-014` | Does not prove full Command Center implementation or resolve hygiene blockers. |
 
 ## Deferred Items
 

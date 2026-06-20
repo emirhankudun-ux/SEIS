@@ -81,6 +81,30 @@
         "Does not prove deployment or live integration."
       ],
       "next_action": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+    },
+    {
+      "id": "SEIS-COMPLETE-004",
+      "title": "Goal Tracking OS objective coverage audit",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-014"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-objective-coverage.json",
+        "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
+        "scripts/check-goal-tracking.mjs"
+      ],
+      "summary": "The Goal Tracking OS mission requirements are mapped to evidence, limitations, and next safe actions.",
+      "limitations": [
+        "Does not prove full Command Center implementation.",
+        "Does not resolve repository hygiene blockers."
+      ],
+      "next_action": "Keep objective coverage visible in the generated Command Center view and static page."
     }
   ],
   "deferredItems": [
@@ -173,11 +197,13 @@
       "evidence_ids": [
         "SEIS-EVID-001",
         "SEIS-EVID-011",
-        "SEIS-EVID-012"
+        "SEIS-EVID-012",
+        "SEIS-EVID-014"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",
-        "content/development/seis-goal-tracking.json"
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-objective-coverage.json"
       ],
       "next_action": "Run goal validation after every structured record update."
     },

@@ -1,6 +1,6 @@
 # SEIS Goal Evidence Ledger
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This ledger defines how Goal Tracking OS stores progress evidence without
 depending on an LLM. The structured evidence file is
@@ -59,6 +59,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-011` | passed | Review cadence | Daily, weekly, and monthly cadence records validate without claiming performed reviews. |
 | `SEIS-EVID-012` | passed | Planning horizons | Yearly, quarterly, monthly, weekly, and active-project records validate. |
 | `SEIS-EVID-013` | passed | Progress ledger | Completed, deferred, and follow-up records validate with evidence and limitations. |
+| `SEIS-EVID-014` | passed | Objective coverage | Goal Tracking OS mission requirements are mapped to evidence, limitations, and next safe actions. |
 
 ## Validation
 
@@ -69,5 +70,5 @@ npm run check:goal-tracking
 ```
 
 The validator checks the goal registry, required goal docs, evidence ledger,
-execution board, review cadence, planning horizons, progress ledger, generated
-Command Center view model, and generated static page.
+execution board, review cadence, planning horizons, progress ledger, objective
+coverage, generated Command Center view model, and generated static page.
