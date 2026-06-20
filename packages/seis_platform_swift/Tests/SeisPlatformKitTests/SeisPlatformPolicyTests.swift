@@ -113,6 +113,48 @@ import Testing
     #expect(contract.requiredInfoPlistKeys.contains("NSPrincipalClass"))
 }
 
+@Test func aiCommandCoreDesktopContractDescribesLocalDemoApp() {
+    let contract = SeisAppleRunHandoffContract.aiCommandCoreDesktop
+
+    #expect(contract.productName == "SeisAICommandCore")
+    #expect(contract.bundleIdentifier == "com.seis.ai-command-core")
+    #expect(contract.bundleDisplayName == "SEIS AI Command Core")
+    #expect(contract.codexRunCommand == "./script/build_and_run.sh --ai-demo")
+    #expect(contract.supportedModes.contains("--ai-demo --verify"))
+}
+
+@Test func aiCommandCoreEngineRoutesBuildRequestsAndScoresRisk() {
+    let run = SeisAICommandCoreEngine.makeRun(
+        prompt: "Build a secure SEIS AI desktop demo with routing, agents, prompt versions, evals, approvals, audit, and no real provider call.",
+        mode: .build,
+        promptVersion: "seis-command-v0.3",
+        approvalRequired: true,
+        redactSecrets: true,
+        autonomyLevel: 1,
+        runNumber: 7
+    )
+
+    #expect(run.id == "SEIS-DESKTOP-007")
+    #expect(run.traceID == "desktop-trace-007")
+    #expect(run.route.selected.name == "Implementation Builder")
+    #expect(run.steps.count >= 6)
+    #expect(run.agents.contains { $0.name == "SwiftUI Agent" && $0.status == "Running" })
+    #expect(run.knowledge.contains { $0.title == "SECURITY.md" })
+    #expect(run.evaluations.contains { $0.name == "Privacy" && $0.score >= 90 })
+    #expect(run.compositeScore >= 80)
+}
+
+@Test func aiCommandCoreEngineRaisesRiskForPrivilegedRequests() {
+    let risk = SeisAICommandCoreEngine.computeRisk(
+        prompt: "Deploy with SSH, token, credential, firewall, and production changes.",
+        autonomyLevel: 3,
+        approvalRequired: true
+    )
+
+    #expect(risk.level == "High")
+    #expect(risk.score >= 68)
+}
+
 @Test func appleContinuationViewRendersReadinessMetrics() throws {
     let root = repositoryRoot()
     let source = try String(
@@ -137,6 +179,19 @@ import Testing
     for token in contract.expectedEnvironmentTokens {
         #expect(environment.contains(token), "missing environment token: \(token)")
     }
+}
+
+@Test func aiCommandCoreRunHandoffFilesMatchSwiftContract() throws {
+    let contract = SeisAppleRunHandoffContract.aiCommandCoreDesktop
+    let root = repositoryRoot()
+    let script = try String(contentsOf: root.appending(path: contract.runScriptRelativePath), encoding: .utf8)
+
+    #expect(script.contains("APP_NAME=\"SeisAppleNativeShell\""))
+    #expect(script.contains("APP_NAME=\"SeisAICommandCore\""))
+    #expect(script.contains("BUNDLE_ID=\"com.seis.ai-command-core\""))
+    #expect(script.contains("DISPLAY_NAME=\"SEIS AI Command Core\""))
+    #expect(script.contains("--ai-demo"))
+    #expect(script.contains("swift build --package-path \"$PACKAGE_DIR\" --product \"$APP_NAME\""))
 }
 
 @Test func appleShellSettingsContractDefinesNativePreferences() {

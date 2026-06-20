@@ -1,0 +1,16 @@
+{
+  "name": "SEIS AI Command Core",
+  "short_name": "SEIS AI",
+  "description": "Local deterministic AI operations demo for SEIS.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#f7f8fa",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">SEIS AI Command Core</title>
+  <rect width="64" height="64" rx="14" fill="#11141a"/>
+  <path d="M16 20h24c7 0 12 5 12 11s-5 11-12 11H27c-5 0-9 4-9 9" fill="none" stroke="#7cc7ff" stroke-width="5" stroke-linecap="round"/>
+  <path d="M16 20c0 6 5 11 12 11h12" fill="none" stroke="#f7f8fa" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="47" cy="18" r="4" fill="#2fb36d"/>
+</svg>

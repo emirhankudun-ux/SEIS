@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f8fa" />
+  <meta
+    name="description"
+    content="SEIS AI Command Core is a local, deterministic demo for model routing, agents, prompt versions, knowledge evidence, evaluation, approvals, and audit workflows."
+  />
+  <title>SEIS AI Command Core</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="app-shell" data-density="comfortable">
+    <aside class="sidebar" aria-label="SEIS AI modules">
+      <a class="brand" href="#workspace" data-nav-target="workspace" aria-label="SEIS AI Command Core workspace">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" aria-label="">
+            <path d="M5 6.5h9.4c2.6 0 4.6 1.9 4.6 4.2s-2 4.2-4.6 4.2H9.7c-1.9 0-3.4 1.4-3.4 3.1" />
+            <path d="M5 6.5c0 2.3 1.9 4.2 4.4 4.2h5" />
+          </svg>
+        </span>
+        <span>
+          <strong>SEIS AI Command Core</strong>
+          <small>Local demo mode</small>
+        </span>
+      </a>
+
+      <nav class="module-nav" aria-label="Primary">
+        <button class="nav-item is-active" type="button" data-nav-target="workspace">
+          <span class="nav-glyph" aria-hidden="true">01</span>
+          <span>Ask SEIS</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="router">
+          <span class="nav-glyph" aria-hidden="true">02</span>
+          <span>Router</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="agents">
+          <span class="nav-glyph" aria-hidden="true">03</span>
+          <span>Agents</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="prompts">
+          <span class="nav-glyph" aria-hidden="true">04</span>
+          <span>Prompts</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="knowledge">
+          <span class="nav-glyph" aria-hidden="true">05</span>
+          <span>Knowledge</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="evals">
+          <span class="nav-glyph" aria-hidden="true">06</span>
+          <span>Evals</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="approvals">
+          <span class="nav-glyph" aria-hidden="true">07</span>
+          <span>Approvals</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="audit">
+          <span class="nav-glyph" aria-hidden="true">08</span>
+          <span>Audit</span>
+        </button>
+      </nav>
+
+      <section class="sidebar-status" aria-labelledby="status-title">
+        <p id="status-title">Execution plane</p>
+        <strong>No provider key connected</strong>
+        <span>All responses are deterministic local demo output.</span>
+      </section>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <button class="icon-button mobile-nav" type="button" id="mobile-nav" aria-label="Toggle navigation">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+        </button>
+        <label class="command-search" for="global-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6" />
+            <path d="m16 16 4 4" />
+          </svg>
+          <input id="global-search" type="search" autocomplete="off" placeholder="Search runs, agents, prompts, evidence..." />
+          <kbd>/</kbd>
+        </label>
+        <div class="topbar-status" aria-label="Environment">
+          <span class="status-dot ready" aria-hidden="true"></span>
+          <span>Local demo mode</span>
+        </div>
+        <button class="quiet-button" type="button" id="open-command">Command</button>
+      </header>
+
+      <main id="main-content" class="main-grid">
+        <section class="primary-column" aria-label="AI command workspace">
+          <section id="workspace" class="hero-panel app-section" aria-labelledby="workspace-title">
+            <div class="section-heading">
+              <div>
+                <h1 id="workspace-title">Ask SEIS</h1>
+                <p>
+                  Draft a request, inspect the route, assign supervised agents, evaluate the answer, and approve only what is safe to act on.
+                </p>
+              </div>
+              <div class="run-clock" aria-label="Current run">
+                <span>Run</span>
+                <strong id="run-id">SEIS-LOCAL-001</strong>
+              </div>
+            </div>
+
+            <div class="mode-strip" role="tablist" aria-label="Task mode">
+              <button class="mode-button is-active" type="button" data-mode="plan" role="tab" aria-selected="true">Plan</button>
+              <button class="mode-button" type="button" data-mode="build" role="tab" aria-selected="false">Build</button>
+              <button class="mode-button" type="button" data-mode="review" role="tab" aria-selected="false">Review</button>
+              <button class="mode-button" type="button" data-mode="security" role="tab" aria-selected="false">Security</button>
+            </div>
+
+            <form class="composer" id="composer-form">
+              <label for="prompt-input">Prompt</label>
+              <textarea id="prompt-input" name="prompt" rows="6" spellcheck="true">Build a SEIS AI demo app that can route a request, coordinate agents, check risk, cite knowledge, run evaluation, and produce an approval-ready plan without calling a real provider.</textarea>
+              <div class="composer-actions">
+                <button class="primary-button" type="submit">Generate plan</button>
+                <button class="secondary-button" type="button" id="run-evaluation">Run evaluation</button>
+                <button class="ghost-button" type="button" id="reset-demo">Reset</button>
+              </div>
+            </form>
+
+            <div class="response-panel" aria-live="polite">
+              <div class="response-header">
+                <h2>Generated plan</h2>
+                <span id="response-quality" class="score-pill">Ready for review</span>
+              </div>
+              <div id="generated-response" class="generated-response"></div>
+            </div>
+          </section>
+
+          <section id="router" class="app-section" aria-labelledby="router-title">
+            <div class="panel-header">
+              <h2 id="router-title">Router</h2>
+              <span class="microcopy">Provider-neutral routing contract</span>
+            </div>
+            <div class="router-layout">
+              <div class="route-summary">
+                <span>Selected profile</span>
+                <strong id="selected-profile">Architecture Planner</strong>
+                <p id="route-rationale">Classifies the request and chooses a safe local demo route before any action.</p>
+              </div>
+              <div class="route-bars" id="route-bars"></div>
+            </div>
+          </section>
+
+          <section id="agents" class="app-section" aria-labelledby="agents-title">
+            <div class="panel-header">
+              <h2 id="agents-title">Agents</h2>
+              <div class="toolbar">
+                <label for="agent-filter">Focus</label>
+                <select id="agent-filter">
+                  <option value="all">All agents</option>
+                  <option value="Ready">Ready</option>
+                  <option value="Running">Running</option>
+                  <option value="Review">Review</option>
+                </select>
+              </div>
+            </div>
+            <div id="agent-queue" class="agent-queue"></div>
+          </section>
+
+          <section id="prompts" class="app-section split-section" aria-labelledby="prompts-title">
+            <div>
+              <div class="panel-header">
+                <h2 id="prompts-title">Prompts</h2>
+                <span class="microcopy">Versioned behavior, not model ownership</span>
+              </div>
+              <div id="prompt-version-list" class="version-list"></div>
+            </div>
+            <form class="prompt-editor" id="prompt-editor">
+              <label for="prompt-version">Active version</label>
+              <select id="prompt-version" name="promptVersion">
+                <option value="seis-command-v0.3">seis-command-v0.3</option>
+                <option value="seis-review-v0.2">seis-review-v0.2</option>
+                <option value="seis-security-v0.1">seis-security-v0.1</option>
+              </select>
+              <label for="prompt-notes">Run notes</label>
+              <textarea id="prompt-notes" rows="5">Keep output bounded, evidence-led, reversible, and explicit about missing credentials.</textarea>
+              <button class="secondary-button" type="submit">Save prompt note</button>
+            </form>
+          </section>
+
+          <section id="knowledge" class="app-section" aria-labelledby="knowledge-title">
+            <div class="panel-header">
+              <h2 id="knowledge-title">Knowledge</h2>
+              <span class="microcopy">Evidence and provenance</span>
+            </div>
+            <div id="knowledge-list" class="knowledge-list"></div>
+          </section>
+        </section>
+
+        <aside class="inspector" aria-label="Run inspector">
+          <section class="inspector-card">
+            <div class="panel-header compact">
+              <h2>Inspector</h2>
+              <span id="risk-label" class="status-label attention">Medium risk</span>
+            </div>
+            <dl class="metadata-list">
+              <div>
+                <dt>Mode</dt>
+                <dd id="inspector-mode">Plan</dd>
+              </div>
+              <div>
+                <dt>Privacy</dt>
+                <dd>Local only</dd>
+              </div>
+              <div>
+                <dt>Provider</dt>
+                <dd>Disconnected</dd>
+              </div>
+              <div>
+                <dt>Trace ID</dt>
+                <dd id="trace-id">trace-local-001</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section id="evals" class="inspector-card app-section" aria-labelledby="evals-title">
+            <div class="panel-header compact">
+              <h2 id="evals-title">Evals</h2>
+              <button class="text-button" type="button" id="rerun-evals">Refresh</button>
+            </div>
+            <div id="eval-score-strip" class="eval-score-strip"></div>
+          </section>
+
+          <section class="inspector-card">
+            <div class="panel-header compact">
+              <h2>Risk controls</h2>
+            </div>
+            <label class="toggle-row">
+              <input type="checkbox" id="require-approval" checked />
+              <span>Require approval</span>
+            </label>
+            <label class="toggle-row">
+              <input type="checkbox" id="redact-secrets" checked />
+              <span>Redact secrets</span>
+            </label>
+            <label class="range-field" for="autonomy-level">
+              <span>Autonomy level</span>
+              <input id="autonomy-level" type="range" min="0" max="3" value="1" />
+            </label>
+          </section>
+
+          <section id="approvals" class="inspector-card app-section" aria-labelledby="approvals-title">
+            <div class="panel-header compact">
+              <h2 id="approvals-title">Approvals</h2>
+              <span id="approval-state" class="status-label waiting">Waiting</span>
+            </div>
+            <p class="approval-copy" id="approval-copy">No privileged action will run until reviewed.</p>
+            <button class="primary-button full" type="button" id="approve-run">Approve</button>
+          </section>
+
+          <section id="audit" class="inspector-card app-section" aria-labelledby="audit-title">
+            <div class="panel-header compact">
+              <h2 id="audit-title">Audit</h2>
+              <button class="text-button" type="button" id="export-audit">Export</button>
+            </div>
+            <ol id="audit-timeline" class="audit-timeline"></ol>
+          </section>
+        </aside>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="command-dialog" class="command-dialog" aria-labelledby="command-title">
+    <form method="dialog">
+      <div class="dialog-header">
+        <h2 id="command-title">Command</h2>
+        <button class="icon-button" value="close" aria-label="Close command dialog">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="command-list">
+        <button type="button" data-command-action="generate">Generate plan</button>
+        <button type="button" data-command-action="evaluate">Run evaluation</button>
+        <button type="button" data-command-action="approve">Approve</button>
+        <button type="button" data-command-action="audit">Jump to audit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

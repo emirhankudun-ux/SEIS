@@ -204,6 +204,8 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis_kernel`](./packages/seis_kernel) | Capability, language, plugin, platform, and AGI-system contract builders |
 | [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go governance and readiness policy contracts |
 | [`polyglot`](./polyglot) | Cross-language audit lanes and platform proof-of-concept surfaces |
+| [`apps/seis-ai-demo`](./apps/seis-ai-demo) | Local deterministic AI Command Core demo for routing, agents, prompts, knowledge, evals, approvals, and audit |
+| [`apps/macos/seis-ai-command-core`](./apps/macos/seis-ai-command-core) | SwiftUI desktop AI Command Core demo built by the `SeisAICommandCore` SwiftPM product |
 | [`apps/web`](./apps/web) | Browser-facing product and documentation surface |
 | [`apps/android`](./apps/android) | Android direction and validation notes |
 | [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |

@@ -4,7 +4,15 @@ set -euo pipefail
 MODE="${1:-run}"
 APP_NAME="SeisAppleNativeShell"
 BUNDLE_ID="com.seis.apple-native-shell"
+DISPLAY_NAME="SEIS Apple Native"
 MIN_SYSTEM_VERSION="13.0"
+
+if [[ "$MODE" == "--ai-demo" || "$MODE" == "ai-demo" ]]; then
+  APP_NAME="SeisAICommandCore"
+  BUNDLE_ID="com.seis.ai-command-core"
+  DISPLAY_NAME="SEIS AI Command Core"
+  MODE="${2:-run}"
+fi
 
 if [[ -n "${SWIFT_BIN:-}" ]] && ! command -v "$SWIFT_BIN" >/dev/null 2>&1; then
     echo "warning: Provided SWIFT_BIN is not executable: $SWIFT_BIN" >&2
@@ -66,7 +74,7 @@ cat >"$INFO_PLIST" <<PLIST
   <key>CFBundleIdentifier</key>
   <string>$BUNDLE_ID</string>
   <key>CFBundleName</key>
-  <string>SEIS Apple Native</string>
+  <string>$DISPLAY_NAME</string>
   <key>CFBundleURLTypes</key>
   <array>
     <dict>
@@ -114,7 +122,7 @@ case "$MODE" in
     pkill -x "$APP_NAME" >/dev/null 2>&1 || true
     ;;
   *)
-    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify]" >&2
+    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify|--ai-demo [run|--verify]]" >&2
     exit 2
     ;;
 esac

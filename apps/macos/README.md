@@ -21,6 +21,27 @@ The script builds the SwiftPM `SeisAppleNativeShell` product, stages a local
 process, and cleans it up. Use the no-flag `./script/build_and_run.sh` path for
 the Codex app Run action when you want to open the shell interactively.
 
+## SEIS AI Command Core Desktop Demo
+
+The macOS lane also includes `SeisAICommandCore`, a local deterministic SwiftUI
+desktop demo for the SEIS AI operating layer.
+
+Run and verify:
+
+```bash
+./script/build_and_run.sh --ai-demo --verify
+```
+
+Open interactively:
+
+```bash
+./script/build_and_run.sh --ai-demo
+```
+
+The app demonstrates request composition, provider-neutral routing, supervised
+agents, prompt versions, evidence, evaluation scores, approval gates, settings,
+and local audit history without requiring provider API keys.
+
 ## Plugin Stack
 
 - Build macOS Apps

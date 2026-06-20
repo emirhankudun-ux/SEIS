@@ -10,7 +10,8 @@ let package = Package(
     ],
     products: [
         .library(name: "SeisPlatformKit", targets: ["SeisPlatformKit"]),
-        .executable(name: "SeisAppleNativeShell", targets: ["SeisAppleNativeShell"])
+        .executable(name: "SeisAppleNativeShell", targets: ["SeisAppleNativeShell"]),
+        .executable(name: "SeisAICommandCore", targets: ["SeisAICommandCore"])
     ],
     targets: [
         .target(name: "SeisPlatformKit"),
@@ -21,6 +22,10 @@ let package = Package(
                 .copy("Resources/seisdemo-urlscheme-template.plist"),
                 .copy("Resources/seis-demo-contract.json"),
             ]
+        ),
+        .executableTarget(
+            name: "SeisAICommandCore",
+            dependencies: ["SeisPlatformKit"]
         ),
         .testTarget(name: "SeisPlatformKitTests", dependencies: ["SeisPlatformKit"])
     ]

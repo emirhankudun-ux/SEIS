@@ -41,6 +41,17 @@ public struct SeisAppleRunHandoffContract: Codable, Equatable, Sendable {
         supportedModes: ["run", "--debug", "--logs", "--telemetry", "--verify"]
     )
 
+    public static let aiCommandCoreDesktop = SeisAppleRunHandoffContract(
+        productName: "SeisAICommandCore",
+        bundleIdentifier: "com.seis.ai-command-core",
+        bundleDisplayName: "SEIS AI Command Core",
+        minimumSystemVersion: "13.0",
+        packageRelativePath: "packages/seis_platform_swift",
+        runScriptRelativePath: "script/build_and_run.sh",
+        codexRunCommand: "./script/build_and_run.sh --ai-demo",
+        supportedModes: ["--ai-demo", "--ai-demo --verify"]
+    )
+
     public var requiredInfoPlistKeys: [String] {
         [
             "CFBundleExecutable",
@@ -56,10 +67,10 @@ public struct SeisAppleRunHandoffContract: Codable, Equatable, Sendable {
         [
             "APP_NAME=\"\(productName)\"",
             "BUNDLE_ID=\"\(bundleIdentifier)\"",
+            "DISPLAY_NAME=\"\(bundleDisplayName)\"",
             "MIN_SYSTEM_VERSION=\"\(minimumSystemVersion)\"",
             "PACKAGE_DIR=\"$ROOT_DIR/\(packageRelativePath)\"",
             "swift build --package-path \"$PACKAGE_DIR\" --product \"$APP_NAME\"",
-            "<string>\(bundleDisplayName)</string>",
             "/usr/bin/open -n \"$APP_BUNDLE\"",
             "--verify|verify"
         ] + requiredInfoPlistKeys.map { "<key>\($0)</key>" }
