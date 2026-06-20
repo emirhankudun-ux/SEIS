@@ -16,6 +16,7 @@
     "promptVersions",
     "agentTasks",
     "toolRegistryEntries",
+    "knowledgeSources",
     "approvalRequests",
     "evaluationResults",
     "auditEvents",
@@ -95,6 +96,13 @@
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/toolRegistryEntry"
+      }
+    },
+    "knowledgeSources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/knowledgeSource"
       }
     },
     "approvalRequests": {
@@ -223,6 +231,20 @@
         "planned",
         "unknown"
       ]
+    },
+    "retrievalState": {
+      "enum": [
+        "approved",
+        "pending-review",
+        "local-only",
+        "redacted",
+        "restricted",
+        "expired",
+        "blocked"
+      ]
+    },
+    "freshness": {
+      "enum": ["current", "needs-review", "stale", "unknown"]
     },
     "evidenceLink": {
       "type": "string",
@@ -390,6 +412,58 @@
         "evidence": { "$ref": "#/$defs/evidenceLink" }
       }
     },
+    "knowledgeSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "sourceName",
+        "sourceClass",
+        "retrievalState",
+        "privacyMode",
+        "freshness",
+        "ingestionPolicy",
+        "approvedUses",
+        "forbiddenUses",
+        "externalRoutingAllowed",
+        "storesRawContent",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "sourceName": { "type": "string" },
+        "sourceClass": { "$ref": "#/$defs/sourceClass" },
+        "retrievalState": { "$ref": "#/$defs/retrievalState" },
+        "privacyMode": { "$ref": "#/$defs/llmExecutionMode" },
+        "freshness": { "$ref": "#/$defs/freshness" },
+        "ingestionPolicy": {
+          "enum": [
+            "approved-metadata",
+            "approved-content",
+            "review-only",
+            "blocked",
+            "future"
+          ]
+        },
+        "approvedUses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "forbiddenUses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "externalRoutingAllowed": { "type": "boolean" },
+        "storesRawContent": { "type": "boolean" },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
     "approvalRequest": {
       "type": "object",
       "additionalProperties": false,
@@ -453,7 +527,7 @@
       "properties": {
         "id": { "$ref": "#/$defs/id" },
         "document": { "$ref": "#/$defs/evidenceLink" },
-        "freshness": { "enum": ["current", "needs-review", "stale", "unknown"] },
+        "freshness": { "$ref": "#/$defs/freshness" },
         "sourceClass": { "$ref": "#/$defs/sourceClass" },
         "status": { "$ref": "#/$defs/state" },
         "evidence": { "$ref": "#/$defs/evidenceLink" }

@@ -51,6 +51,7 @@ const requiredTopLevel = [
   "promptVersions",
   "agentTasks",
   "toolRegistryEntries",
+  "knowledgeSources",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -115,11 +116,22 @@ const expectedAuditRedactionStates = [
   "not-sensitive"
 ];
 
+const expectedRetrievalStates = [
+  "approved",
+  "pending-review",
+  "local-only",
+  "redacted",
+  "restricted",
+  "expired",
+  "blocked"
+];
+
 const objectToArray = {
   modelRoute: "modelRoutes",
   promptVersion: "promptVersions",
   agentTask: "agentTasks",
   toolRegistryEntry: "toolRegistryEntries",
+  knowledgeSource: "knowledgeSources",
   approvalRequest: "approvalRequests",
   evaluationResult: "evaluationResults",
   auditEvent: "auditEvents",
@@ -291,6 +303,34 @@ for (const tool of fixture.toolRegistryEntries || []) {
   }
 }
 
+for (const source of fixture.knowledgeSources || []) {
+  assertAllowed(
+    `knowledgeSource.${source.id}.retrievalState`,
+    source.retrievalState,
+    expectedRetrievalStates
+  );
+
+  if (source.sourceClass === "archive") {
+    if (!["pending-review", "restricted", "blocked"].includes(source.retrievalState)) {
+      fail(`knowledgeSource ${source.id} archive source must be pending-review, restricted, or blocked`);
+    }
+    if (source.externalRoutingAllowed !== false) {
+      fail(`knowledgeSource ${source.id} archive source must not allow external provider routing`);
+    }
+    if (source.storesRawContent !== false) {
+      fail(`knowledgeSource ${source.id} archive source must not store raw content`);
+    }
+  }
+
+  if (source.externalRoutingAllowed && !source.privacyMode.startsWith("external-provider")) {
+    fail(`knowledgeSource ${source.id} external routing must use an external-provider privacy mode`);
+  }
+
+  if (source.privacyMode === "disabled" && source.status !== "blocked") {
+    fail(`knowledgeSource ${source.id} disabled source must be blocked`);
+  }
+}
+
 for (const evaluation of fixture.evaluationResults || []) {
   assertAllowed(
     `evaluationResult.${evaluation.id}.targetType`,
@@ -341,6 +381,7 @@ for (const key of [
   "promptVersions",
   "agentTasks",
   "toolRegistryEntries",
+  "knowledgeSources",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",

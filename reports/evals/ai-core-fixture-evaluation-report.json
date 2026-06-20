@@ -8,12 +8,14 @@
     "docs/testing/prompt-regression-suite.md",
     "docs/architecture/ai-core-app-shared-contracts.md",
     "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
-    "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+    "packages/data/fixtures/knowledge-source-classification.json"
   ],
   "summary": {
     "promptEvaluationCount": 7,
     "appStateEvaluationCount": 2,
-    "passed": 9,
+    "retrievalEvaluationCount": 1,
+    "passed": 10,
     "failed": 0,
     "blocked": 0,
     "unknown": 0
@@ -276,7 +278,7 @@
         "app projection matches shared fixture",
         "evaluation results have evidence links"
       ],
-      "observedOutputSummary": "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, tool registry, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
+      "observedOutputSummary": "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, tool registry, knowledge source, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
       "limitations": [
         "Static app-state fixture validation only; no browser interaction or live backend is measured.",
         "Pass does not imply production deployment or live provider readiness."
@@ -322,6 +324,39 @@
         "scripts/check-repository-assistant-prototype.mjs",
         "docs/product/repository-assistant.md"
       ]
+    },
+    {
+      "id": "eval-retrieval-knowledge-source-classification",
+      "layer": "retrieval",
+      "targetType": "retrieval",
+      "targetId": "knowledge-source-classification",
+      "sourceFixture": "packages/data/fixtures/knowledge-source-classification.json",
+      "privacyClass": "metadata-only",
+      "rubric": [
+        "source classes declared",
+        "retrieval states declared",
+        "blocked archive source declared",
+        "unsafe source patterns excluded"
+      ],
+      "passCriteria": [
+        "official sources are metadata-approved or local-only",
+        "discarded assistant archive remains blocked",
+        "external provider routing is disabled",
+        "non-claims exclude memory writes, embeddings, training, and unsafe automation"
+      ],
+      "observedOutputSummary": "Knowledge source classification fixture separates official docs, generated reports, local fixtures, and blocked assistant archive material for retrieval and Command Center evidence.",
+      "limitations": [
+        "Static fixture validation only; no live retrieval index or embedding database is created.",
+        "Pass does not approve restricted archive content for implementation, provider routing, memory storage, or model training."
+      ],
+      "reviewer": "codex-local-fixture-check",
+      "result": "pass",
+      "status": "validated",
+      "evidenceLinks": [
+        "packages/data/fixtures/knowledge-source-classification.json",
+        "scripts/check-knowledge-source-classification.mjs",
+        "docs/ai/context-memory-boundary.md"
+      ]
     }
   ],
   "nonClaims": [
@@ -332,11 +367,11 @@
     "No secret values, provider keys, private keys, or raw private configuration are included."
   ],
   "nextRecommendedSlice": {
-    "summary": "Add retrieval and knowledge source classification fixtures.",
+    "summary": "Add local read-only retrieval query adapter fixtures.",
     "sourceLinks": [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",
-      "docs/evals/evaluation-strategy.md"
+      "docs/product/ai-app-surfaces.md"
     ]
   }
 }

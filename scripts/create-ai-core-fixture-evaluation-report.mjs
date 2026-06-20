@@ -6,6 +6,7 @@ const generatedAt = "2026-06-20";
 const schemaPath = "packages/evals/schemas/fixture-evaluation-report.schema.json";
 const promptFixturePath = "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json";
 const sharedFixturePath = "packages/shared-types/fixtures/ai-core-command-center-foundation.json";
+const knowledgeFixturePath = "packages/data/fixtures/knowledge-source-classification.json";
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
@@ -127,16 +128,19 @@ function stableJson(value) {
 const schemaText = readText(schemaPath);
 const promptFixtureText = readText(promptFixturePath);
 const sharedFixtureText = readText(sharedFixturePath);
+const knowledgeFixtureText = readText(knowledgeFixturePath);
 const appFixtureText = readText(appFixturePath);
 const schema = readJson(schemaPath);
 const promptSuite = readJson(promptFixturePath);
 const sharedFixture = readJson(sharedFixturePath);
+const knowledgeFixture = readJson(knowledgeFixturePath);
 const appFixture = readAppFixture(appFixtureText);
 
 for (const [filePath, text] of [
   [schemaPath, schemaText],
   [promptFixturePath, promptFixtureText],
   [sharedFixturePath, sharedFixtureText],
+  [knowledgeFixturePath, knowledgeFixtureText],
   [appFixturePath, appFixtureText]
 ]) {
   assertNoSensitivePatterns(filePath, text);
@@ -177,6 +181,7 @@ for (const key of [
   "promptVersions",
   "agentTasks",
   "toolRegistryEntries",
+  "knowledgeSources",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -252,7 +257,7 @@ const appStateEvaluations = [
       "app projection matches shared fixture",
       "evaluation results have evidence links"
     ],
-    observedOutputSummary: "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, tool registry, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
+    observedOutputSummary: "Shared AI Core and Command Center app-state fixture exposes validated route, prompt, agent, tool registry, knowledge source, approval, evaluation, audit, repository, documentation, security, roadmap, AI surface, repository intelligence, and goal state records.",
     limitations: [
       "Static app-state fixture validation only; no browser interaction or live backend is measured.",
       "Pass does not imply production deployment or live provider readiness."
@@ -301,7 +306,43 @@ const appStateEvaluations = [
   }
 ];
 
-const evaluations = [...promptEvaluations, ...appStateEvaluations];
+const retrievalEvaluations = [
+  {
+    id: "eval-retrieval-knowledge-source-classification",
+    layer: "retrieval",
+    targetType: "retrieval",
+    targetId: knowledgeFixture.id,
+    sourceFixture: knowledgeFixturePath,
+    privacyClass: "metadata-only",
+    rubric: [
+      "source classes declared",
+      "retrieval states declared",
+      "blocked archive source declared",
+      "unsafe source patterns excluded"
+    ],
+    passCriteria: [
+      "official sources are metadata-approved or local-only",
+      "discarded assistant archive remains blocked",
+      "external provider routing is disabled",
+      "non-claims exclude memory writes, embeddings, training, and unsafe automation"
+    ],
+    observedOutputSummary: "Knowledge source classification fixture separates official docs, generated reports, local fixtures, and blocked assistant archive material for retrieval and Command Center evidence.",
+    limitations: [
+      "Static fixture validation only; no live retrieval index or embedding database is created.",
+      "Pass does not approve restricted archive content for implementation, provider routing, memory storage, or model training."
+    ],
+    reviewer: "codex-local-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      knowledgeFixturePath,
+      "scripts/check-knowledge-source-classification.mjs",
+      "docs/ai/context-memory-boundary.md"
+    ]
+  }
+];
+
+const evaluations = [...promptEvaluations, ...appStateEvaluations, ...retrievalEvaluations];
 
 const report = {
   version: 1,
@@ -313,11 +354,13 @@ const report = {
     "docs/testing/prompt-regression-suite.md",
     "docs/architecture/ai-core-app-shared-contracts.md",
     promptFixturePath,
-    sharedFixturePath
+    sharedFixturePath,
+    knowledgeFixturePath
   ],
   summary: {
     promptEvaluationCount: promptEvaluations.length,
     appStateEvaluationCount: appStateEvaluations.length,
+    retrievalEvaluationCount: retrievalEvaluations.length,
     passed: countByResult(evaluations, "pass"),
     failed: countByResult(evaluations, "fail"),
     blocked: countByResult(evaluations, "blocked"),
@@ -326,11 +369,11 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add retrieval and knowledge source classification fixtures.",
+    summary: "Add local read-only retrieval query adapter fixtures.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",
-      "docs/evals/evaluation-strategy.md"
+      "docs/product/ai-app-surfaces.md"
     ]
   }
 };
@@ -394,6 +437,7 @@ function createMarkdown(reportData) {
     `- Status: ${reportData.status}`,
     `- Prompt evaluations: ${reportData.summary.promptEvaluationCount}`,
     `- App-state evaluations: ${reportData.summary.appStateEvaluationCount}`,
+    `- Retrieval evaluations: ${reportData.summary.retrievalEvaluationCount}`,
     `- Passed: ${reportData.summary.passed}`,
     `- Failed: ${reportData.summary.failed}`,
     `- Blocked: ${reportData.summary.blocked}`,

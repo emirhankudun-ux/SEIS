@@ -21,6 +21,9 @@ runtime SDK and not a live provider integration.
 - `packages/tool-registry/fixtures/tool-registry-permissions.json` supplies the
   current tool/plugin permission and risk-class evidence projected into the
   shared fixture.
+- `packages/data/fixtures/knowledge-source-classification.json` supplies the
+  current retrieval and knowledge-source classification evidence projected into
+  the shared fixture.
 - `npm run check:ai-core-app-contracts` validates the schema and fixture without
   installing another runtime or provider SDK.
 
@@ -30,6 +33,7 @@ runtime SDK and not a live provider integration.
 - `PromptVersion`
 - `AgentTask`
 - `ToolRegistryEntry`
+- `KnowledgeSource`
 - `ApprovalRequest`
 - `EvaluationResult`
 - `AuditEvent`

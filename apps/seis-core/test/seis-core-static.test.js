@@ -51,6 +51,9 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(fixture, /tool-registry-permissions/);
   assert.match(fixture, /tool-github-pr-publish/);
   assert.match(script, /toolRegistryEntries/);
+  assert.match(fixture, /knowledge-source-classification/);
+  assert.match(fixture, /knowledge-discarded-assistant-archive/);
+  assert.match(script, /knowledgeSources/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);

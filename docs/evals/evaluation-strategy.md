@@ -57,6 +57,16 @@ links, pass criteria, limitations, reviewer, and non-claims. It does not run
 live models, compare provider quality, publish benchmark scores, certify safety,
 or create trained SEIS model evidence.
 
+## Knowledge Source Classification Evidence
+
+Retrieval and knowledge-source classification is fixture-backed through
+`packages/data/fixtures/knowledge-source-classification.json` and
+`npm run check:knowledge-source-classification`. The evaluation layer treats
+knowledge-source classification as retrieval evidence only: it confirms source
+class, freshness, privacy mode, blocked archive handling, and non-claims. It does
+not create embeddings, persistent memory, provider context, benchmark claims, or
+model-training evidence.
+
 ## Non-Claims
 
 SEIS must not publish benchmark, safety, or model capability claims without

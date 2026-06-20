@@ -15,7 +15,8 @@
     "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
     "packages/model-router/fixtures/model-router-route-contracts.json",
     "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
-    "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    "packages/tool-registry/fixtures/tool-registry-permissions.json",
+    "packages/data/fixtures/knowledge-source-classification.json"
   ],
   "stateVocabulary": [
     "ready",
@@ -297,6 +298,110 @@
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
     }
   ],
+  "knowledgeSources": [
+    {
+      "id": "knowledge-official-ai-core-docs",
+      "sourceName": "Official AI Core and Command Center docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "source-backed retrieval planning",
+        "Command Center evidence links",
+        "documentation assistant context"
+      ],
+      "forbiddenUses": [
+        "claiming provider model ownership",
+        "claiming trained SEIS model evidence",
+        "routing secrets to external providers"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-generated-evaluation-reports",
+      "sourceName": "Generated evaluation and language reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "validation status summaries",
+        "regression evidence lookup",
+        "roadmap progress evidence"
+      ],
+      "forbiddenUses": [
+        "benchmark performance claims",
+        "model safety certification",
+        "live provider quality comparison"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-local-fixture-contracts",
+      "sourceName": "Local fixture-backed AI Core contracts",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "contract validation",
+        "Command Center fixture rendering",
+        "local assistant regression checks"
+      ],
+      "forbiddenUses": [
+        "presenting mock fixture data as live integration",
+        "claiming external provider readiness",
+        "claiming deployment readiness"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-discarded-assistant-archive",
+      "sourceName": "Discarded assistant paste archive",
+      "sourceClass": "archive",
+      "retrievalState": "blocked",
+      "privacyMode": "disabled",
+      "freshness": "needs-review",
+      "ingestionPolicy": "blocked",
+      "approvedUses": [
+        "high-level requirement triage after clean-room review",
+        "risk category extraction without copying implementation"
+      ],
+      "forbiddenUses": [
+        "copying source code or generated scripts",
+        "automatic push or merge",
+        "active countermeasure execution",
+        "poisoned data injection",
+        "memetic manipulation",
+        "autonomous payment or infrastructure provisioning",
+        "autonomous infrastructure provisioning",
+        "fake BCI or consciousness claims",
+        "fake trained model ownership claims",
+        "fake model ownership, training, checkpoint, or benchmark claims"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    }
+  ],
   "approvalRequests": [
     {
       "id": "approval-external-provider-route",
@@ -395,6 +500,14 @@
       "result": "pass",
       "status": "validated",
       "evidence": "scripts/check-tool-registry-permissions.mjs"
+    },
+    {
+      "id": "eval-knowledge-source-classification",
+      "targetType": "retrieval",
+      "targetId": "knowledge-source-classification",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-knowledge-source-classification.mjs"
     }
   ],
   "auditEvents": [
@@ -445,6 +558,14 @@
       "redactionState": "metadata-only",
       "status": "validated",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "audit-knowledge-source-classification",
+      "actor": "codex",
+      "action": "added retrieval and knowledge source classification fixtures",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "repositoryFindings": [
@@ -487,6 +608,14 @@
       "severity": "info",
       "status": "validated",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "finding-knowledge-source-classification",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-knowledge-source-classification",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "documentationStatuses": [
@@ -529,6 +658,14 @@
       "sourceClass": "official",
       "status": "validated",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "doc-knowledge-source-classification",
+      "document": "docs/ai/context-memory-boundary.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "securityFindings": [
@@ -545,6 +682,13 @@
       "riskClass": "high",
       "status": "validated",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "security-knowledge-source-boundary",
+      "category": "retrieval-archive-and-provider-boundary",
+      "riskClass": "high",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "roadmapItems": [
@@ -595,6 +739,14 @@
       "status": "validated",
       "maturity": "fixture-backed",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "roadmap-year-1-knowledge-source-classification",
+      "horizon": "year-1",
+      "track": "Retrieval and knowledge source classification",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "aiSurfaces": [
@@ -674,6 +826,26 @@
       "status": "planned",
       "maturity": "fixture-backed",
       "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "surface-knowledge-source-center",
+      "surface": "Knowledge Source Center",
+      "allowedContext": [
+        "official docs",
+        "generated report metadata",
+        "local fixture evidence",
+        "source classification metadata"
+      ],
+      "forbiddenContext": [
+        "raw assistant archive content",
+        "private secrets",
+        "provider-bound sensitive context without approval",
+        "unsafe archive implementation plans"
+      ],
+      "approvalRequired": true,
+      "status": "planned",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "repositoryIntelligence": [
@@ -692,6 +864,14 @@
       "freshness": "current",
       "status": "validated",
       "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "repo-intel-knowledge-source-classification",
+      "sourceClass": "scan-generated",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
     }
   ],
   "goalTrackingStates": [

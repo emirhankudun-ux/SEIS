@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "id": "knowledge-source-classification",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/ai/context-memory-boundary.md",
+    "docs/evals/evaluation-strategy.md",
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "docs/governance/icloud-github-workspace-ingestion.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+  ],
+  "sourceClasses": [
+    "official",
+    "review",
+    "archive",
+    "mock",
+    "scan-generated",
+    "live",
+    "planned",
+    "unknown"
+  ],
+  "retrievalStates": [
+    "approved",
+    "pending-review",
+    "local-only",
+    "redacted",
+    "restricted",
+    "expired",
+    "blocked"
+  ],
+  "privacyModes": [
+    "local-only",
+    "local-preferred",
+    "external-provider-allowed",
+    "external-provider-redacted",
+    "metadata-only",
+    "offline",
+    "disabled",
+    "research-only"
+  ],
+  "knowledgeSources": [
+    {
+      "id": "knowledge-official-ai-core-docs",
+      "sourceName": "Official AI Core and Command Center docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "source-backed retrieval planning",
+        "Command Center evidence links",
+        "documentation assistant context"
+      ],
+      "forbiddenUses": [
+        "claiming provider model ownership",
+        "claiming trained SEIS model evidence",
+        "routing secrets to external providers"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    },
+    {
+      "id": "knowledge-generated-evaluation-reports",
+      "sourceName": "Generated evaluation and language reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "validation status summaries",
+        "regression evidence lookup",
+        "roadmap progress evidence"
+      ],
+      "forbiddenUses": [
+        "benchmark performance claims",
+        "model safety certification",
+        "live provider quality comparison"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "knowledge-local-fixture-contracts",
+      "sourceName": "Local fixture-backed AI Core contracts",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "contract validation",
+        "Command Center fixture rendering",
+        "local assistant regression checks"
+      ],
+      "forbiddenUses": [
+        "presenting mock fixture data as live integration",
+        "claiming external provider readiness",
+        "claiming deployment readiness"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    },
+    {
+      "id": "knowledge-discarded-assistant-archive",
+      "sourceName": "Discarded assistant paste archive",
+      "sourceClass": "archive",
+      "retrievalState": "blocked",
+      "privacyMode": "disabled",
+      "freshness": "needs-review",
+      "ingestionPolicy": "blocked",
+      "approvedUses": [
+        "high-level requirement triage after clean-room review",
+        "risk category extraction without copying implementation"
+      ],
+      "forbiddenUses": [
+        "copying source code or generated scripts",
+        "automatic push or merge",
+        "active countermeasure execution",
+        "poisoned data injection",
+        "memetic manipulation",
+        "autonomous payment or infrastructure provisioning",
+        "autonomous infrastructure provisioning",
+        "fake BCI or consciousness claims",
+        "fake trained model ownership claims",
+        "fake model ownership, training, checkpoint, or benchmark claims"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "docs/governance/icloud-github-workspace-ingestion.md"
+    }
+  ],
+  "excludedUnsafePatterns": [
+    "automatic push or merge",
+    "active countermeasure execution",
+    "poisoned data injection",
+    "memetic manipulation",
+    "autonomous payment",
+    "autonomous infrastructure provisioning",
+    "fake BCI claim",
+    "fake consciousness upload claim",
+    "fake trained model ownership claim",
+    "fake benchmark or checkpoint claim"
+  ],
+  "nonClaims": [
+    "No raw assistant archive content is ingested into memory or retrieval.",
+    "No external provider call is performed by this fixture.",
+    "No embedding index, vector database, or persistent memory write is created.",
+    "No automatic push, merge, deployment, payment, or infrastructure mutation is enabled.",
+    "No active countermeasure, poisoned data injection, or memetic manipulation is implemented.",
+    "No BCI, consciousness upload, trained model, benchmark, checkpoint, or model-card claim is created.",
+    "No secret values, provider keys, private keys, tokens, cookies, or service credentials are included."
+  ]
+}

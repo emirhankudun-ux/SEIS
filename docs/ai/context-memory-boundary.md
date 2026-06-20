@@ -47,3 +47,18 @@ status, module maturity, evidence links, and stale-data warnings.
 It must label each source as official, review, archive, mock, scan-generated,
 live, planned, or unknown. Archive material is historical reference and must not
 override official docs.
+
+## Knowledge Source Classification Fixture
+
+The first retrieval and knowledge-source boundary fixture is
+`packages/data/fixtures/knowledge-source-classification.json`, with its schema in
+`packages/data/schemas/knowledge-source-classification.schema.json`. It is
+validated by `npm run check:knowledge-source-classification`.
+
+This fixture keeps official docs, generated reports, and local contract fixtures
+available as local metadata-backed sources while blocking discarded assistant
+archive material from retrieval, memory writes, provider routing, and
+implementation copying. Unsafe concepts such as automatic push/merge, active
+countermeasures, poisoned data injection, memetic manipulation, autonomous
+payment or infrastructure provisioning, fake BCI claims, and fake model
+ownership claims are exclusion records, not implementation plans.

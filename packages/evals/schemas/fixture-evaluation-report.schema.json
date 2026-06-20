@@ -42,6 +42,7 @@
       "required": [
         "promptEvaluationCount",
         "appStateEvaluationCount",
+        "retrievalEvaluationCount",
         "passed",
         "failed",
         "blocked",
@@ -55,6 +56,10 @@
         "appStateEvaluationCount": {
           "type": "integer",
           "minimum": 1
+        },
+        "retrievalEvaluationCount": {
+          "type": "integer",
+          "minimum": 0
         },
         "passed": {
           "type": "integer",
@@ -139,10 +144,10 @@
           "$ref": "#/$defs/id"
         },
         "layer": {
-          "enum": ["prompt-regression", "app-state"]
+          "enum": ["prompt-regression", "app-state", "retrieval"]
         },
         "targetType": {
-          "enum": ["prompt", "app-state"]
+          "enum": ["prompt", "app-state", "retrieval"]
         },
         "targetId": {
           "$ref": "#/$defs/id"
@@ -151,7 +156,7 @@
           "$ref": "#/$defs/repoPath"
         },
         "privacyClass": {
-          "enum": ["synthetic", "metadata-only", "local-fixture"]
+          "enum": ["synthetic", "metadata-only", "local-fixture", "restricted-archive"]
         },
         "rubric": {
           "type": "array",

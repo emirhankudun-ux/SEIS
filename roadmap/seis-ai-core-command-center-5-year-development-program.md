@@ -77,7 +77,7 @@ docs, UI, reports, releases, or PR descriptions.
 | --- | --- | --- |
 | AI Core | Router, prompts, agents, tools, memory, evals, provider modes | Contract docs and package README files |
 | Command Center / App | Human interface for AI Core, approvals, evidence, roadmap, security | Product and architecture docs |
-| Shared Contracts | Stable objects between AI Core and app | `modelRoute`, `promptVersion`, `agentTask`, `approvalRequest`, `evaluationResult`, `auditEvent` |
+| Shared Contracts | Stable objects between AI Core and app | `modelRoute`, `promptVersion`, `agentTask`, `toolRegistryEntry`, `knowledgeSource`, `approvalRequest`, `evaluationResult`, `auditEvent` |
 | Evaluation | Prompt, route, agent, app-state, retrieval, and model research checks | `docs/evals/evaluation-strategy.md` |
 | Security and Privacy | Provider data handling, secret isolation, approval gates, SSH safety | `docs/security/model-provider-data-policy.md`, `SECURITY.md` |
 | Knowledge System | Retrieval and memory boundaries, source class, freshness, privacy mode | `docs/ai/context-memory-boundary.md` |
@@ -293,7 +293,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add retrieval and knowledge source classification fixtures.
+1. Add local read-only retrieval query adapter fixtures.
 
 Completed foundation slice:
 
@@ -323,6 +323,9 @@ Completed foundation slice:
 - Tool and plugin registry permission and risk-class fixtures now live under
   `packages/tool-registry/` and are checked by
   `npm run check:tool-registry-permissions`.
+- Retrieval and knowledge source classification fixtures now live under
+  `packages/data/` and are checked by
+  `npm run check:knowledge-source-classification`.
 
 ## Relationship to Existing Roadmaps
 

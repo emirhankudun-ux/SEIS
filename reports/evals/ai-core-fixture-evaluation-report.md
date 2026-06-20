@@ -4,7 +4,8 @@
 - Status: fixture-backed
 - Prompt evaluations: 7
 - App-state evaluations: 2
-- Passed: 9
+- Retrieval evaluations: 1
+- Passed: 10
 - Failed: 0
 - Blocked: 0
 - Unknown: 0
@@ -22,6 +23,7 @@
 | eval-prompt-regression-research-assistant-nonclaim | prompt-regression | prompt:prompt-research-assistant-v0-1 | pass | packages/prompt-engine/fixtures/assistant-surface-regression-suite.json, scripts/check-prompt-regression-fixtures.mjs, docs/ai/seis-universe-research.md |
 | eval-app-state-shared-contract-fixture | app-state | app-state:ai-core-command-center-foundation | pass | packages/shared-types/fixtures/ai-core-command-center-foundation.json, apps/seis-core/ai-core-contract-fixture.js, scripts/check-ai-core-app-contracts.mjs |
 | eval-app-state-repository-assistant-local-alpha | app-state | app-state:local-readonly-repository-assistant | pass | packages/repository-assistant/fixtures/local-readonly-repository-assistant.json, scripts/check-repository-assistant-prototype.mjs, docs/product/repository-assistant.md |
+| eval-retrieval-knowledge-source-classification | retrieval | retrieval:knowledge-source-classification | pass | packages/data/fixtures/knowledge-source-classification.json, scripts/check-knowledge-source-classification.mjs, docs/ai/context-memory-boundary.md |
 
 ## Non-Claims
 
@@ -33,10 +35,10 @@
 
 ## Next Recommended Slice
 
-Add retrieval and knowledge source classification fixtures.
+Add local read-only retrieval query adapter fixtures.
 
 Source links:
 
 - `roadmap/seis-ai-core-command-center-5-year-development-program.md`
 - `docs/ai/context-memory-boundary.md`
-- `docs/evals/evaluation-strategy.md`
+- `docs/product/ai-app-surfaces.md`

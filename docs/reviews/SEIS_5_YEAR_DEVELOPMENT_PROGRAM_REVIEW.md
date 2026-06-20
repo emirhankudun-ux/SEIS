@@ -51,7 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add retrieval and knowledge source classification fixtures.
+1. Add local read-only retrieval query adapter fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -196,3 +196,23 @@ GitHub publishing, and blocked SSH/deployment execution. It remains
 fixture-backed and does not execute tools, install plugins, mutate GitHub,
 run SSH commands, deploy services, call providers, expose secrets, or grant
 browser clients privileged execution authority.
+
+## Follow-Up Knowledge Source Classification Slice
+
+Status: Added after the tool registry permission slice.
+
+Evidence:
+
+- `packages/data/schemas/knowledge-source-classification.schema.json`
+- `packages/data/fixtures/knowledge-source-classification.json`
+- `scripts/check-knowledge-source-classification.mjs`
+- `npm run check:knowledge-source-classification`
+
+This slice completes retrieval and knowledge source classification fixtures for
+official docs, generated reports, local fixture contracts, and blocked assistant
+archive material. It remains fixture-backed and does not ingest raw archive
+content, create embeddings, write persistent memory, route content to external
+providers, copy unsafe implementation plans, execute active countermeasures,
+inject poisoned data, perform memetic manipulation, make autonomous payments,
+provision infrastructure, claim BCI/consciousness capabilities, or claim model
+training, checkpoints, benchmarks, or SEIS-owned model weights.

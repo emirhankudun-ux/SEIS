@@ -13,6 +13,7 @@ concepts, state names, evidence links, approval gates, and audit events.
 | `promptVersion` | Reviewed prompt asset and behavior version. | Prompt detail view and regression status. |
 | `agentTask` | Supervised agent run request. | Task center row and timeline. |
 | `toolRegistryEntry` | Tool/plugin permission, risk class, and approval boundary. | Tool registry row and disabled/approval state. |
+| `knowledgeSource` | Retrieval source class, privacy mode, freshness, and ingestion boundary. | Knowledge source row and blocked/approved retrieval state. |
 | `approvalRequest` | Gate before privileged action. | Approval center item and decision state. |
 | `evaluationResult` | Prompt, route, agent, or model test result. | Evidence and quality signal. |
 | `auditEvent` | Redacted action or decision record. | Evidence locker entry. |
@@ -75,13 +76,14 @@ The first shared contract implementation is fixture-backed:
 - `packages/model-router/fixtures/model-router-route-contracts.json`
 - `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json`
 - `packages/tool-registry/fixtures/tool-registry-permissions.json`
+- `packages/data/fixtures/knowledge-source-classification.json`
 - `npm run check:ai-core-app-contracts`
 
 The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
-`toolRegistryEntry`, `approvalRequest`, `evaluationResult`, `auditEvent`,
-`repositoryFinding`, `documentationStatus`, `securityFinding`, `roadmapItem`,
-`moduleMaturity`, `llmExecutionMode`, `aiSurface`, `repositoryIntelligence`,
-and `goalTrackingState`.
+`toolRegistryEntry`, `knowledgeSource`, `approvalRequest`, `evaluationResult`,
+`auditEvent`, `repositoryFinding`, `documentationStatus`, `securityFinding`,
+`roadmapItem`, `moduleMaturity`, `llmExecutionMode`, `aiSurface`,
+`repositoryIntelligence`, and `goalTrackingState`.
 
 The shared fixture now includes model-router contract evidence for local-only,
 metadata-only, and approval-needed provider routes. Provider-backed routes remain
@@ -96,6 +98,13 @@ It also includes tool-registry evidence for read-only, local-write,
 external-write, and privileged tool classes. Approval-needed and blocked tool
 records do not imply plugin installation, GitHub writes, SSH execution,
 deployment authority, provider calls, or secret access.
+
+It also includes knowledge-source classification evidence for official docs,
+generated reports, local fixture contracts, and blocked assistant archive
+material. Blocked archive records do not imply retrieval ingestion, memory
+writes, provider routing, source-code copying, autonomous push/merge, active
+countermeasures, poisoned data injection, memetic manipulation, autonomous
+payments, infrastructure provisioning, fake BCI claims, or fake model ownership.
 
 The fixture is intentionally local and metadata-only. It does not enable live
 provider routing, expose provider secrets, store raw prompts, perform GitHub
