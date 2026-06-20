@@ -204,6 +204,50 @@ for (const websiteId of requiredWebsites) {
   }
 }
 
+if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
+  fail("fabric must declare uiSurface");
+} else {
+  assertPathExists(fabric.uiSurface.path, "uiSurface path");
+  assertPathExists(fabric.uiSurface.script, "uiSurface script");
+
+  const uiHtml = existsSync(fabric.uiSurface.path)
+    ? readFileSync(fabric.uiSurface.path, "utf8")
+    : "";
+  const uiScript = existsSync(fabric.uiSurface.script)
+    ? readFileSync(fabric.uiSurface.script, "utf8")
+    : "";
+
+  assertArrayIncludesAll("uiSurface.sections", fabric.uiSurface.sections, [
+    "fabric",
+    "fabric-summary",
+    "fabric-agents",
+    "fabric-plugin-feeds",
+    "fabric-ssh-plane",
+    "fabric-websites"
+  ]);
+
+  for (const sectionId of fabric.uiSurface.sections ?? []) {
+    if (!uiHtml.includes(`id="${sectionId}"`)) {
+      fail(`uiSurface section ${sectionId} is not present in ${fabric.uiSurface.path}`);
+    }
+  }
+
+  assertArrayIncludesAll("uiSurface.exportHelpers", fabric.uiSurface.exportHelpers, [
+    "fabricOverview",
+    "generateFabricSummary",
+    "renderFabric",
+    "pluginFeedLanes",
+    "sshExecutionPlane",
+    "aiWebsiteSurfaces"
+  ]);
+
+  for (const helperName of fabric.uiSurface.exportHelpers ?? []) {
+    if (!uiScript.includes(helperName)) {
+      fail(`uiSurface helper ${helperName} is not present in ${fabric.uiSurface.script}`);
+    }
+  }
+}
+
 assertArrayIncludesAll("validation", fabric.validation, [
   "npm run check:seis-ai-unified-integration-fabric",
   "npm run check:seis-ai-local-integration",

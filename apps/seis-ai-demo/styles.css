@@ -942,6 +942,106 @@ textarea:focus-visible {
   font-size: 12px;
 }
 
+.fabric-summary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 14px;
+}
+
+.fabric-layout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.fabric-panel {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: #fbfcfd;
+}
+
+.fabric-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.fabric-panel-header h3,
+.fabric-panel-header span,
+.fabric-item h4,
+.fabric-item p {
+  margin: 0;
+}
+
+.fabric-panel-header h3 {
+  font-size: 14px;
+}
+
+.fabric-panel-header span {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.fabric-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 10px;
+}
+
+.fabric-item {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  background: var(--surface-solid);
+}
+
+.fabric-item header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fabric-item h4 {
+  font-size: 13px;
+}
+
+.fabric-item header span {
+  color: var(--muted);
+  font-size: 11px;
+  text-align: right;
+}
+
+.fabric-item p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.fabric-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fabric-tags span {
+  min-height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: #f2f5f8;
+  color: var(--ink-soft);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
 .split-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
@@ -1209,6 +1309,8 @@ textarea:focus-visible {
   .router-layout,
   .split-section,
   .workflow-layout,
+  .fabric-summary,
+  .fabric-layout,
   .agent-queue,
   .provider-readiness,
   .inspector {
@@ -1260,6 +1362,17 @@ textarea:focus-visible {
 
   .metrics-grid {
     grid-template-columns: 1fr;
+  }
+
+  .fabric-item header,
+  .fabric-panel-header {
+    display: grid;
+  }
+
+  .fabric-item header span,
+  .fabric-panel-header span {
+    text-align: left;
+    white-space: normal;
   }
 }
 

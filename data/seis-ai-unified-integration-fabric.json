@@ -224,6 +224,26 @@
       "contract": "apps/web/site-config.json"
     }
   ],
+  "uiSurface": {
+    "path": "apps/seis-ai-demo/index.html",
+    "script": "apps/seis-ai-demo/script.js",
+    "sections": [
+      "fabric",
+      "fabric-summary",
+      "fabric-agents",
+      "fabric-plugin-feeds",
+      "fabric-ssh-plane",
+      "fabric-websites"
+    ],
+    "exportHelpers": [
+      "fabricOverview",
+      "generateFabricSummary",
+      "renderFabric",
+      "pluginFeedLanes",
+      "sshExecutionPlane",
+      "aiWebsiteSurfaces"
+    ]
+  },
   "validation": [
     "npm run check:seis-ai-unified-integration-fabric",
     "npm run check:seis-ai-local-integration",

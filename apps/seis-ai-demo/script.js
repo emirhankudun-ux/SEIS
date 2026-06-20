@@ -158,8 +158,8 @@ const agentCatalog = [
     lane: "Security"
   },
   {
-    id: "documentation",
-    name: "Documentation Agent",
+    id: "documentation-maintainer",
+    name: "Documentation Maintainer",
     role: "Source-of-truth docs, implementation notes, and recovery reports.",
     lane: "Plan"
   },
@@ -216,6 +216,107 @@ const providerReadinessCatalog = [
   }
 ];
 
+const fabricAgentIds = [
+  "seis-assistant",
+  "repository-analyst",
+  "goal-architect",
+  "research-synthesizer",
+  "documentation-maintainer",
+  "model-evaluator",
+  "workflow-operator",
+  "plugin-steward",
+  "ssh-operations-reviewer"
+];
+
+const fabricOverview = {
+  id: "seis-ai-unified-integration-fabric",
+  status: "local-fixture-backed",
+  mode: "plan-first-no-live-mutation",
+  validation: "npm run check:seis-ai-unified-integration-fabric",
+  boundary: "No live provider call, SSH mutation, deployment, database migration, payment action, branch deletion, force push, or model training is enabled."
+};
+
+const pluginFeedLanes = [
+  {
+    id: "seis-governance",
+    name: "SEIS Governance",
+    posture: "read-plan-review",
+    feeds: ["Documentation Maintainer", "Repository Analyst", "Goal Architect"],
+    tools: ["seis_governance_status", "seis_governance_plan"]
+  },
+  {
+    id: "seis-cloud",
+    name: "SEIS Cloud",
+    posture: "plan-only-until-approved",
+    feeds: ["Workflow Operator", "SSH Operations Reviewer"],
+    tools: ["seis_cloud_status", "seis_cloud_plan"]
+  },
+  {
+    id: "seis-code",
+    name: "SEIS Code",
+    posture: "read-plan-local-check",
+    feeds: ["Repository Analyst", "Model Evaluator"],
+    tools: ["seis_code_status", "seis_code_plan"]
+  },
+  {
+    id: "seis-design",
+    name: "SEIS Design",
+    posture: "read-plan-ui-review",
+    feeds: ["SEIS Assistant", "Documentation Maintainer"],
+    tools: ["seis_design_status", "seis_design_plan"]
+  },
+  {
+    id: "seis-data",
+    name: "SEIS Data",
+    posture: "metadata-only-source-governed",
+    feeds: ["Research Synthesizer", "Model Evaluator"],
+    tools: ["seis_data_status", "seis_data_plan"]
+  }
+];
+
+const sshExecutionPlane = {
+  id: "ssh-hardening-contract",
+  allowedModes: ["audit", "dashboard", "verify", "dry-run"],
+  blockedWithoutApproval: ["harden", "full-setup", "firewall-apply", "authorized-keys-write", "sudo-live-mutation"],
+  requiredHumanInputs: ["target-host", "approved-public-key", "host-fingerprint", "rollback-plan", "maintenance-window"],
+  privateKeyRule: "Private key remains exclusively under operator control."
+};
+
+const aiWebsiteSurfaces = [
+  {
+    id: "seis-ai-demo",
+    name: "SEIS AI Command Core",
+    path: "apps/seis-ai-demo",
+    role: "AI Command Core local web app"
+  },
+  {
+    id: "seis-demo-web",
+    name: "SEIS Demo Web",
+    path: "apps/seis-demo-web",
+    role: "Contract-first AI/native demo website"
+  },
+  {
+    id: "seis-command-center",
+    name: "SEIS Command Center",
+    path: "apps/seis-core",
+    role: "Command Center shell with AI Core fixture view"
+  },
+  {
+    id: "portfolio-ai-website",
+    name: "Portfolio AI Website",
+    path: "apps/web",
+    role: "Browser-facing website surface with future SEIS AI routing points"
+  }
+];
+
+const activationBlockers = [
+  "human approval for live SSH host changes",
+  "server-side provider adapter with credential isolation",
+  "plugin permission expansion review",
+  "deployment target approval",
+  "production rollback plan"
+];
+
 const qwenIntake = {
   safeIdeas: [
     "Multi-agent execution timeline",
@@ -251,6 +352,11 @@ const dom = {
   agentFilter: document.querySelector("#agent-filter"),
   workflowMap: document.querySelector("#workflow-map"),
   runMetrics: document.querySelector("#run-metrics"),
+  fabricSummary: document.querySelector("#fabric-summary"),
+  fabricAgents: document.querySelector("#fabric-agents"),
+  fabricPluginFeeds: document.querySelector("#fabric-plugin-feeds"),
+  fabricSshPlane: document.querySelector("#fabric-ssh-plane"),
+  fabricWebsites: document.querySelector("#fabric-websites"),
   promptVersionList: document.querySelector("#prompt-version-list"),
   promptEditor: document.querySelector("#prompt-editor"),
   promptVersion: document.querySelector("#prompt-version"),
@@ -770,6 +876,7 @@ function render() {
   renderAgents();
   renderWorkflow();
   renderRunMetrics();
+  renderFabric();
   renderPromptVersions();
   renderKnowledge();
   renderEvals();
@@ -928,6 +1035,147 @@ function renderRunMetrics() {
     article.append(label, value, note);
     dom.runMetrics.append(article);
   });
+}
+
+function generateFabricSummary() {
+  return [
+    {
+      id: "agents",
+      label: "Controlled agents",
+      value: String(fabricAgentIds.length),
+      note: "Bounded local runtime lanes"
+    },
+    {
+      id: "plugin-lanes",
+      label: "Plugin feed lanes",
+      value: String(pluginFeedLanes.length),
+      note: "Metadata and plans only"
+    },
+    {
+      id: "ssh-modes",
+      label: "SSH safe modes",
+      value: String(sshExecutionPlane.allowedModes.length),
+      note: "Audit, dashboard, verify, dry-run"
+    },
+    {
+      id: "ai-websites",
+      label: "AI websites",
+      value: String(aiWebsiteSurfaces.length),
+      note: "Linked local surfaces"
+    },
+    {
+      id: "blockers",
+      label: "Activation blockers",
+      value: String(activationBlockers.length),
+      note: "Approval required before live action"
+    }
+  ];
+}
+
+function renderFabric() {
+  dom.fabricSummary.replaceChildren();
+  generateFabricSummary().forEach(item => {
+    const article = document.createElement("article");
+    article.className = "metric-tile";
+    article.dataset.searchable = `${item.label} ${item.value} ${item.note}`;
+
+    const label = document.createElement("span");
+    label.textContent = item.label;
+    const value = document.createElement("strong");
+    value.textContent = item.value;
+    const note = document.createElement("p");
+    note.textContent = item.note;
+    article.append(label, value, note);
+    dom.fabricSummary.append(article);
+  });
+
+  renderFabricAgents();
+  renderFabricPluginFeeds();
+  renderFabricSshPlane();
+  renderFabricWebsites();
+}
+
+function renderFabricAgents() {
+  dom.fabricAgents.replaceChildren();
+  agentCatalog
+    .filter(agent => fabricAgentIds.includes(agent.id))
+    .forEach(agent => {
+      const article = createFabricItem(agent.name, agent.lane, agent.role);
+      article.append(createTagList([agent.id, `${agent.lane.toLowerCase()} lane`]));
+      dom.fabricAgents.append(article);
+    });
+}
+
+function renderFabricPluginFeeds() {
+  dom.fabricPluginFeeds.replaceChildren();
+  pluginFeedLanes.forEach(lane => {
+    const article = createFabricItem(lane.name, lane.posture, `Feeds ${lane.feeds.join(", ")}.`);
+    article.append(createTagList(lane.tools));
+    dom.fabricPluginFeeds.append(article);
+  });
+}
+
+function renderFabricSshPlane() {
+  dom.fabricSshPlane.replaceChildren();
+  const safeModes = createFabricItem(
+    "Allowed modes",
+    "No host mutation",
+    sshExecutionPlane.allowedModes.join(", ")
+  );
+  safeModes.append(createTagList(sshExecutionPlane.allowedModes));
+
+  const blockedModes = createFabricItem(
+    "Blocked without approval",
+    "Requires human gate",
+    sshExecutionPlane.blockedWithoutApproval.join(", ")
+  );
+  blockedModes.append(createTagList(sshExecutionPlane.requiredHumanInputs));
+
+  const keyRule = createFabricItem(
+    "Private key rule",
+    "Operator controlled",
+    sshExecutionPlane.privateKeyRule
+  );
+
+  dom.fabricSshPlane.append(safeModes, blockedModes, keyRule);
+}
+
+function renderFabricWebsites() {
+  dom.fabricWebsites.replaceChildren();
+  aiWebsiteSurfaces.forEach(surface => {
+    const article = createFabricItem(surface.name, surface.path, surface.role);
+    article.append(createTagList([surface.id]));
+    dom.fabricWebsites.append(article);
+  });
+}
+
+function createFabricItem(titleText, metaText, detailText) {
+  const article = document.createElement("article");
+  article.className = "fabric-item";
+  article.dataset.searchable = `${titleText} ${metaText} ${detailText}`;
+
+  const header = document.createElement("header");
+  const title = document.createElement("h4");
+  title.textContent = titleText;
+  const meta = document.createElement("span");
+  meta.textContent = metaText;
+  header.append(title, meta);
+
+  const detail = document.createElement("p");
+  detail.textContent = detailText;
+  article.append(header, detail);
+  return article;
+}
+
+function createTagList(tags) {
+  const list = document.createElement("div");
+  list.className = "fabric-tags";
+  tags.forEach(tag => {
+    const item = document.createElement("span");
+    item.textContent = tag;
+    list.append(item);
+  });
+  return list;
 }
 
 function renderPromptVersions() {
@@ -1187,6 +1435,29 @@ function buildMarkdownExport(input = state) {
     "",
     ...run.providerReadiness.map(provider => `- ${provider.name}: ${provider.state} - ${provider.boundary}`),
     "",
+    "## Unified Fabric",
+    "",
+    `Fabric: ${fabricOverview.id}`,
+    `Status: ${fabricOverview.status}`,
+    `Mode: ${fabricOverview.mode}`,
+    `Validation: ${fabricOverview.validation}`,
+    "",
+    "Controlled agents:",
+    ...agentCatalog
+      .filter(agent => fabricAgentIds.includes(agent.id))
+      .map(agent => `- ${agent.name}: ${agent.role}`),
+    "",
+    "Plugin feed lanes:",
+    ...pluginFeedLanes.map(lane => `- ${lane.name}: ${lane.posture}; feeds ${lane.feeds.join(", ")}`),
+    "",
+    "SSH execution plane:",
+    `- Allowed modes: ${sshExecutionPlane.allowedModes.join(", ")}`,
+    `- Blocked without approval: ${sshExecutionPlane.blockedWithoutApproval.join(", ")}`,
+    `- ${sshExecutionPlane.privateKeyRule}`,
+    "",
+    "AI website surfaces:",
+    ...aiWebsiteSurfaces.map(surface => `- ${surface.name}: ${surface.path} - ${surface.role}`),
+    "",
     "## Evaluation",
     "",
     ...run.evals.map(item => `- ${item.name}: ${item.score}/100 - ${item.note}`),
@@ -1238,10 +1509,16 @@ window.SeisAIDemo = {
   generateWorkflow,
   generateProviderReadiness,
   generateRunMetrics,
+  generateFabricSummary,
+  renderFabric,
   selectKnowledge,
   evaluateRun,
   buildMarkdownExport,
   createRun,
   buildMacHandoffURL,
+  fabricOverview,
+  pluginFeedLanes,
+  sshExecutionPlane,
+  aiWebsiteSurfaces,
   getState: () => state
 };

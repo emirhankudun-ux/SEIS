@@ -14,6 +14,11 @@ test("SEIS AI demo exposes the required operating modules", async () => {
     "Router",
     "Agents",
     "Workflow",
+    "Fabric",
+    "Controlled Agent Fabric",
+    "Plugin Feeds",
+    "SSH Plane",
+    "AI Websites",
     "Prompts",
     "Knowledge",
     "Evals",
@@ -36,6 +41,12 @@ test("SEIS AI demo exposes the required operating modules", async () => {
   assert.match(html, /id="agent-queue"/);
   assert.match(html, /id="workflow-map"/);
   assert.match(html, /id="run-metrics"/);
+  assert.match(html, /id="fabric"/);
+  assert.match(html, /id="fabric-summary"/);
+  assert.match(html, /id="fabric-agents"/);
+  assert.match(html, /id="fabric-plugin-feeds"/);
+  assert.match(html, /id="fabric-ssh-plane"/);
+  assert.match(html, /id="fabric-websites"/);
   assert.match(html, /id="eval-score-strip"/);
   assert.match(html, /id="audit-timeline"/);
   assert.match(html, /id="command-dialog"/);
@@ -65,8 +76,16 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(typeof api.createRun, "function");
     assert.equal(typeof api.generateWorkflow, "function");
     assert.equal(typeof api.generateProviderReadiness, "function");
+    assert.equal(typeof api.generateFabricSummary, "function");
+    assert.equal(typeof api.renderFabric, "function");
     assert.equal(typeof api.buildMarkdownExport, "function");
     assert.equal(typeof api.buildMacHandoffURL, "function");
+    assert.equal(api.fabricOverview.status, "local-fixture-backed");
+    assert.equal(api.fabricOverview.mode, "plan-first-no-live-mutation");
+    assert.ok(api.pluginFeedLanes.some(lane => lane.id === "seis-cloud"));
+    assert.ok(api.sshExecutionPlane.allowedModes.includes("dry-run"));
+    assert.ok(api.sshExecutionPlane.blockedWithoutApproval.includes("sudo-live-mutation"));
+    assert.ok(api.aiWebsiteSurfaces.some(surface => surface.id === "seis-ai-demo"));
 
     const route = api.routeTask("Build an AI app demo with agents, evals, and security review.", "build");
     assert.equal(route.selected.name, "Implementation Builder");
@@ -93,6 +112,7 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(run.traceId, "trace-local-007");
     assert.ok(run.steps.length >= 5);
     assert.ok(run.agents.some(agent => agent.name === "QA Agent"));
+    assert.ok(run.agents.some(agent => agent.name === "Documentation Maintainer"));
     assert.ok(run.workflow.some(node => node.id === "approval" && node.state === "Waiting"));
     assert.ok(run.providerReadiness.some(provider => provider.id === "browser-secrets" && provider.state === "Blocked"));
     assert.ok(run.metrics.some(metric => metric.id === "providers" && metric.note === "Live calls disabled"));
@@ -107,7 +127,18 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     });
     assert.match(markdown, /Provider Readiness/);
     assert.match(markdown, /Browser secret entry: Blocked/);
+    assert.match(markdown, /Unified Fabric/);
+    assert.match(markdown, /SEIS Cloud: plan-only-until-approved/);
+    assert.match(markdown, /Allowed modes: audit, dashboard, verify, dry-run/);
+    assert.match(markdown, /AI website surfaces/);
     assert.match(markdown, /Excluded categories/);
+
+    const fabricSummary = api.generateFabricSummary();
+    assert.ok(fabricSummary.some(item => item.id === "agents" && item.value === "9"));
+    assert.ok(fabricSummary.some(item => item.id === "plugin-lanes" && item.value === "5"));
+    assert.match(dom.window.document.querySelector("#fabric-plugin-feeds").textContent, /SEIS Cloud/);
+    assert.match(dom.window.document.querySelector("#fabric-ssh-plane").textContent, /sudo-live-mutation/);
+    assert.match(dom.window.document.querySelector("#fabric-websites").textContent, /SEIS Command Center/);
 
     const handoff = new URL(api.buildMacHandoffURL({
       mode: "security",
@@ -203,6 +234,11 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
 
   assert.match(script, /AI Core contract spine/);
   assert.match(script, /Unified agent, plugin, and SSH fabric/);
+  assert.match(script, /fabricOverview/);
+  assert.match(script, /renderFabric/);
+  assert.match(script, /pluginFeedLanes/);
+  assert.match(script, /sshExecutionPlane/);
+  assert.match(script, /aiWebsiteSurfaces/);
   assert.match(script, /Plugin Steward/);
   assert.match(script, /SSH Operations Reviewer/);
   assert.match(script, /SEIS plugin feed/);
@@ -218,6 +254,9 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   assert.ok(unifiedFabric.pluginFeedLanes.some(lane => lane.id === "seis-cloud" && lane.feeds.includes("ssh-operations-reviewer")));
   assert.ok(unifiedFabric.sshExecutionPlanes.some(plane => plane.allowedModes.includes("dry-run")));
   assert.ok(unifiedFabric.aiWebsites.some(website => website.id === "seis-demo-web"));
+  assert.equal(unifiedFabric.uiSurface.path, "apps/seis-ai-demo/index.html");
+  assert.ok(unifiedFabric.uiSurface.sections.includes("fabric-plugin-feeds"));
+  assert.ok(unifiedFabric.uiSurface.exportHelpers.includes("renderFabric"));
   assert.ok(unifiedFabric.coreBoundaries.some(boundary => boundary.includes("No live provider call")));
   assert.doesNotMatch(serializedIntegration, /\/Users\//);
   assert.doesNotMatch(JSON.stringify(unifiedFabric), /\/Users\//);

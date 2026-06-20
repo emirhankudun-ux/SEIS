@@ -11,6 +11,7 @@ credentials or making live model calls.
 - Provider-neutral model router scoring
 - Supervised agent runtime queue
 - Deterministic workflow map recovered from trusted Qwen reference ideas
+- Unified Fabric module for controlled agents, specialist plugin feeds, SSH boundaries, and linked AI website surfaces
 - Provider readiness cards with browser secret entry explicitly blocked
 - Local run metrics for plan steps, active agents, provider paths, risk, evals, and prompt size
 - Versioned prompt behavior notes
@@ -45,6 +46,9 @@ approval-gated SSH execution boundaries, and AI website surfaces as local
 fixture-backed metadata. Plugins feed SEIS AI through declared lane profiles,
 MCP tool names, source mirrors, and reviewable plans only; they do not silently
 install themselves, expand permissions, read secrets, run live SSH, or deploy.
+The app exposes the same contract through the `Fabric` module and markdown
+export, and the fabric validator checks those UI surface ids and exported
+helpers.
 
 ## Run Locally
 
