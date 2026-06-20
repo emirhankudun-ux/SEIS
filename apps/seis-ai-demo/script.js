@@ -117,6 +117,49 @@ const agentCatalog = [
   }
 ];
 
+const providerReadinessCatalog = [
+  {
+    id: "local-deterministic",
+    name: "Local deterministic",
+    state: "Active",
+    boundary: "No provider SDK, no network request, no secret storage."
+  },
+  {
+    id: "server-adapter",
+    name: "Server-side provider adapter",
+    state: "Designed",
+    boundary: "OpenAI, Anthropic, Google, and Qwen-style routes must stay server-side."
+  },
+  {
+    id: "local-model-adapter",
+    name: "Local model adapter",
+    state: "Ready to wire",
+    boundary: "Ollama or local model calls require operator setup and remain opt-in."
+  },
+  {
+    id: "browser-secrets",
+    name: "Browser secret entry",
+    state: "Blocked",
+    boundary: "The demo never asks the browser to store provider API keys."
+  }
+];
+
+const qwenIntake = {
+  safeIdeas: [
+    "Multi-agent execution timeline",
+    "Workflow node builder",
+    "Provider/model profile mapping",
+    "Usage and activity metrics",
+    "Knowledge graph presentation"
+  ],
+  excludedCategories: [
+    "env and credential examples",
+    "live OpenAI/Anthropic/Google calls",
+    "browser API-key storage",
+    "Stripe, Supabase, Prisma, Pinecone, deployment, and bash setup fragments"
+  ]
+};
+
 const dom = {
   shell: document.querySelector(".app-shell"),
   navButtons: [...document.querySelectorAll("[data-nav-target]")],
@@ -131,8 +174,11 @@ const dom = {
   selectedProfile: document.querySelector("#selected-profile"),
   routeRationale: document.querySelector("#route-rationale"),
   routeBars: document.querySelector("#route-bars"),
+  providerReadiness: document.querySelector("#provider-readiness"),
   agentQueue: document.querySelector("#agent-queue"),
   agentFilter: document.querySelector("#agent-filter"),
+  workflowMap: document.querySelector("#workflow-map"),
+  runMetrics: document.querySelector("#run-metrics"),
   promptVersionList: document.querySelector("#prompt-version-list"),
   promptEditor: document.querySelector("#prompt-editor"),
   promptVersion: document.querySelector("#prompt-version"),
@@ -150,6 +196,7 @@ const dom = {
   autonomyLevel: document.querySelector("#autonomy-level"),
   runEvaluation: document.querySelector("#run-evaluation"),
   rerunEvals: document.querySelector("#rerun-evals"),
+  exportPlan: document.querySelector("#export-plan"),
   openMacOS: document.querySelector("#open-macos"),
   resetDemo: document.querySelector("#reset-demo"),
   auditTimeline: document.querySelector("#audit-timeline"),
@@ -164,6 +211,8 @@ let state = loadState();
 
 if (!state) {
   state = createInitialState();
+} else if (!Array.isArray(state.run.workflow) || !Array.isArray(state.run.providerReadiness) || !Array.isArray(state.run.metrics)) {
+  state.run = createRun(state);
 }
 
 render();
@@ -261,6 +310,7 @@ function bindEvents() {
 
   dom.runEvaluation.addEventListener("click", runEvaluation);
   dom.rerunEvals.addEventListener("click", runEvaluation);
+  dom.exportPlan.addEventListener("click", exportPlanMarkdown);
   dom.openMacOS.addEventListener("click", openInMacOS);
 
   dom.resetDemo.addEventListener("click", () => {
@@ -346,6 +396,9 @@ function createRun(input) {
   const evidence = selectKnowledge(prompt, risk.level);
   const evals = evaluateRun(prompt, steps, evidence, risk, input.redactSecrets);
   const compositeScore = Math.round(evals.reduce((sum, item) => sum + item.score, 0) / evals.length);
+  const workflow = generateWorkflow(steps, agents, route, risk, input.approvalRequired);
+  const providerReadiness = generateProviderReadiness(route.selected.id);
+  const metrics = generateRunMetrics(prompt, steps, agents, evals, risk, providerReadiness);
 
   return {
     id: `SEIS-LOCAL-${String(input.runCounter || 1).padStart(3, "0")}`,
@@ -357,6 +410,9 @@ function createRun(input) {
     agents,
     evidence,
     evals,
+    workflow,
+    providerReadiness,
+    metrics,
     compositeScore
   };
 }
@@ -459,6 +515,109 @@ function generateAgents(profileName, mode, riskLevel) {
   });
 }
 
+function generateWorkflow(steps, agents, route, risk, approvalRequired) {
+  const runningAgents = agents.filter(agent => agent.status === "Running").length;
+  const reviewAgents = agents.filter(agent => agent.status === "Review").length;
+  return [
+    {
+      id: "intake",
+      type: "Trigger",
+      title: "Prompt intake",
+      detail: `${steps.length} bounded plan steps prepared from the current request.`,
+      state: "Complete"
+    },
+    {
+      id: "route",
+      type: "Route",
+      title: route.selected.name,
+      detail: `${route.selected.score}% route score; provider calls remain disconnected.`,
+      state: "Active"
+    },
+    {
+      id: "agents",
+      type: "Agents",
+      title: "Supervised runtime",
+      detail: `${runningAgents} running agent lane${runningAgents === 1 ? "" : "s"}, ${reviewAgents} review lane${reviewAgents === 1 ? "" : "s"}.`,
+      state: reviewAgents > 0 ? "Review" : "Ready"
+    },
+    {
+      id: "evaluate",
+      type: "Eval",
+      title: "Quality gate",
+      detail: `Risk is ${risk.level}; evaluation must pass before approval.`,
+      state: risk.level === "High" ? "Review" : "Ready"
+    },
+    {
+      id: "approval",
+      type: "Approval",
+      title: approvalRequired ? "Human gate required" : "Local gate optional",
+      detail: "Push, PR, live model, SSH, deploy, and secret actions remain blocked.",
+      state: approvalRequired ? "Waiting" : "Ready"
+    },
+    {
+      id: "handoff",
+      type: "Handoff",
+      title: "Web to macOS",
+      detail: "Current prompt, mode, prompt version, risk controls, and notes can open in the native console.",
+      state: "Ready"
+    }
+  ];
+}
+
+function generateProviderReadiness(selectedProfileId) {
+  return providerReadinessCatalog.map(provider => {
+    const emphasis = provider.id === "local-deterministic" || selectedProfileId === "security-reviewer" && provider.id === "browser-secrets";
+    return {
+      ...provider,
+      emphasized: Boolean(emphasis)
+    };
+  });
+}
+
+function generateRunMetrics(prompt, steps, agents, evals, risk, providerReadiness) {
+  const running = agents.filter(agent => agent.status === "Running").length;
+  const review = agents.filter(agent => agent.status === "Review").length;
+  const readyProviders = providerReadiness.filter(provider => provider.state !== "Blocked").length;
+  return [
+    {
+      id: "steps",
+      label: "Plan steps",
+      value: String(steps.length),
+      note: "Deterministic work packages"
+    },
+    {
+      id: "agents",
+      label: "Agents active",
+      value: `${running}/${agents.length}`,
+      note: review > 0 ? `${review} review lane` : "No review lane"
+    },
+    {
+      id: "providers",
+      label: "Provider paths",
+      value: `${readyProviders}/${providerReadiness.length}`,
+      note: "Live calls disabled"
+    },
+    {
+      id: "risk",
+      label: "Risk score",
+      value: String(risk.score),
+      note: `${risk.level} local risk`
+    },
+    {
+      id: "evals",
+      label: "Eval gates",
+      value: String(evals.length),
+      note: "Clarity/security/privacy"
+    },
+    {
+      id: "prompt",
+      label: "Prompt size",
+      value: String(prompt.length),
+      note: "Characters"
+    }
+  ];
+}
+
 function selectKnowledge(prompt, riskLevel) {
   const normalized = prompt.toLowerCase();
   return knowledgeBase.map(item => {
@@ -535,7 +694,10 @@ function render() {
   renderRisk();
   renderResponse();
   renderRoutes();
+  renderProviderReadiness();
   renderAgents();
+  renderWorkflow();
+  renderRunMetrics();
   renderPromptVersions();
   renderKnowledge();
   renderEvals();
@@ -597,6 +759,26 @@ function renderRoutes() {
   });
 }
 
+function renderProviderReadiness() {
+  dom.providerReadiness.replaceChildren();
+  state.run.providerReadiness.forEach(provider => {
+    const article = document.createElement("article");
+    article.className = "provider-card";
+    if (provider.emphasized) article.classList.add("is-emphasized");
+    article.dataset.searchable = `${provider.name} ${provider.state} ${provider.boundary}`;
+
+    const header = document.createElement("header");
+    const title = document.createElement("h3");
+    title.textContent = provider.name;
+    header.append(title, createStatus(provider.state));
+
+    const boundary = document.createElement("p");
+    boundary.textContent = provider.boundary;
+    article.append(header, boundary);
+    dom.providerReadiness.append(article);
+  });
+}
+
 function renderAgents() {
   dom.agentQueue.replaceChildren();
   const visibleAgents = state.run.agents.filter(agent => (
@@ -629,6 +811,50 @@ function renderAgents() {
 
     article.append(header, role, track);
     dom.agentQueue.append(article);
+  });
+}
+
+function renderWorkflow() {
+  dom.workflowMap.replaceChildren();
+  state.run.workflow.forEach((node, index) => {
+    const article = document.createElement("article");
+    article.className = "workflow-node";
+    article.dataset.searchable = `${node.type} ${node.title} ${node.detail} ${node.state}`;
+
+    const indexLabel = document.createElement("span");
+    indexLabel.className = "workflow-index";
+    indexLabel.textContent = String(index + 1).padStart(2, "0");
+
+    const content = document.createElement("div");
+    const eyebrow = document.createElement("span");
+    eyebrow.className = "workflow-type";
+    eyebrow.textContent = node.type;
+    const title = document.createElement("h3");
+    title.textContent = node.title;
+    const detail = document.createElement("p");
+    detail.textContent = node.detail;
+    content.append(eyebrow, title, detail);
+
+    article.append(indexLabel, content, createStatus(node.state));
+    dom.workflowMap.append(article);
+  });
+}
+
+function renderRunMetrics() {
+  dom.runMetrics.replaceChildren();
+  state.run.metrics.forEach(metric => {
+    const article = document.createElement("article");
+    article.className = "metric-tile";
+    article.dataset.searchable = `${metric.label} ${metric.value} ${metric.note}`;
+
+    const label = document.createElement("span");
+    label.textContent = metric.label;
+    const value = document.createElement("strong");
+    value.textContent = metric.value;
+    const note = document.createElement("p");
+    note.textContent = metric.note;
+    article.append(label, value, note);
+    dom.runMetrics.append(article);
   });
 }
 
@@ -743,8 +969,10 @@ function createStatus(label) {
   const status = document.createElement("span");
   status.className = "status-label";
   status.textContent = label;
-  if (label === "Ready" || label === "Active" || label === "Running" || label.includes("%")) {
+  if (label === "Ready" || label === "Active" || label === "Running" || label === "Complete" || label === "Designed" || label === "Ready to wire" || label.includes("%")) {
     status.classList.add("ready");
+  } else if (label === "Blocked") {
+    status.classList.add("blocked");
   } else {
     status.classList.add("attention");
   }
@@ -833,6 +1061,78 @@ function exportAudit() {
   showToast("Audit export prepared.");
 }
 
+function exportPlanMarkdown() {
+  const markdown = buildMarkdownExport(state);
+  const blob = new Blob([markdown], { type: "text/markdown" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `${state.run.id.toLowerCase()}-plan.md`;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+  addAudit("Plan markdown exported", "Local markdown plan prepared by the browser.");
+  saveAndRender(false);
+  showToast("Markdown export prepared.");
+}
+
+function buildMarkdownExport(input = state) {
+  const run = input.run;
+  const lines = [
+    `# ${run.id} SEIS AI Command Core Plan`,
+    "",
+    `Trace ID: ${run.traceId}`,
+    `Mode: ${toTitle(input.mode)}`,
+    `Prompt version: ${input.promptVersion}`,
+    `Provider: disconnected local demo`,
+    `Risk: ${run.risk.level} (${run.risk.score}/100)`,
+    `Composite score: ${run.compositeScore}/100`,
+    "",
+    "## Prompt",
+    "",
+    input.prompt || defaultPrompt,
+    "",
+    "## Route",
+    "",
+    `Selected profile: ${run.route.selected.name} (${run.route.selected.score}%)`,
+    "",
+    run.route.rationale,
+    "",
+    "## Plan Steps",
+    "",
+    ...run.steps.map((step, index) => `${index + 1}. ${step.title}: ${step.detail}`),
+    "",
+    "## Workflow",
+    "",
+    ...run.workflow.map(node => `- ${node.type}: ${node.title} [${node.state}] - ${node.detail}`),
+    "",
+    "## Agents",
+    "",
+    ...run.agents.map(agent => `- ${agent.name}: ${agent.status}, ${agent.progress}% - ${agent.role}`),
+    "",
+    "## Provider Readiness",
+    "",
+    ...run.providerReadiness.map(provider => `- ${provider.name}: ${provider.state} - ${provider.boundary}`),
+    "",
+    "## Evaluation",
+    "",
+    ...run.evals.map(item => `- ${item.name}: ${item.score}/100 - ${item.note}`),
+    "",
+    "## Source Intake",
+    "",
+    "Safe Qwen-derived ideas:",
+    ...qwenIntake.safeIdeas.map(item => `- ${item}`),
+    "",
+    "Excluded categories:",
+    ...qwenIntake.excludedCategories.map(item => `- ${item}`),
+    "",
+    "No provider API key, live model call, SSH operation, deployment, database migration, or payment action is included in this export.",
+    ""
+  ];
+  return `${lines.join("\n")}\n`;
+}
+
 function buildMacHandoffURL(input = state) {
   const url = new URL(macBridgeBase);
   url.searchParams.set("source", "web-demo");
@@ -863,8 +1163,12 @@ window.SeisAIDemo = {
   computeRisk,
   generateSteps,
   generateAgents,
+  generateWorkflow,
+  generateProviderReadiness,
+  generateRunMetrics,
   selectKnowledge,
   evaluateRun,
+  buildMarkdownExport,
   createRun,
   buildMacHandoffURL,
   getState: () => state

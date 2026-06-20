@@ -56,10 +56,15 @@ struct SeisAICommandCoreApp: App {
                 }
                 .keyboardShortcut("2", modifiers: [.command])
 
+                Button("Show Workflow") {
+                    store.selectedSection = .workflow
+                }
+                .keyboardShortcut("4", modifiers: [.command])
+
                 Button("Show Audit") {
                     store.selectedSection = .audit
                 }
-                .keyboardShortcut("8", modifiers: [.command])
+                .keyboardShortcut("9", modifiers: [.command])
 
                 Divider()
 

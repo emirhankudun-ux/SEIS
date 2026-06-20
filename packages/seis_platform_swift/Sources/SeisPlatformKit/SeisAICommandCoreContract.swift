@@ -55,6 +55,29 @@ public struct SeisAICommandCoreAgent: Codable, Equatable, Identifiable, Sendable
     public let progress: Int
 }
 
+public struct SeisAICommandCoreWorkflowNode: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let type: String
+    public let title: String
+    public let detail: String
+    public let state: String
+}
+
+public struct SeisAICommandCoreProviderReadiness: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let name: String
+    public let state: String
+    public let boundary: String
+    public let emphasized: Bool
+}
+
+public struct SeisAICommandCoreRunMetric: Codable, Equatable, Identifiable, Sendable {
+    public let id: String
+    public let label: String
+    public let value: String
+    public let note: String
+}
+
 public struct SeisAICommandCoreKnowledge: Codable, Equatable, Identifiable, Sendable {
     public let id: String
     public let title: String
@@ -94,6 +117,9 @@ public struct SeisAICommandCoreRun: Codable, Equatable, Identifiable, Sendable {
     public let risk: SeisAICommandCoreRisk
     public let steps: [SeisAICommandCorePlanStep]
     public let agents: [SeisAICommandCoreAgent]
+    public let workflow: [SeisAICommandCoreWorkflowNode]
+    public let providerReadiness: [SeisAICommandCoreProviderReadiness]
+    public let metrics: [SeisAICommandCoreRunMetric]
     public let knowledge: [SeisAICommandCoreKnowledge]
     public let evaluations: [SeisAICommandCoreEvaluation]
     public let compositeScore: Int
@@ -220,6 +246,9 @@ public enum SeisAICommandCoreEngine {
         let agents = generateAgents(selectedProfile: route.selected.name, mode: mode, riskLevel: risk.level)
         let knowledge = selectKnowledge(prompt: boundedPrompt, riskLevel: risk.level)
         let evaluations = evaluate(prompt: boundedPrompt, steps: steps, knowledge: knowledge, risk: risk, redactSecrets: redactSecrets)
+        let workflow = generateWorkflow(steps: steps, agents: agents, route: route, risk: risk, approvalRequired: approvalRequired)
+        let providerReadiness = generateProviderReadiness(selectedProfileID: route.selected.id)
+        let metrics = generateMetrics(prompt: boundedPrompt, steps: steps, agents: agents, evaluations: evaluations, risk: risk, providerReadiness: providerReadiness)
         let compositeScore = evaluations.isEmpty ? 0 : evaluations.map(\.score).reduce(0, +) / evaluations.count
 
         return SeisAICommandCoreRun(
@@ -232,6 +261,9 @@ public enum SeisAICommandCoreEngine {
             risk: risk,
             steps: steps,
             agents: agents,
+            workflow: workflow,
+            providerReadiness: providerReadiness,
+            metrics: metrics,
             knowledge: knowledge,
             evaluations: evaluations,
             compositeScore: compositeScore,
@@ -379,6 +411,95 @@ public enum SeisAICommandCoreEngine {
         }
     }
 
+    private static func generateWorkflow(
+        steps: [SeisAICommandCorePlanStep],
+        agents: [SeisAICommandCoreAgent],
+        route: SeisAICommandCoreRoute,
+        risk: SeisAICommandCoreRisk,
+        approvalRequired: Bool
+    ) -> [SeisAICommandCoreWorkflowNode] {
+        let runningAgents = agents.filter { $0.status == "Running" }.count
+        let reviewAgents = agents.filter { $0.status == "Review" }.count
+        return [
+            SeisAICommandCoreWorkflowNode(
+                id: "intake",
+                type: "Trigger",
+                title: "Prompt intake",
+                detail: "\(steps.count) bounded plan steps prepared from the current request.",
+                state: "Complete"
+            ),
+            SeisAICommandCoreWorkflowNode(
+                id: "route",
+                type: "Route",
+                title: route.selected.name,
+                detail: "\(route.selected.score)% route score; provider calls remain disconnected.",
+                state: "Active"
+            ),
+            SeisAICommandCoreWorkflowNode(
+                id: "agents",
+                type: "Agents",
+                title: "Supervised runtime",
+                detail: "\(runningAgents) running agent lane\(runningAgents == 1 ? "" : "s"), \(reviewAgents) review lane\(reviewAgents == 1 ? "" : "s").",
+                state: reviewAgents > 0 ? "Review" : "Ready"
+            ),
+            SeisAICommandCoreWorkflowNode(
+                id: "evaluate",
+                type: "Eval",
+                title: "Quality gate",
+                detail: "Risk is \(risk.level); evaluation must pass before approval.",
+                state: risk.level == "High" ? "Review" : "Ready"
+            ),
+            SeisAICommandCoreWorkflowNode(
+                id: "approval",
+                type: "Approval",
+                title: approvalRequired ? "Human gate required" : "Local gate optional",
+                detail: "Push, PR, live model, SSH, deploy, and secret actions remain blocked.",
+                state: approvalRequired ? "Waiting" : "Ready"
+            ),
+            SeisAICommandCoreWorkflowNode(
+                id: "handoff",
+                type: "Handoff",
+                title: "Web to macOS",
+                detail: "Prompt, mode, prompt version, notes, and risk controls open in this native console.",
+                state: "Ready"
+            )
+        ]
+    }
+
+    private static func generateProviderReadiness(selectedProfileID: String) -> [SeisAICommandCoreProviderReadiness] {
+        providerReadinessCatalog.map { provider in
+            let emphasized = provider.id == "local-deterministic" || (selectedProfileID == "security-reviewer" && provider.id == "browser-secrets")
+            return SeisAICommandCoreProviderReadiness(
+                id: provider.id,
+                name: provider.name,
+                state: provider.state,
+                boundary: provider.boundary,
+                emphasized: emphasized
+            )
+        }
+    }
+
+    private static func generateMetrics(
+        prompt: String,
+        steps: [SeisAICommandCorePlanStep],
+        agents: [SeisAICommandCoreAgent],
+        evaluations: [SeisAICommandCoreEvaluation],
+        risk: SeisAICommandCoreRisk,
+        providerReadiness: [SeisAICommandCoreProviderReadiness]
+    ) -> [SeisAICommandCoreRunMetric] {
+        let runningAgents = agents.filter { $0.status == "Running" }.count
+        let reviewAgents = agents.filter { $0.status == "Review" }.count
+        let readyProviderPaths = providerReadiness.filter { $0.state != "Blocked" }.count
+        return [
+            SeisAICommandCoreRunMetric(id: "steps", label: "Plan steps", value: "\(steps.count)", note: "Deterministic work packages"),
+            SeisAICommandCoreRunMetric(id: "agents", label: "Agents active", value: "\(runningAgents)/\(agents.count)", note: reviewAgents > 0 ? "\(reviewAgents) review lane" : "No review lane"),
+            SeisAICommandCoreRunMetric(id: "providers", label: "Provider paths", value: "\(readyProviderPaths)/\(providerReadiness.count)", note: "Live calls disabled"),
+            SeisAICommandCoreRunMetric(id: "risk", label: "Risk score", value: "\(risk.score)", note: "\(risk.level) local risk"),
+            SeisAICommandCoreRunMetric(id: "evals", label: "Eval gates", value: "\(evaluations.count)", note: "Clarity/security/privacy"),
+            SeisAICommandCoreRunMetric(id: "prompt", label: "Prompt size", value: "\(prompt.count)", note: "Characters")
+        ]
+    }
+
     private static func selectKnowledge(prompt: String, riskLevel: String) -> [SeisAICommandCoreKnowledge] {
         let lowercasedPrompt = prompt.lowercased()
         return knowledgeCatalog.map { item in
@@ -473,6 +594,13 @@ public enum SeisAICommandCoreEngine {
         (id: "documentation", name: "Documentation Agent", lane: "Plan", role: "Source-of-truth docs, runbooks, and recovery reports."),
         (id: "qa", name: "QA Agent", lane: "Review", role: "Evaluation scores, tests, accessibility, and failure-path review."),
         (id: "operations", name: "Operations Agent", lane: "Review", role: "Git isolation, handoff, release readiness, and rollback notes.")
+    ]
+
+    private static let providerReadinessCatalog = [
+        (id: "local-deterministic", name: "Local deterministic", state: "Active", boundary: "No provider SDK, no network request, no secret storage."),
+        (id: "server-adapter", name: "Server-side provider adapter", state: "Designed", boundary: "OpenAI, Anthropic, Google, and Qwen-style routes must stay server-side."),
+        (id: "local-model-adapter", name: "Local model adapter", state: "Ready to wire", boundary: "Ollama or local model calls require operator setup and remain opt-in."),
+        (id: "browser-secrets", name: "Browser secret entry", state: "Blocked", boundary: "The demo never asks the browser to store provider API keys.")
     ]
 
     private static let knowledgeCatalog = [

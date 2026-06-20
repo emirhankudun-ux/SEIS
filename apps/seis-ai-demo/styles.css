@@ -570,6 +570,13 @@ textarea:focus-visible {
   line-height: 1.2;
 }
 
+.response-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
 .generated-response {
   display: grid;
   gap: 10px;
@@ -641,6 +648,11 @@ textarea:focus-visible {
 .status-label.ready {
   background: var(--ok-soft);
   color: var(--ok);
+}
+
+.status-label.blocked {
+  background: var(--bad-soft);
+  color: var(--bad);
 }
 
 .status-label.waiting {
@@ -717,6 +729,44 @@ textarea:focus-visible {
   width: var(--value);
 }
 
+.provider-readiness {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.provider-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 11px;
+  background: #fbfcfd;
+}
+
+.provider-card.is-emphasized {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.provider-card header,
+.metric-tile header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.provider-card h3 {
+  margin: 0;
+  font-size: 13px;
+}
+
+.provider-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .toolbar {
   display: inline-flex;
   align-items: center;
@@ -774,6 +824,122 @@ textarea:focus-visible {
   width: var(--progress);
   border-radius: inherit;
   background: var(--ok);
+}
+
+.workflow-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.workflow-map {
+  display: grid;
+  gap: 10px;
+}
+
+.workflow-node {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px;
+  background: var(--surface-solid);
+}
+
+.workflow-index {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.workflow-type {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.workflow-node h3,
+.workflow-node p,
+.workflow-side h3,
+.source-intake p,
+.metric-tile p {
+  margin: 0;
+}
+
+.workflow-node h3 {
+  margin-top: 2px;
+  font-size: 14px;
+}
+
+.workflow-node p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.workflow-side {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.workflow-side h3 {
+  font-size: 13px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.metric-tile {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px;
+  background: #fbfcfd;
+}
+
+.metric-tile span,
+.metric-tile p {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.metric-tile strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.metric-tile p {
+  margin-top: 6px;
+}
+
+.source-intake {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 11px;
+  background: #fbfcfd;
+}
+
+.source-intake p {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .split-section {
@@ -1042,7 +1208,9 @@ textarea:focus-visible {
 
   .router-layout,
   .split-section,
+  .workflow-layout,
   .agent-queue,
+  .provider-readiness,
   .inspector {
     grid-template-columns: 1fr;
   }
@@ -1068,7 +1236,8 @@ textarea:focus-visible {
 
   .section-heading,
   .panel-header,
-  .response-header {
+  .response-header,
+  .workflow-node {
     display: grid;
   }
 
@@ -1084,8 +1253,13 @@ textarea:focus-visible {
 
   .mode-button,
   .composer-actions > *,
+  .response-actions,
   .run-clock {
     width: 100%;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -15,9 +15,10 @@ Head branch: `seis/ai-demo-app-foundation`
 This PR adds a local, deterministic SEIS AI Command Core demo across the Apple
 desktop and web companion surfaces. It gives SEIS a reviewable AI operating
 interface for request composition, model routing, supervised agents, prompt
-versions, evidence, evaluation scores, approvals, settings, and local audit
-history without requiring provider credentials or live model calls. The web
-companion can hand the active run to the macOS app through a local
+versions, deterministic workflow state, provider readiness, evidence,
+evaluation scores, approvals, settings, markdown export, and local audit history
+without requiring provider credentials or live model calls. The web companion
+can hand the active run to the macOS app through a local
 `seisdemo://ai-command-core/run` URL.
 
 ## Scope
@@ -42,9 +43,21 @@ The change keeps the demo bounded inside existing SEIS surfaces:
   together for local product review.
 - `.github/workflows/seis-ai-command-core.yml` runs the focused PR gate on
   demo-related changes.
+- `docs/reviews/seis-ai-demo-qwen-intake-review.md` documents the maintainer
+  supplied Qwen reference intake and the unsafe material excluded from direct
+  integration.
 
 No provider SDK, secret store, deployment target, signing identity, or new
 runtime dependency is introduced.
+
+## Trusted Reference Intake
+
+The maintainer supplied a local Qwen-generated code folder. This PR recovers
+only safe product ideas from it: multi-agent workflow sequencing, workflow-node
+presentation, provider-readiness mapping, local run metrics, and knowledge graph
+presentation. It excludes env/credential examples, browser API-key storage, live
+provider calls, payment/auth/database fragments, setup scripts, migrations, and
+deployment commands.
 
 ## Master Prompt Alignment
 

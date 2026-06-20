@@ -4,6 +4,7 @@ enum CommandCoreSection: String, CaseIterable, Identifiable {
     case workspace
     case router
     case agents
+    case workflow
     case prompts
     case knowledge
     case evals
@@ -20,6 +21,8 @@ enum CommandCoreSection: String, CaseIterable, Identifiable {
             "Router"
         case .agents:
             "Agents"
+        case .workflow:
+            "Workflow"
         case .prompts:
             "Prompts"
         case .knowledge:
@@ -41,6 +44,8 @@ enum CommandCoreSection: String, CaseIterable, Identifiable {
             "Model-route decision"
         case .agents:
             "Runtime queue"
+        case .workflow:
+            "Agent workflow"
         case .prompts:
             "Versioned behavior"
         case .knowledge:
@@ -62,6 +67,8 @@ enum CommandCoreSection: String, CaseIterable, Identifiable {
             "point.3.connected.trianglepath.dotted"
         case .agents:
             "person.3.sequence"
+        case .workflow:
+            "point.3.connected.trianglepath.dotted"
         case .prompts:
             "text.badge.checkmark"
         case .knowledge:

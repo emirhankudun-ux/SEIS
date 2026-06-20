@@ -74,6 +74,8 @@ struct DetailView: View {
                 RouterView(run: store.run)
             case .agents:
                 AgentsView(store: store)
+            case .workflow:
+                WorkflowView(run: store.run)
             case .prompts:
                 PromptsView(store: store)
             case .knowledge:

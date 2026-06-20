@@ -13,6 +13,7 @@ test("SEIS AI demo exposes the required operating modules", async () => {
     "Ask SEIS",
     "Router",
     "Agents",
+    "Workflow",
     "Prompts",
     "Knowledge",
     "Evals",
@@ -23,6 +24,7 @@ test("SEIS AI demo exposes the required operating modules", async () => {
     "Generate plan",
     "Run evaluation",
     "Open in macOS",
+    "Export markdown",
     "Approve"
   ]) {
     assert.ok(html.includes(label), `missing label: ${label}`);
@@ -30,7 +32,10 @@ test("SEIS AI demo exposes the required operating modules", async () => {
 
   assert.match(html, /id="composer-form"/);
   assert.match(html, /id="route-bars"/);
+  assert.match(html, /id="provider-readiness"/);
   assert.match(html, /id="agent-queue"/);
+  assert.match(html, /id="workflow-map"/);
+  assert.match(html, /id="run-metrics"/);
   assert.match(html, /id="eval-score-strip"/);
   assert.match(html, /id="audit-timeline"/);
   assert.match(html, /id="command-dialog"/);
@@ -58,6 +63,9 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(typeof api.computeRisk, "function");
     assert.equal(typeof api.evaluateRun, "function");
     assert.equal(typeof api.createRun, "function");
+    assert.equal(typeof api.generateWorkflow, "function");
+    assert.equal(typeof api.generateProviderReadiness, "function");
+    assert.equal(typeof api.buildMarkdownExport, "function");
     assert.equal(typeof api.buildMacHandoffURL, "function");
 
     const route = api.routeTask("Build an AI app demo with agents, evals, and security review.", "build");
@@ -85,8 +93,21 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(run.traceId, "trace-local-007");
     assert.ok(run.steps.length >= 5);
     assert.ok(run.agents.some(agent => agent.name === "QA Agent"));
+    assert.ok(run.workflow.some(node => node.id === "approval" && node.state === "Waiting"));
+    assert.ok(run.providerReadiness.some(provider => provider.id === "browser-secrets" && provider.state === "Blocked"));
+    assert.ok(run.metrics.some(metric => metric.id === "providers" && metric.note === "Live calls disabled"));
     assert.ok(run.evidence.some(item => item.title === "AGENTS.md"));
     assert.ok(run.compositeScore >= 70);
+
+    const markdown = api.buildMarkdownExport({
+      mode: "review",
+      prompt: "Evaluate a local provider-free SEIS AI demo.",
+      promptVersion: "seis-review-v0.2",
+      run
+    });
+    assert.match(markdown, /Provider Readiness/);
+    assert.match(markdown, /Browser secret entry: Blocked/);
+    assert.match(markdown, /Excluded categories/);
 
     const handoff = new URL(api.buildMacHandoffURL({
       mode: "security",

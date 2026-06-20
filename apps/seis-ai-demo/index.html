@@ -44,24 +44,28 @@
           <span class="nav-glyph" aria-hidden="true">03</span>
           <span>Agents</span>
         </button>
-        <button class="nav-item" type="button" data-nav-target="prompts">
+        <button class="nav-item" type="button" data-nav-target="workflow">
           <span class="nav-glyph" aria-hidden="true">04</span>
+          <span>Workflow</span>
+        </button>
+        <button class="nav-item" type="button" data-nav-target="prompts">
+          <span class="nav-glyph" aria-hidden="true">05</span>
           <span>Prompts</span>
         </button>
         <button class="nav-item" type="button" data-nav-target="knowledge">
-          <span class="nav-glyph" aria-hidden="true">05</span>
+          <span class="nav-glyph" aria-hidden="true">06</span>
           <span>Knowledge</span>
         </button>
         <button class="nav-item" type="button" data-nav-target="evals">
-          <span class="nav-glyph" aria-hidden="true">06</span>
+          <span class="nav-glyph" aria-hidden="true">07</span>
           <span>Evals</span>
         </button>
         <button class="nav-item" type="button" data-nav-target="approvals">
-          <span class="nav-glyph" aria-hidden="true">07</span>
+          <span class="nav-glyph" aria-hidden="true">08</span>
           <span>Approvals</span>
         </button>
         <button class="nav-item" type="button" data-nav-target="audit">
-          <span class="nav-glyph" aria-hidden="true">08</span>
+          <span class="nav-glyph" aria-hidden="true">09</span>
           <span>Audit</span>
         </button>
       </nav>
@@ -132,7 +136,10 @@
             <div class="response-panel" aria-live="polite">
               <div class="response-header">
                 <h2>Generated plan</h2>
-                <span id="response-quality" class="score-pill">Ready for review</span>
+                <div class="response-actions">
+                  <span id="response-quality" class="score-pill">Ready for review</span>
+                  <button class="text-button" type="button" id="export-plan">Export markdown</button>
+                </div>
               </div>
               <div id="generated-response" class="generated-response"></div>
             </div>
@@ -151,6 +158,7 @@
               </div>
               <div class="route-bars" id="route-bars"></div>
             </div>
+            <div class="provider-readiness" id="provider-readiness" aria-label="Provider readiness"></div>
           </section>
 
           <section id="agents" class="app-section" aria-labelledby="agents-title">
@@ -167,6 +175,26 @@
               </div>
             </div>
             <div id="agent-queue" class="agent-queue"></div>
+          </section>
+
+          <section id="workflow" class="app-section" aria-labelledby="workflow-title">
+            <div class="panel-header">
+              <h2 id="workflow-title">Workflow</h2>
+              <span class="microcopy">Recovered multi-agent and adapter ideas, rewritten as local demo state</span>
+            </div>
+            <div class="workflow-layout">
+              <div id="workflow-map" class="workflow-map" aria-label="Agent workflow"></div>
+              <aside class="workflow-side" aria-label="Run metrics and source intake">
+                <div>
+                  <h3>Run metrics</h3>
+                  <div id="run-metrics" class="metrics-grid"></div>
+                </div>
+                <div class="source-intake">
+                  <h3>Qwen intake</h3>
+                  <p>Useful ideas are converted into deterministic product behavior. Unsafe live API, credential, payment, database, and deployment fragments stay excluded.</p>
+                </div>
+              </aside>
+            </div>
           </section>
 
           <section id="prompts" class="app-section split-section" aria-labelledby="prompts-title">

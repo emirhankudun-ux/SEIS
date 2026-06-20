@@ -10,11 +10,14 @@ credentials or making live model calls.
 - Web-to-macOS handoff through the local `seisdemo://` URL scheme
 - Provider-neutral model router scoring
 - Supervised agent runtime queue
+- Deterministic workflow map recovered from trusted Qwen reference ideas
+- Provider readiness cards with browser secret entry explicitly blocked
+- Local run metrics for plan steps, active agents, provider paths, risk, evals, and prompt size
 - Versioned prompt behavior notes
 - Knowledge and evidence references
 - Evaluation score strip
 - Human approval gate
-- Audit timeline and local JSON export
+- Audit timeline, local JSON export, and markdown plan export
 - Local persistence with `localStorage`
 
 ## Run Locally
@@ -32,6 +35,17 @@ http://localhost:4177/apps/seis-ai-demo/
 ```
 
 This app intentionally stays in local demo mode. It does not request, store, or use provider API keys.
+
+## Trusted Reference Intake
+
+The Qwen reference folder supplied by the maintainer was used only as an idea
+source for multi-agent execution, workflow nodes, provider readiness, local run
+metrics, and knowledge presentation. Raw Qwen files, env examples, live provider
+calls, payment/auth/database fragments, bash setup scripts, and browser API-key
+storage were excluded.
+
+The intake review lives at
+[`docs/reviews/seis-ai-demo-qwen-intake-review.md`](../../docs/reviews/seis-ai-demo-qwen-intake-review.md).
 
 ## Work With The macOS App
 
