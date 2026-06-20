@@ -292,7 +292,8 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add evaluation report generation for prompt and app-state fixtures.
+1. Add model-router request and response contract fixtures for local-only,
+   metadata-only, and approval-needed provider routes.
 
 Completed foundation slice:
 
@@ -309,6 +310,9 @@ Completed foundation slice:
 - A local read-only repository assistant prototype with source-linked output now
   lives under `packages/repository-assistant/` and is checked by
   `npm run check:repository-assistant-prototype`.
+- Prompt and app-state fixture evaluation report generation now lives under
+  `packages/evals/` and `reports/evals/`, and is checked by
+  `npm run check:ai-core-fixture-evaluation-report`.
 
 ## Relationship to Existing Roadmaps
 

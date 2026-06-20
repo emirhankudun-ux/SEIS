@@ -1,6 +1,6 @@
 # Evaluation Strategy
 
-Status: Foundation strategy
+Status: Fixture-backed foundation strategy
 
 SEIS evaluations measure AI Core behavior, prompt quality, routing decisions,
 agent safety, documentation quality, and future model experiments.
@@ -41,6 +41,21 @@ It is validated by `npm run check:prompt-regression-fixtures`.
 This suite is a fixture-backed readiness check for prompt behavior contracts. It
 does not produce live evaluation scores, benchmark claims, provider performance
 claims, model safety claims, or trained SEIS model evidence.
+
+## Fixture Evaluation Report
+
+The first generated evaluation report is fixture-backed and local-only:
+
+- `packages/evals/schemas/fixture-evaluation-report.schema.json`
+- `reports/evals/ai-core-fixture-evaluation-report.json`
+- `reports/evals/ai-core-fixture-evaluation-report.md`
+- `npm run check:ai-core-fixture-evaluation-report`
+- `npm run automation:ai-core-fixture-evaluation-report`
+
+It records prompt-regression and app-state fixture evaluations with evidence
+links, pass criteria, limitations, reviewer, and non-claims. It does not run
+live models, compare provider quality, publish benchmark scores, certify safety,
+or create trained SEIS model evidence.
 
 ## Non-Claims
 

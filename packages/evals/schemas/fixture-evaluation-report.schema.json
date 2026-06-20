@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/fixture-evaluation-report.schema.json",
+  "title": "SEIS Fixture Evaluation Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "status",
+    "generatedAt",
+    "sourceDocuments",
+    "summary",
+    "evaluations",
+    "nonClaims",
+    "nextRecommendedSlice"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "status": {
+      "enum": ["fixture-backed", "blocked"]
+    },
+    "generatedAt": {
+      "type": "string"
+    },
+    "sourceDocuments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repoPath"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "promptEvaluationCount",
+        "appStateEvaluationCount",
+        "passed",
+        "failed",
+        "blocked",
+        "unknown"
+      ],
+      "properties": {
+        "promptEvaluationCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "appStateEvaluationCount": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "blocked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "evaluations": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/evaluation"
+      }
+    },
+    "nonClaims": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "string"
+      }
+    },
+    "nextRecommendedSlice": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "sourceLinks"],
+      "properties": {
+        "summary": {
+          "type": "string"
+        },
+        "sourceLinks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "repoPath": {
+      "type": "string",
+      "pattern": "^(docs|packages|roadmap|reports|apps|content|data|scripts)/"
+    },
+    "evaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "layer",
+        "targetType",
+        "targetId",
+        "sourceFixture",
+        "privacyClass",
+        "rubric",
+        "passCriteria",
+        "observedOutputSummary",
+        "limitations",
+        "reviewer",
+        "result",
+        "status",
+        "evidenceLinks"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "layer": {
+          "enum": ["prompt-regression", "app-state"]
+        },
+        "targetType": {
+          "enum": ["prompt", "app-state"]
+        },
+        "targetId": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceFixture": {
+          "$ref": "#/$defs/repoPath"
+        },
+        "privacyClass": {
+          "enum": ["synthetic", "metadata-only", "local-fixture"]
+        },
+        "rubric": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "passCriteria": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "observedOutputSummary": {
+          "type": "string"
+        },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reviewer": {
+          "type": "string"
+        },
+        "result": {
+          "enum": ["pass", "fail", "blocked", "unknown"]
+        },
+        "status": {
+          "enum": ["validated", "failed", "blocked", "unknown"]
+        },
+        "evidenceLinks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/repoPath"
+          }
+        }
+      }
+    }
+  }
+}

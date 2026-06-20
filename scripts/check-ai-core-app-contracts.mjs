@@ -98,6 +98,21 @@ const expectedMaturities = [
   "blocked"
 ];
 
+const expectedEvaluationTargetTypes = [
+  "prompt",
+  "route",
+  "agent",
+  "app-state",
+  "retrieval",
+  "model-research"
+];
+
+const expectedAuditRedactionStates = [
+  "redacted",
+  "metadata-only",
+  "not-sensitive"
+];
+
 const objectToArray = {
   modelRoute: "modelRoutes",
   promptVersion: "promptVersions",
@@ -260,6 +275,22 @@ for (const approval of fixture.approvalRequests || []) {
   if (approval.riskClass === "high" && approval.decisionState !== "approval-needed") {
     fail(`approvalRequest ${approval.id} high risk fixture must remain approval-needed`);
   }
+}
+
+for (const evaluation of fixture.evaluationResults || []) {
+  assertAllowed(
+    `evaluationResult.${evaluation.id}.targetType`,
+    evaluation.targetType,
+    expectedEvaluationTargetTypes
+  );
+}
+
+for (const auditEvent of fixture.auditEvents || []) {
+  assertAllowed(
+    `auditEvent.${auditEvent.id}.redactionState`,
+    auditEvent.redactionState,
+    expectedAuditRedactionStates
+  );
 }
 
 for (const goal of fixture.goalTrackingStates || []) {

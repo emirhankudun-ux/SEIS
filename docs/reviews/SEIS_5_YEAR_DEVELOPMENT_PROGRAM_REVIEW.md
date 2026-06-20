@@ -51,7 +51,8 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add evaluation report generation for prompt and app-state fixtures.
+1. Add model-router request and response contract fixtures for local-only,
+   metadata-only, and approval-needed provider routes.
 
 ## Follow-Up Contract Slice
 
@@ -124,3 +125,22 @@ risks, validation status, branch plan, excluded material, and next safe action
 from local fixture data only. It does not add external provider routing,
 provider keys, GitHub write actions, SSH execution, deployment, destructive
 cleanup, training, benchmark claims, checkpoints, or model cards.
+
+## Follow-Up Evaluation Report Slice
+
+Status: Added after the repository assistant prototype slice.
+
+Evidence:
+
+- `packages/evals/schemas/fixture-evaluation-report.schema.json`
+- `reports/evals/ai-core-fixture-evaluation-report.json`
+- `reports/evals/ai-core-fixture-evaluation-report.md`
+- `scripts/create-ai-core-fixture-evaluation-report.mjs`
+- `npm run check:ai-core-fixture-evaluation-report`
+
+This slice completes the prompt and app-state fixture evaluation report
+generation slice from the five-year program. It generates local fixture-backed
+evaluation records for prompt regression and app-state fixtures. It does not run
+live models, enable external provider routing, compare provider quality, publish
+benchmark scores, certify safety, train models, create checkpoints, or create
+model cards.

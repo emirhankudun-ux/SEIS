@@ -43,6 +43,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /seisAiCoreContractFixture/);
   assert.match(fixture, /local-readonly-repository-assistant/);
   assert.match(fixture, /surface-repository-assistant/);
+  assert.match(fixture, /ai-core-fixture-evaluation-report/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);

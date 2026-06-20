@@ -162,11 +162,27 @@ window.seisAiCoreContractFixture = {
     },
     {
       id: "eval-repository-assistant-prototype",
-      targetType: "repository-assistant",
+      targetType: "agent",
       targetId: "local-readonly-repository-assistant",
       result: "pass",
       status: "validated",
       evidence: "scripts/check-repository-assistant-prototype.mjs"
+    },
+    {
+      id: "eval-prompt-fixture-report",
+      targetType: "prompt",
+      targetId: "assistant-surface-regression-suite",
+      result: "pass",
+      status: "validated",
+      evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      id: "eval-app-state-fixture-report",
+      targetType: "app-state",
+      targetId: "ai-core-command-center-foundation",
+      result: "pass",
+      status: "validated",
+      evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
     }
   ],
   auditEvents: [
@@ -182,9 +198,17 @@ window.seisAiCoreContractFixture = {
       id: "audit-repository-assistant-local-alpha",
       actor: "codex",
       action: "added local read-only repository assistant prototype fixture",
-      redactionState: "metadata-and-paths-only",
+      redactionState: "metadata-only",
       status: "validated",
       evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      id: "audit-ai-core-fixture-evaluation-report",
+      actor: "codex",
+      action: "generated prompt and app-state fixture evaluation report",
+      redactionState: "metadata-only",
+      status: "validated",
+      evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
     }
   ],
   repositoryFindings: [
@@ -213,6 +237,14 @@ window.seisAiCoreContractFixture = {
       sourceClass: "official",
       status: "validated",
       evidence: "docs/architecture/ai-core-app-shared-contracts.md"
+    },
+    {
+      id: "doc-ai-core-fixture-evaluation-report",
+      document: "reports/evals/ai-core-fixture-evaluation-report.md",
+      freshness: "current",
+      sourceClass: "scan-generated",
+      status: "validated",
+      evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
     }
   ],
   securityFindings: [
@@ -240,6 +272,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "local-alpha",
       evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      id: "roadmap-year-1-fixture-evaluation-report",
+      horizon: "year-1",
+      track: "Prompt and app-state fixture evaluation report generation",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "reports/evals/ai-core-fixture-evaluation-report.json"
     }
   ],
   aiSurfaces: [
