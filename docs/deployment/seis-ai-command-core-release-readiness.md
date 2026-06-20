@@ -36,6 +36,12 @@ The gate covers:
 The same gate runs in GitHub Actions on pull requests that touch the desktop
 demo, web companion, Swift package, run script, or workflow.
 
+## PR Handoff
+
+Use [`docs/reviews/seis-ai-command-core-pr-draft.md`](../reviews/seis-ai-command-core-pr-draft.md)
+as the prepared pull request body after explicit maintainer approval to push the
+branch and open the PR.
+
 ## Publish Gate
 
 `seis/ai-demo-app-foundation` is documented as an accepted local review branch

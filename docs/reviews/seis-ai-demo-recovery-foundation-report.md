@@ -110,6 +110,8 @@ Recent closed PRs visible through GitHub CLI were merged (#38, #36, #35, #34,
 - Keep: this report as a traceable review artifact.
 - Keep: the focused GitHub Actions workflow and release-readiness runbook for
   the demo branch.
+- Keep: `docs/reviews/seis-ai-command-core-pr-draft.md` as the prepared PR
+  body for the short-lived review branch.
 - Exclude: generated concept image, browser screenshots, node_modules, dist, and
   local audit downloads.
 - Merge later: if accepted, link the demo from the primary app index or product
@@ -142,6 +144,8 @@ Expected state on `seis/ai-demo-app-foundation`:
 - `check:publish-gate-contract` passes because the review branch is documented.
 - `automation:publish-readiness` remains blocked until the accepted work is on
   `main`; this is expected and prevents a false direct-publish claim.
+- Use `docs/reviews/seis-ai-command-core-pr-draft.md` for the PR body after
+  explicit maintainer approval to push the branch.
 
 ## Final Decision
 
