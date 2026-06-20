@@ -155,6 +155,31 @@ import Testing
     #expect(risk.score >= 68)
 }
 
+@Test func aiCommandCoreBridgeBuildsAndParsesWebHandoffURLs() throws {
+    let url = try #require(SeisAICommandCoreBridge.makeRunURL(
+        prompt: "Review a local web to macOS bridge without provider keys.",
+        mode: .security,
+        promptVersion: "seis-security-v0.1",
+        promptNotes: "Bridge smoke test",
+        approvalRequired: true,
+        redactSecrets: true,
+        autonomyLevel: 2
+    ))
+    let payload = try #require(SeisAICommandCoreBridge.parseRunURL(url))
+
+    #expect(url.scheme == "seisdemo")
+    #expect(url.host == "ai-command-core")
+    #expect(url.path == "/run")
+    #expect(payload.source == "web-demo")
+    #expect(payload.prompt == "Review a local web to macOS bridge without provider keys.")
+    #expect(payload.mode == .security)
+    #expect(payload.promptVersion == "seis-security-v0.1")
+    #expect(payload.promptNotes == "Bridge smoke test")
+    #expect(payload.approvalRequired)
+    #expect(payload.redactSecrets)
+    #expect(payload.autonomyLevel == 2)
+}
+
 @Test func appleContinuationViewRendersReadinessMetrics() throws {
     let root = repositoryRoot()
     let source = try String(

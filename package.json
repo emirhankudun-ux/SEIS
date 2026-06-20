@@ -11,6 +11,7 @@
     "test:seis-ai-demo": "node --test apps/seis-ai-demo/test/*.test.js",
     "test:seis-ai-desktop": "swift test --package-path packages/seis_platform_swift",
     "check:seis-ai-command-core": "npm run test:seis-ai-demo && npm run test:seis-ai-desktop && npm run build:seis-ai-desktop && npm run verify:seis-ai-desktop",
+    "dev:seis-ai-command-core": "./script/dev_seis_ai_command_core.sh",
     "test:all": "npm test && npm run test:web",
     "test:coverage": "node --test --experimental-test-coverage",
     "lint": "eslint .",

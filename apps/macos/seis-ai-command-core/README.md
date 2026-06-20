@@ -23,6 +23,7 @@ It is intentionally local and deterministic:
 - Audit timeline with copy action
 - Settings window
 - Toolbar and command menu shortcuts
+- Web companion handoff via `seisdemo://ai-command-core/run`
 
 ## Build
 
@@ -57,3 +58,30 @@ human approval.
 ```bash
 ./script/build_and_run.sh --ai-demo
 ```
+
+## Develop With The Web Companion
+
+Open the web companion and desktop app together:
+
+```bash
+npm run dev:seis-ai-command-core
+```
+
+Manual path:
+
+Run the web companion from the repository root:
+
+```bash
+python3 -m http.server 4177 --bind 127.0.0.1
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4177/apps/seis-ai-demo/
+```
+
+With this desktop app running, use `Open in macOS` in the browser demo to send
+the current prompt, mode, prompt version, notes, and risk controls into a new
+desktop run. The handoff stays local and deterministic through the `seisdemo://`
+URL scheme.

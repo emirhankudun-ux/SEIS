@@ -25,6 +25,9 @@ struct SeisAICommandCoreApp: App {
     var body: some Scene {
         WindowGroup("SEIS AI Command Core") {
             ContentView(store: store)
+                .onOpenURL { url in
+                    store.applyBridgeURL(url)
+                }
         }
         #if os(macOS)
         .defaultSize(width: 1360, height: 880)

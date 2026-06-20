@@ -121,6 +121,30 @@ final class SeisAICommandCoreStore: ObservableObject {
         appendAudit(title: "Risk controls changed", detail: "Approval \(approvalRequired ? "required" : "not required"), redaction \(redactSecrets ? "enabled" : "disabled").")
     }
 
+    @discardableResult
+    func applyBridgeURL(_ url: URL) -> Bool {
+        guard let payload = SeisAICommandCoreBridge.parseRunURL(url) else {
+            appendAudit(title: "Bridge URL rejected", detail: "Unsupported or incomplete macOS handoff URL.")
+            return false
+        }
+
+        prompt = payload.prompt
+        mode = payload.mode
+        promptVersion = payload.promptVersion
+        if !payload.promptNotes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            promptNotes = payload.promptNotes
+        }
+        approvalRequired = payload.approvalRequired
+        redactSecrets = payload.redactSecrets
+        autonomyLevel = Double(payload.autonomyLevel)
+        approved = !payload.approvalRequired
+        selectedSection = .workspace
+        runNumber += 1
+        refreshRun()
+        appendAudit(title: "Web handoff received", detail: "\(payload.source) opened \(mode.title) mode as \(run.id).")
+        return true
+    }
+
     func reset() {
         prompt = SeisAICommandCoreEngine.defaultPrompt
         mode = .plan

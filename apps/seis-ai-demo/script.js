@@ -1,4 +1,5 @@
 const storageKey = "seis-ai-command-core-state-v1";
+const macBridgeBase = "seisdemo://ai-command-core/run";
 
 const defaultPrompt = "Build a SEIS AI demo app that can route a request, coordinate agents, check risk, cite knowledge, run evaluation, and produce an approval-ready plan without calling a real provider.";
 
@@ -149,6 +150,7 @@ const dom = {
   autonomyLevel: document.querySelector("#autonomy-level"),
   runEvaluation: document.querySelector("#run-evaluation"),
   rerunEvals: document.querySelector("#rerun-evals"),
+  openMacOS: document.querySelector("#open-macos"),
   resetDemo: document.querySelector("#reset-demo"),
   auditTimeline: document.querySelector("#audit-timeline"),
   exportAudit: document.querySelector("#export-audit"),
@@ -259,6 +261,7 @@ function bindEvents() {
 
   dom.runEvaluation.addEventListener("click", runEvaluation);
   dom.rerunEvals.addEventListener("click", runEvaluation);
+  dom.openMacOS.addEventListener("click", openInMacOS);
 
   dom.resetDemo.addEventListener("click", () => {
     state = createInitialState();
@@ -286,6 +289,7 @@ function bindEvents() {
       const action = button.dataset.commandAction;
       if (action === "generate") generatePlan();
       if (action === "evaluate") runEvaluation();
+      if (action === "macos") openInMacOS();
       if (action === "approve") dom.approveRun.click();
       if (action === "audit") document.querySelector("#audit").scrollIntoView({ block: "start", behavior: "smooth" });
       dom.commandDialog.close();
@@ -320,6 +324,17 @@ function runEvaluation() {
   addAudit("Evaluation refreshed", `Composite score ${state.run.compositeScore}/100.`);
   saveAndRender();
   showToast("Evaluation refreshed.");
+}
+
+function openInMacOS() {
+  state.prompt = dom.promptInput.value.trim() || defaultPrompt;
+  state.promptVersion = dom.promptVersion.value;
+  state.promptNotes = dom.promptNotes.value.trim();
+  state.run = createRun(state);
+  addAudit("macOS handoff requested", `${state.run.id} prepared for SEIS AI Command Core desktop.`);
+  saveAndRender(false);
+  window.location.href = buildMacHandoffURL(state);
+  showToast("Opening SEIS AI Command Core.");
 }
 
 function createRun(input) {
@@ -818,6 +833,19 @@ function exportAudit() {
   showToast("Audit export prepared.");
 }
 
+function buildMacHandoffURL(input = state) {
+  const url = new URL(macBridgeBase);
+  url.searchParams.set("source", "web-demo");
+  url.searchParams.set("prompt", input.prompt || defaultPrompt);
+  url.searchParams.set("mode", input.mode || "plan");
+  url.searchParams.set("promptVersion", input.promptVersion || "seis-command-v0.3");
+  url.searchParams.set("notes", input.promptNotes || "");
+  url.searchParams.set("approval", input.approvalRequired ? "1" : "0");
+  url.searchParams.set("redact", input.redactSecrets ? "1" : "0");
+  url.searchParams.set("autonomy", String(Math.max(0, Math.min(3, Number(input.autonomyLevel) || 0))));
+  return url.toString();
+}
+
 function toTitle(value) {
   return `${value.slice(0, 1).toUpperCase()}${value.slice(1)}`;
 }
@@ -838,5 +866,6 @@ window.SeisAIDemo = {
   selectKnowledge,
   evaluateRun,
   createRun,
+  buildMacHandoffURL,
   getState: () => state
 };

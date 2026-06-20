@@ -32,9 +32,23 @@ The gate covers:
 - Swift package tests
 - SwiftPM build for the `SeisAICommandCore` product
 - local `.app` bundle verification through `./script/build_and_run.sh --ai-demo --verify`
+- web-to-macOS handoff URL contract coverage
 
 The same gate runs in GitHub Actions on pull requests that touch the desktop
 demo, web companion, Swift package, run script, or workflow.
+
+## Local Development Pairing
+
+Use both demo surfaces together during product review:
+
+```bash
+npm run dev:seis-ai-command-core
+```
+
+Open the web companion at `http://127.0.0.1:4177/apps/seis-ai-demo/`, edit a
+prompt, choose a mode, then select `Open in macOS`. The web app constructs a
+`seisdemo://ai-command-core/run` URL with encoded query parameters, and the
+desktop app handles it with the SwiftUI URL-open path.
 
 ## PR Handoff
 

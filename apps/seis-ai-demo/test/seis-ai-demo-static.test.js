@@ -22,6 +22,7 @@ test("SEIS AI demo exposes the required operating modules", async () => {
     "No provider key connected",
     "Generate plan",
     "Run evaluation",
+    "Open in macOS",
     "Approve"
   ]) {
     assert.ok(html.includes(label), `missing label: ${label}`);
@@ -57,6 +58,7 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(typeof api.computeRisk, "function");
     assert.equal(typeof api.evaluateRun, "function");
     assert.equal(typeof api.createRun, "function");
+    assert.equal(typeof api.buildMacHandoffURL, "function");
 
     const route = api.routeTask("Build an AI app demo with agents, evals, and security review.", "build");
     assert.equal(route.selected.name, "Implementation Builder");
@@ -85,6 +87,24 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.ok(run.agents.some(agent => agent.name === "QA Agent"));
     assert.ok(run.evidence.some(item => item.title === "AGENTS.md"));
     assert.ok(run.compositeScore >= 70);
+
+    const handoff = new URL(api.buildMacHandoffURL({
+      mode: "security",
+      prompt: "Review a local web to macOS bridge without provider keys.",
+      promptVersion: "seis-security-v0.1",
+      promptNotes: "Bridge smoke test",
+      approvalRequired: true,
+      redactSecrets: true,
+      autonomyLevel: 2
+    }));
+
+    assert.equal(handoff.protocol, "seisdemo:");
+    assert.equal(handoff.hostname, "ai-command-core");
+    assert.equal(handoff.pathname, "/run");
+    assert.equal(handoff.searchParams.get("source"), "web-demo");
+    assert.equal(handoff.searchParams.get("mode"), "security");
+    assert.equal(handoff.searchParams.get("promptVersion"), "seis-security-v0.1");
+    assert.equal(handoff.searchParams.get("approval"), "1");
   } finally {
     dom.window.close();
     delete global.window;

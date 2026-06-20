@@ -100,6 +100,101 @@ public struct SeisAICommandCoreRun: Codable, Equatable, Identifiable, Sendable {
     public let createdAt: Date
 }
 
+public struct SeisAICommandCoreBridgePayload: Codable, Equatable, Sendable {
+    public let source: String
+    public let prompt: String
+    public let mode: SeisAICommandCoreTaskMode
+    public let promptVersion: String
+    public let promptNotes: String
+    public let approvalRequired: Bool
+    public let redactSecrets: Bool
+    public let autonomyLevel: Int
+}
+
+public enum SeisAICommandCoreBridge {
+    public static let scheme = "seisdemo"
+    public static let host = "ai-command-core"
+    public static let runPath = "/run"
+
+    public static func makeRunURL(
+        prompt: String,
+        mode: SeisAICommandCoreTaskMode,
+        promptVersion: String,
+        promptNotes: String,
+        approvalRequired: Bool,
+        redactSecrets: Bool,
+        autonomyLevel: Int,
+        source: String = "web-demo"
+    ) -> URL? {
+        var components = URLComponents()
+        components.scheme = scheme
+        components.host = host
+        components.path = runPath
+        components.queryItems = [
+            URLQueryItem(name: "source", value: source),
+            URLQueryItem(name: "prompt", value: prompt),
+            URLQueryItem(name: "mode", value: mode.rawValue),
+            URLQueryItem(name: "promptVersion", value: promptVersion),
+            URLQueryItem(name: "notes", value: promptNotes),
+            URLQueryItem(name: "approval", value: approvalRequired ? "1" : "0"),
+            URLQueryItem(name: "redact", value: redactSecrets ? "1" : "0"),
+            URLQueryItem(name: "autonomy", value: String(clampedAutonomy(autonomyLevel)))
+        ]
+        return components.url
+    }
+
+    public static func parseRunURL(_ url: URL) -> SeisAICommandCoreBridgePayload? {
+        guard url.scheme?.lowercased() == scheme,
+              url.host?.lowercased() == host,
+              url.path == runPath,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        else {
+            return nil
+        }
+
+        var values: [String: String] = [:]
+        for item in components.queryItems ?? [] {
+            values[item.name] = item.value
+        }
+        let prompt = values["prompt"]?.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let prompt, !prompt.isEmpty else {
+            return nil
+        }
+
+        let mode = values["mode"].flatMap(SeisAICommandCoreTaskMode.init(rawValue:)) ?? .plan
+        let promptVersion = normalizedPromptVersion(values["promptVersion"])
+
+        return SeisAICommandCoreBridgePayload(
+            source: values["source"]?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false ? values["source"]! : "unknown",
+            prompt: prompt,
+            mode: mode,
+            promptVersion: promptVersion,
+            promptNotes: values["notes"] ?? "",
+            approvalRequired: parseBool(values["approval"], defaultValue: true),
+            redactSecrets: parseBool(values["redact"], defaultValue: true),
+            autonomyLevel: clampedAutonomy(Int(values["autonomy"] ?? "") ?? 1)
+        )
+    }
+
+    private static func normalizedPromptVersion(_ value: String?) -> String {
+        guard let value, SeisAICommandCoreEngine.promptVersions.contains(value) else {
+            return SeisAICommandCoreEngine.promptVersions[0]
+        }
+        return value
+    }
+
+    private static func parseBool(_ value: String?, defaultValue: Bool) -> Bool {
+        guard let normalized = value?.lowercased() else {
+            return defaultValue
+        }
+        return ["1", "true", "yes", "on"].contains(normalized)
+    }
+
+    private static func clampedAutonomy(_ value: Int) -> Int {
+        max(0, min(3, value))
+    }
+}
+
 public enum SeisAICommandCoreEngine {
     public static let defaultPrompt = "Build a SEIS AI desktop demo app that routes requests, coordinates supervised agents, checks risk, cites knowledge, runs evaluation, and waits for approval without calling a real provider."
 

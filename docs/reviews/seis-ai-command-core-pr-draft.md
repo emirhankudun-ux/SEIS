@@ -16,7 +16,9 @@ This PR adds a local, deterministic SEIS AI Command Core demo across the Apple
 desktop and web companion surfaces. It gives SEIS a reviewable AI operating
 interface for request composition, model routing, supervised agents, prompt
 versions, evidence, evaluation scores, approvals, settings, and local audit
-history without requiring provider credentials or live model calls.
+history without requiring provider credentials or live model calls. The web
+companion can hand the active run to the macOS app through a local
+`seisdemo://ai-command-core/run` URL.
 
 ## Scope
 
@@ -36,6 +38,8 @@ The change keeps the demo bounded inside existing SEIS surfaces:
 - `apps/macos/seis-ai-command-core` documents the Apple-native run path.
 - `apps/seis-ai-demo` provides a static web companion for the same operating
   model.
+- `script/dev_seis_ai_command_core.sh` opens the web companion and desktop app
+  together for local product review.
 - `.github/workflows/seis-ai-command-core.yml` runs the focused PR gate on
   demo-related changes.
 
@@ -59,6 +63,7 @@ Checks run locally:
 npm run check:seis-ai-command-core
 npm run check:publish-gate-contract
 npm run check:foundation
+npm run dev:seis-ai-command-core
 npx eslint scripts/automation-publish-readiness.cjs apps/seis-ai-demo/script.js apps/seis-ai-demo/test/seis-ai-demo-static.test.js
 node --check scripts/automation-publish-readiness.cjs
 node --check apps/seis-ai-demo/script.js
@@ -81,7 +86,8 @@ Expected publish-readiness result on this branch:
     `npm run check:publish-gate-contract` passed locally.
 - [x] Güvenlik Kapısı
   - The demo stays local and deterministic, requests no provider credentials,
-    and performs no SSH/deploy/destructive actions.
+    uses an explicit custom URL handoff, and performs no SSH/deploy/destructive
+    actions.
 - [x] Docs Kapısı
   - Release boundary, publish gate behavior, and recovery/foundation status are
     documented.
