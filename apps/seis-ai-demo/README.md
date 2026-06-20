@@ -20,6 +20,24 @@ credentials or making live model calls.
 - Audit timeline, local JSON export, and markdown plan export
 - Local persistence with `localStorage`
 
+## AI Core Integration
+
+The demo is now connected to the restored local AI Core contract spine:
+
+- `packages/shared-types`
+- `packages/model-router`
+- `packages/prompt-engine`
+- `packages/agent-runtime`
+- `packages/tool-registry`
+- `packages/repository-assistant`
+- `packages/data`
+
+The integration manifest lives at
+[`contracts/seis-ai-command-core-integration.json`](./contracts/seis-ai-command-core-integration.json).
+It links the web demo, `apps/seis-demo-web`, `apps/seis-core`, and the SwiftUI
+Command Core surface without enabling live provider calls, browser API-key
+storage, SSH, deployment, payment, database, or production behavior.
+
 ## Run Locally
 
 From the repository root:
@@ -88,6 +106,12 @@ candidate pull request:
 
 ```bash
 npm run check:seis-ai-command-core
+```
+
+Run the local-only AI Core/web contract gate when Swift is not needed:
+
+```bash
+npm run check:seis-ai-local-integration
 ```
 
 Release boundaries and publish blockers are documented in

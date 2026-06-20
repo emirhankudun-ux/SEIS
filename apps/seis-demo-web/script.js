@@ -16,7 +16,15 @@ const focusModeSignals = document.getElementById("focus-mode-signals");
 
 const FALLBACK_CONTRACT = {
   contract_version: "1.0.0",
-  platform_targets: ["iOS", "macOS"],
+  platform_targets: ["iOS", "macOS", "web"],
+  linked_surfaces: [
+    {
+      id: "seis-ai-command-core",
+      title: "SEIS AI Command Core",
+      path: "../seis-ai-demo/",
+      mode: "local-deterministic"
+    }
+  ],
   routes: [
     { path: "/", view: "home", title: "Home" },
     { path: "/demo", view: "demo", title: "Demo Shell" },
@@ -44,6 +52,13 @@ const FALLBACK_CONTRACT = {
       summary: "Runs multi-lane specialist request flow and records conversion milestones.",
       specialist: "SEIS Agent",
       steps: ["Compose specialist prompt", "Dispatch specialists", "Aggregate artifact suggestions"]
+    },
+    {
+      id: "seis-ai-command-core",
+      title: "SEIS AI Command Core Bridge",
+      summary: "Links the website demo to the local AI Core workflow for routing, agents, prompts, evals, approvals, and audit review.",
+      specialist: "AI Core",
+      steps: ["Open local AI Command Core", "Inspect restored contract fixtures", "Confirm provider-free boundaries"]
     }
   ],
   analytics_events: [

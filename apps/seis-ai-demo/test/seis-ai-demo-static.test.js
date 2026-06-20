@@ -164,6 +164,59 @@ test("SEIS AI demo documents local-only execution", async () => {
   const readme = await readFile(new URL("README.md", root), "utf8");
 
   assert.match(readme, /local, deterministic demo application/);
+  assert.match(readme, /AI Core Integration/);
+  assert.match(readme, /contracts\/seis-ai-command-core-integration\.json/);
+  assert.match(readme, /npm run check:seis-ai-local-integration/);
   assert.match(readme, /does not request, store, or use provider API keys/);
   assert.match(readme, /python3 -m http\.server 4177/);
+});
+
+test("SEIS AI demo is wired to the restored local AI Core contract spine", async () => {
+  const integration = JSON.parse(
+    await readFile(new URL("contracts/seis-ai-command-core-integration.json", root), "utf8")
+  );
+  const packageJson = JSON.parse(await readFile(new URL("../../package.json", root), "utf8"));
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const serializedIntegration = JSON.stringify(integration);
+
+  assert.equal(integration.contract_name, "SEIS AI Command Core Local Integration");
+  assert.equal(integration.status, "local-fixture-backed");
+  assert.ok(integration.boundaries.some(boundary => boundary.includes("No browser provider API key")));
+  assert.ok(integration.surfaces.some(surface => surface.path === "apps/seis-demo-web"));
+  assert.ok(integration.surfaces.some(surface => surface.path === "apps/seis-core"));
+
+  for (const expectedPath of [
+    "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
+    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
+    "packages/tool-registry/fixtures/tool-registry-permissions.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+  ]) {
+    assert.ok(serializedIntegration.includes(expectedPath), `missing contract path: ${expectedPath}`);
+  }
+
+  assert.match(script, /AI Core contract spine/);
+  assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:model-router-contracts/);
+  assert.match(packageJson.scripts["check:seis-ai-command-core"], /check:seis-ai-local-integration/);
+  assert.doesNotMatch(serializedIntegration, /\/Users\//);
+});
+
+test("SEIS demo website links into the local AI Command Core surface", async () => {
+  const websiteHtml = await readFile(new URL("../seis-demo-web/index.html", root), "utf8");
+  const websiteReadme = await readFile(new URL("../seis-demo-web/README.md", root), "utf8");
+  const websiteScript = await readFile(new URL("../seis-demo-web/script.js", root), "utf8");
+  const websiteContract = JSON.parse(
+    await readFile(new URL("../seis-demo-web/contracts/seis-demo-contract.json", root), "utf8")
+  );
+
+  assert.match(websiteHtml, /Open AI Command Core/);
+  assert.match(websiteHtml, /\.\.\/seis-ai-demo\//);
+  assert.match(websiteReadme, /seis-ai-command-core-integration\.json/);
+  assert.doesNotMatch(websiteReadme, /\/Users\//);
+
+  assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-command-core"));
+  assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-command-core"));
+  assert.match(websiteScript, /SEIS AI Command Core Bridge/);
 });

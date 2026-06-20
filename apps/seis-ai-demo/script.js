@@ -75,6 +75,12 @@ const knowledgeBase = [
     title: "Local deterministic demo",
     trust: "Implementation",
     summary: "This app demonstrates routing and governance without provider keys or live model calls."
+  },
+  {
+    id: "ai-core-contract-spine",
+    title: "AI Core contract spine",
+    trust: "Fixture contract",
+    summary: "The demo is linked to restored model-router, prompt-engine, agent-runtime, tool-registry, knowledge, and repository-assistant fixtures."
   }
 ];
 

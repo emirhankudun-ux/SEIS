@@ -2,6 +2,14 @@
   "contract_version": "1.0.0",
   "contract_name": "SEIS Demo Shared Contract",
   "platform_targets": ["iOS", "macOS", "web"],
+  "linked_surfaces": [
+    {
+      "id": "seis-ai-command-core",
+      "title": "SEIS AI Command Core",
+      "path": "../seis-ai-demo/",
+      "mode": "local-deterministic"
+    }
+  ],
   "routes": [
     { "path": "/", "view": "home", "title": "Home", "description": "Landing surface and status." },
     { "path": "/demo", "view": "demo", "title": "Demo", "description": "Scenario list and launch." },
@@ -43,6 +51,18 @@
         "Create dispatch request",
         "Route to selected specialists",
         "Consolidate artifact outputs"
+      ]
+    },
+    {
+      "id": "seis-ai-command-core",
+      "title": "SEIS AI Command Core Bridge",
+      "summary": "Links the website demo to the local AI Core workflow for routing, agents, prompts, evals, approvals, and audit review.",
+      "specialist": "AI Core",
+      "defaultPrompt": "Open the local SEIS AI Command Core and inspect provider-free route, agent, prompt, knowledge, eval, approval, and audit state.",
+      "steps": [
+        "Open the local AI Command Core surface",
+        "Inspect restored AI Core contract fixtures",
+        "Confirm provider-free approval and audit boundaries"
       ]
     }
   ],

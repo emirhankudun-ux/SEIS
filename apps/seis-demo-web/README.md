@@ -19,7 +19,7 @@ Files:
 Local run:
 
 ```bash
-cd "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/apps/seis-demo-web"
+cd apps/seis-demo-web
 python3 -m http.server 4173
 ```
 
@@ -38,6 +38,16 @@ Deep link compatibility:
 Shared contract notes:
 
 - `contracts/seis-demo-contract.json` aynı dosya, hem web hem native shell tarafından kullanılır.
+- The contract now links to the local SEIS AI Command Core surface at
+  `../seis-ai-demo/` for provider-free route, agent, prompt, evaluation,
+  approval, and audit demos.
+
+AI Core integration:
+
+- Local AI app surface: `../seis-ai-demo/`
+- Integration manifest:
+  `../seis-ai-demo/contracts/seis-ai-command-core-integration.json`
+- Validation from repository root: `npm run check:seis-ai-local-integration`
 
 Deployment:
 

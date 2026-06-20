@@ -1,0 +1,84 @@
+{
+  "contract_version": "1.0.0",
+  "contract_name": "SEIS AI Command Core Local Integration",
+  "status": "local-fixture-backed",
+  "purpose": "Connect the local SEIS AI demo, Command Center AI Core view, website demo surface, and restored AI Core contract packages without live provider calls.",
+  "surfaces": [
+    {
+      "id": "seis-ai-demo",
+      "label": "SEIS AI Command Core web demo",
+      "path": "apps/seis-ai-demo",
+      "role": "Local deterministic AI command workspace for routing, agents, prompts, knowledge, evals, approvals, audit, and web-to-macOS handoff."
+    },
+    {
+      "id": "seis-demo-web",
+      "label": "SEIS demo website",
+      "path": "apps/seis-demo-web",
+      "role": "Contract-first browser surface that links operators into the AI Command Core demo."
+    },
+    {
+      "id": "seis-command-center",
+      "label": "SEIS Command Center",
+      "path": "apps/seis-core",
+      "role": "Ecosystem operating interface with fixture-backed AI Core contract inspection."
+    },
+    {
+      "id": "seis-ai-command-core-macos",
+      "label": "SEIS AI Command Core macOS",
+      "path": "apps/macos/seis-ai-command-core",
+      "role": "SwiftUI desktop demo that receives local deterministic handoffs from the web demo."
+    }
+  ],
+  "contract_spine": [
+    {
+      "id": "shared-types",
+      "path": "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+      "validation": "npm run check:ai-core-app-contracts"
+    },
+    {
+      "id": "model-router",
+      "path": "packages/model-router/fixtures/model-router-route-contracts.json",
+      "validation": "npm run check:model-router-contracts"
+    },
+    {
+      "id": "prompt-engine",
+      "path": "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
+      "validation": "npm run check:prompt-regression-fixtures"
+    },
+    {
+      "id": "agent-runtime",
+      "path": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
+      "validation": "npm run check:agent-runtime-lifecycle"
+    },
+    {
+      "id": "tool-registry",
+      "path": "packages/tool-registry/fixtures/tool-registry-permissions.json",
+      "validation": "npm run check:tool-registry-permissions"
+    },
+    {
+      "id": "knowledge-source-classification",
+      "path": "packages/data/fixtures/knowledge-source-classification.json",
+      "validation": "npm run check:knowledge-source-classification"
+    },
+    {
+      "id": "repository-assistant",
+      "path": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
+      "validation": "npm run check:repository-assistant-prototype"
+    }
+  ],
+  "boundaries": [
+    "No browser provider API key entry or storage.",
+    "No live OpenAI, Anthropic, Google, Qwen, local model, SSH, deployment, payment, database, or production action.",
+    "All AI behavior shown by the web and Command Center surfaces is deterministic local fixture behavior.",
+    "External provider routing remains server-side only and approval-gated until separate credentials, redaction, audit, and deployment policy are reviewed."
+  ],
+  "local_validation": [
+    "npm run check:seis-ai-local-integration",
+    "npm run check:seis-ai-command-core"
+  ],
+  "next_safe_steps": [
+    "Keep the static web demo and Command Center fixture-backed until a server-side provider adapter exists.",
+    "Add route-level links from the broader website only after publish target and path strategy are approved.",
+    "Do not claim model training, live provider execution, or production readiness from this local contract."
+  ]
+}
