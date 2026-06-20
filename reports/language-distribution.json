@@ -8,50 +8,50 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 867,
-    "countedBytes": 4843150,
-    "javascriptBytes": 1719560,
-    "javascriptPercent": 35.5,
+    "countedFileCount": 868,
+    "countedBytes": 4852320,
+    "javascriptBytes": 1728557,
+    "javascriptPercent": 35.62,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3345230,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 3378903,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1719560,
-      "percent": 35.5
+      "bytes": 1728557,
+      "percent": 35.62
     },
     {
       "language": "JSON",
-      "bytes": 789281,
-      "percent": 16.3
+      "bytes": 789454,
+      "percent": 16.27
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 11.85
+      "percent": 11.83
     },
     {
       "language": "Python",
       "bytes": 507293,
-      "percent": 10.47
+      "percent": 10.45
     },
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.5
+      "percent": 8.49
     },
     {
       "language": "CSS",
       "bytes": 287432,
-      "percent": 5.93
+      "percent": 5.92
     },
     {
       "language": "HTML",
       "bytes": 139289,
-      "percent": 2.88
+      "percent": 2.87
     },
     {
       "language": "Shell",
@@ -81,7 +81,7 @@
     {
       "language": "Scheme",
       "bytes": 15747,
-      "percent": 0.33
+      "percent": 0.32
     },
     {
       "language": "Perl",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1719560,
-      "percent": 35.5,
+      "bytes": 1728557,
+      "percent": 35.62,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 8.5,
+      "percent": 8.49,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2703356,
-      "percent": 55.82,
+      "bytes": 2703529,
+      "percent": 55.72,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 12.05,
+        "percent": 12.02,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1315533,
-        "percent": 27.16,
+        "bytes": 1315706,
+        "percent": 27.11,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2131347,
-        "percent": 44.01,
+        "bytes": 2140344,
+        "percent": 44.11,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -761,7 +761,7 @@
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
         "bytes": 426721,
-        "percent": 8.81,
+        "percent": 8.79,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1366486,
-    "linguist-generated": 2986842,
+    "documentation": 1373572,
+    "linguist-generated": 2991777,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "c26c7e1c3762fa2253ca4cbdbb9842000e9bc606d1809286d0edaad12a489429",
+    "hash": "f42b3d3a1b6012e91d85d346466dbd8ca2e11c8f3923231a70019a5529581b4a",
     "algorithm": "sha256"
   }
 }
