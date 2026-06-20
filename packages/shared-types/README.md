@@ -15,6 +15,9 @@ runtime SDK and not a live provider integration.
   fixture-backed contract bundle for Command Center AI Core views.
 - `packages/model-router/fixtures/model-router-route-contracts.json` supplies the
   current route evidence projected into the shared fixture.
+- `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` supplies
+  the current task lifecycle and approval-state evidence projected into the
+  shared fixture.
 - `npm run check:ai-core-app-contracts` validates the schema and fixture without
   installing another runtime or provider SDK.
 

@@ -51,7 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add agent-runtime task lifecycle and approval-state fixtures.
+1. Add tool/plugin registry permission and risk-class fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -160,3 +160,21 @@ local-only, metadata-only, and approval-needed provider routes. It remains
 fixture-backed and does not add live provider routing, provider keys,
 browser-side provider secrets, model calls, benchmark claims, model training,
 checkpoints, or model cards.
+
+## Follow-Up Agent Runtime Lifecycle Slice
+
+Status: Added after the model-router contract slice.
+
+Evidence:
+
+- `packages/agent-runtime/schemas/agent-runtime-task-lifecycle.schema.json`
+- `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json`
+- `scripts/check-agent-runtime-lifecycle.mjs`
+- `npm run check:agent-runtime-lifecycle`
+
+This slice completes agent-runtime task lifecycle and approval-state fixtures
+for validated documentation review, approval-needed provider routing, and
+blocked SSH/deployment review. It remains fixture-backed and does not add live
+autonomous orchestration, agent self-approval, provider calls, provider keys,
+GitHub write actions, SSH execution, deployment, model training, checkpoints,
+or model cards.

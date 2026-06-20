@@ -10,9 +10,11 @@ window.seisAiCoreContractFixture = {
     "docs/ai/seis-ai-core.md",
     "docs/ai/model-router.md",
     "docs/ai/provider-routing-policy.md",
+    "docs/ai/agent-runtime.md",
     "docs/product/repository-assistant.md",
     "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
-    "packages/model-router/fixtures/model-router-route-contracts.json"
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
   ],
   stateVocabulary: [
     "ready",
@@ -132,9 +134,9 @@ window.seisAiCoreContractFixture = {
         "claim model training"
       ],
       approvalState: "not-required",
-      status: "planned",
+      status: "validated",
       maturity: "fixture-backed",
-      evidence: "docs/ai/agent-runtime.md"
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     },
     {
       id: "task-local-repository-assistant",
@@ -157,6 +159,46 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "local-alpha",
       evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      id: "task-provider-routing-approval-needed",
+      agentRole: "AI Systems Agent",
+      intent: "Classify an external-provider routing request and stop at approval-needed state before any provider call.",
+      allowedActions: [
+        "classify provider-routing request",
+        "attach route fixture evidence",
+        "return approval-required state"
+      ],
+      forbiddenActions: [
+        "call external providers",
+        "read provider credentials",
+        "send sensitive repository content",
+        "self-approve provider use"
+      ],
+      approvalState: "approval-needed",
+      status: "approval-needed",
+      maturity: "fixture-backed",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "task-ssh-deployment-review-blocked",
+      agentRole: "DevOps Agent",
+      intent: "Block SSH or deployment execution until host verification, human approval, and rollback evidence exist.",
+      allowedActions: [
+        "document required approval",
+        "summarize missing host evidence",
+        "propose rollback checklist"
+      ],
+      forbiddenActions: [
+        "execute SSH commands",
+        "modify firewall or sudo configuration",
+        "deploy services",
+        "self-approve infrastructure changes"
+      ],
+      approvalState: "blocked",
+      status: "blocked",
+      maturity: "blocked",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   approvalRequests: [
@@ -167,6 +209,22 @@ window.seisAiCoreContractFixture = {
       decisionState: "approval-needed",
       status: "approval-needed",
       evidence: "docs/ai/provider-routing-policy.md"
+    },
+    {
+      id: "approval-agent-provider-routing",
+      requestType: "agent-external-provider-routing",
+      riskClass: "high",
+      decisionState: "approval-needed",
+      status: "approval-needed",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      id: "approval-agent-ssh-deployment",
+      requestType: "agent-ssh-deployment-execution",
+      riskClass: "critical",
+      decisionState: "blocked",
+      status: "blocked",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   evaluationResults: [
@@ -209,6 +267,14 @@ window.seisAiCoreContractFixture = {
       result: "pass",
       status: "validated",
       evidence: "scripts/check-model-router-contracts.mjs"
+    },
+    {
+      id: "eval-agent-runtime-lifecycle",
+      targetType: "agent",
+      targetId: "agent-runtime-task-lifecycle",
+      result: "pass",
+      status: "validated",
+      evidence: "scripts/check-agent-runtime-lifecycle.mjs"
     }
   ],
   auditEvents: [
@@ -243,6 +309,14 @@ window.seisAiCoreContractFixture = {
       redactionState: "metadata-only",
       status: "validated",
       evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "audit-agent-runtime-lifecycle",
+      actor: "codex",
+      action: "added agent-runtime task lifecycle and approval-state fixtures",
+      redactionState: "metadata-only",
+      status: "validated",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   repositoryFindings: [
@@ -269,6 +343,14 @@ window.seisAiCoreContractFixture = {
       severity: "info",
       status: "validated",
       evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "finding-agent-runtime-lifecycle",
+      repository: "SEIS",
+      findingType: "fixture-backed-agent-runtime-lifecycle",
+      severity: "info",
+      status: "validated",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   documentationStatuses: [
@@ -295,6 +377,14 @@ window.seisAiCoreContractFixture = {
       sourceClass: "official",
       status: "validated",
       evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "doc-agent-runtime-lifecycle",
+      document: "docs/ai/agent-runtime.md",
+      freshness: "current",
+      sourceClass: "official",
+      status: "validated",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   securityFindings: [
@@ -338,6 +428,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "roadmap-year-1-agent-runtime-lifecycle",
+      horizon: "year-1",
+      track: "Agent-runtime task lifecycle and approval states",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   aiSurfaces: [
@@ -378,6 +476,25 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "local-alpha",
       evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      id: "surface-agent-task-center",
+      surface: "Agent Task Center",
+      allowedContext: [
+        "official docs",
+        "agent-runtime lifecycle fixtures",
+        "approval-state metadata"
+      ],
+      forbiddenContext: [
+        "provider API keys",
+        "SSH private keys",
+        "raw .env contents",
+        "privileged tool execution without approval"
+      ],
+      approvalRequired: true,
+      status: "planned",
+      maturity: "fixture-backed",
+      evidence: "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
     }
   ],
   repositoryIntelligence: [

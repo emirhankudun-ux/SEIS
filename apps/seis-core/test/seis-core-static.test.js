@@ -46,6 +46,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(fixture, /ai-core-fixture-evaluation-report/);
   assert.match(fixture, /model-router-route-contracts/);
   assert.match(fixture, /route-metadata-doc-summary/);
+  assert.match(fixture, /agent-runtime-task-lifecycle/);
+  assert.match(fixture, /task-provider-routing-approval-needed/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);

@@ -33,9 +33,10 @@
 
 ## Next Recommended Slice
 
-Add agent-runtime task lifecycle and approval-state fixtures.
+Add tool/plugin registry permission and risk-class fixtures.
 
 Source links:
 
 - `roadmap/seis-ai-core-command-center-5-year-development-program.md`
-- `docs/ai/agent-runtime.md`
+- `docs/ai/tool-use-policy.md`
+- `packages/tool-registry/README.md`

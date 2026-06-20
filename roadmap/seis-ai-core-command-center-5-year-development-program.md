@@ -28,7 +28,7 @@ usable AI-native operating platform.
 | AI Core architecture | Foundation documented | `docs/ai/seis-ai-core.md` |
 | Model router | Foundation documented | `docs/ai/model-router.md`, `packages/model-router/README.md` |
 | Prompt engine | Foundation documented | `docs/ai/prompt-engine.md`, `packages/prompt-engine/README.md` |
-| Agent runtime | Foundation documented | `docs/ai/agent-runtime.md`, `packages/agent-runtime/README.md` |
+| Agent runtime | Fixture-backed contract | `docs/ai/agent-runtime.md`, `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` |
 | AI App / Command Center | Foundation documented | `docs/product/seis-ai-app.md`, `docs/product/command-center.md` |
 | Shared contracts | Foundation documented | `docs/architecture/ai-core-app-shared-contracts.md`, `packages/shared-types/README.md` |
 | Evaluation strategy | Foundation documented | `docs/evals/evaluation-strategy.md`, `docs/testing/prompt-regression-suite.md` |
@@ -292,7 +292,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add agent-runtime task lifecycle and approval-state fixtures.
+1. Add tool/plugin registry permission and risk-class fixtures.
 
 Completed foundation slice:
 
@@ -316,6 +316,9 @@ Completed foundation slice:
   metadata-only, and approval-needed provider routes now live under
   `packages/model-router/` and are checked by
   `npm run check:model-router-contracts`.
+- Agent-runtime task lifecycle and approval-state fixtures now live under
+  `packages/agent-runtime/` and are checked by
+  `npm run check:agent-runtime-lifecycle`.
 
 ## Relationship to Existing Roadmaps
 

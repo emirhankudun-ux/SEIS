@@ -1,6 +1,6 @@
 # Agent Runtime
 
-Status: Foundation contract
+Status: Fixture-backed contract
 
 The agent runtime coordinates human-supervised SEIS agents. It defines roles,
 inputs, allowed actions, forbidden actions, approvals, validation, and audit
@@ -60,3 +60,24 @@ Agents must not:
 The first runtime should be a small typed state machine with fixture-backed
 agents and approval states. Full autonomous orchestration is out of scope for
 the foundation pass.
+
+## Current Fixture Evidence
+
+The first agent-runtime task lifecycle fixture pack lives under
+`packages/agent-runtime/`:
+
+- `schemas/agent-runtime-task-lifecycle.schema.json`
+- `fixtures/agent-runtime-task-lifecycle.json`
+- `npm run check:agent-runtime-lifecycle`
+
+It covers:
+
+- a validated documentation review task with no privileged operation
+- an approval-needed external-provider-routing task that performs no provider
+  call
+- a blocked SSH/deployment review task that performs no command execution
+
+This evidence does not imply autonomous orchestration, production agent
+readiness, GitHub write permission, SSH execution, external provider execution,
+model training, benchmark performance, checkpoint publication, or model-card
+readiness.
