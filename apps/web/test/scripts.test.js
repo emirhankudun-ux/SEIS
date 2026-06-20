@@ -5,6 +5,7 @@ import { JSDOM } from "jsdom";
 let dom;
 let window;
 let document;
+const originalNavigatorDescriptor = Object.getOwnPropertyDescriptor(globalThis, "navigator");
 
 function setupDOM(html = "") {
   dom = new JSDOM(`<!DOCTYPE html><html>${html}</html>`, {
@@ -16,7 +17,11 @@ function setupDOM(html = "") {
   document = dom.window.document;
   global.window = window;
   global.document = document;
-  global.navigator = window.navigator;
+  Object.defineProperty(globalThis, "navigator", {
+    configurable: true,
+    writable: true,
+    value: window.navigator
+  });
   global.localStorage = {
     store: {},
     getItem(key) { return this.store[key] || null; },
@@ -32,7 +37,11 @@ function cleanupDOM() {
   }
   delete global.window;
   delete global.document;
-  delete global.navigator;
+  if (originalNavigatorDescriptor) {
+    Object.defineProperty(globalThis, "navigator", originalNavigatorDescriptor);
+  } else {
+    Reflect.deleteProperty(globalThis, "navigator");
+  }
   delete global.localStorage;
 }
 
