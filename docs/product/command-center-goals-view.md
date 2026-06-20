@@ -18,6 +18,7 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 | Next Safe Action Panel | What should happen next, grouped by PR queue and goal. |
 | Evidence Drawer | Links to docs, validation output, reviews, files, and PR records. |
 | Review Cadence Panel | Daily, weekly, and monthly review templates and last review dates. |
+| Performed Reviews Panel | Actual review occurrences backed by evidence records. |
 | Objective Coverage Panel | Mission requirements mapped to evidence, limitations, and next safe actions. |
 
 ## Filters
@@ -62,6 +63,7 @@ It is derived from the structured source records:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
+- [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
@@ -75,6 +77,8 @@ Tasks, subtasks, blockers, decisions, and next safe actions should come from
 Daily, weekly, and monthly review cadence should come from
 [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 and stay planned until current-period review evidence exists.
+Performed review occurrences should come from
+[`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json).
 Yearly, quarterly, monthly, weekly, and active project lanes should come from
 [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json).
 Completed, deferred, and follow-up work should come from

@@ -413,7 +413,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">14</div>
+    <div class="card-value">15</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -440,6 +440,13 @@
 </article>
         <article class="card">
   <div>
+    <p class="card-label">Performed reviews</p>
+    <div class="card-value">1</div>
+  </div>
+  <p class="muted">Actual review records backed by current evidence.</p>
+</article>
+        <article class="card">
+  <div>
     <p class="card-label">Active projects</p>
     <div class="card-value">3</div>
   </div>
@@ -448,7 +455,7 @@
         <article class="card">
   <div>
     <p class="card-label">Completed items</p>
-    <div class="card-value">4</div>
+    <div class="card-value">5</div>
   </div>
   <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
@@ -998,7 +1005,7 @@
     <span class="badge planned">planned</span>
   </div>
   <p>Mark performed only when a real daily review is run with current-day evidence.</p>
-  <p class="next-action">Use this checklist at the next real daily review; do not backfill a fake review.</p>
+  <p class="next-action">Use the review log for each real daily review occurrence; do not backfill a fake review.</p>
   <div class="row-meta">
     <span class="badge">Product Governance</span>
     <span class="badge">Evidence: none</span>
@@ -1032,6 +1039,27 @@
   <div class="row-meta">
     <span class="badge">Product Architecture</span>
     <span class="badge">Evidence: none</span>
+  </div>
+</article>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Performed Reviews</h2>
+        <div class="grid review-grid">
+          <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Daily Goal Tracking OS review for 2026-06-20</h3>
+      <p class="muted">SEIS-REVIEW-LOG-001 · daily · 2026-06-20</p>
+    </div>
+    <span class="badge ">performed</span>
+  </div>
+  <p>Goal Tracking OS objective coverage was added and connected to validation, generated view data, and the static Goal Tracking Center page. A current daily review record was created from observed repository state and local validation output.</p>
+  <p class="next-action">Resolve P0 repository hygiene blockers before public, release, or merge readiness claims.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-003, SEIS-EVID-004, SEIS-EVID-014, SEIS-EVID-015</span>
+    <span class="badge">Cadence: SEIS-REVIEW-001</span>
   </div>
 </article>
         </div>
@@ -1213,6 +1241,20 @@
     <span class="badge">Evidence: SEIS-EVID-014</span>
   </div>
 </article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Daily Goal Tracking OS review for 2026-06-20</h3>
+      <p class="muted">SEIS-COMPLETE-005 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>A current daily Goal Tracking OS review was performed and recorded from observed repository state and local validation output.</p>
+  <p class="muted">Does not mark weekly or monthly reviews performed. Does not resolve repository hygiene blockers.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-015</span>
+  </div>
+</article>
           </div>
         </div>
 
@@ -1287,7 +1329,7 @@
   <p class="next-action">Run goal validation after every structured record update.</p>
   <div class="row-meta">
     <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
-    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015</span>
   </div>
 </article>
           <article class="row">
@@ -1366,9 +1408,9 @@
               <tr>
   <td><strong>SEIS-OBJ-007</strong><br>Goal Review Cadence<br><span class="muted">Create practical daily, weekly, and monthly review cadence without fake performed reviews.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>Daily, weekly, and monthly review cadence records and templates exist and validate as planned records.</td>
-  <td>No current daily, weekly, or monthly review has been marked performed.</td>
-  <td>Perform the first real review only when current-period evidence exists.</td>
+  <td>Daily, weekly, and monthly review cadence records and templates exist, and one current daily review log was performed on 2026-06-20.</td>
+  <td>Weekly and monthly reviews remain planned and are not marked performed.</td>
+  <td>Continue adding dated review logs only when current-period evidence exists.</td>
 </tr>
               <tr>
   <td><strong>SEIS-OBJ-008</strong><br>Goal Tracking Data Model<br><span class="muted">Define a lightweight goal object with id, title, category, status, target, dependencies, evidence, validation, review, and next action fields.</span></td>
@@ -1482,7 +1524,7 @@
       </section>
 
       <footer class="footer">
-        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>.
+        Source: <code>content/development/seis-goal-tracking.json</code>, <code>content/development/seis-goal-evidence.json</code>, <code>content/development/seis-goal-execution.json</code>, <code>content/development/seis-goal-review-cadence.json</code>, <code>content/development/seis-goal-review-log.json</code>, <code>content/development/seis-goal-planning-horizons.json</code>, <code>content/development/seis-goal-progress-ledger.json</code>, <code>content/development/seis-goal-objective-coverage.json</code>.
         This static page is generated and should not be edited by hand.
       </footer>
     </main>

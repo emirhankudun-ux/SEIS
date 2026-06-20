@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seis-goal-review-cadence",
-  "updated": "2026-06-19",
+  "updated": "2026-06-20",
   "mode": "non_llm_goal_review_cadence",
   "allowedCadences": [
     "daily",
@@ -33,6 +33,8 @@
       "related_paths": [
         "docs/goals/review-cadence.md",
         "docs/goals/daily-review-template.md",
+        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+        "content/development/seis-goal-review-log.json",
         "docs/goals/progress-review.md",
         "content/development/seis-goal-execution.json"
       ],
@@ -48,7 +50,7 @@
         "Evidence record when the review proves a claim."
       ],
       "completion_rule": "Mark performed only when a real daily review is run with current-day evidence.",
-      "next_action": "Use this checklist at the next real daily review; do not backfill a fake review."
+      "next_action": "Use the review log for each real daily review occurrence; do not backfill a fake review."
     },
     {
       "id": "SEIS-REVIEW-002",

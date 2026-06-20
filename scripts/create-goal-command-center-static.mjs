@@ -68,6 +68,7 @@ function buildHtml(model) {
   const validation = panels.validationStatus || [];
   const decisions = panels.decisions || [];
   const reviewCadence = panels.reviewCadence || [];
+  const actualReviews = panels.actualReviews || [];
   const planningHorizons = panels.planningHorizons || [];
   const activeProjects = panels.activeProjects || [];
   const completedItems = panels.completedItems || [];
@@ -547,6 +548,13 @@ function buildHtml(model) {
         </div>
       </section>
 
+      <section class="panel">
+        <h2>Performed Reviews</h2>
+        <div class="grid review-grid">
+          ${actualReviews.map(renderActualReview).join("\n          ")}
+        </div>
+      </section>
+
       <section class="grid section-grid" id="planning">
         <div class="panel">
           <h2>Planning Horizons</h2>
@@ -757,6 +765,24 @@ function renderReviewCadence(item) {
 </article>`;
 }
 
+function renderActualReview(item) {
+  return `<article class="row">
+  <div class="row-head">
+    <div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.cadence)} · ${escapeHtml(item.reviewDate)}</p>
+    </div>
+    <span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+  </div>
+  <p>${escapeHtml((item.whatChanged || []).join(" "))}</p>
+  <p class="next-action">${escapeHtml(item.nextSafeAction)}</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: ${escapeHtml((item.evidenceIds || []).join(", ") || "none")}</span>
+    <span class="badge">Cadence: ${escapeHtml(item.relatedReviewId || "none")}</span>
+  </div>
+</article>`;
+}
+
 function renderPlanningHorizon(item) {
   return `<article class="row">
   <div class="row-head">
@@ -868,6 +894,7 @@ function validateHtml(html, model) {
     "Active Blockers",
     "Validation Status",
     "Review Cadence",
+    "Performed Reviews",
     "Planning Horizons",
     "Active Projects",
     "Completed Work",
@@ -896,6 +923,10 @@ function validateHtml(html, model) {
 
   if ((model.panels?.reviewCadence || []).length > 0 && !html.includes("SEIS-REVIEW-001")) {
     failures.push("static surface must expose review cadence ids");
+  }
+
+  if ((model.panels?.actualReviews || []).length > 0 && !html.includes("SEIS-REVIEW-LOG-001")) {
+    failures.push("static surface must expose actual review ids");
   }
 
   if ((model.panels?.planningHorizons || []).length > 0 && !html.includes("SEIS-HORIZON-001")) {

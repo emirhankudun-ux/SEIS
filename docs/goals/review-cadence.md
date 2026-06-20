@@ -1,14 +1,17 @@
 # SEIS Goal Review Cadence
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This document defines the non-LLM review cadence for SEIS Goal Tracking OS. It
-does not claim that any daily, weekly, or monthly review has been performed.
-Reviews are marked performed only when current evidence proves the review
+separates recurring review cadence records from performed review occurrences.
+Reviews are recorded as performed only when current evidence proves the review
 actually happened.
 
 The structured cadence registry is
 [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json).
+
+The structured performed review log is
+[`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json).
 
 ## Cadence Records
 
@@ -17,6 +20,12 @@ The structured cadence registry is
 | Daily | `SEIS-REVIEW-001` | planned | Record what changed, what is blocked, what needs validation, and the next safe action. |
 | Weekly | `SEIS-REVIEW-002` | planned | Review active goals, milestone progress, next PR queue, blockers, completed work, and priorities. |
 | Monthly | `SEIS-REVIEW-003` | planned | Review long-term direction, roadmap phases, architecture, AI Core, Command Center, public readiness, release readiness, and SEIS Universe direction. |
+
+## Performed Review Log
+
+| Review | Cadence | Date | Status | Evidence |
+| --- | --- | --- | --- | --- |
+| `SEIS-REVIEW-LOG-001` | daily | 2026-06-20 | performed | [`../reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md`](../reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md), `SEIS-EVID-015` |
 
 ## Completion Rules
 
@@ -50,4 +59,4 @@ npm run check:goal-tracking
 ```
 
 The generated Command Center view model and static page must keep planned review
-cadence visible without claiming fake completion.
+cadence visible separately from performed review logs.

@@ -60,6 +60,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-039` | P1 | Goal planning horizons | Maintain structured yearly, quarterly, monthly, weekly, and active-project planning horizons. | `npm run check:goal-tracking` validates horizon/project records and the static page exposes planning horizons plus active projects. |
 | `SEIS-BL-040` | P1 | Goal progress ledger | Maintain structured completed, deferred, and follow-up records with evidence and limitations. | `npm run check:goal-tracking` validates progress ledger records and the static page exposes completed, deferred, and follow-up sections. |
 | `SEIS-BL-041` | P1 | Goal objective coverage | Maintain structured coverage records mapping the Goal Tracking OS mission to evidence, limitations, and next safe actions. | `npm run check:goal-tracking` validates objective coverage records and the static page exposes objective coverage. |
+| `SEIS-BL-042` | P1 | Goal review log | Maintain performed daily, weekly, and monthly review logs only when current-period evidence exists. | `npm run check:goal-tracking` validates review log records and the static page exposes performed reviews separately from cadence. |
 
 ## Deferred Dangerous Work
 

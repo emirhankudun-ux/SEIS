@@ -16,7 +16,8 @@
     "docs/product/goal-tracking-center.md",
     "docs/product/command-center-goals-view.md",
     "docs/reviews/GOAL_TRACKING_REVIEW.md",
-    "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md"
+    "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
+    "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md"
   ],
   "allowedStatuses": [
     "idea",
@@ -132,6 +133,7 @@
         "docs/goals/evidence-ledger.md",
         "docs/goals/execution-board.md",
         "docs/goals/review-cadence.md",
+        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
         "docs/goals/planning-horizons.md",
         "docs/goals/progress-ledger.md",
         "docs/goals/command-center-view-model.md",
@@ -143,6 +145,7 @@
         "content/development/seis-goal-evidence.json",
         "content/development/seis-goal-execution.json",
         "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-review-log.json",
         "content/development/seis-goal-planning-horizons.json",
         "content/development/seis-goal-progress-ledger.json",
         "content/development/seis-goal-objective-coverage.json",
@@ -172,6 +175,8 @@
         "content/development/seis-goal-execution.json",
         "docs/goals/review-cadence.md",
         "content/development/seis-goal-review-cadence.json",
+        "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+        "content/development/seis-goal-review-log.json",
         "docs/goals/planning-horizons.md",
         "content/development/seis-goal-planning-horizons.json",
         "docs/goals/progress-ledger.md",

@@ -60,6 +60,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-012` | passed | Planning horizons | Yearly, quarterly, monthly, weekly, and active-project records validate. |
 | `SEIS-EVID-013` | passed | Progress ledger | Completed, deferred, and follow-up records validate with evidence and limitations. |
 | `SEIS-EVID-014` | passed | Objective coverage | Goal Tracking OS mission requirements are mapped to evidence, limitations, and next safe actions. |
+| `SEIS-EVID-015` | passed | Review log | Daily Goal Tracking OS review for 2026-06-20 was performed from current evidence. |
 
 ## Validation
 
@@ -70,5 +71,6 @@ npm run check:goal-tracking
 ```
 
 The validator checks the goal registry, required goal docs, evidence ledger,
-execution board, review cadence, planning horizons, progress ledger, objective
-coverage, generated Command Center view model, and generated static page.
+execution board, review cadence, review log, planning horizons, progress
+ledger, objective coverage, generated Command Center view model, and generated
+static page.

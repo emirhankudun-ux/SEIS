@@ -4,6 +4,7 @@ const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
 const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
+const reviewLogPath = "content/development/seis-goal-review-log.json";
 const planningHorizonsPath = "content/development/seis-goal-planning-horizons.json";
 const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
 const objectiveCoveragePath = "content/development/seis-goal-objective-coverage.json";
@@ -27,6 +28,7 @@ const requiredDocs = [
   "docs/goals/evidence-ledger.md",
   "docs/goals/execution-board.md",
   "docs/goals/review-cadence.md",
+  "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
   "docs/goals/planning-horizons.md",
   "docs/goals/progress-ledger.md",
   "docs/goals/command-center-view-model.md",
@@ -115,6 +117,10 @@ if (!existsSync(reviewCadencePath)) {
   failures.push(`missing goal review cadence registry: ${reviewCadencePath}`);
 }
 
+if (!existsSync(reviewLogPath)) {
+  failures.push(`missing goal review log registry: ${reviewLogPath}`);
+}
+
 if (!existsSync(planningHorizonsPath)) {
   failures.push(`missing goal planning horizons registry: ${planningHorizonsPath}`);
 }
@@ -149,6 +155,10 @@ const executionRegistry = existsSync(executionPath)
 
 const reviewCadenceRegistry = existsSync(reviewCadencePath)
   ? JSON.parse(readFileSync(reviewCadencePath, "utf8"))
+  : null;
+
+const reviewLogRegistry = existsSync(reviewLogPath)
+  ? JSON.parse(readFileSync(reviewLogPath, "utf8"))
   : null;
 
 const planningHorizonsRegistry = existsSync(planningHorizonsPath)
@@ -399,6 +409,10 @@ if (reviewCadenceRegistry) {
   validateReviewCadence(reviewCadenceRegistry);
 }
 
+if (reviewLogRegistry) {
+  validateReviewLog(reviewLogRegistry);
+}
+
 if (planningHorizonsRegistry) {
   validatePlanningHorizons(planningHorizonsRegistry);
 }
@@ -444,6 +458,7 @@ console.log(JSON.stringify({
   executionBlockers: executionRegistry.blockers.length,
   executionDecisions: executionRegistry.decisions.length,
   reviewRecords: reviewCadenceRegistry.records.length,
+  reviewLogRecords: reviewLogRegistry.records.length,
   planningHorizons: planningHorizonsRegistry.horizons.length,
   activeProjects: planningHorizonsRegistry.activeProjects.length,
   completedItems: progressLedger.completedItems.length,
@@ -848,6 +863,135 @@ function validateReviewCadence(cadenceRegistry) {
 
     if (record.status === "performed" && !record.evidence_ids?.length) {
       failures.push(`${label} cannot be marked performed without evidence_ids`);
+    }
+  }
+}
+
+function validateReviewLog(logRegistry) {
+  if (logRegistry.schemaVersion !== 1) {
+    failures.push("goal review log registry schemaVersion must be 1");
+  }
+
+  if (logRegistry.mode !== "non_llm_goal_review_log") {
+    failures.push("goal review log registry mode must be non_llm_goal_review_log");
+  }
+
+  const allowedCadences = new Set(logRegistry.allowedCadences || []);
+  const allowedStatuses = new Set(logRegistry.allowedStatuses || []);
+  const cadenceRecordIds = new Set((reviewCadenceRegistry?.records || []).map((record) => record.id));
+  const records = logRegistry.records || [];
+  const ids = new Set();
+
+  if (!Array.isArray(records) || records.length === 0) {
+    failures.push("goal review log registry must include performed review records");
+  }
+
+  for (const record of records) {
+    const label = record.id || "(missing review log id)";
+    for (const field of [
+      "id",
+      "title",
+      "cadence",
+      "status",
+      "review_date",
+      "owner_role",
+      "related_review_id",
+      "related_goal_ids",
+      "related_task_ids",
+      "evidence_ids",
+      "related_paths",
+      "what_changed",
+      "active_blockers",
+      "validation_performed",
+      "validation_needed",
+      "limitations",
+      "next_safe_action"
+    ]) {
+      if (!(field in record)) {
+        failures.push(`${label} missing field: ${field}`);
+      }
+    }
+
+    if (ids.has(record.id)) {
+      failures.push(`duplicate review log id: ${record.id}`);
+    }
+    ids.add(record.id);
+
+    if (!/^SEIS-REVIEW-LOG-\d{3}$/.test(record.id || "")) {
+      failures.push(`${label} id must match SEIS-REVIEW-LOG-000 format`);
+    }
+
+    if (!allowedCadences.has(record.cadence)) {
+      failures.push(`${label} has invalid cadence: ${record.cadence}`);
+    }
+
+    if (!allowedStatuses.has(record.status)) {
+      failures.push(`${label} has invalid status: ${record.status}`);
+    }
+
+    if (!cadenceRecordIds.has(record.related_review_id)) {
+      failures.push(`${label} references unknown cadence record: ${record.related_review_id}`);
+    }
+
+    for (const field of [
+      "related_goal_ids",
+      "related_task_ids",
+      "evidence_ids",
+      "related_paths",
+      "what_changed",
+      "active_blockers",
+      "validation_performed",
+      "validation_needed",
+      "limitations"
+    ]) {
+      if (!Array.isArray(record[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+
+    for (const goalId of record.related_goal_ids || []) {
+      if (!knownGoalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+
+    for (const taskId of record.related_task_ids || []) {
+      if (!knownTaskIds.has(taskId)) {
+        failures.push(`${label} references unknown task id: ${taskId}`);
+      }
+    }
+
+    for (const evidenceId of record.evidence_ids || []) {
+      if (!knownEvidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+
+    for (const relatedPath of record.related_paths || []) {
+      validateRelativePath(label, relatedPath, "related_paths");
+    }
+
+    for (const [field, value] of Object.entries({
+      title: record.title,
+      review_date: record.review_date,
+      owner_role: record.owner_role,
+      next_safe_action: record.next_safe_action
+    })) {
+      validateSafeText(label, field, value);
+    }
+
+    for (const item of [
+      ...(record.what_changed || []),
+      ...(record.active_blockers || []),
+      ...(record.validation_performed || []),
+      ...(record.validation_needed || []),
+      ...(record.limitations || [])
+    ]) {
+      validateSafeText(label, "review log item", item);
+    }
+
+    if (record.status === "performed" && !record.evidence_ids?.length) {
+      failures.push(`${label} cannot be performed without evidence_ids`);
     }
   }
 }
@@ -1294,7 +1438,7 @@ function validateProgressRefs(item, label, options = {}) {
 
 function validateCommandCenterView(view) {
   const label = view.id || "(missing command center view id)";
-  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !planningHorizonsRegistry || !progressLedger || !objectiveCoverage) {
+  if (!registry || !evidenceLedger || !executionRegistry || !reviewCadenceRegistry || !reviewLogRegistry || !planningHorizonsRegistry || !progressLedger || !objectiveCoverage) {
     failures.push(`${label} cannot be validated until source registries load`);
     return;
   }
@@ -1307,7 +1451,7 @@ function validateCommandCenterView(view) {
     failures.push(`${label} mode must be non_llm_command_center_goal_view`);
   }
 
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, planningHorizonsPath, progressLedgerPath, objectiveCoveragePath]) {
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, reviewLogPath, planningHorizonsPath, progressLedgerPath, objectiveCoveragePath]) {
     if (!view.sourceRecords?.includes(source)) {
       failures.push(`${label} missing source record: ${source}`);
     }
@@ -1327,6 +1471,10 @@ function validateCommandCenterView(view) {
 
   if (view.summary?.totalReviewRecords !== reviewCadenceRegistry.records.length) {
     failures.push(`${label} totalReviewRecords does not match review cadence registry`);
+  }
+
+  if (view.summary?.totalReviewLogRecords !== reviewLogRegistry.records.length) {
+    failures.push(`${label} totalReviewLogRecords does not match review log registry`);
   }
 
   if (view.summary?.totalPlanningHorizons !== planningHorizonsRegistry.horizons.length) {
@@ -1369,6 +1517,10 @@ function validateCommandCenterView(view) {
     failures.push(`${label} must expose review cadence`);
   }
 
+  if (!view.panels?.actualReviews?.length) {
+    failures.push(`${label} must expose actual reviews`);
+  }
+
   if (!view.panels?.planningHorizons?.length) {
     failures.push(`${label} must expose planning horizons`);
   }
@@ -1406,6 +1558,7 @@ function validateCommandCenterStatic(html) {
     "Active Blockers",
     "Validation Status",
     "Review Cadence",
+    "Performed Reviews",
     "Planning Horizons",
     "Active Projects",
     "Completed Work",
@@ -1417,6 +1570,7 @@ function validateCommandCenterStatic(html) {
     "SEIS-BLOCKER-001",
     "SEIS-TASK-001",
     "SEIS-REVIEW-001",
+    "SEIS-REVIEW-LOG-001",
     "SEIS-HORIZON-001",
     "SEIS-PROJECT-001",
     "SEIS-COMPLETE-001",

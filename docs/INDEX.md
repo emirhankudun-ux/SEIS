@@ -46,6 +46,8 @@ broad file search.
 | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Structured non-LLM execution records. | Active |
 | [goals/review-cadence.md](goals/review-cadence.md) | Daily, weekly, and monthly review cadence rules. | Active |
 | [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Structured non-LLM review cadence records. | Active |
+| [../content/development/seis-goal-review-log.json](../content/development/seis-goal-review-log.json) | Structured non-LLM performed review log. | Active |
+| [reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md](reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md) | First performed daily Goal Tracking OS review. | Active |
 | [goals/planning-horizons.md](goals/planning-horizons.md) | Yearly, quarterly, monthly, weekly, and active-project planning horizons. | Active |
 | [../content/development/seis-goal-planning-horizons.json](../content/development/seis-goal-planning-horizons.json) | Structured non-LLM planning horizon and active project records. | Active |
 | [goals/progress-ledger.md](goals/progress-ledger.md) | Completed work, deferred work, and follow-up action rules. | Active |

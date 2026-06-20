@@ -13,6 +13,7 @@ It is generated from:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
+- [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
@@ -25,9 +26,10 @@ The first generated static page is:
 
 The view model gives Command Center a non-LLM Goal Tracking Center data surface.
 It can render progress cards, active goals, blocked goals, category status,
-next actions, blockers, validation status, review cadence, planning horizons,
-active projects, objective coverage, decisions, readiness connections, and UX
-guardrails without any model provider or external API.
+next actions, blockers, validation status, review cadence, performed review
+logs, planning horizons, active projects, objective coverage, decisions,
+readiness connections, and UX guardrails without any model provider or external
+API.
 
 ## Generated Panels
 
@@ -41,6 +43,7 @@ guardrails without any model provider or external API.
 | `blockedItems` | Active blockers with required approval and next action. |
 | `validationStatus` | Evidence records and limitations. |
 | `reviewCadence` | Planned daily, weekly, and monthly review records. |
+| `actualReviews` | Performed review logs backed by evidence. |
 | `planningHorizons` | Yearly, quarterly, monthly, and weekly planning lanes. |
 | `activeProjects` | Active project lanes linked to goals, tasks, horizons, and evidence. |
 | `completedItems` | Scoped completed work with evidence and limitations. |

@@ -29,6 +29,7 @@ what needs evidence, and what should happen next.
 | Next Safe Action Panel | Show the next safe action per active goal and roadmap queue. | [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json) |
 | Evidence Links | Link each status to docs, reviews, validation, files, or PRs. | [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json) |
 | Review Cadence | Show planned daily, weekly, and monthly reviews without claiming completion. | [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json) |
+| Performed Reviews | Show actual daily, weekly, or monthly review logs only when evidence exists. | [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json) |
 | Planning Horizons | Show yearly, quarterly, monthly, weekly, and active project lanes. | [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) |
 | Progress Ledger | Show completed, deferred, and follow-up work with evidence and limitations. | [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) |
 | Objective Coverage | Show mission requirements with status, proof, limitations, and next safe action. | [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) |
@@ -72,6 +73,7 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-evidence.json`](../../content/development/seis-goal-evidence.json)
 - [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json)
 - [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
+- [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json)
 - [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
