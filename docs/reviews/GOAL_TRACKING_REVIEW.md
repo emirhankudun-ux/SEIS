@@ -34,6 +34,7 @@ progress review, review cadence, and Command Center product planning.
 | Audit full-objective completion status. | Documented | [`GOAL_TRACKING_COMPLETION_AUDIT.md`](GOAL_TRACKING_COMPLETION_AUDIT.md) |
 | Generate non-LLM Command Center view model. | Implemented as local JSON | [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) |
 | Generate static Goal Tracking Center page. | Implemented as local HTML | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) |
+| Generate static Command Center shell. | Implemented as local HTML | [`../../apps/command-center/index.html`](../../apps/command-center/index.html) |
 | Validate goal records without LLM. | Implemented as local check | [`../../scripts/check-goal-tracking.mjs`](../../scripts/check-goal-tracking.mjs) |
 | Keep LLM optional. | Documented | [`../goals/goal-tracking-system.md`](../goals/goal-tracking-system.md) |
 
@@ -71,10 +72,13 @@ progress review, review cadence, and Command Center product planning.
   readiness connections, and UX guardrails.
 - Goal Tracking OS now has a generated static Goal Tracking Center page that
   renders those panels without an LLM or external API.
+- Command Center now has a generated static shell that links to the Goal
+  Tracking Center and core foundation modules without live integrations.
 - Repository hygiene deletion blocker now has a classified review record:
   [`REPOSITORY_HYGIENE_DELETION_REVIEW.md`](REPOSITORY_HYGIENE_DELETION_REVIEW.md).
 - Goal statuses are evidence-aware and avoid fake completion.
 - Goal Tracking Center is connected to Command Center as a planned module.
+- Goal Tracking Center is connected to the static Command Center shell.
 
 ## What Is Planned
 

@@ -8,6 +8,8 @@ actions.
 
 The first generated static surface is
 [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html).
+The first generated Command Center shell is
+[`../../apps/command-center/index.html`](../../apps/command-center/index.html).
 It renders from
 [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
 without an LLM or external API.
@@ -80,6 +82,8 @@ Create a static/manual data file or fixture derived from:
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 - [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json)
 - [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json)
+- [`../../content/development/seis-command-center-shell.json`](../../content/development/seis-command-center-shell.json)
+- [`../../apps/command-center/index.html`](../../apps/command-center/index.html)
 - [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html)
 - [`../goals/long-term-goals.md`](../goals/long-term-goals.md)
 - [`../goals/milestone-map.md`](../goals/milestone-map.md)

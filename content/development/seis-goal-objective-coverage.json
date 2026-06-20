@@ -97,7 +97,8 @@
       "evidence_ids": [
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-019"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -106,15 +107,18 @@
       "related_paths": [
         "docs/product/goal-tracking-center.md",
         "docs/product/command-center-goals-view.md",
+        "docs/product/command-center-shell.md",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "A generated non-LLM view model and static Goal Tracking Center page expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.",
+      "proof": "A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.",
       "limitations": [
-        "The page is static and is not wired into a routed Command Center application shell.",
+        "The shell is static and is not a dynamic routed application runtime.",
         "No live GitHub, release, or SSH integration is claimed."
       ],
-      "next_action": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+      "next_action": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene blockers are isolated."
     },
     {
       "id": "SEIS-OBJ-005",
@@ -237,7 +241,8 @@
       "evidence_ids": [
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-019"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -246,15 +251,17 @@
       "related_paths": [
         "docs/goals/command-center-view-model.md",
         "docs/product/command-center-goals-view.md",
+        "docs/product/command-center-shell.md",
+        "apps/command-center/index.html",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "The generated page renders numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.",
+      "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.",
       "limitations": [
-        "The surface is static and not yet connected to broader app navigation.",
+        "The broader app navigation is static and not a dynamic routed runtime.",
         "Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component."
       ],
-      "next_action": "Add routed shell integration and a milestone timeline only after the current static contract remains stable."
+      "next_action": "Add dynamic routing and a milestone timeline only after the current static contract remains stable."
     },
     {
       "id": "SEIS-OBJ-010",
@@ -265,7 +272,8 @@
         "SEIS-EVID-001",
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-019"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-002",
@@ -307,15 +315,18 @@
         "docs/roadmap/MASTER_BACKLOG.md",
         "docs/roadmap/NEXT_PR_QUEUE.md",
         "docs/product/goal-tracking-center.md",
+        "docs/product/command-center-shell.md",
         "docs/goals/progress-review.md",
-        "content/development/seis-goal-command-center-view.json"
+        "content/development/seis-goal-command-center-view.json",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html"
       ],
-      "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, and static page.",
+      "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, static page, and static Command Center shell.",
       "limitations": [
-        "The full Command Center application connection is planned, not complete.",
+        "The dynamic Command Center application runtime is planned, not complete.",
         "Repository hygiene blockers still control the next safe PR."
       ],
-      "next_action": "Resolve repository hygiene blockers, then promote the static Goal Tracking contract into the Command Center shell."
+      "next_action": "Resolve repository hygiene blockers, then promote the static shell toward a dynamic Command Center runtime."
     }
   ]
 }

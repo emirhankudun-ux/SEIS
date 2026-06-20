@@ -447,6 +447,33 @@
         "Does not prove deployment, SSH, model-provider, benchmark, or dataset state."
       ],
       "next_action": "Keep repository hygiene recovery and governance source-of-truth alignment ahead of readiness or live-integration claims."
+    },
+    {
+      "id": "SEIS-EVID-019",
+      "title": "Command Center shell generated",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "npm run check:command-center-shell",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-004",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
+        "scripts/create-command-center-shell.mjs",
+        "docs/product/command-center-shell.md"
+      ],
+      "summary": "A static non-LLM Command Center shell was generated from a local JSON contract and links to the Goal Tracking Center, repository hygiene, roadmap, evidence, approval, readiness, AI Core, and documentation surfaces.",
+      "limitations": [
+        "Does not prove a dynamic routed application runtime.",
+        "Does not resolve repository hygiene blockers, foundation validation failures, live GitHub PR state, public readiness, or release readiness.",
+        "Does not perform external API, SSH, deployment, release, model-provider, benchmark, or dataset actions."
+      ],
+      "next_action": "Keep the shell as a local operating surface and defer live integrations until repository hygiene and governance blockers are resolved."
     }
   ]
 }

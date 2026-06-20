@@ -25,6 +25,7 @@ broad file search.
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Ordered next PR queue, including blocked dangerous actions that need approval. | Active |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Full foundation review from the current inspection pass. | Active |
 | [product/SEIS_NON_LLM_PLATFORM_MISSION.md](product/SEIS_NON_LLM_PLATFORM_MISSION.md) | Non-LLM Command Center and Platform OS mission. | Active |
+| [product/command-center-shell.md](product/command-center-shell.md) | Static non-LLM Command Center shell contract and validation. | Active |
 | [reviews/GOAL_TRACKING_REVIEW.md](reviews/GOAL_TRACKING_REVIEW.md) | Goal Tracking OS foundation review. | Active |
 | [reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md](reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md) | Goal Tracking OS mission-to-evidence coverage audit. | Active |
 | [reviews/GOAL_TRACKING_COMPLETION_AUDIT.md](reviews/GOAL_TRACKING_COMPLETION_AUDIT.md) | Strict Goal Tracking OS completion gate audit. | Active |
@@ -62,6 +63,9 @@ broad file search.
 | [reviews/GOAL_TRACKING_COMPLETION_AUDIT.md](reviews/GOAL_TRACKING_COMPLETION_AUDIT.md) | Completion gate audit distinguishing proved, partial, blocked, and unverified requirements. | Active |
 | [../content/development/seis-goal-completion-gate.json](../content/development/seis-goal-completion-gate.json) | Structured non-LLM completion gate records. | Active |
 | [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. | Active |
+| [product/command-center-shell.md](product/command-center-shell.md) | Static Command Center shell for non-LLM module navigation. | Active |
+| [../content/development/seis-command-center-shell.json](../content/development/seis-command-center-shell.json) | Structured non-LLM Command Center shell records. | Active |
+| [../apps/command-center/index.html](../apps/command-center/index.html) | Generated static Command Center shell page. | Active |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Static non-LLM Command Center view data. | Active |
 | [../apps/command-center/goal-tracking/index.html](../apps/command-center/goal-tracking/index.html) | Generated static Goal Tracking Center page. | Active |
 | [goals/daily-review-template.md](goals/daily-review-template.md) | Daily review template; use only for real daily reviews. | Template |
@@ -73,6 +77,7 @@ broad file search.
 | Area | Current Documents |
 | --- | --- |
 | Command Center foundation | [architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md](architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md) |
+| Command Center shell | [product/command-center-shell.md](product/command-center-shell.md) |
 | Goal Tracking Center | [product/goal-tracking-center.md](product/goal-tracking-center.md) |
 | Command Center goals view | [product/command-center-goals-view.md](product/command-center-goals-view.md) |
 | Platform OS architecture | [architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md](architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) |

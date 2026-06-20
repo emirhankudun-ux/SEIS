@@ -15,6 +15,7 @@
     "docs/goals/command-center-view-model.md",
     "docs/product/goal-tracking-center.md",
     "docs/product/command-center-goals-view.md",
+    "docs/product/command-center-shell.md",
     "docs/reviews/GOAL_TRACKING_REVIEW.md",
     "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
     "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
@@ -78,17 +79,20 @@
       "description": "Create the core operating interface for repository status, docs, roadmap, security, approvals, evidence, and readiness.",
       "category": "SEIS App / Command Center",
       "priority": "P1 high",
-      "status": "planned",
+      "status": "active",
       "owner_role": "Product Architecture",
       "created_date": "2026-06-19",
       "target_phase": "Platform foundation",
       "related_roadmap_item": "SEIS-BL-023",
       "related_docs": [
         "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
-        "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md"
+        "docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md",
+        "docs/product/command-center-shell.md"
       ],
       "related_files": [
         "apps/web/README.md",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
@@ -107,16 +111,19 @@
       ],
       "evidence_links": [
         "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+        "docs/product/command-center-shell.md",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "docs/goals/command-center-view-model.md",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
       "validation_method": "Static/manual Command Center views render evidence-backed states without LLM or live integrations.",
       "validation_evidence": [],
-      "next_action": "Build static/manual Command Center views from docs and fixture data.",
-      "last_reviewed": "2026-06-19",
+      "next_action": "Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated.",
+      "last_reviewed": "2026-06-20",
       "review_cadence": "weekly",
-      "notes": "Planned product work; not complete."
+      "notes": "Static non-LLM shell exists; dynamic routed app and live integrations remain planned."
     },
     {
       "id": "SEIS-GOAL-002",
@@ -142,6 +149,7 @@
       "docs/goals/planning-horizons.md",
         "docs/goals/progress-ledger.md",
         "docs/goals/command-center-view-model.md",
+        "docs/product/command-center-shell.md",
         "docs/reviews/GOAL_TRACKING_REVIEW.md",
         "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
         "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md"
@@ -157,6 +165,8 @@
         "content/development/seis-goal-objective-coverage.json",
         "content/development/seis-goal-completion-gate.json",
         "content/development/seis-goal-command-center-view.json",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html",
         "scripts/check-goal-tracking.mjs"
       ],
@@ -194,6 +204,9 @@
         "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
         "content/development/seis-goal-completion-gate.json",
         "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md",
+        "docs/product/command-center-shell.md",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "docs/goals/command-center-view-model.md",
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html",

@@ -22,6 +22,7 @@ does not claim that the full Goal Tracking OS has been implemented.
 | Structured objective coverage | active | [`../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md`](../reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md), [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) | Keep mission coverage statuses evidence-backed and limitation-aware. |
 | Structured completion gate | active | [`../reviews/GOAL_TRACKING_COMPLETION_AUDIT.md`](../reviews/GOAL_TRACKING_COMPLETION_AUDIT.md), [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json) | Keep full-completion claims blocked until every requirement is proved. |
 | Command Center view model | active | [`command-center-view-model.md`](command-center-view-model.md), [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json) | Keep generated view data fresh with `npm run check:goal-command-center-view`. |
+| Command Center shell | active | [`../product/command-center-shell.md`](../product/command-center-shell.md), [`../../content/development/seis-command-center-shell.json`](../../content/development/seis-command-center-shell.json), [`../../apps/command-center/index.html`](../../apps/command-center/index.html) | Keep generated shell fresh with `npm run check:command-center-shell`. |
 | Static Goal Tracking page | active | [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html) | Keep generated static page fresh with `npm run check:goal-command-center-static`. |
 | Milestone map | active | [`milestone-map.md`](milestone-map.md) | Connect milestones to next PR queue and evidence records. |
 | Goal Tracking Center | planned | [`../product/goal-tracking-center.md`](../product/goal-tracking-center.md) | Build fixture/manual UI data next. |
@@ -75,10 +76,11 @@ implementation:
 - Static Command Center view model generated from goal, evidence, and execution
   records, including objective coverage.
 - Static Goal Tracking Center page generated from the view model.
+- Static Command Center shell generated from the shell contract.
 
 ## Deferred Work
 
-- Routed Command Center application shell.
+- Dynamic routed Command Center application runtime.
 - Live integrated Goal Tracking Center module.
 - Scanner-generated goal evidence.
 - Live GitHub PR integration.

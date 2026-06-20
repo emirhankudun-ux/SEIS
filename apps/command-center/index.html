@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>SEIS Command Center</title>
+  <style>
+    :root {
+      --bg: #f5f4f0;
+      --ink: #202326;
+      --muted: #626b72;
+      --line: #d8ddd7;
+      --panel: #ffffff;
+      --panel-soft: #f9faf7;
+      --dark: #111315;
+      --dark-line: #2a302e;
+      --green: #247a4f;
+      --amber: #9a6500;
+      --red: #be3d38;
+      --blue: #2f6fed;
+      --violet: #6f58d9;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      padding: 20px 16px;
+      background: var(--dark);
+      color: #f5f3ee;
+      border-right: 1px solid var(--dark-line);
+    }
+
+    .brand { display: grid; gap: 4px; margin-bottom: 24px; }
+    .brand strong { font-size: 15px; font-weight: 680; }
+    .brand span, .eyebrow, .meta, .card-label { color: var(--muted); font-size: 12px; }
+    .sidebar .brand span, .sidebar .meta { color: #aeb7b2; }
+
+    .nav { display: grid; gap: 6px; }
+    .nav a {
+      color: #cbd1cd;
+      text-decoration: none;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+    .nav a:hover, .nav a:focus-visible {
+      color: #fff;
+      background: #242928;
+      outline: 2px solid transparent;
+    }
+
+    .main { min-width: 0; padding: 24px; }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 30px; line-height: 1.12; font-weight: 700; }
+    h2 { font-size: 16px; margin-bottom: 12px; }
+    h3 { font-size: 14px; font-weight: 650; }
+
+    .lede { max-width: 760px; margin-top: 8px; color: var(--muted); }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      border-radius: 8px;
+      padding: 6px 11px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .button.primary { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+    .status-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .stat, .module, .guardrail {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .stat strong { display: block; font-size: 22px; line-height: 1.1; margin-top: 4px; }
+
+    .section { margin-top: 22px; }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .module { display: grid; gap: 10px; min-width: 0; }
+    .module-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 24px;
+      padding: 3px 8px;
+      background: var(--panel-soft);
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .badge::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--muted);
+    }
+    .badge.active::before { background: var(--green); }
+    .badge.planned::before { background: var(--amber); }
+    .badge.blocked::before { background: var(--red); }
+
+    .module p, .guardrail p { color: var(--muted); }
+    .module-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .module a.open { color: var(--blue); font-weight: 650; text-decoration: none; }
+    .module a.open:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+    .evidence {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .guardrail-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .shell { grid-template-columns: 1fr; }
+      .sidebar { position: relative; height: auto; }
+      .status-strip, .module-grid, .guardrail-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" data-seis-command-center-shell="seis-command-center-shell" data-final-state="blocked_by_repository_hygiene">
+    <aside class="sidebar" aria-label="Command Center navigation">
+      <div class="brand">
+        <strong>SEIS Command Center</strong>
+        <span>Non-LLM platform shell</span>
+      </div>
+      <nav class="nav" aria-label="Modules">
+        <a href="#command-center-goals">Goal Tracking Center</a>
+        <a href="#repository-hygiene">Repository Hygiene</a>
+        <a href="#roadmap-center">Roadmap Center</a>
+        <a href="#evidence-locker">Evidence Locker</a>
+        <a href="#approval-center">Approval Center</a>
+        <a href="#readiness-center">Release And Public Readiness</a>
+        <a href="#ai-core">AI Core Foundation</a>
+        <a href="#documentation-hub">Documentation Hub</a>
+      </nav>
+      <p class="meta" style="margin-top: 22px;">Updated 2026-06-20</p>
+    </aside>
+    <main class="main">
+      <div class="topbar">
+        <div>
+          <p class="eyebrow">SEIS Platform OS</p>
+          <h1>SEIS Command Center</h1>
+          <p class="lede">Non-LLM operating shell for the SEIS ecosystem foundation.</p>
+        </div>
+        <div class="actions" aria-label="Primary actions">
+          <a class="button primary" href="goal-tracking/">Open Goal Tracking Center</a>
+          <a class="button" href="../../docs/roadmap/NEXT_PR_QUEUE.md">Review Next PR Queue</a>
+        </div>
+      </div>
+
+      <section class="status-strip" aria-label="Command Center status">
+        <div class="stat">
+          <span class="card-label">Final state</span>
+          <strong>blocked_by_repository_hygiene</strong>
+        </div>
+        <div class="stat">
+          <span class="card-label">Active modules</span>
+          <strong>4</strong>
+        </div>
+        <div class="stat">
+          <span class="card-label">Planned modules</span>
+          <strong>2</strong>
+        </div>
+        <div class="stat">
+          <span class="card-label">Blocked modules</span>
+          <strong>2</strong>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="modules-title">
+        <h2 id="modules-title">Modules</h2>
+        <div class="module-grid">
+          <article class="module" id="command-center-goals">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Goal Tracking Center</h3>
+              </div>
+              <span class="badge active">active</span>
+            </div>
+            <p>Generated non-LLM view for goals, blockers, evidence, reviews, planning horizons, progress ledger, objective coverage, and completion gates.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-009</span><span>SEIS-EVID-010</span><span>SEIS-EVID-018</span>
+            </div>
+            <p><strong>Next:</strong> Keep generated records fresh and wire deeper shell routing only after repository hygiene is isolated.</p>
+            <div class="module-footer">
+              <a class="open" href="goal-tracking/">Open</a>
+            </div>
+          </article>
+          <article class="module" id="repository-hygiene">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P0 critical</p>
+                <h3>Repository Hygiene</h3>
+              </div>
+              <span class="badge blocked">blocked</span>
+            </div>
+            <p>Tracks unresolved deletions, missing governance docs, missing validators, and nested snapshot risks.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-003</span><span>SEIS-EVID-004</span><span>SEIS-EVID-007</span>
+            </div>
+            <p><strong>Next:</strong> Restore, replace, or explicitly approve removal of missing governance files in a focused recovery PR.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="roadmap-center">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Roadmap Center</h3>
+              </div>
+              <span class="badge active">active</span>
+            </div>
+            <p>Consolidated backlog and next PR queue for safe foundation sequencing.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-014</span><span>SEIS-EVID-017</span><span>SEIS-EVID-018</span>
+            </div>
+            <p><strong>Next:</strong> Keep PR 1 focused on foundation recovery before routed shell expansion or readiness claims.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/roadmap/MASTER_BACKLOG.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="evidence-locker">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Evidence Locker</h3>
+              </div>
+              <span class="badge active">active</span>
+            </div>
+            <p>Structured proof, blocker, validation, security-scan, commit, and review records for Goal Tracking OS.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-001</span><span>SEIS-EVID-006</span><span>SEIS-EVID-018</span>
+            </div>
+            <p><strong>Next:</strong> Keep evidence scoped, current, limitation-aware, and free of private paths or secrets.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/goals/evidence-ledger.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="approval-center">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Approval Center</h3>
+              </div>
+              <span class="badge planned">planned</span>
+            </div>
+            <p>Human approval rules for dangerous actions, external access, cleanup, deployment, SSH, release, and model operations.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-014</span>
+            </div>
+            <p><strong>Next:</strong> Keep dangerous actions documented and approval-gated; do not turn planned approvals into live controls.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/governance/APPROVAL_WORKFLOW_PLATFORM.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="readiness-center">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Release And Public Readiness</h3>
+              </div>
+              <span class="badge blocked">blocked</span>
+            </div>
+            <p>Release and public-readiness dry-run framework, currently blocked by repository hygiene and validation recovery.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-003</span><span>SEIS-EVID-004</span>
+            </div>
+            <p><strong>Next:</strong> Run readiness dry-runs only after foundation validation is recoverable.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="ai-core">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>AI Core Foundation</h3>
+              </div>
+              <span class="badge planned">planned</span>
+            </div>
+            <p>Provider-neutral AI Core direction for model router, prompt engine, agent runtime, evaluation, and SEIS Universe research without model ownership overclaims.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-014</span><span>SEIS-EVID-018</span>
+            </div>
+            <p><strong>Next:</strong> Add AI Core contracts only after repository hygiene blockers are isolated.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/ai/AI_CORE_FOUNDATION_REVIEW.md">Open</a>
+            </div>
+          </article>
+          <article class="module" id="documentation-hub">
+            <div class="module-header">
+              <div>
+                <p class="eyebrow">P1 high</p>
+                <h3>Documentation Hub</h3>
+              </div>
+              <span class="badge active">active</span>
+            </div>
+            <p>Navigation spine for source-of-truth docs, status, roadmap, reviews, goals, architecture, governance, and evidence.</p>
+            <div class="evidence" aria-label="Evidence records">
+              <span>SEIS-EVID-014</span><span>SEIS-EVID-018</span>
+            </div>
+            <p><strong>Next:</strong> Keep index, status, backlog, and review docs synchronized after each foundation slice.</p>
+            <div class="module-footer">
+              <a class="open" href="../../docs/INDEX.md">Open</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="guardrails-title">
+        <h2 id="guardrails-title">Guardrails</h2>
+        <div class="guardrail-grid">
+          <article class="guardrail">
+            <p class="eyebrow">no-fake-controls</p>
+            <h3>No Fake Controls</h3>
+            <p>The shell links to local docs or generated local pages; it does not expose disabled-looking controls that imply live integrations.</p>
+          </article>
+          <article class="guardrail">
+            <p class="eyebrow">no-external-actions</p>
+            <h3>No External Actions</h3>
+            <p>No GitHub API, SSH, deployment, release, model-provider, benchmark, or dataset action is performed from this shell.</p>
+          </article>
+          <article class="guardrail">
+            <p class="eyebrow">blocked-visible</p>
+            <h3>Blocked State Visible</h3>
+            <p>Repository hygiene, public readiness, release readiness, and live integrations remain visibly blocked until evidence changes.</p>
+          </article>
+          <article class="guardrail">
+            <p class="eyebrow">evidence-first</p>
+            <h3>Evidence First</h3>
+            <p>Active or completed states must link to current evidence records or stay planned/blocked.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="next-safe-action">
+        <h2 id="next-safe-action">Next Safe Action</h2>
+        <div class="stat">
+          <p>Resolve repository hygiene and governance source-of-truth blockers before public, release, deployment, or live integration claims.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -42,6 +42,7 @@ const requiredDocs = [
   "docs/roadmap/NEXT_PR_QUEUE.md",
   "docs/product/goal-tracking-center.md",
   "docs/product/command-center-goals-view.md",
+  "docs/product/command-center-shell.md",
   "docs/reviews/GOAL_TRACKING_REVIEW.md",
   "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
   "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md"

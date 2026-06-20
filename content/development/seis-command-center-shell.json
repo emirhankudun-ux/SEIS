@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-command-center-shell",
+  "updated": "2026-06-20",
+  "mode": "non_llm_command_center_shell",
+  "finalState": "blocked_by_repository_hygiene",
+  "sourceRecords": [
+    "content/development/seis-goal-command-center-view.json",
+    "content/development/seis-goal-evidence.json",
+    "content/development/seis-goal-execution.json",
+    "content/development/seis-goal-review-log.json",
+    "docs/STATUS.md",
+    "docs/roadmap/NEXT_PR_QUEUE.md"
+  ],
+  "principles": [
+    "Works without an LLM connection.",
+    "Uses repository-local docs and generated records as source evidence.",
+    "Keeps planned, blocked, active, and validated states visible.",
+    "Does not perform external API, SSH, deployment, release, or destructive actions.",
+    "Routes users to real local surfaces instead of fake controls."
+  ],
+  "summary": {
+    "title": "SEIS Command Center",
+    "subtitle": "Non-LLM operating shell for the SEIS ecosystem foundation.",
+    "status": "blocked",
+    "statusLabel": "Repository hygiene blocks readiness claims",
+    "primaryActionLabel": "Open Goal Tracking Center",
+    "primaryActionHref": "goal-tracking/",
+    "secondaryActionLabel": "Review Next PR Queue",
+    "secondaryActionHref": "../../docs/roadmap/NEXT_PR_QUEUE.md",
+    "nextSafeAction": "Resolve repository hygiene and governance source-of-truth blockers before public, release, deployment, or live integration claims."
+  },
+  "modules": [
+    {
+      "id": "command-center-goals",
+      "title": "Goal Tracking Center",
+      "status": "active",
+      "priority": "P1 high",
+      "href": "goal-tracking/",
+      "description": "Generated non-LLM view for goals, blockers, evidence, reviews, planning horizons, progress ledger, objective coverage, and completion gates.",
+      "evidenceIds": [
+        "SEIS-EVID-009",
+        "SEIS-EVID-010",
+        "SEIS-EVID-018"
+      ],
+      "relatedPaths": [
+        "apps/command-center/goal-tracking/index.html",
+        "content/development/seis-goal-command-center-view.json",
+        "docs/product/goal-tracking-center.md"
+      ],
+      "nextAction": "Keep generated records fresh and wire deeper shell routing only after repository hygiene is isolated."
+    },
+    {
+      "id": "repository-hygiene",
+      "title": "Repository Hygiene",
+      "status": "blocked",
+      "priority": "P0 critical",
+      "href": "../../docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+      "description": "Tracks unresolved deletions, missing governance docs, missing validators, and nested snapshot risks.",
+      "evidenceIds": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004",
+        "SEIS-EVID-007"
+      ],
+      "relatedPaths": [
+        "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
+        "docs/STATUS.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "nextAction": "Restore, replace, or explicitly approve removal of missing governance files in a focused recovery PR."
+    },
+    {
+      "id": "roadmap-center",
+      "title": "Roadmap Center",
+      "status": "active",
+      "priority": "P1 high",
+      "href": "../../docs/roadmap/MASTER_BACKLOG.md",
+      "description": "Consolidated backlog and next PR queue for safe foundation sequencing.",
+      "evidenceIds": [
+        "SEIS-EVID-014",
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
+      ],
+      "relatedPaths": [
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "nextAction": "Keep PR 1 focused on foundation recovery before routed shell expansion or readiness claims."
+    },
+    {
+      "id": "evidence-locker",
+      "title": "Evidence Locker",
+      "status": "active",
+      "priority": "P1 high",
+      "href": "../../docs/goals/evidence-ledger.md",
+      "description": "Structured proof, blocker, validation, security-scan, commit, and review records for Goal Tracking OS.",
+      "evidenceIds": [
+        "SEIS-EVID-001",
+        "SEIS-EVID-006",
+        "SEIS-EVID-018"
+      ],
+      "relatedPaths": [
+        "docs/goals/evidence-ledger.md",
+        "content/development/seis-goal-evidence.json"
+      ],
+      "nextAction": "Keep evidence scoped, current, limitation-aware, and free of private paths or secrets."
+    },
+    {
+      "id": "approval-center",
+      "title": "Approval Center",
+      "status": "planned",
+      "priority": "P1 high",
+      "href": "../../docs/governance/APPROVAL_WORKFLOW_PLATFORM.md",
+      "description": "Human approval rules for dangerous actions, external access, cleanup, deployment, SSH, release, and model operations.",
+      "evidenceIds": [
+        "SEIS-EVID-014"
+      ],
+      "relatedPaths": [
+        "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "nextAction": "Keep dangerous actions documented and approval-gated; do not turn planned approvals into live controls."
+    },
+    {
+      "id": "readiness-center",
+      "title": "Release And Public Readiness",
+      "status": "blocked",
+      "priority": "P1 high",
+      "href": "../../docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+      "description": "Release and public-readiness dry-run framework, currently blocked by repository hygiene and validation recovery.",
+      "evidenceIds": [
+        "SEIS-EVID-003",
+        "SEIS-EVID-004"
+      ],
+      "relatedPaths": [
+        "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+        "docs/STATUS.md"
+      ],
+      "nextAction": "Run readiness dry-runs only after foundation validation is recoverable."
+    },
+    {
+      "id": "ai-core",
+      "title": "AI Core Foundation",
+      "status": "planned",
+      "priority": "P1 high",
+      "href": "../../docs/ai/AI_CORE_FOUNDATION_REVIEW.md",
+      "description": "Provider-neutral AI Core direction for model router, prompt engine, agent runtime, evaluation, and SEIS Universe research without model ownership overclaims.",
+      "evidenceIds": [
+        "SEIS-EVID-014",
+        "SEIS-EVID-018"
+      ],
+      "relatedPaths": [
+        "docs/ai/AI_CORE_FOUNDATION_REVIEW.md"
+      ],
+      "nextAction": "Add AI Core contracts only after repository hygiene blockers are isolated."
+    },
+    {
+      "id": "documentation-hub",
+      "title": "Documentation Hub",
+      "status": "active",
+      "priority": "P1 high",
+      "href": "../../docs/INDEX.md",
+      "description": "Navigation spine for source-of-truth docs, status, roadmap, reviews, goals, architecture, governance, and evidence.",
+      "evidenceIds": [
+        "SEIS-EVID-014",
+        "SEIS-EVID-018"
+      ],
+      "relatedPaths": [
+        "docs/INDEX.md",
+        "docs/STATUS.md"
+      ],
+      "nextAction": "Keep index, status, backlog, and review docs synchronized after each foundation slice."
+    }
+  ],
+  "guardrails": [
+    {
+      "id": "no-fake-controls",
+      "title": "No Fake Controls",
+      "description": "The shell links to local docs or generated local pages; it does not expose disabled-looking controls that imply live integrations."
+    },
+    {
+      "id": "no-external-actions",
+      "title": "No External Actions",
+      "description": "No GitHub API, SSH, deployment, release, model-provider, benchmark, or dataset action is performed from this shell."
+    },
+    {
+      "id": "blocked-visible",
+      "title": "Blocked State Visible",
+      "description": "Repository hygiene, public readiness, release readiness, and live integrations remain visibly blocked until evidence changes."
+    },
+    {
+      "id": "evidence-first",
+      "title": "Evidence First",
+      "description": "Active or completed states must link to current evidence records or stay planned/blocked."
+    }
+  ]
+}

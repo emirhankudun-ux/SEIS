@@ -58,6 +58,8 @@ The first generated Command Center view source is
 [`../../content/development/seis-goal-command-center-view.json`](../../content/development/seis-goal-command-center-view.json).
 The first generated static page is
 [`../../apps/command-center/goal-tracking/index.html`](../../apps/command-center/goal-tracking/index.html).
+The first generated Command Center shell is
+[`../../apps/command-center/index.html`](../../apps/command-center/index.html).
 It is derived from the structured source records:
 
 - [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json)
@@ -69,6 +71,7 @@ It is derived from the structured source records:
 - [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json)
 - [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json)
 - [`../../content/development/seis-goal-completion-gate.json`](../../content/development/seis-goal-completion-gate.json)
+- [`../../content/development/seis-command-center-shell.json`](../../content/development/seis-command-center-shell.json)
 
 The raw goal source is
 [`../../content/development/seis-goal-tracking.json`](../../content/development/seis-goal-tracking.json).

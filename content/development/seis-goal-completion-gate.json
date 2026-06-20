@@ -93,7 +93,8 @@
         "SEIS-EVID-009",
         "SEIS-EVID-010",
         "SEIS-EVID-014",
-        "SEIS-EVID-015"
+        "SEIS-EVID-015",
+        "SEIS-EVID-019"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -101,12 +102,15 @@
       ],
       "related_paths": [
         "content/development/seis-goal-command-center-view.json",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html",
-        "docs/product/goal-tracking-center.md"
+        "docs/product/goal-tracking-center.md",
+        "docs/product/command-center-shell.md"
       ],
-      "proof": "The generated view and static page expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
-      "gap": "The page is not a routed Command Center application module and has no live GitHub, release, public-readiness, or SSH integration.",
-      "next_action": "Promote the generated static contract into the Command Center shell after repository hygiene recovery."
+      "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
+      "gap": "The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.",
+      "next_action": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery."
     },
     {
       "id": "SEIS-GATE-005",
@@ -195,7 +199,8 @@
         "SEIS-EVID-001",
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-014"
+        "SEIS-EVID-014",
+        "SEIS-EVID-019"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -207,10 +212,12 @@
         "docs/roadmap/MASTER_BACKLOG.md",
         "docs/roadmap/NEXT_PR_QUEUE.md",
         "content/development/seis-goal-command-center-view.json",
+        "content/development/seis-command-center-shell.json",
+        "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, and static Command Center surface.",
-      "gap": "The routed Command Center shell and repository hygiene recovery remain unfinished.",
+      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, static Goal Tracking surface, and static Command Center shell.",
+      "gap": "Dynamic Command Center routing and repository hygiene recovery remain unfinished.",
       "next_action": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
     }
   ]

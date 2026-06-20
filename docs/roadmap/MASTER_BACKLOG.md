@@ -62,6 +62,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-041` | P1 | Goal objective coverage | Maintain structured coverage records mapping the Goal Tracking OS mission to evidence, limitations, and next safe actions. | `npm run check:goal-tracking` validates objective coverage records and the static page exposes objective coverage. |
 | `SEIS-BL-042` | P1 | Goal review log | Maintain performed daily, weekly, and monthly review logs only when current-period evidence exists. | `npm run check:goal-tracking` validates review log records and the static page exposes performed reviews separately from cadence. |
 | `SEIS-BL-043` | P1 | Goal completion gate | Maintain a strict completion gate that prevents full Goal Tracking OS completion claims until every requirement is proved. | `npm run check:goal-tracking` validates completion gate records and the static page exposes the final completion decision. |
+| `SEIS-BL-044` | P1 | Command Center shell | Maintain a static non-LLM Command Center shell that links Goal Tracking, roadmap, evidence, approval, readiness, AI Core, and docs surfaces. | `npm run check:command-center-shell` validates shell source, generated HTML, blocked-state visibility, and absence of fake progress controls. |
 
 ## Deferred Dangerous Work
 

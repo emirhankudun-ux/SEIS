@@ -19,13 +19,13 @@
     "totalGoals": 20,
     "totalCategories": 20,
     "goalsByStatus": {
-      "planned": 13,
-      "active": 4,
+      "active": 5,
+      "planned": 12,
       "blocked": 3
     },
-    "totalEvidenceRecords": 18,
+    "totalEvidenceRecords": 19,
     "evidenceByStatus": {
-      "passed": 14,
+      "passed": 15,
       "blocked": 2,
       "observed": 1,
       "partial": 1
@@ -59,7 +59,7 @@
       "active": 1,
       "planned": 1
     },
-    "totalCompletedItems": 8,
+    "totalCompletedItems": 9,
     "totalDeferredItems": 3,
     "totalFollowUpActions": 3,
     "totalObjectiveCoverageRecords": 11,
@@ -79,14 +79,14 @@
     {
       "id": "active-goals",
       "label": "Active goals",
-      "value": 4,
+      "value": 5,
       "status": "active",
       "description": "Goals currently carrying foundation work."
     },
     {
       "id": "planned-goals",
       "label": "Planned goals",
-      "value": 13,
+      "value": 12,
       "status": "planned",
       "description": "Goals visible but not claimed complete."
     },
@@ -100,7 +100,7 @@
     {
       "id": "evidence-records",
       "label": "Evidence records",
-      "value": 18,
+      "value": 19,
       "status": "active",
       "description": "Structured proof, blocker, validation, and review records."
     },
@@ -142,7 +142,7 @@
     {
       "id": "completed-items",
       "label": "Completed items",
-      "value": 8,
+      "value": 9,
       "status": "active",
       "description": "Scoped completed work with evidence and limitations."
     },
@@ -163,6 +163,31 @@
   ],
   "panels": {
     "activeGoals": [
+      {
+        "id": "SEIS-GOAL-001",
+        "title": "Build SEIS Command Center as the central operating interface",
+        "category": "SEIS App / Command Center",
+        "priority": "P1 high",
+        "status": "active",
+        "ownerRole": "Product Architecture",
+        "targetPhase": "Platform foundation",
+        "relatedRoadmapItem": "SEIS-BL-023",
+        "relatedMilestone": "SEIS-MS-003",
+        "evidenceLinks": [
+          "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html"
+        ],
+        "blockers": [
+          "Complete app shell is not proven"
+        ],
+        "validationMethod": "Static/manual Command Center views render evidence-backed states without LLM or live integrations.",
+        "nextAction": "Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated."
+      },
       {
         "id": "SEIS-GOAL-002",
         "title": "Establish SEIS Goal Tracking OS",
@@ -194,6 +219,9 @@
           "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
           "content/development/seis-goal-completion-gate.json",
           "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html",
@@ -355,7 +383,7 @@
       },
       {
         "category": "SEIS App / Command Center",
-        "status": "planned",
+        "status": "active",
         "priority": "P1 high",
         "nextMilestone": "SEIS-MS-003",
         "blockers": [
@@ -363,11 +391,14 @@
         ],
         "evidenceLinks": [
           "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "nextAction": "Build static/manual Command Center views from docs and fixture data."
+        "nextAction": "Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated."
       },
       {
         "category": "Goal Tracking OS",
@@ -398,6 +429,9 @@
           "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
           "content/development/seis-goal-completion-gate.json",
           "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html",
@@ -1077,6 +1111,25 @@
           "Does not prove deployment, SSH, model-provider, benchmark, or dataset state."
         ],
         "nextAction": "Keep repository hygiene recovery and governance source-of-truth alignment ahead of readiness or live-integration claims."
+      },
+      {
+        "id": "SEIS-EVID-019",
+        "title": "Command Center shell generated",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-019"
+        ],
+        "summary": "A static non-LLM Command Center shell was generated from a local JSON contract and links to the Goal Tracking Center, repository hygiene, roadmap, evidence, approval, readiness, AI Core, and documentation surfaces.",
+        "limitations": [
+          "Does not prove a dynamic routed application runtime.",
+          "Does not resolve repository hygiene blockers, foundation validation failures, live GitHub PR state, public readiness, or release readiness.",
+          "Does not perform external API, SSH, deployment, release, model-provider, benchmark, or dataset actions."
+        ],
+        "nextAction": "Keep the shell as a local operating surface and defer live integrations until repository hygiene and governance blockers are resolved."
       }
     ],
     "decisions": [
@@ -1777,6 +1830,28 @@
           "Does not mark the full Goal Tracking OS objective complete."
         ],
         "nextAction": "Use the monthly review to keep foundation recovery ahead of readiness and live-integration claims."
+      },
+      {
+        "id": "SEIS-COMPLETE-009",
+        "title": "Static Command Center shell",
+        "status": "completed",
+        "completedAt": "2026-06-20",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-019"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-019"
+        ],
+        "summary": "A static non-LLM Command Center shell now links core foundation modules and the generated Goal Tracking Center without external integrations.",
+        "limitations": [
+          "Does not prove a dynamic routed app runtime.",
+          "Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state.",
+          "Does not mark the full Goal Tracking OS objective complete."
+        ],
+        "nextAction": "Use the shell as the local app root while repository hygiene recovery remains the first safe PR."
       }
     ],
     "deferredItems": [
@@ -1858,7 +1933,8 @@
           "SEIS-EVID-015",
           "SEIS-EVID-016",
           "SEIS-EVID-017",
-          "SEIS-EVID-018"
+          "SEIS-EVID-018",
+          "SEIS-EVID-019"
         ],
         "nextAction": "Run goal validation after every structured record update."
       },
@@ -1968,7 +2044,8 @@
         "evidenceIds": [
           "SEIS-EVID-009",
           "SEIS-EVID-010",
-          "SEIS-EVID-014"
+          "SEIS-EVID-014",
+          "SEIS-EVID-019"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -1977,15 +2054,18 @@
         "relatedPaths": [
           "docs/product/goal-tracking-center.md",
           "docs/product/command-center-goals-view.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "A generated non-LLM view model and static Goal Tracking Center page expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.",
+        "proof": "A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.",
         "limitations": [
-          "The page is static and is not wired into a routed Command Center application shell.",
+          "The shell is static and is not a dynamic routed application runtime.",
           "No live GitHub, release, or SSH integration is claimed."
         ],
-        "nextAction": "Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated."
+        "nextAction": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene blockers are isolated."
       },
       {
         "id": "SEIS-OBJ-005",
@@ -2108,7 +2188,8 @@
         "evidenceIds": [
           "SEIS-EVID-009",
           "SEIS-EVID-010",
-          "SEIS-EVID-014"
+          "SEIS-EVID-014",
+          "SEIS-EVID-019"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2117,15 +2198,17 @@
         "relatedPaths": [
           "docs/goals/command-center-view-model.md",
           "docs/product/command-center-goals-view.md",
+          "docs/product/command-center-shell.md",
+          "apps/command-center/index.html",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "The generated page renders numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.",
+        "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.",
         "limitations": [
-          "The surface is static and not yet connected to broader app navigation.",
+          "The broader app navigation is static and not a dynamic routed runtime.",
           "Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component."
         ],
-        "nextAction": "Add routed shell integration and a milestone timeline only after the current static contract remains stable."
+        "nextAction": "Add dynamic routing and a milestone timeline only after the current static contract remains stable."
       },
       {
         "id": "SEIS-OBJ-010",
@@ -2136,7 +2219,8 @@
           "SEIS-EVID-001",
           "SEIS-EVID-009",
           "SEIS-EVID-010",
-          "SEIS-EVID-014"
+          "SEIS-EVID-014",
+          "SEIS-EVID-019"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-002",
@@ -2178,15 +2262,18 @@
           "docs/roadmap/MASTER_BACKLOG.md",
           "docs/roadmap/NEXT_PR_QUEUE.md",
           "docs/product/goal-tracking-center.md",
+          "docs/product/command-center-shell.md",
           "docs/goals/progress-review.md",
-          "content/development/seis-goal-command-center-view.json"
+          "content/development/seis-goal-command-center-view.json",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html"
         ],
-        "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, and static page.",
+        "proof": "The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, static page, and static Command Center shell.",
         "limitations": [
-          "The full Command Center application connection is planned, not complete.",
+          "The dynamic Command Center application runtime is planned, not complete.",
           "Repository hygiene blockers still control the next safe PR."
         ],
-        "nextAction": "Resolve repository hygiene blockers, then promote the static Goal Tracking contract into the Command Center shell."
+        "nextAction": "Resolve repository hygiene blockers, then promote the static shell toward a dynamic Command Center runtime."
       }
     ],
     "completionGate": [
@@ -2266,7 +2353,8 @@
           "SEIS-EVID-009",
           "SEIS-EVID-010",
           "SEIS-EVID-014",
-          "SEIS-EVID-015"
+          "SEIS-EVID-015",
+          "SEIS-EVID-019"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2274,12 +2362,15 @@
         ],
         "relatedPaths": [
           "content/development/seis-goal-command-center-view.json",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "apps/command-center/goal-tracking/index.html",
-          "docs/product/goal-tracking-center.md"
+          "docs/product/goal-tracking-center.md",
+          "docs/product/command-center-shell.md"
         ],
-        "proof": "The generated view and static page expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
-        "gap": "The page is not a routed Command Center application module and has no live GitHub, release, public-readiness, or SSH integration.",
-        "nextAction": "Promote the generated static contract into the Command Center shell after repository hygiene recovery."
+        "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.",
+        "gap": "The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.",
+        "nextAction": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery."
       },
       {
         "id": "SEIS-GATE-005",
@@ -2368,7 +2459,8 @@
           "SEIS-EVID-001",
           "SEIS-EVID-009",
           "SEIS-EVID-010",
-          "SEIS-EVID-014"
+          "SEIS-EVID-014",
+          "SEIS-EVID-019"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2380,10 +2472,12 @@
           "docs/roadmap/MASTER_BACKLOG.md",
           "docs/roadmap/NEXT_PR_QUEUE.md",
           "content/development/seis-goal-command-center-view.json",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, and static Command Center surface.",
-        "gap": "The routed Command Center shell and repository hygiene recovery remain unfinished.",
+        "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, static Goal Tracking surface, and static Command Center shell.",
+        "gap": "Dynamic Command Center routing and repository hygiene recovery remain unfinished.",
         "nextAction": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
       }
     ],
@@ -2415,14 +2509,17 @@
       },
       {
         "category": "SEIS App / Command Center",
-        "status": "planned",
+        "status": "active",
         "evidenceLinks": [
           "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
           "docs/goals/command-center-view-model.md",
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "nextAction": "Build static/manual Command Center views from docs and fixture data."
+        "nextAction": "Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated."
       },
       {
         "category": "SEIS Universe Research",

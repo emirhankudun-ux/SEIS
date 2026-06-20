@@ -392,14 +392,14 @@
         <article class="card">
   <div>
     <p class="card-label">Active goals</p>
-    <div class="card-value">4</div>
+    <div class="card-value">5</div>
   </div>
   <p class="muted">Goals currently carrying foundation work.</p>
 </article>
         <article class="card">
   <div>
     <p class="card-label">Planned goals</p>
-    <div class="card-value">13</div>
+    <div class="card-value">12</div>
   </div>
   <p class="muted">Goals visible but not claimed complete.</p>
 </article>
@@ -413,7 +413,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">18</div>
+    <div class="card-value">19</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -455,7 +455,7 @@
         <article class="card">
   <div>
     <p class="card-label">Completed items</p>
-    <div class="card-value">8</div>
+    <div class="card-value">9</div>
   </div>
   <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
@@ -599,6 +599,20 @@
             <article class="row">
   <div class="row-head">
     <div>
+      <h3>Build SEIS Command Center as the central operating interface</h3>
+      <p class="muted">SEIS-GOAL-001 · SEIS App / Command Center</p>
+    </div>
+    <span class="badge active">active</span>
+  </div>
+  <p class="next-action">Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated.</p>
+  <div class="row-meta">
+    <span class="badge">P1 high</span>
+    <span class="badge">SEIS-MS-003</span>
+  </div>
+</article>
+            <article class="row">
+  <div class="row-head">
+    <div>
       <h3>Establish SEIS Goal Tracking OS</h3>
       <p class="muted">SEIS-GOAL-002 · Goal Tracking OS</p>
     </div>
@@ -727,10 +741,10 @@
 </tr>
               <tr>
   <td>SEIS App / Command Center</td>
-  <td><span class="badge planned">planned</span></td>
+  <td><span class="badge active">active</span></td>
   <td>P1 high</td>
   <td>SEIS-MS-003</td>
-  <td>Build static/manual Command Center views from docs and fixture data.</td>
+  <td>Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated.</td>
 </tr>
               <tr>
   <td>Goal Tracking OS</td>
@@ -985,9 +999,9 @@
             <article class="row">
   <div class="row-head">
     <h3>SEIS App / Command Center</h3>
-    <span class="badge planned">planned</span>
+    <span class="badge active">active</span>
   </div>
-  <p class="next-action">Build static/manual Command Center views from docs and fixture data.</p>
+  <p class="next-action">Keep the static shell evidence-backed and expand only after repository hygiene blockers are isolated.</p>
 </article>
             <article class="row">
   <div class="row-head">
@@ -1334,6 +1348,20 @@
     <span class="badge">Evidence: SEIS-EVID-018</span>
   </div>
 </article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Static Command Center shell</h3>
+      <p class="muted">SEIS-COMPLETE-009 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>A static non-LLM Command Center shell now links core foundation modules and the generated Goal Tracking Center without external integrations.</p>
+  <p class="muted">Does not prove a dynamic routed app runtime. Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state. Does not mark the full Goal Tracking OS objective complete.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-019</span>
+  </div>
+</article>
           </div>
         </div>
 
@@ -1408,7 +1436,7 @@
   <p class="next-action">Run goal validation after every structured record update.</p>
   <div class="row-meta">
     <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
-    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018, SEIS-EVID-019</span>
   </div>
 </article>
           <article class="row">
@@ -1466,9 +1494,9 @@
               <tr>
   <td><strong>SEIS-OBJ-004</strong><br>Goal Tracking App Foundation<br><span class="muted">Command Center should include a Goal Tracking Center that shows active goals, roadmap, blockers, evidence, validation, readiness, and platform progress.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>A generated non-LLM view model and static Goal Tracking Center page expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.</td>
-  <td>The page is static and is not wired into a routed Command Center application shell. No live GitHub, release, or SSH integration is claimed.</td>
-  <td>Wire the static page into a broader Command Center shell after repository hygiene blockers are isolated.</td>
+  <td>A generated non-LLM view model, static Goal Tracking Center page, and static Command Center shell expose progress cards, blockers, next actions, validation, readiness, planning, and progress records.</td>
+  <td>The shell is static and is not a dynamic routed application runtime. No live GitHub, release, or SSH integration is claimed.</td>
+  <td>Keep the static shell evidence-backed and defer dynamic routing until repository hygiene blockers are isolated.</td>
 </tr>
               <tr>
   <td><strong>SEIS-OBJ-005</strong><br>Required Goal Tracking Deliverables<br><span class="muted">Create or improve the required docs under docs/goals, docs/product, docs/roadmap, and docs/reviews.</span></td>
@@ -1501,9 +1529,9 @@
               <tr>
   <td><strong>SEIS-OBJ-009</strong><br>Command Center Goal UX<br><span class="muted">Show goal list, milestone progress, blockers, next actions, evidence, roadmap, readiness, AI Core, Command Center, and research progress without fake progress bars.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated page renders numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.</td>
-  <td>The surface is static and not yet connected to broader app navigation. Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component.</td>
-  <td>Add routed shell integration and a milestone timeline only after the current static contract remains stable.</td>
+  <td>The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, decisions, and guardrails without progress bars or completion percentages.</td>
+  <td>The broader app navigation is static and not a dynamic routed runtime. Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component.</td>
+  <td>Add dynamic routing and a milestone timeline only after the current static contract remains stable.</td>
 </tr>
               <tr>
   <td><strong>SEIS-OBJ-010</strong><br>Relationship With LLM<br><span class="muted">Keep the goal tracking system structured, inspectable, auditable, and useful without depending entirely on an LLM.</span></td>
@@ -1515,9 +1543,9 @@
               <tr>
   <td><strong>SEIS-OBJ-011</strong><br>First Implementation Priority<br><span class="muted">Prioritize goal structure, milestone map, backlog, next PR queue, schema, product doc, progress template, evidence, roadmap connection, and Command Center connection.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, and static page.</td>
-  <td>The full Command Center application connection is planned, not complete. Repository hygiene blockers still control the next safe PR.</td>
-  <td>Resolve repository hygiene blockers, then promote the static Goal Tracking contract into the Command Center shell.</td>
+  <td>The foundation priority list is represented across docs, backlog, PR queue, structured records, validator, view model, static page, and static Command Center shell.</td>
+  <td>The dynamic Command Center application runtime is planned, not complete. Repository hygiene blockers still control the next safe PR.</td>
+  <td>Resolve repository hygiene blockers, then promote the static shell toward a dynamic Command Center runtime.</td>
 </tr>
             </tbody>
           </table>
@@ -1562,9 +1590,9 @@
               <tr>
   <td><strong>SEIS-GATE-004</strong><br><span class="muted">Goal Tracking Center should show goal, blocker, evidence, readiness, progress, and next-action state without exaggeration.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated view and static page expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.</td>
-  <td>The page is not a routed Command Center application module and has no live GitHub, release, public-readiness, or SSH integration.</td>
-  <td>Promote the generated static contract into the Command Center shell after repository hygiene recovery.</td>
+  <td>The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, readiness, and guardrails without fake progress bars.</td>
+  <td>The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.</td>
+  <td>Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery.</td>
 </tr>
               <tr>
   <td><strong>SEIS-GATE-005</strong><br><span class="muted">Required Goal Tracking deliverables must exist and remain discoverable.</span></td>
@@ -1590,8 +1618,8 @@
               <tr>
   <td><strong>SEIS-GATE-008</strong><br><span class="muted">First implementation priorities must connect goals to evidence, roadmap, backlog, PR queue, and Command Center.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, and static Command Center surface.</td>
-  <td>The routed Command Center shell and repository hygiene recovery remain unfinished.</td>
+  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, generated view data, static Goal Tracking surface, and static Command Center shell.</td>
+  <td>Dynamic Command Center routing and repository hygiene recovery remain unfinished.</td>
   <td>Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR.</td>
 </tr>
             </tbody>

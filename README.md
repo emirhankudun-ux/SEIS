@@ -129,6 +129,7 @@ For the current foundation status and roadmap, start with:
 - [`docs/goals/review-cadence.md`](./docs/goals/review-cadence.md) for daily, weekly, and monthly review rules
 - [`docs/goals/planning-horizons.md`](./docs/goals/planning-horizons.md) for yearly, quarterly, monthly, weekly, and active-project planning horizons
 - [`docs/goals/progress-ledger.md`](./docs/goals/progress-ledger.md) for completed, deferred, and follow-up work tracking
+- [`docs/product/command-center-shell.md`](./docs/product/command-center-shell.md) for the static non-LLM Command Center shell
 - [`docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md`](./docs/product/SEIS_NON_LLM_PLATFORM_MISSION.md) for the non-LLM Command Center and Platform OS mission
 - [`docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md`](./docs/architecture/SEIS_PLATFORM_OS_ARCHITECTURE.md) for the deterministic platform architecture
 - [`docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md`](./docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md) for the repository intelligence plan
