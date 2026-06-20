@@ -29,13 +29,13 @@ legacy compatibility mirror.
 - Repo marketplace: `.agents/plugins/marketplace.json`
 - Install id: `seis@seis-repo`
 - Primary SEIS-Agent install id: `seis-ai-agent@seis-repo`
-- Personal marketplace: `/Users/emirhankudun/.agents/plugins/marketplace.json` (compatibility mirror only)
-- Workspace root: `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github`
+- Personal marketplace: `$HOME/.agents/plugins/marketplace.json` (compatibility mirror only)
+- Workspace root: use the active SEIS Git workspace root; do not commit machine-specific absolute paths.
 
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis
 ```
 
 ## Status
@@ -76,7 +76,7 @@ External or non-installed plugin URI families are fallback paths unless the user
 
 Role-aware LLM planning for SEIS is documented in:
 
-`/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/docs/development/llm-role-routing-blueprint.md`
+[`docs/development/llm-role-routing-blueprint.md`](../../docs/development/llm-role-routing-blueprint.md)
 
 Bu repo içinde pratik rol akışı:
 

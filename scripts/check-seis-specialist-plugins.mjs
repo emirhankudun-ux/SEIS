@@ -2,6 +2,7 @@
 
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 const ROOT = process.cwd();
@@ -498,7 +499,7 @@ function fail(message) {
 }
 
 function homeDir() {
-  return process.env.HOME || "/Users/emirhankudun";
+  return process.env.HOME || os.homedir();
 }
 
 function localPluginRoot(lane) {

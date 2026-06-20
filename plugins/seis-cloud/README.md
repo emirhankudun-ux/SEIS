@@ -20,8 +20,8 @@ SEIS Cloud is the dedicated cloud, deployment, and infrastructure-readiness lane
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-cloud
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-cloud/skills/seis-cloud
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis-cloud
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seis-cloud/skills/seis-cloud
 node plugins/seis-cloud/scripts/seis-cloud-status.mjs
 npm run check:cloud-access-policy
 ```

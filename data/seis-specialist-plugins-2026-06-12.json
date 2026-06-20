@@ -101,6 +101,6 @@
   "validation": [
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",
-    "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent"
+    "python3 $HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent"
   ]
 }

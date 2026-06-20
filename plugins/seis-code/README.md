@@ -14,8 +14,8 @@ SEIS-Code is the dedicated engineering lane for SEIS. It focuses Codex on archit
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-code
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-code/skills/seis-code
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis-code
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seis-code/skills/seis-code
 node plugins/seis-code/scripts/seis-code-status.mjs
 ```
 

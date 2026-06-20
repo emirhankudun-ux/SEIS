@@ -14,8 +14,8 @@ SEIS-DATA is the dedicated data and knowledge-governance lane for SEIS. It focus
 ## Validate
 
 ```bash
-python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-data
-python3 /Users/emirhankudun/.codex/skills/.system/skill-creator/scripts/quick_validate.py plugins/seis-data/skills/seis-data
+python3 "$HOME/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py" plugins/seis-data
+python3 "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" plugins/seis-data/skills/seis-data
 node plugins/seis-data/scripts/seis-data-status.mjs
 ```
 
