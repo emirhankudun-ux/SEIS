@@ -292,9 +292,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add read-only local repository assistant prototype with source links and no
-   external provider routing.
-2. Add evaluation report generation for prompt and app-state fixtures.
+1. Add evaluation report generation for prompt and app-state fixtures.
 
 Completed foundation slice:
 
@@ -308,6 +306,9 @@ Completed foundation slice:
   security, PR, roadmap, and research assistant surfaces now live under
   `packages/prompt-engine/` and are checked by
   `npm run check:prompt-regression-fixtures`.
+- A local read-only repository assistant prototype with source-linked output now
+  lives under `packages/repository-assistant/` and is checked by
+  `npm run check:repository-assistant-prototype`.
 
 ## Relationship to Existing Roadmaps
 

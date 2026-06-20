@@ -97,12 +97,14 @@ tools, approval, output, evidence, audit, and current status.
 - Forbidden tools: staging, committing, pushing, merging, deleting branches,
   history rewrite, deployment, SSH, and destructive cleanup without approval.
 - Required approval: any repository write or external write action.
-- Output format: repository condition, findings, risks, validation, and commit
-  or PR plan.
+- Output format: repository condition, source-linked findings, risks,
+  validation, branch or PR plan, excluded material, and next safe action.
 - Evidence requirement: paths, diffs, checks, PRs, or explicit unknown state.
 - Audit requirement: branch, commit, paths inspected, tools used, and approval
   state.
-- Current status: foundation contract.
+- Current status: local-alpha prototype via
+  `packages/repository-assistant/fixtures/local-readonly-repository-assistant.json`
+  and `npm run check:repository-assistant-prototype`.
 
 ### Documentation Assistant
 

@@ -7,7 +7,9 @@ window.seisAiCoreContractFixture = {
     "docs/architecture/ai-core-app-shared-contracts.md",
     "roadmap/seis-ai-core-command-center-5-year-development-program.md",
     "docs/product/seis-ai-app.md",
-    "docs/ai/seis-ai-core.md"
+    "docs/ai/seis-ai-core.md",
+    "docs/product/repository-assistant.md",
+    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
   ],
   stateVocabulary: [
     "ready",
@@ -48,15 +50,15 @@ window.seisAiCoreContractFixture = {
       taskType: "repository-review",
       dataClass: "repository",
       privacyMode: "local-only",
-      providerProfile: "local-disabled-fixture",
-      modelProfile: "none-fixture",
+      providerProfile: "none-local-prototype",
+      modelProfile: "no-model-local-summary",
       promptVersionId: "prompt-repository-review-v0-1",
       approvalState: "not-required",
-      blockedReason: "No live provider adapter is enabled in the foundation fixture.",
-      evaluationProfile: "prompt-route-fixture",
-      status: "planned",
-      maturity: "fixture-backed",
-      evidence: "docs/ai/model-router.md"
+      blockedReason: "External provider routing remains disabled; the prototype summarizes local source-linked evidence only.",
+      evaluationProfile: "repository-assistant-local-readonly",
+      status: "validated",
+      maturity: "local-alpha",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     },
     {
       id: "route-external-redacted-docs",
@@ -80,9 +82,9 @@ window.seisAiCoreContractFixture = {
       name: "Repository Review Assistant",
       version: "0.1",
       scope: "Read-only repository review with evidence links and no write actions.",
-      status: "planned",
-      maturity: "draft",
-      regressionSuite: "repository-review-fixture",
+      status: "validated",
+      maturity: "local-alpha",
+      regressionSuite: "assistant-surface-regression-suite",
       evidence: "docs/product/repository-assistant.md"
     },
     {
@@ -115,6 +117,28 @@ window.seisAiCoreContractFixture = {
       status: "planned",
       maturity: "fixture-backed",
       evidence: "docs/ai/agent-runtime.md"
+    },
+    {
+      id: "task-local-repository-assistant",
+      agentRole: "Repository Intelligence Agent",
+      intent: "Summarize local repository condition, source-linked evidence, risks, validation state, and next safe action.",
+      allowedActions: [
+        "read official docs",
+        "read git status metadata",
+        "read changed file paths",
+        "summarize validation outputs"
+      ],
+      forbiddenActions: [
+        "stage files",
+        "commit files",
+        "push branches",
+        "call external providers",
+        "execute SSH or deployment commands"
+      ],
+      approvalState: "not-required",
+      status: "validated",
+      maturity: "local-alpha",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     }
   ],
   approvalRequests: [
@@ -135,6 +159,14 @@ window.seisAiCoreContractFixture = {
       result: "pass",
       status: "validated",
       evidence: "scripts/check-ai-core-app-contracts.mjs"
+    },
+    {
+      id: "eval-repository-assistant-prototype",
+      targetType: "repository-assistant",
+      targetId: "local-readonly-repository-assistant",
+      result: "pass",
+      status: "validated",
+      evidence: "scripts/check-repository-assistant-prototype.mjs"
     }
   ],
   auditEvents: [
@@ -145,6 +177,14 @@ window.seisAiCoreContractFixture = {
       redactionState: "metadata-only",
       status: "validated",
       evidence: "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    },
+    {
+      id: "audit-repository-assistant-local-alpha",
+      actor: "codex",
+      action: "added local read-only repository assistant prototype fixture",
+      redactionState: "metadata-and-paths-only",
+      status: "validated",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     }
   ],
   repositoryFindings: [
@@ -155,6 +195,14 @@ window.seisAiCoreContractFixture = {
       severity: "info",
       status: "validated",
       evidence: "packages/shared-types/README.md"
+    },
+    {
+      id: "finding-repository-assistant-local-alpha",
+      repository: "SEIS",
+      findingType: "local-readonly-repository-assistant-prototype",
+      severity: "info",
+      status: "validated",
+      evidence: "packages/repository-assistant/README.md"
     }
   ],
   documentationStatuses: [
@@ -184,6 +232,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      id: "roadmap-year-1-repository-assistant",
+      horizon: "year-1",
+      track: "Local read-only repository assistant prototype",
+      status: "validated",
+      maturity: "local-alpha",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     }
   ],
   aiSurfaces: [
@@ -204,6 +260,26 @@ window.seisAiCoreContractFixture = {
       status: "planned",
       maturity: "fixture-backed",
       evidence: "docs/product/ai-core-center.md"
+    },
+    {
+      id: "surface-repository-assistant",
+      surface: "Repository Assistant",
+      allowedContext: [
+        "official docs",
+        "local git metadata",
+        "changed file paths",
+        "validation result summaries"
+      ],
+      forbiddenContext: [
+        "provider API keys",
+        "SSH private keys",
+        "raw .env contents",
+        "external provider context without approval"
+      ],
+      approvalRequired: false,
+      status: "validated",
+      maturity: "local-alpha",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     }
   ],
   repositoryIntelligence: [
@@ -214,6 +290,14 @@ window.seisAiCoreContractFixture = {
       freshness: "current",
       status: "validated",
       evidence: "docs/ai/context-memory-boundary.md"
+    },
+    {
+      id: "repo-intel-local-readonly-assistant",
+      sourceClass: "scan-generated",
+      privacyMode: "local-only",
+      freshness: "current",
+      status: "validated",
+      evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
     }
   ],
   goalTrackingStates: [

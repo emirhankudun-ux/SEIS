@@ -29,6 +29,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
 
 test("SEIS Command Center script implements local workflows", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
   assert.match(script, /localStorage/);
   assert.match(script, /goal-form/);
   assert.match(script, /repositoryFilter/);
@@ -40,6 +41,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /aiCoreContract/);
   assert.match(script, /renderAiCore/);
   assert.match(script, /seisAiCoreContractFixture/);
+  assert.match(fixture, /local-readonly-repository-assistant/);
+  assert.match(fixture, /surface-repository-assistant/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);

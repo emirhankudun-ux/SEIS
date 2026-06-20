@@ -1,6 +1,6 @@
 # Repository Assistant
 
-Status: Product foundation
+Status: Local read-only prototype
 
 The repository assistant explains and reviews repository state through SEIS AI
 App boundaries.
@@ -52,5 +52,14 @@ branch/commit/PR plan, and excluded material.
 
 ## Current Status
 
-Foundation contract. The assistant may be implemented after shared contracts and
-approval-state fixtures exist.
+Local-alpha prototype evidence now lives under `packages/repository-assistant/`:
+
+- `schemas/local-readonly-repository-assistant.schema.json`
+- `fixtures/local-readonly-repository-assistant.json`
+- `npm run check:repository-assistant-prototype`
+
+The prototype is local-only and read-only. It may return repository condition,
+source-linked evidence, risks, validation status, recommended branch plan,
+excluded material, and next safe action. It does not enable external provider
+routing, GitHub write actions, SSH execution, deployment, destructive cleanup,
+model training, benchmark claims, or secret access.

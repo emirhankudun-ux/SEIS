@@ -51,8 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add local read-only repository assistant prototype.
-2. Add evaluation report generation for prompt and app-state fixtures.
+1. Add evaluation report generation for prompt and app-state fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -107,3 +106,21 @@ research assistant surfaces. It remains fixture-only and does not add live model
 execution, provider routing, provider keys, GitHub write actions, SSH execution,
 deployment, training, benchmark claims, model safety claims, checkpoints, or
 model cards.
+
+## Follow-Up Repository Assistant Slice
+
+Status: Added after the prompt regression fixture slice.
+
+Evidence:
+
+- `packages/repository-assistant/schemas/local-readonly-repository-assistant.schema.json`
+- `packages/repository-assistant/fixtures/local-readonly-repository-assistant.json`
+- `scripts/check-repository-assistant-prototype.mjs`
+- `npm run check:repository-assistant-prototype`
+
+This slice completes the local read-only repository assistant prototype from
+the five-year program. It returns source-linked repository condition, evidence,
+risks, validation status, branch plan, excluded material, and next safe action
+from local fixture data only. It does not add external provider routing,
+provider keys, GitHub write actions, SSH execution, deployment, destructive
+cleanup, training, benchmark claims, checkpoints, or model cards.
