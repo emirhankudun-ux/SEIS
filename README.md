@@ -212,6 +212,16 @@ read/write workflows are routed through explicit safety gates.
 | [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
 | [`reports`](./reports) | Generated ecosystem, language, capability, and readiness reports |
 
+Run the SEIS AI Command Core release-candidate gate before opening or updating
+its PR:
+
+```bash
+npm run check:seis-ai-command-core
+```
+
+The release boundary is documented in
+[`docs/deployment/seis-ai-command-core-release-readiness.md`](./docs/deployment/seis-ai-command-core-release-readiness.md).
+
 ## AI-Assisted Development
 
 SEIS is built with human ownership and AI assistance.

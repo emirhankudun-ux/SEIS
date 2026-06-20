@@ -38,6 +38,20 @@ swift build --package-path packages/seis_platform_swift --product SeisAICommandC
 ./script/build_and_run.sh --ai-demo --verify
 ```
 
+## Release Readiness
+
+Run the full release-candidate gate:
+
+```bash
+npm run check:seis-ai-command-core
+```
+
+The release boundary is documented in
+[`docs/deployment/seis-ai-command-core-release-readiness.md`](../../../docs/deployment/seis-ai-command-core-release-readiness.md).
+The current app bundle is for local verification and PR review; public macOS
+distribution still requires signing, notarization, release notes, and explicit
+human approval.
+
 ## Open
 
 ```bash

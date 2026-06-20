@@ -16,6 +16,10 @@ Machine-readable source: [`content/development/publish-gate-contract.json`](../.
 
 This environment is expected to be **configured but not publish-ready** unless `main`, upstream, clean worktree, and GitHub authentication all become available. The previous network probe returned `Branch protection and signature rules can still block or warn on direct pushes`, so remote configuration should not be treated as GitHub authentication or push proof.
 
+The local review branch `seis/ai-demo-app-foundation` is accepted only for the
+SEIS AI Command Core release-candidate PR path. It does not change the
+publishing branch: actual publication still targets `main`.
+
 ## Validation
 
 Run the focused contract check:

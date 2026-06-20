@@ -1,0 +1,37 @@
+name: SEIS AI Command Core
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/macos/seis-ai-command-core/**'
+      - 'apps/seis-ai-demo/**'
+      - 'packages/seis_platform_swift/**'
+      - 'script/build_and_run.sh'
+      - 'package.json'
+      - '.github/workflows/seis-ai-command-core.yml'
+  pull_request:
+    paths:
+      - 'apps/macos/seis-ai-command-core/**'
+      - 'apps/seis-ai-demo/**'
+      - 'packages/seis_platform_swift/**'
+      - 'script/build_and_run.sh'
+      - 'package.json'
+      - '.github/workflows/seis-ai-command-core.yml'
+
+jobs:
+  desktop-demo:
+    name: Build and verify desktop demo
+    runs-on: macos-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Use Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '22'
+
+      - name: Check SEIS AI Command Core
+        run: npm run check:seis-ai-command-core

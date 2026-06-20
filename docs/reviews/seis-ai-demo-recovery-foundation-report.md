@@ -79,7 +79,7 @@ Recent closed PRs visible through GitHub CLI were merged (#38, #36, #35, #34,
 | `docs/` | Official documentation | Architecture, governance, deployment, and reviews | Add focused report under `docs/reviews/` |
 | `packages/` | Shared platform packages | Existing AI/design/kernel contracts | Do not modify |
 | `scripts/` | Validation and automation | Existing checks and build scripts | Do not modify |
-| `.github/` | GitHub workflow surface | CI, templates, governance checks | Do not modify |
+| `.github/` | GitHub workflow surface | CI, templates, governance checks | Add focused demo validation workflow |
 | `node_modules/` | Generated dependency folder | Already present in worktree | Do not touch or commit |
 | `archive/`, `reports/`, `memories/` | Historical/generated context | Useful for review, not app source | Do not copy into demo |
 | `SEIST/`, `emirhan-kudun-portfolio/` | Nested/project source | Separate lanes with own instructions | Do not modify |
@@ -91,6 +91,8 @@ Recent closed PRs visible through GitHub CLI were merged (#38, #36, #35, #34,
 - No provider API key was requested or used.
 - The SwiftUI desktop app and web companion explicitly stay local and deterministic.
 - Existing generated/dependency folders were not modified.
+- The release-candidate gate is local and CI-backed; it does not publish,
+  deploy, sign, notarize, or upload artifacts.
 
 ## Duplicates and Outdated Material
 
@@ -106,6 +108,8 @@ Recent closed PRs visible through GitHub CLI were merged (#38, #36, #35, #34,
   `apps/macos/seis-ai-command-core/` documentation.
 - Keep: new `apps/seis-ai-demo/` web companion demo and its tests.
 - Keep: this report as a traceable review artifact.
+- Keep: the focused GitHub Actions workflow and release-readiness runbook for
+  the demo branch.
 - Exclude: generated concept image, browser screenshots, node_modules, dist, and
   local audit downloads.
 - Merge later: if accepted, link the demo from the primary app index or product
@@ -119,7 +123,25 @@ Recent closed PRs visible through GitHub CLI were merged (#38, #36, #35, #34,
 
 1. `feat: add SEIS AI Command Core desktop demo`
 2. `test: cover SEIS AI desktop and web demo workflows`
-3. `docs: add SEIS AI desktop recovery report`
+3. `ci: add SEIS AI Command Core release-candidate gate`
+4. `docs: add SEIS AI desktop recovery and release-readiness notes`
+
+## Release-Candidate Gate
+
+Before opening or updating the PR, run:
+
+```bash
+npm run check:seis-ai-command-core
+npm run check:publish-gate-contract
+npm run automation:publish-readiness
+```
+
+Expected state on `seis/ai-demo-app-foundation`:
+
+- `check:seis-ai-command-core` passes locally and in PR CI.
+- `check:publish-gate-contract` passes because the review branch is documented.
+- `automation:publish-readiness` remains blocked until the accepted work is on
+  `main`; this is expected and prevents a false direct-publish claim.
 
 ## Final Decision
 

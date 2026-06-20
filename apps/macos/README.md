@@ -42,6 +42,15 @@ The app demonstrates request composition, provider-neutral routing, supervised
 agents, prompt versions, evidence, evaluation scores, approval gates, settings,
 and local audit history without requiring provider API keys.
 
+Release-candidate validation:
+
+```bash
+npm run check:seis-ai-command-core
+```
+
+The release boundary is documented in
+[`docs/deployment/seis-ai-command-core-release-readiness.md`](../../docs/deployment/seis-ai-command-core-release-readiness.md).
+
 ## Plugin Stack
 
 - Build macOS Apps

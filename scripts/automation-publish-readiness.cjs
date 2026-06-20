@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports, no-console */
+
 const { mkdirSync, writeFileSync } = require("node:fs");
 const { dirname, resolve } = require("node:path");
 const { spawnSync } = require("node:child_process");
@@ -113,11 +115,27 @@ function buildReadiness(state, githubReport) {
     }
   }
 
-  if (!githubReport.ok) {
+  if (githubReport.githubAuth && !githubReport.githubAuth.ok) {
     blockers.push({
       area: "github-auth",
-      reason: githubReport.reason || "GitHub auth is not ready",
-      nextStep: githubReport.nextStep || "run gh auth login -h github.com"
+      reason: githubReport.githubAuth.reason || "GitHub auth is not ready",
+      nextStep: githubReport.githubAuth.nextStep || "run gh auth login -h github.com"
+    });
+  }
+
+  if (githubReport.quality && !githubReport.quality.ok) {
+    blockers.push({
+      area: "quality",
+      reason: githubReport.quality.reason || "publish readiness quality checks failed",
+      nextStep: githubReport.quality.nextStep || "fix failing publish readiness checks"
+    });
+  }
+
+  if (!githubReport.ok && !githubReport.git && !githubReport.githubAuth && !githubReport.quality) {
+    blockers.push({
+      area: "publish-readiness",
+      reason: githubReport.reason || "publish readiness report could not be verified",
+      nextStep: githubReport.nextStep || "rerun publish readiness after resolving reporter output"
     });
   }
 

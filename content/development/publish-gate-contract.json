@@ -9,7 +9,8 @@
     "targetBranch": "main",
     "acceptedLocalBranches": [
       "work",
-      "main"
+      "main",
+      "seis/ai-demo-app-foundation"
     ]
   },
   "readinessLevels": [

@@ -31,3 +31,15 @@ http://localhost:4177/apps/seis-ai-demo/
 ```
 
 This app intentionally stays in local demo mode. It does not request, store, or use provider API keys.
+
+## Release Check
+
+Run the full desktop and web demo gate before opening or updating the release
+candidate pull request:
+
+```bash
+npm run check:seis-ai-command-core
+```
+
+Release boundaries and publish blockers are documented in
+[`docs/deployment/seis-ai-command-core-release-readiness.md`](../../docs/deployment/seis-ai-command-core-release-readiness.md).
