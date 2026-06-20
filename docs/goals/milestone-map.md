@@ -48,7 +48,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-EPIC-GOALS-006` | `SEIS-MS-009` | Execution board | active | Maintain task, subtask, blocker, decision, and next-action records. |
 | `SEIS-EPIC-GOALS-007` | `SEIS-MS-010` | Command Center view model | active | Keep generated Goal Tracking Center panels fresh from source records. |
 | `SEIS-EPIC-GOALS-008` | `SEIS-MS-011` | Static Goal Tracking Center page | active | Keep the generated static page fresh and blocker-visible. |
-| `SEIS-EPIC-GOALS-009` | `SEIS-MS-012` | Review cadence | active | Keep planned daily, weekly, and monthly review records visible until performed with evidence. |
+| `SEIS-EPIC-GOALS-009` | `SEIS-MS-012` | Review cadence | active | Keep cadence definitions separate from performed daily, weekly, and monthly review logs. |
 | `SEIS-EPIC-GOALS-010` | `SEIS-MS-013` | Planning horizons | active | Keep yearly, quarterly, monthly, weekly, and active project lanes linked to evidence. |
 | `SEIS-EPIC-GOALS-011` | `SEIS-MS-014` | Progress ledger | active | Keep completed, deferred, and follow-up records scoped and evidence-backed. |
 

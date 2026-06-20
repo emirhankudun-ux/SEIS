@@ -410,11 +410,43 @@
       ],
       "summary": "A real weekly Goal Tracking OS review was performed for ISO week 2026-W25 using observed repository state, current blockers, and the next PR queue.",
       "limitations": [
-        "Does not prove monthly review completion.",
+        "Does not prove future recurring review completion.",
         "Does not resolve repository hygiene blockers, foundation validation failures, or live GitHub PR state.",
         "Does not prove the routed Command Center shell is implemented."
       ],
-      "next_action": "Keep monthly review planned and prioritize repository hygiene before readiness claims."
+      "next_action": "Keep future recurring reviews evidence-backed and prioritize repository hygiene before readiness claims."
+    },
+    {
+      "id": "SEIS-EVID-018",
+      "title": "Monthly Goal Tracking OS review performed",
+      "type": "review",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "manual monthly review plus local validation evidence",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-008",
+        "SEIS-GOAL-009",
+        "SEIS-GOAL-017",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-log.json",
+        "content/development/seis-goal-planning-horizons.json",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
+        "docs/goals/review-cadence.md",
+        "docs/goals/milestone-map.md",
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "A real monthly Goal Tracking OS review was performed for June 2026 using local foundation evidence, roadmap state, architecture status, readiness blockers, and next PR queue state.",
+      "limitations": [
+        "Does not resolve repository hygiene blockers, foundation validation failures, live GitHub PR state, public readiness, or release readiness.",
+        "Does not prove the routed Command Center shell is implemented.",
+        "Does not prove deployment, SSH, model-provider, benchmark, or dataset state."
+      ],
+      "next_action": "Keep repository hygiene recovery and governance source-of-truth alignment ahead of readiness or live-integration claims."
     }
   ]
 }

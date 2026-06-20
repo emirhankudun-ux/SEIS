@@ -108,8 +108,8 @@ LLM.
 The current structured review cadence registry lives at
 [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
 and is documented in [`review-cadence.md`](review-cadence.md). It stores daily,
-weekly, and monthly review checklists as planned records until actual
-current-period review evidence exists.
+weekly, and monthly review definitions separately from actual performed review
+logs.
 
 The current structured planning horizon registry lives at
 [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json)

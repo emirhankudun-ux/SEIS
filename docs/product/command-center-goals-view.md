@@ -78,7 +78,7 @@ Tasks, subtasks, blockers, decisions, and next safe actions should come from
 [`../../content/development/seis-goal-execution.json`](../../content/development/seis-goal-execution.json).
 Daily, weekly, and monthly review cadence should come from
 [`../../content/development/seis-goal-review-cadence.json`](../../content/development/seis-goal-review-cadence.json)
-and stay planned until current-period review evidence exists.
+while performed review logs stay separate and require current-period evidence.
 Performed review occurrences should come from
 [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json).
 Yearly, quarterly, monthly, weekly, and active project lanes should come from

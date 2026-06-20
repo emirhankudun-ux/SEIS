@@ -76,7 +76,7 @@ reviewed repository hygiene action.
 
 ## What This Does Not Prove
 
-- It does not prove monthly review completion.
+- It does not prove future recurring review completion.
 - It does not prove merge readiness.
 - It does not prove public or release readiness.
 - It does not prove live GitHub, SSH, deployment, model-provider, benchmark, or

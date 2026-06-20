@@ -19,6 +19,7 @@
     "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
     "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
     "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+    "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
     "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md"
   ],
   "allowedStatuses": [
@@ -137,6 +138,7 @@
       "docs/goals/review-cadence.md",
       "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
       "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+      "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
       "docs/goals/planning-horizons.md",
         "docs/goals/progress-ledger.md",
         "docs/goals/command-center-view-model.md",
@@ -182,6 +184,7 @@
       "content/development/seis-goal-review-cadence.json",
       "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
       "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+      "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
       "content/development/seis-goal-review-log.json",
         "docs/goals/planning-horizons.md",
         "content/development/seis-goal-planning-horizons.json",
@@ -201,7 +204,7 @@
       "next_action": "Keep structured goal data, planning horizons, progress ledger, generated view model, and static Command Center page in sync.",
     "last_reviewed": "2026-06-20",
     "review_cadence": "weekly",
-    "notes": "Documentation and data foundation active; daily and weekly review logs exist; application module remains planned."
+    "notes": "Documentation and data foundation active; daily, weekly, and monthly review logs exist; application module remains planned."
     },
     {
       "id": "SEIS-GOAL-003",
@@ -867,6 +870,7 @@
       "docs/goals/daily-review-template.md",
       "docs/goals/weekly-priorities-template.md",
       "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+      "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
       "docs/goals/monthly-review-template.md"
       ],
       "related_files": [
@@ -882,7 +886,7 @@
         "Review cadence discipline"
       ],
       "blockers": [
-      "Monthly review must be performed before cadence can be marked complete"
+      "Future recurring reviews must remain evidence-backed before they can be marked performed"
       ],
       "risk_level": "medium",
       "risks": [
@@ -899,14 +903,15 @@
       "docs/goals/daily-review-template.md",
       "docs/goals/weekly-priorities-template.md",
       "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+      "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
       "docs/goals/monthly-review-template.md"
       ],
       "validation_method": "Review records contain date, scope, evidence, blockers, and validation output.",
       "validation_evidence": [],
-    "next_action": "Keep cadence, planning horizon, and progress ledger records visible; perform monthly review only when current-period evidence exists.",
+    "next_action": "Keep cadence, planning horizon, and progress ledger records visible; future recurring reviews require current-period evidence.",
     "last_reviewed": "2026-06-20",
       "review_cadence": "weekly",
-      "notes": "Active governance goal."
+    "notes": "Active governance goal; current daily, weekly, and monthly review records exist."
     },
     {
       "id": "SEIS-GOAL-020",

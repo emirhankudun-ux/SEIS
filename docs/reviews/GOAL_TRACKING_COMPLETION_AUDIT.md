@@ -14,21 +14,20 @@ Structured source:
 `not_complete`
 
 The Goal Tracking OS foundation is locally validated, but the full objective is
-not complete. The system still lacks a routed Command Center module, monthly
-performed review, live repository intelligence, and repository hygiene
-recovery.
+not complete. The system still lacks a routed Command Center module, live
+repository intelligence, and repository hygiene recovery.
 
 ## Completion Gate Matrix
 
 | Gate | Status | Evidence | Remaining gap |
 | --- | --- | --- | --- |
-| `SEIS-GATE-001` Mission-level tracking | partial | Goal, execution, progress, objective coverage, and review records exist. | Monthly review, routed app integration, and live repository intelligence remain incomplete. |
+| `SEIS-GATE-001` Mission-level tracking | partial | Goal, execution, progress, objective coverage, and review records exist. | Routed app integration and live repository intelligence remain incomplete. |
 | `SEIS-GATE-002` Goal hierarchy and object fields | proved | Goal schema and validator enforce required fields. | Local fixture contract only; not a database. |
 | `SEIS-GATE-003` Strategic categories | proved | 20 goals cover the 20 required categories. | Several categories remain planned or blocked by design. |
 | `SEIS-GATE-004` Goal Tracking Center UX | partial | Generated view model and static page exist. | Not a routed Command Center module and no live integrations. |
 | `SEIS-GATE-005` Required deliverables | proved | Required docs exist and are discoverable. | Docs do not prove application runtime. |
 | `SEIS-GATE-006` Evidence rules | proved | Evidence records include limitations and safe text checks. | No full secret-history or public-readiness scan. |
-| `SEIS-GATE-007` Review cadence | partial | Cadence exists and daily and weekly review logs were performed. | Monthly review remains planned. |
+| `SEIS-GATE-007` Review cadence | proved | Cadence exists and daily, weekly, and monthly review logs were performed. | Future recurring reviews still require current-period evidence. |
 | `SEIS-GATE-008` First implementation priorities | partial | Goals connect to evidence, roadmap, backlog, PR queue, generated view, and static page. | Repository hygiene and routed Command Center shell remain unfinished. |
 
 ## Proved Foundation
@@ -47,7 +46,7 @@ recovery.
   Command Center application module.
 - Live GitHub PR state remains unverified.
 - Repository intelligence is not yet live scanner output.
-- Monthly review is not performed.
+- Future recurring reviews are not performed until current-period evidence exists.
 - Public and release readiness remain blocked.
 - Foundation validation remains blocked by missing governance files and checker.
 

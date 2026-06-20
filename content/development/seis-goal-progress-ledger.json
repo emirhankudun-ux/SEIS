@@ -176,11 +176,43 @@
       ],
       "summary": "A current weekly Goal Tracking OS review was performed for ISO week 2026-W25 and tied to the next PR queue, blockers, and evidence ledger.",
       "limitations": [
-        "Does not mark monthly reviews performed.",
+        "Does not mark future recurring reviews complete.",
         "Does not resolve repository hygiene blockers or foundation validation failures.",
         "Does not prove live GitHub PR integration."
       ],
-      "next_action": "Keep repository hygiene recovery as the first safe PR and continue monthly review only when real period evidence exists."
+      "next_action": "Keep repository hygiene recovery as the first safe PR and continue recurring reviews only when real period evidence exists."
+    },
+    {
+      "id": "SEIS-COMPLETE-008",
+      "title": "Monthly Goal Tracking OS review for 2026-06",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-008",
+        "SEIS-GOAL-009",
+        "SEIS-GOAL-017",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-018"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-review-log.json",
+        "content/development/seis-goal-planning-horizons.json",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
+        "docs/goals/review-cadence.md",
+        "docs/goals/milestone-map.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "summary": "A current monthly Goal Tracking OS review was performed for June 2026 and tied to long-term direction, roadmap phases, readiness blockers, and next safe PR sequencing.",
+      "limitations": [
+        "Does not resolve repository hygiene blockers or foundation validation failures.",
+        "Does not prove live GitHub PR integration, public readiness, release readiness, deployment, SSH, or model-provider state.",
+        "Does not mark the full Goal Tracking OS objective complete."
+      ],
+      "next_action": "Use the monthly review to keep foundation recovery ahead of readiness and live-integration claims."
     }
   ],
   "deferredItems": [
@@ -277,7 +309,8 @@
         "SEIS-EVID-014",
         "SEIS-EVID-015",
         "SEIS-EVID-016",
-        "SEIS-EVID-017"
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",

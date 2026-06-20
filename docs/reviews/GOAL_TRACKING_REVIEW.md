@@ -25,6 +25,7 @@ progress review, review cadence, and Command Center product planning.
 | Store structured non-LLM performed review logs. | Implemented as local JSON | [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json) |
 | Perform first daily Goal Tracking OS review. | Performed | [`GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md`](GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md) |
 | Perform first weekly Goal Tracking OS review. | Performed | [`GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md`](GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md) |
+| Perform first monthly Goal Tracking OS review. | Performed | [`GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md`](GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md) |
 | Store structured non-LLM planning horizon records. | Implemented as local JSON | [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json) |
 | Store structured non-LLM progress ledger records. | Implemented as local JSON | [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json) |
 | Store structured non-LLM objective coverage records. | Implemented as local JSON | [`../../content/development/seis-goal-objective-coverage.json`](../../content/development/seis-goal-objective-coverage.json) |
@@ -46,11 +47,15 @@ progress review, review cadence, and Command Center product planning.
 - Goal Tracking OS now has a structured execution board for tasks, subtasks,
   blockers, decisions, and next safe actions.
 - Goal Tracking OS now has structured daily, weekly, and monthly review cadence
-  records that remain planned until real review evidence exists.
+  definitions, with performed review occurrences recorded separately in the
+  review log.
 - Goal Tracking OS now has a structured performed review log with the first
   daily review recorded for 2026-06-20.
 - Goal Tracking OS now has a structured weekly review log for 2026-W25 that is
   tied to the next PR queue and current blockers.
+- Goal Tracking OS now has a structured monthly review log for June 2026 that
+  reviews long-term direction, roadmap phases, architecture alignment, AI Core,
+  Command Center, readiness, and SEIS Universe direction.
 - Goal Tracking OS now has structured yearly, quarterly, monthly, weekly, and
   active-project planning horizon records.
 - Goal Tracking OS now has structured completed, deferred, and follow-up action

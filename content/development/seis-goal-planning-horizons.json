@@ -44,7 +44,8 @@
         "SEIS-EVID-008",
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "docs/goals/planning-horizons.md",
@@ -56,7 +57,7 @@
       "blockers": [
         "Repository hygiene blockers prevent public or release readiness claims."
       ],
-      "next_action": "Resolve repository hygiene blockers, then keep the yearly foundation horizon updated through monthly reviews."
+      "next_action": "Resolve repository hygiene blockers, then keep the yearly foundation horizon updated through evidence-backed monthly reviews."
     },
     {
       "id": "SEIS-HORIZON-002",
@@ -81,7 +82,8 @@
         "SEIS-EVID-003",
         "SEIS-EVID-004",
         "SEIS-EVID-007",
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "docs/reviews/REPOSITORY_HYGIENE_DELETION_REVIEW.md",
@@ -100,7 +102,7 @@
       "title": "Current monthly foundation review lane",
       "horizon": "monthly",
       "timeframe": "Current month",
-      "status": "planned",
+      "status": "active",
       "priority": "P2 medium",
       "owner_role": "Product Governance",
       "related_goal_ids": [
@@ -111,26 +113,29 @@
         "SEIS-TASK-005"
       ],
       "evidence_ids": [
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "docs/goals/monthly-review-template.md",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
         "docs/goals/review-cadence.md",
-        "content/development/seis-goal-review-cadence.json"
+        "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-review-log.json"
       ],
-      "focus": "Run the monthly review only when current month evidence is available.",
+      "focus": "Keep the June 2026 monthly review evidence-backed while repository hygiene remains unresolved.",
       "success_signal": "A completed monthly review record exists with evidence-backed changes and no fake completion claims.",
       "blockers": [
-        "No monthly review has been performed yet."
+        "Repository hygiene blockers still prevent readiness claims."
       ],
-      "next_action": "Keep monthly review planned until actual review evidence exists."
+      "next_action": "Use the monthly review to keep foundation recovery and governance source-of-truth alignment ahead of readiness claims."
     },
     {
       "id": "SEIS-HORIZON-004",
       "title": "Current weekly priorities lane",
       "horizon": "weekly",
       "timeframe": "Current week",
-      "status": "planned",
+      "status": "active",
       "priority": "P2 medium",
       "owner_role": "Product Governance",
       "related_goal_ids": [
@@ -142,19 +147,22 @@
         "SEIS-TASK-005"
       ],
       "evidence_ids": [
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-017"
       ],
       "related_paths": [
         "docs/goals/weekly-priorities-template.md",
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
         "docs/goals/daily-review-template.md",
-        "content/development/seis-goal-review-cadence.json"
+        "content/development/seis-goal-review-cadence.json",
+        "content/development/seis-goal-review-log.json"
       ],
-      "focus": "Use the weekly priorities template only for the actual current week.",
+      "focus": "Keep the current weekly priorities evidence-backed for ISO week 2026-W25.",
       "success_signal": "A weekly review exists with updated priorities, blockers, validation needs, and next safe actions.",
       "blockers": [
-        "No weekly review has been performed yet."
+        "Repository hygiene blockers still prevent readiness claims."
       ],
-      "next_action": "Keep weekly priorities planned until actual weekly review evidence exists."
+      "next_action": "Keep weekly priorities current without changing readiness claims until repository hygiene is resolved."
     }
   ],
   "activeProjects": [
@@ -207,10 +215,13 @@
       "evidence_ids": [
         "SEIS-EVID-001",
         "SEIS-EVID-008",
-        "SEIS-EVID-011"
+        "SEIS-EVID-011",
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
       ],
       "related_horizon_ids": [
         "SEIS-HORIZON-001",
+        "SEIS-HORIZON-003",
         "SEIS-HORIZON-004"
       ],
       "related_paths": [

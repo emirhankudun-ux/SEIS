@@ -15,8 +15,8 @@ The structured planning horizon registry is
 | --- | --- | --- | --- |
 | Yearly | `SEIS-HORIZON-001` | active | Track the 2026 foundation year across repository recovery, Goal Tracking OS, Command Center, and governance. |
 | Quarterly | `SEIS-HORIZON-002` | active | Track the current foundation recovery quarter and repository hygiene blockers. |
-| Monthly | `SEIS-HORIZON-003` | planned | Track the current monthly foundation review lane until real monthly evidence exists. |
-| Weekly | `SEIS-HORIZON-004` | planned | Track the current weekly priorities lane until a real weekly review is performed. |
+| Monthly | `SEIS-HORIZON-003` | active | Track the June 2026 monthly foundation review lane with evidence-backed readiness blockers. |
+| Weekly | `SEIS-HORIZON-004` | active | Track the 2026-W25 weekly priorities lane with evidence-backed readiness blockers. |
 
 ## Active Projects
 
@@ -30,8 +30,8 @@ The structured planning horizon registry is
 
 - Yearly and quarterly horizons can be active only when they describe current
   strategic lanes and keep blockers visible.
-- Monthly and weekly horizons stay planned until a real review record exists
-  for the actual period.
+- Monthly and weekly horizons can become active only when a real review record
+  exists for the actual period.
 - Active projects must link to goal ids, task ids, evidence ids, and horizon
   ids.
 - Do not mark a horizon or project completed without evidence.

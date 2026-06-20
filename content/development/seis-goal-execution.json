@@ -239,13 +239,15 @@
       ],
       "evidence_ids": [
         "SEIS-EVID-011",
-        "SEIS-EVID-017"
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "docs/goals/review-cadence.md",
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md",
         "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
         "docs/goals/progress-review.md",
         "content/development/seis-goal-review-cadence.json",
         "content/development/seis-goal-review-log.json"
@@ -259,13 +261,13 @@
         },
         {
           "id": "SEIS-SUBTASK-011",
-          "title": "Run monthly review only with current period evidence",
-          "status": "planned",
-          "next_action": "Fill the monthly template only when a real monthly review is performed."
+          "title": "Keep monthly reviews evidence-backed",
+          "status": "active",
+          "next_action": "Create monthly review records only when the actual monthly review is performed."
         }
       ],
-      "next_action": "Keep weekly review recurrence evidence-backed and perform monthly review only with current period evidence.",
-      "notes": "Daily and weekly review logs exist; monthly review remains planned."
+      "next_action": "Keep daily, weekly, and monthly review recurrences evidence-backed and do not use templates as performed reviews.",
+      "notes": "Daily, weekly, and monthly review logs exist for the current foundation period; future recurrences still require evidence."
     }
   ],
   "blockers": [
@@ -393,15 +395,17 @@
         "SEIS-GOAL-019"
       ],
       "evidence_ids": [
-        "SEIS-EVID-017"
+        "SEIS-EVID-017",
+        "SEIS-EVID-018"
       ],
       "related_paths": [
         "docs/goals/weekly-priorities-template.md",
         "docs/goals/monthly-review-template.md",
-        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md"
+        "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md"
       ],
       "decision": "Weekly and monthly review records must only be created when those reviews are actually performed with current evidence.",
-      "consequence": "The 2026-W25 weekly review is recorded from current evidence; templates remain templates until each real cadence event occurs."
+      "consequence": "The 2026-W25 weekly review and 2026-06 monthly review are recorded from current evidence; templates remain templates until each real cadence event occurs."
     }
   ]
 }

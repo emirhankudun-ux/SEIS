@@ -111,9 +111,11 @@
       "evidence_ids": [],
       "related_paths": [
         "docs/goals/monthly-review-template.md",
+        "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
         "docs/goals/milestone-map.md",
         "docs/goals/progress-review.md",
-        "docs/roadmap/MASTER_BACKLOG.md"
+        "docs/roadmap/MASTER_BACKLOG.md",
+        "content/development/seis-goal-review-log.json"
       ],
       "checklist": [
         "Review long-term direction.",
@@ -128,7 +130,7 @@
         "Evidence records for any new completion or validation claim."
       ],
       "completion_rule": "Mark performed only when the monthly review is completed for the current month with evidence-backed updates.",
-      "next_action": "Keep monthly review planned until an actual month-end review is performed."
+      "next_action": "Use monthly review logs only for actual months and keep readiness blockers visible until resolved."
     }
   ]
 }

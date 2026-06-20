@@ -21,7 +21,8 @@ listed scope is complete, not that the whole SEIS ecosystem is complete.
 | `SEIS-COMPLETE-004` Goal Tracking OS objective coverage audit | `SEIS-EVID-014` | Does not prove full Command Center implementation or resolve hygiene blockers. |
 | `SEIS-COMPLETE-005` Daily Goal Tracking OS review for 2026-06-20 | `SEIS-EVID-015` | Does not mark broader cadence complete. |
 | `SEIS-COMPLETE-006` Goal Tracking OS completion gate audit | `SEIS-EVID-016` | Does not mark the full objective complete. |
-| `SEIS-COMPLETE-007` Weekly Goal Tracking OS review for 2026-W25 | `SEIS-EVID-017` | Does not mark monthly reviews performed or resolve hygiene blockers. |
+| `SEIS-COMPLETE-007` Weekly Goal Tracking OS review for 2026-W25 | `SEIS-EVID-017` | Does not mark recurring future reviews complete or resolve hygiene blockers. |
+| `SEIS-COMPLETE-008` Monthly Goal Tracking OS review for 2026-06 | `SEIS-EVID-018` | Does not mark the full objective complete or resolve hygiene blockers. |
 
 ## Deferred Items
 
