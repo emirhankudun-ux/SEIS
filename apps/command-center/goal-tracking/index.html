@@ -365,6 +365,7 @@
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
         <a href="#planning">Planning</a>
+        <a href="#timeline">Timeline</a>
         <a href="#progress">Progress</a>
         <a href="#coverage">Coverage</a>
         <a href="#matrix">Matrix</a>
@@ -414,7 +415,7 @@
         <article class="card">
   <div>
     <p class="card-label">Evidence records</p>
-    <div class="card-value">20</div>
+    <div class="card-value">21</div>
   </div>
   <p class="muted">Structured proof, blocker, validation, and review records.</p>
 </article>
@@ -455,8 +456,15 @@
 </article>
         <article class="card">
   <div>
+    <p class="card-label">Milestones</p>
+    <div class="card-value">6</div>
+  </div>
+  <p class="muted">Milestone timeline records derived from goals, horizons, and active projects.</p>
+</article>
+        <article class="card">
+  <div>
     <p class="card-label">Completed items</p>
-    <div class="card-value">10</div>
+    <div class="card-value">11</div>
   </div>
   <p class="muted">Scoped completed work with evidence and limitations.</p>
 </article>
@@ -1240,6 +1248,74 @@
         </div>
       </section>
 
+      <section class="panel" id="timeline">
+        <h2>Milestone Timeline</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Goals</th>
+                <th>Horizons</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+  <td><strong>SEIS-MS-001</strong><br>Goal docs foundation<br><span class="muted">Goal Tracking OS, Documentation System, Long-Term Product Vision</span></td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-GOAL-002, SEIS-GOAL-004, SEIS-GOAL-019</td>
+  <td>SEIS-HORIZON-001, SEIS-HORIZON-002, SEIS-HORIZON-003, SEIS-HORIZON-004</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-MS-003</strong><br>Goal Tracking Center product plan<br><span class="muted">SEIS App / Command Center</span></td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-GOAL-001</td>
+  <td>SEIS-HORIZON-001</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-MS-004</strong><br>Static goal data for UI<br><span class="muted">Design System</span></td>
+  <td><span class="badge planned">planned</span></td>
+  <td>P1 high</td>
+  <td>SEIS-GOAL-009</td>
+  <td>none</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-MS-005</strong><br>Repository intelligence report<br><span class="muted">Repository Intelligence, GitHub Workflow</span></td>
+  <td><span class="badge blocked">blocked</span></td>
+  <td>P0 critical</td>
+  <td>SEIS-GOAL-003, SEIS-GOAL-006</td>
+  <td>SEIS-HORIZON-001, SEIS-HORIZON-002</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-MS-006</strong><br>Approval and evidence records<br><span class="muted">Security and Governance, Automation Queue</span></td>
+  <td><span class="badge active">active</span></td>
+  <td>P1 high</td>
+  <td>SEIS-GOAL-005, SEIS-GOAL-011</td>
+  <td>none</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+              <tr>
+  <td><strong>SEIS-MS-007</strong><br>Public and release readiness dry-runs<br><span class="muted">Public Readiness, Release Readiness</span></td>
+  <td><span class="badge blocked">blocked</span></td>
+  <td>P1 high</td>
+  <td>SEIS-GOAL-007, SEIS-GOAL-008</td>
+  <td>SEIS-HORIZON-002</td>
+  <td>Resolve visible blockers before promoting this milestone.</td>
+</tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="grid section-grid" id="progress">
         <div class="panel">
           <h2>Completed Work</h2>
@@ -1384,6 +1460,20 @@
     <span class="badge">Evidence: SEIS-EVID-020</span>
   </div>
 </article>
+            <article class="row">
+  <div class="row-head">
+    <div>
+      <h3>Static milestone timeline panel</h3>
+      <p class="muted">SEIS-COMPLETE-011 · 2026-06-20</p>
+    </div>
+    <span class="badge active">completed</span>
+  </div>
+  <p>The generated Goal Tracking Center now includes a dedicated milestone timeline derived from existing goals, planning horizons, and active projects.</p>
+  <p class="muted">Does not mark the full Goal Tracking OS objective complete. Does not prove an interactive routed timeline or live Command Center runtime. Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state.</p>
+  <div class="row-meta">
+    <span class="badge">Evidence: SEIS-EVID-021</span>
+  </div>
+</article>
           </div>
         </div>
 
@@ -1458,7 +1548,7 @@
   <p class="next-action">Run goal validation after every structured record update.</p>
   <div class="row-meta">
     <span class="badge">Tasks: SEIS-TASK-002, SEIS-TASK-005</span>
-    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018, SEIS-EVID-019, SEIS-EVID-020</span>
+    <span class="badge">Evidence: SEIS-EVID-001, SEIS-EVID-011, SEIS-EVID-012, SEIS-EVID-014, SEIS-EVID-015, SEIS-EVID-016, SEIS-EVID-017, SEIS-EVID-018, SEIS-EVID-019, SEIS-EVID-020, SEIS-EVID-021</span>
   </div>
 </article>
           <article class="row">
@@ -1551,9 +1641,9 @@
               <tr>
   <td><strong>SEIS-OBJ-009</strong><br>Command Center Goal UX<br><span class="muted">Show goal list, milestone progress, blockers, next actions, evidence, roadmap, readiness, AI Core, Command Center, and research progress without fake progress bars.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.</td>
-  <td>The broader app navigation is static and not a dynamic routed runtime. Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component.</td>
-  <td>Add dynamic routing and a milestone timeline only after the current static contract remains stable.</td>
+  <td>The generated page and static shell render numeric cards, active and blocked goals, milestone timeline, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.</td>
+  <td>The broader app navigation is static and not a dynamic routed runtime. Milestone timeline is static and generated, not an interactive routed component.</td>
+  <td>Keep the generated milestone timeline stable and add dynamic routing only after repository hygiene recovery.</td>
 </tr>
               <tr>
   <td><strong>SEIS-OBJ-010</strong><br>Relationship With LLM<br><span class="muted">Keep the goal tracking system structured, inspectable, auditable, and useful without depending entirely on an LLM.</span></td>
@@ -1689,9 +1779,9 @@
               <tr>
   <td><strong>SEIS-REQ-015</strong><br>Command Center UX<br><span class="muted">Show milestone timeline, progress cards, blocker view, next safe action panel, evidence links, and readiness connections without fake progress bars.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The static page renders progress cards, blockers, next actions, validation, planning, readiness, objective coverage, and completion gates without fake percentages.</td>
-  <td>Milestone timeline exists as planning and milestone fields, not a dedicated interactive timeline.</td>
-  <td>Add a dedicated timeline component only after the static contract remains validated.</td>
+  <td>The static page renders progress cards, blockers, next actions, validation, planning, a dedicated milestone timeline, readiness, objective coverage, and completion gates without fake percentages.</td>
+  <td>Milestone timeline is static and generated, not an interactive routed timeline.</td>
+  <td>Keep the generated timeline synchronized with goal, horizon, and project records until a routed app timeline is safe.</td>
 </tr>
               <tr>
   <td><strong>SEIS-REQ-016</strong><br>Evidence rules<br><span class="muted">Prevent fake progress, fake completion, fake validation, private data, unsupported claims, and private paths.</span></td>
@@ -1785,7 +1875,7 @@
               <tr>
   <td><strong>SEIS-GATE-004</strong><br><span class="muted">Goal Tracking Center should show goal, blocker, evidence, readiness, progress, and next-action state without exaggeration.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.</td>
+  <td>The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, milestone timeline, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.</td>
   <td>The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.</td>
   <td>Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery.</td>
 </tr>
@@ -1813,7 +1903,7 @@
               <tr>
   <td><strong>SEIS-GATE-008</strong><br><span class="muted">First implementation priorities must connect goals to evidence, roadmap, backlog, PR queue, and Command Center.</span></td>
   <td><span class="badge planned">partial</span></td>
-  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated view data, static Goal Tracking surface, and static Command Center shell.</td>
+  <td>Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated milestone timeline, generated view data, static Goal Tracking surface, and static Command Center shell.</td>
   <td>Dynamic Command Center routing and repository hygiene recovery remain unfinished.</td>
   <td>Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR.</td>
 </tr>

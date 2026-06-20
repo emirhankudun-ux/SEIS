@@ -338,7 +338,8 @@
       "evidence_ids": [
         "SEIS-EVID-009",
         "SEIS-EVID-010",
-        "SEIS-EVID-019"
+        "SEIS-EVID-019",
+        "SEIS-EVID-021"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -378,11 +379,11 @@
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "The static page renders progress cards, blockers, next actions, validation, planning, readiness, objective coverage, and completion gates without fake percentages.",
+      "proof": "The static page renders progress cards, blockers, next actions, validation, planning, a dedicated milestone timeline, readiness, objective coverage, and completion gates without fake percentages.",
       "gaps": [
-        "Milestone timeline exists as planning and milestone fields, not a dedicated interactive timeline."
+        "Milestone timeline is static and generated, not an interactive routed timeline."
       ],
-      "next_action": "Add a dedicated timeline component only after the static contract remains validated."
+      "next_action": "Keep the generated timeline synchronized with goal, horizon, and project records until a routed app timeline is safe."
     },
     {
       "id": "SEIS-REQ-016",

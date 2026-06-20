@@ -502,6 +502,34 @@
         "Does not prove live GitHub, SSH, deployment, model-provider, benchmark, dataset, public-readiness, or release-readiness state."
       ],
       "next_action": "Keep the matrix synced with the generated Command Center view and use it before any completion or readiness claim."
+    },
+    {
+      "id": "SEIS-EVID-021",
+      "title": "Goal milestone timeline generated",
+      "type": "validation",
+      "status": "passed",
+      "observed_at": "2026-06-20",
+      "command": "npm run check:goal-command-center-view && npm run check:goal-command-center-static",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
+        "scripts/create-goal-command-center-view.mjs",
+        "scripts/create-goal-command-center-static.mjs",
+        "docs/goals/milestone-map.md",
+        "docs/product/command-center-goals-view.md"
+      ],
+      "summary": "The Goal Tracking Center now derives a milestone timeline from structured goal, planning horizon, and active project records, then renders it in the static page without fake percentages.",
+      "limitations": [
+        "Does not prove a dynamic routed Command Center runtime.",
+        "Does not resolve repository hygiene blockers or foundation validation failures.",
+        "Does not prove live GitHub, SSH, deployment, public-readiness, release-readiness, model-provider, benchmark, or dataset state."
+      ],
+      "next_action": "Keep the milestone timeline generated from structured records and defer interactive runtime work until repository hygiene is isolated."
     }
   ]
 }

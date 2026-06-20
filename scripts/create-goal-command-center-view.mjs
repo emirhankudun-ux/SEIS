@@ -110,6 +110,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
   const objectiveCoverageByStatus = countBy(objectiveCoverageRecords, "status");
   const completionGateByStatus = countBy(completionGateRecords, "status");
   const requirementMatrixByStatus = countBy(requirementMatrixRecords, "status");
+  const milestoneTimeline = buildMilestoneTimeline(goalRecords, horizonRecords, projectRecords);
 
   const activeCriticalBlockers = blockerRecords.filter((blocker) => blocker.status === "active" && blocker.severity === "critical");
   const finalState = activeCriticalBlockers.length > 0
@@ -153,6 +154,8 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       horizonsByStatus,
       totalActiveProjects: projectRecords.length,
       projectsByStatus,
+      totalMilestones: milestoneTimeline.length,
+      milestonesByStatus: countBy(milestoneTimeline, "status"),
       totalCompletedItems: completedItems.length,
       totalDeferredItems: deferredItems.length,
       totalFollowUpActions: followUpActions.length,
@@ -177,6 +180,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
       card("review-cadence", "Review cadence", reviewRecords.length, "planned", "Planned daily, weekly, and monthly review records."),
       card("performed-reviews", "Performed reviews", reviewLogRecords.length, "active", "Actual review records backed by current evidence."),
       card("active-projects", "Active projects", projectRecords.length, "active", "Current project lanes linked to goals and evidence."),
+      card("milestones", "Milestones", milestoneTimeline.length, "active", "Milestone timeline records derived from goals, horizons, and active projects."),
       card("completed-items", "Completed items", completedItems.length, "active", "Scoped completed work with evidence and limitations."),
       card("objective-coverage", "Objective coverage", objectiveCoverageRecords.length, "active", "Mission requirements mapped to evidence and limitations."),
       card("requirement-matrix", "Requirement matrix", requirementMatrixRecords.length, "active", "Requirement-level coverage records with proof, gaps, and next actions."),
@@ -309,6 +313,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
         blockers: record.blockers,
         nextAction: record.next_action
       })),
+      milestoneTimeline,
       completedItems: completedItems.map((item) => ({
         id: item.id,
         title: item.title,
@@ -402,6 +407,7 @@ function buildView(goalRegistry, evidenceLedger, executionRegistry, reviewCadenc
 
 function validateView(view, goalRegistry, evidenceLedger, executionRegistry, reviewCadenceRegistry, reviewLogRegistry, planningHorizonsRegistry, progressLedger, objectiveCoverageRegistry, completionGateRegistry, requirementMatrixRegistry) {
   const failures = [];
+  const expectedMilestoneTimeline = buildMilestoneTimeline(goalRegistry.goals || [], planningHorizonsRegistry.horizons || [], planningHorizonsRegistry.activeProjects || []);
   const goalIds = new Set((goalRegistry.goals || []).map((goal) => goal.id));
   const evidenceIds = new Set((evidenceLedger.records || []).map((record) => record.id));
   const blockerIds = new Set((executionRegistry.blockers || []).map((blocker) => blocker.id));
@@ -454,6 +460,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
 
   if (view.summary.totalActiveProjects !== (planningHorizonsRegistry.activeProjects || []).length) {
     failures.push("view summary totalActiveProjects does not match planning horizons registry");
+  }
+
+  if (view.summary.totalMilestones !== expectedMilestoneTimeline.length) {
+    failures.push("view summary totalMilestones does not match derived milestone timeline");
   }
 
   if (view.summary.totalCompletedItems !== (progressLedger.completedItems || []).length) {
@@ -510,6 +520,10 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
 
   if (!view.panels.activeProjects.length) {
     failures.push("view must expose active projects");
+  }
+
+  if (!view.panels.milestoneTimeline.length) {
+    failures.push("view must expose milestone timeline");
   }
 
   if (!view.panels.completedItems.length) {
@@ -624,6 +638,36 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
     }
   }
 
+  for (const item of view.panels.milestoneTimeline) {
+    if (!/^SEIS-MS-\d{3}$/.test(item.id || "")) {
+      failures.push(`${item.id || "(missing milestone id)"} id must match SEIS-MS-000 format`);
+    }
+    if (!item.title || !item.status || !item.priority || !item.nextAction) {
+      failures.push(`${item.id} must expose title, status, priority, and nextAction`);
+    }
+    if (!Array.isArray(item.relatedGoalIds) || item.relatedGoalIds.length === 0) {
+      failures.push(`${item.id} must expose relatedGoalIds`);
+    }
+    for (const goalId of item.relatedGoalIds || []) {
+      if (!goalIds.has(goalId)) {
+        failures.push(`${item.id} references unknown goal id: ${goalId}`);
+      }
+    }
+    for (const horizonId of item.relatedHorizonIds || []) {
+      if (!horizonIds.has(horizonId)) {
+        failures.push(`${item.id} references unknown horizon id: ${horizonId}`);
+      }
+    }
+    for (const projectId of item.relatedProjectIds || []) {
+      if (!projectIds.has(projectId)) {
+        failures.push(`${item.id} references unknown project id: ${projectId}`);
+      }
+    }
+    if (!Array.isArray(item.evidenceLinks) || item.evidenceLinks.length === 0) {
+      failures.push(`${item.id} must expose evidenceLinks`);
+    }
+  }
+
   for (const item of view.panels.completedItems) {
     validateGoalTaskEvidenceRefs(item, goalIds, taskIds, evidenceIds, failures);
     if (!item.evidenceIds?.length) {
@@ -687,6 +731,122 @@ function validateView(view, goalRegistry, evidenceLedger, executionRegistry, rev
   }
 
   return failures;
+}
+
+function buildMilestoneTimeline(goalRecords, horizonRecords, projectRecords) {
+  const groups = new Map();
+
+  for (const goal of goalRecords || []) {
+    const milestoneId = goal.related_milestone;
+    if (!milestoneId || milestoneId === "none") {
+      continue;
+    }
+
+    if (!groups.has(milestoneId)) {
+      groups.set(milestoneId, []);
+    }
+    groups.get(milestoneId).push(goal);
+  }
+
+  return [...groups.entries()]
+    .sort(([left], [right]) => milestoneRank(left) - milestoneRank(right))
+    .map(([milestoneId, goals]) => {
+      const goalIds = goals.map((goal) => goal.id);
+      const goalIdSet = new Set(goalIds);
+      const relatedHorizons = (horizonRecords || []).filter((horizon) =>
+        (horizon.related_goal_ids || []).some((goalId) => goalIdSet.has(goalId))
+      );
+      const relatedProjects = (projectRecords || []).filter((project) =>
+        (project.related_goal_ids || []).some((goalId) => goalIdSet.has(goalId))
+      );
+      const evidenceLinks = unique(goals.flatMap((goal) => goal.evidence_links || []));
+      const blockers = unique([
+        ...goals.flatMap((goal) => goal.blockers || []),
+        ...relatedProjects.flatMap((project) => project.blockers || [])
+      ].filter((blocker) => blocker && blocker !== "none"));
+
+      return {
+        id: milestoneId,
+        title: milestoneTitle(milestoneId, goals),
+        status: aggregateStatus(goals.map((goal) => goal.status)),
+        priority: aggregatePriority(goals.map((goal) => goal.priority)),
+        relatedGoalIds: goalIds,
+        relatedEpicIds: unique(goals.map((goal) => goal.related_epic).filter((epic) => epic && epic !== "none")),
+        categories: unique(goals.map((goal) => goal.category)),
+        relatedHorizonIds: relatedHorizons.map((horizon) => horizon.id),
+        relatedProjectIds: relatedProjects.map((project) => project.id),
+        evidenceLinks: evidenceLinks.length > 0 ? evidenceLinks : ["evidence unavailable"],
+        blockers,
+        nextAction: milestoneNextAction(goals, blockers)
+      };
+    });
+}
+
+function milestoneTitle(milestoneId, goals) {
+  const knownTitles = {
+    "SEIS-MS-001": "Goal docs foundation",
+    "SEIS-MS-002": "Goal evidence rules",
+    "SEIS-MS-003": "Goal Tracking Center product plan",
+    "SEIS-MS-004": "Static goal data for UI",
+    "SEIS-MS-005": "Repository intelligence report",
+    "SEIS-MS-006": "Approval and evidence records",
+    "SEIS-MS-007": "Public and release readiness dry-runs",
+    "SEIS-MS-008": "Goal evidence ledger",
+    "SEIS-MS-009": "Goal execution board",
+    "SEIS-MS-010": "Command Center goal view model",
+    "SEIS-MS-011": "Static Goal Tracking Center page",
+    "SEIS-MS-012": "Goal review cadence records",
+    "SEIS-MS-013": "Goal planning horizon records",
+    "SEIS-MS-014": "Goal progress ledger records",
+    "SEIS-MS-015": "Static milestone timeline"
+  };
+
+  return knownTitles[milestoneId] || `${milestoneId} Goal Tracking milestone`;
+}
+
+function aggregateStatus(statuses) {
+  if (statuses.includes("blocked")) {
+    return "blocked";
+  }
+  if (statuses.includes("active")) {
+    return "active";
+  }
+  if (statuses.includes("in-review")) {
+    return "in-review";
+  }
+  if (statuses.includes("planned")) {
+    return "planned";
+  }
+  if (statuses.length > 0 && statuses.every((status) => status === "completed" || status === "validated")) {
+    return "validated";
+  }
+  return statuses[0] || "unknown";
+}
+
+function aggregatePriority(priorities) {
+  return priorities
+    .slice()
+    .sort((left, right) => priorityRank(left) - priorityRank(right))[0] || "P4 future";
+}
+
+function milestoneNextAction(goals, blockers) {
+  if (blockers.length > 0) {
+    return "Resolve visible blockers before promoting this milestone.";
+  }
+
+  const primaryGoal = goals
+    .slice()
+    .sort((left, right) => priorityRank(left.priority) - priorityRank(right.priority))[0];
+  return primaryGoal?.next_action || "Keep milestone records evidence-backed.";
+}
+
+function milestoneRank(milestoneId) {
+  const match = String(milestoneId).match(/(\d+)$/);
+  return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
+}
+
+function unique(items) {
+  return [...new Set(items.filter(Boolean))];
 }
 
 function validateGoalTaskEvidenceRefs(item, goalIds, taskIds, evidenceIds, failures) {

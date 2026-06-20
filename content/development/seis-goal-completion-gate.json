@@ -97,7 +97,8 @@
         "SEIS-EVID-014",
         "SEIS-EVID-015",
         "SEIS-EVID-019",
-        "SEIS-EVID-020"
+        "SEIS-EVID-020",
+        "SEIS-EVID-021"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -113,7 +114,7 @@
         "content/development/seis-goal-requirement-matrix.json",
         "docs/reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md"
       ],
-      "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.",
+      "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, milestone timeline, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.",
       "gap": "The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.",
       "next_action": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery."
     },
@@ -206,7 +207,8 @@
         "SEIS-EVID-010",
         "SEIS-EVID-014",
         "SEIS-EVID-019",
-        "SEIS-EVID-020"
+        "SEIS-EVID-020",
+        "SEIS-EVID-021"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -223,7 +225,7 @@
         "apps/command-center/index.html",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated view data, static Goal Tracking surface, and static Command Center shell.",
+      "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated milestone timeline, generated view data, static Goal Tracking surface, and static Command Center shell.",
       "gap": "Dynamic Command Center routing and repository hygiene recovery remain unfinished.",
       "next_action": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
     }

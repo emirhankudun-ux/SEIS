@@ -64,6 +64,7 @@ small PRs with clear evidence over broad rewrites.
 | `SEIS-BL-043` | P1 | Goal completion gate | Maintain a strict completion gate that prevents full Goal Tracking OS completion claims until every requirement is proved. | `npm run check:goal-tracking` validates completion gate records and the static page exposes the final completion decision. |
 | `SEIS-BL-044` | P1 | Command Center shell | Maintain a static non-LLM Command Center shell that links Goal Tracking, roadmap, evidence, approval, readiness, AI Core, and docs surfaces. | `npm run check:command-center-shell` validates shell source, generated HTML, blocked-state visibility, and absence of fake progress controls. |
 | `SEIS-BL-045` | P1 | Goal requirement matrix | Maintain requirement-level Goal Tracking OS coverage with proof, gaps, evidence ids, and next safe actions. | `npm run check:goal-tracking` validates requirement matrix records and the static page exposes the Requirement Matrix panel. |
+| `SEIS-BL-046` | P1 | Goal milestone timeline | Maintain a generated milestone timeline derived from goal, planning horizon, and active project records. | `npm run check:goal-tracking` validates milestone records and the static page exposes the Milestone Timeline panel without fake progress percentages. |
 
 ## Deferred Dangerous Work
 

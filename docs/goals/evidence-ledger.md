@@ -66,6 +66,7 @@ completed or validated only when the evidence proves the full requirement.
 | `SEIS-EVID-018` | passed | Review log | Monthly Goal Tracking OS review for 2026-06 was performed from current evidence, roadmap state, and readiness blockers. |
 | `SEIS-EVID-019` | passed | Command Center shell | Static Command Center shell was generated and validated from a local non-LLM contract. |
 | `SEIS-EVID-020` | passed | Requirement matrix | Goal Tracking OS requirements are mapped to proof, gaps, evidence ids, and next safe actions. |
+| `SEIS-EVID-021` | passed | Milestone timeline | Goal Tracking Center milestone timeline is generated from goal, horizon, and project records. |
 
 ## Validation
 
@@ -77,5 +78,5 @@ npm run check:goal-tracking
 
 The validator checks the goal registry, required goal docs, evidence ledger,
 execution board, review cadence, review log, planning horizons, progress
-ledger, objective coverage, completion gate, requirement matrix, generated
-Command Center view model, and generated static page.
+ledger, objective coverage, completion gate, requirement matrix, milestone
+timeline, generated Command Center view model, and generated static page.

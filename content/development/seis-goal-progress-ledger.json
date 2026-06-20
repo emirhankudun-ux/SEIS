@@ -269,6 +269,34 @@
         "Does not replace the strict completion gate."
       ],
       "next_action": "Keep the matrix visible in the generated Goal Tracking Center and update it whenever source requirements or evidence change."
+    },
+    {
+      "id": "SEIS-COMPLETE-011",
+      "title": "Static milestone timeline panel",
+      "completed_at": "2026-06-20",
+      "status": "completed",
+      "supports_goal_ids": [
+        "SEIS-GOAL-001",
+        "SEIS-GOAL-002",
+        "SEIS-GOAL-019"
+      ],
+      "evidence_ids": [
+        "SEIS-EVID-021"
+      ],
+      "related_paths": [
+        "content/development/seis-goal-command-center-view.json",
+        "apps/command-center/goal-tracking/index.html",
+        "scripts/create-goal-command-center-view.mjs",
+        "scripts/create-goal-command-center-static.mjs",
+        "docs/product/command-center-goals-view.md"
+      ],
+      "summary": "The generated Goal Tracking Center now includes a dedicated milestone timeline derived from existing goals, planning horizons, and active projects.",
+      "limitations": [
+        "Does not mark the full Goal Tracking OS objective complete.",
+        "Does not prove an interactive routed timeline or live Command Center runtime.",
+        "Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state."
+      ],
+      "next_action": "Keep the timeline generated from structured records and avoid manual drift."
     }
   ],
   "deferredItems": [
@@ -368,7 +396,8 @@
         "SEIS-EVID-017",
         "SEIS-EVID-018",
         "SEIS-EVID-019",
-        "SEIS-EVID-020"
+        "SEIS-EVID-020",
+        "SEIS-EVID-021"
       ],
       "related_paths": [
         "scripts/check-goal-tracking.mjs",

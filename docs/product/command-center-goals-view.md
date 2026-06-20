@@ -13,7 +13,7 @@ readiness, release readiness, AI Core progress, and Command Center progress.
 | Header | Current review window, last updated date, and stale data warning. |
 | Summary Strip | Counts by status: active, blocked, planned, in-review, validated, completed, deferred. |
 | Goal Table | Sortable/filterable goal list with evidence and next action. |
-| Milestone Timeline | Phase and milestone status without fake progress bars. |
+| Milestone Timeline | Generated milestone status from goal, horizon, and active-project records without fake progress bars. |
 | Blocker Panel | High-risk blockers, security blockers, and approval-needed actions. |
 | Next Safe Action Panel | What should happen next, grouped by PR queue and goal. |
 | Evidence Drawer | Links to docs, validation output, reviews, files, and PR records. |
@@ -88,6 +88,9 @@ Performed review occurrences should come from
 [`../../content/development/seis-goal-review-log.json`](../../content/development/seis-goal-review-log.json).
 Yearly, quarterly, monthly, weekly, and active project lanes should come from
 [`../../content/development/seis-goal-planning-horizons.json`](../../content/development/seis-goal-planning-horizons.json).
+The milestone timeline should be derived from goal `related_milestone` fields
+plus planning horizon and active project links; it must not show percentages
+unless real measured progress exists.
 Completed, deferred, and follow-up work should come from
 [`../../content/development/seis-goal-progress-ledger.json`](../../content/development/seis-goal-progress-ledger.json).
 Mission-to-evidence coverage should come from

@@ -492,6 +492,7 @@ console.log(JSON.stringify({
   reviewLogRecords: reviewLogRegistry.records.length,
   planningHorizons: planningHorizonsRegistry.horizons.length,
   activeProjects: planningHorizonsRegistry.activeProjects.length,
+  milestoneRecords: commandCenterView.summary.totalMilestones,
   completedItems: progressLedger.completedItems.length,
   deferredItems: progressLedger.deferredItems.length,
   followUpActions: progressLedger.followUpActions.length,
@@ -1665,6 +1666,8 @@ function validateCommandCenterView(view) {
     return;
   }
 
+  const milestoneIds = deriveMilestoneIds(registry.goals || []);
+
   if (view.schemaVersion !== 1) {
     failures.push(`${label} schemaVersion must be 1`);
   }
@@ -1705,6 +1708,10 @@ function validateCommandCenterView(view) {
 
   if (view.summary?.totalActiveProjects !== planningHorizonsRegistry.activeProjects.length) {
     failures.push(`${label} totalActiveProjects does not match planning horizons registry`);
+  }
+
+  if (view.summary?.totalMilestones !== milestoneIds.length) {
+    failures.push(`${label} totalMilestones does not match goal milestones`);
   }
 
   if (view.summary?.totalCompletedItems !== progressLedger.completedItems.length) {
@@ -1763,6 +1770,10 @@ function validateCommandCenterView(view) {
     failures.push(`${label} must expose active projects`);
   }
 
+  if (!view.panels?.milestoneTimeline?.length) {
+    failures.push(`${label} must expose milestone timeline`);
+  }
+
   if (!view.panels?.completedItems?.length) {
     failures.push(`${label} must expose completed items`);
   }
@@ -1803,6 +1814,7 @@ function validateCommandCenterStatic(html) {
     "Performed Reviews",
     "Planning Horizons",
     "Active Projects",
+    "Milestone Timeline",
     "Completed Work",
     "Deferred Work",
     "Follow-Up Actions",
@@ -1817,6 +1829,7 @@ function validateCommandCenterStatic(html) {
     "SEIS-REVIEW-LOG-001",
     "SEIS-HORIZON-001",
     "SEIS-PROJECT-001",
+    "SEIS-MS-001",
     "SEIS-COMPLETE-001",
     "SEIS-DEFER-001",
     "SEIS-FOLLOWUP-001",
@@ -1834,6 +1847,12 @@ function validateCommandCenterStatic(html) {
   if (/%\s*complete|aria-valuenow|role="progressbar"/i.test(html)) {
     failures.push("static Goal Tracking Center must not render fake progress bars or percentages");
   }
+}
+
+function deriveMilestoneIds(goals) {
+  return [...new Set((goals || [])
+    .map((goal) => goal.related_milestone)
+    .filter((milestone) => milestone && milestone !== "none"))];
 }
 
 function countBy(items, key) {

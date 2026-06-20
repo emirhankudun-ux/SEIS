@@ -25,6 +25,7 @@ listed scope is complete, not that the whole SEIS ecosystem is complete.
 | `SEIS-COMPLETE-008` Monthly Goal Tracking OS review for 2026-06 | `SEIS-EVID-018` | Does not mark the full objective complete or resolve hygiene blockers. |
 | `SEIS-COMPLETE-009` Static Command Center shell | `SEIS-EVID-019` | Does not prove a dynamic routed runtime or live integrations. |
 | `SEIS-COMPLETE-010` Goal Tracking OS requirement matrix | `SEIS-EVID-020` | Does not mark the full objective complete or replace the completion gate. |
+| `SEIS-COMPLETE-011` Static milestone timeline panel | `SEIS-EVID-021` | Does not prove an interactive routed timeline or live app runtime. |
 
 ## Deferred Items
 

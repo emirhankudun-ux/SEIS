@@ -71,6 +71,7 @@ function buildHtml(model) {
   const actualReviews = panels.actualReviews || [];
   const planningHorizons = panels.planningHorizons || [];
   const activeProjects = panels.activeProjects || [];
+  const milestoneTimeline = panels.milestoneTimeline || [];
   const completedItems = panels.completedItems || [];
   const deferredItems = panels.deferredItems || [];
   const followUpActions = panels.followUpActions || [];
@@ -448,6 +449,7 @@ function buildHtml(model) {
         <a href="#validation">Validation</a>
         <a href="#reviews">Reviews</a>
         <a href="#planning">Planning</a>
+        <a href="#timeline">Timeline</a>
         <a href="#progress">Progress</a>
         <a href="#coverage">Coverage</a>
         <a href="#matrix">Matrix</a>
@@ -571,6 +573,27 @@ function buildHtml(model) {
           <div class="stack">
             ${activeProjects.map(renderActiveProject).join("\n            ")}
           </div>
+        </div>
+      </section>
+
+      <section class="panel" id="timeline">
+        <h2>Milestone Timeline</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Milestone</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Goals</th>
+                <th>Horizons</th>
+                <th>Next Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${milestoneTimeline.map(renderMilestoneTimelineRow).join("\n              ")}
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -861,6 +884,17 @@ function renderActiveProject(item) {
 </article>`;
 }
 
+function renderMilestoneTimelineRow(item) {
+  return `<tr>
+  <td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.title)}<br><span class="muted">${escapeHtml((item.categories || []).join(", "))}</span></td>
+  <td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td>
+  <td>${escapeHtml(item.priority)}</td>
+  <td>${escapeHtml((item.relatedGoalIds || []).join(", "))}</td>
+  <td>${escapeHtml((item.relatedHorizonIds || []).join(", ") || "none")}</td>
+  <td>${escapeHtml(item.nextAction)}</td>
+</tr>`;
+}
+
 function renderCompletedItem(item) {
   return `<article class="row">
   <div class="row-head">
@@ -960,6 +994,7 @@ function validateHtml(html, model) {
     "Performed Reviews",
     "Planning Horizons",
     "Active Projects",
+    "Milestone Timeline",
     "Completed Work",
     "Deferred Work",
     "Follow-Up Actions",
@@ -1000,6 +1035,10 @@ function validateHtml(html, model) {
 
   if ((model.panels?.activeProjects || []).length > 0 && !html.includes("SEIS-PROJECT-001")) {
     failures.push("static surface must expose active project ids");
+  }
+
+  if ((model.panels?.milestoneTimeline || []).length > 0 && !html.includes("SEIS-MS-001")) {
+    failures.push("static surface must expose milestone timeline ids");
   }
 
   if ((model.panels?.completedItems || []).length > 0 && !html.includes("SEIS-COMPLETE-001")) {

@@ -24,9 +24,9 @@
       "planned": 12,
       "blocked": 3
     },
-    "totalEvidenceRecords": 20,
+    "totalEvidenceRecords": 21,
     "evidenceByStatus": {
-      "passed": 16,
+      "passed": 17,
       "blocked": 2,
       "observed": 1,
       "partial": 1
@@ -60,7 +60,13 @@
       "active": 1,
       "planned": 1
     },
-    "totalCompletedItems": 10,
+    "totalMilestones": 6,
+    "milestonesByStatus": {
+      "active": 3,
+      "planned": 1,
+      "blocked": 2
+    },
+    "totalCompletedItems": 11,
     "totalDeferredItems": 3,
     "totalFollowUpActions": 3,
     "totalObjectiveCoverageRecords": 11,
@@ -107,7 +113,7 @@
     {
       "id": "evidence-records",
       "label": "Evidence records",
-      "value": 20,
+      "value": 21,
       "status": "active",
       "description": "Structured proof, blocker, validation, and review records."
     },
@@ -147,9 +153,16 @@
       "description": "Current project lanes linked to goals and evidence."
     },
     {
+      "id": "milestones",
+      "label": "Milestones",
+      "value": 6,
+      "status": "active",
+      "description": "Milestone timeline records derived from goals, horizons, and active projects."
+    },
+    {
       "id": "completed-items",
       "label": "Completed items",
-      "value": 10,
+      "value": 11,
       "status": "active",
       "description": "Scoped completed work with evidence and limitations."
     },
@@ -1163,6 +1176,24 @@
           "Does not prove live GitHub, SSH, deployment, model-provider, benchmark, dataset, public-readiness, or release-readiness state."
         ],
         "nextAction": "Keep the matrix synced with the generated Command Center view and use it before any completion or readiness claim."
+      },
+      {
+        "id": "SEIS-EVID-021",
+        "title": "Goal milestone timeline generated",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "summary": "The Goal Tracking Center now derives a milestone timeline from structured goal, planning horizon, and active project records, then renders it in the static page without fake percentages.",
+        "limitations": [
+          "Does not prove a dynamic routed Command Center runtime.",
+          "Does not resolve repository hygiene blockers or foundation validation failures.",
+          "Does not prove live GitHub, SSH, deployment, public-readiness, release-readiness, model-provider, benchmark, or dataset state."
+        ],
+        "nextAction": "Keep the milestone timeline generated from structured records and defer interactive runtime work until repository hygiene is isolated."
       }
     ],
     "decisions": [
@@ -1701,6 +1732,234 @@
         "nextAction": "Wire the generated static page into a broader Command Center shell after repository hygiene blockers are isolated."
       }
     ],
+    "milestoneTimeline": [
+      {
+        "id": "SEIS-MS-001",
+        "title": "Goal docs foundation",
+        "status": "active",
+        "priority": "P1 high",
+        "relatedGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-019"
+        ],
+        "relatedEpicIds": [
+          "SEIS-EPIC-GOALS-001"
+        ],
+        "categories": [
+          "Goal Tracking OS",
+          "Documentation System",
+          "Long-Term Product Vision"
+        ],
+        "relatedHorizonIds": [
+          "SEIS-HORIZON-001",
+          "SEIS-HORIZON-002",
+          "SEIS-HORIZON-003",
+          "SEIS-HORIZON-004"
+        ],
+        "relatedProjectIds": [
+          "SEIS-PROJECT-002",
+          "SEIS-PROJECT-003"
+        ],
+        "evidenceLinks": [
+          "docs/goals/goal-tracking-system.md",
+          "docs/goals/goal-schema.md",
+          "docs/goals/evidence-ledger.md",
+          "content/development/seis-goal-evidence.json",
+          "docs/goals/execution-board.md",
+          "content/development/seis-goal-execution.json",
+          "docs/goals/review-cadence.md",
+          "content/development/seis-goal-review-cadence.json",
+          "docs/reviews/GOAL_TRACKING_DAILY_REVIEW_2026-06-20.md",
+          "docs/reviews/GOAL_TRACKING_WEEKLY_REVIEW_2026-W25.md",
+          "docs/reviews/GOAL_TRACKING_MONTHLY_REVIEW_2026-06.md",
+          "content/development/seis-goal-review-log.json",
+          "docs/goals/planning-horizons.md",
+          "content/development/seis-goal-planning-horizons.json",
+          "docs/goals/progress-ledger.md",
+          "content/development/seis-goal-progress-ledger.json",
+          "content/development/seis-goal-objective-coverage.json",
+          "docs/reviews/GOAL_TRACKING_OBJECTIVE_AUDIT.md",
+          "content/development/seis-goal-completion-gate.json",
+          "docs/reviews/GOAL_TRACKING_COMPLETION_AUDIT.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html",
+          "docs/reviews/GOAL_TRACKING_REVIEW.md",
+          "docs/INDEX.md",
+          "docs/STATUS.md",
+          "docs/goals/seis-vision.md",
+          "docs/goals/daily-review-template.md",
+          "docs/goals/weekly-priorities-template.md",
+          "docs/goals/monthly-review-template.md"
+        ],
+        "blockers": [
+          "Command Center UI implementation is not built yet",
+          "Root architecture, roadmap, and changelog docs are still missing",
+          "Future recurring reviews must remain evidence-backed before they can be marked performed",
+          "Static page is not wired into a routed Command Center shell."
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      },
+      {
+        "id": "SEIS-MS-003",
+        "title": "Goal Tracking Center product plan",
+        "status": "active",
+        "priority": "P1 high",
+        "relatedGoalIds": [
+          "SEIS-GOAL-001"
+        ],
+        "relatedEpicIds": [
+          "SEIS-EPIC-GOALS-002"
+        ],
+        "categories": [
+          "SEIS App / Command Center"
+        ],
+        "relatedHorizonIds": [
+          "SEIS-HORIZON-001"
+        ],
+        "relatedProjectIds": [
+          "SEIS-PROJECT-003"
+        ],
+        "evidenceLinks": [
+          "docs/architecture/COMMAND_CENTER_FOUNDATION_REVIEW.md",
+          "docs/product/command-center-shell.md",
+          "content/development/seis-command-center-shell.json",
+          "apps/command-center/index.html",
+          "docs/goals/command-center-view-model.md",
+          "content/development/seis-goal-command-center-view.json",
+          "apps/command-center/goal-tracking/index.html"
+        ],
+        "blockers": [
+          "Complete app shell is not proven",
+          "Static page is not wired into a routed Command Center shell."
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      },
+      {
+        "id": "SEIS-MS-004",
+        "title": "Static goal data for UI",
+        "status": "planned",
+        "priority": "P1 high",
+        "relatedGoalIds": [
+          "SEIS-GOAL-009"
+        ],
+        "relatedEpicIds": [
+          "SEIS-EPIC-GOALS-002"
+        ],
+        "categories": [
+          "Design System"
+        ],
+        "relatedHorizonIds": [],
+        "relatedProjectIds": [],
+        "evidenceLinks": [
+          "docs/design-system/SEIS_DESIGN_SYSTEM_FOUNDATION.md"
+        ],
+        "blockers": [
+          "No component demo yet"
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      },
+      {
+        "id": "SEIS-MS-005",
+        "title": "Repository intelligence report",
+        "status": "blocked",
+        "priority": "P0 critical",
+        "relatedGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-006"
+        ],
+        "relatedEpicIds": [
+          "SEIS-EPIC-GOALS-004"
+        ],
+        "categories": [
+          "Repository Intelligence",
+          "GitHub Workflow"
+        ],
+        "relatedHorizonIds": [
+          "SEIS-HORIZON-001",
+          "SEIS-HORIZON-002"
+        ],
+        "relatedProjectIds": [
+          "SEIS-PROJECT-001"
+        ],
+        "evidenceLinks": [
+          "docs/architecture/REPOSITORY_INTELLIGENCE_SYSTEM.md",
+          "docs/governance/GITHUB_GOVERNANCE_REVIEW.md"
+        ],
+        "blockers": [
+          "Missing validation scripts remain unresolved",
+          "External GitHub PR state was not queried",
+          "Dirty worktree contains pre-existing deletions",
+          "Tracked deletion set remains unresolved."
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      },
+      {
+        "id": "SEIS-MS-006",
+        "title": "Approval and evidence records",
+        "status": "active",
+        "priority": "P1 high",
+        "relatedGoalIds": [
+          "SEIS-GOAL-005",
+          "SEIS-GOAL-011"
+        ],
+        "relatedEpicIds": [
+          "SEIS-EPIC-GOALS-004"
+        ],
+        "categories": [
+          "Security and Governance",
+          "Automation Queue"
+        ],
+        "relatedHorizonIds": [],
+        "relatedProjectIds": [],
+        "evidenceLinks": [
+          "docs/security/SECURITY_BASELINE.md",
+          "docs/governance/APPROVAL_WORKFLOW_PLATFORM.md"
+        ],
+        "blockers": [
+          "Live GitHub security status is unknown",
+          "No approval ledger implementation yet"
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      },
+      {
+        "id": "SEIS-MS-007",
+        "title": "Public and release readiness dry-runs",
+        "status": "blocked",
+        "priority": "P1 high",
+        "relatedGoalIds": [
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008"
+        ],
+        "relatedEpicIds": [],
+        "categories": [
+          "Public Readiness",
+          "Release Readiness"
+        ],
+        "relatedHorizonIds": [
+          "SEIS-HORIZON-002"
+        ],
+        "relatedProjectIds": [
+          "SEIS-PROJECT-001"
+        ],
+        "evidenceLinks": [
+          "docs/readiness/RELEASE_PUBLIC_READINESS_SYSTEM.md",
+          "docs/STATUS.md"
+        ],
+        "blockers": [
+          "Foundation check fails",
+          "Source-of-truth docs are missing",
+          "Release artifacts exist but release sync was not validated",
+          "Deployment is approval-gated",
+          "Tracked deletion set remains unresolved."
+        ],
+        "nextAction": "Resolve visible blockers before promoting this milestone."
+      }
+    ],
     "completedItems": [
       {
         "id": "SEIS-COMPLETE-001",
@@ -1907,6 +2166,27 @@
           "Does not replace the strict completion gate."
         ],
         "nextAction": "Keep the matrix visible in the generated Goal Tracking Center and update it whenever source requirements or evidence change."
+      },
+      {
+        "id": "SEIS-COMPLETE-011",
+        "title": "Static milestone timeline panel",
+        "status": "completed",
+        "completedAt": "2026-06-20",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-019"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-021"
+        ],
+        "summary": "The generated Goal Tracking Center now includes a dedicated milestone timeline derived from existing goals, planning horizons, and active projects.",
+        "limitations": [
+          "Does not mark the full Goal Tracking OS objective complete.",
+          "Does not prove an interactive routed timeline or live Command Center runtime.",
+          "Does not resolve repository hygiene, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state."
+        ],
+        "nextAction": "Keep the timeline generated from structured records and avoid manual drift."
       }
     ],
     "deferredItems": [
@@ -1990,7 +2270,8 @@
           "SEIS-EVID-017",
           "SEIS-EVID-018",
           "SEIS-EVID-019",
-          "SEIS-EVID-020"
+          "SEIS-EVID-020",
+          "SEIS-EVID-021"
         ],
         "nextAction": "Run goal validation after every structured record update."
       },
@@ -2104,7 +2385,8 @@
           "SEIS-EVID-010",
           "SEIS-EVID-014",
           "SEIS-EVID-019",
-          "SEIS-EVID-020"
+          "SEIS-EVID-020",
+          "SEIS-EVID-021"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2265,12 +2547,12 @@
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.",
+        "proof": "The generated page and static shell render numeric cards, active and blocked goals, milestone timeline, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.",
         "limitations": [
           "The broader app navigation is static and not a dynamic routed runtime.",
-          "Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component."
+          "Milestone timeline is static and generated, not an interactive routed component."
         ],
-        "nextAction": "Add dynamic routing and a milestone timeline only after the current static contract remains stable."
+        "nextAction": "Keep the generated milestone timeline stable and add dynamic routing only after repository hygiene recovery."
       },
       {
         "id": "SEIS-OBJ-010",
@@ -2422,7 +2704,8 @@
           "SEIS-EVID-014",
           "SEIS-EVID-015",
           "SEIS-EVID-019",
-          "SEIS-EVID-020"
+          "SEIS-EVID-020",
+          "SEIS-EVID-021"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2438,7 +2721,7 @@
           "content/development/seis-goal-requirement-matrix.json",
           "docs/reviews/GOAL_TRACKING_REQUIREMENT_MATRIX.md"
         ],
-        "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.",
+        "proof": "The generated view, static page, and static Command Center shell expose cards, active goals, blocked items, milestone timeline, next actions, validation, review cadence, performed reviews, planning, progress, objective coverage, requirement matrix, readiness, and guardrails without fake progress bars.",
         "gap": "The shell is not a dynamic routed application runtime and has no live GitHub, release, public-readiness, or SSH integration.",
         "nextAction": "Keep the static shell evidence-backed and defer dynamic routing until repository hygiene recovery."
       },
@@ -2531,7 +2814,8 @@
           "SEIS-EVID-010",
           "SEIS-EVID-014",
           "SEIS-EVID-019",
-          "SEIS-EVID-020"
+          "SEIS-EVID-020",
+          "SEIS-EVID-021"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2548,7 +2832,7 @@
           "apps/command-center/index.html",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated view data, static Goal Tracking surface, and static Command Center shell.",
+        "proof": "Goals are connected to evidence, roadmap items, backlog, next PR queue, requirement matrix, generated milestone timeline, generated view data, static Goal Tracking surface, and static Command Center shell.",
         "gap": "Dynamic Command Center routing and repository hygiene recovery remain unfinished.",
         "nextAction": "Resolve repository hygiene blockers before claiming foundation readiness or opening a merge PR."
       }
@@ -2881,7 +3165,8 @@
         "evidenceIds": [
           "SEIS-EVID-009",
           "SEIS-EVID-010",
-          "SEIS-EVID-019"
+          "SEIS-EVID-019",
+          "SEIS-EVID-021"
         ],
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -2921,11 +3206,11 @@
           "content/development/seis-goal-command-center-view.json",
           "apps/command-center/goal-tracking/index.html"
         ],
-        "proof": "The static page renders progress cards, blockers, next actions, validation, planning, readiness, objective coverage, and completion gates without fake percentages.",
+        "proof": "The static page renders progress cards, blockers, next actions, validation, planning, a dedicated milestone timeline, readiness, objective coverage, and completion gates without fake percentages.",
         "gaps": [
-          "Milestone timeline exists as planning and milestone fields, not a dedicated interactive timeline."
+          "Milestone timeline is static and generated, not an interactive routed timeline."
         ],
-        "nextAction": "Add a dedicated timeline component only after the static contract remains validated."
+        "nextAction": "Keep the generated timeline synchronized with goal, horizon, and project records until a routed app timeline is safe."
       },
       {
         "id": "SEIS-REQ-016",

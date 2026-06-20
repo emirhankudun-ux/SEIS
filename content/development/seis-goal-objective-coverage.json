@@ -101,7 +101,8 @@
         "SEIS-EVID-010",
         "SEIS-EVID-014",
         "SEIS-EVID-019",
-        "SEIS-EVID-020"
+        "SEIS-EVID-020",
+        "SEIS-EVID-021"
       ],
       "related_goal_ids": [
         "SEIS-GOAL-001",
@@ -262,12 +263,12 @@
         "content/development/seis-goal-command-center-view.json",
         "apps/command-center/goal-tracking/index.html"
       ],
-      "proof": "The generated page and static shell render numeric cards, active and blocked goals, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.",
+      "proof": "The generated page and static shell render numeric cards, active and blocked goals, milestone timeline, next actions, validation, readiness, planning, progress, requirement coverage, decisions, and guardrails without progress bars or completion percentages.",
       "limitations": [
         "The broader app navigation is static and not a dynamic routed runtime.",
-        "Milestone timeline is represented through planning and milestone fields, not a dedicated timeline component."
+        "Milestone timeline is static and generated, not an interactive routed component."
       ],
-      "next_action": "Add dynamic routing and a milestone timeline only after the current static contract remains stable."
+      "next_action": "Keep the generated milestone timeline stable and add dynamic routing only after repository hygiene recovery."
     },
     {
       "id": "SEIS-OBJ-010",

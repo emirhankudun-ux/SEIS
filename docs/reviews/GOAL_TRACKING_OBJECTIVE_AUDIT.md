@@ -27,7 +27,7 @@ Requirement matrix:
 | `SEIS-OBJ-006` Evidence Rules | passed | Evidence ledger and validator enforce evidence, limitations, and relative paths. | Scoped checks are not a full repository security audit. |
 | `SEIS-OBJ-007` Review Cadence | passed | Daily, weekly, and monthly review records and templates exist; current daily, weekly, and monthly reviews were performed with evidence. | Future recurring reviews still require current-period evidence. |
 | `SEIS-OBJ-008` Data Model | passed | Goal schema and JSON registry validate required fields. | The model is a fixture contract, not a database schema. |
-| `SEIS-OBJ-009` Command Center Goal UX | partial | Static page and shell expose modules, cards, blockers, next actions, validation, readiness, requirement matrix, and guardrails. | Milestone timeline is not a dedicated dynamic routed component. |
+| `SEIS-OBJ-009` Command Center Goal UX | partial | Static page and shell expose modules, cards, blockers, milestone timeline, next actions, validation, readiness, requirement matrix, and guardrails. | Milestone timeline is static and not a dynamic routed component. |
 | `SEIS-OBJ-010` Relationship With LLM | passed | Registry, validator, generator, and static page run without a model connection. | Future LLM assistance must remain evidence-aware. |
 | `SEIS-OBJ-011` First Implementation Priority | partial | Docs, backlog, PR queue, records, validator, view model, static page, and static shell cover the priority list. | Repository hygiene remains the next blocker. |
 
@@ -44,6 +44,8 @@ Requirement matrix:
   HTML surface.
 - The requirement matrix exposes individual objective requirements with proof,
   gaps, evidence ids, and next safe actions.
+- The generated static Goal Tracking Center exposes a milestone timeline derived
+  from goal, horizon, and active project records.
 - The validator can detect missing required Goal Tracking deliverables and
   stale generated artifacts.
 - Evidence and limitations stay visible; partial status is not promoted to

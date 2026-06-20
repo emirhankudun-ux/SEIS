@@ -35,6 +35,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-MS-012` | `SEIS-PHASE-1` | Goal review cadence records | active | Daily, weekly, and monthly cadence records exist and validate without fake performed reviews. |
 | `SEIS-MS-013` | `SEIS-PHASE-1` | Goal planning horizon records | active | Yearly, quarterly, monthly, weekly, and active-project records exist and validate without fake completion. |
 | `SEIS-MS-014` | `SEIS-PHASE-1` | Goal progress ledger records | active | Completed, deferred, and follow-up records exist and validate with evidence and limitations. |
+| `SEIS-MS-015` | `SEIS-PHASE-2` | Static milestone timeline | active | Generated Command Center view and static page expose milestone records derived from goals, horizons, and active projects. |
 
 ## Epics
 
@@ -51,6 +52,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | `SEIS-EPIC-GOALS-009` | `SEIS-MS-012` | Review cadence | active | Keep cadence definitions separate from performed daily, weekly, and monthly review logs. |
 | `SEIS-EPIC-GOALS-010` | `SEIS-MS-013` | Planning horizons | active | Keep yearly, quarterly, monthly, weekly, and active project lanes linked to evidence. |
 | `SEIS-EPIC-GOALS-011` | `SEIS-MS-014` | Progress ledger | active | Keep completed, deferred, and follow-up records scoped and evidence-backed. |
+| `SEIS-EPIC-GOALS-012` | `SEIS-MS-015` | Milestone timeline | active | Keep the generated static timeline synchronized with goal, horizon, and project records. |
 
 ## Validation Steps
 
@@ -60,7 +62,7 @@ phases, epics, tasks, validation, evidence, and follow-up actions.
 | Links use relative paths | Docs remain portable. | active |
 | `git diff --check` | No whitespace issues in scoped diff. | passed on 2026-06-19 |
 | `npm run seis:check` | Existing web audit still passes. | passed on 2026-06-19 |
-| `npm run check:goal-tracking` | Goal registry, evidence ledger, execution board, review cadence, planning horizons, and progress ledger validate. | passed on 2026-06-20 |
+| `npm run check:goal-tracking` | Goal registry, evidence ledger, execution board, review cadence, planning horizons, progress ledger, requirement matrix, and milestone timeline validate. | passed on 2026-06-20 |
 | `npm run check:goal-command-center-view` | Generated Command Center view model is fresh. | passed on 2026-06-19 |
 | `npm run check:goal-command-center-static` | Generated static Goal Tracking Center page is fresh. | passed on 2026-06-19 |
 | `npm run check:foundation` | Foundation validators pass. | blocked by pre-existing deleted files |

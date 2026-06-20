@@ -48,6 +48,7 @@ without any model provider or external API.
 | `actualReviews` | Performed review logs backed by evidence. |
 | `planningHorizons` | Yearly, quarterly, monthly, and weekly planning lanes. |
 | `activeProjects` | Active project lanes linked to goals, tasks, horizons, and evidence. |
+| `milestoneTimeline` | Static milestone timeline derived from goal, horizon, and active project records. |
 | `completedItems` | Scoped completed work with evidence and limitations. |
 | `deferredItems` | Deferred work with reasons, approval needs, and next actions. |
 | `followUpActions` | Follow-up actions linked to goals, tasks, and evidence. |
