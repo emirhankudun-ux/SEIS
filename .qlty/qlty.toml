@@ -1,0 +1,29 @@
+config_version = "0"
+
+exclude_patterns = [
+  ".agents/**",
+  ".claude/**",
+  ".codex/**",
+  "SEIST/**",
+  "archive/**",
+  "release/**",
+  "releases/**",
+  "reports/**",
+  "content/development/**",
+  "cloud-migration-audit.ci.json",
+  "**/node_modules/**",
+  "**/.next/**",
+  "**/.turbo/**",
+  "**/dist/**",
+  "**/build/**",
+  "**/__pycache__/**"
+]
+
+test_patterns = ["**/test/**", "**/*.test.*"]
+
+[checks]
+mode = "comment"
+
+[[source]]
+name = "default"
+default = true
