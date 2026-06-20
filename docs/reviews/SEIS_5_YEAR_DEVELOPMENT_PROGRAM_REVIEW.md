@@ -179,6 +179,25 @@ autonomous orchestration, agent self-approval, provider calls, provider keys,
 GitHub write actions, SSH execution, deployment, model training, checkpoints,
 or model cards.
 
+## Follow-Up 10,000,000 Token Feed Budget Slice
+
+Status: Added after the knowledge-source classification and route contract
+foundation.
+
+Evidence:
+
+- `packages/data/schemas/token-feed-budget.schema.json`
+- `packages/data/fixtures/seis-10m-token-feed-budget.json`
+- `scripts/check-token-feed-budget.mjs`
+- `npm run check:token-feed-budget`
+
+This slice gives SEIS a 10,000,000 token metadata-only feed budget connected to
+the model-router, knowledge-source classification, shared AI Core/App contract,
+and Command Center projection. It is a capacity and routing contract only:
+`tokensExecuted` remains `0`, blocked archive material remains excluded, and no
+raw-content storage, embedding index, persistent memory write, external provider
+call, model training, checkpoint, benchmark, or model ownership claim is added.
+
 ## Follow-Up Tool Registry Permission Slice
 
 Status: Added after the agent-runtime lifecycle slice.

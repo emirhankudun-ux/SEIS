@@ -67,6 +67,13 @@ class, freshness, privacy mode, blocked archive handling, and non-claims. It doe
 not create embeddings, persistent memory, provider context, benchmark claims, or
 model-training evidence.
 
+The first token feed budget evaluation is fixture-backed through
+`packages/data/fixtures/seis-10m-token-feed-budget.json` and
+`npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only
+budget plan and Command Center integration while keeping executed ingestion at
+0 tokens. It does not create embeddings, persistent memory, provider context,
+benchmark claims, or model-training evidence.
+
 ## Non-Claims
 
 SEIS must not publish benchmark, safety, or model capability claims without

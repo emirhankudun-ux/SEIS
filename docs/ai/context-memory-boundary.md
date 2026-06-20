@@ -62,3 +62,18 @@ implementation copying. Unsafe concepts such as automatic push/merge, active
 countermeasures, poisoned data injection, memetic manipulation, autonomous
 payment or infrastructure provisioning, fake BCI claims, and fake model
 ownership claims are exclusion records, not implementation plans.
+
+## SEIS 10,000,000 Token Feed Budget
+
+The first token-feed capacity contract is
+`packages/data/fixtures/seis-10m-token-feed-budget.json`, with its schema in
+`packages/data/schemas/token-feed-budget.schema.json`. It is validated by
+`npm run check:token-feed-budget`.
+
+This fixture gives SEIS a 10,000,000 token metadata-only budget plan across
+official docs, generated reports, local fixture contracts, and future approved
+metadata-only sources. It keeps blocked archive material at 0 planned tokens,
+sets `tokensExecuted` to `0`, and records no raw-content storage, embedding
+index, persistent memory write, provider call, browser-side provider key, or
+model training. The budget feeds Command Center evidence and model-router
+planning; it is not an executed ingestion claim.

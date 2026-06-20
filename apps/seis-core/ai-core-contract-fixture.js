@@ -17,7 +17,8 @@ window.seisAiCoreContractFixture = {
     "packages/model-router/fixtures/model-router-route-contracts.json",
     "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
     "packages/tool-registry/fixtures/tool-registry-permissions.json",
-    "packages/data/fixtures/knowledge-source-classification.json"
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/data/fixtures/seis-10m-token-feed-budget.json"
   ],
   stateVocabulary: [
     "ready",
@@ -82,6 +83,21 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      id: "route-seis-10m-token-feed-metadata",
+      taskType: "knowledge-feed-planning",
+      dataClass: "public",
+      privacyMode: "metadata-only",
+      providerProfile: "metadata-only-no-provider",
+      modelProfile: "no-model-token-feed-budget",
+      promptVersionId: "prompt-documentation-assistant-v0-1",
+      approvalState: "not-required",
+      blockedReason: "Metadata-only 10,000,000 token feed budget plan; no raw content, provider call, embedding index, memory write, or model training is performed.",
+      evaluationProfile: "token-feed-budget-fixture",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     },
     {
       id: "route-external-redacted-docs",
@@ -162,6 +178,27 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "local-alpha",
       evidence: "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      id: "task-seis-10m-token-feed-plan",
+      agentRole: "SEIS Data Agent",
+      intent: "Validate and expose a 10,000,000 token metadata-only feed budget without ingesting raw content.",
+      allowedActions: [
+        "read token feed budget fixture",
+        "summarize source allocations",
+        "attach model-router and knowledge-source evidence"
+      ],
+      forbiddenActions: [
+        "call external providers",
+        "create embeddings",
+        "write persistent memory",
+        "claim token ingestion completion",
+        "claim model training"
+      ],
+      approvalState: "not-required",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     },
     {
       id: "task-provider-routing-approval-needed",
@@ -373,6 +410,32 @@ window.seisAiCoreContractFixture = {
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
     },
     {
+      id: "knowledge-seis-10m-token-feed-plan",
+      sourceName: "SEIS 10,000,000 token feed budget plan",
+      sourceClass: "planned",
+      retrievalState: "local-only",
+      privacyMode: "metadata-only",
+      freshness: "current",
+      ingestionPolicy: "approved-metadata",
+      approvedUses: [
+        "Command Center token feed budget display",
+        "metadata-only route validation",
+        "future approved source capacity planning"
+      ],
+      forbiddenUses: [
+        "claiming 10,000,000 tokens were ingested",
+        "storing raw repository content",
+        "creating embeddings or persistent memory",
+        "routing raw content to external providers",
+        "claiming model training or checkpoint progress"
+      ],
+      externalRoutingAllowed: false,
+      storesRawContent: false,
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
       id: "knowledge-discarded-assistant-archive",
       sourceName: "Discarded assistant paste archive",
       sourceClass: "archive",
@@ -509,6 +572,14 @@ window.seisAiCoreContractFixture = {
       result: "pass",
       status: "validated",
       evidence: "scripts/check-knowledge-source-classification.mjs"
+    },
+    {
+      id: "eval-seis-10m-token-feed-budget",
+      targetType: "retrieval",
+      targetId: "seis-10m-token-feed-budget",
+      result: "pass",
+      status: "validated",
+      evidence: "scripts/check-token-feed-budget.mjs"
     }
   ],
   auditEvents: [
@@ -567,6 +638,14 @@ window.seisAiCoreContractFixture = {
       redactionState: "metadata-only",
       status: "validated",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "audit-seis-10m-token-feed-budget",
+      actor: "codex",
+      action: "added metadata-only 10,000,000 token feed budget fixture and Command Center integration evidence",
+      redactionState: "metadata-only",
+      status: "validated",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   repositoryFindings: [
@@ -617,6 +696,14 @@ window.seisAiCoreContractFixture = {
       severity: "info",
       status: "validated",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "finding-seis-10m-token-feed-budget",
+      repository: "SEIS",
+      findingType: "fixture-backed-10m-token-feed-budget-plan",
+      severity: "info",
+      status: "validated",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   documentationStatuses: [
@@ -667,6 +754,14 @@ window.seisAiCoreContractFixture = {
       sourceClass: "official",
       status: "validated",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "doc-token-feed-budget-plan",
+      document: "docs/ai/context-memory-boundary.md",
+      freshness: "current",
+      sourceClass: "official",
+      status: "validated",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   securityFindings: [
@@ -690,6 +785,13 @@ window.seisAiCoreContractFixture = {
       riskClass: "high",
       status: "validated",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "security-token-feed-nonclaim-boundary",
+      category: "metadata-only-token-feed-nonclaim-boundary",
+      riskClass: "high",
+      status: "validated",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   roadmapItems: [
@@ -748,6 +850,14 @@ window.seisAiCoreContractFixture = {
       status: "validated",
       maturity: "fixture-backed",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "roadmap-year-1-token-feed-budget",
+      horizon: "year-1",
+      track: "10,000,000 token metadata-only feed budget and Command Center integration",
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   aiSurfaces: [
@@ -847,6 +957,27 @@ window.seisAiCoreContractFixture = {
       status: "planned",
       maturity: "fixture-backed",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "surface-token-feed-budget",
+      surface: "Token Feed Budget",
+      allowedContext: [
+        "token budget metadata",
+        "source class allocations",
+        "route fixture evidence",
+        "knowledge-source classification metadata"
+      ],
+      forbiddenContext: [
+        "raw repository content",
+        "provider API keys",
+        "SSH private keys",
+        "restricted archive content",
+        "model training claims"
+      ],
+      approvalRequired: false,
+      status: "validated",
+      maturity: "fixture-backed",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   repositoryIntelligence: [
@@ -873,6 +1004,14 @@ window.seisAiCoreContractFixture = {
       freshness: "current",
       status: "validated",
       evidence: "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      id: "repo-intel-token-feed-budget",
+      sourceClass: "planned",
+      privacyMode: "metadata-only",
+      freshness: "current",
+      status: "validated",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ],
   goalTrackingStates: [
@@ -883,6 +1022,14 @@ window.seisAiCoreContractFixture = {
       completionEvidence: "partial",
       status: "running",
       evidence: "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      id: "goal-seis-10m-token-feed",
+      goal: "10,000,000 token budget should feed SEIS through metadata-only AI Core and Command Center contracts",
+      progressState: "in-progress",
+      completionEvidence: "partial",
+      status: "running",
+      evidence: "packages/data/fixtures/seis-10m-token-feed-budget.json"
     }
   ]
 };

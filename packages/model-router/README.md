@@ -24,9 +24,14 @@ privacy policy and evaluation fixtures are stable.
 - `schemas/model-router-route-contract.schema.json` defines the request,
   decision, response, and audit metadata shape.
 - `fixtures/model-router-route-contracts.json` covers local-only,
-  metadata-only, and approval-needed provider routes.
+  metadata-only, 10,000,000 token feed budget, and approval-needed provider
+  routes.
 - `npm run check:model-router-contracts` validates route modes, source links,
   approval boundaries, safe audit metadata, non-claims, and secret hygiene.
+- `npm run check:token-feed-budget` validates that
+  `route-contract-seis-10m-token-feed-metadata` remains metadata-only with
+  `maxTokens` set to 10,000,000, `maxUsd` set to 0, and no provider call,
+  embedding, memory write, raw-content storage, or model training.
 
 The current fixture pack does not call model providers, configure provider
 keys, expose browser-side secrets, run benchmarks, or claim live provider

@@ -9,13 +9,14 @@
     "docs/architecture/ai-core-app-shared-contracts.md",
     "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
     "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
-    "packages/data/fixtures/knowledge-source-classification.json"
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/data/fixtures/seis-10m-token-feed-budget.json"
   ],
   "summary": {
     "promptEvaluationCount": 7,
     "appStateEvaluationCount": 2,
-    "retrievalEvaluationCount": 1,
-    "passed": 10,
+    "retrievalEvaluationCount": 2,
+    "passed": 11,
     "failed": 0,
     "blocked": 0,
     "unknown": 0
@@ -355,6 +356,39 @@
       "evidenceLinks": [
         "packages/data/fixtures/knowledge-source-classification.json",
         "scripts/check-knowledge-source-classification.mjs",
+        "docs/ai/context-memory-boundary.md"
+      ]
+    },
+    {
+      "id": "eval-retrieval-seis-10m-token-feed-budget",
+      "layer": "retrieval",
+      "targetType": "retrieval",
+      "targetId": "seis-10m-token-feed-budget",
+      "sourceFixture": "packages/data/fixtures/seis-10m-token-feed-budget.json",
+      "privacyClass": "metadata-only",
+      "rubric": [
+        "10,000,000 token target declared",
+        "executed token count remains zero",
+        "metadata-only route integration declared",
+        "raw content, provider, embedding, memory, and training actions are disabled"
+      ],
+      "passCriteria": [
+        "planned allocations total 10,000,000 tokens",
+        "tokensExecuted is 0",
+        "model-router route uses metadata-only mode",
+        "Command Center projection includes the feed budget evidence"
+      ],
+      "observedOutputSummary": "Token feed budget fixture gives SEIS a 10,000,000 token metadata-only capacity plan connected to model-router, knowledge-source, shared contract, and Command Center evidence without executing ingestion.",
+      "limitations": [
+        "Static fixture validation only; no live 10,000,000 token ingestion was executed.",
+        "Pass does not create embeddings, persistent memory, provider routing, model training, checkpoints, or benchmark evidence."
+      ],
+      "reviewer": "codex-local-fixture-check",
+      "result": "pass",
+      "status": "validated",
+      "evidenceLinks": [
+        "packages/data/fixtures/seis-10m-token-feed-budget.json",
+        "scripts/check-token-feed-budget.mjs",
         "docs/ai/context-memory-boundary.md"
       ]
     }

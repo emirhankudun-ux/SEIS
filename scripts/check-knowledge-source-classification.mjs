@@ -62,6 +62,7 @@ const requiredKnowledgeSourceIds = [
   "knowledge-official-ai-core-docs",
   "knowledge-generated-evaluation-reports",
   "knowledge-local-fixture-contracts",
+  "knowledge-seis-10m-token-feed-plan",
   "knowledge-discarded-assistant-archive"
 ];
 
@@ -80,6 +81,7 @@ const requiredNonClaimTerms = [
   "No raw assistant archive content",
   "No external provider call",
   "No embedding index",
+  "No 10,000,000 token ingestion",
   "No automatic push",
   "No active countermeasure",
   "No BCI",

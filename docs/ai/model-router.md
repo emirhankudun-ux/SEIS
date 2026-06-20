@@ -77,9 +77,17 @@ It covers:
 
 - `local-only` repository review with no provider call
 - `metadata-only` documentation summary with raw-content routing blocked
+- `route-contract-seis-10m-token-feed-metadata`, a metadata-only route for the
+  SEIS 10,000,000 token feed budget plan with `maxTokens` set to 10,000,000,
+  `maxUsd` set to 0, and no raw content routed
 - `approval-needed` external-provider-redacted route that fails closed until
   approval, server-side credential handling, and redaction policy are verified
 
 This evidence does not imply live provider execution, provider readiness,
 provider quality, benchmark performance, model training, or SEIS-owned model
 capability.
+
+The token feed budget is additionally validated by
+`npm run check:token-feed-budget`. It is a route and capacity contract only; it
+does not execute 10,000,000 token ingestion, create embeddings, write persistent
+memory, call providers, train models, or create checkpoints.

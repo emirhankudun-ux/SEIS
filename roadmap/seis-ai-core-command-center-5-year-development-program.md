@@ -30,6 +30,7 @@ usable AI-native operating platform.
 | Prompt engine | Foundation documented | `docs/ai/prompt-engine.md`, `packages/prompt-engine/README.md` |
 | Agent runtime | Fixture-backed contract | `docs/ai/agent-runtime.md`, `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` |
 | Tool registry | Fixture-backed contract | `docs/ai/tool-use-policy.md`, `packages/tool-registry/fixtures/tool-registry-permissions.json` |
+| 10,000,000 token feed budget | Fixture-backed metadata-only plan | `packages/data/fixtures/seis-10m-token-feed-budget.json`, `npm run check:token-feed-budget` |
 | AI App / Command Center | Foundation documented | `docs/product/seis-ai-app.md`, `docs/product/command-center.md` |
 | Shared contracts | Foundation documented | `docs/architecture/ai-core-app-shared-contracts.md`, `packages/shared-types/README.md` |
 | Evaluation strategy | Foundation documented | `docs/evals/evaluation-strategy.md`, `docs/testing/prompt-regression-suite.md` |
@@ -100,6 +101,8 @@ Primary work:
 - Add agent-runtime task lifecycle states and approval state contract.
 - Add eval result schema for prompt, route, agent, app-state, and retrieval
   checks.
+- Add a 10,000,000 token metadata-only feed budget fixture that can feed
+  Command Center evidence without claiming executed ingestion.
 - Keep all provider keys server-side or absent.
 - Keep local/private mode as the first safe user-facing mode.
 
@@ -119,6 +122,8 @@ Exit evidence:
 - Shared contract fixtures reviewed in a PR.
 - Prompt regression suite runs on fixture data.
 - Evaluation report format can represent pass, fail, blocked, and unknown.
+- Token feed budget fixture validates planned 10,000,000 token capacity with
+  executed ingestion remaining at 0 tokens.
 
 ## Year 2 - Product Alpha and Controlled Provider Routing
 

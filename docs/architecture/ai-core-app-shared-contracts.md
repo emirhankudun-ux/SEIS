@@ -106,6 +106,14 @@ writes, provider routing, source-code copying, autonomous push/merge, active
 countermeasures, poisoned data injection, memetic manipulation, autonomous
 payments, infrastructure provisioning, fake BCI claims, or fake model ownership.
 
+It also includes the `seis-10m-token-feed-budget` fixture, which connects a
+10,000,000 token metadata-only budget plan to model-router, knowledge-source,
+agent task, evaluation, audit, roadmap, repository-intelligence, goal, and
+Command Center projection records. The budget has `tokensExecuted` set to `0`
+and does not imply executed ingestion, embeddings, persistent memory writes,
+external provider calls, model training, checkpoints, benchmark evidence, or
+model ownership.
+
 The fixture is intentionally local and metadata-only. It does not enable live
 provider routing, expose provider secrets, store raw prompts, perform GitHub
 write actions, execute SSH commands, or claim model training.

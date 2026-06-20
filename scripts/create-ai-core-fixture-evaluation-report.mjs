@@ -7,6 +7,7 @@ const schemaPath = "packages/evals/schemas/fixture-evaluation-report.schema.json
 const promptFixturePath = "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json";
 const sharedFixturePath = "packages/shared-types/fixtures/ai-core-command-center-foundation.json";
 const knowledgeFixturePath = "packages/data/fixtures/knowledge-source-classification.json";
+const tokenFeedFixturePath = "packages/data/fixtures/seis-10m-token-feed-budget.json";
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
@@ -129,11 +130,13 @@ const schemaText = readText(schemaPath);
 const promptFixtureText = readText(promptFixturePath);
 const sharedFixtureText = readText(sharedFixturePath);
 const knowledgeFixtureText = readText(knowledgeFixturePath);
+const tokenFeedFixtureText = readText(tokenFeedFixturePath);
 const appFixtureText = readText(appFixturePath);
 const schema = readJson(schemaPath);
 const promptSuite = readJson(promptFixturePath);
 const sharedFixture = readJson(sharedFixturePath);
 const knowledgeFixture = readJson(knowledgeFixturePath);
+const tokenFeedFixture = readJson(tokenFeedFixturePath);
 const appFixture = readAppFixture(appFixtureText);
 
 for (const [filePath, text] of [
@@ -141,6 +144,7 @@ for (const [filePath, text] of [
   [promptFixturePath, promptFixtureText],
   [sharedFixturePath, sharedFixtureText],
   [knowledgeFixturePath, knowledgeFixtureText],
+  [tokenFeedFixturePath, tokenFeedFixtureText],
   [appFixturePath, appFixtureText]
 ]) {
   assertNoSensitivePatterns(filePath, text);
@@ -339,6 +343,39 @@ const retrievalEvaluations = [
       "scripts/check-knowledge-source-classification.mjs",
       "docs/ai/context-memory-boundary.md"
     ]
+  },
+  {
+    id: "eval-retrieval-seis-10m-token-feed-budget",
+    layer: "retrieval",
+    targetType: "retrieval",
+    targetId: tokenFeedFixture.id,
+    sourceFixture: tokenFeedFixturePath,
+    privacyClass: "metadata-only",
+    rubric: [
+      "10,000,000 token target declared",
+      "executed token count remains zero",
+      "metadata-only route integration declared",
+      "raw content, provider, embedding, memory, and training actions are disabled"
+    ],
+    passCriteria: [
+      "planned allocations total 10,000,000 tokens",
+      "tokensExecuted is 0",
+      "model-router route uses metadata-only mode",
+      "Command Center projection includes the feed budget evidence"
+    ],
+    observedOutputSummary: "Token feed budget fixture gives SEIS a 10,000,000 token metadata-only capacity plan connected to model-router, knowledge-source, shared contract, and Command Center evidence without executing ingestion.",
+    limitations: [
+      "Static fixture validation only; no live 10,000,000 token ingestion was executed.",
+      "Pass does not create embeddings, persistent memory, provider routing, model training, checkpoints, or benchmark evidence."
+    ],
+    reviewer: "codex-local-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      tokenFeedFixturePath,
+      "scripts/check-token-feed-budget.mjs",
+      "docs/ai/context-memory-boundary.md"
+    ]
   }
 ];
 
@@ -355,7 +392,8 @@ const report = {
     "docs/architecture/ai-core-app-shared-contracts.md",
     promptFixturePath,
     sharedFixturePath,
-    knowledgeFixturePath
+    knowledgeFixturePath,
+    tokenFeedFixturePath
   ],
   summary: {
     promptEvaluationCount: promptEvaluations.length,

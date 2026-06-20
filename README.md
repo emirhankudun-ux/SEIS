@@ -247,6 +247,7 @@ npm run check:model-router-contracts
 npm run check:agent-runtime-lifecycle
 npm run check:tool-registry-permissions
 npm run check:knowledge-source-classification
+npm run check:token-feed-budget
 npm run seis:check
 npm run check:seis-platform-language-policy
 npm run check:seis-platform-kernel

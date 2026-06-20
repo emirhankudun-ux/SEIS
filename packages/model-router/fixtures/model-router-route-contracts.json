@@ -6,6 +6,7 @@
     "docs/ai/model-router.md",
     "docs/ai/provider-routing-policy.md",
     "docs/security/model-provider-data-policy.md",
+    "packages/data/fixtures/seis-10m-token-feed-budget.json",
     "roadmap/seis-ai-core-command-center-5-year-development-program.md"
   ],
   "routeModes": [
@@ -148,6 +149,76 @@
       "sourceLinks": [
         "docs/ai/model-router.md",
         "docs/ai/provider-routing-policy.md"
+      ]
+    },
+    {
+      "id": "route-contract-seis-10m-token-feed-metadata",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "request": {
+        "taskType": "documentation-assistance",
+        "dataClass": "metadata",
+        "privacyMode": "metadata-only",
+        "requiredCapabilities": [
+          "token-feed-budgeting",
+          "knowledge-source-classification",
+          "command-center-evidence-feed"
+        ],
+        "approvalState": "not-required",
+        "costBudget": {
+          "maxTokens": 10000000,
+          "maxUsd": 0
+        },
+        "evaluationProfile": "token-feed-budget-fixture",
+        "sourceLinks": [
+          "packages/data/fixtures/seis-10m-token-feed-budget.json",
+          "docs/ai/context-memory-boundary.md"
+        ]
+      },
+      "decision": {
+        "routeMode": "metadata-only",
+        "allowed": true,
+        "providerProfile": "metadata-only-no-provider",
+        "modelProfile": "no-model-token-feed-budget",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "approvalRequired": false,
+        "redactionRequired": true,
+        "blockedReason": "metadata-only feed budget plan; no raw content, provider call, embedding index, memory write, or model training is performed"
+      },
+      "response": {
+        "routeId": "route-seis-10m-token-feed-metadata",
+        "providerId": "metadata-only-no-provider",
+        "modelProfileId": "no-model-token-feed-budget",
+        "promptVersionId": "prompt-documentation-assistant-v0-1",
+        "privacyMode": "metadata-only",
+        "blockedReason": "metadata-only feed budget plan; no raw content, provider call, embedding index, memory write, or model training is performed",
+        "auditEventId": "audit-route-seis-10m-token-feed-metadata",
+        "evaluationProfile": "token-feed-budget-fixture",
+        "sourceLinks": [
+          "packages/model-router/fixtures/model-router-route-contracts.json",
+          "packages/data/fixtures/seis-10m-token-feed-budget.json"
+        ]
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "promptContentStored": false,
+        "secretMaterialStored": false,
+        "providerCallPerformed": false,
+        "browserReceivesProviderKey": false,
+        "safeMetadata": [
+          "route id",
+          "task type",
+          "target token budget",
+          "tokens executed",
+          "source class",
+          "privacy mode",
+          "approval state",
+          "evaluation profile"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/model-router.md",
+        "packages/data/fixtures/seis-10m-token-feed-budget.json"
       ]
     },
     {

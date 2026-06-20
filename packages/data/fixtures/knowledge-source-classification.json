@@ -5,7 +5,9 @@
   "sourceDocuments": [
     "docs/ai/context-memory-boundary.md",
     "docs/evals/evaluation-strategy.md",
+    "docs/ai/model-router.md",
     "docs/architecture/ai-core-app-shared-contracts.md",
+    "packages/data/fixtures/seis-10m-token-feed-budget.json",
     "docs/governance/icloud-github-workspace-ingestion.md",
     "roadmap/seis-ai-core-command-center-5-year-development-program.md"
   ],
@@ -112,6 +114,32 @@
       "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
     },
     {
+      "id": "knowledge-seis-10m-token-feed-plan",
+      "sourceName": "SEIS 10,000,000 token feed budget plan",
+      "sourceClass": "planned",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "Command Center token feed budget display",
+        "metadata-only route validation",
+        "future approved source capacity planning"
+      ],
+      "forbiddenUses": [
+        "claiming 10,000,000 tokens were ingested",
+        "storing raw repository content",
+        "creating embeddings or persistent memory",
+        "routing raw content to external providers",
+        "claiming model training or checkpoint progress"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
       "id": "knowledge-discarded-assistant-archive",
       "sourceName": "Discarded assistant paste archive",
       "sourceClass": "archive",
@@ -152,12 +180,14 @@
     "fake BCI claim",
     "fake consciousness upload claim",
     "fake trained model ownership claim",
+    "fake 10,000,000 token ingestion completion claim",
     "fake benchmark or checkpoint claim"
   ],
   "nonClaims": [
     "No raw assistant archive content is ingested into memory or retrieval.",
     "No external provider call is performed by this fixture.",
     "No embedding index, vector database, or persistent memory write is created.",
+    "No 10,000,000 token ingestion has been executed.",
     "No automatic push, merge, deployment, payment, or infrastructure mutation is enabled.",
     "No active countermeasure, poisoned data injection, or memetic manipulation is implemented.",
     "No BCI, consciousness upload, trained model, benchmark, checkpoint, or model-card claim is created.",
