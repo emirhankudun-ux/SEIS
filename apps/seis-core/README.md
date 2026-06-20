@@ -6,6 +6,8 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
+- `ai-core-contract-fixture.js`: browser-safe projection of the shared AI Core
+  and Command Center contract fixture.
 - `script.js`: local state, goal creation, repository filtering, agent mode switching, command palette, settings, and dashboard rendering.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
@@ -15,6 +17,7 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 apps/seis-core/
   index.html
   styles.css
+  ai-core-contract-fixture.js
   script.js
   icon.svg
   manifest.webmanifest
@@ -25,7 +28,7 @@ apps/seis-core/
 
 ## UI Wireframe Plan
 
-1. Sidebar: persistent module navigation for Dashboard, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge.
+1. Sidebar: persistent module navigation for Dashboard, Goals, Repositories, Documentation, Agents, AI Core, Plugins, Automation, Security, Architecture, and Knowledge.
 2. Top navigation: global search, command palette, settings.
 3. Main workspace: selected module content with clear page header and primary action.
 4. Right inspector: active agent mode, next actions, and MVP specification.
@@ -47,6 +50,9 @@ apps/seis-core/
 - Repositories: filter chips, health cards, documentation coverage.
 - Documentation: index and coverage plan.
 - Agents: mode cards, AI system support, and inspector sync.
+- AI Core: fixture-backed model routes, prompt versions, supervised agent tasks,
+  approval gates, evaluation results, audit events, safety findings, roadmap
+  items, and goal evidence from the shared contract fixture.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
@@ -59,6 +65,7 @@ apps/seis-core/
 - Update goal status to Review or Done.
 - Filter repositories by health.
 - Switch active AI agent mode.
+- Inspect AI Core shared-contract routes, prompts, approvals, evaluations, and evidence without live provider access.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.
@@ -74,6 +81,7 @@ apps/seis-core/
 ## Future Roadmap
 
 - GitHub workflow and check-run integration.
+- Live AI Core adapters after provider privacy, approval, and evaluation gates are implemented.
 - Documentation coverage scanner.
 - ADR creation workflow.
 - Agent handoff records.

@@ -154,6 +154,28 @@ const aiSystems = [
   }
 ];
 
+const aiCoreContract = window.seisAiCoreContractFixture ?? {
+  id: "missing-ai-core-contract-fixture",
+  status: "blocked",
+  sourceFixture: "apps/seis-core/ai-core-contract-fixture.js",
+  stateVocabulary: [],
+  llmExecutionModes: [],
+  moduleMaturities: [],
+  modelRoutes: [],
+  promptVersions: [],
+  agentTasks: [],
+  approvalRequests: [],
+  evaluationResults: [],
+  auditEvents: [],
+  repositoryFindings: [],
+  documentationStatuses: [],
+  securityFindings: [],
+  roadmapItems: [],
+  aiSurfaces: [],
+  repositoryIntelligence: [],
+  goalTrackingStates: []
+};
+
 const pluginFamilies = [
   {
     name: "Builder and Prototyping",
@@ -239,6 +261,7 @@ const securityReports = [
 
 const recommendedActions = [
   ["Command Center architecture", "Keep Phase 1 static, then promote proven modules to React/Next."],
+  ["AI Core contract views", "Use fixture-backed routes, prompts, approvals and evidence before live provider adapters."],
   ["Security review", "Make plugin permissions and SSH gates visible before adding remote writes."],
   ["Automation wiring", "Connect report refresh, quality and release checks to a traceable workflow history."],
   ["Native bridge", "Use the SwiftUI shell as Phase 3 once Command Center workflows stabilize."]
@@ -374,6 +397,7 @@ const viewMeta = {
   repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
   documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
   agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Run Agent"],
+  "ai-core": ["AI Core", "AI Core center", "Inspect model routes, prompts, agent tasks, approvals, evals, and evidence from the shared contract fixture.", "Review Route"],
   plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Review Plugins"],
   automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Run Check"],
   security: ["Security", "Security center", "Track risk reports, permission reviews, dependency scanning, access models, and auditability.", "Review Risk"],
@@ -400,9 +424,20 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 function statusClass(status) {
-  if (status === "Ready" || status === "Active" || status === "Done") return "ready";
-  if (status === "Blocked") return "blocked";
+  const normalized = `${status}`.toLowerCase();
+  if (["ready", "active", "done", "validated", "pass", "not-required", "fixture-backed"].includes(normalized)) {
+    return "ready";
+  }
+  if (["blocked", "failed", "fail", "denied", "secret"].includes(normalized)) return "blocked";
   return "attention";
+}
+
+function labelFromId(value) {
+  return `${value}`
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 function render() {
@@ -415,6 +450,7 @@ function render() {
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderAiCore();
   renderPlugins();
   renderAutomation();
   renderSecurity();
@@ -602,6 +638,103 @@ function renderAgents() {
       <p>${system.role}</p>
     </article>
   `).join("");
+}
+
+function renderContractCard(item, title, detail, chips = []) {
+  return `
+    <article class="contract-card">
+      <div class="card-topline">
+        <h3>${title}</h3>
+        <span class="status-pill ${statusClass(item.status ?? item.approvalState ?? item.decisionState ?? item.result)}">${item.status ?? item.approvalState ?? item.decisionState ?? item.result}</span>
+      </div>
+      <p>${detail}</p>
+      <div class="meta-row">
+        ${chips.map((chip) => `<span class="meta-chip">${chip}</span>`).join("")}
+        <span class="meta-chip">${item.evidence}</span>
+      </div>
+    </article>
+  `;
+}
+
+function renderAiCore() {
+  const contract = aiCoreContract;
+  const routeCount = contract.modelRoutes.length;
+  const toolCount = contract.toolRegistryEntries.length;
+  const knowledgeSourceCount = contract.knowledgeSources.length;
+  const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
+    contract.modelRoutes.filter((route) => route.approvalState === "approval-needed").length;
+  const validatedEvidence = [
+    ...contract.evaluationResults,
+    ...contract.auditEvents,
+    ...contract.documentationStatuses,
+    ...contract.securityFindings,
+    ...contract.roadmapItems,
+    ...contract.repositoryIntelligence
+  ].filter((item) => item.status === "validated").length;
+
+  $("#ai-core-contract-status").textContent = labelFromId(contract.status);
+  $("#ai-core-contract-status").className = `status-pill ${statusClass(contract.status)}`;
+
+  $("#ai-core-summary-grid").innerHTML = [
+    ["Contract", labelFromId(contract.status), contract.sourceFixture],
+    ["Routes", routeCount, "model-router fixtures"],
+    ["Tools", toolCount, "permission registry"],
+    ["Sources", knowledgeSourceCount, "retrieval boundary"],
+    ["Execution Modes", contract.llmExecutionModes.length, "privacy modes"],
+    ["Approvals", approvalNeeded, "human gates"],
+    ["Evidence", validatedEvidence, "validated metadata records"]
+  ].map(([label, value, detail]) => `
+    <article class="metric-card">
+      <span>${label}</span>
+      <strong>${value}</strong>
+      <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#ai-core-routes").innerHTML = contract.modelRoutes.map((route) => renderContractCard(
+    route,
+    labelFromId(route.id),
+    route.blockedReason,
+    [route.taskType, route.privacyMode, route.approvalState, route.maturity]
+  )).join("");
+
+  $("#ai-core-prompts").innerHTML = contract.promptVersions.map((prompt) => renderContractCard(
+    prompt,
+    prompt.name,
+    prompt.scope,
+    [`v${prompt.version}`, prompt.regressionSuite, prompt.maturity]
+  )).join("");
+
+  $("#ai-core-agent-tasks").innerHTML = contract.agentTasks.map((task) => renderContractCard(
+    task,
+    task.agentRole,
+    task.intent,
+    [task.approvalState, task.maturity, `${task.allowedActions.length} allowed`, `${task.forbiddenActions.length} forbidden`]
+  )).join("");
+
+  $("#ai-core-approvals").innerHTML = contract.approvalRequests.map((request) => renderContractCard(
+    request,
+    labelFromId(request.id),
+    request.requestType,
+    [request.riskClass, request.decisionState]
+  )).join("");
+
+  const evidenceItems = [
+    ...contract.evaluationResults.map((item) => ({ ...item, group: "Evaluation", title: item.targetType, detail: item.result })),
+    ...contract.auditEvents.map((item) => ({ ...item, group: "Audit", title: item.actor, detail: item.action })),
+    ...contract.toolRegistryEntries.map((item) => ({ ...item, group: "Tool", title: item.riskClass, detail: `${item.toolName}: ${item.permissionState}` })),
+    ...contract.knowledgeSources.map((item) => ({ ...item, group: "Source", title: item.sourceClass, detail: `${item.sourceName}: ${item.retrievalState}` })),
+    ...contract.securityFindings.map((item) => ({ ...item, group: "Security", title: item.category, detail: item.riskClass })),
+    ...contract.roadmapItems.map((item) => ({ ...item, group: "Roadmap", title: item.horizon, detail: item.track })),
+    ...contract.goalTrackingStates.map((item) => ({ ...item, group: "Goal", title: item.progressState, detail: item.goal }))
+  ];
+
+  $("#ai-core-evidence").innerHTML = evidenceItems.map((item) => renderContractCard(
+    item,
+    `${item.group}: ${labelFromId(item.title)}`,
+    item.detail,
+    [item.status, item.maturity ?? item.completionEvidence ?? item.redactionState ?? "metadata"]
+  )).join("");
 }
 
 function renderPlugins() {
@@ -837,6 +970,7 @@ function renderCommandResults(query) {
     ["Repositories", "Inspect repository health", "repositories"],
     ["Documentation", "Review docs and ADR coverage", "documentation"],
     ["Agents", "Switch AI operating mode", "agents"],
+    ["AI Core", "Inspect routes, prompts, approvals and evidence", "ai-core"],
     ["Plugins", "Review plugins, permissions and updates", "plugins"],
     ["Automation", "Inspect workflows and triggers", "automation"],
     ["Security", "Review risk and access posture", "security"],
