@@ -104,8 +104,10 @@ dedicated follow-up PR exists.
   the repository setting exists, validates generated SARIF, and preserves SARIF
   as an Actions artifact.
 - qlty still requires external service access for full logs. The visible status
-  only reports `Build errored`, so this PR records local repo validation instead
-  of inventing a qlty root cause.
+  only reports `Build errored`, so this PR adds `.qlty/qlty.toml` to keep qlty
+  analysis focused on active source and governance files while excluding legacy
+  mirrors, generated reports, release outputs, and agent archives that are not
+  part of this PR's review surface.
 
 ## Validation Plan
 
