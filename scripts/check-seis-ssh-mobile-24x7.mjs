@@ -154,7 +154,7 @@ function parseArgs(tokens) {
     if (token === "--") continue;
     if (!token.startsWith("--")) continue;
     const key = token.slice(2);
-    if (key === "help" || key === "require-ready") {
+    if (key === "help" || key === "require-ready" || key === "skip-mobile-check") {
       parsed[key] = true;
       continue;
     }
@@ -297,10 +297,10 @@ function nextActions(value) {
   const actions = [];
   if (value.blockers.includes("mobile-24x7-requires-direct-cloud-transport")) {
     actions.push("Keep SEIS-SSH as the only alias, but switch it to direct-cloud after root key auth works on the always-on host.");
-    actions.push("Run: npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply");
+    actions.push(`Run: npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply`);
   }
   if (value.blockers.some((item) => item.startsWith("direct-cloud-endpoint-unreachable"))) {
-    actions.push("Fix cloud firewall/security group, public IP routing, and sshd listener for port 22.");
+    actions.push(`Generate host-fix plan and rerun mobile check:\n  npm run cloud:ssh:host-fix-plan -- --public-ip ${quote(value.checks?.sshConfig?.hostname || "<direct-host>")} --user ${quote(value.checks?.sshConfig?.user || "root")} --live --json`);
   }
   if (value.blockers.some((item) => item.startsWith("direct-cloud-ssh-auth-unavailable"))) {
     actions.push("Install the local public key in root authorized_keys or provision aiuser, then rerun the mobile 24/7 check.");
@@ -315,6 +315,12 @@ function nextActions(value) {
     actions.push("SEIS-SSH is mobile 24/7 ready. Keep this strict check in release and device-bootstrap handoff.");
   }
   return actions;
+}
+
+function quote(value) {
+  const text = String(value || "");
+  if (!text) return "''";
+  return `'${text.replaceAll("'", "'\"'\"'")}'`;
 }
 
 function isLocalHost(host) {

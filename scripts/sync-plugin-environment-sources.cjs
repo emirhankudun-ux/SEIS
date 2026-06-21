@@ -39,6 +39,10 @@ const THIRD_PARTY_AI_HELPERS = [
 ];
 const LOCAL_AI_HELPERS = [
   { id: "codex", label: "Codex", command: "codex" },
+  { id: "antigravity", label: "Antigravity", command: "open", appPath: desktopAppPath(["Antigravity.app"]) },
+  { id: "antigravity-ide", label: "Antigravity IDE", command: "open", appPath: desktopAppPath(["Antigravity IDE.app"]) },
+  { id: "cursor", label: "Cursor", command: "open", appPath: desktopAppPath(["Cursor.app"]) },
+  { id: "xcode", label: "Xcode", command: "open", appPath: desktopAppPath(["Xcode.app"]) },
   { id: "openai", label: "OpenAI", command: "openai", credentialEnv: "OPENAI_API_KEY" },
   { id: "claude", label: "Claude", command: "claude", credentialEnv: "ANTHROPIC_API_KEY" },
   { id: "gemini", label: "Gemini", command: "gemini", credentialEnv: "GEMINI_API_KEY" },
@@ -173,10 +177,24 @@ function commandExists(command) {
   };
 }
 
+function desktopAppPath(bundleNames) {
+  const roots = [
+    path.join(process.env.HOME || "", "Applications"),
+    "/Applications"
+  ].filter(Boolean);
+
+  for (const root of roots) {
+    for (const bundleName of bundleNames) {
+      const candidate = path.join(root, bundleName);
+      if (fs.existsSync(candidate)) return candidate;
+    }
+  }
+
+  return path.join("/Applications", bundleNames[0]);
+}
+
 function openDesignAppPath() {
-  const homeCandidate = path.join(process.env.HOME || "", "Applications", "Open Design.app");
-  if (homeCandidate && fs.existsSync(homeCandidate)) return homeCandidate;
-  return "/Applications/Open Design.app";
+  return desktopAppPath(["Open Design.app"]);
 }
 
 function formatLocalAiToolState(tool) {
@@ -578,10 +596,21 @@ function createDesktopAppIntegrationSource(integration) {
     missingCount: integration.summary?.missingCount || apps.filter((app) => !app.detected).length,
     launchMode: integration.policy?.launchMode,
     defaultIde: integration.policy?.defaultIde,
+    antigravity2Surface: integration.policy?.antigravity2Surface,
+    secondaryAiEditor: integration.policy?.secondaryAiEditor,
+    primaryAgentExecution: integration.policy?.primaryAgentExecution,
+    localModelRuntime: integration.policy?.localModelRuntime,
+    appleWork: integration.policy?.appleWork,
+    androidWork: integration.policy?.androidWork,
+    jetbrainsWork: integration.policy?.jetbrainsWork,
+    oneWriterAtATime: integration.policy?.oneWriterAtATime,
+    noPrivateAppStateInRepo: integration.policy?.noPrivateAppStateInRepo,
     apps: apps.map((app) => ({
       id: app.id,
+      label: app.label,
       role: app.role,
       detected: app.detected,
+      version: app.version,
       appPath: app.appPath,
       integrationAction: app.integrationAction
     }))

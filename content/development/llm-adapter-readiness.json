@@ -18,6 +18,34 @@
       "notes": "Primary local execution lane when explicitly selected; governed by SEIS Agent policy."
     },
     {
+      "id": "antigravity",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["agentic-workspace", "ai-native-ideation", "manual-launch"],
+      "notes": "Antigravity 2.x desktop surface is locally installed; use on request without committing private app state."
+    },
+    {
+      "id": "antigravity-ide",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["repo-workspace", "agentic-ide", "review-surface"],
+      "notes": "Preferred IDE surface for SEIS repo/worktree work when an IDE is needed."
+    },
+    {
+      "id": "cursor",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["secondary-ai-editor", "diff-review", "manual-launch"],
+      "notes": "Secondary AI editor surface; keep one writer active and review Git diffs before handoff."
+    },
+    {
+      "id": "xcode",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["swift", "swiftui", "apple-signing", "simulator"],
+      "notes": "Apple platform IDE for iOS/macOS validation and signing-sensitive work."
+    },
+    {
       "id": "openai",
       "status": "planned",
       "mode": "local-helper",

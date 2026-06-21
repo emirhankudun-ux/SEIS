@@ -1,0 +1,266 @@
+{
+  "datasetId": "seis-memory-ranker-seed-v0",
+  "version": "0.1.0",
+  "owner": "SEIS",
+  "sourceClass": "SEIS-owned synthetic examples",
+  "license": "repository-license",
+  "consent": "no-user-private-data",
+  "cases": [
+    {
+      "id": "train-governance-map",
+      "split": "train",
+      "query": {
+        "id": "train-governance-map",
+        "text": "Where is the architecture map for core SEIS product layers and how do model and governance layers connect?"
+      },
+      "candidates": [
+        {
+          "id": "five-layer-map",
+          "title": "SEIS 5-Layer Operating Map",
+          "summary": "Layer definitions for product, platform, AI, cloud, and governance work with operating dependencies.",
+          "topics": ["architecture", "governance", "5-layer"],
+          "source": "docs/architecture/seis-5-layer-operating-map.md"
+        },
+        {
+          "id": "universe-manifesto",
+          "title": "SEIS Universe Model Family",
+          "summary": "Family roadmap for permission policy, memory ranker, eval critic, and design sense models.",
+          "topics": ["model-family", "seis-universe", "roadmap"],
+          "source": "SEIS_UNIVERSE_MODEL_FAMILY.md"
+        },
+        {
+          "id": "policy-card",
+          "title": "Permission Policy Model Card",
+          "summary": "Evidence for the first deterministic and learned permission model.",
+          "topics": ["policy", "governance", "safety"],
+          "source": "SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md"
+        }
+      ],
+      "expectedOrder": ["five-layer-map"]
+    },
+    {
+      "id": "train-secret-safety-gates",
+      "split": "train",
+      "query": {
+        "id": "train-secret-safety-gates",
+        "text": "How do we verify that a planned action is safe before running commands or cloud operations?"
+      },
+      "candidates": [
+        {
+          "id": "clean-build-charter",
+          "title": "SEIS Universe Clean Build",
+          "summary": "Clean-room boundary, permission model, and first implementation slice for AI work.",
+          "topics": ["clean-room", "governance", "implementation-gates"],
+          "source": "SEIS_UNIVERSE_CLEAN_BUILD.md"
+        },
+        {
+          "id": "check-enterprise-gates",
+          "title": "Enterprise Change Gates",
+          "summary": "Four-gate sequence for validation, security, documentation, and rollback before completion.",
+          "topics": ["gates", "security", "documentation", "rollback"],
+          "source": "docs/governance/enterprise-change-gates.md"
+        },
+        {
+          "id": "quality-gates",
+          "title": "Quality and Security Gates",
+          "summary": "Command-level checks for workspace, security policy, and AI workflow readiness.",
+          "topics": ["quality", "security", "ai", "commands"],
+          "source": "governance/quality-gates.md"
+        }
+      ],
+      "expectedOrder": ["check-enterprise-gates"]
+    },
+    {
+      "id": "train-memory-retrieval",
+      "split": "train",
+      "query": {
+        "id": "train-memory-retrieval",
+        "text": "I need guidance for which file should receive a documentation update and why."
+      },
+      "candidates": [
+        {
+          "id": "gov-instructions",
+          "title": "SEIS Governing Instructions",
+          "summary": "Repository-level policy for operating prompts, architecture, and quality gates.",
+          "topics": ["instructions", "governance", "architecture"],
+          "source": "AGENTS.md"
+        },
+        {
+          "id": "docs-update-plan",
+          "title": "SEIS Master Goal Coverage Report",
+          "summary": "Tracks quality and objective coverage for documentation and governance updates.",
+          "topics": ["documentation", "coverage", "goals"],
+          "source": "SEIS_UNIVERSE_PERMISSION_POLICY_MODEL_CARD.md"
+        },
+        {
+          "id": "policy-reference",
+          "title": "AI Policy",
+          "summary": "Rules for AI usage, policy enforcement, and risk reporting.",
+          "topics": ["ai-policy", "risk", "security"],
+          "source": "docs/ai/policy.md"
+        }
+      ],
+      "expectedOrder": ["policy-reference"]
+    },
+    {
+      "id": "train-model-release-readiness",
+      "split": "train",
+      "query": {
+        "id": "train-model-release-readiness",
+        "text": "What is required before a new model experiment is shipped to release gates?"
+      },
+      "candidates": [
+        {
+          "id": "release-readiness",
+          "title": "Publish and Release Gates",
+          "summary": "Quality and compliance checks for release readiness across security and AI controls.",
+          "topics": ["release", "governance", "compliance"],
+          "source": "package.json"
+        },
+        {
+          "id": "model-card-guidance",
+          "title": "Model Card Template",
+          "summary": "Mandatory model fields for provenance, limits, dataset linkage, and approval status.",
+          "topics": ["model-card", "provenance", "evaluation"],
+          "source": "SEIS_UNIVERSE_MODEL_CARD_TEMPLATE.md"
+        },
+        {
+          "id": "dataset-guidance",
+          "title": "Dataset Card Template",
+          "summary": "Required fields for consent, source class, licenses, risks, and dataset splits.",
+          "topics": ["dataset", "governance", "rights"],
+          "source": "SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md"
+        }
+      ],
+      "expectedOrder": ["model-card-guidance"]
+    },
+    {
+      "id": "train-eval-plan",
+      "split": "train",
+      "query": {
+        "id": "train-eval-plan",
+        "text": "What should be measured to validate first wave model behaviors in SEIS?"
+      },
+      "candidates": [
+        {
+          "id": "eval-plan-doc",
+          "title": "SEIS Universe Evaluation Plan",
+          "summary": "Model quality families for engineering, permission safety, provenance, and energy-aware review.",
+          "topics": ["evaluation", "quality", "release", "security"],
+          "source": "SEIS_UNIVERSE_EVAL_PLAN.md"
+        },
+        {
+          "id": "dataset-template",
+          "title": "Dataset Card Template",
+          "summary": "Source, consent, risk review, and split policy for SEIS datasets.",
+          "topics": ["dataset", "risk", "quality"],
+          "source": "SEIS_UNIVERSE_DATASET_CARD_TEMPLATE.md"
+        },
+        {
+          "id": "model-program-doc",
+          "title": "Model Program Charter",
+          "summary": "Clean-room source priority and model family roadmap for phase-based research.",
+          "topics": ["model-program", "clean-room", "strategy"],
+          "source": "SEIS_UNIVERSE_CLEAN_BUILD.md"
+        }
+      ],
+      "expectedOrder": ["eval-plan-doc"]
+    },
+    {
+      "id": "eval-memory-rank",
+      "split": "eval",
+      "query": {
+        "id": "eval-memory-rank",
+        "text": "Which document should I read when deciding whether to update SEIS governance gates first?"
+      },
+      "candidates": [
+        {
+          "id": "governance-bridge",
+          "title": "Enterprise Change Gates",
+          "summary": "Validation gate sequence for governance-safe modifications.",
+          "topics": ["governance", "safety", "change"],
+          "source": "docs/governance/enterprise-change-gates.md"
+        },
+        {
+          "id": "model-family-doc",
+          "title": "SEIS Universe Model Family",
+          "summary": "Active model families and first active learning slice details.",
+          "topics": ["model-family", "governance", "roadmap"],
+          "source": "SEIS_UNIVERSE_MODEL_FAMILY.md"
+        },
+        {
+          "id": "ai-gates-doc",
+          "title": "AI Policy Document",
+          "summary": "AI policy requirements for risk, safety, and rollback in model usage.",
+          "topics": ["ai", "policy", "rollback"],
+          "source": "docs/ai/policy.md"
+        }
+      ],
+      "expectedOrder": ["governance-bridge"]
+    },
+    {
+      "id": "eval-governance-routes",
+      "split": "eval",
+      "query": {
+        "id": "eval-governance-routes",
+        "text": "Which document gives the 30-day rollout architecture roadmap and security sequencing requirements?"
+      },
+      "candidates": [
+        {
+          "id": "vision-doc",
+          "title": "SEIS Supreme Vision",
+          "summary": "Long-term vision and cross-system strategy guidance.",
+          "topics": ["vision", "roadmap", "strategy"],
+          "source": "docs/governance/seis-supreme-vision.md"
+        },
+        {
+          "id": "thirty-day-roadmap",
+          "title": "Architecture Roadmap",
+          "summary": "30-day sequencing for architecture and quality gate rollout.",
+          "topics": ["roadmap", "architecture", "governance"],
+          "source": "goals/architecture.md"
+        },
+        {
+          "id": "ai-strategy-doc",
+          "title": "AI Vision Policy",
+          "summary": "Strategic model-family direction and AI policy principles.",
+          "topics": ["ai", "strategy", "policy"],
+          "source": "docs/governance/seis-supreme-vision.md"
+        }
+      ],
+      "expectedOrder": ["thirty-day-roadmap"]
+    },
+    {
+      "id": "eval-github-readiness",
+      "split": "eval",
+      "query": {
+        "id": "eval-github-readiness",
+        "text": "Which command and checks should run before publish readiness for GitHub workflow?"
+      },
+      "candidates": [
+        {
+          "id": "publish-readiness-doc",
+          "title": "Publish and Deploy Readiness",
+          "summary": "Command and environment checks for repository publishing health.",
+          "topics": ["publish", "check", "github"],
+          "source": "scripts/check-github-publish-readiness.mjs"
+        },
+        {
+          "id": "remote-config-doc",
+          "title": "Remote Readiness Record",
+          "summary": "Remote configuration contract for governance and publish checks.",
+          "topics": ["remote", "readiness", "automation"],
+          "source": "docs/governance/enterprise-change-gates.md"
+        },
+        {
+          "id": "ai-readiness-doc",
+          "title": "AI Release Manifest",
+          "summary": "Checks and checksums for AI readiness and governance.",
+          "topics": ["ai", "release", "governance"],
+          "source": "scripts/create-ai-release-manifest.cjs"
+        }
+      ],
+      "expectedOrder": ["publish-readiness-doc"]
+    }
+  ]
+}

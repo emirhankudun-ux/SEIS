@@ -35,6 +35,7 @@ List the checks you ran:
 npm run check:seis-enterprise-gates:quality
 npm run check:seis-enterprise-gates:security
 npm run check:seis-enterprise-gates:ai
+npm run check:llm-orchestration-policy
 npm run check:seis-master-prompt-report
 npm run check:seis-master-prompt
 npm run check:open-source-governance
@@ -43,7 +44,7 @@ npm run seis:check
 
 Quality/Safety evidence (choose one per row):
 
-- Enterprise gate set: [ ] quality [ ] security [ ] ai
+- Enterprise gate set: [ ] quality [ ] security [ ] ai [ ] ai-policy
 - 4-kapı formu: `docs/governance/enterprise-change-gates.md`’de kapı kapanışları işaretlendi.
 - Rollback plan: ilgili ticket / ADR / runbook linki:
 
@@ -59,6 +60,19 @@ Değişikliğiniz bu 4 kapıdan geçtiyse işaretleyin (kapanışta tüm kutular
   - Davranış etkisi varsa güncel dokümantasyon/decisions kaydı eklediniz
 - [ ] Rollback Kapısı
   - Geri alma planı, etki alanı, rollback adımı ve RTO/RPO varsayımı tanımlandı
+
+## God Mode Kapı Durumları
+
+Kapanış satırında her satırı doldurun:
+
+- Doğrulama Metrikleri Kapısı: passed / waived / blocked
+- Güvenlik Kapısı: passed / waived / blocked
+- Docs Kapısı: passed / waived / blocked
+- Rollback Kapısı: passed / waived / blocked
+- AI Kapısı: passed / waived / blocked
+- CI Kapısı (quality/security/AI): passed / blocked
+
+En az bir kapı `blocked` ise PR tamamlanmış kabul edilmez.
 
 Örnek:
 - PR tipi: Özellik / Refactor / Dokümantasyon / Security / AI

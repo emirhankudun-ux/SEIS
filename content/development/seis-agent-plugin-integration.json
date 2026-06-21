@@ -1,0 +1,242 @@
+{
+  "id": "seis-agent-plugin-integration",
+  "version": "2026.06.19",
+  "status": "active",
+  "updatedAt": "2026-06-19",
+  "purpose": "Bind the personal SEIS plugin family, the new embedded specialist skills, and the submitted plugin universe into the repo-contained SEIS-Agent, the SEIS AI runtime, the demo application surface, and SEIS repository governance without publishing standalone lane cards.",
+  "primaryInstallId": "seis-ai-agent@seis-repo",
+  "canonicalAgent": {
+    "identity": "SEIS-Agent",
+    "pluginRoot": "plugins/seis-ai-agent",
+    "repoMarketplace": ".agents/plugins/marketplace.json",
+    "marketplaceName": "seis-repo",
+    "publishedPlugin": "seis-ai-agent",
+    "installMode": "single-agent",
+    "standaloneLaneInstallMode": "disabled"
+  },
+  "auditedSnapshot": {
+    "auditedAt": "2026-06-19",
+    "sourceCommand": "WORKDIR=/tmp/seis-installed-plugin-audit-20260619 bash /Users/emirhankudun/plugins/seis/scripts/seis-installed-plugin-audit.sh",
+    "installedEnabledCount": 185,
+    "notInstalledCount": 5,
+    "personalPluginsInstalledEnabled": [
+      "seis@personal",
+      "seis-cloud@personal",
+      "seis-code@personal",
+      "seis-design@personal",
+      "seis-data@personal"
+    ],
+    "notInstalled": [
+      "hex@openai-curated",
+      "chronograph-lp@openai-curated",
+      "glean@openai-curated",
+      "chronograph-gp@openai-curated",
+      "openai-ads-conversions@openai-curated"
+    ],
+    "authenticationClaim": "not-claimed"
+  },
+  "activationPolicy": {
+    "mode": "task-scoped-lane-activation",
+    "rule": "Use installed and enabled plugins only when task relevance, authentication, safety scope, and validation path are explicit.",
+    "noBlanketActivation": true,
+    "noSecretDisclosure": true,
+    "externalMutationRequiresUserConfirmation": true
+  },
+  "personalPlugins": [
+    {
+      "id": "seis@personal",
+      "status": "installed-enabled-audited",
+      "embeddedAs": "seis",
+      "sourceMirror": "plugins/seis",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md"
+    },
+    {
+      "id": "seis-cloud@personal",
+      "status": "installed-enabled-audited",
+      "embeddedAs": "seis-cloud",
+      "sourceMirror": "plugins/seis-cloud",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md"
+    },
+    {
+      "id": "seis-code@personal",
+      "status": "installed-enabled-audited",
+      "embeddedAs": "seis-code",
+      "sourceMirror": "plugins/seis-code",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md"
+    },
+    {
+      "id": "seis-design@personal",
+      "status": "installed-enabled-audited",
+      "embeddedAs": "seis-design",
+      "sourceMirror": "plugins/seis-design",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md"
+    },
+    {
+      "id": "seis-data@personal",
+      "status": "installed-enabled-audited",
+      "embeddedAs": "seis-data",
+      "sourceMirror": "plugins/seis-data",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md"
+    }
+  ],
+  "lanes": [
+    {
+      "id": "seis",
+      "displayName": "SEIS Hub",
+      "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "mcpTools": [
+        "seis_hub_status",
+        "seis_hub_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-governance",
+      "displayName": "SEIS Governance",
+      "role": "release readiness, marketplace policy, identity checks, and operating evidence",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-governance/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "mcpTools": [
+        "seis_governance_status",
+        "seis_governance_plan"
+      ],
+      "defaultGate": "npm run check:seis-specialist-plugins"
+    },
+    {
+      "id": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "sourceMirror": "plugins/seis-cloud",
+      "mcpTools": [
+        "seis_cloud_status",
+        "seis_cloud_plan"
+      ],
+      "defaultGate": "npm run check:cloud-access-policy"
+    },
+    {
+      "id": "seis-code",
+      "displayName": "SEIS-Code",
+      "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "sourceMirror": "plugins/seis-code",
+      "mcpTools": [
+        "seis_code_status",
+        "seis_code_plan"
+      ],
+      "defaultGate": "npm run check:seis-plugin-bundle"
+    },
+    {
+      "id": "seis-design",
+      "displayName": "SEIS-Design",
+      "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "sourceMirror": "plugins/seis-design",
+      "mcpTools": [
+        "seis_design_status",
+        "seis_design_plan"
+      ],
+      "defaultGate": "npm run check:motion-evidence"
+    },
+    {
+      "id": "seis-data",
+      "displayName": "SEIS-DATA",
+      "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "sourceMirror": "plugins/seis-data",
+      "mcpTools": [
+        "seis_data_status",
+        "seis_data_plan"
+      ],
+      "defaultGate": "npm run check:plugin-capability-lanes"
+    },
+    {
+      "id": "seis-security",
+      "displayName": "SEIS Security",
+      "role": "threat modeling, secret-safety review, dependency and permission risk, SSH/VPN hardening, and release-blocking security checks",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-security/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_security_status",
+        "seis_security_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-research",
+      "displayName": "SEIS Research",
+      "role": "official source review, version checks, evidence synthesis, and research-backed technical decisions",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-research/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_research_status",
+        "seis_research_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-automation",
+      "displayName": "SEIS Automation",
+      "role": "repeatable scripts, checks, CI steps, runbooks, scheduled jobs, and human-approved agent automation",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-automation/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_automation_status",
+        "seis_automation_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    },
+    {
+      "id": "seis-product",
+      "displayName": "SEIS Product",
+      "role": "roadmap slices, requirements, acceptance criteria, launch readiness, and product scope",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-product/SKILL.md",
+      "sourceMirror": "plugins/seis-ai-agent",
+      "mcpTools": [
+        "seis_product_status",
+        "seis_product_plan"
+      ],
+      "defaultGate": "npm run check:seis-ai-agent"
+    }
+  ],
+  "helperPluginUniverse": {
+    "sourceRegistry": "content/development/requested-plugin-inventory.json",
+    "capabilityLanes": "content/development/plugin-capability-lanes.json",
+    "uniquePlugins": 300,
+    "totalLinks": 301,
+    "laneCount": 12,
+    "activationPolicy": "activate_only_when_relevant_authenticated_scoped_and_user_approved"
+  },
+  "runtimeIntegration": {
+    "aiPackage": "packages/seis-ai",
+    "toolLoopTool": "seis_plugin_integration",
+    "mcpTool": "seis_plugin_integration",
+    "mcpResource": "seis://agent/plugin-integration.json",
+    "sharedHelper": "packages/seis-ai/src/lib/plugin-integration.mjs"
+  },
+  "applicationIntegration": {
+    "surface": "apps/seis-demo-web",
+    "panel": "God Mode ecosystem lanes",
+    "qualityPanelCommand": "npm run check:seis-agent-plugin-integration",
+    "serviceWorkerCache": "seis-demo-web-v17"
+  },
+  "repoIntegration": {
+    "docs": [
+      "docs/platform/seis-agent-plugin-integration.md",
+      "docs/platform/seis-ai-agent.md",
+      "docs/platform/seis-specialist-plugins.md"
+    ],
+    "checker": "scripts/check-seis-agent-plugin-integration.mjs",
+    "packageScript": "check:seis-agent-plugin-integration"
+  },
+  "qualityCommands": [
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:plugin-capability-lanes",
+    "npm test --prefix packages/seis-ai"
+  ],
+  "completionRule": "The integration is active when the manifest, AI runtime tool, MCP tool/resource, demo application surface, docs, package script, and checker all validate without claiming connector authentication or external deployment readiness."
+}

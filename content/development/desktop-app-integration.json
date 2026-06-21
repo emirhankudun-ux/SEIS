@@ -4,25 +4,49 @@
   "generatedAt": "2026-06-11T08:24:53.168Z",
   "policy": {
     "launchMode": "manual_or_user_requested",
-    "defaultIde": "antigravity",
+    "defaultIde": "antigravity-ide",
+    "antigravity2Surface": "antigravity",
+    "secondaryAiEditor": "cursor",
+    "primaryAgentExecution": "codex",
+    "localModelRuntime": "ollama",
     "appleWork": "xcode",
     "androidWork": "android-studio",
+    "jetbrainsWork": "task_specific_jetbrains_ide",
+    "oneWriterAtATime": true,
     "noPrivateAppStateInRepo": true
   },
   "summary": {
-    "appCount": 10,
-    "detectedCount": 7,
+    "appCount": 28,
+    "detectedCount": 25,
     "missingCount": 3
   },
   "apps": [
     {
       "id": "antigravity",
+      "label": "Antigravity",
+      "role": "antigravity-2-agent-surface",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Antigravity.app",
+      "version": "2.0.11",
+      "bundleNames": [
+        "Antigravity.app"
+      ],
+      "workflows": [
+        "Run agentic workspace sessions",
+        "Coordinate AI-native ideation",
+        "Use as Antigravity 2.x surface when task matches"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "antigravity-ide",
       "label": "Antigravity IDE",
       "role": "preferred-agentic-ide",
       "detected": true,
-      "appPath": "../../../../../../../Applications/Antigravity.app",
+      "appPath": "../../../../../../../Applications/Antigravity IDE.app",
+      "version": "2.0.4",
       "bundleNames": [
-        "Antigravity.app"
+        "Antigravity IDE.app"
       ],
       "workflows": [
         "Open repo/worktree",
@@ -32,11 +56,29 @@
       "integrationAction": "use_when_task_matches"
     },
     {
+      "id": "cursor",
+      "label": "Cursor",
+      "role": "secondary-ai-editor",
+      "detected": true,
+      "appPath": "../../../../../../../Applications/Cursor.app",
+      "version": "3.7.21",
+      "bundleNames": [
+        "Cursor.app"
+      ],
+      "workflows": [
+        "Review focused diffs",
+        "Open repo/worktree on request",
+        "Use as a secondary editor with one writer active"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
       "id": "xcode",
       "label": "Xcode",
       "role": "apple-platform-ide",
       "detected": true,
       "appPath": "../../../../../../../Applications/Xcode.app",
+      "version": "16.0",
       "bundleNames": [
         "Xcode.app"
       ],
@@ -53,6 +95,7 @@
       "role": "android-ide",
       "detected": false,
       "appPath": null,
+      "version": null,
       "bundleNames": [
         "Android Studio.app"
       ],
@@ -69,6 +112,7 @@
       "role": "ide-manager",
       "detected": true,
       "appPath": "../../../../../../../Applications/JetBrains Toolbox.app",
+      "version": "3.5.0.84344",
       "bundleNames": [
         "JetBrains Toolbox.app"
       ],
@@ -79,11 +123,250 @@
       "integrationAction": "use_when_task_matches"
     },
     {
+      "id": "intellij-idea",
+      "label": "IntelliJ IDEA",
+      "role": "jvm-and-polyglot-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/IntelliJ IDEA.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "IntelliJ IDEA.app"
+      ],
+      "workflows": [
+        "JVM backend work",
+        "Large project navigation",
+        "Refactor review when task matches"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "webstorm",
+      "label": "WebStorm",
+      "role": "web-typescript-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/WebStorm.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "WebStorm.app"
+      ],
+      "workflows": [
+        "TypeScript and frontend inspection",
+        "Web refactor review",
+        "JavaScript project navigation"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "pycharm",
+      "label": "PyCharm",
+      "role": "python-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/PyCharm.app",
+      "version": "2026.1.2",
+      "bundleNames": [
+        "PyCharm.app"
+      ],
+      "workflows": [
+        "Python data and automation work",
+        "Virtual environment inspection",
+        "Python test review"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "datagrip",
+      "label": "DataGrip",
+      "role": "database-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/DataGrip.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "DataGrip.app"
+      ],
+      "workflows": [
+        "SQL/schema inspection",
+        "Database query review",
+        "Data model exploration"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "goland",
+      "label": "GoLand",
+      "role": "go-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/GoLand.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "GoLand.app"
+      ],
+      "workflows": [
+        "Go services",
+        "CLI tooling",
+        "Go test and module inspection"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "rustrover",
+      "label": "RustRover",
+      "role": "rust-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/RustRover.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "RustRover.app"
+      ],
+      "workflows": [
+        "Rust systems work",
+        "Cargo project inspection",
+        "Performance-oriented tooling review"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "clion",
+      "label": "CLion",
+      "role": "c-cpp-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/CLion.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "CLion.app"
+      ],
+      "workflows": [
+        "C/C++ and systems work",
+        "CMake project inspection",
+        "Native debugging when needed"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "rider",
+      "label": "Rider",
+      "role": "dotnet-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/Rider.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "Rider.app"
+      ],
+      "workflows": [
+        ".NET and C# work",
+        "Unity/desktop project inspection",
+        "Rider-specific refactor review"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "phpstorm",
+      "label": "PhpStorm",
+      "role": "php-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/PhpStorm.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "PhpStorm.app"
+      ],
+      "workflows": [
+        "PHP project inspection",
+        "Composer workflow review",
+        "Legacy web maintenance when needed"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "rubymine",
+      "label": "RubyMine",
+      "role": "ruby-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/RubyMine.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "RubyMine.app"
+      ],
+      "workflows": [
+        "Ruby/Rails inspection",
+        "Gem workflow review",
+        "Legacy scripting work when needed"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "dataspell",
+      "label": "DataSpell",
+      "role": "data-science-ide",
+      "detected": true,
+      "appPath": "../../../../../Applications/DataSpell.app",
+      "version": "2026.1.2",
+      "bundleNames": [
+        "DataSpell.app"
+      ],
+      "workflows": [
+        "Notebook/data-science inspection",
+        "Python analytics review",
+        "Data exploration when task matches"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "mps",
+      "label": "MPS",
+      "role": "language-workbench",
+      "detected": true,
+      "appPath": "../../../../../Applications/MPS.app",
+      "version": "2025.3",
+      "bundleNames": [
+        "MPS.app"
+      ],
+      "workflows": [
+        "Language workbench experiments",
+        "DSL review",
+        "Advanced modeling when justified"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "dottrace",
+      "label": "dotTrace",
+      "role": "performance-profiler",
+      "detected": true,
+      "appPath": "../../../../../Applications/dotTrace.app",
+      "version": null,
+      "bundleNames": [
+        "dotTrace.app"
+      ],
+      "workflows": [
+        "Performance profiling",
+        "Runtime bottleneck analysis",
+        "Use only for targeted diagnostics"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "dotmemory",
+      "label": "dotMemory",
+      "role": "memory-profiler",
+      "detected": true,
+      "appPath": "../../../../../Applications/dotMemory.app",
+      "version": null,
+      "bundleNames": [
+        "dotMemory.app"
+      ],
+      "workflows": [
+        "Memory diagnostics",
+        "Leak investigation",
+        "Use only for targeted diagnostics"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
       "id": "codex",
       "label": "Codex",
       "role": "primary-agent-execution",
       "detected": true,
       "appPath": "../../../../../../../Applications/Codex.app",
+      "version": "26.616.31447",
       "bundleNames": [
         "Codex.app"
       ],
@@ -95,11 +378,46 @@
       "integrationAction": "use_when_task_matches"
     },
     {
+      "id": "air",
+      "label": "Air",
+      "role": "ai-native-workspace-experiment",
+      "detected": true,
+      "appPath": "../../../../../Applications/Air.app",
+      "version": "262.43.15",
+      "bundleNames": [
+        "Air.app"
+      ],
+      "workflows": [
+        "Experimental agent workspace",
+        "Review only when explicitly selected",
+        "Do not treat as repository source of truth"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
+      "id": "gateway",
+      "label": "Gateway",
+      "role": "remote-development-gateway",
+      "detected": true,
+      "appPath": "../../../../../Applications/Gateway.app",
+      "version": "2026.1.3",
+      "bundleNames": [
+        "Gateway.app"
+      ],
+      "workflows": [
+        "Remote IDE access",
+        "Gateway-managed project access",
+        "Use with explicit workspace target"
+      ],
+      "integrationAction": "use_when_task_matches"
+    },
+    {
       "id": "open-design",
       "label": "Open Design",
       "role": "design-agent-workflow",
       "detected": true,
       "appPath": "../../../../../Applications/Open Design.app",
+      "version": "0.10.1",
       "bundleNames": [
         "Open Design.app"
       ],
@@ -116,6 +434,7 @@
       "role": "local-model-runtime",
       "detected": true,
       "appPath": "../../../../../../../Applications/Ollama.app",
+      "version": "0.30.10",
       "bundleNames": [
         "Ollama.app"
       ],
@@ -131,6 +450,7 @@
       "role": "container-runtime",
       "detected": false,
       "appPath": null,
+      "version": null,
       "bundleNames": [
         "Docker.app"
       ],
@@ -145,6 +465,7 @@
       "role": "design-workflow",
       "detected": true,
       "appPath": "../../../../../../../Applications/Figma.app",
+      "version": "126.5.6",
       "bundleNames": [
         "Figma.app"
       ],
@@ -160,6 +481,7 @@
       "role": "creative-app-manager",
       "detected": false,
       "appPath": null,
+      "version": null,
       "bundleNames": [
         "Adobe Creative Cloud.app"
       ],

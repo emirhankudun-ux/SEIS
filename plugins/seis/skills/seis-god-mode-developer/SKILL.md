@@ -1,50 +1,34 @@
 ---
 name: seis-god-mode-developer
-description: Use SEIS God Mode Developer for high-agency SEIS engineering work that must improve architecture, code, docs, security, CI, cloud, plugins, AI systems, and product quality without bypassing evidence, user-work protection, or repository governance.
+description: Use SEIS God Mode Developer for cross-layer SEIS work that must improve product experience, application behavior, AI/AGI learning, cloud/security posture, and governance evidence together. Trigger when the user says God Mode, every topic, everything must improve, or the work is too broad to count as a single isolated feature.
 ---
 
 # SEIS God Mode Developer
 
-Use this skill when the user asks for maximum SEIS development intensity, broad
-full-stack ownership, or "god-mode" engineering. The mode means disciplined
-systems ownership, not unsafe shortcuts.
+God Mode Developer is a controlled cross-layer operating lane. It is not permission to skip discovery, security, rollback, or validation. It exists to stop shallow progress claims and force visible, contract-backed improvement across SEIS.
 
 ## Canonical Surfaces
 
-- Operating contract: `docs/governance/seis-master-prompt.md`
-- Supreme vision: `docs/governance/seis-supreme-vision.md`
-- Command Center architecture: `docs/architecture/seis-command-center.md`
-- Operational goal tracker: `data/seis-operational-goal-tracker.json`
-- God Mode contract: `content/development/seis-god-mode-developer-contract.json`
+- Governance: `docs/governance/seis-god-mode-developer.md`
+- Supreme Vision: `docs/governance/seis-supreme-vision.md`
+- Web feature: `apps/seis-demo-web/index.html`
+- Telemetry contract: `apps/seis-demo-web/contracts/seis-demo-contract.json`
+- Native contract parity: `packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json`
+- AI/AGI contract: `content/development/seis-god-mode-developer-contract.json`
 - Dedicated check: `scripts/check-seis-god-mode-developer.mjs`
 
-## Operating Behavior
+## Operating Rules
 
-1. Start from current evidence: worktree, branch, remote, CI, docs, reports, and runtime state.
-2. Protect user work before editing; use clean worktrees when the active tree is dirty.
-3. Improve one real SEIS system surface per turn: architecture, product, AI, cloud, security, plugin, docs, tests, or generated reports.
-4. Keep every change small enough to review and reversible enough to roll back.
-5. Use focused checks first, then broader governance gates when the change touches shared contracts.
-6. Never claim deployed, online, mobile-ready, protected, pushed, or merged unless current evidence proves it.
-7. Preserve private keys, API keys, tokens, cloud credentials, and personal paths outside committed artifacts.
+1. Map the work to product, application, AI/AGI, cloud/security, and governance before editing.
+2. Ship visible behavior when the request asks whether anything new was added.
+3. Add or update a contract when a mode changes runtime behavior.
+4. Keep plugin instructions aligned with the repo quality gate.
+5. Keep the goal active unless all named layers have current evidence.
 
-## Expected Checks
+## Validation
 
 ```bash
 npm run check:seis-god-mode-developer
-npm run check:seis-plugin-bundle -- --no-local
-npm run check:seis-master-prompt
-npm run quality:governance
 ```
 
-Run the dedicated check for skill and contract edits. Run broader governance
-when this lane changes plugin manifests, generated reports, CI, security,
-cloud/SSH readiness, or command-center surfaces.
-
-## Safety Rules
-
-- God Mode is not permission to skip validation.
-- God Mode is not permission to overwrite user work.
-- God Mode is not permission to commit secrets or private key material.
-- God Mode is not permission to turn temporary compatibility into final architecture.
-- If the current path is blocked, continue through a safe adjacent repo improvement instead of faking readiness.
+Use `npm run quality:governance` only when the change is ready for full repository closure.

@@ -26,6 +26,38 @@
       "scope": ["repo-execution", "automation", "bounded-task-runner"]
     },
     {
+      "id": "antigravity-helper",
+      "label": "Antigravity Helper",
+      "provider": "google",
+      "mode": "desktop-helper",
+      "status": "ready",
+      "scope": ["agentic-workspace", "manual-launch", "ai-native-ideation"]
+    },
+    {
+      "id": "antigravity-ide-helper",
+      "label": "Antigravity IDE Helper",
+      "provider": "jetbrains-google",
+      "mode": "desktop-helper",
+      "status": "ready",
+      "scope": ["repo-workspace", "agentic-ide", "review-surface"]
+    },
+    {
+      "id": "cursor-helper",
+      "label": "Cursor Helper",
+      "provider": "cursor",
+      "mode": "desktop-helper",
+      "status": "ready",
+      "scope": ["secondary-ai-editor", "diff-review", "manual-launch"]
+    },
+    {
+      "id": "xcode-helper",
+      "label": "Xcode Helper",
+      "provider": "apple",
+      "mode": "desktop-helper",
+      "status": "ready",
+      "scope": ["swift", "swiftui", "apple-signing", "simulator"]
+    },
+    {
       "id": "openai-helper",
       "label": "OpenAI Helper",
       "provider": "openai",

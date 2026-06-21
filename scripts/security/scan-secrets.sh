@@ -4,7 +4,7 @@
 # GitLeaks kullanarak hassas verileri tarar.
 # V14 Güvenlik Standardı: "Asla sırları commit etme."
 
-set -e
+set -euo pipefail
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -34,7 +34,7 @@ fi
 # Taramayı Çalıştır
 echo "🔍 Tüm geçmiş ve staged dosyalar taranıyor..."
 
-if gitleaks detect --source . --verbose --exit-code 2; then
+if gitleaks detect --source . --config .gitleaks.toml --verbose --exit-code 2; then
     echo -e "${GREEN}✅ Tebrikler! Hiçbir gizli anahtar veya hassas veri bulunamadı.${NC}"
     echo "🎉 SEIS Güvenlik Standardı: PASSED"
     exit 0

@@ -77,6 +77,7 @@ product strategy aligned through a central SEIS operating contract.
 | documentation-and-traceability | P1 | Documentation links Master Prompt, objective coverage, operational tracking, generated reports, and change checklist. | reports/seis-master-prompt-governance.md; reports/seis-master-objective-coverage.md; data/seis-master-objective-coverage.json | Run report checks and confirm generated reports are current. |
 | quality-gate-integration | P1 | Dedicated checks are wired into governance quality scripts. | package.json; scripts/check-seis-master-prompt.mjs; scripts/check-seis-operational-goal-tracker.mjs | Run npm run check:seis-master-prompt-report and npm run check:seis-master-prompt. |
 | ai-cloud-product-coverage | P2 | AI, cloud, product, design, and mobile SSH readiness stay tracked without overstated readiness claims. | data/seis-operational-goal-tracker.json; data/seis-master-objective-coverage.json; docs/deployment/ssh-wireguard-vps-cloud-server.md | Run objective coverage and operational goal tracker checks before claiming readiness. |
+| god-mode-every-topic-feature-growth | P1 | The active God Mode objective is incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all have explicit feature or governance improvement evidence. | data/seis-master-objective-coverage.json; content/development/seis-god-mode-feature-growth-ledger.json; content/development/seis-god-mode-module-coverage.json; content/development/seis-god-mode-completion-audit.json; roadmap/seis-next-steps-implementation-pack.md | Run God Mode feature growth ledger, module coverage, work package, and completion audit checks before claiming the broad objective is complete. |
 
 ## GitHub Controls
 
@@ -116,6 +117,10 @@ npm run check:seis-master-prompt-report
 npm run check:seis-master-prompt
 npm run check:seis-master-objective-coverage-report
 npm run check:seis-master-objective-coverage
+npm run check:seis-god-mode-feature-growth-ledger
+npm run check:seis-god-mode-module-coverage
+npm run check:seis-god-mode-work-package
+npm run check:seis-god-mode-completion-audit
 npm run check:seis-operational-goal-tracker
 npm run check:ssh-hardening-contract
 npm run check:open-source-governance

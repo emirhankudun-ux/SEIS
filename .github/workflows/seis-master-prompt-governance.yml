@@ -36,7 +36,9 @@ permissions:
 
 jobs:
   governance:
+    name: Governance
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5

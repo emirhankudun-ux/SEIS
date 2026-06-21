@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-06-19T05:50:27.000Z",
+  "scope": "web runtime browser proof",
+  "method": "headless Chrome via Chrome DevTools Protocol",
+  "url": "file:///Users/emirhankudun/Library/Mobile%20Documents/com%7Eapple%7ECloudDocs/Github/SEIS/apps/seis-demo-web/index.html",
+  "browserResult": {
+    "ok": true,
+    "readyState": "complete",
+    "title": "SEIS Demo",
+    "bodyLength": 19567,
+    "markers": {
+      "completion-audit-panel": true,
+      "run-state-panel": true,
+      "handoff-panel": true,
+      "God Mode completion audit": true,
+      "God Mode run state": true,
+      "Dashboard": true,
+      "Goals": true,
+      "Repos": true,
+      "Docs": true,
+      "Agents": true
+    },
+    "telemetryHooks": {
+      "seis_demo_completion_audit_viewed": true,
+      "seis_demo_run_state_viewed": true,
+      "seis_demo_handoff_viewed": true
+    }
+  },
+  "staticSourceCrossCheck": {
+    "index": {
+      "hasCompletionAuditPanel": true,
+      "hasRunStatePanel": true,
+      "hasGodModeText": true
+    },
+    "script": {
+      "hasRenderCompletionAudit": true,
+      "hasRenderRunState": true,
+      "hasCompletionAuditTelemetry": true,
+      "hasRunStateTelemetry": true
+    },
+    "styles": {
+      "hasCompletionGrid": true,
+      "hasRunStateGrid": true,
+      "hasPanelStyles": true
+    }
+  },
+  "aiEvaluator": {
+    "modelId": "seis-eval-critic-seed-v0",
+    "advisoryReport": "reports/seis-eval-critic-advisory/latest.json",
+    "advisoryMarkdown": "reports/seis-eval-critic-advisory/latest.md",
+    "generatedAt": "2026-06-19T06:01:20.312Z",
+    "decision": "pass",
+    "gates": {
+      "allReportsPresent": true,
+      "allCriticSignalsPresent": true,
+      "allPassed": true,
+      "noSecretLikeMaterial": true
+    },
+    "reviewedReports": [
+      "reports/seis-action-decisions/latest.json",
+      "reports/seis-action-execution/latest.json",
+      "reports/seis-action-execution/latest-run.json"
+    ]
+  }
+}

@@ -7,7 +7,7 @@
   ],
   "version": 1,
   "status": "development",
-  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, and SEIS-Data into one repo-contained AI-native agent system before public launch.",
+  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product into one repo-contained AI-native agent system before public launch.",
   "canonicalRepo": "emirhankudun-ux/SEIS",
   "canonicalBranch": "main",
   "repoMarketplace": "seis-repo",
@@ -25,14 +25,22 @@
       "seis-cloud",
       "seis-code",
       "seis-design",
-      "seis-data"
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
     ],
     "embeddedLaneProfiles": [
       "assets/lanes/seis-governance.json",
       "assets/lanes/seis-cloud.json",
       "assets/lanes/seis-code.json",
       "assets/lanes/seis-design.json",
-      "assets/lanes/seis-data.json"
+      "assets/lanes/seis-data.json",
+      "assets/lanes/seis-security.json",
+      "assets/lanes/seis-research.json",
+      "assets/lanes/seis-automation.json",
+      "assets/lanes/seis-product.json"
     ]
   },
   "composedLanes": [
@@ -41,7 +49,11 @@
     "seis-cloud",
     "seis-code",
     "seis-design",
-    "seis-data"
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
   ],
   "terminalInstall": {
     "entrypoint": "node scripts/install-seis-ai-agent.mjs",
@@ -58,6 +70,7 @@
   },
   "qualityCommands": [
     "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-repo-marketplace",
     "npm run quality"
   ],

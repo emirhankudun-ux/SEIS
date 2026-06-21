@@ -68,6 +68,54 @@
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
     },
     {
+      "name": "seis_demo_god_mode_changed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_module_coverage_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_release_readiness_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_validation_plan_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_work_package_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_adr_workflow_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_ecosystem_lanes_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_handoff_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_completion_audit_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_run_state_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_staging_manifest_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_changelog_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
       "name": "seis_demo_error",
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
     }

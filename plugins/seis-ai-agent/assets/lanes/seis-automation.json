@@ -1,0 +1,42 @@
+{
+  "id": "seis-automation",
+  "displayName": "SEIS Automation",
+  "version": 1,
+  "lane": "automation",
+  "intent": "Repeatable SEIS workflows, scripts, checks, scheduled jobs, runbooks, CI steps, agent loops, and human-approved automation gates.",
+  "activationPolicy": "use_when_task_requires_repeatable_workflows_scripts_ci_runbooks_or_agent_automation_under_seis",
+  "sourceEvidence": [
+    "AGENTS.md",
+    "docs/governance/development-automation.md",
+    "content/development/seis-agent-plugin-integration.json"
+  ],
+  "helperFamilies": [
+    "GitHub",
+    "CircleCI",
+    "Superpowers",
+    "Cloudflare",
+    "Vercel"
+  ],
+  "primaryPaths": [
+    "scripts",
+    ".github/workflows",
+    "packages",
+    "plugins",
+    "docs/governance",
+    "docs/deployment",
+    "content/development"
+  ],
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-command-center",
+    "npm run check:seis-god-mode-validation-plan"
+  ],
+  "guardrails": [
+    "make automation deterministic and idempotent where practical",
+    "default to plan or dry-run modes for mutating workflows",
+    "do not hide failures",
+    "do not store credentials in scripts or docs",
+    "document inputs, outputs, rollback, and validation"
+  ]
+}

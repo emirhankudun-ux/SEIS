@@ -46,6 +46,19 @@ npm run cloud:ssh:mobile-24x7:strict
 The strict check exits non-zero until the alias is direct-cloud, SSH key auth
 works, and the remote runtime is active.
 
+### One-command host remediation planner
+
+If `cloud:ssh:mobile-24x7:strict` fails on network reachability or transport,
+run the triage planner with live probe and then iterate the generated command list:
+
+```bash
+npm run cloud:ssh:host-fix-plan -- --public-ip 21.0.3.171 --user root --live
+npm run cloud:ssh:host-fix-plan -- --public-ip 21.0.3.171 --user root --json
+```
+
+Use `--json` output when you want machine-consumable artifacts for automation
+or bugreport sharing. Re-run after each blocker is fixed and continue with:
+
 ## Direct-cloud setup flow
 
 1. Provision or select an always-on VM.
@@ -53,19 +66,29 @@ works, and the remote runtime is active.
 3. Install the local SEIS public key into the remote user's
    `~/.ssh/authorized_keys`.
 4. Install the SSH-AI runtime:
-
-```bash
-cd server/cloud/ssh-ai-shell
-./remote-bootstrap.sh <PUBLIC_IP> root 22 ~/.ssh/id_ed25519_seis_codex ~/.ssh/id_ed25519_seis_codex.pub --apply-seis-ssh-alias
-```
-
-5. Switch the single alias to direct-cloud after the endpoint authenticates:
+   - `curl -fsSL https://ollama.com/install.sh | sh` (for model backend), then setup `/opt/ssh-ai` shell runtime
+   - Run `sudo ln -s /opt/ssh-ai/ai_shell.py /usr/local/bin/ai` and enable `ssh-ai.service`.
+5. Apply direct-cloud mode in one command:
 
 ```bash
 npm run cloud:ssh:direct-cloud:switch -- --public-ip <PUBLIC_IP> --direct-user root --apply
 ```
 
-6. Require the mobile gate to pass:
+   `--apply` is required for the config write in switch mode. This is a validated
+   plan/apply path.
+
+6. Or use the one-command activator (switch + mobile readiness):
+
+```bash
+npm run cloud:ssh:direct-cloud:activate -- --public-ip <PUBLIC_IP> --direct-user root
+npm run cloud:ssh:direct-cloud:activate -- --public-ip <PUBLIC_IP> --direct-user root --skip-mobile-check
+```
+
+   The activator automatically runs `cloud:ssh:mobile-24x7:strict` at the end.
+   Use `--skip-mobile-check` to complete direct-cloud switch verification
+   (reachable + SSH auth) and skip the final mobile-24x7 strict gate.
+
+7. Require the mobile gate to pass:
 
 ```bash
 npm run cloud:ssh:mobile-24x7:strict
@@ -83,6 +106,44 @@ the direct-cloud alias.
 
 If the checker reports `direct-cloud-ssh-auth-unavailable`, install the public
 key on the remote host or fix the remote user before applying the alias.
+
+
+## One-time runtime hardening after host reachability is fixed
+
+If SSH still times out after `direct-cloud` is configured, run this on the host first to remove common 22/tcp blockers.
+
+```bash
+# For UFW
+sudo ufw status verbose
+sudo ufw allow 22/tcp
+sudo ufw reload
+
+# For firewalld
+sudo firewall-cmd --permanent --add-port=22/tcp
+sudo firewall-cmd --reload
+
+# For sshd
+sudo ss -ltnp | rg ":22\b"
+sudo nano /etc/ssh/sshd_config
+sudo systemctl restart sshd
+sudo systemctl status sshd
+
+# Validate remote host SSH and key auth from local
+ssh -i ~/.ssh/id_ed25519_seis_codex -p 22 root@<PUBLIC_IP> "echo ok"
+```
+
+```bash
+# 1) Verify SSH port and auth with existing identity
+ssh -i ~/.ssh/id_ed25519_seis_codex -p 22 root@<PUBLIC_IP> "hostname"
+
+# 2) Verify sshd + service
+systemctl status sshd
+systemctl status ssh-ai
+
+# 3) Validate direct-cloud check stack
+npm run cloud:ssh:online:strict
+npm run cloud:ssh:mobile-24x7:strict
+```
 
 ## Safety rules
 

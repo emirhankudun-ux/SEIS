@@ -1,0 +1,43 @@
+{
+  "id": "seis-command-center-knowledge-system",
+  "version": "2026.06.19",
+  "status": "active",
+  "commandCenterSurface": "apps/seis-core",
+  "qualityGate": "npm run check:seis-command-center-knowledge-system",
+  "purpose": "Make SEIS repository memory, research sources, decisions, reusable patterns, security policy, and AI agent handoffs visible as a connected knowledge system.",
+  "requiredNodes": [
+    "Repository Memory",
+    "Research Sources",
+    "Decision History",
+    "Reusable Patterns",
+    "Security Policy",
+    "AI Agent Handoffs"
+  ],
+  "requiredEvidenceKinds": [
+    "knowledge-graph-node",
+    "relationship-contract",
+    "memory-freshness",
+    "decision-impact",
+    "reusable-pattern"
+  ],
+  "releaseRule": "The Knowledge System is valid only when graph nodes, relationship contracts, memory evidence, decision history, reusable patterns, documentation, and checker coverage are all present.",
+  "securityBoundary": {
+    "storesSecrets": false,
+    "forbiddenData": [
+      "API keys",
+      "tokens",
+      "SSH private keys",
+      "provider credentials",
+      "private cloud material"
+    ]
+  },
+  "evidence": [
+    "apps/seis-core/index.html",
+    "apps/seis-core/script.js",
+    "apps/seis-core/styles.css",
+    "apps/seis-core/test/seis-core-static.test.js",
+    "docs/architecture/seis-command-center.md",
+    "apps/seis-core/README.md",
+    "scripts/check-seis-command-center-knowledge-system.mjs"
+  ]
+}

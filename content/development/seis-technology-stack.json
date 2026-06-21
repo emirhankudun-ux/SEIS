@@ -28,7 +28,7 @@
       "label": "JavaScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 1719560,
+      "githubBytes": 2310662,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
@@ -43,7 +43,7 @@
       "label": "TypeScript",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 411787,
+      "githubBytes": 424439,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "polyglot/typescript/seis_config_validator.ts",
@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 507293,
+      "githubBytes": 508621,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -245,7 +245,7 @@
       "label": "Shell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 97083,
+      "githubBytes": 97489,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
@@ -664,7 +664,7 @@
       "label": "HTML",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 139289,
+      "githubBytes": 161998,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/index.html",
@@ -677,7 +677,7 @@
       "label": "CSS",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 287432,
+      "githubBytes": 325296,
       "layer": "frontend-and-experience",
       "entrypoints": [
         "apps/web/style.css",

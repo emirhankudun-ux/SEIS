@@ -1,0 +1,83 @@
+{
+  "id": "seis-command-center-operations-readiness",
+  "version": "2026.06.19",
+  "status": "active",
+  "decisionState": "review-before-release",
+  "purpose": "Make release, CI, security, rollback, and handoff evidence visible in SEIS Command Center before work is treated as shippable.",
+  "qualityGate": "npm run check:seis-command-center-operations-readiness",
+  "commandCenterSurface": "apps/seis-core",
+  "requiredReadinessAreas": [
+    "release",
+    "ci",
+    "security",
+    "rollback",
+    "handoff"
+  ],
+  "summaryCards": [
+    {
+      "area": "Release",
+      "status": "Ready",
+      "evidence": "Work package, handoff, changelog, and source boundary are visible."
+    },
+    {
+      "area": "CI",
+      "status": "Review",
+      "evidence": "Local gates pass; GitHub code scanning and branch protection remain external evidence."
+    },
+    {
+      "area": "Security",
+      "status": "Ready",
+      "evidence": "No-secret policy, permission review, and access model checks stay attached to release decisions."
+    },
+    {
+      "area": "Rollback",
+      "status": "Ready",
+      "evidence": "Rollback path is tied to commit scope, generated reports, and adapter boundaries."
+    }
+  ],
+  "checks": [
+    {
+      "name": "Source boundary",
+      "owner": "Builder Agent",
+      "status": "Ready",
+      "gate": "clean worktree",
+      "evidence": "git status --short and reversible commit scope"
+    },
+    {
+      "name": "Command Center contract",
+      "owner": "Architect Agent",
+      "status": "Ready",
+      "gate": "check:seis-command-center",
+      "evidence": "apps/seis-core plus architecture docs"
+    },
+    {
+      "name": "Quality governance",
+      "owner": "Automation Center",
+      "status": "Ready",
+      "gate": "local quality",
+      "evidence": "npm run quality"
+    },
+    {
+      "name": "Security posture",
+      "owner": "Security Agent",
+      "status": "Ready",
+      "gate": "least privilege",
+      "evidence": "enterprise gates, access model, dependency scan records"
+    },
+    {
+      "name": "External CI",
+      "owner": "GitHub Workflow",
+      "status": "Review",
+      "gate": "external evidence",
+      "evidence": "remote checks and code scanning results"
+    },
+    {
+      "name": "Handoff proof",
+      "owner": "Research Agent",
+      "status": "Review",
+      "gate": "handoff audit",
+      "evidence": "commit hash, push result, next command, and rollback note"
+    }
+  ],
+  "completionRule": "Operations readiness can move from review-before-release to release-ready only after local quality, clean source boundary, push evidence, external CI or explicit no-CI handoff evidence, and rollback proof are all visible."
+}

@@ -40,7 +40,10 @@ if (record) {
   ensure(record.id === "github-remote-configuration", "remote configuration id must stay stable");
   ensure(record.status === "configured-local-remote", "remote configuration status must be configured-local-remote");
   ensure(record.repository?.remoteName === "origin", "remote name must be origin");
-  ensure(record.repository?.remoteUrl === "https://github.com/emirhankudun-ux/SEIS.git", "remote URL must target SEIS");
+  ensure(
+    isSeisRemoteUrl(record.repository?.remoteUrl),
+    "remote URL must target SEIS"
+  );
   ensure(record.repository?.targetBranch === "main", "target branch must be main");
   ensure(record.publishReadiness?.remoteConfigured === true, "remoteConfigured must be true");
   ensure(record.publishReadiness?.pushAllowed === false, "pushAllowed must remain false until auth, branch protection, and branch readiness are proven");
@@ -51,7 +54,7 @@ if (record) {
 const remoteUrl = git(["remote", "get-url", "origin"]);
 if (remoteUrl.status === 0) {
   const url = remoteUrl.stdout.trim();
-  ensure(url === record?.repository?.remoteUrl, `origin remote URL mismatch: ${url || "empty"}`);
+  ensure(isSeisRemoteUrl(url), `origin remote URL mismatch: ${url || "empty"}`);
   notes.push(`origin remote configured: ${url}`);
 } else {
   ensure(false, "origin remote must be configured locally");
@@ -66,13 +69,18 @@ if (currentBranch.status === 0) {
 
 const branchRemote = git(["config", "--get", `branch.${record?.localBranchMode?.currentWorkingBranch}.remote`]);
 const branchMerge = git(["config", "--get", `branch.${record?.localBranchMode?.currentWorkingBranch}.merge`]);
+const expectedTrackingBranch = record?.localBranchMode?.tracks?.replace(/^origin\//, "");
+const expectedMergeTarget = expectedTrackingBranch || record?.repository?.targetBranch;
 ensure(branchRemote.stdout.trim() === record?.repository?.remoteName, "current branch remote tracking must point to origin");
-ensure(branchMerge.stdout.trim() === `refs/heads/${record?.repository?.targetBranch}`, "current branch merge target must point to main");
+ensure(
+  branchMerge.stdout.trim() === `refs/heads/${expectedMergeTarget}`,
+  `current branch merge target must point to ${expectedMergeTarget}`
+);
 
 for (const requiredText of [
   "GitHub Remote Configuration",
   "content/development/github-remote-configuration.json",
-  "https://github.com/emirhankudun-ux/SEIS.git",
+  record?.repository?.remoteUrl,
   "main",
   "npm run check:github-remote-configuration",
   "Branch protection and signature rules can still block or warn on direct pushes"
@@ -96,4 +104,11 @@ if (failures.length > 0) {
 console.log("SEIS GitHub remote configuration check passed.");
 for (const note of notes) {
   console.log(`- ${note}`);
+}
+
+function isSeisRemoteUrl(value) {
+  return [
+    "git@github.com:emirhankudun-ux/SEIS.git",
+    "https://github.com/emirhankudun-ux/SEIS.git"
+  ].includes(value);
 }

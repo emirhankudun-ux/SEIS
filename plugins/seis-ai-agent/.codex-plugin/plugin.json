@@ -1,7 +1,7 @@
 {
   "name": "seis-ai-agent",
   "version": "0.1.0+codex.20260615102011",
-  "description": "Unified SEIS-AI Agent that orchestrates SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA as one repo-contained development system.",
+  "description": "Unified SEIS-AI Agent that orchestrates SEIS, SEIS Cloud, SEIS-Code, SEIS-Design, SEIS-DATA, security, research, automation, and product lanes as one repo-contained development system.",
   "author": {
     "name": "emirhankudun-ux",
     "url": "https://github.com/emirhankudun-ux"
@@ -18,14 +18,18 @@
     "cloud",
     "code",
     "design",
-    "data"
+    "data",
+    "security",
+    "research",
+    "automation",
+    "product"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "SEIS-Agent",
     "shortDescription": "One SEIS agent that coordinates cloud, code, design, data, memory, and context lanes.",
-    "longDescription": "SEIS-Agent is the combined orchestration layer for SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, and SEIS-Data. It keeps long-running SEIS development inside the repository, prepares terminal installation flows for macOS, Windows, Linux, and future app surfaces, and preserves a cinematic design and website roadmap for the eventual public launch decision.",
+    "longDescription": "SEIS-Agent is the combined orchestration layer for SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product. It keeps long-running SEIS development inside the repository, prepares terminal installation flows for macOS, Windows, Linux, and future app surfaces, and preserves a cinematic design and website roadmap for the eventual public launch decision.",
     "developerName": "emirhankudun-ux",
     "category": "Developer Tools",
     "capabilities": [
@@ -36,6 +40,10 @@
       "SEIS-Code engineering governance",
       "SEIS-Design cinematic product direction",
       "SEIS-DATA knowledge and analytics governance",
+      "SEIS Security threat, secret, and release-risk review",
+      "SEIS Research evidence and source evaluation",
+      "SEIS Automation repeatable workflow and runbook design",
+      "SEIS Product roadmap, scope, and acceptance criteria",
       "Cross-platform terminal install planning",
       "Website and launch readiness planning",
       "Repository-contained plugin development",
@@ -45,6 +53,7 @@
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
       "Use SEIS-AI Agent to route this work across cloud, code, design, and data.",
+      "Use SEIS-AI Agent to route security, research, automation, and product work to the right embedded lane.",
       "Plan the next SEIS-AI Agent milestone without publishing prematurely.",
       "Prepare a cross-platform terminal install path for this SEIS capability.",
       "Shape the cinematic website and product experience roadmap for SEIS-AI Agent."

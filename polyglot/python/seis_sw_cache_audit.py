@@ -26,7 +26,7 @@ WEB_ROOT  = Path("apps/web")
 
 def extract_precache(source: str) -> list[str]:
     """Return the list of path strings from the PRECACHE array."""
-    m = re.search(r'var\s+PRECACHE\s*=\s*\[([^\]]*)\]', source, re.DOTALL)
+    m = re.search(r'(?:const|let|var)\s+PRECACHE\s*=\s*\[([^\]]*)\]', source, re.DOTALL)
     if not m:
         return []
     block = m.group(1)
@@ -56,10 +56,10 @@ def _run_self_tests() -> bool:
             print(f"  [FAIL] self-test: {label}")
 
     # extract_precache
-    src1 = 'var PRECACHE = ["./", "./index.html", "./style.css"];'
+    src1 = 'const PRECACHE = ["./", "./index.html", "./style.css"];'
     check("extracts 3 entries",    extract_precache(src1) == ["./", "./index.html", "./style.css"])
 
-    src2 = "var PRECACHE = ['./script.js'];"
+    src2 = "let PRECACHE = ['./script.js'];"
     check("single-quoted entry",   extract_precache(src2) == ["./script.js"])
 
     src3 = 'var OTHER = ["x"];'

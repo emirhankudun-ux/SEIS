@@ -1,7 +1,19 @@
-"""Central configuration for SSH-AI v0.3."""
+"""Central configuration for SSH-AI."""
 
 import os
 from pathlib import Path
+
+from version import (
+    SSH_AI_DISPLAY_VERSION,
+    SSH_AI_RELEASE_CHANNEL,
+    SSH_AI_RELEASE_DATE,
+    SSH_AI_RELEASE_NAME,
+    SSH_AI_RELEASE_TRACK,
+    SSH_AI_SUPPORT_HORIZON_YEARS,
+    SSH_AI_SUPPORT_UNTIL,
+    SSH_AI_USER_AGENT,
+    SSH_AI_VERSION,
+)
 
 # ==== AI provider selection ====
 AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").strip().lower()

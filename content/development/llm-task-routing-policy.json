@@ -14,6 +14,10 @@
       ],
       "localHelpers": [
         "codex",
+        "antigravity",
+        "antigravity-ide",
+        "cursor",
+        "xcode",
         "openai",
         "claude",
         "gemini",
@@ -44,6 +48,26 @@
         "preferred": false,
         "mode": "local-helper",
         "description": "Primary repository execution helper when explicitly requested; SEIS Agent keeps policy authority."
+      },
+      "antigravity": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Antigravity 2.x desktop surface for AI-native workspace sessions; repo truth stays in Git."
+      },
+      "antigravity-ide": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Preferred agentic IDE surface for opening SEIS repo/worktrees when an IDE is requested."
+      },
+      "cursor": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Secondary AI editor for focused review or editing when explicitly selected; one writer remains active."
+      },
+      "xcode": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Apple platform IDE for Swift, SwiftUI, signing, simulator, and macOS/iOS build workflows."
       },
       "ollama": {
         "preferred": false,
@@ -80,6 +104,22 @@
       {
         "keyword": "codex|primary execution|repo execution lane",
         "primary": "codex"
+      },
+      {
+        "keyword": "antigravity ide|ag ide|agentic ide workspace",
+        "primary": "antigravity-ide"
+      },
+      {
+        "keyword": "antigravity 2.0|antigravity app|google antigravity|agentic workspace",
+        "primary": "antigravity"
+      },
+      {
+        "keyword": "cursor|cursor editor|cursor review|secondary ai editor",
+        "primary": "cursor"
+      },
+      {
+        "keyword": "xcode|swiftui|apple signing|ios simulator|macos build",
+        "primary": "xcode"
       },
       {
         "keyword": "local",

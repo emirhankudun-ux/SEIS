@@ -13,7 +13,12 @@ npm run check:release-sync
 npm run quality
 ```
 
-These checks avoid production builds and broad indexing.
+These checks avoid production builds and broad indexing. The foundation check
+also protects the root SEIS operating documents: `AGENTS.md`, `README.md`,
+`ARCHITECTURE.md`, `ROADMAP.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, and
+`SECURITY.md`. It also verifies the local AI workbench routing document so
+Codex, Antigravity, Cursor, Xcode, Ollama, JetBrains tools, and Figma stay
+coordinated through repository rules instead of private app state.
 
 ## Browser Smoke Test
 

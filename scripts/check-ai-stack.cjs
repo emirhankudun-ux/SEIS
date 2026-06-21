@@ -4,11 +4,15 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawnSync } = require("node:child_process");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute, chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const tools = [
   { id: "seis-agent", command: "npm", optional: false, runtimeCheck: checkSeisAgentEntrypoint },
   { id: "codex", optional: false },
+  { id: "antigravity", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Antigravity.app") },
+  { id: "antigravity-ide", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Antigravity IDE.app") },
+  { id: "cursor", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Cursor.app") },
+  { id: "xcode", command: "open", optional: true, runtimeCheck: () => checkAppBundle("Xcode.app") },
   { id: "openai", optional: true, credential: "OPENAI_API_KEY" },
   { id: "claude", optional: true, credential: "ANTHROPIC_API_KEY" },
   { id: "gemini", optional: true, credential: "GEMINI_API_KEY" },
@@ -36,11 +40,18 @@ function checkOllamaHealth() {
   return result.status === 0;
 }
 
+function appBundlePath(bundleName) {
+  const homeCandidate = path.join(os.homedir(), "Applications", bundleName);
+  if (fs.existsSync(homeCandidate)) return homeCandidate;
+  return path.join("/Applications", bundleName);
+}
+
+function checkAppBundle(bundleName) {
+  return fs.existsSync(appBundlePath(bundleName));
+}
+
 function checkOpenDesignApp() {
-  return [
-    path.join(os.homedir(), "Applications", "Open Design.app"),
-    "/Applications/Open Design.app"
-  ].some((candidate) => fs.existsSync(candidate));
+  return checkAppBundle("Open Design.app");
 }
 
 function checkSeisAgentEntrypoint() {
@@ -87,6 +98,10 @@ const routingExpectations = [
   ["qwen cross-check", "qwen"],
   ["opencode terminal coding", "opencode"],
   ["codex primary execution", "codex"],
+  ["antigravity ide workspace", "antigravity-ide"],
+  ["antigravity 2.0 app", "antigravity"],
+  ["cursor review", "cursor"],
+  ["xcode swiftui signing", "xcode"],
   ["hermes mcp gateway", "hermes"],
   ["goose general agent", "goose"],
   ["open design prototype", "open-design"],
@@ -106,6 +121,25 @@ for (const [intent, expected] of routingExpectations) {
   console.log(`[${status}] ${intent} -> ${actual}`);
   if (actual !== expected) {
     routingFailures.push(`${intent} expected ${expected} but got ${actual}`);
+  }
+}
+
+const laneExpectations = [
+  ["audit token redaction vulnerability exposure", "seis-security"],
+  ["browser research for docs mcp", "seis-research"],
+  ["idempotent automation workflow dry-run runbook", "seis-automation"],
+  ["product requirements acceptance launch readiness", "seis-product"]
+];
+
+console.log("");
+console.log("SEIS lane routing check");
+
+for (const [intent, expected] of laneExpectations) {
+  const actual = chooseAutoRoute(intent).laneId;
+  const status = actual === expected ? "ok" : "mismatch";
+  console.log(`[${status}] ${intent} -> ${actual}`);
+  if (actual !== expected) {
+    routingFailures.push(`${intent} expected SEIS lane ${expected} but got ${actual}`);
   }
 }
 

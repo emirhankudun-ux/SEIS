@@ -112,7 +112,7 @@ if (!sourcePluginManifest) {
     "SEIS Master Prompt governance",
     "SEIS Security Review governance",
     "SEIS Focus Mode AGI operating lane",
-    "SEIS God Mode Developer operating lane",
+    "SEIS God Mode Developer cross-layer lane",
   ];
   for (const capability of requiredCapabilities) {
     ensure(sourcePluginManifest.interface.capabilities.includes(capability), `source plugin capability missing: ${capability}`);

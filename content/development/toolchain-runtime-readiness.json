@@ -353,7 +353,7 @@
       "command": "ollama",
       "commandPath": "/usr/local/bin/ollama",
       "installed": true,
-      "version": "ollama version is 0.30.8",
+      "version": "ollama version is 0.30.10",
       "use": "Use as offline/private fallback.",
       "notes": "Install/start only with user confirmation.",
       "installAction": "none"

@@ -1,0 +1,344 @@
+{
+  "policyId": "seis-model-promotion-policy-v0",
+  "policyType": "seis-owned-local-model-promotion-policy",
+  "version": "0.1.0",
+  "appliesTo": {
+    "registryId": "seis-model-family-registry-v0",
+    "registryVersion": "0.1.0",
+    "registryType": "seis-owned-local-ai-model-family"
+  },
+  "authority": {
+    "modelDirection": "SEIS-owned model requirements and evaluation results",
+    "implementationBasis": "SEIS-owned artifacts, local deterministic tests, and first-principles policy rules",
+    "dataBasis": "SEIS-owned synthetic datasets until a documented higher-provenance corpus is approved"
+  },
+  "stagePolicy": [
+    {
+      "stage": "seed-local-lab",
+      "runtimeAuthority": false,
+      "requiredGates": [
+        "registry-valid",
+        "dataset-provenance-present",
+        "private-user-data-excluded",
+        "eval-split-passes",
+        "specialized-test-present"
+      ]
+    },
+    {
+      "stage": "benchmark-expansion",
+      "runtimeAuthority": false,
+      "requiredGates": [
+        "minimum-eval-case-count",
+        "independent-benchmark-suite",
+        "failure-analysis-recorded",
+        "regression-thresholds-declared"
+      ]
+    },
+    {
+      "stage": "runtime-candidate",
+      "runtimeAuthority": false,
+      "requiredGates": [
+        "policy-owner-approval",
+        "security-review-pass",
+        "rollback-plan-present",
+        "runtime-observability-present"
+      ]
+    }
+  ],
+  "totals": {
+    "modelCount": 4,
+    "labReadyCount": 4,
+    "benchmarkReadyCount": 4,
+    "runtimeAuthorityCount": 0,
+    "productionBlockedCount": 4,
+    "statuses": {
+      "benchmark-ready-no-runtime-authority": 4
+    }
+  },
+  "registryValidation": {
+    "ok": true,
+    "failures": []
+  },
+  "benchmarkValidation": {
+    "ok": true,
+    "failures": []
+  },
+  "models": [
+    {
+      "id": "permission-policy",
+      "modelId": "seis-permission-policy-learned-seed-v0",
+      "modelFamily": "seis-permission-policy",
+      "role": "permission_decision",
+      "currentStage": "seed-local-lab",
+      "nextStage": "runtime-candidate",
+      "labReady": true,
+      "benchmarkReady": true,
+      "runtimeAuthority": false,
+      "productionBlocked": true,
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
+      "blockedReasons": [
+        "runtime-observability-present"
+      ],
+      "metrics": {
+        "trainingCaseCount": 12,
+        "evalCaseCount": 8,
+        "evalPassed": 8,
+        "trainMetricCount": 12,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
+      },
+      "gates": [
+        {
+          "id": "registry-valid",
+          "passed": true,
+          "rationale": "model is included in a validated SEIS model family registry"
+        },
+        {
+          "id": "dataset-provenance-present",
+          "passed": true,
+          "rationale": "dataset source class declares SEIS ownership"
+        },
+        {
+          "id": "private-user-data-excluded",
+          "passed": true,
+          "rationale": "dataset consent excludes user-private data"
+        },
+        {
+          "id": "eval-split-passes",
+          "passed": true,
+          "rationale": "held-out eval split passes for the seed local experiment"
+        },
+        {
+          "id": "specialized-test-present",
+          "passed": true,
+          "rationale": "model has a focused local test suite",
+          "evidencePath": "packages/seis-ai/test/permission-policy-lab.test.mjs"
+        },
+        {
+          "id": "minimum-eval-case-count",
+          "passed": true,
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "independent-benchmark-suite",
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "runtime-observability-present",
+          "passed": false,
+          "rationale": "runtime traces, drift signals, and rollback telemetry are not yet attached"
+        }
+      ]
+    },
+    {
+      "id": "memory-ranker",
+      "modelId": "seis-memory-ranker-seed-v0",
+      "modelFamily": "seis-memory-ranker",
+      "role": "memory_retrieval",
+      "currentStage": "seed-local-lab",
+      "nextStage": "runtime-candidate",
+      "labReady": true,
+      "benchmarkReady": true,
+      "runtimeAuthority": false,
+      "productionBlocked": true,
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
+      "blockedReasons": [
+        "runtime-observability-present"
+      ],
+      "metrics": {
+        "trainingCaseCount": 5,
+        "evalCaseCount": 3,
+        "evalPassed": 3,
+        "trainMetricCount": 5,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
+      },
+      "gates": [
+        {
+          "id": "registry-valid",
+          "passed": true,
+          "rationale": "model is included in a validated SEIS model family registry"
+        },
+        {
+          "id": "dataset-provenance-present",
+          "passed": true,
+          "rationale": "dataset source class declares SEIS ownership"
+        },
+        {
+          "id": "private-user-data-excluded",
+          "passed": true,
+          "rationale": "dataset consent excludes user-private data"
+        },
+        {
+          "id": "eval-split-passes",
+          "passed": true,
+          "rationale": "held-out eval split passes for the seed local experiment"
+        },
+        {
+          "id": "specialized-test-present",
+          "passed": true,
+          "rationale": "model has a focused local test suite",
+          "evidencePath": "packages/seis-ai/test/memory-ranker-lab.test.mjs"
+        },
+        {
+          "id": "minimum-eval-case-count",
+          "passed": true,
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "independent-benchmark-suite",
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "runtime-observability-present",
+          "passed": false,
+          "rationale": "runtime traces, drift signals, and rollback telemetry are not yet attached"
+        }
+      ]
+    },
+    {
+      "id": "eval-critic",
+      "modelId": "seis-eval-critic-seed-v0",
+      "modelFamily": "seis-eval-critic",
+      "role": "evaluation_advisory",
+      "currentStage": "seed-local-lab",
+      "nextStage": "runtime-candidate",
+      "labReady": true,
+      "benchmarkReady": true,
+      "runtimeAuthority": false,
+      "productionBlocked": true,
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
+      "blockedReasons": [
+        "runtime-observability-present"
+      ],
+      "metrics": {
+        "trainingCaseCount": 8,
+        "evalCaseCount": 5,
+        "evalPassed": 5,
+        "trainMetricCount": 8,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
+      },
+      "gates": [
+        {
+          "id": "registry-valid",
+          "passed": true,
+          "rationale": "model is included in a validated SEIS model family registry"
+        },
+        {
+          "id": "dataset-provenance-present",
+          "passed": true,
+          "rationale": "dataset source class declares SEIS ownership"
+        },
+        {
+          "id": "private-user-data-excluded",
+          "passed": true,
+          "rationale": "dataset consent excludes user-private data"
+        },
+        {
+          "id": "eval-split-passes",
+          "passed": true,
+          "rationale": "held-out eval split passes for the seed local experiment"
+        },
+        {
+          "id": "specialized-test-present",
+          "passed": true,
+          "rationale": "model has a focused local test suite",
+          "evidencePath": "packages/seis-ai/test/eval-critic-lab.test.mjs"
+        },
+        {
+          "id": "minimum-eval-case-count",
+          "passed": true,
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "independent-benchmark-suite",
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "runtime-observability-present",
+          "passed": false,
+          "rationale": "runtime traces, drift signals, and rollback telemetry are not yet attached"
+        }
+      ]
+    },
+    {
+      "id": "agent-router",
+      "modelId": "seis-agent-router-seed-v0",
+      "modelFamily": "seis-agent-router",
+      "role": "agent_lane_routing",
+      "currentStage": "seed-local-lab",
+      "nextStage": "runtime-candidate",
+      "labReady": true,
+      "benchmarkReady": true,
+      "runtimeAuthority": false,
+      "productionBlocked": true,
+      "promotionStatus": "benchmark-ready-no-runtime-authority",
+      "blockedReasons": [
+        "runtime-observability-present"
+      ],
+      "metrics": {
+        "trainingCaseCount": 12,
+        "evalCaseCount": 10,
+        "evalPassed": 10,
+        "trainMetricCount": 12,
+        "benchmarkCaseCount": 5,
+        "benchmarkPassed": 5
+      },
+      "gates": [
+        {
+          "id": "registry-valid",
+          "passed": true,
+          "rationale": "model is included in a validated SEIS model family registry"
+        },
+        {
+          "id": "dataset-provenance-present",
+          "passed": true,
+          "rationale": "dataset source class declares SEIS ownership"
+        },
+        {
+          "id": "private-user-data-excluded",
+          "passed": true,
+          "rationale": "dataset consent excludes user-private data"
+        },
+        {
+          "id": "eval-split-passes",
+          "passed": true,
+          "rationale": "held-out eval split passes for the seed local experiment"
+        },
+        {
+          "id": "specialized-test-present",
+          "passed": true,
+          "rationale": "model has a focused local test suite",
+          "evidencePath": "packages/seis-ai/test/agent-router-lab.test.mjs"
+        },
+        {
+          "id": "minimum-eval-case-count",
+          "passed": true,
+          "rationale": "independent benchmark has at least 5 cases",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "independent-benchmark-suite",
+          "passed": true,
+          "rationale": "independent benchmark suite passes for this model",
+          "evidencePath": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+        },
+        {
+          "id": "runtime-observability-present",
+          "passed": false,
+          "rationale": "runtime traces, drift signals, and rollback telemetry are not yet attached"
+        }
+      ]
+    }
+  ]
+}

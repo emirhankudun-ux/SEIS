@@ -1,6 +1,15 @@
-# SSH-AI Shell v0.3
+# SSH-AI Shell v0.4
 
 SSH üzerinden güvenli, kalıcı ve araç destekli bir terminal asistanı.
+
+Version source of truth: [`version.py`](./version.py). Version-only releases may
+update display strings, user-agent metadata, and release notes, but must not
+change the SSH alias, host, daemon port, bridge port, or remote connection path.
+
+This release line is `SSH-AI v0.4 5-Year LTS`: a long-term support version
+declared on 2026-06-19 with a five-year support horizon through 2031-06-19.
+The five-year line keeps runtime connection surfaces stable while allowing
+version metadata, compatibility checks, docs, and release evidence to improve.
 
 ## Özellikler
 

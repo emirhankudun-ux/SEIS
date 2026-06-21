@@ -9,14 +9,14 @@ Machine-readable source: [`content/development/github-remote-configuration.json`
 | Field | Value |
 | --- | --- |
 | Remote name | `origin` |
-| Remote URL | `https://github.com/emirhankudun-ux/SEIS.git` |
+| Remote URL | `git@github.com:emirhankudun-ux/SEIS.git` |
 | Target branch | `main` |
-| Local execution branch | `main` |
-| Local tracking target | `origin/main` |
+| Local execution branch | `codex/publish-local-seis-20260618-163043` |
+| Local tracking target | `origin/codex/publish-local-seis-20260618-163043` |
 
 ## Publication Rule
 
-The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, and the publish path uses the `main` branch contract.
+The remote is configured locally, but publication remains gated. A branch push can publish reviewed work to `origin/codex/publish-local-seis-20260618-163043`; a release or protected-branch publication still requires the `main` branch contract.
 
 Branch protection and signature rules can still block or warn on direct pushes. Treat a successful local remote configuration as necessary evidence, not as proof that GitHub accepted the update. When publishing, verify the actual push or PR state and then check GitHub Actions, CodeQL, and open code-scanning alerts.
 

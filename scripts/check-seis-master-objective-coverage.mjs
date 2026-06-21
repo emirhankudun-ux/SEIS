@@ -70,6 +70,7 @@ if (coverage) {
     "design-accessibility-experience",
     "ai-data-cloud-automation",
     "open-source-github-readiness",
+    "god-mode-every-topic-feature-growth",
   ]) {
     ensure(ids.has(expected), `${coveragePath} must include ${expected}`);
   }
@@ -77,6 +78,10 @@ if (coverage) {
   for (const command of [
     "npm run check:seis-master-objective-coverage",
     "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-god-mode-feature-growth-ledger",
+    "npm run check:seis-god-mode-module-coverage",
+    "npm run check:seis-god-mode-work-package",
+    "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
@@ -103,6 +108,58 @@ if (coverage) {
     requireCoverageIncludes(cloudCoverage, "evidence", "data/ssh-hardening-operation-contract.json", "AI/data/cloud coverage must cite the SSH hardening operation contract");
     requireCoverageIncludes(cloudCoverage, "evidence", "docs/deployment/ssh-wireguard-vps-cloud-server.md", "AI/data/cloud coverage must cite the SSH/WireGuard deployment guide");
     requireCoverageIncludes(cloudCoverage, "checks", "npm run check:ssh-vpn-cloud-server", "AI/data/cloud coverage must require SSH/VPN cloud validation");
+  }
+
+  const godModeGrowthCoverage = findCoverage(coverage, "god-mode-every-topic-feature-growth");
+  if (godModeGrowthCoverage) {
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "evidence",
+      "content/development/seis-god-mode-feature-growth-ledger.json",
+      "God Mode growth coverage must cite the feature growth ledger"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "evidence",
+      "content/development/seis-god-mode-module-coverage.json",
+      "God Mode growth coverage must cite the module coverage contract"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "evidence",
+      "content/development/seis-god-mode-completion-audit.json",
+      "God Mode growth coverage must cite the completion audit"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "evidence",
+      "roadmap/seis-next-steps-implementation-pack.md",
+      "God Mode growth coverage must cite the next steps implementation pack"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "checks",
+      "npm run check:seis-god-mode-feature-growth-ledger",
+      "God Mode growth coverage must require feature growth ledger validation"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "checks",
+      "npm run check:seis-god-mode-module-coverage",
+      "God Mode growth coverage must require module coverage validation"
+    );
+    requireCoverageIncludes(
+      godModeGrowthCoverage,
+      "checks",
+      "npm run check:seis-god-mode-completion-audit",
+      "God Mode growth coverage must require completion audit validation"
+    );
+    ensure(
+      String(godModeGrowthCoverage.gap || "").includes("Commit") &&
+        String(godModeGrowthCoverage.gap || "").includes("push") &&
+        String(godModeGrowthCoverage.gap || "").includes("CI"),
+      `${coveragePath} god-mode-every-topic-feature-growth gap must keep commit, push, and CI evidence open`
+    );
   }
 }
 

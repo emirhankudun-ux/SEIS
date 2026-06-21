@@ -1,6 +1,7 @@
 const contractUrl = new URL("contracts/seis-demo-contract.json", window.location.href);
 const storageKey = "seis-demo-events-v1";
 const focusStorageKey = "seis-demo-focus-mode-v1";
+const godModeStorageKey = "seis-demo-god-mode-developer-v1";
 const content = document.getElementById("content");
 const eventLog = document.getElementById("event-log");
 const routePill = document.getElementById("route-pill");
@@ -13,6 +14,31 @@ const copyNativeLinkButton = document.getElementById("copy-native-link");
 const focusModeToggleButton = document.getElementById("focus-mode-toggle");
 const focusModeStatus = document.getElementById("focus-mode-status");
 const focusModeSignals = document.getElementById("focus-mode-signals");
+const godModeToggleButton = document.getElementById("god-mode-toggle");
+const godModeStatus = document.getElementById("god-mode-status");
+const godModeSignals = document.getElementById("god-mode-signals");
+const moduleCoverageGrid = document.getElementById("module-coverage-grid");
+const moduleCoverageBadge = document.getElementById("module-coverage-badge");
+const releaseReadinessGrid = document.getElementById("release-readiness-grid");
+const releaseReadinessBadge = document.getElementById("release-readiness-badge");
+const validationPlanList = document.getElementById("validation-plan-list");
+const validationPlanBadge = document.getElementById("validation-plan-badge");
+const workPackageGrid = document.getElementById("work-package-grid");
+const workPackageBadge = document.getElementById("work-package-badge");
+const adrWorkflowList = document.getElementById("adr-workflow-list");
+const adrWorkflowBadge = document.getElementById("adr-workflow-badge");
+const ecosystemLanesGrid = document.getElementById("ecosystem-lanes-grid");
+const ecosystemLanesBadge = document.getElementById("ecosystem-lanes-badge");
+const handoffList = document.getElementById("handoff-list");
+const handoffBadge = document.getElementById("handoff-badge");
+const completionAuditGrid = document.getElementById("completion-audit-grid");
+const completionAuditBadge = document.getElementById("completion-audit-badge");
+const runStateGrid = document.getElementById("run-state-grid");
+const runStateBadge = document.getElementById("run-state-badge");
+const stagingManifestGrid = document.getElementById("staging-manifest-grid");
+const stagingManifestBadge = document.getElementById("staging-manifest-badge");
+const changelogGrid = document.getElementById("changelog-grid");
+const changelogBadge = document.getElementById("changelog-badge");
 
 const FALLBACK_CONTRACT = {
   contract_version: "1.0.0",
@@ -68,6 +94,54 @@ const FALLBACK_CONTRACT = {
       description: "Supreme Vision focus mode changed."
     },
     {
+      name: "seis_demo_god_mode_changed",
+      description: "God Mode Developer operating layer changed."
+    },
+    {
+      name: "seis_demo_module_coverage_viewed",
+      description: "God Mode module coverage surface was viewed."
+    },
+    {
+      name: "seis_demo_release_readiness_viewed",
+      description: "God Mode release readiness surface was viewed."
+    },
+    {
+      name: "seis_demo_validation_plan_viewed",
+      description: "God Mode validation plan surface was viewed."
+    },
+    {
+      name: "seis_demo_work_package_viewed",
+      description: "God Mode work package surface was viewed."
+    },
+    {
+      name: "seis_demo_adr_workflow_viewed",
+      description: "God Mode ADR workflow surface was viewed."
+    },
+    {
+      name: "seis_demo_ecosystem_lanes_viewed",
+      description: "God Mode ecosystem lanes surface was viewed."
+    },
+    {
+      name: "seis_demo_handoff_viewed",
+      description: "God Mode handoff surface was viewed."
+    },
+    {
+      name: "seis_demo_completion_audit_viewed",
+      description: "God Mode completion audit surface was viewed."
+    },
+    {
+      name: "seis_demo_run_state_viewed",
+      description: "God Mode run-state surface was viewed."
+    },
+    {
+      name: "seis_demo_staging_manifest_viewed",
+      description: "God Mode staging manifest surface was viewed."
+    },
+    {
+      name: "seis_demo_changelog_viewed",
+      description: "God Mode changelog surface was viewed."
+    },
+    {
       name: "seis_demo_error",
       description: "A runtime/demo error occurred."
     }
@@ -106,7 +180,8 @@ const state = {
   routeStartAt: performance.now(),
   deviceType: detectDevice(),
   isMac: matchMedia("(hover: hover) and (pointer: fine)").matches,
-  isFocusMode: loadFocusMode()
+  isFocusMode: loadFocusMode(),
+  isGodMode: loadGodMode()
 };
 
 function generateId(prefix) {
@@ -213,9 +288,13 @@ function loadFocusMode() {
   return localStorage.getItem(focusStorageKey) === "enabled";
 }
 
+function loadGodMode() {
+  return localStorage.getItem(godModeStorageKey) === "enabled";
+}
+
 function renderEventLog() {
   if (!eventLog) return;
-  const visibleEventCount = state.isFocusMode ? 8 : 20;
+  const visibleEventCount = state.isGodMode ? 5 : state.isFocusMode ? 8 : 20;
   eventLog.textContent = JSON.stringify(state.events.slice(0, visibleEventCount), null, 2);
 }
 
@@ -224,6 +303,7 @@ function renderFocusModeSignals() {
   focusModeSignals.replaceChildren();
   const signals = [
     `Mode: ${state.isFocusMode ? "focused" : "standard"}`,
+    `God Mode: ${state.isGodMode ? "active" : "off"}`,
     `Route: ${state.route}`,
     `Run: ${state.activeRunId || "none"}`
   ];
@@ -248,6 +328,7 @@ function updateFocusModeUI() {
   renderFocusModeSignals();
   setMetricsFromContract();
   renderEventLog();
+  renderGodModeSignals();
 }
 
 function setFocusMode(enabled, options = {}) {
@@ -264,8 +345,868 @@ function setFocusMode(enabled, options = {}) {
   }
 }
 
+function renderGodModeSignals() {
+  if (!godModeSignals) return;
+  godModeSignals.replaceChildren();
+  const signals = [
+    "Product: visible demo behavior must improve",
+    "Engineering: code changes must stay reversible",
+    "AI/AGI: learning contracts must capture behavior",
+    "Plugins: SEIS-Agent plugin integration must stay manifest-backed",
+    "Security: no secrets or weakened gates",
+    "Governance: quality evidence stays attached"
+  ];
+  signals.forEach((signal) => {
+    const item = document.createElement("li");
+    item.textContent = signal;
+    godModeSignals.appendChild(item);
+  });
+}
+
+function updateGodModeUI() {
+  document.body.classList.toggle("is-god-mode", state.isGodMode);
+  if (godModeToggleButton) {
+    godModeToggleButton.setAttribute("aria-pressed", String(state.isGodMode));
+    godModeToggleButton.textContent = state.isGodMode ? "Exit God Mode" : "Activate God Mode";
+  }
+  if (godModeStatus) {
+    godModeStatus.textContent = state.isGodMode
+      ? "God Mode Developer is active: every SEIS change must improve product, app, AI, cloud, security, and governance evidence."
+      : "God Mode Developer is available for cross-layer SEIS development.";
+  }
+  renderGodModeSignals();
+  renderFocusModeSignals();
+  setMetricsFromContract();
+  renderEventLog();
+}
+
+function setGodMode(enabled, options = {}) {
+  const shouldEmit = options.emit !== false;
+  state.isGodMode = Boolean(enabled);
+  localStorage.setItem(godModeStorageKey, state.isGodMode ? "enabled" : "disabled");
+  updateGodModeUI();
+  if (shouldEmit) {
+    emitEvent("seis_demo_god_mode_changed", {
+      enabled: state.isGodMode,
+      mode: state.isGodMode ? "god-mode-developer" : "standard",
+      required_layers: ["product", "application", "ai-agi", "cloud-security", "governance"]
+    });
+  }
+}
+
+if (godModeToggleButton) {
+  godModeToggleButton.addEventListener("click", () => {
+    setGodMode(!state.isGodMode);
+  });
+}
+
+updateGodModeUI();
+renderGodModeModuleCoverage();
+renderGodModeReleaseReadiness();
+renderGodModeValidationPlan();
+renderGodModeWorkPackage();
+renderGodModeAdrWorkflow();
+renderGodModeEcosystemLanes();
+renderGodModeHandoff();
+renderGodModeCompletionAudit();
+renderGodModeRunState();
+renderGodModeStagingManifest();
+renderGodModeChangelog();
+
 function scenarioById(id) {
   return state.contract.scenarios.find((item) => item.id === id);
+}
+
+function renderGodModeModuleCoverage() {
+  if (!moduleCoverageGrid) return;
+
+  const layers = ["Product", "Platform", "AI", "Security", "Quality"];
+  const modules = [
+    {
+      name: "Dashboard",
+      feature: "Operating overview for coverage, gate posture, risk, and next build slice.",
+      gate: "npm run check:seis-god-mode-module-coverage",
+      evidence: "apps/seis-demo-web + module coverage contract",
+      next: "Read module coverage contract and flag missing evidence."
+    },
+    {
+      name: "Goals",
+      feature: "Evidence ledger for objectives, acceptance criteria, blockers, validation, and rollback.",
+      gate: "npm run check:seis-goals-evidence-ledger",
+      evidence: "goals evidence ledger contract",
+      next: "Map every active objective to proof, risk, and rollback readiness."
+    },
+    {
+      name: "Repos",
+      feature: "Repo health layer for CI posture, plugin readiness, publish safety, and governance drift.",
+      gate: "npm run check:seis-repo-health-manifest",
+      evidence: "repo health manifest contract",
+      next: "Summarize required checks and missing governance files per lane."
+    },
+    {
+      name: "Docs",
+      feature: "Living documentation system for architecture, gates, AI policy, and module coverage.",
+      gate: "npm run check:seis-governance-index",
+      evidence: "governance index contract",
+      next: "Link manifesto, quality gates, AI policy, and God Mode coverage."
+    },
+    {
+      name: "Agents",
+      feature: "Safe autonomy model for skill scope, tool boundaries, validation duties, and observability.",
+      gate: "npm run check:seis-agent-lane-status",
+      evidence: "agent lane status contract",
+      next: "Show which agent lanes are active, checked, and safe to use."
+    }
+  ];
+
+  moduleCoverageGrid.innerHTML = modules
+    .map(
+      (module) => `
+        <article class="module-coverage-card">
+          <div class="module-coverage-card__header">
+            <span class="module-coverage-card__label">${module.name}</span>
+            <span class="module-coverage-card__state">Mapped</span>
+          </div>
+          <p>${module.feature}</p>
+          <div class="module-coverage-layers" aria-label="${module.name} required layers">
+            ${layers.map((layer) => `<span>${layer}</span>`).join("")}
+          </div>
+          <dl class="module-coverage-meta">
+            <div>
+              <dt>Gate</dt>
+              <dd>${module.gate}</dd>
+            </div>
+            <div>
+              <dt>Evidence</dt>
+              <dd>${module.evidence}</dd>
+            </div>
+          </dl>
+          <div class="module-coverage-next">
+            <strong>Next slice</strong>
+            <span>${module.next}</span>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+
+  if (moduleCoverageBadge) {
+    moduleCoverageBadge.textContent = `${modules.length} modules x ${layers.length} layers`;
+  }
+  queueMicrotask(() => {
+    emitEvent("seis_demo_module_coverage_viewed", {
+      panel: "module_coverage",
+      module_count: modules.length,
+      layer_count: layers.length
+    });
+  });
+}
+
+function renderGodModeReleaseReadiness() {
+  if (!releaseReadinessGrid) return;
+
+  const gates = [
+    {
+      name: "Security",
+      rule: "No secrets, weakened controls, unsafe instructions, or hidden destructive behavior.",
+      evidence: "repo health + agent lane safety docs"
+    },
+    {
+      name: "AI Policy",
+      rule: "Agent scope, autonomy boundary, tool boundary, safety boundary, and validation duty must be declared.",
+      evidence: "agent lane status contract"
+    },
+    {
+      name: "Quality Evidence",
+      rule: "Every module claim needs acceptance criteria, evidence links, and a checker.",
+      evidence: "goals evidence ledger"
+    },
+    {
+      name: "Feature Growth",
+      rule: "Every required God Mode topic needs feature or governance improvement evidence and visible remaining gaps.",
+      evidence: "feature growth ledger + Command Center surface"
+    },
+    {
+      name: "Rollback",
+      rule: "Every meaningful slice needs a reversible rollback path.",
+      evidence: "repo health manifest + goals ledger"
+    },
+    {
+      name: "CI Readiness",
+      rule: "Quality governance must include the relevant God Mode gates before release claims.",
+      evidence: "package quality:governance + CI workflow"
+    }
+  ];
+
+  releaseReadinessGrid.innerHTML = gates
+    .map(
+      (gate) => `
+        <article class="release-readiness-card">
+          <div class="release-readiness-card__header">
+            <span>${gate.name}</span>
+            <strong>Required</strong>
+          </div>
+          <p>${gate.rule}</p>
+          <small>${gate.evidence}</small>
+        </article>
+      `
+    )
+    .join("");
+
+  if (releaseReadinessBadge) {
+    releaseReadinessBadge.textContent = `${gates.length} required gates`;
+  }
+  queueMicrotask(() => {
+    emitEvent("seis_demo_release_readiness_viewed", {
+      panel: "release_readiness",
+      gate_count: gates.length,
+      required: true
+    });
+  });
+}
+
+function renderGodModeValidationPlan() {
+  if (!validationPlanList) return;
+
+  const commands = [
+    {
+      label: "God Mode foundation",
+      command: "npm run check:seis-god-mode-developer",
+      proves: "Skill, plugin, governance doc, and operating contract."
+    },
+    {
+      label: "Module coverage",
+      command: "npm run check:seis-god-mode-module-coverage",
+      proves: "Dashboard, Goals, Repos, Docs, and Agents mapped to five layers."
+    },
+    {
+      label: "Goal evidence",
+      command: "npm run check:seis-goals-evidence-ledger",
+      proves: "Acceptance criteria, validation commands, rollback, and evidence links."
+    },
+    {
+      label: "Repo health",
+      command: "npm run check:seis-repo-health-manifest",
+      proves: "Repo lanes, publish safety, security, and rollback posture."
+    },
+    {
+      label: "Governance index",
+      command: "npm run check:seis-governance-index",
+      proves: "Living docs index covers architecture, quality, AI, modules, goals, repos, agents, release, and validation."
+    },
+    {
+      label: "Agent lanes",
+      command: "npm run check:seis-agent-lane-status",
+      proves: "Skills, autonomy boundaries, tool boundaries, safety boundaries, and validation duties."
+    },
+    {
+      label: "SEIS-Agent plugin integration",
+      command: "npm run check:seis-agent-plugin-integration",
+      proves: "Personal SEIS plugins, embedded lanes, seis_plugin_integration, MCP resource, app surface, and repo docs are connected."
+    },
+    {
+      label: "Release readiness",
+      command: "npm run check:seis-god-mode-release-readiness",
+      proves: "Security, AI policy, quality evidence, rollback, and CI readiness."
+    },
+    {
+      label: "Validation plan",
+      command: "npm run check:seis-god-mode-validation-plan",
+      proves: "Command sequence and proof targets are source-controlled."
+    },
+    {
+      label: "Work package",
+      command: "npm run check:seis-god-mode-work-package",
+      proves: "Current slice is bounded by module, gate, primary files, rollback, and pending validation state."
+    },
+    {
+      label: "ADR workflow",
+      command: "npm run check:seis-god-mode-adr-workflow",
+      proves: "Architecture decisions use a source-controlled template, example ADR, and workflow gate."
+    },
+    {
+      label: "Handoff",
+      command: "npm run check:seis-god-mode-handoff",
+      proves: "Handoff includes summary, risks, rollback, next commands, and protected user work."
+    },
+    {
+      label: "Completion audit",
+      command: "npm run check:seis-god-mode-completion-audit",
+      proves: "Completion remains blocked until validation, commit, push, CI, and protected-user-work evidence exist."
+    },
+    {
+      label: "Run state",
+      command: "npm run check:seis-god-mode-run-state",
+      proves: "Current package state remains pending until validation, commit boundary, push, and CI evidence exist."
+    },
+    {
+      label: "Staging manifest",
+      command: "npm run check:seis-god-mode-staging-manifest",
+      proves: "Commit scope is bounded and unrelated user work remains protected before staging."
+    },
+    {
+      label: "Changelog",
+      command: "npm run check:seis-god-mode-changelog",
+      proves: "Added features are recorded as draft-unverified release notes without claiming release readiness."
+    },
+    {
+      label: "Feature growth ledger",
+      command: "npm run check:seis-god-mode-feature-growth-ledger",
+      proves: "Every required topic has feature or governance improvement evidence plus remaining gaps."
+    },
+    {
+      label: "Full governance",
+      command: "npm run quality:governance",
+      proves: "Repo-level governance chain passes as one release-grade gate."
+    }
+  ];
+
+  validationPlanList.innerHTML = commands
+    .map(
+      (item) => `
+        <li>
+          <div>
+            <strong>${item.label}</strong>
+            <code>${item.command}</code>
+          </div>
+          <span>${item.proves}</span>
+        </li>
+      `
+    )
+    .join("");
+
+  if (validationPlanBadge) {
+    validationPlanBadge.textContent = `${commands.length} commands`;
+  }
+  queueMicrotask(() => {
+    emitEvent("seis_demo_validation_plan_viewed", {
+      panel: "validation_plan",
+      command_count: commands.length,
+      includes_full_governance: true
+    });
+  });
+}
+
+function renderGodModeWorkPackage() {
+  if (!workPackageGrid) return;
+
+  const sections = [
+    {
+      name: "Product Surface",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-module-coverage",
+      rollback: "Revert dashboard panels, renderers, styles, and cache version."
+    },
+    {
+      name: "Goals",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-goals-evidence-ledger",
+      rollback: "Remove goals ledger contract, doc, checker, and quality reference."
+    },
+    {
+      name: "Repos",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-repo-health-manifest",
+      rollback: "Remove repo health manifest, doc, checker, and quality reference."
+    },
+    {
+      name: "Docs",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-governance-index",
+      rollback: "Remove governance index additions and slice-only indexed docs."
+    },
+    {
+      name: "Agents",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-agent-lane-status",
+      rollback: "Remove agent lane status artifacts and God Mode skill references."
+    },
+    {
+      name: "SEIS-Agent Plugin Integration",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-agent-plugin-integration",
+      rollback: "Remove plugin integration manifest, AI helper, MCP tool/resource, app panel entries, docs, checker, and package script."
+    },
+    {
+      name: "Security + AI + Rollback",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-release-readiness",
+      rollback: "Remove release readiness contract, doc, checker, and dashboard panel."
+    },
+    {
+      name: "Validation",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-validation-plan",
+      rollback: "Remove validation plan contract, doc, checker, and dashboard panel."
+    },
+    {
+      name: "Architecture Decisions",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-adr-workflow",
+      rollback: "Remove ADR workflow contract, template, example ADR, checker, and dashboard panel."
+    },
+    {
+      name: "Handoff",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-handoff",
+      rollback: "Remove handoff contract, doc, checker, dashboard panel, and governance links."
+    },
+    {
+      name: "Completion Audit",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-completion-audit",
+      rollback: "Remove completion audit contract, doc, checker, dashboard panel, and governance links."
+    },
+    {
+      name: "Run State",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-run-state",
+      rollback: "Remove run-state contract, doc, checker, dashboard panel, and governance links."
+    },
+    {
+      name: "Staging Manifest",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-staging-manifest",
+      rollback: "Remove staging manifest contract, doc, checker, dashboard panel, and governance links."
+    },
+    {
+      name: "Changelog",
+      status: "Implemented / unverified",
+      gate: "npm run check:seis-god-mode-changelog",
+      rollback: "Remove changelog contract, doc, checker, dashboard panel, and governance links."
+    }
+  ];
+
+  workPackageGrid.innerHTML = sections
+    .map(
+      (section) => `
+        <article class="work-package-card">
+          <div class="work-package-card__header">
+            <span>${section.name}</span>
+            <strong>${section.status}</strong>
+          </div>
+          <dl>
+            <div>
+              <dt>Gate</dt>
+              <dd>${section.gate}</dd>
+            </div>
+            <div>
+              <dt>Rollback</dt>
+              <dd>${section.rollback}</dd>
+            </div>
+          </dl>
+        </article>
+      `
+    )
+    .join("");
+
+  if (workPackageBadge) {
+    workPackageBadge.textContent = `${sections.length} sections`;
+  }
+  queueMicrotask(() => {
+    emitEvent("seis_demo_work_package_viewed", {
+      panel: "work_package",
+      section_count: sections.length,
+      commit_readiness: "pending-validation"
+    });
+  });
+}
+
+function renderGodModeChangelog() {
+  if (!changelogGrid) return;
+
+  const entries = [
+    "Dashboard",
+    "Goals",
+    "Repos",
+    "Docs",
+    "Agents",
+    "Security + AI + Rollback",
+    "Validation",
+    "Architecture Decisions",
+    "Handoff",
+    "Completion Audit",
+    "Run State",
+    "Staging Manifest",
+    "Plugin Integration"
+  ];
+
+  changelogGrid.innerHTML = entries
+    .map(
+      (entry) => `
+        <article class="changelog-card">
+          <strong>${entry}</strong>
+          <span>draft-unverified</span>
+        </article>
+      `
+    )
+    .join("");
+
+  if (changelogBadge) {
+    changelogBadge.textContent = "draft-unverified";
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_changelog_viewed", {
+      panel: "changelog",
+      release_state: "draft-unverified",
+      entry_count: entries.length
+    });
+  });
+}
+
+function renderGodModeStagingManifest() {
+  if (!stagingManifestGrid) return;
+
+  const groups = [
+    { name: "Dashboard Runtime", state: "include after validation", note: "panels + renderers + styles + cache" },
+    { name: "Shared Contracts", state: "include after validation", note: "web/native telemetry parity" },
+    { name: "God Mode Contracts", state: "include after validation", note: "source of truth package" },
+    { name: "Agent Plugin Integration", state: "include after validation", note: "manifest + AI tool + MCP resource + demo panel" },
+    { name: "Governance Docs", state: "include after validation", note: "operating docs + ADRs" },
+    { name: "Quality Checkers", state: "include after validation", note: "CI-linked gates" },
+    { name: "Plugin Skill", state: "include after validation", note: "manifest + skill + agent" },
+    { name: "Package Quality Chain", state: "include after validation", note: "package scripts only with checkers" }
+  ];
+
+  stagingManifestGrid.innerHTML = groups
+    .map(
+      (group) => `
+        <article class="staging-manifest-card">
+          <div class="staging-manifest-card__header">
+            <span>${group.name}</span>
+            <strong>${group.state}</strong>
+          </div>
+          <p>${group.note}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  if (stagingManifestBadge) {
+    stagingManifestBadge.textContent = "planned-not-staged";
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_staging_manifest_viewed", {
+      panel: "staging_manifest",
+      staging_state: "planned-not-staged",
+      group_count: groups.length
+    });
+  });
+}
+
+function renderGodModeRunState() {
+  if (!runStateGrid) return;
+
+  const states = [
+    { name: "Source-controlled artifacts", state: "present / unverified", next: "run checkers" },
+    { name: "Runtime surfaces", state: "present / unverified", next: "browser or runtime check" },
+    { name: "Telemetry contracts", state: "present / unverified", next: "contract parity check" },
+    { name: "Validation commands", state: "planned / not run", next: "explicit approval to run" },
+    { name: "Commit boundary", state: "pending review", next: "protect unrelated work" },
+    { name: "Push and CI", state: "missing evidence", next: "push after validation" },
+    { name: "Protected user work", state: "declared / pending final review", next: "final staging review" }
+  ];
+
+  runStateGrid.innerHTML = states
+    .map(
+      (item) => `
+        <article class="run-state-card">
+          <div class="run-state-card__header">
+            <span>${item.name}</span>
+            <strong>${item.state}</strong>
+          </div>
+          <p>${item.next}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  if (runStateBadge) {
+    runStateBadge.textContent = "pending-validation";
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_run_state_viewed", {
+      panel: "run_state",
+      run_state: "pending-validation",
+      state_count: states.length
+    });
+  });
+}
+
+function renderGodModeCompletionAudit() {
+  if (!completionAuditGrid) return;
+
+  const items = [
+    { name: "New Features", state: "Implemented / unverified", missing: "runtime + quality output" },
+    { name: "Dashboard", state: "Implemented / unverified", missing: "browser verification" },
+    { name: "Goals", state: "Implemented / unverified", missing: "goals check output" },
+    { name: "Repos", state: "Implemented / unverified", missing: "repo health + commit boundary review" },
+    { name: "Docs", state: "Implemented / unverified", missing: "governance index output" },
+    { name: "Agents", state: "Implemented / unverified", missing: "agent lane output" },
+    { name: "Security + AI + Rollback", state: "Implemented / unverified", missing: "release readiness output" },
+    { name: "Validation", state: "Missing evidence", missing: "validation command output" },
+    { name: "Commit / Push / CI", state: "Missing evidence", missing: "commit hash + push + CI pass" },
+    { name: "Protected User Work", state: "Implemented / unverified", missing: "final staging review" }
+  ];
+
+  completionAuditGrid.innerHTML = items
+    .map(
+      (item) => `
+        <article class="completion-audit-card">
+          <div class="completion-audit-card__header">
+            <span>${item.name}</span>
+            <strong>${item.state}</strong>
+          </div>
+          <p>${item.missing}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  if (completionAuditBadge) {
+    completionAuditBadge.textContent = "not-complete";
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_completion_audit_viewed", {
+      panel: "completion_audit",
+      completion_state: "not-complete",
+      audit_item_count: items.length
+    });
+  });
+}
+
+function renderGodModeHandoff() {
+  if (!handoffList) return;
+
+  const sections = [
+    {
+      label: "Summary",
+      detail: "God Mode added dashboard surfaces, contracts, docs, quality gates, telemetry, ADR workflow, plugin integration, validation plan, and handoff tracking."
+    },
+    {
+      label: "Changed Surfaces",
+      detail: "Product, goals, repos, docs, agents, security, AI, rollback, validation, ADR, and handoff surfaces are represented."
+    },
+    {
+      label: "Validation Status",
+      detail: "Pending. No completion claim until validation plan and quality governance pass."
+    },
+    {
+      label: "Risks",
+      detail: "Unrun validation, uncommitted changes, unpushed branch state, and unrelated user work."
+    },
+    {
+      label: "Rollback",
+      detail: "Remove bounded slice artifacts: panels, contracts, docs, checkers, scripts, telemetry, and index entries."
+    },
+    {
+      label: "Next Commands",
+      detail: "Run handoff, validation plan, work package, ADR workflow, completion audit, run-state, staging manifest, changelog, and quality governance checks."
+    },
+    {
+      label: "Protected User Work",
+      detail: "Unrelated user or system changes must be preserved during validation and commit preparation."
+    }
+  ];
+
+  handoffList.innerHTML = sections
+    .map(
+      (section) => `
+        <li>
+          <strong>${section.label}</strong>
+          <span>${section.detail}</span>
+        </li>
+      `
+    )
+    .join("");
+
+  if (handoffBadge) {
+    handoffBadge.textContent = `${sections.length} handoff sections`;
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_handoff_viewed", {
+      panel: "handoff",
+      section_count: sections.length,
+      handoff_state: "pending-validation"
+    });
+  });
+}
+
+function renderGodModeAdrWorkflow() {
+  if (!adrWorkflowList) return;
+
+  const steps = [
+    {
+      label: "Scope",
+      rule: "Define affected modules, layers, and user outcomes before editing.",
+      evidence: "Module coverage and work package."
+    },
+    {
+      label: "Decision",
+      rule: "Record durable architecture decisions using the SEIS ADR template.",
+      evidence: "docs/adr/0001-seis-god-mode-operating-system.md"
+    },
+    {
+      label: "Implementation",
+      rule: "Ship bounded, reversible slices with contracts, docs, scripts, and UI when user-visible.",
+      evidence: "Primary files listed in the work package."
+    },
+    {
+      label: "Validation",
+      rule: "Run or request the relevant validation plan commands before completion claims.",
+      evidence: "God Mode validation plan."
+    },
+    {
+      label: "Handoff",
+      rule: "Report changes, validation status, risks, rollback, and next steps without hiding unverified work.",
+      evidence: "Final response, commit, PR, or release note."
+    }
+  ];
+
+  adrWorkflowList.innerHTML = steps
+    .map(
+      (step) => `
+        <li>
+          <strong>${step.label}</strong>
+          <p>${step.rule}</p>
+          <span>${step.evidence}</span>
+        </li>
+      `
+    )
+    .join("");
+
+  if (adrWorkflowBadge) {
+    adrWorkflowBadge.textContent = `${steps.length} workflow steps`;
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_adr_workflow_viewed", {
+      panel: "adr_workflow",
+      step_count: steps.length,
+      adr_required: true
+    });
+  });
+}
+
+function renderGodModeEcosystemLanes() {
+  if (!ecosystemLanesGrid) return;
+
+  const lanes = [
+    {
+      name: "Goals",
+      status: "Evidence ledger active",
+      source: "content/development/seis-goals-evidence-ledger.json",
+      gate: "npm run check:seis-goals-evidence-ledger",
+      next: "Run validation and move current goals from implemented-unverified to evidence-backed."
+    },
+    {
+      name: "Repos",
+      status: "Health manifest active",
+      source: "content/development/seis-repo-health-manifest.json",
+      gate: "npm run check:seis-repo-health-manifest",
+      next: "Prepare commit-safe diff boundaries and protect unrelated worktree changes."
+    },
+    {
+      name: "Docs",
+      status: "Governance index active",
+      source: "content/development/seis-governance-index.json",
+      gate: "npm run check:seis-governance-index",
+      next: "Keep every new durable decision indexed with a purpose and source path."
+    },
+    {
+      name: "Agents",
+      status: "Lane status active",
+      source: "content/development/seis-agent-lane-status.json",
+      gate: "npm run check:seis-agent-lane-status",
+      next: "Keep every active agent lane observable, controllable, and validation-bound."
+    },
+    {
+      name: "SEIS-Agent",
+      status: "Plugin integration active",
+      source: "content/development/seis-agent-plugin-integration.json",
+      gate: "npm run check:seis-agent-plugin-integration",
+      next: "Route seis_plugin_integration while keeping seis@personal and specialist plugins embedded under seis-ai-agent@seis-repo."
+    },
+    {
+      name: "SEIS Hub",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      gate: "npm run check:seis-ai-agent",
+      next: "Route repository governance, architecture, migration safety, and quality policy through SEIS-Agent."
+    },
+    {
+      name: "SEIS Cloud",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      gate: "npm run check:cloud-access-policy",
+      next: "Keep public cloud and team/workplace VPN cloud paths explicit, scoped, and rollback-ready."
+    },
+    {
+      name: "SEIS-Code",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      gate: "npm run check:seis-plugin-bundle",
+      next: "Route implementation, tests, CI, MCP/plugin code, and automation through the code lane."
+    },
+    {
+      name: "SEIS-Design",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      gate: "npm run check:motion-evidence",
+      next: "Keep product UI, design systems, accessibility, motion, and visual QA connected to implementation."
+    },
+    {
+      name: "SEIS-DATA",
+      status: "Embedded lane active",
+      source: "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      gate: "npm run check:plugin-capability-lanes",
+      next: "Keep reports, schemas, memory, context, plugin inventory, and provenance tied to generated sources."
+    }
+  ];
+
+  ecosystemLanesGrid.innerHTML = lanes
+    .map(
+      (lane) => `
+        <article class="ecosystem-lane-card">
+          <div class="ecosystem-lane-card__header">
+            <span>${lane.name}</span>
+            <strong>${lane.status}</strong>
+          </div>
+          <dl>
+            <div>
+              <dt>Source</dt>
+              <dd>${lane.source}</dd>
+            </div>
+            <div>
+              <dt>Gate</dt>
+              <dd>${lane.gate}</dd>
+            </div>
+            <div>
+              <dt>Next</dt>
+              <dd>${lane.next}</dd>
+            </div>
+          </dl>
+        </article>
+      `
+    )
+    .join("");
+
+  if (ecosystemLanesBadge) {
+    ecosystemLanesBadge.textContent = `${lanes.length} lanes`;
+  }
+
+  queueMicrotask(() => {
+    emitEvent("seis_demo_ecosystem_lanes_viewed", {
+      panel: "ecosystem_lanes",
+      lane_count: lanes.length,
+      lanes: lanes.map((lane) => lane.name.toLowerCase())
+    });
+  });
 }
 
 function setMetricsFromContract() {
@@ -279,7 +1220,11 @@ function setMetricsFromContract() {
   targets.textContent = `Targets: ${(state.contract.platform_targets || []).join(" / ") || "web only"}`;
   const focusMode = document.createElement("li");
   focusMode.textContent = `Focus Mode: ${state.isFocusMode ? "enabled" : "available"}`;
-  metricsContainer.append(routes, events, targets, focusMode);
+  const godMode = document.createElement("li");
+  godMode.textContent = `God Mode Developer: ${state.isGodMode ? "active" : "available"}`;
+  const pluginFabric = document.createElement("li");
+  pluginFabric.textContent = "Plugin fabric: seis@personal + cloud/code/design/data embedded in SEIS-Agent";
+  metricsContainer.append(routes, events, targets, focusMode, godMode, pluginFabric);
 }
 
 function renderScenarioCards() {

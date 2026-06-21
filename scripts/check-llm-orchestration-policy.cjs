@@ -2,7 +2,7 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute, chooseAutoTool } = require("./ai-routing-policy.cjs");
 
 const ROOT = process.cwd();
 const POLICY_PATH = path.join(ROOT, "content", "development", "llm-task-routing-policy.json");
@@ -15,6 +15,10 @@ const failures = [];
 const REMOTE_ORCHESTRATOR = "seis-agent";
 const REQUIRED_LOCAL_HELPERS = [
   "codex",
+  "antigravity",
+  "antigravity-ide",
+  "cursor",
+  "xcode",
   "openai",
   "claude",
   "gemini",
@@ -95,12 +99,20 @@ if (!policy) {
   ensure(chooseAutoTool("qwen cross-check") === "qwen", "auto routing should map qwen cross-check intents to qwen");
   ensure(chooseAutoTool("opencode terminal coding") === "opencode", "auto routing should map opencode intents to opencode");
   ensure(chooseAutoTool("codex primary execution") === "codex", "auto routing should map codex primary execution intents to codex");
+  ensure(chooseAutoTool("antigravity ide workspace") === "antigravity-ide", "auto routing should map Antigravity IDE intents to antigravity-ide");
+  ensure(chooseAutoTool("antigravity 2.0 app") === "antigravity", "auto routing should map Antigravity 2.x intents to antigravity");
+  ensure(chooseAutoTool("cursor review") === "cursor", "auto routing should map Cursor intents to cursor");
+  ensure(chooseAutoTool("xcode swiftui signing") === "xcode", "auto routing should map Xcode intents to xcode");
   ensure(chooseAutoTool("hermes mcp gateway") === "hermes", "auto routing should map hermes gateway intents to hermes");
   ensure(chooseAutoTool("goose general agent") === "goose", "auto routing should map goose agent intents to goose");
   ensure(chooseAutoTool("open design prototype") === "open-design", "auto routing should map Open Design intents to open-design");
   ensure(chooseAutoTool("translate") === "kimi", "auto routing should map translation intents to kimi");
   ensure(chooseAutoTool("research") === "gemini", "auto routing should map research intents to gemini");
   ensure(chooseAutoTool("özet") === "openai", "auto routing should map translation-aware summary intents to openai");
+  ensure(chooseAutoRoute("audit token redaction vulnerability exposure").laneId === "seis-security", "SEIS router should map security-sensitive intents to seis-security");
+  ensure(chooseAutoRoute("browser research for docs mcp").laneId === "seis-research", "SEIS router should map research intents to seis-research");
+  ensure(chooseAutoRoute("idempotent automation workflow dry-run runbook").laneId === "seis-automation", "SEIS router should map automation intents to seis-automation");
+  ensure(chooseAutoRoute("product requirements acceptance launch readiness").laneId === "seis-product", "SEIS router should map product intents to seis-product");
 }
 
 if (!registry) {

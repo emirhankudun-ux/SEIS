@@ -16,7 +16,10 @@ function setupDOM(html = "") {
   document = dom.window.document;
   global.window = window;
   global.document = document;
-  global.navigator = window.navigator;
+  Object.defineProperty(global, "navigator", {
+    value: window.navigator,
+    configurable: true
+  });
   global.localStorage = {
     store: {},
     getItem(key) { return this.store[key] || null; },

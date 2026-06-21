@@ -13,6 +13,7 @@ import sys
 
 from commands import handle_slash
 from ai_engine import AIEngine
+from config import SSH_AI_RELEASE_NAME
 from i18n import get as i18n_get, pick
 from memory import Session
 from persistence import KeepaliveThread, load_state, save_state
@@ -37,9 +38,10 @@ class C:
 
 
 def _banner() -> str:
+    title = f"{SSH_AI_RELEASE_NAME} • Terminal Asistanı"
     return (
         f"{C.CYAN}╔════════════════════════════════════════════════════╗\n"
-        f"║             SSH-AI v0.3 • Terminal Asistanı        ║\n"
+        f"║{title:^52}║\n"
         f"╚════════════════════════════════════════════════════╝{C.RESET}"
     )
 
@@ -79,7 +81,7 @@ def main() -> None:
     parser.add_argument("--help", action="store_true")
     args, _ = parser.parse_known_args()
     if args.help:
-        print("SSH-AI v0.3\nKullanım: ai_shell.py [--session-id <session-id>]")
+        print(f"{SSH_AI_RELEASE_NAME}\nKullanım: ai_shell.py [--session-id <session-id>]")
         return
 
     if not sys.stdout.isatty() or os.environ.get("NO_COLOR"):

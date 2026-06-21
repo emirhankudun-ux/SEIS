@@ -1,0 +1,209 @@
+{
+  "id": "seis-god-mode-module-coverage",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Make God Mode development measurable across the core SEIS modules and five required ecosystem layers.",
+  "requiredModules": [
+    "dashboard",
+    "goals",
+    "repos",
+    "docs",
+    "agents"
+  ],
+  "requiredLayers": [
+    "product-experience",
+    "application-platform",
+    "ai-agi-learning",
+    "cloud-security",
+    "governance-quality"
+  ],
+  "qualityGate": "npm run check:seis-god-mode-module-coverage",
+  "modules": [
+    {
+      "id": "dashboard",
+      "displayName": "Dashboard",
+      "newFeature": "God Mode operating overview that shows module coverage, quality gates, and current ecosystem posture in one cockpit surface.",
+      "layers": {
+        "product-experience": {
+          "evidence": "Dashboard exposes a concise operating view for progress, gaps, and next build slices.",
+          "riskGate": "No dashboard work is complete without showing the user what changed, what is blocked, and what needs validation."
+        },
+        "application-platform": {
+          "evidence": "Dashboard state is backed by explicit contracts instead of hard-coded prose.",
+          "riskGate": "No dashboard-only mock may be treated as platform progress."
+        },
+        "ai-agi-learning": {
+          "evidence": "Dashboard reports AI/agent signals, learning mode, and decision trace status.",
+          "riskGate": "AI claims must map to a contract, event, or documented capability."
+        },
+        "cloud-security": {
+          "evidence": "Dashboard includes security and deployment-readiness posture before release claims.",
+          "riskGate": "No deployment-ready label without security and rollback evidence."
+        },
+        "governance-quality": {
+          "evidence": "Dashboard links each feature slice to a quality gate and acceptance evidence.",
+          "riskGate": "No visual feature can bypass governance checks."
+        }
+      },
+      "acceptanceEvidence": [
+        "Visible cockpit surface or contract-backed view",
+        "Quality gate state",
+        "Security posture",
+        "Next action"
+      ],
+      "nextBuildSlice": "Add a dashboard module card that reads this coverage contract and flags missing evidence."
+    },
+    {
+      "id": "goals",
+      "displayName": "Goals",
+      "newFeature": "God Mode goal ledger that separates active objectives, completion evidence, blockers, and long-horizon roadmap slices.",
+      "layers": {
+        "product-experience": {
+          "evidence": "Goals are understandable as user-facing outcomes, not only engineering tasks.",
+          "riskGate": "No goal can be marked complete without explicit evidence."
+        },
+        "application-platform": {
+          "evidence": "Goals use durable records and stable fields for status, owner, gates, and evidence.",
+          "riskGate": "No invisible or undocumented goal state."
+        },
+        "ai-agi-learning": {
+          "evidence": "Goal updates preserve learning signals, assumptions, and decision rationale.",
+          "riskGate": "No autonomous goal update without auditability."
+        },
+        "cloud-security": {
+          "evidence": "Goals that affect cloud, secrets, deploy, or data require security gates.",
+          "riskGate": "No goal may weaken privacy, secret handling, or rollback readiness."
+        },
+        "governance-quality": {
+          "evidence": "Goals are tied to acceptance criteria, validation commands, and rollback notes.",
+          "riskGate": "No roadmap item may bypass quality gates."
+        }
+      },
+      "acceptanceEvidence": [
+        "Goal status",
+        "Acceptance criteria",
+        "Validation evidence",
+        "Rollback path"
+      ],
+      "nextBuildSlice": "Add a goals module ledger that maps every active objective to validation evidence and rollback readiness."
+    },
+    {
+      "id": "repos",
+      "displayName": "Repos",
+      "newFeature": "God Mode repository governance layer that tracks repo health, plugin readiness, CI posture, and publish safety.",
+      "layers": {
+        "product-experience": {
+          "evidence": "Repository health is visible as maintainability and contributor-readiness, not hidden shell output.",
+          "riskGate": "No repo change is complete if user-visible repo health regresses."
+        },
+        "application-platform": {
+          "evidence": "Repo scripts, packages, plugins, and apps are mapped to supported platform surfaces.",
+          "riskGate": "No untracked platform lane or orphaned script."
+        },
+        "ai-agi-learning": {
+          "evidence": "Repo plugin and agent capabilities are declared and checked.",
+          "riskGate": "No AI/plugin capability without manifest and checker coverage."
+        },
+        "cloud-security": {
+          "evidence": "Repo gates cover CI, secrets safety, publish readiness, and rollback notes.",
+          "riskGate": "No push/release without security-sensitive checks."
+        },
+        "governance-quality": {
+          "evidence": "Repo governance uses mandatory checks for docs, security, quality, and architecture consistency.",
+          "riskGate": "No repository slice can bypass CI-linked governance."
+        }
+      },
+      "acceptanceEvidence": [
+        "CI-linked checks",
+        "Plugin bundle coverage",
+        "Open-source readiness",
+        "Rollback notes"
+      ],
+      "nextBuildSlice": "Add a repo health manifest that summarizes required checks and missing governance files per repo lane."
+    },
+    {
+      "id": "docs",
+      "displayName": "Docs",
+      "newFeature": "God Mode documentation system that turns architecture, quality gates, AI policy, and module coverage into living contracts.",
+      "layers": {
+        "product-experience": {
+          "evidence": "Docs explain what exists, why it exists, and what the user can do next.",
+          "riskGate": "No feature may ship with only code and no operating guidance."
+        },
+        "application-platform": {
+          "evidence": "Docs link contracts, scripts, apps, plugins, and package commands.",
+          "riskGate": "No stale doc claim without a repo artifact."
+        },
+        "ai-agi-learning": {
+          "evidence": "Docs describe AI boundaries, autonomy limits, learning loops, and evidence requirements.",
+          "riskGate": "No AI policy gap for autonomous or agentic behavior."
+        },
+        "cloud-security": {
+          "evidence": "Docs include security, privacy, deployment readiness, and rollback expectations.",
+          "riskGate": "No operational doc can omit security impact."
+        },
+        "governance-quality": {
+          "evidence": "Docs define acceptance criteria and are checked by quality gates.",
+          "riskGate": "No documentation-only artifact without quality linkage."
+        }
+      },
+      "acceptanceEvidence": [
+        "Architecture rationale",
+        "Quality gates",
+        "AI policy boundary",
+        "Rollback and maintenance notes"
+      ],
+      "nextBuildSlice": "Add a docs index that links manifesto, quality gates, AI policy, and God Mode coverage."
+    },
+    {
+      "id": "agents",
+      "displayName": "Agents",
+      "newFeature": "God Mode agent operating model that defines safe autonomy, tool boundaries, plugin capabilities, and validation duties.",
+      "layers": {
+        "product-experience": {
+          "evidence": "Agent behavior is legible to users through status, scope, and next-step reporting.",
+          "riskGate": "No invisible agent action without observable outcome."
+        },
+        "application-platform": {
+          "evidence": "Agent skills, manifests, and MCP/plugin hooks are declared as platform assets.",
+          "riskGate": "No agent feature without source-controlled capability definition."
+        },
+        "ai-agi-learning": {
+          "evidence": "Agents capture reasoning boundaries, learning signals, and evaluation gates.",
+          "riskGate": "No autonomous claim without validation and controllability."
+        },
+        "cloud-security": {
+          "evidence": "Agents follow least-privilege, secret-safety, and non-destructive operation rules.",
+          "riskGate": "No agent may expose credentials, bypass approval, or weaken rollback posture."
+        },
+        "governance-quality": {
+          "evidence": "Agents are checked for skill presence, manifest coverage, quality gates, and docs.",
+          "riskGate": "No agent lane can ship without policy and checker coverage."
+        }
+      },
+      "acceptanceEvidence": [
+        "Skill definition",
+        "Agent manifest",
+        "Safety boundary",
+        "Validation duty"
+      ],
+      "nextBuildSlice": "Add agent lane status that shows which skills are active, checked, and safe to use."
+    }
+  ],
+  "roadmap": {
+    "30Days": [
+      "Expose module coverage in the demo dashboard.",
+      "Create a goals ledger with validation and rollback fields.",
+      "Make repo health and plugin readiness visible through checked manifests.",
+      "Add docs index for architecture, quality, AI policy, and God Mode coverage.",
+      "Add agent lane status for skill, manifest, and safety boundaries."
+    ],
+    "90Days": [
+      "Connect module coverage to real product telemetry and release gates.",
+      "Turn goals into a durable ecosystem planning system.",
+      "Expand repo governance across all SEIS packages, apps, plugins, and docs.",
+      "Create living documentation that is regenerated from source contracts where practical.",
+      "Evolve agents into safe, observable, policy-bound development operators."
+    ]
+  }
+}

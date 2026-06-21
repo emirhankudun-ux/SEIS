@@ -42,11 +42,20 @@ function runWithEnv( commandLineArgs, extraEnv, pathExtensions = [] ) {
   const combined = `${result.stdout || ""}${result.stderr || ""}`;
   const selectedLine = combined.split( "\n" ).find( line => line.startsWith( "auto selected:" ) );
   const selectedRoute = selectedLine ? selectedLine.replace( "auto selected:", "" ).trim() : undefined;
+  const laneLine = combined.split( "\n" ).find( line => line.startsWith( "seis lane:" ) );
+  const seisLane = laneLine ? laneLine.replace( "seis lane:", "" ).trim() : undefined;
 
-  return { selectedRoute };
+  return { selectedRoute, seisLane };
 }
 
 function assertRoute( label, actual, expected ) {
+  if ( actual === expected ) {
+    return;
+  }
+  failures.push( `${label} expected ${expected}, got ${actual || "<not-selected>"}` );
+}
+
+function assertLane( label, actual, expected ) {
   if ( actual === expected ) {
     return;
   }
@@ -64,6 +73,7 @@ const scenario1 = runWithEnv(
   [ tmpBase ]
 );
 assertRoute( "offline force fallback -> no ollama", scenario1.selectedRoute, "seis-agent" );
+assertLane( "offline force fallback -> SEIS research lane", scenario1.seisLane, "seis-research" );
 
 // Scenario 2:
 // Offline forced, selected helper unavailable, fake ollama list works and fallback should switch to ollama.
@@ -81,6 +91,7 @@ const scenario2 = runWithEnv(
   [ tmpWithOllama ]
 );
 assertRoute( "offline force fallback -> ollama", scenario2.selectedRoute, "ollama" );
+assertLane( "offline force fallback with ollama -> SEIS research lane", scenario2.seisLane, "seis-research" );
 
 // Scenario 3:
 // Online forced should keep remote helper behavior even if offline hints are set; gemini route should be selected from policy mapping.
@@ -94,6 +105,7 @@ const scenario3 = runWithEnv(
   [ tmpWithOllama ]
 );
 assertRoute( "online override should not force offline fallback", scenario3.selectedRoute, "gemini" );
+assertLane( "online override -> SEIS research lane", scenario3.seisLane, "seis-research" );
 
 // Scenario 4:
 // Online forced with no key should fallback when remote helper not ready.
@@ -109,6 +121,7 @@ const scenario4 = runWithEnv(
   [ tmpWithOllama ]
 );
 assertRoute( "online override + offline key missing", scenario4.selectedRoute, "seis-agent" );
+assertLane( "online override + offline key missing -> SEIS research lane", scenario4.seisLane, "seis-research" );
 
 // Scenario 5:
 // Role command should force role-aware helper selection.

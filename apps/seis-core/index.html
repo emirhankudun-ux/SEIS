@@ -31,6 +31,10 @@
           <span class="nav-icon" aria-hidden="true">D</span>
           <span>Dashboard</span>
         </button>
+        <button class="nav-item" type="button" data-view="godmode">
+          <span class="nav-icon" aria-hidden="true">X</span>
+          <span>God Mode</span>
+        </button>
         <button class="nav-item" type="button" data-view="goals">
           <span class="nav-icon" aria-hidden="true">G</span>
           <span>Goals</span>
@@ -106,6 +110,24 @@
           <section class="dashboard-view view-panel is-active" data-panel="dashboard" aria-labelledby="dashboard-title">
             <h2 id="dashboard-title" class="sr-only">Dashboard</h2>
             <div class="metric-grid" id="metric-grid"></div>
+            <section class="panel operations-readiness-panel" aria-labelledby="operations-readiness-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="operations-readiness-title">Operations Readiness</h3>
+                  <p class="panel-summary">Unify release, CI, security, rollback, and handoff evidence before SEIS work is treated as shippable.</p>
+                </div>
+                <span class="status-pill attention" id="operations-readiness-state">Review</span>
+              </div>
+              <div class="readiness-summary-grid" id="readiness-summary"></div>
+              <div class="operations-readiness-layout">
+                <div class="readiness-queue" id="readiness-queue" aria-label="Operations readiness checks"></div>
+                <aside class="decision-summary-card" aria-labelledby="decision-summary-title">
+                  <h4 id="decision-summary-title">Decision Summary</h4>
+                  <div id="readiness-decision"></div>
+                  <button class="secondary-button" type="button" data-view="automation">Open Handoff</button>
+                </aside>
+              </div>
+            </section>
             <section class="panel operating-model-panel">
               <div class="panel-header">
                 <h3>Ecosystem Operating Model</h3>
@@ -131,6 +153,13 @@
             </div>
             <section class="panel">
               <div class="panel-header">
+                <h3>Recent Activity</h3>
+                <span class="status-pill ready">Live log model</span>
+              </div>
+              <div class="activity-timeline" id="recent-activity"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
                 <h3>Architecture Alerts</h3>
                 <span class="status-pill attention">Review</span>
               </div>
@@ -142,6 +171,100 @@
                 <span class="status-pill ready">Next best</span>
               </div>
               <div class="action-grid" id="recommended-actions"></div>
+            </section>
+          </section>
+
+          <section class="view-panel" data-panel="godmode" aria-labelledby="godmode-title">
+            <div class="section-heading">
+              <h2 id="godmode-title">God Mode</h2>
+              <p>Coordinate SEIS-specific AI setup, agent execution, evidence gates, and custom model development from one controlled surface.</p>
+            </div>
+            <section class="panel godmode-workbench" aria-labelledby="godmode-workbench-title">
+              <div class="mission-composer">
+                <div class="panel-header">
+                  <h3 id="godmode-workbench-title">Mission Composer</h3>
+                  <span class="status-pill ready">Local-first</span>
+                </div>
+                <form id="godmode-mission-form" class="godmode-form">
+                  <label for="godmode-mission-input">Mission</label>
+                  <textarea id="godmode-mission-input" name="mission" placeholder="Define the SEIS mission, expected artifact, risk boundary, and validation evidence..."></textarea>
+                  <div class="composer-row">
+                    <label for="godmode-lane-select">Lane</label>
+                    <select id="godmode-lane-select" name="lane"></select>
+                    <button class="primary-button" type="submit">Run Mission</button>
+                  </div>
+                </form>
+                <div class="mission-route-preview" id="mission-route-preview" aria-live="polite"></div>
+                <div class="lane-switcher" id="godmode-lane-switcher" aria-label="God Mode lanes"></div>
+              </div>
+              <div class="mission-brief" id="godmode-mission-brief"></div>
+            </section>
+            <div class="godmode-layout module-spacer">
+              <section class="panel" aria-labelledby="godmode-protocol-title">
+                <div class="panel-header">
+                  <h3 id="godmode-protocol-title">Execution Protocol</h3>
+                  <span class="status-pill attention">Gated</span>
+                </div>
+                <div class="godmode-protocol" id="godmode-protocol"></div>
+              </section>
+              <section class="panel" aria-labelledby="seis-ai-setup-title">
+                <div class="panel-header">
+                  <h3 id="seis-ai-setup-title">SEIS AI Setup</h3>
+                  <span class="status-pill ready">Model program</span>
+                </div>
+                <div class="ai-setup-grid" id="seis-ai-setup"></div>
+              </section>
+            </div>
+            <section class="panel router-ledger-panel module-spacer" aria-labelledby="seis-router-ledger-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="seis-router-ledger-title">10-Lane SEIS Router</h3>
+                  <p class="panel-summary">Expose the AI launcher route contract as tool, SEIS lane, and default gate before mission execution.</p>
+                </div>
+                <span class="status-pill ready">God-mode aware</span>
+              </div>
+              <div class="router-summary-grid" id="seis-router-summary"></div>
+              <div class="router-lane-grid" id="seis-router-lanes"></div>
+            </section>
+            <div class="godmode-layout module-spacer">
+              <section class="panel" aria-labelledby="godmode-run-title">
+                <div class="panel-header">
+                  <h3 id="godmode-run-title">Run Timeline</h3>
+                  <span class="status-pill ready">Evidence-led</span>
+                </div>
+                <div class="run-timeline" id="godmode-run-timeline"></div>
+              </section>
+              <section class="panel" aria-labelledby="godmode-guardrails-title">
+                <div class="panel-header">
+                  <h3 id="godmode-guardrails-title">Guardrails</h3>
+                  <span class="status-pill ready">No secrets</span>
+                </div>
+                <div class="guardrail-list" id="godmode-guardrails"></div>
+              </section>
+            </div>
+            <section class="panel module-spacer" aria-labelledby="godmode-artifacts-title">
+              <div class="panel-header">
+                <h3 id="godmode-artifacts-title">Artifacts</h3>
+                <span class="status-pill ready">Traceable</span>
+              </div>
+              <div class="artifact-grid" id="godmode-artifacts"></div>
+            </section>
+            <section class="panel feature-growth-ledger module-spacer" aria-labelledby="feature-growth-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="feature-growth-title">Feature Growth Ledger</h3>
+                  <p class="panel-summary">Track whether every required SEIS topic gained real feature or governance evidence before completion is claimed.</p>
+                </div>
+                <span class="status-pill attention" id="feature-growth-state">not-complete</span>
+              </div>
+              <div class="ledger-summary-grid" id="feature-growth-summary"></div>
+              <div class="feature-growth-grid">
+                <div class="ledger-list" id="feature-growth-ledger" aria-label="Feature growth topics"></div>
+                <aside class="completion-blockers" aria-labelledby="completion-blockers-title">
+                  <h4 id="completion-blockers-title">Completion Blockers</h4>
+                  <div id="feature-growth-blockers"></div>
+                </aside>
+              </div>
             </section>
           </section>
 
@@ -197,6 +320,13 @@
               <button class="filter-chip" type="button" data-filter="Blocked">Blocked</button>
             </div>
             <div class="repo-grid" id="repository-grid"></div>
+            <section class="panel module-spacer">
+              <div class="panel-header">
+                <h3>Dependency Overview</h3>
+                <span class="status-pill attention">Tracked</span>
+              </div>
+              <div class="dependency-overview" id="dependency-overview"></div>
+            </section>
           </section>
 
           <section class="view-panel" data-panel="documentation" aria-labelledby="documentation-title">
@@ -229,6 +359,26 @@
               </div>
               <div class="system-grid" id="ai-system-grid"></div>
             </section>
+            <section class="panel module-spacer">
+              <div class="panel-header">
+                <h3>Agent Orchestration</h3>
+                <span class="status-pill attention">Handoff audit</span>
+              </div>
+              <div class="orchestration-layout">
+                <div class="orchestration-lanes" id="orchestration-lanes"></div>
+                <div class="handoff-audit" id="handoff-audit"></div>
+              </div>
+            </section>
+            <section class="panel module-spacer" aria-labelledby="agent-routing-matrix-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="agent-routing-matrix-title">SEIS Routing Matrix</h3>
+                  <p class="panel-summary">Mirror the 10-lane router output for agent handoff, gate ownership, and launcher tool selection.</p>
+                </div>
+                <span class="status-pill ready">10 lanes</span>
+              </div>
+              <div class="routing-matrix" id="agent-routing-matrix"></div>
+            </section>
           </section>
 
           <section class="view-panel" data-panel="plugins" aria-labelledby="plugins-title">
@@ -245,6 +395,29 @@
               <p>Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.</p>
             </div>
             <div class="automation-grid" id="automation-grid"></div>
+            <section class="panel module-spacer" aria-labelledby="workflow-run-history-title">
+              <div class="panel-header">
+                <h3 id="workflow-run-history-title">Workflow Run History</h3>
+                <span class="status-pill ready">Auditable</span>
+              </div>
+              <div class="workflow-run-list" id="workflow-run-history"></div>
+            </section>
+            <div class="automation-ops-layout module-spacer">
+              <section class="panel" aria-labelledby="approval-gates-title">
+                <div class="panel-header">
+                  <h3 id="approval-gates-title">Approval Gates</h3>
+                  <span class="status-pill attention">Controlled</span>
+                </div>
+                <div class="approval-gates" id="approval-gates"></div>
+              </section>
+              <section class="panel" aria-labelledby="rollback-evidence-title">
+                <div class="panel-header">
+                  <h3 id="rollback-evidence-title">Rollback Evidence</h3>
+                  <span class="status-pill ready">Reversible</span>
+                </div>
+                <div class="rollback-evidence" id="rollback-evidence"></div>
+              </section>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="security" aria-labelledby="security-title">
@@ -261,6 +434,29 @@
                 <h3>Security Requirements</h3>
                 <ul class="spec-list" id="security-requirements"></ul>
               </div>
+            </div>
+            <section class="panel module-spacer" aria-labelledby="permission-reviews-title">
+              <div class="panel-header">
+                <h3 id="permission-reviews-title">Permission Reviews</h3>
+                <span class="status-pill ready">Least privilege</span>
+              </div>
+              <div class="permission-reviews" id="permission-reviews"></div>
+            </section>
+            <div class="security-ops-layout module-spacer">
+              <section class="panel" aria-labelledby="dependency-scans-title">
+                <div class="panel-header">
+                  <h3 id="dependency-scans-title">Dependency Scanning</h3>
+                  <span class="status-pill attention">Evidence</span>
+                </div>
+                <div class="dependency-scans" id="dependency-scans"></div>
+              </section>
+              <section class="panel" aria-labelledby="security-audits-title">
+                <div class="panel-header">
+                  <h3 id="security-audits-title">Security Audits</h3>
+                  <span class="status-pill ready">Auditable</span>
+                </div>
+                <div class="security-audits" id="security-audits"></div>
+              </section>
             </div>
           </section>
 
@@ -279,6 +475,29 @@
                 <div class="phase-list" id="phase-list"></div>
               </section>
             </div>
+            <section class="panel module-spacer" aria-labelledby="dependency-graph-title">
+              <div class="panel-header">
+                <h3 id="dependency-graph-title">Dependency Graph</h3>
+                <span class="status-pill ready">Boundaries</span>
+              </div>
+              <div class="dependency-graph" id="dependency-graph"></div>
+            </section>
+            <div class="architecture-ops-layout module-spacer">
+              <section class="panel" aria-labelledby="module-relationships-title">
+                <div class="panel-header">
+                  <h3 id="module-relationships-title">Module Relationships</h3>
+                  <span class="status-pill ready">Contracts</span>
+                </div>
+                <div class="module-relationships" id="module-relationships"></div>
+              </section>
+              <section class="panel" aria-labelledby="technical-debt-title">
+                <div class="panel-header">
+                  <h3 id="technical-debt-title">Technical Debt Register</h3>
+                  <span class="status-pill attention">Tracked</span>
+                </div>
+                <div class="technical-debt-register" id="technical-debt-register"></div>
+              </section>
+            </div>
           </section>
 
           <section class="view-panel" data-panel="knowledge" aria-labelledby="knowledge-title">
@@ -286,6 +505,45 @@
               <h2 id="knowledge-title">Knowledge</h2>
               <p>Keep SEIS memory, research, and operating decisions discoverable.</p>
             </div>
+            <section class="panel knowledge-map-panel" aria-labelledby="knowledge-graph-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="knowledge-graph-title">Knowledge Graph</h3>
+                  <p class="panel-summary">Connect repository memory, research, decisions, reusable patterns, security policy, and agent handoffs.</p>
+                </div>
+                <span class="status-pill ready">Mapped</span>
+              </div>
+              <div class="knowledge-map-layout">
+                <div class="knowledge-node-grid" id="knowledge-node-grid"></div>
+                <aside class="knowledge-edge-list" aria-labelledby="knowledge-edges-title">
+                  <h4 id="knowledge-edges-title">Relationship Contracts</h4>
+                  <div id="knowledge-edge-list"></div>
+                </aside>
+              </div>
+            </section>
+            <div class="knowledge-ops-layout module-spacer">
+              <section class="panel" aria-labelledby="memory-evidence-title">
+                <div class="panel-header">
+                  <h3 id="memory-evidence-title">Memory Evidence</h3>
+                  <span class="status-pill attention">Staleness-aware</span>
+                </div>
+                <div class="memory-evidence-list" id="memory-evidence-list"></div>
+              </section>
+              <section class="panel" aria-labelledby="decision-history-title">
+                <div class="panel-header">
+                  <h3 id="decision-history-title">Decision History</h3>
+                  <span class="status-pill ready">Traceable</span>
+                </div>
+                <div class="decision-history-list" id="decision-history-list"></div>
+              </section>
+            </div>
+            <section class="panel module-spacer" aria-labelledby="pattern-library-title">
+              <div class="panel-header">
+                <h3 id="pattern-library-title">Reusable Patterns</h3>
+                <span class="status-pill ready">Codified</span>
+              </div>
+              <div class="pattern-library" id="pattern-library"></div>
+            </section>
             <div class="knowledge-grid" id="knowledge-grid"></div>
           </section>
         </section>
@@ -311,6 +569,7 @@
               <li>Local goal management</li>
               <li>Repo and doc health surfaces</li>
               <li>Agent mode switching</li>
+              <li>God Mode mission orchestration</li>
               <li>Plugin, automation, and security centers</li>
               <li>Architecture and roadmap visibility</li>
             </ul>

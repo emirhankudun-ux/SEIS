@@ -241,7 +241,16 @@ function nextActions(blockerItems, warningItems, host) {
   if (blockerItems.includes("ssh-picker-not-compatible")) actions.push("Switch SEIS-SSH to --transport direct-cloud after the cloud endpoint is reachable.");
   if (warningItems.includes("codespaces-proxycommand-may-render-offline-in-some-pickers")) actions.push("If the UI picker shows offline while terminal SSH works, use a reachable direct-cloud endpoint for SEIS-SSH.");
   if (warningItems.includes("direct-cloud-endpoint-not-reachable") && host) actions.push(`Fix cloud firewall/sshd for ${host}:22 before installing direct-cloud mode.`);
+  if (warningItems.includes("direct-cloud-endpoint-not-reachable") && host) {
+    actions.push(`Run host remediation plan now:\n  npm run cloud:ssh:host-fix-plan -- --public-ip ${shellQuote(host)} --user root --live --json`);
+  }
   return actions;
+}
+
+function shellQuote(value) {
+  const text = String(value || "");
+  if (!text) return "''";
+  return `'${text.replaceAll("'", "'\\''")}'`;
 }
 
 function printHelp() {

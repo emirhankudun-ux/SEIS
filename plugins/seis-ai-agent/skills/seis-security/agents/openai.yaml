@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Security"
+  short_description: "Security, threat, and secret-safety lane"
+  default_prompt: "Use $seis-security to review this SEIS change for security, secrets, rollback, and release risk."

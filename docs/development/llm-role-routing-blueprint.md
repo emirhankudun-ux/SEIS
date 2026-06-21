@@ -23,6 +23,10 @@ Eşleşme yoksa veya genel karar/egemenlik isteği varsa yönlendirme:
 | Belirsiz / genel | `seis-agent` | `openai`, `aider`, `claude` | Yönetim ve koordinasyon gerektirirse remote |
 
 Ek özel yol:
+- `antigravity ide` anahtar kelimeleri için `antigravity-ide`
+- `antigravity 2.0` veya `antigravity app` anahtar kelimeleri için `antigravity`
+- `cursor` anahtar kelimeleri için `cursor`
+- `xcode`, `swiftui`, `ios simulator` veya `apple signing` anahtar kelimeleri için `xcode`
 - `translation` anahtar kelimeleri için `kimi`
 - `offline/local` anahtar kelimeleri için `ollama`
 - `policy/governance/security` anahtar kelimeleri için direkt `seis-agent`
@@ -32,10 +36,11 @@ Ek özel yol:
 
 1. İstek metni normalize edilir (lowercase + anahtar eşleme)
 2. Rol sinyalleri puanlanır ve `roleProfile` çıkarılır
-3. Lane adayları hesaplanır
-4. Remote orkestrasyon gerekiyorsa `seis-agent` zorunlu kalır
+3. `packages/seis-ai/models/agent-router-seed-v0.json` üzerinden 10 SEIS lane çıktısı hesaplanır: `seis`, `seis-governance`, `seis-cloud`, `seis-code`, `seis-design`, `seis-data`, `seis-security`, `seis-research`, `seis-automation`, `seis-product`
+4. Helper tool adayı hesaplanır; remote orkestrasyon gerekiyorsa `seis-agent` zorunlu kalır
 5. Plan objesi şu alanlarla döner:
    - `suggestedLane`
+   - `seisLane`
    - `laneType`
    - `role`, `roleConfidence`, `roleSignals`
    - `routerRationale`, `suggestedAlternatives`
@@ -70,6 +75,7 @@ seis_llm_role_plan_request
 
 - `seis-agent` yalnızca remote karar katmanı olarak kalır.
 - Local yardımcılar (`openai`, `claude`, `gemini`, `kimi`, `ollama`, `aider`, `interpreter`) doğrudan **yardımcı** rolünde çalışır.
+- Masaüstü yüzeyleri (`antigravity`, `antigravity-ide`, `cursor`, `xcode`) yalnızca manuel/istek bazlı çalışma yüzeyidir; repo gerçeği Git ve SEIS dokümanlarıdır.
 - İnternet yoksa ve online helper kullanılamıyorsa fallback sırası: `ollama` → `seis-agent`.
 
 ## 6) Kısa Test Vaka Seti (iç doğrulama)

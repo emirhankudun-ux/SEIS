@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import urllib.request
 
+from config import SSH_AI_USER_AGENT
+
 PLUGIN_NAME = "web"
 
 TOOL_DEFINITIONS = [
@@ -34,7 +36,7 @@ def execute(name: str, args: dict) -> str:
         return "[HATA] Geçersiz URL"
 
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "SSH-AI/0.3"})
+        req = urllib.request.Request(url, headers={"User-Agent": SSH_AI_USER_AGENT})
         with urllib.request.urlopen(req, timeout=15) as response:
             data = response.read().decode("utf-8", errors="replace")
         max_chars = int(args.get("max_chars", 5000))

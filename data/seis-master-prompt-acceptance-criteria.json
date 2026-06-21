@@ -43,6 +43,13 @@
       "requirement": "AI, cloud, product, design, and mobile SSH readiness stay tracked without overstated readiness claims.",
       "evidence": ["data/seis-operational-goal-tracker.json", "data/seis-master-objective-coverage.json", "docs/deployment/ssh-wireguard-vps-cloud-server.md"],
       "verification": "Run objective coverage and operational goal tracker checks before claiming readiness."
+    },
+    {
+      "id": "god-mode-every-topic-feature-growth",
+      "priority": "P1",
+      "requirement": "The active God Mode objective is incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all have explicit feature or governance improvement evidence.",
+      "evidence": ["data/seis-master-objective-coverage.json", "content/development/seis-god-mode-feature-growth-ledger.json", "content/development/seis-god-mode-module-coverage.json", "content/development/seis-god-mode-completion-audit.json", "roadmap/seis-next-steps-implementation-pack.md"],
+      "verification": "Run God Mode feature growth ledger, module coverage, work package, and completion audit checks before claiming the broad objective is complete."
     }
   ],
   "requiredCommands": [
@@ -50,6 +57,10 @@
     "npm run check:seis-master-prompt",
     "npm run check:seis-master-objective-coverage-report",
     "npm run check:seis-master-objective-coverage",
+    "npm run check:seis-god-mode-feature-growth-ledger",
+    "npm run check:seis-god-mode-module-coverage",
+    "npm run check:seis-god-mode-work-package",
+    "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
     "npm run check:ssh-hardening-contract",
     "npm run check:open-source-governance",
@@ -60,6 +71,9 @@
     "scripts/check-ssh-hardening-contract.mjs",
     "data/seis-master-objective-coverage.json",
     "reports/seis-master-objective-coverage.md",
+    "content/development/seis-god-mode-feature-growth-ledger.json",
+    "content/development/seis-god-mode-module-coverage.json",
+    "content/development/seis-god-mode-completion-audit.json",
     "data/seis-operational-goal-tracker.json",
     "scripts/check-seis-operational-goal-tracker.mjs"
   ]

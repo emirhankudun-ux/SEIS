@@ -1,34 +1,35 @@
 {
   "id": "seis-god-mode-developer-contract",
-  "title": "SEIS God Mode Developer",
+  "version": "2026.06.18",
   "status": "active",
+  "purpose": "Define required 5-layer lifts and module evidence gates for true SEIS-level progress in God Mode development.",
   "qualityGate": "npm run check:seis-god-mode-developer",
-  "purpose": "Define the high-agency SEIS engineering lane for architecture, implementation, documentation, validation, repository governance, and mobile/cloud readiness work.",
-  "requiredBehavior": [
-    "Protect user work before editing.",
-    "Map the repository context before making broad architecture changes.",
-    "Prefer reversible commits with clear scope boundaries.",
-    "Keep secrets, credentials, private keys, certificates, and provider material outside git.",
-    "Use current evidence before claiming pushed, deployed, online, mobile-ready, protected, or merged status.",
-    "Document the operational contract when adding cloud, SSH, plugin, automation, or governance surfaces.",
-    "Keep SEIS aligned with Apple-first, AI-native, full-stack, design-driven, and open-source ecosystem goals."
+  "requiredLayerLift": [
+    "product-experience",
+    "application-platform",
+    "ai-agi-learning",
+    "cloud-security",
+    "governance-quality"
   ],
-  "forbiddenBehavior": [
-    "Do not claim deployed, online, mobile-ready, protected, pushed, or merged without current evidence.",
-    "Do not overwrite, discard, or revert user changes without explicit approval.",
-    "Do not commit API keys, private SSH keys, tokens, certificates, or provider credentials.",
-    "Do not treat God Mode as permission to skip validation, documentation, security, or repository hygiene.",
-    "Do not introduce duplicate governance lanes when an existing SEIS lane can be extended safely."
+  "feature": {
+    "telemetryEvent": "seis_demo_god_mode_changed",
+    "name": "God Mode cross-layer operating mode"
+  },
+  "operatingBehavior": [
+    "Cross-layer module evidence must exist for Dashboard/Goals/Repos/Docs/Agents before any completion claim.",
+    "No claim of feature completeness without validation + security + rollback proof.",
+    "No public release posture without commit/push/CI evidence or an explicit handoff waiver.",
+    "Every active module lane must keep an auditable rollback slice.",
+    "CI-triggered changes must remain gate-consistent across quality, security, AI, and docs layers."
   ],
-  "evidenceSurfaces": [
-    "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
-    "plugins/seis/skills/seis-god-mode-developer/agents/openai.yaml",
-    "plugins/seis/.codex-plugin/plugin.json",
-    "plugins/seis/README.md",
-    "docs/governance/seis-master-prompt.md",
-    "docs/governance/seis-supreme-vision.md",
-    "docs/architecture/seis-command-center.md",
-    "content/development/seis-ssh-mobile-direct-cloud-contract.json",
-    "data/seis-operational-goal-tracker.json"
-  ]
+  "featureScope": {
+    "modules": [
+      "dashboard",
+      "goals",
+      "repos",
+      "docs",
+      "agents"
+    ],
+    "newFeatureRule": "If any module lacks evidence, required layer lift, or verification, the project state is not-complete and no God Mode completion claim is valid."
+  }
 }

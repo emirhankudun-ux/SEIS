@@ -4,11 +4,15 @@ const fs = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 const { spawn, spawnSync } = require("node:child_process");
-const { chooseAutoTool } = require("./ai-routing-policy.cjs");
+const { chooseAutoRoute } = require("./ai-routing-policy.cjs");
 
 const ROUTES = {
   "seis-agent": { command: "npm", argsPrefix: [ "run", "seis:agent", "--" ], aliases: [ "seis", "agent", "policy" ] },
   codex: { command: "codex", aliases: [ "code" ] },
+  antigravity: { command: "open", appPath: appBundlePath( "Antigravity.app" ), aliases: [ "antigravity-2", "antigravity2" ], healthCheck: () => checkAppBundle( "Antigravity.app" ) },
+  "antigravity-ide": { command: "open", appPath: appBundlePath( "Antigravity IDE.app" ), aliases: [ "ag-ide" ], healthCheck: () => checkAppBundle( "Antigravity IDE.app" ) },
+  cursor: { command: "open", appPath: appBundlePath( "Cursor.app" ), aliases: [ "cursor-editor" ], healthCheck: () => checkAppBundle( "Cursor.app" ) },
+  xcode: { command: "open", appPath: appBundlePath( "Xcode.app" ), aliases: [ "apple-ide" ], healthCheck: () => checkAppBundle( "Xcode.app" ) },
   openai: { command: "openai", aliases: [ "gpt" ], credential: "OPENAI_API_KEY", online: true },
   claude: { command: "claude", aliases: [ "anthropic" ], credential: "ANTHROPIC_API_KEY", online: true },
   gemini: { command: "gemini", aliases: [ "google" ], credential: "GEMINI_API_KEY", online: true },
@@ -40,10 +44,18 @@ function checkOllamaHealth() {
   return result.status === 0;
 }
 
-function openDesignAppPath() {
-  const homeCandidate = path.join( os.homedir(), "Applications", "Open Design.app" );
+function appBundlePath( bundleName ) {
+  const homeCandidate = path.join( os.homedir(), "Applications", bundleName );
   if ( fs.existsSync( homeCandidate ) ) return homeCandidate;
-  return "/Applications/Open Design.app";
+  return path.join( "/Applications", bundleName );
+}
+
+function checkAppBundle( bundleName ) {
+  return fs.existsSync( appBundlePath( bundleName ) );
+}
+
+function openDesignAppPath() {
+  return appBundlePath( "Open Design.app" );
 }
 
 function checkOpenDesignApp() {
@@ -133,23 +145,32 @@ if ( !target || target === "list" || target === "--help" || target === "-h" ) {
 }
 
 let resolvedTarget = target;
+let autoRoute = null;
 if ( target === "auto" ) {
   const separatorIndex = rest.indexOf( "::" );
   const intentParts = separatorIndex >= 0 ? rest.slice( 0, separatorIndex ) : rest;
   forwardArgs = separatorIndex >= 0 ? rest.slice( separatorIndex + 1 ) : [];
   const intentText = intentParts.join( " " );
-  resolvedTarget = chooseAutoTool( intentText );
+  autoRoute = chooseAutoRoute( intentText );
+  resolvedTarget = autoRoute.tool;
   isPolicySelected = true;
 } else if ( ROLE_TARGETS.has( target ) ) {
   const intentText = `${target}: ${rest.join( " " )}`;
   forwardArgs = rest;
-  resolvedTarget = chooseAutoTool( intentText, { preferredRole: target } );
+  autoRoute = chooseAutoRoute( intentText, { preferredRole: target } );
+  resolvedTarget = autoRoute.tool;
   isPolicySelected = true;
 }
 
 if ( isPolicySelected ) {
   resolvedTarget = resolveAutoFallback( resolvedTarget );
   console.log( `auto selected: ${resolvedTarget}` );
+  if ( autoRoute?.laneId ) {
+    console.log( `seis lane: ${autoRoute.laneId}` );
+  }
+  if ( resolvedTarget === "seis-agent" && autoRoute?.intent && forwardArgs.length === 0 ) {
+    forwardArgs = [ formatSeisAgentIntent( autoRoute ) ];
+  }
 }
 
 const route = resolveRoute( resolvedTarget );
@@ -168,3 +189,13 @@ if ( issue ) {
 }
 
 launch( route, forwardArgs );
+
+function formatSeisAgentIntent( route ) {
+  const details = [
+    `SEIS lane: ${route.laneId}`,
+    route.defaultGate ? `default gate: ${route.defaultGate}` : null,
+    route.integrationTool ? `integration tool: ${route.integrationTool}` : null
+  ].filter( Boolean ).join( "; " );
+
+  return `[${details}] ${route.intent}`;
+}

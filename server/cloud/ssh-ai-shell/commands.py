@@ -1,4 +1,4 @@
-"""Slash command handling for SSH-AI v0.3."""
+"""Slash command handling for SSH-AI."""
 
 from __future__ import annotations
 
@@ -7,7 +7,12 @@ import shlex
 import time
 
 import sandbox
-from config import SAFE_SHELL_COMMANDS
+from config import (
+    SAFE_SHELL_COMMANDS,
+    SSH_AI_RELEASE_NAME,
+    SSH_AI_RELEASE_TRACK,
+    SSH_AI_SUPPORT_UNTIL,
+)
 from persistence import list_user_sessions, load_state
 from memory import Session
 
@@ -34,6 +39,8 @@ def handle_slash(user_input: str, session: Session, engine_var: dict) -> tuple[b
         return True, _history(session)
     if cmd == "/model":
         return True, f"Sağlayıcı: {engine_var.get('provider')}, Model: {engine_var.get('model')}"
+    if cmd == "/version":
+        return True, f"{SSH_AI_RELEASE_NAME} ({SSH_AI_RELEASE_TRACK}, support until {SSH_AI_SUPPORT_UNTIL})"
     if cmd == "/usage":
         from usage import user_summary
         summary = user_summary(session.username)
@@ -66,11 +73,11 @@ def handle_slash(user_input: str, session: Session, engine_var: dict) -> tuple[b
 
 
 def _help() -> str:
-    return """
-📚 SSH-AI v0.3 Komutları:
+    return f"""
+📚 {SSH_AI_RELEASE_NAME} Komutları:
 
 Temel:
-  /help, /exit, /clear, /reset, /history, /model, /usage
+  /help, /exit, /clear, /reset, /history, /model, /version, /usage
 
 Veri & RAG:
   /index         RAG dökümanlarını indeksle

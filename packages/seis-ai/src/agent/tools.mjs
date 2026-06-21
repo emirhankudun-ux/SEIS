@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "n
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 
+import { pluginIntegrationStatus } from "../lib/plugin-integration.mjs";
 import { resolveInside } from "../lib/repo.mjs";
 import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit, a11yAudit, securityAudit } from "../lib/checks.mjs";
 
@@ -72,6 +73,17 @@ export function toolDefinitions({ allowWrite = false } = {}) {
         type: "object",
         properties: {
           count: { type: "integer", description: "Number of commits to show (default 10, max 40)" },
+        },
+      },
+    },
+    {
+      name: "seis_plugin_integration",
+      description:
+        "Read the canonical SEIS-Agent plugin integration manifest. Use for SEIS plugin, MCP, cloud/code/design/data lane, helper plugin, or SEIS-Agent routing work before making integration claims.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullManifest: { type: "boolean", description: "Return the full manifest in addition to the compact status summary." },
         },
       },
     },
@@ -179,6 +191,13 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
         out = (err.stdout ?? "") || err.message;
       }
       return out.trim() || "(no commits)";
+    }
+    case "seis_plugin_integration": {
+      return JSON.stringify(
+        pluginIntegrationStatus(repoRoot, { includeFullManifest: input.includeFullManifest === true }),
+        null,
+        2
+      );
     }
     case "run_checks": {
       const result =

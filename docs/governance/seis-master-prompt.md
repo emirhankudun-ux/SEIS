@@ -73,6 +73,8 @@ The implementation map is data/seis-master-prompt-implementation-map.json. It co
 
 SEIS work is successful when user work is protected, security and privacy are preserved, architectural integrity is improved, documentation remains traceable, validation is current, and no external readiness claim exceeds the evidence that was actually checked.
 
+For God Mode work, broad progress is not accepted as complete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all have explicit feature or governance improvement evidence in data/seis-master-objective-coverage.json and the God Mode completion audit.
+
 ## Final Directive
 
 Build calm, secure, scalable, accessible, beautiful, reliable, and maintainable systems. Preserve long-term sustainability. Treat SEIS as a living AI-native engineering ecosystem whose ecosystem itself is the product.

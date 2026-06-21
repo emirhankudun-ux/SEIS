@@ -1,0 +1,117 @@
+{
+  "id": "seis-goals-evidence-ledger",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Track God Mode objectives with explicit acceptance evidence, validation duties, blockers, and rollback paths.",
+  "qualityGate": "npm run check:seis-goals-evidence-ledger",
+  "requiredFields": [
+    "id",
+    "module",
+    "title",
+    "status",
+    "layers",
+    "acceptanceCriteria",
+    "validationCommands",
+    "rollbackPlan",
+    "evidenceLinks"
+  ],
+  "goals": [
+    {
+      "id": "goal-dashboard-coverage-cockpit",
+      "module": "dashboard",
+      "title": "Expose God Mode module coverage in the dashboard",
+      "status": "in-progress",
+      "layers": ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+      "acceptanceCriteria": [
+        "Dashboard shows Dashboard, Goals, Repos, Docs, and Agents coverage cards.",
+        "Each card exposes the five required God Mode layers.",
+        "Coverage surface is backed by a shared contract event and a checker."
+      ],
+      "validationCommands": ["npm run check:seis-god-mode-module-coverage"],
+      "rollbackPlan": "Remove the module coverage panel, renderer, styles, event contract, and checker references as one reversible slice.",
+      "evidenceLinks": [
+        "apps/seis-demo-web/index.html",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/styles.css",
+        "content/development/seis-god-mode-module-coverage.json"
+      ]
+    },
+    {
+      "id": "goal-goals-evidence-ledger",
+      "module": "goals",
+      "title": "Create a durable evidence ledger for active objectives",
+      "status": "active",
+      "layers": ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+      "acceptanceCriteria": [
+        "Every active objective has acceptance criteria.",
+        "Every active objective has validation commands.",
+        "Every active objective has rollback and evidence links."
+      ],
+      "validationCommands": ["npm run check:seis-goals-evidence-ledger"],
+      "rollbackPlan": "Remove the goals ledger contract, governance doc, package script, and checker from quality governance.",
+      "evidenceLinks": [
+        "content/development/seis-goals-evidence-ledger.json",
+        "docs/governance/seis-goals-evidence-ledger.md",
+        "scripts/check-seis-goals-evidence-ledger.mjs"
+      ]
+    },
+    {
+      "id": "goal-repos-health-manifest",
+      "module": "repos",
+      "title": "Add repository health and publish-safety manifest",
+      "status": "active",
+      "layers": ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+      "acceptanceCriteria": [
+        "Repo lanes identify quality, security, docs, plugin, and rollback gates.",
+        "Publish readiness is not declared without CI-linked checks.",
+        "Plugin and agent readiness remain source-controlled."
+      ],
+      "validationCommands": ["npm run check:seis-repo-health-manifest"],
+      "rollbackPlan": "Remove the repo health manifest, doc, checker, and quality script reference.",
+      "evidenceLinks": [
+        "content/development/seis-repo-health-manifest.json",
+        "docs/governance/seis-repo-health-manifest.md",
+        "scripts/check-seis-repo-health-manifest.mjs"
+      ]
+    },
+    {
+      "id": "goal-docs-governance-index",
+      "module": "docs",
+      "title": "Create a living governance index for God Mode documentation",
+      "status": "active",
+      "layers": ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+      "acceptanceCriteria": [
+        "Architecture, quality, AI policy, module coverage, goals, repos, and agents docs are indexed.",
+        "Each indexed doc has an operating purpose.",
+        "Docs are connected to a checker instead of relying on manual memory."
+      ],
+      "validationCommands": ["npm run check:seis-governance-index"],
+      "rollbackPlan": "Remove the governance index contract, doc, checker, and quality script reference.",
+      "evidenceLinks": [
+        "content/development/seis-governance-index.json",
+        "docs/governance/seis-governance-index.md",
+        "scripts/check-seis-governance-index.mjs"
+      ]
+    },
+    {
+      "id": "goal-agents-lane-status",
+      "module": "agents",
+      "title": "Add agent lane status for safe autonomy and validation duties",
+      "status": "active",
+      "layers": ["product-experience", "application-platform", "ai-agi-learning", "cloud-security", "governance-quality"],
+      "acceptanceCriteria": [
+        "Agent lanes declare skill path, autonomy boundary, and validation duty.",
+        "God Mode Developer lane is listed as an active checked lane.",
+        "Agent safety rules preserve least privilege and observable outcomes."
+      ],
+      "validationCommands": ["npm run check:seis-agent-lane-status"],
+      "rollbackPlan": "Remove the agent lane status contract, doc, checker, and quality script reference.",
+      "evidenceLinks": [
+        "content/development/seis-agent-lane-status.json",
+        "docs/governance/seis-agent-lane-status.md",
+        "scripts/check-seis-agent-lane-status.mjs",
+        "plugins/seis/skills/seis-god-mode-developer/SKILL.md"
+      ]
+    }
+  ]
+}

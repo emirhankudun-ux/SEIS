@@ -44,7 +44,7 @@
       "SEIS GitHub workflow governance",
       "SEIS Security Review governance",
       "SEIS Focus Mode AGI operating lane",
-      "SEIS God Mode Developer operating lane"
+      "SEIS God Mode Developer cross-layer lane"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
@@ -56,7 +56,7 @@
       "Use SEIS GitHub workflow governance to plan branch, PR, checks, CODEOWNERS, and source-of-truth handoff.",
       "Use SEIS Security Review governance to inspect secrets, least privilege, SSH/cloud risk, GitHub readiness, and validation claims.",
       "Use SEIS Focus Mode to keep app, website, plugin, and AI/AGI work concentrated, low-noise, and evidence-preserving.",
-      "Use SEIS God Mode Developer for high-agency architecture, code, docs, security, cloud, plugin, AI, and product improvements with strict evidence and user-work protection."
+      "Use SEIS God Mode Developer when the work must improve product, app, AI/AGI, cloud/security, and governance together."
     ],
     "brandColor": "#2563EB"
   }

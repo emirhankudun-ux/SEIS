@@ -15,6 +15,7 @@ const requiredFiles = [
 
 const requiredModules = [
   "Dashboard",
+  "God Mode",
   "Goals",
   "Repositories",
   "Documentation",
@@ -30,10 +31,40 @@ const requiredScriptSignals = [
   "localStorage",
   "pluginFamilies",
   "automationWorkflows",
+  "godModeLanes",
+  "godModeProtocol",
+  "seisAiSetup",
+  "godModeGuardrails",
+  "godModeArtifacts",
+  "godModeRuns",
+  "renderGodMode",
+  "operationsReadiness",
+  "renderOperationsReadiness",
+  "featureGrowthLedger",
+  "renderFeatureGrowthLedger",
+  "workflowRuns",
+  "approvalGates",
+  "rollbackEvidence",
   "securityReports",
+  "permissionReviews",
+  "dependencyScans",
+  "securityAudits",
   "aiSystems",
   "operatingDomains",
   "platformPhases",
+  "dependencyGraph",
+  "moduleRelationships",
+  "technicalDebtRegister",
+  "recentActivity",
+  "dependencyRisk",
+  "renderAgentDetail",
+  "orchestrationLanes",
+  "handoffAudit",
+  "knowledgeGraphNodes",
+  "knowledgeEdges",
+  "memoryEvidence",
+  "decisionHistory",
+  "reusablePatterns",
   "renderCommandResults"
 ];
 
@@ -42,6 +73,13 @@ const requiredDocSections = [
   "Component Map",
   "Data Model",
   "Operating Model",
+  "God Mode Operations Model",
+  "Operations Readiness Model",
+  "AI Orchestration Model",
+  "Automation Operations Model",
+  "Architecture Operations Model",
+  "Security Operations Model",
+  "Knowledge System Model",
   "API Design",
   "Testing Strategy",
   "Roadmap",
@@ -63,6 +101,24 @@ const requiredOperatingDomains = [
   "Cloud Infrastructure",
   "Knowledge Systems",
   "Security Systems"
+];
+
+const requiredAiSystems = [
+  "OpenAI",
+  "Claude",
+  "Gemini",
+  "Qwen",
+  "Local Models",
+  "Future AI Systems"
+];
+
+const requiredOrchestrationLanes = [
+  "Plan",
+  "Build",
+  "Validate",
+  "Counter-Review",
+  "Private Draft",
+  "Future Adapter"
 ];
 
 function fail(message) {
@@ -108,7 +164,70 @@ for (const domain of requiredOperatingDomains) {
   }
 }
 
-for (const selector of [".plugin-card", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
+for (const agentField of ["capabilities", "tasks", "logs", "outputs"]) {
+  if (!script.includes(`${agentField}: [`)) {
+    fail(`missing agent evidence field: ${agentField}`);
+  }
+}
+
+for (const system of requiredAiSystems) {
+  if (!script.includes(`name: "${system}"`) && !script.includes(`primary: "${system}"`)) {
+    fail(`missing AI system support: ${system}`);
+  }
+}
+
+for (const lane of requiredOrchestrationLanes) {
+  if (!script.includes(`lane: "${lane}"`)) {
+    fail(`missing orchestration lane: ${lane}`);
+  }
+}
+
+for (const selector of [
+  ".plugin-card",
+  ".godmode-workbench",
+  ".mission-composer",
+  ".lane-chip",
+  ".protocol-step",
+  ".ai-setup-card",
+  ".run-step",
+  ".guardrail-row",
+  ".artifact-card",
+  ".operations-readiness-panel",
+  ".readiness-card",
+  ".readiness-row",
+  ".decision-summary-card",
+  ".feature-growth-ledger",
+  ".ledger-row",
+  ".blocker-row",
+  ".automation-card",
+  ".automation-ops-layout",
+  ".workflow-run-row",
+  ".approval-row",
+  ".rollback-row",
+  ".security-card",
+  ".security-ops-layout",
+  ".permission-review-row",
+  ".dependency-scan-row",
+  ".security-audit-row",
+  ".system-card",
+  ".domain-card",
+  ".phase-row",
+  ".architecture-ops-layout",
+  ".dependency-edge",
+  ".relationship-row",
+  ".debt-row",
+  ".activity-row",
+  ".dependency-row",
+  ".agent-detail",
+  ".orchestration-card",
+  ".handoff-row",
+  ".knowledge-map-panel",
+  ".knowledge-node-card",
+  ".knowledge-edge-row",
+  ".memory-evidence-row",
+  ".decision-history-row",
+  ".pattern-card"
+]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
   }
