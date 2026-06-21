@@ -46,3 +46,183 @@ config_file = "agents/reviewer.toml"
 [agents.docs_researcher]
 description = "Documentation specialist that verifies APIs, framework behavior, and release notes."
 config_file = "agents/docs-researcher.toml"
+
+[agents.architect]
+description = "SEIS architecture sub-agent for system boundaries, ADR candidates, and integration fit."
+config_file = "agents/architect.toml"
+
+[agents.ai_systems]
+description = "AI systems sub-agent for model router, prompt engine, eval, and provider-boundary analysis."
+config_file = "agents/ai-systems.toml"
+
+[agents.backend]
+description = "Backend sub-agent for FastAPI, service, route, storage, and API contract review."
+config_file = "agents/backend.toml"
+
+[agents.frontend]
+description = "Frontend sub-agent for browser UI, interaction states, responsive behavior, and accessibility review."
+config_file = "agents/frontend.toml"
+
+[agents.ui_ux]
+description = "UI/UX sub-agent for premium, calm, Apple-first interface review."
+config_file = "agents/ui-ux.toml"
+
+[agents.website_builder]
+description = "Website builder sub-agent for landing, dashboard, panels, settings, and website feature fabric planning."
+config_file = "agents/website-builder.toml"
+
+[agents.security]
+description = "Security sub-agent for secret safety, SSH boundaries, permissions, and threat-model review."
+config_file = "agents/security.toml"
+
+[agents.documentation]
+description = "Documentation sub-agent for README, runbook, architecture, and handoff alignment."
+config_file = "agents/documentation.toml"
+
+[agents.goal_tracking]
+description = "Goal tracking sub-agent for goals, milestones, status, progress, assignment, and result reports."
+config_file = "agents/goal-tracking.toml"
+
+[agents.memory]
+description = "Memory sub-agent for source classification, local memory categories, retention, and privacy boundaries."
+config_file = "agents/memory.toml"
+
+[agents.task_planner]
+description = "Task planner sub-agent for decomposing objectives into reversible, testable work packages."
+config_file = "agents/task-planner.toml"
+
+[agents.code_review]
+description = "Code review sub-agent for correctness, regression, maintainability, and missing validation review."
+config_file = "agents/code-review.toml"
+
+[agents.deployment]
+description = "Deployment sub-agent for release readiness, rollback plans, hosting targets, and no-live-apply boundaries."
+config_file = "agents/deployment.toml"
+
+[agents.repository_governance]
+description = "Repository governance sub-agent for branch policy, PR hygiene, source-of-truth docs, and GitHub controls."
+config_file = "agents/repository-governance.toml"
+
+[agents.plugin_registry]
+description = "Plugin registry sub-agent for installed plugin metadata, capability lanes, schemas, and permission posture."
+config_file = "agents/plugin-registry.toml"
+
+[agents.plugin_feeding]
+description = "Plugin feeding sub-agent for routing plugin outputs into agents, goals, memory, websites, and backend services."
+config_file = "agents/plugin-feeding.toml"
+
+[agents.ssh_connector]
+description = "SSH connector sub-agent for SSH profiles, safe modes, host evidence, and dry-run planning."
+config_file = "agents/ssh-connector.toml"
+
+[agents.local_model_connector]
+description = "Local model connector sub-agent for Ollama/local-model readiness, limits, and non-claim boundaries."
+config_file = "agents/local-model-connector.toml"
+
+[agents.remote_model_connector]
+description = "Remote model connector sub-agent for provider-neutral server-side routing and credential isolation."
+config_file = "agents/remote-model-connector.toml"
+
+[agents.self_analysis]
+description = "Self-analysis sub-agent for code quality, performance, agent efficiency, plugin use, goals, and bottlenecks."
+config_file = "agents/self-analysis.toml"
+
+[agents.self_improvement]
+description = "Self-improvement sub-agent for improvement proposals, roadmap drafts, task creation, and PR draft planning."
+config_file = "agents/self-improvement.toml"
+
+[agents.knowledge_expansion]
+description = "Knowledge expansion sub-agent for documentation, architecture, project, goal, memory, and agent graph planning."
+config_file = "agents/knowledge-expansion.toml"
+
+[agents.agent_evolution]
+description = "Agent evolution sub-agent for role coverage, handoff quality, failure analysis, and strategy updates."
+config_file = "agents/agent-evolution.toml"
+
+[agents.plugin_evolution]
+description = "Plugin evolution sub-agent for plugin relationships, data-flow optimization, and permission review drafts."
+config_file = "agents/plugin-evolution.toml"
+
+[agents.ceo]
+description = "Executive strategy sub-agent for SEIS Universe Omega priorities, tradeoffs, and goal alignment."
+config_file = "agents/ceo.toml"
+
+[agents.cto]
+description = "Technology strategy sub-agent for architecture, platform, infrastructure, and engineering standards."
+config_file = "agents/cto.toml"
+
+[agents.cpo]
+description = "Product strategy sub-agent for product requirements, user flows, roadmap, and launch readiness."
+config_file = "agents/cpo.toml"
+
+[agents.cfo]
+description = "Finance and cost intelligence sub-agent for token, model, infrastructure, and venture-cost analysis."
+config_file = "agents/cfo.toml"
+
+[agents.cdo]
+description = "Design leadership sub-agent for brand, design systems, creative direction, and experience quality."
+config_file = "agents/cdo.toml"
+
+[agents.cso]
+description = "Security and strategy sub-agent for risk posture, compliance, and strategic governance."
+config_file = "agents/cso.toml"
+
+[agents.mobile]
+description = "Mobile sub-agent for iOS, Android, handoff surfaces, and mobile readiness."
+config_file = "agents/mobile.toml"
+
+[agents.devops]
+description = "DevOps sub-agent for CI/CD, environment management, release gates, and rollback planning."
+config_file = "agents/devops.toml"
+
+[agents.ui]
+description = "UI sub-agent for component surfaces, visual clarity, and interaction states."
+config_file = "agents/ui.toml"
+
+[agents.ux]
+description = "UX sub-agent for user flows, information architecture, accessibility, and calm interaction."
+config_file = "agents/ux.toml"
+
+[agents.branding]
+description = "Branding sub-agent for identity, voice, typography, color, and asset direction."
+config_file = "agents/branding.toml"
+
+[agents.motion]
+description = "Motion sub-agent for restrained animation, reduced-motion support, and interaction pacing."
+config_file = "agents/motion.toml"
+
+[agents.three_d]
+description = "3D sub-agent for spatial UI, WebGL readiness, asset constraints, and performance safety."
+config_file = "agents/three-d.toml"
+
+[agents.content]
+description = "Content sub-agent for copy, narrative structure, documentation tone, and localization readiness."
+config_file = "agents/content.toml"
+
+[agents.ai_research]
+description = "AI research sub-agent for model research, eval strategy, papers, and non-claim boundaries."
+config_file = "agents/ai-research.toml"
+
+[agents.market_research]
+description = "Market research sub-agent for market landscape, user segments, and validation hypotheses."
+config_file = "agents/market-research.toml"
+
+[agents.technology_research]
+description = "Technology research sub-agent for technical landscape, standards, and emerging architecture review."
+config_file = "agents/technology-research.toml"
+
+[agents.trend_research]
+description = "Trend research sub-agent for design, AI, product, and market trend signals."
+config_file = "agents/trend-research.toml"
+
+[agents.testing]
+description = "Testing sub-agent for unit, integration, contract, accessibility, security, and smoke test planning."
+config_file = "agents/testing.toml"
+
+[agents.monitoring]
+description = "Monitoring sub-agent for observability, health status, metrics, logs, and alert readiness."
+config_file = "agents/monitoring.toml"
+
+[agents.automation]
+description = "Automation sub-agent for safe workflow automation, scheduled checks, and approval-gated operations."
+config_file = "agents/automation.toml"

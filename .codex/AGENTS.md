@@ -18,6 +18,17 @@ The generated baseline enables GitHub, Context7, Exa, Memory, Playwright, and Se
 - Explorer: read-only evidence gathering
 - Reviewer: correctness, security, and regression review
 - Docs researcher: API and release-note verification
+- SEIS Codex sub-agents are installed through `.codex/config.toml` and
+  `.codex/agents/*.toml`.
+- The installed SEIS sub-agents are bounded, human-supervised lanes for
+  architecture, AI systems, backend, frontend, UI/UX, website building,
+  security, documentation, goals, memory, task planning, code review,
+  deployment, repository governance, plugin registry, plugin feeding, SSH,
+  local/remote model connectors, self-analysis, self-improvement, knowledge
+  expansion, agent evolution, and plugin evolution.
+- Default sub-agent posture is read-only. They may analyze, plan, review, and
+  prepare handoff guidance, but they must not push, merge, deploy, mutate SSH
+  hosts, read secrets, install plugins, or expand permissions.
 
 ## Workflow Files
 
