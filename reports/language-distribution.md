@@ -1,21 +1,21 @@
 # SEIS Language Distribution
 
 - Mode: `github_linguist_aligned_source_budget`
-- Counted files: 953
-- Counted bytes: 5688150
-- JavaScript: 2301475 bytes (40.46%)
+- Counted files: 957
+- Counted bytes: 5700290
+- JavaScript: 2310662 bytes (40.54%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 5271254
+- Additional non-JavaScript bytes needed for strict target: 5302862
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 2301475 | 40.46% | JavaScript |
-| TypeScript | 424439 | 7.46% | TypeScript |
+| JavaScript | 2310662 | 40.54% | JavaScript |
+| TypeScript | 424439 | 7.45% | TypeScript |
 | Objective-C | 8447 | 0.15% | Objective-C |
-| Other | 2953789 | 51.93% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2956742 | 51.87% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,14 +25,14 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 10.26% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 26.34% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 47.92% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Apple / Swift ecosystem | 10.23% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 26.31% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 47.98% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.42% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.52% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
-| Go / Infrastructure | 2.93% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
+| Go / Infrastructure | 2.95% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.14% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 8.57% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 8.55% | 0.0-3.0% | `above_target` | HTML, CSS |
 
 Unassigned counted languages: 2.9% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
@@ -40,17 +40,17 @@ Unassigned counted languages: 2.9% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake,
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 2301475 | 40.46% |
-| JSON | 972293 | 17.09% |
-| Swift | 574078 | 10.09% |
-| Python | 507065 | 8.91% |
-| TypeScript | 424439 | 7.46% |
-| CSS | 325296 | 5.72% |
-| HTML | 161998 | 2.85% |
+| JavaScript | 2310662 | 40.54% |
+| JSON | 972362 | 17.06% |
+| Swift | 574078 | 10.07% |
+| Python | 508621 | 8.92% |
+| TypeScript | 424439 | 7.45% |
+| CSS | 325296 | 5.71% |
+| HTML | 161998 | 2.84% |
 | Shell | 97489 | 1.71% |
-| YAML | 44532 | 0.78% |
+| YAML | 45394 | 0.8% |
 | Other | 43278 | 0.76% |
-| Go | 16806 | 0.3% |
+| Go | 16806 | 0.29% |
 | Java | 16392 | 0.29% |
 | Scheme | 15747 | 0.28% |
 | Perl | 13916 | 0.24% |
@@ -108,7 +108,7 @@ Unassigned counted languages: 2.9% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake,
 | `rustc` | no | `error: Missing manifest in toolchain 'stable-x86_64-apple-darwin'` |
 | `swift` | yes | `detected; package tests handle configured toolchain readiness` |
 | `javac` | yes | `javac 21.0.11` |
-| `dart` | no | `/Users/emirhankudun/Developer/flutter/bin/internal/shared.sh: line 122: /Users/emirhankudun/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory` |
+| `dart` | no | `$HOME/Developer/flutter/bin/internal/shared.sh: line 122: $HOME/Developer/flutter/bin/internal/update_engine_version.sh: No such file or directory` |
 
 ## Next Migration Order
 
