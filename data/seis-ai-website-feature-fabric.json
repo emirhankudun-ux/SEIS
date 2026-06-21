@@ -1,0 +1,133 @@
+{
+  "id": "seis-ai-website-feature-fabric",
+  "version": 1,
+  "updatedAt": "2026-06-21",
+  "status": "local-fixture-backed",
+  "mode": "single-prompt-website-feature-orchestration",
+  "purpose": "Bind the SEIS AI website surfaces into one auditable feature fabric so the single operator prompt can activate local UI modules, controlled agents, plugin feeds, SSH safety indicators, and installed-AI helper evidence without claiming live deployment or provider execution.",
+  "sourceBasis": [
+    "data/seis-ai-unified-integration-fabric.json",
+    "data/seis-ai-activation-matrix.json",
+    "data/seis-installed-ai-collaboration.json",
+    "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json",
+    "apps/seis-demo-web/contracts/seis-demo-contract.json",
+    "apps/seis-ai-demo/index.html",
+    "apps/seis-demo-web/index.html",
+    "apps/seis-core/index.html",
+    "apps/web/index.html"
+  ],
+  "singlePromptRequest": {
+    "id": "seis-ai-all-websites-single-prompt",
+    "requestedScope": "all-sub-agents-plugins-ssh-and-ai-website-features",
+    "acceptedLocalScope": "fixture-backed contracts, visible local UI wiring, scenario links, validation gates, and non-claim boundaries",
+    "blockedClaims": [
+      "production deployment complete",
+      "all external plugins installed",
+      "live SSH host mutation complete",
+      "provider model calls complete",
+      "frontier model training complete",
+      "unbounded token spend complete"
+    ]
+  },
+  "websiteFeatureSurfaces": [
+    {
+      "websiteId": "seis-ai-demo",
+      "path": "apps/seis-ai-demo",
+      "entrypoint": "apps/seis-ai-demo/index.html",
+      "contract": "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json",
+      "coverageState": "visible-local-ui",
+      "activatedFeatures": ["router", "agents", "workflow", "fabric", "activation-matrix", "website-feature-fabric", "prompts", "knowledge", "evals", "approvals", "audit"],
+      "featureModules": ["composer", "model-router-readiness", "agent-queue", "workflow-map", "fabric-panels", "website-feature-cards", "prompt-versions", "knowledge-evidence", "evaluation-strip", "approval-gate", "audit-timeline", "markdown-export", "macos-handoff"],
+      "agentFeeds": ["seis-assistant", "repository-analyst", "goal-architect", "documentation-maintainer", "model-evaluator", "workflow-operator", "plugin-steward", "ssh-operations-reviewer"],
+      "pluginFeeds": ["seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data"],
+      "sshExposure": "safe-mode-indicator-only",
+      "providerKeyPolicy": "no-browser-provider-key-entry",
+      "validationSignals": ["npm run test:seis-ai-demo", "npm run check:seis-ai-website-feature-fabric"]
+    },
+    {
+      "websiteId": "seis-demo-web",
+      "path": "apps/seis-demo-web",
+      "entrypoint": "apps/seis-demo-web/index.html",
+      "contract": "apps/seis-demo-web/contracts/seis-demo-contract.json",
+      "coverageState": "scenario-linked",
+      "activatedFeatures": ["seis-ai-command-core-bridge", "unified-fabric-scenario", "specialist-dispatch-scenarios", "website-feature-fabric"],
+      "featureModules": ["route-shell", "scenario-list", "scenario-detail", "result-timeline", "event-log", "command-core-link", "fabric-scenario", "activation-matrix-scenario", "website-feature-fabric-scenario"],
+      "agentFeeds": ["seis-assistant", "documentation-maintainer", "plugin-steward"],
+      "pluginFeeds": ["seis-governance", "seis-design"],
+      "sshExposure": "scenario-text-only",
+      "providerKeyPolicy": "no-browser-provider-key-entry",
+      "validationSignals": ["npm run test:seis-ai-demo", "npm run check:seis-ai-website-feature-fabric"]
+    },
+    {
+      "websiteId": "seis-command-center",
+      "path": "apps/seis-core",
+      "entrypoint": "apps/seis-core/index.html",
+      "contract": "apps/seis-core/ai-core-contract-fixture.js",
+      "coverageState": "fixture-inspection",
+      "activatedFeatures": ["ai-core-fixture-view", "command-center-shell", "contract-inspection", "website-feature-fabric"],
+      "featureModules": ["ecosystem-status", "ai-core-contract-fixture", "command-center-navigation", "contract-health-summary"],
+      "agentFeeds": ["seis-assistant", "repository-analyst", "goal-architect", "plugin-steward"],
+      "pluginFeeds": ["seis-governance", "seis-code", "seis-data"],
+      "sshExposure": "none",
+      "providerKeyPolicy": "no-browser-provider-key-entry",
+      "validationSignals": ["npm run check:seis-command-center", "npm run check:seis-ai-website-feature-fabric"]
+    },
+    {
+      "websiteId": "portfolio-ai-website",
+      "path": "apps/web",
+      "entrypoint": "apps/web/index.html",
+      "contract": "apps/web/site-config.json",
+      "coverageState": "linked-future-routing-point",
+      "activatedFeatures": ["browser-facing-surface", "future-seis-ai-routing-point", "no-provider-key-entry", "website-feature-fabric"],
+      "featureModules": ["product-surface", "system-pulse", "handoff-panel", "pwa-safe-registration", "future-ai-route-slot"],
+      "agentFeeds": ["seis-assistant", "documentation-maintainer"],
+      "pluginFeeds": ["seis-design", "seis-governance"],
+      "sshExposure": "none",
+      "providerKeyPolicy": "no-browser-provider-key-entry",
+      "validationSignals": ["npm run test:web", "npm run check:seis-ai-website-feature-fabric"]
+    }
+  ],
+  "crossSurfaceRoutes": [
+    {
+      "from": "seis-demo-web",
+      "to": "seis-ai-demo",
+      "route": "../seis-ai-demo/",
+      "purpose": "Open the local AI Command Core from the demo website."
+    },
+    {
+      "from": "seis-ai-demo",
+      "to": "seis-ai-command-core-macos",
+      "route": "seisdemo://ai-command-core/run",
+      "purpose": "Prepare local deterministic macOS handoff with prompt, mode, approval, redaction, and autonomy metadata."
+    },
+    {
+      "from": "seis-ai-demo",
+      "to": "seis-command-center",
+      "route": "apps/seis-core",
+      "purpose": "Keep Command Center contract inspection visible as a linked local AI Core surface."
+    }
+  ],
+  "featureBridgeRules": [
+    "Every website feature surface must point at an existing local path, entrypoint, and contract.",
+    "Every website feature surface must declare agent feeds and plugin feeds that exist in the unified integration fabric.",
+    "Website features may display SSH status and dry-run boundaries, but may not mutate hosts or read private keys.",
+    "Website features may display installed AI helper readiness, but blocked or aborted helpers are not validation evidence.",
+    "Browser surfaces may not request, store, or forward provider API keys, SSH private keys, passwords, service accounts, cookies, or production secrets.",
+    "The single prompt activates local feature wiring and plans only; it does not prove production deployment, external plugin installation, live provider execution, or model training."
+  ],
+  "validation": [
+    "npm run check:seis-ai-website-feature-fabric",
+    "npm run check:seis-ai-activation-matrix",
+    "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-local-integration",
+    "npm run test:seis-ai-demo",
+    "npm run test:web"
+  ],
+  "activationBlockedUntil": [
+    "deployment target approval",
+    "server-side provider adapter with credential isolation",
+    "human approval for live SSH host changes",
+    "plugin permission expansion review",
+    "production rollback plan"
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "id": "seis-ai-ecosystem-api-contract",
+  "version": 1,
+  "updatedAt": "2026-06-21",
+  "status": "local-contract-backed",
+  "backendFramework": "FastAPI",
+  "storage": "SQLite local store for operator-created goal and memory records",
+  "sourceBasis": [
+    "server/ai_ecosystem_api/app.py",
+    "server/ai_ecosystem_api/routes.py",
+    "server/ai_ecosystem_api/services.py",
+    "server/ai_ecosystem_api/storage.py",
+    "data/seis-ai-unified-integration-fabric.json",
+    "data/seis-ai-activation-matrix.json",
+    "data/seis-ai-website-feature-fabric.json",
+    "data/seis-operational-goal-tracker.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "data/ssh-hardening-operation-contract.json",
+    "data/seis-ai-self-evolution-contract.json"
+  ],
+  "systems": [
+    "SEIS AI Core",
+    "Autonomous Agent Orchestrator",
+    "Plugin Registry",
+    "Plugin Feeding System",
+    "SSH Connector Layer",
+    "Local AI Model Connector",
+    "Remote AI Model Connector",
+    "Website Builder Agent",
+    "UI/UX Agent",
+    "Backend Agent",
+    "Frontend Agent",
+    "Security Agent",
+    "Documentation Agent",
+    "Goal Tracking Agent",
+    "Memory Agent",
+    "Task Planner Agent",
+    "Code Review Agent",
+    "Deployment Agent",
+    "Repository Governance Agent"
+  ],
+  "endpoints": [
+    {"method": "GET", "path": "/api/v1/health", "feature": "system health panel"},
+    {"method": "GET", "path": "/api/v1/ecosystem", "feature": "dashboard"},
+    {"method": "GET", "path": "/api/v1/agents", "feature": "agent panel"},
+    {"method": "GET", "path": "/api/v1/plugins", "feature": "plugin panel"},
+    {"method": "GET", "path": "/api/v1/websites", "feature": "website builder interface"},
+    {"method": "GET", "path": "/api/v1/goals", "feature": "goal tracking panel"},
+    {"method": "POST", "path": "/api/v1/goals/local", "feature": "goal tracking local write"},
+    {"method": "GET", "path": "/api/v1/memory", "feature": "memory panel"},
+    {"method": "POST", "path": "/api/v1/memory/events", "feature": "memory local write"},
+    {"method": "GET", "path": "/api/v1/ssh", "feature": "SSH connection panel"},
+    {"method": "GET", "path": "/api/v1/model-connectors", "feature": "local and remote AI model connectors"},
+    {"method": "GET", "path": "/api/v1/self-evolution", "feature": "self analysis and self improvement engines"},
+    {"method": "GET", "path": "/api/v1/knowledge-graphs", "feature": "documentation, architecture, project, goal, memory, and agent graphs"},
+    {"method": "GET", "path": "/api/v1/ready", "feature": "ready-to-run report"}
+  ],
+  "selfEvolutionEngines": [
+    "Self Analysis Engine",
+    "Self Improvement Engine",
+    "Knowledge Expansion Engine",
+    "Autonomous Learning Engine",
+    "Goal Driven Evolution Engine",
+    "Architecture Evolution Engine",
+    "Agent Evolution Engine",
+    "Plugin Evolution Engine",
+    "Memory Optimization Engine"
+  ],
+  "securityBoundaries": [
+    "No API key, token, SSH key, or credential is hardcoded.",
+    "Provider credentials remain environment-only and server-side.",
+    "SSH endpoints expose safe modes and contract metadata only; live host mutation remains approval-gated.",
+    "Plugin endpoints expose metadata and plans only; permission expansion is blocked without review.",
+    "Local SQLite writes are limited to operator-created goal and memory records."
+  ],
+  "validation": [
+    "npm run check:seis-ai-ecosystem-api",
+    "npm run test:seis-ai-ecosystem-api",
+    "npm run check:seis-ai-local-integration"
+  ],
+  "runCommand": "uvicorn server.ai_ecosystem_api.app:app --host 127.0.0.1 --port 4188"
+}

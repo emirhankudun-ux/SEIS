@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 
 const matrixPath = "data/seis-ai-activation-matrix.json";
 const installedAICollaborationPath = "data/seis-installed-ai-collaboration.json";
+const websiteFeatureFabricPath = "data/seis-ai-website-feature-fabric.json";
 const fabricPath = "data/seis-ai-unified-integration-fabric.json";
 const specialistPluginsPath = "data/seis-specialist-plugins-2026-06-12.json";
 const agentProfilePath = "plugins/seis-ai-agent/assets/agent-profile.json";
@@ -63,6 +64,7 @@ function textOf(filePath) {
 
 const matrix = readJson(matrixPath);
 const installedAICollaboration = readJson(installedAICollaborationPath);
+const websiteFeatureFabric = readJson(websiteFeatureFabricPath);
 const fabric = readJson(fabricPath);
 const specialistPlugins = readJson(specialistPluginsPath);
 const agentProfile = readJson(agentProfilePath);
@@ -121,6 +123,10 @@ if (!`${packageJson.scripts?.["check:seis-ai-local-integration"] ?? ""}`.include
 
 if (installedAICollaboration.id !== "seis-installed-ai-collaboration") {
   fail("installed AI collaboration source must be readable");
+}
+
+if (websiteFeatureFabric.id !== "seis-ai-website-feature-fabric") {
+  fail("website feature fabric source must be readable");
 }
 
 const fabricAgents = new Map(arrayFor(fabric.agentCatalog).map((agent) => [agent.id, agent]));
@@ -252,6 +258,22 @@ if (!arrayFor(matrixWebsites.get("seis-ai-demo")?.features).includes("activation
   fail("seis-ai-demo website features must include activation-matrix");
 }
 
+for (const [websiteId, matrixWebsite] of matrixWebsites) {
+  const websiteFeatureSurface = arrayFor(websiteFeatureFabric.websiteFeatureSurfaces)
+    .find((surface) => surface.websiteId === websiteId);
+
+  if (!websiteFeatureSurface) {
+    fail(`website feature fabric must include ${websiteId}`);
+    continue;
+  }
+
+  assertArrayIncludesAll(`${websiteId}.websiteFeatureSurface.activatedFeatures`, websiteFeatureSurface.activatedFeatures, matrixWebsite.features ?? []);
+}
+
+if (!arrayFor(matrixWebsites.get("seis-ai-demo")?.features).includes("website-feature-fabric")) {
+  fail("seis-ai-demo website features must include website-feature-fabric");
+}
+
 if (!aiDemoHtml.includes('id="fabric-activation-matrix"')) {
   fail("SEIS AI demo UI must expose fabric-activation-matrix");
 }
@@ -270,6 +292,10 @@ if (!arrayFor(appContract.contract_spine).some((entry) => entry.id === "seis-ins
   fail("AI Command Core integration contract must include installed AI collaboration spine entry");
 }
 
+if (!arrayFor(appContract.contract_spine).some((entry) => entry.id === "seis-ai-website-feature-fabric")) {
+  fail("AI Command Core integration contract must include website feature fabric spine entry");
+}
+
 if (!arrayFor(websiteContract.linked_surfaces).some((entry) => entry.id === "seis-ai-unified-integration-fabric")) {
   fail("SEIS demo website contract must link unified integration fabric");
 }
@@ -278,14 +304,23 @@ if (!arrayFor(websiteContract.linked_surfaces).some((entry) => entry.id === "sei
   fail("SEIS demo website contract must link activation matrix");
 }
 
+if (!arrayFor(websiteContract.linked_surfaces).some((entry) => entry.id === "seis-ai-website-feature-fabric")) {
+  fail("SEIS demo website contract must link website feature fabric");
+}
+
 if (!arrayFor(websiteContract.scenarios).some((entry) => entry.id === "seis-ai-activation-matrix")) {
   fail("SEIS demo website contract must expose activation matrix scenario");
+}
+
+if (!arrayFor(websiteContract.scenarios).some((entry) => entry.id === "seis-ai-website-feature-fabric")) {
+  fail("SEIS demo website contract must expose website feature fabric scenario");
 }
 
 assertArrayIncludesAll("validation", matrix.validation, [
   "npm run check:seis-ai-activation-matrix",
   "npm run check:seis-installed-ai-collaboration",
   "npm run check:seis-ai-unified-integration-fabric",
+  "npm run check:seis-ai-website-feature-fabric",
   "npm run check:seis-ai-local-integration",
   "npm run check:seis-specialist-plugins",
   "npm run check:seis-ai-agent",

@@ -8,6 +8,7 @@
   "sourceBasis": [
     "data/seis-ai-unified-integration-fabric.json",
     "data/seis-installed-ai-collaboration.json",
+    "data/seis-ai-website-feature-fabric.json",
     "data/seis-specialist-plugins-2026-06-12.json",
     "plugins/seis-ai-agent/assets/agent-profile.json",
     "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json",
@@ -162,31 +163,32 @@
       "websiteId": "seis-ai-demo",
       "path": "apps/seis-ai-demo",
       "coverageState": "visible-local-ui",
-      "features": ["router", "agents", "workflow", "fabric", "activation-matrix", "prompts", "knowledge", "evals", "approvals", "audit"]
+      "features": ["router", "agents", "workflow", "fabric", "activation-matrix", "website-feature-fabric", "prompts", "knowledge", "evals", "approvals", "audit"]
     },
     {
       "websiteId": "seis-demo-web",
       "path": "apps/seis-demo-web",
       "coverageState": "scenario-linked",
-      "features": ["seis-ai-command-core-bridge", "unified-fabric-scenario", "specialist-dispatch-scenarios"]
+      "features": ["seis-ai-command-core-bridge", "unified-fabric-scenario", "specialist-dispatch-scenarios", "website-feature-fabric"]
     },
     {
       "websiteId": "seis-command-center",
       "path": "apps/seis-core",
       "coverageState": "fixture-inspection",
-      "features": ["ai-core-fixture-view", "command-center-shell", "contract-inspection"]
+      "features": ["ai-core-fixture-view", "command-center-shell", "contract-inspection", "website-feature-fabric"]
     },
     {
       "websiteId": "portfolio-ai-website",
       "path": "apps/web",
       "coverageState": "linked-future-routing-point",
-      "features": ["browser-facing-surface", "future-seis-ai-routing-point", "no-provider-key-entry"]
+      "features": ["browser-facing-surface", "future-seis-ai-routing-point", "no-provider-key-entry", "website-feature-fabric"]
     }
   ],
   "validation": [
     "npm run check:seis-ai-activation-matrix",
     "npm run check:seis-installed-ai-collaboration",
     "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-website-feature-fabric",
     "npm run check:seis-ai-local-integration",
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",

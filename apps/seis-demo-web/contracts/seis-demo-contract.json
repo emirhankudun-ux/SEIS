@@ -20,6 +20,12 @@
       "title": "SEIS AI Activation Matrix",
       "path": "../../data/seis-ai-activation-matrix.json",
       "mode": "local-fixture-backed"
+    },
+    {
+      "id": "seis-ai-website-feature-fabric",
+      "title": "SEIS AI Website Feature Fabric",
+      "path": "../../data/seis-ai-website-feature-fabric.json",
+      "mode": "local-fixture-backed"
     }
   ],
   "routes": [
@@ -99,6 +105,18 @@
         "Read the activation matrix",
         "Confirm every plugin lane feeds Plugin Steward and its target agents",
         "Confirm AI website features include the activation matrix surface"
+      ]
+    },
+    {
+      "id": "seis-ai-website-feature-fabric",
+      "title": "SEIS AI Website Feature Fabric",
+      "summary": "Maps every local AI website feature surface to controlled agents, plugin feeds, SSH exposure, provider-key policy, and validation signals.",
+      "specialist": "SEIS AI",
+      "defaultPrompt": "Review the SEIS AI website feature fabric and confirm every AI website feature surface is linked to local agents, plugin feeds, safe SSH exposure, and provider-free validation.",
+      "steps": [
+        "Read the website feature fabric",
+        "Map each AI website surface to its agent and plugin feeds",
+        "Confirm browser provider-key entry and live SSH mutation remain blocked"
       ]
     }
   ],

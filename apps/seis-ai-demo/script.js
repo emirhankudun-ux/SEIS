@@ -327,6 +327,53 @@ const activationMatrixOverview = {
   liveMutationDefault: "blocked"
 };
 
+const websiteFeatureFabricOverview = {
+  id: "seis-ai-website-feature-fabric",
+  status: "local-fixture-backed",
+  mode: "single-prompt-website-feature-orchestration",
+  validation: "npm run check:seis-ai-website-feature-fabric",
+  acceptedLocalScope: "fixture-backed contracts, visible local UI wiring, scenario links, validation gates, and non-claim boundaries",
+  blockedClaims: [
+    "production deployment complete",
+    "all external plugins installed",
+    "live SSH host mutation complete",
+    "provider model calls complete",
+    "frontier model training complete",
+    "unbounded token spend complete"
+  ]
+};
+
+const websiteFeatureSurfaces = [
+  {
+    id: "seis-ai-demo",
+    name: "SEIS AI Command Core",
+    coverage: "visible-local-ui",
+    features: ["router", "agents", "workflow", "fabric", "activation matrix", "website feature fabric", "prompts", "knowledge", "evals", "approvals", "audit"],
+    feeds: ["SEIS Assistant", "Repository Analyst", "Plugin Steward", "SSH Operations Reviewer"]
+  },
+  {
+    id: "seis-demo-web",
+    name: "SEIS Demo Web",
+    coverage: "scenario-linked",
+    features: ["command core bridge", "fabric scenario", "activation matrix scenario", "website feature fabric scenario"],
+    feeds: ["SEIS Assistant", "Documentation Maintainer", "Plugin Steward"]
+  },
+  {
+    id: "seis-command-center",
+    name: "SEIS Command Center",
+    coverage: "fixture-inspection",
+    features: ["AI Core fixture view", "command center shell", "contract inspection", "website feature fabric"],
+    feeds: ["SEIS Assistant", "Repository Analyst", "Goal Architect", "Plugin Steward"]
+  },
+  {
+    id: "portfolio-ai-website",
+    name: "Portfolio AI Website",
+    coverage: "linked-future-routing-point",
+    features: ["browser-facing surface", "future SEIS AI route slot", "no provider key entry", "website feature fabric"],
+    feeds: ["SEIS Assistant", "Documentation Maintainer"]
+  }
+];
+
 const installedAIHelpers = [
   {
     id: "codex",
@@ -406,6 +453,7 @@ const dom = {
   fabricPluginFeeds: document.querySelector("#fabric-plugin-feeds"),
   fabricSshPlane: document.querySelector("#fabric-ssh-plane"),
   fabricActivationMatrix: document.querySelector("#fabric-activation-matrix"),
+  fabricWebsiteFeatures: document.querySelector("#fabric-website-features"),
   fabricWebsites: document.querySelector("#fabric-websites"),
   promptVersionList: document.querySelector("#prompt-version-list"),
   promptEditor: document.querySelector("#prompt-editor"),
@@ -1108,6 +1156,12 @@ function generateFabricSummary() {
       note: "Single-agent embedded lanes"
     },
     {
+      id: "website-feature-fabric",
+      label: "Website fabric",
+      value: websiteFeatureFabricOverview.status === "local-fixture-backed" ? "On" : "Off",
+      note: "Single prompt feature map"
+    },
+    {
       id: "ssh-modes",
       label: "SSH safe modes",
       value: String(sshExecutionPlane.allowedModes.length),
@@ -1149,6 +1203,7 @@ function renderFabric() {
   renderFabricPluginFeeds();
   renderFabricSshPlane();
   renderFabricActivationMatrix();
+  renderFabricWebsiteFeatures();
   renderFabricWebsites();
 }
 
@@ -1238,6 +1293,46 @@ function renderFabricActivationMatrix() {
     const article = createFabricItem(card.title, card.meta, card.detail);
     article.append(createTagList([activationMatrixOverview.status]));
     dom.fabricActivationMatrix.append(article);
+  });
+}
+
+function generateWebsiteFeatureCards() {
+  return [
+    {
+      title: "Single prompt scope",
+      meta: websiteFeatureFabricOverview.mode,
+      detail: websiteFeatureFabricOverview.acceptedLocalScope
+    },
+    {
+      title: "Website surfaces",
+      meta: `${websiteFeatureSurfaces.length} linked`,
+      detail: "Each local AI website declares features, agent feeds, plugin feeds, safe SSH exposure, and provider-key policy."
+    },
+    {
+      title: "Blocked claims",
+      meta: `${websiteFeatureFabricOverview.blockedClaims.length} blocked`,
+      detail: "The fabric prevents local UI wiring from being misreported as deployment, training, provider execution, or unbounded spend."
+    },
+    {
+      title: "Validation",
+      meta: websiteFeatureFabricOverview.validation,
+      detail: "The validator checks every surface path, entrypoint, contract, agent feed, plugin feed, and UI export hook."
+    }
+  ];
+}
+
+function renderFabricWebsiteFeatures() {
+  dom.fabricWebsiteFeatures.replaceChildren();
+  generateWebsiteFeatureCards().forEach(card => {
+    const article = createFabricItem(card.title, card.meta, card.detail);
+    article.append(createTagList([websiteFeatureFabricOverview.status]));
+    dom.fabricWebsiteFeatures.append(article);
+  });
+
+  websiteFeatureSurfaces.forEach(surface => {
+    const article = createFabricItem(surface.name, surface.coverage, `Features: ${surface.features.join(", ")}.`);
+    article.append(createTagList(surface.feeds));
+    dom.fabricWebsiteFeatures.append(article);
   });
 }
 
@@ -1563,6 +1658,16 @@ function buildMarkdownExport(input = state) {
     `- Live mutation default: ${activationMatrixOverview.liveMutationDefault}`,
     `- Validation: ${activationMatrixOverview.validation}`,
     "",
+    "Website feature fabric:",
+    `- Fabric: ${websiteFeatureFabricOverview.id}`,
+    `- Mode: ${websiteFeatureFabricOverview.mode}`,
+    `- Accepted local scope: ${websiteFeatureFabricOverview.acceptedLocalScope}`,
+    `- Validation: ${websiteFeatureFabricOverview.validation}`,
+    "Website feature surfaces:",
+    ...websiteFeatureSurfaces.map(surface => `- ${surface.name}: ${surface.coverage}; features ${surface.features.join(", ")}`),
+    "Blocked website claims:",
+    ...websiteFeatureFabricOverview.blockedClaims.map(claim => `- ${claim}`),
+    "",
     "Installed AI collaboration:",
     ...installedAIHelpers.map(helper => `- ${helper.name} ${helper.version}: ${helper.status}`),
     "",
@@ -1622,6 +1727,7 @@ window.SeisAIDemo = {
   generateRunMetrics,
   generateFabricSummary,
   generateActivationMatrixCards,
+  generateWebsiteFeatureCards,
   renderFabric,
   selectKnowledge,
   evaluateRun,
@@ -1630,9 +1736,11 @@ window.SeisAIDemo = {
   buildMacHandoffURL,
   fabricOverview,
   activationMatrixOverview,
+  websiteFeatureFabricOverview,
   installedAIHelpers,
   pluginFeedLanes,
   sshExecutionPlane,
   aiWebsiteSurfaces,
+  websiteFeatureSurfaces,
   getState: () => state
 };

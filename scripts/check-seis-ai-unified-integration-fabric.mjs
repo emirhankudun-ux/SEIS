@@ -3,6 +3,7 @@ import { existsSync, readFileSync } from "node:fs";
 const fabricPath = "data/seis-ai-unified-integration-fabric.json";
 const activationMatrixPath = "data/seis-ai-activation-matrix.json";
 const installedAICollaborationPath = "data/seis-installed-ai-collaboration.json";
+const websiteFeatureFabricPath = "data/seis-ai-website-feature-fabric.json";
 const specialistPluginsPath = "data/seis-specialist-plugins-2026-06-12.json";
 const sshContractPath = "data/ssh-hardening-operation-contract.json";
 const failures = [];
@@ -51,6 +52,7 @@ function collectText(value) {
 const fabric = readJson(fabricPath);
 const activationMatrix = readJson(activationMatrixPath);
 const installedAICollaboration = readJson(installedAICollaborationPath);
+const websiteFeatureFabric = readJson(websiteFeatureFabricPath);
 const specialistPlugins = readJson(specialistPluginsPath);
 const sshContract = readJson(sshContractPath);
 const fabricText = collectText(fabric);
@@ -181,6 +183,10 @@ if (installedAICollaboration.id !== "seis-installed-ai-collaboration") {
   fail("installed AI collaboration must be readable from data/seis-installed-ai-collaboration.json");
 }
 
+if (websiteFeatureFabric.id !== "seis-ai-website-feature-fabric") {
+  fail("website feature fabric must be readable from data/seis-ai-website-feature-fabric.json");
+}
+
 for (const plane of fabric.sshExecutionPlanes ?? []) {
   assertPathExists(plane.contractPath, `${plane.id} contractPath`);
   for (const docPath of plane.docs ?? []) {
@@ -204,10 +210,18 @@ if (sshContract.credentialHandling?.privateKeyMaterialLogged !== false) {
 }
 
 const requiredWebsites = ["seis-ai-demo", "seis-demo-web", "seis-command-center", "portfolio-ai-website"];
+const websiteFeatureSurfaces = new Map((websiteFeatureFabric.websiteFeatureSurfaces ?? []).map((surface) => [surface.websiteId, surface]));
 for (const website of fabric.aiWebsites ?? []) {
   assertPathExists(website.path, `${website.id} path`);
   assertPathExists(website.entrypoint, `${website.id} entrypoint`);
   assertPathExists(website.contract, `${website.id} contract`);
+
+  const websiteFeatureSurface = websiteFeatureSurfaces.get(website.id);
+  if (!websiteFeatureSurface) {
+    fail(`website feature fabric must expose ${website.id}`);
+  } else if (websiteFeatureSurface.path !== website.path) {
+    fail(`${website.id} website feature path must match unified fabric website path`);
+  }
 }
 
 for (const websiteId of requiredWebsites) {
@@ -236,6 +250,7 @@ if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
     "fabric-plugin-feeds",
     "fabric-ssh-plane",
     "fabric-activation-matrix",
+    "fabric-website-features",
     "fabric-websites"
   ]);
 
@@ -251,6 +266,8 @@ if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
     "renderFabric",
     "activationMatrixOverview",
     "generateActivationMatrixCards",
+    "websiteFeatureFabricOverview",
+    "generateWebsiteFeatureCards",
     "installedAIHelpers",
     "pluginFeedLanes",
     "sshExecutionPlane",
@@ -268,6 +285,7 @@ assertArrayIncludesAll("validation", fabric.validation, [
   "npm run check:seis-ai-unified-integration-fabric",
   "npm run check:seis-ai-activation-matrix",
   "npm run check:seis-installed-ai-collaboration",
+  "npm run check:seis-ai-website-feature-fabric",
   "npm run check:seis-ai-local-integration",
   "npm run check:seis-specialist-plugins",
   "npm run check:seis-ai-agent",

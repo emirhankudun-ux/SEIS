@@ -1,0 +1,141 @@
+{
+  "id": "seis-ai-self-evolution-contract",
+  "version": 1,
+  "updatedAt": "2026-06-21",
+  "status": "local-contract-backed",
+  "mode": "human-supervised-self-improvement",
+  "purpose": "Define how SEIS AI analyzes itself, proposes improvements, expands knowledge, evolves agents/plugins, and routes model work without uncontrolled self-modification, live deployment, secret access, or model-training claims.",
+  "sourceBasis": [
+    "server/ai_ecosystem_api/services.py",
+    "server/ai_ecosystem_api/routes.py",
+    "data/seis-ai-ecosystem-api-contract.json",
+    "data/seis-ai-unified-integration-fabric.json",
+    "data/seis-ai-activation-matrix.json",
+    "data/seis-ai-website-feature-fabric.json",
+    "data/seis-operational-goal-tracker.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "data/seis-installed-ai-collaboration.json"
+  ],
+  "improvementCycle": ["Analyze", "Learn", "Improve", "Build", "Test", "Document", "Evolve"],
+  "engines": [
+    {
+      "id": "self-analysis-engine",
+      "status": "contract-backed",
+      "measures": ["code-quality", "validation-state", "agent-efficiency", "plugin-usage", "goal-progress", "system-bottlenecks"],
+      "allowedOutputs": ["finding", "risk", "metric-summary", "next-task-suggestion"],
+      "blockedActions": ["secret-read", "live-provider-call", "autonomous-merge"]
+    },
+    {
+      "id": "self-improvement-engine",
+      "status": "contract-backed",
+      "measures": ["open-gaps", "failed-checks", "blocked-live-actions", "documentation-drift"],
+      "allowedOutputs": ["improvement-proposal", "goal-update-draft", "roadmap-update-draft", "pull-request-draft"],
+      "blockedActions": ["self-approve", "push-main", "deploy-production"]
+    },
+    {
+      "id": "knowledge-expansion-engine",
+      "status": "contract-backed",
+      "measures": ["approved-source-coverage", "knowledge-source-class", "retrieval-state", "privacy-mode"],
+      "allowedOutputs": ["source-summary", "graph-node-draft", "provenance-link"],
+      "blockedActions": ["restricted-source-copy", "secret-indexing", "unsafe-archive-ingestion"]
+    },
+    {
+      "id": "autonomous-learning-engine",
+      "status": "contract-backed",
+      "measures": ["completed-task-patterns", "user-preference-signals", "successful-decisions"],
+      "allowedOutputs": ["learning-note", "memory-event-draft", "agent-strategy-suggestion"],
+      "blockedActions": ["unreviewed-memory-write", "private-data-ingestion", "model-weight-update"]
+    },
+    {
+      "id": "goal-driven-evolution-engine",
+      "status": "contract-backed",
+      "measures": ["goal-status", "priority", "progress", "blockers", "validation-state"],
+      "allowedOutputs": ["task-draft", "milestone-update", "agent-assignment-suggestion"],
+      "blockedActions": ["auto-complete-goal", "delete-roadmap", "override-human-priority"]
+    },
+    {
+      "id": "architecture-evolution-engine",
+      "status": "contract-backed",
+      "measures": ["module-boundaries", "dependency-risk", "API-contract-coverage", "documentation-alignment"],
+      "allowedOutputs": ["adr-draft", "interface-change-proposal", "migration-plan"],
+      "blockedActions": ["silent-framework-rewrite", "unapproved-build-system-change", "dependency-bloat"]
+    },
+    {
+      "id": "agent-evolution-engine",
+      "status": "contract-backed",
+      "measures": ["agent-role-coverage", "handoff-quality", "failure-patterns", "tool-boundary-fit"],
+      "allowedOutputs": ["agent-role-update-draft", "strategy-improvement", "handoff-template"],
+      "blockedActions": ["permission-expansion", "autonomous-approval", "hidden-agent-execution"]
+    },
+    {
+      "id": "plugin-evolution-engine",
+      "status": "contract-backed",
+      "measures": ["plugin-lane-coverage", "mcp-tool-fit", "permission-posture", "feed-quality"],
+      "allowedOutputs": ["plugin-relationship-map", "data-flow-optimization-proposal", "permission-review-draft"],
+      "blockedActions": ["install-unapproved-plugin", "publish-plugin", "expand-plugin-permissions"]
+    },
+    {
+      "id": "memory-optimization-engine",
+      "status": "contract-backed",
+      "measures": ["memory-category-coverage", "staleness", "source-risk", "privacy-mode"],
+      "allowedOutputs": ["memory-compaction-plan", "retention-policy-draft", "source-classification-update"],
+      "blockedActions": ["store-secrets", "index-private-keys", "copy-restricted-content"]
+    }
+  ],
+  "modelOrchestration": {
+    "supportedProviderFamilies": ["OpenAI", "Anthropic", "Gemini", "Qwen", "Gemma", "DeepSeek", "Mistral", "Llama", "Ollama Local Models"],
+    "routingEvidence": "packages/model-router/fixtures/model-router-route-contracts.json",
+    "installedHelperEvidence": "data/seis-installed-ai-collaboration.json",
+    "allowedModes": ["local-only", "metadata-only", "approval-needed"],
+    "requiredAnalysis": ["task-fit", "privacy-mode", "cost-budget", "performance-signal", "approval-state"],
+    "blockedClaims": ["live provider comparison complete", "provider credential available", "model training complete", "SEIS foundation model created"]
+  },
+  "knowledgeGraphs": [
+    {
+      "id": "documentation-graph",
+      "source": "docs",
+      "status": "planned-contract"
+    },
+    {
+      "id": "architecture-graph",
+      "source": "docs/architecture",
+      "status": "planned-contract"
+    },
+    {
+      "id": "project-graph",
+      "source": "data/seis-ai-ecosystem-api-contract.json",
+      "status": "local-contract-backed"
+    },
+    {
+      "id": "goal-graph",
+      "source": "data/seis-operational-goal-tracker.json",
+      "status": "local-contract-backed"
+    },
+    {
+      "id": "memory-graph",
+      "source": "packages/data/fixtures/knowledge-source-classification.json",
+      "status": "fixture-backed"
+    },
+    {
+      "id": "agent-graph",
+      "source": "data/seis-ai-unified-integration-fabric.json",
+      "status": "local-contract-backed"
+    }
+  ],
+  "humanApprovalRequiredBefore": [
+    "writing official memory records",
+    "changing agent permissions",
+    "installing or publishing plugins",
+    "live SSH host mutation",
+    "provider credential use",
+    "deployment",
+    "model training or model version promotion",
+    "push, merge, branch deletion, or history rewrite"
+  ],
+  "validation": [
+    "npm run check:seis-ai-self-evolution",
+    "npm run check:seis-ai-ecosystem-api",
+    "npm run check:seis-ai-local-integration"
+  ]
+}

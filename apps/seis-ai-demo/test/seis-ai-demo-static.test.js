@@ -19,6 +19,7 @@ test("SEIS AI demo exposes the required operating modules", async () => {
     "Plugin Feeds",
     "SSH Plane",
     "Activation Matrix",
+    "Website Feature Fabric",
     "AI Websites",
     "Prompts",
     "Knowledge",
@@ -48,6 +49,7 @@ test("SEIS AI demo exposes the required operating modules", async () => {
   assert.match(html, /id="fabric-plugin-feeds"/);
   assert.match(html, /id="fabric-ssh-plane"/);
   assert.match(html, /id="fabric-activation-matrix"/);
+  assert.match(html, /id="fabric-website-features"/);
   assert.match(html, /id="fabric-websites"/);
   assert.match(html, /id="eval-score-strip"/);
   assert.match(html, /id="audit-timeline"/);
@@ -80,6 +82,7 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(typeof api.generateProviderReadiness, "function");
     assert.equal(typeof api.generateFabricSummary, "function");
     assert.equal(typeof api.generateActivationMatrixCards, "function");
+    assert.equal(typeof api.generateWebsiteFeatureCards, "function");
     assert.equal(typeof api.renderFabric, "function");
     assert.equal(typeof api.buildMarkdownExport, "function");
     assert.equal(typeof api.buildMacHandoffURL, "function");
@@ -88,6 +91,9 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.equal(api.activationMatrixOverview.status, "local-fixture-backed");
     assert.equal(api.activationMatrixOverview.installSurface, "seis-ai-agent@seis-repo");
     assert.equal(api.activationMatrixOverview.liveMutationDefault, "blocked");
+    assert.equal(api.websiteFeatureFabricOverview.status, "local-fixture-backed");
+    assert.equal(api.websiteFeatureFabricOverview.mode, "single-prompt-website-feature-orchestration");
+    assert.ok(api.websiteFeatureFabricOverview.blockedClaims.includes("production deployment complete"));
     assert.ok(api.installedAIHelpers.some(helper => helper.id === "codex" && helper.status === "active-current-session"));
     assert.ok(api.installedAIHelpers.some(helper => helper.id === "ollama" && helper.status === "aborted-output-not-accepted"));
     assert.ok(api.pluginFeedLanes.some(lane => lane.id === "seis-cloud"));
@@ -95,6 +101,7 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.ok(api.sshExecutionPlane.allowedModes.includes("dry-run"));
     assert.ok(api.sshExecutionPlane.blockedWithoutApproval.includes("sudo-live-mutation"));
     assert.ok(api.aiWebsiteSurfaces.some(surface => surface.id === "seis-ai-demo"));
+    assert.ok(api.websiteFeatureSurfaces.some(surface => surface.id === "seis-ai-demo" && surface.features.includes("website feature fabric")));
 
     const route = api.routeTask("Build an AI app demo with agents, evals, and security review.", "build");
     assert.equal(route.selected.name, "Implementation Builder");
@@ -142,6 +149,9 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.match(markdown, /Activation matrix/);
     assert.match(markdown, /Install surface: seis-ai-agent@seis-repo/);
     assert.match(markdown, /Live mutation default: blocked/);
+    assert.match(markdown, /Website feature fabric/);
+    assert.match(markdown, /single-prompt-website-feature-orchestration/);
+    assert.match(markdown, /production deployment complete/);
     assert.match(markdown, /Installed AI collaboration/);
     assert.match(markdown, /Codex CLI 0\.139\.0: active-current-session/);
     assert.match(markdown, /Ollama 0\.30\.10: aborted-output-not-accepted/);
@@ -152,11 +162,15 @@ test("SEIS AI demo script keeps provider-free deterministic workflow helpers", a
     assert.ok(fabricSummary.some(item => item.id === "agents" && item.value === "9"));
     assert.ok(fabricSummary.some(item => item.id === "plugin-lanes" && item.value === "5"));
     assert.ok(fabricSummary.some(item => item.id === "activation-matrix" && item.value === "On"));
+    assert.ok(fabricSummary.some(item => item.id === "website-feature-fabric" && item.value === "On"));
     assert.ok(api.generateActivationMatrixCards().some(card => card.title === "Install surface"));
     assert.ok(api.generateActivationMatrixCards().some(card => card.title === "Installed AI helpers"));
+    assert.ok(api.generateWebsiteFeatureCards().some(card => card.title === "Single prompt scope"));
+    assert.ok(api.generateWebsiteFeatureCards().some(card => card.title === "Blocked claims"));
     assert.match(dom.window.document.querySelector("#fabric-plugin-feeds").textContent, /SEIS Cloud/);
     assert.match(dom.window.document.querySelector("#fabric-ssh-plane").textContent, /sudo-live-mutation/);
     assert.match(dom.window.document.querySelector("#fabric-activation-matrix").textContent, /seis-ai-agent@seis-repo/);
+    assert.match(dom.window.document.querySelector("#fabric-website-features").textContent, /SEIS Demo Web/);
     assert.match(dom.window.document.querySelector("#fabric-websites").textContent, /SEIS Command Center/);
 
     const handoff = new URL(api.buildMacHandoffURL({
@@ -219,10 +233,16 @@ test("SEIS AI demo documents local-only execution", async () => {
   assert.match(readme, /data\/seis-ai-unified-integration-fabric\.json/);
   assert.match(readme, /data\/seis-ai-activation-matrix\.json/);
   assert.match(readme, /data\/seis-installed-ai-collaboration\.json/);
+  assert.match(readme, /data\/seis-ai-website-feature-fabric\.json/);
+  assert.match(readme, /data\/seis-ai-self-evolution-contract\.json/);
+  assert.match(readme, /data\/seis-ai-ecosystem-api-contract\.json/);
   assert.match(readme, /npm run check:seis-ai-local-integration/);
   assert.match(readme, /npm run check:seis-ai-unified-integration-fabric/);
   assert.match(readme, /npm run check:seis-ai-activation-matrix/);
   assert.match(readme, /npm run check:seis-installed-ai-collaboration/);
+  assert.match(readme, /npm run check:seis-ai-website-feature-fabric/);
+  assert.match(readme, /npm run check:seis-ai-self-evolution/);
+  assert.match(readme, /npm run check:seis-ai-ecosystem-api/);
   assert.match(readme, /does not request, store, or use provider API keys/);
   assert.match(readme, /python3 -m http\.server 4177/);
 });
@@ -234,6 +254,9 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   const unifiedFabric = JSON.parse(await readFile(new URL("../../data/seis-ai-unified-integration-fabric.json", root), "utf8"));
   const activationMatrix = JSON.parse(await readFile(new URL("../../data/seis-ai-activation-matrix.json", root), "utf8"));
   const installedAICollaboration = JSON.parse(await readFile(new URL("../../data/seis-installed-ai-collaboration.json", root), "utf8"));
+  const websiteFeatureFabric = JSON.parse(await readFile(new URL("../../data/seis-ai-website-feature-fabric.json", root), "utf8"));
+  const selfEvolution = JSON.parse(await readFile(new URL("../../data/seis-ai-self-evolution-contract.json", root), "utf8"));
+  const ecosystemApi = JSON.parse(await readFile(new URL("../../data/seis-ai-ecosystem-api-contract.json", root), "utf8"));
   const packageJson = JSON.parse(await readFile(new URL("../../package.json", root), "utf8"));
   const script = await readFile(new URL("script.js", root), "utf8");
   const serializedIntegration = JSON.stringify(integration);
@@ -254,7 +277,10 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
     "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
     "data/seis-ai-unified-integration-fabric.json",
     "data/seis-ai-activation-matrix.json",
-    "data/seis-installed-ai-collaboration.json"
+    "data/seis-installed-ai-collaboration.json",
+    "data/seis-ai-website-feature-fabric.json",
+    "data/seis-ai-self-evolution-contract.json",
+    "data/seis-ai-ecosystem-api-contract.json"
   ]) {
     assert.ok(serializedIntegration.includes(expectedPath), `missing contract path: ${expectedPath}`);
   }
@@ -264,6 +290,8 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   assert.match(script, /fabricOverview/);
   assert.match(script, /activationMatrixOverview/);
   assert.match(script, /generateActivationMatrixCards/);
+  assert.match(script, /websiteFeatureFabricOverview/);
+  assert.match(script, /generateWebsiteFeatureCards/);
   assert.match(script, /installedAIHelpers/);
   assert.match(script, /renderFabric/);
   assert.match(script, /pluginFeedLanes/);
@@ -277,10 +305,17 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-unified-integration-fabric/);
   assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-activation-matrix/);
   assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-installed-ai-collaboration/);
+  assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-website-feature-fabric/);
+  assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-self-evolution/);
+  assert.match(packageJson.scripts["check:seis-ai-local-integration"], /check:seis-ai-ecosystem-api/);
   assert.match(packageJson.scripts["check:seis-ai-command-core"], /check:seis-ai-local-integration/);
   assert.equal(packageJson.scripts["check:seis-ai-unified-integration-fabric"], "node scripts/check-seis-ai-unified-integration-fabric.mjs");
   assert.equal(packageJson.scripts["check:seis-ai-activation-matrix"], "node scripts/check-seis-ai-activation-matrix.mjs");
   assert.equal(packageJson.scripts["check:seis-installed-ai-collaboration"], "node scripts/check-seis-installed-ai-collaboration.mjs");
+  assert.equal(packageJson.scripts["check:seis-ai-website-feature-fabric"], "node scripts/check-seis-ai-website-feature-fabric.mjs");
+  assert.equal(packageJson.scripts["check:seis-ai-self-evolution"], "node scripts/check-seis-ai-self-evolution.mjs");
+  assert.equal(packageJson.scripts["test:seis-ai-ecosystem-api"], "python3 -m unittest server.ai_ecosystem_api.tests.test_services");
+  assert.equal(packageJson.scripts["check:seis-ai-ecosystem-api"], "npm run test:seis-ai-ecosystem-api && node scripts/check-seis-ai-ecosystem-api.mjs");
 
   assert.equal(unifiedFabric.status, "local-fixture-backed");
   assert.ok(unifiedFabric.agentCatalog.some(agent => agent.id === "plugin-steward"));
@@ -292,8 +327,10 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   assert.equal(unifiedFabric.uiSurface.path, "apps/seis-ai-demo/index.html");
   assert.ok(unifiedFabric.uiSurface.sections.includes("fabric-plugin-feeds"));
   assert.ok(unifiedFabric.uiSurface.sections.includes("fabric-activation-matrix"));
+  assert.ok(unifiedFabric.uiSurface.sections.includes("fabric-website-features"));
   assert.ok(unifiedFabric.uiSurface.exportHelpers.includes("renderFabric"));
   assert.ok(unifiedFabric.uiSurface.exportHelpers.includes("activationMatrixOverview"));
+  assert.ok(unifiedFabric.uiSurface.exportHelpers.includes("websiteFeatureFabricOverview"));
   assert.ok(unifiedFabric.uiSurface.exportHelpers.includes("installedAIHelpers"));
   assert.ok(unifiedFabric.coreBoundaries.some(boundary => boundary.includes("No live provider call")));
   assert.equal(activationMatrix.id, "seis-ai-activation-matrix");
@@ -302,13 +339,31 @@ test("SEIS AI demo is wired to the restored local AI Core contract spine", async
   assert.ok(activationMatrix.subAgentActivations.some(agent => agent.agentId === "plugin-steward" && agent.pluginFeeds.includes("seis-cloud")));
   assert.ok(activationMatrix.pluginLaneActivations.every(lane => lane.feeds.includes("plugin-steward")));
   assert.ok(activationMatrix.aiWebsiteFeatureActivation.some(website => website.websiteId === "seis-ai-demo" && website.features.includes("activation-matrix")));
+  assert.ok(activationMatrix.aiWebsiteFeatureActivation.every(website => website.features.includes("website-feature-fabric")));
   assert.equal(installedAICollaboration.id, "seis-installed-ai-collaboration");
   assert.ok(installedAICollaboration.helpers.some(helper => helper.id === "codex" && helper.reviewAttemptStatus === "active-current-session"));
   assert.ok(installedAICollaboration.helpers.some(helper => helper.id === "ollama" && helper.reviewAttemptStatus === "aborted-output-not-accepted"));
+  assert.equal(websiteFeatureFabric.id, "seis-ai-website-feature-fabric");
+  assert.equal(websiteFeatureFabric.mode, "single-prompt-website-feature-orchestration");
+  assert.ok(websiteFeatureFabric.websiteFeatureSurfaces.some(surface => surface.websiteId === "seis-ai-demo" && surface.activatedFeatures.includes("website-feature-fabric")));
+  assert.ok(websiteFeatureFabric.websiteFeatureSurfaces.every(surface => surface.providerKeyPolicy === "no-browser-provider-key-entry"));
+  assert.ok(websiteFeatureFabric.singlePromptRequest.blockedClaims.includes("live SSH host mutation complete"));
+  assert.equal(selfEvolution.id, "seis-ai-self-evolution-contract");
+  assert.equal(selfEvolution.mode, "human-supervised-self-improvement");
+  assert.ok(selfEvolution.engines.some(engine => engine.id === "self-analysis-engine"));
+  assert.ok(selfEvolution.engines.some(engine => engine.id === "plugin-evolution-engine"));
+  assert.ok(selfEvolution.modelOrchestration.supportedProviderFamilies.includes("Ollama Local Models"));
+  assert.equal(ecosystemApi.id, "seis-ai-ecosystem-api-contract");
+  assert.equal(ecosystemApi.backendFramework, "FastAPI");
+  assert.ok(ecosystemApi.endpoints.some(endpoint => endpoint.path === "/api/v1/self-evolution"));
+  assert.ok(ecosystemApi.selfEvolutionEngines.includes("Self Improvement Engine"));
   assert.doesNotMatch(serializedIntegration, /\/Users\//);
   assert.doesNotMatch(JSON.stringify(unifiedFabric), /\/Users\//);
   assert.doesNotMatch(JSON.stringify(activationMatrix), /\/Users\//);
   assert.doesNotMatch(JSON.stringify(installedAICollaboration), /\/Users\//);
+  assert.doesNotMatch(JSON.stringify(websiteFeatureFabric), /\/Users\//);
+  assert.doesNotMatch(JSON.stringify(selfEvolution), /\/Users\//);
+  assert.doesNotMatch(JSON.stringify(ecosystemApi), /\/Users\//);
 });
 
 test("SEIS demo website links into the local AI Command Core surface", async () => {
@@ -325,15 +380,19 @@ test("SEIS demo website links into the local AI Command Core surface", async () 
   assert.match(websiteReadme, /seis-ai-command-core-integration\.json/);
   assert.match(websiteReadme, /seis-ai-unified-integration-fabric\.json/);
   assert.match(websiteReadme, /seis-ai-activation-matrix\.json/);
+  assert.match(websiteReadme, /seis-ai-website-feature-fabric\.json/);
   assert.doesNotMatch(websiteReadme, /\/Users\//);
 
   assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-command-core"));
   assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-unified-integration-fabric"));
   assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-activation-matrix"));
+  assert.ok(websiteContract.linked_surfaces.some(surface => surface.id === "seis-ai-website-feature-fabric"));
   assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-command-core"));
   assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-unified-integration-fabric"));
   assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-activation-matrix"));
+  assert.ok(websiteContract.scenarios.some(scenario => scenario.id === "seis-ai-website-feature-fabric"));
   assert.match(websiteScript, /SEIS AI Command Core Bridge/);
   assert.match(websiteScript, /Unified Agent, Plugin, SSH and Website Fabric/);
   assert.match(websiteScript, /SEIS AI Activation Matrix/);
+  assert.match(websiteScript, /SEIS AI Website Feature Fabric/);
 });

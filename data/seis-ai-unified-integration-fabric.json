@@ -17,6 +17,9 @@
     "packages/data/fixtures/knowledge-source-classification.json",
     "data/seis-ai-activation-matrix.json",
     "data/seis-installed-ai-collaboration.json",
+    "data/seis-ai-website-feature-fabric.json",
+    "data/seis-ai-self-evolution-contract.json",
+    "data/seis-ai-ecosystem-api-contract.json",
     "data/seis-specialist-plugins-2026-06-12.json",
     "data/seis-child-agent-intake.json",
     "data/ssh-hardening-operation-contract.json"
@@ -236,6 +239,7 @@
       "fabric-plugin-feeds",
       "fabric-ssh-plane",
       "fabric-activation-matrix",
+      "fabric-website-features",
       "fabric-websites"
     ],
     "exportHelpers": [
@@ -244,6 +248,8 @@
       "renderFabric",
       "activationMatrixOverview",
       "generateActivationMatrixCards",
+      "websiteFeatureFabricOverview",
+      "generateWebsiteFeatureCards",
       "installedAIHelpers",
       "pluginFeedLanes",
       "sshExecutionPlane",
@@ -254,6 +260,9 @@
     "npm run check:seis-ai-unified-integration-fabric",
     "npm run check:seis-ai-activation-matrix",
     "npm run check:seis-installed-ai-collaboration",
+    "npm run check:seis-ai-website-feature-fabric",
+    "npm run check:seis-ai-self-evolution",
+    "npm run check:seis-ai-ecosystem-api",
     "npm run check:seis-ai-local-integration",
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",

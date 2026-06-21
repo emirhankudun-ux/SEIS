@@ -35,6 +35,12 @@ const FALLBACK_CONTRACT = {
       title: "SEIS AI Activation Matrix",
       path: "../../data/seis-ai-activation-matrix.json",
       mode: "local-fixture-backed"
+    },
+    {
+      id: "seis-ai-website-feature-fabric",
+      title: "SEIS AI Website Feature Fabric",
+      path: "../../data/seis-ai-website-feature-fabric.json",
+      mode: "local-fixture-backed"
     }
   ],
   routes: [
@@ -85,6 +91,13 @@ const FALLBACK_CONTRACT = {
       summary: "Checks the SEIS-Agent install surface, sub-agent activation map, embedded plugin feeds, SSH safe modes, and AI website feature coverage.",
       specialist: "SEIS AI",
       steps: ["Read activation matrix", "Confirm plugin feed coverage", "Confirm website feature coverage"]
+    },
+    {
+      id: "seis-ai-website-feature-fabric",
+      title: "SEIS AI Website Feature Fabric",
+      summary: "Maps every local AI website feature surface to controlled agents, plugin feeds, SSH exposure, provider-key policy, and validation signals.",
+      specialist: "SEIS AI",
+      steps: ["Read website feature fabric", "Map website feature feeds", "Confirm browser keys and live SSH stay blocked"]
     }
   ],
   analytics_events: [
