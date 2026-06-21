@@ -1,0 +1,202 @@
+{
+  "id": "seis-ai-activation-matrix",
+  "version": 1,
+  "updatedAt": "2026-06-20",
+  "status": "local-fixture-backed",
+  "mode": "single-agent-embedded-lanes-plan-only",
+  "purpose": "Define how SEIS AI sub-agents, embedded specialist plugin lanes, SSH execution boundaries, and AI website surfaces activate together without live provider calls, permission expansion, deployment, or host mutation.",
+  "sourceBasis": [
+    "data/seis-ai-unified-integration-fabric.json",
+    "data/seis-installed-ai-collaboration.json",
+    "data/seis-specialist-plugins-2026-06-12.json",
+    "plugins/seis-ai-agent/assets/agent-profile.json",
+    "apps/seis-ai-demo/contracts/seis-ai-command-core-integration.json",
+    "apps/seis-demo-web/contracts/seis-demo-contract.json",
+    "data/ssh-hardening-operation-contract.json"
+  ],
+  "installSurface": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "terminalInstallScript": "scripts/install-seis-ai-agent.mjs",
+    "packageScript": "npm run install:seis-ai-agent",
+    "defaultInstallMode": "plan-only",
+    "standaloneLaneInstallMode": "disabled",
+    "liveMutationDefault": "blocked",
+    "permissionExpansion": "blocked-until-human-approval"
+  },
+  "subAgentActivations": [
+    {
+      "agentId": "seis-assistant",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "bounded-human-supervised",
+      "pluginFeeds": ["seis-design"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-demo-web", "seis-command-center", "portfolio-ai-website"],
+      "allowedActivation": ["route-intent", "show-boundaries", "prepare-plan"],
+      "deniedLiveActions": ["provider-call", "ssh-live-mutation", "deployment-apply", "secret-read"]
+    },
+    {
+      "agentId": "repository-analyst",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "read-only-human-supervised",
+      "pluginFeeds": ["seis-governance", "seis-code"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["read-repository-metadata", "summarize-validation-state", "prepare-risk-signals"],
+      "deniedLiveActions": ["stage-files", "commit-files", "push-branches", "delete-files"]
+    },
+    {
+      "agentId": "goal-architect",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "bounded-human-supervised",
+      "pluginFeeds": ["seis-governance"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["map-goals", "prepare-milestones", "surface-blockers"],
+      "deniedLiveActions": ["auto-complete-goals", "delete-roadmap", "deploy-workflow"]
+    },
+    {
+      "agentId": "research-synthesizer",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "source-governed-human-supervised",
+      "pluginFeeds": ["seis-data"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["summarize-approved-sources", "attach-provenance", "classify-source-risk"],
+      "deniedLiveActions": ["restricted-source-copy", "private-archive-merge", "secret-indexing"]
+    },
+    {
+      "agentId": "documentation-maintainer",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "bounded-human-supervised",
+      "pluginFeeds": ["seis-governance", "seis-design"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-demo-web", "seis-command-center", "portfolio-ai-website"],
+      "allowedActivation": ["draft-doc-updates", "sync-implementation-notes", "prepare-pr-description"],
+      "deniedLiveActions": ["overwrite-official-docs-with-archive", "claim-unrun-validation", "publish-docs"]
+    },
+    {
+      "agentId": "model-evaluator",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "fixture-only-human-supervised",
+      "pluginFeeds": ["seis-code", "seis-data"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["run-fixture-evals", "check-routing-contracts", "summarize-scorecards"],
+      "deniedLiveActions": ["invent-benchmark-score", "publish-model-version", "start-training-job"]
+    },
+    {
+      "agentId": "workflow-operator",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "human-approved-local-workflows-only",
+      "pluginFeeds": ["seis-cloud"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["run-local-check", "record-audit-event", "prepare-rollback-note"],
+      "deniedLiveActions": ["unapproved-ssh-apply", "production-deploy", "database-migration", "secret-exfiltration"]
+    },
+    {
+      "agentId": "plugin-steward",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "metadata-only-human-supervised",
+      "pluginFeeds": ["seis-governance", "seis-cloud", "seis-code", "seis-design", "seis-data"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-demo-web", "seis-command-center"],
+      "allowedActivation": ["read-plugin-lanes", "map-mcp-tools", "prepare-permission-review"],
+      "deniedLiveActions": ["install-unapproved-plugin", "publish-plugin", "expand-plugin-permissions"]
+    },
+    {
+      "agentId": "ssh-operations-reviewer",
+      "activationState": "enabled-local-fixture",
+      "autonomyBoundary": "approval-required-before-live-host-change",
+      "pluginFeeds": ["seis-cloud"],
+      "aiWebsiteSurfaces": ["seis-ai-demo", "seis-command-center"],
+      "allowedActivation": ["review-ssh-contract", "prepare-dry-run-plan", "check-rollback-inputs"],
+      "deniedLiveActions": ["private-key-read", "authorized-keys-write", "firewall-apply", "sudo-live-mutation"]
+    }
+  ],
+  "pluginLaneActivations": [
+    {
+      "laneId": "seis-governance",
+      "installId": "seis-ai-agent@seis-repo#seis-governance",
+      "feedMode": "metadata-plan-review",
+      "feeds": ["documentation-maintainer", "repository-analyst", "goal-architect", "plugin-steward"],
+      "mcpTools": ["seis_governance_status", "seis_governance_plan"],
+      "liveActionState": "blocked"
+    },
+    {
+      "laneId": "seis-cloud",
+      "installId": "seis-ai-agent@seis-repo#seis-cloud",
+      "feedMode": "plan-only-until-approved",
+      "feeds": ["workflow-operator", "ssh-operations-reviewer", "plugin-steward"],
+      "mcpTools": ["seis_cloud_status", "seis_cloud_plan"],
+      "liveActionState": "blocked"
+    },
+    {
+      "laneId": "seis-code",
+      "installId": "seis-ai-agent@seis-repo#seis-code",
+      "feedMode": "read-plan-local-check",
+      "feeds": ["repository-analyst", "model-evaluator", "plugin-steward"],
+      "mcpTools": ["seis_code_status", "seis_code_plan"],
+      "liveActionState": "blocked"
+    },
+    {
+      "laneId": "seis-design",
+      "installId": "seis-ai-agent@seis-repo#seis-design",
+      "feedMode": "read-plan-ui-review",
+      "feeds": ["seis-assistant", "documentation-maintainer", "plugin-steward"],
+      "mcpTools": ["seis_design_status", "seis_design_plan"],
+      "liveActionState": "blocked"
+    },
+    {
+      "laneId": "seis-data",
+      "installId": "seis-ai-agent@seis-repo#seis-data",
+      "feedMode": "metadata-only-source-governed",
+      "feeds": ["research-synthesizer", "model-evaluator", "plugin-steward"],
+      "mcpTools": ["seis_data_status", "seis_data_plan"],
+      "liveActionState": "blocked"
+    }
+  ],
+  "sshActivation": {
+    "reviewerAgent": "ssh-operations-reviewer",
+    "feedLane": "seis-cloud",
+    "contractPath": "data/ssh-hardening-operation-contract.json",
+    "allowedModes": ["audit", "dashboard", "verify", "dry-run"],
+    "blockedWithoutApproval": ["harden", "full-setup", "firewall-apply", "authorized-keys-write", "sudo-live-mutation"],
+    "requiredHumanInputs": ["target-host", "approved-public-key", "host-fingerprint", "rollback-plan", "maintenance-window"],
+    "privateKeyRule": "private key remains exclusively under operator control"
+  },
+  "aiWebsiteFeatureActivation": [
+    {
+      "websiteId": "seis-ai-demo",
+      "path": "apps/seis-ai-demo",
+      "coverageState": "visible-local-ui",
+      "features": ["router", "agents", "workflow", "fabric", "activation-matrix", "prompts", "knowledge", "evals", "approvals", "audit"]
+    },
+    {
+      "websiteId": "seis-demo-web",
+      "path": "apps/seis-demo-web",
+      "coverageState": "scenario-linked",
+      "features": ["seis-ai-command-core-bridge", "unified-fabric-scenario", "specialist-dispatch-scenarios"]
+    },
+    {
+      "websiteId": "seis-command-center",
+      "path": "apps/seis-core",
+      "coverageState": "fixture-inspection",
+      "features": ["ai-core-fixture-view", "command-center-shell", "contract-inspection"]
+    },
+    {
+      "websiteId": "portfolio-ai-website",
+      "path": "apps/web",
+      "coverageState": "linked-future-routing-point",
+      "features": ["browser-facing-surface", "future-seis-ai-routing-point", "no-provider-key-entry"]
+    }
+  ],
+  "validation": [
+    "npm run check:seis-ai-activation-matrix",
+    "npm run check:seis-installed-ai-collaboration",
+    "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-local-integration",
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-ai-agent",
+    "npm run check:ssh-hardening-contract"
+  ],
+  "activationBlockedUntil": [
+    "human approval for live SSH host changes",
+    "server-side provider adapter with credential isolation",
+    "plugin permission expansion review",
+    "deployment target approval",
+    "production rollback plan"
+  ]
+}

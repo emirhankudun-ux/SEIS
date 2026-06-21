@@ -241,35 +241,35 @@ const pluginFeedLanes = [
     id: "seis-governance",
     name: "SEIS Governance",
     posture: "read-plan-review",
-    feeds: ["Documentation Maintainer", "Repository Analyst", "Goal Architect"],
+    feeds: ["Documentation Maintainer", "Repository Analyst", "Goal Architect", "Plugin Steward"],
     tools: ["seis_governance_status", "seis_governance_plan"]
   },
   {
     id: "seis-cloud",
     name: "SEIS Cloud",
     posture: "plan-only-until-approved",
-    feeds: ["Workflow Operator", "SSH Operations Reviewer"],
+    feeds: ["Workflow Operator", "SSH Operations Reviewer", "Plugin Steward"],
     tools: ["seis_cloud_status", "seis_cloud_plan"]
   },
   {
     id: "seis-code",
     name: "SEIS Code",
     posture: "read-plan-local-check",
-    feeds: ["Repository Analyst", "Model Evaluator"],
+    feeds: ["Repository Analyst", "Model Evaluator", "Plugin Steward"],
     tools: ["seis_code_status", "seis_code_plan"]
   },
   {
     id: "seis-design",
     name: "SEIS Design",
     posture: "read-plan-ui-review",
-    feeds: ["SEIS Assistant", "Documentation Maintainer"],
+    feeds: ["SEIS Assistant", "Documentation Maintainer", "Plugin Steward"],
     tools: ["seis_design_status", "seis_design_plan"]
   },
   {
     id: "seis-data",
     name: "SEIS Data",
     posture: "metadata-only-source-governed",
-    feeds: ["Research Synthesizer", "Model Evaluator"],
+    feeds: ["Research Synthesizer", "Model Evaluator", "Plugin Steward"],
     tools: ["seis_data_status", "seis_data_plan"]
   }
 ];
@@ -317,6 +317,55 @@ const activationBlockers = [
   "production rollback plan"
 ];
 
+const activationMatrixOverview = {
+  id: "seis-ai-activation-matrix",
+  status: "local-fixture-backed",
+  installSurface: "seis-ai-agent@seis-repo",
+  mode: "single-agent-embedded-lanes-plan-only",
+  validation: "npm run check:seis-ai-activation-matrix",
+  standaloneLaneInstallMode: "disabled",
+  liveMutationDefault: "blocked"
+};
+
+const installedAIHelpers = [
+  {
+    id: "codex",
+    name: "Codex CLI",
+    version: "0.139.0",
+    status: "active-current-session"
+  },
+  {
+    id: "claude",
+    name: "Claude Code",
+    version: "2.1.177",
+    status: "blocked-not-logged-in"
+  },
+  {
+    id: "gemini",
+    name: "Gemini CLI",
+    version: "0.46.0",
+    status: "blocked-no-auth-method"
+  },
+  {
+    id: "qwen",
+    name: "Qwen Code",
+    version: "0.18.0",
+    status: "blocked-no-auth-type"
+  },
+  {
+    id: "opencode",
+    name: "OpenCode",
+    version: "1.17.4",
+    status: "detected-not-invoked-for-review"
+  },
+  {
+    id: "ollama",
+    name: "Ollama",
+    version: "0.30.10",
+    status: "aborted-output-not-accepted"
+  }
+];
+
 const qwenIntake = {
   safeIdeas: [
     "Multi-agent execution timeline",
@@ -356,6 +405,7 @@ const dom = {
   fabricAgents: document.querySelector("#fabric-agents"),
   fabricPluginFeeds: document.querySelector("#fabric-plugin-feeds"),
   fabricSshPlane: document.querySelector("#fabric-ssh-plane"),
+  fabricActivationMatrix: document.querySelector("#fabric-activation-matrix"),
   fabricWebsites: document.querySelector("#fabric-websites"),
   promptVersionList: document.querySelector("#prompt-version-list"),
   promptEditor: document.querySelector("#prompt-editor"),
@@ -1052,6 +1102,12 @@ function generateFabricSummary() {
       note: "Metadata and plans only"
     },
     {
+      id: "activation-matrix",
+      label: "Activation matrix",
+      value: activationMatrixOverview.status === "local-fixture-backed" ? "On" : "Off",
+      note: "Single-agent embedded lanes"
+    },
+    {
       id: "ssh-modes",
       label: "SSH safe modes",
       value: String(sshExecutionPlane.allowedModes.length),
@@ -1092,6 +1148,7 @@ function renderFabric() {
   renderFabricAgents();
   renderFabricPluginFeeds();
   renderFabricSshPlane();
+  renderFabricActivationMatrix();
   renderFabricWebsites();
 }
 
@@ -1138,6 +1195,50 @@ function renderFabricSshPlane() {
   );
 
   dom.fabricSshPlane.append(safeModes, blockedModes, keyRule);
+}
+
+function generateActivationMatrixCards() {
+  return [
+    {
+      title: "Install surface",
+      meta: activationMatrixOverview.installSurface,
+      detail: "SEIS-Agent is the single install target; specialist lanes are embedded feed lanes."
+    },
+    {
+      title: "Activation mode",
+      meta: activationMatrixOverview.mode,
+      detail: "Sub-agents run as bounded, human-supervised local fixtures until live adapters are approved."
+    },
+    {
+      title: "Standalone lanes",
+      meta: activationMatrixOverview.standaloneLaneInstallMode,
+      detail: "SEIS Cloud, Code, Design, Data, and Governance feed SEIS AI through the primary agent."
+    },
+    {
+      title: "Live mutation",
+      meta: activationMatrixOverview.liveMutationDefault,
+      detail: "Provider calls, SSH apply, deployments, plugin permission expansion, and training remain blocked."
+    },
+    {
+      title: "Validation",
+      meta: activationMatrixOverview.validation,
+      detail: "The matrix cross-checks agents, plugin lanes, SSH boundaries, and AI websites."
+    },
+    {
+      title: "Installed AI helpers",
+      meta: `${installedAIHelpers.length} detected`,
+      detail: "Codex is active; Claude, Gemini, and Qwen need auth; Ollama local output was not accepted as validation."
+    }
+  ];
+}
+
+function renderFabricActivationMatrix() {
+  dom.fabricActivationMatrix.replaceChildren();
+  generateActivationMatrixCards().forEach(card => {
+    const article = createFabricItem(card.title, card.meta, card.detail);
+    article.append(createTagList([activationMatrixOverview.status]));
+    dom.fabricActivationMatrix.append(article);
+  });
 }
 
 function renderFabricWebsites() {
@@ -1455,6 +1556,16 @@ function buildMarkdownExport(input = state) {
     `- Blocked without approval: ${sshExecutionPlane.blockedWithoutApproval.join(", ")}`,
     `- ${sshExecutionPlane.privateKeyRule}`,
     "",
+    "Activation matrix:",
+    `- Install surface: ${activationMatrixOverview.installSurface}`,
+    `- Mode: ${activationMatrixOverview.mode}`,
+    `- Standalone lane install: ${activationMatrixOverview.standaloneLaneInstallMode}`,
+    `- Live mutation default: ${activationMatrixOverview.liveMutationDefault}`,
+    `- Validation: ${activationMatrixOverview.validation}`,
+    "",
+    "Installed AI collaboration:",
+    ...installedAIHelpers.map(helper => `- ${helper.name} ${helper.version}: ${helper.status}`),
+    "",
     "AI website surfaces:",
     ...aiWebsiteSurfaces.map(surface => `- ${surface.name}: ${surface.path} - ${surface.role}`),
     "",
@@ -1510,6 +1621,7 @@ window.SeisAIDemo = {
   generateProviderReadiness,
   generateRunMetrics,
   generateFabricSummary,
+  generateActivationMatrixCards,
   renderFabric,
   selectKnowledge,
   evaluateRun,
@@ -1517,6 +1629,8 @@ window.SeisAIDemo = {
   createRun,
   buildMacHandoffURL,
   fabricOverview,
+  activationMatrixOverview,
+  installedAIHelpers,
   pluginFeedLanes,
   sshExecutionPlane,
   aiWebsiteSurfaces,

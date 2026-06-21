@@ -15,6 +15,8 @@
     "packages/model-router/fixtures/model-router-route-contracts.json",
     "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
     "packages/data/fixtures/knowledge-source-classification.json",
+    "data/seis-ai-activation-matrix.json",
+    "data/seis-installed-ai-collaboration.json",
     "data/seis-specialist-plugins-2026-06-12.json",
     "data/seis-child-agent-intake.json",
     "data/ssh-hardening-operation-contract.json"
@@ -141,7 +143,7 @@
       "id": "seis-governance",
       "sourceMirror": "plugins/seis",
       "installId": "seis-ai-agent@seis-repo#seis-governance",
-      "feeds": ["documentation-maintainer", "repository-analyst", "goal-architect"],
+      "feeds": ["documentation-maintainer", "repository-analyst", "goal-architect", "plugin-steward"],
       "mcpTools": ["seis_governance_status", "seis_governance_plan"],
       "permissionPosture": "read-plan-review"
     },
@@ -149,7 +151,7 @@
       "id": "seis-cloud",
       "sourceMirror": "plugins/seis-cloud",
       "installId": "seis-ai-agent@seis-repo#seis-cloud",
-      "feeds": ["workflow-operator", "ssh-operations-reviewer"],
+      "feeds": ["workflow-operator", "ssh-operations-reviewer", "plugin-steward"],
       "mcpTools": ["seis_cloud_status", "seis_cloud_plan"],
       "permissionPosture": "plan-only-until-approved"
     },
@@ -157,7 +159,7 @@
       "id": "seis-code",
       "sourceMirror": "plugins/seis-code",
       "installId": "seis-ai-agent@seis-repo#seis-code",
-      "feeds": ["repository-analyst", "model-evaluator"],
+      "feeds": ["repository-analyst", "model-evaluator", "plugin-steward"],
       "mcpTools": ["seis_code_status", "seis_code_plan"],
       "permissionPosture": "read-plan-local-check"
     },
@@ -165,7 +167,7 @@
       "id": "seis-design",
       "sourceMirror": "plugins/seis-design",
       "installId": "seis-ai-agent@seis-repo#seis-design",
-      "feeds": ["seis-assistant", "documentation-maintainer"],
+      "feeds": ["seis-assistant", "documentation-maintainer", "plugin-steward"],
       "mcpTools": ["seis_design_status", "seis_design_plan"],
       "permissionPosture": "read-plan-ui-review"
     },
@@ -173,7 +175,7 @@
       "id": "seis-data",
       "sourceMirror": "plugins/seis-data",
       "installId": "seis-ai-agent@seis-repo#seis-data",
-      "feeds": ["research-synthesizer", "model-evaluator"],
+      "feeds": ["research-synthesizer", "model-evaluator", "plugin-steward"],
       "mcpTools": ["seis_data_status", "seis_data_plan"],
       "permissionPosture": "metadata-only-source-governed"
     }
@@ -233,12 +235,16 @@
       "fabric-agents",
       "fabric-plugin-feeds",
       "fabric-ssh-plane",
+      "fabric-activation-matrix",
       "fabric-websites"
     ],
     "exportHelpers": [
       "fabricOverview",
       "generateFabricSummary",
       "renderFabric",
+      "activationMatrixOverview",
+      "generateActivationMatrixCards",
+      "installedAIHelpers",
       "pluginFeedLanes",
       "sshExecutionPlane",
       "aiWebsiteSurfaces"
@@ -246,6 +252,8 @@
   },
   "validation": [
     "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-activation-matrix",
+    "npm run check:seis-installed-ai-collaboration",
     "npm run check:seis-ai-local-integration",
     "npm run check:seis-specialist-plugins",
     "npm run check:seis-ai-agent",

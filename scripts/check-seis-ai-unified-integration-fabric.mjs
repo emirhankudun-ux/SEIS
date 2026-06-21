@@ -1,6 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 
 const fabricPath = "data/seis-ai-unified-integration-fabric.json";
+const activationMatrixPath = "data/seis-ai-activation-matrix.json";
+const installedAICollaborationPath = "data/seis-installed-ai-collaboration.json";
 const specialistPluginsPath = "data/seis-specialist-plugins-2026-06-12.json";
 const sshContractPath = "data/ssh-hardening-operation-contract.json";
 const failures = [];
@@ -47,6 +49,8 @@ function collectText(value) {
 }
 
 const fabric = readJson(fabricPath);
+const activationMatrix = readJson(activationMatrixPath);
+const installedAICollaboration = readJson(installedAICollaborationPath);
 const specialistPlugins = readJson(specialistPluginsPath);
 const sshContract = readJson(sshContractPath);
 const fabricText = collectText(fabric);
@@ -164,9 +168,17 @@ for (const lane of expectedPluginLanes) {
 }
 
 for (const target of ["plugin-steward", "ssh-operations-reviewer", "repository-analyst", "model-evaluator"]) {
-  if (target !== "plugin-steward" && !feedTargets.has(target)) {
+  if (!feedTargets.has(target)) {
     fail(`plugin feed lanes should route to ${target}`);
   }
+}
+
+if (activationMatrix.id !== "seis-ai-activation-matrix") {
+  fail("activation matrix must be readable from data/seis-ai-activation-matrix.json");
+}
+
+if (installedAICollaboration.id !== "seis-installed-ai-collaboration") {
+  fail("installed AI collaboration must be readable from data/seis-installed-ai-collaboration.json");
 }
 
 for (const plane of fabric.sshExecutionPlanes ?? []) {
@@ -223,6 +235,7 @@ if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
     "fabric-agents",
     "fabric-plugin-feeds",
     "fabric-ssh-plane",
+    "fabric-activation-matrix",
     "fabric-websites"
   ]);
 
@@ -236,6 +249,9 @@ if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
     "fabricOverview",
     "generateFabricSummary",
     "renderFabric",
+    "activationMatrixOverview",
+    "generateActivationMatrixCards",
+    "installedAIHelpers",
     "pluginFeedLanes",
     "sshExecutionPlane",
     "aiWebsiteSurfaces"
@@ -250,6 +266,8 @@ if (!fabric.uiSurface || typeof fabric.uiSurface !== "object") {
 
 assertArrayIncludesAll("validation", fabric.validation, [
   "npm run check:seis-ai-unified-integration-fabric",
+  "npm run check:seis-ai-activation-matrix",
+  "npm run check:seis-installed-ai-collaboration",
   "npm run check:seis-ai-local-integration",
   "npm run check:seis-specialist-plugins",
   "npm run check:seis-ai-agent",

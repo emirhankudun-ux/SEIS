@@ -49,6 +49,8 @@ AI Core integration:
   `../seis-ai-demo/contracts/seis-ai-command-core-integration.json`
 - Unified agent/plugin/SSH fabric:
   `../../data/seis-ai-unified-integration-fabric.json`
+- Activation matrix:
+  `../../data/seis-ai-activation-matrix.json`
 - Validation from repository root: `npm run check:seis-ai-local-integration`
 
 Deployment:

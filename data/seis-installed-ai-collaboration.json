@@ -1,0 +1,89 @@
+{
+  "id": "seis-installed-ai-collaboration",
+  "version": 1,
+  "checkedAt": "2026-06-21",
+  "status": "local-observed-partial",
+  "mode": "safe-readiness-and-review-attempts",
+  "purpose": "Record which installed AI helper CLIs were detected locally and how they can safely assist SEIS AI without receiving secrets, repository dumps, credentials, live SSH access, deployment authority, or permission expansion.",
+  "promptClassUsedForReviewAttempts": "generic-no-file-no-secret-validation-risk-prompt",
+  "helpers": [
+    {
+      "id": "codex",
+      "displayName": "Codex CLI",
+      "command": "codex",
+      "version": "0.139.0",
+      "detected": true,
+      "role": "primary implementation and repository editing agent",
+      "reviewAttemptStatus": "active-current-session",
+      "safeUse": "implementation, validation, commit preparation, and final integration under SEIS governance"
+    },
+    {
+      "id": "claude",
+      "displayName": "Claude Code",
+      "command": "claude",
+      "version": "2.1.177",
+      "detected": true,
+      "role": "architecture and safety reviewer when authenticated",
+      "reviewAttemptStatus": "blocked-not-logged-in",
+      "safeUse": "review-only after authentication and with no secrets or private keys in prompt context"
+    },
+    {
+      "id": "gemini",
+      "displayName": "Gemini CLI",
+      "command": "gemini",
+      "version": "0.46.0",
+      "detected": true,
+      "role": "broad-context documentation and Google ecosystem reviewer when authenticated",
+      "reviewAttemptStatus": "blocked-no-auth-method",
+      "safeUse": "plan-mode review after authentication and with explicit no-secret prompt boundaries"
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen Code",
+      "command": "qwen",
+      "version": "0.18.0",
+      "detected": true,
+      "role": "secondary reasoning and contradiction review when authenticated",
+      "reviewAttemptStatus": "blocked-no-auth-type",
+      "safeUse": "plan-mode review after authentication and without workspace dumps or credentials"
+    },
+    {
+      "id": "opencode",
+      "displayName": "OpenCode",
+      "command": "opencode",
+      "version": "1.17.4",
+      "detected": true,
+      "role": "optional local implementation/review helper",
+      "reviewAttemptStatus": "detected-not-invoked-for-review",
+      "safeUse": "explicitly scoped review or run mode only after permission boundaries are chosen"
+    },
+    {
+      "id": "ollama",
+      "displayName": "Ollama",
+      "command": "ollama",
+      "version": "0.30.10",
+      "detected": true,
+      "role": "local model experimentation and private draft review",
+      "localModelsObserved": ["gemma4:latest"],
+      "reviewAttemptStatus": "aborted-output-not-accepted",
+      "safeUse": "local-only draft review; output must be filtered for hidden reasoning and never treated as authoritative"
+    }
+  ],
+  "acceptedCollaborationEvidence": [
+    "Codex is the active implementation agent for this local repository turn.",
+    "Installed helper availability was verified by command presence and version checks.",
+    "Claude, Gemini, and Qwen review attempts were blocked by missing authentication and were not treated as successful assistance.",
+    "Ollama local model availability was verified, but the review attempt was aborted because output was not concise and was not accepted as guidance."
+  ],
+  "nonClaimBoundaries": [
+    "No external AI helper was given secrets, private keys, tokens, .env contents, host credentials, deployment authority, or broad repository dumps.",
+    "No blocked or aborted helper output is treated as validation success.",
+    "No helper may install plugins, expand permissions, run live SSH, deploy, push, merge, or train models without explicit human approval.",
+    "Installed AI collaboration is advisory and remains subordinate to SEIS governance, local validators, tests, and human review."
+  ],
+  "validation": [
+    "npm run check:seis-installed-ai-collaboration",
+    "npm run check:seis-ai-activation-matrix",
+    "npm run check:seis-ai-local-integration"
+  ]
+}

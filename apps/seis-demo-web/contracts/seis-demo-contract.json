@@ -14,6 +14,12 @@
       "title": "SEIS AI Unified Integration Fabric",
       "path": "../../data/seis-ai-unified-integration-fabric.json",
       "mode": "local-fixture-backed"
+    },
+    {
+      "id": "seis-ai-activation-matrix",
+      "title": "SEIS AI Activation Matrix",
+      "path": "../../data/seis-ai-activation-matrix.json",
+      "mode": "local-fixture-backed"
     }
   ],
   "routes": [
@@ -81,6 +87,18 @@
         "Read the unified integration fabric",
         "Map plugin feed lanes to controlled agents",
         "Confirm SSH remains audit, verify, or dry-run until approval"
+      ]
+    },
+    {
+      "id": "seis-ai-activation-matrix",
+      "title": "SEIS AI Activation Matrix",
+      "summary": "Checks the SEIS-Agent install surface, sub-agent activation map, embedded plugin feeds, SSH safe modes, and AI website feature coverage.",
+      "specialist": "SEIS AI",
+      "defaultPrompt": "Review the SEIS AI activation matrix and confirm the sub-agents, plugins, SSH modes, and AI websites are locally wired without live mutation.",
+      "steps": [
+        "Read the activation matrix",
+        "Confirm every plugin lane feeds Plugin Steward and its target agents",
+        "Confirm AI website features include the activation matrix surface"
       ]
     }
   ],

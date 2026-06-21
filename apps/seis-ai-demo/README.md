@@ -12,6 +12,8 @@ credentials or making live model calls.
 - Supervised agent runtime queue
 - Deterministic workflow map recovered from trusted Qwen reference ideas
 - Unified Fabric module for controlled agents, specialist plugin feeds, SSH boundaries, and linked AI website surfaces
+- Activation Matrix module for the `seis-ai-agent@seis-repo` install surface, embedded plugin lanes, blocked live mutation, and sub-agent activation evidence
+- Installed AI helper evidence for Codex, Claude, Gemini, Qwen, OpenCode, and Ollama with honest auth/output status
 - Provider readiness cards with browser secret entry explicitly blocked
 - Local run metrics for plan steps, active agents, provider paths, risk, evals, and prompt size
 - Versioned prompt behavior notes
@@ -46,6 +48,15 @@ approval-gated SSH execution boundaries, and AI website surfaces as local
 fixture-backed metadata. Plugins feed SEIS AI through declared lane profiles,
 MCP tool names, source mirrors, and reviewable plans only; they do not silently
 install themselves, expand permissions, read secrets, run live SSH, or deploy.
+The activation matrix lives at
+[`data/seis-ai-activation-matrix.json`](../../data/seis-ai-activation-matrix.json).
+It records the single SEIS-Agent install surface, sub-agent activation map,
+plugin lane feeds, SSH safe modes, and AI website feature coverage.
+Installed AI collaboration evidence lives at
+[`data/seis-installed-ai-collaboration.json`](../../data/seis-installed-ai-collaboration.json).
+It records detected local AI helper CLIs, successful availability checks,
+blocked auth states, the aborted Ollama local review attempt, and non-claim
+boundaries.
 The app exposes the same contract through the `Fabric` module and markdown
 export, and the fabric validator checks those UI surface ids and exported
 helpers.
@@ -130,6 +141,18 @@ Run only the agent/plugin/SSH fabric contract:
 
 ```bash
 npm run check:seis-ai-unified-integration-fabric
+```
+
+Run only the activation matrix contract:
+
+```bash
+npm run check:seis-ai-activation-matrix
+```
+
+Run only the installed AI collaboration contract:
+
+```bash
+npm run check:seis-installed-ai-collaboration
 ```
 
 Release boundaries and publish blockers are documented in

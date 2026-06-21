@@ -29,6 +29,12 @@ const FALLBACK_CONTRACT = {
       title: "SEIS AI Unified Integration Fabric",
       path: "../../data/seis-ai-unified-integration-fabric.json",
       mode: "local-fixture-backed"
+    },
+    {
+      id: "seis-ai-activation-matrix",
+      title: "SEIS AI Activation Matrix",
+      path: "../../data/seis-ai-activation-matrix.json",
+      mode: "local-fixture-backed"
     }
   ],
   routes: [
@@ -72,6 +78,13 @@ const FALLBACK_CONTRACT = {
       summary: "Shows how controlled agents, embedded SEIS plugin lanes, SSH approval gates, and AI website surfaces feed one local SEIS AI contract.",
       specialist: "SEIS AI",
       steps: ["Read unified fabric", "Map plugin lanes to agents", "Confirm SSH dry-run boundary"]
+    },
+    {
+      id: "seis-ai-activation-matrix",
+      title: "SEIS AI Activation Matrix",
+      summary: "Checks the SEIS-Agent install surface, sub-agent activation map, embedded plugin feeds, SSH safe modes, and AI website feature coverage.",
+      specialist: "SEIS AI",
+      steps: ["Read activation matrix", "Confirm plugin feed coverage", "Confirm website feature coverage"]
     }
   ],
   analytics_events: [

@@ -69,6 +69,16 @@
       "id": "unified-agent-plugin-ssh-fabric",
       "path": "data/seis-ai-unified-integration-fabric.json",
       "validation": "npm run check:seis-ai-unified-integration-fabric"
+    },
+    {
+      "id": "seis-ai-activation-matrix",
+      "path": "data/seis-ai-activation-matrix.json",
+      "validation": "npm run check:seis-ai-activation-matrix"
+    },
+    {
+      "id": "seis-installed-ai-collaboration",
+      "path": "data/seis-installed-ai-collaboration.json",
+      "validation": "npm run check:seis-installed-ai-collaboration"
     }
   ],
   "plugin_feed_policy": {
@@ -91,6 +101,8 @@
   ],
   "local_validation": [
     "npm run check:seis-ai-unified-integration-fabric",
+    "npm run check:seis-ai-activation-matrix",
+    "npm run check:seis-installed-ai-collaboration",
     "npm run check:seis-ai-local-integration",
     "npm run check:seis-ai-command-core"
   ],
