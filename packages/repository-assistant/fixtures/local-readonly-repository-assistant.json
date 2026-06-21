@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "id": "local-readonly-repository-assistant",
+  "status": "local-alpha",
+  "mode": "local-only",
+  "readOnly": true,
+  "externalProviderRouting": false,
+  "sourceDocuments": [
+    "docs/product/repository-assistant.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+    "docs/ai/model-router.md",
+    "docs/security/model-provider-data-policy.md",
+    "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json"
+  ],
+  "allowedCommands": [
+    "git status --short --branch",
+    "git diff --stat",
+    "git log --oneline --decorate",
+    "rg path-only policy scans",
+    "npm run check:repository-assistant-prototype"
+  ],
+  "forbiddenActions": [
+    "stage files without explicit human approval",
+    "commit files without explicit human approval",
+    "push to any branch",
+    "merge or close pull requests",
+    "delete branches or rewrite history",
+    "execute SSH commands",
+    "deploy or mutate infrastructure",
+    "call external model providers",
+    "print secrets or raw private configuration"
+  ],
+  "assistantOutput": {
+    "repositoryCondition": {
+      "summary": "SEIS AI Core has fixture-backed contracts and is ready for read-only local repository assistance. The assistant may summarize branch state, changed paths, validation status, risks, and next safe action from local evidence only.",
+      "sourceLinks": [
+        "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+        "docs/product/repository-assistant.md",
+        "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+      ]
+    },
+    "evidence": [
+      {
+        "id": "evidence-repository-assistant-policy",
+        "kind": "doc",
+        "summary": "Repository Assistant policy defines allowed context, forbidden context, read-only tools, forbidden tools, and output format.",
+        "sourceLinks": [
+          "docs/product/repository-assistant.md"
+        ]
+      },
+      {
+        "id": "evidence-local-route-policy",
+        "kind": "security",
+        "summary": "Model-router and provider policy keep repository review local-only until provider routing is explicitly approved.",
+        "sourceLinks": [
+          "docs/ai/model-router.md",
+          "docs/security/model-provider-data-policy.md"
+        ]
+      },
+      {
+        "id": "evidence-prompt-regression",
+        "kind": "validation",
+        "summary": "Prompt regression fixtures include a repository-assistant read-only scenario with blocked write actions and evidence requirements.",
+        "sourceLinks": [
+          "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
+          "scripts/check-prompt-regression-fixtures.mjs"
+        ]
+      },
+      {
+        "id": "evidence-command-center-contract",
+        "kind": "package",
+        "summary": "AI Core and Command Center shared contract exposes model routes, prompt versions, repository intelligence, audits, and evaluation state.",
+        "sourceLinks": [
+          "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+          "apps/seis-core/ai-core-contract-fixture.js",
+          "scripts/check-ai-core-app-contracts.mjs"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "summary": "Repository assistance must not become a hidden write-capable agent. GitHub writes, provider routing, SSH, deployment, and destructive cleanup remain outside this prototype.",
+        "sourceLinks": [
+          "docs/product/repository-assistant.md",
+          "docs/ai/provider-routing-policy.md"
+        ]
+      },
+      {
+        "summary": "Validation summaries must name commands actually run and must not imply benchmark, training, deployment, or provider readiness.",
+        "sourceLinks": [
+          "docs/evals/evaluation-strategy.md",
+          "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+        ]
+      }
+    ],
+    "validationStatus": [
+      {
+        "command": "npm run check:repository-assistant-prototype",
+        "status": "pass",
+        "summary": "Validates the fixture shape, source links, read-only mode, forbidden actions, non-claims, and secret/path hygiene.",
+        "sourceLinks": [
+          "scripts/check-repository-assistant-prototype.mjs"
+        ]
+      },
+      {
+        "command": "npm run check:prompt-regression-fixtures",
+        "status": "pass",
+        "summary": "Keeps the repository-assistant prompt regression scenario aligned with read-only behavior.",
+        "sourceLinks": [
+          "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json"
+        ]
+      }
+    ],
+    "recommendedBranchPlan": {
+      "summary": "Continue in a short-lived review branch, commit local-only repository assistant evidence as a small slice, and open a human-reviewed PR before any merge.",
+      "sourceLinks": [
+        "docs/governance/branch-policy.md"
+      ]
+    },
+    "excludedMaterial": [
+      "external provider calls",
+      "provider keys",
+      "GitHub writes",
+      "SSH execution",
+      "deployment",
+      "model training",
+      "benchmark claims",
+      "secret values"
+    ],
+    "nextSafeAction": {
+      "summary": "Use the local prototype output to render or review repository state in Command Center, then add evaluation report generation for prompt and app-state fixtures.",
+      "sourceLinks": [
+        "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+        "docs/evals/evaluation-strategy.md"
+      ]
+    }
+  },
+  "auditMetadata": {
+    "privacyMode": "local-only",
+    "providerProfile": "none-local-prototype",
+    "writesPerformed": false,
+    "approvalState": "not-required",
+    "redactionState": "metadata-and-paths-only",
+    "sourceLinkMode": "relative-repository-paths"
+  },
+  "nonClaims": [
+    "No external provider routing is enabled.",
+    "No GitHub write action is enabled.",
+    "No SSH, deployment, or infrastructure mutation is enabled.",
+    "No model training, benchmark, or SEIS-owned model claim is created.",
+    "No secret values or raw private configuration are included."
+  ]
+}

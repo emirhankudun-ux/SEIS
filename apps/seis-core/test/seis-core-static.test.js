@@ -12,6 +12,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
     "Repositories",
     "Documentation",
     "Agents",
+    "AI Core",
     "Plugins",
     "Automation",
     "Security",
@@ -21,12 +22,14 @@ test("SEIS Command Center shell exposes required modules", async () => {
     assert.match(html, new RegExp(`>${label}<`));
   }
   assert.match(html, /SEIS Command Center/);
+  assert.match(html, /ai-core-contract-fixture\.js/);
   assert.match(html, /id="command-dialog"/);
   assert.match(html, /id="settings-dialog"/);
 });
 
 test("SEIS Command Center script implements local workflows", async () => {
   const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
   assert.match(script, /localStorage/);
   assert.match(script, /goal-form/);
   assert.match(script, /repositoryFilter/);
@@ -35,6 +38,22 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /automationWorkflows/);
   assert.match(script, /securityReports/);
   assert.match(script, /aiSystems/);
+  assert.match(script, /aiCoreContract/);
+  assert.match(script, /renderAiCore/);
+  assert.match(script, /seisAiCoreContractFixture/);
+  assert.match(fixture, /local-readonly-repository-assistant/);
+  assert.match(fixture, /surface-repository-assistant/);
+  assert.match(fixture, /ai-core-fixture-evaluation-report/);
+  assert.match(fixture, /model-router-route-contracts/);
+  assert.match(fixture, /route-metadata-doc-summary/);
+  assert.match(fixture, /agent-runtime-task-lifecycle/);
+  assert.match(fixture, /task-provider-routing-approval-needed/);
+  assert.match(fixture, /tool-registry-permissions/);
+  assert.match(fixture, /tool-github-pr-publish/);
+  assert.match(script, /toolRegistryEntries/);
+  assert.match(fixture, /knowledge-source-classification/);
+  assert.match(fixture, /knowledge-discarded-assistant-archive/);
+  assert.match(script, /knowledgeSources/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
   assert.match(script, /openCommandPalette/);
@@ -66,6 +85,8 @@ test("SEIS Command Center design system preserves required tokens", async () => 
     assert.match(css, new RegExp(token));
   }
   assert.match(css, /plugin-card/);
+  assert.match(css, /contract-card/);
+  assert.match(css, /ai-core-layout/);
   assert.match(css, /automation-card/);
   assert.match(css, /security-card/);
   assert.match(css, /domain-card/);

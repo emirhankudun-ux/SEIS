@@ -184,6 +184,7 @@ read/write workflows are routed through explicit safety gates.
 | --- | --- | --- |
 | AGI system contract | [`reports/seis-agi-system.md`](./reports/seis-agi-system.md) | Track the 150-domain capability atlas, plugin/MCP lanes, token efficiency target, and release window. |
 | Active mission board | [`reports/seis-active-mission-board.md`](./reports/seis-active-mission-board.md) | Convert the three-month goal into Month 1/2/3 execution lanes with acceptance gates and evidence paths. |
+| AI Core and Command Center five-year program | [`roadmap/seis-ai-core-command-center-5-year-development-program.md`](./roadmap/seis-ai-core-command-center-5-year-development-program.md) | Govern the AI Core and app dual-build from foundation contracts to evidence-backed product and research maturity. |
 | Apple-first Swift contract | [`packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift`](./packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift) | Keep the implementation path tied to Swift, SwiftUI, Objective-C, Metal, AppKit, UIKit, Combine, Core Data, and CloudKit. |
 | Generated implementation doc | [`docs/agi/seis-agi-system.md`](./docs/agi/seis-agi-system.md) | Explain implementation roots, token efficiency, plugin use, and visual source policy. |
 
@@ -192,6 +193,12 @@ read/write workflows are routed through explicit safety gates.
 | Path | Purpose |
 | --- | --- |
 | [`packages/seis-ai`](./packages/seis-ai) | AI agent CLI, MCP server, audit tools, prompts, resources, and tests |
+| [`packages/model-router`](./packages/model-router) | Foundation contract for provider-neutral model routing and privacy modes |
+| [`packages/prompt-engine`](./packages/prompt-engine) | Foundation contract for prompt versioning, metadata, and regression support |
+| [`packages/agent-runtime`](./packages/agent-runtime) | Foundation contract for supervised agent roles, approvals, and audit state |
+| [`packages/evals`](./packages/evals) | Foundation contract for prompt, route, agent, app-state, and future model evaluations |
+| [`packages/tool-registry`](./packages/tool-registry) | Foundation contract for tools, plugins, permissions, and risk classes |
+| [`packages/shared-types`](./packages/shared-types) | Foundation contract for shared AI Core and Command Center data shapes |
 | [`mcp`](./mcp) | SEIS MCP server entrypoints and integration surface |
 | [`plugins/seis`](./plugins/seis) | Codex plugin bundle, scripts, and SEIS skill entrypoints |
 | [`plugins/seis-ai-agent`](./plugins/seis-ai-agent) | SEIS-Agent unified orchestration across cloud, code, design, data, memory, context, MCP, skills, plugins, and automation |
@@ -205,9 +212,12 @@ read/write workflows are routed through explicit safety gates.
 | [`packages/seis_kernel_go`](./packages/seis_kernel_go) | Go governance and readiness policy contracts |
 | [`polyglot`](./polyglot) | Cross-language audit lanes and platform proof-of-concept surfaces |
 | [`apps/web`](./apps/web) | Browser-facing product and documentation surface |
+| [`apps/command-center`](./apps/command-center) | Command Center documentation placeholder; current implementation evidence remains in `apps/seis-core` |
 | [`apps/android`](./apps/android) | Android direction and validation notes |
 | [`apps/macos`](./apps/macos) | macOS direction and Apple-native notes |
 | [`docs`](./docs) | Architecture, governance, deployment, strategy, quality, and research records |
+| [`docs/product`](./docs/product) | SEIS App, AI App, Command Center, LLM surfaces, assistants, approvals, and evidence contracts |
+| [`roadmap`](./roadmap) | 30/90/365-day, 18-60-month, five-year AI Core/App, native demo, and long-horizon operating plans |
 | [`reports`](./reports) | Generated ecosystem, language, capability, and readiness reports |
 
 ## AI-Assisted Development
@@ -229,6 +239,15 @@ Use the lightest reliable check first, then scale validation with risk:
 
 ```bash
 npm run check:open-source-governance
+npm run check:ai-core-app-contracts
+npm run check:prompt-regression-fixtures
+npm run check:repository-assistant-prototype
+npm run check:ai-core-fixture-evaluation-report
+npm run check:model-router-contracts
+npm run check:agent-runtime-lifecycle
+npm run check:tool-registry-permissions
+npm run check:knowledge-source-classification
+npm run check:token-feed-budget
 npm run seis:check
 npm run check:seis-platform-language-policy
 npm run check:seis-platform-kernel

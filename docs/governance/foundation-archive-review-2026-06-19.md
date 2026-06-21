@@ -19,8 +19,7 @@ cleanup pull request and what must stay out until a later focused review.
 ## Excluded From This PR
 
 - Raw iCloud workspace dumps.
-- The separate `/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/SEIS`
-  intake checkout.
+- The separate iCloud Drive `SEIS` intake checkout.
 - `SEIST/` and other duplicate repository copies.
 - Portfolio repository copies.
 - Desktop ZIPs, screenshots, and macOS resource-fork metadata.

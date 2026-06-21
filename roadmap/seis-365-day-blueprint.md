@@ -1,6 +1,6 @@
 # SEIS 365 Gün Vizyon Blueprinti
 
-Bu 365 günlük planın uzun dönem genişlemesi için ana referans: [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github/SEIS/roadmap/seis-18-60-month-long-horizon-ops-blueprint.md).
+Bu 365 günlük planın uzun dönem genişlemesi için ana referans: [roadmap/seis-18-60-month-long-horizon-ops-blueprint.md](./seis-18-60-month-long-horizon-ops-blueprint.md).
 
 ## Genel Çerçeve
 

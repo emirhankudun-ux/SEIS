@@ -4,6 +4,7 @@ import fnmatch
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -691,7 +692,7 @@ def sanitize_runtime_output(output):
     sanitized = output
     for source, replacement in replacements.items():
         sanitized = sanitized.replace(source, replacement)
-    return sanitized
+    return re.sub(r"/Users/[^/\s`|]+", "$HOME", sanitized)
 
 
 def hash_counted_files(files):

@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "id": "seis-10m-token-feed-budget",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/ai/context-memory-boundary.md",
+    "docs/ai/model-router.md",
+    "docs/evals/evaluation-strategy.md",
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+  ],
+  "targetTokenBudget": 10000000,
+  "tokensExecuted": 0,
+  "budgetMode": "metadata-only-feed-plan",
+  "privacyMode": "metadata-only",
+  "feedState": "validated",
+  "allocations": [
+    {
+      "id": "allocation-official-docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "metadata-only",
+      "plannedTokens": 4000000,
+      "approvedUse": "source-backed summaries and Command Center evidence links",
+      "evidence": "docs/ai/context-memory-boundary.md",
+      "storesRawContent": false,
+      "externalRoutingAllowed": false
+    },
+    {
+      "id": "allocation-generated-reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "plannedTokens": 2000000,
+      "approvedUse": "validation status summaries and regression evidence lookup",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json",
+      "storesRawContent": false,
+      "externalRoutingAllowed": false
+    },
+    {
+      "id": "allocation-local-fixtures",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "plannedTokens": 3000000,
+      "approvedUse": "local contract rendering and fixture-backed assistant checks",
+      "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+      "storesRawContent": false,
+      "externalRoutingAllowed": false
+    },
+    {
+      "id": "allocation-safety-reserve",
+      "sourceClass": "planned",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "plannedTokens": 1000000,
+      "approvedUse": "reserved capacity for future approved metadata-only sources",
+      "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+      "storesRawContent": false,
+      "externalRoutingAllowed": false
+    },
+    {
+      "id": "allocation-blocked-archives",
+      "sourceClass": "archive",
+      "retrievalState": "blocked",
+      "privacyMode": "disabled",
+      "plannedTokens": 0,
+      "approvedUse": "blocked from feed until clean-room review creates sanitized requirements",
+      "evidence": "docs/governance/icloud-github-workspace-ingestion.md",
+      "storesRawContent": false,
+      "externalRoutingAllowed": false
+    }
+  ],
+  "integrationTargets": {
+    "modelRouterRouteId": "route-contract-seis-10m-token-feed-metadata",
+    "knowledgeSourceId": "knowledge-seis-10m-token-feed-plan",
+    "agentTaskId": "task-seis-10m-token-feed-plan",
+    "sharedContractFixture": "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+    "commandCenterProjection": "apps/seis-core/ai-core-contract-fixture.js"
+  },
+  "gateRules": [
+    "Token feed work is metadata-only until a reviewed ingestion adapter exists.",
+    "No raw repository content, secrets, private keys, provider keys, or restricted archive material may be stored by this fixture.",
+    "External provider routing, embeddings, persistent memory writes, and model training require separate human approval and evidence.",
+    "The 10,000,000 token number is a target budget for future approved feed capacity, not an executed token spend."
+  ],
+  "auditMetadata": {
+    "redactionState": "metadata-only",
+    "rawContentStored": false,
+    "embeddingIndexCreated": false,
+    "persistentMemoryWritePerformed": false,
+    "providerCallPerformed": false,
+    "modelTrainingPerformed": false,
+    "browserReceivesProviderKey": false,
+    "safeMetadata": [
+      "feed id",
+      "target token budget",
+      "tokens executed",
+      "privacy mode",
+      "source classes",
+      "integration target ids"
+    ]
+  },
+  "nonClaims": [
+    "No 10,000,000 token ingestion has been executed.",
+    "No live model execution, external provider call, embedding index, or persistent memory write is performed.",
+    "No provider key, private key, token, credential, raw private configuration, or restricted archive content is included.",
+    "No model training, fine-tune, checkpoint, benchmark, model-card, or SEIS-owned model capability claim is created.",
+    "This fixture validates a budget and routing contract only."
+  ]
+}
