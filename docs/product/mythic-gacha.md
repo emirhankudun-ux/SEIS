@@ -30,11 +30,11 @@ The current route is a playable static browser foundation at
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Game route | Playable static foundation | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.js`, `apps/web/mythic-gacha.css` | No browser/mobile screenshot QA yet. | Add Playwright or manual browser QA evidence. |
+| Game route | Playable static foundation with browser smoke | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.js`, `apps/web/mythic-gacha.css`, `npm run check:product-experience-browser-smoke` | No committed visual-regression baseline yet. | Keep browser smoke passing and attach generated screenshots when review requires them. |
 | Creature records | Implemented as local runtime data | 60 `SHJ-*` creature records in `apps/web/mythic-gacha.js` | Lore/art provenance needs product review before public release. | Move creature records to a JSON manifest after review. |
 | Artwork | Local atlas-backed | `apps/web/public/media/mythic/shan-hai-creature-atlas.png` | Atlas is reused through deterministic crops, not 60 separately reviewed production images. | Add per-card artwork provenance or approved generated asset set. |
-| Persistence | Browser-local plus SEIS Code workspace export | IndexedDB state in `apps/web/mythic-gacha.js`, `/workspace/MythicArchive` export bridge, `npm run check:mythic-gacha` | No cross-tab browser QA screenshot yet. | Add interaction evidence for export visibility in SEIS Code and Terminal. |
-| Validation | Static validator | `npm run check:mythic-gacha` | No runtime click-through automation. | Add interaction tests for draw, filter, favorite, export, reset, and refresh persistence. |
+| Persistence | Browser-local plus SEIS Code workspace export | IndexedDB state in `apps/web/mythic-gacha.js`, `/workspace/MythicArchive` export bridge, `npm run check:mythic-gacha`, `npm run check:product-experience-browser-smoke` | No full shared desktop VFS integration yet. | Keep export visibility covered in SEIS Code and Terminal smoke. |
+| Validation | Static validator plus browser smoke | `npm run check:mythic-gacha`, `npm run check:product-experience-browser-smoke` | Refresh-persistence and reset coverage still need dedicated review. | Add interaction tests for ten draw, daily draw, reset, reduced-motion mode, and refresh persistence. |
 
 ## Rules / Policy
 
@@ -49,12 +49,12 @@ The current route is a playable static browser foundation at
 
 The route can move beyond playable static foundation only after:
 
-- mobile and desktop browser QA,
+- mobile and desktop browser QA through `npm run check:product-experience-browser-smoke`,
 - refresh-persistence QA,
 - artwork provenance review,
 - accessibility review,
 - performance review,
-- export/VFS interaction review.
+- export visibility in SEIS Code and Terminal smoke.
 
 ## Related Documents
 
@@ -65,6 +65,5 @@ The route can move beyond playable static foundation only after:
 
 ## Next Safe Action
 
-Add a browser interaction smoke test for one draw, ten draw, daily draw, bestiary
-filtering, favorite toggle, detail dialog, export, reset, reduced-motion mode,
-and persistence after refresh.
+Extend the browser smoke beyond one draw to cover ten draw, daily draw, reset,
+reduced-motion mode, and persistence after refresh.

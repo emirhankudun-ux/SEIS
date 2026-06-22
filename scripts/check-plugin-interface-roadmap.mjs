@@ -12,6 +12,7 @@ const failures = [];
 
 const requiredInterfaceIds = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"];
 const requiredYears = ["2026", "2027", "2028", "2029", "2030"];
+const requiredPeriods = ["H1", "H2"];
 const allowedRisks = new Set(["low", "medium", "high"]);
 const allowedStages = new Set([
   "foundation",
@@ -106,6 +107,41 @@ function validateDevelopmentProgram(record) {
   }
 }
 
+function validateDevelopmentCadence(cadence) {
+  ensure(typeof cadence === "object" && cadence !== null, "developmentCadence must be an object");
+  ensure(Array.isArray(cadence?.periods), "developmentCadence.periods must be an array");
+  ensure(Array.isArray(cadence?.laneRoutines), "developmentCadence.laneRoutines must be an array");
+
+  const periodIds = new Set();
+  for (const period of cadence?.periods || []) {
+    const label = period?.id || "unknown period";
+    ensure(requiredPeriods.includes(period?.id), `${label} is not an allowed development cadence period`);
+    ensure(!periodIds.has(period?.id), `duplicate development cadence period: ${period?.id}`);
+    periodIds.add(period?.id);
+    ensure(typeof period?.label === "string" && period.label.length >= 4, `${label} label is required`);
+    ensure(typeof period?.purpose === "string" && period.purpose.length >= 30, `${label} purpose must be specific`);
+    ensure(typeof period?.reviewGate === "string" && period.reviewGate.length >= 30, `${label} reviewGate must be specific`);
+  }
+
+  for (const period of requiredPeriods) {
+    ensure(periodIds.has(period), `missing development cadence period: ${period}`);
+  }
+
+  const routineIds = new Set();
+  for (const routine of cadence?.laneRoutines || []) {
+    const label = routine?.id || "unknown routine";
+    ensure(requiredInterfaceIds.includes(routine?.id), `${label} is not an allowed cadence lane id`);
+    ensure(!routineIds.has(routine?.id), `duplicate development cadence lane routine: ${routine?.id}`);
+    routineIds.add(routine?.id);
+    ensure(typeof routine?.h1 === "string" && routine.h1.length >= 30, `${label} h1 routine must be specific`);
+    ensure(typeof routine?.h2 === "string" && routine.h2.length >= 30, `${label} h2 routine must be specific`);
+  }
+
+  for (const requiredId of requiredInterfaceIds) {
+    ensure(routineIds.has(requiredId), `missing development cadence lane routine: ${requiredId}`);
+  }
+}
+
 const roadmap = readJson(ROADMAP_FILE);
 const packageJson = readJson(PACKAGE_FILE);
 const packageScripts = new Set(Object.keys(packageJson?.scripts || {}));
@@ -117,6 +153,7 @@ if (roadmap) {
   ensure(Array.isArray(roadmap.interfaces), "interfaces must be an array");
   ensure(Array.isArray(roadmap.fiveYearHorizon), "fiveYearHorizon must be an array");
   ensure(Array.isArray(roadmap.developmentProgram), "developmentProgram must be an array");
+  validateDevelopmentCadence(roadmap.developmentCadence);
 
   const ids = new Set();
   for (const record of roadmap.interfaces || []) {
@@ -163,6 +200,7 @@ if (fs.existsSync(WEB_INDEX_FILE)) {
   ensure(html.includes('id="plugin-interfaces"'), "web index must include plugin-interfaces section");
   ensure(html.includes("data-five-year-controls"), "web index must include five-year controls");
   ensure(html.includes("data-five-year-detail"), "web index must include five-year detail");
+  ensure(html.includes("data-plugin-interface-coverage"), "web index must include plugin coverage metrics");
   for (const id of requiredInterfaceIds) {
     ensure(html.includes(`data-plugin-interface-tab="${id}"`), `web index missing tab for ${id}`);
   }
@@ -172,17 +210,24 @@ if (fs.existsSync(WEB_APP_FILE)) {
   const js = fs.readFileSync(WEB_APP_FILE, "utf8");
   ensure(js.includes("loadPluginInterfaces"), "web app must load plugin interface roadmap");
   ensure(js.includes("renderPluginInterfaces"), "web app must render plugin interfaces");
+  ensure(js.includes("renderPluginCoverage"), "web app must render plugin coverage metrics");
   ensure(js.includes("setupPluginYearControls"), "web app must wire five-year controls");
   ensure(js.includes("renderPluginDevelopmentProgram"), "web app must render development program");
+  ensure(js.includes("data-plugin-period"), "web app must wire development cadence period controls");
+  ensure(js.includes("lane-year commitments"), "web app must render lane-year commitment metric");
+  ensure(js.includes("live actions"), "web app must render live-action boundary metric");
   ensure(js.includes("seis-plugin-interface-roadmap.json"), "web app must reference plugin roadmap source");
 }
 
 if (fs.existsSync(WEB_STYLE_FILE)) {
   const css = fs.readFileSync(WEB_STYLE_FILE, "utf8");
   ensure(css.includes(".plugin-interface-layout"), "web styles must include plugin interface layout");
+  ensure(css.includes(".plugin-interface-coverage"), "web styles must include plugin coverage metrics");
   ensure(css.includes(".five-year-grid"), "web styles must include five-year grid");
   ensure(css.includes(".five-year-controls"), "web styles must include five-year controls");
   ensure(css.includes(".five-year-detail"), "web styles must include five-year detail");
+  ensure(css.includes(".five-year-period-controls"), "web styles must include cadence period controls");
+  ensure(css.includes(".five-year-cadence"), "web styles must include cadence panel");
 }
 
 if (fs.existsSync(QA_FILE)) {
@@ -193,7 +238,13 @@ if (fs.existsSync(QA_FILE)) {
   for (const year of requiredYears) {
     ensure(qa.includes(year), `QA report must mention ${year}`);
   }
+  for (const period of requiredPeriods) {
+    ensure(qa.includes(period), `QA report must mention ${period}`);
+  }
   ensure(qa.includes("Mobile overflow"), "QA report must include mobile overflow result");
+  ensure(qa.includes("Coverage metrics"), "QA report must include coverage metrics result");
+  ensure(qa.includes("25 lane-year commitments"), "QA report must include lane-year coverage");
+  ensure(qa.includes("0 live actions"), "QA report must include live-action boundary");
   ensure(qa.includes("Application data HTTP errors"), "QA report must include application data HTTP error result");
   ensure(qa.includes("HTTP Notes"), "QA report must include HTTP notes");
 }

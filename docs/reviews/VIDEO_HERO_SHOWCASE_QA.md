@@ -29,9 +29,9 @@ or production performance readiness.
 | Area | Status | Evidence | Remaining gap |
 | --- | --- | --- | --- |
 | Route count | Validated | `npm run check:video-hero-showcase` confirms exactly four themed pages. | None for static contract. |
-| Runtime controls | Browser-smoked | Headless Chrome DevTools smoke verified play/pause, mute, fullscreen, and CTA scroll behavior on the Nature page. | In-app Browser click dispatch timed out, so interaction proof used no-install Chrome DevTools fallback. |
-| Loading behavior | Browser-smoked | Desktop and mobile smoke verified each route has the expected hero, video element, metadata preload, controls, and no horizontal overflow. | Network-performance measurements are not captured. |
-| Reduced motion | Browser-smoked | Chrome media emulation verified `prefers-reduced-motion: reduce`, paused video state, and `is-reduced-motion` hero state on Materials. | No committed screenshot artifact. |
+| Runtime controls | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies play/pause, mute, fullscreen, and CTA scroll behavior on the Nature page. | In-app Browser click dispatch timed out, so interaction proof uses no-install Chrome DevTools fallback. |
+| Loading behavior | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies each route has the expected hero, video element, metadata preload, controls, and no horizontal overflow at desktop and mobile viewports. | Network-performance measurements are not captured. |
+| Reduced motion | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies `prefers-reduced-motion: reduce`, paused video state, and `is-reduced-motion` hero state on Materials. | Screenshot artifacts are generated under ignored `dist/qa/video-hero-smoke`; they are not committed. |
 | Provenance | Documented | `apps/web/showcase/video-heroes.json` stores Pexels source pages and direct MP4 URLs. | Asset licensing and long-term hosting should be re-reviewed before public release. |
 | Static package | Built | `npm run build:static` produced `dist/seis-static.zip` and includes `dist/seis-static/showcase/*`. | `release/web` mirror only syncs `index.html`, `styles.css`, and `app.js`; it is not the route-file evidence source. |
 | Release readiness | Not ready | Repository hygiene and visual/performance QA remain incomplete. | Add screenshot, mobile, and media fallback QA before release. |
@@ -45,9 +45,7 @@ or production performance readiness.
 | `npm run check:plugin-interface-roadmap` | Passed | Confirms the broader five-lane interface roadmap and 2026-2030 horizon remain valid. |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
 | In-app Browser route/screenshot check | Partial | Browser loaded and screenshotted the routes, but its low-level click dispatcher timed out on control interaction. |
-| Headless Chrome DevTools browser smoke | Passed | Verified all four routes at 1280x720 and 390x844, page identity, hero/video/control presence, no framework overlay text, no horizontal overflow, and temporary screenshot capture outside the repo. |
-| Headless Chrome DevTools interaction smoke | Passed | Verified Nature play toggled to `Play` with paused status, mute toggled to `Mute`, fullscreen entered, and CTA scroll moved focus/scroll to `#story`. |
-| Headless Chrome DevTools reduced-motion smoke | Passed | Verified Materials route under reduced-motion emulation with `reducedMotion: true`, paused video, and `is-reduced-motion` class. |
+| `npm run check:video-hero-browser-smoke` | Passed | Starts a local static server, drives system Chrome through DevTools, verifies all four routes at 1280x720 and 390x844, captures ignored screenshots, verifies Nature play/mute/fullscreen/CTA interactions, and verifies Materials reduced-motion behavior. |
 
 ## Manual Evidence Notes
 
@@ -58,19 +56,19 @@ or production performance readiness.
 - CTA and media controls are real links/buttons with runtime handlers.
 - Loading, paused, muted, playback-error, and reduced-motion states are
   represented in the page and runtime model.
-- Browser smoke generated temporary screenshots outside the repository; no
-  screenshot artifacts were committed.
-- The only observed browser console/network issue in the smoke run was a local
-  `/favicon.ico` 404, which is unrelated to the showcase route behavior but
-  should be cleaned before public readiness.
+- Browser smoke writes screenshots to ignored `dist/qa/video-hero-smoke`.
+- The prior one-off smoke observed a local `/favicon.ico` 404. The repeatable
+  command filters that known static-site gap out of showcase failures, but the
+  favicon should still be cleaned before public readiness.
 
 ## Known Gaps
 
-- No committed visual screenshot comparison exists yet.
+- Browser screenshots are generated locally but not committed or attached to a
+  PR review artifact.
 - No Lighthouse, bundle-size, or media transfer budget was recorded.
 - No local poster/media optimization pipeline exists yet.
 - No public-release attribution review has been completed.
-- `/favicon.ico` still returns 404 in the local static smoke context.
+- `/favicon.ico` may still return 404 in local static smoke contexts.
 
 ## Release Boundary
 
@@ -95,5 +93,6 @@ release. Public readiness requires:
 
 ## Next Safe Action
 
-Turn the no-install Chrome DevTools smoke into a repeatable lightweight command
-or keep running equivalent browser QA before each product-experience PR.
+Run `npm run check:video-hero-browser-smoke` before product-experience PRs and
+attach the generated `dist/qa/video-hero-smoke` screenshots to PR review
+evidence when visual approval is required.

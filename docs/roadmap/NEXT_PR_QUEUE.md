@@ -143,7 +143,7 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a selectable five-year development program. |
+| Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a selectable five-year development program, H1/H2 cadence, and coverage metrics. |
 | Include | `apps/web/index.html`, `apps/web/app.js`, `apps/web/styles.css`, `content/development/seis-plugin-interface-roadmap.json`, `content/development/plugin-skill-capability-map.json`, `content/lab/cinematic-engine.json`, `content/lab/quality-console.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
 | Exclude | Live cloud, GitHub write, SSH, or AI provider actions. |
 | Validation | `npm run check:plugin-interface-roadmap`, `node --check apps/web/app.js`, `jq empty content/development/seis-plugin-interface-roadmap.json`, `git diff --check`, keyboard/manual QA when browser verification is available. |
@@ -154,7 +154,7 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Keep dedicated validation and manual QA evidence for the static plugin interface suite, including lane tabs, year controls, and program rows. |
+| Goal | Keep dedicated validation and manual QA evidence for the static plugin interface suite, including lane tabs, year controls, H1/H2 cadence, coverage metrics, and program rows. |
 | Include | `scripts/check-plugin-interface-roadmap.mjs`, `npm run check:plugin-interface-roadmap`, `docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md`, support data files, browser QA notes for lane tabs, evidence links, mobile layout, HTTP status, and reduced-motion behavior. |
 | Exclude | Dependency installation, live provider calls, SSH, deployment, or destructive actions. |
 | Validation | `npm run check:plugin-interface-roadmap`, browser screenshot/manual QA, keyboard navigation review. |
@@ -179,7 +179,7 @@ Date: 2026-06-22
 | Goal | Convert the four Video Hero showcase pages from validated static contract to visual QA evidence for desktop, mobile, reduced-motion, and media fallback behavior. |
 | Include | `docs/product/video-hero-showcase.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`, browser smoke notes, screenshots, reduced-motion evidence, media provenance review, and static package verification. |
 | Exclude | Deployment, live media CDN migration, dependency installation, paid media purchases, model-provider image generation, and release publication. |
-| Validation | `npm run check:video-hero-showcase`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
+| Validation | `npm run check:video-hero-showcase`, `npm run check:video-hero-browser-smoke`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
 | Approval needed | None for local QA/docs; approval required for dependency installation, hosted media migration, deployment, or release. |
 
 ## PR 7: Mythic Gacha Playable Foundation
@@ -190,7 +190,7 @@ Date: 2026-06-22
 | Goal | Keep the Shan Hai Jing inspired gacha route playable without a runtime image-generation provider key. |
 | Include | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.css`, `apps/web/mythic-gacha.js`, `apps/web/seis-code.js` export listener, `apps/web/public/media/mythic/shan-hai-creature-atlas.png`, `docs/product/mythic-gacha.md`, route/cache/sitemap bindings, and `scripts/check-mythic-gacha.mjs`. |
 | Exclude | Live image generation, real-money purchase flows, provider keys, dependency installation, deployment, SSH, or asset claims without provenance review. |
-| Validation | `npm run check:mythic-gacha`, `node --check apps/web/mythic-gacha.js`, `node --check apps/web/seis-code.js`, browser/mobile QA when available. |
+| Validation | `npm run check:mythic-gacha`, `npm run check:product-experience-browser-smoke`, `node --check apps/web/mythic-gacha.js`, `node --check apps/web/seis-code.js`, browser/mobile screenshot review when needed. |
 | Approval needed | None for the static foundation; approval required for live image generation, dependency installation, public release, or external asset pipeline changes. |
 
 ## Human Approval Needed

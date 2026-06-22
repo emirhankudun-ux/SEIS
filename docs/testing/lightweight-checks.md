@@ -9,7 +9,9 @@ npm run check:foundation
 npm run check:release-sync
 npm run check:plugin-interface-roadmap
 npm run check:seis-code
+npm run check:product-experience-browser-smoke
 npm run check:video-hero-showcase
+npm run check:video-hero-browser-smoke
 npm run check:mythic-gacha
 npm run check:data-schema-registry
 npm run quality
@@ -48,6 +50,8 @@ For the plugin interface suite, expected:
 - evidence links render for each selected lane
 - the five-year horizon shows 2026, 2027, 2028, 2029, and 2030
 - the year controls switch the development program without page errors
+- the H1/H2 cadence controls switch the active lane development rhythm
+- coverage metrics show 25 lane-year commitments and 0 live actions
 - the program rows switch the active plugin lane
 - mobile layout has no horizontal overflow
 
@@ -61,6 +65,13 @@ For SEIS Code, expected:
 - `claude` enters a clearly labeled Local Demo REPL, not a live Anthropic session
 - files, command history, extensions, and session state persist through IndexedDB
 
+`npm run check:product-experience-browser-smoke` starts a local static server
+and system Chrome through DevTools. It verifies SEIS Code menus, activity views,
+bottom panels, Monaco/fallback readiness, terminal write/read, Local Demo REPL
+identity, Mythic Gacha draw/favorite/export/detail, SEIS Code terminal
+visibility for exported `MythicArchive` files, and desktop/mobile overflow. It
+writes ignored screenshots to `dist/qa/product-experience-smoke`.
+
 For Video Hero showcase pages, expected:
 
 - all four themes load with a video or CSS fallback
@@ -68,14 +79,17 @@ For Video Hero showcase pages, expected:
 - reduced-motion users get the still fallback behavior
 - manifest provenance remains visible in `apps/web/showcase/video-heroes.json`
 
-Latest evidence is recorded in `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`. The
-current browser smoke used no-install Chrome DevTools because the in-app Browser
-could read and screenshot the routes but timed out on low-level click dispatch.
+Latest evidence is recorded in `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`.
+`npm run check:video-hero-browser-smoke` starts a local static server and uses
+system Chrome through DevTools because the in-app Browser could read and
+screenshot the routes but timed out on low-level click dispatch. The command
+writes ignored screenshots to `dist/qa/video-hero-smoke`.
 
 For Mythic Gacha, the lightweight check validates the no-key draw route,
 IndexedDB hooks, local atlas, and SEIS Code `/workspace/MythicArchive` export
-bridge. Browser QA still needs to cover draw, filter, favorite, export, reset,
-and refresh-persistence interactions.
+bridge. The product-experience browser smoke covers draw, filter, favorite,
+export, detail, cross-app archive visibility, and mobile overflow. Refresh
+persistence and asset provenance still need dedicated review.
 
 ## Deferred Heavy Checks
 

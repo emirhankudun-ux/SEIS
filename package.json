@@ -14,6 +14,7 @@
     "check:seis-code": "node scripts/check-seis-code.mjs",
     "check:video-hero-showcase": "node scripts/check-video-hero-showcase.mjs",
     "check:video-hero-browser-smoke": "node scripts/check-video-hero-browser-smoke.mjs",
+    "check:product-experience-browser-smoke": "node scripts/check-product-experience-browser-smoke.mjs",
     "check:mythic-gacha": "node scripts/check-mythic-gacha.mjs",
     "check:design-component-inventory": "node scripts/check-design-component-inventory.mjs",
     "check:release-sync": "node scripts/check-release-sync.cjs",

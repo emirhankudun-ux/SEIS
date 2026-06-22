@@ -171,12 +171,20 @@ async function evaluate(client, expression) {
 }
 
 async function goto(client, url) {
-  const startIndex = client.events.length;
   await client.send("Page.navigate", { url });
   const deadline = Date.now() + 12000;
 
   while (Date.now() < deadline) {
-    if (client.events.slice(startIndex).some((event) => event.method === "Page.loadEventFired")) return;
+    try {
+      const result = await client.send("Runtime.evaluate", {
+        expression: "({ href: location.href, readyState: document.readyState })",
+        returnByValue: true
+      });
+      const state = result.result?.value;
+      if (state?.href === url && state?.readyState && state.readyState !== "loading") return;
+    } catch (_error) {
+      // Navigation can briefly invalidate the execution context; retry until the deadline.
+    }
     await delay(100);
   }
 

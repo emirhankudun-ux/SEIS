@@ -17,7 +17,7 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 426
+Inspected files: 427
 
 ## Provider Matrix
 
@@ -26,7 +26,6 @@ Inspected files: 426
 | Anthropic Claude | cloud model provider | Unknown | ANTHROPIC_API_KEY | 2814 | no | no | Retain | Review manually before enabling. |
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 3 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 35 | no | no | Retain | Review manually before enabling. |
-| fal.ai | media provider | Unknown | FAL_KEY | 808 | no | no | Retain | Review manually before enabling. |
 | Google Gemini | cloud model provider | Unknown | GEMINI_API_KEY | 31 | no | no | Retain | Review manually before enabling. |
 | NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 275 | no | no | Retain | Review manually before enabling. |
 | Ollama | local model provider | Unknown | OLLAMA_BASE_URL, OLLAMA_HOST | 17 | no | no | Retain | Review manually before enabling. |
@@ -98,7 +97,6 @@ These references do not prove enabled live features or required API keys.
 - Anthropic Claude: ANTHROPIC_API_KEY (Unknown)
 - Cloudflare Workers AI: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (Live but Unverified)
 - DeepSeek: DEEPSEEK_API_KEY (Unknown)
-- fal.ai: FAL_KEY (Unknown)
 - Google Gemini: GEMINI_API_KEY (Unknown)
 - NVIDIA NIM: NVIDIA_API_KEY (Unknown)
 - Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Unknown)

@@ -63,9 +63,10 @@ requests from producing application-data HTTP 404s in browser QA.
 
 Mythic Gacha is now a playable static product foundation. It provides 60 local
 creature records, draw and bestiary controls, IndexedDB persistence, pity logic,
-local export, and a no-key runtime boundary. It is not yet public or release
-ready because browser/mobile QA, shared VFS integration, and per-card artwork
-provenance review are still missing.
+local export, browser-smoked SEIS Code terminal visibility for exported cards,
+and a no-key runtime boundary. It is not yet public or release ready because
+committed visual-regression baselines, full shared desktop VFS integration, and
+per-card artwork provenance review are still missing.
 
 ## AI Core Review
 
@@ -158,8 +159,8 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Live provider calls.
 - SSH and deployment.
 - Full SEIS Desktop implementation and the remaining 60+ app operating system target.
-- Mythic Gacha browser/mobile QA, shared VFS integration, and full artwork provenance review.
-- Browser QA and E2E hardening for SEIS Code and Video Hero showcase.
+- Mythic Gacha refresh-persistence QA, full shared desktop VFS integration, and full artwork provenance review.
+- E2E hardening and committed visual-regression baselines for SEIS Code, Mythic Gacha, and Video Hero showcase.
 
 ## Validation Performed
 

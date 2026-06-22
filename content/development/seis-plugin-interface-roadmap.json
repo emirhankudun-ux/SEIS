@@ -327,8 +327,8 @@
       },
       {
         "id": "seis-cloud",
-        "h1": "Review cloud target placeholders, dry-run checks, rollback ownership, and SSH-disabled boundaries.",
-        "h2": "Harden deployment readiness docs, incident notes, approval gates, and no-live-action messaging."
+        "h1": "Review @seis-cloud target placeholders, dry-run checks, rollback ownership, and SSH-disabled boundaries.",
+        "h2": "Harden @seis-cloud deployment readiness docs, incident notes, approval gates, and no-live-action messaging."
       },
       {
         "id": "seis-code",

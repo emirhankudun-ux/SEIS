@@ -683,6 +683,39 @@ h2 {
   margin-top: 0.9rem;
 }
 
+.plugin-interface-coverage {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.plugin-interface-coverage-card {
+  border: 1px solid rgba(47, 111, 115, 0.2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.5);
+  padding: 0.62rem 0.7rem;
+}
+
+.plugin-interface-coverage-card strong,
+.plugin-interface-coverage-card span {
+  display: block;
+}
+
+.plugin-interface-coverage-card strong {
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.plugin-interface-coverage-card span {
+  margin-top: 0.28rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .plugin-interface-evidence a,
 .plugin-interface-link,
 .five-year-card {
@@ -992,10 +1025,11 @@ html[data-motion-mode="cinematic"] .hero {
   .mode-grid,
   .gap-grid,
   .system-grid,
-  .showcase-preview-grid,
+    .showcase-preview-grid,
   .mythic-preview-panel,
     .marketplace-layout,
     .plugin-interface-layout,
+    .plugin-interface-coverage,
     .five-year-panel,
     .five-year-program,
     .five-year-grid,

@@ -10,8 +10,9 @@ covering `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and
 
 ## Scope
 
-This QA pass validates the static read-only interface, five-year horizon, and
-interactive year-by-year lane program. It does not validate live plugin
+This QA pass validates the static read-only interface, five-year horizon,
+interactive year-by-year lane program, and H1/H2 development cadence controls.
+It does not validate live plugin
 execution, deployment, SSH, provider calls, repository writes, or production
 release readiness.
 
@@ -41,6 +42,8 @@ release readiness.
 | `@seis-data` tab | Passed | Selected state became `true`; 3 evidence links rendered. |
 | Five-year horizon | Passed | 2026, 2027, 2028, 2029, and 2030 rendered. |
 | Year controls | Passed | 2026, 2027, 2028, 2029, and 2030 controls selected the yearly program detail. |
+| H1/H2 cadence controls | Passed | H1 and H2 controls selected the development cadence for the active year and lane. |
+| Coverage metrics | Passed | 25 lane-year commitments, 2 cadence periods, 5 lane routines, evidence links, and 0 live actions rendered. |
 | Lane program rows | Passed | Program rows selected the matching `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` lane. |
 | Desktop overflow | Passed | No horizontal document overflow detected. |
 | Mobile overflow | Passed | No horizontal document overflow detected. |
@@ -74,4 +77,5 @@ jq empty content/development/seis-plugin-interface-roadmap.json content/developm
 
 Keep this QA note current when the plugin interface layout, data source,
 five-year horizon, or development-program controls change. Clean up the
-`/favicon.ico` fallback request before claiming release readiness.
+H1/H2 cadence controls and `/favicon.ico` fallback request before claiming
+release readiness.

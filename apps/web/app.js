@@ -102,8 +102,8 @@ const fallbackMarketplace = {
       },
       {
         id: "seis-cloud",
-        h1: "Review cloud target placeholders, dry-run checks, rollback ownership, and SSH-disabled boundaries.",
-        h2: "Harden deployment readiness docs, incident notes, approval gates, and no-live messaging."
+        h1: "Review @seis-cloud target placeholders, dry-run checks, rollback ownership, and SSH-disabled boundaries.",
+        h2: "Harden @seis-cloud deployment readiness docs, incident notes, approval gates, and no-live messaging."
       },
       {
         id: "seis-code",
@@ -865,6 +865,8 @@ function renderPluginInterfaces() {
     });
   }
 
+  renderPluginCoverage(payload);
+
   if (horizonBoard) {
     horizonBoard.replaceChildren();
     (payload.fiveYearHorizon || fallbackPluginInterfaces.fiveYearHorizon).forEach((item) => {
@@ -880,6 +882,34 @@ function renderPluginInterfaces() {
   }
 
   renderPluginDevelopmentProgram(payload, interfaces, active);
+}
+
+function renderPluginCoverage(payload) {
+  const coverageBoard = el("[data-plugin-interface-coverage]");
+  if (!coverageBoard) return;
+
+  const interfaces = payload.interfaces || fallbackPluginInterfaces.interfaces;
+  const program = payload.developmentProgram || fallbackPluginInterfaces.developmentProgram;
+  const cadence = payload.developmentCadence || fallbackPluginInterfaces.developmentCadence;
+  const laneYearCommitments = program.reduce((total, year) => total + (year.laneCommitments || []).length, 0);
+  const evidenceLinks = interfaces.reduce((total, item) => total + (item.evidence || []).length, 0);
+  const cadencePeriods = cadence.periods?.length || 0;
+  const routineCount = cadence.laneRoutines?.length || 0;
+  const metrics = [
+    { label: "lane-year commitments", value: laneYearCommitments },
+    { label: "cadence periods", value: cadencePeriods },
+    { label: "lane routines", value: routineCount },
+    { label: "evidence links", value: evidenceLinks },
+    { label: "live actions", value: 0 }
+  ];
+
+  coverageBoard.replaceChildren(
+    ...metrics.map((metric) => {
+      const card = create("article", "plugin-interface-coverage-card");
+      card.append(create("strong", "", String(metric.value)), create("span", "", metric.label));
+      return card;
+    })
+  );
 }
 
 function renderPluginDevelopmentProgram(payload, interfaces, active) {

@@ -37,7 +37,7 @@ const providerCatalog = [
   provider("Voyage AI", "embedding provider", ["voyage"], ["api.voyageai.com"], ["VOYAGE_API_KEY"], ["voyage"]),
   provider("Jina AI", "embedding/reranking provider", ["jina"], ["api.jina.ai"], ["JINA_API_KEY"], ["jina"]),
   provider("Stability AI", "image provider", ["stability"], ["api.stability.ai"], ["STABILITY_API_KEY"], ["stable-diffusion"]),
-  provider("fal.ai", "media provider", ["@fal-ai", "fal.ai"], ["fal.ai"], ["FAL_KEY"], ["fal"]),
+  provider("fal.ai", "media provider", ["@fal-ai", "fal.ai"], ["fal.ai"], ["FAL_KEY"], []),
   provider("ElevenLabs", "speech provider", ["elevenlabs"], ["api.elevenlabs.io"], ["ELEVENLABS_API_KEY"], ["elevenlabs"]),
   provider("AssemblyAI", "speech provider", ["assemblyai"], ["api.assemblyai.com"], ["ASSEMBLYAI_API_KEY"], ["assemblyai"]),
   provider("Deepgram", "speech provider", ["deepgram"], ["api.deepgram.com"], ["DEEPGRAM_API_KEY"], ["deepgram"]),
