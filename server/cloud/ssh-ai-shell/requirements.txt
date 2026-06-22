@@ -3,3 +3,7 @@ anthropic>=0.42.0
 requests>=2.31.0
 websockets>=13.0.0
 duckduckgo-search>=4.0.0
+fastapi
+uvicorn
+pydantic
+python-dotenv
