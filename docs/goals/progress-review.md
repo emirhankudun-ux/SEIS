@@ -17,6 +17,7 @@ This review records current foundation progress on branch
 | Progress ledger | active | `content/development/seis-goal-progress-ledger.json`, `docs/goals/progress-ledger.md` | Keep completed, deferred, and follow-up records synced with evidence. |
 | Horizon/project hierarchy | active | `content/development/seis-goal-hierarchy.json`, `docs/goals/horizon-map.md`, `docs/goals/project-epic-task-map.md` | Keep yearly, quarterly, monthly, weekly, project, epic, and subtask links validator-backed. |
 | Archive ledger | active | `content/development/seis-goal-archive-ledger.json`, `docs/goals/archive-ledger.md` | Keep historical, deferred, and review-candidate material separate from active goals. |
+| Cycle plan | active | `content/development/seis-goal-cycle-plan.json`, `docs/goals/cycle-plan.md` | Keep yearly goals, quarterly goals, monthly goals, and weekly priorities evidence-linked. |
 | Command Center Goal view | active | `docs/product/goal-tracking-center.md`, `docs/goals/command-center-view-model.md`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html` | Keep generated view fresh with `npm run check:goal-command-center-view`. |
 | GitHub workflow | blocked | `docs/STATUS.md` | Do not stage unrelated deletions. |
 | Public readiness | blocked | `docs/STATUS.md` | Resolve repository hygiene first. |
@@ -34,6 +35,7 @@ This review records current foundation progress on branch
 - Progress ledger for completed, deferred, and follow-up work.
 - Horizon, project, epic, and subtask hierarchy records.
 - Archive ledger for historical reference, deletion-review candidates, and deferred readiness claims.
+- Cycle plan for yearly goals, quarterly goals, monthly goals, and weekly priorities.
 
 ## Not Complete
 

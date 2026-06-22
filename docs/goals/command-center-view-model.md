@@ -26,6 +26,7 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 - `content/development/seis-goal-progress-ledger.json`
 - `content/development/seis-goal-hierarchy.json`
 - `content/development/seis-goal-archive-ledger.json`
+- `content/development/seis-goal-cycle-plan.json`
 
 ## Required Panels
 
@@ -48,6 +49,10 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 | `epics` | Project-level execution groupings. |
 | `subtasks` | Task-backed execution detail records. |
 | `archiveItems` | Historical, deferred, and review-candidate archive boundary records. |
+| `yearlyGoals` | Yearly cycle goals. |
+| `quarterlyGoals` | Quarterly cycle goals. |
+| `monthlyGoals` | Monthly cycle goals. |
+| `weeklyPriorities` | Weekly priority records. |
 
 ## Commands
 
@@ -73,3 +78,4 @@ npm run check:goal-tracking
 - Not proof that planned review cadences were already performed.
 - Not proof of live GitHub issue, project-board, or PR synchronization.
 - Not promotion of archive material into active official goals.
+- Not proof that a weekly or monthly review has been performed.

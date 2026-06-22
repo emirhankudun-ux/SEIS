@@ -65,9 +65,17 @@ evidence ids, related paths, promotion rule, risk, and next action. Archive
 records keep historical reference and deferred material separate from active
 official goals.
 
+## Cycle Plan Object
+
+Cycle plan records include yearly goals, quarterly goals, monthly goals, and
+weekly priorities. Each item includes id, title, status, priority, horizon id,
+goal links, evidence ids, related paths, and next action. Yearly, quarterly, and
+monthly items may also include a success condition.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
 record ids, category coverage, repo-relative links, review cadence references,
 progress ledger references, hierarchy references, archive ledger references,
-generated view panels, and no active goal with unavailable evidence.
+cycle plan references, generated view panels, and no active goal with
+unavailable evidence.

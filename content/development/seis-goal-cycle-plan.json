@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-cycle-plan",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_cycle_plan",
+  "yearlyGoals": [
+    {
+      "id": "SEIS-YEAR-001",
+      "title": "2026 SEIS operating layer foundation",
+      "status": "active",
+      "priority": "P0 critical",
+      "horizon_id": "SEIS-HORIZON-001",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003", "SEIS-GOAL-005", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-001", "SEIS-EVID-006", "SEIS-EVID-011"],
+      "related_paths": ["docs/goals/seis-vision.md", "docs/goals/long-term-goals.md", "docs/goals/cycle-plan.md"],
+      "success_condition": "SEIS has an evidence-backed non-LLM operating layer for goals, roadmap, evidence, and next actions.",
+      "next_action": "Keep yearly scope connected to source records and avoid release/public readiness overclaims."
+    }
+  ],
+  "quarterlyGoals": [
+    {
+      "id": "SEIS-QUARTER-001",
+      "title": "Q3 repository recovery and intelligence planning",
+      "status": "planned",
+      "priority": "P1 high",
+      "horizon_id": "SEIS-HORIZON-002",
+      "supports_goal_ids": ["SEIS-GOAL-004", "SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "evidence_ids": ["SEIS-EVID-002", "SEIS-EVID-004", "SEIS-EVID-011"],
+      "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md", "docs/goals/cycle-plan.md"],
+      "success_condition": "Repository hygiene decisions are separated from Goal Tracking commits and scanner planning is ready for review.",
+      "next_action": "Resolve tracked deletion decisions in a dedicated repository hygiene PR."
+    }
+  ],
+  "monthlyGoals": [
+    {
+      "id": "SEIS-MONTH-001",
+      "title": "June 2026 Goal Tracking OS source-of-truth baseline",
+      "status": "active",
+      "priority": "P0 critical",
+      "horizon_id": "SEIS-HORIZON-003",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-006", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-007", "SEIS-EVID-008", "SEIS-EVID-009", "SEIS-EVID-010", "SEIS-EVID-011"],
+      "related_paths": ["docs/goals/progress-review.md", "docs/goals/cycle-plan.md", "content/development/seis-goal-cycle-plan.json"],
+      "success_condition": "Goal, evidence, execution, cadence, ledger, hierarchy, archive, metadata, cycle, validator, and generated view remain synchronized.",
+      "next_action": "Record a real monthly review only when current-month review evidence exists."
+    }
+  ],
+  "weeklyPriorities": [
+    {
+      "id": "SEIS-WEEK-001",
+      "title": "Keep Goal Tracking validators green",
+      "status": "active",
+      "priority": "P0 critical",
+      "horizon_id": "SEIS-HORIZON-004",
+      "supports_goal_ids": ["SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-011"],
+      "related_paths": ["scripts/check-goal-tracking.mjs", "docs/goals/cycle-plan.md"],
+      "next_action": "Run npm run check:goal-tracking after source record changes."
+    },
+    {
+      "id": "SEIS-WEEK-002",
+      "title": "Keep unrelated repository hygiene work unstaged",
+      "status": "blocked",
+      "priority": "P0 critical",
+      "horizon_id": "SEIS-HORIZON-004",
+      "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "evidence_ids": ["SEIS-EVID-004", "SEIS-EVID-010", "SEIS-EVID-011"],
+      "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "next_action": "Do not stage tracked deletions or unrelated web/release drift in Goal Tracking commits."
+    },
+    {
+      "id": "SEIS-WEEK-003",
+      "title": "Keep generated Goal Tracking Center fresh",
+      "status": "active",
+      "priority": "P1 high",
+      "horizon_id": "SEIS-HORIZON-004",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-006", "SEIS-EVID-011"],
+      "related_paths": ["scripts/create-goal-command-center-view.mjs", "apps/web/goal-tracking.html"],
+      "next_action": "Run npm run check:goal-command-center-view after source record changes."
+    }
+  ]
+}

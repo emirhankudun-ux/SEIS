@@ -9,6 +9,7 @@ const requiredDocs = [
   "docs/goals/horizon-map.md",
   "docs/goals/project-epic-task-map.md",
   "docs/goals/archive-ledger.md",
+  "docs/goals/cycle-plan.md",
   "docs/goals/progress-review.md",
   "docs/goals/review-cadence.md",
   "docs/goals/progress-ledger.md",
@@ -57,6 +58,7 @@ const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
 const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
 const hierarchyPath = "content/development/seis-goal-hierarchy.json";
 const archiveLedgerPath = "content/development/seis-goal-archive-ledger.json";
+const cyclePlanPath = "content/development/seis-goal-cycle-plan.json";
 const viewPath = "content/development/seis-goal-command-center-view.json";
 const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
@@ -67,7 +69,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, viewPath, staticPagePath]) {
+for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }
@@ -80,6 +82,7 @@ const reviewCadence = existsSync(reviewCadencePath) ? readJson(reviewCadencePath
 const progressLedger = existsSync(progressLedgerPath) ? readJson(progressLedgerPath) : null;
 const hierarchy = existsSync(hierarchyPath) ? readJson(hierarchyPath) : null;
 const archiveLedger = existsSync(archiveLedgerPath) ? readJson(archiveLedgerPath) : null;
+const cyclePlan = existsSync(cyclePlanPath) ? readJson(cyclePlanPath) : null;
 const commandCenterView = existsSync(viewPath) ? readJson(viewPath) : null;
 
 if (registry) {
@@ -466,7 +469,72 @@ if (archiveLedger && registry && evidence) {
   }
 }
 
-if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger) {
+if (cyclePlan && registry && evidence && hierarchy) {
+  assert(cyclePlan.schemaVersion === 1, "goal cycle plan schemaVersion must be 1");
+  assert(cyclePlan.mode === "non_llm_goal_cycle_plan", "goal cycle plan mode is invalid");
+  const goalIds = new Set(registry.goals.map((goal) => goal.id));
+  const evidenceIds = new Set(evidence.records.map((record) => record.id));
+  const horizonIds = new Set(hierarchy.horizons.map((horizon) => horizon.id));
+  const priorities = new Set(registry.allowedPriorities || []);
+  const allowedCycleStatuses = new Set(["planned", "active", "blocked", "deferred", "completed"]);
+
+  const groups = [
+    ["yearlyGoals", /^SEIS-YEAR-\d{3}$/, "SEIS-YEAR-000"],
+    ["quarterlyGoals", /^SEIS-QUARTER-\d{3}$/, "SEIS-QUARTER-000"],
+    ["monthlyGoals", /^SEIS-MONTH-\d{3}$/, "SEIS-MONTH-000"],
+    ["weeklyPriorities", /^SEIS-WEEK-\d{3}$/, "SEIS-WEEK-000"]
+  ];
+
+  for (const [field, idPattern, idLabel] of groups) {
+    if (!Array.isArray(cyclePlan[field]) || cyclePlan[field].length === 0) {
+      failures.push(`goal cycle plan ${field} must be a non-empty array`);
+      continue;
+    }
+    const ids = new Set();
+    for (const item of cyclePlan[field]) {
+      const label = item.id || `(missing ${field} id)`;
+      if (!idPattern.test(item.id || "")) {
+        failures.push(`${label} id must match ${idLabel}`);
+      }
+      if (ids.has(item.id)) {
+        failures.push(`duplicate cycle item id: ${item.id}`);
+      }
+      ids.add(item.id);
+      if (!allowedCycleStatuses.has(item.status)) {
+        failures.push(`${label} status is not allowed: ${item.status}`);
+      }
+      if (!priorities.has(item.priority)) {
+        failures.push(`${label} priority is not allowed: ${item.priority}`);
+      }
+      if (!horizonIds.has(item.horizon_id)) {
+        failures.push(`${label} references unknown horizon id: ${item.horizon_id}`);
+      }
+      for (const arrayField of ["supports_goal_ids", "evidence_ids", "related_paths"]) {
+        if (!Array.isArray(item[arrayField])) {
+          failures.push(`${label} ${arrayField} must be an array`);
+        }
+      }
+      for (const goalId of item.supports_goal_ids || []) {
+        if (!goalIds.has(goalId)) {
+          failures.push(`${label} references unknown goal id: ${goalId}`);
+        }
+      }
+      for (const evidenceId of item.evidence_ids || []) {
+        if (!evidenceIds.has(evidenceId)) {
+          failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+        }
+      }
+      for (const path of item.related_paths || []) {
+        validatePath(label, path);
+      }
+      if (typeof item.next_action !== "string" || item.next_action.length === 0) {
+        failures.push(`${label} next_action must be a non-empty string`);
+      }
+    }
+  }
+}
+
+if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger && cyclePlan) {
   assert(commandCenterView.schemaVersion === 1, "command center view schemaVersion must be 1");
   assert(commandCenterView.mode === "non_llm_command_center_goal_view", "command center view mode is invalid");
   if (commandCenterView.summary?.totalGoals !== registry.goals.length) {
@@ -505,12 +573,24 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
   if (commandCenterView.summary?.totalArchiveItems !== archiveLedger.archiveItems.length) {
     failures.push("command center view totalArchiveItems does not match archive ledger");
   }
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath]) {
+  if (commandCenterView.summary?.totalYearlyGoals !== cyclePlan.yearlyGoals.length) {
+    failures.push("command center view totalYearlyGoals does not match cycle plan");
+  }
+  if (commandCenterView.summary?.totalQuarterlyGoals !== cyclePlan.quarterlyGoals.length) {
+    failures.push("command center view totalQuarterlyGoals does not match cycle plan");
+  }
+  if (commandCenterView.summary?.totalMonthlyGoals !== cyclePlan.monthlyGoals.length) {
+    failures.push("command center view totalMonthlyGoals does not match cycle plan");
+  }
+  if (commandCenterView.summary?.totalWeeklyPriorities !== cyclePlan.weeklyPriorities.length) {
+    failures.push("command center view totalWeeklyPriorities does not match cycle plan");
+  }
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath]) {
     if (!commandCenterView.sourceRecords?.includes(source)) {
       failures.push(`command center view missing source: ${source}`);
     }
   }
-  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems"]) {
+  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems", "yearlyGoals", "quarterlyGoals", "monthlyGoals", "weeklyPriorities"]) {
     if (!Array.isArray(commandCenterView.panels?.[panel]) || commandCenterView.panels[panel].length === 0) {
       failures.push(`command center view missing panel: ${panel}`);
     }
@@ -519,7 +599,7 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
 
 if (existsSync(staticPagePath)) {
   const html = readFileSync(staticPagePath, "utf8");
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Cycle Plan", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001"]) {
     if (!html.includes(text)) {
       failures.push(`static Goal Tracking page missing: ${text}`);
     }
@@ -556,6 +636,10 @@ console.log(JSON.stringify({
   epics: hierarchy.epics.length,
   subtasks: hierarchy.subtasks.length,
   archiveItems: archiveLedger.archiveItems.length,
+  yearlyGoals: cyclePlan.yearlyGoals.length,
+  quarterlyGoals: cyclePlan.quarterlyGoals.length,
+  monthlyGoals: cyclePlan.monthlyGoals.length,
+  weeklyPriorities: cyclePlan.weeklyPriorities.length,
   commandCenterView: commandCenterView.id,
   staticPage: staticPagePath
 }, null, 2));
