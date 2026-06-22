@@ -31,3 +31,4 @@ claims unless the named scope is fully proved.
 | `SEIS-EVID-009` | passed | Goal metadata fields validate. |
 | `SEIS-EVID-010` | passed | Archive ledger records validate. |
 | `SEIS-EVID-011` | passed | Goal cycle plan records validate. |
+| `SEIS-EVID-012` | passed | Risk and validation step records validate. |

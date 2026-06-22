@@ -27,6 +27,8 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 - `content/development/seis-goal-hierarchy.json`
 - `content/development/seis-goal-archive-ledger.json`
 - `content/development/seis-goal-cycle-plan.json`
+- `content/development/seis-goal-risk-register.json`
+- `content/development/seis-goal-validation-steps.json`
 
 ## Required Panels
 
@@ -53,6 +55,8 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 | `quarterlyGoals` | Quarterly cycle goals. |
 | `monthlyGoals` | Monthly cycle goals. |
 | `weeklyPriorities` | Weekly priority records. |
+| `risks` | First-class risk records with severity, mitigation, and next action. |
+| `validationSteps` | Repeatable validation commands or review methods with success conditions. |
 
 ## Commands
 
@@ -79,3 +83,5 @@ npm run check:goal-tracking
 - Not proof of live GitHub issue, project-board, or PR synchronization.
 - Not promotion of archive material into active official goals.
 - Not proof that a weekly or monthly review has been performed.
+- Not proof that every risk is mitigated.
+- Not proof that every validation step has been performed.

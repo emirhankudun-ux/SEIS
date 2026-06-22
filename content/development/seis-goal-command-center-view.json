@@ -11,7 +11,9 @@
     "content/development/seis-goal-progress-ledger.json",
     "content/development/seis-goal-hierarchy.json",
     "content/development/seis-goal-archive-ledger.json",
-    "content/development/seis-goal-cycle-plan.json"
+    "content/development/seis-goal-cycle-plan.json",
+    "content/development/seis-goal-risk-register.json",
+    "content/development/seis-goal-validation-steps.json"
   ],
   "summary": {
     "finalState": "blocked_by_repository_hygiene",
@@ -22,9 +24,9 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 11,
+    "totalEvidenceRecords": 12,
     "evidenceByStatus": {
-      "passed": 10,
+      "passed": 11,
       "blocked": 1
     },
     "totalTasks": 3,
@@ -98,6 +100,18 @@
       "active": 2,
       "blocked": 1
     },
+    "totalRisks": 3,
+    "risksByStatus": {
+      "active": 3
+    },
+    "risksBySeverity": {
+      "high": 1,
+      "medium": 2
+    },
+    "totalValidationSteps": 3,
+    "validationStepsByStatus": {
+      "active": 3
+    },
     "nextSafeAction": "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
   },
   "progressCards": [
@@ -128,7 +142,7 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 11,
+      "value": 12,
       "description": "Evidence records with limitations and next actions."
     },
     {
@@ -196,6 +210,18 @@
       "label": "Cycle Plan",
       "value": 6,
       "description": "Yearly, quarterly, monthly, and weekly execution records."
+    },
+    {
+      "id": "risks",
+      "label": "Risks",
+      "value": 3,
+      "description": "Risk records with severity and mitigation."
+    },
+    {
+      "id": "validation",
+      "label": "Validation Steps",
+      "value": 3,
+      "description": "Scoped checks with success conditions."
     }
   ],
   "panels": {
@@ -981,6 +1007,27 @@
           "Does not resolve unrelated tracked deletions or web/release sync drift."
         ],
         "nextAction": "Keep cycle records synchronized with horizon records, status, and next PR queue."
+      },
+      {
+        "id": "SEIS-EVID-012",
+        "title": "Risk and validation step records validate",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "Goal Tracking OS risk records and validation-step records are represented as file-backed ledgers and validate through the local checker.",
+        "limitations": [
+          "Does not prove a full security scan, public readiness, release readiness, live GitHub state, deployment, SSH, model-provider, benchmark, or dataset state.",
+          "Does not resolve unrelated tracked deletions or broader worktree drift."
+        ],
+        "nextAction": "Keep risks and validation steps visible in the generated Goal Tracking Center and update observed results only after checks run."
       }
     ],
     "readinessConnections": [
@@ -1672,6 +1719,119 @@
           "SEIS-EVID-011"
         ],
         "nextAction": "Run npm run check:goal-command-center-view after source record changes."
+      }
+    ],
+    "risks": [
+      {
+        "id": "SEIS-RISK-001",
+        "title": "Repository hygiene drift enters Goal Tracking commits",
+        "status": "active",
+        "severity": "high",
+        "category": "repository_hygiene",
+        "ownerRole": "GitHub Governance",
+        "supportsGoalIds": [
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-004",
+          "SEIS-EVID-012"
+        ],
+        "mitigation": "Stage only scoped Goal Tracking files and keep tracked deletion decisions in a dedicated repository hygiene PR.",
+        "nextAction": "Prepare repository hygiene review before staging deletion changes."
+      },
+      {
+        "id": "SEIS-RISK-002",
+        "title": "Progress overclaim from planned review records",
+        "status": "active",
+        "severity": "medium",
+        "category": "progress_integrity",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-007",
+          "SEIS-EVID-011",
+          "SEIS-EVID-012"
+        ],
+        "mitigation": "Keep cadence and cycle records planned or active until dated review evidence proves a performed review.",
+        "nextAction": "Record performed daily, weekly, or monthly reviews only with current-period evidence."
+      },
+      {
+        "id": "SEIS-RISK-003",
+        "title": "Generated Goal Tracking Center becomes stale",
+        "status": "active",
+        "severity": "medium",
+        "category": "generated_surface",
+        "ownerRole": "Command Center",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-006",
+          "SEIS-EVID-012"
+        ],
+        "mitigation": "Run the generator and freshness check after any source-record update.",
+        "nextAction": "Keep `npm run check:goal-command-center-view` in the scoped validation set."
+      }
+    ],
+    "validationSteps": [
+      {
+        "id": "SEIS-VAL-001",
+        "title": "Validate Goal Tracking source records",
+        "status": "active",
+        "priority": "P0 critical",
+        "command": "npm run check:goal-tracking",
+        "ownerRole": "Program System",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-006"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-005",
+          "SEIS-EVID-012"
+        ],
+        "successCondition": "The command passes and reports synchronized goals, evidence, execution, cadence, hierarchy, archive, cycle, risk, validation, view model, and static page records.",
+        "nextAction": "Run before every scoped Goal Tracking commit."
+      },
+      {
+        "id": "SEIS-VAL-002",
+        "title": "Validate generated Goal Tracking Center freshness",
+        "status": "active",
+        "priority": "P0 critical",
+        "command": "npm run check:goal-command-center-view",
+        "ownerRole": "Command Center",
+        "supportsGoalIds": [
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-003"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-006",
+          "SEIS-EVID-012"
+        ],
+        "successCondition": "The generated view model and static page match the current structured source records.",
+        "nextAction": "Regenerate with `npm run automation:goal-command-center-view` when the freshness check fails."
+      },
+      {
+        "id": "SEIS-VAL-003",
+        "title": "Validate scoped secret and private-path exposure",
+        "status": "active",
+        "priority": "P1 high",
+        "command": "scoped sensitive-pattern scan over Goal Tracking files",
+        "ownerRole": "Security and Governance",
+        "supportsGoalIds": [
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-008"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-012"
+        ],
+        "successCondition": "No secret assignment, key block, private path, file URI, or editor URI appears in scoped Goal Tracking files.",
+        "nextAction": "Keep scan output value-free and report only path/category if a finding appears."
       }
     ]
   },

@@ -18,6 +18,8 @@ This review records current foundation progress on branch
 | Horizon/project hierarchy | active | `content/development/seis-goal-hierarchy.json`, `docs/goals/horizon-map.md`, `docs/goals/project-epic-task-map.md` | Keep yearly, quarterly, monthly, weekly, project, epic, and subtask links validator-backed. |
 | Archive ledger | active | `content/development/seis-goal-archive-ledger.json`, `docs/goals/archive-ledger.md` | Keep historical, deferred, and review-candidate material separate from active goals. |
 | Cycle plan | active | `content/development/seis-goal-cycle-plan.json`, `docs/goals/cycle-plan.md` | Keep yearly goals, quarterly goals, monthly goals, and weekly priorities evidence-linked. |
+| Risk register | active | `content/development/seis-goal-risk-register.json`, `docs/goals/risk-register.md` | Keep risks explicit, evidence-linked, and mitigation-focused. |
+| Validation steps | active | `content/development/seis-goal-validation-steps.json`, `docs/goals/validation-steps.md` | Keep validation commands scoped and avoid broad readiness claims. |
 | Command Center Goal view | active | `docs/product/goal-tracking-center.md`, `docs/goals/command-center-view-model.md`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html` | Keep generated view fresh with `npm run check:goal-command-center-view`. |
 | GitHub workflow | blocked | `docs/STATUS.md` | Do not stage unrelated deletions. |
 | Public readiness | blocked | `docs/STATUS.md` | Resolve repository hygiene first. |
@@ -36,6 +38,8 @@ This review records current foundation progress on branch
 - Horizon, project, epic, and subtask hierarchy records.
 - Archive ledger for historical reference, deletion-review candidates, and deferred readiness claims.
 - Cycle plan for yearly goals, quarterly goals, monthly goals, and weekly priorities.
+- Risk register for repository hygiene, overclaim, and generated-view drift risks.
+- Validation step ledger for scoped checks and success conditions.
 
 ## Not Complete
 

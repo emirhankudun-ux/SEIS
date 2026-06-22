@@ -10,6 +10,8 @@ const requiredDocs = [
   "docs/goals/project-epic-task-map.md",
   "docs/goals/archive-ledger.md",
   "docs/goals/cycle-plan.md",
+  "docs/goals/risk-register.md",
+  "docs/goals/validation-steps.md",
   "docs/goals/progress-review.md",
   "docs/goals/review-cadence.md",
   "docs/goals/progress-ledger.md",
@@ -59,6 +61,8 @@ const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
 const hierarchyPath = "content/development/seis-goal-hierarchy.json";
 const archiveLedgerPath = "content/development/seis-goal-archive-ledger.json";
 const cyclePlanPath = "content/development/seis-goal-cycle-plan.json";
+const riskRegisterPath = "content/development/seis-goal-risk-register.json";
+const validationStepsPath = "content/development/seis-goal-validation-steps.json";
 const viewPath = "content/development/seis-goal-command-center-view.json";
 const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
@@ -69,7 +73,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, viewPath, staticPagePath]) {
+for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }
@@ -83,6 +87,8 @@ const progressLedger = existsSync(progressLedgerPath) ? readJson(progressLedgerP
 const hierarchy = existsSync(hierarchyPath) ? readJson(hierarchyPath) : null;
 const archiveLedger = existsSync(archiveLedgerPath) ? readJson(archiveLedgerPath) : null;
 const cyclePlan = existsSync(cyclePlanPath) ? readJson(cyclePlanPath) : null;
+const riskRegister = existsSync(riskRegisterPath) ? readJson(riskRegisterPath) : null;
+const validationSteps = existsSync(validationStepsPath) ? readJson(validationStepsPath) : null;
 const commandCenterView = existsSync(viewPath) ? readJson(viewPath) : null;
 
 if (registry) {
@@ -534,7 +540,115 @@ if (cyclePlan && registry && evidence && hierarchy) {
   }
 }
 
-if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger && cyclePlan) {
+if (riskRegister && registry && evidence) {
+  assert(riskRegister.schemaVersion === 1, "goal risk register schemaVersion must be 1");
+  assert(riskRegister.mode === "non_llm_goal_risk_register", "goal risk register mode is invalid");
+  assert(Array.isArray(riskRegister.risks), "goal risk register risks must be an array");
+  if ((riskRegister.risks || []).length === 0) {
+    failures.push("goal risk register must include at least one risk");
+  }
+  const goalIds = new Set(registry.goals.map((goal) => goal.id));
+  const evidenceIds = new Set(evidence.records.map((record) => record.id));
+  const riskLevels = new Set(registry.allowedRiskLevels || []);
+  const allowedRiskStatuses = new Set(["active", "monitored", "mitigated", "accepted", "deferred"]);
+  const riskIds = new Set();
+
+  for (const risk of riskRegister.risks || []) {
+    const label = risk.id || "(missing risk id)";
+    if (!/^SEIS-RISK-\d{3}$/.test(risk.id || "")) {
+      failures.push(`${label} id must match SEIS-RISK-000`);
+    }
+    if (riskIds.has(risk.id)) {
+      failures.push(`duplicate risk id: ${risk.id}`);
+    }
+    riskIds.add(risk.id);
+    if (!allowedRiskStatuses.has(risk.status)) {
+      failures.push(`${label} status is not allowed: ${risk.status}`);
+    }
+    if (!riskLevels.has(risk.severity)) {
+      failures.push(`${label} severity is not allowed: ${risk.severity}`);
+    }
+    for (const field of ["title", "category", "owner_role", "mitigation", "next_action"]) {
+      if (typeof risk[field] !== "string" || risk[field].length === 0) {
+        failures.push(`${label} ${field} must be a non-empty string`);
+      }
+    }
+    for (const field of ["supports_goal_ids", "evidence_ids", "related_paths"]) {
+      if (!Array.isArray(risk[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+    for (const goalId of risk.supports_goal_ids || []) {
+      if (!goalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+    for (const evidenceId of risk.evidence_ids || []) {
+      if (!evidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+    for (const path of risk.related_paths || []) {
+      validatePath(label, path);
+    }
+  }
+}
+
+if (validationSteps && registry && evidence) {
+  assert(validationSteps.schemaVersion === 1, "goal validation steps schemaVersion must be 1");
+  assert(validationSteps.mode === "non_llm_goal_validation_steps", "goal validation steps mode is invalid");
+  assert(Array.isArray(validationSteps.steps), "goal validation steps must be an array");
+  if ((validationSteps.steps || []).length === 0) {
+    failures.push("goal validation steps must include at least one step");
+  }
+  const goalIds = new Set(registry.goals.map((goal) => goal.id));
+  const evidenceIds = new Set(evidence.records.map((record) => record.id));
+  const priorities = new Set(registry.allowedPriorities || []);
+  const allowedValidationStatuses = new Set(["planned", "active", "blocked", "passed", "failed", "skipped"]);
+  const stepIds = new Set();
+
+  for (const step of validationSteps.steps || []) {
+    const label = step.id || "(missing validation step id)";
+    if (!/^SEIS-VAL-\d{3}$/.test(step.id || "")) {
+      failures.push(`${label} id must match SEIS-VAL-000`);
+    }
+    if (stepIds.has(step.id)) {
+      failures.push(`duplicate validation step id: ${step.id}`);
+    }
+    stepIds.add(step.id);
+    if (!allowedValidationStatuses.has(step.status)) {
+      failures.push(`${label} status is not allowed: ${step.status}`);
+    }
+    if (!priorities.has(step.priority)) {
+      failures.push(`${label} priority is not allowed: ${step.priority}`);
+    }
+    for (const field of ["title", "command", "owner_role", "success_condition", "next_action"]) {
+      if (typeof step[field] !== "string" || step[field].length === 0) {
+        failures.push(`${label} ${field} must be a non-empty string`);
+      }
+    }
+    for (const field of ["supports_goal_ids", "evidence_ids", "related_paths"]) {
+      if (!Array.isArray(step[field])) {
+        failures.push(`${label} ${field} must be an array`);
+      }
+    }
+    for (const goalId of step.supports_goal_ids || []) {
+      if (!goalIds.has(goalId)) {
+        failures.push(`${label} references unknown goal id: ${goalId}`);
+      }
+    }
+    for (const evidenceId of step.evidence_ids || []) {
+      if (!evidenceIds.has(evidenceId)) {
+        failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+      }
+    }
+    for (const path of step.related_paths || []) {
+      validatePath(label, path);
+    }
+  }
+}
+
+if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger && cyclePlan && riskRegister && validationSteps) {
   assert(commandCenterView.schemaVersion === 1, "command center view schemaVersion must be 1");
   assert(commandCenterView.mode === "non_llm_command_center_goal_view", "command center view mode is invalid");
   if (commandCenterView.summary?.totalGoals !== registry.goals.length) {
@@ -585,12 +699,18 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
   if (commandCenterView.summary?.totalWeeklyPriorities !== cyclePlan.weeklyPriorities.length) {
     failures.push("command center view totalWeeklyPriorities does not match cycle plan");
   }
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath]) {
+  if (commandCenterView.summary?.totalRisks !== riskRegister.risks.length) {
+    failures.push("command center view totalRisks does not match risk register");
+  }
+  if (commandCenterView.summary?.totalValidationSteps !== validationSteps.steps.length) {
+    failures.push("command center view totalValidationSteps does not match validation steps");
+  }
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath]) {
     if (!commandCenterView.sourceRecords?.includes(source)) {
       failures.push(`command center view missing source: ${source}`);
     }
   }
-  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems", "yearlyGoals", "quarterlyGoals", "monthlyGoals", "weeklyPriorities"]) {
+  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems", "yearlyGoals", "quarterlyGoals", "monthlyGoals", "weeklyPriorities", "risks", "validationSteps"]) {
     if (!Array.isArray(commandCenterView.panels?.[panel]) || commandCenterView.panels[panel].length === 0) {
       failures.push(`command center view missing panel: ${panel}`);
     }
@@ -599,7 +719,7 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
 
 if (existsSync(staticPagePath)) {
   const html = readFileSync(staticPagePath, "utf8");
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Cycle Plan", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Cycle Plan", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001"]) {
     if (!html.includes(text)) {
       failures.push(`static Goal Tracking page missing: ${text}`);
     }
@@ -640,6 +760,8 @@ console.log(JSON.stringify({
   quarterlyGoals: cyclePlan.quarterlyGoals.length,
   monthlyGoals: cyclePlan.monthlyGoals.length,
   weeklyPriorities: cyclePlan.weeklyPriorities.length,
+  risks: riskRegister.risks.length,
+  validationSteps: validationSteps.steps.length,
   commandCenterView: commandCenterView.id,
   staticPage: staticPagePath
 }, null, 2));

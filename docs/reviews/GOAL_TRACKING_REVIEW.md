@@ -24,6 +24,7 @@ Date: 2026-06-22
 - Required goal metadata fields for creation date, milestone, epic, last review, cadence, and notes.
 - Archive ledger records for historical reference, repository hygiene review candidates, and deferred readiness claims.
 - Cycle plan records for yearly goals, quarterly goals, monthly goals, and weekly priorities.
+- Risk register and validation step records for first-class risk/quality gates.
 
 ## Findings
 
@@ -38,6 +39,7 @@ Date: 2026-06-22
 | Goal metadata includes placeholders until real review evidence exists. | low | active | Replace placeholders only with dated review records. |
 | Archive material remains separated from active official goals. | medium | active | Promote archive material only through reviewed source-of-truth updates. |
 | Cycle plan is file-backed, not a completed review ceremony. | low | active | Mark weekly or monthly reviews performed only with dated review evidence. |
+| Risk and validation records are scoped, not broad readiness proof. | medium | active | Record only the specific command or review evidence that was actually performed. |
 
 ## Decision
 

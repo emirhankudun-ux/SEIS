@@ -72,10 +72,24 @@ weekly priorities. Each item includes id, title, status, priority, horizon id,
 goal links, evidence ids, related paths, and next action. Yearly, quarterly, and
 monthly items may also include a success condition.
 
+## Risk Register Object
+
+Risk register records include id, title, status, severity, category, owner role,
+goal links, evidence ids, related paths, mitigation, and next action. Risk
+records must use the allowed risk levels and must not be treated as completed
+mitigation without evidence.
+
+## Validation Step Object
+
+Validation step records include id, title, status, priority, command or manual
+review method, owner role, goal links, evidence ids, related paths, success
+condition, and next action. A validation step proves only the scope named by its
+success condition.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
 record ids, category coverage, repo-relative links, review cadence references,
 progress ledger references, hierarchy references, archive ledger references,
-cycle plan references, generated view panels, and no active goal with
-unavailable evidence.
+cycle plan references, risk register references, validation step references,
+generated view panels, and no active goal with unavailable evidence.

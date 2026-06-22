@@ -86,6 +86,18 @@ Date: 2026-06-22
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
+## PR 1F: Goal Risk And Validation Ledgers
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/product-experience-suite` |
+| Priority | P1 |
+| Goal | Add first-class risk and validation-step ledgers to the non-LLM Goal Tracking OS. |
+| Include | `content/development/seis-goal-risk-register.json`, `content/development/seis-goal-validation-steps.json`, `docs/goals/risk-register.md`, `docs/goals/validation-steps.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
+| Exclude | Fake risk mitigation, fake performed validation, live GitHub issue/project sync, unrelated tracked deletions, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON/generated-static work. |
+
 ## PR 2: Repository Hygiene Recovery
 
 | Field | Value |

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-risk-register",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_risk_register",
+  "risks": [
+    {
+      "id": "SEIS-RISK-001",
+      "title": "Repository hygiene drift enters Goal Tracking commits",
+      "status": "active",
+      "severity": "high",
+      "category": "repository_hygiene",
+      "owner_role": "GitHub Governance",
+      "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "evidence_ids": ["SEIS-EVID-004", "SEIS-EVID-012"],
+      "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "mitigation": "Stage only scoped Goal Tracking files and keep tracked deletion decisions in a dedicated repository hygiene PR.",
+      "next_action": "Prepare repository hygiene review before staging deletion changes."
+    },
+    {
+      "id": "SEIS-RISK-002",
+      "title": "Progress overclaim from planned review records",
+      "status": "active",
+      "severity": "medium",
+      "category": "progress_integrity",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-007", "SEIS-EVID-011", "SEIS-EVID-012"],
+      "related_paths": ["docs/goals/review-cadence.md", "docs/goals/cycle-plan.md"],
+      "mitigation": "Keep cadence and cycle records planned or active until dated review evidence proves a performed review.",
+      "next_action": "Record performed daily, weekly, or monthly reviews only with current-period evidence."
+    },
+    {
+      "id": "SEIS-RISK-003",
+      "title": "Generated Goal Tracking Center becomes stale",
+      "status": "active",
+      "severity": "medium",
+      "category": "generated_surface",
+      "owner_role": "Command Center",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-006", "SEIS-EVID-012"],
+      "related_paths": ["scripts/create-goal-command-center-view.mjs", "apps/web/goal-tracking.html"],
+      "mitigation": "Run the generator and freshness check after any source-record update.",
+      "next_action": "Keep `npm run check:goal-command-center-view` in the scoped validation set."
+    }
+  ]
+}

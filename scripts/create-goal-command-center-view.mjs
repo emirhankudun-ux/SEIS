@@ -13,6 +13,8 @@ const paths = {
   hierarchy: "content/development/seis-goal-hierarchy.json",
   archiveLedger: "content/development/seis-goal-archive-ledger.json",
   cyclePlan: "content/development/seis-goal-cycle-plan.json",
+  riskRegister: "content/development/seis-goal-risk-register.json",
+  validationSteps: "content/development/seis-goal-validation-steps.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -25,7 +27,9 @@ const progressLedger = readJson(paths.progressLedger);
 const hierarchy = readJson(paths.hierarchy);
 const archiveLedger = readJson(paths.archiveLedger);
 const cyclePlan = readJson(paths.cyclePlan);
-const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan);
+const riskRegister = readJson(paths.riskRegister);
+const validationSteps = readJson(paths.validationSteps);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan, riskRegister, validationSteps);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -51,7 +55,7 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords, riskRegisterRecords, validationStepRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
@@ -70,6 +74,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
   const quarterlyGoals = cyclePlanRecords.quarterlyGoals || [];
   const monthlyGoals = cyclePlanRecords.monthlyGoals || [];
   const weeklyPriorities = cyclePlanRecords.weeklyPriorities || [];
+  const risks = riskRegisterRecords.risks || [];
+  const validationSteps = validationStepRecords.steps || [];
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -78,7 +84,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan, paths.riskRegister, paths.validationSteps],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -116,6 +122,11 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       monthlyGoalsByStatus: countBy(monthlyGoals, "status"),
       totalWeeklyPriorities: weeklyPriorities.length,
       weeklyPrioritiesByStatus: countBy(weeklyPriorities, "status"),
+      totalRisks: risks.length,
+      risksByStatus: countBy(risks, "status"),
+      risksBySeverity: countBy(risks, "severity"),
+      totalValidationSteps: validationSteps.length,
+      validationStepsByStatus: countBy(validationSteps, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -136,7 +147,9 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       card("epics", "Epics", epics.length, "Project-level execution groupings."),
       card("subtasks", "Subtasks", subtasks.length, "Task-backed execution detail records."),
       card("archive", "Archive", archiveItems.length, "Historical, deferred, and review-candidate records."),
-      card("cycle", "Cycle Plan", yearlyGoals.length + quarterlyGoals.length + monthlyGoals.length + weeklyPriorities.length, "Yearly, quarterly, monthly, and weekly execution records.")
+      card("cycle", "Cycle Plan", yearlyGoals.length + quarterlyGoals.length + monthlyGoals.length + weeklyPriorities.length, "Yearly, quarterly, monthly, and weekly execution records."),
+      card("risks", "Risks", risks.length, "Risk records with severity and mitigation."),
+      card("validation", "Validation Steps", validationSteps.length, "Scoped checks with success conditions.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -305,7 +318,31 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       yearlyGoals: yearlyGoals.map(mapCycleItem),
       quarterlyGoals: quarterlyGoals.map(mapCycleItem),
       monthlyGoals: monthlyGoals.map(mapCycleItem),
-      weeklyPriorities: weeklyPriorities.map(mapCycleItem)
+      weeklyPriorities: weeklyPriorities.map(mapCycleItem),
+      risks: risks.map((risk) => ({
+        id: risk.id,
+        title: risk.title,
+        status: risk.status,
+        severity: risk.severity,
+        category: risk.category,
+        ownerRole: risk.owner_role,
+        supportsGoalIds: risk.supports_goal_ids,
+        evidenceIds: risk.evidence_ids,
+        mitigation: risk.mitigation,
+        nextAction: risk.next_action
+      })),
+      validationSteps: validationSteps.map((step) => ({
+        id: step.id,
+        title: step.title,
+        status: step.status,
+        priority: step.priority,
+        command: step.command,
+        ownerRole: step.owner_role,
+        supportsGoalIds: step.supports_goal_ids,
+        evidenceIds: step.evidence_ids,
+        successCondition: step.success_condition,
+        nextAction: step.next_action
+      }))
     },
     uxGuards: [
       "No fake progress bars or percentages.",
@@ -494,6 +531,17 @@ function buildHtml(model) {
 
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
+        <h2>Risk Register</h2>
+        <div class="stack">${panels.risks.map(renderRisk).join("")}</div>
+      </div>
+      <div class="panel">
+        <h2>Validation Steps</h2>
+        <div class="stack">${panels.validationSteps.map(renderValidationStep).join("")}</div>
+      </div>
+    </section>
+
+    <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="panel">
         <h2>Evidence Links</h2>
         <div class="stack">${panels.evidence.map(renderEvidence).join("")}</div>
       </div>
@@ -587,9 +635,17 @@ function renderCycleItem(item) {
   return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)} · ${escapeHtml(item.horizonId)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
 }
 
+function renderRisk(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.severity)} · ${escapeHtml(item.category)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.mitigation)}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
+function renderValidationStep(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p><strong>${escapeHtml(item.command)}</strong></p><p class="muted">${escapeHtml(item.successCondition)}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }

@@ -21,6 +21,8 @@ completed work, deferred work, and next safe actions.
 | Evidence | Record supporting a status or claim. |
 | Blocker | Condition preventing safe progress. |
 | Risk | Condition that can cause failure or harm. |
+| Risk register item | Structured risk with severity, mitigation, evidence, and next action. |
+| Validation step | Repeatable command or review method with a success condition. |
 | Completed item | Scoped work finished with evidence. |
 | Deferred item | Work intentionally delayed. |
 | Archived item | Historical material not active by default. |
@@ -61,6 +63,8 @@ Rules:
 - `content/development/seis-goal-hierarchy.json`
 - `content/development/seis-goal-archive-ledger.json`
 - `content/development/seis-goal-cycle-plan.json`
+- `content/development/seis-goal-risk-register.json`
+- `content/development/seis-goal-validation-steps.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
@@ -69,6 +73,8 @@ Rules:
 - `docs/goals/project-epic-task-map.md`
 - `docs/goals/archive-ledger.md`
 - `docs/goals/cycle-plan.md`
+- `docs/goals/risk-register.md`
+- `docs/goals/validation-steps.md`
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 
