@@ -8,13 +8,14 @@ Date: 2026-06-22
 | `SEIS-BL-002` | P0 | Repository hygiene | Resolve pre-existing tracked deletions outside this slice. | `git status --short` no longer shows unexplained deletions. |
 | `SEIS-BL-003` | P1 | Command Center | Maintain generated/static Goal Tracking view model. | `npm run check:goal-command-center-view` passes and the static page reads JSON records without LLM. |
 | `SEIS-BL-004` | P1 | Goal Tracking OS | Keep review cadence and progress ledger records synchronized with evidence. | `SEIS-EVID-007` exists and `npm run check:goal-tracking` validates review and ledger panels. |
-| `SEIS-BL-005` | P1 | Repository intelligence | Define read-only scanner outputs for missing docs, risky files, validation gaps, and readiness blockers. | Scanner plan and fixture output exist. |
-| `SEIS-BL-006` | P1 | Security | Add deeper security baseline without printing secrets. | Path-only scan and validation notes are documented. |
-| `SEIS-BL-007` | P1 | GitHub governance | Inspect open/closed PRs after approval. | PR rescue review records current state. |
-| `SEIS-BL-008` | P1 | Public readiness | Run public-readiness dry run after worktree recovery. | Public readiness decision is evidence-backed. |
-| `SEIS-BL-009` | P1 | Release readiness | Run release-readiness dry run without deployment. | Release blockers and rollback plan are documented. |
-| `SEIS-BL-010` | P2 | AI Core | Define model router, prompt engine, agent runtime, and evaluation boundaries. | Docs avoid model ownership overclaims. |
-| `SEIS-BL-011` | P2 | SSH / cloud | Document SSH workspace policy before remote commands. | SSH docs require approval and no private key exposure. |
+| `SEIS-BL-005` | P1 | Goal Tracking OS | Keep horizon, project, epic, and subtask hierarchy records synchronized with evidence. | `SEIS-EVID-008` exists and `npm run check:goal-tracking` validates hierarchy panels. |
+| `SEIS-BL-006` | P1 | Repository intelligence | Define read-only scanner outputs for missing docs, risky files, validation gaps, and readiness blockers. | Scanner plan and fixture output exist. |
+| `SEIS-BL-007` | P1 | Security | Add deeper security baseline without printing secrets. | Path-only scan and validation notes are documented. |
+| `SEIS-BL-008` | P1 | GitHub governance | Inspect open/closed PRs after approval. | PR rescue review records current state. |
+| `SEIS-BL-009` | P1 | Public readiness | Run public-readiness dry run after worktree recovery. | Public readiness decision is evidence-backed. |
+| `SEIS-BL-010` | P1 | Release readiness | Run release-readiness dry run without deployment. | Release blockers and rollback plan are documented. |
+| `SEIS-BL-011` | P2 | AI Core | Define model router, prompt engine, agent runtime, and evaluation boundaries. | Docs avoid model ownership overclaims. |
+| `SEIS-BL-012` | P2 | SSH / cloud | Document SSH workspace policy before remote commands. | SSH docs require approval and no private key exposure. |
 | `SEIS-BL-012` | P0 | Security | Add root `SECURITY.md` and a repeatable redacted provider/credential audit. | Security policy exists and audit output never prints secret values. |
 | `SEIS-BL-013` | P1 | `@seis-cloud` | Keep cloud work dry-run until deployment approval. | Existing cloud checks pass without live deployment. |
 | `SEIS-BL-014` | P1 | `@seis-code` | Define SEIS Code MVP contract before implementation. | Contract covers Monaco, virtual FS, terminal, persistence, and no-key AI fallback. |

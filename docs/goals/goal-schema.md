@@ -16,12 +16,18 @@ The first Goal Tracking OS schema is intentionally lightweight and file-backed.
 | `target_phase` | yes | Foundation, readiness, research, or later phase. |
 | `related_docs` | yes | Repo-relative docs. |
 | `related_files` | yes | Repo-relative files or directories. |
+| `created_at` | planned | Placeholder for future dated goal creation tracking. |
+| `related_milestone` | planned | Placeholder for a milestone id such as `SEIS-MS-001`. |
+| `related_epic` | planned | Placeholder for an epic id such as `SEIS-EPIC-001`. |
 | `dependencies` | yes | Named dependencies. |
 | `blockers` | yes | Named blockers or `none`. |
 | `risks` | yes | Named risks. |
 | `evidence_links` | yes | Repo-relative evidence or `evidence unavailable`. |
 | `validation_method` | yes | How the claim will be validated. |
 | `next_action` | yes | Next safe action. |
+| `last_reviewed` | planned | Placeholder for future dated review evidence. |
+| `review_cadence` | planned | Placeholder for daily, weekly, monthly, or custom cadence. |
+| `notes` | planned | Placeholder for future non-secret notes. |
 
 ## Evidence Object
 
@@ -45,9 +51,16 @@ Progress ledger records include completed items, deferred items, and follow-up
 actions. Completed items require evidence ids. Deferred items require a reason
 and next safe action.
 
+## Hierarchy Object
+
+Hierarchy records include planning horizons, active projects, epics, and
+subtasks. Horizons cover yearly, quarterly, monthly, and weekly planning levels.
+Projects group milestones. Epics belong to projects. Subtasks connect known
+execution tasks to epics.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
 record ids, category coverage, repo-relative links, review cadence references,
-progress ledger references, generated view panels, and no active goal with
-unavailable evidence.
+progress ledger references, hierarchy references, generated view panels, and no
+active goal with unavailable evidence.

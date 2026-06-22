@@ -20,6 +20,7 @@ Date: 2026-06-22
 - Generated static Goal Tracking Center view model and HTML page.
 - Planned daily, weekly, and monthly review cadence records.
 - Completed, deferred, and follow-up progress ledger records.
+- Yearly, quarterly, monthly, weekly, project, epic, and subtask hierarchy records.
 
 ## Findings
 
@@ -30,6 +31,7 @@ Date: 2026-06-22
 | Public/release readiness is not proved. | high | blocked | Run dry-runs only after repository hygiene recovery. |
 | Live GitHub PR state was not inspected. | medium | unverified | Use GitHub API/CLI only when approved. |
 | Recurring daily, weekly, and monthly reviews are planned, not performed. | medium | planned | Record performed reviews only when current-period evidence exists. |
+| Hierarchy records are file-backed, not live issue/project sync. | medium | planned | Add repository intelligence or GitHub sync only in a separate approved pass. |
 
 ## Decision
 

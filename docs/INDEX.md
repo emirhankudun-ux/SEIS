@@ -29,6 +29,7 @@ Date: 2026-06-22
 | [product/command-center-foundation.md](product/command-center-foundation.md) | Command Center module contract and evidence rules. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
+| [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
 
 ## Goal Tracking OS
 
@@ -39,6 +40,8 @@ Date: 2026-06-22
 | [goals/goal-tracking-system.md](goals/goal-tracking-system.md) | Goal Tracking OS rules and storage model. |
 | [goals/goal-schema.md](goals/goal-schema.md) | Lightweight schema. |
 | [goals/milestone-map.md](goals/milestone-map.md) | Milestone map. |
+| [goals/horizon-map.md](goals/horizon-map.md) | Yearly, quarterly, monthly, and weekly planning horizons. |
+| [goals/project-epic-task-map.md](goals/project-epic-task-map.md) | Project, epic, task, and subtask hierarchy map. |
 | [goals/progress-review.md](goals/progress-review.md) | Current progress review. |
 | [goals/review-cadence.md](goals/review-cadence.md) | Planned daily, weekly, and monthly review cadence contract. |
 | [goals/progress-ledger.md](goals/progress-ledger.md) | Completed, deferred, and follow-up progress ledger. |
@@ -62,5 +65,6 @@ Date: 2026-06-22
 | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Tasks, blockers, and decisions. |
 | [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Planned review cadence records. |
 | [../content/development/seis-goal-progress-ledger.json](../content/development/seis-goal-progress-ledger.json) | Completed, deferred, and follow-up ledger records. |
+| [../content/development/seis-goal-hierarchy.json](../content/development/seis-goal-hierarchy.json) | Planning horizon, project, epic, and subtask records. |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Generated Command Center view data. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

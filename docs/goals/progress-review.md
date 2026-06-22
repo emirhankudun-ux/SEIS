@@ -15,6 +15,7 @@ This review records current foundation progress on branch
 | Execution | active | `content/development/seis-goal-execution.json` | Keep blockers and decisions current. |
 | Review cadence | planned | `content/development/seis-goal-review-cadence.json`, `docs/goals/review-cadence.md` | Record performed reviews only when real current-period evidence exists. |
 | Progress ledger | active | `content/development/seis-goal-progress-ledger.json`, `docs/goals/progress-ledger.md` | Keep completed, deferred, and follow-up records synced with evidence. |
+| Horizon/project hierarchy | active | `content/development/seis-goal-hierarchy.json`, `docs/goals/horizon-map.md`, `docs/goals/project-epic-task-map.md` | Keep yearly, quarterly, monthly, weekly, project, epic, and subtask links validator-backed. |
 | Command Center Goal view | active | `docs/product/goal-tracking-center.md`, `docs/goals/command-center-view-model.md`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html` | Keep generated view fresh with `npm run check:goal-command-center-view`. |
 | GitHub workflow | blocked | `docs/STATUS.md` | Do not stage unrelated deletions. |
 | Public readiness | blocked | `docs/STATUS.md` | Resolve repository hygiene first. |
@@ -30,6 +31,7 @@ This review records current foundation progress on branch
 - Generated static Command Center Goal Tracking view model and HTML page.
 - Planned daily, weekly, and monthly review cadence records.
 - Progress ledger for completed, deferred, and follow-up work.
+- Horizon, project, epic, and subtask hierarchy records.
 
 ## Not Complete
 

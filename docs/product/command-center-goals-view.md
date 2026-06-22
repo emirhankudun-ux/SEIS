@@ -10,6 +10,7 @@ records.
 - `content/development/seis-goal-execution.json`
 - `content/development/seis-goal-review-cadence.json`
 - `content/development/seis-goal-progress-ledger.json`
+- `content/development/seis-goal-hierarchy.json`
 - `content/development/seis-goal-command-center-view.json`
 - `apps/web/goal-tracking.html`
 - `docs/roadmap/MASTER_BACKLOG.md`
@@ -28,6 +29,8 @@ records.
 | Completed work panel | Shows scoped completed records with evidence and limitations. |
 | Deferred work panel | Shows deferred records with approval notes. |
 | Follow-up action panel | Shows continuing actions tied to goals, tasks, and evidence. |
+| Planning horizon panel | Shows yearly, quarterly, monthly, and weekly planning records. |
+| Project hierarchy panel | Shows active projects, epics, and subtasks with blockers visible. |
 | Readiness panel | Public and release readiness stay blocked until validated. |
 
 ## Generated Surface

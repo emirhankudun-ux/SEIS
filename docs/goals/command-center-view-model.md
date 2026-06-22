@@ -24,8 +24,7 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 - `content/development/seis-goal-execution.json`
 - `content/development/seis-goal-review-cadence.json`
 - `content/development/seis-goal-progress-ledger.json`
-- `content/development/seis-goal-review-cadence.json`
-- `content/development/seis-goal-progress-ledger.json`
+- `content/development/seis-goal-hierarchy.json`
 
 ## Required Panels
 
@@ -39,14 +38,14 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 | `evidence` | Evidence records with limitations. |
 | `readinessConnections` | Public/release/AI Core/Command Center/research states. |
 | `decisions` | Current operating decisions and consequences. |
-| `reviewCadence` | Planned daily, weekly, and monthly review controls. |
-| `completedItems` | Scoped completed work with evidence and limitations. |
-| `deferredItems` | Deferred work with approval and dependency notes. |
-| `followUpActions` | Follow-up actions tied to goals, tasks, and evidence. |
 | `reviewCadence` | Planned daily, weekly, and monthly review records. |
 | `completedItems` | Scoped completed work with evidence and limitations. |
 | `deferredItems` | Deferred work with reasons, approval notes, and next actions. |
 | `followUpActions` | Continuing safe actions tied to goals, tasks, and evidence. |
+| `planningHorizons` | Yearly, quarterly, monthly, and weekly planning records. |
+| `activeProjects` | Active, blocked, and planned project records. |
+| `epics` | Project-level execution groupings. |
+| `subtasks` | Task-backed execution detail records. |
 
 ## Commands
 
@@ -70,3 +69,4 @@ npm run check:goal-tracking
 - Not a public-readiness or release-readiness claim.
 - Not an LLM-generated status surface.
 - Not proof that planned review cadences were already performed.
+- Not proof of live GitHub issue, project-board, or PR synchronization.

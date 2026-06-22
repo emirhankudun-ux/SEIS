@@ -6,6 +6,8 @@ const requiredDocs = [
   "docs/goals/goal-tracking-system.md",
   "docs/goals/goal-schema.md",
   "docs/goals/milestone-map.md",
+  "docs/goals/horizon-map.md",
+  "docs/goals/project-epic-task-map.md",
   "docs/goals/progress-review.md",
   "docs/goals/review-cadence.md",
   "docs/goals/progress-ledger.md",
@@ -52,6 +54,7 @@ const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
 const reviewCadencePath = "content/development/seis-goal-review-cadence.json";
 const progressLedgerPath = "content/development/seis-goal-progress-ledger.json";
+const hierarchyPath = "content/development/seis-goal-hierarchy.json";
 const viewPath = "content/development/seis-goal-command-center-view.json";
 const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
@@ -62,7 +65,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, viewPath, staticPagePath]) {
+for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }
@@ -73,6 +76,7 @@ const evidence = existsSync(evidencePath) ? readJson(evidencePath) : null;
 const execution = existsSync(executionPath) ? readJson(executionPath) : null;
 const reviewCadence = existsSync(reviewCadencePath) ? readJson(reviewCadencePath) : null;
 const progressLedger = existsSync(progressLedgerPath) ? readJson(progressLedgerPath) : null;
+const hierarchy = existsSync(hierarchyPath) ? readJson(hierarchyPath) : null;
 const commandCenterView = existsSync(viewPath) ? readJson(viewPath) : null;
 
 if (registry) {
@@ -300,7 +304,93 @@ if (progressLedger && registry && evidence && execution) {
   });
 }
 
-if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger) {
+if (hierarchy && registry && evidence && execution) {
+  assert(hierarchy.schemaVersion === 1, "goal hierarchy schemaVersion must be 1");
+  assert(hierarchy.mode === "non_llm_goal_hierarchy_foundation", "goal hierarchy mode is invalid");
+  const goalIds = new Set(registry.goals.map((goal) => goal.id));
+  const evidenceIds = new Set(evidence.records.map((record) => record.id));
+  const taskIds = new Set(execution.tasks.map((task) => task.id));
+  const allowedHierarchyStatuses = new Set(["planned", "active", "blocked", "deferred", "completed"]);
+  const allowedHorizonLevels = new Set(["yearly", "quarterly", "monthly", "weekly"]);
+
+  for (const field of ["horizons", "activeProjects", "epics", "subtasks"]) {
+    if (!Array.isArray(hierarchy[field])) {
+      failures.push(`goal hierarchy ${field} must be an array`);
+    }
+  }
+
+  const projectIds = new Set();
+  const epicIds = new Set();
+
+  for (const horizon of hierarchy.horizons || []) {
+    const label = horizon.id || "(missing horizon id)";
+    if (!/^SEIS-HORIZON-\d{3}$/.test(horizon.id || "")) {
+      failures.push(`${label} id must match SEIS-HORIZON-000`);
+    }
+    if (!allowedHorizonLevels.has(horizon.level)) {
+      failures.push(`${label} level is not allowed: ${horizon.level}`);
+    }
+    validateHierarchyCommon(horizon, label, { allowedHierarchyStatuses, goalIds, evidenceIds });
+  }
+
+  const levels = new Set((hierarchy.horizons || []).map((horizon) => horizon.level));
+  for (const requiredLevel of allowedHorizonLevels) {
+    if (!levels.has(requiredLevel)) {
+      failures.push(`goal hierarchy missing ${requiredLevel} horizon`);
+    }
+  }
+
+  for (const project of hierarchy.activeProjects || []) {
+    const label = project.id || "(missing project id)";
+    if (!/^SEIS-PROJECT-\d{3}$/.test(project.id || "")) {
+      failures.push(`${label} id must match SEIS-PROJECT-000`);
+    }
+    if (projectIds.has(project.id)) {
+      failures.push(`duplicate project id: ${project.id}`);
+    }
+    projectIds.add(project.id);
+    validateHierarchyCommon(project, label, { allowedHierarchyStatuses, goalIds, evidenceIds });
+    if (!Array.isArray(project.milestone_ids) || project.milestone_ids.length === 0) {
+      failures.push(`${label} milestone_ids must be a non-empty array`);
+    }
+    for (const milestoneId of project.milestone_ids || []) {
+      if (!/^SEIS-MS-\d{3}$/.test(milestoneId)) {
+        failures.push(`${label} references invalid milestone id: ${milestoneId}`);
+      }
+    }
+  }
+
+  for (const epic of hierarchy.epics || []) {
+    const label = epic.id || "(missing epic id)";
+    if (!/^SEIS-EPIC-\d{3}$/.test(epic.id || "")) {
+      failures.push(`${label} id must match SEIS-EPIC-000`);
+    }
+    if (epicIds.has(epic.id)) {
+      failures.push(`duplicate epic id: ${epic.id}`);
+    }
+    epicIds.add(epic.id);
+    if (!projectIds.has(epic.project_id)) {
+      failures.push(`${label} references unknown project id: ${epic.project_id}`);
+    }
+    validateHierarchyCommon(epic, label, { allowedHierarchyStatuses, goalIds, evidenceIds });
+  }
+
+  for (const subtask of hierarchy.subtasks || []) {
+    const label = subtask.id || "(missing subtask id)";
+    if (!/^SEIS-SUBTASK-\d{3}$/.test(subtask.id || "")) {
+      failures.push(`${label} id must match SEIS-SUBTASK-000`);
+    }
+    if (!taskIds.has(subtask.task_id)) {
+      failures.push(`${label} references unknown task id: ${subtask.task_id}`);
+    }
+    if (!epicIds.has(subtask.epic_id)) {
+      failures.push(`${label} references unknown epic id: ${subtask.epic_id}`);
+    }
+    validateHierarchyCommon(subtask, label, { allowedHierarchyStatuses, goalIds, evidenceIds });
+  }
+}
+
+if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy) {
   assert(commandCenterView.schemaVersion === 1, "command center view schemaVersion must be 1");
   assert(commandCenterView.mode === "non_llm_command_center_goal_view", "command center view mode is invalid");
   if (commandCenterView.summary?.totalGoals !== registry.goals.length) {
@@ -324,12 +414,24 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
   if (commandCenterView.summary?.totalFollowUpActions !== progressLedger.followUpActions.length) {
     failures.push("command center view totalFollowUpActions does not match progress ledger");
   }
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath]) {
+  if (commandCenterView.summary?.totalHorizons !== hierarchy.horizons.length) {
+    failures.push("command center view totalHorizons does not match hierarchy");
+  }
+  if (commandCenterView.summary?.totalActiveProjects !== hierarchy.activeProjects.length) {
+    failures.push("command center view totalActiveProjects does not match hierarchy");
+  }
+  if (commandCenterView.summary?.totalEpics !== hierarchy.epics.length) {
+    failures.push("command center view totalEpics does not match hierarchy");
+  }
+  if (commandCenterView.summary?.totalSubtasks !== hierarchy.subtasks.length) {
+    failures.push("command center view totalSubtasks does not match hierarchy");
+  }
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath]) {
     if (!commandCenterView.sourceRecords?.includes(source)) {
       failures.push(`command center view missing source: ${source}`);
     }
   }
-  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions"]) {
+  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks"]) {
     if (!Array.isArray(commandCenterView.panels?.[panel]) || commandCenterView.panels[panel].length === 0) {
       failures.push(`command center view missing panel: ${panel}`);
     }
@@ -338,7 +440,7 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
 
 if (existsSync(staticPagePath)) {
   const html = readFileSync(staticPagePath, "utf8");
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001"]) {
     if (!html.includes(text)) {
       failures.push(`static Goal Tracking page missing: ${text}`);
     }
@@ -370,6 +472,10 @@ console.log(JSON.stringify({
   completedItems: progressLedger.completedItems.length,
   deferredItems: progressLedger.deferredItems.length,
   followUpActions: progressLedger.followUpActions.length,
+  horizons: hierarchy.horizons.length,
+  activeProjects: hierarchy.activeProjects.length,
+  epics: hierarchy.epics.length,
+  subtasks: hierarchy.subtasks.length,
   commandCenterView: commandCenterView.id,
   staticPage: staticPagePath
 }, null, 2));
@@ -444,6 +550,31 @@ function validateLedgerItems(items, options) {
     for (const path of item.related_paths || []) {
       validatePath(label, path);
     }
+  }
+}
+
+function validateHierarchyCommon(item, label, options) {
+  if (!options.allowedHierarchyStatuses.has(item.status)) {
+    failures.push(`${label} status is not allowed: ${item.status}`);
+  }
+  if (!Array.isArray(item.supports_goal_ids) || item.supports_goal_ids.length === 0) {
+    failures.push(`${label} supports_goal_ids must be a non-empty array`);
+  }
+  for (const goalId of item.supports_goal_ids || []) {
+    if (!options.goalIds.has(goalId)) {
+      failures.push(`${label} references unknown goal id: ${goalId}`);
+    }
+  }
+  if (!Array.isArray(item.evidence_ids) || item.evidence_ids.length === 0) {
+    failures.push(`${label} evidence_ids must be a non-empty array`);
+  }
+  for (const evidenceId of item.evidence_ids || []) {
+    if (!options.evidenceIds.has(evidenceId)) {
+      failures.push(`${label} references unknown evidence id: ${evidenceId}`);
+    }
+  }
+  for (const path of item.related_paths || []) {
+    validatePath(label, path);
   }
 }
 

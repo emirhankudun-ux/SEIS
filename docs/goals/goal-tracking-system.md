@@ -12,8 +12,11 @@ completed work, deferred work, and next safe actions.
 | Strategy | Sustained approach for reaching the vision. |
 | Roadmap | Ordered phases and milestones. |
 | Milestone | A measurable step toward a phase. |
+| Planning horizon | Yearly, quarterly, monthly, or weekly planning layer. |
+| Project | Active, blocked, or planned body of work tied to goals and milestones. |
 | Epic | Coherent body of work under a milestone. |
 | Task | Concrete unit of work. |
+| Subtask | Execution detail tied to a task and epic. |
 | Validation | Check or review that proves a claim. |
 | Evidence | Record supporting a status or claim. |
 | Blocker | Condition preventing safe progress. |
@@ -53,10 +56,13 @@ Rules:
 - `content/development/seis-goal-execution.json`
 - `content/development/seis-goal-review-cadence.json`
 - `content/development/seis-goal-progress-ledger.json`
+- `content/development/seis-goal-hierarchy.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
 - `docs/goals/progress-ledger.md`
+- `docs/goals/horizon-map.md`
+- `docs/goals/project-epic-task-map.md`
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 

@@ -21,6 +21,8 @@ It must work without an LLM or external API.
 | Completed work | Show scoped completed items with evidence and limitations. | `content/development/seis-goal-command-center-view.json` |
 | Deferred work | Show deferred work with reason, approval need, and next action. | `content/development/seis-goal-command-center-view.json` |
 | Follow-up actions | Show safe continuation items after the current slice. | `content/development/seis-goal-command-center-view.json` |
+| Planning horizons | Show yearly, quarterly, monthly, and weekly planning layers. | `content/development/seis-goal-command-center-view.json` |
+| Projects, epics, subtasks | Show active projects, epics, and task-backed subtasks. | `content/development/seis-goal-command-center-view.json` |
 | Roadmap connection | Show backlog and next PR queue. | `docs/roadmap/*` |
 | Readiness connection | Keep public/release status blocked until evidence exists. | `docs/STATUS.md` |
 
@@ -31,4 +33,5 @@ It must work without an LLM or external API.
 - Blockers stay visible.
 - Planned states remain labeled planned.
 - Planned reviews are not performed reviews.
+- Hierarchy records are not live GitHub issue or project-board sync.
 - Unknown and unverified states are not hidden.

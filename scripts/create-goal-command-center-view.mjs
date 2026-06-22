@@ -10,6 +10,7 @@ const paths = {
   execution: "content/development/seis-goal-execution.json",
   reviewCadence: "content/development/seis-goal-review-cadence.json",
   progressLedger: "content/development/seis-goal-progress-ledger.json",
+  hierarchy: "content/development/seis-goal-hierarchy.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -19,7 +20,8 @@ const evidence = readJson(paths.evidence);
 const execution = readJson(paths.execution);
 const reviewCadence = readJson(paths.reviewCadence);
 const progressLedger = readJson(paths.progressLedger);
-const view = buildView(goals, evidence, execution, reviewCadence, progressLedger);
+const hierarchy = readJson(paths.hierarchy);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -45,7 +47,7 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
@@ -55,6 +57,10 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
   const completedItems = progressLedgerRecords.completedItems || [];
   const deferredItems = progressLedgerRecords.deferredItems || [];
   const followUpActions = progressLedgerRecords.followUpActions || [];
+  const horizons = hierarchyRecords.horizons || [];
+  const activeProjects = hierarchyRecords.activeProjects || [];
+  const epics = hierarchyRecords.epics || [];
+  const subtasks = hierarchyRecords.subtasks || [];
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -63,7 +69,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -82,6 +88,15 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       totalDeferredItems: deferredItems.length,
       totalFollowUpActions: followUpActions.length,
       followUpActionsByStatus: countBy(followUpActions, "status"),
+      totalHorizons: horizons.length,
+      horizonsByLevel: countBy(horizons, "level"),
+      horizonsByStatus: countBy(horizons, "status"),
+      totalActiveProjects: activeProjects.length,
+      activeProjectsByStatus: countBy(activeProjects, "status"),
+      totalEpics: epics.length,
+      epicsByStatus: countBy(epics, "status"),
+      totalSubtasks: subtasks.length,
+      subtasksByStatus: countBy(subtasks, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -96,7 +111,11 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       card("reviews", "Reviews", reviews.length, "Daily, weekly, and monthly cadence records."),
       card("completed", "Completed", completedItems.length, "Scoped items finished with evidence."),
       card("deferred", "Deferred", deferredItems.length, "Work delayed with approval or dependency notes."),
-      card("followups", "Follow-ups", followUpActions.length, "Continuing safe actions after this slice.")
+      card("followups", "Follow-ups", followUpActions.length, "Continuing safe actions after this slice."),
+      card("horizons", "Horizons", horizons.length, "Yearly, quarterly, monthly, and weekly planning records."),
+      card("projects", "Projects", activeProjects.length, "Active, blocked, or planned project records."),
+      card("epics", "Epics", epics.length, "Project-level execution groupings."),
+      card("subtasks", "Subtasks", subtasks.length, "Task-backed execution detail records.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -203,6 +222,45 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         priority: item.priority,
         supportsGoalIds: item.supports_goal_ids,
         relatedTaskIds: item.related_task_ids,
+        evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
+      })),
+      planningHorizons: horizons.map((item) => ({
+        id: item.id,
+        level: item.level,
+        title: item.title,
+        status: item.status,
+        supportsGoalIds: item.supports_goal_ids,
+        evidenceIds: item.evidence_ids,
+        successCondition: item.success_condition,
+        nextAction: item.next_action
+      })),
+      activeProjects: activeProjects.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        ownerRole: item.owner_role,
+        supportsGoalIds: item.supports_goal_ids,
+        milestoneIds: item.milestone_ids,
+        evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
+      })),
+      epics: epics.map((item) => ({
+        id: item.id,
+        projectId: item.project_id,
+        title: item.title,
+        status: item.status,
+        supportsGoalIds: item.supports_goal_ids,
+        evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
+      })),
+      subtasks: subtasks.map((item) => ({
+        id: item.id,
+        taskId: item.task_id,
+        epicId: item.epic_id,
+        title: item.title,
+        status: item.status,
+        supportsGoalIds: item.supports_goal_ids,
         evidenceIds: item.evidence_ids,
         nextAction: item.next_action
       }))
@@ -343,6 +401,31 @@ function buildHtml(model) {
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Planning Horizons</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Horizon</th><th>Status</th><th>Level</th><th>Evidence</th><th>Next Action</th></tr></thead>
+          <tbody>${panels.planningHorizons.map(renderHorizon).join("")}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="panel">
+        <h2>Active Projects</h2>
+        <div class="stack">${panels.activeProjects.map(renderProject).join("")}</div>
+      </div>
+      <div class="panel">
+        <h2>Epics</h2>
+        <div class="stack">${panels.epics.map(renderEpic).join("")}</div>
+      </div>
+      <div class="panel">
+        <h2>Subtasks</h2>
+        <div class="stack">${panels.subtasks.map(renderSubtask).join("")}</div>
+      </div>
+    </section>
+
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
         <h2>Evidence Links</h2>
@@ -413,9 +496,25 @@ function renderFollowUp(item) {
   return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
 }
 
+function renderHorizon(item) {
+  return `<tr><td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.title)}</td><td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml(item.level)}</td><td>${escapeHtml((item.evidenceIds || []).join(", "))}</td><td>${escapeHtml(item.nextAction)}</td></tr>`;
+}
+
+function renderProject(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.ownerRole)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p class="muted">${escapeHtml((item.milestoneIds || []).join(", "))}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
+function renderEpic(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.projectId)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
+function renderSubtask(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.taskId)} · ${escapeHtml(item.epicId)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }
