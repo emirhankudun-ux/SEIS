@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 echo "--- SEIS AGI Kurulum Sihirbazı ---"
 
 # Python kontrolü

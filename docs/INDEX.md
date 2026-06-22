@@ -12,7 +12,7 @@ Date: 2026-06-22
 | [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
-| [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite, year controls, H1/H2 cadence, and coverage metrics. |
+| [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite, year controls, H1/H2 cadence, maturity signals, readiness gates, and coverage metrics. |
 | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) | QA evidence and release boundary for the four-page cinematic Video Hero showcase. |
 | [reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md](reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md) | Loading, provenance, reduced-motion, and local-artifact budget for the Video Hero showcase. |
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, and the browser-local export bridge. |
@@ -86,7 +86,7 @@ Date: 2026-06-22
 | [../content/development/seis-goal-archive-ledger.json](../content/development/seis-goal-archive-ledger.json) | Archive boundary records. |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Generated Command Center view data. |
 | [../content/development/seis-integration-map.json](../content/development/seis-integration-map.json) | Canonical workstream-to-GitHub integration map. |
-| [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) | Static plugin interface lane records, five-year roadmap, development-program commitments, and H1/H2 cadence. |
+| [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) | Static plugin interface lane records, five-year roadmap, development-program commitments, H1/H2 cadence, maturity signals, and readiness gates. |
 | [../content/development/plugin-skill-capability-map.json](../content/development/plugin-skill-capability-map.json) | Static capability records for the plugin interface suite. |
 | [../content/lab/cinematic-engine.json](../content/lab/cinematic-engine.json) | Static command deck for the web interface. |
 | [../content/lab/quality-console.json](../content/lab/quality-console.json) | Static quality signals for the plugin interface suite. |

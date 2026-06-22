@@ -11,7 +11,8 @@ covering `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and
 ## Scope
 
 This QA pass validates the static read-only interface, five-year horizon,
-interactive year-by-year lane program, and H1/H2 development cadence controls.
+interactive year-by-year lane program, H1/H2 development cadence controls,
+maturity signals, and lane-specific readiness gates.
 It does not validate live plugin
 execution, deployment, SSH, provider calls, repository writes, or production
 release readiness.
@@ -21,7 +22,7 @@ release readiness.
 | Item | Value |
 | --- | --- |
 | Server | Local static server from repository root |
-| URL | `http://127.0.0.1:4183/apps/web/index.html#plugin-interfaces` |
+| URL | `http://127.0.0.1:4183/apps/web/seis-cockpit.html#plugin-interfaces` |
 | Browser | System Google Chrome through Playwright |
 | Desktop viewport | `1440 x 1100` |
 | Mobile viewport | `390 x 920` |
@@ -43,7 +44,9 @@ release readiness.
 | Five-year horizon | Passed | 2026, 2027, 2028, 2029, and 2030 rendered. |
 | Year controls | Passed | 2026, 2027, 2028, 2029, and 2030 controls selected the yearly program detail. |
 | H1/H2 cadence controls | Passed | H1 and H2 controls selected the development cadence for the active year and lane. |
-| Coverage metrics | Passed | 25 lane-year commitments, 2 cadence periods, 5 lane routines, evidence links, and 0 live actions rendered. |
+| Maturity signals | Passed | Five-year product-memory headline plus lane-year commitments, cadence loops, 5 readiness gates, and 0 live actions rendered. |
+| Readiness gates | Passed | Each requested lane shows allowed local actions and blocked privileged actions without live-action controls. |
+| Coverage metrics | Passed | 25 lane-year commitments, 2 cadence periods, 5 lane routines, 5 readiness gates, evidence links, and 0 live actions rendered. |
 | Lane program rows | Passed | Program rows selected the matching `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` lane. |
 | Desktop overflow | Passed | No horizontal document overflow detected. |
 | Mobile overflow | Passed | No horizontal document overflow detected. |
@@ -78,4 +81,5 @@ jq empty content/development/seis-plugin-interface-roadmap.json content/developm
 
 Keep this QA note current when the plugin interface layout, data source,
 five-year horizon, or development-program controls change. Refresh browser
-evidence for H1/H2 cadence controls before claiming release readiness.
+evidence for maturity signals, readiness gates, and H1/H2 cadence controls
+before claiming release readiness.

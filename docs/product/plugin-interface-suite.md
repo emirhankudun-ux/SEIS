@@ -13,13 +13,16 @@ deployment console, AI provider gateway, SSH surface, or production dashboard.
 It now includes an interactive 2026-2030 development program so each lane has a
 year-by-year focus, interface outcome, validation gate, and H1/H2 development
 cadence. The interface also surfaces coverage metrics so the five-lane,
-five-year scope is visible as 25 lane-year commitments with zero live actions.
+five-year scope is visible as 25 lane-year commitments with five readiness
+gates and zero live actions. A maturity-signal board makes the surface feel like
+a maintained five-year product system without claiming live deployment,
+provider, SSH, or repository-write capability.
 
 ## Current Status
 
 | Lane | Interface status | Evidence | Next safe action |
 | --- | --- | --- | --- |
-| `@seis` | Static lane detail | `apps/web/index.html`, `content/development/seis-plugin-interface-roadmap.json`, `npm run check:plugin-interface-roadmap` | Keep source-of-truth docs aligned. |
+| `@seis` | Static lane detail | `apps/web/seis-cockpit.html`, `content/development/seis-plugin-interface-roadmap.json`, `npm run check:plugin-interface-roadmap` | Keep source-of-truth docs aligned. |
 | `@seis-cloud` | Static dry-run lane | `docs/operations/seis-cloud-foundation.md`, `deploy/cloud-environment.json` | Add approval and rollback evidence before live cloud actions. |
 | `@seis-code` | Planned MVP lane | `docs/product/seis-code-foundation.md` | Build a browser-safe editor/file slice before Monaco and terminal expansion. |
 | `@seis-design` | Quality-gate lane | `docs/design-system/seis-design-foundation.md` | Add component inventory and visual QA evidence. |
@@ -35,6 +38,8 @@ five-year scope is visible as 25 lane-year commitments with zero live actions.
 - H1/H2 cadence controls define the recurring build and hardening rhythm for
   every plugin lane; they do not authorize live deployment, provider calls, or
   SSH execution.
+- Maturity signals and readiness gates are product-state indicators, not live
+  operational health claims.
 - Cloud, SSH, deployment, provider, repository-write, and destructive actions
   stay approval-gated.
 - Five-year roadmap phases and lane commitments are planning horizons, not
@@ -57,8 +62,9 @@ phase provides:
 - development-program records for all five years and all five plugin lanes
 - development-cadence records for H1 and H2 routines across all five plugin
   lanes
+- maturity-signal records and five lane-specific readiness gate records
 - browser QA evidence that coverage metrics render 25 lane-year commitments and
-  0 live actions
+  5 readiness gates with 0 live actions
 
 ## Related Documents
 
@@ -72,4 +78,5 @@ phase provides:
 
 Keep `npm run check:plugin-interface-roadmap` passing and refresh the manual
 browser QA record whenever lane tabs, year controls, mobile layout, or evidence
-links change. Include H1/H2 cadence controls in the same QA pass.
+links change. Include maturity signals, readiness gates, and H1/H2 cadence
+controls in the same QA pass.

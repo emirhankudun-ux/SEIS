@@ -179,7 +179,7 @@ Date: 2026-06-22
 | --- | --- |
 | Priority | P1 |
 | Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a selectable five-year development program, H1/H2 cadence, and coverage metrics. |
-| Include | `apps/web/index.html`, `apps/web/app.js`, `apps/web/styles.css`, `content/development/seis-plugin-interface-roadmap.json`, `content/development/plugin-skill-capability-map.json`, `content/lab/cinematic-engine.json`, `content/lab/quality-console.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
+| Include | `apps/web/seis-cockpit.html`, `apps/web/app.js`, `apps/web/styles.css`, `release/web/*`, `content/development/seis-plugin-interface-roadmap.json`, `content/development/plugin-skill-capability-map.json`, `content/lab/cinematic-engine.json`, `content/lab/quality-console.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
 | Exclude | Live cloud, GitHub write, SSH, or AI provider actions. |
 | Validation | `npm run check:plugin-interface-roadmap`, `node --check apps/web/app.js`, `jq empty content/development/seis-plugin-interface-roadmap.json`, `git diff --check`, keyboard/manual QA when browser verification is available. |
 | Approval needed | None unless adding dependencies. |
@@ -190,7 +190,7 @@ Date: 2026-06-22
 | --- | --- |
 | Priority | P1 |
 | Goal | Keep dedicated validation and manual QA evidence for the static plugin interface suite, including lane tabs, year controls, H1/H2 cadence, coverage metrics, and program rows. |
-| Include | `scripts/check-plugin-interface-roadmap.mjs`, `npm run check:plugin-interface-roadmap`, `docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md`, support data files, browser QA notes for lane tabs, evidence links, mobile layout, HTTP status, and reduced-motion behavior. |
+| Include | `scripts/check-plugin-interface-roadmap.mjs`, `npm run check:plugin-interface-roadmap`, `docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md`, support data files, browser QA notes for lane tabs, maturity signals, readiness gates, evidence links, mobile layout, HTTP status, and reduced-motion behavior. |
 | Exclude | Dependency installation, live provider calls, SSH, deployment, or destructive actions. |
 | Validation | `npm run check:plugin-interface-roadmap`, browser screenshot/manual QA, keyboard navigation review. |
 | Approval needed | None unless adding dependencies or external tooling. |
