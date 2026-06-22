@@ -288,17 +288,17 @@
             </div>
             <section class="panel module-spacer">
               <div class="panel-header">
-                <h3>Local Retrieval</h3>
+                <h3 id="ai-core-local-retrieval-title">Local Retrieval</h3>
                 <span class="status-pill ready">No content ingestion</span>
               </div>
-              <div class="retrieval-controls" aria-label="Local retrieval filters">
+              <div class="retrieval-controls" role="group" aria-labelledby="ai-core-local-retrieval-title" aria-describedby="ai-core-retrieval-filter-status">
                 <label class="retrieval-filter-field" for="ai-core-retrieval-query">
                   <span>Local query filter</span>
-                  <input id="ai-core-retrieval-query" type="search" autocomplete="off" placeholder="Filter metadata, evidence, or transcript text" />
+                  <input id="ai-core-retrieval-query" type="search" autocomplete="off" placeholder="Filter metadata, evidence, or transcript text" aria-controls="ai-core-retrieval-results ai-core-no-content-transcripts" />
                 </label>
                 <label class="retrieval-filter-field" for="ai-core-retrieval-source-class">
                   <span>Source class</span>
-                  <select id="ai-core-retrieval-source-class">
+                  <select id="ai-core-retrieval-source-class" aria-controls="ai-core-retrieval-results ai-core-no-content-transcripts">
                     <option value="all">All source classes</option>
                     <option value="official">Official</option>
                     <option value="scan-generated">Scan-generated</option>
@@ -307,13 +307,13 @@
                 </label>
                 <label class="retrieval-filter-field" for="ai-core-retrieval-transcript-state">
                   <span>Transcript state</span>
-                  <select id="ai-core-retrieval-transcript-state">
+                  <select id="ai-core-retrieval-transcript-state" aria-controls="ai-core-retrieval-results ai-core-no-content-transcripts">
                     <option value="all">All transcript states</option>
                     <option value="empty">Empty</option>
                     <option value="blocked">Blocked</option>
                   </select>
                 </label>
-                <button class="secondary-button" id="ai-core-retrieval-reset" type="button">Reset filters</button>
+                <button class="secondary-button" id="ai-core-retrieval-reset" type="button" aria-controls="ai-core-retrieval-results ai-core-no-content-transcripts">Reset filters</button>
                 <output id="ai-core-retrieval-filter-status" class="retrieval-filter-status" aria-live="polite">0 result cards, 0 no-content transcripts</output>
               </div>
               <div class="retrieval-layout">

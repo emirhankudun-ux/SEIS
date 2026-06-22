@@ -102,12 +102,27 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /boundary-card/);
   assert.match(css, /action-boundary/);
   assert.match(css, /ai-core-layout/);
+  assert.match(css, /retrieval-filter-field input:focus-visible/);
+  assert.match(css, /retrieval-filter-field select:focus-visible/);
+  assert.match(css, /outline: 3px solid rgba\(64, 120, 255, 0\.22\)/);
+  assert.match(css, /box-shadow: 0 0 0 1px rgba\(64, 120, 255, 0\.16\)/);
   assert.match(css, /automation-card/);
   assert.match(css, /security-card/);
   assert.match(css, /domain-card/);
   assert.match(css, /phase-row/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
+});
+
+test("SEIS Command Center local retrieval filters have mobile viewport coverage", async () => {
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const mobileBlock = css.match(/@media \(max-width: 900px\) \{[\s\S]*?(?=\n@media \(max-width: 620px\))/)?.[0] ?? "";
+
+  assert.match(mobileBlock, /\.retrieval-controls/);
+  assert.match(mobileBlock, /grid-template-columns: 1fr/);
+  assert.match(mobileBlock, /#ai-core-retrieval-reset/);
+  assert.match(mobileBlock, /min-height: 44px/);
+  assert.match(mobileBlock, /width: 100%/);
 });
 
 test("SEIS Command Center exposes local-only retrieval boundaries", async () => {
@@ -124,6 +139,8 @@ test("SEIS Command Center exposes local-only retrieval boundaries", async () => 
   assert.match(html, /id="ai-core-retrieval-transcript-state"/);
   assert.match(html, /id="ai-core-retrieval-reset"/);
   assert.match(html, /id="ai-core-retrieval-filter-status"/);
+  assert.match(html, /role="group" aria-labelledby="ai-core-local-retrieval-title" aria-describedby="ai-core-retrieval-filter-status"/);
+  assert.match(html, /aria-controls="ai-core-retrieval-results ai-core-no-content-transcripts"/);
   assert.match(html, /Safety Boundary/);
   assert.match(fixture, /local-readonly-retrieval-query-adapter/);
   assert.match(fixture, /local-readonly-retrieval-search-transcript/);
@@ -168,12 +185,20 @@ test("SEIS Command Center local retrieval filters render empty states and reset"
   const transcriptSelect = document.querySelector("#ai-core-retrieval-transcript-state");
   const resetButton = document.querySelector("#ai-core-retrieval-reset");
 
+  queryInput.focus();
   queryInput.value = "official docs";
   dispatch(queryInput, "input");
+  assert.equal(document.activeElement, queryInput);
+
+  sourceSelect.focus();
   sourceSelect.value = "scan-generated";
   dispatch(sourceSelect, "change");
+  assert.equal(document.activeElement, sourceSelect);
+
+  transcriptSelect.focus();
   transcriptSelect.value = "empty";
   dispatch(transcriptSelect, "change");
+  assert.equal(document.activeElement, transcriptSelect);
 
   assert.match(
     document.querySelector("#ai-core-retrieval-results").textContent,
@@ -188,7 +213,9 @@ test("SEIS Command Center local retrieval filters render empty states and reset"
     /0 result cards, 0 no-content transcripts/
   );
 
+  resetButton.focus();
   resetButton.click();
+  assert.equal(document.activeElement, resetButton);
 
   assert.equal(queryInput.value, "");
   assert.equal(sourceSelect.value, "all");
@@ -197,6 +224,43 @@ test("SEIS Command Center local retrieval filters render empty states and reset"
     document.querySelector("#ai-core-retrieval-filter-status").textContent,
     /[1-9]\d* result cards, [1-9]\d* no-content transcripts/
   );
+});
+
+test("SEIS Command Center local retrieval filters preserve keyboard focus order", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
+
+  const dom = new JSDOM(html, {
+    runScripts: "outside-only",
+    url: "https://seis.local/command-center"
+  });
+  dom.window.structuredClone = globalThis.structuredClone;
+  dom.window.eval(fixture);
+  dom.window.eval(script);
+
+  const document = dom.window.document;
+  const focusableRetrievalControls = [
+    "#ai-core-retrieval-query",
+    "#ai-core-retrieval-source-class",
+    "#ai-core-retrieval-transcript-state",
+    "#ai-core-retrieval-reset"
+  ].map((selector) => document.querySelector(selector));
+  const controlsInDomOrder = [...document.querySelectorAll(".retrieval-controls input, .retrieval-controls select, .retrieval-controls button")];
+
+  assert.deepEqual(controlsInDomOrder, focusableRetrievalControls);
+  assert.equal(document.querySelector(".retrieval-controls").getAttribute("role"), "group");
+  assert.equal(document.querySelector(".retrieval-controls").getAttribute("aria-labelledby"), "ai-core-local-retrieval-title");
+  assert.equal(document.querySelector(".retrieval-controls").getAttribute("aria-describedby"), "ai-core-retrieval-filter-status");
+
+  for (const control of focusableRetrievalControls) {
+    control.focus();
+    assert.equal(document.activeElement, control);
+    assert.equal(control.getAttribute("aria-controls"), "ai-core-retrieval-results ai-core-no-content-transcripts");
+  }
+
+  assert.equal(document.querySelector("#ai-core-retrieval-query").getAttribute("type"), "search");
+  assert.equal(document.querySelector("#ai-core-retrieval-filter-status").getAttribute("aria-live"), "polite");
 });
 
 test("SEIS Command Center browser bundle does not contain live provider or secret transport hooks", async () => {

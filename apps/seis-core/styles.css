@@ -668,6 +668,14 @@ select {
   color: var(--ink);
 }
 
+.retrieval-filter-field input:focus-visible,
+.retrieval-filter-field select:focus-visible {
+  border-color: rgba(64, 120, 255, 0.58);
+  outline: 3px solid rgba(64, 120, 255, 0.22);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px rgba(64, 120, 255, 0.16);
+}
+
 .retrieval-filter-status {
   grid-column: 1 / -1;
 }
@@ -1012,6 +1020,17 @@ select {
 
   .field-group.wide {
     grid-column: auto;
+  }
+
+  .retrieval-filter-field input,
+  .retrieval-filter-field select,
+  #ai-core-retrieval-reset {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .retrieval-filter-status {
+    line-height: 1.35;
   }
 
   .view-header,

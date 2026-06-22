@@ -38,7 +38,7 @@
 
 ## Next Recommended Slice
 
-Add keyboard-focused retrieval filter QA and focus-state coverage.
+Add browser-level visual smoke coverage for the Local Retrieval toolbar.
 
 Source links:
 

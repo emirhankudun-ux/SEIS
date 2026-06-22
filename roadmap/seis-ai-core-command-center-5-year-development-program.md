@@ -344,12 +344,18 @@ Completed foundation slice:
   raw-content behavior. The Command Center static suite also runs a JSDOM
   interaction check for query, source-class, transcript-state, reset, and
   two-panel empty-state output.
+- Keyboard-focused retrieval filter QA is now covered by explicit
+  `:focus-visible` styles for retrieval text/select controls and a JSDOM test
+  that walks query, source-class, transcript-state, and reset focus order.
+- Mobile viewport QA is now covered by a static Command Center test that
+  verifies the Local Retrieval toolbar collapses to one column and preserves
+  44px touch targets under the 900px breakpoint.
 
 ## Next Safe Slice
 
-Add keyboard-focused retrieval filter QA and fixture-backed focus-state coverage
-without adding live retrieval, providers, embeddings, memory writes, or
-raw-content behavior.
+Add browser-level visual smoke coverage for the Local Retrieval toolbar across
+desktop and mobile viewports while keeping it fixture-backed without adding live
+retrieval, providers, embeddings, memory writes, or raw-content behavior.
 
 ## Relationship to Existing Roadmaps
 

@@ -96,6 +96,16 @@ transcript-state, reset, and rendered empty states. These are UI/state
 regressions over fixture data only; a pass does not imply live search coverage
 or provider readiness.
 
+A follow-up Command Center static test covers keyboard focus order for the
+local retrieval controls and verifies the filter status live region. This is
+accessibility QA over existing fixture-backed UI only; it does not add live
+retrieval, providers, embeddings, raw-content ingestion, or memory writes.
+
+The same app-scoped test layer now covers mobile viewport rules for the Local
+Retrieval toolbar: the controls collapse to one column and keep 44px touch
+targets. This remains CSS/static UI evidence, not runtime proof of live
+retrieval or provider readiness.
+
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and
 `npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only

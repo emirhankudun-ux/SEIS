@@ -79,6 +79,10 @@ apps/seis-core/
 - Validate those local retrieval filters with a JSDOM interaction test that
   exercises query, source-class, transcript-state, reset, and rendered
   empty-state output.
+- Preserve keyboard focus order and visible focus states for the local
+  retrieval filter controls without introducing live retrieval behavior.
+- Preserve mobile viewport behavior for the local retrieval toolbar with a
+  single-column layout and 44px touch targets.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.

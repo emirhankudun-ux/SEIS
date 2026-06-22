@@ -283,3 +283,12 @@ UI's two panels with separate result-card and no-content transcript messages,
 and the Command Center test suite executes the filter/reset flow in JSDOM. The
 controls do not perform live retrieval, provider calls, secret search,
 embeddings, memory writes, or infrastructure actions.
+
+The next hardening slice added explicit visible focus styles and a JSDOM
+keyboard-focus-order test for the local retrieval filter controls. This remains
+UI accessibility evidence over fixture-backed state only.
+
+The mobile hardening slice added static coverage for the Local Retrieval
+toolbar's single-column responsive collapse and 44px touch targets. It remains
+CSS and app-test evidence only; no live retrieval or provider integration was
+added.

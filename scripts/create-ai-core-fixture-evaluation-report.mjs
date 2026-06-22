@@ -493,7 +493,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add keyboard-focused retrieval filter QA and focus-state coverage.",
+    summary: "Add browser-level visual smoke coverage for the Local Retrieval toolbar.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",
