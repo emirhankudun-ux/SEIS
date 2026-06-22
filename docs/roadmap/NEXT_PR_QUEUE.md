@@ -20,7 +20,7 @@ Date: 2026-06-22
 | --- | --- |
 | Suggested branch | `seis/pr-stack-triage` |
 | Priority | P0 |
-| Goal | Classify the 23 open PRs visible in the read-only GitHub inventory into merge-ready, replace, close, archive, superseded, or needs-human-review buckets. |
+| Goal | Classify the 25 open PRs visible in the read-only GitHub inventory into merge-ready, replace, close, archive, superseded, or needs-human-review buckets. |
 | Include | `docs/reviews/PR_STACK_REVIEW.md`, PR number/title/head/base/state table, duplication notes, security/readiness risks, and recommended replacement order. |
 | Exclude | Closing PRs, merging PRs, reopening PRs, force-push, branch deletion, cross-worktree cherry-pick, and history rewrite. |
 | Validation | Read-only `gh pr list`, local docs review, `git diff --check`. |
@@ -239,11 +239,22 @@ Date: 2026-06-22
 | Validation | `npm run check:workspace`, product validators, manual accessibility checklist, `git diff --check`. |
 | Approval needed | None for docs/templates; approval required for repository settings or public visibility changes. |
 
+## PR 9: Repository Policy Reconciliation
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Reconcile legacy UIXAppTTR-era branch wording, release artifact retention, archive-ledger coverage, and backlog ID validation. |
+| Include | Branch-policy wording review, release zip artifact policy, archive-ledger records for assistant materials, backlog ID uniqueness check. |
+| Exclude | File deletion, branch deletion, repository setting changes, history rewrite, moving tracked release zips, or changing default branch. |
+| Validation | Docs review, backlog ID validator when added, `git diff --check`. |
+| Approval needed | None for docs/validator; approval required for deleting or migrating tracked artifacts and repository setting changes. |
+
 ## Human Approval Needed
 
 - Push to `main`, merge, force-push, branch deletion, or history rewrite.
 - File deletion.
 - Cross-worktree cherry-pick, bulk copy, or branch reconciliation.
-- External GitHub PR/API inspection.
+- GitHub PR classification, merge, close, reopen, or other write action.
 - Dependency installation.
 - SSH, deployment, release/tag creation, repository settings changes, secret rotation, public visibility changes, model training, benchmarks, or dataset downloads.

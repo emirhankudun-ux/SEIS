@@ -103,8 +103,8 @@ deletion, merge, force-push, and history rewrite remain approval-gated.
 | --- | --- |
 | Architecture/product reviewer | Confirmed source-of-truth alignment around SEIS as a Command Center / Platform OS, flagged missing root architecture/roadmap pointers, CI script drift, and public-safe path cleanup. |
 | Public readiness/UX reviewer | Flagged CI drift, public-indexing ambiguity, missing GitHub templates/CODEOWNERS, keyboard accessibility gaps, and asset provenance blockers. |
-| Contradiction/archive reviewer | Pending at the time this section was updated. |
-| Product/design reviewer | Pending at the time this section was updated. |
+| Contradiction/archive reviewer | Flagged legacy UIXAppTTR branch-policy wording, OpenAI-first/plugin versus provider-neutral AI Core ambiguity, duplicate backlog IDs, release zip artifact risk, and archive-ledger coverage gaps. |
+| Product/design reviewer | Flagged Mythic Gacha pre-draw/insufficient-currency behavior, SEIS Code path-boundary risk, shallow controls, mobile touch-target gaps, token drift, video poster/responsive-source gaps, and per-card art provenance gaps. |
 
 ## Documentation Review
 
@@ -174,6 +174,13 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Added SEIS Code and Video Hero showcase validators.
 - Added Mythic Gacha playable static route, local atlas-backed bestiary,
   no-key draw system, and `npm run check:mythic-gacha`.
+- Hardened Mythic Gacha interaction states so pre-draw actions and claimed
+  daily draws no longer look silently active, and Ten Draw cannot drive jade
+  negative.
+- Hardened SEIS Code workspace path normalization so `/workspace2/...` is not
+  accepted as inside `/workspace`.
+- Added validator markers for the Mythic Gacha interaction guards and SEIS Code
+  workspace boundary.
 
 ## Changes Deferred
 

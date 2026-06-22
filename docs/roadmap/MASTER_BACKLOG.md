@@ -31,12 +31,16 @@ Date: 2026-06-22
 | `SEIS-BL-019` | P1 | Plugin interfaces | Keep `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` visible as a read-only static interface with a selectable five-year development program, H1/H2 cadence, and coverage metrics. | `npm run check:plugin-interface-roadmap` and `npm run check:data-schema-registry` validate the static UI bindings, support data, evidence paths, 2026-2030 horizon, lane commitments, cadence routines, and coverage metrics. |
 | `SEIS-BL-021` | P0 | Integration | Keep every SEIS workstream tied to GitHub, evidence, validation, and PR sequencing. | `docs/governance/seis-integration-and-github-development.md` and `content/development/seis-integration-map.json` stay current. |
 | `SEIS-BL-022` | P1 | Mythic Gacha | Keep the no-key Shan Hai Jing inspired gacha playable and evidence-backed. | `npm run check:mythic-gacha` validates route, draw controls, 60 card markers, IndexedDB hooks, pity marker, filters, atlas binding, and SEIS Code export bridge. |
-| `SEIS-BL-023` | P0 | GitHub governance | Triage 23 open PRs into merge-ready, replace, close, archive, or superseded buckets without merging or closing them. | Read-only `gh pr list --state open --limit 30` inventory exists in `docs/STATUS.md`. |
+| `SEIS-BL-023` | P0 | GitHub governance | Triage 25 open PRs into merge-ready, replace, close, archive, or superseded buckets without merging or closing them. | Read-only `gh pr list --state open --limit 30` inventory exists in `docs/STATUS.md`. |
 | `SEIS-BL-024` | P0 | CI | Align GitHub Actions with declared package scripts without weakening checks. | `.github/workflows/foundation-check.yml` currently references missing `check:js` and `package:server` scripts. |
 | `SEIS-BL-025` | P1 | AI Core | Keep model-router, prompt-engine, and agent-runtime contracts documented before live provider integration. | `docs/ai/model-router.md`, `docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md` exist. |
 | `SEIS-BL-026` | P1 | Public readiness | Resolve public-indexing intent before release. | `robots.txt` and sitemap point toward public crawling while core page metadata still uses `noindex, nofollow`. |
 | `SEIS-BL-027` | P1 | GitHub governance | Add PR template, issue templates, and CODEOWNERS for security, accessibility, validation, and asset provenance review. | `.github/` currently contains workflows only. |
 | `SEIS-BL-028` | P1 | Accessibility | Add keyboard-navigation and focus-management QA for SEIS Code menus, plugin tabs, and year controls. | Public-readiness review identified click-first handlers and limited roving-focus evidence. |
+| `SEIS-BL-034` | P1 | Repository governance | Resolve legacy UIXAppTTR-era branch-policy wording against current `main`/`seis/product-experience-suite` workflow. | Contradiction review found older docs that still describe UIXAppTTR-centered flow. |
+| `SEIS-BL-035` | P1 | Repository hygiene | Define release zip artifact policy before deleting or moving tracked archives. | `releases/` contains tracked static zip archives and cleanup requires approval. |
+| `SEIS-BL-036` | P2 | Archive governance | Add structured archive-ledger records for external-agent and generated assistant materials. | `docs/goals/archive-ledger.md` now lists reference-only paths to classify. |
+| `SEIS-BL-037` | P2 | Backlog governance | Add a lightweight uniqueness check for backlog IDs. | Historical duplicate backlog IDs were corrected manually in this pass. |
 
 ## Detailed Next Work
 
@@ -62,6 +66,10 @@ Date: 2026-06-22
 | `SEIS-BL-026` | `docs/public-indexing-intent` | `docs: define public indexing readiness` | Medium | No for docs; yes for public visibility changes | Decide preview/private/public SEO posture before release. |
 | `SEIS-BL-027` | `governance/github-review-templates` | `chore: add GitHub review templates` | Low | No unless changing branch protection | Add PR and issue templates plus CODEOWNERS routing. |
 | `SEIS-BL-028` | `a11y/keyboard-navigation-qa` | `test: add keyboard navigation QA` | Medium | No unless adding dependencies | Add keyboard acceptance checks and manual WCAG notes. |
+| `SEIS-BL-034` | `docs/branch-policy-reconciliation` | `docs: reconcile SEIS branch policy wording` | Medium | No for docs; yes for repository setting changes | Mark UIXAppTTR-era docs as legacy or update them to current main-centered flow. |
+| `SEIS-BL-035` | `docs/release-artifact-policy` | `docs: define release artifact retention policy` | Medium | Yes for file deletion or artifact migration | Decide whether zips stay tracked, move to releases/LFS/object storage, or are replaced by manifests. |
+| `SEIS-BL-036` | `docs/archive-ledger-agent-materials` | `docs: classify assistant archive materials` | Low | No unless moving/deleting files | Add structured archive records for external-agent and generated assistant materials. |
+| `SEIS-BL-037` | `docs/backlog-id-validator` | `test: add backlog id uniqueness check` | Low | No | Add a small docs validator that fails on duplicate backlog IDs. |
 
 ## Deferred Dangerous Work
 
