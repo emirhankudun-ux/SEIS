@@ -24,6 +24,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Next PR queue | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) |
 | Ultimate foundation review | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) |
 | Video Hero showcase QA | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) |
+| Product experience browser smoke | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) |
 
 ## Platform Lanes
 
@@ -65,6 +66,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Static plugin interface surface | [../apps/web/index.html](../apps/web/index.html#plugin-interfaces) |
 | SEIS Code route | [../apps/web/seis-code.html](../apps/web/seis-code.html) |
 | SEIS Code runtime | [../apps/web/seis-code.js](../apps/web/seis-code.js) |
+| Product experience browser smoke | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) |
 | Video hero manifest | [../apps/web/showcase/video-heroes.json](../apps/web/showcase/video-heroes.json) |
 | Mythic Gacha route | [../apps/web/mythic-gacha.html](../apps/web/mythic-gacha.html) |
 | Mythic atlas asset | [../apps/web/public/media/mythic/shan-hai-creature-atlas.png](../apps/web/public/media/mythic/shan-hai-creature-atlas.png) |

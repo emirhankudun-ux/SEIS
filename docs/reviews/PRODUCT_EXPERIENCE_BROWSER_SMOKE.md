@@ -43,8 +43,8 @@ npm run check:product-experience-browser-smoke
 Latest observed summary:
 
 - Browser: Google Chrome through Chrome DevTools Protocol.
-- SEIS Code: fallback editor ready, terminal ready, 8 menus, 5 activity views,
-  4 bottom panels.
+- SEIS Code: Monaco or fallback editor ready, terminal ready, 8 menus,
+  5 activity views, 4 bottom panels.
 - Mythic Gacha: 60 cards, draw result recorded, export path created.
 - Cross-app: `MythicArchive` export visible through SEIS Code terminal.
 - Screenshots were written under ignored `dist/qa/product-experience-smoke/`.
@@ -58,6 +58,15 @@ Latest observed summary:
 - Refresh-persistence is sampled through IndexedDB reuse in one browser session,
   not through a full browser restart assertion.
 - Artwork provenance and public-release asset review remain incomplete.
+
+## Security Notes
+
+- This smoke does not require provider API keys, SSH access, deployment
+  credentials, or live AI calls.
+- The Claude-style REPL evidence is Local Demo only and must not be represented
+  as Anthropic output.
+- Exported cards stay in the browser-local SEIS Code workspace store during the
+  smoke run.
 
 ## Related Documents
 

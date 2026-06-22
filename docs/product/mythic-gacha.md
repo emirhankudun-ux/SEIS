@@ -60,6 +60,7 @@ The route can move beyond playable static foundation only after:
 
 - [video-hero-showcase.md](video-hero-showcase.md)
 - [seis-code-foundation.md](seis-code-foundation.md)
+- [../reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](../reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md)
 - [../design-system/seis-design-foundation.md](../design-system/seis-design-foundation.md)
 - [../STATUS.md](../STATUS.md)
 

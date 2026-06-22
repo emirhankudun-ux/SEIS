@@ -70,7 +70,8 @@ and system Chrome through DevTools. It verifies SEIS Code menus, activity views,
 bottom panels, Monaco/fallback readiness, terminal write/read, Local Demo REPL
 identity, Mythic Gacha draw/favorite/export/detail, SEIS Code terminal
 visibility for exported `MythicArchive` files, and desktop/mobile overflow. It
-writes ignored screenshots to `dist/qa/product-experience-smoke`.
+writes ignored screenshots to `dist/qa/product-experience-smoke`. Latest
+evidence is recorded in `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`.
 
 For Video Hero showcase pages, expected:
 

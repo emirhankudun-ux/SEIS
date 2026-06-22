@@ -55,6 +55,7 @@ SEIS Code can move beyond browser foundation only after:
 ## Related Documents
 
 - [command-center-foundation.md](command-center-foundation.md)
+- [../reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](../reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md)
 - [../ai/seis-ai-core.md](../ai/seis-ai-core.md)
 - [../architecture/seis-platform-lanes.md](../architecture/seis-platform-lanes.md)
 
