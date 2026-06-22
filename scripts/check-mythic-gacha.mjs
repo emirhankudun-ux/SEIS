@@ -83,8 +83,10 @@ for (const marker of [
   "state.pity >= 79",
   "forceRare",
   "duplicateJade",
+  "clampCurrency",
   "favorites",
   "exportActive",
+  "resetProgressState",
   "showModal",
   "prefers-reduced-motion",
   "shan-hai-creature-atlas.png",
@@ -97,7 +99,9 @@ for (const marker of [
   "Ten Draw needs",
   "control.disabled = !hasLastDraw",
   "elements.drawTen.disabled",
-  "state.currency < cost"
+  "state.currency < cost",
+  "state.currency = clampCurrency(state.currency - cost, 0)",
+  "state.dailyKey = \"\""
 ]) {
   ensure(js.includes(marker), `Mythic Gacha runtime missing interaction-safety marker: ${marker}`);
 }

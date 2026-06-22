@@ -166,8 +166,12 @@ for (const required of ["indexedDB.open", "createObjectStore", "terminalHistory"
   ensure(js.includes(required), `SEIS Code runtime missing required capability marker: ${required}`);
 }
 
-for (const required of ["normalized !== WORKSPACE", "startsWith(`${WORKSPACE}/`)"]) {
+for (const required of ["normalized !== WORKSPACE", "startsWith(`${WORKSPACE}/`)", "unsafe characters", "toolPath = args.path ? normalizePath(args.path)", "Blocked external workspace update"]) {
   ensure(js.includes(required), `SEIS Code runtime missing workspace path-boundary marker: ${required}`);
+}
+
+for (const required of ["let settled = false", "app.fallbackReady", "textarea.value", "finish(true)"]) {
+  ensure(js.includes(required), `SEIS Code runtime missing Monaco fallback-race marker: ${required}`);
 }
 
 for (const required of [".monaco-host", ".terminal-output", ".activity-button", "@media", "prefers-reduced-motion"]) {

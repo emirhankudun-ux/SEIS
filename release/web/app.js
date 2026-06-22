@@ -1455,7 +1455,7 @@ async function loadPluginCommandCenter() {
 
 async function loadMcpManifest() {
   try {
-    state.mcpManifest = await fetchJson("../../_mcp/seis-mcp-server-2026-06-07.json");
+    state.mcpManifest = await fetchJson("../../data/seis-mcp-server-2026-06-07.json");
   } catch {
     state.mcpManifest = null;
   }

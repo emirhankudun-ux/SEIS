@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 1553,
+  "inspectedFiles": 1554,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -22554,7 +22554,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1549,
+          "line": 1591,
           "matchTypes": [
             "model:claude-"
           ],
@@ -51675,7 +51675,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 643,
+          "line": 667,
           "matchTypes": [
             "model:nim"
           ],
@@ -51683,7 +51683,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 697,
+          "line": 729,
           "matchTypes": [
             "model:nim"
           ],
@@ -51691,7 +51691,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 941,
+          "line": 974,
           "matchTypes": [
             "model:nim"
           ],
@@ -51699,7 +51699,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1012,
+          "line": 1045,
           "matchTypes": [
             "model:nim"
           ],
@@ -51707,7 +51707,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1013,
+          "line": 1046,
           "matchTypes": [
             "model:nim"
           ],
@@ -51715,7 +51715,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1015,
+          "line": 1048,
           "matchTypes": [
             "model:nim"
           ],
@@ -51723,7 +51723,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1016,
+          "line": 1049,
           "matchTypes": [
             "model:nim"
           ],

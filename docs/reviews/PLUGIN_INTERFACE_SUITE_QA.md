@@ -22,7 +22,7 @@ release readiness.
 | Item | Value |
 | --- | --- |
 | Server | Local static server from repository root |
-| URL | `http://127.0.0.1:4183/apps/web/seis-cockpit.html#plugin-interfaces` |
+| URL | `http://127.0.0.1:4188/apps/web/seis-cockpit.html#plugin-interfaces` |
 | Browser | System Google Chrome through Playwright |
 | Desktop viewport | `1440 x 1100` |
 | Mobile viewport | `390 x 920` |
@@ -62,6 +62,8 @@ sources:
 - `content/development/plugin-skill-capability-map.json`
 - `content/lab/cinematic-engine.json`
 - `content/lab/quality-console.json`
+- `data/plugin-command-center-2026-06-05.json`
+- `data/seis-mcp-server-2026-06-07.json`
 
 The browser favicon fallback has been cleaned up with `apps/web/favicon.ico`
 and explicit favicon links on the static product pages. This resolves the

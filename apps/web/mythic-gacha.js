@@ -8,6 +8,10 @@ const CODE_WORKSPACE_DB_VERSION = 1;
 const CODE_WORKSPACE_ROOT = "/workspace";
 const MYTHIC_ARCHIVE_DIR = `${CODE_WORKSPACE_ROOT}/MythicArchive`;
 const CODE_WORKSPACE_CHANNEL = "seis-code-workspace";
+const STARTING_CURRENCY = 1200;
+const SINGLE_DRAW_COST = 100;
+const TEN_DRAW_COST = 900;
+const FIELD_STIPEND = 120;
 
 const rarities = [
   { name: "Common", weight: 58, duplicateJade: 8 },
@@ -131,7 +135,7 @@ const creatures = creatureSeeds.map((seed, index) => {
 });
 
 const state = {
-  currency: 1200,
+  currency: STARTING_CURRENCY,
   pity: 0,
   inventory: {},
   favorites: {},
@@ -142,6 +146,7 @@ const state = {
 };
 
 let db;
+const revealTimers = [];
 
 function artPosition(index) {
   const col = index % 10;
@@ -157,6 +162,12 @@ function setArt(element, index) {
 
 function todayKey() {
   return new Date().toISOString().slice(0, 10);
+}
+
+function clampCurrency(value, fallback = STARTING_CURRENCY) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return fallback;
+  return Math.max(0, Math.floor(numeric));
 }
 
 function openDatabase() {
@@ -272,6 +283,31 @@ function setExportStatus(message) {
   if (elements.exportStatus) elements.exportStatus.textContent = message;
 }
 
+function resetProgressState() {
+  while (revealTimers.length) window.clearTimeout(revealTimers.pop());
+  state.currency = STARTING_CURRENCY;
+  state.pity = 0;
+  state.inventory = {};
+  state.favorites = {};
+  state.history = [];
+  state.lastDraw = null;
+  state.dailyKey = "";
+  elements.stage.classList.remove("is-drawing", "is-revealed");
+  if (elements.search) elements.search.value = "";
+  if (elements.rarity) elements.rarity.value = "all";
+  if (elements.element) elements.element.value = "all";
+  if (elements.state) elements.state.value = "all";
+  elements.activeRarity.textContent = "Undrawn";
+  elements.activeName.textContent = "Awaiting seal";
+  elements.activeMeta.textContent = "Tap draw to reveal a creature";
+  elements.loreName.textContent = "No creature drawn yet";
+  elements.loreLine.textContent = "Begin a draw to unlock lore.";
+  elements.loreRegion.textContent = "Region: undiscovered";
+  elements.loreElement.textContent = "Element: undiscovered";
+  elements.loreTemperament.textContent = "Temperament: undiscovered";
+  elements.loreBody.textContent = "The bestiary will fill with original Shan Hai Jing inspired creatures as cards are discovered.";
+}
+
 function saveState() {
   if (!db) return;
   dbPut(STATE_KEY, {
@@ -289,7 +325,7 @@ function saveState() {
 function mergeSaved(saved) {
   if (!saved || typeof saved !== "object") return;
   Object.assign(state, {
-    currency: Number.isFinite(saved.currency) ? saved.currency : state.currency,
+    currency: clampCurrency(saved.currency, state.currency),
     pity: Number.isFinite(saved.pity) ? saved.pity : state.pity,
     inventory: saved.inventory || {},
     favorites: saved.favorites || {},
@@ -318,10 +354,11 @@ function chooseCreature(rarityName) {
 }
 
 function draw(count, options = {}) {
-  const cost = options.free ? 0 : count === 10 ? 900 : 100;
+  const cost = options.free ? 0 : count === 10 ? TEN_DRAW_COST : SINGLE_DRAW_COST;
+  state.currency = clampCurrency(state.currency, 0);
   if (state.currency < cost) {
     if (count === 1 && !options.free) {
-      state.currency += 120;
+      state.currency = clampCurrency(state.currency + FIELD_STIPEND, 0);
       setExportStatus("A 120 jade field stipend was added for a single draw.");
     }
     if (state.currency < cost) {
@@ -331,7 +368,7 @@ function draw(count, options = {}) {
       return;
     }
   }
-  state.currency -= cost;
+  state.currency = clampCurrency(state.currency - cost, 0);
 
   const results = [];
   for (let index = 0; index < count; index += 1) {
@@ -341,7 +378,7 @@ function draw(count, options = {}) {
     const duplicate = record.count > 0;
     record.count += 1;
     if (duplicate) {
-      state.currency += rarities.find((rarity) => rarity.name === creature.rarity).duplicateJade;
+      state.currency = clampCurrency(state.currency + rarities.find((rarity) => rarity.name === creature.rarity).duplicateJade, 0);
     }
     state.inventory[creature.id] = record;
     state.pity = creature.rarity === "Legendary" ? 0 : state.pity + 1;
@@ -357,17 +394,18 @@ function draw(count, options = {}) {
 }
 
 function reveal(creature) {
+  while (revealTimers.length) window.clearTimeout(revealTimers.pop());
   elements.stage.classList.add("is-drawing");
   elements.stage.classList.remove("is-revealed");
-  setTimeout(() => {
+  revealTimers.push(window.setTimeout(() => {
     setArt(elements.activeArt, creature.artIndex);
     elements.activeRarity.textContent = creature.rarity;
     elements.activeName.textContent = creature.name;
     elements.activeMeta.textContent = `${creature.element} / ${creature.region}`;
     elements.stage.classList.add("is-revealed");
     renderLore(creature);
-  }, state.motionReduced ? 20 : 420);
-  setTimeout(() => elements.stage.classList.remove("is-drawing"), state.motionReduced ? 30 : 900);
+  }, state.motionReduced ? 20 : 420));
+  revealTimers.push(window.setTimeout(() => elements.stage.classList.remove("is-drawing"), state.motionReduced ? 30 : 900));
 }
 
 function renderLore(creature) {
@@ -408,10 +446,10 @@ function render() {
     control.title = hasLastDraw ? "" : "Draw a creature first.";
   }
   if (elements.drawTen) {
-    const disabled = state.currency < 900;
+    const disabled = state.currency < TEN_DRAW_COST;
     elements.drawTen.disabled = disabled;
     elements.drawTen.setAttribute("aria-disabled", String(disabled));
-    elements.drawTen.title = disabled ? "Ten Draw needs 900 jade." : "";
+    elements.drawTen.title = disabled ? `Ten Draw needs ${TEN_DRAW_COST} jade.` : "";
   }
   if (elements.dailyDraw) {
     elements.dailyDraw.disabled = dailyClaimed;
@@ -465,7 +503,8 @@ async function exportActive() {
   const creature = creatures.find((entry) => entry.id === state.lastDraw);
   if (!creature) return;
   const payload = JSON.stringify({ exportedAt: new Date().toISOString(), creature, localRecord: state.inventory[creature.id] }, null, 2);
-  const filename = `${creature.id}-${creature.name.toLowerCase().replaceAll(" ", "-")}.json`;
+  const safeName = creature.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const filename = `${creature.id}-${safeName}.json`;
   try {
     const archivePath = await saveToCodeWorkspace(filename, payload);
     setExportStatus(`Saved ${archivePath}. Open SEIS Code or Terminal to inspect it.`);
@@ -512,12 +551,7 @@ function bindEvents() {
       saveState();
     }
     if (action === "reset-progress" && window.confirm("Reset local Mythic Gacha progress?")) {
-      state.currency = 1200;
-      state.pity = 0;
-      state.inventory = {};
-      state.favorites = {};
-      state.history = [];
-      state.lastDraw = null;
+      resetProgressState();
       saveState();
       render();
     }

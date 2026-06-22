@@ -256,8 +256,13 @@ function extname(path) {
 }
 
 function normalizePath(input, base = app.cwd) {
-  if (!input || input === ".") return base;
-  const raw = input.startsWith("/") ? input : `${base}/${input}`;
+  const value = String(input || "").trim();
+  const safeBase = base === WORKSPACE || String(base).startsWith(`${WORKSPACE}/`) ? base : WORKSPACE;
+  if (!value || value === ".") return safeBase;
+  if (value.includes("\0") || value.includes("\\") || /^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(value)) {
+    throw new Error("Path contains unsupported or unsafe characters.");
+  }
+  const raw = value.startsWith("/") ? value : `${safeBase}/${value}`;
   const parts = [];
   raw.split("/").forEach((part) => {
     if (!part || part === ".") return;
@@ -599,25 +604,44 @@ function renderProblems() {
 
 function setupMonaco() {
   return new Promise((resolve) => {
+    let settled = false;
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      resolve(value);
+    };
     const fallbackTimer = window.setTimeout(() => {
       if (!app.monacoReady) {
         setupFallbackEditor();
-        resolve(false);
+        finish(false);
       }
     }, 5000);
 
     if (!window.require) {
       window.clearTimeout(fallbackTimer);
       setupFallbackEditor();
-      resolve(false);
+      finish(false);
       return;
     }
 
     window.require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
     window.require(["vs/editor/editor.main"], () => {
       window.clearTimeout(fallbackTimer);
+      if (app.fallbackReady) {
+        const textarea = $("[data-fallback-textarea]");
+        const file = app.files.get(app.activePath);
+        if (textarea && file && file.type === "file") {
+          file.content = textarea.value;
+          file.updatedAt = new Date().toISOString();
+          app.files.set(file.path, file);
+          put("files", file);
+        }
+      }
       app.monaco = window.monaco;
       app.monacoReady = true;
+      app.fallbackReady = false;
+      $("#monaco-editor").hidden = false;
+      $("[data-editor-fallback]").hidden = true;
       app.monaco.editor.defineTheme("seis-dark", {
         base: "vs-dark",
         inherit: true,
@@ -665,12 +689,20 @@ function setupMonaco() {
         if (status) status.textContent = `Ln ${event.position.lineNumber}, Col ${event.position.column}`;
       });
       openFile(app.activePath);
-      resolve(true);
+      finish(true);
+    }, () => {
+      window.clearTimeout(fallbackTimer);
+      setupFallbackEditor();
+      finish(false);
     });
   });
 }
 
 function setupFallbackEditor() {
+  if (app.fallbackReady) {
+    openFile(app.activePath);
+    return;
+  }
   app.fallbackReady = true;
   $("#monaco-editor").hidden = true;
   $("[data-editor-fallback]").hidden = false;
@@ -705,10 +737,11 @@ function setEditorContent(file) {
 }
 
 async function openFile(path, line = 1) {
-  const file = app.files.get(path);
+  const safePath = normalizePath(path);
+  const file = app.files.get(safePath);
   if (!file || file.type !== "file") return;
-  app.activePath = path;
-  if (!app.openTabs.includes(path)) app.openTabs.push(path);
+  app.activePath = safePath;
+  if (!app.openTabs.includes(safePath)) app.openTabs.push(safePath);
   await saveSetting("activePath", app.activePath);
   await saveSetting("openTabs", app.openTabs);
   setEditorContent(file);
@@ -812,12 +845,12 @@ async function replaceMatches(all = false) {
 }
 
 async function stageFile(path) {
-  app.staged.add(path);
+  app.staged.add(normalizePath(path));
   renderSourceControl();
 }
 
 async function unstageFile(path) {
-  app.staged.delete(path);
+  app.staged.delete(normalizePath(path));
   renderSourceControl();
 }
 
@@ -1348,26 +1381,29 @@ function readInputOrFiles(args, input) {
 }
 
 function listVirtualDir(path) {
-  const entry = app.files.get(path);
-  if (!entry) throw new Error(`ls: no such path: ${path}`);
+  const safePath = normalizePath(path);
+  const entry = app.files.get(safePath);
+  if (!entry) throw new Error(`ls: no such path: ${safePath}`);
   if (entry.type === "file") return entry.name;
   return Array.from(app.files.values())
-    .filter((file) => file.parent === path)
+    .filter((file) => file.parent === safePath)
     .sort((a, b) => a.path.localeCompare(b.path))
     .map((file) => `${file.type === "folder" ? "dir " : "file"} ${file.name}`)
     .join("\n");
 }
 
 function readVirtualFile(path) {
-  const file = app.files.get(path);
-  if (!file || file.type !== "file") throw new Error(`cat: no such file: ${path}`);
+  const safePath = normalizePath(path);
+  const file = app.files.get(safePath);
+  if (!file || file.type !== "file") throw new Error(`cat: no such file: ${safePath}`);
   return file.content;
 }
 
 async function writeVirtualFile(path, content) {
-  await ensureFolder(dirname(path));
-  const existing = app.files.get(path);
-  const entry = existing || createFileEntry(path, "");
+  const safePath = normalizePath(path);
+  await ensureFolder(dirname(safePath));
+  const existing = app.files.get(safePath);
+  const entry = existing || createFileEntry(safePath, "");
   entry.type = "file";
   entry.content = content;
   await saveFile(entry);
@@ -1428,24 +1464,30 @@ function grepVirtual(args, input) {
 }
 
 function findVirtual(path) {
-  return Array.from(app.files.keys()).filter((filePath) => filePath.startsWith(path)).sort().join("\n");
+  const safePath = normalizePath(path);
+  return Array.from(app.files.keys())
+    .filter((filePath) => filePath === safePath || filePath.startsWith(`${safePath}/`))
+    .sort()
+    .join("\n");
 }
 
 function treeVirtual(path) {
-  const lines = [path];
+  const safePath = normalizePath(path);
+  const lines = [safePath];
   Array.from(app.files.values())
-    .filter((file) => file.path !== path && file.path.startsWith(`${path}/`))
+    .filter((file) => file.path !== safePath && file.path.startsWith(`${safePath}/`))
     .sort((a, b) => a.path.localeCompare(b.path))
     .forEach((file) => {
-      const depth = file.path.replace(`${path}/`, "").split("/").length - 1;
+      const depth = file.path.replace(`${safePath}/`, "").split("/").length - 1;
       lines.push(`${"  ".repeat(depth)}- ${file.name}${file.type === "folder" ? "/" : ""}`);
     });
   return lines.join("\n");
 }
 
 function statVirtual(path) {
-  const file = app.files.get(path);
-  if (!file) throw new Error(`stat: no such path: ${path}`);
+  const safePath = normalizePath(path);
+  const file = app.files.get(safePath);
+  if (!file) throw new Error(`stat: no such path: ${safePath}`);
   return [
     `Path: ${file.path}`,
     `Type: ${file.type}`,
@@ -1557,14 +1599,15 @@ async function runDemoToolCall(name, args) {
   node.innerHTML = `<span class="tool-call">${escapeHtml(name)} running</span>`;
   let output = "";
   try {
-    if (name === "list_files") output = findVirtual(args.path);
-    if (name === "read_file") output = readVirtualFile(args.path).slice(0, 500);
+    const toolPath = args.path ? normalizePath(args.path) : app.activePath;
+    if (name === "list_files") output = findVirtual(toolPath);
+    if (name === "read_file") output = readVirtualFile(toolPath).slice(0, 500);
     if (name === "search_files") output = searchFiles(args.query).slice(0, 5).map((match) => `${match.path}:${match.line}`).join("\n");
     if (name === "create_file") {
-      await writeVirtualFile(args.path, "# Created by Local Demo REPL\n\nThis file was created by an approved browser-local tool call.\n");
-      output = `created ${args.path}`;
+      await writeVirtualFile(toolPath, "# Created by Local Demo REPL\n\nThis file was created by an approved browser-local tool call.\n");
+      output = `created ${toolPath}`;
     }
-    if (name === "get_file_metadata") output = statVirtual(args.path);
+    if (name === "get_file_metadata") output = statVirtual(toolPath);
     await wait(260);
     node.innerHTML = `<span class="tool-call">${escapeHtml(name)} success</span>`;
     if (output) appendTermLine(output, "muted");
@@ -1723,9 +1766,16 @@ function setupWorkspaceBridge() {
   const channel = new BroadcastChannel(WORKSPACE_CHANNEL);
   channel.addEventListener("message", async (event) => {
     if (event.data?.type !== "workspace-file-created") return;
+    let safePath;
+    try {
+      safePath = normalizePath(event.data.path);
+    } catch (error) {
+      appendOutput(`Blocked external workspace update: ${error.message}`);
+      return;
+    }
     await reloadState();
     renderAll();
-    appendOutput(`Workspace updated from ${event.data.source || "external app"}: ${event.data.path}`);
+    appendOutput(`Workspace updated from ${event.data.source || "external app"}: ${safePath}`);
   });
 }
 

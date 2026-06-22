@@ -17,7 +17,7 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 1553
+Inspected files: 1554
 
 ## Provider Matrix
 
