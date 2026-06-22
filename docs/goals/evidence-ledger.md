@@ -26,3 +26,5 @@ claims unless the named scope is fully proved.
 | `SEIS-EVID-004` | blocked | Repository hygiene blocker observed. |
 | `SEIS-EVID-005` | passed | Goal Tracking validator available. |
 | `SEIS-EVID-006` | passed | Static Command Center Goal Tracking view generated. |
+| `SEIS-EVID-007` | passed | Review cadence and progress ledger records validate. |
+| `SEIS-EVID-007` | passed | Review cadence and progress ledger records validate. |

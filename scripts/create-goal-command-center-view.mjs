@@ -8,6 +8,8 @@ const paths = {
   goals: "content/development/seis-goal-tracking.json",
   evidence: "content/development/seis-goal-evidence.json",
   execution: "content/development/seis-goal-execution.json",
+  reviewCadence: "content/development/seis-goal-review-cadence.json",
+  progressLedger: "content/development/seis-goal-progress-ledger.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -15,7 +17,9 @@ const paths = {
 const goals = readJson(paths.goals);
 const evidence = readJson(paths.evidence);
 const execution = readJson(paths.execution);
-const view = buildView(goals, evidence, execution);
+const reviewCadence = readJson(paths.reviewCadence);
+const progressLedger = readJson(paths.progressLedger);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -41,12 +45,16 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
   const blockers = executionBoard.blockers || [];
   const decisions = executionBoard.decisions || [];
+  const reviews = reviewCadenceRecords.records || [];
+  const completedItems = progressLedgerRecords.completedItems || [];
+  const deferredItems = progressLedgerRecords.deferredItems || [];
+  const followUpActions = progressLedgerRecords.followUpActions || [];
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -55,7 +63,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard) {
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -68,6 +76,12 @@ function buildView(goalRegistry, evidenceLedger, executionBoard) {
       totalBlockers: blockers.length,
       blockersByStatus: countBy(blockers, "status"),
       totalDecisions: decisions.length,
+      totalReviewRecords: reviews.length,
+      reviewRecordsByStatus: countBy(reviews, "status"),
+      totalCompletedItems: completedItems.length,
+      totalDeferredItems: deferredItems.length,
+      totalFollowUpActions: followUpActions.length,
+      followUpActionsByStatus: countBy(followUpActions, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -78,7 +92,11 @@ function buildView(goalRegistry, evidenceLedger, executionBoard) {
       card("blocked", "Blocked", countBy(goalRecords, "status").blocked || 0, "Goals blocked by named conditions."),
       card("planned", "Planned", countBy(goalRecords, "status").planned || 0, "Goals visible without unsupported completion claims."),
       card("evidence", "Evidence", evidenceRecords.length, "Evidence records with limitations and next actions."),
-      card("tasks", "Tasks", tasks.length, "Execution tasks tied to goals and evidence.")
+      card("tasks", "Tasks", tasks.length, "Execution tasks tied to goals and evidence."),
+      card("reviews", "Reviews", reviews.length, "Daily, weekly, and monthly cadence records."),
+      card("completed", "Completed", completedItems.length, "Scoped items finished with evidence."),
+      card("deferred", "Deferred", deferredItems.length, "Work delayed with approval or dependency notes."),
+      card("followups", "Follow-ups", followUpActions.length, "Continuing safe actions after this slice.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -144,6 +162,49 @@ function buildView(goalRegistry, evidenceLedger, executionBoard) {
         status: decision.status,
         decision: decision.decision,
         consequence: decision.consequence
+      })),
+      reviewCadence: reviews.map((record) => ({
+        id: record.id,
+        title: record.title,
+        cadence: record.cadence,
+        status: record.status,
+        ownerRole: record.owner_role,
+        relatedGoalIds: record.related_goal_ids,
+        relatedTaskIds: record.related_task_ids,
+        evidenceIds: record.evidence_ids,
+        checklist: record.checklist,
+        completionRule: record.completion_rule,
+        nextAction: record.next_action
+      })),
+      completedItems: completedItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        completedAt: item.completed_at,
+        supportsGoalIds: item.supports_goal_ids,
+        evidenceIds: item.evidence_ids,
+        summary: item.summary,
+        limitations: item.limitations,
+        nextAction: item.next_action
+      })),
+      deferredItems: deferredItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        reason: item.reason,
+        supportsGoalIds: item.supports_goal_ids,
+        approvalRequired: item.approval_required,
+        nextAction: item.next_action
+      })),
+      followUpActions: followUpActions.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        priority: item.priority,
+        supportsGoalIds: item.supports_goal_ids,
+        relatedTaskIds: item.related_task_ids,
+        evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
       }))
     },
     uxGuards: [
@@ -257,6 +318,31 @@ function buildHtml(model) {
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Review Cadence</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Review</th><th>Status</th><th>Cadence</th><th>Evidence</th><th>Next Action</th></tr></thead>
+          <tbody>${panels.reviewCadence.map(renderReview).join("")}</tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <div class="panel">
+        <h2>Completed Work</h2>
+        <div class="stack">${panels.completedItems.map(renderCompleted).join("")}</div>
+      </div>
+      <div class="panel">
+        <h2>Deferred Work</h2>
+        <div class="stack">${panels.deferredItems.map(renderDeferred).join("")}</div>
+      </div>
+      <div class="panel">
+        <h2>Follow-Up Actions</h2>
+        <div class="stack">${panels.followUpActions.map(renderFollowUp).join("")}</div>
+      </div>
+    </section>
+
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
         <h2>Evidence Links</h2>
@@ -311,9 +397,25 @@ function renderDecision(decision) {
   return `<article class="row"><h3>${escapeHtml(decision.id)} · ${escapeHtml(decision.title)}</h3><p>${escapeHtml(decision.decision)}</p><p class="muted">${escapeHtml(decision.consequence)}</p></article>`;
 }
 
+function renderReview(record) {
+  return `<tr><td><strong>${escapeHtml(record.id)}</strong><br>${escapeHtml(record.title)}</td><td><span class="badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></td><td>${escapeHtml(record.cadence)}</td><td>${escapeHtml((record.evidenceIds || []).join(", "))}</td><td>${escapeHtml(record.nextAction)}</td></tr>`;
+}
+
+function renderCompleted(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.completedAt)}</p></div><span class="badge active">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.summary)}</p><p class="muted">${escapeHtml((item.limitations || []).join(" "))}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
+function renderDeferred(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)}</p></div><span class="badge planned">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.reason)}</p><p class="muted">${escapeHtml(item.approvalRequired)}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
+function renderFollowUp(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }

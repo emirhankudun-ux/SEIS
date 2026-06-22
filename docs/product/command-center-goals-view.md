@@ -8,6 +8,8 @@ records.
 - `content/development/seis-goal-tracking.json`
 - `content/development/seis-goal-evidence.json`
 - `content/development/seis-goal-execution.json`
+- `content/development/seis-goal-review-cadence.json`
+- `content/development/seis-goal-progress-ledger.json`
 - `content/development/seis-goal-command-center-view.json`
 - `apps/web/goal-tracking.html`
 - `docs/roadmap/MASTER_BACKLOG.md`
@@ -22,6 +24,10 @@ records.
 | Blocker panel | Repository hygiene and approval blockers visible. |
 | Evidence drawer | Shows proof and limitations. |
 | Next safe action panel | Uses task and PR queue records. |
+| Review cadence panel | Shows planned daily, weekly, and monthly reviews without marking them performed. |
+| Completed work panel | Shows scoped completed records with evidence and limitations. |
+| Deferred work panel | Shows deferred records with approval notes. |
+| Follow-up action panel | Shows continuing actions tied to goals, tasks, and evidence. |
 | Readiness panel | Public and release readiness stay blocked until validated. |
 
 ## Generated Surface

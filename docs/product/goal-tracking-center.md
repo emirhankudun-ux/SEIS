@@ -17,6 +17,10 @@ It must work without an LLM or external API.
 | Goal list | Show goals by category, status, priority, and next action. | `content/development/seis-goal-command-center-view.json` |
 | Evidence panel | Show validation and limitations. | `content/development/seis-goal-command-center-view.json` |
 | Blocked items | Show blockers without hiding security or repo hygiene issues. | `content/development/seis-goal-command-center-view.json` |
+| Review cadence | Show planned daily, weekly, and monthly review contracts. | `content/development/seis-goal-command-center-view.json` |
+| Completed work | Show scoped completed items with evidence and limitations. | `content/development/seis-goal-command-center-view.json` |
+| Deferred work | Show deferred work with reason, approval need, and next action. | `content/development/seis-goal-command-center-view.json` |
+| Follow-up actions | Show safe continuation items after the current slice. | `content/development/seis-goal-command-center-view.json` |
 | Roadmap connection | Show backlog and next PR queue. | `docs/roadmap/*` |
 | Readiness connection | Keep public/release status blocked until evidence exists. | `docs/STATUS.md` |
 
@@ -26,4 +30,5 @@ It must work without an LLM or external API.
 - Completed states require evidence.
 - Blockers stay visible.
 - Planned states remain labeled planned.
+- Planned reviews are not performed reviews.
 - Unknown and unverified states are not hidden.

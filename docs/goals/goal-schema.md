@@ -33,8 +33,21 @@ ids, related paths, summary, limitations, and next action.
 Execution records include tasks, blockers, and decisions. They are not a live
 automation queue yet.
 
+## Review Cadence Object
+
+Review cadence records include id, title, cadence, status, owner role, related
+goals, related tasks, evidence ids, checklist, completion rule, and next action.
+Planned cadence records are not performed reviews.
+
+## Progress Ledger Object
+
+Progress ledger records include completed items, deferred items, and follow-up
+actions. Completed items require evidence ids. Deferred items require a reason
+and next safe action.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
-record ids, category coverage, repo-relative links, and no active goal with
+record ids, category coverage, repo-relative links, review cadence references,
+progress ledger references, generated view panels, and no active goal with
 unavailable evidence.

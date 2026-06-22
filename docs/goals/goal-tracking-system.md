@@ -51,8 +51,13 @@ Rules:
 - `content/development/seis-goal-tracking.json`
 - `content/development/seis-goal-evidence.json`
 - `content/development/seis-goal-execution.json`
+- `content/development/seis-goal-review-cadence.json`
+- `content/development/seis-goal-progress-ledger.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
+- `docs/goals/review-cadence.md`
+- `docs/goals/progress-ledger.md`
+- `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 
 Run:
