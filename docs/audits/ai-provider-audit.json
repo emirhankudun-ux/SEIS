@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 432,
+  "inspectedFiles": 433,
   "providers": [
     {
       "provider": "Anthropic Claude",

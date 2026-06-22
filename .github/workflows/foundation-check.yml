@@ -20,7 +20,11 @@ jobs:
 
       - name: Run lightweight checks
         run: |
-          npm run check:js
+          npm run check:workspace
           npm run check:foundation
-          npm run package:server
-          npm run prepare:server
+          npm run check:goal-tracking
+          npm run check:plugin-interface-roadmap
+          npm run check:seis-code
+          npm run check:mythic-gacha
+          npm run check:video-hero-showcase
+          npm run audit:ai-providers
