@@ -42,6 +42,21 @@
       "checklist": ["long-term direction", "roadmap phases", "architecture alignment", "AI Core progress", "Command Center progress", "public readiness", "release readiness", "SEIS Universe research"],
       "completion_rule": "Only mark performed when current-month evidence exists.",
       "next_action": "Use docs/goals/monthly-review-template.md for the next real monthly review."
+    },
+    {
+      "id": "SEIS-REVIEW-004",
+      "title": "Current Goal Tracking objective review",
+      "cadence": "daily",
+      "status": "performed",
+      "performed_at": "2026-06-22",
+      "owner_role": "Program System",
+      "related_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-007", "SEIS-GOAL-020"],
+      "related_task_ids": ["SEIS-TASK-001", "SEIS-TASK-002"],
+      "evidence_ids": ["SEIS-EVID-014"],
+      "checklist": ["objective file read", "primary checkout state inspected", "merge-conflict blocker recorded", "clean worktree created", "validators run", "next safe action identified"],
+      "completion_rule": "Performed status is valid only for this dated review and its evidence record.",
+      "review_summary": "Read the active Goal Tracking OS objective, inspected repository state, preserved the unresolved primary checkout merge, pushed the already committed branch head, created a clean isolated Goal Tracking worktree, and ran Goal Tracking validation before updating records.",
+      "next_action": "Keep future daily, weekly, or monthly reviews planned until they have their own dated evidence."
     }
   ]
 }

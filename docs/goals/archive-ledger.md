@@ -6,7 +6,8 @@ material separate from active official Goal Tracking OS records.
 ## Purpose
 
 - Prevent raw archive material from becoming official direction by accident.
-- Keep tracked deletion candidates visible without staging deletion changes.
+- Keep primary checkout merge-conflict and repository hygiene candidates visible
+  without staging them into Goal Tracking commits.
 - Keep unsupported public or release readiness claims deferred until evidence
   exists.
 
@@ -19,7 +20,7 @@ material separate from active official Goal Tracking OS records.
 | ID | Status | Classification | Scope |
 | --- | --- | --- | --- |
 | `SEIS-ARCHIVE-001` | historical-reference | archive_only | Historical AI and prompt material boundary. |
-| `SEIS-ARCHIVE-002` | review-candidate | repository_hygiene | Tracked deletion review candidates. |
+| `SEIS-ARCHIVE-002` | review-candidate | repository_hygiene | Primary checkout merge-conflict and repository hygiene review candidates. |
 | `SEIS-ARCHIVE-003` | deferred-readiness | unsupported_claim | Deferred public and release readiness claims. |
 
 ## Reference-Only Material To Classify

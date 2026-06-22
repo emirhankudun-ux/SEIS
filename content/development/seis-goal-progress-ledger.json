@@ -39,6 +39,18 @@
       "summary": "A generated static Goal Tracking Center page renders structured records without an LLM.",
       "limitations": ["Does not prove routed app navigation, live GitHub state, deployment, public readiness, or release readiness."],
       "next_action": "Keep generated outputs fresh with npm run check:goal-command-center-view."
+    },
+    {
+      "id": "SEIS-COMPLETE-004",
+      "title": "Current Goal Tracking objective review",
+      "completed_at": "2026-06-22",
+      "status": "completed",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-007", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-014"],
+      "related_paths": ["docs/goals/progress-review.md", "docs/reviews/GOAL_TRACKING_REVIEW.md", "content/development/seis-goal-review-cadence.json"],
+      "summary": "The active objective was re-read, the current repository blocker was documented, a clean isolated Goal Tracking branch was used, and Goal Tracking validators were run.",
+      "limitations": ["Does not resolve the primary checkout merge conflicts, merge a PR, deploy, release, run SSH, call providers, train models, run benchmarks, or download datasets."],
+      "next_action": "Push the isolated Goal Tracking branch after validators pass."
     }
   ],
   "deferredItems": [
@@ -46,11 +58,11 @@
       "id": "SEIS-DEFER-001",
       "title": "Repository hygiene recovery",
       "status": "deferred",
-      "reason": "Pre-existing tracked deletions are outside this Goal Tracking OS slice and require dedicated review.",
+      "reason": "The primary checkout has unresolved merge/conflict state and a large staged import set outside this isolated Goal Tracking OS slice.",
       "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
       "related_paths": ["docs/STATUS.md"],
-      "approval_required": "File deletion decisions require explicit approval.",
-      "next_action": "Handle deletion recovery in a separate repository hygiene PR."
+      "approval_required": "Conflict resolution, file deletion decisions, branch reconciliation, or history changes require explicit review and approval where applicable.",
+      "next_action": "Handle primary checkout merge recovery in a separate repository hygiene PR or operator pass."
     },
     {
       "id": "SEIS-DEFER-002",
@@ -66,7 +78,7 @@
       "id": "SEIS-DEFER-003",
       "title": "Public and release readiness claims",
       "status": "deferred",
-      "reason": "Foundation validation is blocked by pre-existing deleted files and readiness dry-runs were not performed.",
+      "reason": "Public/release readiness remains blocked by unresolved primary checkout hygiene and missing readiness dry-runs.",
       "supports_goal_ids": ["SEIS-GOAL-008", "SEIS-GOAL-009"],
       "related_paths": ["docs/STATUS.md", "docs/roadmap/MASTER_BACKLOG.md"],
       "approval_required": "Deployment, release/tag creation, and public visibility changes require explicit approval.",

@@ -7,7 +7,8 @@ Structured source:
 ## Purpose
 
 Define the planned daily, weekly, and monthly review controls for the
-file-backed Goal Tracking OS.
+file-backed Goal Tracking OS, plus any dated reviews that have actually been
+performed with evidence.
 
 ## Current Status
 
@@ -16,11 +17,13 @@ file-backed Goal Tracking OS.
 | Daily | Planned | `SEIS-REVIEW-001` | Use `daily-review-template.md` only when a real daily review is performed. |
 | Weekly | Planned | `SEIS-REVIEW-002` | Use `weekly-priorities-template.md` only when current-week evidence exists. |
 | Monthly | Planned | `SEIS-REVIEW-003` | Use `monthly-review-template.md` only when current-month evidence exists. |
+| Current objective review | Performed | `SEIS-REVIEW-004`, `SEIS-EVID-014` | Keep this review scoped to the dated evidence and do not generalize it into release/public readiness. |
 
 ## Rules
 
 - Planned review cadence is not proof that a review happened.
-- A review can be marked performed only with dated evidence.
+- A review can be marked performed only with `performed_at`, evidence IDs, and
+  a review summary.
 - Reviews must keep blockers, validation gaps, and next safe actions visible.
 - Reviews must not claim deployment, release, SSH, provider, benchmark, dataset,
   or model-training status without observed evidence.
@@ -46,4 +49,5 @@ Performed reviews require:
 
 ## Next Safe Action
 
-Keep cadence records planned until a real dated review is performed.
+Keep future cadence records planned until a real dated review is performed and
+recorded with evidence.

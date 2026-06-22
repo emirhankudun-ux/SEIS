@@ -154,7 +154,7 @@
         "Repository docs"
       ],
       "blockers": [
-        "Pre-existing deletion set remains unresolved"
+        "Primary checkout merge conflicts remain unresolved"
       ],
       "risk_level": "high",
       "risks": [
@@ -233,7 +233,7 @@
         "Docs index"
       ],
       "blockers": [
-        "Some branch docs are pre-existing deleted files"
+        "Primary checkout source-of-truth docs have unresolved merge conflicts"
       ],
       "risk_level": "medium",
       "risks": [
@@ -312,17 +312,17 @@
         "Clean worktree"
       ],
       "blockers": [
-        "Pre-existing tracked deletions remain unstaged"
+        "Primary checkout merge conflicts remain unresolved"
       ],
       "risk_level": "high",
       "risks": [
-        "Unrelated deletions could be staged accidentally"
+        "Unresolved merge/import state could be staged accidentally"
       ],
       "evidence_links": [
         "docs/STATUS.md"
       ],
       "validation_method": "git status and PR queue show blocked state and approval boundaries.",
-      "next_action": "Stage only scoped Goal Tracking files.",
+      "next_action": "Keep this branch scoped and resolve the primary checkout merge conflicts separately.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-005",
       "related_epic": "SEIS-EPIC-003",
@@ -351,7 +351,7 @@
         "Repository hygiene"
       ],
       "blockers": [
-        "Dirty worktree and deleted files"
+        "Primary checkout merge conflicts and unresolved repository hygiene"
       ],
       "risk_level": "high",
       "risks": [
@@ -361,7 +361,7 @@
         "docs/STATUS.md"
       ],
       "validation_method": "Public readiness remains blocked until checks and docs pass.",
-      "next_action": "Resolve repo hygiene before public readiness dry-run.",
+      "next_action": "Resolve primary checkout merge conflicts before public readiness dry-run.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-005",
       "related_epic": "SEIS-EPIC-003",
@@ -400,7 +400,7 @@
         "docs/STATUS.md"
       ],
       "validation_method": "Release readiness remains blocked until dry-run evidence exists.",
-      "next_action": "Run release dry-run only after foundation recovery.",
+      "next_action": "Run release dry-run only after primary checkout hygiene recovery.",
       "created_at": "2026-06-22",
       "related_milestone": "SEIS-MS-005",
       "related_epic": "SEIS-EPIC-003",

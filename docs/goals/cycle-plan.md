@@ -28,8 +28,8 @@ weekly priorities for the SEIS Goal Tracking OS.
 - Cycle records are planning and execution guidance, not release claims.
 - Weekly priorities must cite goals and evidence.
 - Blocked weekly priorities must remain visible.
-- Quarterly readiness work remains planned until repository hygiene evidence
-  exists.
+- Quarterly readiness work remains planned until primary checkout merge-conflict
+  recovery and repository hygiene evidence exists.
 - Monthly reviews must not be marked complete without current-month review
   evidence.
 

@@ -18,7 +18,7 @@ unavailable, and blocked goals must name a blocker.
 | Repository Intelligence | planned | Add read-only scanner plan after this foundation validates. |
 | Documentation System | active | Keep `docs/INDEX.md` and `docs/STATUS.md` current. |
 | Security and Governance | active | Keep no-secret, no-fake-validation, approval-gated rules visible. |
-| GitHub Workflow | blocked | Do not stage unrelated tracked deletions. |
+| GitHub Workflow | blocked | Keep the primary checkout merge-conflict state out of Goal Tracking commits. |
 | Public Readiness | blocked | Resolve repository hygiene before public readiness claims. |
 | Release Readiness | blocked | Run dry-runs only after foundation recovery. |
 | Design System | planned | Add status badges, states, and accessibility rules later. |

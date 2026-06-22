@@ -7,8 +7,8 @@ inside the Goal Tracking OS.
 
 - Track active projects without treating every idea as an active goal.
 - Connect epics and subtasks to existing goal, evidence, and execution records.
-- Keep blocked repository hygiene work visible without staging unrelated
-  deletion changes.
+- Keep blocked repository hygiene work visible without staging unresolved
+  primary-checkout merge-conflict changes.
 
 ## Source Record
 
@@ -28,7 +28,7 @@ inside the Goal Tracking OS.
 | --- | --- | --- | --- |
 | `SEIS-EPIC-001` | `SEIS-PROJECT-001` | active | Structured source records. |
 | `SEIS-EPIC-002` | `SEIS-PROJECT-001` | active | Generated Command Center view. |
-| `SEIS-EPIC-003` | `SEIS-PROJECT-002` | blocked | Tracked deletion triage. |
+| `SEIS-EPIC-003` | `SEIS-PROJECT-002` | blocked | Primary checkout merge-conflict triage. |
 
 ## Current Subtasks
 
@@ -56,4 +56,4 @@ are fresh.
 ## Next Safe Action
 
 Use this map as the bridge between strategic goals and execution records while
-keeping repository hygiene work in a dedicated PR.
+keeping primary checkout merge recovery in a dedicated repository hygiene pass.
