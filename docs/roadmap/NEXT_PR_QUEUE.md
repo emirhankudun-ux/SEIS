@@ -2,6 +2,18 @@
 
 Date: 2026-06-22
 
+## PR 0: SEIS Integration And GitHub Development Spine
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/product-experience-suite` |
+| Priority | P0 |
+| Goal | Keep every SEIS workstream connected to the canonical GitHub repository through evidence, validation, and PR sequencing. |
+| Include | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/STATUS.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, `docs/roadmap/MASTER_BACKLOG.md`, `docs/roadmap/NEXT_PR_QUEUE.md`, `docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md`. |
+| Exclude | Bulk copying from separate worktrees, cherry-picking unreviewed commits, live GitHub write actions, SSH, deployment, provider calls, secret rotation, file deletion, branch deletion, and history rewrite. |
+| Validation | `jq empty content/development/seis-integration-map.json`, documentation review, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON updates; approval required for cross-worktree merge, push, or deletion. |
+
 ## PR 1: Goal Tracking OS Foundation
 
 | Field | Value |
@@ -49,6 +61,18 @@ Date: 2026-06-22
 | Exclude | Fake performed reviews, live GitHub issue/project sync, unrelated tracked deletions, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
+
+## PR 1D: Goal Archive Ledger
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/product-experience-suite` |
+| Priority | P1 |
+| Goal | Keep historical reference, repository hygiene review candidates, and deferred readiness claims separate from active official goals. |
+| Include | `content/development/seis-goal-archive-ledger.json`, `docs/goals/archive-ledger.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
+| Exclude | Archive promotion, file deletion, history rewrite, live GitHub PR inspection, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON/generated-static work; approval required for deletion, promotion, history rewrite, merge, release, or public visibility changes. |
 
 ## PR 2: Repository Hygiene Recovery
 
@@ -105,16 +129,17 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Define SEIS Code MVP, data schema registry, and design component inventory as reviewable contracts. |
+| Goal | Define SEIS Code MVP, expand the data schema registry, and add design component inventory as reviewable contracts. |
 | Include | Virtual file system, Monaco, terminal, no-key AI REPL acceptance criteria, JSON schema expectations, component inventory, reduced-motion QA. |
 | Exclude | Full product implementation or dependency installation unless separately approved. |
-| Validation | Documentation review, JSON checks, manual accessibility checklist. |
+| Validation | `npm run check:data-schema-registry`, documentation review, JSON checks, manual accessibility checklist. |
 | Approval needed | Yes for dependency installation. |
 
 ## Human Approval Needed
 
 - Push to `main`, merge, force-push, branch deletion, or history rewrite.
 - File deletion.
+- Cross-worktree cherry-pick, bulk copy, or branch reconciliation.
 - External GitHub PR/API inspection.
 - Dependency installation.
 - SSH, deployment, release/tag creation, repository settings changes, secret rotation, public visibility changes, model training, benchmarks, or dataset downloads.

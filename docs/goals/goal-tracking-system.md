@@ -24,6 +24,7 @@ completed work, deferred work, and next safe actions.
 | Completed item | Scoped work finished with evidence. |
 | Deferred item | Work intentionally delayed. |
 | Archived item | Historical material not active by default. |
+| Archive ledger item | Historical, deferred, or review-candidate material kept outside active official goals. |
 
 ## Status Rules
 
@@ -57,12 +58,14 @@ Rules:
 - `content/development/seis-goal-review-cadence.json`
 - `content/development/seis-goal-progress-ledger.json`
 - `content/development/seis-goal-hierarchy.json`
+- `content/development/seis-goal-archive-ledger.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
 - `docs/goals/progress-ledger.md`
 - `docs/goals/horizon-map.md`
 - `docs/goals/project-epic-task-map.md`
+- `docs/goals/archive-ledger.md`
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 

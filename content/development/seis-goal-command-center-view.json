@@ -9,7 +9,8 @@
     "content/development/seis-goal-execution.json",
     "content/development/seis-goal-review-cadence.json",
     "content/development/seis-goal-progress-ledger.json",
-    "content/development/seis-goal-hierarchy.json"
+    "content/development/seis-goal-hierarchy.json",
+    "content/development/seis-goal-archive-ledger.json"
   ],
   "summary": {
     "finalState": "blocked_by_repository_hygiene",
@@ -20,9 +21,9 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 9,
+    "totalEvidenceRecords": 10,
     "evidenceByStatus": {
-      "passed": 8,
+      "passed": 9,
       "blocked": 1
     },
     "totalTasks": 3,
@@ -73,6 +74,12 @@
       "active": 2,
       "blocked": 1
     },
+    "totalArchiveItems": 3,
+    "archiveItemsByStatus": {
+      "historical-reference": 1,
+      "review-candidate": 1,
+      "deferred-readiness": 1
+    },
     "nextSafeAction": "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
   },
   "progressCards": [
@@ -103,7 +110,7 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 9,
+      "value": 10,
       "description": "Evidence records with limitations and next actions."
     },
     {
@@ -159,6 +166,12 @@
       "label": "Subtasks",
       "value": 3,
       "description": "Task-backed execution detail records."
+    },
+    {
+      "id": "archive",
+      "label": "Archive",
+      "value": 3,
+      "description": "Historical, deferred, and review-candidate records."
     }
   ],
   "panels": {
@@ -907,6 +920,24 @@
           "Does not prove live project sync, recurring review completion, public readiness, release readiness, deployment, SSH, benchmark, provider, or dataset state."
         ],
         "nextAction": "Replace placeholder metadata only with dated review evidence or approved project records."
+      },
+      {
+        "id": "SEIS-EVID-010",
+        "title": "Archive ledger records validate",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-005",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009",
+          "SEIS-GOAL-016"
+        ],
+        "summary": "Historical reference, repository hygiene review candidates, and deferred readiness claims are represented as archive ledger records separate from active official goals.",
+        "limitations": [
+          "Does not perform archive cleanup, file deletion, public readiness dry-run, release dry-run, GitHub PR inspection, history rewrite, deployment, SSH, benchmark, provider, or dataset action."
+        ],
+        "nextAction": "Promote archive material only through a reviewed source-of-truth update with evidence."
       }
     ],
     "readinessConnections": [
@@ -1426,6 +1457,59 @@
           "SEIS-EVID-004"
         ],
         "nextAction": "Do not stage tracked deletions in Goal Tracking OS commits."
+      }
+    ],
+    "archiveItems": [
+      {
+        "id": "SEIS-ARCHIVE-001",
+        "title": "Historical AI and prompt material boundary",
+        "status": "historical-reference",
+        "classification": "archive_only",
+        "relatedGoalIds": [
+          "SEIS-GOAL-005",
+          "SEIS-GOAL-016"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-010"
+        ],
+        "promotionRule": "Historical AI outputs may inform reviews but do not become official direction without a reviewed source-of-truth update.",
+        "risk": "Archive material can be mistaken for current SEIS direction.",
+        "nextAction": "Keep archive references separate from active goals until promoted by review."
+      },
+      {
+        "id": "SEIS-ARCHIVE-002",
+        "title": "Tracked deletion review candidates",
+        "status": "review-candidate",
+        "classification": "repository_hygiene",
+        "relatedGoalIds": [
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-004",
+          "SEIS-EVID-010"
+        ],
+        "promotionRule": "Deleted or orphaned material needs a dedicated repository hygiene review before restore, archive, replacement, or approved removal.",
+        "risk": "Unreviewed deletion staging can mix unrelated work into Goal Tracking commits.",
+        "nextAction": "Keep deletion decisions out of Goal Tracking OS commits."
+      },
+      {
+        "id": "SEIS-ARCHIVE-003",
+        "title": "Deferred public and release readiness claims",
+        "status": "deferred-readiness",
+        "classification": "unsupported_claim",
+        "relatedGoalIds": [
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-002",
+          "SEIS-EVID-010"
+        ],
+        "promotionRule": "Public or release readiness claims require dry-run evidence and cannot be promoted from roadmap intent alone.",
+        "risk": "Readiness language can overstate current repository maturity.",
+        "nextAction": "Run readiness dry-runs only after repository hygiene is resolved."
       }
     ]
   },

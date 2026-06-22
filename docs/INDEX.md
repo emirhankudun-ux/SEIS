@@ -8,6 +8,7 @@ Date: 2026-06-22
 | --- | --- |
 | [SEIS_MASTER_INDEX.md](SEIS_MASTER_INDEX.md) | Current master navigation for SEIS lanes, evidence, blockers, and next safe actions. |
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
+| [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
 | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) | Master backlog for reviewable SEIS work. |
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Recommended next PR queue and approval gates. |
@@ -21,12 +22,14 @@ Date: 2026-06-22
 | [product/seis-code-foundation.md](product/seis-code-foundation.md) | SEIS Code workspace foundation. |
 | [design-system/seis-design-foundation.md](design-system/seis-design-foundation.md) | Design-system foundation and evidence rules. |
 | [data/seis-data-foundation.md](data/seis-data-foundation.md) | Data foundation, records, and validation expectations. |
+| [data/schema-registry.md](data/schema-registry.md) | Validator-backed registry for current structured records. |
 
 ## Command Center And AI
 
 | Document | Purpose |
 | --- | --- |
 | [product/command-center-foundation.md](product/command-center-foundation.md) | Command Center module contract and evidence rules. |
+| [product/plugin-interface-suite.md](product/plugin-interface-suite.md) | Read-only interface foundation for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
 | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
@@ -42,6 +45,7 @@ Date: 2026-06-22
 | [goals/milestone-map.md](goals/milestone-map.md) | Milestone map. |
 | [goals/horizon-map.md](goals/horizon-map.md) | Yearly, quarterly, monthly, and weekly planning horizons. |
 | [goals/project-epic-task-map.md](goals/project-epic-task-map.md) | Project, epic, task, and subtask hierarchy map. |
+| [goals/archive-ledger.md](goals/archive-ledger.md) | Historical, deferred, and review-candidate archive boundary. |
 | [goals/progress-review.md](goals/progress-review.md) | Current progress review. |
 | [goals/review-cadence.md](goals/review-cadence.md) | Planned daily, weekly, and monthly review cadence contract. |
 | [goals/progress-ledger.md](goals/progress-ledger.md) | Completed, deferred, and follow-up progress ledger. |
@@ -66,5 +70,8 @@ Date: 2026-06-22
 | [../content/development/seis-goal-review-cadence.json](../content/development/seis-goal-review-cadence.json) | Planned review cadence records. |
 | [../content/development/seis-goal-progress-ledger.json](../content/development/seis-goal-progress-ledger.json) | Completed, deferred, and follow-up ledger records. |
 | [../content/development/seis-goal-hierarchy.json](../content/development/seis-goal-hierarchy.json) | Planning horizon, project, epic, and subtask records. |
+| [../content/development/seis-goal-archive-ledger.json](../content/development/seis-goal-archive-ledger.json) | Archive boundary records. |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Generated Command Center view data. |
+| [../content/development/seis-integration-map.json](../content/development/seis-integration-map.json) | Canonical workstream-to-GitHub integration map. |
+| [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) | Static plugin interface lane records and five-year roadmap. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

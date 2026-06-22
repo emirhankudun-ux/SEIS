@@ -23,6 +23,7 @@ It must work without an LLM or external API.
 | Follow-up actions | Show safe continuation items after the current slice. | `content/development/seis-goal-command-center-view.json` |
 | Planning horizons | Show yearly, quarterly, monthly, and weekly planning layers. | `content/development/seis-goal-command-center-view.json` |
 | Projects, epics, subtasks | Show active projects, epics, and task-backed subtasks. | `content/development/seis-goal-command-center-view.json` |
+| Archive ledger | Show historical, deferred, and review-candidate material outside active goals. | `content/development/seis-goal-command-center-view.json` |
 | Roadmap connection | Show backlog and next PR queue. | `docs/roadmap/*` |
 | Readiness connection | Keep public/release status blocked until evidence exists. | `docs/STATUS.md` |
 
@@ -34,4 +35,5 @@ It must work without an LLM or external API.
 - Planned states remain labeled planned.
 - Planned reviews are not performed reviews.
 - Hierarchy records are not live GitHub issue or project-board sync.
+- Archive records are not official direction until promoted through review.
 - Unknown and unverified states are not hidden.

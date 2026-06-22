@@ -58,9 +58,16 @@ subtasks. Horizons cover yearly, quarterly, monthly, and weekly planning levels.
 Projects group milestones. Epics belong to projects. Subtasks connect known
 execution tasks to epics.
 
+## Archive Ledger Object
+
+Archive ledger records include id, title, status, classification, related goals,
+evidence ids, related paths, promotion rule, risk, and next action. Archive
+records keep historical reference and deferred material separate from active
+official goals.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
 record ids, category coverage, repo-relative links, review cadence references,
-progress ledger references, hierarchy references, generated view panels, and no
-active goal with unavailable evidence.
+progress ledger references, hierarchy references, archive ledger references,
+generated view panels, and no active goal with unavailable evidence.

@@ -11,6 +11,7 @@ const paths = {
   reviewCadence: "content/development/seis-goal-review-cadence.json",
   progressLedger: "content/development/seis-goal-progress-ledger.json",
   hierarchy: "content/development/seis-goal-hierarchy.json",
+  archiveLedger: "content/development/seis-goal-archive-ledger.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -21,7 +22,8 @@ const execution = readJson(paths.execution);
 const reviewCadence = readJson(paths.reviewCadence);
 const progressLedger = readJson(paths.progressLedger);
 const hierarchy = readJson(paths.hierarchy);
-const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy);
+const archiveLedger = readJson(paths.archiveLedger);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -47,7 +49,7 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
@@ -61,6 +63,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
   const activeProjects = hierarchyRecords.activeProjects || [];
   const epics = hierarchyRecords.epics || [];
   const subtasks = hierarchyRecords.subtasks || [];
+  const archiveItems = archiveLedgerRecords.archiveItems || [];
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -69,7 +72,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -97,6 +100,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       epicsByStatus: countBy(epics, "status"),
       totalSubtasks: subtasks.length,
       subtasksByStatus: countBy(subtasks, "status"),
+      totalArchiveItems: archiveItems.length,
+      archiveItemsByStatus: countBy(archiveItems, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -115,7 +120,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       card("horizons", "Horizons", horizons.length, "Yearly, quarterly, monthly, and weekly planning records."),
       card("projects", "Projects", activeProjects.length, "Active, blocked, or planned project records."),
       card("epics", "Epics", epics.length, "Project-level execution groupings."),
-      card("subtasks", "Subtasks", subtasks.length, "Task-backed execution detail records.")
+      card("subtasks", "Subtasks", subtasks.length, "Task-backed execution detail records."),
+      card("archive", "Archive", archiveItems.length, "Historical, deferred, and review-candidate records.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -268,6 +274,17 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         status: item.status,
         supportsGoalIds: item.supports_goal_ids,
         evidenceIds: item.evidence_ids,
+        nextAction: item.next_action
+      })),
+      archiveItems: archiveItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        status: item.status,
+        classification: item.classification,
+        relatedGoalIds: item.related_goal_ids,
+        evidenceIds: item.evidence_ids,
+        promotionRule: item.promotion_rule,
+        risk: item.risk,
         nextAction: item.next_action
       }))
     },
@@ -432,6 +449,11 @@ function buildHtml(model) {
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Archive Ledger</h2>
+      <div class="stack">${panels.archiveItems.map(renderArchiveItem).join("")}</div>
+    </section>
+
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
         <h2>Evidence Links</h2>
@@ -519,9 +541,13 @@ function renderSubtask(item) {
   return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.taskId)} · ${escapeHtml(item.epicId)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.nextAction)}</p></article>`;
 }
 
+function renderArchiveItem(item) {
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.classification)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p>${escapeHtml(item.promotionRule)}</p><p class="muted">${escapeHtml(item.risk)}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }
