@@ -8,6 +8,8 @@ const requiredFiles = [
   "apps/web/case-studies/seis-foundation.html",
   "apps/web/case-studies/case-study.css",
   "apps/web/manifest.webmanifest",
+  "apps/web/favicon.ico",
+  "apps/web/favicon.svg",
   "apps/web/robots.txt",
   "apps/web/sitemap.xml",
   "apps/web/src/scripts/motion-system.js",
@@ -64,6 +66,8 @@ const requiredFiles = [
 
 const requiredTextChecks = [
   ["apps/web/index.html", "UI-UX Digital Lab"],
+  ["apps/web/index.html", "href=\"./favicon.svg\""],
+  ["apps/web/index.html", "href=\"./favicon.ico\""],
   ["apps/web/index.html", "id=\"development\""],
   ["apps/web/index.html", "id=\"development-mode\""],
   ["apps/web/index.html", "id=\"pulse\""],

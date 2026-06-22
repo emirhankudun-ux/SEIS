@@ -9,6 +9,7 @@ const CORE_ASSETS = [
   "./mythic-gacha.css",
   "./mythic-gacha.js",
   "./favicon.svg",
+  "./favicon.ico",
   "./manifest.webmanifest",
   "./showcase/nature.html",
   "./showcase/still-life.html",

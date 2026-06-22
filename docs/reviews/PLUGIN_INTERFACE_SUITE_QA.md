@@ -60,9 +60,10 @@ sources:
 - `content/lab/cinematic-engine.json`
 - `content/lab/quality-console.json`
 
-The browser still requested `/favicon.ico`, which returned 404 because the page
-uses `apps/web/favicon.svg`. This is not part of the plugin interface data
-path, but can be cleaned up before release readiness.
+The browser favicon fallback has been cleaned up with `apps/web/favicon.ico`
+and explicit favicon links on the static product pages. This resolves the
+previous local `/favicon.ico` 404 note, but does not by itself prove release
+readiness.
 
 ## Validation Commands
 
@@ -76,6 +77,5 @@ jq empty content/development/seis-plugin-interface-roadmap.json content/developm
 ## Next Safe Action
 
 Keep this QA note current when the plugin interface layout, data source,
-five-year horizon, or development-program controls change. Clean up the
-H1/H2 cadence controls and `/favicon.ico` fallback request before claiming
-release readiness.
+five-year horizon, or development-program controls change. Refresh browser
+evidence for H1/H2 cadence controls before claiming release readiness.

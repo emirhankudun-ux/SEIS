@@ -193,10 +193,14 @@ ensure(packageScripts.has("check:plugin-interface-roadmap"), "package.json must 
 ensure(fs.existsSync(WEB_APP_FILE), "apps/web/app.js must exist");
 ensure(fs.existsSync(WEB_INDEX_FILE), "apps/web/index.html must exist");
 ensure(fs.existsSync(WEB_STYLE_FILE), "apps/web/styles.css must exist");
+ensure(fs.existsSync(path.join(ROOT, "apps", "web", "favicon.ico")), "apps/web/favicon.ico must exist as browser fallback.");
+ensure(fs.existsSync(path.join(ROOT, "apps", "web", "favicon.svg")), "apps/web/favicon.svg must exist.");
 ensure(fs.existsSync(QA_FILE), "docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md must exist");
 
 if (fs.existsSync(WEB_INDEX_FILE)) {
   const html = fs.readFileSync(WEB_INDEX_FILE, "utf8");
+  ensure(html.includes('href="./favicon.svg"'), "web index must link SVG favicon.");
+  ensure(html.includes('href="./favicon.ico"'), "web index must link ICO fallback favicon.");
   ensure(html.includes('id="plugin-interfaces"'), "web index must include plugin-interfaces section");
   ensure(html.includes("data-five-year-controls"), "web index must include five-year controls");
   ensure(html.includes("data-five-year-detail"), "web index must include five-year detail");

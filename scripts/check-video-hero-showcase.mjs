@@ -76,6 +76,8 @@ for (const required of requiredHeroes) {
   ensure(html.includes('data-video-action="fullscreen"'), `${required.id} missing fullscreen control.`);
   ensure(html.includes("data-smooth-scroll"), `${required.id} missing CTA smooth-scroll hook.`);
   ensure(html.includes("aria-live=\"polite\""), `${required.id} missing video status live region.`);
+  ensure(html.includes('href="../favicon.svg"'), `${required.id} page must link the shared SVG favicon.`);
+  ensure(html.includes('href="../favicon.ico"'), `${required.id} page must link the shared ICO fallback.`);
   ensure(html.includes("./video-hero.js"), `${required.id} page must load shared runtime.`);
   ensure(html.includes("./video-hero.css"), `${required.id} page must load shared styles.`);
 }
@@ -99,6 +101,8 @@ for (const required of requiredHeroes) {
 ensure(serviceWorker.includes("./showcase/video-heroes.json"), "service worker must cache video hero manifest.");
 ensure(serviceWorker.includes("./showcase/video-hero.css"), "service worker must cache video hero CSS.");
 ensure(serviceWorker.includes("./showcase/video-hero.js"), "service worker must cache video hero JS.");
+ensure(serviceWorker.includes("./favicon.ico"), "service worker must cache favicon.ico fallback.");
+ensure(serviceWorker.includes("./favicon.svg"), "service worker must cache favicon.svg.");
 
 if (failures.length > 0) {
   console.error("Video hero showcase check failed:");

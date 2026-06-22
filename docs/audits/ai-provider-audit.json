@@ -22647,7 +22647,7 @@
         },
         {
           "path": "README.md",
-          "line": 73,
+          "line": 71,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -23245,7 +23245,7 @@
         },
         {
           "path": ".agents/skills/UIX-Apps/SKILL.md",
-          "line": 57,
+          "line": 55,
           "matchTypes": [
             "model:nim"
           ],
@@ -24109,7 +24109,7 @@
         },
         {
           "path": "apps/web/seis-code.html",
-          "line": 55,
+          "line": 57,
           "matchTypes": [
             "model:nim"
           ],
@@ -24821,7 +24821,7 @@
         },
         {
           "path": "docs/architecture/animation-system-plan.md",
-          "line": 49,
+          "line": 47,
           "matchTypes": [
             "model:nim"
           ],
@@ -25197,7 +25197,7 @@
         },
         {
           "path": "release/web/index.html",
-          "line": 71,
+          "line": 73,
           "matchTypes": [
             "model:nim"
           ],
@@ -25317,7 +25317,7 @@
         },
         {
           "path": "scripts/check-foundation.mjs",
-          "line": 47,
+          "line": 49,
           "matchTypes": [
             "model:nim"
           ],

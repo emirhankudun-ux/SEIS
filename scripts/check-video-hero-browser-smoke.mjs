@@ -29,6 +29,7 @@ function contentType(file) {
   if (file.endsWith(".js")) return "text/javascript; charset=utf-8";
   if (file.endsWith(".json")) return "application/json; charset=utf-8";
   if (file.endsWith(".svg")) return "image/svg+xml";
+  if (file.endsWith(".ico")) return "image/x-icon";
   if (file.endsWith(".png")) return "image/png";
   if (file.endsWith(".jpg") || file.endsWith(".jpeg")) return "image/jpeg";
   if (file.endsWith(".webmanifest")) return "application/manifest+json";
@@ -297,8 +298,7 @@ function collectRelevantIssues(events) {
         text: event.params?.args?.map((arg) => arg.value || arg.description || "").join(" ") || event.params?.errorText || "",
         url: event.params?.url || ""
       };
-    })
-    .filter((issue) => !issue.url.endsWith("/favicon.ico"));
+    });
 }
 
 async function main() {

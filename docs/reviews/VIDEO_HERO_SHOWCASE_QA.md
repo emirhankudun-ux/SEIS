@@ -57,9 +57,8 @@ or production performance readiness.
 - Loading, paused, muted, playback-error, and reduced-motion states are
   represented in the page and runtime model.
 - Browser smoke writes screenshots to ignored `dist/qa/video-hero-smoke`.
-- The prior one-off smoke observed a local `/favicon.ico` 404. The repeatable
-  command filters that known static-site gap out of showcase failures, but the
-  favicon should still be cleaned before public readiness.
+- Static product pages now link the shared SVG favicon and `/favicon.ico`
+  fallback, and the service worker caches both assets.
 
 ## Known Gaps
 
@@ -68,7 +67,7 @@ or production performance readiness.
 - No Lighthouse, bundle-size, or media transfer budget was recorded.
 - No local poster/media optimization pipeline exists yet.
 - No public-release attribution review has been completed.
-- `/favicon.ico` may still return 404 in local static smoke contexts.
+- No committed icon visual audit exists yet.
 
 ## Release Boundary
 
@@ -80,7 +79,7 @@ release. Public readiness requires:
 - playback and autoplay fallback verification,
 - performance budget evidence,
 - final asset provenance review,
-- favicon/static asset cleanup,
+- static asset visual audit,
 - repository hygiene recovery.
 
 ## Related Documents
