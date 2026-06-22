@@ -1,4 +1,3 @@
 User-agent: *
-Disallow:
-
-Sitemap: https://emirhankudun.com/sitemap.xml
+Allow: /
+Sitemap: https://seis.app/sitemap.xml

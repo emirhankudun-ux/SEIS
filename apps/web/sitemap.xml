@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>https://emirhankudun.com/</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="tr"       href="https://emirhankudun.com/"/>
-    <xhtml:link rel="alternate" hreflang="en"       href="https://emirhankudun.com/en/"/>
-    <xhtml:link rel="alternate" hreflang="fr"       href="https://emirhankudun.com/fr/"/>
-    <xhtml:link rel="alternate" hreflang="it"       href="https://emirhankudun.com/it/"/>
-    <xhtml:link rel="alternate" hreflang="de"       href="https://emirhankudun.com/de/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://emirhankudun.com/"/>
-  </url>
-</urlset>
+<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://seis.app/</loc></url><url><loc>https://seis.app/product.html</loc></url><url><loc>https://seis.app/studios.html</loc></url><url><loc>https://seis.app/intelligence.html</loc></url><url><loc>https://seis.app/system.html</loc></url><url><loc>https://seis.app/about.html</loc></url><url><loc>https://seis.app/signin.html</loc></url></urlset>
