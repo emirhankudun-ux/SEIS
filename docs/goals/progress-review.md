@@ -13,7 +13,7 @@ This review records current foundation progress on branch
 | Goals | active | `content/development/seis-goal-tracking.json` | Validate after every change. |
 | Evidence | active | `content/development/seis-goal-evidence.json` | Keep limitations visible. |
 | Execution | active | `content/development/seis-goal-execution.json` | Keep blockers and decisions current. |
-| Command Center Goal view | planned | `docs/product/goal-tracking-center.md` | Add generated view in a later PR. |
+| Command Center Goal view | active | `docs/product/goal-tracking-center.md`, `docs/goals/command-center-view-model.md`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html` | Keep generated view fresh with `npm run check:goal-command-center-view`. |
 | GitHub workflow | blocked | `docs/STATUS.md` | Do not stage unrelated deletions. |
 | Public readiness | blocked | `docs/STATUS.md` | Resolve repository hygiene first. |
 
@@ -25,6 +25,7 @@ This review records current foundation progress on branch
 - Structured execution records.
 - Local validator exposed through `npm run check:goal-tracking`.
 - Roadmap and next PR queue entries.
+- Generated static Command Center Goal Tracking view model and HTML page.
 
 ## Not Complete
 

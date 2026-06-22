@@ -6,7 +6,7 @@ Date: 2026-06-22
 | --- | --- | --- | --- | --- |
 | `SEIS-BL-001` | P0 | Goal Tracking OS | Keep structured goal, evidence, and execution records valid. | `npm run check:goal-tracking` passes. |
 | `SEIS-BL-002` | P0 | Repository hygiene | Resolve pre-existing tracked deletions outside this slice. | `git status --short` no longer shows unexplained deletions. |
-| `SEIS-BL-003` | P1 | Command Center | Add generated/static Goal Tracking view model. | Static/generated view reads JSON records without LLM. |
+| `SEIS-BL-003` | P1 | Command Center | Maintain generated/static Goal Tracking view model. | `npm run check:goal-command-center-view` passes and the static page reads JSON records without LLM. |
 | `SEIS-BL-004` | P1 | Repository intelligence | Define read-only scanner outputs for missing docs, risky files, validation gaps, and readiness blockers. | Scanner plan and fixture output exist. |
 | `SEIS-BL-005` | P1 | Security | Add deeper security baseline without printing secrets. | Path-only scan and validation notes are documented. |
 | `SEIS-BL-006` | P1 | GitHub governance | Inspect open/closed PRs after approval. | PR rescue review records current state. |

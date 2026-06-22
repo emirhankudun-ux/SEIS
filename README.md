@@ -21,6 +21,7 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 - Current status: [`docs/STATUS.md`](./docs/STATUS.md)
 - Goal Tracking OS: [`docs/goals/goal-tracking-system.md`](./docs/goals/goal-tracking-system.md)
 - Goal Tracking Center: [`docs/product/goal-tracking-center.md`](./docs/product/goal-tracking-center.md)
+- Static Goal Tracking page: [`apps/web/goal-tracking.html`](./apps/web/goal-tracking.html)
 
 ## OpenAI-curated Build Route
 

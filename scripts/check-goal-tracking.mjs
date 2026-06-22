@@ -9,6 +9,7 @@ const requiredDocs = [
   "docs/goals/progress-review.md",
   "docs/goals/evidence-ledger.md",
   "docs/goals/execution-board.md",
+  "docs/goals/command-center-view-model.md",
   "docs/goals/daily-review-template.md",
   "docs/goals/weekly-priorities-template.md",
   "docs/goals/monthly-review-template.md",
@@ -47,6 +48,8 @@ const requiredCategories = [
 const registryPath = "content/development/seis-goal-tracking.json";
 const evidencePath = "content/development/seis-goal-evidence.json";
 const executionPath = "content/development/seis-goal-execution.json";
+const viewPath = "content/development/seis-goal-command-center-view.json";
+const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
 
 for (const file of requiredDocs) {
@@ -55,7 +58,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath]) {
+for (const file of [registryPath, evidencePath, executionPath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }
@@ -64,6 +67,7 @@ for (const file of [registryPath, evidencePath, executionPath]) {
 const registry = existsSync(registryPath) ? readJson(registryPath) : null;
 const evidence = existsSync(evidencePath) ? readJson(evidencePath) : null;
 const execution = existsSync(executionPath) ? readJson(executionPath) : null;
+const commandCenterView = existsSync(viewPath) ? readJson(viewPath) : null;
 
 if (registry) {
   assert(registry.schemaVersion === 1, "goal registry schemaVersion must be 1");
@@ -193,6 +197,42 @@ if (execution && registry && evidence) {
   }
 }
 
+if (commandCenterView && registry && evidence && execution) {
+  assert(commandCenterView.schemaVersion === 1, "command center view schemaVersion must be 1");
+  assert(commandCenterView.mode === "non_llm_command_center_goal_view", "command center view mode is invalid");
+  if (commandCenterView.summary?.totalGoals !== registry.goals.length) {
+    failures.push("command center view totalGoals does not match goal registry");
+  }
+  if (commandCenterView.summary?.totalEvidenceRecords !== evidence.records.length) {
+    failures.push("command center view totalEvidenceRecords does not match evidence ledger");
+  }
+  if (commandCenterView.summary?.totalTasks !== execution.tasks.length) {
+    failures.push("command center view totalTasks does not match execution board");
+  }
+  for (const source of [registryPath, evidencePath, executionPath]) {
+    if (!commandCenterView.sourceRecords?.includes(source)) {
+      failures.push(`command center view missing source: ${source}`);
+    }
+  }
+  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections"]) {
+    if (!Array.isArray(commandCenterView.panels?.[panel]) || commandCenterView.panels[panel].length === 0) {
+      failures.push(`command center view missing panel: ${panel}`);
+    }
+  }
+}
+
+if (existsSync(staticPagePath)) {
+  const html = readFileSync(staticPagePath, "utf8");
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001"]) {
+    if (!html.includes(text)) {
+      failures.push(`static Goal Tracking page missing: ${text}`);
+    }
+  }
+  if (/%\s*complete|role="progressbar"|aria-valuenow/i.test(html)) {
+    failures.push("static Goal Tracking page must not render fake progress indicators");
+  }
+}
+
 if (failures.length > 0) {
   console.error("SEIS goal tracking check failed:");
   for (const failure of failures) {
@@ -210,7 +250,9 @@ console.log(JSON.stringify({
   evidenceRecords: evidence.records.length,
   tasks: execution.tasks.length,
   blockers: execution.blockers.length,
-  decisions: execution.decisions.length
+  decisions: execution.decisions.length,
+  commandCenterView: commandCenterView.id,
+  staticPage: staticPagePath
 }, null, 2));
 
 function readJson(path) {

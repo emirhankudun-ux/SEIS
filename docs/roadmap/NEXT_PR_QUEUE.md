@@ -22,12 +22,13 @@ Date: 2026-06-22
 | Goal | Decide restore, replace, archive, or approved removal for pre-existing tracked deletions. |
 | Approval needed | File deletion if any deleted files are intentionally removed. |
 
-## PR 3: Static Goal Tracking Center
+## PR 3: Static Goal Tracking Center Maintenance
 
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Generate a static Command Center Goal Tracking view from the JSON records. |
+| Goal | Keep the generated static Command Center Goal Tracking view fresh from JSON records. |
+| Validation | `npm run check:goal-command-center-view`, `npm run check:goal-tracking`. |
 | Approval needed | None unless adding dependencies or live integrations. |
 
 ## Human Approval Needed

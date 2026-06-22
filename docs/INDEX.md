@@ -14,6 +14,7 @@ Date: 2026-06-22
 | [goals/progress-review.md](goals/progress-review.md) | Current progress review. |
 | [goals/evidence-ledger.md](goals/evidence-ledger.md) | Evidence rules and current evidence records. |
 | [goals/execution-board.md](goals/execution-board.md) | Tasks, blockers, and decisions. |
+| [goals/command-center-view-model.md](goals/command-center-view-model.md) | Generated Command Center Goal Tracking view model. |
 | [goals/daily-review-template.md](goals/daily-review-template.md) | Daily review template. |
 | [product/goal-tracking-center.md](product/goal-tracking-center.md) | Command Center module contract. |
 | [product/command-center-goals-view.md](product/command-center-goals-view.md) | UI view contract. |
@@ -29,3 +30,5 @@ Date: 2026-06-22
 | [../content/development/seis-goal-tracking.json](../content/development/seis-goal-tracking.json) | Goal registry. |
 | [../content/development/seis-goal-evidence.json](../content/development/seis-goal-evidence.json) | Evidence records. |
 | [../content/development/seis-goal-execution.json](../content/development/seis-goal-execution.json) | Tasks, blockers, and decisions. |
+| [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Generated Command Center view data. |
+| [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

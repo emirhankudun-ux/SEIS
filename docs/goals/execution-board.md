@@ -13,7 +13,7 @@ is not a live automation queue yet.
 | --- | --- | --- |
 | `SEIS-TASK-001` | active | Run `npm run check:goal-tracking`. |
 | `SEIS-TASK-002` | blocked | Stage only scoped Goal Tracking OS files. |
-| `SEIS-TASK-003` | planned | Add generated/static Goal Tracking Center later. |
+| `SEIS-TASK-003` | active | Keep generated/static Goal Tracking Center fresh from source records. |
 
 ## Current Blockers
 

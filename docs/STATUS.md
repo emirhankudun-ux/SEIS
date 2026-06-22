@@ -10,7 +10,7 @@ deployment, public-readiness, or merge-readiness claim.
 | Area | Status | Evidence | Next action |
 | --- | --- | --- | --- |
 | Branch | Non-main branch | `seis/product-experience-suite` | Keep work scoped and push only this branch. |
-| Goal Tracking OS | Foundation added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs` | Run validator before commit. |
+| Goal Tracking OS | Foundation plus generated static view added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator and generated view freshness checks passing. |
 | Worktree hygiene | Blocked | Pre-existing unstaged tracked deletions are present. | Do not stage unrelated deletions. |
 | GitHub PR state | Unverified | No external GitHub API/CLI inspection was performed. | Inspect only after approval. |
 | Public readiness | Not ready | Repository hygiene and readiness checks are incomplete. | Resolve blockers first. |
@@ -21,8 +21,10 @@ deployment, public-readiness, or merge-readiness claim.
 | Command | Result | Notes |
 | --- | --- | --- |
 | `node --check scripts/check-goal-tracking.mjs` | Passed | Validator syntax is valid. |
-| `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json` | Passed | Structured records parse as JSON. |
-| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 5 evidence records, 3 tasks, 2 blockers, and 2 decisions validate. |
+| `node --check scripts/create-goal-command-center-view.mjs` | Passed | View generator syntax is valid. |
+| `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json content/development/seis-goal-command-center-view.json` | Passed | Structured records and generated view model parse as JSON. |
+| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 6 evidence records, 3 tasks, 2 blockers, 2 decisions, generated view model, and static page validate. |
+| `npm run check:goal-command-center-view` | Passed | Generated view model and static page are fresh. |
 | `git diff --check` | Passed | No whitespace errors in the scoped diff. |
 | Scoped sensitive-pattern scan | Passed | No private-path, file URI, editor URI, key block, token assignment, API key assignment, or password assignment hits were found in scoped Goal Tracking files. |
 | `npm run check:workspace` | Passed | Existing workspace check passed. |
