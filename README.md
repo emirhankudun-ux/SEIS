@@ -45,6 +45,15 @@ Root system documents:
 - [`docs/governance/seis-god-mode-developer.md`](./docs/governance/seis-god-mode-developer.md)
   defines the SEIS God Mode Developer lane for high-leverage, cross-layer work.
 
+## Yeni Nesil AGI Özellikleri
+
+SEIS artık sadece bir platform değil, otonom bir AGI çekirdeğidir:
+
+- **Muhakeme Döngüsü (Reasoning Loop):** Karmaşık görevleri analiz eder, planlar ve adım adım uygular.
+- **Gelişmiş Dosya Manipülasyonu:** Kod yazabilir, dosyaları okuyabilir ve projeyi otonom olarak geliştirebilir.
+- **API Erişimi:** FastAPI tabanlı modern bir arayüz ile her türlü uygulamaya entegre edilebilir.
+- **Docker Desteği:** Tek komutla her yerde çalıştırılabilir.
+
 ## Core Scope
 
 | Area        | SEIS covers                                                                                                                                                                        |
