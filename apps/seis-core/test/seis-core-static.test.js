@@ -5,6 +5,36 @@ import { JSDOM } from "jsdom";
 
 const root = new URL("../", import.meta.url);
 
+async function renderCommandCenter({ width = 1440, height = 900 } = {}) {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
+
+  const dom = new JSDOM(html, {
+    pretendToBeVisual: true,
+    runScripts: "outside-only",
+    url: "https://seis.local/command-center"
+  });
+
+  Object.defineProperty(dom.window, "innerWidth", { configurable: true, value: width });
+  Object.defineProperty(dom.window, "innerHeight", { configurable: true, value: height });
+  dom.window.matchMedia = (query) => ({
+    addEventListener() {},
+    addListener() {},
+    dispatchEvent: () => false,
+    matches: query.includes("max-width: 900px") ? width <= 900 : false,
+    media: query,
+    onchange: null,
+    removeEventListener() {},
+    removeListener() {}
+  });
+  dom.window.structuredClone = globalThis.structuredClone;
+  dom.window.eval(fixture);
+  dom.window.eval(script);
+
+  return dom;
+}
+
 test("SEIS Command Center shell exposes required modules", async () => {
   const html = await readFile(new URL("index.html", root), "utf8");
   for (const label of [
@@ -123,6 +153,69 @@ test("SEIS Command Center local retrieval filters have mobile viewport coverage"
   assert.match(mobileBlock, /#ai-core-retrieval-reset/);
   assert.match(mobileBlock, /min-height: 44px/);
   assert.match(mobileBlock, /width: 100%/);
+});
+
+test("SEIS Command Center local retrieval toolbar preserves desktop and mobile visual smoke contracts", async () => {
+  const css = await readFile(new URL("styles.css", root), "utf8");
+  const desktopRetrievalControls = css.match(/\.retrieval-controls \{[\s\S]*?\n\}/)?.[0] ?? "";
+  const mobileBlock = css.match(/@media \(max-width: 900px\) \{[\s\S]*?(?=\n@media \(max-width: 620px\))/)?.[0] ?? "";
+
+  assert.match(
+    desktopRetrievalControls,
+    /grid-template-columns: minmax\(220px, 1fr\) minmax\(150px, 190px\) minmax\(150px, 190px\) auto/
+  );
+  assert.match(mobileBlock, /\.retrieval-controls,\n  \.architecture-strip/);
+  assert.match(mobileBlock, /grid-template-columns: 1fr/);
+  assert.match(mobileBlock, /\.retrieval-filter-field input,\n  \.retrieval-filter-field select,\n  #ai-core-retrieval-reset/);
+  assert.match(mobileBlock, /min-height: 44px/);
+
+  for (const viewport of [
+    { name: "desktop", width: 1440, height: 900 },
+    { name: "mobile", width: 390, height: 844 }
+  ]) {
+    const dom = await renderCommandCenter(viewport);
+    const document = dom.window.document;
+    const bodyText = document.body.textContent;
+    const toolbar = document.querySelector(".retrieval-controls");
+    const controls = [
+      "#ai-core-retrieval-query",
+      "#ai-core-retrieval-source-class",
+      "#ai-core-retrieval-transcript-state",
+      "#ai-core-retrieval-reset",
+      "#ai-core-retrieval-filter-status"
+    ].map((selector) => document.querySelector(selector));
+    const adapters = document.querySelector("#ai-core-retrieval-adapters");
+    const results = document.querySelector("#ai-core-retrieval-results");
+    const transcripts = document.querySelector("#ai-core-no-content-transcripts");
+
+    assert.match(bodyText, /SEIS Command Center/, `${viewport.name} body renders shell copy`);
+    assert.match(bodyText, /Local Retrieval/, `${viewport.name} body renders retrieval heading`);
+    assert.match(bodyText, /Retrieval Result Cards/, `${viewport.name} body renders result panel heading`);
+    assert.match(bodyText, /No-Content Search Transcripts/, `${viewport.name} body renders transcript panel heading`);
+
+    assert.equal(toolbar.getAttribute("role"), "group");
+    assert.equal(toolbar.getAttribute("aria-labelledby"), "ai-core-local-retrieval-title");
+    assert.equal(toolbar.getAttribute("aria-describedby"), "ai-core-retrieval-filter-status");
+    assert.deepEqual(
+      controls.map((control) => control?.id),
+      [
+        "ai-core-retrieval-query",
+        "ai-core-retrieval-source-class",
+        "ai-core-retrieval-transcript-state",
+        "ai-core-retrieval-reset",
+        "ai-core-retrieval-filter-status"
+      ]
+    );
+
+    assert.match(adapters.textContent, /local-readonly-retrieval-query-adapter/);
+    assert.match(results.textContent, /raw:false/);
+    assert.match(results.textContent, /provider:false/);
+    assert.match(transcripts.textContent, /0 results/);
+    assert.doesNotMatch(
+      document.querySelector("#ai-core-retrieval-filter-status").textContent,
+      /^0 result cards, 0 no-content transcripts$/
+    );
+  }
 });
 
 test("SEIS Command Center exposes local-only retrieval boundaries", async () => {

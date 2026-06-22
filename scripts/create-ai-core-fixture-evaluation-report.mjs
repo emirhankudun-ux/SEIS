@@ -493,7 +493,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add browser-level visual smoke coverage for the Local Retrieval toolbar.",
+    summary: "Add browser-run visual QA for the Local Retrieval toolbar with screenshot or DOM evidence.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",

@@ -38,7 +38,7 @@
 
 ## Next Recommended Slice
 
-Add browser-level visual smoke coverage for the Local Retrieval toolbar.
+Add browser-run visual QA for the Local Retrieval toolbar with screenshot or DOM evidence.
 
 Source links:
 

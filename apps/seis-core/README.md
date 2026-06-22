@@ -83,6 +83,10 @@ apps/seis-core/
   retrieval filter controls without introducing live retrieval behavior.
 - Preserve mobile viewport behavior for the local retrieval toolbar with a
   single-column layout and 44px touch targets.
+- Preserve desktop and mobile viewport smoke contracts for the local retrieval
+  toolbar in JSDOM. This validates rendered DOM, ARIA wiring, populated fixture
+  panels, security boundary chips, and responsive CSS contracts without
+  claiming pixel-level browser visual regression coverage.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.
@@ -122,3 +126,7 @@ Open `http://127.0.0.1:4174/`.
 ```bash
 node --test apps/seis-core/test/*.test.js
 ```
+
+The app-level test suite includes Local Retrieval viewport-contract smoke
+coverage for desktop and mobile rendering. Browser screenshot regression should
+remain a separate review slice.

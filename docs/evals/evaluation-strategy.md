@@ -106,6 +106,14 @@ Retrieval toolbar: the controls collapse to one column and keep 44px touch
 targets. This remains CSS/static UI evidence, not runtime proof of live
 retrieval or provider readiness.
 
+The app-scoped suite also includes a desktop and mobile viewport-contract smoke
+test for the Local Retrieval toolbar. It renders the Command Center fixture in
+JSDOM and verifies nonblank shell content, ARIA wiring, populated local
+retrieval panels, safety boundary chips, and responsive CSS contracts. This is
+stronger than source-only CSS checks, but it is still not pixel-level browser
+visual regression evidence and does not claim screenshot, clipping, or real
+layout-engine coverage.
+
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and
 `npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only

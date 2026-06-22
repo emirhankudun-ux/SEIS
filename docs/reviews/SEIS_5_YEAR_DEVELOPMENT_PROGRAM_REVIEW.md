@@ -292,3 +292,10 @@ The mobile hardening slice added static coverage for the Local Retrieval
 toolbar's single-column responsive collapse and 44px touch targets. It remains
 CSS and app-test evidence only; no live retrieval or provider integration was
 added.
+
+The viewport-contract smoke slice added a Command Center JSDOM render check for
+desktop and mobile dimensions. It verifies that the Local Retrieval toolbar
+renders nonblank shell content, stable ARIA wiring, populated fixture-backed
+retrieval panels, safety boundary chips, and responsive CSS contracts. This is
+not a browser screenshot regression suite and does not add live retrieval,
+provider calls, embeddings, memory writes, or raw-content behavior.

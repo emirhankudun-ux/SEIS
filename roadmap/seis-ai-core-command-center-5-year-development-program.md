@@ -350,12 +350,18 @@ Completed foundation slice:
 - Mobile viewport QA is now covered by a static Command Center test that
   verifies the Local Retrieval toolbar collapses to one column and preserves
   44px touch targets under the 900px breakpoint.
+- Desktop and mobile viewport-contract smoke QA is now covered by a Command
+  Center JSDOM test that renders the Local Retrieval toolbar and verifies
+  nonblank shell content, ARIA wiring, populated local retrieval panels, safety
+  boundary chips, and responsive CSS contracts without live retrieval or
+  provider behavior.
 
 ## Next Safe Slice
 
-Add browser-level visual smoke coverage for the Local Retrieval toolbar across
-desktop and mobile viewports while keeping it fixture-backed without adding live
-retrieval, providers, embeddings, memory writes, or raw-content behavior.
+Add browser-run visual QA for the Local Retrieval toolbar across desktop and
+mobile viewports, with screenshot or DOM evidence, while keeping it
+fixture-backed without adding live retrieval, providers, embeddings, memory
+writes, or raw-content behavior.
 
 ## Relationship to Existing Roadmaps
 
