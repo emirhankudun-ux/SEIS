@@ -130,9 +130,12 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - No full secret-history scan.
 - No typed environment validation.
 - No runtime AI provider verification.
-- SEIS Code has static/browser foundation evidence, but no browser interaction or refresh-persistence QA yet.
+- SEIS Code and Mythic Gacha now have repeatable browser smoke evidence, but
+  no committed visual-regression baseline or full browser-restart persistence
+  suite yet.
 - No live cloud deployment evidence.
-- No component inventory or visual QA record.
+- Component inventory and browser smoke records exist, but committed
+  visual-regression baselines are still absent.
 - Schema registry coverage is partial and top-level only; it does not yet cover all JSON records semantically.
 - No cross-worktree integration validation.
 
@@ -181,6 +184,9 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
   accepted as inside `/workspace`.
 - Added validator markers for the Mythic Gacha interaction guards and SEIS Code
   workspace boundary.
+- Added repeatable product-experience browser smoke coverage for SEIS Code,
+  the Local Demo REPL, Mythic Gacha, mobile overflow checks, and MythicArchive
+  terminal visibility.
 
 ## Changes Deferred
 
@@ -197,8 +203,10 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Live provider calls.
 - SSH and deployment.
 - Full SEIS Desktop implementation and the remaining 60+ app operating system target.
-- Mythic Gacha refresh-persistence QA, full shared desktop VFS integration, and full artwork provenance review.
-- E2E hardening and committed visual-regression baselines for SEIS Code, Mythic Gacha, and Video Hero showcase.
+- Mythic Gacha full browser-restart persistence QA, full shared desktop VFS
+  integration, and full artwork provenance review.
+- E2E hardening and committed visual-regression baselines for SEIS Code,
+  Mythic Gacha, and Video Hero showcase.
 
 ## Validation Performed
 
@@ -224,8 +232,8 @@ See `docs/STATUS.md` for the final validation table after this pass.
 6. GitHub templates/CODEOWNERS and public exposure checklist.
 7. Accessibility keyboard-navigation QA.
 8. Plugin interface validation and browser QA.
-9. SEIS Code interaction and persistence QA.
-10. Video Hero and Mythic Gacha asset provenance and browser QA.
+9. SEIS Code interaction, source-control, extension, and full restart-persistence QA.
+10. Video Hero and Mythic Gacha asset provenance and visual-regression QA.
 11. Data schema registry semantic expansion.
 
 ## Human Approval Needed

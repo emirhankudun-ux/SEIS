@@ -14,6 +14,8 @@
     <meta name="twitter:card" content="summary">
     <title>SEIS</title>
     <link rel="canonical" href="https://emirhankudun-ux.github.io/SEIS/">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="alternate icon" href="./favicon.ico">
     <link rel="manifest" href="./manifest.webmanifest">
     <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.svg">
     <link rel="stylesheet" href="./styles.css">
@@ -26,6 +28,7 @@
         <a href="#modes">Modes</a>
         <a href="#development">Develop</a>
         <a href="#plugins">Plugins</a>
+        <a href="#plugin-interfaces">Interfaces</a>
         <a href="#ai-release">AI</a>
         <a href="#languages">Languages</a>
         <a href="#pulse">Pulse</a>
@@ -191,6 +194,74 @@
             <h3>Requested plugin inventory</h3>
             <p class="status-line" data-requested-plugin-summary>Requested plugin inventory loading.</p>
             <div class="marketplace-source-list" data-requested-plugin-inventory-sources></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plugin-interfaces" class="section-reveal system-section" data-plugin-interfaces>
+        <p class="eyebrow">SEIS plugin interfaces</p>
+        <h2>Five lanes with a five-year product memory.</h2>
+        <p class="section-copy">
+          A read-only Command Center slice for <code>@seis</code>, <code>@seis-cloud</code>,
+          <code>@seis-code</code>, <code>@seis-design</code>, and <code>@seis-data</code>.
+          It gives the interface suite the feel of a mature five-year product system while
+          keeping deployment, SSH, provider, and repository-write actions explicitly blocked.
+        </p>
+        <p class="status-line" data-plugin-interface-status>Static plugin interface view loading.</p>
+
+        <div class="plugin-interface-layout">
+          <div class="plugin-interface-tabs" role="tablist" aria-label="SEIS plugin lanes" data-plugin-interface-tabs>
+            <button class="plugin-interface-tab is-active" type="button" role="tab" aria-selected="true" data-plugin-interface-tab="seis">
+              <span>@seis</span>
+              <strong>Command</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-cloud">
+              <span>@seis-cloud</span>
+              <strong>Cloud</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-code">
+              <span>@seis-code</span>
+              <strong>Code</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-design">
+              <span>@seis-design</span>
+              <strong>Design</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-data">
+              <span>@seis-data</span>
+              <strong>Data</strong>
+            </button>
+          </div>
+
+          <article class="plugin-interface-detail" role="tabpanel" aria-live="polite" data-plugin-interface-detail>
+            <span>Loading</span>
+            <h3>Plugin lane details</h3>
+            <p>Loading local interface records.</p>
+          </article>
+        </div>
+
+        <div class="plugin-interface-evidence" data-plugin-interface-evidence aria-label="Current evidence links"></div>
+        <div class="plugin-maturity-signals" data-plugin-maturity-signals aria-label="Five-year maturity signals"></div>
+        <div class="plugin-interface-coverage" data-plugin-interface-coverage aria-label="Five-year plugin program coverage"></div>
+        <article class="plugin-interface-readiness" data-plugin-interface-readiness aria-live="polite">
+          <span>Loading</span>
+          <h3>Readiness gates</h3>
+          <p>Loading lane safety boundaries.</p>
+        </article>
+
+        <div class="five-year-panel">
+          <div>
+            <p class="eyebrow">Five-year development horizon</p>
+            <h3>2026 through 2030, staged instead of overclaimed.</h3>
+          </div>
+          <div class="five-year-program">
+            <div class="five-year-controls" data-five-year-controls aria-label="Five-year development years"></div>
+            <div class="five-year-grid" data-five-year-grid></div>
+            <article class="five-year-detail" data-five-year-detail aria-live="polite">
+              <span>Loading</span>
+              <h4>Development program</h4>
+              <p>Loading yearly lane commitments.</p>
+            </article>
           </div>
         </div>
       </section>

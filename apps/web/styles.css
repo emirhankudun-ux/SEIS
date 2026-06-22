@@ -443,6 +443,185 @@ h2 {
   text-transform: capitalize;
 }
 
+.plugin-interface-layout {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.42fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.plugin-interface-tabs {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.plugin-interface-tab,
+.five-year-button,
+.five-year-period-button,
+.five-year-lane-button {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.45);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.plugin-interface-tab {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem;
+}
+
+.plugin-interface-tab span,
+.plugin-interface-detail > span,
+.five-year-card span,
+.five-year-detail > span,
+.five-year-cadence span {
+  color: var(--teal);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.plugin-interface-tab.is-active,
+.five-year-button.is-active,
+.five-year-period-button.is-active,
+.five-year-lane-button.is-active {
+  border-color: rgba(47, 111, 115, 0.55);
+  background: rgba(47, 111, 115, 0.12);
+}
+
+.plugin-interface-detail,
+.five-year-detail {
+  min-height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.plugin-interface-detail h3,
+.five-year-detail h4,
+.five-year-card h4 {
+  margin: 0.28rem 0 0.55rem;
+}
+
+.plugin-interface-detail p,
+.five-year-detail p,
+.five-year-card p,
+.five-year-cadence p {
+  color: var(--muted);
+}
+
+.plugin-interface-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.65rem 0;
+}
+
+.plugin-interface-link,
+.plugin-interface-evidence a {
+  color: var(--teal);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.plugin-interface-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.plugin-interface-evidence a {
+  border: 1px solid rgba(47, 111, 115, 0.24);
+  border-radius: 999px;
+  padding: 0.42rem 0.65rem;
+  background: rgba(255, 255, 255, 0.36);
+}
+
+.plugin-interface-coverage {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.plugin-interface-coverage-card,
+.five-year-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.plugin-interface-coverage-card strong,
+.plugin-interface-coverage-card span {
+  display: block;
+}
+
+.plugin-interface-coverage-card strong {
+  font-size: 1.12rem;
+}
+
+.plugin-interface-coverage-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.five-year-panel {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+.five-year-program {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.five-year-controls,
+.five-year-period-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.five-year-button,
+.five-year-period-button {
+  padding: 0.55rem 0.75rem;
+}
+
+.five-year-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.five-year-cadence,
+.five-year-lane-list {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.five-year-cadence {
+  border-left: 2px solid rgba(142, 82, 100, 0.38);
+  padding-left: 0.75rem;
+}
+
+.five-year-lane-button {
+  display: grid;
+  gap: 0.22rem;
+  padding: 0.75rem;
+}
+
 .language-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -586,6 +765,9 @@ html[data-motion-mode="cinematic"] .hero {
   .gap-grid,
   .system-grid,
   .marketplace-layout,
+  .plugin-interface-layout,
+  .plugin-interface-coverage,
+  .five-year-grid,
   .artwork-grid,
   .timeline {
     grid-template-columns: 1fr;

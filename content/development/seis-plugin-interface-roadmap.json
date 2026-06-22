@@ -346,5 +346,123 @@
         "h2": "Validate data consumers, stale-state behavior, provenance links, and generated artifact integrity."
       }
     ]
-  }
+  },
+  "maturitySignals": {
+    "headline": "Five-year product memory without live-action overclaiming.",
+    "posture": "The interface should feel like a maintained product system: dense evidence, clear cadence, predictable gates, and no fake operational buttons.",
+    "markers": [
+      {
+        "label": "lane-year commitments",
+        "value": "25",
+        "detail": "Five plugin lanes carry commitments across 2026, 2027, 2028, 2029, and 2030."
+      },
+      {
+        "label": "cadence loops",
+        "value": "10",
+        "detail": "Each lane has H1 build and H2 hardening routines to create a long-run maintenance rhythm."
+      },
+      {
+        "label": "readiness gates",
+        "value": "5",
+        "detail": "Every requested lane declares allowed local actions and blocked privileged actions."
+      },
+      {
+        "label": "live actions",
+        "value": "0",
+        "detail": "The current surface remains read-only, local, and safe without cloud credentials."
+      }
+    ]
+  },
+  "interfaceReadiness": [
+    {
+      "id": "seis",
+      "currentMode": "read-only governance cockpit",
+      "allowedActions": [
+        "Review status, backlog, roadmap, and evidence links.",
+        "Switch local plugin lanes, years, and H1/H2 cadence views.",
+        "Prepare review notes for a future scoped foundation PR."
+      ],
+      "blockedActions": [
+        "Push to main or merge PRs.",
+        "Rewrite official governance without review.",
+        "Claim live ecosystem health without validation evidence."
+      ],
+      "nextReview": "2026-H2",
+      "reviewCadence": "H1/H2",
+      "evidenceGate": "Status, backlog, source docs, and validators must stay aligned.",
+      "promotionGate": "Promote only after browser QA covers lane tabs, year controls, readiness gates, and mobile layout."
+    },
+    {
+      "id": "seis-cloud",
+      "currentMode": "dry-run cloud readiness",
+      "allowedActions": [
+        "Review deployment targets and rollback requirements as static records.",
+        "Show disabled live-action boundaries and approval requirements.",
+        "Document cloud and SSH readiness blockers without opening connections."
+      ],
+      "blockedActions": [
+        "Execute deployment, SSH, firewall, VPN, or sudo commands.",
+        "Store private hostnames, private keys, or credentials in the browser.",
+        "Claim production readiness without rollback and approval evidence."
+      ],
+      "nextReview": "2026-H2",
+      "reviewCadence": "H1/H2",
+      "evidenceGate": "Cloud records must remain placeholder-safe and credential-free.",
+      "promotionGate": "Live paths require explicit human approval, target confirmation, rollback notes, and redacted logs."
+    },
+    {
+      "id": "seis-code",
+      "currentMode": "browser workspace contract",
+      "allowedActions": [
+        "Review the local IDE, virtual file system, terminal, and no-key AI REPL contract.",
+        "Plan browser-safe editor slices before adding heavy dependencies.",
+        "Keep provider identity and Local Demo boundaries visible."
+      ],
+      "blockedActions": [
+        "Expose provider keys or SSH private keys in client storage.",
+        "Label non-Anthropic fallback output as Claude.",
+        "Claim native OS execution from a browser sandbox."
+      ],
+      "nextReview": "2026-H2",
+      "reviewCadence": "H1/H2",
+      "evidenceGate": "No-key startup, client-bundle secret safety, and virtual-file persistence must be testable.",
+      "promotionGate": "Move beyond contract only after a small editor/file/terminal slice passes browser QA."
+    },
+    {
+      "id": "seis-design",
+      "currentMode": "design-system quality gate",
+      "allowedActions": [
+        "Review tokens, component inventory, motion boundaries, and responsive acceptance notes.",
+        "Track visual QA and accessibility gaps as evidence-backed records.",
+        "Use restrained motion and reduced-motion fallbacks."
+      ],
+      "blockedActions": [
+        "Ship decorative-only controls as functional UI.",
+        "Use unlicensed assets or unclear provenance.",
+        "Claim accessibility maturity without keyboard and visual QA evidence."
+      ],
+      "nextReview": "2026-H2",
+      "reviewCadence": "H1/H2",
+      "evidenceGate": "Design records must cite component, token, motion, and responsive evidence.",
+      "promotionGate": "Promote only after browser screenshots, reduced-motion review, and mobile overflow checks are current."
+    },
+    {
+      "id": "seis-data",
+      "currentMode": "schema and evidence registry",
+      "allowedActions": [
+        "Review JSON records, schema expectations, freshness, and provenance links.",
+        "Add validator-backed records for UI-consumed data.",
+        "Mark unknown or stale evidence as unknown or stale."
+      ],
+      "blockedActions": [
+        "Invent scan results, health scores, or timestamps.",
+        "Store secrets, tokens, personal data, or private hosts in structured records.",
+        "Treat stale or mock evidence as live validation."
+      ],
+      "nextReview": "2026-H2",
+      "reviewCadence": "H1/H2",
+      "evidenceGate": "Every UI-consumed record must have a registry entry and validation command.",
+      "promotionGate": "Analytics expansion waits for schema coverage, freshness rules, and provenance review."
+    }
+  ]
 }

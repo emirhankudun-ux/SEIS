@@ -17,32 +17,62 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 433
+Inspected files: 1553
 
 ## Provider Matrix
 
 | Provider | Category | Status | Expected env vars | Locations | Frontend direct | Backend side | Decision | Recommended action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Anthropic Claude | cloud model provider | Unknown | ANTHROPIC_API_KEY | 2814 | no | no | Retain | Review manually before enabling. |
-| Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 3 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 35 | no | no | Retain | Review manually before enabling. |
-| Google Gemini | cloud model provider | Unknown | GEMINI_API_KEY | 31 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 276 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Unknown | OLLAMA_BASE_URL, OLLAMA_HOST | 17 | no | no | Retain | Review manually before enabling. |
-| OpenAI | cloud model provider | Unknown | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 4 | no | no | Retain | Review manually before enabling. |
-| Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 36 | no | no | Retain | Review manually before enabling. |
-| Runway | media provider | Unknown | RUNWAY_API_KEY | 31 | no | no | Retain | Review manually before enabling. |
-| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 36 | no | no | Retain | Review manually before enabling. |
-| Vercel AI SDK | abstraction layer | Unknown | none detected | 8 | no | no | Retain | Review manually before enabling. |
+| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5787 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 6 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Cohere | cloud model provider | Unknown | COHERE_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
+| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 110 | no | no | Retain | Review manually before enabling. |
+| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 91 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Groq | cloud model provider | Unknown | GROQ_API_KEY | 3 | no | no | Retain | Review manually before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 956 | no | no | Retain | Review manually before enabling. |
+| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 210 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 38 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 74 | no | no | Retain | Review manually before enabling. |
+| Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
+| Runway | media provider | Unknown | RUNWAY_API_KEY | 329 | no | no | Retain | Review manually before enabling. |
+| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 95 | no | no | Retain | Review manually before enabling. |
+| Vercel AI SDK | abstraction layer | Unknown | none detected | 15 | no | no | Retain | Review manually before enabling. |
 
 ## Secret-Exposure Findings
 
-No secret-like values were reported by this static scan.
+| Type | Variable | Path | Line | Severity | Value |
+| --- | --- | --- | --- | --- | --- |
+| assignment_like_secret | omitted | reports/seis-action-decisions/latest-learned.md | 33 | high | value intentionally omitted |
+| assignment_like_secret | omitted | reports/seis-action-decisions/latest.md | 33 | high | value intentionally omitted |
+| assignment_like_secret | omitted | reports/seis-action-execution/latest-learned.md | 29 | high | value intentionally omitted |
+| assignment_like_secret | omitted | reports/seis-action-execution/latest-run.md | 29 | high | value intentionally omitted |
+| assignment_like_secret | omitted | reports/seis-action-execution/latest.md | 29 | high | value intentionally omitted |
+| assignment_like_secret | omitted | scripts/check-seis-enterprise-gates.mjs | 83 | high | value intentionally omitted |
+| assignment_like_secret | omitted | scripts/check-seis-enterprise-gates.mjs | 95 | high | value intentionally omitted |
+| assignment_like_secret | omitted | server/cloud/ssh-ai-shell/ai_engine.py | 169 | high | value intentionally omitted |
 
 ## Deployment Credential References
 
 | Name | Path | Line | Surface |
 | --- | --- | --- | --- |
+| GITHUB_TOKEN | SEIST/deploy/cloud-environment.json | 22 | repository |
+| CLOUDFLARE_API_TOKEN | SEIST/deploy/cloud-environment.json | 31 | repository |
+| VERCEL_TOKEN | SEIST/deploy/cloud-environment.json | 40 | repository |
+| NETLIFY_AUTH_TOKEN | SEIST/deploy/cloud-environment.json | 48 | repository |
+| AZURE_STATIC_WEB_APPS_API_TOKEN | SEIST/deploy/cloud-environment.json | 56 | repository |
+| AWS_AMPLIFY_DEPLOY_TOKEN | SEIST/deploy/cloud-environment.json | 64 | repository |
+| FIREBASE_DEPLOY_TOKEN | SEIST/deploy/cloud-environment.json | 72 | repository |
+| GITHUB_TOKEN | SEIST/plugins/seis/scripts/seis-repo-visibility-audit.sh | 35 | repository |
+| GITHUB_TOKEN | SEIST/reports/server-cloud-activation-report.json | 111 | repository |
+| CLOUDFLARE_API_TOKEN | SEIST/reports/server-cloud-activation-report.json | 121 | repository |
+| VERCEL_TOKEN | SEIST/reports/server-cloud-activation-report.json | 131 | repository |
+| NETLIFY_AUTH_TOKEN | SEIST/reports/server-cloud-activation-report.json | 140 | repository |
+| AZURE_STATIC_WEB_APPS_API_TOKEN | SEIST/reports/server-cloud-activation-report.json | 149 | repository |
+| AWS_AMPLIFY_DEPLOY_TOKEN | SEIST/reports/server-cloud-activation-report.json | 158 | repository |
+| FIREBASE_DEPLOY_TOKEN | SEIST/reports/server-cloud-activation-report.json | 167 | repository |
+| CLOUDFLARE_API_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
+| VERCEL_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
+| NETLIFY_AUTH_TOKEN | SEIST/scripts/create-connector-activation-report.cjs | 49 | repository |
 | GITHUB_TOKEN | deploy/cloud-environment.json | 22 | deployment-config |
 | CLOUDFLARE_API_TOKEN | deploy/cloud-environment.json | 31 | deployment-config |
 | VERCEL_TOKEN | deploy/cloud-environment.json | 40 | deployment-config |
@@ -50,14 +80,15 @@ No secret-like values were reported by this static scan.
 | AZURE_STATIC_WEB_APPS_API_TOKEN | deploy/cloud-environment.json | 56 | deployment-config |
 | AWS_AMPLIFY_DEPLOY_TOKEN | deploy/cloud-environment.json | 64 | deployment-config |
 | FIREBASE_DEPLOY_TOKEN | deploy/cloud-environment.json | 72 | deployment-config |
+| VERCEL_TOKEN | emirhan-kudun-portfolio/docs/deployment-server-runbook.md | 22 | documentation |
 | GITHUB_TOKEN | plugins/seis/scripts/seis-repo-visibility-audit.sh | 35 | repository |
-| GITHUB_TOKEN | reports/server-cloud-activation-report.json | 111 | documentation |
-| CLOUDFLARE_API_TOKEN | reports/server-cloud-activation-report.json | 121 | documentation |
-| VERCEL_TOKEN | reports/server-cloud-activation-report.json | 131 | documentation |
-| NETLIFY_AUTH_TOKEN | reports/server-cloud-activation-report.json | 140 | documentation |
-| AZURE_STATIC_WEB_APPS_API_TOKEN | reports/server-cloud-activation-report.json | 149 | documentation |
-| AWS_AMPLIFY_DEPLOY_TOKEN | reports/server-cloud-activation-report.json | 158 | documentation |
-| FIREBASE_DEPLOY_TOKEN | reports/server-cloud-activation-report.json | 167 | documentation |
+| GITHUB_TOKEN | reports/server-cloud-activation-report.json | 139 | documentation |
+| CLOUDFLARE_API_TOKEN | reports/server-cloud-activation-report.json | 149 | documentation |
+| VERCEL_TOKEN | reports/server-cloud-activation-report.json | 159 | documentation |
+| NETLIFY_AUTH_TOKEN | reports/server-cloud-activation-report.json | 168 | documentation |
+| AZURE_STATIC_WEB_APPS_API_TOKEN | reports/server-cloud-activation-report.json | 177 | documentation |
+| AWS_AMPLIFY_DEPLOY_TOKEN | reports/server-cloud-activation-report.json | 186 | documentation |
+| FIREBASE_DEPLOY_TOKEN | reports/server-cloud-activation-report.json | 195 | documentation |
 | CLOUDFLARE_API_TOKEN | scripts/create-connector-activation-report.cjs | 49 | backend |
 | VERCEL_TOKEN | scripts/create-connector-activation-report.cjs | 49 | backend |
 | NETLIFY_AUTH_TOKEN | scripts/create-connector-activation-report.cjs | 49 | backend |
@@ -94,14 +125,17 @@ only. They do not require API keys for core SEIS.
 
 These references do not prove enabled live features or required API keys.
 
-- Anthropic Claude: ANTHROPIC_API_KEY (Unknown)
+- Anthropic Claude: ANTHROPIC_API_KEY (Live but Unverified)
 - Cloudflare Workers AI: CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN (Live but Unverified)
+- Cohere: COHERE_API_KEY (Unknown)
 - DeepSeek: DEEPSEEK_API_KEY (Unknown)
-- Google Gemini: GEMINI_API_KEY (Unknown)
+- Google Gemini: GEMINI_API_KEY (Live but Unverified)
+- Groq: GROQ_API_KEY (Unknown)
 - NVIDIA NIM: NVIDIA_API_KEY (Unknown)
-- Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Unknown)
-- OpenAI: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID (Unknown)
+- Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Live but Unverified)
+- OpenAI: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID (Live but Unverified)
 - Perplexity: PERPLEXITY_API_KEY (Unknown)
+- Portkey: PORTKEY_API_KEY (Unknown)
 - Runway: RUNWAY_API_KEY (Unknown)
 - Together AI: TOGETHER_API_KEY (Unknown)
 - Vercel AI SDK: no key variable detected (Unknown)

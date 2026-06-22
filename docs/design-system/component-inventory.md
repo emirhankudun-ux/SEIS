@@ -24,8 +24,8 @@ regression suite.
 | --- | --- | --- | --- | --- |
 | Inventory record | Validated | `content/development/seis-design-component-inventory.json` | It covers current static surfaces only. | Expand when new app surfaces land. |
 | Validator | Validated | `scripts/check-design-component-inventory.mjs` | It checks selector/source evidence, not rendered screenshots. | Add browser visual QA later. |
-| SEIS Code components | Validated | `npm run check:seis-code` | No Playwright interaction coverage. | Add interaction tests. |
-| Video Hero components | Validated | `npm run check:video-hero-showcase` | No playback screenshot QA. | Add viewport screenshots. |
+| SEIS Code components | Browser-smoked foundation | `npm run check:seis-code`, `npm run check:product-experience-browser-smoke` | No committed visual-regression baseline or Playwright suite yet. | Keep browser smoke passing and add focused interaction cases. |
+| Video Hero components | Browser-smoked foundation | `npm run check:video-hero-showcase`, `npm run check:video-hero-browser-smoke`, `npm run check:video-hero-performance-budget` | No committed visual-regression baseline or measured hosted transfer budget. | Attach generated viewport screenshots and add hosted media-transfer evidence. |
 
 ## Rules / Policy
 
@@ -58,5 +58,6 @@ Each component record needs:
 
 ## Next Safe Action
 
-Add browser visual QA evidence for viewport fit, focus states, reduced-motion
-behavior, and control response across desktop and mobile.
+Expand browser QA evidence for viewport fit, focus states, reduced-motion
+behavior, control response, and committed visual-regression baselines across
+desktop and mobile.

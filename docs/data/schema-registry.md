@@ -18,6 +18,7 @@ or production data pipeline.
 | Registry record | Validated | `content/development/seis-data-schema-registry.json` | Coverage is still partial. | Expand records in small batches. |
 | Validator | Validated | `scripts/check-data-schema-registry.mjs` | It checks top-level shapes, not full semantic schemas. | Add per-record semantic checks where useful. |
 | Package command | Validated | `npm run check:data-schema-registry` | Not part of full `quality` because `check:foundation` is blocked. | Add to quality after repo hygiene recovery. |
+| Product smoke evidence | Validated | `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `npm run check:product-experience-browser-smoke` | Browser smoke records are text evidence, not a formal JSON result schema yet. | Add a compact machine-readable smoke summary when the QA format stabilizes. |
 
 ## Rules / Policy
 
@@ -53,4 +54,5 @@ Each registry entry should include:
 ## Next Safe Action
 
 Add semantic checks for the most critical records: goal evidence, cloud
-environment, code automation plan, plugin interface roadmap, and design tokens.
+environment, code automation plan, plugin interface roadmap, product browser
+smoke evidence, and design tokens.

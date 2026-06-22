@@ -147,7 +147,9 @@
         "interfaces",
         "fiveYearHorizon",
         "developmentProgram",
-        "developmentCadence"
+        "developmentCadence",
+        "maturitySignals",
+        "interfaceReadiness"
       ],
       "validationCommands": [
         "npm run check:plugin-interface-roadmap"

@@ -22,8 +22,8 @@ The foundation includes:
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
 | Design tokens | Scaffolded | `packages/design-tokens/seis.tokens.css` | No token validation command found. | Add token inventory and usage checks. |
-| Component inventory | Validator-backed | `content/development/seis-design-component-inventory.json`, `scripts/check-design-component-inventory.mjs` | No browser visual regression coverage. | Add viewport and focus-state QA. |
-| Visual style | Documented | `AGENTS.md`, strategy docs, `docs/design-system/component-inventory.md` | Visual QA remains manual. | Add browser screenshots before release readiness. |
+| Component inventory | Validator-backed with browser-smoked product surfaces | `content/development/seis-design-component-inventory.json`, `scripts/check-design-component-inventory.mjs`, `npm run check:product-experience-browser-smoke`, `npm run check:video-hero-browser-smoke` | No committed visual-regression baseline. | Add focused viewport and focus-state QA. |
+| Visual style | Documented with browser smoke evidence | `AGENTS.md`, strategy docs, `docs/design-system/component-inventory.md`, `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md` | Visual-regression baselines remain absent. | Attach generated screenshots before release readiness. |
 | Motion policy | Documented | `AGENTS.md`, motion checks | Coverage is partial. | Keep reduced-motion mandatory. |
 | Asset registry | Scaffolded | `packages/asset-registry` | License/provenance review incomplete. | Add asset intake policy and attribution review. |
 
@@ -56,5 +56,6 @@ Design work needs:
 
 ## Next Safe Action
 
-Add browser visual QA evidence for the current component inventory before
-broader product UI work.
+Expand browser QA for the current component inventory into committed viewport,
+focus-state, reduced-motion, and visual-regression evidence before broader
+product UI release work.
