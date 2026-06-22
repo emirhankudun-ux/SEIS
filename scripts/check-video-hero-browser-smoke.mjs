@@ -204,20 +204,19 @@ async function screenshot(client, name) {
 }
 
 async function clickSelector(client, selector) {
-  const point = await evaluate(client, `(() => {
+  const clicked = await evaluate(client, `(() => {
     const element = document.querySelector(${JSON.stringify(selector)});
-    if (!element) return null;
+    if (!element) return { ok: false, reason: 'missing' };
+    element.scrollIntoView({ block: 'center', inline: 'center' });
     const rect = element.getBoundingClientRect();
-    return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, width: rect.width, height: rect.height };
+    if (rect.width <= 0 || rect.height <= 0) return { ok: false, reason: 'not-visible' };
+    element.click();
+    return { ok: true };
   })()`);
 
-  if (!point || point.width <= 0 || point.height <= 0) {
-    throw new Error(`Cannot click selector: ${selector}`);
+  if (!clicked?.ok) {
+    throw new Error(`Cannot click selector: ${selector} (${clicked?.reason || "unknown"})`);
   }
-
-  await client.send("Input.dispatchMouseEvent", { type: "mouseMoved", x: point.x, y: point.y, button: "none" });
-  await client.send("Input.dispatchMouseEvent", { type: "mousePressed", x: point.x, y: point.y, button: "left", clickCount: 1 });
-  await client.send("Input.dispatchMouseEvent", { type: "mouseReleased", x: point.x, y: point.y, button: "left", clickCount: 1 });
   await delay(300);
 }
 
@@ -371,7 +370,7 @@ async function main() {
         key: "Escape",
         code: "Escape",
         windowsVirtualKeyCode: 27
-      });
+      }, 20000);
       await delay(300);
     }
 
