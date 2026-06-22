@@ -273,6 +273,20 @@
       "secretPolicy": "must not contain credentials, private paths, or committed screenshot binaries"
     },
     {
+      "id": "video-hero-performance-budget",
+      "path": "docs/reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md",
+      "lane": "@seis-design",
+      "currentStatus": "validated",
+      "sourceType": "performance-budget-evidence",
+      "expectedShape": "text",
+      "requiredTopLevelKeys": [],
+      "validationCommands": [
+        "npm run check:video-hero-performance-budget"
+      ],
+      "freshness": "review after Video Hero media, runtime loading, fallback, or provenance changes",
+      "secretPolicy": "must not contain credentials, private paths, committed video binaries, or unreviewed asset claims"
+    },
+    {
       "id": "gap-closure-register",
       "path": "data/gap-closure-register.json",
       "lane": "@seis-data",

@@ -30,7 +30,7 @@ or production performance readiness.
 | --- | --- | --- | --- |
 | Route count | Validated | `npm run check:video-hero-showcase` confirms exactly four themed pages. | None for static contract. |
 | Runtime controls | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies play/pause, mute, fullscreen, and CTA scroll behavior on the Nature page. | In-app Browser click dispatch timed out, so interaction proof uses no-install Chrome DevTools fallback. |
-| Loading behavior | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies each route has the expected hero, video element, metadata preload, controls, and no horizontal overflow at desktop and mobile viewports. | Network-performance measurements are not captured. |
+| Loading behavior | Browser-smoked and static-budgeted | `npm run check:video-hero-browser-smoke` verifies each route has the expected hero, video element, metadata preload, controls, and no horizontal overflow at desktop and mobile viewports. `npm run check:video-hero-performance-budget` verifies no committed video binaries, metadata-first loading, intent-based next-video preload, and fallback markers. | Network-performance measurements are not captured. |
 | Reduced motion | Browser-smoked | `npm run check:video-hero-browser-smoke` verifies `prefers-reduced-motion: reduce`, paused video state, and `is-reduced-motion` hero state on Materials. | Screenshot artifacts are generated under ignored `dist/qa/video-hero-smoke`; they are not committed. |
 | Provenance | Documented | `apps/web/showcase/video-heroes.json` stores Pexels source pages and direct MP4 URLs. | Asset licensing and long-term hosting should be re-reviewed before public release. |
 | Static package | Built | `npm run build:static` produced `dist/seis-static.zip` and includes `dist/seis-static/showcase/*`. | `release/web` mirror only syncs `index.html`, `styles.css`, and `app.js`; it is not the route-file evidence source. |
@@ -41,6 +41,7 @@ or production performance readiness.
 | Command | Result | Notes |
 | --- | --- | --- |
 | `npm run check:video-hero-showcase` | Passed | Validates pages, manifest, runtime hooks, CSS theme hooks, route config, service worker cache entries, and sitemap entries. |
+| `npm run check:video-hero-performance-budget` | Passed | Validates remote media provenance, no committed video binaries, metadata-first loading, intent preload, reduced-motion fallback, and minimum accessibility/loading markers. |
 | `npm run build:static` | Passed | Produces `dist/seis-static.zip`; generated package contains the showcase route files. |
 | `npm run check:plugin-interface-roadmap` | Passed | Confirms the broader five-lane interface roadmap and 2026-2030 horizon remain valid. |
 | `git diff --check` | Passed | No whitespace errors in the current diff. |
@@ -85,6 +86,7 @@ release. Public readiness requires:
 ## Related Documents
 
 - [../product/video-hero-showcase.md](../product/video-hero-showcase.md)
+- [VIDEO_HERO_PERFORMANCE_BUDGET.md](VIDEO_HERO_PERFORMANCE_BUDGET.md)
 - [../design-system/seis-design-foundation.md](../design-system/seis-design-foundation.md)
 - [../roadmap/MASTER_BACKLOG.md](../roadmap/MASTER_BACKLOG.md)
 - [../roadmap/NEXT_PR_QUEUE.md](../roadmap/NEXT_PR_QUEUE.md)

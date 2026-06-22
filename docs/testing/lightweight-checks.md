@@ -14,6 +14,7 @@ npm run check:plugin-interface-roadmap
 npm run check:seis-code
 npm run check:product-experience-browser-smoke
 npm run check:video-hero-showcase
+npm run check:video-hero-performance-budget
 npm run check:video-hero-browser-smoke
 npm run check:mythic-gacha
 npm run check:data-schema-registry
@@ -89,6 +90,8 @@ For Video Hero showcase pages, expected:
 - manifest provenance remains visible in `apps/web/showcase/video-heroes.json`
 
 Latest evidence is recorded in `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`.
+The static loading/provenance budget is recorded in
+`docs/reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md`.
 `npm run check:video-hero-browser-smoke` starts a local static server and uses
 system Chrome through DevTools because the in-app Browser could read and
 screenshot the routes but timed out on low-level click dispatch. The command

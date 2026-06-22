@@ -2,17 +2,39 @@
 (function () {
   "use strict";
 
-  const CACHE_NAME = "ek-portfolio-v1";
+  const CACHE_NAME = "seis-product-foundation-v11";
 
   const PRECACHE = [
     "./",
     "./index.html",
     "./style.css",
+    "./styles.css",
     "./script.js",
+    "./app.js",
     "./translations.json",
     "./manifest.json",
+    "./manifest.webmanifest",
     "./site-config.json",
-    "./favicon.svg"
+    "./favicon.svg",
+    "./favicon.ico",
+    "./seis-code.html",
+    "./seis-code.css",
+    "./seis-code.js",
+    "./mythic-gacha.html",
+    "./mythic-gacha.css",
+    "./mythic-gacha.js",
+    "./showcase/nature.html",
+    "./showcase/still-life.html",
+    "./showcase/materials.html",
+    "./showcase/metal-parts.html",
+    "./showcase/video-hero.css",
+    "./showcase/video-hero.js",
+    "./showcase/video-heroes.json",
+    "./public/media/mythic/shan-hai-creature-atlas.png",
+    "./src/config/routes.json",
+    "./src/styles/base.css",
+    "./src/styles/motion.css",
+    "./src/styles/responsive.css"
   ];
 
   self.addEventListener("install", function (event) {

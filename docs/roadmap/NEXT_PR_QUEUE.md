@@ -214,7 +214,7 @@ Date: 2026-06-22
 | Goal | Convert the four Video Hero showcase pages from validated static contract to visual QA evidence for desktop, mobile, reduced-motion, and media fallback behavior. |
 | Include | `docs/product/video-hero-showcase.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`, browser smoke notes, screenshots, reduced-motion evidence, media provenance review, and static package verification. |
 | Exclude | Deployment, live media CDN migration, dependency installation, paid media purchases, model-provider image generation, and release publication. |
-| Validation | `npm run check:video-hero-showcase`, `npm run check:video-hero-browser-smoke`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
+| Validation | `npm run check:video-hero-showcase`, `npm run check:video-hero-performance-budget`, `npm run check:video-hero-browser-smoke`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
 | Approval needed | None for local QA/docs; approval required for dependency installation, hosted media migration, deployment, or release. |
 
 ## PR 7: Mythic Gacha Playable Foundation
