@@ -1,0 +1,45 @@
+{
+  "name": "seis-code",
+  "version": "0.1.0",
+  "description": "SEIS-Code engineering lane for architecture-aware implementation, refactors, tests, CI, MCP/plugin code, and repo automation.",
+  "author": {
+    "name": "emirhankudun-ux",
+    "url": "https://github.com/emirhankudun-ux"
+  },
+  "homepage": "https://github.com/emirhankudun-ux/SEIS",
+  "repository": "https://github.com/emirhankudun-ux/SEIS",
+  "license": "UNLICENSED",
+  "keywords": [
+    "seis",
+    "code",
+    "architecture",
+    "codex",
+    "engineering",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SEIS-Code",
+    "shortDescription": "Architecture-aware SEIS engineering lane.",
+    "longDescription": "SEIS-Code gives Codex a dedicated engineering plugin for scoped implementation, refactors, debugging, tests, CI quality gates, MCP/plugin work, Apple-first platform packages, and repository automation under SEIS governance.",
+    "developerName": "emirhankudun-ux",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Architecture-aware implementation",
+      "Scoped refactors",
+      "Test and CI planning",
+      "MCP and plugin engineering",
+      "Apple-first platform code",
+      "Repository automation",
+      "Rollback-safe validation"
+    ],
+    "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
+    "defaultPrompt": [
+      "Use SEIS-Code to implement this repo change safely.",
+      "Plan tests and rollback notes for this SEIS change.",
+      "Audit this MCP/plugin code path before editing."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

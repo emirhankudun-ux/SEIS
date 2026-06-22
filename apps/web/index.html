@@ -1,494 +1,769 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="UI-UX Digital Lab is a calm SEIS workspace foundation for premium UI/UX systems, accessible motion, and low-pressure creative engineering.">
-    <meta name="theme-color" content="#f3efe7">
-    <meta name="color-scheme" content="light">
-    <meta name="robots" content="noindex, nofollow">
-    <meta property="og:title" content="UI-UX Digital Lab">
-    <meta property="og:description" content="A calm SEIS workspace foundation for premium UI/UX systems, accessible motion, and low-pressure creative engineering.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emirhankudun-ux.github.io/UIX-Apps/">
-    <meta name="twitter:card" content="summary">
-    <title>UI-UX Digital Lab</title>
-    <link rel="canonical" href="https://emirhankudun-ux.github.io/UIX-Apps/">
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-    <link rel="alternate icon" href="./favicon.ico">
-    <link rel="manifest" href="./manifest.webmanifest">
-    <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.svg">
-    <link rel="stylesheet" href="./styles.css">
-  </head>
-  <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="#top">UI-UX Digital Lab</a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#modes">Modes</a>
-        <a href="#showcase">Showcase</a>
-        <a href="#mythic">Mythic</a>
-        <a href="#development">Develop</a>
-        <a href="#plugins">Plugins</a>
-        <a href="#plugin-interfaces">Interfaces</a>
-        <a href="#pulse">Pulse</a>
-        <a href="#archive">Archive</a>
-        <a href="#roadmap">Roadmap</a>
-      </nav>
-      <div class="header-actions">
-        <div class="locale-switcher" data-locale-switcher aria-label="Language">
-          <button class="locale-chip is-active" type="button" aria-pressed="true">EN</button>
-          <button class="locale-chip" type="button" aria-pressed="false">TR</button>
-        </div>
-        <button id="motion-mode" class="mode-button" data-motion-toggle type="button" aria-pressed="true">
-          Cinematic
-        </button>
+<!DOCTYPE html>
+<!--
+  Emirhan Kudun — Portfolio | Global Edition
+  Dosyalar: index.html | style.css | script.js
+-->
+<html lang="en" data-lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="dark">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- PRIMARY SEO -->
+  <title>Emirhan Kudun — Grafik Tasarımcı &amp; UI/UX Designer | İstanbul</title>
+  <meta name="description" content="Emirhan Kudun — İstanbul merkezli Grafik Tasarımcı & UI/UX Designer. Branding, editorial tasarım ve dijital görsel sistemler.">
+  <meta name="keywords" content="emirhan kudun, graphic designer, UI UX designer, branding, logo design, visual identity, minimal design, typography, editorial design, motion design, istanbul designer, grafik tasarımcı">
+  <meta name="author" content="Emirhan Kudun">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#c8a96e">
+  <link rel="canonical" href="https://emirhankudun.com/">
+
+  <!-- OPEN GRAPH -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://emirhankudun.com/">
+  <meta property="og:title" content="Emirhan Kudun — Graphic Designer & UI/UX Designer">
+  <meta property="og:description" content="Minimal, modern ve kullanıcı odaklı grafik tasarım. Branding, editorial ve UI/UX visual design. Istanbul based, global projects.">
+  <meta property="og:image" content="https://emirhankudun.com/images/og-preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="Emirhan Kudun Portfolio">
+
+  <!-- TWITTER CARD -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Emirhan Kudun — Graphic Designer">
+  <meta name="twitter:description" content="Minimal, modern ve güçlü görsel tasarımlar. Istanbul based designer.">
+  <meta name="twitter:image" content="https://emirhankudun.com/images/og-preview.jpg">
+
+  <!-- HREFLANG -->
+  <link rel="alternate" hreflang="tr" href="https://emirhankudun.com/">
+  <link rel="alternate" hreflang="en" href="https://emirhankudun.com/en/">
+  <link rel="alternate" hreflang="fr" href="https://emirhankudun.com/fr/">
+  <link rel="alternate" hreflang="it" href="https://emirhankudun.com/it/">
+  <link rel="alternate" hreflang="de" href="https://emirhankudun.com/de/">
+  <link rel="alternate" hreflang="x-default" href="https://emirhankudun.com/">
+
+  <!-- FAVICON & PWA -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- SCHEMA.ORG -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://emirhankudun.com/#person","name":"Emirhan Kudun","jobTitle":"Graphic Designer & UI/UX Designer","description":"Minimal, modern ve kullanıcı odaklı grafik tasarım. Branding, editorial ve UI/UX visual design.","url":"https://emirhankudun.com","image":"https://emirhankudun.com/images/og-preview.jpg","email":"emirhan@kudun.com","address":{"@type":"PostalAddress","addressLocality":"Istanbul","addressCountry":"TR"},"alumniOf":{"@type":"CollegeOrUniversity","name":"Maltepe Üniversitesi","department":"Görsel İletişim Tasarımı"},"knowsLanguage":["tr","en","fr","it","de"],"knowsAbout":["Graphic Design","UI/UX Design","Branding","Motion Design","Editorial Design","Typography","Front-end Development","TypeScript","PHP"],"sameAs":["https://www.behance.net/emirhankudun","https://www.linkedin.com/in/emirhankudun","https://emirhankudun.myportfolio.com"]},{"@type":"WebSite","@id":"https://emirhankudun.com/#website","url":"https://emirhankudun.com","name":"Emirhan Kudun Portfolio","publisher":{"@id":"https://emirhankudun.com/#person"},"inLanguage":["tr","en","fr","it","de"]}]}
+  </script>
+
+  <!-- PRECONNECT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://www.behance.net">
+
+  <!-- FONTS -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=20260609-2">
+</head>
+<body>
+
+  <!-- COOKIE CONSENT -->
+  <div id="cookie-bar" role="alert">
+    <p data-i18n="cookie.text">Bu site deneyiminizi geliştirmek için çerez kullanır.</p>
+    <div class="cookie-actions">
+      <button id="cookie-accept" data-i18n="cookie.accept">Kabul Et</button>
+      <button id="cookie-decline" data-i18n="cookie.decline">Reddet</button>
+    </div>
+  </div>
+
+  <div id="scroll-progress" aria-hidden="true"></div>
+
+  <!-- ACCESSIBILITY -->
+  <a href="#main" class="skip-link" data-i18n="a11y.skip">İçeriğe Geç</a>
+
+  <!-- CURSOR -->
+  <div id="cursor-dot" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">Emirhan Kudun <span aria-hidden="true"></span></a>
+
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about"    data-i18n="nav.about">Hakkımda</a></li>
+      <li><a href="#services" data-i18n="nav.services">Uzmanlık</a></li>
+      <li><a href="#work"     data-i18n="nav.work">Çalışmalar</a></li>
+      <li><a href="#drawings" data-i18n="nav.drawings">Çizimler</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">İletişim</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <div class="lang-switcher">
+        <button class="lang-btn" data-lang="tr">TR</button>
+        <span aria-hidden="true">|</span>
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span aria-hidden="true">|</span>
+        <button class="lang-btn" data-lang="fr">FR</button>
+        <span aria-hidden="true">|</span>
+        <button class="lang-btn" data-lang="it">IT</button>
+        <span aria-hidden="true">|</span>
+        <button class="lang-btn" data-lang="de">DE</button>
+        <span id="lang-chip" class="lang-chip" aria-live="polite">English</span>
       </div>
-    </header>
+      <div class="motion-switcher" role="group" aria-label="Motion mode" data-i18n-aria-label="motion.group.aria">
+        <button type="button" class="motion-btn active" data-motion="standard" data-i18n="motion.standard">Standard</button>
+        <button type="button" class="motion-btn" data-motion="low" data-i18n="motion.low">Low Motion</button>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menü" aria-expanded="false" aria-controls="nav-links" data-i18n-aria-label="a11y.menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
 
-    <main id="main">
-      <section class="hero section-reveal is-visible" id="top">
-        <div class="hero-copy">
-          <p class="eyebrow">AI-native creative engineering</p>
-          <h1>Calm systems with cinematic clarity.</h1>
-          <p>
-            A lightweight workspace for premium UI/UX production that protects accessibility,
-            performance, and long-term maintainability.
+  <main id="main">
+
+    <!-- ===== HERO ===== -->
+    <section id="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-grid">
+        <div class="hero-content">
+          <p class="hero-eyebrow" data-i18n="hero.eyebrow">Grafik Tasarımcı</p>
+          <h1 class="hero-title">
+            <span data-i18n="hero.t1">Görsel</span><br>
+            <em data-i18n="hero.t2">Hikayeler</em><br>
+            <span data-i18n="hero.t3">Tasarlıyorum</span>
+          </h1>
+          <p class="hero-desc" data-i18n="hero.desc">
+            Grafik tasarım, UI ve motion design alanlarında modern ve minimalist çözümler üretiyorum.
+            Kompozisyon, renk ve tipografi aracılığıyla markalara güçlü görsel hikayeler anlatma konusunda uzmanım.
           </p>
-        </div>
-        <div class="hero-panel hero-panel--visual" data-depth-card>
-          <canvas class="cinematic-field" data-cinematic-field width="640" height="360" aria-hidden="true"></canvas>
-          <div>
-            <h2>Operating Mode</h2>
-            <p id="mode-label">Cinematic</p>
-            <p id="mode-detail">Layered motion with reduced-motion fallback.</p>
+          <div class="hero-actions">
+            <a href="#work" class="btn-primary"><span data-i18n="hero.cta1">Çalışmalarımı İncele</span></a>
+            <a href="#contact" class="btn-secondary">
+              <span class="btn-arrow" aria-hidden="true"></span>
+              <span data-i18n="hero.cta2">İletişime Geç</span>
+            </a>
           </div>
         </div>
-      </section>
 
-      <section id="modes" class="section-reveal">
-        <h2>Experience Modes</h2>
-        <div class="mode-grid">
-          <article>
-            <h3>Minimal</h3>
-            <p>Typography-first and low motion.</p>
-          </article>
-          <article>
-            <h3>Balanced</h3>
-            <p>Measured transitions and practical polish.</p>
-          </article>
-          <article>
-            <h3>Cinematic</h3>
-            <p>Layered reveals, depth, and optional intensity.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="showcase" class="section-reveal system-section">
-        <p class="eyebrow">Video hero gallery</p>
-        <h2>Immersive product openings with real video controls.</h2>
-        <p class="section-copy">
-          Four full-screen showcase routes pair high-quality looping video, quiet typography, CTA
-          actions, reduced-motion fallbacks, and loading-conscious playback behavior.
-        </p>
-        <div class="showcase-preview-grid" aria-label="Video hero showcase pages">
-          <a class="showcase-preview-card showcase-preview-card--nature" href="./showcase/nature.html">
-            <span>Nature</span>
-            <strong>Untamed Silence</strong>
-            <p>Forest-shadow atmosphere and ocean motion for elemental brand openings.</p>
-          </a>
-          <a class="showcase-preview-card showcase-preview-card--still-life" href="./showcase/still-life.html">
-            <span>Still Life</span>
-            <strong>Objects in Quiet Light</strong>
-            <p>Ceramics, glassware, refraction, and controlled studio shadows.</p>
-          </a>
-          <a class="showcase-preview-card showcase-preview-card--materials" href="./showcase/materials.html">
-            <span>Materials</span>
-            <strong>Tactile Memory</strong>
-            <p>Leather, fabric, fibers, and macro texture for material-led stories.</p>
-          </a>
-          <a class="showcase-preview-card showcase-preview-card--metal" href="./showcase/metal-parts.html">
-            <span>Metal Parts</span>
-            <strong>Precision in Motion</strong>
-            <p>Mechanical gears and machined detail for engineered product narratives.</p>
-          </a>
-        </div>
-      </section>
-
-      <section id="mythic" class="section-reveal system-section">
-        <p class="eyebrow">Mythic gacha</p>
-        <h2>A no-key Shan Hai Jing inspired draw system.</h2>
-        <p class="section-copy">
-          The playable Mythic Gacha route uses a local artwork atlas, 60 collectible creature
-          records, IndexedDB progress, pity logic, daily draw state, favorites, export, and
-          bestiary filters without requiring a live image-generation provider.
-        </p>
-        <div class="mythic-preview-panel">
-          <div>
-            <strong>60</strong>
-            <span>creature records</span>
+        <div class="hero-side" aria-hidden="true">
+          <div class="hero-card">
+            <p class="hero-card-label" data-i18n="hero.card">Özet</p>
+            <div class="hero-stats">
+              <div class="stat-item">
+                <div class="stat-num">1<span>+</span></div>
+                <div class="stat-label" data-i18n="hero.s1">Yıl Deneyim</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">40<span>+</span></div>
+                <div class="stat-label" data-i18n="hero.s2">Tamamlanan Proje</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">15<span>+</span></div>
+                <div class="stat-label" data-i18n="hero.s3">Araç &amp; Teknoloji</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <strong>80</strong>
-            <span>legendary pity cap</span>
-          </div>
-          <div>
-            <strong>0</strong>
-            <span>runtime provider keys</span>
-          </div>
-          <a class="showcase-cta" href="./mythic-gacha.html">Open Mythic Gacha</a>
         </div>
-      </section>
+      </div>
 
-      <section id="gaps" class="section-reveal">
-        <h2>Gap Closure Register</h2>
-        <div id="gap-board" class="gap-grid" aria-live="polite"></div>
-      </section>
+      <div class="scroll-hint" aria-hidden="true">
+        <div class="scroll-line"></div>
+        <span data-i18n="hero.scroll">Aşağı Kaydır</span>
+      </div>
+    </section>
 
-      <section id="development" class="section-reveal system-section">
-        <div id="development-mode" data-development-mode>
-          <p class="eyebrow">Development mode</p>
-          <h2>Develop locally, publish honestly.</h2>
-          <p class="section-copy">
-            The active path keeps source edits modular, local checks visible, and GitHub publishing
-            blocked until remote configuration and authentication are real.
+    <!-- ===== VISUAL BAND ===== -->
+    <div class="visual-band" aria-hidden="true">
+      <div class="vb-labels">
+        <span>Branding</span>
+        <span>·</span>
+        <span>Editorial</span>
+        <span>·</span>
+        <span>UI / UX</span>
+        <span>·</span>
+        <span>Motion</span>
+        <span>·</span>
+        <span>Typography</span>
+        <span>·</span>
+        <span>Visual Identity</span>
+      </div>
+      <div class="vb-line"></div>
+    </div>
+
+    <!-- ===== MARQUEE ===== -->
+    <div class="marquee-wrap" aria-hidden="true">
+      <div class="marquee-track">
+        <span>Grafik Tasarım <b>&middot;</b></span>
+        <span>UI/UX Design <b>&middot;</b></span>
+        <span>Motion Design <b>&middot;</b></span>
+        <span>Marka Kimliği <b>&middot;</b></span>
+        <span>Tipografi <b>&middot;</b></span>
+        <span>Editorial Design <b>&middot;</b></span>
+        <span>Figma <b>&middot;</b></span>
+        <span>Adobe Suite <b>&middot;</b></span>
+        <span>Grafik Tasarım <b>&middot;</b></span>
+        <span>UI/UX Design <b>&middot;</b></span>
+        <span>Motion Design <b>&middot;</b></span>
+        <span>Marka Kimliği <b>&middot;</b></span>
+        <span>Tipografi <b>&middot;</b></span>
+        <span>Editorial Design <b>&middot;</b></span>
+        <span>Figma <b>&middot;</b></span>
+        <span>Adobe Suite <b>&middot;</b></span>
+      </div>
+    </div>
+
+    <!-- ===== ABOUT ===== -->
+    <section id="about">
+      <div class="about-wrap">
+
+        <!-- Sol: Bio + Tools + Languages -->
+        <div class="about-text">
+          <p class="section-label reveal" data-i18n="ab.lbl">01 — Hakkımda</p>
+          <h2 class="section-title reveal reveal-delay-1">
+            <span data-i18n="ab.t1">Tasarım </span><em data-i18n="ab.t2">sanat</em><span data-i18n="ab.t3"> ile işlevselliği buluşturur.</span>
+          </h2>
+          <p class="about-bio reveal reveal-delay-2" data-i18n="ab.p1">
+            Ben <strong>Emirhan Kudun</strong> — Maltepe Üniversitesi Görsel İletişim Tasarımı mezunuyum.
+            Tasarım sürecinde estetik kadar işlevselliği de ön planda tutarım. Görsel dili sadeleştirerek
+            mesajı en net ve güçlü şekilde iletmeye odaklanırım.
           </p>
-          <p class="status-line" data-development-mode-status>Static development mode view active.</p>
-          <div class="system-grid" data-development-mode-grid>
-            <article class="system-card status-active">
-              <span>Source</span>
-              <strong>code</strong>
-              <h3>Modular edits</h3>
-              <p>HTML, CSS, JavaScript, and JSON changes stay small enough to review and reverse.</p>
-            </article>
-            <article class="system-card status-ready">
-              <span>Package</span>
-              <strong>zip</strong>
-              <h3>Static release</h3>
-              <p>The server-ready package refreshes only after source changes need shipment proof.</p>
-            </article>
-            <article class="system-card status-synced">
-              <span>Sync</span>
-              <strong>local</strong>
-              <h3>Workspace first</h3>
-              <p>Local progress remains distinct from confirmed GitHub publication.</p>
-            </article>
-            <article class="system-card status-blocked">
-              <span>GitHub</span>
-              <strong>auth</strong>
-              <h3>Publish gated</h3>
-              <p>Remote upload waits for a configured origin and authenticated GitHub CLI session.</p>
-            </article>
+          <p class="about-bio reveal reveal-delay-2" data-i18n="ab.p2">
+            Minimal, düzenli ve işlevsel görsel sistemler oluşturmak üzerine kurulu bir anlayışla;
+            branding, editorial design ve UI/UX visual design alanlarında üretim yapıyorum.
+            Amacım sade, net ve etkili görsel çözümler geliştirmek.
+          </p>
+
+          <div class="about-block-inner reveal reveal-delay-3">
+            <p class="block-label" data-i18n="ab.tools">Araçlar</p>
+            <div class="skills-grid">
+              <div class="skill-tag">Adobe Photoshop</div>
+              <div class="skill-tag">Adobe Illustrator</div>
+              <div class="skill-tag">Adobe After Effects</div>
+              <div class="skill-tag">Adobe InDesign</div>
+              <div class="skill-tag">Adobe Premiere Pro</div>
+              <div class="skill-tag">Adobe Lightroom</div>
+              <div class="skill-tag">Figma</div>
+              <div class="skill-tag">Canva</div>
+            </div>
           </div>
-          <div class="publish-gate-panel" data-publish-gate-panel aria-live="polite">
+
+          <div class="about-block-inner about-block-sep reveal reveal-delay-3">
+            <p class="block-label" data-i18n="ab.langs">Diller</p>
+            <div class="lang-list">
+              <div class="lang-item">
+                <div class="lang-meta">
+                  <span data-i18n="ab.l1">Türkçe</span>
+                  <span class="lang-lv" data-i18n="ab.l1.lv">Anadil</span>
+                </div>
+                <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+              </div>
+              <div class="lang-item">
+                <div class="lang-meta">
+                  <span data-i18n="ab.l2">İngilizce</span>
+                  <span class="lang-lv" data-i18n="ab.l2.lv">B1 – B2</span>
+                </div>
+                <div class="lang-bar"><div class="lang-fill" style="width:65%"></div></div>
+              </div>
+              <div class="lang-item">
+                <div class="lang-meta">
+                  <span data-i18n="ab.l3">Almanca</span>
+                  <span class="lang-lv" data-i18n="ab.l3.lv">Başlangıç</span>
+                </div>
+                <div class="lang-bar"><div class="lang-fill" style="width:20%"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sağ: Eğitim + Deneyim + Badge -->
+        <div class="about-side">
+
+          <div class="about-block reveal reveal-delay-2">
+            <p class="block-label" data-i18n="ab.edu">Eğitim</p>
+            <div class="timeline-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <p class="tl-org">Maltepe Üniversitesi</p>
+                <p class="tl-role" data-i18n="ab.edu.dept">Görsel İletişim Tasarımı</p>
+                <p class="tl-sub" data-i18n="ab.edu.level">Lisans</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-block reveal reveal-delay-3">
+            <p class="block-label" data-i18n="ab.exp">Deneyim</p>
+
+            <div class="timeline-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <p class="tl-org">Glassart Cam Sanatları</p>
+                <p class="tl-role" data-i18n="ab.e1">Grafik Tasarımcı</p>
+                <p class="tl-sub" data-i18n="ab.e1.d">Ürün ve marka odaklı görsel tasarım</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <p class="tl-org">Laf Ajans</p>
+                <p class="tl-role" data-i18n="ab.e2">Stajyer Grafik Tasarımcı</p>
+                <p class="tl-sub" data-i18n="ab.e2.d">Marka ve kampanya görsel üretimi</p>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="tl-dot"></div>
+              <div class="tl-content">
+                <p class="tl-org">Beldeport</p>
+                <p class="tl-role" data-i18n="ab.e3">Stajyer Sosyal Medya &amp; Bilgi Güvenliği</p>
+                <p class="tl-sub" data-i18n="ab.e3.d">Dijital tasarım ve kurumsal süreçler</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="avail-badge reveal reveal-delay-4">
+            <div class="avail-dot"></div>
             <div>
-              <p class="eyebrow">Publish gate</p>
-              <h3>Configured remote, blocked publication.</h3>
-              <p data-publish-gate-summary>
-                Local remote state can be configured while push and deployment remain gated.
-              </p>
-            </div>
-            <div class="publish-gate-levels" data-publish-gate-levels></div>
-          </div>
-        </div>
-      </section>
-
-      <div id="marketplace" class="anchor-alias" aria-hidden="true"></div>
-      <section id="plugins" class="section-reveal system-section" data-marketplace>
-        <p class="eyebrow">Plugins marketplace</p>
-        <h2>New plugins marketplace, separated from the old catalog.</h2>
-        <p class="section-copy">
-          A visible curation surface for trusted GitHub, MCP, Copilot, and model sources before
-          anything is installed, published, or connected live.
-        </p>
-        <p class="status-line" data-marketplace-status>New plugins marketplace view active.</p>
-        <div class="marketplace-layout">
-          <div>
-            <h3>Marketplace channels</h3>
-            <div class="system-grid marketplace-grid" data-marketplace-channels>
-              <article class="system-card status-ready">
-                <span>Preferred</span>
-                <strong>MCP</strong>
-                <h3>GitHub MCP Registry</h3>
-                <p>Best first channel for official AI tool integrations and cross-agent compatibility.</p>
-              </article>
-              <article class="system-card status-watch">
-                <span>Publish</span>
-                <strong>Action</strong>
-                <h3>GitHub Marketplace Actions</h3>
-                <p>Use only after a small reusable automation is ready for a separate public repo.</p>
-              </article>
-              <article class="system-card status-blocked">
-                <span>Legacy</span>
-                <strong>Blocked</strong>
-                <h3>Copilot Extensions</h3>
-                <p>Do not build new GitHub App-based Copilot Extensions; route ideas through MCP.</p>
-              </article>
+              <p class="avail-status" data-i18n="ab.avail">Yeni projeler için müsaitim</p>
+              <p class="avail-sub" data-i18n="ab.avail.sub">Freelance &middot; Full-time</p>
             </div>
           </div>
-          <div>
-            <h3>Trusted source shortlist</h3>
-            <div class="marketplace-source-list" data-marketplace-sources>
-              <article class="marketplace-source-card status-ready">
-                <span>Figma</span>
-                <h3>Figma MCP Server</h3>
-                <p>Bring design context into implementation after a concrete Figma target is selected.</p>
-              </article>
-              <article class="marketplace-source-card status-watch">
-                <span>GitHub</span>
-                <h3>GitHub MCP Server</h3>
-                <p>Connect repository issues, pull requests, and workflow status to governance.</p>
-              </article>
-              <article class="marketplace-source-card status-watch">
-                <span>OpenAI</span>
-                <h3>GitHub Models Reference</h3>
-                <p>Use as model sourcing for future AI-assisted marketplace content and QA.</p>
-              </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services">
+      <div class="services-header">
+        <div>
+          <p class="section-label reveal" data-i18n="sv.lbl">02 — Uzmanlık</p>
+          <h2 class="section-title reveal reveal-delay-1">
+            <span data-i18n="sv.t">Ne </span><em data-i18n="sv.te">yapıyorum?</em>
+          </h2>
+        </div>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card reveal">
+          <div class="service-num">01</div>
+          <svg class="service-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <rect x="4" y="4" width="16" height="16" stroke="#c8a96e" stroke-width="1.2"/>
+            <rect x="24" y="4" width="16" height="16" stroke="#c8a96e" stroke-width="1.2" rx="8"/>
+            <rect x="4" y="24" width="16" height="16" stroke="#c8a96e" stroke-width="1.2" rx="2"/>
+            <rect x="24" y="24" width="16" height="16" stroke="#c8a96e" stroke-width="1.2"/>
+          </svg>
+          <h3 class="service-name" data-i18n="sv.s1n">Grafik Tasarım &amp; Branding</h3>
+          <p class="service-desc" data-i18n="sv.s1d">
+            Logo, kurumsal kimlik, afiş ve dijital tasarım alanlarında markanızı
+            güçlü ve tutarlı bir görsel dille temsil ediyorum.
+          </p>
+        </div>
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-num">02</div>
+          <svg class="service-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <rect x="3" y="8" width="38" height="28" rx="2" stroke="#c8a96e" stroke-width="1.2"/>
+            <circle cx="22" cy="22" r="6" stroke="#c8a96e" stroke-width="1.2"/>
+            <line x1="3" y1="16" x2="41" y2="16" stroke="#c8a96e" stroke-width="0.8" stroke-dasharray="2 2"/>
+          </svg>
+          <h3 class="service-name" data-i18n="sv.s2n">UI/UX Visual Design</h3>
+          <p class="service-desc" data-i18n="sv.s2d">
+            Kullanıcı deneyimini merkeze alan, sezgisel ve estetik arayüzler
+            tasarlıyorum. Wireframe'den final tasarıma kadar eksiksiz süreç.
+          </p>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-num">03</div>
+          <svg class="service-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <rect x="4" y="6" width="36" height="26" rx="1" stroke="#c8a96e" stroke-width="1.2"/>
+            <line x1="4" y1="14" x2="40" y2="14" stroke="#c8a96e" stroke-width="0.6" stroke-dasharray="3 2"/>
+            <rect x="10" y="18" width="24" height="2.5" rx="1" fill="#c8a96e" opacity="0.3"/>
+            <rect x="10" y="23" width="16" height="2.5" rx="1" fill="#c8a96e" opacity="0.2"/>
+            <line x1="14" y1="36" x2="30" y2="36" stroke="#c8a96e" stroke-width="1.2"/>
+            <line x1="22" y1="32" x2="22" y2="36" stroke="#c8a96e" stroke-width="1.2"/>
+          </svg>
+          <h3 class="service-name" data-i18n="sv.s3n">Editorial Design</h3>
+          <p class="service-desc" data-i18n="sv.s3d">
+            Dergi, katalog, broşür ve yayın tasarımı. Tipografi ve grid
+            sistemleriyle içeriği görsel olarak güçlü bir formata dönüştürüyorum.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== WORK — Behance ===== -->
+    <section id="work">
+      <div class="work-header">
+        <div>
+          <p class="section-label reveal" data-i18n="wk.lbl">03 — Çalışmalar</p>
+          <h2 class="section-title reveal reveal-delay-1">
+            <span data-i18n="wk.t">Seçili </span><em data-i18n="wk.te">Projeler</em>
+          </h2>
+        </div>
+        <a href="https://www.behance.net/emirhankudun" class="btn-secondary reveal reveal-delay-2"
+           target="_blank" rel="noopener noreferrer">
+          <span class="btn-arrow" aria-hidden="true"></span>
+           <span data-i18n="wk.all">Behance'de Gör</span>
+        </a>
+      </div>
+
+      <div class="case-grid reveal reveal-delay-2" role="list" aria-label="Case studies" data-i18n-aria-label="wk.case.aria">
+        <article class="case-card" role="listitem">
+          <p class="case-tag" data-i18n="wk.case.1.tag">Brand Identity</p>
+          <h3 data-i18n="wk.case.1.title">Tutarlılığı Dağınık Bir Markayı Toparlamak</h3>
+          <p class="case-copy"><strong data-i18n="wk.case.problem">Problem:</strong> <span data-i18n="wk.case.1.problem">Farklı mecralarda kimlik dili parçalıydı.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.solution">Çözüm:</strong> <span data-i18n="wk.case.1.solution">Tipografi, renk ve grid kararlarını tek sistemde topladım.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.result">Sonuç:</strong> <span data-i18n="wk.case.1.result">Uygulama hızı arttı, görsel tutarlılık stabil hale geldi.</span></p>
+        </article>
+        <article class="case-card" role="listitem">
+          <p class="case-tag" data-i18n="wk.case.2.tag">Editorial Design</p>
+          <h3 data-i18n="wk.case.2.title">Uzun İçeriği Kolay Okunur Hale Getirmek</h3>
+          <p class="case-copy"><strong data-i18n="wk.case.problem">Problem:</strong> <span data-i18n="wk.case.2.problem">Yoğun içerik sayfalarda okuma yorgunluğu oluşturuyordu.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.solution">Çözüm:</strong> <span data-i18n="wk.case.2.solution">Modüler hiyerarşi ve net boşluk sistemi kurdum.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.result">Sonuç:</strong> <span data-i18n="wk.case.2.result">Sayfa taranabilirliği ve içerik algısı belirgin şekilde iyileşti.</span></p>
+        </article>
+        <article class="case-card" role="listitem">
+          <p class="case-tag" data-i18n="wk.case.3.tag">UI/UX Visual</p>
+          <h3 data-i18n="wk.case.3.title">Arayüzde Estetik ve Net Aksiyon Dengesi</h3>
+          <p class="case-copy"><strong data-i18n="wk.case.problem">Problem:</strong> <span data-i18n="wk.case.3.problem">Kullanıcılar kritik aksiyonları ilk bakışta bulamıyordu.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.solution">Çözüm:</strong> <span data-i18n="wk.case.3.solution">CTA önceliğini kontrast ve ritimle yeniden kurguladım.</span></p>
+          <p class="case-copy"><strong data-i18n="wk.case.result">Sonuç:</strong> <span data-i18n="wk.case.3.result">Görev tamamlama akışı daha hızlı ve hatasız ilerledi.</span></p>
+        </article>
+      </div>
+
+      <div class="behance-tools reveal reveal-delay-2">
+        <p class="behance-progress" id="behance-progress" role="status" aria-live="polite" aria-atomic="true" data-i18n="wk.embed.progress.initial">Behance projeleri yükleniyor...</p>
+        <div class="behance-tool-actions">
+          <div class="behance-filters" role="group" aria-label="Behance filtreleri" data-i18n-aria-label="wk.filters.aria">
+            <button type="button" class="behance-filter-btn active" data-behance-filter="all" data-i18n="wk.filter.all">Tümü</button>
+            <button type="button" class="behance-filter-btn" data-behance-filter="failed" data-i18n="wk.filter.failed">Hatalı</button>
+          </div>
+          <button type="button" class="behance-retry-btn behance-load-btn" id="behance-load-all" data-i18n="wk.embed.loadAll">Tum embedleri yukle</button>
+          <button type="button" class="behance-retry-btn" id="behance-retry-failed" data-i18n="wk.embed.retry.all">Hatalı embedleri tekrar dene</button>
+        </div>
+      </div>
+      <p class="behance-note reveal reveal-delay-2" data-i18n="wk.embed.hint">Ilk projeler hizli yuklenir, kalanlar kaydirdikca hazirlanir. Istersen tum embedleri tek tikla yukleyebilirsin.</p>
+
+      <div class="behance-grid" id="behance-grid" aria-label="Behance projeleri galerisi" data-i18n-aria-label="wk.grid.aria">
+        <!-- İlk 9: öncelikli görünür -->
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/245560201?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 1"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/205108621?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 2"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/178412361?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 3"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/181320969?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 4"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/178216053?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 5"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/178126385?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 6"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/178124789?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 7"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/177929985?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 8"></iframe></div>
+        <div class="b-item"><iframe src="https://www.behance.net/embed/project/177929453?ilo0=1" height="316" width="404" allowfullscreen loading="eager" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 9"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/177929021?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 10"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/177846565?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 11"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/177639103?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 12"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/177636517?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 13"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/175803925?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 14"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/173235081?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 15"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/170228809?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 16"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/162309345?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 17"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/162306979?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 18"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/156155557?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 19"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/154324861?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 20"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/154252891?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 21"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/153415565?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 22"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/153428237?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 23"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/153357569?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 24"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/153045431?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 25"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/152808473?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 26"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/152806257?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 27"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/152551909?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 28"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151925471?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 29"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151788235?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 30"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151096891?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 31"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151089007?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 32"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151088757?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 33"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151085695?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 34"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151085469?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 35"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/151023563?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 36"></iframe></div>
+        <div class="b-item"><iframe data-src="https://www.behance.net/embed/project/150083227?ilo0=1" height="316" width="404" allowfullscreen loading="lazy" frameborder="0" allow="clipboard-write" referrerpolicy="strict-origin-when-cross-origin" title="Proje 37"></iframe></div>
+      </div>
+    </section>
+
+    <!-- ===== DRAWINGS ===== -->
+    <section id="drawings">
+      <div class="drawings-header">
+        <p class="section-label reveal" data-i18n="dr.lbl">04 — Çizimler</p>
+        <h2 class="section-title reveal reveal-delay-1">
+          <span data-i18n="dr.t">El ile </span><em data-i18n="dr.te">yapılan</em><span data-i18n="dr.t2"> işler</span>
+        </h2>
+        <p class="drawings-desc reveal reveal-delay-2" data-i18n="dr.desc">
+          Sketch, illüstrasyon ve el çizimi çalışmalarım. Dijital araçların ötesinde, kâğıt üzerinde düşünmek.
+        </p>
+        <p class="drawings-tip reveal reveal-delay-2" data-i18n="draw.tip">Görseller yüklendi. Bir çizimin üstüne gelince odağa alınır.</p>
+        <p class="drawings-micro reveal reveal-delay-3" data-i18n="draw.micro">Masaüstünde üzerine gelin, mobilde bir kez dokunup sonra açın.</p>
+        <div class="drawings-meta reveal reveal-delay-3">
+          <p class="drawings-summary" id="drawings-summary" data-i18n="draw.summary.initial">Koleksiyon yükleniyor...</p>
+          <p class="drawings-quality" data-i18n="draw.quality">Seçili arşiv · yüksek çözünürlüklü önizleme</p>
+        </div>
+        <div class="drawings-filters reveal reveal-delay-3" role="group" aria-label="Çizim kategori filtreleri" data-i18n-aria-label="filters.group.aria">
+          <button type="button" class="draw-filter-btn active" data-filter="all" data-i18n="filters.all">Tümü</button>
+          <button type="button" class="draw-filter-btn" data-filter="karakalem" data-i18n="filters.karakalem">Karakalem</button>
+          <button type="button" class="draw-filter-btn" data-filter="kuru-boya" data-i18n="filters.color">Kuru Boya</button>
+        </div>
+        <p class="drawings-empty" id="drawings-empty" data-i18n="gallery.empty" hidden>Bu filtrede gösterilecek çizim bulunamadı.</p>
+      </div>
+
+      <div class="drawings-group reveal reveal-delay-2">
+        <h3 class="drawings-group-title" data-i18n="draw.section.karakalem">Karakalem</h3>
+        <p class="drawings-group-meta" data-i18n="draw.section.karakalem.meta">9 çalışma · Dokun veya tıkla</p>
+        <div class="drawings-grid">
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="1"><span class="drawing-thumb"><img src="public/media/drawings/karakalem-01.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">01</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="2"><span class="drawing-thumb"><img src="public/media/drawings/karakalem-02.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">02</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="3"><span class="drawing-thumb"><img src="public/media/drawings/karakalem-03.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">03</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="4"><span class="drawing-thumb"><img src="public/media/drawings/karakalem-04.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">04</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="5"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/karakalem-05.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">05</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="6"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/karakalem-06.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">06</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="7"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/karakalem-07.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">07</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="8"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/karakalem-08.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">08</span></span></button>
+        <button type="button" class="drawing-card" data-category="karakalem" data-index="9"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/karakalem-09.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.karakalem">Karakalem</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">09</span></span></button>
+        </div>
+      </div>
+
+      <div class="drawings-group reveal reveal-delay-3">
+        <h3 class="drawings-group-title" data-i18n="draw.section.kuru_boya">Kuru Boya</h3>
+        <p class="drawings-group-meta" data-i18n="draw.section.kuru_boya.meta">10 çalışma · Dokun veya tıkla</p>
+        <div class="drawings-grid">
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="1"><span class="drawing-thumb"><img src="public/media/drawings/renk-01.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">01</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="2"><span class="drawing-thumb"><img src="public/media/drawings/renk-03.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">02</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="3"><span class="drawing-thumb"><img src="public/media/drawings/renk-04.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">03</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="4"><span class="drawing-thumb"><img src="public/media/drawings/renk-05.jpg" loading="eager" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">04</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="5"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-06.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">05</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="6"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-07.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">06</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="7"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-08.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">07</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="8"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-09.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">08</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="9"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-10.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">09</span></span></button>
+        <button type="button" class="drawing-card" data-category="kuru-boya" data-index="10"><span class="drawing-thumb"><img class="lazy-media" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" data-src="public/media/drawings/renk-11.jpg" loading="lazy" alt=""></span><span class="drawing-meta"><span class="drawing-category" data-i18n="filters.color">Kuru Boya</span><span class="drawing-dot" aria-hidden="true">·</span><span class="drawing-number">10</span></span></button>
+        </div>
+      </div>
+
+      <div class="drawings-cta reveal">
+        <a href="https://emirhankudun.myportfolio.com" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+          <span class="btn-arrow" aria-hidden="true"></span>
+          <span data-i18n="dr.link">Adobe Portfolio — Tüm Çalışmalar</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===== QUOTE BAND ===== -->
+    <div id="quote-band">
+      <p class="quote-text">
+        &ldquo;<span data-i18n="qt.text">Tasarım, estetiğin ötesinde bir iletişim dilidir — en yalın haliyle en güçlü mesajı taşır.</span>&rdquo;
+      </p>
+      <p class="quote-author" data-i18n="qt.auth">— Emirhan Kudun, Tasarım Felsefesi</p>
+    </div>
+
+    <!-- ===== CONTACT ===== -->
+    <section id="contact">
+      <div class="contact-grid">
+
+        <!-- Sol: Bilgi -->
+        <div class="contact-info">
+          <p class="section-label reveal" data-i18n="ct.lbl">05 — İletişim</p>
+          <h2 class="contact-headline reveal reveal-delay-1">
+            <span data-i18n="ct.t1">Bir şey</span><br>
+            <span data-i18n="ct.t2">yaratmaya</span><br>
+            <em data-i18n="ct.t3">hazır mısınız?</em>
+          </h2>
+          <p class="contact-desc reveal reveal-delay-2" data-i18n="ct.desc">
+            Sade, işlevsel ve estetik görsel sistemler tasarlarım. Yeni projeler, iş birlikleri
+            ve freelance çalışmalar için iletişime geçebilirsiniz.
+          </p>
+          <p class="availability-badge reveal reveal-delay-2">
+            <span class="availability-dot" aria-hidden="true"></span>
+            <span data-i18n="ct.availability">Bu ay 2 yeni proje slotu açık.</span>
+          </p>
+
+          <div class="contact-process reveal reveal-delay-3" role="list" aria-label="Süreç adımları" data-i18n-aria-label="ct.process.aria">
+            <p class="process-label" data-i18n="ct.process.label">Süreç</p>
+            <div class="process-row" role="listitem">
+              <span class="process-num">01</span>
+              <span data-i18n="ct.process.1">Brief ve kapsamı birlikte netleştiriyoruz.</span>
+            </div>
+            <div class="process-row" role="listitem">
+              <span class="process-num">02</span>
+              <span data-i18n="ct.process.2">Tasarım yönünü örneklerle hizalıyorum.</span>
+            </div>
+            <div class="process-row" role="listitem">
+              <span class="process-num">03</span>
+              <span data-i18n="ct.process.3">Revizyon sonrası final teslimi yapıyorum.</span>
             </div>
           </div>
-        </div>
-      </section>
 
-      <section id="plugin-interfaces" class="section-reveal system-section" data-plugin-interfaces>
-        <p class="eyebrow">SEIS plugin interfaces</p>
-        <h2>Five plugin lanes, one governed interface system.</h2>
-        <p class="section-copy">
-          A read-only Command Center slice for `@seis`, `@seis-cloud`, `@seis-code`,
-          `@seis-design`, and `@seis-data`. It shows current evidence, blocked live
-          work, and the five-year development horizon without pretending any live
-          deployment, AI provider, or SSH integration is active.
-        </p>
-        <p class="status-line" data-plugin-interface-status>Static plugin interface view loading.</p>
-
-        <div class="plugin-interface-layout">
-          <div class="plugin-interface-tabs" role="tablist" aria-label="SEIS plugin lanes" data-plugin-interface-tabs>
-            <button class="plugin-interface-tab is-active" type="button" role="tab" aria-selected="true" data-plugin-interface-tab="seis">
-              <span>@seis</span>
-              <strong>Command</strong>
-            </button>
-            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-cloud">
-              <span>@seis-cloud</span>
-              <strong>Cloud</strong>
-            </button>
-            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-code">
-              <span>@seis-code</span>
-              <strong>Code</strong>
-            </button>
-            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-design">
-              <span>@seis-design</span>
-              <strong>Design</strong>
-            </button>
-            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-data">
-              <span>@seis-data</span>
-              <strong>Data</strong>
-            </button>
+          <div class="ct-status reveal reveal-delay-3">
+            <div class="cts-item">
+              <span class="cts-dot"></span>
+              <span data-i18n="ct.s1">Yeni projeler için müsaitim</span>
+            </div>
+            <div class="cts-item">
+              <span class="cts-ico">&#9201;</span>
+              <span data-i18n="ct.s2">24–48 saat içinde dönüş</span>
+            </div>
+            <div class="cts-item">
+              <span class="cts-ico">&#128205;</span>
+              <span data-i18n="ct.s3">İstanbul, Türkiye (GMT+3)</span>
+            </div>
           </div>
 
-          <article class="plugin-interface-detail" role="tabpanel" aria-live="polite" data-plugin-interface-detail>
-            <span>Loading</span>
-            <h3>Plugin lane details</h3>
-            <p>Loading local interface records.</p>
-          </article>
-        </div>
-
-        <div class="plugin-interface-evidence" data-plugin-interface-evidence aria-label="Current evidence links"></div>
-        <div class="plugin-interface-coverage" data-plugin-interface-coverage aria-label="Five-year plugin program coverage"></div>
-
-        <div class="five-year-panel">
-          <div>
-            <p class="eyebrow">Five-year development horizon</p>
-            <h3>2026 through 2030, staged instead of overclaimed.</h3>
+          <div class="contact-email-row reveal reveal-delay-3">
+            <a id="contact-email-link" href="mailto:emirhan@kudun.com">emirhan@kudun.com</a>
+            <button type="button" id="copy-email-btn" class="mini-btn" data-i18n="ct.copy">E-postayı Kopyala</button>
           </div>
-          <div class="five-year-program">
-            <div class="five-year-controls" data-five-year-controls aria-label="Five-year development years"></div>
-            <div class="five-year-grid" data-five-year-grid></div>
-            <article class="five-year-detail" data-five-year-detail aria-live="polite">
-              <span>Loading</span>
-              <h4>Development program</h4>
-              <p>Loading yearly lane commitments.</p>
-            </article>
+          <p class="contact-promise reveal reveal-delay-4">
+            <strong data-i18n="ct.promise">Yanıt vaadi:</strong>
+            <span data-i18n="ct.promise.detail">24-48 saat içinde kısa ve net bir dönüş.</span>
+          </p>
+
+          <div class="ct-services reveal reveal-delay-3">
+            <p class="cts-label" data-i18n="ct.svlbl">Hizmetler</p>
+            <p class="cts-list" data-i18n="ct.services.list">Branding &middot; Editorial Design &middot; UI/UX Visual Design</p>
           </div>
-        </div>
-      </section>
-
-      <section id="pulse" class="section-reveal system-section" data-system-pulse>
-        <p class="eyebrow">System pulse</p>
-        <h2>Live readiness without noisy dashboards.</h2>
-        <p class="section-copy">
-          A compact pulse keeps release, locale, and handoff signals readable without turning the
-          workspace into an attention-heavy operations wall.
-        </p>
-        <p class="status-line" data-system-pulse-status>Static system pulse view active.</p>
-        <div class="system-grid" data-system-pulse-grid>
-          <article class="system-card status-ready">
-            <span>Release</span>
-            <strong>ready</strong>
-            <h3>Static package</h3>
-            <p>Server packaging remains lightweight and rollback-aware.</p>
-          </article>
-          <article class="system-card status-active">
-            <span>Locales</span>
-            <strong>7</strong>
-            <h3>Language shell</h3>
-            <p>Core locale coverage stays contract-driven and easy to verify.</p>
-          </article>
-          <article class="system-card status-watch">
-            <span>Server</span>
-            <strong>pending</strong>
-            <h3>Handoff waiting</h3>
-            <p>Deploy waits for explicit domain, host, path, and rollback ownership.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="efficiency" class="section-reveal system-section" data-efficiency-governor>
-        <p class="eyebrow">Efficiency governor</p>
-        <h2>High cognition, low machine pressure.</h2>
-        <p class="section-copy">
-          The work mode spends attention on architecture, UX, and governance while keeping local
-          execution targeted and calm.
-        </p>
-        <p class="status-line" data-efficiency-status>Static efficiency view active.</p>
-        <div class="system-grid" data-efficiency-grid>
-          <article class="system-card status-active">
-            <span>AI depth</span>
-            <strong>full</strong>
-            <h3>Strategic reasoning</h3>
-            <p>Design, risk, and architecture receive attention before heavier local execution.</p>
-          </article>
-          <article class="system-card status-ready">
-            <span>Machine load</span>
-            <strong>low</strong>
-            <h3>Protected runtime</h3>
-            <p>No broad rebuild loops, unnecessary installs, or heavy browser automation by default.</p>
-          </article>
-          <article class="system-card status-watch">
-            <span>Validation</span>
-            <strong>targeted</strong>
-            <h3>Proportional checks</h3>
-            <p>Static and focused checks run when they protect the changed surface.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="weekly-usage" class="section-reveal system-section" data-weekly-usage>
-        <p class="eyebrow">Weekly usage governor</p>
-        <h2>Spend the week on useful progress.</h2>
-        <p class="section-copy">
-          Weekly capacity favors durable design decisions, small implementation slices, and honest
-          shipment state over repeated local churn.
-        </p>
-        <p class="status-line" data-weekly-usage-status>Static weekly usage view active.</p>
-        <div class="system-grid" data-weekly-usage-grid>
-          <article class="system-card status-active">
-            <span>Reasoning</span>
-            <strong>deep</strong>
-            <h3>Architecture first</h3>
-            <p>Planning effort goes into governance, implementation choices, and review quality.</p>
-          </article>
-          <article class="system-card status-ready">
-            <span>Machine</span>
-            <strong>low</strong>
-            <h3>Calm execution</h3>
-            <p>Local runs stay bounded to preserve performance and thermal headroom.</p>
-          </article>
-          <article class="system-card status-blocked">
-            <span>Remote</span>
-            <strong>auth</strong>
-            <h3>Publish blocked</h3>
-            <p>GitHub remains gated until origin and CLI authentication are restored.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="handoff" class="section-reveal system-section" data-handoff-system>
-        <p class="eyebrow">Release handoff</p>
-        <h2>Calm checks before live upload.</h2>
-        <p class="section-copy">
-          The release path keeps target confirmation, package verification, rollback, and quiet
-          observability visible before any live server action.
-        </p>
-        <p class="status-line" data-handoff-summary>Local review 0/4 - blocked 1</p>
-        <div class="system-grid" data-handoff-list>
-          <article class="system-card status-blocked">
-            <span>Target</span>
-            <h3>Confirm server</h3>
-            <p>Domain, host, upload path, and rollback owner must be explicit.</p>
-          </article>
-          <article class="system-card status-ready">
-            <span>Package</span>
-            <h3>Verify static zip</h3>
-            <p>The package stays compact and reproducible from source.</p>
-          </article>
-          <article class="system-card status-ready">
-            <span>Rollback</span>
-            <h3>Protect recovery</h3>
-            <p>Backup and restore steps remain local, documented, and reversible.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="archive" class="section-reveal">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Curated archive</p>
-            <h2>Legacy drawings stay calm, inspectable, and lightweight.</h2>
+          <div class="mini-faq reveal reveal-delay-4">
+            <p class="mini-faq-label" data-i18n="faq.lbl">Sık Sorulan Kısa Sorular</p>
+            <details>
+              <summary data-i18n="faq.q1">Projeye başlamak için hangi bilgi gerekiyor?</summary>
+              <p data-i18n="faq.a1">Kapsam, hedef kitle ve yaklaşık teslim beklentisi başlangıç için yeterli.</p>
+            </details>
+            <details>
+              <summary data-i18n="faq.q2">Revizyon süreci nasıl ilerliyor?</summary>
+              <p data-i18n="faq.a2">Her aşamada kısa geri bildirimle ilerliyoruz ve kararları net checkpoints ile topluyoruz.</p>
+            </details>
+            <details>
+              <summary data-i18n="faq.q3">Uzaktan çalışma mümkün mü?</summary>
+              <p data-i18n="faq.a3">Evet. Tüm süreç online toplantı, paylaşımlı doküman ve haftalık durum güncellemesiyle yürütülebilir.</p>
+            </details>
+            <details>
+              <summary data-i18n="faq.q4">Teslim sonrası destek veriyor musunuz?</summary>
+              <p data-i18n="faq.a4">Final teslim sonrası kısa bir destek penceresiyle gerekli düzenlemeleri tamamlıyorum.</p>
+            </details>
           </div>
-          <div class="artwork-toolbar" aria-label="Artwork filters">
-            <button class="locale-chip is-active" data-artwork-filter="all" type="button" aria-pressed="true">All</button>
-            <button class="locale-chip" data-artwork-filter="karakalem" type="button" aria-pressed="false">Pencil</button>
-            <button class="locale-chip" data-artwork-filter="renk" type="button" aria-pressed="false">Color</button>
-          </div>
+          <ul class="social-links reveal reveal-delay-4">
+            <li><a href="https://emirhankudun.myportfolio.com/work" target="_blank" rel="noopener noreferrer"><span class="btn-arrow" style="width:18px" aria-hidden="true"></span>Portfolio</a></li>
+            <li><a href="https://www.behance.net/emirhankudun" target="_blank" rel="noopener noreferrer"><span class="btn-arrow" style="width:18px" aria-hidden="true"></span>Behance</a></li>
+            <li><a href="https://www.linkedin.com/in/emirhankudun" target="_blank" rel="noopener noreferrer"><span class="btn-arrow" style="width:18px" aria-hidden="true"></span>LinkedIn</a></li>
+            <li><a href="https://www.youtube.com/@emirhankudun" target="_blank" rel="noopener noreferrer"><span class="btn-arrow" style="width:18px" aria-hidden="true"></span>YouTube</a></li>
+          </ul>
         </div>
-        <div class="artwork-grid" data-artwork-grid>
-          <article class="artwork-card">
-            <img src="./public/media/drawings/karakalem-01.jpg" width="787" height="1400" loading="lazy" decoding="async" alt="Monochrome pencil drawing from the SEIS legacy portfolio archive.">
-            <h3>Karakalem Study 01</h3>
-          </article>
-          <article class="artwork-card">
-            <img src="./public/media/drawings/renk-01.jpg" width="787" height="1400" loading="lazy" decoding="async" alt="Color drawing from the SEIS legacy portfolio archive.">
-            <h3>Color Study 01</h3>
-          </article>
-          <article class="artwork-card">
-            <img src="./public/media/drawings/renk-11.jpg" width="1012" height="1800" loading="lazy" decoding="async" alt="Color drawing selected from the source legacy image archive.">
-            <h3>Color Study 11</h3>
-          </article>
+
+        <!-- Sağ: Form -->
+        <div class="contact-form-wrap reveal reveal-delay-2">
+          <!-- Endpoint ayari site-config.json icinden yapilir -->
+          <form id="contact-form" action="#contact" method="POST" data-endpoint="" novalidate>
+            <input type="hidden" name="_subject" value="Emirhan Kudun — Yeni Mesaj">
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="f-name" data-i18n="fm.name">Ad Soyad</label>
+                <input type="text" id="f-name" name="name" required placeholder="Adınız" autocomplete="name" data-i18n-placeholder="fm.name.ph">
+                <span class="form-err" data-i18n="fm.name.e">Adınızı girin.</span>
+                <small class="form-hint" data-i18n="fm.name.h">Ad ve soyad bilgisini birlikte yazın.</small>
+              </div>
+              <div class="form-group">
+                <label for="f-email" data-i18n="fm.email">E-posta</label>
+                <input type="email" id="f-email" name="email" required inputmode="email" placeholder="email@adres.com" autocomplete="email" data-i18n-placeholder="fm.email.ph">
+                <span class="form-err" data-i18n="fm.email.e">Geçerli e-posta girin.</span>
+                <small class="form-hint" data-i18n="fm.email.h">Aktif kullandığınız e-posta adresini girin.</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="f-svc" data-i18n="fm.svc">Hizmet</label>
+              <select id="f-svc" name="service">
+                <option value="" data-i18n="fm.svc.o">Seçin...</option>
+                <option value="branding">Branding</option>
+                <option value="editorial">Editorial Design</option>
+                <option value="ui-ux">UI/UX Visual Design</option>
+                <option value="other" data-i18n="fm.svc.oth">Diğer</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="f-msg" data-i18n="fm.msg">Mesaj</label>
+              <textarea id="f-msg" name="message" rows="5" required placeholder="Projenizden bahsedin..." autocomplete="off" data-i18n-placeholder="fm.msg.ph"></textarea>
+              <span class="form-err" data-i18n="fm.msg.e">Mesajınızı girin.</span>
+              <small class="form-hint" data-i18n="fm.msg.h">Kapsam, teslim tarihi ve bütçe aralığı eklerseniz süreç hızlanır.</small>
+              <small class="form-hint form-count" id="f-msg-count" aria-live="polite">0 / 12</small>
+              <small class="form-hint form-hotkey" data-i18n="fm.hotkey">Hızlı gönderim: Ctrl/Cmd + Enter</small>
+            </div>
+            <div class="quick-brief">
+              <p class="quick-brief-label" data-i18n="fm.quick.lbl">Hızlı Brief Alanları</p>
+              <div class="quick-brief-actions" role="group" aria-label="Mesaj şablonları" data-i18n-aria-label="fm.quick.group.aria">
+                <button type="button" class="brief-btn" data-brief="scope" data-i18n="fm.quick.scope">Kapsam</button>
+                <button type="button" class="brief-btn" data-brief="timeline" data-i18n="fm.quick.timeline">Takvim</button>
+                <button type="button" class="brief-btn" data-brief="budget" data-i18n="fm.quick.budget">Bütçe</button>
+                <button type="button" class="brief-btn" data-brief="clear" id="draft-clear" data-i18n="fm.quick.clear">Temizle</button>
+              </div>
+              <div class="quick-brief-secondary">
+                <button type="button" class="brief-btn brief-btn-ghost" id="draft-restore" data-i18n="fm.draft.restore">Taslağı Geri Yükle</button>
+                <button type="button" class="brief-btn brief-btn-ghost" id="draft-reset" data-i18n="fm.draft.reset">Formu Sıfırla</button>
+              </div>
+              <p class="form-draft-note" id="form-draft-note" aria-live="polite"></p>
+            </div>
+
+            <button type="submit" id="form-submit" class="form-submit">
+              <span class="fs-text" data-i18n="fm.send">Gönder</span>
+              <span class="fs-arr" aria-hidden="true">&#8594;</span>
+              <span class="fs-load" aria-hidden="true">&#9679; &#9679; &#9679;</span>
+            </button>
+            <p class="form-ok" id="form-ok" role="status" aria-live="polite" aria-atomic="true" data-i18n="fm.ok">&#10003; Mesajınız iletildi. En kısa sürede dönüş yapacağım.</p>
+          </form>
         </div>
-      </section>
 
-      <section id="roadmap" class="section-reveal system-section">
-        <p class="eyebrow">Long-run roadmap</p>
-        <h2>Phased growth without framework pressure.</h2>
-        <div class="timeline">
-          <article>
-            <span>Active</span>
-            <h3>Foundation hardening</h3>
-            <p>Keep the static shell, quality gates, and governance documents coherent.</p>
-          </article>
-          <article>
-            <span>Queued</span>
-            <h3>Experience expansion</h3>
-            <p>Make the lab richer while preserving mobile clarity and reduced-motion behavior.</p>
-          </article>
-          <article>
-            <span>Deferred</span>
-            <h3>Framework decision</h3>
-            <p>Choose a framework only when static constraints justify the added complexity.</p>
-          </article>
-        </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="principles" class="section-reveal">
-        <h2>Non-Negotiables</h2>
-        <ul class="principle-list">
-          <li>Accessibility before spectacle.</li>
-          <li>Small reversible changes.</li>
-          <li>Low machine pressure by default.</li>
-          <li>Clear branch and publish governance.</li>
-        </ul>
-      </section>
-    </main>
+  </main>
 
-    <script src="./app.js" type="module"></script>
-  </body>
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; 2026 Emirhan Kudun. <span data-i18n="ft.rights">Tüm hakları saklıdır.</span></p>
+      <a href="https://emirhankudun.myportfolio.com" class="footer-link" target="_blank" rel="noopener noreferrer">emirhankudun.com</a>
+      <p class="footer-made"><span data-i18n="ft.made">Tasarım ile</span> <span aria-hidden="true">&#9825;</span> &mdash; <span data-i18n="ft.city">İstanbul, Türkiye</span></p>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top -->
+  <button id="scroll-top" aria-label="Sayfanın üstüne git" data-i18n-aria-label="a11y.top">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <polyline points="18 15 12 9 6 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="lightbox" id="drawing-lightbox" hidden aria-hidden="true">
+    <button type="button" class="lightbox-backdrop" data-lightbox-close="true" tabindex="-1" aria-hidden="true"></button>
+    <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-counter" aria-describedby="lightbox-caption lightbox-help">
+      <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Kapat" data-i18n-aria-label="lightbox.close.aria">&times;</button>
+      <img id="lightbox-image" src="" alt="">
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+      <div class="lightbox-controls">
+        <button type="button" class="lightbox-nav" id="lightbox-prev" aria-label="Önceki görsel" data-i18n-aria-label="lightbox.prev.aria">&#8592;</button>
+        <p class="lightbox-counter" id="lightbox-counter" aria-live="polite"></p>
+        <button type="button" class="lightbox-nav" id="lightbox-next" aria-label="Sonraki görsel" data-i18n-aria-label="lightbox.next.aria">&#8594;</button>
+      </div>
+      <p class="lightbox-help" id="lightbox-help" data-i18n="lightbox.help">ESC ile kapat · Ok tuşları ile gezin</p>
+    </div>
+  </div>
+
+  <div id="site-toast" class="site-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js?v=20260609-2" defer></script>
+</body>
 </html>

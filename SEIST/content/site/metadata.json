@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "siteName": "UI-UX Digital Lab",
+  "description": "A calm SEIS creative experience operating system for premium UI/UX, cinematic interfaces, AI-native workflows, accessibility, and sustainable digital products.",
+  "status": "foundation",
+  "seoPolicy": {
+    "canonicalBase": "https://emirhankudun-ux.github.io/UIX-Apps",
+    "sitemapUrl": "https://emirhankudun-ux.github.io/UIX-Apps/sitemap.xml",
+    "currentRobots": "noindex while repository is pre-production",
+    "productionRobots": "index, follow after canonical domain is confirmed",
+    "canonicalRequired": true,
+    "structuredDataRequired": true,
+    "placeholderUrlsAllowed": false
+  }
+}

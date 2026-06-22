@@ -1,0 +1,4130 @@
+{
+  "version": 1,
+  "id": "seis-universal-capability-kernel",
+  "mode": "ai_agent_mcp_skill_plugin_llm_capability_coverage",
+  "summary": {
+    "domainCount": 38,
+    "laneCount": 14,
+    "requiredDomainCount": 38,
+    "agentRoles": [
+      "agent-orchestrator",
+      "ai-agent",
+      "algorithm-agent",
+      "architecture-agent",
+      "big-data-agent",
+      "cloud-agent",
+      "creative-agent",
+      "cs-foundation-agent",
+      "data-agent",
+      "data-science-agent",
+      "database-agent",
+      "delivery-agent",
+      "devops-agent",
+      "formal-methods-agent",
+      "full-stack-agent",
+      "game-agent",
+      "git-governance-agent",
+      "governance-agent",
+      "integration-agent",
+      "language-engineering-agent",
+      "llm-routing-agent",
+      "low-code-agent",
+      "math-agent",
+      "metrics-agent",
+      "mobile-agent",
+      "multimodal-ai-agent",
+      "qa-agent",
+      "quantum-agent",
+      "refactoring-agent",
+      "requirements-agent",
+      "reverse-engineering-agent",
+      "robotics-agent",
+      "sdlc-agent",
+      "security-agent",
+      "sre-agent",
+      "sustainability-agent",
+      "ux-ui-agent",
+      "web-agent"
+    ],
+    "lanes": {
+      "ai-intelligence": 5,
+      "architecture": 2,
+      "cloud-ops": 3,
+      "core-computing": 5,
+      "data-intelligence": 2,
+      "data-platform": 2,
+      "design-systems": 2,
+      "governance": 3,
+      "interactive-systems": 1,
+      "product-engineering": 4,
+      "product-governance": 3,
+      "quality-engineering": 2,
+      "research-lab": 2,
+      "security-governance": 2
+    },
+    "pluginGroupCount": 6,
+    "pluginInventoryCount": 168,
+    "coveredPluginCount": 69,
+    "minimumDomainPluginCount": 3,
+    "platformCount": 3,
+    "appleLanguageCount": 5,
+    "windowsLanguageCount": 18,
+    "windowsPolicyLanguageCount": 41,
+    "platformDevelopmentTrackCount": 4
+  },
+  "sourceReferences": {
+    "kernelCode": "packages/seis_kernel/capabilities.py",
+    "polyglotManifest": "polyglot/manifest.json",
+    "llmRoutingPolicy": "content/development/llm-task-routing-policy.json",
+    "pluginSources": "deploy/cloud-environment.json"
+  },
+  "routingContract": {
+    "entrypoint": "DomainRouter.route(text)",
+    "seisRole": "SEIS stays the task-facing AI agent; local and remote LLMs become helpers behind scoped routing.",
+    "executionBoundary": "No connector, MCP server, plugin, or external model is activated unless task relevance, authentication, permission scope, and user approval are clear."
+  },
+  "pluginInventory": {
+    "source": "screenshots-and-enabled-plugin-inventory",
+    "groupCount": 6,
+    "pluginCount": 168,
+    "coveredPluginCount": 69,
+    "groups": [
+      {
+        "id": "design",
+        "pluginCount": 13,
+        "plugins": [
+          "Adobe Express",
+          "Adobe Photoshop",
+          "Canva",
+          "Figma",
+          "Product Design",
+          "Creative Production",
+          "Remotion",
+          "BioRender",
+          "HyperFrames by HeyGen",
+          "HeyGen",
+          "Shutterstock",
+          "Picsart",
+          "Fal"
+        ]
+      },
+      {
+        "id": "developer-tools",
+        "pluginCount": 41,
+        "plugins": [
+          "GitHub",
+          "OpenAI Developers",
+          "Browser",
+          "Chrome",
+          "Hugging Face",
+          "Netlify",
+          "Vercel",
+          "Game Studio",
+          "Superpowers",
+          "CircleCI",
+          "Cloudflare",
+          "Sentry",
+          "Build iOS Apps",
+          "Build macOS Apps",
+          "Build Web Apps",
+          "Build Web Data Visualization",
+          "Test Android Apps",
+          "Expo",
+          "CodeRabbit",
+          "Neon Postgres",
+          "Plugin Eval",
+          "Cloudinary",
+          "Hostinger",
+          "MarcoPolo",
+          "Quicknode",
+          "SendGrid",
+          "Statsig",
+          "Vantage",
+          "YepCode",
+          "Render",
+          "Temporal",
+          "Supabase",
+          "Twilio Developer Kit",
+          "Datadog (Preview)",
+          "Convex",
+          "Replit",
+          "Lovable",
+          "Wix",
+          "Base44",
+          "Shopify",
+          "MagicPath"
+        ]
+      },
+      {
+        "id": "data-and-interactive-read-write",
+        "pluginCount": 10,
+        "plugins": [
+          "Data Analytics",
+          "Build Web Data Visualization",
+          "Airtable",
+          "Supabase",
+          "MotherDuck",
+          "Deepnote",
+          "Spreadsheets",
+          "Documents",
+          "Google Drive",
+          "Notion"
+        ]
+      },
+      {
+        "id": "productivity-ops-business",
+        "pluginCount": 77,
+        "plugins": [
+          "Documents",
+          "Atlassian Rovo",
+          "Jam",
+          "Stripe",
+          "Box",
+          "Deepnote",
+          "Amplitude",
+          "Attio",
+          "Brand24",
+          "Brex",
+          "Carta CRM",
+          "Channel99",
+          "Circleback",
+          "ClickUp",
+          "Common Room",
+          "Conductor",
+          "Coupler.io",
+          "Coveo",
+          "Demandbase",
+          "Docket",
+          "Domotz (Preview)",
+          "Dovetail",
+          "Egnyte",
+          "Fireflies",
+          "Fyxer",
+          "Granola",
+          "Happenstance",
+          "Help Scout",
+          "HighLevel",
+          "HubSpot",
+          "KeyBid Puls",
+          "Mem",
+          "Monday.com",
+          "MotherDuck",
+          "Network Solutions",
+          "Omni Analytics",
+          "Otter.ai",
+          "Pipedrive",
+          "Pylon",
+          "Ranked AI",
+          "Razorpay",
+          "Read AI",
+          "Responsive",
+          "Semrush",
+          "SignNow",
+          "SkyWatch",
+          "Streak",
+          "Teamwork.com",
+          "United Rentals",
+          "Waldo",
+          "Windsor.ai",
+          "Asana",
+          "Zoom",
+          "Similarweb",
+          "Datasite",
+          "ZoomInfo",
+          "Docusign",
+          "Mixpanel",
+          "Mixpanel Headless",
+          "Close",
+          "Apollo",
+          "Meticulate",
+          "ThoughtSpot",
+          "Clay",
+          "Calendly",
+          "Rox",
+          "HG Insights",
+          "Airtable",
+          "Outreach",
+          "QuickBooks",
+          "Intercom",
+          "PostHog",
+          "Metabase",
+          "Actively",
+          "Zoho",
+          "Alation",
+          "Superhuman Mail"
+        ]
+      },
+      {
+        "id": "research-finance-legal-science",
+        "pluginCount": 32,
+        "plugins": [
+          "LaTeX",
+          "Life Science Research",
+          "Zotero",
+          "Alpaca",
+          "Binance",
+          "CB Insights",
+          "Cube",
+          "Daloopa",
+          "D&B Finance Analytics",
+          "Dow Jones Factiva",
+          "GovTribe",
+          "Moody's",
+          "Morningstar",
+          "MT Newswires",
+          "Particl Market Research",
+          "PitchBook",
+          "PolicyNote",
+          "Quartr",
+          "Readwise",
+          "Scite",
+          "Taxdown",
+          "Third Bridge",
+          "Tinman AI",
+          "LSEG",
+          "S&P Global",
+          "FactSet",
+          "Aiera",
+          "Midpage",
+          "Chronograph",
+          "Fiscal AI",
+          "Hebbia",
+          "Life Sciences NGS Analysis"
+        ]
+      },
+      {
+        "id": "security",
+        "pluginCount": 1,
+        "plugins": [
+          "Codex Security"
+        ]
+      }
+    ],
+    "coverageByDomain": [
+      {
+        "domainId": "algorithms-and-flowcharts",
+        "plugins": [
+          "Build Web Data Visualization",
+          "Documents",
+          "Superpowers"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "mathematics-foundations",
+        "plugins": [
+          "Data Analytics",
+          "Deepnote",
+          "LaTeX",
+          "Scite"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "research-finance-legal-science"
+        ]
+      },
+      {
+        "domainId": "computer-science-foundations",
+        "plugins": [
+          "Codex Security",
+          "Documents",
+          "Superpowers"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "security"
+        ]
+      },
+      {
+        "domainId": "web-development",
+        "plugins": [
+          "Browser",
+          "Build Web Apps",
+          "Cloudflare",
+          "Netlify",
+          "Vercel"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "mobile-development",
+        "plugins": [
+          "Build iOS Apps",
+          "Expo",
+          "Test Android Apps"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "game-development",
+        "plugins": [
+          "Cloudinary",
+          "Fal",
+          "Game Studio",
+          "Shutterstock"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "design",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "full-stack-engineering",
+        "plugins": [
+          "Build Web Apps",
+          "Convex",
+          "Neon Postgres",
+          "Render",
+          "Supabase"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "data-engineering-and-analytics",
+        "plugins": [
+          "Data Analytics",
+          "Deepnote",
+          "Metabase",
+          "MotherDuck",
+          "ThoughtSpot"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "data-and-interactive-read-write",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "data-science",
+        "plugins": [
+          "Data Analytics",
+          "Deepnote",
+          "Hugging Face",
+          "Mixpanel Headless"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "artificial-intelligence",
+        "plugins": [
+          "Fal",
+          "Hugging Face",
+          "OpenAI Developers",
+          "Plugin Eval"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "design",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "ai-agent-engineering",
+        "plugins": [
+          "GitHub",
+          "OpenAI Developers",
+          "SEIS",
+          "Superpowers",
+          "YepCode"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "developer-tools",
+          "external-or-session"
+        ]
+      },
+      {
+        "domainId": "llm-orchestration",
+        "plugins": [
+          "Hugging Face",
+          "OpenAI Developers",
+          "Plugin Eval"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "mcp-skills-plugins",
+        "plugins": [
+          "Airtable",
+          "GitHub",
+          "Plugin Eval",
+          "SEIS",
+          "Supabase"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "external-or-session"
+        ]
+      },
+      {
+        "domainId": "database-management",
+        "plugins": [
+          "Airtable",
+          "Metabase",
+          "MotherDuck",
+          "Neon Postgres",
+          "Supabase"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "version-control-systems",
+        "plugins": [
+          "Atlassian Rovo",
+          "CircleCI",
+          "CodeRabbit",
+          "GitHub"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "developer-tools",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "cloud-computing",
+        "plugins": [
+          "Cloudflare",
+          "Hostinger",
+          "Netlify",
+          "Render",
+          "Vantage",
+          "Vercel"
+        ],
+        "pluginCount": 6,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "cybersecurity",
+        "plugins": [
+          "Codex Security",
+          "Datadog (Preview)",
+          "Sentry"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "developer-tools",
+          "security"
+        ]
+      },
+      {
+        "domainId": "devops-and-system-management",
+        "plugins": [
+          "CircleCI",
+          "Cloudflare",
+          "Datadog (Preview)",
+          "Temporal",
+          "Vantage"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "test-engineering",
+        "plugins": [
+          "Browser",
+          "CodeRabbit",
+          "Sentry",
+          "Test Android Apps"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "software-architecture-and-patterns",
+        "plugins": [
+          "Build Web Data Visualization",
+          "Documents",
+          "Figma",
+          "Superpowers"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "design",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "big-data-engineering",
+        "plugins": [
+          "Alation",
+          "Cube",
+          "Deepnote",
+          "MotherDuck"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "productivity-ops-business",
+          "research-finance-legal-science"
+        ]
+      },
+      {
+        "domainId": "nlp-and-computer-vision",
+        "plugins": [
+          "Cloudinary",
+          "Fal",
+          "Hugging Face",
+          "Picsart",
+          "Shutterstock"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "design",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "quantum-programming",
+        "plugins": [
+          "LaTeX",
+          "Scite",
+          "Zotero"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "research-finance-legal-science"
+        ]
+      },
+      {
+        "domainId": "sustainable-software",
+        "plugins": [
+          "Build Web Apps",
+          "Cloudflare",
+          "Vantage"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "low-code-no-code-platforms",
+        "plugins": [
+          "Base44",
+          "Hostinger",
+          "Lovable",
+          "Replit",
+          "Wix"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "ux-ui-engineering",
+        "plugins": [
+          "Build Web Apps",
+          "Canva",
+          "Figma",
+          "MagicPath",
+          "Product Design"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "design",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "product-design-and-creative-systems",
+        "plugins": [
+          "Canva",
+          "Creative Production",
+          "Fal",
+          "HeyGen",
+          "Remotion",
+          "Shutterstock"
+        ],
+        "pluginCount": 6,
+        "groups": [
+          "design"
+        ]
+      },
+      {
+        "domainId": "autonomous-vehicles-and-robotics",
+        "plugins": [
+          "Build Web Data Visualization",
+          "Documents",
+          "NVIDIA"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "external-or-session"
+        ]
+      },
+      {
+        "domainId": "ai-ethics-and-data-governance",
+        "plugins": [
+          "Alation",
+          "Codex Security",
+          "Data Analytics",
+          "Documents"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "productivity-ops-business",
+          "security"
+        ]
+      },
+      {
+        "domainId": "compiler-and-language-engineering",
+        "plugins": [
+          "Documents",
+          "OpenAI Developers",
+          "Superpowers"
+        ],
+        "pluginCount": 3,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "requirements-engineering",
+        "plugins": [
+          "Asana",
+          "Atlassian Rovo",
+          "ClickUp",
+          "Documents",
+          "Monday.com"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "data-and-interactive-read-write",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "agile-project-management",
+        "plugins": [
+          "Asana",
+          "Atlassian Rovo",
+          "ClickUp",
+          "Monday.com",
+          "Teamwork.com"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "software-development-lifecycle",
+        "plugins": [
+          "CircleCI",
+          "CodeRabbit",
+          "GitHub",
+          "Superpowers"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "developer-tools"
+        ]
+      },
+      {
+        "domainId": "software-metrics-and-measurement",
+        "plugins": [
+          "Amplitude",
+          "Data Analytics",
+          "Mixpanel",
+          "PostHog",
+          "Statsig"
+        ],
+        "pluginCount": 5,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "sre-and-observability",
+        "plugins": [
+          "Datadog (Preview)",
+          "Domotz (Preview)",
+          "Sentry",
+          "Vantage"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "developer-tools",
+          "productivity-ops-business"
+        ]
+      },
+      {
+        "domainId": "reverse-engineering",
+        "plugins": [
+          "CodeRabbit",
+          "Codex Security",
+          "Documents",
+          "Jam"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "developer-tools",
+          "productivity-ops-business",
+          "security"
+        ]
+      },
+      {
+        "domainId": "software-refactoring",
+        "plugins": [
+          "CodeRabbit",
+          "Codex Security",
+          "GitHub",
+          "Superpowers"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "developer-tools",
+          "security"
+        ]
+      },
+      {
+        "domainId": "formal-methods",
+        "plugins": [
+          "Codex Security",
+          "Documents",
+          "LaTeX",
+          "Scite"
+        ],
+        "pluginCount": 4,
+        "groups": [
+          "data-and-interactive-read-write",
+          "research-finance-legal-science",
+          "security"
+        ]
+      }
+    ],
+    "coverageByGroup": {
+      "data-and-interactive-read-write": 23,
+      "design": 16,
+      "developer-tools": 83,
+      "external-or-session": 3,
+      "productivity-ops-business": 21,
+      "research-finance-legal-science": 8,
+      "security": 6
+    },
+    "minimumDomainPluginCount": 3
+  },
+  "platformCompatibility": {
+    "version": 1,
+    "id": "seis-platform-compatibility-kernel",
+    "mode": "macos_windows_native_and_cross_platform_support",
+    "summary": {
+      "platformCount": 3,
+      "appleLanguageCount": 5,
+      "windowsLanguageCount": 18,
+      "appleLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "windowsLanguages": [
+        "Batch",
+        "C",
+        "C#",
+        "C++",
+        "CMD",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "appleFrameworks": [
+        "AppKit",
+        "AppleScript",
+        "CloudKit",
+        "Combine",
+        "Core Data",
+        "Foundation",
+        "Metal",
+        "PlaygroundSupport",
+        "SwiftUI",
+        "UIKit"
+      ],
+      "windowsFrameworks": [
+        ".NET",
+        "WPF",
+        "WSL-aware CLI",
+        "WinUI",
+        "Windows Terminal"
+      ]
+    },
+    "surfaces": [
+      {
+        "id": "macos-apple-native",
+        "label": "macOS Apple Native",
+        "osFamily": "macos",
+        "languages": [
+          "Swift",
+          "SwiftUI",
+          "Objective-C",
+          "Playground",
+          "AppleScript"
+        ],
+        "localHelpers": [
+          "SwiftPM",
+          "xcodebuild",
+          "xcrun",
+          "osascript",
+          "osacompile"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "macos-agent",
+          "apple-platform-agent",
+          "local-helper-agent"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "swiftui_playground_surface",
+          "objective_c_syntax",
+          "applescript_syntax_when_available",
+          "apple_native_only_policy",
+          "permission_scope",
+          "offline_fallback",
+          "notarization_awareness",
+          "accessibility_when_ui"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_platform_swift/Package.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleRunHandoffContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellSettingsContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellTelemetry.swift",
+          "packages/seis_platform_swift/Sources/SeisAppleNativeShell/App/SeisAppleNativeShellApp.swift",
+          "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleContinuationWindow.swift",
+          "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellDiagnosticsView.swift",
+          "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Views/AppleShellSettingsView.swift",
+          "polyglot/objective-c/SEISPlatformBridge.h",
+          "polyglot/objective-c/SEISPlatformBridge.m",
+          "polyglot/swiftui-playground/SEISPlatformPlayground.playground/Contents.swift",
+          "polyglot/applescript/seis_platform_automation.applescript"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "AppKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
+          "Foundation",
+          "PlaygroundSupport",
+          "AppleScript"
+        ]
+      },
+      {
+        "id": "ios-apple-native",
+        "label": "iOS Apple Native",
+        "osFamily": "ios",
+        "languages": [
+          "Swift",
+          "SwiftUI",
+          "Objective-C"
+        ],
+        "localHelpers": [
+          "Xcode",
+          "xcodebuild",
+          "xcrun",
+          "simctl"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "ios-agent",
+          "apple-platform-agent",
+          "mobile-agent"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "swiftui_ios_surface",
+          "objective_c_bridge_review",
+          "uikit_accessibility",
+          "metal_rendering_budget",
+          "combine_state_flow_review",
+          "coredata_cloudkit_sync_review",
+          "app_privacy_review"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisPlatformPolicy.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleContinuationSurface.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleDiagnosticsPersistentHistoryStore.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisApplePersistenceReadinessContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleRunHandoffContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellDiagnosticsHistory.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellRuntimeDiagnostics.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellSettingsContract.swift",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAppleShellTelemetry.swift",
+          "packages/seis_platform_swift/Tests/SeisPlatformKitTests/SeisPlatformPolicyTests.swift",
+          "polyglot/swift/SEISMotionPolicy.swift"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "UIKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
+          "Foundation"
+        ]
+      },
+      {
+        "id": "windows-native",
+        "label": "Windows Native",
+        "osFamily": "windows",
+        "languages": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "localHelpers": [
+          "PowerShell",
+          "dotnet",
+          "winget",
+          "python",
+          "go",
+          "rustc",
+          "javac",
+          "clang++"
+        ],
+        "remoteHelpers": [
+          "SEIS Agent",
+          "OpenAI",
+          "Claude",
+          "Gemini"
+        ],
+        "agentRoles": [
+          "windows-agent",
+          "powershell-ops-agent",
+          "dotnet-agent",
+          "polyglot-runtime-agent"
+        ],
+        "qualityGates": [
+          "powershell_policy",
+          "dotnet_readiness",
+          "windows_multilang_source_surface",
+          "native_cpp_syntax_when_available",
+          "jvm_syntax_when_available",
+          "windows_path_safety",
+          "permission_scope",
+          "offline_fallback",
+          "event_log_awareness",
+          "no_swift_windows_surface"
+        ],
+        "sourceSurfaces": [
+          "packages/seis_windows_csharp/SeisPlatformPolicy.cs",
+          "packages/seis_windows_csharp/SeisPlatformPolicy.csproj",
+          "polyglot/powershell/SeisPlatformReadiness.ps1",
+          "polyglot/windows/dotnet/SeisWindowsPlatform.fs",
+          "polyglot/windows/dotnet/SeisWindowsPlatform.vb",
+          "polyglot/windows/native/seis_windows_platform.hpp",
+          "polyglot/windows/native/seis_windows_platform.cpp",
+          "polyglot/windows/go/seis_windows_platform.go",
+          "polyglot/windows/rust/seis_windows_platform.rs",
+          "polyglot/windows/jvm/SeisWindowsPlatform.java",
+          "polyglot/windows/jvm/SeisWindowsPlatform.kt",
+          "polyglot/windows/scripting/seis_windows_platform.py",
+          "polyglot/windows/scripting/seis_windows_platform.bat",
+          "polyglot/windows/scripting/seis_windows_platform.cmd",
+          "polyglot/windows/scripting/seis_windows_platform.lua",
+          "polyglot/windows/scripting/seis_windows_platform.rb",
+          "polyglot/windows/scripting/seis_windows_platform.php",
+          "polyglot/windows/data/seis_windows_platform.sql",
+          "polyglot/windows/data/seis_windows_platform.r"
+        ],
+        "frameworks": [
+          ".NET",
+          "WinUI",
+          "WPF",
+          "Windows Terminal",
+          "WSL-aware CLI"
+        ]
+      }
+    ],
+    "routingRule": "SEIS remains the user-facing agent; platform helpers execute only inside local permission, credential, and OS boundaries."
+  },
+  "platformLanguagePolicy": {
+    "version": 1,
+    "id": "seis-platform-language-policy",
+    "mode": "apple_native_continuation_first_with_windows_polyglot_support",
+    "summary": {
+      "appleLanguageCount": 5,
+      "appleNativeFrameworkCount": 10,
+      "windowsLanguageCount": 41,
+      "windowsRequiredLanguageCount": 18,
+      "appleOnlyLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "appleNativeFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
+      ],
+      "windowsExcludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ]
+    },
+    "apple": {
+      "platforms": [
+        "macos",
+        "ios"
+      ],
+      "allowedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "prioritizedFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
+      ],
+      "allowedSourceRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swift/",
+        "polyglot/objective-c/",
+        "polyglot/swiftui-playground/",
+        "polyglot/applescript/",
+        "apps/macos/"
+      ],
+      "rule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+      "continuationRule": "New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere."
+    },
+    "windows": {
+      "platforms": [
+        "windows"
+      ],
+      "allowedLanguageSurfaces": [
+        "Awk",
+        "Batch",
+        "Bicep",
+        "C",
+        "C#",
+        "C++",
+        "CMD",
+        "CMake",
+        "COBOL",
+        "Dart",
+        "Dockerfile",
+        "F#",
+        "Fortran",
+        "Go",
+        "Groovy",
+        "Haskell",
+        "JSON Schema",
+        "Java",
+        "JavaScript",
+        "Kotlin",
+        "Lua",
+        "Make",
+        "Nim",
+        "OCaml",
+        "OpenAPI",
+        "PHP",
+        "Perl",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Scala",
+        "Shell",
+        "Tcl",
+        "Terraform",
+        "TypeScript",
+        "Visual Basic",
+        "YAML",
+        "Zig"
+      ],
+      "requiredLanguageSurfaces": [
+        "C#",
+        "F#",
+        "Visual Basic",
+        "PowerShell",
+        "Batch",
+        "CMD",
+        "C",
+        "C++",
+        "Rust",
+        "Go",
+        "Python",
+        "Java",
+        "Kotlin",
+        "SQL",
+        "R",
+        "Lua",
+        "Ruby",
+        "PHP"
+      ],
+      "excludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "rule": "Windows work is broad polyglot and excludes Apple-only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+    },
+    "routingRule": "SEIS remains the primary agent; platform helpers are selected by OS boundary and language policy."
+  },
+  "platformDevelopmentTracks": {
+    "version": 1,
+    "id": "seis-platform-development-tracks",
+    "mode": "apple_native_continuation_and_windows_polyglot_execution_tracks",
+    "summary": {
+      "trackCount": 4,
+      "appleTrackCount": 1,
+      "windowsTrackCount": 2,
+      "governanceTrackCount": 1,
+      "appleLanguageCount": 5,
+      "appleNativeFrameworkCount": 10,
+      "windowsRequiredLanguageCount": 18,
+      "windowsExtendedLanguageCount": 23,
+      "windowsLanguageCoverageCount": 41,
+      "qualityGateCount": 31
+    },
+    "platformBoundaries": {
+      "appleOnlyLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "appleNativeFrameworks": [
+        "SwiftUI",
+        "AppKit",
+        "UIKit",
+        "Metal",
+        "Combine",
+        "Core Data",
+        "CloudKit",
+        "Foundation",
+        "PlaygroundSupport",
+        "AppleScript"
+      ],
+      "windowsExcludedLanguageSurfaces": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "javascriptPolicy": "compatibility_only_keep_under_language_budget"
+    },
+    "tracks": [
+      {
+        "id": "apple-native-macos-track",
+        "label": "Apple Native Continuation Track",
+        "lane": "apple_native",
+        "platformScope": [
+          "macos",
+          "ios"
+        ],
+        "relatedPlatforms": [
+          "watchos",
+          "tvos",
+          "visionos"
+        ],
+        "languages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "frameworks": [
+          "SwiftUI",
+          "AppKit",
+          "UIKit",
+          "Metal",
+          "Combine",
+          "Core Data",
+          "CloudKit",
+          "Foundation",
+          "PlaygroundSupport",
+          "AppleScript"
+        ],
+        "forbiddenLanguages": [
+          "Awk",
+          "Batch",
+          "Bicep",
+          "C#",
+          "CMD",
+          "CMake",
+          "COBOL",
+          "Dart",
+          "Dockerfile",
+          "F#",
+          "Fortran",
+          "Go",
+          "Groovy",
+          "Haskell",
+          "JSON Schema",
+          "Java",
+          "JavaScript",
+          "Kotlin",
+          "Lua",
+          "Make",
+          "Nim",
+          "OCaml",
+          "OpenAPI",
+          "PHP",
+          "Perl",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Scala",
+          "Shell",
+          "Tcl",
+          "Terraform",
+          "TypeScript",
+          "Visual Basic",
+          "YAML",
+          "Zig"
+        ],
+        "sourceRoots": [
+          "packages/seis_platform_swift/",
+          "polyglot/swift/",
+          "polyglot/objective-c/",
+          "polyglot/swiftui-playground/",
+          "polyglot/applescript/",
+          "apps/macos/"
+        ],
+        "validationCommands": [
+          "swift test --package-path packages/seis_platform_swift",
+          "xcrun swift --version",
+          "xcodebuild -version",
+          "xcrun clang -fsyntax-only -fobjc-arc -framework Foundation polyglot/objective-c/SEISPlatformBridge.m",
+          "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+        ],
+        "agentRoles": [
+          "macos-agent",
+          "apple-platform-agent",
+          "local-helper-agent"
+        ],
+        "artifacts": [
+          "SwiftPM package surfaces",
+          "SwiftUI playground live view",
+          "Objective-C bridge header and implementation",
+          "AppleScript automation bridge",
+          "Apple framework policy for Metal, AppKit, UIKit, Combine, Core Data, and CloudKit"
+        ],
+        "qualityGates": [
+          "swift_test",
+          "swiftui_playground_surface",
+          "objective_c_syntax",
+          "applescript_syntax_when_available",
+          "xcode_toolchain_verified",
+          "metal_rendering_budget",
+          "appkit_uikit_surface_review",
+          "combine_state_flow_review",
+          "coredata_cloudkit_sync_review",
+          "accessibility_when_ui",
+          "sandbox_permission_review",
+          "notarization_awareness"
+        ],
+        "executionRule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+        "continuationBias": "Default new SEIS platform implementation to Apple-native surfaces before adding compatibility work elsewhere."
+      },
+      {
+        "id": "windows-required-polyglot-track",
+        "label": "Windows Required Polyglot Track",
+        "lane": "windows_required",
+        "platformScope": [
+          "windows"
+        ],
+        "languages": [
+          "C#",
+          "F#",
+          "Visual Basic",
+          "PowerShell",
+          "Batch",
+          "CMD",
+          "C",
+          "C++",
+          "Rust",
+          "Go",
+          "Python",
+          "Java",
+          "Kotlin",
+          "SQL",
+          "R",
+          "Lua",
+          "Ruby",
+          "PHP"
+        ],
+        "forbiddenLanguages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "sourceRoots": [
+          "packages/seis_windows_csharp/",
+          "polyglot/powershell/",
+          "polyglot/windows/dotnet/",
+          "polyglot/windows/native/",
+          "polyglot/windows/go/",
+          "polyglot/windows/rust/",
+          "polyglot/windows/jvm/",
+          "polyglot/windows/scripting/",
+          "polyglot/windows/data/"
+        ],
+        "validationCommands": [
+          "dotnet --info",
+          "pwsh --version",
+          "python3 --version",
+          "go version",
+          "rustc --version",
+          "javac -version",
+          "npm run check:seis-platform-kernel"
+        ],
+        "agentRoles": [
+          "windows-agent",
+          "dotnet-agent",
+          "powershell-ops-agent",
+          "polyglot-runtime-agent"
+        ],
+        "artifacts": [
+          ".NET C#/F#/Visual Basic policy surfaces",
+          "PowerShell/Batch/CMD operation surfaces",
+          "Native C/C++ and Rust/Go system surfaces",
+          "JVM, scripting, and data-language surfaces"
+        ],
+        "qualityGates": [
+          "no_swift_windows_surface",
+          "dotnet_readiness_when_available",
+          "powershell_policy",
+          "cmd_batch_path_safety",
+          "native_cpp_syntax_when_available",
+          "jvm_syntax_when_available",
+          "offline_fallback",
+          "remote_agent_reasoning_only"
+        ],
+        "executionRule": "Windows work is broad polyglot and must never use Swift, SwiftUI, Objective-C, Playground, or AppleScript surfaces."
+      },
+      {
+        "id": "windows-extended-polyglot-track",
+        "label": "Windows Extended Polyglot Track",
+        "lane": "windows_extended",
+        "platformScope": [
+          "windows"
+        ],
+        "languages": [
+          "TypeScript",
+          "JavaScript",
+          "Dart",
+          "Scala",
+          "Groovy",
+          "Haskell",
+          "OCaml",
+          "Nim",
+          "Zig",
+          "Fortran",
+          "COBOL",
+          "Perl",
+          "Awk",
+          "Tcl",
+          "Shell",
+          "YAML",
+          "JSON Schema",
+          "OpenAPI",
+          "Terraform",
+          "Bicep",
+          "Dockerfile",
+          "Make",
+          "CMake"
+        ],
+        "forbiddenLanguages": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "sourceRoots": [
+          "content/development/fullstack-language-matrix.json",
+          "reports/language-distribution.json",
+          "polyglot/windows/"
+        ],
+        "validationCommands": [
+          "npm run check:fullstack-language-matrix",
+          "npm run check:language-distribution",
+          "npm run check:seis-nonjs-kernel"
+        ],
+        "agentRoles": [
+          "polyglot-runtime-agent",
+          "fullstack-agent",
+          "data-platform-agent"
+        ],
+        "artifacts": [
+          "Full-stack language matrix alignment",
+          "Generated language budget reports",
+          "Future Windows language adapters"
+        ],
+        "qualityGates": [
+          "no_swift_windows_surface",
+          "language_budget_kept_under_target",
+          "runtime_install_requirement_led",
+          "artifact_root_declared",
+          "polyglot_matrix_consistent",
+          "generated_output_idempotent"
+        ],
+        "executionRule": "Extended Windows languages are allowed as needed; JavaScript stays compatibility-only and below the language budget."
+      },
+      {
+        "id": "seis-platform-boundary-governance-track",
+        "label": "SEIS Platform Boundary Governance Track",
+        "lane": "governance",
+        "platformScope": [
+          "macos",
+          "ios",
+          "windows"
+        ],
+        "languages": [],
+        "forbiddenLanguages": [],
+        "sourceRoots": [
+          "packages/seis_kernel/",
+          "scripts/",
+          "content/development/",
+          "reports/"
+        ],
+        "validationCommands": [
+          "npm run check:seis-platform-language-policy",
+          "npm run check:seis-platform-kernel",
+          "npm run check:seis-nonjs-kernel",
+          "npm run automation:refresh-seis-surface -- --summary"
+        ],
+        "agentRoles": [
+          "seis-governance-agent",
+          "quality-gate-agent"
+        ],
+        "artifacts": [
+          "Platform policy JSON and Markdown",
+          "Development track JSON and Markdown",
+          "Idempotent refresh summary"
+        ],
+        "qualityGates": [
+          "apple_native_only_boundary",
+          "windows_no_apple_only_boundary",
+          "javascript_compatibility_only",
+          "explicit_commit_approval",
+          "explicit_push_approval",
+          "deterministic_refresh"
+        ],
+        "executionRule": "SEIS stays primary; platform tracks only constrain safe execution boundaries.",
+        "boundaryRules": [
+          "macOS artifacts stay Apple-native only",
+          "Windows artifacts exclude Apple-only language surfaces",
+          "runtime installs are requirement-led, never percentage-led",
+          "commit and push require explicit user approval"
+        ]
+      }
+    ]
+  },
+  "domains": [
+    {
+      "id": "algorithms-and-flowcharts",
+      "label": "Algorithms and Flowcharts",
+      "lane": "core-computing",
+      "purpose": "Model problem solving as algorithms, diagrams, complexity notes, and executable decision flows.",
+      "agentRole": "algorithm-agent",
+      "keywords": [
+        "algorithm",
+        "flowchart",
+        "akış",
+        "pseudocode",
+        "complexity"
+      ],
+      "algorithms": [
+        "search",
+        "sort",
+        "dynamic programming",
+        "graph traversal",
+        "state machines"
+      ],
+      "foundations": [
+        "big_o",
+        "recurrence relations",
+        "discrete structures"
+      ],
+      "artifacts": [
+        "mermaid flowcharts",
+        "pseudocode specs",
+        "algorithm test cases"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "diagram-renderer"
+      ],
+      "skillHooks": [
+        "algorithm-design",
+        "diagram-generation"
+      ],
+      "pluginHooks": [
+        "Build Web Data Visualization",
+        "Documents"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "complexity_budget",
+        "edge_case_tests"
+      ],
+      "starterSurfaces": [
+        "docs/architecture/*.md",
+        "polyglot/mermaid/*.mmd"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "mathematics-foundations",
+      "label": "Mathematics Foundations",
+      "lane": "core-computing",
+      "purpose": "Keep mathematical reasoning available for models, metrics, optimization, graphics, and verification.",
+      "agentRole": "math-agent",
+      "keywords": [
+        "math",
+        "linear algebra",
+        "statistics",
+        "calculus",
+        "probability"
+      ],
+      "algorithms": [
+        "optimization",
+        "numerical methods",
+        "statistical estimation"
+      ],
+      "foundations": [
+        "linear algebra",
+        "probability",
+        "calculus",
+        "logic"
+      ],
+      "artifacts": [
+        "math notes",
+        "metric formulas",
+        "model assumptions"
+      ],
+      "mcpHooks": [
+        "notebook-context",
+        "semantic-report"
+      ],
+      "skillHooks": [
+        "data-analytics",
+        "latex"
+      ],
+      "pluginHooks": [
+        "Data Analytics",
+        "LaTeX"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "assumption_review",
+        "unit_consistency"
+      ],
+      "starterSurfaces": [
+        "docs/research/*.md",
+        "reports/*.md"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "computer-science-foundations",
+      "label": "Computer Science Foundations",
+      "lane": "core-computing",
+      "purpose": "Anchor SEIS in data structures, complexity, concurrency, operating systems, and networking basics.",
+      "agentRole": "cs-foundation-agent",
+      "keywords": [
+        "data structure",
+        "network",
+        "os",
+        "concurrency",
+        "compiler"
+      ],
+      "algorithms": [
+        "hashing",
+        "queues",
+        "trees",
+        "locks",
+        "protocol state machines"
+      ],
+      "foundations": [
+        "automata",
+        "systems",
+        "networks",
+        "memory models"
+      ],
+      "artifacts": [
+        "foundation notes",
+        "architecture decisions",
+        "risk matrices"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "runtime-inventory"
+      ],
+      "skillHooks": [
+        "software-architecture",
+        "security-scan"
+      ],
+      "pluginHooks": [
+        "Codex Security",
+        "Superpowers"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "complexity_budget",
+        "concurrency_risk_review"
+      ],
+      "starterSurfaces": [
+        "docs/architecture/*.md",
+        "packages/core/*"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "web-development",
+      "label": "Web Development",
+      "lane": "product-engineering",
+      "purpose": "Build responsive, accessible, performant web interfaces and browser runtime surfaces.",
+      "agentRole": "web-agent",
+      "keywords": [
+        "web",
+        "frontend",
+        "html",
+        "css",
+        "javascript",
+        "react"
+      ],
+      "algorithms": [
+        "event delegation",
+        "render scheduling",
+        "cache-first loading"
+      ],
+      "foundations": [
+        "browser APIs",
+        "http",
+        "accessibility tree",
+        "responsive layout"
+      ],
+      "artifacts": [
+        "web pages",
+        "components",
+        "static release",
+        "pwa assets"
+      ],
+      "mcpHooks": [
+        "browser",
+        "local-preview"
+      ],
+      "skillHooks": [
+        "frontend-app-builder",
+        "frontend-testing-debugging"
+      ],
+      "pluginHooks": [
+        "Build Web Apps",
+        "Browser",
+        "Vercel",
+        "Cloudflare"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "seo_when_public",
+        "mobile_ergonomics"
+      ],
+      "starterSurfaces": [
+        "apps/web",
+        "release/web",
+        "server/edge"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "mobile-development",
+      "label": "Mobile Development",
+      "lane": "product-engineering",
+      "purpose": "Support iOS, Android, Flutter, React Native, and mobile ergonomics without forcing one stack.",
+      "agentRole": "mobile-agent",
+      "keywords": [
+        "ios",
+        "android",
+        "swift",
+        "kotlin",
+        "flutter",
+        "react native"
+      ],
+      "algorithms": [
+        "offline sync",
+        "gesture state",
+        "navigation state"
+      ],
+      "foundations": [
+        "platform SDKs",
+        "touch ergonomics",
+        "store release constraints"
+      ],
+      "artifacts": [
+        "mobile policies",
+        "native bridges",
+        "simulator checks"
+      ],
+      "mcpHooks": [
+        "simulator-context",
+        "device-log-context"
+      ],
+      "skillHooks": [
+        "ios-apps",
+        "expo",
+        "android-testing"
+      ],
+      "pluginHooks": [
+        "Build iOS Apps",
+        "Test Android Apps",
+        "Expo"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "battery",
+        "touch_target",
+        "offline_fallback"
+      ],
+      "starterSurfaces": [
+        "polyglot/swift",
+        "polyglot/kotlin",
+        "polyglot/dart"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "game-development",
+      "label": "Game Development",
+      "lane": "interactive-systems",
+      "purpose": "Cover game loops, input, rendering, physics, asset pipelines, and playtestable browser/native prototypes.",
+      "agentRole": "game-agent",
+      "keywords": [
+        "game",
+        "physics",
+        "rendering",
+        "input",
+        "playtest"
+      ],
+      "algorithms": [
+        "game loop",
+        "collision detection",
+        "pathfinding",
+        "entity component systems"
+      ],
+      "foundations": [
+        "linear algebra",
+        "graphics",
+        "simulation",
+        "state machines"
+      ],
+      "artifacts": [
+        "game prototypes",
+        "playtest reports",
+        "asset manifests"
+      ],
+      "mcpHooks": [
+        "browser-canvas",
+        "asset-library"
+      ],
+      "skillHooks": [
+        "game-studio",
+        "sprite-pipeline"
+      ],
+      "pluginHooks": [
+        "Game Studio",
+        "Fal",
+        "Shutterstock"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "frame_budget",
+        "input_latency"
+      ],
+      "starterSurfaces": [
+        "polyglot/gdscript",
+        "polyglot/glsl",
+        "polyglot/wgsl"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "full-stack-engineering",
+      "label": "Full-Stack Engineering",
+      "lane": "product-engineering",
+      "purpose": "Connect UI, APIs, databases, release checks, and observability into one maintainable product surface.",
+      "agentRole": "full-stack-agent",
+      "keywords": [
+        "full stack",
+        "api",
+        "backend",
+        "frontend",
+        "server"
+      ],
+      "algorithms": [
+        "request routing",
+        "validation pipeline",
+        "cache invalidation"
+      ],
+      "foundations": [
+        "http",
+        "database transactions",
+        "security boundaries"
+      ],
+      "artifacts": [
+        "api contracts",
+        "server adapters",
+        "release sync"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "server-targets"
+      ],
+      "skillHooks": [
+        "frontend-app-builder",
+        "backend-guidance"
+      ],
+      "pluginHooks": [
+        "Build Web Apps",
+        "Supabase",
+        "Neon Postgres",
+        "Render"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "contract_tests",
+        "release_sync"
+      ],
+      "starterSurfaces": [
+        "server",
+        "deploy",
+        "packages"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "data-engineering-and-analytics",
+      "label": "Data Engineering and Analytics",
+      "lane": "data-intelligence",
+      "purpose": "Move data from raw sources into clean models, dashboards, reports, and decision-ready metrics.",
+      "agentRole": "data-agent",
+      "keywords": [
+        "data pipeline",
+        "etl",
+        "elt",
+        "analytics",
+        "dashboard"
+      ],
+      "algorithms": [
+        "batch processing",
+        "incremental models",
+        "semantic aggregation"
+      ],
+      "foundations": [
+        "relational algebra",
+        "statistics",
+        "dimensional modeling"
+      ],
+      "artifacts": [
+        "datasets",
+        "metric reports",
+        "dashboards"
+      ],
+      "mcpHooks": [
+        "warehouse-context",
+        "report-renderer"
+      ],
+      "skillHooks": [
+        "data-analytics",
+        "build-dashboard"
+      ],
+      "pluginHooks": [
+        "Data Analytics",
+        "MotherDuck",
+        "Metabase",
+        "Deepnote"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "lineage",
+        "metric_definitions"
+      ],
+      "starterSurfaces": [
+        "content/development/*.json",
+        "reports/*.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "data-science",
+      "label": "Data Science",
+      "lane": "data-intelligence",
+      "purpose": "Support exploration, feature engineering, evaluation, and statistical interpretation.",
+      "agentRole": "data-science-agent",
+      "keywords": [
+        "data science",
+        "model",
+        "feature",
+        "notebook",
+        "evaluation"
+      ],
+      "algorithms": [
+        "regression",
+        "classification",
+        "clustering",
+        "cross validation"
+      ],
+      "foundations": [
+        "statistics",
+        "probability",
+        "linear algebra"
+      ],
+      "artifacts": [
+        "experiment reports",
+        "evaluation cards",
+        "feature specs"
+      ],
+      "mcpHooks": [
+        "notebook-context",
+        "dataset-search"
+      ],
+      "skillHooks": [
+        "metric-diagnostics",
+        "visualize-data"
+      ],
+      "pluginHooks": [
+        "Data Analytics",
+        "Hugging Face",
+        "Deepnote"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "bias_review",
+        "sample_size_review"
+      ],
+      "starterSurfaces": [
+        "polyglot/python",
+        "polyglot/r",
+        "polyglot/julia"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "artificial-intelligence",
+      "label": "Artificial Intelligence",
+      "lane": "ai-intelligence",
+      "purpose": "Represent planning, reasoning, model selection, evaluation, and responsible AI behavior.",
+      "agentRole": "ai-agent",
+      "keywords": [
+        "ai",
+        "machine learning",
+        "reasoning",
+        "model",
+        "evaluation"
+      ],
+      "algorithms": [
+        "search",
+        "planning",
+        "retrieval",
+        "ranking",
+        "model evaluation"
+      ],
+      "foundations": [
+        "optimization",
+        "probability",
+        "information theory"
+      ],
+      "artifacts": [
+        "model cards",
+        "evaluation reports",
+        "routing policy"
+      ],
+      "mcpHooks": [
+        "model-registry",
+        "eval-context"
+      ],
+      "skillHooks": [
+        "openai-docs",
+        "huggingface-llm-trainer"
+      ],
+      "pluginHooks": [
+        "OpenAI Developers",
+        "Hugging Face",
+        "Plugin Eval"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "evals",
+        "safety_policy"
+      ],
+      "starterSurfaces": [
+        "content/development/ai-release-manifest.json",
+        "packages/ai-language"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "ai-agent-engineering",
+      "label": "AI Agent Engineering",
+      "lane": "ai-intelligence",
+      "purpose": "Turn SEIS into role-based agents with tools, memory, policies, and scoped execution.",
+      "agentRole": "agent-orchestrator",
+      "keywords": [
+        "agent",
+        "planner",
+        "tool",
+        "memory",
+        "workflow"
+      ],
+      "algorithms": [
+        "task decomposition",
+        "tool routing",
+        "policy gating"
+      ],
+      "foundations": [
+        "state machines",
+        "control theory",
+        "risk modeling"
+      ],
+      "artifacts": [
+        "agent manifests",
+        "tool policies",
+        "execution logs"
+      ],
+      "mcpHooks": [
+        "mcp-server",
+        "repo-context",
+        "tool-inventory"
+      ],
+      "skillHooks": [
+        "superpowers",
+        "plugin-creator",
+        "skill-creator"
+      ],
+      "pluginHooks": [
+        "SEIS",
+        "Superpowers",
+        "GitHub",
+        "OpenAI Developers"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "permission_scope",
+        "rollback_plan"
+      ],
+      "starterSurfaces": [
+        "mcp",
+        "plugins/seis",
+        "packages/ai-language"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "llm-orchestration",
+      "label": "LLM Orchestration",
+      "lane": "ai-intelligence",
+      "purpose": "Coordinate local and remote models while SEIS remains the task-facing agent.",
+      "agentRole": "llm-routing-agent",
+      "keywords": [
+        "llm",
+        "openai",
+        "gemini",
+        "claude",
+        "ollama",
+        "qwen"
+      ],
+      "algorithms": [
+        "provider fallback",
+        "intent routing",
+        "cost-aware selection"
+      ],
+      "foundations": [
+        "decision theory",
+        "token budgeting",
+        "prompt semantics"
+      ],
+      "artifacts": [
+        "routing policy",
+        "request blueprints",
+        "adapter readiness"
+      ],
+      "mcpHooks": [
+        "provider-registry",
+        "local-model-registry"
+      ],
+      "skillHooks": [
+        "openai-docs",
+        "huggingface-llm-trainer"
+      ],
+      "pluginHooks": [
+        "OpenAI Developers",
+        "Hugging Face"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "credential_boundaries",
+        "offline_fallback"
+      ],
+      "starterSurfaces": [
+        "content/development/llm-task-routing-policy.json",
+        "scripts/ai-routing-policy.cjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "mcp-skills-plugins",
+      "label": "MCP, Skills, and Plugins",
+      "lane": "ai-intelligence",
+      "purpose": "Make external capabilities discoverable, scoped, validated, and visible in SEIS source surfaces.",
+      "agentRole": "integration-agent",
+      "keywords": [
+        "mcp",
+        "skill",
+        "plugin",
+        "connector",
+        "tool"
+      ],
+      "algorithms": [
+        "capability matching",
+        "permission gating",
+        "source synchronization"
+      ],
+      "foundations": [
+        "interface contracts",
+        "security boundaries",
+        "least privilege"
+      ],
+      "artifacts": [
+        "mcp manifests",
+        "skill docs",
+        "plugin source reports"
+      ],
+      "mcpHooks": [
+        "mcp-server",
+        "plugin-registry",
+        "skill-registry"
+      ],
+      "skillHooks": [
+        "plugin-creator",
+        "skill-creator",
+        "plugin-eval"
+      ],
+      "pluginHooks": [
+        "GitHub",
+        "Plugin Eval",
+        "SEIS"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "source_visibility",
+        "auth_state_review"
+      ],
+      "starterSurfaces": [
+        "plugins/seis",
+        "mcp",
+        "reports/plugin-*.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "database-management",
+      "label": "Database Management",
+      "lane": "data-platform",
+      "purpose": "Cover relational, document, cache, schema, migration, backup, and governance patterns.",
+      "agentRole": "database-agent",
+      "keywords": [
+        "database",
+        "postgres",
+        "mysql",
+        "mongodb",
+        "redis",
+        "schema"
+      ],
+      "algorithms": [
+        "index selection",
+        "query planning",
+        "migration ordering"
+      ],
+      "foundations": [
+        "relational algebra",
+        "normalization",
+        "transactions"
+      ],
+      "artifacts": [
+        "schemas",
+        "migration plans",
+        "backup policies"
+      ],
+      "mcpHooks": [
+        "database-context",
+        "schema-inspector"
+      ],
+      "skillHooks": [
+        "supabase-postgres-best-practices"
+      ],
+      "pluginHooks": [
+        "Supabase",
+        "Neon Postgres",
+        "MotherDuck"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "backup_restore",
+        "migration_safety"
+      ],
+      "starterSurfaces": [
+        "polyglot/sql",
+        "polyglot/mysql",
+        "deploy"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "version-control-systems",
+      "label": "Version Control Systems",
+      "lane": "governance",
+      "purpose": "Protect Git history, branches, releases, reviews, and publication gates.",
+      "agentRole": "git-governance-agent",
+      "keywords": [
+        "git",
+        "github",
+        "branch",
+        "commit",
+        "pull request"
+      ],
+      "algorithms": [
+        "diff analysis",
+        "merge strategy",
+        "release tagging"
+      ],
+      "foundations": [
+        "graph theory",
+        "change management"
+      ],
+      "artifacts": [
+        "branch policies",
+        "PR summaries",
+        "release notes"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "github-context"
+      ],
+      "skillHooks": [
+        "github",
+        "coderabbit-review"
+      ],
+      "pluginHooks": [
+        "GitHub",
+        "CodeRabbit",
+        "CircleCI"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "no_destructive_git",
+        "ci_review"
+      ],
+      "starterSurfaces": [
+        ".github",
+        "scripts/check-github-*.mjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "cloud-computing",
+      "label": "Cloud Computing",
+      "lane": "cloud-ops",
+      "purpose": "Map hosting, edge, serverless, storage, networking, IAM, and deployment readiness.",
+      "agentRole": "cloud-agent",
+      "keywords": [
+        "cloud",
+        "serverless",
+        "gcp",
+        "aws",
+        "azure",
+        "firebase",
+        "cloudflare"
+      ],
+      "algorithms": [
+        "autoscaling",
+        "routing",
+        "cache policy",
+        "deployment gates"
+      ],
+      "foundations": [
+        "distributed systems",
+        "networking",
+        "security"
+      ],
+      "artifacts": [
+        "cloud matrices",
+        "deploy manifests",
+        "runbooks"
+      ],
+      "mcpHooks": [
+        "cloud-targets",
+        "deployment-context"
+      ],
+      "skillHooks": [
+        "cloudflare",
+        "wrangler",
+        "vercel"
+      ],
+      "pluginHooks": [
+        "Cloudflare",
+        "Vercel",
+        "Netlify",
+        "Render",
+        "Supabase"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "iam_review",
+        "cost_guard"
+      ],
+      "starterSurfaces": [
+        "deploy",
+        "server/edge",
+        "reports/server-cloud-activation-report.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "cybersecurity",
+      "label": "Cybersecurity",
+      "lane": "security-governance",
+      "purpose": "Keep threat modeling, secret detection, dependency review, auth, and secure coding active.",
+      "agentRole": "security-agent",
+      "keywords": [
+        "security",
+        "threat",
+        "vulnerability",
+        "secret",
+        "auth"
+      ],
+      "algorithms": [
+        "attack tree analysis",
+        "risk scoring",
+        "secret scanning"
+      ],
+      "foundations": [
+        "cryptography basics",
+        "network security",
+        "secure design"
+      ],
+      "artifacts": [
+        "threat models",
+        "security reports",
+        "mitigation plans"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "security-scan"
+      ],
+      "skillHooks": [
+        "codex-security",
+        "threat-model"
+      ],
+      "pluginHooks": [
+        "Codex Security",
+        "Sentry"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "secret_detection",
+        "least_privilege"
+      ],
+      "starterSurfaces": [
+        "SECURITY.md",
+        "scripts/check-*.mjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "devops-and-system-management",
+      "label": "DevOps and System Management",
+      "lane": "cloud-ops",
+      "purpose": "Support CI/CD, environment readiness, runtime inventory, shell automation, and operations runbooks.",
+      "agentRole": "devops-agent",
+      "keywords": [
+        "devops",
+        "ci",
+        "cd",
+        "ops",
+        "system",
+        "runtime"
+      ],
+      "algorithms": [
+        "pipeline orchestration",
+        "health checks",
+        "rollback sequencing"
+      ],
+      "foundations": [
+        "operating systems",
+        "networking",
+        "process management"
+      ],
+      "artifacts": [
+        "automation scripts",
+        "runbooks",
+        "environment reports"
+      ],
+      "mcpHooks": [
+        "terminal-context",
+        "runtime-inventory"
+      ],
+      "skillHooks": [
+        "circleci-config",
+        "cloudflare-workers"
+      ],
+      "pluginHooks": [
+        "CircleCI",
+        "Cloudflare",
+        "Vantage"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "idempotency",
+        "environment_check"
+      ],
+      "starterSurfaces": [
+        "scripts",
+        "deploy",
+        "server"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "test-engineering",
+      "label": "Test Engineering",
+      "lane": "quality-engineering",
+      "purpose": "Create unit, integration, UI, regression, accessibility, performance, and release checks.",
+      "agentRole": "qa-agent",
+      "keywords": [
+        "test",
+        "qa",
+        "validation",
+        "regression",
+        "coverage"
+      ],
+      "algorithms": [
+        "property-based testing",
+        "mutation testing",
+        "snapshot comparison"
+      ],
+      "foundations": [
+        "quality models",
+        "risk-based testing",
+        "observability"
+      ],
+      "artifacts": [
+        "test plans",
+        "check scripts",
+        "evidence reports"
+      ],
+      "mcpHooks": [
+        "browser-context",
+        "simulator-context",
+        "repo-context"
+      ],
+      "skillHooks": [
+        "frontend-testing-debugging",
+        "test-android-apps"
+      ],
+      "pluginHooks": [
+        "Browser",
+        "Test Android Apps",
+        "CodeRabbit"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "test_plan",
+        "regression_guard"
+      ],
+      "starterSurfaces": [
+        "scripts/check-*.mjs",
+        "reports"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "software-architecture-and-patterns",
+      "label": "Software Architecture and Design Patterns",
+      "lane": "architecture",
+      "purpose": "Guide bounded contexts, patterns, system diagrams, tradeoffs, and long-term maintainability.",
+      "agentRole": "architecture-agent",
+      "keywords": [
+        "architecture",
+        "design pattern",
+        "system design",
+        "bounded context"
+      ],
+      "algorithms": [
+        "dependency inversion",
+        "event sourcing",
+        "adapter patterns"
+      ],
+      "foundations": [
+        "modularity",
+        "distributed systems",
+        "domain modeling"
+      ],
+      "artifacts": [
+        "ADRs",
+        "component maps",
+        "dependency diagrams"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "diagram-renderer"
+      ],
+      "skillHooks": [
+        "software-architecture",
+        "figma-generate-diagram"
+      ],
+      "pluginHooks": [
+        "Documents",
+        "Figma",
+        "Build Web Data Visualization"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "architecture_decision_record",
+        "dependency_review"
+      ],
+      "starterSurfaces": [
+        "docs/architecture",
+        "docs/development"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "big-data-engineering",
+      "label": "Big Data Engineering",
+      "lane": "data-platform",
+      "purpose": "Prepare distributed ingestion, storage, transformation, streaming, and lakehouse patterns.",
+      "agentRole": "big-data-agent",
+      "keywords": [
+        "big data",
+        "streaming",
+        "lakehouse",
+        "warehouse",
+        "spark"
+      ],
+      "algorithms": [
+        "partitioning",
+        "windowing",
+        "map reduce",
+        "stream processing"
+      ],
+      "foundations": [
+        "distributed systems",
+        "statistics",
+        "storage formats"
+      ],
+      "artifacts": [
+        "data lake plans",
+        "stream schemas",
+        "lineage reports"
+      ],
+      "mcpHooks": [
+        "warehouse-context",
+        "dataset-context"
+      ],
+      "skillHooks": [
+        "data-analytics",
+        "deepnote"
+      ],
+      "pluginHooks": [
+        "Data Analytics",
+        "MotherDuck",
+        "Deepnote"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "lineage",
+        "cost_guard"
+      ],
+      "starterSurfaces": [
+        "polyglot/avro",
+        "polyglot/protobuf",
+        "polyglot/asyncapi"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "nlp-and-computer-vision",
+      "label": "NLP and Computer Vision",
+      "lane": "ai-intelligence",
+      "purpose": "Cover language, speech, image, video, embeddings, retrieval, detection, and multimodal workflows.",
+      "agentRole": "multimodal-ai-agent",
+      "keywords": [
+        "nlp",
+        "vision",
+        "computer vision",
+        "embedding",
+        "ocr",
+        "multimodal"
+      ],
+      "algorithms": [
+        "tokenization",
+        "embedding search",
+        "classification",
+        "object detection"
+      ],
+      "foundations": [
+        "linear algebra",
+        "probability",
+        "signal processing"
+      ],
+      "artifacts": [
+        "model cards",
+        "dataset sheets",
+        "evaluation reports"
+      ],
+      "mcpHooks": [
+        "model-registry",
+        "asset-library"
+      ],
+      "skillHooks": [
+        "huggingface-vision-trainer",
+        "generative-polish"
+      ],
+      "pluginHooks": [
+        "Hugging Face",
+        "Fal",
+        "Cloudinary",
+        "Shutterstock"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "dataset_rights",
+        "bias_review"
+      ],
+      "starterSurfaces": [
+        "packages/asset-registry",
+        "reports/icloud-personal-inventory.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "quantum-programming",
+      "label": "Quantum Programming",
+      "lane": "research-lab",
+      "purpose": "Track quantum-readiness concepts, circuits, algorithms, and simulation boundaries.",
+      "agentRole": "quantum-agent",
+      "keywords": [
+        "quantum",
+        "qsharp",
+        "circuit",
+        "qubit"
+      ],
+      "algorithms": [
+        "grover search",
+        "quantum Fourier transform",
+        "circuit simulation"
+      ],
+      "foundations": [
+        "linear algebra",
+        "probability amplitudes",
+        "complex numbers"
+      ],
+      "artifacts": [
+        "quantum notes",
+        "simulation specs",
+        "research cards"
+      ],
+      "mcpHooks": [
+        "research-context"
+      ],
+      "skillHooks": [
+        "latex",
+        "research-synthesis"
+      ],
+      "pluginHooks": [
+        "LaTeX",
+        "Scite",
+        "Zotero"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "research_citation",
+        "simulation_boundary"
+      ],
+      "starterSurfaces": [
+        "polyglot/qsharp"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "sustainable-software",
+      "label": "Sustainable Software",
+      "lane": "governance",
+      "purpose": "Reduce unnecessary compute, dependency bloat, carbon cost, and maintenance pressure.",
+      "agentRole": "sustainability-agent",
+      "keywords": [
+        "sustainable",
+        "green software",
+        "low power",
+        "efficiency"
+      ],
+      "algorithms": [
+        "resource budgeting",
+        "cache reuse",
+        "workload shedding"
+      ],
+      "foundations": [
+        "systems efficiency",
+        "measurement",
+        "lifecycle cost"
+      ],
+      "artifacts": [
+        "efficiency reports",
+        "runtime budgets",
+        "dependency reviews"
+      ],
+      "mcpHooks": [
+        "runtime-inventory",
+        "cost-context"
+      ],
+      "skillHooks": [
+        "cloudflare-web-perf",
+        "performance-audit"
+      ],
+      "pluginHooks": [
+        "Vantage",
+        "Cloudflare",
+        "Build Web Apps"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "dependency_budget",
+        "low_power_mode"
+      ],
+      "starterSurfaces": [
+        "docs/governance/full-efficiency-low-pressure-mode.md",
+        "scripts/check-experience-budget.mjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "low-code-no-code-platforms",
+      "label": "Low-Code and No-Code Platforms",
+      "lane": "product-engineering",
+      "purpose": "Use low-code tools only when they reduce delivery risk and keep ownership clear.",
+      "agentRole": "low-code-agent",
+      "keywords": [
+        "low-code",
+        "no-code",
+        "replit",
+        "lovable",
+        "base44",
+        "wix"
+      ],
+      "algorithms": [
+        "workflow mapping",
+        "guardrail validation",
+        "export review"
+      ],
+      "foundations": [
+        "requirements modeling",
+        "integration design"
+      ],
+      "artifacts": [
+        "tool decision records",
+        "export plans",
+        "ownership maps"
+      ],
+      "mcpHooks": [
+        "app-builder-context"
+      ],
+      "skillHooks": [
+        "base44-cli",
+        "wix"
+      ],
+      "pluginHooks": [
+        "Base44",
+        "Lovable",
+        "Replit",
+        "Wix"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "exportability",
+        "vendor_lockin_review"
+      ],
+      "starterSurfaces": [
+        "docs/development",
+        "reports"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "ux-ui-engineering",
+      "label": "UX and UI Engineering",
+      "lane": "design-systems",
+      "purpose": "Connect usability, interaction design, accessibility, design systems, and polished implementation.",
+      "agentRole": "ux-ui-agent",
+      "keywords": [
+        "ux",
+        "ui",
+        "design system",
+        "accessibility",
+        "interaction"
+      ],
+      "algorithms": [
+        "information architecture",
+        "interaction state modeling",
+        "responsive heuristics"
+      ],
+      "foundations": [
+        "human-computer interaction",
+        "visual hierarchy",
+        "accessibility"
+      ],
+      "artifacts": [
+        "wireframes",
+        "component specs",
+        "design tokens"
+      ],
+      "mcpHooks": [
+        "browser-context",
+        "design-context"
+      ],
+      "skillHooks": [
+        "frontend-app-builder",
+        "figma-use"
+      ],
+      "pluginHooks": [
+        "Figma",
+        "Canva",
+        "Product Design",
+        "Build Web Apps"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "accessibility",
+        "mobile_ergonomics",
+        "typography"
+      ],
+      "starterSurfaces": [
+        "packages/design-tokens",
+        "apps/web/styles.css"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "product-design-and-creative-systems",
+      "label": "Product Design and Creative Systems",
+      "lane": "design-systems",
+      "purpose": "Support visual systems, brand assets, media, presentations, and creative production workflows.",
+      "agentRole": "creative-agent",
+      "keywords": [
+        "design",
+        "brand",
+        "creative",
+        "media",
+        "presentation"
+      ],
+      "algorithms": [
+        "creative brief routing",
+        "asset curation",
+        "variant comparison"
+      ],
+      "foundations": [
+        "visual communication",
+        "narrative design",
+        "media operations"
+      ],
+      "artifacts": [
+        "creative briefs",
+        "moodboards",
+        "asset registries"
+      ],
+      "mcpHooks": [
+        "asset-library",
+        "design-context"
+      ],
+      "skillHooks": [
+        "creative-production",
+        "canva-branded-presentation"
+      ],
+      "pluginHooks": [
+        "Creative Production",
+        "Canva",
+        "Fal",
+        "HeyGen",
+        "Shutterstock"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "rights_review",
+        "brand_consistency"
+      ],
+      "starterSurfaces": [
+        "packages/asset-registry",
+        "docs/strategy"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "autonomous-vehicles-and-robotics",
+      "label": "Autonomous Vehicles and Robotics",
+      "lane": "research-lab",
+      "purpose": "Represent robotics software, perception, planning, control, simulation, and safety cases.",
+      "agentRole": "robotics-agent",
+      "keywords": [
+        "robotics",
+        "autonomous",
+        "vehicle",
+        "ros",
+        "control"
+      ],
+      "algorithms": [
+        "path planning",
+        "sensor fusion",
+        "pid control",
+        "slam"
+      ],
+      "foundations": [
+        "control theory",
+        "kinematics",
+        "computer vision",
+        "real-time systems"
+      ],
+      "artifacts": [
+        "simulation plans",
+        "safety cases",
+        "control policies"
+      ],
+      "mcpHooks": [
+        "simulation-context",
+        "sensor-data-context"
+      ],
+      "skillHooks": [
+        "nvidia",
+        "life-science-style-research-routing"
+      ],
+      "pluginHooks": [
+        "NVIDIA",
+        "Build Web Data Visualization"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "safety_case",
+        "simulation_boundary"
+      ],
+      "starterSurfaces": [
+        "docs/research",
+        "polyglot/cpp",
+        "polyglot/python"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "ai-ethics-and-data-governance",
+      "label": "AI Ethics and Data Governance",
+      "lane": "governance",
+      "purpose": "Keep privacy, fairness, consent, provenance, retention, and model accountability in scope.",
+      "agentRole": "governance-agent",
+      "keywords": [
+        "ethics",
+        "privacy",
+        "governance",
+        "bias",
+        "data policy"
+      ],
+      "algorithms": [
+        "risk scoring",
+        "bias evaluation",
+        "data lineage checks"
+      ],
+      "foundations": [
+        "ethics",
+        "statistics",
+        "law-aware governance"
+      ],
+      "artifacts": [
+        "policy docs",
+        "data cards",
+        "model cards"
+      ],
+      "mcpHooks": [
+        "policy-context",
+        "data-lineage-context"
+      ],
+      "skillHooks": [
+        "codex-security",
+        "data-analytics"
+      ],
+      "pluginHooks": [
+        "Codex Security",
+        "Data Analytics",
+        "Documents"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "privacy_review",
+        "provenance"
+      ],
+      "starterSurfaces": [
+        "SECURITY.md",
+        "content/development/*.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "compiler-and-language-engineering",
+      "label": "Compiler and Language Engineering",
+      "lane": "core-computing",
+      "purpose": "Cover parsing, ASTs, interpreters, compilers, DSLs, type systems, and language tooling.",
+      "agentRole": "language-engineering-agent",
+      "keywords": [
+        "compiler",
+        "parser",
+        "dsl",
+        "language",
+        "ast"
+      ],
+      "algorithms": [
+        "lexing",
+        "parsing",
+        "type checking",
+        "code generation"
+      ],
+      "foundations": [
+        "automata",
+        "formal languages",
+        "type theory"
+      ],
+      "artifacts": [
+        "grammar specs",
+        "AST schemas",
+        "DSL docs"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "language-runtime-context"
+      ],
+      "skillHooks": [
+        "skill-creator",
+        "plugin-creator"
+      ],
+      "pluginHooks": [
+        "Superpowers",
+        "OpenAI Developers"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "grammar_tests",
+        "type_contracts"
+      ],
+      "starterSurfaces": [
+        "polyglot",
+        "packages/ai-language"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "requirements-engineering",
+      "label": "Requirements Engineering",
+      "lane": "product-governance",
+      "purpose": "Turn fuzzy requests into traceable scope, acceptance criteria, risks, and release decisions.",
+      "agentRole": "requirements-agent",
+      "keywords": [
+        "requirements",
+        "acceptance criteria",
+        "scope",
+        "prd"
+      ],
+      "algorithms": [
+        "decision trees",
+        "traceability matrices",
+        "risk classification"
+      ],
+      "foundations": [
+        "systems analysis",
+        "stakeholder modeling"
+      ],
+      "artifacts": [
+        "PRDs",
+        "acceptance criteria",
+        "traceability maps"
+      ],
+      "mcpHooks": [
+        "document-context",
+        "issue-context"
+      ],
+      "skillHooks": [
+        "documents",
+        "spec-to-backlog"
+      ],
+      "pluginHooks": [
+        "Documents",
+        "Atlassian Rovo",
+        "Linear",
+        "Notion"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "traceability",
+        "acceptance_criteria"
+      ],
+      "starterSurfaces": [
+        "docs/development",
+        "PROJECTS.md"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "agile-project-management",
+      "label": "Agile Project Management",
+      "lane": "product-governance",
+      "purpose": "Support backlogs, sprint planning, prioritization, retrospectives, and delivery cadence.",
+      "agentRole": "delivery-agent",
+      "keywords": [
+        "agile",
+        "scrum",
+        "kanban",
+        "sprint",
+        "roadmap"
+      ],
+      "algorithms": [
+        "prioritization scoring",
+        "dependency ordering",
+        "cycle-time review"
+      ],
+      "foundations": [
+        "project management",
+        "systems thinking"
+      ],
+      "artifacts": [
+        "roadmaps",
+        "status reports",
+        "backlogs"
+      ],
+      "mcpHooks": [
+        "task-context",
+        "meeting-context"
+      ],
+      "skillHooks": [
+        "generate-status-report",
+        "capture-tasks-from-meeting-notes"
+      ],
+      "pluginHooks": [
+        "Asana",
+        "ClickUp",
+        "Atlassian Rovo",
+        "Linear"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "scope_control",
+        "status_transparency"
+      ],
+      "starterSurfaces": [
+        "roadmap",
+        "docs/development/agents"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "software-development-lifecycle",
+      "label": "Software Development Lifecycle",
+      "lane": "product-governance",
+      "purpose": "Keep planning, design, implementation, testing, release, operations, and retirement connected.",
+      "agentRole": "sdlc-agent",
+      "keywords": [
+        "sdlc",
+        "lifecycle",
+        "release",
+        "maintenance"
+      ],
+      "algorithms": [
+        "stage gates",
+        "release readiness",
+        "retirement planning"
+      ],
+      "foundations": [
+        "process design",
+        "risk management"
+      ],
+      "artifacts": [
+        "lifecycle docs",
+        "release checklists",
+        "runbooks"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "release-context"
+      ],
+      "skillHooks": [
+        "superpowers",
+        "github"
+      ],
+      "pluginHooks": [
+        "GitHub",
+        "CodeRabbit",
+        "CircleCI"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "release_gate",
+        "rollback_plan"
+      ],
+      "starterSurfaces": [
+        "docs/governance",
+        "scripts/automation-*.cjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "software-metrics-and-measurement",
+      "label": "Software Metrics and Measurement",
+      "lane": "quality-engineering",
+      "purpose": "Measure quality, velocity, reliability, performance, accessibility, and language distribution.",
+      "agentRole": "metrics-agent",
+      "keywords": [
+        "metrics",
+        "measurement",
+        "kpi",
+        "quality",
+        "language distribution"
+      ],
+      "algorithms": [
+        "aggregation",
+        "trend analysis",
+        "threshold checks"
+      ],
+      "foundations": [
+        "statistics",
+        "measurement theory",
+        "sampling"
+      ],
+      "artifacts": [
+        "metric reports",
+        "dashboards",
+        "quality budgets"
+      ],
+      "mcpHooks": [
+        "report-context",
+        "runtime-inventory"
+      ],
+      "skillHooks": [
+        "kpi-reporting",
+        "metric-diagnostics"
+      ],
+      "pluginHooks": [
+        "Data Analytics",
+        "PostHog",
+        "Mixpanel",
+        "Amplitude"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "metric_definition",
+        "threshold_review"
+      ],
+      "starterSurfaces": [
+        "reports/language-distribution.json",
+        "scripts/check-*.mjs"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "sre-and-observability",
+      "label": "SRE and Observability",
+      "lane": "cloud-ops",
+      "purpose": "Cover SLIs, SLOs, error budgets, incident response, logs, traces, metrics, and reliability reviews.",
+      "agentRole": "sre-agent",
+      "keywords": [
+        "sre",
+        "observability",
+        "incident",
+        "slo",
+        "error budget"
+      ],
+      "algorithms": [
+        "error budget policy",
+        "alert routing",
+        "incident timeline analysis"
+      ],
+      "foundations": [
+        "reliability engineering",
+        "queuing theory",
+        "distributed systems"
+      ],
+      "artifacts": [
+        "SLO docs",
+        "incident reports",
+        "observability maps"
+      ],
+      "mcpHooks": [
+        "telemetry-context",
+        "cloud-context"
+      ],
+      "skillHooks": [
+        "datadog",
+        "sentry"
+      ],
+      "pluginHooks": [
+        "Datadog (Preview)",
+        "Sentry",
+        "Vantage"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "incident_response",
+        "slo_review"
+      ],
+      "starterSurfaces": [
+        "docs/server",
+        "reports/server-cloud-activation-report.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "reverse-engineering",
+      "label": "Reverse Engineering",
+      "lane": "security-governance",
+      "purpose": "Analyze legacy code, third-party snapshots, binaries, protocols, and behavior before adaptation.",
+      "agentRole": "reverse-engineering-agent",
+      "keywords": [
+        "reverse engineering",
+        "legacy",
+        "third-party",
+        "binary",
+        "protocol"
+      ],
+      "algorithms": [
+        "static analysis",
+        "call graph extraction",
+        "behavior comparison"
+      ],
+      "foundations": [
+        "systems",
+        "security",
+        "program analysis"
+      ],
+      "artifacts": [
+        "adaptation plans",
+        "risk notes",
+        "behavior maps"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "artifact-context"
+      ],
+      "skillHooks": [
+        "security-scan",
+        "code-review"
+      ],
+      "pluginHooks": [
+        "Codex Security",
+        "CodeRabbit"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "license_review",
+        "behavior_preservation"
+      ],
+      "starterSurfaces": [
+        "reports/third-party-intake-blueprint.json",
+        "content/development/third-party-adaptation-plan.json"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "software-refactoring",
+      "label": "Software Refactoring",
+      "lane": "architecture",
+      "purpose": "Improve structure while preserving behavior through small, reversible, test-backed changes.",
+      "agentRole": "refactoring-agent",
+      "keywords": [
+        "refactor",
+        "modernize",
+        "technical debt",
+        "cleanup"
+      ],
+      "algorithms": [
+        "dependency extraction",
+        "strangler pattern",
+        "behavior characterization"
+      ],
+      "foundations": [
+        "software design",
+        "program analysis"
+      ],
+      "artifacts": [
+        "refactor plans",
+        "migration reports",
+        "compatibility notes"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "test-context"
+      ],
+      "skillHooks": [
+        "code-review",
+        "superpowers"
+      ],
+      "pluginHooks": [
+        "CodeRabbit",
+        "Superpowers"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "behavior_preservation",
+        "small_changes"
+      ],
+      "starterSurfaces": [
+        "scripts",
+        "packages",
+        "apps"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    },
+    {
+      "id": "formal-methods",
+      "label": "Formal Methods",
+      "lane": "core-computing",
+      "purpose": "Represent specifications, invariants, proofs, model checking, contracts, and safety-critical logic.",
+      "agentRole": "formal-methods-agent",
+      "keywords": [
+        "formal",
+        "invariant",
+        "proof",
+        "model checking",
+        "specification"
+      ],
+      "algorithms": [
+        "model checking",
+        "symbolic execution",
+        "contract verification"
+      ],
+      "foundations": [
+        "logic",
+        "set theory",
+        "type systems"
+      ],
+      "artifacts": [
+        "formal specs",
+        "invariant lists",
+        "proof sketches"
+      ],
+      "mcpHooks": [
+        "repo-context",
+        "spec-context"
+      ],
+      "skillHooks": [
+        "latex",
+        "security-validation"
+      ],
+      "pluginHooks": [
+        "LaTeX",
+        "Codex Security"
+      ],
+      "qualityGates": [
+        "security",
+        "accessibility_when_ui",
+        "performance",
+        "maintainability",
+        "testability",
+        "invariant_review",
+        "spec_traceability"
+      ],
+      "starterSurfaces": [
+        "polyglot/rego",
+        "polyglot/cel",
+        "polyglot/turtle",
+        "polyglot/sparql"
+      ],
+      "flow": [
+        "intake",
+        "scope",
+        "design",
+        "implement",
+        "validate",
+        "document",
+        "release_gate"
+      ]
+    }
+  ],
+  "flowchart": "flowchart TD\n  A[\"User goal\"] --> B[\"SEIS intent intake\"]\n  B --> C[\"DomainRouter capability match\"]\n  C --> D[\"Agent role + LLM route\"]\n  D --> E[\"MCP / plugin / skill gate\"]\n  E --> F[\"Implementation plan\"]\n  F --> G[\"Code, docs, or artifact change\"]\n  G --> H[\"Quality gates\"]\n  H --> I[\"Report and next reversible step\"]"
+}

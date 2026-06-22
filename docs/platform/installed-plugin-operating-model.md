@@ -1,20 +1,23 @@
 # SEIS Installed Plugin Operating Model
 
-Date: 2026-06-05
+Date: 2026-06-15
 
 Google Drive companion document: https://docs.google.com/document/d/10A-Ld9TBu6HSsB0W1dJ3p6Y14Hqr3VMLeMgYJ89mX64
 
-SEIS uses installed and enabled Codex plugins first. Mentioned plugin URIs are not treated as available unless they appear in `data/installed-codex-plugins-2026-06-05.json`.
+SEIS uses installed and enabled Codex plugins first. Mentioned plugin URIs are
+not treated as active unless they appear as installed and enabled in
+`data/installed-codex-plugins-2026-06-15.json`.
 
 ## Summary
 
-- Installed and enabled plugins before install pass: 143
-- Installed and enabled plugins after install pass: 179
-- Not installed plugins after install pass: 0
-- Install pass result: 36 attempted, 36 succeeded, 0 failed
-- Canonical local SEIS plugin: `seis@personal`
+- Installed and enabled plugins after SEIS consolidation audit: 187
+- Not installed plugins after SEIS consolidation audit: 5
+- Canonical SEIS plugin: `seis-ai-agent@seis-repo`
+- Legacy SEIS mirror: `seis@personal` compatibility only
+- Duplicate SEIS lane cards: not installed by default
 - Canonical repository: `emirhankudun-ux/SEIS`
 - Primary plugin policy: OpenAI-first
+- Governance registry closure is `npm run quality:governance`.
 
 ## OpenAI-First Rule
 
@@ -39,7 +42,7 @@ Policy records:
 
 | Lane | Primary installed plugins | Purpose |
 |---|---|---|
-| Repository and governance | `seis@personal`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated` | Keep SEIS as the single source of truth, review changes, run governance, and protect deletion gates. |
+| Repository and governance | `seis-ai-agent@seis-repo`, `github@openai-curated`, `coderabbit@openai-curated`, `circleci@openai-curated`, `codex-security@openai-curated`, `superpowers@openai-curated`, `plugin-eval@openai-curated` | Keep SEIS as the single source of truth, review changes, run governance, and protect deletion gates. |
 | Android and iOS mobile | `expo@openai-curated`, `test-android-apps@openai-curated`, `build-ios-apps@openai-curated` | Build, test, and organize mobile app work under SEIS. |
 | Web and design | `build-web-apps@openai-curated`, `browser@openai-bundled`, `chrome@openai-bundled`, `figma@openai-curated`, `canva@openai-curated`, `magicpath@openai-curated`, `wix@openai-curated`, `base44@openai-curated`, `hostinger@openai-curated`, `replit@openai-curated`, `lovable@openai-curated` | Build web apps, inspect local UI, coordinate design assets, and prototype sites/apps. |
 | macOS desktop | `build-macos-apps@openai-curated` | Build and validate macOS app work. |
@@ -54,9 +57,15 @@ Policy records:
 
 The 2026-06-05 install pass installed every plugin that the local Codex listing exposed as available but not installed. The 36 successful installs are recorded in `data/plugin-install-pass-2026-06-05.json`.
 
+The 2026-06-15 consolidation audit records the active post-merge state in
+`data/installed-codex-plugins-2026-06-15.json`: `seis-ai-agent@seis-repo` is
+installed and enabled; `seis`, `seis-cloud`, `seis-code`, `seis-design`, and
+`seis-data` are not installed in either the `personal` or `seis-repo`
+marketplaces.
+
 ## Operating Rules
 
-1. Start SEIS work with `seis@personal` for repo orientation and safety gates.
+1. Start SEIS work with `seis-ai-agent@seis-repo` for repo orientation, lane routing, and safety gates.
 2. Use the OpenAI/Codex category plugin before falling back to generic shell, external plugin URI families, or manual steps.
 3. Write durable outcomes back to SEIS docs, data files, or integration manifests.
 4. Keep Google Drive, Calendar, Sheets, Docs, and external tools linked from `integrations/google-workspace.json`.

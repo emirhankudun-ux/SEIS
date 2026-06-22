@@ -1,0 +1,174 @@
+{
+  "id": "seis-llm-task-routing-policy",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-13",
+  "default": "seis-agent",
+  "policy": {
+    "executionBoundary": {
+      "remoteOrchestrator": "seis-agent",
+      "remoteOnly": [
+        "release governance",
+        "security policy",
+        "governance check",
+        "cross-tool orchestration"
+      ],
+      "localHelpers": [
+        "codex",
+        "antigravity",
+        "antigravity-ide",
+        "cursor",
+        "xcode",
+        "openai",
+        "claude",
+        "gemini",
+        "qwen",
+        "kimi",
+        "ollama",
+        "opencode",
+        "aider",
+        "interpreter",
+        "hermes",
+        "goose",
+        "open-design"
+      ],
+      "notes": "Remote orchestration is centralized in SEIS Agent. Local tools are helper candidates."
+    },
+    "tiers": {
+      "seis-agent": {
+        "preferred": true,
+        "mode": "remote",
+        "description": "Single remote orchestrator for policy checks, governance, and cross-tool coordination."
+      },
+      "openai": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Local/proxy-friendly helper for policy-oriented local reasoning."
+      },
+      "codex": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Primary repository execution helper when explicitly requested; SEIS Agent keeps policy authority."
+      },
+      "antigravity": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Antigravity 2.x desktop surface for AI-native workspace sessions; repo truth stays in Git."
+      },
+      "antigravity-ide": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Preferred agentic IDE surface for opening SEIS repo/worktrees when an IDE is requested."
+      },
+      "cursor": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Secondary AI editor for focused review or editing when explicitly selected; one writer remains active."
+      },
+      "xcode": {
+        "preferred": false,
+        "mode": "desktop-helper",
+        "description": "Apple platform IDE for Swift, SwiftUI, signing, simulator, and macOS/iOS build workflows."
+      },
+      "ollama": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Fallback lane for local/offline and private drafting."
+      },
+      "qwen": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Alternative local reasoning helper for cross-checks."
+      },
+      "opencode": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Terminal coding helper; SEIS keeps orchestration authority."
+      },
+      "hermes": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Agent gateway and MCP-oriented helper for bounded local orchestration."
+      },
+      "goose": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "General automation agent helper for desktop/local agent experiments."
+      },
+      "open-design": {
+        "preferred": false,
+        "mode": "local-helper",
+        "description": "Agent-native design and prototype helper surfaced through the Open Design desktop app."
+      }
+    },
+    "routingRules": [
+      {
+        "keyword": "codex|primary execution|repo execution lane",
+        "primary": "codex"
+      },
+      {
+        "keyword": "antigravity ide|ag ide|agentic ide workspace",
+        "primary": "antigravity-ide"
+      },
+      {
+        "keyword": "antigravity 2.0|antigravity app|google antigravity|agentic workspace",
+        "primary": "antigravity"
+      },
+      {
+        "keyword": "cursor|cursor editor|cursor review|secondary ai editor",
+        "primary": "cursor"
+      },
+      {
+        "keyword": "xcode|swiftui|apple signing|ios simulator|macos build",
+        "primary": "xcode"
+      },
+      {
+        "keyword": "local",
+        "primary": "ollama"
+      },
+      {
+        "keyword": "qwen|alternative reasoning|cross-check|ikinci görüş",
+        "primary": "qwen"
+      },
+      {
+        "keyword": "opencode|terminal coding|terminal agent",
+        "primary": "opencode"
+      },
+      {
+        "keyword": "hermes|hermes agent|agent gateway|tool gateway|mcp gateway",
+        "primary": "hermes"
+      },
+      {
+        "keyword": "goose|desktop agent|general agent|automation agent",
+        "primary": "goose"
+      },
+      {
+        "keyword": "open design|opendesign|design artifact|visual prototype|design system preview",
+        "primary": "open-design"
+      },
+      {
+        "keyword": "translate|localize|multilingual|çeviri",
+        "primary": "kimi"
+      },
+      {
+        "keyword": "research|dokümant|compare|araştır",
+        "primary": "gemini"
+      },
+      {
+        "keyword": "policy|governance|plan|karar",
+        "primary": "seis-agent"
+      },
+      {
+        "keyword": "copy|ux|narrative|strateji|anlatım",
+        "primary": "claude"
+      },
+      {
+        "keyword": "openai|summary|summarize|özet|analiz",
+        "primary": "openai"
+      }
+    ]
+  },
+  "notes": [
+    "SEIS Agent is the only remote lane by policy.",
+    "Local helpers are never promoted to remote; they return to SEIS Agent for orchestration."
+  ]
+}

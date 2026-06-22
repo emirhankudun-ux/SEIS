@@ -1,0 +1,65 @@
+{
+  "title": "SEIS SSH Hardening Operation Contract",
+  "status": "active",
+  "credentialHandling": {
+    "privateKeyMaterialLogged": false,
+    "temporaryPasswordsGenerated": false,
+    "privateKeyPlaceholder": "<operator-private-key-path>",
+    "rescueAccountPolicy": "console-only; SSH denied by sshd_config"
+  },
+  "backupMetadataMustRecordSourceAndBackupHashes": true,
+  "backupMetadataHashAlgorithm": "sha256",
+  "backupMetadataMustRecordSkippedSources": true,
+  "backupMetadataMustExposeManifestStatus": true,
+  "backupDirectoryMode": "0700",
+  "backupMetadataMode": "0600",
+  "backupArtifactFileMode": "0600",
+  "rollbackMustRestoreSourceFileMode": true,
+  "backupMetadataManifestStatusValues": ["complete", "partial", "missing"],
+  "operationReportMustSummarizeBackupManifest": true,
+  "operationReportMustExposeRollbackEvidence": true,
+  "rollbackEvidenceMustListRestoredAndSkippedFiles": true,
+  "rollbackEvidenceDefaultStatus": "not-run",
+  "rollbackEvidenceStatusValues": ["not-run", "skipped", "success", "error"],
+  "rollbackMustVerifyRestoredFileHashes": true,
+  "rollbackHashVerificationStatusValues": ["not-run", "verified", "mismatch", "error"],
+  "modeExpectations": {
+    "audit": "observe only",
+    "dashboard": "observe only",
+    "verify": "observe only",
+    "dry-run": "plan only",
+    "harden": "mutating SSH hardening without normal user creation",
+    "full-setup": "mutating setup with explicit user setup step"
+  },
+  "modeIsolation": {
+    "hardenDisallowsNormalUserCreation": true,
+    "fullSetupRequiresUserSetupStep": true,
+    "auditMutatesHost": false,
+    "dashboardMutatesHost": false,
+    "verifyMutatesHost": false,
+    "dryRunMutatesHost": false
+  },
+  "firewallAndLockoutSafety": {
+    "portKnockApplyDefault": false,
+    "liveApplyPreflightConfirmationRequired": true,
+    "liveApplyRequiresPlanAndRecoveryReview": true,
+    "mutatingApplyRequiresInteractiveConfirmOrExplicitCliFlag": true,
+    "nonInteractiveLiveApplyRequiresExplicitCliFlag": "--confirm-live-apply-safety",
+    "planMustExposeLiveApplySafetyPolicy": true,
+    "operationReportMustExposeLiveApplySafetyEvidence": true,
+    "verificationReportMustExposeLiveApplySafetyEvidence": true,
+    "liveApplySafetyEvidenceMustExposeConfirmationStatus": true,
+    "secondAccessPathRequired": true,
+    "maintenanceWindowRequired": true
+  },
+  "idempotencyAndFailureHandling": {
+    "singleOperationReportRequired": true,
+    "managedWritesMustBeIdempotent": true,
+    "criticalMutationMustFailFast": true,
+    "rollbackEvidenceRequiredOnFailure": true
+  },
+  "requiredValidation": [
+    "npm run check:ssh-hardening-contract",
+    "python3 -m unittest scripts.tests.test_ultra_ssh_manager"
+  ]
+}

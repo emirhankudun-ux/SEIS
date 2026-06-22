@@ -1,109 +1,83 @@
-# SEIS Security Policy
+# Security Policy
 
-## Purpose
+SEIS treats security, privacy, and responsible AI governance as core platform
+requirements.
 
-This policy defines the current security boundary for SEIS repository work. It
-is a repository governance document, not a claim that SEIS is production-ready
-or externally security-certified.
+## Reporting a Vulnerability
 
-## Supported Status
+Do not open a public issue for a vulnerability.
 
-SEIS is currently an internal closed-code operating repository. Public release,
-deployment, live provider integrations, SSH execution, and repository visibility
-changes remain approval-gated until readiness evidence exists.
+Send a private report to the maintainer:
 
-## Secret Handling Rules
+- GitHub: [@emirhankudun-ux](https://github.com/emirhankudun-ux)
+- Email: emirhankudun@gmail.com
 
-- Do not commit API keys, tokens, passwords, cookies, service accounts, private
-  keys, `.env` files, production configs, or private user data.
-- Use `.env.local` for local secrets and deployment secret managers for hosted
-  environments.
-- Keep `.env.example` tracked with placeholders or empty values only.
-- Never put provider credentials in `VITE_`, `NEXT_PUBLIC_`, `PUBLIC_`,
-  `REACT_APP_`, `NUXT_PUBLIC_`, `EXPO_PUBLIC_`, or similar browser-exposed
-  variables.
-- Browser code must not receive cloud provider or deployment credentials.
-- Logs, reports, audits, issue templates, and PR descriptions must not include
-  secret values or partial secret values.
+Please include:
 
-## AI Provider Boundary
+- affected file, package, workflow, or integration
+- vulnerability type and impact
+- reproduction steps or proof of concept when safe
+- affected versions or commit SHA when known
+- suggested mitigation if you have one
 
-SEIS AI Core must be provider-neutral and must boot with zero cloud model
-provider keys. Missing keys disable only the related provider or live inference
-feature. They must not break non-AI product surfaces, docs, static views, local
-records, or Goal Tracking OS.
+## Response Targets
 
-Live model-provider integrations require:
+| Step                       | Target                                 |
+| -------------------------- | -------------------------------------- |
+| Initial acknowledgement    | within 48 hours                        |
+| Triage and severity review | within 5 business days                 |
+| Fix plan                   | depends on severity and blast radius   |
+| Public disclosure          | after a fix or mitigation is available |
 
-- server-only credentials
-- redacted audit report
-- provider status model
-- no-key startup behavior
-- visible fallback identity
-- client-bundle secret exposure check
-- tests or documented manual validation
+## Supported Versions
 
-Provider routing, prompt engineering, retrieval, and local demos are not SEIS
-foundation-model ownership claims.
+SEIS is evolving from `main`. Security fixes target the current `main` branch
+unless a maintainer explicitly announces another supported release line.
 
-## SSH And Cloud Boundary
+## Security Rules
 
-- Do not execute SSH commands without explicit approval.
-- Do not store SSH private keys in the repository, docs, browser storage,
-  prompts, logs, or audit artifacts.
-- Deployment tokens are server-only.
-- Dry-run cloud checks must not claim live deployment success.
-- GitHub remains the source of truth; cloud and SSH hosts are execution planes.
+- Never commit API keys, tokens, credentials, certificates, provisioning files,
+  `.env` contents, or personal data.
+- Do not weaken authentication, authorization, sandboxing, path safety, or
+  secret handling for convenience.
+- Keep AI-generated code under the same review standard as human-written code.
+- Treat MCP tools, plugins, and agent workflows as security-sensitive execution
+  surfaces.
+- Prefer small, auditable fixes with clear validation.
 
-## Vulnerability Reporting
+## SSH Hardening Contract
 
-Until a public vulnerability disclosure channel is approved, report findings to
-the repository owner through the private project channel used for SEIS work.
-
-When reporting a suspected secret exposure, include:
-
-- file path
-- line number
-- secret type or provider category
-- tracked/untracked status if known
-- recommended rotation/remediation
-
-Do not include the secret value, prefix, suffix, screenshot, or reversible
-encoding.
-
-## Required Response For Suspected Secret Exposure
-
-1. Stop printing or copying the value.
-2. Remove the value from the current source tree where safe.
-3. Replace runtime usage with a server-only environment variable reference.
-4. Update ignore rules or templates if needed.
-5. Mark the credential for rotation or revocation.
-6. Search docs, tests, fixtures, generated reports, and committed artifacts for
-   duplicate exposure.
-7. Do not rewrite Git history or rotate credentials without explicit approval.
-
-## Current Validation
-
-Run the current redacted AI provider and credential audit:
+SSH and firewall hardening is safety-critical because a bad sequence can lock
+out the operator. SEIS tracks that contract with:
 
 ```bash
-npm run audit:ai-providers
+npm run check:ssh-hardening-contract
 ```
 
-Run existing repository checks where safe:
+The check keeps `scripts/ultra_ssh_manager.py`, its unit-test expectations, the
+SEIS security review skill, and the deployment guidance aligned around
+credential redaction, root-owned credential manifests, dry-run/recovery
+playbooks, rescue-account scope, and honest validation claims.
 
-```bash
-npm run check:workspace
-npm run check:goal-tracking
-npm run check:cloud-environment
-```
+The machine-readable operation contract is maintained at
+`data/ssh-hardening-operation-contract.json`.
 
-`npm run check:foundation` may remain blocked until repository hygiene recovery
-resolves pre-existing tracked deletions.
+## Automated Security Scanning
 
-## Related Documents
+SEIS uses GitHub CodeQL code scanning for the repository's JavaScript,
+TypeScript, and Python surfaces, plus the Swift lane, when GitHub Code Security
+or GitHub Advanced Security is enabled for the private repository.
 
-- [docs/security/security-baseline.md](docs/security/security-baseline.md)
-- [docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md)
-- [docs/ai/seis-ai-core.md](docs/ai/seis-ai-core.md)
-- [docs/operations/seis-cloud-foundation.md](docs/operations/seis-cloud-foundation.md)
+Until that repository setting is available, the CodeQL workflow still runs
+mandatory CodeQL analysis on relevant pull requests, `main` pushes, weekly
+scheduled scans, and manual dispatches. The workflow validates generated SARIF
+and preserves the SARIF output as a GitHub Actions artifact instead of claiming
+code-scanning alert upload succeeded.
+
+Findings should be triaged as security work, not as general feature backlog.
+
+## Dependency and Toolchain Policy
+
+Do not install unused runtimes or SDKs by default. A dependency is acceptable
+only when it is necessary, maintained, documented, and covered by a validation
+path.

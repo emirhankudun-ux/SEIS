@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "seis": {
+      "command": "node",
+      "args": ["packages/seis-ai/bin/seis-mcp.mjs"],
+      "env": {}
+    }
+  }
+}

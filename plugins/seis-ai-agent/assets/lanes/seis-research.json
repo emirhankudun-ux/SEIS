@@ -1,0 +1,42 @@
+{
+  "id": "seis-research",
+  "displayName": "SEIS Research",
+  "version": 1,
+  "lane": "research",
+  "intent": "Evidence-led technical research, source evaluation, product and architecture discovery, official documentation review, standards/version checks, and research-to-decision synthesis.",
+  "activationPolicy": "use_when_task_requires_external_evidence_version_checks_or_research_backed_decisions_under_seis",
+  "sourceEvidence": [
+    "AGENTS.md",
+    "docs/governance/seis-supreme-v12-constitution.md",
+    "content/development/seis-agent-plugin-integration.json"
+  ],
+  "helperFamilies": [
+    "OpenAI Developers",
+    "GitHub",
+    "Hugging Face",
+    "Figma",
+    "Cloudflare",
+    "Vercel"
+  ],
+  "primaryPaths": [
+    "docs",
+    "content/development",
+    "reports",
+    "plugins",
+    "packages",
+    "scripts"
+  ],
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-governance-index",
+    "npm run check:seis-repo-health-manifest"
+  ],
+  "guardrails": [
+    "prefer primary sources and official documentation",
+    "separate facts from inference",
+    "record dates and version context",
+    "do not claim unverified authentication or deployment readiness",
+    "preserve provenance for decisions"
+  ]
+}

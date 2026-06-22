@@ -1,0 +1,215 @@
+{
+  "registryId": "seis-model-family-registry-v0",
+  "registryType": "seis-owned-local-ai-model-family",
+  "version": "0.1.0",
+  "sourcePolicy": {
+    "implementationBasis": "SEIS-owned artifacts and first-principles local experiments",
+    "dataBasis": "SEIS-owned synthetic datasets with documented consent and provenance",
+    "forbiddenMaterial": [
+      "private source archives",
+      "unlicensed implementation material",
+      "copied or reconstructed private source behavior"
+    ]
+  },
+  "lifecycle": {
+    "stage": "seed-local-lab",
+    "deploymentMode": "local-artifact-only",
+    "productionUse": false,
+    "nextGate": "independent benchmark expansion before runtime authority"
+  },
+  "qualityGates": [
+    "dataset provenance present",
+    "model artifact present",
+    "train split metrics present",
+    "eval split passes",
+    "registry artifact deterministic",
+    "registry test covers all registered models"
+  ],
+  "totals": {
+    "modelCount": 4,
+    "familyCount": 4,
+    "datasetCount": 4,
+    "families": [
+      "seis-agent-router",
+      "seis-eval-critic",
+      "seis-memory-ranker",
+      "seis-permission-policy"
+    ],
+    "datasets": [
+      "seis-agent-router-seed-v0",
+      "seis-eval-critic-seed-v0",
+      "seis-memory-ranker-seed-v0",
+      "seis-permission-policy-seed-eval"
+    ]
+  },
+  "models": [
+    {
+      "id": "permission-policy",
+      "role": "permission_decision",
+      "capability": "bounded local permission decisions",
+      "modelId": "seis-permission-policy-learned-seed-v0",
+      "modelFamily": "seis-permission-policy",
+      "artifactId": "seis-permission-policy-learned-seed-v0",
+      "artifactType": "seis-owned-local-model-experiment",
+      "version": "0.2.0",
+      "trainingCaseCount": 12,
+      "dataset": {
+        "datasetId": "seis-permission-policy-seed-eval",
+        "version": "0.2.0",
+        "sourceClass": "SEIS-owned synthetic examples",
+        "consent": "no-user-private-data",
+        "caseCount": 20
+      },
+      "eval": {
+        "train": {
+          "ok": true,
+          "total": 12,
+          "passed": 12,
+          "failed": 0,
+          "learnedPassed": 12,
+          "safetyAdjusted": 0
+        },
+        "eval": {
+          "ok": true,
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "learnedPassed": 7,
+          "safetyAdjusted": 1
+        }
+      },
+      "evidence": {
+        "datasetPath": "packages/seis-ai/data/permission-policy-seed.json",
+        "artifactPath": "packages/seis-ai/models/permission-policy-seed-v0.json",
+        "buildScript": "scripts/build-seis-permission-policy-model.mjs",
+        "registryTestPath": "packages/seis-ai/test/model-family-registry.test.mjs",
+        "specializedTestPath": "packages/seis-ai/test/permission-policy-lab.test.mjs"
+      }
+    },
+    {
+      "id": "memory-ranker",
+      "role": "memory_retrieval",
+      "capability": "local governance and evidence retrieval ranking",
+      "modelId": "seis-memory-ranker-seed-v0",
+      "modelFamily": "seis-memory-ranker",
+      "artifactId": "seis-memory-ranker-seed-v0",
+      "artifactType": "seis-owned-local-retrieval-experiment",
+      "version": "0.1.0",
+      "trainingCaseCount": 5,
+      "dataset": {
+        "datasetId": "seis-memory-ranker-seed-v0",
+        "version": "0.1.0",
+        "sourceClass": "SEIS-owned synthetic examples",
+        "consent": "no-user-private-data",
+        "caseCount": 8
+      },
+      "eval": {
+        "train": {
+          "ok": false,
+          "total": 5,
+          "passed": 3,
+          "failed": 0
+        },
+        "eval": {
+          "ok": true,
+          "total": 3,
+          "passed": 3,
+          "failed": 0
+        }
+      },
+      "evidence": {
+        "datasetPath": "packages/seis-ai/data/memory-ranker-seed-v0.json",
+        "artifactPath": "packages/seis-ai/models/memory-ranker-seed-v0.json",
+        "buildScript": "scripts/build-seis-memory-ranker-model.mjs",
+        "registryTestPath": "packages/seis-ai/test/model-family-registry.test.mjs",
+        "specializedTestPath": "packages/seis-ai/test/memory-ranker-lab.test.mjs"
+      }
+    },
+    {
+      "id": "eval-critic",
+      "role": "evaluation_advisory",
+      "capability": "local report and release risk critique",
+      "modelId": "seis-eval-critic-seed-v0",
+      "modelFamily": "seis-eval-critic",
+      "artifactId": "seis-eval-critic-seed-v0",
+      "artifactType": "seis-owned-local-evaluator-experiment",
+      "version": "0.1.0",
+      "trainingCaseCount": 8,
+      "dataset": {
+        "datasetId": "seis-eval-critic-seed-v0",
+        "version": "0.1.0",
+        "sourceClass": "SEIS-owned synthetic examples",
+        "consent": "no-user-private-data",
+        "caseCount": 13
+      },
+      "eval": {
+        "train": {
+          "ok": true,
+          "total": 8,
+          "passed": 8,
+          "failed": 0,
+          "learnedPassed": 8,
+          "safetyAdjusted": 0
+        },
+        "eval": {
+          "ok": true,
+          "total": 5,
+          "passed": 5,
+          "failed": 0,
+          "learnedPassed": 3,
+          "safetyAdjusted": 2
+        }
+      },
+      "evidence": {
+        "datasetPath": "packages/seis-ai/data/eval-critic-seed-v0.json",
+        "artifactPath": "packages/seis-ai/models/eval-critic-seed-v0.json",
+        "buildScript": "scripts/build-seis-eval-critic-model.mjs",
+        "registryTestPath": "packages/seis-ai/test/model-family-registry.test.mjs",
+        "specializedTestPath": "packages/seis-ai/test/eval-critic-lab.test.mjs"
+      }
+    },
+    {
+      "id": "agent-router",
+      "role": "agent_lane_routing",
+      "capability": "local specialist lane and gate routing",
+      "modelId": "seis-agent-router-seed-v0",
+      "modelFamily": "seis-agent-router",
+      "artifactId": "seis-agent-router-seed-v0",
+      "artifactType": "seis-owned-local-agent-routing-experiment",
+      "version": "0.1.0",
+      "trainingCaseCount": 12,
+      "dataset": {
+        "datasetId": "seis-agent-router-seed-v0",
+        "version": "0.1.0",
+        "sourceClass": "SEIS-owned synthetic examples",
+        "consent": "no user-private data",
+        "caseCount": 22
+      },
+      "eval": {
+        "train": {
+          "ok": true,
+          "total": 12,
+          "passed": 12,
+          "failed": 0,
+          "learnedPassed": 12,
+          "safetyAdjusted": 0
+        },
+        "eval": {
+          "ok": true,
+          "total": 10,
+          "passed": 10,
+          "failed": 0,
+          "learnedPassed": 10,
+          "safetyAdjusted": 0
+        }
+      },
+      "evidence": {
+        "datasetPath": "packages/seis-ai/data/agent-router-seed-v0.json",
+        "artifactPath": "packages/seis-ai/models/agent-router-seed-v0.json",
+        "buildScript": "scripts/build-seis-agent-router-model.mjs",
+        "registryTestPath": "packages/seis-ai/test/model-family-registry.test.mjs",
+        "specializedTestPath": "packages/seis-ai/test/agent-router-lab.test.mjs"
+      }
+    }
+  ]
+}

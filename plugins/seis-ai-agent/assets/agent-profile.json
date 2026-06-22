@@ -1,0 +1,85 @@
+{
+  "id": "seis-ai-agent",
+  "displayName": "SEIS-Agent",
+  "aliases": [
+    "SEIS-AI Agent",
+    "seis-ai-agent"
+  ],
+  "version": 1,
+  "status": "development",
+  "intent": "Unify SEIS, SEIS-Cloud, SEIS-Code, SEIS-Design, SEIS-Data, SEIS Security, SEIS Research, SEIS Automation, and SEIS Product into one repo-contained AI-native agent system before public launch.",
+  "canonicalRepo": "emirhankudun-ux/SEIS",
+  "canonicalBranch": "main",
+  "repoMarketplace": "seis-repo",
+  "installId": "seis-ai-agent@seis-repo",
+  "consolidationPolicy": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-agent",
+    "legacyPersonalMarketplace": "compatibility-mirror-only",
+    "standaloneLaneInstallMode": "disabled",
+    "marketplacePolicy": "only-seis-ai-agent-is-published",
+    "embeddedSkills": [
+      "seis-ai-agent",
+      "seis-governance",
+      "seis-hub",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
+    ],
+    "embeddedLaneProfiles": [
+      "assets/lanes/seis-governance.json",
+      "assets/lanes/seis-cloud.json",
+      "assets/lanes/seis-code.json",
+      "assets/lanes/seis-design.json",
+      "assets/lanes/seis-data.json",
+      "assets/lanes/seis-security.json",
+      "assets/lanes/seis-research.json",
+      "assets/lanes/seis-automation.json",
+      "assets/lanes/seis-product.json"
+    ]
+  },
+  "composedLanes": [
+    "seis",
+    "seis-governance",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
+  ],
+  "terminalInstall": {
+    "entrypoint": "node scripts/install-seis-ai-agent.mjs",
+    "packageScript": "npm run install:seis-ai-agent",
+    "platforms": [
+      "macos",
+      "windows",
+      "linux"
+    ]
+  },
+  "websiteRoadmap": {
+    "releasePolicy": "Build the website only when SEIS-AI Agent is ready for a deliberate public release decision.",
+    "direction": "Cinematic, premium, design-driven, accessible, responsive, and grounded in real SEIS product surfaces."
+  },
+  "qualityCommands": [
+    "npm run check:seis-ai-agent",
+    "npm run check:seis-agent-plugin-integration",
+    "npm run check:seis-repo-marketplace",
+    "npm run quality"
+  ],
+  "guardrails": [
+    "keep development inside the SEIS repo",
+    "do not publish or deploy before explicit release decision",
+    "keep memory and context systems under SEIS-Data and SEIS-Agent governance",
+    "avoid dependency bloat",
+    "do not expose secrets",
+    "validate plugin, terminal install, docs, and generated reports before handoff"
+  ]
+}

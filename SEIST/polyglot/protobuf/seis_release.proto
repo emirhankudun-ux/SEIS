@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package seis.polyglot;
+
+message SeisRelease {
+  string package_path = 1;
+  string sha256 = 2;
+  bool live_upload_blocked = 3;
+  repeated string supported_locales = 4;
+}
+
+message SeisMotionPolicy {
+  bool supports_reduced_motion = 1;
+  uint32 mobile_particle_limit = 2;
+  uint32 desktop_particle_limit = 3;
+  uint32 continuous_scene_limit = 4;
+}

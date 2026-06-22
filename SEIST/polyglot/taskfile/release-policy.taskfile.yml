@@ -1,0 +1,12 @@
+version: "3"
+
+vars:
+  PACKAGE_PATH: dist/seis-static.zip
+  RELEASE_LEDGER: releases/latest.json
+  REQUIRES_DOMAIN_BEFORE_LIVE_DEPLOY: "true"
+  SUPPORTS_REDUCED_MOTION: "true"
+
+tasks:
+  describe:
+    cmds:
+      - echo "package={{.PACKAGE_PATH}} ledger={{.RELEASE_LEDGER}} deploy_guard={{.REQUIRES_DOMAIN_BEFORE_LIVE_DEPLOY}} reduced_motion={{.SUPPORTS_REDUCED_MOTION}}"

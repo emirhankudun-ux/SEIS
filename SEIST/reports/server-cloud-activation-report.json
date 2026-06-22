@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "id": "seis-server-cloud-activation-report",
+  "generatedAt": "2026-06-02T08:08:37.306Z",
+  "readyForLiveUpload": false,
+  "branch": "UIXAppTTR",
+  "remote": "origin",
+  "activeTarget": null,
+  "selectedProvider": null,
+  "siteUrl": null,
+  "releasePackage": {
+    "path": "dist/seis-static.zip",
+    "exists": false
+  },
+  "manifest": {
+    "path": "dist/server-upload-manifest.json",
+    "exists": false
+  },
+  "providerCandidates": [
+    {
+      "id": "github-pages",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "github-actions-pages-artifact",
+      "qualityCommands": [
+        "npm run automation:publish-readiness",
+        "npm run check:cloud-environment"
+      ],
+      "rollback": "revert_pages_publish_commit"
+    },
+    {
+      "id": "cloudflare-pages",
+      "kind": "edge-static-site",
+      "status": "candidate",
+      "uploadModel": "pages_project_artifact_upload",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ],
+      "rollback": "promote_previous_pages_deployment"
+    },
+    {
+      "id": "vercel-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "vercel_prebuilt_static_output",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:workspace"
+      ],
+      "rollback": "promote_previous_vercel_deployment"
+    },
+    {
+      "id": "netlify-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "netlify_site_deploy_artifact",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ],
+      "rollback": "restore_previous_netlify_deploy"
+    },
+    {
+      "id": "docker-node-static",
+      "kind": "container",
+      "status": "candidate",
+      "uploadModel": "container_build_from_static_package",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "node scripts/check-server-adapters.mjs"
+      ],
+      "rollback": "redeploy_previous_container_image"
+    },
+    {
+      "id": "azure-static-web-apps",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "azure_static_web_apps_artifact_upload",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ],
+      "rollback": "promote_previous_static_web_apps_deployment"
+    },
+    {
+      "id": "aws-amplify-static",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "amplify_hosting_static_artifact",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run publish:preflight"
+      ],
+      "rollback": "redeploy_previous_amplify_job"
+    },
+    {
+      "id": "firebase-hosting",
+      "kind": "static-site",
+      "status": "candidate",
+      "uploadModel": "firebase_hosting_release_channel",
+      "qualityCommands": [
+        "npm run check:cloud-environment",
+        "npm run check:release-sync"
+      ],
+      "rollback": "rollback_to_previous_firebase_release"
+    }
+  ],
+  "secretStatus": [
+    {
+      "name": "GITHUB_TOKEN",
+      "status": "missing",
+      "scope": "github-actions",
+      "storage": "github-actions-secret",
+      "requiredFor": [
+        "github-pages",
+        "workflow-dispatch"
+      ]
+    },
+    {
+      "name": "CLOUDFLARE_API_TOKEN",
+      "status": "missing",
+      "scope": "cloudflare-pages-or-worker",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "cloudflare-pages",
+        "cloudflare-worker-origin"
+      ]
+    },
+    {
+      "name": "VERCEL_TOKEN",
+      "status": "missing",
+      "scope": "vercel-project",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "vercel-static"
+      ]
+    },
+    {
+      "name": "NETLIFY_AUTH_TOKEN",
+      "status": "missing",
+      "scope": "netlify-site",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "netlify-static"
+      ]
+    },
+    {
+      "name": "AZURE_STATIC_WEB_APPS_API_TOKEN",
+      "status": "missing",
+      "scope": "azure-static-web-apps",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "azure-static-web-apps"
+      ]
+    },
+    {
+      "name": "AWS_AMPLIFY_DEPLOY_TOKEN",
+      "status": "missing",
+      "scope": "aws-amplify-hosting",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "aws-amplify-static"
+      ]
+    },
+    {
+      "name": "FIREBASE_DEPLOY_TOKEN",
+      "status": "missing",
+      "scope": "firebase-hosting",
+      "storage": "provider-secret-store",
+      "requiredFor": [
+        "firebase-hosting"
+      ]
+    }
+  ],
+  "blockers": [
+    "server activeTarget is not configured",
+    "SEIS_SITE_URL is missing",
+    "SEIS_CLOUD_PROVIDER is missing",
+    "release package is missing: dist/seis-static.zip",
+    "release manifest is missing: dist/server-upload-manifest.json"
+  ],
+  "nextActions": [
+    "Select one server/cloud target.",
+    "Set SEIS_SITE_URL and SEIS_CLOUD_PROVIDER.",
+    "Store only the selected provider secret outside git.",
+    "Rerun npm run automation:server-cloud-report."
+  ]
+}

@@ -2,25 +2,157 @@ name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main ]
 
 jobs:
   test:
+    name: Core SEIS audit
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 10
+
     steps:
-      - uses: actions/checkout@v3
-      
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
         with:
-          node-version: '20.x'
-          cache: 'npm'
-      
+          node-version: '20'
+
+      - name: Single governance/quality closure
+        run: npm run quality:governance
+
+  publish-readiness:
+    name: Publish readiness report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Use Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '20'
+
       - name: Install dependencies
         run: npm ci
-      
-      - name: Run tests
-        run: npm test --if-present
+
+      - name: Generate publish readiness report
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: npm run automation:publish-readiness -- --ci --json
+
+      - name: Append publish readiness summary
+        if: always()
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const summaryPath = 'reports/publish-readiness-report-summary.json';
+          const outputPath = process.env.GITHUB_STEP_SUMMARY;
+          const report = fs.existsSync(summaryPath)
+            ? JSON.parse(fs.readFileSync(summaryPath, 'utf8'))
+            : {
+                ok: false,
+                mode: 'publish-readiness',
+                nextAction: 'publish readiness summary artifact was not generated',
+                blockerAreas: ['artifact'],
+                blockers: [],
+                suggestions: []
+              };
+
+          const rows = [
+            '## SEIS publish readiness',
+            '',
+            `Status: ${report.ok ? 'ready' : 'blocked'}`,
+            `Next action: ${report.nextAction || 'none'}`,
+            `Blockers: ${(report.blockerAreas || []).join(', ') || 'none'}`,
+          ];
+
+          if (Array.isArray(report.suggestions) && report.suggestions.length > 0) {
+            rows.push(`Suggestions: ${report.suggestions.join(' | ')}`);
+          }
+
+          fs.appendFileSync(outputPath, `${rows.join('\n')}\n`);
+          NODE
+
+      - name: Upload publish readiness reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: publish-readiness-reports
+          path: |
+            reports/publish-readiness-report.json
+            reports/publish-readiness-report-summary.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  quality-governance-publish-report:
+    name: Quality governance publish report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Use Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate quality governance publish report
+        continue-on-error: ${{ github.event_name == 'pull_request' }}
+        run: npm run quality:governance:publish:ci -- --json
+
+      - name: Append quality governance publish summary
+        if: always()
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const summaryPath = 'reports/quality-governance-publish-report-summary.json';
+          const outputPath = process.env.GITHUB_STEP_SUMMARY;
+          const report = fs.existsSync(summaryPath)
+            ? JSON.parse(fs.readFileSync(summaryPath, 'utf8'))
+            : {
+                ok: false,
+                mode: 'quality:governance:publish',
+                nextStep: 'quality governance publish summary artifact was not generated',
+                totalChecks: 0,
+                failedCount: 1,
+                failedChecks: ['artifact']
+              };
+
+          const rows = [
+            '## SEIS quality governance publish',
+            '',
+            `Status: ${report.ok ? 'ready' : 'blocked'}`,
+            `Checks: ${report.totalChecks ?? 0}`,
+            `Failed: ${report.failedCount ?? (report.failedChecks || []).length}`,
+            `Next step: ${report.nextStep || 'none'}`,
+            `Failed checks: ${(report.failedChecks || []).join(', ') || 'none'}`,
+          ];
+
+          fs.appendFileSync(outputPath, `${rows.join('\n')}\n`);
+          NODE
+
+      - name: Upload quality governance publish reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: quality-governance-publish-reports
+          path: |
+            reports/quality-governance-publish-report.json
+            reports/quality-governance-publish-report-summary.json
+          if-no-files-found: warn
+          retention-days: 14

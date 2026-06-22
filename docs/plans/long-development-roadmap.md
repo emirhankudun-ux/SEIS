@@ -46,3 +46,12 @@ This roadmap turns SEIS development into a long-running modular process. It does
 - Backend services.
 - Broad automated browser loops.
 - New dependencies without a written decision record.
+
+## Long-Horizon Alignment
+
+- This roadmap remains the 3-6-12 month execution line.
+- Strategic continuity is captured in `roadmap/seis-long-horizon-strategy.md`.
+- If this roadmap reaches a steady state but long-term risks (security drift, AI policy erosion, onboarding fatigue) increase, pause feature expansion and execute the Strategy Recovery Loop:
+  1. Freeze scope for two weeks.
+  2. Fix governance and documentation drift first.
+  3. Reopen one module with a measurable gate proof.

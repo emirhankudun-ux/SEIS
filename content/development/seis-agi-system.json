@@ -1,0 +1,2077 @@
+{
+  "version": 1,
+  "id": "seis-agi-system",
+  "generatedAt": "2026-06-12",
+  "mode": "human_owned_agi_inspired_engineering_system",
+  "masterGoal": {
+    "name": "SEIS MASTER GOAL",
+    "northStar": "Continuously improve SEIS as a premium AI-native, full-stack, design-driven, open-source ecosystem for real users and contributors.",
+    "claimBoundary": "This is an AGI-inspired operating architecture for human-helper AI systems; it does not claim autonomous general intelligence.",
+    "workingMode": [
+      "inspect",
+      "analyze",
+      "prioritize",
+      "improve",
+      "validate",
+      "document"
+    ]
+  },
+  "releaseWindow": {
+    "startDate": "2026-06-12",
+    "targetReleaseDate": "2026-09-12",
+    "cadence": "three_month_version_window",
+    "milestones": [
+      {
+        "id": "month-01-foundation-architecture-docs",
+        "month": 1,
+        "dayRange": "0-30",
+        "theme": "Foundation, architecture, documentation",
+        "done": "AGI contract, source references, master goal trace, and token policy are generated and checked.",
+        "focusAreas": [
+          "computer-science-foundation",
+          "software-architecture",
+          "documentation",
+          "open-source-health"
+        ],
+        "acceptanceGates": [
+          "agi-contract-generated",
+          "agent-memory-planning-foundation-visible",
+          "github-community-health-current",
+          "quality-gates-pass"
+        ],
+        "evidencePaths": [
+          "reports/seis-agi-system.md",
+          "reports/seis-active-mission-board.md",
+          "README.md",
+          "AGENTS.md"
+        ]
+      },
+      {
+        "id": "month-02-memory-planning-mcp",
+        "month": 2,
+        "dayRange": "31-60",
+        "theme": "Memory, planning, MCP",
+        "done": "Memory checkpoints, planning loops, plugin lanes, and MCP/skills activation gates are traceable.",
+        "focusAreas": [
+          "memory-architecture",
+          "planning-kernel",
+          "mcp-skills",
+          "plugin-read-write-lanes"
+        ],
+        "acceptanceGates": [
+          "memory-checkpoints-traceable",
+          "planning-loops-deterministic",
+          "plugin-mcp-lanes-scoped",
+          "apple-first-contract-covered"
+        ],
+        "evidencePaths": [
+          "content/development/seis-agi-system.json",
+          "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+          "reports/plugin-capability-lanes.md",
+          "reports/seis-execution-runway.md"
+        ]
+      },
+      {
+        "id": "month-03-agents-validation-release",
+        "month": 3,
+        "dayRange": "61-90",
+        "theme": "Agents, validation, release",
+        "done": "Agent roles, validation evidence, security gates, and GitHub community health are release ready.",
+        "focusAreas": [
+          "agent-orchestration",
+          "multi-agent-coordination",
+          "security-validation",
+          "release-readiness"
+        ],
+        "acceptanceGates": [
+          "agent-roles-separated",
+          "security-and-human-review-gates-present",
+          "github-community-health-ready",
+          "release-evidence-current"
+        ],
+        "evidencePaths": [
+          "docs/development/agents/README.md",
+          "SECURITY.md",
+          ".github/PULL_REQUEST_TEMPLATE.md",
+          "reports/seis-agi-system.json"
+        ]
+      }
+    ]
+  },
+  "platformStrategy": {
+    "priority": "apple_first_when_practical",
+    "appleLanguages": [
+      "Swift",
+      "SwiftUI",
+      "Objective-C",
+      "Metal",
+      "AppKit",
+      "UIKit",
+      "Combine",
+      "Core Data",
+      "CloudKit"
+    ],
+    "webLanguages": [
+      "TypeScript",
+      "JavaScript",
+      "HTML",
+      "CSS"
+    ],
+    "aiDataLanguages": [
+      "Python",
+      "Rust"
+    ],
+    "androidLanguages": [
+      "Kotlin",
+      "Java",
+      "Jetpack Compose"
+    ],
+    "windowsLanguages": [
+      "C#",
+      ".NET",
+      "C++",
+      "Rust",
+      "WinUI"
+    ],
+    "systemsInfrastructureLanguages": [
+      "Go",
+      "Zig",
+      "SQL",
+      "Shell",
+      "PowerShell"
+    ],
+    "installPolicy": "avoid_unnecessary_sdks_runtimes_frameworks_dependencies_and_toolchain_bloat",
+    "javascriptTargetPercent": 21.0,
+    "htmlCssPolicy": "Keep HTML and CSS stable; do not distort GitHub Linguist just to move source percentages."
+  },
+  "tokenEfficiency": {
+    "targetSavingsPercent": 60,
+    "strategy": [
+      "use source manifests before broad file reads",
+      "reuse generated contracts instead of re-reading huge prompts",
+      "summarize large evidence into bounded reports",
+      "activate minimum required tools",
+      "prefer deterministic checks over repeated reasoning",
+      "cache stable architecture decisions in docs and reports"
+    ]
+  },
+  "subsystems": [
+    {
+      "id": "agent-orchestration",
+      "label": "Advanced Agent Orchestration",
+      "intent": "Route Codex, Claude, Gemini, Qwen, local helpers, MCP tools, and plugins through one governed execution layer.",
+      "implementationRoots": [
+        "packages/seis-ai/",
+        "mcp/",
+        "plugins/seis/",
+        "docs/development/agents/"
+      ],
+      "qualityGates": [
+        "single-writer-mode",
+        "tool-minimization",
+        "handoff-notes",
+        "permission-scope"
+      ]
+    },
+    {
+      "id": "memory-architecture",
+      "label": "Memory Architecture",
+      "intent": "Preserve durable project, architecture, governance, deployment, research, and design decisions without leaking secrets.",
+      "implementationRoots": [
+        "packages/seis_platform_swift/",
+        "packages/seis_kernel/",
+        "docs/governance/"
+      ],
+      "qualityGates": [
+        "source-backed-memory",
+        "secret-safety",
+        "retrieval-trace",
+        "staleness-awareness"
+      ]
+    },
+    {
+      "id": "planning-and-execution",
+      "label": "Planning and Execution Kernel",
+      "intent": "Turn large goals into reversible daily packets, 90-day release windows, and long-horizon mission waves.",
+      "implementationRoots": [
+        "content/development/seis-active-mission-board.json",
+        "reports/seis-execution-packages.md"
+      ],
+      "qualityGates": [
+        "small-slices",
+        "dependency-order",
+        "rollback-ready",
+        "no-runtime-bloat"
+      ]
+    },
+    {
+      "id": "research-automation",
+      "label": "Research Automation",
+      "intent": "Prefer primary sources and task-specific research tools before implementation assumptions become architecture.",
+      "implementationRoots": [
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
+        "docs/research/",
+        "reports/",
+        "content/development/"
+      ],
+      "qualityGates": [
+        "primary-source-first",
+        "version-compatibility",
+        "citation-trace",
+        "claim-boundary"
+      ]
+    },
+    {
+      "id": "multi-agent-coordination",
+      "label": "Multi-Agent Coordination",
+      "intent": "Coordinate Codex execution, Claude architecture review, Gemini research validation, and local fallback helpers.",
+      "implementationRoots": [
+        "AGENTS.md",
+        "packages/ai-language/",
+        "docs/platform/"
+      ],
+      "qualityGates": [
+        "one-writer-at-a-time",
+        "reviewer-role-separated",
+        "diff-review",
+        "human-approval"
+      ]
+    },
+    {
+      "id": "plugin-mcp-skills",
+      "label": "Plugin, MCP, and Skills Mesh",
+      "intent": "Activate data, development, design, research, deployment, security, and collaboration capabilities only when relevant.",
+      "implementationRoots": [
+        "content/development/plugin-capability-lanes.json",
+        "reports/plugin-capability-lanes.md"
+      ],
+      "qualityGates": [
+        "authenticated-scope",
+        "read-write-gate",
+        "minimum-required-tools",
+        "no-fake-usage"
+      ]
+    },
+    {
+      "id": "token-efficiency",
+      "label": "Token Efficiency Engine",
+      "intent": "Save at least 60 percent of prompt/runtime budget through retrieval, compression, source manifests, and staged plans.",
+      "implementationRoots": [
+        "AGENTS.md",
+        "docs/governance/",
+        "reports/seis-agi-system.md"
+      ],
+      "qualityGates": [
+        "bounded-context",
+        "source-manifest",
+        "summarize-before-expand",
+        "avoid-repeated-discovery"
+      ]
+    },
+    {
+      "id": "human-helper-ai",
+      "label": "Human Helper AI",
+      "intent": "Keep SEIS helpful to real people through calm UX, explainable decisions, accessibility, and human review.",
+      "implementationRoots": [
+        "apps/web/",
+        "packages/seis_platform_swift/",
+        "docs/agi/"
+      ],
+      "qualityGates": [
+        "accessibility",
+        "humane-ux",
+        "explainability",
+        "human-in-the-loop"
+      ]
+    },
+    {
+      "id": "security-governance",
+      "label": "Security and Governance",
+      "intent": "Keep credentials, user data, repository state, and connector writes behind explicit safety gates.",
+      "implementationRoots": [
+        "SECURITY.md",
+        "docs/governance/",
+        ".github/"
+      ],
+      "qualityGates": [
+        "least-privilege",
+        "secret-safety",
+        "auditability",
+        "non-destructive-defaults"
+      ]
+    },
+    {
+      "id": "observability-evaluation",
+      "label": "Observability and Evaluation",
+      "intent": "Measure agent quality, reliability, token efficiency, capability usage, and release readiness.",
+      "implementationRoots": [
+        "reports/",
+        "scripts/",
+        "packages/seis-ai/test/"
+      ],
+      "qualityGates": [
+        "deterministic-checks",
+        "quality-metrics",
+        "regression-tests",
+        "release-evidence"
+      ]
+    }
+  ],
+  "pluginCapabilityLanes": [
+    {
+      "id": "development-read-write",
+      "label": "Development read/write",
+      "sourceLaneIds": [
+        "builder-and-prototyping",
+        "cloud-devops-and-release",
+        "platform-native-and-polyglot"
+      ],
+      "examples": [
+        "GitHub",
+        "Build Web Apps",
+        "Build iOS Apps",
+        "Build macOS Apps",
+        "Expo",
+        "Vercel",
+        "Cloudflare"
+      ],
+      "activationGate": "Use only for scoped implementation, repo inspection, CI, deploy, or native platform validation."
+    },
+    {
+      "id": "data-read-write",
+      "label": "Data read/write",
+      "sourceLaneIds": [
+        "backend-data-and-api",
+        "analytics-observability-and-growth"
+      ],
+      "examples": [
+        "Airtable",
+        "Supabase",
+        "Neon Postgres",
+        "MotherDuck",
+        "Data Analytics",
+        "Mixpanel",
+        "PostHog"
+      ],
+      "activationGate": "Use only with schema, date range, account scope, privacy boundary, and rollback path."
+    },
+    {
+      "id": "design-interactive",
+      "label": "Design interactive",
+      "sourceLaneIds": [
+        "creative-production-and-design",
+        "builder-and-prototyping"
+      ],
+      "examples": [
+        "Figma",
+        "Canva",
+        "Adobe",
+        "Product Design",
+        "Creative Production",
+        "Fal",
+        "Shutterstock"
+      ],
+      "activationGate": "Use only with a design brief, asset rights, accessibility notes, and visual QA target."
+    },
+    {
+      "id": "research-knowledge",
+      "label": "Research and knowledge",
+      "sourceLaneIds": [
+        "specialized-domain-and-research",
+        "ai-workflow-docs-and-knowledge"
+      ],
+      "examples": [
+        "Hugging Face",
+        "Scite",
+        "Zotero",
+        "Google Drive",
+        "Notion",
+        "Hebbia",
+        "Readwise"
+      ],
+      "activationGate": "Use only when source-backed evidence or durable knowledge retrieval is needed."
+    },
+    {
+      "id": "collaboration-operations",
+      "label": "Collaboration and operations",
+      "sourceLaneIds": [
+        "collaboration-calendar-and-support",
+        "sales-gtm-and-market-intelligence"
+      ],
+      "examples": [
+        "Slack",
+        "Asana",
+        "Linear",
+        "Jira",
+        "Google Calendar",
+        "HubSpot",
+        "Intercom"
+      ],
+      "activationGate": "Use only with clear write intent, user approval, and communication scope."
+    }
+  ],
+  "memoryPlanning": {
+    "id": "seis-memory-planning-runtime",
+    "ownerRuntime": "Swift + Foundation + Core Data + CloudKit",
+    "storagePolicy": "Use Core Data for local agent context records, CloudKit for optional sync metadata, and Foundation JSON for generated evidence manifests; never persist secrets.",
+    "checkpoints": [
+      {
+        "id": "context-intake",
+        "label": "Context Intake",
+        "phase": "inspect",
+        "appleStorageSurface": "Core Data local context cache",
+        "evidencePath": "AGENTS.md",
+        "qualityGates": [
+          "repo-state-read",
+          "instruction-boundary",
+          "secret-safety"
+        ]
+      },
+      {
+        "id": "task-decomposition",
+        "label": "Task Decomposition",
+        "phase": "plan",
+        "appleStorageSurface": "Core Data task packet records",
+        "evidencePath": "reports/seis-execution-packages.md",
+        "qualityGates": [
+          "small-slices",
+          "rollback-ready",
+          "dependency-order"
+        ]
+      },
+      {
+        "id": "research-evidence",
+        "label": "Research Evidence",
+        "phase": "research",
+        "appleStorageSurface": "Foundation JSON source manifest",
+        "evidencePath": "reports/seis-agi-system.md",
+        "qualityGates": [
+          "primary-source-first",
+          "citation-trace",
+          "claim-boundary"
+        ]
+      },
+      {
+        "id": "multi-agent-handoff",
+        "label": "Multi-Agent Handoff",
+        "phase": "coordinate",
+        "appleStorageSurface": "Core Data handoff notes plus git diff summary",
+        "evidencePath": "docs/agi/seis-agi-system.md",
+        "qualityGates": [
+          "single-writer-mode",
+          "reviewer-role-separated",
+          "human-approval"
+        ]
+      },
+      {
+        "id": "self-evaluation",
+        "label": "Self Evaluation",
+        "phase": "verify",
+        "appleStorageSurface": "Foundation check transcript plus generated reports",
+        "evidencePath": "reports/seis-agi-system.json",
+        "qualityGates": [
+          "deterministic-checks",
+          "coverage-evidence",
+          "residual-risk-log"
+        ]
+      }
+    ],
+    "loops": [
+      {
+        "id": "retrieve-compress-plan",
+        "label": "Retrieve Compress Plan",
+        "trigger": "large or recurring SEIS goal",
+        "steps": [
+          "retrieve durable contract",
+          "compress scope",
+          "select smallest reversible packet",
+          "record evidence paths"
+        ],
+        "outputArtifact": "content/development/seis-agi-system.json",
+        "evaluationGates": [
+          "bounded-context",
+          "source-backed-memory",
+          "token-savings-target"
+        ]
+      },
+      {
+        "id": "plan-execute-verify-document",
+        "label": "Plan Execute Verify Document",
+        "trigger": "repo modification request",
+        "steps": [
+          "inspect repo state",
+          "plan focused change",
+          "implement",
+          "run checks",
+          "update docs"
+        ],
+        "outputArtifact": "reports/seis-agi-system.md",
+        "evaluationGates": [
+          "git-diff-reviewable",
+          "swift-test",
+          "docs-updated"
+        ]
+      },
+      {
+        "id": "research-synthesize-validate",
+        "label": "Research Synthesize Validate",
+        "trigger": "unstable or source-sensitive claim",
+        "steps": [
+          "select source type",
+          "collect evidence",
+          "summarize constraints",
+          "validate compatibility"
+        ],
+        "outputArtifact": "docs/agi/seis-agi-system.md",
+        "evaluationGates": [
+          "primary-source-first",
+          "version-compatibility",
+          "citation-trace"
+        ]
+      },
+      {
+        "id": "handoff-review-commit",
+        "label": "Handoff Review Commit",
+        "trigger": "agent writer role changes or commit handoff",
+        "steps": [
+          "summarize diff",
+          "separate reviewer role",
+          "run deterministic checks",
+          "commit scoped change"
+        ],
+        "outputArtifact": "git commit",
+        "evaluationGates": [
+          "one-writer-at-a-time",
+          "human-readable-handoff",
+          "no-unrelated-reverts"
+        ]
+      }
+    ]
+  },
+  "imageReferenceSignals": [
+    {
+      "id": "basic-programming-concepts",
+      "basename": "images.jpeg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/basic-programming-concepts.jpeg",
+      "width": 259,
+      "height": 194,
+      "sha256": "ca3ac9207fc01deb73c5e29dc01e54b9b555917d709230558f45ba6b70a1a4b6",
+      "used": true,
+      "signals": [
+        "program-development",
+        "problem-analysis",
+        "algorithm-design",
+        "debugging",
+        "documentation",
+        "structured-programming"
+      ]
+    },
+    {
+      "id": "python-mastery-topics",
+      "basename": "Unknown-7.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/python-programming-roadmap.jpg",
+      "width": 203,
+      "height": 249,
+      "sha256": "a3e92f4e4f802c2ebd4209365da32328a07d9fe7fa045b01e8d9a5bc69a1c76f",
+      "used": true,
+      "signals": [
+        "python-basics",
+        "oop",
+        "data-structures",
+        "automation",
+        "testing",
+        "web-frameworks",
+        "data-science"
+      ]
+    },
+    {
+      "id": "college-project-matrix",
+      "basename": "Unknown-6.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/college-projects.jpg",
+      "width": 225,
+      "height": 225,
+      "sha256": "636a1a11e3834f8f3cd3ac671190817b7284fdf2709aedbd177cb2e370d25fc3",
+      "used": true,
+      "signals": [
+        "starter-projects",
+        "javascript",
+        "python",
+        "c-plus-plus",
+        "java",
+        "apps",
+        "automation"
+      ]
+    },
+    {
+      "id": "important-python-topics",
+      "basename": "Unknown-5.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/python-important-topics.jpg",
+      "width": 183,
+      "height": 275,
+      "sha256": "5269fa772942be1eeba6def63369ce6806efa26fe2d6ee0fce802d29e4083d7e",
+      "used": true,
+      "signals": [
+        "syntax",
+        "data-structures",
+        "oop",
+        "file-handling",
+        "web-development",
+        "data-analysis",
+        "machine-learning",
+        "concurrency"
+      ]
+    },
+    {
+      "id": "advanced-c-projects",
+      "basename": "Unknown-4.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/advanced-c-projects.jpg",
+      "width": 193,
+      "height": 261,
+      "sha256": "65420ae94d110ccc4eacc47395e365198a27a04345765a2014fceceb81dd5b37",
+      "used": true,
+      "signals": [
+        "c",
+        "systems-programming",
+        "data-structures",
+        "file-handling",
+        "graphics",
+        "simulation"
+      ]
+    },
+    {
+      "id": "functional-programming-core",
+      "basename": "Unknown-3.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/functional-programming-concepts.jpg",
+      "width": 263,
+      "height": 192,
+      "sha256": "577f43a89399f8a3427feffcfb843e7a6faa785a5a131cc25607046fcdde3ab7",
+      "used": true,
+      "signals": [
+        "pure-functions",
+        "immutability",
+        "higher-order-functions",
+        "recursion",
+        "referential-transparency",
+        "lazy-evaluation"
+      ]
+    },
+    {
+      "id": "dsa-interview-map",
+      "basename": "Unknown-2.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/dsa-interview-topics.jpg",
+      "width": 256,
+      "height": 197,
+      "sha256": "345a957822efcb96868098495cec4646156aa8ab55958f3c5a10886327d5ed9b",
+      "used": true,
+      "signals": [
+        "arrays",
+        "trees",
+        "graphs",
+        "sorting",
+        "searching",
+        "two-pointers",
+        "dynamic-programming",
+        "greedy"
+      ]
+    },
+    {
+      "id": "programming-reference-sites",
+      "basename": "Unknown.jpg",
+      "repositoryPath": "content/development/seis-agi-reference-assets/programming-blogs-websites.jpg",
+      "width": 197,
+      "height": 256,
+      "sha256": "ec806dabf4a8316615e1a4a7e5ca85974c0399ed1e26600e6bd28780ef93e716",
+      "used": true,
+      "signals": [
+        "learning-resources",
+        "programming-blogs",
+        "real-python",
+        "css-tricks",
+        "knowledge-sources"
+      ]
+    }
+  ],
+  "priorityDomains": [
+    {
+      "id": 1,
+      "label": "Computer Foundations",
+      "lane": "core-computing"
+    },
+    {
+      "id": 2,
+      "label": "Programming Foundations",
+      "lane": "core-computing"
+    },
+    {
+      "id": 3,
+      "label": "Data Structures",
+      "lane": "core-computing"
+    },
+    {
+      "id": 4,
+      "label": "Algorithms",
+      "lane": "core-computing"
+    },
+    {
+      "id": 5,
+      "label": "Mathematics",
+      "lane": "mathematics"
+    },
+    {
+      "id": 8,
+      "label": "Software Architecture",
+      "lane": "architecture"
+    },
+    {
+      "id": 13,
+      "label": "Mobile Development",
+      "lane": "mobile"
+    },
+    {
+      "id": 14,
+      "label": "Desktop Development",
+      "lane": "desktop"
+    },
+    {
+      "id": 17,
+      "label": "DevOps",
+      "lane": "devops"
+    },
+    {
+      "id": 18,
+      "label": "Cybersecurity",
+      "lane": "security-governance"
+    },
+    {
+      "id": 19,
+      "label": "Artificial Intelligence",
+      "lane": "ai-intelligence"
+    },
+    {
+      "id": 23,
+      "label": "Testing and Quality",
+      "lane": "quality"
+    },
+    {
+      "id": 24,
+      "label": "Open Source",
+      "lane": "open-source"
+    },
+    {
+      "id": 30,
+      "label": "Data Engineering",
+      "lane": "data-engineering"
+    },
+    {
+      "id": 34,
+      "label": "Design Technologies",
+      "lane": "design-systems"
+    },
+    {
+      "id": 43,
+      "label": "AI Native Systems",
+      "lane": "ai-intelligence"
+    },
+    {
+      "id": 47,
+      "label": "Documentation Engineering",
+      "lane": "documentation"
+    },
+    {
+      "id": 48,
+      "label": "Platform Engineering",
+      "lane": "platform"
+    },
+    {
+      "id": 73,
+      "label": "AI Agent Ecosystems",
+      "lane": "agent-ecosystem"
+    },
+    {
+      "id": 102,
+      "label": "Research Engineering",
+      "lane": "research-engineering"
+    }
+  ],
+  "domainTaxonomy": [
+    {
+      "id": 1,
+      "label": "Computer Foundations",
+      "lane": "core-computing"
+    },
+    {
+      "id": 2,
+      "label": "Programming Foundations",
+      "lane": "core-computing"
+    },
+    {
+      "id": 3,
+      "label": "Data Structures",
+      "lane": "core-computing"
+    },
+    {
+      "id": 4,
+      "label": "Algorithms",
+      "lane": "core-computing"
+    },
+    {
+      "id": 5,
+      "label": "Mathematics",
+      "lane": "mathematics"
+    },
+    {
+      "id": 6,
+      "label": "Object-Oriented Programming",
+      "lane": "software-engineering"
+    },
+    {
+      "id": 7,
+      "label": "Functional Programming",
+      "lane": "software-engineering"
+    },
+    {
+      "id": 8,
+      "label": "Software Architecture",
+      "lane": "architecture"
+    },
+    {
+      "id": 9,
+      "label": "Frontend Engineering",
+      "lane": "product-engineering"
+    },
+    {
+      "id": 10,
+      "label": "UI UX and Design Systems",
+      "lane": "design-systems"
+    },
+    {
+      "id": 11,
+      "label": "Backend Engineering",
+      "lane": "product-engineering"
+    },
+    {
+      "id": 12,
+      "label": "Databases",
+      "lane": "data-engineering"
+    },
+    {
+      "id": 13,
+      "label": "Mobile Development",
+      "lane": "mobile"
+    },
+    {
+      "id": 14,
+      "label": "Desktop Development",
+      "lane": "desktop"
+    },
+    {
+      "id": 15,
+      "label": "Game Development",
+      "lane": "game-systems"
+    },
+    {
+      "id": 16,
+      "label": "Cloud Technologies",
+      "lane": "cloud"
+    },
+    {
+      "id": 17,
+      "label": "DevOps",
+      "lane": "devops"
+    },
+    {
+      "id": 18,
+      "label": "Cybersecurity",
+      "lane": "security-governance"
+    },
+    {
+      "id": 19,
+      "label": "Artificial Intelligence",
+      "lane": "ai-intelligence"
+    },
+    {
+      "id": 20,
+      "label": "Robotics",
+      "lane": "robotics"
+    },
+    {
+      "id": 21,
+      "label": "Systems Programming",
+      "lane": "systems"
+    },
+    {
+      "id": 22,
+      "label": "Networking",
+      "lane": "systems"
+    },
+    {
+      "id": 23,
+      "label": "Testing and Quality",
+      "lane": "quality"
+    },
+    {
+      "id": 24,
+      "label": "Open Source",
+      "lane": "open-source"
+    },
+    {
+      "id": 25,
+      "label": "Advanced Engineering",
+      "lane": "reliability"
+    },
+    {
+      "id": 26,
+      "label": "Future Technologies",
+      "lane": "future-systems"
+    },
+    {
+      "id": 27,
+      "label": "Compilers and Programming Languages",
+      "lane": "language-engineering"
+    },
+    {
+      "id": 28,
+      "label": "Operating System Engineering",
+      "lane": "systems"
+    },
+    {
+      "id": 29,
+      "label": "Distributed Systems",
+      "lane": "distributed-systems"
+    },
+    {
+      "id": 30,
+      "label": "Data Engineering",
+      "lane": "data-engineering"
+    },
+    {
+      "id": 31,
+      "label": "MLOps",
+      "lane": "mlops"
+    },
+    {
+      "id": 32,
+      "label": "Computer Graphics",
+      "lane": "graphics"
+    },
+    {
+      "id": 33,
+      "label": "Human Computer Interaction",
+      "lane": "hci"
+    },
+    {
+      "id": 34,
+      "label": "Design Technologies",
+      "lane": "design-systems"
+    },
+    {
+      "id": 35,
+      "label": "Product Development",
+      "lane": "product-governance"
+    },
+    {
+      "id": 36,
+      "label": "FinTech Systems",
+      "lane": "domain-systems"
+    },
+    {
+      "id": 37,
+      "label": "Blockchain and Web3",
+      "lane": "domain-systems"
+    },
+    {
+      "id": 38,
+      "label": "Embedded Systems",
+      "lane": "embedded"
+    },
+    {
+      "id": 39,
+      "label": "Scientific Computing",
+      "lane": "research-lab"
+    },
+    {
+      "id": 40,
+      "label": "Enterprise Software Engineering",
+      "lane": "enterprise"
+    },
+    {
+      "id": 41,
+      "label": "Digital Content and Media Technologies",
+      "lane": "media"
+    },
+    {
+      "id": 42,
+      "label": "Search and Information Retrieval",
+      "lane": "information-retrieval"
+    },
+    {
+      "id": 43,
+      "label": "AI Native Systems",
+      "lane": "ai-intelligence"
+    },
+    {
+      "id": 44,
+      "label": "Observability and Operations",
+      "lane": "reliability"
+    },
+    {
+      "id": 45,
+      "label": "Digital Design and Creative Technologies",
+      "lane": "creative"
+    },
+    {
+      "id": 46,
+      "label": "Knowledge Engineering",
+      "lane": "knowledge"
+    },
+    {
+      "id": 47,
+      "label": "Documentation Engineering",
+      "lane": "documentation"
+    },
+    {
+      "id": 48,
+      "label": "Platform Engineering",
+      "lane": "platform"
+    },
+    {
+      "id": 49,
+      "label": "API Engineering",
+      "lane": "api"
+    },
+    {
+      "id": 50,
+      "label": "Developer Experience",
+      "lane": "developer-experience"
+    },
+    {
+      "id": 51,
+      "label": "Build and Release Engineering",
+      "lane": "release"
+    },
+    {
+      "id": 52,
+      "label": "Quality Engineering",
+      "lane": "quality"
+    },
+    {
+      "id": 53,
+      "label": "Reliability Engineering",
+      "lane": "reliability"
+    },
+    {
+      "id": 54,
+      "label": "Business Process Automation",
+      "lane": "automation"
+    },
+    {
+      "id": 55,
+      "label": "Low-Code No-Code Systems",
+      "lane": "low-code"
+    },
+    {
+      "id": 56,
+      "label": "Digital Ecosystem Design",
+      "lane": "ecosystem"
+    },
+    {
+      "id": 57,
+      "label": "Social and Community Systems",
+      "lane": "community"
+    },
+    {
+      "id": 58,
+      "label": "Education Technologies",
+      "lane": "education"
+    },
+    {
+      "id": 59,
+      "label": "Health Technologies",
+      "lane": "health"
+    },
+    {
+      "id": 60,
+      "label": "Geographic Information Systems",
+      "lane": "geospatial"
+    },
+    {
+      "id": 61,
+      "label": "Smart City Systems",
+      "lane": "smart-cities"
+    },
+    {
+      "id": 62,
+      "label": "Industry 4.0",
+      "lane": "industry"
+    },
+    {
+      "id": 63,
+      "label": "Aerospace and Space Software",
+      "lane": "aerospace"
+    },
+    {
+      "id": 64,
+      "label": "Financial Engineering",
+      "lane": "finance"
+    },
+    {
+      "id": 65,
+      "label": "Bioinformatics",
+      "lane": "bioinformatics"
+    },
+    {
+      "id": 66,
+      "label": "Legal Technologies",
+      "lane": "legal-tech"
+    },
+    {
+      "id": 67,
+      "label": "Sustainable Technology",
+      "lane": "sustainability"
+    },
+    {
+      "id": 68,
+      "label": "Digital Humanities",
+      "lane": "humanities"
+    },
+    {
+      "id": 69,
+      "label": "Cognitive Systems",
+      "lane": "cognitive"
+    },
+    {
+      "id": 70,
+      "label": "Humane Technology",
+      "lane": "humane-tech"
+    },
+    {
+      "id": 71,
+      "label": "Creative Artificial Intelligence",
+      "lane": "creative-ai"
+    },
+    {
+      "id": 72,
+      "label": "Enterprise AI Systems",
+      "lane": "enterprise-ai"
+    },
+    {
+      "id": 73,
+      "label": "AI Agent Ecosystems",
+      "lane": "agent-ecosystem"
+    },
+    {
+      "id": 74,
+      "label": "Digital Product Ecosystems",
+      "lane": "product-ecosystem"
+    },
+    {
+      "id": 75,
+      "label": "Future Operating Systems",
+      "lane": "future-os"
+    },
+    {
+      "id": 76,
+      "label": "Digital Civilization Systems",
+      "lane": "civilization"
+    },
+    {
+      "id": 77,
+      "label": "Knowledge Economy Systems",
+      "lane": "knowledge-economy"
+    },
+    {
+      "id": 78,
+      "label": "Decision Support Systems",
+      "lane": "decision-intelligence"
+    },
+    {
+      "id": 79,
+      "label": "Simulation Systems",
+      "lane": "simulation"
+    },
+    {
+      "id": 80,
+      "label": "Digital Twin Ecosystems",
+      "lane": "digital-twins"
+    },
+    {
+      "id": 81,
+      "label": "Autonomous Systems",
+      "lane": "autonomy"
+    },
+    {
+      "id": 82,
+      "label": "Collective Intelligence Systems",
+      "lane": "collective-intelligence"
+    },
+    {
+      "id": 83,
+      "label": "Human AI Collaboration Systems",
+      "lane": "human-ai"
+    },
+    {
+      "id": 84,
+      "label": "Digital Identity Systems",
+      "lane": "identity"
+    },
+    {
+      "id": 85,
+      "label": "Trust and Reputation Systems",
+      "lane": "trust"
+    },
+    {
+      "id": 86,
+      "label": "Information Security Architectures",
+      "lane": "security-governance"
+    },
+    {
+      "id": 87,
+      "label": "Data Governance",
+      "lane": "data-governance"
+    },
+    {
+      "id": 88,
+      "label": "Digital Archive Systems",
+      "lane": "archives"
+    },
+    {
+      "id": 89,
+      "label": "Personal Knowledge Systems",
+      "lane": "personal-knowledge"
+    },
+    {
+      "id": 90,
+      "label": "Cognitive Productivity Systems",
+      "lane": "productivity"
+    },
+    {
+      "id": 91,
+      "label": "Creative Ecosystems",
+      "lane": "creative"
+    },
+    {
+      "id": 92,
+      "label": "Design Operations",
+      "lane": "design-ops"
+    },
+    {
+      "id": 93,
+      "label": "AI Assisted Software Factories",
+      "lane": "software-factory"
+    },
+    {
+      "id": 94,
+      "label": "Agentic Organizations",
+      "lane": "agent-organization"
+    },
+    {
+      "id": 95,
+      "label": "Future Education Systems",
+      "lane": "education"
+    },
+    {
+      "id": 96,
+      "label": "Future Work Systems",
+      "lane": "future-work"
+    },
+    {
+      "id": 97,
+      "label": "Spatial Computing Ecosystems",
+      "lane": "spatial"
+    },
+    {
+      "id": 98,
+      "label": "Digital Culture Systems",
+      "lane": "culture"
+    },
+    {
+      "id": 99,
+      "label": "Super Platforms",
+      "lane": "platform"
+    },
+    {
+      "id": 100,
+      "label": "AI Native Civilization Systems",
+      "lane": "civilization"
+    },
+    {
+      "id": 101,
+      "label": "Scientific Discovery Systems",
+      "lane": "scientific-discovery"
+    },
+    {
+      "id": 102,
+      "label": "Research Engineering",
+      "lane": "research-engineering"
+    },
+    {
+      "id": 103,
+      "label": "Innovation Systems",
+      "lane": "innovation"
+    },
+    {
+      "id": 104,
+      "label": "Futures Studies",
+      "lane": "foresight"
+    },
+    {
+      "id": 105,
+      "label": "Systems Thinking",
+      "lane": "systems-thinking"
+    },
+    {
+      "id": 106,
+      "label": "Complexity Science",
+      "lane": "complexity"
+    },
+    {
+      "id": 107,
+      "label": "Organization Engineering",
+      "lane": "organization"
+    },
+    {
+      "id": 108,
+      "label": "Enterprise Knowledge Systems",
+      "lane": "enterprise-knowledge"
+    },
+    {
+      "id": 109,
+      "label": "Human Performance Systems",
+      "lane": "human-performance"
+    },
+    {
+      "id": 110,
+      "label": "Talent and Skill Systems",
+      "lane": "skill-graph"
+    },
+    {
+      "id": 111,
+      "label": "Digital Democracy Systems",
+      "lane": "civic"
+    },
+    {
+      "id": 112,
+      "label": "Social Technology",
+      "lane": "social-tech"
+    },
+    {
+      "id": 113,
+      "label": "Economic Simulation Systems",
+      "lane": "economic-simulation"
+    },
+    {
+      "id": 114,
+      "label": "Energy Systems",
+      "lane": "energy"
+    },
+    {
+      "id": 115,
+      "label": "Climate Technologies",
+      "lane": "climate"
+    },
+    {
+      "id": 116,
+      "label": "Space Ecosystems",
+      "lane": "space"
+    },
+    {
+      "id": 117,
+      "label": "Humanity Scale Systems",
+      "lane": "global-systems"
+    },
+    {
+      "id": 118,
+      "label": "Consciousness and Intelligence Research",
+      "lane": "cognitive-research"
+    },
+    {
+      "id": 119,
+      "label": "Meta Systems",
+      "lane": "meta-systems"
+    },
+    {
+      "id": 120,
+      "label": "Digital Civilization Engineering",
+      "lane": "civilization"
+    },
+    {
+      "id": 121,
+      "label": "Quantum Technologies",
+      "lane": "quantum"
+    },
+    {
+      "id": 122,
+      "label": "Neuromorphic Computing",
+      "lane": "neuromorphic"
+    },
+    {
+      "id": 123,
+      "label": "Brain Computer Interfaces",
+      "lane": "bci"
+    },
+    {
+      "id": 124,
+      "label": "Synthetic Biology",
+      "lane": "synthetic-biology"
+    },
+    {
+      "id": 125,
+      "label": "Computational Neuroscience",
+      "lane": "neuroscience"
+    },
+    {
+      "id": 126,
+      "label": "Molecular Computing",
+      "lane": "molecular-computing"
+    },
+    {
+      "id": 127,
+      "label": "Autonomous Science Systems",
+      "lane": "scientific-discovery"
+    },
+    {
+      "id": 128,
+      "label": "Artificial General Intelligence Systems",
+      "lane": "agi-research"
+    },
+    {
+      "id": 129,
+      "label": "Superintelligence Safety",
+      "lane": "ai-safety"
+    },
+    {
+      "id": 130,
+      "label": "Universal Knowledge Systems",
+      "lane": "universal-knowledge"
+    },
+    {
+      "id": 131,
+      "label": "Planetary Scale Computing",
+      "lane": "planetary-computing"
+    },
+    {
+      "id": 132,
+      "label": "Space Computing",
+      "lane": "space"
+    },
+    {
+      "id": 133,
+      "label": "Digital Life Systems",
+      "lane": "artificial-life"
+    },
+    {
+      "id": 134,
+      "label": "Computational Social Science",
+      "lane": "computational-society"
+    },
+    {
+      "id": 135,
+      "label": "Collective Superintelligence",
+      "lane": "collective-intelligence"
+    },
+    {
+      "id": 136,
+      "label": "Autonomous Economies",
+      "lane": "machine-economies"
+    },
+    {
+      "id": 137,
+      "label": "Machine Law",
+      "lane": "legal-tech"
+    },
+    {
+      "id": 138,
+      "label": "Planetary Engineering",
+      "lane": "planetary-engineering"
+    },
+    {
+      "id": 139,
+      "label": "Civilization Simulations",
+      "lane": "civilization-simulation"
+    },
+    {
+      "id": 140,
+      "label": "Post Digital Systems",
+      "lane": "ambient-computing"
+    },
+    {
+      "id": 141,
+      "label": "Spatial Internet",
+      "lane": "spatial"
+    },
+    {
+      "id": 142,
+      "label": "Metaverse Infrastructures",
+      "lane": "metaverse"
+    },
+    {
+      "id": 143,
+      "label": "Human Enhancement Technologies",
+      "lane": "human-augmentation"
+    },
+    {
+      "id": 144,
+      "label": "Digital Consciousness Systems",
+      "lane": "synthetic-minds"
+    },
+    {
+      "id": 145,
+      "label": "Civilization Scale Artificial Intelligence",
+      "lane": "civilization-ai"
+    },
+    {
+      "id": 146,
+      "label": "Evolutionary Artificial Intelligence",
+      "lane": "evolutionary-ai"
+    },
+    {
+      "id": 147,
+      "label": "Synthetic Reality Systems",
+      "lane": "synthetic-worlds"
+    },
+    {
+      "id": 148,
+      "label": "Multi-Civilization Systems",
+      "lane": "space-civilization"
+    },
+    {
+      "id": 149,
+      "label": "Cosmic Computing",
+      "lane": "cosmic-computing"
+    },
+    {
+      "id": 150,
+      "label": "Future Civilization Architectures",
+      "lane": "future-civilization"
+    }
+  ],
+  "domainLanes": [
+    {
+      "lane": "aerospace",
+      "domainCount": 1
+    },
+    {
+      "lane": "agent-ecosystem",
+      "domainCount": 1
+    },
+    {
+      "lane": "agent-organization",
+      "domainCount": 1
+    },
+    {
+      "lane": "agi-research",
+      "domainCount": 1
+    },
+    {
+      "lane": "ai-intelligence",
+      "domainCount": 2
+    },
+    {
+      "lane": "ai-safety",
+      "domainCount": 1
+    },
+    {
+      "lane": "ambient-computing",
+      "domainCount": 1
+    },
+    {
+      "lane": "api",
+      "domainCount": 1
+    },
+    {
+      "lane": "architecture",
+      "domainCount": 1
+    },
+    {
+      "lane": "archives",
+      "domainCount": 1
+    },
+    {
+      "lane": "artificial-life",
+      "domainCount": 1
+    },
+    {
+      "lane": "automation",
+      "domainCount": 1
+    },
+    {
+      "lane": "autonomy",
+      "domainCount": 1
+    },
+    {
+      "lane": "bci",
+      "domainCount": 1
+    },
+    {
+      "lane": "bioinformatics",
+      "domainCount": 1
+    },
+    {
+      "lane": "civic",
+      "domainCount": 1
+    },
+    {
+      "lane": "civilization",
+      "domainCount": 3
+    },
+    {
+      "lane": "civilization-ai",
+      "domainCount": 1
+    },
+    {
+      "lane": "civilization-simulation",
+      "domainCount": 1
+    },
+    {
+      "lane": "climate",
+      "domainCount": 1
+    },
+    {
+      "lane": "cloud",
+      "domainCount": 1
+    },
+    {
+      "lane": "cognitive",
+      "domainCount": 1
+    },
+    {
+      "lane": "cognitive-research",
+      "domainCount": 1
+    },
+    {
+      "lane": "collective-intelligence",
+      "domainCount": 2
+    },
+    {
+      "lane": "community",
+      "domainCount": 1
+    },
+    {
+      "lane": "complexity",
+      "domainCount": 1
+    },
+    {
+      "lane": "computational-society",
+      "domainCount": 1
+    },
+    {
+      "lane": "core-computing",
+      "domainCount": 4
+    },
+    {
+      "lane": "cosmic-computing",
+      "domainCount": 1
+    },
+    {
+      "lane": "creative",
+      "domainCount": 2
+    },
+    {
+      "lane": "creative-ai",
+      "domainCount": 1
+    },
+    {
+      "lane": "culture",
+      "domainCount": 1
+    },
+    {
+      "lane": "data-engineering",
+      "domainCount": 2
+    },
+    {
+      "lane": "data-governance",
+      "domainCount": 1
+    },
+    {
+      "lane": "decision-intelligence",
+      "domainCount": 1
+    },
+    {
+      "lane": "design-ops",
+      "domainCount": 1
+    },
+    {
+      "lane": "design-systems",
+      "domainCount": 2
+    },
+    {
+      "lane": "desktop",
+      "domainCount": 1
+    },
+    {
+      "lane": "developer-experience",
+      "domainCount": 1
+    },
+    {
+      "lane": "devops",
+      "domainCount": 1
+    },
+    {
+      "lane": "digital-twins",
+      "domainCount": 1
+    },
+    {
+      "lane": "distributed-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "documentation",
+      "domainCount": 1
+    },
+    {
+      "lane": "domain-systems",
+      "domainCount": 2
+    },
+    {
+      "lane": "economic-simulation",
+      "domainCount": 1
+    },
+    {
+      "lane": "ecosystem",
+      "domainCount": 1
+    },
+    {
+      "lane": "education",
+      "domainCount": 2
+    },
+    {
+      "lane": "embedded",
+      "domainCount": 1
+    },
+    {
+      "lane": "energy",
+      "domainCount": 1
+    },
+    {
+      "lane": "enterprise",
+      "domainCount": 1
+    },
+    {
+      "lane": "enterprise-ai",
+      "domainCount": 1
+    },
+    {
+      "lane": "enterprise-knowledge",
+      "domainCount": 1
+    },
+    {
+      "lane": "evolutionary-ai",
+      "domainCount": 1
+    },
+    {
+      "lane": "finance",
+      "domainCount": 1
+    },
+    {
+      "lane": "foresight",
+      "domainCount": 1
+    },
+    {
+      "lane": "future-civilization",
+      "domainCount": 1
+    },
+    {
+      "lane": "future-os",
+      "domainCount": 1
+    },
+    {
+      "lane": "future-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "future-work",
+      "domainCount": 1
+    },
+    {
+      "lane": "game-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "geospatial",
+      "domainCount": 1
+    },
+    {
+      "lane": "global-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "graphics",
+      "domainCount": 1
+    },
+    {
+      "lane": "hci",
+      "domainCount": 1
+    },
+    {
+      "lane": "health",
+      "domainCount": 1
+    },
+    {
+      "lane": "human-ai",
+      "domainCount": 1
+    },
+    {
+      "lane": "human-augmentation",
+      "domainCount": 1
+    },
+    {
+      "lane": "human-performance",
+      "domainCount": 1
+    },
+    {
+      "lane": "humane-tech",
+      "domainCount": 1
+    },
+    {
+      "lane": "humanities",
+      "domainCount": 1
+    },
+    {
+      "lane": "identity",
+      "domainCount": 1
+    },
+    {
+      "lane": "industry",
+      "domainCount": 1
+    },
+    {
+      "lane": "information-retrieval",
+      "domainCount": 1
+    },
+    {
+      "lane": "innovation",
+      "domainCount": 1
+    },
+    {
+      "lane": "knowledge",
+      "domainCount": 1
+    },
+    {
+      "lane": "knowledge-economy",
+      "domainCount": 1
+    },
+    {
+      "lane": "language-engineering",
+      "domainCount": 1
+    },
+    {
+      "lane": "legal-tech",
+      "domainCount": 2
+    },
+    {
+      "lane": "low-code",
+      "domainCount": 1
+    },
+    {
+      "lane": "machine-economies",
+      "domainCount": 1
+    },
+    {
+      "lane": "mathematics",
+      "domainCount": 1
+    },
+    {
+      "lane": "media",
+      "domainCount": 1
+    },
+    {
+      "lane": "meta-systems",
+      "domainCount": 1
+    },
+    {
+      "lane": "metaverse",
+      "domainCount": 1
+    },
+    {
+      "lane": "mlops",
+      "domainCount": 1
+    },
+    {
+      "lane": "mobile",
+      "domainCount": 1
+    },
+    {
+      "lane": "molecular-computing",
+      "domainCount": 1
+    },
+    {
+      "lane": "neuromorphic",
+      "domainCount": 1
+    },
+    {
+      "lane": "neuroscience",
+      "domainCount": 1
+    },
+    {
+      "lane": "open-source",
+      "domainCount": 1
+    },
+    {
+      "lane": "organization",
+      "domainCount": 1
+    },
+    {
+      "lane": "personal-knowledge",
+      "domainCount": 1
+    },
+    {
+      "lane": "planetary-computing",
+      "domainCount": 1
+    },
+    {
+      "lane": "planetary-engineering",
+      "domainCount": 1
+    },
+    {
+      "lane": "platform",
+      "domainCount": 2
+    },
+    {
+      "lane": "product-ecosystem",
+      "domainCount": 1
+    },
+    {
+      "lane": "product-engineering",
+      "domainCount": 2
+    },
+    {
+      "lane": "product-governance",
+      "domainCount": 1
+    },
+    {
+      "lane": "productivity",
+      "domainCount": 1
+    },
+    {
+      "lane": "quality",
+      "domainCount": 2
+    },
+    {
+      "lane": "quantum",
+      "domainCount": 1
+    },
+    {
+      "lane": "release",
+      "domainCount": 1
+    },
+    {
+      "lane": "reliability",
+      "domainCount": 3
+    },
+    {
+      "lane": "research-engineering",
+      "domainCount": 1
+    },
+    {
+      "lane": "research-lab",
+      "domainCount": 1
+    },
+    {
+      "lane": "robotics",
+      "domainCount": 1
+    },
+    {
+      "lane": "scientific-discovery",
+      "domainCount": 2
+    },
+    {
+      "lane": "security-governance",
+      "domainCount": 2
+    },
+    {
+      "lane": "simulation",
+      "domainCount": 1
+    },
+    {
+      "lane": "skill-graph",
+      "domainCount": 1
+    },
+    {
+      "lane": "smart-cities",
+      "domainCount": 1
+    },
+    {
+      "lane": "social-tech",
+      "domainCount": 1
+    },
+    {
+      "lane": "software-engineering",
+      "domainCount": 2
+    },
+    {
+      "lane": "software-factory",
+      "domainCount": 1
+    },
+    {
+      "lane": "space",
+      "domainCount": 2
+    },
+    {
+      "lane": "space-civilization",
+      "domainCount": 1
+    },
+    {
+      "lane": "spatial",
+      "domainCount": 2
+    },
+    {
+      "lane": "sustainability",
+      "domainCount": 1
+    },
+    {
+      "lane": "synthetic-biology",
+      "domainCount": 1
+    },
+    {
+      "lane": "synthetic-minds",
+      "domainCount": 1
+    },
+    {
+      "lane": "synthetic-worlds",
+      "domainCount": 1
+    },
+    {
+      "lane": "systems",
+      "domainCount": 3
+    },
+    {
+      "lane": "systems-thinking",
+      "domainCount": 1
+    },
+    {
+      "lane": "trust",
+      "domainCount": 1
+    },
+    {
+      "lane": "universal-knowledge",
+      "domainCount": 1
+    }
+  ],
+  "implementation": {
+    "swiftContract": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+    "swiftMemoryPlanningStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIMemoryPlanningStore.swift",
+    "swiftContextCompressionRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIContextCompressionRuntime.swift",
+    "swiftAgentOrchestrationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentOrchestrationRuntime.swift",
+    "swiftResearchAutomationRuntime": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIResearchAutomationRuntime.swift",
+    "swiftAgentHandoffStore": "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGIAgentHandoffStore.swift",
+    "generator": "scripts/create-seis-agi-system.py",
+    "sourceContract": "content/development/seis-agi-system.json",
+    "report": "reports/seis-agi-system.md",
+    "documentation": "docs/agi/seis-agi-system.md"
+  },
+  "qualityGates": [
+    "agent_subsystems_at_least_10",
+    "visual_sources_marked_used",
+    "plugin_lanes_cover_data_development_design",
+    "javascript_target_is_21_percent",
+    "token_savings_target_is_60_percent",
+    "apple_first_language_contract_present",
+    "apple_native_memory_store_present",
+    "apple_native_context_compression_present",
+    "apple_native_agent_orchestration_present",
+    "apple_native_research_automation_present",
+    "apple_native_agent_handoff_store_present",
+    "no_runtime_install_for_language_percentage",
+    "security_and_human_review_gates_present"
+  ]
+}

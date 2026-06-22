@@ -1,0 +1,2683 @@
+{
+  "version": 1,
+  "id": "seis-execution-packages",
+  "mode": "daily_reversible_task_packets",
+  "sourceBoard": "seis-active-mission-board",
+  "summary": {
+    "packageCount": 30,
+    "nowPackageCount": 10,
+    "nextPackageCount": 10,
+    "queuedPackageCount": 10,
+    "validationCommandCount": 10,
+    "artifactRootCount": 9,
+    "remoteReadyCount": 30,
+    "offlineReadyCount": 30
+  },
+  "governance": {
+    "defaultCadence": "one package per focused work slice",
+    "commitPolicy": "commit only after explicit user approval",
+    "pushPolicy": "push only after explicit user approval",
+    "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+  },
+  "commandCoverage": [
+    "dotnet --info",
+    "npm run automation:refresh-seis-surface -- --summary",
+    "npm run check:seis-nonjs-kernel",
+    "npm run check:workspace",
+    "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript",
+    "pwsh --version",
+    "python3 --version",
+    "xcode-select -p",
+    "xcodebuild -version",
+    "xcrun swift --version"
+  ],
+  "artifactRoots": [
+    "content/development/",
+    "packages/seis_kernel/",
+    "packages/seis_platform_swift/",
+    "packages/seis_windows_csharp/",
+    "polyglot/applescript/",
+    "polyglot/objective-c/",
+    "polyglot/swiftui-playground/",
+    "polyglot/windows/",
+    "reports/"
+  ],
+  "packages": [
+    {
+      "id": "packet-01-wave-01-foundation-m01-architecture-contract",
+      "packetNumber": 1,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m01-architecture-contract",
+      "domainId": "algorithms-and-flowcharts",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "objective": "Deliver Architecture Contract for algorithms-and-flowcharts as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update architecture note for wave-01-foundation-m01-architecture-contract",
+        "Create or update interface contract for wave-01-foundation-m01-architecture-contract",
+        "Create or update risk register for wave-01-foundation-m01-architecture-contract"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "maintainability",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-02-wave-01-foundation-m02-agent-policy",
+      "packetNumber": 2,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m02-agent-policy",
+      "domainId": "mathematics-foundations",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "objective": "Deliver Agent Policy for mathematics-foundations as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update agent policy for wave-01-foundation-m02-agent-policy",
+        "Create or update permission matrix for wave-01-foundation-m02-agent-policy",
+        "Create or update fallback path for wave-01-foundation-m02-agent-policy"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "credential-safety",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "human-approval",
+        "no-destructive-operation",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-03-wave-01-foundation-m03-platform-bridge",
+      "packetNumber": 3,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m03-platform-bridge",
+      "domainId": "computer-science-foundations",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "C#",
+        "CUE",
+        "Go",
+        "PowerShell",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "objective": "Deliver Platform Bridge for computer-science-foundations as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update platform adapter for wave-01-foundation-m03-platform-bridge",
+        "Create or update runtime readiness check for wave-01-foundation-m03-platform-bridge",
+        "Create or update path safety rule for wave-01-foundation-m03-platform-bridge"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-04-wave-01-foundation-m04-data-plane",
+      "packetNumber": 4,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m04-data-plane",
+      "domainId": "web-development",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "R",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "objective": "Deliver Data Plane for web-development as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update data schema for wave-01-foundation-m04-data-plane",
+        "Create or update query contract for wave-01-foundation-m04-data-plane",
+        "Create or update lineage note for wave-01-foundation-m04-data-plane"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "migration-plan",
+        "no-destructive-operation",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-05-wave-01-foundation-m05-design-engineering",
+      "packetNumber": 5,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m05-design-engineering",
+      "domainId": "mobile-development",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CSS",
+        "CUE",
+        "Go",
+        "HTML",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "objective": "Deliver Design Engineering for mobile-development as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update design token map for wave-01-foundation-m05-design-engineering",
+        "Create or update interaction states for wave-01-foundation-m05-design-engineering",
+        "Create or update accessibility checklist for wave-01-foundation-m05-design-engineering"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "accessibility",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "motion-evidence",
+        "no-destructive-operation",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-06-wave-01-foundation-m06-quality-gate",
+      "packetNumber": 6,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m06-quality-gate",
+      "domainId": "game-development",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "objective": "Deliver Quality Gate for game-development as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update check script for wave-01-foundation-m06-quality-gate",
+        "Create or update failure message for wave-01-foundation-m06-quality-gate",
+        "Create or update developer note for wave-01-foundation-m06-quality-gate"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "explicit-push-approval",
+        "fail-fast",
+        "git-diff-reviewable",
+        "idempotent-output",
+        "no-destructive-operation",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-07-wave-01-foundation-m07-security-governance",
+      "packetNumber": 7,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m07-security-governance",
+      "domainId": "full-stack-engineering",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "objective": "Deliver Security Governance for full-stack-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update threat model for wave-01-foundation-m07-security-governance",
+        "Create or update secret handling rule for wave-01-foundation-m07-security-governance",
+        "Create or update abuse case table for wave-01-foundation-m07-security-governance"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "auditability",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "least-privilege",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-08-wave-01-foundation-m08-llm-orchestration",
+      "packetNumber": 8,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m08-llm-orchestration",
+      "domainId": "data-engineering-and-analytics",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "JSON",
+        "Python",
+        "Rust",
+        "SQL",
+        "YAML"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ]
+      },
+      "objective": "Deliver LLM Orchestration for data-engineering-and-analytics as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update routing rule for wave-01-foundation-m08-llm-orchestration",
+        "Create or update provider policy for wave-01-foundation-m08-llm-orchestration",
+        "Create or update offline fallback for wave-01-foundation-m08-llm-orchestration"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "model-fallback",
+        "no-destructive-operation",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-09-wave-01-foundation-m09-runtime-surface",
+      "packetNumber": 9,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m09-runtime-surface",
+      "domainId": "data-science",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Java",
+        "Kotlin",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Rust",
+        "SQL"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "objective": "Deliver Runtime Surface for data-science as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update source stub for wave-01-foundation-m09-runtime-surface",
+        "Create or update readiness gate for wave-01-foundation-m09-runtime-surface",
+        "Create or update install policy for wave-01-foundation-m09-runtime-surface"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "documented-owner",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-10-wave-01-foundation-m10-release-readiness",
+      "packetNumber": 10,
+      "laneId": "now",
+      "missionId": "wave-01-foundation-m10-release-readiness",
+      "domainId": "artificial-intelligence",
+      "agentRole": "cs-foundation-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "objective": "Deliver Release Readiness for artificial-intelligence as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update release note for wave-01-foundation-m10-release-readiness",
+        "Create or update rollback checklist for wave-01-foundation-m10-release-readiness",
+        "Create or update publish gate for wave-01-foundation-m10-release-readiness"
+      ],
+      "artifactRoots": [
+        "packages/seis_kernel/",
+        "content/development/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "npm run check:seis-nonjs-kernel",
+        "npm run check:workspace",
+        "npm run automation:refresh-seis-surface -- --summary"
+      ],
+      "acceptanceGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "language-budget",
+        "no-destructive-operation",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-11-wave-02-apple-native-m01-architecture-contract",
+      "packetNumber": 11,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m01-architecture-contract",
+      "domainId": "ai-agent-engineering",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Architecture Contract for ai-agent-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update architecture note for wave-02-apple-native-m01-architecture-contract",
+        "Create or update interface contract for wave-02-apple-native-m01-architecture-contract",
+        "Create or update risk register for wave-02-apple-native-m01-architecture-contract"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "maintainability",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-12-wave-02-apple-native-m02-agent-policy",
+      "packetNumber": 12,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m02-agent-policy",
+      "domainId": "llm-orchestration",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Agent Policy for llm-orchestration as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update agent policy for wave-02-apple-native-m02-agent-policy",
+        "Create or update permission matrix for wave-02-apple-native-m02-agent-policy",
+        "Create or update fallback path for wave-02-apple-native-m02-agent-policy"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "credential-safety",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "human-approval",
+        "no-destructive-operation",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-13-wave-02-apple-native-m03-platform-bridge",
+      "packetNumber": 13,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m03-platform-bridge",
+      "domainId": "mcp-skills-plugins",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Platform Bridge for mcp-skills-plugins as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update platform adapter for wave-02-apple-native-m03-platform-bridge",
+        "Create or update runtime readiness check for wave-02-apple-native-m03-platform-bridge",
+        "Create or update path safety rule for wave-02-apple-native-m03-platform-bridge"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-14-wave-02-apple-native-m04-data-plane",
+      "packetNumber": 14,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m04-data-plane",
+      "domainId": "database-management",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Data Plane for database-management as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update data schema for wave-02-apple-native-m04-data-plane",
+        "Create or update query contract for wave-02-apple-native-m04-data-plane",
+        "Create or update lineage note for wave-02-apple-native-m04-data-plane"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "migration-plan",
+        "no-destructive-operation",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-15-wave-02-apple-native-m05-design-engineering",
+      "packetNumber": 15,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m05-design-engineering",
+      "domainId": "version-control-systems",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Design Engineering for version-control-systems as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update design token map for wave-02-apple-native-m05-design-engineering",
+        "Create or update interaction states for wave-02-apple-native-m05-design-engineering",
+        "Create or update accessibility checklist for wave-02-apple-native-m05-design-engineering"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "accessibility",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "motion-evidence",
+        "no-destructive-operation",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-16-wave-02-apple-native-m06-quality-gate",
+      "packetNumber": 16,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m06-quality-gate",
+      "domainId": "cloud-computing",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Quality Gate for cloud-computing as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update check script for wave-02-apple-native-m06-quality-gate",
+        "Create or update failure message for wave-02-apple-native-m06-quality-gate",
+        "Create or update developer note for wave-02-apple-native-m06-quality-gate"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "explicit-push-approval",
+        "fail-fast",
+        "git-diff-reviewable",
+        "idempotent-output",
+        "no-destructive-operation",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-17-wave-02-apple-native-m07-security-governance",
+      "packetNumber": 17,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m07-security-governance",
+      "domainId": "cybersecurity",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Security Governance for cybersecurity as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update threat model for wave-02-apple-native-m07-security-governance",
+        "Create or update secret handling rule for wave-02-apple-native-m07-security-governance",
+        "Create or update abuse case table for wave-02-apple-native-m07-security-governance"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "auditability",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "least-privilege",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-18-wave-02-apple-native-m08-llm-orchestration",
+      "packetNumber": 18,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m08-llm-orchestration",
+      "domainId": "devops-and-system-management",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver LLM Orchestration for devops-and-system-management as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update routing rule for wave-02-apple-native-m08-llm-orchestration",
+        "Create or update provider policy for wave-02-apple-native-m08-llm-orchestration",
+        "Create or update offline fallback for wave-02-apple-native-m08-llm-orchestration"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "model-fallback",
+        "no-destructive-operation",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-19-wave-02-apple-native-m09-runtime-surface",
+      "packetNumber": 19,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m09-runtime-surface",
+      "domainId": "test-engineering",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Runtime Surface for test-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update source stub for wave-02-apple-native-m09-runtime-surface",
+        "Create or update readiness gate for wave-02-apple-native-m09-runtime-surface",
+        "Create or update install policy for wave-02-apple-native-m09-runtime-surface"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "documented-owner",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-20-wave-02-apple-native-m10-release-readiness",
+      "packetNumber": 20,
+      "laneId": "next",
+      "missionId": "wave-02-apple-native-m10-release-readiness",
+      "domainId": "software-architecture-and-patterns",
+      "agentRole": "apple-platform-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "objective": "Deliver Release Readiness for software-architecture-and-patterns as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update release note for wave-02-apple-native-m10-release-readiness",
+        "Create or update rollback checklist for wave-02-apple-native-m10-release-readiness",
+        "Create or update publish gate for wave-02-apple-native-m10-release-readiness"
+      ],
+      "artifactRoots": [
+        "packages/seis_platform_swift/",
+        "polyglot/swiftui-playground/",
+        "polyglot/objective-c/",
+        "polyglot/applescript/"
+      ],
+      "validationCommands": [
+        "xcode-select -p",
+        "xcodebuild -version",
+        "xcrun swift --version",
+        "osacompile -o /tmp/seis-platform-automation.scpt polyglot/applescript/seis_platform_automation.applescript"
+      ],
+      "acceptanceGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "language-budget",
+        "no-destructive-operation",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-21-wave-03-windows-polyglot-m01-architecture-contract",
+      "packetNumber": 21,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m01-architecture-contract",
+      "domainId": "big-data-engineering",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Architecture Contract for big-data-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update architecture note for wave-03-windows-polyglot-m01-architecture-contract",
+        "Create or update interface contract for wave-03-windows-polyglot-m01-architecture-contract",
+        "Create or update risk register for wave-03-windows-polyglot-m01-architecture-contract"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "maintainability",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-22-wave-03-windows-polyglot-m02-agent-policy",
+      "packetNumber": 22,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m02-agent-policy",
+      "domainId": "nlp-and-computer-vision",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Agent Policy for nlp-and-computer-vision as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update agent policy for wave-03-windows-polyglot-m02-agent-policy",
+        "Create or update permission matrix for wave-03-windows-polyglot-m02-agent-policy",
+        "Create or update fallback path for wave-03-windows-polyglot-m02-agent-policy"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "credential-safety",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "human-approval",
+        "no-destructive-operation",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-23-wave-03-windows-polyglot-m03-platform-bridge",
+      "packetNumber": 23,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m03-platform-bridge",
+      "domainId": "quantum-programming",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Platform Bridge for quantum-programming as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update platform adapter for wave-03-windows-polyglot-m03-platform-bridge",
+        "Create or update runtime readiness check for wave-03-windows-polyglot-m03-platform-bridge",
+        "Create or update path safety rule for wave-03-windows-polyglot-m03-platform-bridge"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-24-wave-03-windows-polyglot-m04-data-plane",
+      "packetNumber": 24,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m04-data-plane",
+      "domainId": "sustainable-software",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Data Plane for sustainable-software as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update data schema for wave-03-windows-polyglot-m04-data-plane",
+        "Create or update query contract for wave-03-windows-polyglot-m04-data-plane",
+        "Create or update lineage note for wave-03-windows-polyglot-m04-data-plane"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "migration-plan",
+        "no-destructive-operation",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-25-wave-03-windows-polyglot-m05-design-engineering",
+      "packetNumber": 25,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m05-design-engineering",
+      "domainId": "low-code-no-code-platforms",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Design Engineering for low-code-no-code-platforms as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update design token map for wave-03-windows-polyglot-m05-design-engineering",
+        "Create or update interaction states for wave-03-windows-polyglot-m05-design-engineering",
+        "Create or update accessibility checklist for wave-03-windows-polyglot-m05-design-engineering"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "accessibility",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "motion-evidence",
+        "no-destructive-operation",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-26-wave-03-windows-polyglot-m06-quality-gate",
+      "packetNumber": 26,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m06-quality-gate",
+      "domainId": "ux-ui-engineering",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Shell",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Quality Gate for ux-ui-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update check script for wave-03-windows-polyglot-m06-quality-gate",
+        "Create or update failure message for wave-03-windows-polyglot-m06-quality-gate",
+        "Create or update developer note for wave-03-windows-polyglot-m06-quality-gate"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "explicit-push-approval",
+        "fail-fast",
+        "git-diff-reviewable",
+        "idempotent-output",
+        "no-destructive-operation",
+        "reviewable-diff"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-27-wave-03-windows-polyglot-m07-security-governance",
+      "packetNumber": 27,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m07-security-governance",
+      "domainId": "product-design-and-creative-systems",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Security Governance for product-design-and-creative-systems as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update threat model for wave-03-windows-polyglot-m07-security-governance",
+        "Create or update secret handling rule for wave-03-windows-polyglot-m07-security-governance",
+        "Create or update abuse case table for wave-03-windows-polyglot-m07-security-governance"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "auditability",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "least-privilege",
+        "no-destructive-operation",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-28-wave-03-windows-polyglot-m08-llm-orchestration",
+      "packetNumber": 28,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m08-llm-orchestration",
+      "domainId": "autonomous-vehicles-and-robotics",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic",
+        "YAML"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ]
+      },
+      "objective": "Deliver LLM Orchestration for autonomous-vehicles-and-robotics as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update routing rule for wave-03-windows-polyglot-m08-llm-orchestration",
+        "Create or update provider policy for wave-03-windows-polyglot-m08-llm-orchestration",
+        "Create or update offline fallback for wave-03-windows-polyglot-m08-llm-orchestration"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "model-fallback",
+        "no-destructive-operation",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-29-wave-03-windows-polyglot-m09-runtime-surface",
+      "packetNumber": 29,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m09-runtime-surface",
+      "domainId": "ai-ethics-and-data-governance",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Runtime Surface for ai-ethics-and-data-governance as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update source stub for wave-03-windows-polyglot-m09-runtime-surface",
+        "Create or update readiness gate for wave-03-windows-polyglot-m09-runtime-surface",
+        "Create or update install policy for wave-03-windows-polyglot-m09-runtime-surface"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "docs-updated",
+        "documented-owner",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "no-destructive-operation",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "packet-30-wave-03-windows-polyglot-m10-release-readiness",
+      "packetNumber": 30,
+      "laneId": "queued",
+      "missionId": "wave-03-windows-polyglot-m10-release-readiness",
+      "domainId": "compiler-and-language-engineering",
+      "agentRole": "windows-agent",
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Shell",
+        "Visual Basic"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ]
+      },
+      "objective": "Deliver Release Readiness for compiler-and-language-engineering as a small reversible SEIS increment.",
+      "workItems": [
+        "Create or update release note for wave-03-windows-polyglot-m10-release-readiness",
+        "Create or update rollback checklist for wave-03-windows-polyglot-m10-release-readiness",
+        "Create or update publish gate for wave-03-windows-polyglot-m10-release-readiness"
+      ],
+      "artifactRoots": [
+        "packages/seis_windows_csharp/",
+        "polyglot/windows/",
+        "reports/"
+      ],
+      "validationCommands": [
+        "dotnet --info",
+        "pwsh --version",
+        "python3 --version"
+      ],
+      "acceptanceGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "explicit-push-approval",
+        "git-diff-reviewable",
+        "language-budget",
+        "no-destructive-operation",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "delegationPolicy": {
+        "seisRole": "primary_user_facing_agent",
+        "remoteProviders": "allowed_for_reasoning_only",
+        "offlineFallback": "ollama_or_local_static_analysis",
+        "secretHandling": "never_write_credentials_to_reports"
+      },
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    }
+  ]
+}

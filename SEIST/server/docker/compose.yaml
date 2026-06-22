@@ -1,0 +1,12 @@
+services:
+  seis-static:
+    build:
+      context: ../..
+      dockerfile: server/docker/Dockerfile
+    ports:
+      - "4177:4177"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4177
+      SEIS_STATIC_ROOT: /app/dist/seis-static
+

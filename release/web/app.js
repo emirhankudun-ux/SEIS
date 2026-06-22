@@ -78,337 +78,30 @@ const fallbackMarketplace = {
       designerValue: "Reference provider for future AI-assisted marketplace descriptions and content QA.",
       activationPosture: "model-selection-only"
     }
-  ],
-  developmentCadence: {
-    periods: [
-      {
-        id: "H1",
-        label: "H1 build cycle",
-        purpose: "Define, prototype, and validate the next safe interface slice for the selected year.",
-        reviewGate: "Mid-year review confirms evidence paths, mobile behavior, and no-key fallback."
-      },
-      {
-        id: "H2",
-        label: "H2 hardening cycle",
-        purpose: "Stabilize, document, and prepare the selected year's interface work for PR sequencing.",
-        reviewGate: "Year-end review confirms validators, release boundaries, and deferred actions."
-      }
-    ],
-    laneRoutines: [
-      {
-        id: "seis",
-        h1: "Refresh source-of-truth status, backlog, review queue, and lane copy.",
-        h2: "Reconcile generated views, goal records, release notes, and governance evidence."
-      },
-      {
-        id: "seis-cloud",
-        h1: "Review @seis-cloud target placeholders, dry-run checks, rollback ownership, and SSH-disabled boundaries.",
-        h2: "Harden @seis-cloud deployment readiness docs, incident notes, approval gates, and no-live messaging."
-      },
-      {
-        id: "seis-code",
-        h1: "Build the next browser-safe workspace slice with local persistence.",
-        h2: "Add editor, terminal, source-control, and AI REPL QA evidence without provider secrets."
-      },
-      {
-        id: "seis-design",
-        h1: "Inventory components, tokens, motion rules, visual states, and responsive criteria.",
-        h2: "Run visual QA, accessibility review, reduced-motion review, and asset provenance checks."
-      },
-      {
-        id: "seis-data",
-        h1: "Register JSON records, schema expectations, freshness rules, and evidence ownership.",
-        h2: "Validate data consumers, stale states, provenance links, and generated artifact integrity."
-      }
-    ]
-  }
+  ]
 };
 
-const fallbackPluginInterfaces = {
-  generatedAt: "2026-06-22",
-  status: "static-fallback",
-  summary: "Read-only fallback for the requested SEIS plugin interface lanes.",
-  interfaces: [
+const fallbackPublishGate = {
+  status: "active",
+  purpose: "Keep local GitHub publication decisions explicit before push or deployment.",
+  readinessLevels: [
     {
-      id: "seis",
-      handle: "@seis",
-      title: "SEIS Command Layer",
-      status: "documented foundation",
-      stage: "foundation",
-      risk: "medium",
-      purpose: "Coordinate governance, goals, evidence, and Command Center navigation.",
-      currentSurface: "Command Center lane status and Goal Tracking OS records.",
-      nextAction: "Keep official docs, status, backlog, and generated static views aligned.",
-      evidence: ["docs/STATUS.md", "docs/SEIS_MASTER_INDEX.md"]
+      id: "configured",
+      meaning: "The intended GitHub remote exists in local git config.",
+      allows: ["local validation", "commit creation"],
+      blocks: ["push claim", "deployment claim"]
     },
     {
-      id: "seis-cloud",
-      handle: "@seis-cloud",
-      title: "Cloud Readiness",
-      status: "documented dry-run",
-      stage: "approval-gated",
-      risk: "high",
-      purpose: "Expose cloud readiness without executing deployment or SSH.",
-      currentSurface: "Dry-run cloud readiness and publish-gate evidence.",
-      nextAction: "Keep live actions blocked until target, rollback, and approval are explicit.",
-      evidence: ["docs/operations/seis-cloud-foundation.md", "deploy/cloud-environment.json"]
-    },
-    {
-      id: "seis-code",
-      handle: "@seis-code",
-      title: "SEIS Code Workspace",
-      status: "planned mvp",
-      stage: "contract",
-      risk: "medium",
-      purpose: "Define browser IDE, virtual file system, terminal, and no-key AI REPL boundaries.",
-      currentSurface: "Static MVP contract and code automation plan evidence.",
-      nextAction: "Build a browser-safe editor/file slice before broader dependencies.",
-      evidence: ["docs/product/seis-code-foundation.md"]
-    },
-    {
-      id: "seis-design",
-      handle: "@seis-design",
-      title: "Design System",
-      status: "scaffolded",
-      stage: "quality-gates",
-      risk: "low",
-      purpose: "Track tokens, components, accessibility, reduced motion, and visual QA.",
-      currentSurface: "Design foundation and token evidence.",
-      nextAction: "Add component inventory and visual QA evidence.",
-      evidence: ["docs/design-system/seis-design-foundation.md", "packages/design-tokens/seis.tokens.css"]
-    },
-    {
-      id: "seis-data",
-      handle: "@seis-data",
-      title: "Data And Evidence",
-      status: "validated records plus gaps",
-      stage: "schema-registry",
-      risk: "medium",
-      purpose: "Manage JSON records, evidence ledgers, generated reports, and data contracts.",
-      currentSurface: "Goal records, evidence records, and generated view models.",
-      nextAction: "Create a schema registry and freshness policy.",
-      evidence: ["docs/data/seis-data-foundation.md", "content/development/seis-goal-command-center-view.json"]
+      id: "publish-preflight",
+      meaning: "The working tree, branch, upstream, and GitHub auth are verified.",
+      allows: ["bounded push preflight"],
+      blocks: ["automatic deploy without confirmed target"]
     }
   ],
-  fiveYearHorizon: [
-    {
-      year: "2026",
-      phase: "Foundation",
-      focus: "Static interfaces, evidence links, and no-live-action boundaries.",
-      validation: "Syntax checks, JSON validation, manual accessibility review."
-    },
-    {
-      year: "2027",
-      phase: "Command Center Alpha",
-      focus: "Shared navigation, persistence, search, and operator review workflows.",
-      validation: "Component tests, keyboard QA, data freshness checks."
-    },
-    {
-      year: "2028",
-      phase: "Integrated Workflows",
-      focus: "Read-only GitHub, cloud dry-run, SEIS Code MVP, design inventory, and schema coverage.",
-      validation: "Contract tests, no-key startup checks, redacted provider audits."
-    },
-    {
-      year: "2029",
-      phase: "Governed Automation",
-      focus: "Approval-gated actions, audit trails, agent queues, and rollback-ready operations.",
-      validation: "Permission tests, audit event reviews, degraded-mode checks."
-    },
-    {
-      year: "2030",
-      phase: "Ecosystem Maturity",
-      focus: "Federation, release governance, local model options, and maintenance cadence.",
-      validation: "Release dry-runs, public exposure review, security refresh."
-    }
-  ],
-  developmentProgram: [
-    {
-      year: "2026",
-      theme: "Foundation interfaces",
-      operatingPosture: "Read-only, validator-backed, and safe without cloud credentials.",
-      laneCommitments: [
-        {
-          id: "seis",
-          focus: "Unify source-of-truth navigation, status, backlog, and evidence.",
-          interfaceOutcome: "A governance surface for repository state, goals, and safe next actions.",
-          validationGate: "Status, backlog, index, and roadmap checks stay green."
-        },
-        {
-          id: "seis-cloud",
-          focus: "Keep cloud and SSH controls visibly approval-gated.",
-          interfaceOutcome: "Cloud lane shows blockers, rollback needs, and disabled live actions.",
-          validationGate: "No live deployment, SSH, or credential path is exposed."
-        },
-        {
-          id: "seis-code",
-          focus: "Define the browser IDE contract before heavy dependencies.",
-          interfaceOutcome: "Code lane links editor, file-system, terminal, and no-key AI REPL boundaries.",
-          validationGate: "Code workspace remains planned until a browser-safe slice is validated."
-        },
-        {
-          id: "seis-design",
-          focus: "Treat design tokens, accessibility, motion, and component quality as governance.",
-          interfaceOutcome: "Design lane exposes quality gates and component inventory requirements.",
-          validationGate: "Reduced-motion, mobile readability, and token evidence stay documented."
-        },
-        {
-          id: "seis-data",
-          focus: "Register current JSON records and visible freshness rules.",
-          interfaceOutcome: "Data lane shows schema-registry work and evidence-backed records.",
-          validationGate: "Schema registry and roadmap validators verify referenced records."
-        }
-      ]
-    },
-    {
-      year: "2027",
-      theme: "Command Center Alpha",
-      operatingPosture: "Local-first workflows with shared navigation and operator review loops.",
-      laneCommitments: [
-        {
-          id: "seis",
-          focus: "Promote the plugin lane system into Command Center information architecture.",
-          interfaceOutcome: "Operators can move between goals, docs, evidence, and lane-specific actions.",
-          validationGate: "Keyboard navigation, route persistence, and source links pass browser QA."
-        },
-        {
-          id: "seis-cloud",
-          focus: "Add cloud target review screens without live deployment.",
-          interfaceOutcome: "Cloud readiness shows target, environment, rollback, and approval status.",
-          validationGate: "Dry-run data is labeled and live actions remain disabled."
-        },
-        {
-          id: "seis-code",
-          focus: "Ship the first local file explorer, editor, and command-history slice.",
-          interfaceOutcome: "SEIS Code edits local virtual files and persists sessions without provider keys.",
-          validationGate: "No-key startup, save/reopen, and mobile layout checks pass."
-        },
-        {
-          id: "seis-design",
-          focus: "Turn component inventory into a reusable review surface.",
-          interfaceOutcome: "Design lane tracks component status, accessibility notes, and visual QA needs.",
-          validationGate: "Component inventory JSON and visual QA notes stay linked."
-        },
-        {
-          id: "seis-data",
-          focus: "Add freshness metadata and evidence expiration rules.",
-          interfaceOutcome: "Data lane explains current, stale, mock, and blocked record states.",
-          validationGate: "Freshness checks distinguish stale evidence from current validation."
-        }
-      ]
-    },
-    {
-      year: "2028",
-      theme: "Integrated workflows",
-      operatingPosture: "Read-only integrations first, contract-tested before write-gated actions.",
-      laneCommitments: [
-        {
-          id: "seis",
-          focus: "Connect governance, reviews, goals, and release readiness into one evidence model.",
-          interfaceOutcome: "Command lane shows cross-lane dependencies without hidden state.",
-          validationGate: "Contract tests verify status inputs before live write paths."
-        },
-        {
-          id: "seis-cloud",
-          focus: "Introduce read-only provider status and deployment package review.",
-          interfaceOutcome: "Cloud lane compares intended and observed readiness without deploying.",
-          validationGate: "Provider status uses sanitized data and keeps credentials server-only."
-        },
-        {
-          id: "seis-code",
-          focus: "Add Monaco-backed editing, terminal foundations, and safe source-control simulation.",
-          interfaceOutcome: "Code lane becomes a local development cockpit for safe tasks.",
-          validationGate: "Editor persistence, command behavior, and bundle scans pass."
-        },
-        {
-          id: "seis-design",
-          focus: "Link tokens, component QA, motion rules, and asset provenance to surfaces.",
-          interfaceOutcome: "Design lane identifies surfaces needing visual, motion, or accessibility review.",
-          validationGate: "Accessibility and reduced-motion checks join release evidence."
-        },
-        {
-          id: "seis-data",
-          focus: "Expand schema coverage for goals, evidence, quality signals, providers, and interfaces.",
-          interfaceOutcome: "Data lane becomes the contract source for Command Center dashboards.",
-          validationGate: "Data-schema registry covers every UI-consumed JSON file."
-        }
-      ]
-    },
-    {
-      year: "2029",
-      theme: "Governed automation",
-      operatingPosture: "Approval-gated actions, audit trails, and policy-aware automation only.",
-      laneCommitments: [
-        {
-          id: "seis",
-          focus: "Coordinate approval queues, agent task boundaries, and rollback-ready plans.",
-          interfaceOutcome: "Command lane separates recommended, approved, blocked, and completed actions.",
-          validationGate: "Approval and audit records exist before write-gated operations."
-        },
-        {
-          id: "seis-cloud",
-          focus: "Add deployment dry-run comparison, rollback drills, and incident evidence views.",
-          interfaceOutcome: "Cloud lane supports controlled release review without production changes.",
-          validationGate: "Deployment actions require explicit approval and rollback notes."
-        },
-        {
-          id: "seis-code",
-          focus: "Introduce local demo REPL tools and backend-gated live AI routing where configured.",
-          interfaceOutcome: "Code lane can run virtual commands and label actual provider identity.",
-          validationGate: "Local-only mode, tool permissions, and fallback identity checks pass."
-        },
-        {
-          id: "seis-design",
-          focus: "Automate non-destructive design QA summaries while preserving human review.",
-          interfaceOutcome: "Design lane produces review queues for contrast, layout, motion, and content fit.",
-          validationGate: "Automated findings are evidence-labeled and do not override approval."
-        },
-        {
-          id: "seis-data",
-          focus: "Add audit-event, provenance, and validation-evidence ledgers.",
-          interfaceOutcome: "Data lane traces which record supported each visible recommendation.",
-          validationGate: "Every automated status has evidence, timestamp, and stale-state rules."
-        }
-      ]
-    },
-    {
-      year: "2030",
-      theme: "Ecosystem maturity",
-      operatingPosture: "Multi-workspace, release-ready, privacy-aware, and maintainable.",
-      laneCommitments: [
-        {
-          id: "seis",
-          focus: "Stabilize the SEIS operating model across repositories, goals, and release trains.",
-          interfaceOutcome: "Command lane supports governance, public readiness, and review cadence.",
-          validationGate: "Release dry-runs and public readiness reviews support maturity claims."
-        },
-        {
-          id: "seis-cloud",
-          focus: "Operate cloud and remote readiness through auditable, least-privilege workflows.",
-          interfaceOutcome: "Cloud lane shows deployment posture, workspace safety, and recovery evidence.",
-          validationGate: "Security baseline refresh and incident-response review are current."
-        },
-        {
-          id: "seis-code",
-          focus: "Maintain SEIS Code as a browser workspace with local and approved live AI modes.",
-          interfaceOutcome: "Code lane supports editor, terminal, extension, and provider visibility.",
-          validationGate: "No-key startup, bundle scans, and browser E2E remain release gates."
-        },
-        {
-          id: "seis-design",
-          focus: "Keep the design system coherent across SEIS product surfaces.",
-          interfaceOutcome: "Design lane becomes the durable record for visual, motion, and accessibility work.",
-          validationGate: "Design review cadence and component gates remain documented."
-        },
-        {
-          id: "seis-data",
-          focus: "Federate evidence, schemas, evaluations, and readiness records across workspaces.",
-          interfaceOutcome: "Data lane supports public-ready status, release evidence, and trend review.",
-          validationGate: "Data provenance, freshness, and schema coverage refresh before releases."
-        }
-      ]
-    }
-  ]
+  currentEnvironmentPolicy: {
+    expectedResult: "configured-but-not-publish-ready",
+    reason: "Publication remains blocked until the publish preflight is explicitly green."
+  }
 };
 
 const state = {
@@ -416,15 +109,17 @@ const state = {
   gaps: [],
   capabilities: fallbackCapabilities,
   marketplace: fallbackMarketplace,
-  pluginInterfaces: fallbackPluginInterfaces,
-  activePluginInterface: "seis",
-  activePluginYear: "2026",
-  activePluginPeriod: "H1",
+  publishGate: fallbackPublishGate,
+  pluginCommandCenter: null,
+  mcpManifest: null,
+  seisReposBridge: null,
+  llmRegistry: null,
+  isRefreshingPluginCommandCenter: false,
   commands: [],
   qualitySignals: [],
   thresholds: [],
-  publishGate: null,
-  filter: "all"
+  filter: "all",
+  pluginProofFilter: "all"
 };
 
 function el(selector) {
@@ -674,10 +369,70 @@ function setupCapabilityFilters() {
       state.filter = button.dataset.capabilityFilter || "all";
       document
         .querySelectorAll("[data-capability-filter]")
-        .forEach((item) => item.classList.toggle("is-active", item === button));
+        .forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
       renderCapabilities();
     });
   });
+}
+
+function setupPluginProofFilters() {
+  document.querySelectorAll("[data-plugin-proof-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.pluginProofFilter = button.dataset.pluginProofFilter || "all";
+      document
+        .querySelectorAll("[data-plugin-proof-filter]")
+        .forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+      renderPluginCommandCenter();
+    });
+  });
+}
+
+function setupPluginCommandCenterRefresh() {
+  const refreshButton = el("[data-plugin-command-refresh]");
+  if (!refreshButton) return;
+
+  const restoreRefreshButton = () => {
+    state.isRefreshingPluginCommandCenter = false;
+    refreshButton.disabled = false;
+    refreshButton.textContent = "Refresh data";
+    refreshButton.removeAttribute("aria-busy");
+  };
+
+  const handleRefresh = async () => {
+    if (state.isRefreshingPluginCommandCenter) return;
+    const status = el("[data-plugin-command-status]");
+    state.isRefreshingPluginCommandCenter = true;
+    refreshButton.disabled = true;
+    refreshButton.textContent = "Refreshing...";
+    refreshButton.setAttribute("aria-busy", "true");
+    if (status) status.textContent = "Plugin command center refreshing from static payload...";
+    try {
+      await Promise.all([
+        loadPluginCommandCenter(),
+        loadMcpManifest(),
+        loadSeisReposBridge(),
+        loadLlmRegistry()
+      ]);
+
+      renderSeisReposLlmBridge();
+      renderPluginCommandCenter();
+    } catch (error) {
+      if (status) status.textContent = `Plugin command center refresh failed: ${error.message}`;
+    } finally {
+      restoreRefreshButton();
+    }
+  };
+
+  refreshButton.addEventListener("click", handleRefresh);
 }
 
 function renderGapBoard() {
@@ -776,253 +531,337 @@ function renderMarketplace() {
   });
 }
 
-function setupPluginInterfaceTabs() {
-  document.querySelectorAll("[data-plugin-interface-tab]").forEach((button) => {
-    button.addEventListener("click", () => {
-      state.activePluginInterface = button.dataset.pluginInterfaceTab || "seis";
-      renderPluginInterfaces();
-    });
+function renderPublishGate() {
+  const panel = el("[data-publish-gate-panel]");
+  const summary = el("[data-publish-gate-summary]");
+  const levelsBoard = el("[data-publish-gate-levels]");
+  if (!panel || !levelsBoard) return;
+
+  const publishGate = state.publishGate || fallbackPublishGate;
+  const levels = publishGate.readinessLevels || fallbackPublishGate.readinessLevels;
+  const policy = publishGate.currentEnvironmentPolicy || fallbackPublishGate.currentEnvironmentPolicy;
+
+  panel.dataset.publishGateStatus = publishGate.status || "unknown";
+  if (summary) {
+    summary.textContent = `${policy.expectedResult || "configured"} - ${policy.reason || publishGate.purpose || fallbackPublishGate.purpose}`;
+  }
+
+  levelsBoard.replaceChildren();
+  levels.forEach((level) => {
+    const card = create("article", `system-card ${level.id === "deployment-ready" ? "status-blocked" : "status-ready"}`);
+    const allows = (level.allows || []).slice(0, 3).join(", ");
+    const blocks = (level.blocks || []).slice(0, 3).join(", ");
+    card.append(
+      create("span", "", level.id),
+      create("h3", "", level.meaning || level.id),
+      create("p", "", allows ? `Allows: ${allows}` : "Allows remain gated."),
+      create("p", "", blocks ? `Blocks: ${blocks}` : "No additional blocks declared.")
+    );
+    levelsBoard.append(card);
   });
 }
 
-function setupPluginYearControls() {
-  const section = el("[data-plugin-interfaces]");
-  if (!section) return;
+function renderPluginCommandCenter() {
+  const commandCenter = state.pluginCommandCenter;
+  const status = el("[data-plugin-command-status]");
+  const metrics = el("[data-plugin-command-metrics]");
+  const topics = el("[data-plugin-topic-counts]");
+  const policies = el("[data-plugin-policy-counts]");
+  const proofList = el("[data-plugin-proof-list]");
+  const visualScope = el("[data-plugin-visual-scope]");
+  const mcpProof = el("[data-mcp-source-proof]");
+  const sourceFilesList = el("[data-plugin-source-files]");
+  if (!metrics || !topics || !policies) return;
 
-  section.addEventListener("click", (event) => {
-    const yearButton = event.target.closest("[data-plugin-year]");
-    if (yearButton) {
-      state.activePluginYear = yearButton.dataset.pluginYear || "2026";
-      renderPluginInterfaces();
-      return;
+  if (!commandCenter) {
+    if (status) status.textContent = "Plugin command center unavailable; static fallback remains visible.";
+    if (sourceFilesList) {
+      sourceFilesList.replaceChildren(create("span", "source-file-chip", "Source files unavailable in cockpit cache."));
     }
+    renderMcpSourceProof(mcpProof);
+    return;
+  }
 
-    const periodButton = event.target.closest("[data-plugin-period]");
-    if (periodButton) {
-      state.activePluginPeriod = periodButton.dataset.pluginPeriod || "H1";
-      renderPluginInterfaces();
-      return;
-    }
-
-    const laneButton = event.target.closest("[data-program-lane]");
-    if (laneButton) {
-      state.activePluginInterface = laneButton.dataset.programLane || "seis";
-      renderPluginInterfaces();
-    }
+  const scope = commandCenter.scope || {};
+  const counts = commandCenter.counts || {};
+  const provenPlugins = commandCenter.actual_invocation_summary?.proven_plugins || [];
+  const commandPlugins = commandCenter.plugins || [];
+  const provenPluginIds = new Set(provenPlugins.map((entry) => entry.plugin_id));
+  const sourceVisiblePluginIds = new Set(commandPlugins.map((entry) => entry.plugin_id));
+  const effectiveUsedPluginIds = new Set([...sourceVisiblePluginIds, ...provenPluginIds]);
+  const displayPlugins = [...commandPlugins].sort((left, right) => {
+    const leftProven = effectiveUsedPluginIds.has(left.plugin_id) ? 1 : 0;
+    const rightProven = effectiveUsedPluginIds.has(right.plugin_id) ? 1 : 0;
+    if (leftProven !== rightProven) return rightProven - leftProven;
+    return (left.display_name || left.plugin_id).localeCompare(right.display_name || right.plugin_id);
   });
-}
-
-function renderPluginInterfaces() {
-  const status = el("[data-plugin-interface-status]");
-  const detail = el("[data-plugin-interface-detail]");
-  const evidenceBoard = el("[data-plugin-interface-evidence]");
-  const horizonBoard = el("[data-five-year-grid]");
-  const payload = state.pluginInterfaces || fallbackPluginInterfaces;
-  const interfaces = payload.interfaces || fallbackPluginInterfaces.interfaces;
-  const active =
-    interfaces.find((item) => item.id === state.activePluginInterface) ||
-    interfaces[0] ||
-    fallbackPluginInterfaces.interfaces[0];
+  const provenByPlugin = new Map(provenPlugins.map((entry) => [entry.plugin_id, entry]));
+  const visualTopics = commandCenter.operator_visual_scope?.topics || [];
+  const evidenceDate = commandCenter.evidence_updated || commandCenter.date || "unknown";
+  const gatedPolicies = [
+    "approval_before_write",
+    "needs_external_target",
+    "reauth_required",
+    "scope_required",
+    "plan_required",
+    "account_required",
+    "tool_error",
+    "policy_guide_unavailable"
+  ];
+  const writeGated = gatedPolicies.reduce((sum, policy) => sum + (counts.by_call_policy?.[policy] || 0), 0);
+  const usedCount = effectiveUsedPluginIds.size;
+  const pendingCount = commandPlugins.length - usedCount;
+  const pluginFilters = document.querySelectorAll("[data-plugin-proof-filter]");
 
   if (status) {
-    status.textContent = `${interfaces.length} plugin lanes - ${payload.status || "static"} - source: ${payload.generatedAt || "unknown"}`;
+    const mcpStatus = state.mcpManifest?.server?.globalCodexMcpStatus;
+    status.textContent = `${scope.command_center_count || commandPlugins.length || 0} plugins - ${usedCount} used (${pendingCount} pending) - evidence ${evidenceDate}${mcpStatus ? ` - MCP ${mcpStatus}` : ""}`;
   }
 
-  document.querySelectorAll("[data-plugin-interface-tab]").forEach((button) => {
-    const activeButton = button.dataset.pluginInterfaceTab === active.id;
-    button.classList.toggle("is-active", activeButton);
-    button.setAttribute("aria-selected", activeButton ? "true" : "false");
-  });
+  metrics.replaceChildren(
+    createMetricCard("Installed", String(scope.installed_enabled_count || 0), "Enabled plugin inventory"),
+    createMetricCard("Visible", String(commandPlugins.length || 0), "Plugins in command-center source payload"),
+    createMetricCard("Used", String(usedCount), "Plugins in source-visible command-center payload"),
+    createMetricCard("Proven", String(provenPlugins.length), "Safe Codex Sources calls"),
+    createMetricCard("Gated", String(writeGated), "Plugins requiring policy or external checks")
+  );
 
-  if (detail) {
-    const meta = create("div", "plugin-interface-meta");
-    meta.append(
-      create("span", "chip", active.status || "unknown"),
-      create("span", "chip", active.stage || "planned"),
-      create("span", "chip", `risk: ${active.risk || "unknown"}`)
-    );
+  renderCountGrid(topics, counts.by_topic || {});
+  renderCountGrid(policies, counts.by_call_policy || {}, formatPolicyLabel);
+  renderMcpSourceProof(mcpProof);
+  renderSourceFiles(sourceFilesList, commandCenter.source_files || []);
 
-    const link = create("a", "plugin-interface-link", "Open lane source");
-    link.href = getLaneSource(active.id);
-
-    detail.replaceChildren(
-      create("span", "", active.handle || active.id),
-      create("h3", "", active.title || "Plugin lane"),
-      create("p", "", active.purpose || "No purpose documented."),
-      meta,
-      create("p", "", `Current surface: ${active.currentSurface || "unknown"}`),
-      create("p", "", `Next safe action: ${active.nextAction || "document before implementation"}`),
-      link
-    );
-  }
-
-  if (evidenceBoard) {
-    evidenceBoard.replaceChildren();
-    (active.evidence || []).forEach((path) => {
-      const evidenceLink = create("a", "", path);
-      evidenceLink.href = getEvidenceHref(path);
-      evidenceBoard.append(evidenceLink);
-    });
-  }
-
-  renderPluginCoverage(payload);
-
-  if (horizonBoard) {
-    horizonBoard.replaceChildren();
-    (payload.fiveYearHorizon || fallbackPluginInterfaces.fiveYearHorizon).forEach((item) => {
-      const card = create("article", "five-year-card");
+  if (visualScope) {
+    visualScope.replaceChildren();
+    visualTopics.forEach((item) => {
+      const card = create("article", "proof-card");
       card.append(
-        create("span", "", item.year),
-        create("h4", "", item.phase),
-        create("p", "", item.focus),
-        create("p", "", `Validation: ${item.validation}`)
+        create("span", "", item.topic),
+        create("h4", "", (item.examples || []).slice(0, 4).join(", ")),
+        create("p", "", item.seis_route || "Route through SEIS before activation.")
       );
-      horizonBoard.append(card);
+      visualScope.append(card);
     });
   }
 
-  renderPluginDevelopmentProgram(payload, interfaces, active);
-}
+  if (proofList) {
+    const filter = state.pluginProofFilter || "all";
+    const filteredPlugins = displayPlugins.filter((plugin) => {
+      const isUsed = effectiveUsedPluginIds.has(plugin.plugin_id);
+      if (filter === "used" || filter === "proven") return isUsed;
+      if (filter === "pending") return !isUsed;
+      return true;
+    });
 
-function renderPluginCoverage(payload) {
-  const coverageBoard = el("[data-plugin-interface-coverage]");
-  if (!coverageBoard) return;
+    pluginFilters.forEach((button) => {
+      const value = button.dataset.pluginProofFilter;
+      if (!value) return;
+      const active = value === filter || (value === "used" && filter === "proven");
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
 
-  const interfaces = payload.interfaces || fallbackPluginInterfaces.interfaces;
-  const program = payload.developmentProgram || fallbackPluginInterfaces.developmentProgram;
-  const cadence = payload.developmentCadence || fallbackPluginInterfaces.developmentCadence;
-  const laneYearCommitments = program.reduce((total, year) => total + (year.laneCommitments || []).length, 0);
-  const evidenceLinks = interfaces.reduce((total, item) => total + (item.evidence || []).length, 0);
-  const cadencePeriods = cadence.periods?.length || 0;
-  const routineCount = cadence.laneRoutines?.length || 0;
-  const metrics = [
-    { label: "lane-year commitments", value: laneYearCommitments },
-    { label: "cadence periods", value: cadencePeriods },
-    { label: "lane routines", value: routineCount },
-    { label: "evidence links", value: evidenceLinks },
-    { label: "live actions", value: 0 }
-  ];
+      if (value === "used" || value === "proven") {
+        button.textContent = `Used (${usedCount})`;
+        button.setAttribute("aria-label", `Show ${usedCount} source-visible plugins`);
+        button.setAttribute("title", "Source-visible plugins in the SEIS command center");
+      } else if (value === "pending") {
+        button.textContent = `Pending (${pendingCount})`;
+        button.setAttribute("aria-label", `Show ${pendingCount} pending plugins`);
+        button.setAttribute("title", "Plugins outside the current source-visible command-center payload");
+      } else {
+        button.textContent = `All (${commandPlugins.length})`;
+        button.setAttribute("aria-label", `Show all ${commandPlugins.length} command-center plugins`);
+        button.setAttribute("title", "All plugins loaded into the SEIS command center");
+      }
+    });
 
-  coverageBoard.replaceChildren(
-    ...metrics.map((metric) => {
-      const card = create("article", "plugin-interface-coverage-card");
-      card.append(create("strong", "", String(metric.value)), create("span", "", metric.label));
-      return card;
-    })
-  );
-}
+    proofList.replaceChildren();
+    if (!filteredPlugins.length) {
+      proofList.append(
+        create(
+          "p",
+          "proof-card",
+          "No plugin matches this proof visibility filter."
+        )
+      );
+      return;
+    }
 
-function renderPluginDevelopmentProgram(payload, interfaces, active) {
-  const controls = el("[data-five-year-controls]");
-  const programDetail = el("[data-five-year-detail]");
-  const program = payload.developmentProgram || fallbackPluginInterfaces.developmentProgram;
-  const selected =
-    program.find((item) => item.year === state.activePluginYear) ||
-    program[0] ||
-    fallbackPluginInterfaces.developmentProgram[0];
-
-  if (!selected) return;
-  state.activePluginYear = selected.year;
-
-  if (controls) {
-    controls.replaceChildren();
-    program.forEach((item) => {
-      const button = create("button", "five-year-button", item.year);
-      const activeYear = item.year === selected.year;
-      button.type = "button";
-      button.dataset.pluginYear = item.year;
-      button.classList.toggle("is-active", activeYear);
-      button.setAttribute("aria-pressed", activeYear ? "true" : "false");
-      button.setAttribute("title", item.theme || item.phase || item.year);
-      controls.append(button);
+    filteredPlugins.forEach((plugin) => {
+      const proof = provenByPlugin.get(plugin.plugin_id);
+      const isProven = effectiveUsedPluginIds.has(plugin.plugin_id);
+      const safeProof = proof || {};
+      const result = safeProof.safe_public_result ||
+        "No session invocation is recorded; plugin remains source-visible for SEIS routing.";
+      const tools = (safeProof.tools_called || []).join(", ");
+      const card = create("article", `proof-card ${getProofStatusClass(plugin.status)}`);
+      const badges = create("div", "proof-card__badges");
+      card.append(
+        badges,
+        create("h4", "", plugin.display_name || plugin.plugin_id),
+        create("p", "", tools ? `Tools: ${tools}` : `Policy: ${plugin.call_policy || "tracked"}`),
+        create("p", "", result)
+      );
+      badges.append(
+        create("span", "", isProven ? "used" : "unused"),
+        create("span", "", plugin.status)
+      );
+      proofList.append(card);
     });
   }
+}
 
-  if (!programDetail) return;
+function renderSourceFiles(container, files) {
+  if (!container) return;
 
-  const selectedCommitments = selected.laneCommitments || [];
-  const activeCommitment =
-    selectedCommitments.find((commitment) => commitment.id === active.id) || selectedCommitments[0];
-  const activeLane = interfaces.find((item) => item.id === activeCommitment?.id) || active;
-  const cadence = payload.developmentCadence || fallbackPluginInterfaces.developmentCadence;
-  const periods = cadence.periods || fallbackPluginInterfaces.developmentCadence.periods;
-  const selectedPeriod =
-    periods.find((period) => period.id === state.activePluginPeriod) ||
-    periods[0] ||
-    fallbackPluginInterfaces.developmentCadence.periods[0];
-  const laneRoutine =
-    (cadence.laneRoutines || []).find((routine) => routine.id === active.id) ||
-    fallbackPluginInterfaces.developmentCadence.laneRoutines.find((routine) => routine.id === active.id);
-  const laneList = create("div", "five-year-lane-list");
-  const periodControls = create("div", "five-year-period-controls");
-  const cadencePanel = create("div", "five-year-cadence");
-
-  if (selectedPeriod) {
-    state.activePluginPeriod = selectedPeriod.id;
+  container.replaceChildren();
+  if (!files.length) {
+    container.append(create("span", "source-file-chip", "No source references in this payload."));
+    return;
   }
 
-  periods.forEach((period) => {
-    const button = create("button", "five-year-period-button", period.label || period.id);
-    const activePeriod = period.id === state.activePluginPeriod;
-    button.type = "button";
-    button.dataset.pluginPeriod = period.id;
-    button.classList.toggle("is-active", activePeriod);
-    button.setAttribute("aria-pressed", activePeriod ? "true" : "false");
-    periodControls.append(button);
+  files.forEach((path) => {
+    const normalizedPath = String(path || "").replace(/^\/+/, "");
+    const link = document.createElement("a");
+    link.className = "source-file-chip";
+    const isFileProtocol = window.location.protocol === "file:";
+    link.href = isFileProtocol ? `./${normalizedPath}` : `/${normalizedPath}`;
+    link.textContent = normalizedPath || path;
+    link.setAttribute("target", "_blank");
+    link.setAttribute("rel", "noopener noreferrer");
+    link.setAttribute("aria-label", `Open source file ${normalizedPath || path}`);
+    container.append(link);
   });
+}
 
-  cadencePanel.append(
-    create("span", "", selectedPeriod?.id || "H1"),
-    create("strong", "", selectedPeriod?.purpose || "Cadence purpose not documented."),
-    create("p", "", laneRoutine?.[String(state.activePluginPeriod || "H1").toLowerCase()] || "Lane routine not documented."),
-    create("p", "", `Review gate: ${selectedPeriod?.reviewGate || "not documented"}`)
+function renderSeisReposLlmBridge() {
+  const status = el("[data-seis-repos-llm-status]");
+  const metrics = el("[data-seis-repos-llm-metrics]");
+  const lanesBoard = el("[data-seis-repos-llm-lanes]");
+  if (!metrics || !lanesBoard) return;
+
+  const bridge = state.seisReposBridge;
+  const registry = state.llmRegistry;
+  if (!bridge) {
+    if (status) status.textContent = "SEIS Repos bridge unavailable; package registry remains gated.";
+    return;
+  }
+
+  const lanes = bridge.llmPackageLanes || [];
+  const registryCount = registry?.summary?.packageCount || 0;
+  const commandCenterCount = state.pluginCommandCenter?.scope?.installed_enabled_count || 0;
+  if (status) {
+    status.textContent = `${bridge.status || "connected"} - ${lanes.length} LLM lanes - ${registryCount} package/runtime records`;
+  }
+
+  metrics.replaceChildren(
+    createReposLlmMetric("Repo", bridge.repoBridge?.canonicalDefaultBranch || "UIXAppTTR", bridge.repoBridge?.canonicalRepository || bridge.repository),
+    createReposLlmMetric("Plugin", bridge.pluginBridge?.pluginName || "seis", bridge.pluginBridge?.installedPluginId || "seis@personal"),
+    createReposLlmMetric("MCP", bridge.mcpBridge?.server || "seis", `${bridge.mcpBridge?.tools?.length || 0} tools, ${bridge.mcpBridge?.resources?.length || 0} resources`),
+    createReposLlmMetric("Registry", String(registryCount), `${commandCenterCount || 179} plugins remain command-center visible`)
   );
 
-  selectedCommitments.forEach((commitment) => {
-    const lane = interfaces.find((item) => item.id === commitment.id) || { handle: commitment.id, title: commitment.id };
-    const row = create("button", "five-year-lane-row");
-    const activeRow = commitment.id === active.id;
-    row.type = "button";
-    row.dataset.programLane = commitment.id;
-    row.classList.toggle("is-active", activeRow);
-    row.setAttribute("aria-pressed", activeRow ? "true" : "false");
-    row.append(
-      create("span", "", lane.handle || commitment.id),
-      create("strong", "", commitment.focus || "Focus not documented."),
-      create("p", "", commitment.validationGate || "Validation gate not documented.")
+  lanesBoard.replaceChildren();
+  lanes.forEach((lane) => {
+    const card = create("article", "repos-llm-lane");
+    card.append(
+      create("span", "", lane.label || lane.id),
+      create("h3", "", (lane.packageCandidates || []).slice(0, 3).join(", ")),
+      create("p", "", lane.purpose || "Governed LLM package lane."),
+      create("p", "", `Gate: ${lane.activationGate || "target required"}`)
     );
-    laneList.append(row);
+    lanesBoard.append(card);
   });
+}
 
-  programDetail.replaceChildren(
-    create("span", "", `${selected.year} - ${selected.theme || "Development program"}`),
-    create("h4", "", activeCommitment ? `${activeLane.handle || activeLane.id} yearly commitment` : "Yearly commitment"),
-    create("p", "", selected.operatingPosture || "Operating posture not documented."),
-    create("p", "", activeCommitment?.interfaceOutcome || "Interface outcome not documented."),
-    create("p", "", `Validation gate: ${activeCommitment?.validationGate || "not documented"}`),
-    periodControls,
-    cadencePanel,
-    laneList
+function createReposLlmMetric(label, value, detail) {
+  const card = create("article", "repos-llm-card");
+  card.append(create("span", "", label), create("strong", "", value), create("p", "", detail || "Connected"));
+  return card;
+}
+
+function renderMcpSourceProof(container) {
+  if (!container) return;
+
+  const manifest = state.mcpManifest;
+  if (!manifest) {
+    container.replaceChildren(create("p", "mcp-source-proof__empty", "MCP manifest unavailable in this package."));
+    return;
+  }
+
+  const server = manifest.server || {};
+  const safety = manifest.safety || {};
+  const tools = manifest.tools || [];
+  const resources = manifest.resources || [];
+  container.replaceChildren(
+    createMcpProofCard("Global", server.globalCodexMcpStatus || "local", server.globalCodexMcpName || server.name || "seis"),
+    createMcpProofCard("Tools", String(tools.length), tools.slice(0, 3).map((tool) => tool.name).join(", ")),
+    createMcpProofCard("Resources", String(resources.length), resources.slice(0, 3).join(", ")),
+    createMcpProofCard("Safety", safety.writePolicy || "read only", safety.externalSideEffects || "no external side effects")
   );
 }
 
-function getLaneSource(id) {
-  const paths = {
-    seis: "../../docs/architecture/seis-platform-lanes.md",
-    "seis-cloud": "../../docs/operations/seis-cloud-foundation.md",
-    "seis-code": "../../docs/product/seis-code-foundation.md",
-    "seis-design": "../../docs/design-system/seis-design-foundation.md",
-    "seis-data": "../../docs/data/seis-data-foundation.md"
-  };
-  return paths[id] || "../../docs/SEIS_MASTER_INDEX.md";
+function createMcpProofCard(label, value, detail) {
+  const card = create("article", "mcp-source-card");
+  card.append(create("span", "", label), create("strong", "", value), create("p", "", detail || "Packaged source proof."));
+  return card;
 }
 
-function getEvidenceHref(path) {
-  if (path.startsWith("docs/")) return `../../${path}`;
-  if (path.startsWith("content/")) return `../../${path}`;
-  if (path.startsWith("deploy/")) return `../../${path}`;
-  if (path.startsWith("packages/")) return `../../${path}`;
-  return `../../${path}`;
+function createMetricCard(label, value, detail) {
+  const card = create("article", "metric-card");
+  card.setAttribute("aria-label", `${label}: ${value}. ${detail}`);
+  card.setAttribute("title", detail);
+  card.append(create("span", "", label), create("strong", "", value), create("p", "", detail));
+  return card;
+}
+
+function renderCountGrid(container, counts, formatter = formatCountLabel) {
+  container.replaceChildren();
+  Object.entries(counts)
+    .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+    .forEach(([label, count]) => {
+      const card = create("article", "count-card");
+      card.append(create("strong", "", String(count)), create("span", "", formatter(label)));
+      container.append(card);
+    });
+}
+
+function formatCountLabel(value) {
+  return String(value).replaceAll("_", " ");
+}
+
+function formatPolicyLabel(value) {
+  const labels = {
+    safe_call_now: "safe call now",
+    skill_load_only: "skill load only",
+    account_required: "account required",
+    plan_required: "plan required",
+    policy_guide_unavailable: "policy guide unavailable",
+    reauth_required: "reauth required",
+    scope_required: "scope required",
+    tool_error: "tool error",
+    needs_external_target: "needs external target",
+    approval_before_write: "approval before write",
+    not_relevant_to_seis_now: "not relevant now"
+  };
+  return labels[value] || formatCountLabel(value);
+}
+
+function getProofStatusClass(status) {
+  const normalized = String(status);
+  if (normalized.includes("success") || normalized.includes("skill")) return "status-ready";
+  if (normalized.includes("empty")) return "status-watch";
+  if (
+    normalized.includes("reauth") ||
+    normalized.includes("scope") ||
+    normalized.includes("plan") ||
+    normalized.includes("account") ||
+    normalized.includes("error") ||
+    normalized.includes("policy")
+  ) {
+    return "status-blocked";
+  }
+  return "status-active";
 }
 
 function getMarketplaceShortLabel(id) {
@@ -1038,39 +877,6 @@ function getMarketplaceStatusClass(status) {
   if (String(status).includes("preferred") || String(status).includes("candidate")) return "status-ready";
   if (String(status).includes("blocked") || String(status).includes("do-not")) return "status-blocked";
   return "status-watch";
-}
-
-function renderPublishGate() {
-  const panel = el("[data-publish-gate-panel]");
-  const summary = el("[data-publish-gate-summary]");
-  const levelsBoard = el("[data-publish-gate-levels]");
-  if (!panel || !levelsBoard) return;
-
-  const gate = state.publishGate;
-  if (!gate) {
-    panel.classList.add("status-watch");
-    levelsBoard.replaceChildren(create("p", "", "Publish gate contract is unavailable; keep publication blocked."));
-    return;
-  }
-
-  const remote = gate.remote || {};
-  const environment = gate.currentEnvironmentPolicy || {};
-  if (summary) {
-    summary.textContent = `${remote.name || "origin"} targets ${remote.targetBranch || "UIXAppTTR"}; current policy: ${environment.expectedResult || "publish gated"}.`;
-  }
-
-  levelsBoard.replaceChildren();
-  (gate.readinessLevels || []).forEach((level, index) => {
-    const item = create("article", "publish-gate-level");
-    const marker = create("span", "publish-gate-level__marker", String(index + 1));
-    const copy = create("div");
-    copy.append(
-      create("h4", "", level.id || "gate"),
-      create("p", "", level.meaning || "Publication remains gated until this level is explicit.")
-    );
-    item.append(marker, copy);
-    levelsBoard.append(item);
-  });
 }
 
 function renderCommands() {
@@ -1138,7 +944,7 @@ async function loadCapabilities() {
   try {
     const payload = await fetchJson("../../content/development/plugin-skill-capability-map.json");
     state.capabilities = payload.capabilities || fallbackCapabilities;
-  } catch (_error) {
+  } catch {
     state.capabilities = fallbackCapabilities;
   }
 }
@@ -1146,16 +952,48 @@ async function loadCapabilities() {
 async function loadMarketplace() {
   try {
     state.marketplace = await fetchJson("../../content/development/trusted-marketplace-intake.json");
-  } catch (_error) {
+  } catch {
     state.marketplace = fallbackMarketplace;
   }
 }
 
-async function loadPluginInterfaces() {
+async function loadPublishGate() {
   try {
-    state.pluginInterfaces = await fetchJson("../../content/development/seis-plugin-interface-roadmap.json");
-  } catch (_error) {
-    state.pluginInterfaces = fallbackPluginInterfaces;
+    state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
+  } catch {
+    state.publishGate = fallbackPublishGate;
+  }
+}
+
+async function loadPluginCommandCenter() {
+  try {
+    state.pluginCommandCenter = await fetchJson("../../data/plugin-command-center-2026-06-05.json");
+  } catch {
+    state.pluginCommandCenter = null;
+  }
+}
+
+async function loadMcpManifest() {
+  try {
+    state.mcpManifest = await fetchJson("../../_mcp/seis-mcp-server-2026-06-07.json");
+  } catch {
+    state.mcpManifest = null;
+  }
+}
+
+async function loadSeisReposBridge() {
+  try {
+    state.seisReposBridge = await fetchJson("../../data/seis-repos-llm-bridge-2026-06-08.json");
+  } catch {
+    state.seisReposBridge = null;
+  }
+}
+
+async function loadLlmRegistry() {
+  try {
+    state.llmRegistry = await fetchJson("../../content/development/llm-package-registry.json");
+  } catch {
+    state.llmRegistry = null;
   }
 }
 
@@ -1163,7 +1001,7 @@ async function loadCinematicEngine() {
   try {
     const payload = await fetchJson("../../content/lab/cinematic-engine.json");
     state.commands = payload.commandDeck || [];
-  } catch (_error) {
+  } catch {
     state.commands = [
       {
         id: "local-fallback",
@@ -1176,33 +1014,12 @@ async function loadCinematicEngine() {
   }
 }
 
-async function loadPublishGate() {
-  try {
-    state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
-  } catch (_error) {
-    state.publishGate = {
-      remote: { name: "origin", targetBranch: "UIXAppTTR" },
-      currentEnvironmentPolicy: { expectedResult: "publish gated" },
-      readinessLevels: [
-        {
-          id: "configured",
-          meaning: "Local remote configuration can be reviewed, but publishing remains blocked."
-        },
-        {
-          id: "publish-preflight",
-          meaning: "UIXAppTTR, upstream, clean worktree, and GitHub auth must be ready."
-        }
-      ]
-    };
-  }
-}
-
 async function loadQualityConsole() {
   try {
     const payload = await fetchJson("../../content/lab/quality-console.json");
     state.qualitySignals = payload.signals || [];
     state.thresholds = payload.thresholds || [];
-  } catch (_error) {
+  } catch {
     state.qualitySignals = [
       {
         id: "quality-fallback",
@@ -1345,25 +1162,29 @@ async function init() {
   setupDepthCards();
   setupTouchFeedback();
   setupCapabilityFilters();
-  setupPluginInterfaceTabs();
-  setupPluginYearControls();
+  setupPluginProofFilters();
+  setupPluginCommandCenterRefresh();
   setupCinematicField();
   await Promise.allSettled([
     loadGaps(),
     loadCapabilities(),
     loadMarketplace(),
-    loadPluginInterfaces(),
+    loadPublishGate(),
+    loadPluginCommandCenter(),
+    loadMcpManifest(),
+    loadSeisReposBridge(),
+    loadLlmRegistry(),
     loadCinematicEngine(),
-    loadQualityConsole(),
-    loadPublishGate()
+    loadQualityConsole()
   ]);
   renderGapBoard();
   renderCapabilities();
   renderMarketplace();
-  renderPluginInterfaces();
+  renderPublishGate();
+  renderSeisReposLlmBridge();
+  renderPluginCommandCenter();
   renderCommands();
   renderQualityConsole();
-  renderPublishGate();
 }
 
 init().catch((error) => {
@@ -1373,7 +1194,8 @@ init().catch((error) => {
   }
   renderCapabilities();
   renderMarketplace();
-  renderPluginInterfaces();
-  renderQualityConsole();
   renderPublishGate();
+  renderSeisReposLlmBridge();
+  renderPluginCommandCenter();
+  renderQualityConsole();
 });

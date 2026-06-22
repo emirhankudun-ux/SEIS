@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "branch": "UIXAppTTR",
+  "runId": "sprint-zero-agent-pass-001",
+  "mode": "low-power-static",
+  "agents": [
+    {
+      "id": "interface-agent",
+      "focus": "Refine cockpit hierarchy and responsive scan paths.",
+      "status": "ready",
+      "nextAction": "Audit first viewport, navigation density, and card hierarchy before adding new UI surfaces."
+    },
+    {
+      "id": "motion-agent",
+      "focus": "Keep cinematic movement calm and mobile-safe.",
+      "status": "ready",
+      "nextAction": "Review section reveal timing and low-motion behavior before increasing depth effects."
+    },
+    {
+      "id": "release-agent",
+      "focus": "Keep server package, manifest, handoff, and rollback current.",
+      "status": "active",
+      "nextAction": "Run release-ready after every meaningful UI, content, or governance change."
+    },
+    {
+      "id": "polyglot-agent",
+      "focus": "Keep many-language contracts light and dependency-free.",
+      "status": "ready",
+      "nextAction": "Promote no language surface into a service until server target and product route are confirmed."
+    },
+    {
+      "id": "governance-agent",
+      "focus": "Keep backlog, ADRs, branch policy, and summaries aligned.",
+      "status": "active",
+      "nextAction": "Regenerate development summary and verify UIXAppTTR guard before each commit."
+    },
+    {
+      "id": "premium-local-foundation-agent",
+      "focus": "Keep codex/premium-local-foundation absorbed as UIXAppTTR-local foundation intent, never as an independent branch.",
+      "status": "active",
+      "nextAction": "Port any future premium-local-foundation code through UIXAppTTR surfaces and document the migration in branch consolidation records."
+    }
+  ]
+}

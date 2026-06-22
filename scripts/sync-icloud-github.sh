@@ -2,7 +2,9 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TARGET_DIR="/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github/seis-digital-experience-foundation"
+USER_HOME="${HOME:-$(dscl . -read /Users/$(whoami) NFSHomeDirectory | awk '{print $2}')}"
+TARGET_ROOT="${SEIS_ICLOUD_ROOT:-${USER_HOME}/Library/Mobile\ Documents/com~apple~CloudDocs/Github}"
+TARGET_DIR="${TARGET_ROOT}/seis-digital-experience-foundation"
 
 mkdir -p "$TARGET_DIR"
 
@@ -16,4 +18,3 @@ rsync -a \
   "$TARGET_DIR/"
 
 echo "Synced SEIS foundation to: $TARGET_DIR"
-

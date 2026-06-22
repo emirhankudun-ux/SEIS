@@ -2,29 +2,29 @@
   "id": "github-remote-configuration",
   "version": 1,
   "status": "configured-local-remote",
-  "configuredAt": "2026-06-06",
+  "configuredAt": "2026-06-12",
   "repository": {
     "name": "SEIS",
     "owner": "emirhankudun-ux",
     "remoteName": "origin",
-    "remoteUrl": "https://github.com/emirhankudun-ux/SEIS",
-    "targetBranch": "seis/product-experience-suite"
+    "remoteUrl": "git@github.com:emirhankudun-ux/SEIS.git",
+    "targetBranch": "main"
   },
   "localBranchMode": {
-    "currentWorkingBranch": "seis/product-experience-suite",
-    "tracks": "origin/seis/product-experience-suite",
-    "reason": "The execution environment is using the scoped product-experience integration branch while preserving main as the protected source-of-truth branch."
+    "currentWorkingBranch": "codex/publish-local-seis-20260618-163043",
+    "tracks": "origin/codex/publish-local-seis-20260618-163043",
+    "reason": "Execution is happening on codex/publish-local-seis-20260618-163043; main remains the intended publish target."
   },
   "publishReadiness": {
     "remoteConfigured": true,
-    "networkProbe": "not-run-in-current-local-pass",
+    "networkProbe": "verified-with-gh-repo-view",
     "pushAllowed": false,
     "pushRequires": [
-      "stay off main",
       "clean worktree",
       "GitHub authentication ready",
       "remote branch state reviewed",
-      "human approval for push",
+      "branch protection and signed-commit policy reviewed",
+      "GitHub Actions and CodeQL state reviewed",
       "target deployment path confirmed when publishing release artifacts"
     ]
   },
@@ -33,5 +33,5 @@
     "npm run check:seis-evolution-model",
     "npm run check:workspace"
   ],
-  "rollback": "Remove or reset the origin remote and restore branch tracking config if the repository target changes."
+  "rollback": "Remove or reset the origin remote and restore main branch tracking config if the repository target changes."
 }

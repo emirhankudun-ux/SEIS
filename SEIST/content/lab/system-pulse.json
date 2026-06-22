@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "source": "seis-local-foundation",
+  "updatedAt": "2026-05-25",
+  "cards": [
+    {
+      "id": "static-release",
+      "status": "ready",
+      "value": "4.4MB",
+      "labelKey": "pulse.card.release.label",
+      "titleKey": "pulse.card.release.title",
+      "copyKey": "pulse.card.release.copy"
+    },
+    {
+      "id": "locale-coverage",
+      "status": "active",
+      "value": "7",
+      "labelKey": "pulse.card.locale.label",
+      "titleKey": "pulse.card.locale.title",
+      "copyKey": "pulse.card.locale.copy"
+    },
+    {
+      "id": "server-handoff",
+      "status": "waiting",
+      "value": "pending",
+      "labelKey": "pulse.card.server.label",
+      "titleKey": "pulse.card.server.title",
+      "copyKey": "pulse.card.server.copy"
+    }
+  ]
+}

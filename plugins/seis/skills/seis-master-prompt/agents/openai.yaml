@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Master Prompt"
+  short_description: "Govern SEIS Master Prompt workflows."
+  default_prompt: "Use SEIS Master Prompt governance to plan, change, validate, and document this SEIS repo work."

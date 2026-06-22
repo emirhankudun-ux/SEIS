@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "items": [
+    { "label": "System", "href": "#system" },
+    { "label": "Lab OS", "href": "#lab" },
+    { "label": "Develop", "href": "#development" },
+    { "label": "Motion", "href": "#motion" },
+    { "label": "Archive", "href": "#archive" },
+    { "label": "Quality", "href": "#quality" },
+    { "label": "Deploy", "href": "#deploy" }
+  ]
+}

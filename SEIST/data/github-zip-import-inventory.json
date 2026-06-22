@@ -1,0 +1,272 @@
+{
+  "zip_path": "/Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github.zip",
+  "zip_size_bytes": 1146306309,
+  "sha256": "76cb95a3caf3b45aa11ef487fe766b441b031296c9adddadcd51658b420e0fd7",
+  "entry_count": 48365,
+  "total_uncompressed_bytes": 1656920490,
+  "total_compressed_bytes": 1128046557,
+  "git_entries": 2704,
+  "macosx_entries": 2822,
+  "generated_or_cache_entries": 37687,
+  "top_level": [
+    [
+      "Github",
+      47047
+    ],
+    [
+      "__MACOSX",
+      1318
+    ]
+  ],
+  "extensions": [
+    [
+      ".py",
+      8061
+    ],
+    [
+      ".pyc",
+      7961
+    ],
+    [
+      ".js",
+      1186
+    ],
+    [
+      ".heic",
+      1044
+    ],
+    [
+      ".jpg",
+      539
+    ],
+    [
+      ".md",
+      472
+    ],
+    [
+      ".jpeg",
+      459
+    ],
+    [
+      ".json",
+      452
+    ],
+    [
+      ".ts",
+      380
+    ],
+    [
+      ".dist-info",
+      376
+    ],
+    [
+      ".txt",
+      253
+    ],
+    [
+      ".typed",
+      214
+    ],
+    [
+      ".png",
+      206
+    ],
+    [
+      ".pyi",
+      195
+    ],
+    [
+      ".go",
+      144
+    ],
+    [
+      ".html",
+      110
+    ],
+    [
+      ".h",
+      99
+    ],
+    [
+      ".1",
+      95
+    ],
+    [
+      ".jmod",
+      68
+    ],
+    [
+      ".proto",
+      66
+    ],
+    [
+      ".java",
+      58
+    ],
+    [
+      ".yml",
+      55
+    ],
+    [
+      ".dylib",
+      42
+    ],
+    [
+      ".yaml",
+      40
+    ],
+    [
+      ".webp",
+      40
+    ],
+    [
+      ".so",
+      38
+    ],
+    [
+      ".css",
+      31
+    ],
+    [
+      ".exe",
+      31
+    ],
+    [
+      ".sh",
+      30
+    ],
+    [
+      ".pxi",
+      27
+    ],
+    [
+      ".gitignore",
+      25
+    ],
+    [
+      ".ps1",
+      22
+    ],
+    [
+      ".segments",
+      22
+    ],
+    [
+      ".rs",
+      22
+    ],
+    [
+      ".prproj",
+      22
+    ],
+    [
+      ".pxd",
+      20
+    ],
+    [
+      ".mp4",
+      19
+    ],
+    [
+      ".swift",
+      16
+    ],
+    [
+      ".xml",
+      14
+    ],
+    [
+      ".properties",
+      14
+    ]
+  ],
+  "inner_archives": [
+    {
+      "path": "Github/C╠ºizimler.zip",
+      "bytes": 31453367
+    },
+    {
+      "path": "__MACOSX/Github/._C╠ºizimler.zip",
+      "bytes": 176
+    },
+    {
+      "path": "Github/Codex/2026-05-05/files-mentioned-by-the-user-emirhan/emirhan-kudun-portfolio-2h-delivery.zip",
+      "bytes": 7782581
+    },
+    {
+      "path": "Github/Codex/oracleJdk-26.jdk/Contents/Home/lib/src.zip",
+      "bytes": 47287876
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.local-tools/json-mcp-server/json-mcp-server.tar.gz",
+      "bytes": 4298132
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.local-tools/json-mcp-server/json-mcp-server-x86_64-pc-windows-msvc.zip",
+      "bytes": 1397642
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.local-tools/npm/npm.tgz",
+      "bytes": 2724903
+    },
+    {
+      "path": "Github/_SEIS_ARCHIVE/Archive/New project/Nicepage/backups/Site1_3.17.1_backup.zip",
+      "bytes": 9010145
+    },
+    {
+      "path": "Github/_SEIS_ARCHIVE/Archive/New project/Nicepage/backups/Site1_3.14.0_backup.zip",
+      "bytes": 9009449
+    },
+    {
+      "path": "Github/_SEIS_ARCHIVE/Archive/New project/Nicepage/backups/Site1_3.9.0_backup.zip",
+      "bytes": 9011753
+    },
+    {
+      "path": "Github/_SEIS_ARCHIVE/Archive/New project/Nicepage/backups/Site1_3.19.1_backup.zip",
+      "bytes": 358478
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/mcp-tools/MCP TOOLS/json-mcp-server-main/dist/json-mcp-server-x86_64-pc-windows-msvc.zip",
+      "bytes": 1397642
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/mcp-tools/__MACOSX/MCP TOOLS/json-mcp-server-main/dist/._json-mcp-server-x86_64-pc-windows-msvc.zip",
+      "bytes": 212
+    }
+  ],
+  "heavy_files": [
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.venvs/coding-tools/lib/python3.12/site-packages/semgrep/bin/semgrep-core",
+      "bytes": 162478336
+    },
+    {
+      "path": "Github/Codex/oracleJdk-26.jdk/Contents/Home/lib/modules",
+      "bytes": 145993113
+    },
+    {
+      "path": "Github/Codex/oracleJdk-26.jdk/Contents/Home/lib/src.zip",
+      "bytes": 47287876
+    },
+    {
+      "path": "Github/C╠ºizimler.zip",
+      "bytes": 31453367
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.venvs/official-mcp/lib/python3.12/site-packages/cryptography/hazmat/bindings/_rust.abi3.so",
+      "bytes": 23567472
+    },
+    {
+      "path": "Github/Codex/2026-05-06/files-mentioned-by-the-user-mcp/.venvs/file-tools/lib/python3.12/site-packages/cryptography/hazmat/bindings/_rust.abi3.so",
+      "bytes": 23567472
+    },
+    {
+      "path": "Github/Codex/oracleJdk-26.jdk/Contents/Home/jmods/java.base.jmod",
+      "bytes": 21684387
+    },
+    {
+      "path": "Github/Codex/oracleJdk-26.jdk/Contents/Home/lib/server/libjvm.dylib",
+      "bytes": 20532576
+    }
+  ],
+  "recommendation": "Do not commit this zip directly to SEIS. Store the checksum and inventory in SEIS, then import curated source folders or use Git LFS/object storage for the binary archive."
+}

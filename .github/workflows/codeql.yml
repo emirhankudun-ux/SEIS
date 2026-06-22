@@ -1,0 +1,90 @@
+name: CodeQL
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/codeql.yml'
+      - 'apps/web/**'
+      - 'mcp/**'
+      - 'packages/seis-ai/**'
+      - 'packages/seis_kernel/**'
+      - 'packages/seis_platform_swift/**'
+      - 'scripts/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/codeql.yml'
+      - 'apps/web/**'
+      - 'mcp/**'
+      - 'packages/seis-ai/**'
+      - 'packages/seis_kernel/**'
+      - 'packages/seis_platform_swift/**'
+      - 'scripts/**'
+  schedule:
+    - cron: '24 4 * * 1'
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            runner: ubuntu-latest
+            build-mode: none
+            build_command: ''
+          - language: python
+            runner: ubuntu-latest
+            build-mode: none
+            build_command: ''
+          - language: swift
+            runner: macos-latest
+            build-mode: manual
+            build_command: swift build --package-path packages/seis_platform_swift --target SeisPlatformKit
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - name: Build for CodeQL
+        if: matrix.build_command != ''
+        run: ${{ matrix.build_command }}
+
+      - name: Perform CodeQL Analysis
+        id: analyze
+        uses: github/codeql-action/analyze@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
+        with:
+          category: '/language:${{ matrix.language }}'
+          output: codeql-results/${{ matrix.language }}
+          # Private repositories need GitHub Code Security/GHAS before SARIF can
+          # be uploaded to the code scanning API. Keep CodeQL analysis required
+          # and preserve SARIF as an artifact until that repository setting is on.
+          upload: never
+
+      - name: Validate CodeQL SARIF output
+        run: node scripts/check-codeql-sarif.mjs "${{ steps.analyze.outputs.sarif-output }}"
+
+      - name: Upload CodeQL SARIF artifact
+        if: always() && steps.analyze.outputs.sarif-output != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: codeql-sarif-${{ matrix.language }}
+          path: ${{ steps.analyze.outputs.sarif-output }}
+          if-no-files-found: error
+          retention-days: 14

@@ -1,6 +1,6 @@
 import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { execFileSync } from "node:child_process";
+import { spawnSync } from "node:child_process";
 import { localeDirection, supportedLocales, translations } from "../apps/web/src/i18n/locales.js";
 
 const outputRoot = "dist";
@@ -35,10 +35,7 @@ writeLocalizedRoutes(staticDir, rewrittenIndex);
 writeSitemap(staticDir);
 
 rmSync(archivePath, { force: true });
-execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", "seis-static", "seis-static.zip"], {
-  cwd: outputRoot,
-  stdio: "inherit"
-});
+createArchive();
 
 console.log(`Static server package ready: ${archivePath}`);
 
@@ -134,6 +131,24 @@ function writeSitemap(targetDir) {
   ].join("\n")).join("\n");
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   writeFileSync(join(targetDir, "sitemap.xml"), sitemap);
+}
+
+function createArchive() {
+  const zip = spawnSync("zip", ["-qr", "seis-static.zip", "seis-static"], {
+    cwd: outputRoot,
+    stdio: "inherit"
+  });
+
+  if (zip.status === 0) return;
+
+  const ditto = spawnSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", "seis-static", "seis-static.zip"], {
+    cwd: outputRoot,
+    stdio: "inherit"
+  });
+
+  if (ditto.status !== 0) {
+    throw new Error("Failed to create static archive with zip or ditto.");
+  }
 }
 
 function escapeHtml(value) {

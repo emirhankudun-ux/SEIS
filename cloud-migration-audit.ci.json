@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-06-19T12:07:17.394Z",
+  "migrationNeeded": false,
+  "findings": [],
+  "recommendations": [
+    "No local SSH-heavy deployment remnants detected in the audited files.",
+    "Keep team/workplace SSH+WireGuard lane checks in place for private infrastructure.",
+    "Run `npm run cloud:migration:audit -- --json` and store output with the release notes if needed."
+  ],
+  "commands": {
+    "preferredPublicCloudPath": "npm run cloud:public:readiness -- --repo <OWNER/REPO>",
+    "preferredTeamVpnPath": "npm run cloud:ssh-vpn:readiness -- --ssh-target USER@HOST",
+    "preferredCloudComputePath": "npm run cloud:gcp:readiness -- --project PROJECT_ID"
+  }
+}

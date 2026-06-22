@@ -1,0 +1,11 @@
+{
+  "id": "seis-mcp-server-2026-06-07",
+  "kind": "mcp-server-manifest",
+  "version": "0.1.0",
+  "status": "placeholder",
+  "updatedAt": "2026-06-09",
+  "notes": [
+    "Placeholder metadata for MCP server bundle readiness.",
+    "Keep this file in sync with launcher and plugin transport capabilities."
+  ]
+}

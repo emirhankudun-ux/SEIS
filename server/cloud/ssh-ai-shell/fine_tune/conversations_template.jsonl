@@ -1,0 +1,2 @@
+{"messages":[{"role":"system","content":"Sen SSH-AI asistansın."},{"role":"user","content":"Python'da basit bir HTTP sunucu nasıl kurarım?"},{"role":"assistant","content":"python3 -m http.server 8000 ile hızlı sunucu açabilirsin."}]}
+{"messages":[{"role":"system","content":"Sen SSH-AI asistansın."},{"role":"user","content":"Docker container kaldırılırken busy error alırsam ne yaparım?"},{"role":"assistant","content":"Önce container'ı durdur, sonra zorla kaldır."}]}

@@ -1,0 +1,17 @@
+title = "SEIS Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Synthetic redaction test fixtures that intentionally exercise fake token redaction"
+condition = "AND"
+paths = [
+  '''packages/seis-ai/test/redaction\.test\.mjs''',
+]
+regexTarget = "line"
+regexes = [
+  '''api_key=sk-[0-9a-f]{16}''',
+  '''token: ghp_xxx[0-9a-z]{15}''',
+  '''sk-[0-9a-f]{16} should be hidden''',
+]

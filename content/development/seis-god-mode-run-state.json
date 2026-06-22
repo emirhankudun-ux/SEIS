@@ -1,0 +1,94 @@
+{
+  "id": "seis-god-mode-run-state",
+  "version": "2026.06.18",
+  "status": "active",
+  "runState": "pending-validation",
+  "purpose": "Track the current God Mode work package state before validation, commit, push, and CI evidence exist.",
+  "qualityGate": "npm run check:seis-god-mode-run-state",
+  "requiredStates": [
+    "source-controlled-artifacts",
+    "runtime-surfaces",
+    "telemetry-contracts",
+    "validation-commands",
+    "commit-boundary",
+    "push-ci",
+    "protected-user-work"
+  ],
+  "states": [
+    {
+      "id": "source-controlled-artifacts",
+      "displayName": "Source-controlled artifacts",
+      "state": "present-unverified",
+      "evidence": [
+        "content/development/seis-god-mode-work-package.json",
+        "content/development/seis-god-mode-completion-audit.json",
+        "content/development/seis-god-mode-changelog.json"
+      ],
+      "nextAction": "Run the relevant God Mode checkers and update status from pending only after command output exists."
+    },
+    {
+      "id": "runtime-surfaces",
+      "displayName": "Runtime surfaces",
+      "state": "browser-verified-local",
+      "evidence": [
+        "apps/seis-demo-web/index.html",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/styles.css",
+        "content/development/seis-god-mode-runtime-evidence.json"
+      ],
+      "nextAction": "Keep browser evidence current and capture commit, push, and CI evidence before completion claims."
+    },
+    {
+      "id": "telemetry-contracts",
+      "displayName": "Telemetry contracts",
+      "state": "present-unverified",
+      "evidence": [
+        "apps/seis-demo-web/contracts/seis-demo-contract.json",
+        "packages/seis_platform_swift/Sources/SeisAppleNativeShell/Resources/seis-demo-contract.json"
+      ],
+      "nextAction": "Run shared contract and module coverage checks before claiming parity."
+    },
+    {
+      "id": "validation-commands",
+      "displayName": "Validation commands",
+      "state": "executed-local-quality-governance",
+      "evidence": [
+        "content/development/seis-god-mode-validation-plan.json",
+        "package.json",
+        "content/development/seis-god-mode-validation-log.md"
+      ],
+      "nextAction": "Keep quality:governance current, then capture browser/runtime, commit, push, and CI evidence before completion claims."
+    },
+    {
+      "id": "commit-boundary",
+      "displayName": "Commit boundary",
+      "state": "pending-review",
+      "evidence": [
+        "content/development/seis-god-mode-handoff.json",
+        "content/development/seis-god-mode-staging-manifest.json",
+        "content/development/seis-god-mode-work-package.json"
+      ],
+      "nextAction": "Review staged paths and keep unrelated user work out of the commit."
+    },
+    {
+      "id": "push-ci",
+      "displayName": "Push and CI",
+      "state": "missing-evidence",
+      "evidence": [
+        "content/development/seis-god-mode-completion-audit.json"
+      ],
+      "nextAction": "Push only after validation passes and then capture CI evidence."
+    },
+    {
+      "id": "protected-user-work",
+      "displayName": "Protected user work",
+      "state": "declared-pending-final-review",
+      "evidence": [
+        "content/development/seis-god-mode-handoff.json",
+        "content/development/seis-god-mode-completion-audit.json"
+      ],
+      "nextAction": "Do a final staging review before any commit or push."
+    }
+  ],
+  "completionRule": "Run state remains pending-validation until approved validation commands pass, commit boundaries are reviewed, and push or CI evidence is captured."
+}

@@ -1,0 +1,131 @@
+{
+  "date": "2026-06-05",
+  "repository": "emirhankudun-ux/SEIS",
+  "branch_policy": {
+    "desired_state": "Only main remains visible on GitHub for SEIS.",
+    "verified_with": "GitHub repository metadata and remote heads checks"
+  },
+  "purpose": "Evidence ledger for plugins/connectors that were actually invoked in Codex while building SEIS CLOSED CODE.",
+  "source_visibility_rule": "Codex Sources/Used indicators are driven by actual tool or connector invocation in the active work session, not only by installed checkmarks.",
+  "privacy_rule": "Do not publish private account counts, organization IDs, personal inbox counts, or hidden SaaS identifiers into the public SEIS repository.",
+  "actually_invoked": [
+    {
+      "plugin": "GitHub",
+      "category": "Developer Tools",
+      "tools_called": ["_get_repo", "_fetch_file"],
+      "status": "usable",
+      "safe_public_result": "SEIS repository metadata confirmed default branch main; workbench and governance script were fetched."
+    },
+    {
+      "plugin": "Google Drive",
+      "category": "Productivity",
+      "tools_called": ["_get_file_metadata"],
+      "status": "usable",
+      "safe_public_result": "SEIS Installed Plugin Operating Model document metadata was found."
+    },
+    {
+      "plugin": "Google Calendar",
+      "category": "Productivity",
+      "tools_called": ["_search_events"],
+      "status": "usable",
+      "safe_public_result": "SEIS CLOSED CODE weekly review events were found in the configured date window."
+    },
+    {
+      "plugin": "Notion",
+      "category": "Productivity",
+      "tools_called": ["_search"],
+      "status": "empty",
+      "safe_public_result": "Workspace search ran; no SEIS-specific Notion results were returned."
+    },
+    {
+      "plugin": "Airtable",
+      "category": "Productivity",
+      "tools_called": ["_ping", "_list_workspaces"],
+      "status": "limited",
+      "safe_public_result": "MCP ping succeeded; workspace listing requires additional scopes or reauthentication."
+    },
+    {
+      "plugin": "Linear",
+      "category": "Productivity",
+      "tools_called": ["_search", "_list_teams"],
+      "status": "limited",
+      "safe_public_result": "Linear connector responded with reauthentication required."
+    },
+    {
+      "plugin": "Slack",
+      "category": "Productivity",
+      "tools_called": ["_slack_search_channels"],
+      "status": "empty",
+      "safe_public_result": "Public channel search for SEIS returned no channels."
+    },
+    {
+      "plugin": "Gmail",
+      "category": "Productivity",
+      "tools_called": ["_list_labels"],
+      "status": "usable-redacted",
+      "safe_public_result": "Label listing succeeded; private message and thread counts were redacted from this public ledger."
+    },
+    {
+      "plugin": "Supabase",
+      "category": "Developer Tools",
+      "tools_called": ["_list_organizations", "_list_projects"],
+      "status": "usable-empty",
+      "safe_public_result": "Organization listing succeeded; no Supabase projects were found. Organization identifiers are intentionally not published."
+    },
+    {
+      "plugin": "Canva",
+      "category": "Design",
+      "tools_called": ["_search_folders"],
+      "status": "empty",
+      "safe_public_result": "No Canva folders matching SEIS were found."
+    },
+    {
+      "plugin": "Vercel",
+      "category": "Developer Tools",
+      "tools_called": ["_list_teams", "_list_projects"],
+      "status": "usable-empty",
+      "safe_public_result": "Team listing succeeded; no Vercel projects were found. Team identifiers are intentionally not published."
+    },
+    {
+      "plugin": "Figma",
+      "category": "Design",
+      "tools_called": ["_whoami"],
+      "status": "limited",
+      "safe_public_result": "Figma connector requires reauthentication before other actions can succeed."
+    },
+    {
+      "plugin": "Cloudinary",
+      "category": "Design",
+      "tools_called": ["_search_folders"],
+      "status": "empty",
+      "safe_public_result": "No Cloudinary folders matching SEIS were found."
+    },
+    {
+      "plugin": "Data Analytics",
+      "category": "Research / Data",
+      "tools_called": ["render_table"],
+      "status": "usable",
+      "safe_public_result": "A compact SEIS Plugin Usage Ledger table was rendered from the reviewed invocation rows."
+    }
+  ],
+  "not_forced": [
+    {
+      "reason": "No destructive actions were run just to make a source appear.",
+      "examples": ["delete", "archive", "inventory update", "send message", "create project"]
+    },
+    {
+      "reason": "Some installed plugins expose no safe read/list tool in this session or need an external object ID first.",
+      "examples": ["Sentry", "Datadog", "PostHog", "Mixpanel", "Remotion", "CodeRabbit", "Codex Security"]
+    },
+    {
+      "reason": "Some connectors responded but need reauthentication before deeper reads.",
+      "examples": ["Figma", "Linear", "Airtable workspace listing"]
+    }
+  ],
+  "next_safe_activation_steps": [
+    "Reauthenticate limited connectors only when they are needed for real SEIS work.",
+    "Create SEIS-specific folders/projects in Canva, Vercel, Supabase, or Cloudinary only after confirming the desired workspace and ownership.",
+    "Keep public repo evidence redacted for private SaaS counts and organization identifiers.",
+    "Prefer OpenAI-curated plugins first for design, developer tools, productivity, research, and security workflows."
+  ]
+}

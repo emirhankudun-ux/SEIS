@@ -1,0 +1,236 @@
+{
+  "version": 1,
+  "id": "seis-ssh-5-year-enterprise-benchmark",
+  "title": "SEIS SSH 5-Year Enterprise Benchmark",
+  "scope": "cloud-only-access, developer portability, AI-safe operations",
+  "assumptionDate": "2026-06-18",
+  "officialReferenceBaseline": [
+    {
+      "id": "nist-zero-trust",
+      "source": "NIST SP 800-207 Zero Trust Architecture",
+      "url": "https://csrc.nist.gov/pubs/sp/800/207/final",
+      "principle": "Treat every SSH request as resource-specific, continuously evaluated access."
+    },
+    {
+      "id": "apple-managed-device-attestation",
+      "source": "Apple Managed Device Attestation",
+      "url": "https://support.apple.com/guide/deployment/managed-device-attestation-dep28afbde6a/web",
+      "principle": "Make trusted device posture a first-class input for future access decisions."
+    },
+    {
+      "id": "google-beyondcorp",
+      "source": "Google BeyondCorp",
+      "url": "https://cloud.google.com/beyondcorp",
+      "principle": "Move access decisions from network location to identity, device, and policy."
+    },
+    {
+      "id": "microsoft-zero-trust",
+      "source": "Microsoft Zero Trust overview",
+      "url": "https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview",
+      "principle": "Verify identity, device, location, behavior, and risk before granting access."
+    },
+    {
+      "id": "openssh-forcecommand",
+      "source": "OpenBSD sshd_config manual",
+      "url": "https://man.openbsd.org/sshd_config",
+      "principle": "Use ForceCommand and Match blocks to constrain the exposed SSH execution surface."
+    },
+    {
+      "id": "github-ssh-ca",
+      "source": "GitHub Enterprise SSH certificate authorities",
+      "url": "https://docs.github.com/enterprise-cloud@latest/organizations/managing-git-access-to-your-organizations-repositories/about-ssh-certificate-authorities",
+      "principle": "Prefer centrally issued and revocable SSH certificates over unmanaged long-lived keys."
+    },
+    {
+      "id": "aws-session-manager",
+      "source": "AWS Systems Manager Session Manager",
+      "url": "https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html",
+      "principle": "Long-term target should reduce open inbound SSH exposure when a brokered cloud session path is available."
+    }
+  ],
+  "targetControlPlane": {
+    "year5Default": "identity-aware-ssh-broker",
+    "accessMethodOrder": [
+      "brokered-cloud-session-or-cloud-development-environment",
+      "short-lived-ssh-certificates",
+      "direct-cloud-ssh-as-picker-compatible-fallback",
+      "codespace-proxycommand-as-terminal-compatible-fallback"
+    ],
+    "mandatorySignals": [
+      "human-or-agent-identity",
+      "device-posture",
+      "repository-scope",
+      "runtime-risk",
+      "command-risk",
+      "session-continuity"
+    ],
+    "nonGoals": [
+      "long-lived-shared-private-keys",
+      "local-machine-dependency",
+      "unlogged-root-shell",
+      "multiple-picker-aliases"
+    ]
+  },
+  "referenceCompanyPatterns": [
+    {
+      "name": "Apple",
+      "theme": "simple product surface with strict defaults",
+      "signals": [
+        "single visible access entry point",
+        "key-first identity and strict auth defaults",
+        "minimal exposed operations from client",
+        "portable onboarding with verified cloud workspace"
+      ]
+    },
+    {
+      "name": "Google",
+      "theme": "policy-first control and continuous drift prevention",
+      "signals": [
+        "contract/manifest-driven controls",
+        "gated config and infrastructure changes",
+        "continuous compliance evidence",
+        "transport-aware readiness checks"
+      ]
+    },
+    {
+      "name": "Large AI Companies",
+      "theme": "tool-bound AI plane with audit-first behavior",
+      "signals": [
+        "policy-tagged tool calls",
+        "deny-by-default for unsafe commands",
+        "machine-readable session continuity evidence",
+        "human confirmation on risky actions"
+      ]
+    }
+  ],
+  "kpiFramework": {
+    "overallTarget": {
+      "year": 5,
+      "slaSshAvailability": 0.9995,
+      "criticalMttxHours": 1,
+      "mobileOnboardingMinutes": 10,
+      "policyDriftTolerance": 0
+    },
+    "gateThresholds": {
+      "year1": {
+        "onlineSuccess": 0.99,
+        "recoverySeconds": 30,
+        "policyDrift": 0
+      },
+      "year3": {
+        "restoreMinutes": 15,
+        "driftDetection": 0.95,
+        "gateBypass": false
+      },
+      "year5": {
+        "availability": 0.9995,
+        "criticalMTTRHours": 1,
+        "regionalFailoverMinutes": 30
+      }
+    }
+  },
+  "years": [
+    {
+      "year": 1,
+      "name": "Cloud Foundation",
+      "expectedControls": [
+        "single alias enforcement",
+        "key-only auth and strict ForceCommand",
+        "offline recovery path for session state",
+        "online proof includes /workspaces/SEIS + codex CLI"
+      ],
+      "minimumKPIs": {
+        "accessSuccess": 0.99,
+        "recoverySeconds": 30,
+        "newDeviceReadinessMinutes": 10,
+        "policyViolationsPer1000": 1
+      },
+      "deliverables": [
+        "cloud:ssh:online:strict enforces runtime readiness",
+        "check:seis-ssh-access-model",
+        "check:seis-ssh-cloud-roadmap",
+        "check:seis-ssh-picker-compatibility"
+      ]
+    },
+    {
+      "year": 2,
+      "name": "Zero-Trust Maturity",
+      "expectedControls": [
+        "explicit allowlist for shell/tool surface",
+        "authorized key constraints",
+        "role-aware transport separation",
+        "daily/weekly drift audit records"
+      ],
+      "minimumKPIs": {
+        "unauthorizedCommandRate": 0.001,
+        "newDeviceReadinessMinutes": 8,
+        "driftReportLatencyHours": 24
+      },
+      "deliverables": [
+        "sandbox risk classifier implemented",
+        "tool allowlist + deny-by-default path",
+        "bootstrap automation for new computer"
+      ]
+    },
+    {
+      "year": 3,
+      "name": "SRE-Grade Platforming",
+      "expectedControls": [
+        "multi-region continuity plan",
+        "alias migration without picker break",
+        "mandatory pre-release SSH gate",
+        "signed persistence restore metadata"
+      ],
+      "minimumKPIs": {
+        "restoreMinutes": 15,
+        "driftDetectionAccuracy": 0.95,
+        "releaseGatePassRate": 1.0
+      },
+      "deliverables": [
+        "config drift checker for ssh access model",
+        "automated restore drill in CI",
+        "rollback evidence produced with each control change"
+      ]
+    },
+    {
+      "year": 4,
+      "name": "AI-Safe Automation",
+      "expectedControls": [
+        "tool risk scoring",
+        "policy escalation for high-risk commands",
+        "anomaly quarantine runbooks",
+        "SOC/IR artifact generation"
+      ],
+      "minimumKPIs": {
+        "falsePositiveRate": 0.02,
+        "firstConnectionSuccessRate": 0.98,
+        "incidentMeanTimeToDetectHours": 2
+      },
+      "deliverables": [
+        "policy-aware AI command pipeline",
+        "human confirmation path for critical tool chains",
+        "monthly red-team drift simulation"
+      ]
+    },
+    {
+      "year": 5,
+      "name": "Platform-Grade Access Service",
+      "expectedControls": [
+        "identity-aware access service facade",
+        "policy-driven short-lived access",
+        "global alias continuity under failover",
+        "sealed secrets with repo-free runtime state"
+      ],
+      "minimumKPIs": {
+        "availability": 0.9995,
+        "criticalCaseMTTRHours": 1,
+        "regionalFailoverMinutes": 30
+      },
+      "deliverables": [
+        "enterprise benchmark gate integrated into governance",
+        "annual external audit-ready evidence pack",
+        "cross-region continuity runbook"
+      ]
+    }
+  ]
+}

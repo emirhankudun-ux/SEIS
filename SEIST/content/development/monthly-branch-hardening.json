@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "id": "seis-monthly-branch-hardening",
+  "month": "2026-06",
+  "branch": "UIXAppTTR",
+  "mode": "repo-first-plugin-second",
+  "summary": "Harden the UIXAppTTR repo and branch this month before expanding the SEIS Trusted Marketplace plugin further.",
+  "principles": [
+    "strengthen repo contracts before plugin surface expansion",
+    "keep every increment small and reversible",
+    "separate local progress, GitHub publication, and live deployment state",
+    "preserve unrelated dirty files and user-created work",
+    "prefer lightweight validation before heavy builds or live connectors"
+  ],
+  "workstreams": [
+    {
+      "id": "branch-foundation",
+      "label": "Branch Foundation",
+      "status": "active",
+      "goal": "Keep UIXAppTTR synchronized, publish-ready, and protected from accidental main or dirty-tree work.",
+      "qualityCommands": [
+        "git status --short --branch",
+        "npm run check:workspace",
+        "npm run automation:publish-readiness"
+      ],
+      "exitGate": "branch is on UIXAppTTR, upstream is origin/UIXAppTTR, intended files are committed, and publish readiness is clean"
+    },
+    {
+      "id": "capability-contracts",
+      "label": "Capability Contracts",
+      "status": "active",
+      "goal": "Make data engineering, development, design, learning, monitoring, productivity, security, and testing visible as governed repo lanes.",
+      "qualityCommands": [
+        "npm run check:aggressive-capability-map",
+        "npm run check:connector-activation-report",
+        "npm run check:seis-trusted-marketplace-plugin"
+      ],
+      "exitGate": "capability routing is documented, validator-protected, and not dependent on blanket connector activation"
+    },
+    {
+      "id": "release-and-deploy-readiness",
+      "label": "Release And Deploy Readiness",
+      "status": "active",
+      "goal": "Keep release, server handoff, cloud, and upload blockers explicit before any live deployment claim.",
+      "qualityCommands": [
+        "npm run check:release-sync",
+        "npm run check:server-target",
+        "npm run check:server-cloud-report"
+      ],
+      "exitGate": "deploy blockers are named separately from source quality and GitHub branch publication"
+    },
+    {
+      "id": "plugin-integration",
+      "label": "Plugin Integration",
+      "status": "gated",
+      "goal": "Let the SEIS Trusted Marketplace plugin read and explain repo contracts after the branch foundation is stable.",
+      "qualityCommands": [
+        "npm run check:trusted-marketplace-intake",
+        "npm run check:seis-trusted-marketplace-plugin"
+      ],
+      "exitGate": "plugin expansion follows repo contracts and does not introduce unreviewed live activation"
+    }
+  ],
+  "sequence": [
+    "repo branch foundation",
+    "repo capability contracts",
+    "release and deploy readiness",
+    "plugin integration",
+    "public plugin readiness only after private workflow is stable"
+  ],
+  "stopConditions": [
+    "worktree has unrelated dirty files that cannot be safely isolated",
+    "branch is behind origin/UIXAppTTR",
+    "publish readiness is blocked by source state",
+    "live deploy target, auth, or rollback path is unclear",
+    "plugin update would require broad connector activation without a concrete task"
+  ]
+}

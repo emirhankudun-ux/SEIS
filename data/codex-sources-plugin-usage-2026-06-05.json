@@ -5,7 +5,7 @@
     "desired_state": "Only main remains visible on GitHub for SEIS.",
     "verified_with": "GitHub repository metadata and remote heads checks"
   },
-  "purpose": "Evidence ledger for plugins/connectors that were actually invoked in Codex while building SEIS CLOSED CODE.",
+  "purpose": "Evidence ledger for plugins/connectors that were actually invoked in Codex while building the open-source SEIS platform.",
   "source_visibility_rule": "Codex Sources/Used indicators are driven by actual tool or connector invocation in the active work session, not only by installed checkmarks.",
   "privacy_rule": "Do not publish private account counts, organization IDs, personal inbox counts, or hidden SaaS identifiers into the public SEIS repository.",
   "actually_invoked": [
@@ -28,7 +28,7 @@
       "category": "Productivity",
       "tools_called": ["_search_events"],
       "status": "usable",
-      "safe_public_result": "SEIS CLOSED CODE weekly review events were found in the configured date window."
+      "safe_public_result": "SEIS open-source weekly review events were found in the configured date window."
     },
     {
       "plugin": "Notion",

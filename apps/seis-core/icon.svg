@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="SEIS Core">
+  <rect width="128" height="128" rx="24" fill="#111111"/>
+  <path d="M34 38h60v13H52c-5 0-8 2-8 6s3 6 8 6h24c14 0 23 8 23 21 0 14-10 22-25 22H32V93h43c6 0 10-3 10-8s-4-8-10-8H52c-14 0-22-8-22-20 0-12 8-19 24-19z" fill="#ffffff"/>
+  <circle cx="94" cy="38" r="7" fill="#4078ff"/>
+</svg>

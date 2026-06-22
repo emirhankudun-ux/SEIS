@@ -1,0 +1,1040 @@
+{
+  "artifactId": "seis-command-center-router-routes",
+  "schemaVersion": "1.0.0",
+  "generatedBy": "scripts/create-seis-command-center-router-artifact.cjs",
+  "sourcePolicy": "scripts/ai-routing-policy.cjs#chooseAutoRoute",
+  "sourceModel": "packages/seis-ai/models/agent-router-seed-v0.json",
+  "policy": {
+    "tokenPattern": "[a-z0-9_-]{2,}",
+    "laneRiskOrder": {
+      "seis": 0,
+      "seis-design": 1,
+      "seis-data": 2,
+      "seis-product": 3,
+      "seis-research": 4,
+      "seis-automation": 5,
+      "seis-code": 6,
+      "seis-governance": 7,
+      "seis-security": 8,
+      "seis-cloud": 9
+    },
+    "safetyKeywords": {
+      "seis-cloud": [
+        "cloud",
+        "deploy",
+        "deployment",
+        "provider",
+        "ssh",
+        "vpn",
+        "wireguard",
+        "bootstrap",
+        "rollback",
+        "cost"
+      ],
+      "seis-governance": [
+        "release",
+        "security",
+        "license",
+        "quality",
+        "ci",
+        "github",
+        "handoff",
+        "policy",
+        "governance",
+        "status",
+        "check",
+        "validation"
+      ],
+      "seis-design": [
+        "design",
+        "ui",
+        "ux",
+        "accessibility",
+        "responsive",
+        "motion",
+        "visual",
+        "layout"
+      ],
+      "seis-data": [
+        "data",
+        "dataset",
+        "schema",
+        "memory",
+        "provenance",
+        "training",
+        "report",
+        "rag"
+      ],
+      "seis-security": [
+        "threat",
+        "vulnerability",
+        "secret",
+        "secrets",
+        "credential",
+        "token",
+        "redaction",
+        "permission",
+        "permissions",
+        "hardening",
+        "exposure",
+        "risk",
+        "private-key",
+        "access-control"
+      ],
+      "seis-research": [
+        "research",
+        "official",
+        "source",
+        "sources",
+        "standards",
+        "version",
+        "compatibility",
+        "documentation",
+        "docs",
+        "api-docs"
+      ],
+      "seis-automation": [
+        "automation",
+        "workflow",
+        "workflows",
+        "runbook",
+        "scheduled",
+        "idempotent",
+        "dry-run",
+        "generator",
+        "repeatable",
+        "failure-handling"
+      ],
+      "seis-product": [
+        "requirements",
+        "acceptance",
+        "launch",
+        "outcome",
+        "milestone",
+        "roadmap-slice",
+        "user-jobs",
+        "non-goals"
+      ],
+      "seis-code": [
+        "code",
+        "script",
+        "runtime",
+        "test",
+        "tests",
+        "mcp",
+        "tool",
+        "bug",
+        "package",
+        "node"
+      ],
+      "seis": [
+        "architecture",
+        "roadmap",
+        "scope",
+        "plan",
+        "ecosystem",
+        "model-family",
+        "universe"
+      ]
+    },
+    "routeHints": [
+      {
+        "tool": "seis-agent",
+        "hints": [
+          "release",
+          "governance",
+          "policy",
+          "karar",
+          "safety",
+          "security",
+          "compliance",
+          "audit",
+          "deployment",
+          "deploy"
+        ]
+      },
+      {
+        "tool": "codex",
+        "hints": [
+          "codex",
+          "primary execution",
+          "repo execution lane"
+        ]
+      },
+      {
+        "tool": "antigravity-ide",
+        "hints": [
+          "antigravity ide",
+          "ag ide",
+          "agentic ide workspace"
+        ]
+      },
+      {
+        "tool": "antigravity",
+        "hints": [
+          "antigravity 2.0",
+          "antigravity app",
+          "google antigravity",
+          "agentic workspace"
+        ]
+      },
+      {
+        "tool": "cursor",
+        "hints": [
+          "cursor",
+          "cursor editor",
+          "cursor review",
+          "secondary ai editor"
+        ]
+      },
+      {
+        "tool": "xcode",
+        "hints": [
+          "xcode",
+          "swiftui",
+          "apple signing",
+          "ios simulator",
+          "macos build"
+        ]
+      },
+      {
+        "tool": "ollama",
+        "hints": [
+          "local",
+          "offline",
+          "private",
+          "on-device",
+          "llama",
+          "ollama"
+        ]
+      },
+      {
+        "tool": "qwen",
+        "hints": [
+          "qwen",
+          "alternative reasoning",
+          "cross-check",
+          "ikinci görüş"
+        ]
+      },
+      {
+        "tool": "gemini",
+        "hints": [
+          "browser",
+          "search",
+          "research",
+          "compare docs",
+          "web",
+          "source lookup"
+        ]
+      },
+      {
+        "tool": "interpreter",
+        "hints": [
+          "csv",
+          "spreadsheet",
+          "dataset",
+          "json transform",
+          "log analysis",
+          "trace"
+        ]
+      },
+      {
+        "tool": "aider",
+        "hints": [
+          "quick patch",
+          "repo patch",
+          "small patch",
+          "refactor",
+          "rename",
+          "edit existing file",
+          "diff"
+        ]
+      },
+      {
+        "tool": "opencode",
+        "hints": [
+          "opencode",
+          "terminal coding",
+          "terminal agent"
+        ]
+      },
+      {
+        "tool": "hermes",
+        "hints": [
+          "hermes",
+          "hermes agent",
+          "agent gateway",
+          "tool gateway",
+          "mcp gateway"
+        ]
+      },
+      {
+        "tool": "goose",
+        "hints": [
+          "goose",
+          "desktop agent",
+          "general agent",
+          "automation agent"
+        ]
+      },
+      {
+        "tool": "open-design",
+        "hints": [
+          "open design",
+          "opendesign",
+          "design artifact",
+          "visual prototype",
+          "design system preview"
+        ]
+      },
+      {
+        "tool": "claude",
+        "hints": [
+          "brainstorm",
+          "naming",
+          "ux copy",
+          "editorial",
+          "narrative",
+          "strategy memo"
+        ]
+      },
+      {
+        "tool": "kimi",
+        "hints": [
+          "translation",
+          "translate",
+          "localize",
+          "multilingual",
+          "polyglot",
+          "çeviri"
+        ]
+      },
+      {
+        "tool": "openai",
+        "hints": [
+          "openai",
+          "summarize",
+          "summary",
+          "özet",
+          "analysis",
+          "analiz"
+        ]
+      }
+    ],
+    "roleHints": {
+      "designer": {
+        "tool": "claude",
+        "hints": [
+          "designer",
+          "tasarım",
+          "tasarim",
+          "ui",
+          "ux",
+          "mikrocopy",
+          "brand",
+          "copy",
+          "narrative"
+        ]
+      },
+      "engineer": {
+        "tool": "aider",
+        "hints": [
+          "engineer",
+          "mühendis",
+          "muhendis",
+          "bug",
+          "patch",
+          "refactor",
+          "build",
+          "repo",
+          "debug",
+          "lint"
+        ]
+      },
+      "software": {
+        "tool": "openai",
+        "hints": [
+          "software",
+          "yazılım",
+          "mimari",
+          "plan",
+          "requirement",
+          "requirements",
+          "product",
+          "roadmap",
+          "performans",
+          "scalability"
+        ]
+      }
+    }
+  },
+  "model": {
+    "modelId": "seis-agent-router-seed-v0",
+    "modelFamily": "seis-agent-router",
+    "version": "0.1.0",
+    "datasetId": "seis-agent-router-seed-v0",
+    "trainingCaseCount": 12,
+    "labels": [
+      "seis",
+      "seis-governance",
+      "seis-cloud",
+      "seis-code",
+      "seis-design",
+      "seis-data",
+      "seis-security",
+      "seis-research",
+      "seis-automation",
+      "seis-product"
+    ],
+    "priors": {
+      "seis": -2.3978952727983707,
+      "seis-governance": -2.3978952727983707,
+      "seis-cloud": -1.9924301646902063,
+      "seis-code": -1.9924301646902063,
+      "seis-design": -2.3978952727983707,
+      "seis-data": -2.3978952727983707,
+      "seis-security": -2.3978952727983707,
+      "seis-research": -2.3978952727983707,
+      "seis-automation": -2.3978952727983707,
+      "seis-product": -2.3978952727983707
+    },
+    "features": [
+      "bias",
+      "flag:external_runtime",
+      "flag:release_sensitive",
+      "flag:secret_sensitive",
+      "flag:seis",
+      "flag:seis-automation",
+      "flag:seis-cloud",
+      "flag:seis-code",
+      "flag:seis-data",
+      "flag:seis-design",
+      "flag:seis-governance",
+      "flag:seis-product",
+      "flag:seis-research",
+      "flag:seis-security",
+      "text:acceptance",
+      "text:access",
+      "text:accessibility",
+      "text:add",
+      "text:agent",
+      "text:an",
+      "text:and",
+      "text:architecture",
+      "text:assumptions",
+      "text:automation",
+      "text:before",
+      "text:bootstrap",
+      "text:bug",
+      "text:build",
+      "text:check",
+      "text:cloud",
+      "text:code",
+      "text:compatibility",
+      "text:config",
+      "text:coordination",
+      "text:cost",
+      "text:create",
+      "text:criteria",
+      "text:dashboard",
+      "text:dataset",
+      "text:decision",
+      "text:define",
+      "text:dependency",
+      "text:deployment",
+      "text:design",
+      "text:deterministic",
+      "text:direct",
+      "text:documentation",
+      "text:dry-run",
+      "text:ecosystem",
+      "text:evidence",
+      "text:execution",
+      "text:exposure",
+      "text:fix",
+      "text:for",
+      "text:gates",
+      "text:god",
+      "text:handoff",
+      "text:hardening",
+      "text:hierarchy",
+      "text:idempotent",
+      "text:implement",
+      "text:interaction",
+      "text:keep",
+      "text:key",
+      "text:launch",
+      "text:license",
+      "text:local",
+      "text:loop",
+      "text:map",
+      "text:mcp",
+      "text:memory",
+      "text:mobile",
+      "text:mode",
+      "text:model",
+      "text:motion",
+      "text:no-push",
+      "text:node",
+      "text:non-goals",
+      "text:official",
+      "text:outcome",
+      "text:output",
+      "text:package",
+      "text:path",
+      "text:permission",
+      "text:plan",
+      "text:polish",
+      "text:prepare",
+      "text:private",
+      "text:private-key",
+      "text:product",
+      "text:provenance",
+      "text:provider",
+      "text:quality",
+      "text:readiness",
+      "text:recommendation",
+      "text:release",
+      "text:report",
+      "text:requirements",
+      "text:research",
+      "text:responsive",
+      "text:retrieval",
+      "text:review",
+      "text:risk",
+      "text:roadmap",
+      "text:roadmap-slice",
+      "text:rollback",
+      "text:runbook",
+      "text:runtime",
+      "text:scheduled",
+      "text:schema",
+      "text:scope",
+      "text:scripts",
+      "text:secret-safe",
+      "text:secrets",
+      "text:security",
+      "text:seis",
+      "text:slice",
+      "text:source",
+      "text:sources",
+      "text:ssh",
+      "text:standards",
+      "text:step",
+      "text:test",
+      "text:tests",
+      "text:the",
+      "text:tool",
+      "text:training",
+      "text:ui",
+      "text:update",
+      "text:user",
+      "text:validation",
+      "text:version",
+      "text:visual",
+      "text:vpn",
+      "text:vulnerability",
+      "text:wiring",
+      "text:workflow"
+    ],
+    "classFeatureWeights": {
+      "seis": {
+        "bias": 1,
+        "flag:seis": 1,
+        "text:and": 1,
+        "text:architecture": 1,
+        "text:coordination": 1,
+        "text:create": 1,
+        "text:ecosystem": 1,
+        "text:god": 1,
+        "text:map": 1,
+        "text:mode": 1,
+        "text:plan": 1,
+        "text:recommendation": 1,
+        "text:roadmap": 1,
+        "text:scope": 1,
+        "text:the": 1
+      },
+      "seis-governance": {
+        "bias": 1,
+        "flag:release_sensitive": 1,
+        "flag:seis-governance": 1,
+        "text:and": 1,
+        "text:evidence": 1,
+        "text:gates": 1,
+        "text:handoff": 1,
+        "text:license": 1,
+        "text:no-push": 1,
+        "text:prepare": 1,
+        "text:quality": 1,
+        "text:readiness": 1,
+        "text:release": 1,
+        "text:review": 1,
+        "text:security": 1
+      },
+      "seis-cloud": {
+        "bias": 2,
+        "flag:external_runtime": 2,
+        "flag:secret_sensitive": 1,
+        "flag:seis-cloud": 2,
+        "flag:seis-data": 1,
+        "flag:seis-governance": 2,
+        "flag:seis-security": 1,
+        "text:access": 1,
+        "text:and": 2,
+        "text:assumptions": 1,
+        "text:bootstrap": 1,
+        "text:check": 2,
+        "text:cloud": 2,
+        "text:config": 1,
+        "text:cost": 1,
+        "text:deployment": 1,
+        "text:direct": 1,
+        "text:gates": 1,
+        "text:mobile": 1,
+        "text:path": 1,
+        "text:prepare": 1,
+        "text:provider": 1,
+        "text:readiness": 2,
+        "text:report": 1,
+        "text:rollback": 2,
+        "text:secret-safe": 1,
+        "text:secrets": 1,
+        "text:ssh": 1,
+        "text:the": 1,
+        "text:vpn": 1
+      },
+      "seis-code": {
+        "bias": 2,
+        "flag:seis-code": 2,
+        "text:add": 2,
+        "text:agent": 1,
+        "text:and": 2,
+        "text:bug": 1,
+        "text:code": 1,
+        "text:deterministic": 1,
+        "text:execution": 1,
+        "text:fix": 1,
+        "text:implement": 1,
+        "text:keep": 1,
+        "text:local": 2,
+        "text:loop": 1,
+        "text:mcp": 1,
+        "text:node": 1,
+        "text:package": 2,
+        "text:runtime": 2,
+        "text:scripts": 1,
+        "text:seis": 1,
+        "text:test": 1,
+        "text:tests": 2,
+        "text:the": 2,
+        "text:tool": 2,
+        "text:update": 2,
+        "text:wiring": 1
+      },
+      "seis-design": {
+        "bias": 1,
+        "flag:seis-design": 1,
+        "text:accessibility": 1,
+        "text:and": 1,
+        "text:dashboard": 1,
+        "text:design": 1,
+        "text:hierarchy": 1,
+        "text:interaction": 1,
+        "text:motion": 1,
+        "text:polish": 1,
+        "text:responsive": 1,
+        "text:review": 1,
+        "text:the": 1,
+        "text:ui": 1,
+        "text:visual": 1
+      },
+      "seis-data": {
+        "bias": 1,
+        "flag:seis-data": 1,
+        "flag:seis-governance": 1,
+        "text:and": 1,
+        "text:build": 1,
+        "text:dataset": 1,
+        "text:evidence": 1,
+        "text:for": 1,
+        "text:memory": 1,
+        "text:model": 1,
+        "text:provenance": 1,
+        "text:quality": 1,
+        "text:report": 1,
+        "text:retrieval": 1,
+        "text:schema": 1,
+        "text:seis": 1,
+        "text:training": 1
+      },
+      "seis-security": {
+        "bias": 1,
+        "flag:external_runtime": 1,
+        "flag:secret_sensitive": 1,
+        "flag:seis-cloud": 1,
+        "flag:seis-governance": 1,
+        "flag:seis-security": 1,
+        "text:and": 1,
+        "text:dependency": 1,
+        "text:exposure": 1,
+        "text:gates": 1,
+        "text:hardening": 1,
+        "text:key": 1,
+        "text:permission": 1,
+        "text:private": 1,
+        "text:private-key": 1,
+        "text:review": 1,
+        "text:risk": 1,
+        "text:rollback": 1,
+        "text:security": 1,
+        "text:ssh": 1,
+        "text:vulnerability": 1
+      },
+      "seis-research": {
+        "bias": 1,
+        "flag:seis": 1,
+        "flag:seis-governance": 1,
+        "flag:seis-research": 1,
+        "text:an": 1,
+        "text:and": 1,
+        "text:architecture": 1,
+        "text:before": 1,
+        "text:compatibility": 1,
+        "text:decision": 1,
+        "text:documentation": 1,
+        "text:evidence": 1,
+        "text:official": 1,
+        "text:quality": 1,
+        "text:research": 1,
+        "text:source": 1,
+        "text:sources": 1,
+        "text:standards": 1,
+        "text:version": 1
+      },
+      "seis-automation": {
+        "bias": 1,
+        "flag:seis-automation": 1,
+        "flag:seis-cloud": 1,
+        "flag:seis-design": 1,
+        "flag:seis-governance": 1,
+        "text:an": 1,
+        "text:and": 1,
+        "text:automation": 1,
+        "text:check": 1,
+        "text:design": 1,
+        "text:dry-run": 1,
+        "text:idempotent": 1,
+        "text:output": 1,
+        "text:rollback": 1,
+        "text:runbook": 1,
+        "text:scheduled": 1,
+        "text:step": 1,
+        "text:validation": 1,
+        "text:workflow": 1
+      },
+      "seis-product": {
+        "bias": 1,
+        "flag:seis": 1,
+        "flag:seis-product": 1,
+        "text:acceptance": 1,
+        "text:and": 1,
+        "text:criteria": 1,
+        "text:define": 1,
+        "text:launch": 1,
+        "text:non-goals": 1,
+        "text:outcome": 1,
+        "text:product": 1,
+        "text:readiness": 1,
+        "text:requirements": 1,
+        "text:roadmap": 1,
+        "text:roadmap-slice": 1,
+        "text:slice": 1,
+        "text:user": 1
+      }
+    },
+    "laneDefaults": {
+      "seis-cloud": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:cloud-access-policy"
+      },
+      "seis-code": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-plugin-bundle"
+      },
+      "seis-design": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:motion-evidence"
+      },
+      "seis-data": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      },
+      "seis-governance": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-specialist-plugins"
+      },
+      "seis": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      },
+      "seis-security": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      },
+      "seis-research": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      },
+      "seis-automation": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      },
+      "seis-product": {
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    "safetyFloor": "seis-agent-router-rule-floor-v0"
+  },
+  "routeCount": 10,
+  "summary": {
+    "lanes": 10,
+    "ready": 7,
+    "safetyFloor": "seis-security",
+    "routeSources": [
+      "seis-agent-router-seed-v0"
+    ]
+  },
+  "routes": [
+    {
+      "laneId": "seis",
+      "expectedLaneId": "seis",
+      "label": "SEIS Hub",
+      "owner": "Architect Agent",
+      "status": "Ready",
+      "intent": "Create the God Mode architecture roadmap scope ecosystem coordination plan.",
+      "signal": "Architecture, roadmap, ecosystem coordination, and God Mode scope.",
+      "handoff": "Frame the mission, risk boundary, validation evidence, and rollback path.",
+      "tool": "openai",
+      "selectedTool": "openai",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis",
+      "safetyLaneId": "seis",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis",
+        "matched seis"
+      ]
+    },
+    {
+      "laneId": "seis-governance",
+      "expectedLaneId": "seis-governance",
+      "label": "Governance",
+      "owner": "Documentation Agent",
+      "status": "Ready",
+      "intent": "Prepare release quality license governance policy handoff evidence.",
+      "signal": "Release readiness, quality gates, license posture, and handoff evidence.",
+      "handoff": "Attach governance proof before commit, push, or completion claims.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-specialist-plugins",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-governance",
+      "safetyLaneId": "seis-governance",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-governance",
+        "matched release_sensitive",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-cloud",
+      "expectedLaneId": "seis-cloud",
+      "label": "Cloud",
+      "owner": "DevOps Agent",
+      "status": "Review",
+      "intent": "Check cloud deployment provider ssh vpn rollback cost readiness.",
+      "signal": "Cloud, SSH, VPN, deployment, rollback, cost, and provider readiness.",
+      "handoff": "Keep local, GitHub, and SEIS Cloud boundaries explicit before access changes.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:cloud-access-policy",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-cloud",
+      "safetyLaneId": "seis-cloud",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-cloud",
+        "matched external_runtime",
+        "matched seis-cloud",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-code",
+      "expectedLaneId": "seis-code",
+      "label": "Code",
+      "owner": "Frontend Agent",
+      "status": "Ready",
+      "intent": "Use codex primary execution for code MCP tool runtime bug tests package patch.",
+      "signal": "Code changes, MCP tools, runtime fixes, tests, and package scripts.",
+      "handoff": "Implement the smallest durable slice and leave validation hooks visible.",
+      "tool": "codex",
+      "selectedTool": "codex",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-plugin-bundle",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-code",
+      "safetyLaneId": "seis-code",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-code",
+        "matched seis-code"
+      ]
+    },
+    {
+      "laneId": "seis-design",
+      "expectedLaneId": "seis-design",
+      "label": "Design",
+      "owner": "Design System Agent",
+      "status": "Ready",
+      "intent": "Open design visual prototype for UI UX accessibility responsive motion layout.",
+      "signal": "UI hierarchy, accessibility, motion, responsive behavior, and design tokens.",
+      "handoff": "Preserve calm density while making the operational state easier to scan.",
+      "tool": "open-design",
+      "selectedTool": "open-design",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:motion-evidence",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-design",
+      "safetyLaneId": "seis-design",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-design",
+        "matched seis-design"
+      ]
+    },
+    {
+      "laneId": "seis-data",
+      "expectedLaneId": "seis-data",
+      "label": "Data",
+      "owner": "AI Systems Agent",
+      "status": "Ready",
+      "intent": "Transform dataset memory schema provenance training report RAG quality evidence.",
+      "signal": "Datasets, memory, provenance, schemas, training evidence, and quality signals.",
+      "handoff": "Keep synthetic data, source policy, and redaction boundaries attached.",
+      "tool": "interpreter",
+      "selectedTool": "interpreter",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:plugin-capability-lanes",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-data",
+      "safetyLaneId": "seis-data",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-data",
+        "matched seis-data",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-security",
+      "expectedLaneId": "seis-security",
+      "label": "Security",
+      "owner": "Security Agent",
+      "status": "Ready",
+      "intent": "Audit secret token credential redaction vulnerability permission hardening exposure security risk.",
+      "signal": "Secrets, private keys, vulnerabilities, hardening, permissions, and risk.",
+      "handoff": "Apply the safety floor before any lower-risk lane can execute.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-security",
+      "safetyLaneId": "seis-security",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-security",
+        "matched secret_sensitive",
+        "matched seis-governance",
+        "matched seis-security"
+      ]
+    },
+    {
+      "laneId": "seis-research",
+      "expectedLaneId": "seis-research",
+      "label": "Research",
+      "owner": "Research Agent",
+      "status": "Active",
+      "intent": "Browser research official documentation standards version compatibility source quality.",
+      "signal": "Official docs, standards, compatibility, source quality, and evidence checks.",
+      "handoff": "Convert external assumptions into cited evidence before architecture decisions.",
+      "tool": "gemini",
+      "selectedTool": "gemini",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-research",
+      "safetyLaneId": "seis-research",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-research",
+        "matched seis-governance",
+        "matched seis-research"
+      ]
+    },
+    {
+      "laneId": "seis-automation",
+      "expectedLaneId": "seis-automation",
+      "label": "Automation",
+      "owner": "DevOps Agent",
+      "status": "Ready",
+      "intent": "Prepare idempotent dry-run automation workflow scheduled runbook generator repeatable failure-handling validation output.",
+      "signal": "Idempotent workflows, schedules, runbooks, dry-runs, and rollback steps.",
+      "handoff": "Make every automated action explainable, reversible, and evidence-producing.",
+      "tool": "seis-agent",
+      "selectedTool": "seis-agent",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-automation",
+      "safetyLaneId": "seis-automation",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-automation",
+        "matched seis-automation",
+        "matched seis-governance"
+      ]
+    },
+    {
+      "laneId": "seis-product",
+      "expectedLaneId": "seis-product",
+      "label": "Product",
+      "owner": "Architect Agent",
+      "status": "Active",
+      "intent": "Define product requirements acceptance launch outcome milestone roadmap-slice user-jobs non-goals.",
+      "signal": "Requirements, acceptance criteria, launch readiness, user outcomes, and non-goals.",
+      "handoff": "Translate strategy into one shippable roadmap slice with explicit boundaries.",
+      "tool": "openai",
+      "selectedTool": "openai",
+      "integrationTool": "seis_plugin_integration",
+      "defaultGate": "npm run check:seis-ai-agent",
+      "routeSource": "seis-agent-router-seed-v0",
+      "learnedLaneId": "seis-product",
+      "safetyLaneId": "seis-product",
+      "safetyAdjusted": false,
+      "reasons": [
+        "selected seis-product",
+        "matched seis-product"
+      ]
+    }
+  ]
+}

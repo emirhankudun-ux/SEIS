@@ -1,0 +1,2946 @@
+{
+  "version": 1,
+  "id": "seis-active-mission-board",
+  "mode": "first_90_days_execution_board",
+  "sourcePlan": "seis-long-horizon-mission-kernel",
+  "masterGoalTrace": {
+    "id": "seis-v12-master-prompt-trace",
+    "northStar": "Continuously improve SEIS as a sustainable, high-quality, Apple-first, AI-native, open-source ecosystem.",
+    "workflow": [
+      "inspect",
+      "analyze",
+      "understand-context",
+      "identify-risks",
+      "plan",
+      "validate",
+      "document"
+    ],
+    "priorityFocusAreas": [
+      "engineering",
+      "architecture",
+      "design",
+      "ai-agents",
+      "mcp-plugins",
+      "data",
+      "automation",
+      "documentation",
+      "research",
+      "product"
+    ],
+    "avoid": [
+      "unnecessary-dependencies",
+      "technical-debt",
+      "duplicated-solutions",
+      "low-value-changes",
+      "runtime-installs-for-language-percentages"
+    ]
+  },
+  "focusWindow": {
+    "weeks": 12,
+    "dailyRule": "ship one inspectable slice or one validated blocker note",
+    "weeklyRule": "refresh reports, run checks, and promote next card only after gates pass"
+  },
+  "monthWindows": [
+    {
+      "id": "month-01-foundation-architecture-docs",
+      "label": "Month 1",
+      "dayRange": "0-30",
+      "laneId": "now",
+      "theme": "Foundation, architecture, documentation",
+      "acceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "evidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "month-02-memory-planning-mcp",
+      "label": "Month 2",
+      "dayRange": "31-60",
+      "laneId": "next",
+      "theme": "Memory, planning, MCP",
+      "acceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "evidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ]
+    },
+    {
+      "id": "month-03-agents-validation-release",
+      "label": "Month 3",
+      "dayRange": "61-90",
+      "laneId": "queued",
+      "theme": "Agents, validation, release",
+      "acceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "evidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ]
+    }
+  ],
+  "installPolicy": {
+    "default": "do_not_install_new_runtime_for_language_percentage",
+    "allowedWhen": [
+      "a mission has a real build, test, deploy, or product runtime requirement",
+      "the runtime is needed to validate a user-approved platform target",
+      "the dependency can be removed or isolated if the mission is reverted"
+    ]
+  },
+  "summary": {
+    "laneCount": 3,
+    "monthWindowCount": 3,
+    "cardCount": 30,
+    "nowCount": 10,
+    "nextCount": 10,
+    "queuedCount": 10,
+    "platformCoverageCount": 5,
+    "languageCoverageCount": 29,
+    "qualityGateCoverageCount": 41,
+    "acceptanceGateCoverageCount": 12
+  },
+  "lanes": [
+    {
+      "id": "now",
+      "label": "Now",
+      "waveId": "wave-01-foundation",
+      "wipLimit": 10,
+      "cadence": "daily reversible implementation slices"
+    },
+    {
+      "id": "next",
+      "label": "Next",
+      "waveId": "wave-02-apple-native",
+      "wipLimit": 10,
+      "cadence": "weekly Apple-native platform slices"
+    },
+    {
+      "id": "queued",
+      "label": "Queued",
+      "waveId": "wave-03-windows-polyglot",
+      "wipLimit": 10,
+      "cadence": "weekly Windows polyglot platform slices"
+    }
+  ],
+  "platformCoverage": [
+    "backend",
+    "ios",
+    "macos",
+    "web",
+    "windows"
+  ],
+  "languageCoverage": [
+    "AppleScript",
+    "Batch",
+    "C#",
+    "C++",
+    "CSS",
+    "CUE",
+    "F#",
+    "Go",
+    "HTML",
+    "JSON",
+    "Java",
+    "Kotlin",
+    "Lua",
+    "Markdown",
+    "Objective-C",
+    "PHP",
+    "Playground",
+    "PowerShell",
+    "Python",
+    "R",
+    "Rego",
+    "Ruby",
+    "Rust",
+    "SQL",
+    "Shell",
+    "Swift",
+    "SwiftUI",
+    "Visual Basic",
+    "YAML"
+  ],
+  "qualityGateCoverage": [
+    "accessibility",
+    "actionable-error",
+    "auditability",
+    "cloud-readiness",
+    "credential-safety",
+    "deterministic-check",
+    "docs-updated",
+    "documented-owner",
+    "fail-fast",
+    "human-approval",
+    "idempotent-output",
+    "language-budget",
+    "least-privilege",
+    "maintainability",
+    "migration-plan",
+    "model-fallback",
+    "motion-evidence",
+    "no-heavy-install-by-default",
+    "no-secret-leakage",
+    "offline-fallback",
+    "path-safety",
+    "permission-scope",
+    "platform-syntax",
+    "privacy-review",
+    "provider-boundary",
+    "release-sync",
+    "responsive-fit",
+    "reviewable-diff",
+    "rollback-plan",
+    "runtime-check-if-available",
+    "runtime-optional",
+    "safe-defaults",
+    "sample-test",
+    "schema-validity",
+    "secret-detection",
+    "security",
+    "source-present",
+    "testability",
+    "token-budget",
+    "typography-consistency",
+    "workspace-check"
+  ],
+  "acceptanceGateCoverage": [
+    "agent-memory-planning-foundation-visible",
+    "agent-roles-separated",
+    "agi-contract-generated",
+    "apple-first-contract-covered",
+    "github-community-health-current",
+    "github-community-health-ready",
+    "memory-checkpoints-traceable",
+    "planning-loops-deterministic",
+    "plugin-mcp-lanes-scoped",
+    "quality-gates-pass",
+    "release-evidence-current",
+    "security-and-human-review-gates-present"
+  ],
+  "cards": [
+    {
+      "id": "now-wave-01-foundation-m01-architecture-contract",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m01-architecture-contract",
+      "order": 1,
+      "title": "Architecture Contract",
+      "domainId": "algorithms-and-flowcharts",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL"
+      ],
+      "requiredOutputs": [
+        "architecture note",
+        "interface contract",
+        "risk register"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "maintainability",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m02-agent-policy",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m02-agent-policy",
+      "order": 2,
+      "title": "Agent Policy",
+      "domainId": "mathematics-foundations",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "requiredOutputs": [
+        "agent policy",
+        "permission matrix",
+        "fallback path"
+      ],
+      "qualityGates": [
+        "credential-safety",
+        "docs-updated",
+        "human-approval",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m01-architecture-contract"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m03-platform-bridge",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m03-platform-bridge",
+      "order": 3,
+      "title": "Platform Bridge",
+      "domainId": "computer-science-foundations",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "C#",
+        "CUE",
+        "Go",
+        "PowerShell",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "requiredOutputs": [
+        "platform adapter",
+        "runtime readiness check",
+        "path safety rule"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "C#",
+          "CUE",
+          "Go",
+          "PowerShell",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m02-agent-policy"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m04-data-plane",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m04-data-plane",
+      "order": 4,
+      "title": "Data Plane",
+      "domainId": "web-development",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "R",
+        "Rust",
+        "SQL"
+      ],
+      "requiredOutputs": [
+        "data schema",
+        "query contract",
+        "lineage note"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "migration-plan",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "R",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m03-platform-bridge"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m05-design-engineering",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m05-design-engineering",
+      "order": 5,
+      "title": "Design Engineering",
+      "domainId": "mobile-development",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CSS",
+        "CUE",
+        "Go",
+        "HTML",
+        "Python",
+        "Rust",
+        "SQL",
+        "Swift"
+      ],
+      "requiredOutputs": [
+        "design token map",
+        "interaction states",
+        "accessibility checklist"
+      ],
+      "qualityGates": [
+        "accessibility",
+        "docs-updated",
+        "motion-evidence",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ],
+        "backend": [
+          "CSS",
+          "CUE",
+          "Go",
+          "HTML",
+          "Python",
+          "Rust",
+          "SQL",
+          "Swift"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m04-data-plane"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m06-quality-gate",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m06-quality-gate",
+      "order": 6,
+      "title": "Quality Gate",
+      "domainId": "game-development",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "requiredOutputs": [
+        "check script",
+        "failure message",
+        "developer note"
+      ],
+      "qualityGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "fail-fast",
+        "idempotent-output",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m05-design-engineering"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m07-security-governance",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m07-security-governance",
+      "order": 7,
+      "title": "Security Governance",
+      "domainId": "full-stack-engineering",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Python",
+        "Rego",
+        "Rust",
+        "SQL"
+      ],
+      "requiredOutputs": [
+        "threat model",
+        "secret handling rule",
+        "abuse case table"
+      ],
+      "qualityGates": [
+        "auditability",
+        "docs-updated",
+        "least-privilege",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Python",
+          "Rego",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m06-quality-gate"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m08-llm-orchestration",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m08-llm-orchestration",
+      "order": 8,
+      "title": "LLM Orchestration",
+      "domainId": "data-engineering-and-analytics",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "JSON",
+        "Python",
+        "Rust",
+        "SQL",
+        "YAML"
+      ],
+      "requiredOutputs": [
+        "routing rule",
+        "provider policy",
+        "offline fallback"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "model-fallback",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "JSON",
+          "Python",
+          "Rust",
+          "SQL",
+          "YAML"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m07-security-governance"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m09-runtime-surface",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m09-runtime-surface",
+      "order": 9,
+      "title": "Runtime Surface",
+      "domainId": "data-science",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Java",
+        "Kotlin",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Rust",
+        "SQL"
+      ],
+      "requiredOutputs": [
+        "source stub",
+        "readiness gate",
+        "install policy"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "documented-owner",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Java",
+          "Kotlin",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Rust",
+          "SQL"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m08-llm-orchestration"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "now-wave-01-foundation-m10-release-readiness",
+      "laneId": "now",
+      "monthWindowId": "month-01-foundation-architecture-docs",
+      "missionId": "wave-01-foundation-m10-release-readiness",
+      "order": 10,
+      "title": "Release Readiness",
+      "domainId": "artificial-intelligence",
+      "agentRole": "cs-foundation-agent",
+      "platformScope": [
+        "macos",
+        "windows",
+        "web",
+        "backend"
+      ],
+      "primaryLanguages": [
+        "CUE",
+        "Go",
+        "Markdown",
+        "Python",
+        "Rust",
+        "SQL",
+        "Shell"
+      ],
+      "requiredOutputs": [
+        "release note",
+        "rollback checklist",
+        "publish gate"
+      ],
+      "qualityGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "language-budget",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ],
+        "web": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ],
+        "backend": [
+          "CUE",
+          "Go",
+          "Markdown",
+          "Python",
+          "Rust",
+          "SQL",
+          "Shell"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m09-runtime-surface"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agi-contract-generated",
+        "agent-memory-planning-foundation-visible",
+        "github-community-health-current",
+        "quality-gates-pass"
+      ],
+      "monthEvidencePaths": [
+        "reports/seis-agi-system.md",
+        "reports/seis-active-mission-board.md",
+        "README.md",
+        "AGENTS.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m01-architecture-contract",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m01-architecture-contract",
+      "order": 11,
+      "title": "Architecture Contract",
+      "domainId": "ai-agent-engineering",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "architecture note",
+        "interface contract",
+        "risk register"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "maintainability",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-01-foundation-m10-release-readiness"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m02-agent-policy",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m02-agent-policy",
+      "order": 12,
+      "title": "Agent Policy",
+      "domainId": "llm-orchestration",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "agent policy",
+        "permission matrix",
+        "fallback path"
+      ],
+      "qualityGates": [
+        "credential-safety",
+        "docs-updated",
+        "human-approval",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m01-architecture-contract"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m03-platform-bridge",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m03-platform-bridge",
+      "order": 13,
+      "title": "Platform Bridge",
+      "domainId": "mcp-skills-plugins",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "platform adapter",
+        "runtime readiness check",
+        "path safety rule"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m02-agent-policy"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m04-data-plane",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m04-data-plane",
+      "order": 14,
+      "title": "Data Plane",
+      "domainId": "database-management",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "data schema",
+        "query contract",
+        "lineage note"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "migration-plan",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m03-platform-bridge"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m05-design-engineering",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m05-design-engineering",
+      "order": 15,
+      "title": "Design Engineering",
+      "domainId": "version-control-systems",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "design token map",
+        "interaction states",
+        "accessibility checklist"
+      ],
+      "qualityGates": [
+        "accessibility",
+        "docs-updated",
+        "motion-evidence",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m04-data-plane"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m06-quality-gate",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m06-quality-gate",
+      "order": 16,
+      "title": "Quality Gate",
+      "domainId": "cloud-computing",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "check script",
+        "failure message",
+        "developer note"
+      ],
+      "qualityGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "fail-fast",
+        "idempotent-output",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m05-design-engineering"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m07-security-governance",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m07-security-governance",
+      "order": 17,
+      "title": "Security Governance",
+      "domainId": "cybersecurity",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "threat model",
+        "secret handling rule",
+        "abuse case table"
+      ],
+      "qualityGates": [
+        "auditability",
+        "docs-updated",
+        "least-privilege",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m06-quality-gate"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m08-llm-orchestration",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m08-llm-orchestration",
+      "order": 18,
+      "title": "LLM Orchestration",
+      "domainId": "devops-and-system-management",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "routing rule",
+        "provider policy",
+        "offline fallback"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "model-fallback",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m07-security-governance"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m09-runtime-surface",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m09-runtime-surface",
+      "order": 19,
+      "title": "Runtime Surface",
+      "domainId": "test-engineering",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "source stub",
+        "readiness gate",
+        "install policy"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "documented-owner",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m08-llm-orchestration"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "next-wave-02-apple-native-m10-release-readiness",
+      "laneId": "next",
+      "monthWindowId": "month-02-memory-planning-mcp",
+      "missionId": "wave-02-apple-native-m10-release-readiness",
+      "order": 20,
+      "title": "Release Readiness",
+      "domainId": "software-architecture-and-patterns",
+      "agentRole": "apple-platform-agent",
+      "platformScope": [
+        "macos",
+        "ios"
+      ],
+      "primaryLanguages": [
+        "AppleScript",
+        "Objective-C",
+        "Playground",
+        "Swift",
+        "SwiftUI"
+      ],
+      "requiredOutputs": [
+        "release note",
+        "rollback checklist",
+        "publish gate"
+      ],
+      "qualityGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "language-budget",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "platformLanguagePolicy": {
+        "macos": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ],
+        "ios": [
+          "AppleScript",
+          "Objective-C",
+          "Playground",
+          "Swift",
+          "SwiftUI"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m09-runtime-surface"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "memory-checkpoints-traceable",
+        "planning-loops-deterministic",
+        "plugin-mcp-lanes-scoped",
+        "apple-first-contract-covered"
+      ],
+      "monthEvidencePaths": [
+        "content/development/seis-agi-system.json",
+        "packages/seis_platform_swift/Sources/SeisPlatformKit/SeisAGISystemContract.swift",
+        "reports/plugin-capability-lanes.md",
+        "reports/seis-execution-runway.md"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m01-architecture-contract",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m01-architecture-contract",
+      "order": 21,
+      "title": "Architecture Contract",
+      "domainId": "big-data-engineering",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "architecture note",
+        "interface contract",
+        "risk register"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "maintainability",
+        "reviewable-diff",
+        "rollback-plan",
+        "security",
+        "testability"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-02-apple-native-m10-release-readiness"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m02-agent-policy",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m02-agent-policy",
+      "order": 22,
+      "title": "Agent Policy",
+      "domainId": "nlp-and-computer-vision",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "agent policy",
+        "permission matrix",
+        "fallback path"
+      ],
+      "qualityGates": [
+        "credential-safety",
+        "docs-updated",
+        "human-approval",
+        "offline-fallback",
+        "permission-scope",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m01-architecture-contract"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m03-platform-bridge",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m03-platform-bridge",
+      "order": 23,
+      "title": "Platform Bridge",
+      "domainId": "quantum-programming",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "platform adapter",
+        "runtime readiness check",
+        "path safety rule"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "path-safety",
+        "permission-scope",
+        "platform-syntax",
+        "reviewable-diff",
+        "runtime-optional"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m02-agent-policy"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m04-data-plane",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m04-data-plane",
+      "order": 24,
+      "title": "Data Plane",
+      "domainId": "sustainable-software",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "data schema",
+        "query contract",
+        "lineage note"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "migration-plan",
+        "privacy-review",
+        "reviewable-diff",
+        "sample-test",
+        "schema-validity"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m03-platform-bridge"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m05-design-engineering",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m05-design-engineering",
+      "order": 25,
+      "title": "Design Engineering",
+      "domainId": "low-code-no-code-platforms",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "design token map",
+        "interaction states",
+        "accessibility checklist"
+      ],
+      "qualityGates": [
+        "accessibility",
+        "docs-updated",
+        "motion-evidence",
+        "responsive-fit",
+        "reviewable-diff",
+        "typography-consistency"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m04-data-plane"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m06-quality-gate",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m06-quality-gate",
+      "order": 26,
+      "title": "Quality Gate",
+      "domainId": "ux-ui-engineering",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Shell",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "check script",
+        "failure message",
+        "developer note"
+      ],
+      "qualityGates": [
+        "actionable-error",
+        "deterministic-check",
+        "docs-updated",
+        "fail-fast",
+        "idempotent-output",
+        "reviewable-diff"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m05-design-engineering"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m07-security-governance",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m07-security-governance",
+      "order": 27,
+      "title": "Security Governance",
+      "domainId": "product-design-and-creative-systems",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "threat model",
+        "secret handling rule",
+        "abuse case table"
+      ],
+      "qualityGates": [
+        "auditability",
+        "docs-updated",
+        "least-privilege",
+        "reviewable-diff",
+        "safe-defaults",
+        "secret-detection"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m06-quality-gate"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m08-llm-orchestration",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m08-llm-orchestration",
+      "order": 28,
+      "title": "LLM Orchestration",
+      "domainId": "autonomous-vehicles-and-robotics",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic",
+        "YAML"
+      ],
+      "requiredOutputs": [
+        "routing rule",
+        "provider policy",
+        "offline fallback"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "model-fallback",
+        "no-secret-leakage",
+        "provider-boundary",
+        "reviewable-diff",
+        "token-budget"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic",
+          "YAML"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m07-security-governance"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m09-runtime-surface",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m09-runtime-surface",
+      "order": 29,
+      "title": "Runtime Surface",
+      "domainId": "ai-ethics-and-data-governance",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "source stub",
+        "readiness gate",
+        "install policy"
+      ],
+      "qualityGates": [
+        "docs-updated",
+        "documented-owner",
+        "no-heavy-install-by-default",
+        "reviewable-diff",
+        "runtime-check-if-available",
+        "source-present"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m08-llm-orchestration"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    },
+    {
+      "id": "queued-wave-03-windows-polyglot-m10-release-readiness",
+      "laneId": "queued",
+      "monthWindowId": "month-03-agents-validation-release",
+      "missionId": "wave-03-windows-polyglot-m10-release-readiness",
+      "order": 30,
+      "title": "Release Readiness",
+      "domainId": "compiler-and-language-engineering",
+      "agentRole": "windows-agent",
+      "platformScope": [
+        "windows"
+      ],
+      "primaryLanguages": [
+        "Batch",
+        "C#",
+        "C++",
+        "F#",
+        "Go",
+        "Java",
+        "Kotlin",
+        "Lua",
+        "PHP",
+        "PowerShell",
+        "Python",
+        "R",
+        "Ruby",
+        "Rust",
+        "SQL",
+        "Shell",
+        "Visual Basic"
+      ],
+      "requiredOutputs": [
+        "release note",
+        "rollback checklist",
+        "publish gate"
+      ],
+      "qualityGates": [
+        "cloud-readiness",
+        "docs-updated",
+        "language-budget",
+        "release-sync",
+        "reviewable-diff",
+        "workspace-check"
+      ],
+      "platformLanguagePolicy": {
+        "windows": [
+          "Batch",
+          "C",
+          "C#",
+          "C++",
+          "CMD",
+          "F#",
+          "Go",
+          "Java",
+          "Kotlin",
+          "Lua",
+          "PHP",
+          "PowerShell",
+          "Python",
+          "R",
+          "Ruby",
+          "Rust",
+          "SQL",
+          "Shell",
+          "Visual Basic"
+        ]
+      },
+      "dependencies": [
+        "wave-03-windows-polyglot-m09-runtime-surface"
+      ],
+      "executionMode": "local_first_seis_agent_with_remote_provider_delegation",
+      "monthAcceptanceGates": [
+        "agent-roles-separated",
+        "security-and-human-review-gates-present",
+        "github-community-health-ready",
+        "release-evidence-current"
+      ],
+      "monthEvidencePaths": [
+        "docs/development/agents/README.md",
+        "SECURITY.md",
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        "reports/seis-agi-system.json"
+      ],
+      "doneDefinition": [
+        "source artifact is generated or updated",
+        "check command passes without stale output",
+        "changed files are reviewable and reversible",
+        "no runtime is installed only for language percentage goals"
+      ],
+      "runtimeInstallPolicy": "do_not_install_new_runtime_for_language_percentage"
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "datasetId": "seis-agent-router-seed-v0",
+  "version": "0.1.0",
+  "sourceClass": "SEIS-owned synthetic examples",
+  "consent": "no user-private data",
+  "createdAt": "2026-06-19",
+  "task": "route SEIS user intents to the right agent/plugin lane",
+  "labels": [
+    "seis",
+    "seis-governance",
+    "seis-cloud",
+    "seis-code",
+    "seis-design",
+    "seis-data",
+    "seis-security",
+    "seis-research",
+    "seis-automation",
+    "seis-product"
+  ],
+  "cases": [
+    {
+      "id": "train-cloud-mobile-ssh",
+      "split": "train",
+      "task": {
+        "text": "Prepare the mobile SSH direct cloud bootstrap, readiness report, rollback path, and secret-safe config check.",
+        "signals": ["ssh", "cloud", "mobile", "bootstrap", "rollback", "secrets"]
+      },
+      "expected": {
+        "laneId": "seis-cloud",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:cloud-access-policy"
+      }
+    },
+    {
+      "id": "train-code-mcp-tool",
+      "split": "train",
+      "task": {
+        "text": "Implement the SEIS MCP tool wiring, update package scripts, add tests, and keep the local runtime deterministic.",
+        "signals": ["mcp", "tool", "code", "test", "runtime"]
+      },
+      "expected": {
+        "laneId": "seis-code",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-plugin-bundle"
+      }
+    },
+    {
+      "id": "train-design-accessibility",
+      "split": "train",
+      "task": {
+        "text": "Review the dashboard interaction, visual hierarchy, accessibility, motion, and responsive UI polish.",
+        "signals": ["design", "accessibility", "motion", "responsive", "ui"]
+      },
+      "expected": {
+        "laneId": "seis-design",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:motion-evidence"
+      }
+    },
+    {
+      "id": "train-data-memory",
+      "split": "train",
+      "task": {
+        "text": "Build a memory retrieval dataset, provenance report, schema, and quality evidence for SEIS model training.",
+        "signals": ["dataset", "memory", "schema", "provenance", "training"]
+      },
+      "expected": {
+        "laneId": "seis-data",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      }
+    },
+    {
+      "id": "train-governance-release",
+      "split": "train",
+      "task": {
+        "text": "Prepare release readiness, quality gates, license review, security evidence, and no-push handoff.",
+        "signals": ["release", "quality", "license", "security", "handoff"]
+      },
+      "expected": {
+        "laneId": "seis-governance",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-specialist-plugins"
+      }
+    },
+    {
+      "id": "train-hub-architecture",
+      "split": "train",
+      "task": {
+        "text": "Create the God Mode architecture map, scope recommendation, roadmap, and ecosystem coordination plan.",
+        "signals": ["architecture", "roadmap", "scope", "ecosystem", "plan"]
+      },
+      "expected": {
+        "laneId": "seis",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-code-agent-loop",
+      "split": "train",
+      "task": {
+        "text": "Fix the agent loop tool execution bug, add node tests, and update the local package runtime.",
+        "signals": ["agent", "loop", "tool", "bug", "node", "tests"]
+      },
+      "expected": {
+        "laneId": "seis-code",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-plugin-bundle"
+      }
+    },
+    {
+      "id": "train-cloud-deploy",
+      "split": "train",
+      "task": {
+        "text": "Check provider readiness, deployment assumptions, VPN access, cloud rollback, and cost gates.",
+        "signals": ["provider", "deployment", "vpn", "cloud", "rollback", "cost"]
+      },
+      "expected": {
+        "laneId": "seis-cloud",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:cloud-access-policy"
+      }
+    },
+    {
+      "id": "train-security-release-risk",
+      "split": "train",
+      "task": {
+        "text": "Review private key exposure, permission risk, dependency vulnerability, SSH hardening, and rollback security gates.",
+        "signals": ["security", "private-key", "permission", "vulnerability", "hardening", "risk"]
+      },
+      "expected": {
+        "laneId": "seis-security",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-research-official-docs",
+      "split": "train",
+      "task": {
+        "text": "Research official documentation, standards, version compatibility, source quality, and evidence before an architecture decision.",
+        "signals": ["research", "official", "documentation", "standards", "version", "sources"]
+      },
+      "expected": {
+        "laneId": "seis-research",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-automation-runbook",
+      "split": "train",
+      "task": {
+        "text": "Design an idempotent dry-run automation workflow, scheduled check, runbook, rollback step, and validation output.",
+        "signals": ["automation", "workflow", "scheduled", "runbook", "idempotent", "dry-run"]
+      },
+      "expected": {
+        "laneId": "seis-automation",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "train-product-launch-slice",
+      "split": "train",
+      "task": {
+        "text": "Define product requirements, acceptance criteria, user outcome, launch readiness, non-goals, and roadmap slice.",
+        "signals": ["product", "requirements", "acceptance", "outcome", "launch", "roadmap-slice"]
+      },
+      "expected": {
+        "laneId": "seis-product",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-design-system",
+      "split": "eval",
+      "task": {
+        "text": "Improve the design-system cards, accessibility states, mobile layout, and motion evidence for the command center.",
+        "signals": ["design-system", "accessibility", "mobile", "motion"]
+      },
+      "expected": {
+        "laneId": "seis-design",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:motion-evidence"
+      }
+    },
+    {
+      "id": "eval-data-provenance",
+      "split": "eval",
+      "task": {
+        "text": "Create a dataset card, provenance filter, schema review, and training quality report for the model lab.",
+        "signals": ["dataset", "provenance", "schema", "training"]
+      },
+      "expected": {
+        "laneId": "seis-data",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      }
+    },
+    {
+      "id": "eval-governance-ci",
+      "split": "eval",
+      "task": {
+        "text": "Validate CI, quality governance, release readiness, security policy, and GitHub handoff before push.",
+        "signals": ["ci", "governance", "release", "security", "github"]
+      },
+      "expected": {
+        "laneId": "seis-governance",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-specialist-plugins"
+      }
+    },
+    {
+      "id": "eval-code-runtime",
+      "split": "eval",
+      "task": {
+        "text": "Add a deterministic Node runtime, tests, package script, and MCP smoke coverage for the SEIS agent.",
+        "signals": ["node", "runtime", "tests", "package", "mcp"]
+      },
+      "expected": {
+        "laneId": "seis-code",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-plugin-bundle"
+      }
+    },
+    {
+      "id": "eval-cloud-secret-safe",
+      "split": "eval",
+      "task": {
+        "text": "Plan cloud SSH access, secret-safe bootstrap, provider readiness, and rollback validation.",
+        "signals": ["cloud", "ssh", "secret-safe", "provider", "rollback"]
+      },
+      "expected": {
+        "laneId": "seis-cloud",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:cloud-access-policy"
+      }
+    },
+    {
+      "id": "eval-hub-roadmap",
+      "split": "eval",
+      "task": {
+        "text": "Coordinate the SEIS Universe roadmap, architecture direction, AI model family, and product scope.",
+        "signals": ["roadmap", "architecture", "model-family", "scope"]
+      },
+      "expected": {
+        "laneId": "seis",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-security-permissions",
+      "split": "eval",
+      "task": {
+        "text": "Audit token redaction, dependency vulnerability, access-control exposure, and security rollback risk.",
+        "signals": ["token", "redaction", "vulnerability", "access-control", "security-risk"]
+      },
+      "expected": {
+        "laneId": "seis-security",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-research-versions",
+      "split": "eval",
+      "task": {
+        "text": "Compare official API docs, version support, source provenance, standards notes, and implementation constraints.",
+        "signals": ["official", "api-docs", "version", "source", "standards"]
+      },
+      "expected": {
+        "laneId": "seis-research",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-automation-ci-runbook",
+      "split": "eval",
+      "task": {
+        "text": "Create a repeatable CI automation workflow with dry-run mode, runbook ownership, and failure handling.",
+        "signals": ["automation", "ci-workflow", "dry-run", "runbook", "failure-handling"]
+      },
+      "expected": {
+        "laneId": "seis-automation",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "eval-product-acceptance",
+      "split": "eval",
+      "task": {
+        "text": "Scope the product milestone with acceptance criteria, launch readiness, user jobs, risks, and non-goals.",
+        "signals": ["product", "milestone", "acceptance", "launch", "user-jobs"]
+      },
+      "expected": {
+        "laneId": "seis-product",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1556 @@
+{
+  "version": 1,
+  "id": "seis-technology-stack",
+  "generatedAt": "2026-06-12",
+  "mode": "source_languages_plus_ecosystem_stack",
+  "sourceReferences": {
+    "languageDistribution": "reports/language-distribution.json",
+    "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json",
+    "requestedSoftwareStack": "content/development/requested-software-stack.json"
+  },
+  "summary": {
+    "sourceLanguageCount": 60,
+    "ecosystemGroupCount": 7,
+    "ecosystemTechnologyCount": 143,
+    "requestedCoreStackCount": 6,
+    "githubFocusedPanels": [
+      "JavaScript",
+      "TypeScript",
+      "Objective-C",
+      "Other"
+    ],
+    "githubLanguagePolicy": "Only real source languages belong in the GitHub language surface; frameworks, clouds, products, and tools belong in the ecosystem stack."
+  },
+  "sourceLanguageCatalog": [
+    {
+      "order": 1,
+      "id": "javascript",
+      "label": "JavaScript",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 2310662,
+      "layer": "frontend-and-experience",
+      "entrypoints": [
+        "apps/web/src/scripts/motion-system.js",
+        "apps/web/src/scripts/gallery-system.js",
+        "apps/web/src/scripts/i18n-system.js",
+        "polyglot/javascript/plugin-source-runtime.js"
+      ]
+    },
+    {
+      "order": 2,
+      "id": "typescript",
+      "label": "TypeScript",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 424439,
+      "layer": "frontend-and-experience",
+      "entrypoints": [
+        "polyglot/typescript/seis_config_validator.ts",
+        "polyglot/typescript/language-split-contract.ts",
+        "packages/seis-ai/types/seis-ai.d.ts"
+      ]
+    },
+    {
+      "order": 3,
+      "id": "objective-c",
+      "label": "Objective-C",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 8447,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/objective-c/SEISReleasePolicy.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.h",
+        "polyglot/objective-c/SEISLanguageDistributionContract.m"
+      ]
+    },
+    {
+      "order": 4,
+      "id": "python",
+      "label": "Python",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 508621,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/python/seis_manifest.py",
+        "polyglot/python/seis_image_audit.py",
+        "polyglot/python/seis_icon_gen.py",
+        "polyglot/python/seis_color_contrast.py",
+        "polyglot/python/seis_sw_cache_audit.py",
+        "server/python/verify_release.py"
+      ]
+    },
+    {
+      "order": 5,
+      "id": "swift",
+      "label": "Swift",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 574078,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/swift/SEISMotionPolicy.swift"
+      ]
+    },
+    {
+      "order": 6,
+      "id": "go",
+      "label": "Go",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 16806,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/go/health_contract.go",
+        "polyglot/go/cmd/seis-serve/main.go",
+        "polyglot/go/cmd/seis-jsonld/main.go"
+      ]
+    },
+    {
+      "order": 7,
+      "id": "rust",
+      "label": "Rust",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 12286,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/rust/performance_budget.rs",
+        "polyglot/rust/seis-link-audit/src/main.rs"
+      ]
+    },
+    {
+      "order": 8,
+      "id": "java",
+      "label": "Java",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 16392,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/java/SeisDeployReadiness.java",
+        "polyglot/java/DrawingsChecksum.java",
+        "polyglot/java/CssMediaQueryAudit.java"
+      ]
+    },
+    {
+      "order": 9,
+      "id": "kotlin",
+      "label": "Kotlin",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 1406,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/kotlin/SeisMotionPolicy.kt",
+        "polyglot/kotlin/seis_css_font_audit.kts"
+      ]
+    },
+    {
+      "order": 10,
+      "id": "dart",
+      "label": "Dart",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 532,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/dart/seis_motion_policy.dart"
+      ]
+    },
+    {
+      "order": 11,
+      "id": "php",
+      "label": "PHP",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 8768,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/php/contact-endpoint.php",
+        "server/php/health.php",
+        "server/php/router.php"
+      ]
+    },
+    {
+      "order": 12,
+      "id": "ruby",
+      "label": "Ruby",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 13677,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/ruby/verify_release.rb",
+        "polyglot/ruby/i18n_stats.rb",
+        "polyglot/ruby/html_heading_audit.rb",
+        "polyglot/ruby/favicon_audit.rb"
+      ]
+    },
+    {
+      "order": 13,
+      "id": "c",
+      "label": "C",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 5440,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/c/readiness_contract.h",
+        "polyglot/c/seis_utf8_check.c"
+      ]
+    },
+    {
+      "order": 14,
+      "id": "cplusplus",
+      "label": "C++",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 11206,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/cpp/readiness_contract.hpp",
+        "polyglot/cpp/seis_translations_lint.cpp"
+      ]
+    },
+    {
+      "order": 15,
+      "id": "csharp",
+      "label": "C#",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 2973,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/csharp/SeisReleaseContract.cs"
+      ]
+    },
+    {
+      "order": 16,
+      "id": "sql",
+      "label": "SQL",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 8752,
+      "layer": "database-and-data",
+      "entrypoints": [
+        "polyglot/sql/audit_ledger.sqlite.sql"
+      ]
+    },
+    {
+      "order": 17,
+      "id": "shell",
+      "label": "Shell",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 97489,
+      "layer": "cloud-devops-and-config",
+      "entrypoints": [
+        "polyglot/bash/deploy_guard.sh",
+        "scripts/polyglot-check.sh"
+      ]
+    },
+    {
+      "order": 18,
+      "id": "powershell",
+      "label": "PowerShell",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 2427,
+      "layer": "cloud-devops-and-config",
+      "entrypoints": [
+        "polyglot/powershell/SeisReleasePolicy.ps1"
+      ]
+    },
+    {
+      "order": 19,
+      "id": "lua",
+      "label": "Lua",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 6948,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/lua/seis_i18n_attr_audit.lua"
+      ]
+    },
+    {
+      "order": 20,
+      "id": "r",
+      "label": "R",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 7953,
+      "layer": "database-and-data",
+      "entrypoints": [
+        "polyglot/r/seis_translation_stats.R"
+      ]
+    },
+    {
+      "order": 21,
+      "id": "julia",
+      "label": "Julia",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 595,
+      "layer": "database-and-data",
+      "entrypoints": [
+        "polyglot/julia/readiness_metrics.jl"
+      ]
+    },
+    {
+      "order": 22,
+      "id": "perl",
+      "label": "Perl",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 13916,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/perl/readiness_guard.pl",
+        "polyglot/perl/hygiene_lint.pl",
+        "polyglot/perl/robots_txt_audit.pl"
+      ]
+    },
+    {
+      "order": 23,
+      "id": "haskell",
+      "label": "Haskell",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 0,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/haskell/CalmReleasePolicy.hs",
+        "polyglot/haskell/seis_css_unit_audit.hs"
+      ]
+    },
+    {
+      "order": 24,
+      "id": "scala",
+      "label": "Scala",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 660,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/scala/SeisReleasePolicy.scala"
+      ]
+    },
+    {
+      "order": 25,
+      "id": "elixir",
+      "label": "Elixir",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 582,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/elixir/calm_release_policy.ex",
+        "polyglot/elixir/seis_html_anchor_audit.exs"
+      ]
+    },
+    {
+      "order": 26,
+      "id": "erlang",
+      "label": "Erlang",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 560,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/erlang/calm_release_policy.erl"
+      ]
+    },
+    {
+      "order": 27,
+      "id": "clojure",
+      "label": "Clojure",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 569,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/clojure/readiness_policy.clj"
+      ]
+    },
+    {
+      "order": 28,
+      "id": "fsharp",
+      "label": "F#",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 1592,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/fsharp/SeisReleasePolicy.fs"
+      ]
+    },
+    {
+      "order": 29,
+      "id": "ocaml",
+      "label": "OCaml",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 7550,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/ocaml/release_policy.ml",
+        "polyglot/ocaml/seis_css_selector_stats.ml"
+      ]
+    },
+    {
+      "order": 30,
+      "id": "nim",
+      "label": "Nim",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 5452,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/nim/readiness_policy.nim",
+        "polyglot/nim/seis_html_img_audit.nim"
+      ]
+    },
+    {
+      "order": 31,
+      "id": "zig",
+      "label": "Zig",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 711,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/zig/readiness_contract.zig"
+      ]
+    },
+    {
+      "order": 32,
+      "id": "groovy",
+      "label": "Groovy",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 5362,
+      "layer": "backend-and-api",
+      "entrypoints": [
+        "polyglot/groovy/SeisReleasePolicy.groovy",
+        "polyglot/groovy/seis_json_files_check.groovy"
+      ]
+    },
+    {
+      "order": 33,
+      "id": "crystal",
+      "label": "Crystal",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 594,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/crystal/readiness_policy.cr"
+      ]
+    },
+    {
+      "order": 34,
+      "id": "d",
+      "label": "D",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 455,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/d/readiness_policy.d"
+      ]
+    },
+    {
+      "order": 35,
+      "id": "v",
+      "label": "V",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 572,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/v/readiness_policy.v"
+      ]
+    },
+    {
+      "order": 36,
+      "id": "fortran",
+      "label": "Fortran",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 528,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/fortran/readiness_policy.f90"
+      ]
+    },
+    {
+      "order": 37,
+      "id": "cobol",
+      "label": "COBOL",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 723,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/cobol/readiness-policy.cob"
+      ]
+    },
+    {
+      "order": 38,
+      "id": "pascal",
+      "label": "Pascal",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 858,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/pascal/release_policy.pas"
+      ]
+    },
+    {
+      "order": 39,
+      "id": "racket",
+      "label": "Racket",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 7245,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/racket/readiness-policy.rkt",
+        "polyglot/racket/seis_pwa_manifest_audit.rkt"
+      ]
+    },
+    {
+      "order": 40,
+      "id": "scheme",
+      "label": "Scheme",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 15747,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/scheme/readiness-policy.scm"
+      ]
+    },
+    {
+      "order": 41,
+      "id": "prolog",
+      "label": "Prolog",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 0,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/prolog/readiness_policy.pl",
+        "polyglot/prolog/seis_html_tabindex_audit.pl"
+      ]
+    },
+    {
+      "order": 42,
+      "id": "tcl",
+      "label": "Tcl",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 7290,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/tcl/seis_meta_tags_check.tcl"
+      ]
+    },
+    {
+      "order": 43,
+      "id": "awk",
+      "label": "AWK",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 1595,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/awk/css_var_histogram.awk"
+      ]
+    },
+    {
+      "order": 44,
+      "id": "common-lisp",
+      "label": "Common Lisp",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 5908,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/common-lisp/release-policy.lisp",
+        "polyglot/common-lisp/seis_html_id_uniqueness.lisp"
+      ]
+    },
+    {
+      "order": 45,
+      "id": "emacs-lisp",
+      "label": "Emacs Lisp",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 310,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/emacs-lisp/release-policy.el"
+      ]
+    },
+    {
+      "order": 46,
+      "id": "smalltalk",
+      "label": "Smalltalk",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 382,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/smalltalk/ReleasePolicy.st"
+      ]
+    },
+    {
+      "order": 47,
+      "id": "ada",
+      "label": "Ada",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 779,
+      "layer": "mobile-and-native",
+      "entrypoints": [
+        "polyglot/ada/seis_release_policy.ads"
+      ]
+    },
+    {
+      "order": 48,
+      "id": "visual-basic",
+      "label": "Visual Basic",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 992,
+      "layer": "research-legacy-and-lab",
+      "entrypoints": [
+        "polyglot/vb/SeisReleasePolicy.vb"
+      ]
+    },
+    {
+      "order": 49,
+      "id": "batchfile",
+      "label": "Batchfile",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 282,
+      "layer": "cloud-devops-and-config",
+      "entrypoints": [
+        "polyglot/windows/scripting/seis_windows_platform.bat"
+      ]
+    },
+    {
+      "order": 50,
+      "id": "matlab",
+      "label": "MATLAB",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 365,
+      "layer": "database-and-data",
+      "entrypoints": [
+        "polyglot/matlab/readiness_policy.m"
+      ]
+    },
+    {
+      "order": 51,
+      "id": "html",
+      "label": "HTML",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 161998,
+      "layer": "frontend-and-experience",
+      "entrypoints": [
+        "apps/web/index.html",
+        "apps/web/seis-cockpit.html"
+      ]
+    },
+    {
+      "order": 52,
+      "id": "css",
+      "label": "CSS",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 325296,
+      "layer": "frontend-and-experience",
+      "entrypoints": [
+        "apps/web/style.css",
+        "apps/web/styles.css"
+      ]
+    },
+    {
+      "order": 53,
+      "id": "solidity",
+      "label": "Solidity",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 869,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/solidity/SeisReleasePolicy.sol"
+      ]
+    },
+    {
+      "order": 54,
+      "id": "move",
+      "label": "Move",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 843,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/move/release_policy.move"
+      ]
+    },
+    {
+      "order": 55,
+      "id": "cairo",
+      "label": "Cairo",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 649,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/cairo/release_policy.cairo"
+      ]
+    },
+    {
+      "order": 56,
+      "id": "hack",
+      "label": "Hack",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 772,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/hack/SeisReleasePolicy.hack"
+      ]
+    },
+    {
+      "order": 57,
+      "id": "apex",
+      "label": "Apex",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 0,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/apex/SeisReleasePolicy.cls"
+      ]
+    },
+    {
+      "order": 58,
+      "id": "abap",
+      "label": "ABAP",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 778,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/abap/readiness_policy.abap"
+      ]
+    },
+    {
+      "order": 59,
+      "id": "qsharp",
+      "label": "Q#",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 594,
+      "layer": "security-policy-and-governance",
+      "entrypoints": [
+        "polyglot/qsharp/ReleasePolicy.qs"
+      ]
+    },
+    {
+      "order": 60,
+      "id": "make",
+      "label": "Make",
+      "kind": "source-language",
+      "githubLanguageSurface": true,
+      "githubBytes": 246,
+      "layer": "cloud-devops-and-config",
+      "entrypoints": [
+        "polyglot/make/release-policy.mk"
+      ]
+    }
+  ],
+  "ecosystemGroups": [
+    {
+      "id": "core-languages-and-logic",
+      "label": "Core Languages & Logic",
+      "kind": "source-language",
+      "technologies": [
+        {
+          "id": "python",
+          "label": "Python",
+          "order": 1
+        },
+        {
+          "id": "javascript",
+          "label": "JavaScript",
+          "order": 2
+        },
+        {
+          "id": "typescript",
+          "label": "TypeScript",
+          "order": 3
+        },
+        {
+          "id": "objective-c",
+          "label": "Objective-C",
+          "order": 4
+        },
+        {
+          "id": "swift",
+          "label": "Swift",
+          "order": 5
+        },
+        {
+          "id": "go",
+          "label": "Go",
+          "order": 6
+        },
+        {
+          "id": "rust",
+          "label": "Rust",
+          "order": 7
+        },
+        {
+          "id": "java",
+          "label": "Java",
+          "order": 8
+        },
+        {
+          "id": "kotlin",
+          "label": "Kotlin",
+          "order": 9
+        },
+        {
+          "id": "c",
+          "label": "C",
+          "order": 10
+        },
+        {
+          "id": "cplusplus",
+          "label": "C++",
+          "order": 11
+        },
+        {
+          "id": "csharp",
+          "label": "C#",
+          "order": 12
+        },
+        {
+          "id": "php",
+          "label": "PHP",
+          "order": 13
+        },
+        {
+          "id": "ruby",
+          "label": "Ruby",
+          "order": 14
+        },
+        {
+          "id": "r",
+          "label": "R",
+          "order": 15
+        },
+        {
+          "id": "lua",
+          "label": "Lua",
+          "order": 16
+        },
+        {
+          "id": "scala",
+          "label": "Scala",
+          "order": 17
+        },
+        {
+          "id": "haskell",
+          "label": "Haskell",
+          "order": 18
+        },
+        {
+          "id": "elixir",
+          "label": "Elixir",
+          "order": 19
+        },
+        {
+          "id": "dart",
+          "label": "Dart",
+          "order": 20
+        },
+        {
+          "id": "fsharp",
+          "label": "F#",
+          "order": 21
+        },
+        {
+          "id": "perl",
+          "label": "Perl",
+          "order": 22
+        },
+        {
+          "id": "shell",
+          "label": "Shell",
+          "order": 23
+        },
+        {
+          "id": "powershell",
+          "label": "PowerShell",
+          "order": 24
+        },
+        {
+          "id": "sql",
+          "label": "SQL",
+          "order": 25
+        }
+      ]
+    },
+    {
+      "id": "web-mobile-and-runtimes",
+      "label": "Web, Mobile & Runtimes",
+      "kind": "framework-runtime",
+      "technologies": [
+        {
+          "id": "react",
+          "label": "React",
+          "order": 1
+        },
+        {
+          "id": "next-js",
+          "label": "Next.js",
+          "order": 2
+        },
+        {
+          "id": "angular",
+          "label": "Angular",
+          "order": 3
+        },
+        {
+          "id": "vue",
+          "label": "Vue",
+          "order": 4
+        },
+        {
+          "id": "svelte",
+          "label": "Svelte",
+          "order": 5
+        },
+        {
+          "id": "astro",
+          "label": "Astro",
+          "order": 6
+        },
+        {
+          "id": "node-js",
+          "label": "Node.js",
+          "order": 7
+        },
+        {
+          "id": "express-js",
+          "label": "Express.js",
+          "order": 8
+        },
+        {
+          "id": "django",
+          "label": "Django",
+          "order": 9
+        },
+        {
+          "id": "flask",
+          "label": "Flask",
+          "order": 10
+        },
+        {
+          "id": "laravel",
+          "label": "Laravel",
+          "order": 11
+        },
+        {
+          "id": "ruby-on-rails",
+          "label": "Ruby on Rails",
+          "order": 12
+        },
+        {
+          "id": "wordpress",
+          "label": "WordPress",
+          "order": 13
+        },
+        {
+          "id": "graphql",
+          "label": "GraphQL",
+          "order": 14
+        },
+        {
+          "id": "rest",
+          "label": "REST",
+          "order": 15
+        },
+        {
+          "id": "tailwind-css",
+          "label": "Tailwind CSS",
+          "order": 16
+        },
+        {
+          "id": "bootstrap",
+          "label": "Bootstrap",
+          "order": 17
+        },
+        {
+          "id": "sass",
+          "label": "Sass",
+          "order": 18
+        },
+        {
+          "id": "jquery",
+          "label": "jQuery",
+          "order": 19
+        },
+        {
+          "id": "flutter",
+          "label": "Flutter",
+          "order": 20
+        },
+        {
+          "id": "react-native",
+          "label": "React Native",
+          "order": 21
+        },
+        {
+          "id": "expo",
+          "label": "Expo",
+          "order": 22
+        },
+        {
+          "id": "android",
+          "label": "Android",
+          "order": 23
+        },
+        {
+          "id": "swiftui",
+          "label": "SwiftUI",
+          "order": 24
+        },
+        {
+          "id": "uikit",
+          "label": "UIKit",
+          "order": 25
+        },
+        {
+          "id": "appkit",
+          "label": "AppKit",
+          "order": 26
+        },
+        {
+          "id": "web-components",
+          "label": "Web Components",
+          "order": 27
+        },
+        {
+          "id": "progressive-web-apps",
+          "label": "Progressive Web Apps",
+          "order": 28
+        }
+      ]
+    },
+    {
+      "id": "ai-data-and-intelligence",
+      "label": "AI, Data & Intelligence",
+      "kind": "ai-data",
+      "technologies": [
+        {
+          "id": "tensorflow",
+          "label": "TensorFlow",
+          "order": 1
+        },
+        {
+          "id": "pytorch",
+          "label": "PyTorch",
+          "order": 2
+        },
+        {
+          "id": "opencv",
+          "label": "OpenCV",
+          "order": 3
+        },
+        {
+          "id": "scikit-learn",
+          "label": "scikit-learn",
+          "order": 4
+        },
+        {
+          "id": "pandas",
+          "label": "Pandas",
+          "order": 5
+        },
+        {
+          "id": "numpy",
+          "label": "NumPy",
+          "order": 6
+        },
+        {
+          "id": "jupyter",
+          "label": "Jupyter",
+          "order": 7
+        },
+        {
+          "id": "matplotlib",
+          "label": "Matplotlib",
+          "order": 8
+        },
+        {
+          "id": "d3-js",
+          "label": "D3.js",
+          "order": 9
+        },
+        {
+          "id": "chart-js",
+          "label": "Chart.js",
+          "order": 10
+        },
+        {
+          "id": "openai-apis",
+          "label": "OpenAI APIs",
+          "order": 11
+        },
+        {
+          "id": "agents-sdk",
+          "label": "Agents SDK",
+          "order": 12
+        },
+        {
+          "id": "mcp",
+          "label": "MCP",
+          "order": 13
+        },
+        {
+          "id": "agi-system-contract",
+          "label": "AGI System Contract",
+          "order": 14
+        },
+        {
+          "id": "agent-memory",
+          "label": "Agent Memory",
+          "order": 15
+        },
+        {
+          "id": "agent-planning",
+          "label": "Agent Planning",
+          "order": 16
+        },
+        {
+          "id": "multi-agent-coordination",
+          "label": "Multi-Agent Coordination",
+          "order": 17
+        },
+        {
+          "id": "research-automation",
+          "label": "Research Automation",
+          "order": 18
+        },
+        {
+          "id": "token-efficiency",
+          "label": "Token Efficiency",
+          "order": 19
+        },
+        {
+          "id": "rag",
+          "label": "RAG",
+          "order": 20
+        },
+        {
+          "id": "embeddings",
+          "label": "Embeddings",
+          "order": 21
+        },
+        {
+          "id": "model-evaluation",
+          "label": "Model Evaluation",
+          "order": 22
+        }
+      ]
+    },
+    {
+      "id": "infra-cloud-and-devops",
+      "label": "Infra, Cloud & DevOps",
+      "kind": "infra-cloud-devops",
+      "technologies": [
+        {
+          "id": "docker",
+          "label": "Docker",
+          "order": 1
+        },
+        {
+          "id": "kubernetes",
+          "label": "Kubernetes",
+          "order": 2
+        },
+        {
+          "id": "git",
+          "label": "Git",
+          "order": 3
+        },
+        {
+          "id": "github",
+          "label": "GitHub",
+          "order": 4
+        },
+        {
+          "id": "github-actions",
+          "label": "GitHub Actions",
+          "order": 5
+        },
+        {
+          "id": "gitlab",
+          "label": "GitLab",
+          "order": 6
+        },
+        {
+          "id": "jenkins",
+          "label": "Jenkins",
+          "order": 7
+        },
+        {
+          "id": "aws",
+          "label": "AWS",
+          "order": 8
+        },
+        {
+          "id": "google-cloud",
+          "label": "Google Cloud",
+          "order": 9
+        },
+        {
+          "id": "azure",
+          "label": "Azure",
+          "order": 10
+        },
+        {
+          "id": "cloudflare",
+          "label": "Cloudflare",
+          "order": 11
+        },
+        {
+          "id": "firebase",
+          "label": "Firebase",
+          "order": 12
+        },
+        {
+          "id": "vercel",
+          "label": "Vercel",
+          "order": 13
+        },
+        {
+          "id": "netlify",
+          "label": "Netlify",
+          "order": 14
+        },
+        {
+          "id": "render",
+          "label": "Render",
+          "order": 15
+        },
+        {
+          "id": "heroku",
+          "label": "Heroku",
+          "order": 16
+        },
+        {
+          "id": "nginx",
+          "label": "Nginx",
+          "order": 17
+        },
+        {
+          "id": "terraform",
+          "label": "Terraform",
+          "order": 18
+        },
+        {
+          "id": "ansible",
+          "label": "Ansible",
+          "order": 19
+        },
+        {
+          "id": "prometheus",
+          "label": "Prometheus",
+          "order": 20
+        },
+        {
+          "id": "grafana",
+          "label": "Grafana",
+          "order": 21
+        },
+        {
+          "id": "sentry",
+          "label": "Sentry",
+          "order": 22
+        },
+        {
+          "id": "datadog",
+          "label": "Datadog",
+          "order": 23
+        }
+      ]
+    },
+    {
+      "id": "databases-and-storage",
+      "label": "Databases & Storage",
+      "kind": "database-storage",
+      "technologies": [
+        {
+          "id": "postgresql",
+          "label": "PostgreSQL",
+          "order": 1
+        },
+        {
+          "id": "mysql",
+          "label": "MySQL",
+          "order": 2
+        },
+        {
+          "id": "mariadb",
+          "label": "MariaDB",
+          "order": 3
+        },
+        {
+          "id": "mongodb",
+          "label": "MongoDB",
+          "order": 4
+        },
+        {
+          "id": "sqlite",
+          "label": "SQLite",
+          "order": 5
+        },
+        {
+          "id": "redis",
+          "label": "Redis",
+          "order": 6
+        },
+        {
+          "id": "cassandra",
+          "label": "Cassandra",
+          "order": 7
+        },
+        {
+          "id": "dynamodb",
+          "label": "DynamoDB",
+          "order": 8
+        },
+        {
+          "id": "supabase",
+          "label": "Supabase",
+          "order": 9
+        },
+        {
+          "id": "firebase-realtime-database",
+          "label": "Firebase Realtime Database",
+          "order": 10
+        },
+        {
+          "id": "cloudinary",
+          "label": "Cloudinary",
+          "order": 11
+        },
+        {
+          "id": "object-storage",
+          "label": "Object Storage",
+          "order": 12
+        }
+      ]
+    },
+    {
+      "id": "tools-and-design-suite",
+      "label": "Tools & Design Suite",
+      "kind": "tool-design",
+      "technologies": [
+        {
+          "id": "antigravity-ide",
+          "label": "Antigravity IDE",
+          "order": 1
+        },
+        {
+          "id": "xcode",
+          "label": "Xcode",
+          "order": 2
+        },
+        {
+          "id": "android-studio",
+          "label": "Android Studio",
+          "order": 3
+        },
+        {
+          "id": "jetbrains-toolbox",
+          "label": "JetBrains Toolbox",
+          "order": 4
+        },
+        {
+          "id": "vim",
+          "label": "Vim",
+          "order": 5
+        },
+        {
+          "id": "neovim",
+          "label": "Neovim",
+          "order": 6
+        },
+        {
+          "id": "sublime-text",
+          "label": "Sublime Text",
+          "order": 7
+        },
+        {
+          "id": "figma",
+          "label": "Figma",
+          "order": 8
+        },
+        {
+          "id": "adobe-photoshop",
+          "label": "Adobe Photoshop",
+          "order": 9
+        },
+        {
+          "id": "adobe-illustrator",
+          "label": "Adobe Illustrator",
+          "order": 10
+        },
+        {
+          "id": "adobe-after-effects",
+          "label": "Adobe After Effects",
+          "order": 11
+        },
+        {
+          "id": "adobe-premiere-pro",
+          "label": "Adobe Premiere Pro",
+          "order": 12
+        },
+        {
+          "id": "adobe-xd",
+          "label": "Adobe XD",
+          "order": 13
+        },
+        {
+          "id": "blender",
+          "label": "Blender",
+          "order": 14
+        },
+        {
+          "id": "postman",
+          "label": "Postman",
+          "order": 15
+        },
+        {
+          "id": "npm",
+          "label": "npm",
+          "order": 16
+        },
+        {
+          "id": "pnpm",
+          "label": "pnpm",
+          "order": 17
+        },
+        {
+          "id": "bun",
+          "label": "Bun",
+          "order": 18
+        },
+        {
+          "id": "obsidian",
+          "label": "Obsidian",
+          "order": 19
+        },
+        {
+          "id": "notion",
+          "label": "Notion",
+          "order": 20
+        },
+        {
+          "id": "discord",
+          "label": "Discord",
+          "order": 21
+        }
+      ]
+    },
+    {
+      "id": "meta-and-productivity",
+      "label": "Meta & Productivity",
+      "kind": "meta-productivity",
+      "technologies": [
+        {
+          "id": "stack-overflow",
+          "label": "Stack Overflow",
+          "order": 1
+        },
+        {
+          "id": "github-discussions",
+          "label": "GitHub Discussions",
+          "order": 2
+        },
+        {
+          "id": "gitlab-issues",
+          "label": "GitLab Issues",
+          "order": 3
+        },
+        {
+          "id": "bitbucket",
+          "label": "Bitbucket",
+          "order": 4
+        },
+        {
+          "id": "linkedin",
+          "label": "LinkedIn",
+          "order": 5
+        },
+        {
+          "id": "x-twitter",
+          "label": "X / Twitter",
+          "order": 6
+        },
+        {
+          "id": "markdown",
+          "label": "Markdown",
+          "order": 7
+        },
+        {
+          "id": "mermaid",
+          "label": "Mermaid",
+          "order": 8
+        },
+        {
+          "id": "graphviz",
+          "label": "Graphviz",
+          "order": 9
+        },
+        {
+          "id": "readwise",
+          "label": "Readwise",
+          "order": 10
+        },
+        {
+          "id": "zotero",
+          "label": "Zotero",
+          "order": 11
+        },
+        {
+          "id": "notebooklm",
+          "label": "NotebookLM",
+          "order": 12
+        }
+      ]
+    }
+  ],
+  "governance": [
+    "Keep GitHub Linguist honest: source languages are counted from real files and language overrides only clarify true source identity.",
+    "Do not add placeholder code to inflate a language percentage.",
+    "Represent frameworks, SDKs, cloud providers, databases, design tools, and productivity surfaces in the ecosystem stack instead of the language bar.",
+    "Default editor guidance remains Antigravity IDE, Xcode for Apple work, Android Studio for Android work, and terminal/Codex for repo automation."
+  ]
+}

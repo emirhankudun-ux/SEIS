@@ -6,7 +6,8 @@
     "openai-bundled",
     "openai-primary-runtime"
   ],
-  "local_system_plugin": "seis@personal",
+  "local_system_plugin": "seis-ai-agent@seis-repo",
+  "legacy_system_plugin": "seis@personal",
   "fallback_rule": "Use non-OpenAI, non-installed, or externally mentioned plugin URI families only when the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for that provider.",
   "categories": {
     "design": {

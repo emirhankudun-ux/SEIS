@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS God Mode Developer"
+  short_description: "High-agency SEIS engineering lane with strict evidence and safety gates."
+  default_prompt: "Use SEIS God Mode Developer to make one high-impact SEIS improvement while protecting user work, preserving security, and validating claims with current evidence."

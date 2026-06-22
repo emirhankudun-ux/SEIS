@@ -1,0 +1,379 @@
+{
+  "version": 1,
+  "id": "seis-ssh-cloud-roadmap",
+  "sourceModel": "deploy/seis-ssh-access-model.json",
+  "targetAlias": "SEIS-SSH",
+  "strategy": "cloud-only-long-horizon",
+  "status": "active",
+  "enterpriseBenchmarkSource": "deploy/seis-ssh-5-year-enterprise-benchmark.json",
+  "portableBootstrap": {
+    "artifact": "docs/deployment/seis-ssh-new-device-bootstrap.md",
+    "target": "new-computer-and-chatgpt-codex-surfaces",
+    "requiredAlias": "SEIS-SSH",
+    "requiredCommands": [
+      "gh auth refresh -h github.com -s codespace",
+      "npm run cloud:ssh-config:install",
+      "npm run cloud:ssh:ensure-online",
+      "npm run cloud:ssh:online:strict"
+    ],
+    "forbiddenBootstrapPatterns": [
+      "copy-private-keys-into-repo",
+      "use-localhost-as-remote",
+      "use-lan-hostname-as-remote",
+      "add-direct-vps-picker-alias"
+    ]
+  },
+  "pickerCompatibility": {
+    "checkCommand": "npm run check:seis-ssh-picker-compatibility",
+    "singleAlias": "SEIS-SSH",
+    "defaultTransport": "codespace",
+    "pickerPreferredTransport": "direct-cloud",
+    "rules": [
+      "Codespaces transport is terminal-compatible and remains the default.",
+      "Some SSH pickers may show Codespaces ProxyCommand targets as offline.",
+      "Direct-cloud transport may be used for the same SEIS-SSH alias only after the cloud endpoint is reachable.",
+      "Do not add extra visible aliases to make a picker look online."
+    ]
+  },
+  "closedDeveloperRuntime": {
+    "contract": "deploy/seis-ssh-closed-runtime-contract.json",
+    "runbook": "docs/deployment/seis-ssh-closed-developer-runtime.md",
+    "targetAlias": "SEIS-SSH",
+    "runtimeType": "closed-cloud-development-system",
+    "privateRuntimeState": true,
+    "publicInboundRequired": false,
+    "requiredValidation": [
+      "npm run check:seis-ssh-closed-runtime",
+      "npm run cloud:ssh:online:strict"
+    ]
+  },
+  "northStar": [
+    "Expose one stable SSH entry point for ChatGPT, Codex, and future SEIS clients.",
+    "Keep the runtime portable across new computers by avoiding local Mac, LAN, and direct VPS picker dependencies.",
+    "Route individuals through normal cloud SSH.",
+    "Route companies and teams through peer-authenticated VPN cloud controls.",
+    "Route developers through a closed cloud development system for sensitive and long-running work."
+  ],
+  "invariants": [
+    {
+      "id": "single-visible-alias",
+      "statement": "Only SEIS-SSH may be exposed as the SEIS SSH target in the Codex SSH picker.",
+      "evidence": ["npm run check:seis-ssh-access-model"]
+    },
+    {
+      "id": "cloud-only-entrypoint",
+      "statement": "SEIS-SSH must resolve to a cloud transport and must not depend on 127.0.0.1, .local, or a direct public VPS alias.",
+      "evidence": ["npm run cloud:ssh:online:strict"]
+    },
+    {
+      "id": "individual-normal-cloud",
+      "statement": "Individual users keep normal cloud SSH with no VPN requirement.",
+      "profile": "individual-cloud",
+      "evidence": ["deploy/seis-ssh-access-model.json"]
+    },
+    {
+      "id": "organization-vpn",
+      "statement": "Companies and teams require WireGuard or an equivalent peer-authenticated VPN cloud route.",
+      "profile": "organization-vpn-cloud",
+      "evidence": ["npm run check:ssh-vpn-cloud-server"]
+    },
+    {
+      "id": "developer-closed-system",
+      "statement": "Developers use a closed cloud development system for sensitive or long-running engineering.",
+      "profile": "developer-closed-system",
+      "evidence": ["deploy/seis-ssh-access-model.json"]
+    }
+  ],
+  "tracks": [
+    {
+      "id": "individual-cloud-access",
+      "profile": "individual-cloud",
+      "audience": "individual-users",
+      "vpnRequired": false,
+      "currentProvider": "github-codespaces",
+      "definitionOfReady": [
+        "SEIS-SSH is installed in ~/.ssh/config.",
+        "GitHub CLI has codespace scope.",
+        "Remote /workspaces/SEIS exists.",
+        "Remote Codex CLI is available."
+      ],
+      "nextMilestones": [
+        "Keep cloud:ssh:online:strict as the primary online proof.",
+        "Document new-computer bootstrap without copying private keys into the repo.",
+        "Add future broker support only if it preserves the one-alias contract."
+      ]
+    },
+    {
+      "id": "organization-vpn-access",
+      "profile": "organization-vpn-cloud",
+      "audience": "companies-and-teams",
+      "vpnRequired": true,
+      "currentProvider": "wireguard-or-equivalent-peer-authenticated-vpn",
+      "definitionOfReady": [
+        "At least one approved team peer exists.",
+        "Each peer uses a narrow /32 address.",
+        "Broad VPN source ranges are rejected.",
+        "The user-facing SSH alias remains SEIS-SSH."
+      ],
+      "nextMilestones": [
+        "Keep provisioning plan-first and non-destructive.",
+        "Add organization peer inventory reporting.",
+        "Add release handoff evidence for team workspaces before publish."
+      ]
+    },
+    {
+      "id": "developer-closed-cloud-system",
+      "profile": "developer-closed-system",
+      "audience": "developers",
+      "vpnRequired": true,
+      "currentProvider": "cloud-isolated-workspace",
+      "definitionOfReady": [
+        "Sensitive work is not performed through local Mac or LAN hosts.",
+        "Private runtime state stays out of the open-source repo.",
+        "Remote Codex CLI is available.",
+        "Long-running development can continue after local device changes."
+      ],
+      "nextMilestones": [
+        "Define closed workspace promotion gates.",
+        "Add developer handoff manifest for long-running cloud sessions.",
+        "Add periodic closed-system drift checks."
+      ]
+    }
+  ],
+  "maturityPhases": [
+    {
+      "id": "phase-0-current-lock",
+      "label": "Current cloud-only lock",
+      "exitCriteria": [
+        "SEIS-SSH is the only active SEIS SSH alias.",
+        "cloud:ssh:online:strict passes.",
+        "Access model and roadmap checks pass."
+      ]
+    },
+    {
+      "id": "phase-1-portable-bootstrap",
+      "label": "Portable bootstrap for new computers",
+      "exitCriteria": [
+        "A new device can install the same SEIS-SSH alias without local repo assumptions.",
+        "Codespace auth and identity-file prerequisites are documented.",
+        "No private keys or tokens are committed.",
+        "ChatGPT and Codex SSH surfaces select SEIS-SSH instead of stale local aliases."
+      ]
+    },
+    {
+      "id": "phase-2-team-vpn-hardening",
+      "label": "Team VPN hardening",
+      "exitCriteria": [
+        "Organization peers are reviewed explicitly.",
+        "Peer inventory rejects broad ranges.",
+        "Team handoff surfaces remain private and cloud-only."
+      ]
+    },
+    {
+      "id": "phase-3-closed-developer-runtime",
+      "label": "Closed developer runtime",
+      "exitCriteria": [
+        "Developer workspaces have closed runtime governance.",
+        "Sensitive execution state is separated from open-source artifacts.",
+        "Long-running Codex work can resume from cloud evidence."
+      ]
+    }
+  ],
+  "cadence": {
+    "weekly": [
+      "Run cloud:ssh:ensure-online before interactive work.",
+      "Run cloud:ssh:online:strict on the active SEIS-SSH target.",
+      "Review whether any local, LAN, direct VPS, or duplicate SEIS SSH aliases have reappeared."
+    ],
+    "release": [
+      "Run check:seis-ssh-access-model.",
+      "Run check:seis-ssh-cloud-roadmap.",
+      "Run check:ssh-vpn-cloud-server.",
+      "Attach cloud SSH readiness output to publish readiness when release tooling requires it."
+    ],
+    "incident": [
+      "Disable stale aliases instead of adding temporary local aliases.",
+      "Rotate affected credentials outside the repo.",
+      "Rebuild SEIS-SSH from the managed installer."
+    ]
+  },
+  "guardrails": [
+    "Do not add local Mac or LAN aliases to the managed SEIS SSH block.",
+    "Do not add direct public VPS aliases to the Codex picker.",
+    "Do not print SSH private keys, GitHub tokens, certificates, or VPN private keys.",
+    "Do not mark SEIS SSH online unless remote repo and Codex CLI are verified.",
+    "Do not weaken company/team VPN requirements to simplify onboarding."
+  ],
+  "validationCommands": [
+    "npm run check:seis-ssh-cloud-roadmap",
+    "npm run check:seis-ssh-closed-runtime",
+    "npm run check:seis-ssh-access-model",
+    "npm run check:seis-ssh-picker-compatibility",
+    "npm run check:seis-ssh-enterprise-benchmark",
+    "npm run cloud:ssh:online:strict",
+    "npm run check:ssh-vpn-cloud-server"
+  ],
+  "enterpriseBenchmark": {
+    "id": "seis-ssh-5-year-enterprise-benchmark",
+    "version": 1,
+    "title": "SEIS SSH 5-Year Enterprise Benchmark",
+    "scope": "cloud-only-access, developer portability, AI-safe operations",
+    "referenceCompanyPatterns": [
+      {
+        "name": "Apple",
+        "theme": "simple product surface with strict defaults",
+        "signals": [
+          "single visible access entry point",
+          "key-first identity and strict auth defaults",
+          "portable onboarding with verified cloud workspace"
+        ]
+      },
+      {
+        "name": "Google",
+        "theme": "policy-first control and continuous drift prevention",
+        "signals": [
+          "contract-driven controls",
+          "gated config and infrastructure changes",
+          "continuous compliance evidence"
+        ]
+      },
+      {
+        "name": "Large AI Companies",
+        "theme": "tool-bound AI plane with audit-first behavior",
+        "signals": [
+          "policy-tagged tool calls",
+          "deny-by-default for unsafe commands",
+          "machine-readable session continuity evidence",
+          "human confirmation on risky actions"
+        ]
+      }
+    ],
+    "kpiFramework": {
+      "overallTarget": {
+        "year": 5,
+        "slaSshAvailability": 0.9995,
+        "criticalMttxHours": 1,
+        "mobileOnboardingMinutes": 10
+      },
+      "gateThresholds": {
+        "year1": {
+          "onlineSuccess": 0.99,
+          "recoverySeconds": 30,
+          "policyDrift": 0
+        },
+        "year3": {
+          "restoreMinutes": 15,
+          "driftDetection": 0.95
+        },
+        "year5": {
+          "availability": 0.9995,
+          "criticalMTTRHours": 1,
+          "regionalFailoverMinutes": 30
+        }
+      }
+    },
+    "years": [
+      {
+        "year": 1,
+        "name": "Cloud Foundation",
+        "expectedControls": [
+          "single alias enforcement",
+          "key-only auth and strict ForceCommand",
+          "offline recovery path for session state",
+          "online proof includes /workspaces/SEIS + codex CLI"
+        ],
+        "minimumKPIs": {
+          "accessSuccess": 0.99,
+          "recoverySeconds": 30,
+          "newDeviceReadinessMinutes": 10
+        },
+        "deliverables": [
+          "cloud:ssh:online:strict",
+          "check:seis-ssh-access-model",
+          "check:seis-ssh-cloud-roadmap",
+          "check:seis-ssh-picker-compatibility"
+        ]
+      },
+      {
+        "year": 2,
+        "name": "Zero-Trust Maturity",
+        "expectedControls": [
+          "explicit allowlist for shell/tool surface",
+          "authorized key constraints",
+          "role-aware transport separation",
+          "drift audit records"
+        ],
+        "minimumKPIs": {
+          "unauthorizedCommandRate": 0.001,
+          "newDeviceReadinessMinutes": 8,
+          "driftReportLatencyHours": 24
+        },
+        "deliverables": [
+          "sandbox risk classifier",
+          "tool allowlist",
+          "new-computer bootstrap automation"
+        ]
+      },
+      {
+        "year": 3,
+        "name": "SRE-Grade Platforming",
+        "expectedControls": [
+          "multi-region continuity plan",
+          "alias migration without picker break",
+          "mandatory pre-release SSH gate",
+          "signed persistence restore metadata"
+        ],
+        "minimumKPIs": {
+          "restoreMinutes": 15,
+          "driftDetectionAccuracy": 0.95,
+          "releaseGatePassRate": 1.0
+        },
+        "deliverables": [
+          "config drift checker",
+          "automated restore drill",
+          "rollback evidence on control change"
+        ]
+      },
+      {
+        "year": 4,
+        "name": "AI-Safe Automation",
+        "expectedControls": [
+          "tool risk scoring",
+          "policy escalation for high-risk commands",
+          "anomaly quarantine runbooks",
+          "SOC/IR artifact generation"
+        ],
+        "minimumKPIs": {
+          "falsePositiveRate": 0.02,
+          "firstConnectionSuccessRate": 0.98,
+          "incidentMTTHours": 2
+        },
+        "deliverables": [
+          "policy-aware AI command pipeline",
+          "human confirmation path",
+          "red-team drift simulation"
+        ]
+      },
+      {
+        "year": 5,
+        "name": "Platform-Grade Access Service",
+        "expectedControls": [
+          "identity-aware access service facade",
+          "short-lived access",
+          "global alias continuity under failover",
+          "sealed secrets"
+        ],
+        "minimumKPIs": {
+          "availability": 0.9995,
+          "criticalCaseMTTRHours": 1,
+          "regionalFailoverMinutes": 30
+        },
+        "deliverables": [
+          "enterprise benchmark gate in governance",
+          "annual audit-ready evidence pack",
+          "cross-region continuity runbook"
+        ]
+      }
+    ]
+  }
+}

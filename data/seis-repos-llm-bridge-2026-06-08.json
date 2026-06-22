@@ -1,0 +1,30 @@
+{
+  "id": "seis-repos-llm-bridge-2026-06-08",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-09",
+  "canonical": {
+    "repo": ".",
+    "branch": "main",
+    "notes": [
+      "Central SEIS repository for MCP and plugin bundle artifacts.",
+      "Keep this file aligned with plugin, MCP, and LLM lane assets."
+    ]
+  },
+  "plugin": {
+    "manifest": "plugins/seis/.codex-plugin/plugin.json",
+    "localPath": "plugins/seis",
+    "mcpManifest": "plugins/seis/.mcp.json"
+  },
+  "mcp": {
+    "server": "mcp/seis-mcp-server.mjs",
+    "launcher": "plugins/seis/scripts/seis-mcp-launcher.mjs",
+    "audit": "plugins/seis/scripts/seis-mcp-bundle-audit.sh"
+  },
+  "llmPackages": {
+    "registry": "content/development/llm-package-registry.json",
+    "routingPolicy": "content/development/llm-task-routing-policy.json",
+    "adapters": "content/development/llm-adapter-readiness.json",
+    "requestBlueprints": "content/development/llm-request-blueprints.json",
+    "planner": "packages/ai-language/src/llm-task-planner.mjs"
+  }
+}

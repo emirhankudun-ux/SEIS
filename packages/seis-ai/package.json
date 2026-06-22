@@ -1,0 +1,26 @@
+{
+  "name": "@seis/ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SEIS AI toolkit: MCP server, Claude agent CLI, and web audit suite for the SEIS workspace.",
+  "bin": {
+    "seis-mcp": "bin/seis-mcp.mjs",
+    "seis-agent": "bin/seis-agent.mjs",
+    "seis-check": "bin/seis-check.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/**/*.test.mjs",
+    "check": "node bin/seis-check.mjs",
+    "mcp": "node bin/seis-mcp.mjs",
+    "agent": "node bin/seis-agent.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.103.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.76"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

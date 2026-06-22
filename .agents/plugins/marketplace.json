@@ -1,0 +1,20 @@
+{
+  "name": "seis-repo",
+  "interface": {
+    "displayName": "SEIS Repo"
+  },
+  "plugins": [
+    {
+      "name": "seis-ai-agent",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seis-ai-agent"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer"
+    }
+  ]
+}

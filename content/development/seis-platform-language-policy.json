@@ -1,0 +1,149 @@
+{
+  "version": 1,
+  "id": "seis-platform-language-policy",
+  "mode": "apple_native_continuation_first_with_windows_polyglot_support",
+  "summary": {
+    "appleLanguageCount": 5,
+    "appleNativeFrameworkCount": 10,
+    "windowsLanguageCount": 41,
+    "windowsRequiredLanguageCount": 18,
+    "appleOnlyLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "appleNativeFrameworks": [
+      "SwiftUI",
+      "AppKit",
+      "UIKit",
+      "Metal",
+      "Combine",
+      "Core Data",
+      "CloudKit",
+      "Foundation",
+      "PlaygroundSupport",
+      "AppleScript"
+    ],
+    "windowsExcludedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ]
+  },
+  "apple": {
+    "platforms": [
+      "macos",
+      "ios"
+    ],
+    "allowedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "prioritizedFrameworks": [
+      "SwiftUI",
+      "AppKit",
+      "UIKit",
+      "Metal",
+      "Combine",
+      "Core Data",
+      "CloudKit",
+      "Foundation",
+      "PlaygroundSupport",
+      "AppleScript"
+    ],
+    "allowedSourceRoots": [
+      "packages/seis_platform_swift/",
+      "polyglot/swift/",
+      "polyglot/objective-c/",
+      "polyglot/swiftui-playground/",
+      "polyglot/applescript/",
+      "apps/macos/"
+    ],
+    "rule": "Apple platform work continues through Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces first.",
+    "continuationRule": "New SEIS platform implementation should default to Apple-native surfaces before adding compatibility work elsewhere."
+  },
+  "windows": {
+    "platforms": [
+      "windows"
+    ],
+    "allowedLanguageSurfaces": [
+      "Awk",
+      "Batch",
+      "Bicep",
+      "C",
+      "C#",
+      "C++",
+      "CMD",
+      "CMake",
+      "COBOL",
+      "Dart",
+      "Dockerfile",
+      "F#",
+      "Fortran",
+      "Go",
+      "Groovy",
+      "Haskell",
+      "JSON Schema",
+      "Java",
+      "JavaScript",
+      "Kotlin",
+      "Lua",
+      "Make",
+      "Nim",
+      "OCaml",
+      "OpenAPI",
+      "PHP",
+      "Perl",
+      "PowerShell",
+      "Python",
+      "R",
+      "Ruby",
+      "Rust",
+      "SQL",
+      "Scala",
+      "Shell",
+      "Tcl",
+      "Terraform",
+      "TypeScript",
+      "Visual Basic",
+      "YAML",
+      "Zig"
+    ],
+    "requiredLanguageSurfaces": [
+      "C#",
+      "F#",
+      "Visual Basic",
+      "PowerShell",
+      "Batch",
+      "CMD",
+      "C",
+      "C++",
+      "Rust",
+      "Go",
+      "Python",
+      "Java",
+      "Kotlin",
+      "SQL",
+      "R",
+      "Lua",
+      "Ruby",
+      "PHP"
+    ],
+    "excludedLanguageSurfaces": [
+      "AppleScript",
+      "Objective-C",
+      "Playground",
+      "Swift",
+      "SwiftUI"
+    ],
+    "rule": "Windows work is broad polyglot and excludes Apple-only Swift, SwiftUI, Objective-C, Playground, and AppleScript surfaces."
+  },
+  "routingRule": "SEIS remains the primary agent; platform helpers are selected by OS boundary and language policy."
+}

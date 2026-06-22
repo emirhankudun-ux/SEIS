@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<seisReleasePolicy version="1">
+  <deployment requiresDomainBeforeLiveDeploy="true">
+    <artifact>dist/seis-static.zip</artifact>
+    <artifact>dist/server-upload-manifest.json</artifact>
+    <releaseLedger>releases/latest.json</releaseLedger>
+  </deployment>
+  <motion supportsReducedMotion="true" mobileParticleLimit="24" desktopParticleLimit="64" />
+  <quality accessibilityReviewRequired="true" polyglotContractsRequired="true" serverDropRequired="true" />
+</seisReleasePolicy>

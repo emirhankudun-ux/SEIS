@@ -1,0 +1,4 @@
+interface:
+  display_name: "SEIS Focus Mode"
+  short_description: "Concentrated SEIS app, website, and AI/AGI operating lane."
+  default_prompt: "Use SEIS Focus Mode to reduce noise, preserve governance evidence, and keep app, website, plugin, and AI/AGI work aligned."

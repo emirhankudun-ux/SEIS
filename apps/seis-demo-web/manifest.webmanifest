@@ -1,0 +1,17 @@
+{
+  "name": "SEIS Demo",
+  "short_name": "SEIS Demo",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06090f",
+  "theme_color": "#0b1323",
+  "orientation": "any",
+  "description": "SEIS demo for macOS and iOS surfaces with shared route map and analytics contract.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,572 @@
+{
+  "version": 1,
+  "branch": "feature/polyglot-multilingual-server-foundation",
+  "principle": "many software languages, minimal runtime weight",
+  "languages": [
+    {
+      "language": "JavaScript",
+      "role": "browser interaction, cinematic motion, gallery, i18n",
+      "entrypoints": [
+        "apps/web/src/scripts/motion-system.js",
+        "apps/web/src/scripts/gallery-system.js",
+        "apps/web/src/scripts/i18n-system.js",
+        "polyglot/javascript/plugin-source-runtime.js"
+      ]
+    },
+    {
+      "language": "TypeScript",
+      "role": "release contract typing and requested plugin stack contracts",
+      "entrypoints": [
+        "polyglot/typescript/release-contract.ts",
+        "polyglot/typescript/fullstack-plugin-contract.ts"
+      ]
+    },
+    {
+      "language": "Node.js",
+      "role": "packaging, quality checks, and requested stack readiness",
+      "entrypoints": [
+        "scripts/check-foundation.mjs",
+        "scripts/prepare-server-upload.mjs",
+        "scripts/create-requested-software-stack.cjs",
+        "polyglot/node/requested_stack_readiness.mjs"
+      ]
+    },
+    {
+      "language": "MySQL",
+      "role": "plugin source registry and requested software stack ledger schema",
+      "entrypoints": ["polyglot/mysql/plugin_source_registry.mysql.sql"]
+    },
+    {
+      "language": "React",
+      "role": "typed plugin source dashboard component contract",
+      "entrypoints": ["polyglot/react/PluginSourceDashboard.tsx"]
+    },
+    {
+      "language": "Express.js",
+      "role": "Express-compatible plugin source and software stack route adapter",
+      "entrypoints": ["server/express/plugin-source-routes.mjs"]
+    },
+    {
+      "language": "Python",
+      "role": "asset/deploy metadata inspection",
+      "entrypoints": [
+        "polyglot/python/seis_manifest.py",
+        "server/python/verify_release.py"
+      ]
+    },
+    {
+      "language": "Ruby",
+      "role": "alternate release hash verification",
+      "entrypoints": ["polyglot/ruby/verify_release.rb"]
+    },
+    {
+      "language": "PHP",
+      "role": "shared-hosting health fallback",
+      "entrypoints": [
+        "server/php/health.php",
+        "server/php/router.php"
+      ]
+    },
+    {
+      "language": "Go",
+      "role": "future service health contract",
+      "entrypoints": ["polyglot/go/health_contract.go"]
+    },
+    {
+      "language": "Rust",
+      "role": "performance budget contract",
+      "entrypoints": ["polyglot/rust/performance_budget.rs"]
+    },
+    {
+      "language": "Swift",
+      "role": "iOS motion/accessibility policy",
+      "entrypoints": ["polyglot/swift/SEISMotionPolicy.swift"]
+    },
+    {
+      "language": "Kotlin",
+      "role": "Android motion/accessibility policy",
+      "entrypoints": ["polyglot/kotlin/SeisMotionPolicy.kt"]
+    },
+    {
+      "language": "Dart",
+      "role": "Flutter motion/accessibility policy",
+      "entrypoints": ["polyglot/dart/seis_motion_policy.dart"]
+    },
+    {
+      "language": "Bash",
+      "role": "portable deploy guard",
+      "entrypoints": ["polyglot/bash/deploy_guard.sh"]
+    },
+    {
+      "language": "Java",
+      "role": "JVM release readiness contract",
+      "entrypoints": ["polyglot/java/SeisDeployReadiness.java"]
+    },
+    {
+      "language": "C#",
+      "role": ".NET release preservation contract",
+      "entrypoints": ["polyglot/csharp/SeisReleaseContract.cs"]
+    },
+    {
+      "language": "SQL",
+      "role": "future release ledger schema",
+      "entrypoints": ["polyglot/sql/release_readiness_schema.sql"]
+    },
+    {
+      "language": "Lua",
+      "role": "tiny edge/device calm-mode policy",
+      "entrypoints": ["polyglot/lua/calm_motion_policy.lua"]
+    },
+    {
+      "language": "YAML",
+      "role": "portable deploy governance configuration",
+      "entrypoints": ["polyglot/yaml/deploy-governance.yml"]
+    },
+    {
+      "language": "Cloudflare Worker",
+      "role": "edge health and origin proxy adapter",
+      "entrypoints": ["server/edge/cloudflare-worker.js"]
+    },
+    {
+      "language": "Docker",
+      "role": "containerized static serving",
+      "entrypoints": [
+        "server/docker/Dockerfile",
+        "server/docker/compose.yaml"
+      ]
+    },
+    {
+      "language": "Nginx/Apache config",
+      "role": "static hosting rewrite and cache policy",
+      "entrypoints": [
+        "server/nginx/seis-static.conf",
+        "server/apache/.htaccess"
+      ]
+    },
+    {
+      "language": "C",
+      "role": "portable embedded readiness contract",
+      "entrypoints": ["polyglot/c/readiness_contract.h"]
+    },
+    {
+      "language": "C++",
+      "role": "native application readiness contract",
+      "entrypoints": ["polyglot/cpp/readiness_contract.hpp"]
+    },
+    {
+      "language": "Elixir",
+      "role": "calm release policy for concurrent service experiments",
+      "entrypoints": ["polyglot/elixir/calm_release_policy.ex"]
+    },
+    {
+      "language": "Erlang",
+      "role": "fault-tolerant release policy sketch",
+      "entrypoints": ["polyglot/erlang/calm_release_policy.erl"]
+    },
+    {
+      "language": "Haskell",
+      "role": "pure release policy model",
+      "entrypoints": ["polyglot/haskell/CalmReleasePolicy.hs"]
+    },
+    {
+      "language": "Scala",
+      "role": "JVM typed release policy model",
+      "entrypoints": ["polyglot/scala/SeisReleasePolicy.scala"]
+    },
+    {
+      "language": "R",
+      "role": "readiness metrics sketch for analysis notebooks",
+      "entrypoints": ["polyglot/r/readiness_metrics.R"]
+    },
+    {
+      "language": "Julia",
+      "role": "readiness metrics sketch for numerical analysis",
+      "entrypoints": ["polyglot/julia/readiness_metrics.jl"]
+    },
+    {
+      "language": "Perl",
+      "role": "portable readiness guard for legacy hosting scripts",
+      "entrypoints": ["polyglot/perl/readiness_guard.pl"]
+    },
+    {
+      "language": "Zig",
+      "role": "systems-level readiness contract",
+      "entrypoints": ["polyglot/zig/readiness_contract.zig"]
+    },
+    {
+      "language": "Clojure",
+      "role": "data-first release policy map",
+      "entrypoints": ["polyglot/clojure/readiness_policy.clj"]
+    },
+    {
+      "language": "F#",
+      "role": ".NET functional release policy model",
+      "entrypoints": ["polyglot/fsharp/SeisReleasePolicy.fs"]
+    },
+    {
+      "language": "PowerShell",
+      "role": "Windows operations release policy guard",
+      "entrypoints": ["polyglot/powershell/SeisReleasePolicy.ps1"]
+    },
+    {
+      "language": "TOML",
+      "role": "portable governance configuration for future tooling",
+      "entrypoints": ["polyglot/toml/deploy-governance.toml"]
+    },
+    {
+      "language": "XML",
+      "role": "enterprise interchange release policy contract",
+      "entrypoints": ["polyglot/xml/release-policy.xml"]
+    },
+    {
+      "language": "OCaml",
+      "role": "typed functional release policy model",
+      "entrypoints": ["polyglot/ocaml/release_policy.ml"]
+    },
+    {
+      "language": "ReasonML",
+      "role": "JavaScript-adjacent typed policy model",
+      "entrypoints": ["polyglot/reason/ReleasePolicy.re"]
+    },
+    {
+      "language": "Nim",
+      "role": "compact systems readiness policy",
+      "entrypoints": ["polyglot/nim/readiness_policy.nim"]
+    },
+    {
+      "language": "Crystal",
+      "role": "Ruby-like compiled readiness policy",
+      "entrypoints": ["polyglot/crystal/readiness_policy.cr"]
+    },
+    {
+      "language": "Groovy",
+      "role": "JVM scripting release policy guard",
+      "entrypoints": ["polyglot/groovy/SeisReleasePolicy.groovy"]
+    },
+    {
+      "language": "Objective-C",
+      "role": "Apple native release policy bridge",
+      "entrypoints": ["polyglot/objective-c/SEISReleasePolicy.h"]
+    },
+    {
+      "language": "Visual Basic",
+      "role": "legacy .NET release policy model",
+      "entrypoints": ["polyglot/vb/SeisReleasePolicy.vb"]
+    },
+    {
+      "language": "MATLAB",
+      "role": "analysis-oriented readiness policy",
+      "entrypoints": ["polyglot/matlab/readiness_policy.m"]
+    },
+    {
+      "language": "Fortran",
+      "role": "scientific legacy readiness policy",
+      "entrypoints": ["polyglot/fortran/readiness_policy.f90"]
+    },
+    {
+      "language": "COBOL",
+      "role": "enterprise legacy readiness policy",
+      "entrypoints": ["polyglot/cobol/readiness-policy.cob"]
+    },
+    {
+      "language": "Racket",
+      "role": "language-lab readiness policy",
+      "entrypoints": ["polyglot/racket/readiness-policy.rkt"]
+    },
+    {
+      "language": "Scheme",
+      "role": "minimal Lisp readiness policy",
+      "entrypoints": ["polyglot/scheme/readiness-policy.scm"]
+    },
+    {
+      "language": "Prolog",
+      "role": "logic-programming readiness proof sketch",
+      "entrypoints": ["polyglot/prolog/readiness_policy.pl"]
+    },
+    {
+      "language": "D",
+      "role": "systems readiness policy model",
+      "entrypoints": ["polyglot/d/readiness_policy.d"]
+    },
+    {
+      "language": "V",
+      "role": "small systems readiness policy",
+      "entrypoints": ["polyglot/v/readiness_policy.v"]
+    },
+    {
+      "language": "GraphQL",
+      "role": "future API release policy schema",
+      "entrypoints": ["polyglot/graphql/release-policy.graphql"]
+    },
+    {
+      "language": "OpenAPI",
+      "role": "future release health API contract",
+      "entrypoints": ["polyglot/openapi/release-health.openapi.yaml"]
+    },
+    {
+      "language": "JSON Schema",
+      "role": "machine-readable release policy validation contract",
+      "entrypoints": ["polyglot/json-schema/release-policy.schema.json"]
+    },
+    {
+      "language": "WebAssembly Text",
+      "role": "portable low-level deploy safety proof sketch",
+      "entrypoints": ["polyglot/wat/readiness_policy.wat"]
+    },
+    {
+      "language": "HCL",
+      "role": "infrastructure governance policy sketch",
+      "entrypoints": ["polyglot/hcl/release-governance.hcl"]
+    },
+    {
+      "language": "Protocol Buffers",
+      "role": "future service message release policy contract",
+      "entrypoints": ["polyglot/protobuf/release_policy.proto"]
+    },
+    {
+      "language": "Avro",
+      "role": "future analytics and event schema contract",
+      "entrypoints": ["polyglot/avro/release-policy.avsc"]
+    },
+    {
+      "language": "AsyncAPI",
+      "role": "future release event contract",
+      "entrypoints": ["polyglot/asyncapi/release-events.asyncapi.yaml"]
+    },
+    {
+      "language": "JSON-LD",
+      "role": "semantic release policy metadata",
+      "entrypoints": ["polyglot/jsonld/release-policy.jsonld"]
+    },
+    {
+      "language": "INI",
+      "role": "legacy-compatible release policy configuration",
+      "entrypoints": ["polyglot/ini/release-policy.ini"]
+    },
+    {
+      "language": "Solidity",
+      "role": "future on-chain release policy contract",
+      "entrypoints": ["polyglot/solidity/SeisReleasePolicy.sol"]
+    },
+    {
+      "language": "Move",
+      "role": "resource-oriented release policy contract",
+      "entrypoints": ["polyglot/move/release_policy.move"]
+    },
+    {
+      "language": "Cairo",
+      "role": "zero-knowledge ecosystem release policy sketch",
+      "entrypoints": ["polyglot/cairo/release_policy.cairo"]
+    },
+    {
+      "language": "Hack",
+      "role": "typed PHP-family release policy model",
+      "entrypoints": ["polyglot/hack/SeisReleasePolicy.hack"]
+    },
+    {
+      "language": "Elm",
+      "role": "calm frontend state policy model",
+      "entrypoints": ["polyglot/elm/ReleasePolicy.elm"]
+    },
+    {
+      "language": "PureScript",
+      "role": "strongly typed UI policy model",
+      "entrypoints": ["polyglot/purescript/ReleasePolicy.purs"]
+    },
+    {
+      "language": "ReScript",
+      "role": "typed JavaScript-adjacent release policy",
+      "entrypoints": ["polyglot/rescript/ReleasePolicy.res"]
+    },
+    {
+      "language": "Q#",
+      "role": "quantum-readiness release policy placeholder",
+      "entrypoints": ["polyglot/qsharp/ReleasePolicy.qs"]
+    },
+    {
+      "language": "Apex",
+      "role": "enterprise CRM release policy contract",
+      "entrypoints": ["polyglot/apex/SeisReleasePolicy.cls"]
+    },
+    {
+      "language": "ABAP",
+      "role": "enterprise ERP readiness policy",
+      "entrypoints": ["polyglot/abap/readiness_policy.abap"]
+    },
+    {
+      "language": "PL/SQL",
+      "role": "database release readiness policy",
+      "entrypoints": ["polyglot/plsql/readiness_policy.sql"]
+    },
+    {
+      "language": "T-SQL",
+      "role": "SQL Server release readiness policy",
+      "entrypoints": ["polyglot/tsql/readiness_policy.sql"]
+    },
+    {
+      "language": "Bicep",
+      "role": "Azure infrastructure release governance sketch",
+      "entrypoints": ["polyglot/bicep/release-governance.bicep"]
+    },
+    {
+      "language": "Nix",
+      "role": "reproducible environment release policy",
+      "entrypoints": ["polyglot/nix/release-policy.nix"]
+    },
+    {
+      "language": "CUE",
+      "role": "configuration schema release policy",
+      "entrypoints": ["polyglot/cue/release_policy.cue"]
+    },
+    {
+      "language": "Turtle",
+      "role": "RDF semantic release policy graph",
+      "entrypoints": ["polyglot/turtle/release-policy.ttl"]
+    },
+    {
+      "language": "SPARQL",
+      "role": "semantic release policy validation query",
+      "entrypoints": ["polyglot/sparql/release-policy-check.rq"]
+    },
+    {
+      "language": "Mermaid",
+      "role": "lightweight release flow diagram source",
+      "entrypoints": ["polyglot/mermaid/release-flow.mmd"]
+    },
+    {
+      "language": "PlantUML",
+      "role": "enterprise-friendly release flow diagram source",
+      "entrypoints": ["polyglot/plantuml/release-flow.puml"]
+    },
+    {
+      "language": "CSV",
+      "role": "minimal operations release policy table",
+      "entrypoints": ["polyglot/csv/release-policy.csv"]
+    },
+    {
+      "language": "Ada",
+      "role": "high-integrity readiness policy contract",
+      "entrypoints": ["polyglot/ada/seis_release_policy.ads"]
+    },
+    {
+      "language": "Pascal",
+      "role": "classic application readiness policy",
+      "entrypoints": ["polyglot/pascal/release_policy.pas"]
+    },
+    {
+      "language": "Tcl",
+      "role": "portable scripting release policy",
+      "entrypoints": ["polyglot/tcl/release_policy.tcl"]
+    },
+    {
+      "language": "AWK",
+      "role": "minimal text-ops release policy guard",
+      "entrypoints": ["polyglot/awk/release_policy.awk"]
+    },
+    {
+      "language": "Forth",
+      "role": "tiny stack-language readiness policy",
+      "entrypoints": ["polyglot/forth/release_policy.fs"]
+    },
+    {
+      "language": "Common Lisp",
+      "role": "durable Lisp release policy model",
+      "entrypoints": ["polyglot/common-lisp/release-policy.lisp"]
+    },
+    {
+      "language": "Emacs Lisp",
+      "role": "editor-automation release policy guard",
+      "entrypoints": ["polyglot/emacs-lisp/release-policy.el"]
+    },
+    {
+      "language": "Smalltalk",
+      "role": "object-oriented release policy sketch",
+      "entrypoints": ["polyglot/smalltalk/ReleasePolicy.st"]
+    },
+    {
+      "language": "GDScript",
+      "role": "interactive scene readiness policy",
+      "entrypoints": ["polyglot/gdscript/release_policy.gd"]
+    },
+    {
+      "language": "GLSL",
+      "role": "GPU-safe visual readiness constants",
+      "entrypoints": ["polyglot/glsl/release_policy.glsl"]
+    },
+    {
+      "language": "WGSL",
+      "role": "WebGPU visual readiness constants",
+      "entrypoints": ["polyglot/wgsl/release_policy.wgsl"]
+    },
+    {
+      "language": "Rego",
+      "role": "policy-as-code release gate",
+      "entrypoints": ["polyglot/rego/release_policy.rego"]
+    },
+    {
+      "language": "CEL",
+      "role": "portable expression release gate",
+      "entrypoints": ["polyglot/cel/release_policy.cel"]
+    },
+    {
+      "language": "Jsonnet",
+      "role": "composable configuration release policy",
+      "entrypoints": ["polyglot/jsonnet/release-policy.jsonnet"]
+    },
+    {
+      "language": "Dhall",
+      "role": "typed configuration release policy",
+      "entrypoints": ["polyglot/dhall/release-policy.dhall"]
+    },
+    {
+      "language": "Starlark",
+      "role": "build-system policy extension sketch",
+      "entrypoints": ["polyglot/starlark/release_policy.star"]
+    },
+    {
+      "language": "KDL",
+      "role": "human-readable structured release policy",
+      "entrypoints": ["polyglot/kdl/release-policy.kdl"]
+    },
+    {
+      "language": "HOCON",
+      "role": "service configuration release policy",
+      "entrypoints": ["polyglot/hocon/release-policy.conf"]
+    },
+    {
+      "language": "Java Properties",
+      "role": "JVM-era release policy configuration",
+      "entrypoints": ["polyglot/properties/release-policy.properties"]
+    },
+    {
+      "language": "dotenv",
+      "role": "environment-style release policy configuration",
+      "entrypoints": ["polyglot/dotenv/release-policy.env"]
+    },
+    {
+      "language": "Make",
+      "role": "portable build recipe release policy",
+      "entrypoints": ["polyglot/make/release-policy.mk"]
+    },
+    {
+      "language": "CMake",
+      "role": "native build configuration release policy",
+      "entrypoints": ["polyglot/cmake/release-policy.cmake"]
+    },
+    {
+      "language": "Meson",
+      "role": "modern build configuration release policy",
+      "entrypoints": ["polyglot/meson/release-policy.meson"]
+    },
+    {
+      "language": "Just",
+      "role": "developer task recipe release policy",
+      "entrypoints": ["polyglot/just/release-policy.just"]
+    },
+    {
+      "language": "Taskfile",
+      "role": "cross-platform task runner release policy",
+      "entrypoints": ["polyglot/taskfile/release-policy.taskfile.yml"]
+    }
+  ]
+}

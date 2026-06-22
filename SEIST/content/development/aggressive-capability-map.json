@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "id": "seis-aggressive-capability-map",
+  "mode": "aggressive-safe-activation",
+  "branch": "UIXAppTTR",
+  "timeboxMinutes": 10,
+  "mission": "Grow SEIS aggressively without credential leaks, dependency bloat, force pushes, or blind connector writes.",
+  "activationPrinciples": [
+    "Use every available capability through a registry before using it live.",
+    "Prefer local checks, generated contracts, and release artifacts before remote writes.",
+    "Treat connector auth, server upload secrets, and cloud provider tokens as explicit gates.",
+    "Keep all code batches reversible and push only after publish readiness is clean."
+  ],
+  "capabilityLanes": [
+    {
+      "id": "github-shipment",
+      "surfaces": ["GitHub CLI", "GitHub connector", "publish preflight"],
+      "allowedActions": ["fetch", "pull --rebase", "push UIXAppTTR", "read remote status"],
+      "blockedActions": ["force push", "main branch writes", "unsigned secret commits"],
+      "qualityCommands": ["npm run publish:preflight"]
+    },
+    {
+      "id": "cloud-environment",
+      "surfaces": [
+        "GitHub Pages",
+        "Cloudflare Pages",
+        "Vercel",
+        "Netlify",
+        "Docker static",
+        "Azure Static Web Apps",
+        "AWS Amplify static",
+        "Firebase Hosting"
+      ],
+      "allowedActions": ["provider planning", "artifact validation", "rollback mapping"],
+      "blockedActions": ["live deploy without SEIS_SITE_URL and provider token"],
+      "qualityCommands": ["npm run check:cloud-environment", "npm run check:server-target"]
+    },
+    {
+      "id": "design-and-browser-quality",
+      "surfaces": ["frontend-design skill", "Browser", "Playwright", "Figma"],
+      "allowedActions": ["local smoke validation", "design-system mapping", "responsive review"],
+      "blockedActions": ["broad browser crawls without UI change", "design writes without target file"],
+      "qualityCommands": ["npm run check:mobile-ergonomics", "npm run check:motion-evidence"]
+    },
+    {
+      "id": "connector-and-mcp-governance",
+      "surfaces": ["MCP registry", "connector registry", "plugin skill map", "skill router", "plugin capability families"],
+      "allowedActions": ["mission routing", "readiness checks", "blocked reason reporting"],
+      "blockedActions": ["blanket OAuth calls", "write connector use without explicit target"],
+      "qualityCommands": ["npm run check:aggressive-capability-map", "npm run check:code-automation-plan"]
+    },
+    {
+      "id": "polyglot-language-presence",
+      "surfaces": ["polyglot manifest", "language atlas", "GitHub Linguist overrides"],
+      "allowedActions": ["tiny contracts", "policy files", "readiness adapters"],
+      "blockedActions": ["new runtime dependency for atlas-only growth"],
+      "qualityCommands": ["npm run check:software-languages"]
+    }
+  ],
+  "liveReadinessMatrix": [
+    {
+      "id": "github-cli",
+      "type": "connector",
+      "status": "ready",
+      "useFor": ["repository publication", "branch status", "release preflight"],
+      "guard": "publish only after clean worktree and pull --rebase"
+    },
+    {
+      "id": "browser",
+      "type": "app",
+      "status": "ready-when-local-url-known",
+      "useFor": ["file URL smoke test", "localhost UI review", "responsive scan"],
+      "guard": "avoid broad crawls unless UI behavior changed"
+    },
+    {
+      "id": "figma",
+      "type": "connector",
+      "status": "target-required",
+      "useFor": ["design context", "handoff mapping", "design system reuse"],
+      "guard": "requires explicit figma file or node target"
+    },
+    {
+      "id": "playwright",
+      "type": "skill-or-mcp",
+      "status": "candidate",
+      "useFor": ["render validation", "mobile viewport smoke", "canvas checks"],
+      "guard": "run only after frontend or canvas behavior changes"
+    },
+    {
+      "id": "output-ai",
+      "type": "workflow-framework",
+      "status": "candidate",
+      "useFor": ["durable workflow planning", "multi-step automation design"],
+      "guard": "use only when creating a real Output.ai workflow"
+    },
+    {
+      "id": "cloud-hosting-connectors",
+      "type": "connector-group",
+      "status": "auth-and-target-gated",
+      "useFor": ["GitHub Pages", "Cloudflare Pages", "Vercel", "Netlify", "Azure", "AWS Amplify", "Firebase"],
+      "guard": "requires provider target, public URL, token store, and rollback owner"
+    },
+    {
+      "id": "docs-and-planning-connectors",
+      "type": "connector-group",
+      "status": "approval-gated",
+      "useFor": ["Notion", "Linear", "Google Drive", "Slack handoff"],
+      "guard": "write only after destination and audience are explicit"
+    },
+    {
+      "id": "security-quality-skills",
+      "type": "skill-group",
+      "status": "candidate",
+      "useFor": ["Semgrep", "Aikido", "SonarQube", "static security notes"],
+      "guard": "scan only relevant source paths and report blockers separately"
+    },
+    {
+      "id": "plugin-mcp-skill-hub",
+      "type": "governance-group",
+      "status": "registry-ready",
+      "useFor": ["plugin capability routing", "MCP tool discovery", "skill loading policy", "connector activation blockers"],
+      "guard": "activate only the smallest task-matched set after target, auth, and rollback path are explicit"
+    }
+  ],
+  "capabilityFamilyPolicy": {
+    "default": "registry-first",
+    "allAvailableDoesNotMeanAllActive": true,
+    "selectionRule": "pick the minimum plugin, MCP tool, connector, or skill set that advances the current task",
+    "reportingRule": "report ready, blocked, and approval-gated surfaces separately"
+  },
+  "automationContract": {
+    "workspaceAutomation": "seis-agresif-kod-gelistirme-ve-yayin",
+    "loopIntervalMinutes": 30,
+    "changePolicy": "one coherent reversible batch per run",
+    "pushPolicy": "pull --rebase before push; never force push",
+    "serverPolicy": "dry-run only until target and secrets are configured"
+  },
+  "serverUploadGate": {
+    "status": "blocked-until-target-selected",
+    "requiredInputs": ["SEIS_SITE_URL", "SEIS_CLOUD_PROVIDER", "provider secret or server target"],
+    "safeCommand": "npm run server-upload:dry-run"
+  }
+}

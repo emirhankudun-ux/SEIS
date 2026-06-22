@@ -1,6 +1,6 @@
 {
   "name": "seis",
-  "version": "0.1.0+codex.20260605135659",
+  "version": "0.1.0+codex.20260613134714",
   "description": "SEIS-centered Codex development workflow for the emirhankudun-ux ecosystem.",
   "author": {
     "name": "emirhankudun-ux",
@@ -17,24 +17,46 @@
     "workflow"
   ],
   "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "SEIS",
     "shortDescription": "Develop SEIS-centered GitHub and Codex workflows.",
-    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, and project governance.",
+    "longDescription": "SEIS keeps the emirhankudun-ux GitHub ecosystem organized around one canonical hub. This plugin gives Codex a local SEIS development workflow for repository consolidation, plugin iteration, migration safety, project governance, MCP source proof, governed LLM package lanes, security review, Focus Mode AGI operating behavior, and the SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA specialist lanes.",
     "developerName": "emirhankudun-ux",
     "category": "Productivity",
     "capabilities": [
       "Repository workflow",
       "Plugin development",
       "Migration safety",
-      "OpenAI-first plugin routing",
-      "OpenAI-curated build workflow"
+      "SEIS-first governance routing",
+      "Local helper + SEIS remote build workflow",
+      "SEIS Repos bridge",
+      "LLM package governance",
+      "LLM adapter readiness",
+      "LLM request planning",
+      "MCP bundled install",
+      "MCP source proof",
+      "SEIS Cloud deployment lane",
+      "SEIS-Code engineering lane",
+      "SEIS-Design product lane",
+      "SEIS-DATA knowledge lane",
+      "SEIS Master Prompt governance",
+      "SEIS GitHub workflow governance",
+      "SEIS Security Review governance",
+      "SEIS Focus Mode AGI operating lane",
+      "SEIS God Mode Developer cross-layer lane"
     ],
     "websiteURL": "https://github.com/emirhankudun-ux/SEIS",
     "defaultPrompt": [
       "Use SEIS as the main repo and plan the next step.",
       "Check SEIS migration status before deleting repos.",
-      "Help develop the SEIS Codex plugin."
+      "Help develop the SEIS Codex plugin.",
+      "Connect this work to SEIS Repos and the governed LLM package bridge.",
+      "Use SEIS Master Prompt governance for architecture, security, documentation, AI, cloud, product, and quality changes.",
+      "Use SEIS GitHub workflow governance to plan branch, PR, checks, CODEOWNERS, and source-of-truth handoff.",
+      "Use SEIS Security Review governance to inspect secrets, least privilege, SSH/cloud risk, GitHub readiness, and validation claims.",
+      "Use SEIS Focus Mode to keep app, website, plugin, and AI/AGI work concentrated, low-noise, and evidence-preserving.",
+      "Use SEIS God Mode Developer when the work must improve product, app, AI/AGI, cloud/security, and governance together."
     ],
     "brandColor": "#2563EB"
   }

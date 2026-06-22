@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "id": "seis-requested-plugin-trace",
+  "updatedAt": "2026-06-03",
+  "mode": "transparent-requested-plugin-governance",
+  "context": "Tracks user-requested plugin URIs that should be visible in source and generated outputs without pretending unavailable integrations are active.",
+  "requestedPlugins": [
+    {
+      "id": "public-equity-investing",
+      "uri": "plugin://public-equity-investing@openai-curated-remote",
+      "surface": "public-equity-research",
+      "requestedUse": "Use public-market investment context for SEIS branch and repository improvement decisions.",
+      "observedSessionStatus": "exact-plugin-not-callable",
+      "nearestAvailableSurface": "Quartr public-company IR data was discoverable, but the session returned a subscription_required blocker.",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_financial_provider_is_available",
+      "blockedWithout": [
+        "public_equity_plugin_available",
+        "financial_data_auth",
+        "target_company_scope",
+        "user_approval"
+      ],
+      "evidence": [
+        "Tool discovery did not expose a public-equity-investing namespace.",
+        "Quartr call returned subscription_required for this account."
+      ]
+    },
+    {
+      "id": "product-design",
+      "uri": "plugin://product-design@openai-curated-remote",
+      "surface": "product-design-strategy",
+      "requestedUse": "Use product-design judgment for calm UX, design-system clarity, and source-visible design governance.",
+      "observedSessionStatus": "exact-plugin-not-callable",
+      "nearestAvailableSurface": "Figma was discoverable as a product/design-adjacent surface, but it requested reauthentication before actions.",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_design_surface_is_available",
+      "blockedWithout": [
+        "product_design_plugin_available",
+        "product_design_auth",
+        "product_design_scope",
+        "user_approval"
+      ],
+      "evidence": [
+        "Tool discovery did not expose a product-design namespace.",
+        "Figma whoami returned a reauthentication requirement."
+      ]
+    },
+    {
+      "id": "investment-banking",
+      "uri": "plugin://investment-banking@openai-curated-remote",
+      "surface": "investment-banking-analysis",
+      "requestedUse": "Use investment-banking style deal, valuation, and readiness framing for repository governance outputs.",
+      "observedSessionStatus": "exact-plugin-not-callable",
+      "nearestAvailableSurface": "Carta CRM was discoverable for deal/contact context, but investment-banking contact search returned unauthorized.",
+      "activationPolicy": "only_after_exact_plugin_or_authenticated_deal_data_provider_is_available",
+      "blockedWithout": [
+        "investment_banking_plugin_available",
+        "investment_banking_auth",
+        "deal_scope",
+        "user_approval"
+      ],
+      "evidence": [
+        "Tool discovery did not expose an investment-banking namespace.",
+        "Carta CRM contact search returned unauthorized."
+      ]
+    }
+  ],
+  "outputArtifacts": [
+    "content/development/requested-plugin-inventory.json",
+    "reports/requested-plugin-trace.json",
+    "reports/requested-plugin-trace.md"
+  ]
+}

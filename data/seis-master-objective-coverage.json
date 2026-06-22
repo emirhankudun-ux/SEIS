@@ -1,0 +1,94 @@
+{
+  "contract": "SEIS Master Objective Coverage",
+  "status": "active",
+  "reportPath": "reports/seis-master-objective-coverage.md",
+  "reportGeneratorPath": "scripts/create-seis-master-objective-coverage-report.mjs",
+  "coverageStatusValues": ["mapped", "partial", "active", "blocked", "complete"],
+  "completionRule": "Coverage is complete only when required checks pass or the maintainer explicitly waives them with evidence.",
+  "requiredCommands": [
+    "npm run check:seis-master-objective-coverage",
+    "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-god-mode-feature-growth-ledger",
+    "npm run check:seis-god-mode-module-coverage",
+    "npm run check:seis-god-mode-work-package",
+    "npm run check:seis-god-mode-completion-audit",
+    "npm run check:seis-operational-goal-tracker",
+    "npm run check:seis-master-prompt-report",
+    "npm run check:seis-master-prompt",
+    "npm run quality"
+  ],
+  "coverage": [
+    {
+      "id": "user-work-protection",
+      "requirement": "Protect user work, preserve dirty worktrees, and keep changes reversible.",
+      "status": "active",
+      "evidence": ["docs/governance/seis-master-prompt.md", "docs/governance/seis-master-prompt-change-checklist.md"],
+      "checks": ["npm run check:seis-master-prompt"],
+      "gap": "Requires current diff review before every commit."
+    },
+    {
+      "id": "security-and-privacy",
+      "requirement": "Prevent secrets exposure and govern SSH hardening risk.",
+      "status": "active",
+      "evidence": ["data/ssh-hardening-operation-contract.json", "docs/deployment/ssh-wireguard-vps-cloud-server.md"],
+      "checks": ["npm run check:ssh-hardening-contract", "npm run check:seis-master-prompt"],
+      "gap": "Track mode-isolation, lockout-safety, and fail-fast validation until direct-cloud SSH is proven."
+    },
+    {
+      "id": "architecture-and-maintainability",
+      "requirement": "Keep governance and implementation surfaces mapped to a single operating contract.",
+      "status": "active",
+      "evidence": ["data/seis-master-prompt-implementation-map.json", "docs/governance/adr-0001-seis-master-prompt-operating-contract.md"],
+      "checks": ["npm run check:seis-master-prompt"],
+      "gap": "Continue reducing duplicated governance text."
+    },
+    {
+      "id": "documentation-traceability",
+      "requirement": "Make governance evidence reproducible through generated reports.",
+      "status": "active",
+      "evidence": ["reports/seis-master-prompt-governance.md", "reports/seis-master-objective-coverage.md"],
+      "checks": ["npm run check:seis-master-prompt-report", "npm run check:seis-master-objective-coverage-report"],
+      "gap": "Reports must be regenerated after source JSON changes."
+    },
+    {
+      "id": "apple-first-platform",
+      "requirement": "Preserve Apple-first platform direction while keeping cross-platform checks realistic.",
+      "status": "mapped",
+      "evidence": ["docs/governance/seis-supreme-vision.md", "AGENTS.md"],
+      "checks": ["npm run check:seis-master-prompt"],
+      "gap": "Apple-native runtime checks remain platform-specific."
+    },
+    {
+      "id": "design-accessibility-experience",
+      "requirement": "Treat design, accessibility, and product experience as engineering systems.",
+      "status": "mapped",
+      "evidence": ["docs/governance/seis-supreme-vision.md", "data/seis-operational-goal-tracker.json"],
+      "checks": ["npm run check:seis-operational-goal-tracker"],
+      "gap": "Needs ongoing product-surface validation."
+    },
+    {
+      "id": "ai-data-cloud-automation",
+      "requirement": "Keep AI, data, cloud, SSH, and automation work governed and measurable.",
+      "status": "active",
+      "evidence": ["data/ssh-hardening-operation-contract.json", "docs/deployment/ssh-wireguard-vps-cloud-server.md"],
+      "checks": ["npm run check:ssh-vpn-cloud-server", "npm run check:seis-master-prompt"],
+      "gap": "Direct cloud mobile SSH remains blocked until strict readiness passes."
+    },
+    {
+      "id": "open-source-github-readiness",
+      "requirement": "Keep GitHub, community, governance, and CI readiness visible.",
+      "status": "active",
+      "evidence": ["data/seis-master-prompt-github-controls.json", ".github/workflows/seis-master-prompt-governance.yml"],
+      "checks": ["npm run check:open-source-governance", "npm run check:seis-master-prompt"],
+      "gap": "External GitHub branch settings must be verified before claiming enforcement."
+    },
+    {
+      "id": "god-mode-every-topic-feature-growth",
+      "requirement": "Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence.",
+      "status": "active",
+      "evidence": ["content/development/seis-god-mode-feature-growth-ledger.json", "content/development/seis-god-mode-module-coverage.json", "content/development/seis-god-mode-completion-audit.json", "roadmap/seis-next-steps-implementation-pack.md", "docs/governance/seis-god-mode-module-coverage.md"],
+      "checks": ["npm run check:seis-god-mode-feature-growth-ledger", "npm run check:seis-god-mode-module-coverage", "npm run check:seis-god-mode-completion-audit", "npm run check:seis-god-mode-work-package"],
+      "gap": "Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete."
+    }
+  ]
+}

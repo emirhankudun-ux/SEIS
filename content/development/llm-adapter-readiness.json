@@ -1,0 +1,133 @@
+{
+  "id": "seis-llm-adapter-readiness",
+  "version": "0.1.0",
+  "updatedAt": "2026-06-13",
+  "adapters": [
+    {
+      "id": "seis-agent",
+      "status": "ready",
+      "mode": "remote-orchestrator",
+      "capabilities": ["orchestrate", "policy", "route", "manifest-check", "request-packaging"],
+      "notes": "SEIS Agent is the only approved remote control plane."
+    },
+    {
+      "id": "codex",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["repo-execution", "automation", "bounded-task-running"],
+      "notes": "Primary local execution lane when explicitly selected; governed by SEIS Agent policy."
+    },
+    {
+      "id": "antigravity",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["agentic-workspace", "ai-native-ideation", "manual-launch"],
+      "notes": "Antigravity 2.x desktop surface is locally installed; use on request without committing private app state."
+    },
+    {
+      "id": "antigravity-ide",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["repo-workspace", "agentic-ide", "review-surface"],
+      "notes": "Preferred IDE surface for SEIS repo/worktree work when an IDE is needed."
+    },
+    {
+      "id": "cursor",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["secondary-ai-editor", "diff-review", "manual-launch"],
+      "notes": "Secondary AI editor surface; keep one writer active and review Git diffs before handoff."
+    },
+    {
+      "id": "xcode",
+      "status": "ready",
+      "mode": "desktop-helper",
+      "capabilities": ["swift", "swiftui", "apple-signing", "simulator"],
+      "notes": "Apple platform IDE for iOS/macOS validation and signing-sensitive work."
+    },
+    {
+      "id": "openai",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["chat", "embeddings", "tools", "planning-assist"],
+      "notes": "Integrate when official policy alignment is finalized."
+    },
+    {
+      "id": "gemini",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["research", "doc-compare", "source-discovery"],
+      "notes": "Integrate as local helper when docs access and approvals are complete."
+    },
+    {
+      "id": "claude",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["narrative", "strategy", "copy-review"],
+      "notes": "Integrate as a local editorial/strategy helper."
+    },
+    {
+      "id": "kimi",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["translation", "localization"],
+      "notes": "Integrate when translation policy and approval flow are completed."
+    },
+    {
+      "id": "ollama",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["chat", "local-experiments"],
+      "notes": "Local fallback path under local experimentation policy."
+    },
+    {
+      "id": "qwen",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["alternative-reasoning", "code-review-assist", "model-cross-check"],
+      "notes": "Local helper lane for alternate reasoning when installed and approved."
+    },
+    {
+      "id": "opencode",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["terminal-coding-assist", "repo-navigation", "patch-assist"],
+      "notes": "Terminal helper lane; SEIS remains the orchestrator."
+    },
+    {
+      "id": "hermes",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["agent-gateway", "mcp-gateway", "tool-routing"],
+      "notes": "Hermes Agent lane for bounded gateway experiments under SEIS policy."
+    },
+    {
+      "id": "goose",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["desktop-agent", "automation", "local-agent-experiments"],
+      "notes": "General local automation agent lane."
+    },
+    {
+      "id": "open-design",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["design-artifacts", "prototype-preview", "design-system-generation"],
+      "notes": "Open Design desktop lane; terminal CLI and MCP wiring stay separate from the app install."
+    },
+    {
+      "id": "aider",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["diff-editing", "small-refactor", "existing-file-patch"],
+      "notes": "Diff-oriented helper for small reversible changes."
+    },
+    {
+      "id": "interpreter",
+      "status": "planned",
+      "mode": "local-helper",
+      "capabilities": ["data-transform", "log-analysis", "local-execution-assist"],
+      "notes": "Local helper for bounded data and log work."
+    }
+  ]
+}

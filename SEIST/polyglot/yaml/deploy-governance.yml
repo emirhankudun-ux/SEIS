@@ -1,0 +1,16 @@
+version: 1
+name: ui-ux-digital-lab-deploy-governance
+package: dist/seis-static.zip
+liveUpload:
+  blockedUntil:
+    - confirmed_domain_or_server
+    - confirmed_upload_path
+    - provider_specific_adapter
+preservation:
+  backupCommand: npm run backup:release
+  ledger: releases/latest.json
+quality:
+  requiredChecks:
+    - npm run check:js
+    - npm run check:foundation
+    - npm run release:ready

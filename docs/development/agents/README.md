@@ -10,3 +10,4 @@ Run: `sprint-zero-agent-pass-001`
 | polyglot-agent | polyglot-growth | ready | Keep many-language contracts light and dependency-free. |
 | governance-agent | development-governance | active | Keep backlog, ADRs, branch policy, and summaries aligned. |
 | premium-local-foundation-agent | premium-local-foundation | active | Keep codex/premium-local-foundation absorbed as UIXAppTTR-local foundation intent, never as an independent branch. |
+| memories-agent | knowledge-governance-source | planned | Bring `emirhankudun-ux/memories` under SEIS as a child-agent or verified source before any visibility mutation. |

@@ -1,0 +1,46 @@
+{
+  "version": "0.1.0",
+  "mode": "full-efficiency-low-pressure",
+  "summary": {
+    "title": "Full efficiency without thermal pressure",
+    "status": "active",
+    "runtimeBudget": "static-first",
+    "computerPressure": "low",
+    "automationCadence": "bounded"
+  },
+  "principles": [
+    {
+      "id": "context-before-compute",
+      "label": "Context before compute",
+      "status": "active",
+      "signal": "Use more reasoning and targeted reads before running heavy commands.",
+      "guardrail": "Avoid broad scans of generated caches, dependency folders, and build output."
+    },
+    {
+      "id": "static-first-validation",
+      "label": "Static-first validation",
+      "status": "active",
+      "signal": "Prefer syntax checks, JSON contract checks, and targeted foundation gates.",
+      "guardrail": "Run production builds only when release packaging or deployment readiness requires them."
+    },
+    {
+      "id": "cinematic-with-fallbacks",
+      "label": "Cinematic with fallbacks",
+      "status": "active",
+      "signal": "Increase atmosphere through CSS, canvas, and content rhythm before adding GPU-heavy layers.",
+      "guardrail": "Every immersive effect needs reduced-motion and mobile-safe behavior."
+    },
+    {
+      "id": "small-reversible-diffs",
+      "label": "Small reversible diffs",
+      "status": "active",
+      "signal": "Ship one coherent surface at a time so rollback stays simple.",
+      "guardrail": "Keep unrelated repo noise out of the current development slice."
+    }
+  ],
+  "nextSteps": [
+    "Keep enriching the public lab surface with JSON-backed modules.",
+    "Add heavier 3D only after a dependency and performance budget note.",
+    "Preserve static release readiness until the server target is confirmed."
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "id": "seis-action-execution-lane",
+  "name": "SEIS Action Execution Lane",
+  "status": "active",
+  "version": "0.1.0",
+  "scope": "local-repo",
+  "qualityGate": "npm run check:seis-action-execution",
+  "policyVersion": "seis-action-execution-v0",
+  "defaultDecision": "gate",
+  "operatingModel": "inspect first, then execute only after explicit approval",
+  "requiredArtifacts": [
+    "scripts/inspect-seis-action-execution.mjs",
+    "scripts/check-seis-action-execution.mjs",
+    "content/development/seis-action-execution-contract.json",
+    "reports/seis-action-execution/latest.json",
+    "reports/seis-action-execution/latest.md"
+  ],
+  "requiredEvidence": [
+    "REFERENCE_REQUIREMENTS.md",
+    "SEIS_PHASE_2_CLEAN_ROOM_ARCHITECTURE.md",
+    "SEIS_UNIVERSE_CLEAN_BUILD.md",
+    "content/development/seis-project-intake-contract.json",
+    "content/development/seis-action-decision-contract.json",
+    "docs/architecture/seis-5-layer-operating-map.md"
+  ],
+  "capabilityDecisionRules": [
+    {
+      "capability": "read",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "status",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "search",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "summarize",
+      "decision": "allow",
+      "requiresApproval": false,
+      "risk": "low"
+    },
+    {
+      "capability": "write",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "shell",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "git",
+      "decision": "gate",
+      "requiresApproval": true,
+      "risk": "medium"
+    },
+    {
+      "capability": "network",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "secret",
+      "decision": "deny",
+      "requiresApproval": false,
+      "risk": "critical"
+    },
+    {
+      "capability": "deploy",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "model",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    },
+    {
+      "capability": "data",
+      "decision": "approval_required",
+      "requiresApproval": true,
+      "risk": "high"
+    }
+  ],
+  "executionPolicy": {
+    "mode": "dryRunDefault",
+    "dryRun": true,
+    "maxCommandSeconds": 60,
+    "requiresExplicitApprovalFor": ["write", "shell", "git", "network", "deploy", "model", "data"],
+    "redaction": {
+      "enabled": true,
+      "patterns": [
+        "(?i)\\b(api[_-]?key|token|password|credential|secret)\\b",
+        "\\b(sk-[A-Za-z0-9]{12,}|ghp_[A-Za-z0-9]{12,})\\b",
+        "BEGIN [A-Z ]*PRIVATE KEY"
+      ]
+    },
+    "rollback": {
+      "required": true,
+      "strategy": "documented"
+    }
+  },
+  "secretPolicy": "never include secret-like text in report fields; replace with [REDACTED_SECRET]"
+}

@@ -1,0 +1,10 @@
+package_path('dist/seis-static.zip').
+supported_locale(tr).
+supported_locale(en).
+supported_locale(fr).
+supported_locale(it).
+supported_locale(de).
+supported_locale(es).
+supported_locale(ar).
+reduced_motion_required(true).
+live_upload_requires_target(true).

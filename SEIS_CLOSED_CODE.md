@@ -1,33 +1,36 @@
-# SEIS CLOSED CODE
+# SEIS Open Source Platform Charter
 
-SEIS CLOSED CODE is the single `main`-centered operating repository for private SEIS platform development.
+This file records the repository's earlier closed-code phase and supersedes it
+with the current open source direction.
+
+## Current Direction
+
+SEIS is a `main`-centered open source AI-native platform for software
+engineering, design systems, data systems, AI agents, MCP, skills, plugins, LLM
+workflows, automation, education, and digital product development.
 
 ## Mission
 
 SEIS is the general center for:
 
-- Android product work
-- Web product work
-- macOS product work
-- full-stack backend and auth
-- data inventory and analytics
-- Google Drive planning records
-- Google Calendar build cadence
-- Codex plugin development
-- source archive and migration verification
+- AI systems, agent orchestration, MCP, skills, plugins, and LLM workflows
+- web, Android, Windows, macOS, full-stack, and data platform work
+- design systems, UX engineering, accessibility, and calm technology
+- security, DevOps, SRE, testing, observability, and governance
+- GitHub discoverability, open source adoption, and community growth
 
 ## Branch Rule
 
-`main` is the visible center branch. The configured GitHub default branch may still be `UIXAppTTR`, but both branches must mirror the same commit while GitHub settings are constrained.
+`main` is the only permanent branch. Temporary branches are staging surfaces for
+pull requests, review, or experiments, and must converge back into `main`.
 
-`source/*` and `sources/*` refs remain index/recovery refs. They are not the day-to-day product branches.
+## License Rule
 
-## Closed Code Rule
+SEIS is distributed under the MIT License unless the maintainer explicitly
+changes licensing in `LICENSE`.
 
-This repository is operated as closed code. Do not treat public visibility as open-source permission. See [`LICENSE`](./LICENSE) and [`docs/platform/seis-closed-code-architecture.md`](./docs/platform/seis-closed-code-architecture.md).
+## Historical Note
 
-## Google Workspace Links
-
-- Operating plan: https://docs.google.com/document/d/1EvyhGA4ulJHsEB2DCzZAYxDrUv1X6dGj0PFa0splrps
-- Platform backlog: https://docs.google.com/spreadsheets/d/1sxnxOz9ZRzwZAz2FmHt_3YzAhQjKL2sQbYR1uWdGsaQ
-- Weekly build review: https://www.google.com/calendar/event?eid=ZWg5djhtamRjdHZjaGY2aTljczRqMDJkZjQgZW1pcmhhbmt1ZHVuQG0
+Some older docs still use "closed-code" language because they record a previous
+repository consolidation phase. New public-facing work should follow
+[`docs/governance/open-source-governance.md`](./docs/governance/open-source-governance.md).

@@ -23,7 +23,7 @@ const required = [
   'packages/data/README.md',
   'data/github-zip-import-inventory.json',
   'data/repository-visibility-audit-2026-06-05.json',
-  'data/installed-codex-plugins-2026-06-05.json',
+  'data/installed-codex-plugins-2026-06-15.json',
   'data/plugin-install-pass-2026-06-05.json',
   'data/openai-plugin-priority-2026-06-05.json',
   'data/openai-curated-build-workbench-2026-06-05.json',
@@ -37,11 +37,11 @@ const required = [
 const missing = required.filter((path) => !existsSync(path));
 
 if (missing.length > 0) {
-  console.error('SEIS CLOSED CODE governance check failed. Missing files:');
+  console.error('SEIS open-source governance compatibility check failed. Missing files:');
   for (const path of missing) {
     console.error(`- ${path}`);
   }
   process.exit(1);
 }
 
-console.log(`SEIS CLOSED CODE governance check passed (${required.length} files).`);
+console.log(`SEIS open-source governance compatibility check passed (${required.length} files).`);

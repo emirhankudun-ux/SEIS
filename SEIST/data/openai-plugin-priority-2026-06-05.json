@@ -1,0 +1,105 @@
+{
+  "date": "2026-06-05",
+  "policy": "openai_first",
+  "primary_marketplace_families": [
+    "openai-curated",
+    "openai-bundled",
+    "openai-primary-runtime"
+  ],
+  "local_system_plugin": "seis@personal",
+  "fallback_rule": "Use non-OpenAI, non-installed, or externally mentioned plugin URI families only when the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for that provider.",
+  "categories": {
+    "design": {
+      "primary_plugins": [
+        "build-web-apps@openai-curated",
+        "browser@openai-bundled",
+        "chrome@openai-bundled",
+        "figma@openai-curated",
+        "canva@openai-curated",
+        "magicpath@openai-curated",
+        "wix@openai-curated",
+        "base44@openai-curated",
+        "hostinger@openai-curated",
+        "replit@openai-curated",
+        "lovable@openai-curated"
+      ],
+      "purpose": "UI, frontend, product design, screenshots, browser inspection, and visual assets."
+    },
+    "developer_tools": {
+      "primary_plugins": [
+        "github@openai-curated",
+        "coderabbit@openai-curated",
+        "circleci@openai-curated",
+        "cloudflare@openai-curated",
+        "vercel@openai-curated",
+        "netlify@openai-curated",
+        "supabase@openai-curated",
+        "neon-postgres@openai-curated",
+        "convex@openai-curated",
+        "render@openai-curated",
+        "temporal@openai-curated",
+        "openai-developers@openai-curated",
+        "expo@openai-curated",
+        "build-ios-apps@openai-curated",
+        "build-macos-apps@openai-curated",
+        "test-android-apps@openai-curated"
+      ],
+      "purpose": "Repository work, CI, deployment, backend, database, mobile, desktop, and OpenAI API development."
+    },
+    "productivity": {
+      "primary_plugins": [
+        "google-drive@openai-curated",
+        "google-calendar@openai-curated",
+        "gmail@openai-curated",
+        "slack@openai-curated",
+        "teams@openai-curated",
+        "sharepoint@openai-curated",
+        "outlook-email@openai-curated",
+        "outlook-calendar@openai-curated",
+        "notion@openai-curated",
+        "box@openai-curated",
+        "documents@openai-primary-runtime",
+        "spreadsheets@openai-primary-runtime",
+        "presentations@openai-primary-runtime",
+        "linear@openai-curated",
+        "atlassian-rovo@openai-curated",
+        "asana@openai-curated",
+        "calendly@openai-curated",
+        "zoom@openai-curated"
+      ],
+      "purpose": "Docs, calendars, email, collaboration, project management, and operating cadence."
+    },
+    "research": {
+      "primary_plugins": [
+        "hugging-face@openai-curated",
+        "life-science-research@openai-curated",
+        "zotero@openai-curated",
+        "scite@openai-curated",
+        "ngs-analysis@openai-curated",
+        "deepnote@openai-curated",
+        "quartr@openai-curated",
+        "factset@openai-curated",
+        "lseg@openai-curated",
+        "s-p@openai-curated",
+        "morningstar@openai-curated",
+        "moody-s@openai-curated",
+        "dow-jones-factiva@openai-curated"
+      ],
+      "purpose": "Scientific, technical, market, financial, and reference research."
+    },
+    "security": {
+      "primary_plugins": [
+        "codex-security@openai-curated",
+        "sentry@openai-curated",
+        "datadog@openai-curated",
+        "coderabbit@openai-curated",
+        "jam@openai-curated",
+        "semrush@openai-curated",
+        "conductor@openai-curated",
+        "statsig@openai-curated"
+      ],
+      "purpose": "Security scans, code review, runtime investigation, observability, and quality signals."
+    }
+  },
+  "rule": "For core SEIS work, route through these OpenAI/Codex plugins first, then record outcomes back into SEIS."
+}

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b1323" />
+  <meta name="description" content="SEIS demo experience for macOS and iOS teams. Explore scenarios, run specialists, and inspect shared telemetry." />
+  <title>SEIS Demo</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="brand" id="home-link" data-route="/">SEIS Demo</a>
+      <nav aria-label="Primary routes">
+        <a href="#/" id="nav-home" data-route="/" class="nav-link">Home</a>
+        <a href="#/demo" id="nav-demo" data-route="/demo" class="nav-link">Demo</a>
+        <a href="#/results/demo-home" id="nav-results" data-route="/results/demo-home" class="nav-link">Results</a>
+      </nav>
+      <button id="fallback-reload" class="ghost-button" type="button" title="Reload demo surface">Reload</button>
+    </div>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <section class="hero card">
+      <p class="eyebrow">AI-native demo surface</p>
+      <h1>Open-source SEIS demo for <span>macOS + iOS</span></h1>
+      <p>
+        This demo validates how SEIS orchestrates specialists and returns
+        structured artifacts for analytics, quality signals, and handoff.
+      </p>
+      <div class="hero-cta-row">
+        <button type="button" class="button" data-route="/demo" data-cta-id="hero_start_demo">Start Demo</button>
+        <a href="#/results/demo-home" class="button ghost" data-route="/results/demo-home" data-cta-id="view_default_results">View Sample Result</a>
+        <button type="button" id="download-native" class="button ghost" data-cta-id="open_release_download" title="Download latest macOS package">Download macOS</button>
+        <button type="button" id="copy-native-link" class="button ghost" data-cta-id="copy_deep_link">Copy deep-link demo</button>
+      </div>
+      <p class="live-hint">
+        Active route: <strong id="route-pill"></strong>
+      </p>
+    </section>
+
+    <section class="card release-panel">
+      <h2>Apple-first website + native package flow</h2>
+      <p class="release-copy">
+        The landing flow, web demo, and macOS app are built from the same contract.
+        Start in browser, jump to a scenario, then continue in native for a cinematic
+        "single-click story" workflow.
+      </p>
+      <ul class="release-list" id="release-checklist">
+        <li>Route parity: <strong>/demo</strong>, <strong>/demo/:scenario</strong>, <strong>/results/:runId</strong></li>
+        <li>Shared contract metrics and telemetry schema validation</li>
+        <li>Download-ready release surface on GitHub (preview button)</li>
+      </ul>
+    </section>
+
+    <section class="card focus-mode-panel" aria-labelledby="focus-mode-title">
+      <div>
+        <p class="eyebrow">Supreme Vision feature</p>
+        <h2 id="focus-mode-title">Focus Mode</h2>
+        <p id="focus-mode-status" class="focus-mode-status">
+          Focus Mode is ready for concentrated SEIS work.
+        </p>
+      </div>
+      <div class="focus-mode-controls">
+        <button
+          type="button"
+          id="focus-mode-toggle"
+          class="button"
+          aria-pressed="false"
+          data-cta-id="focus_mode_toggle"
+        >
+          Enable focus
+        </button>
+        <ul id="focus-mode-signals" class="focus-mode-signals" aria-label="Focus mode signals"></ul>
+      </div>
+    </section>
+
+    <section class="card god-mode-panel" aria-labelledby="god-mode-title">
+      <div>
+        <p class="eyebrow">Developer operating layer</p>
+        <h2 id="god-mode-title">God Mode Developer</h2>
+        <p id="god-mode-status" class="god-mode-status">
+          God Mode Developer is available for cross-layer SEIS development.
+        </p>
+      </div>
+      <div class="god-mode-controls">
+        <button
+          type="button"
+          id="god-mode-toggle"
+          class="button"
+          aria-pressed="false"
+          data-cta-id="god_mode_toggle"
+        >
+          Activate God Mode
+        </button>
+        <ul id="god-mode-signals" class="god-mode-signals" aria-label="God Mode developer signals"></ul>
+      </div>
+    </section>
+
+    <section class="card module-coverage-panel" aria-labelledby="module-coverage-title">
+      <div class="module-coverage-heading">
+        <div>
+          <p class="eyebrow">Dashboard / Goals / Repos / Docs / Agents</p>
+          <h2 id="module-coverage-title">God Mode module coverage</h2>
+          <p class="module-coverage-summary">
+            Every core module must show product, platform, AI, security, and governance lift before the ecosystem can be called improved.
+          </p>
+        </div>
+        <span class="module-coverage-badge" id="module-coverage-badge">5 modules x 5 layers</span>
+      </div>
+      <div class="module-coverage-grid" id="module-coverage-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card release-readiness-panel" aria-labelledby="release-readiness-title">
+      <div class="release-readiness-heading">
+        <div>
+          <p class="eyebrow">Security / AI / Quality / Feature Growth / Rollback / CI</p>
+          <h2 id="release-readiness-title">God Mode release readiness</h2>
+          <p class="release-readiness-summary">
+            A SEIS improvement is not complete until release gates are visible, evidence-bound, and reversible.
+          </p>
+        </div>
+        <span class="release-readiness-badge" id="release-readiness-badge">6 required gates</span>
+      </div>
+      <div class="release-readiness-grid" id="release-readiness-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card validation-plan-panel" aria-labelledby="validation-plan-title">
+      <div class="validation-plan-heading">
+        <div>
+          <p class="eyebrow">Proof sequence</p>
+          <h2 id="validation-plan-title">God Mode validation plan</h2>
+          <p class="validation-plan-summary">
+            Completion requires current-state evidence from feature gates and the full governance chain.
+          </p>
+        </div>
+        <span class="validation-plan-badge" id="validation-plan-badge">17 commands</span>
+      </div>
+      <ol class="validation-plan-list" id="validation-plan-list" aria-live="polite"></ol>
+    </section>
+
+    <section class="card work-package-panel" aria-labelledby="work-package-title">
+      <div class="work-package-heading">
+        <div>
+          <p class="eyebrow">Commit readiness</p>
+          <h2 id="work-package-title">God Mode work package</h2>
+          <p class="work-package-summary">
+            The current slice is bounded by module, gate, rollback, and pending validation evidence before commit or push.
+          </p>
+        </div>
+        <span class="work-package-badge" id="work-package-badge">14 sections</span>
+      </div>
+      <div class="work-package-grid" id="work-package-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card adr-workflow-panel" aria-labelledby="adr-workflow-title">
+      <div class="adr-workflow-heading">
+        <div>
+          <p class="eyebrow">Architecture decisions</p>
+          <h2 id="adr-workflow-title">God Mode ADR workflow</h2>
+          <p class="adr-workflow-summary">
+            Durable SEIS decisions must record context, tradeoffs, security, AI policy, validation, and rollback.
+          </p>
+        </div>
+        <span class="adr-workflow-badge" id="adr-workflow-badge">5 workflow steps</span>
+      </div>
+      <ol class="adr-workflow-list" id="adr-workflow-list" aria-live="polite"></ol>
+    </section>
+
+    <section class="card ecosystem-lanes-panel" aria-labelledby="ecosystem-lanes-title">
+      <div class="ecosystem-lanes-heading">
+        <div>
+          <p class="eyebrow">Live operating lanes + plugin fabric</p>
+          <h2 id="ecosystem-lanes-title">God Mode ecosystem lanes</h2>
+          <p class="ecosystem-lanes-summary">
+            Goals, Repos, Docs, Agents, and the SEIS plugin fabric now have visible operating status, evidence source, quality gate, next action, and seis_plugin_integration routing.
+          </p>
+        </div>
+        <span class="ecosystem-lanes-badge" id="ecosystem-lanes-badge">10 lanes</span>
+      </div>
+      <div class="ecosystem-lanes-grid" id="ecosystem-lanes-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card handoff-panel" aria-labelledby="handoff-title">
+      <div class="handoff-heading">
+        <div>
+          <p class="eyebrow">Repo handoff</p>
+          <h2 id="handoff-title">God Mode handoff</h2>
+          <p class="handoff-summary">
+            The current slice stays pending until validation, risks, rollback, next commands, and protected user work are explicit.
+          </p>
+        </div>
+        <span class="handoff-badge" id="handoff-badge">7 handoff sections</span>
+      </div>
+      <ul class="handoff-list" id="handoff-list" aria-live="polite"></ul>
+    </section>
+
+    <section class="card completion-audit-panel" aria-labelledby="completion-audit-title">
+      <div class="completion-audit-heading">
+        <div>
+          <p class="eyebrow">Completion evidence</p>
+          <h2 id="completion-audit-title">God Mode completion audit</h2>
+          <p class="completion-audit-summary">
+            The objective remains not-complete until validation, commit, push, CI, and protected-user-work evidence exist.
+          </p>
+        </div>
+        <span class="completion-audit-badge" id="completion-audit-badge">not-complete</span>
+      </div>
+      <div class="completion-audit-grid" id="completion-audit-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card run-state-panel" aria-labelledby="run-state-title">
+      <div class="run-state-heading">
+        <div>
+          <p class="eyebrow">Execution state</p>
+          <h2 id="run-state-title">God Mode run state</h2>
+          <p class="run-state-summary">
+            The work package is source-controlled but still pending validation, commit boundary review, push, and CI evidence.
+          </p>
+        </div>
+        <span class="run-state-badge" id="run-state-badge">pending-validation</span>
+      </div>
+      <div class="run-state-grid" id="run-state-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card staging-manifest-panel" aria-labelledby="staging-manifest-title">
+      <div class="staging-manifest-heading">
+        <div>
+          <p class="eyebrow">Staging boundary</p>
+          <h2 id="staging-manifest-title">God Mode staging manifest</h2>
+          <p class="staging-manifest-summary">
+            The current package has an intended staging boundary, protected paths, and excluded-until-review categories.
+          </p>
+        </div>
+        <span class="staging-manifest-badge" id="staging-manifest-badge">planned-not-staged</span>
+      </div>
+      <div class="staging-manifest-grid" id="staging-manifest-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card changelog-panel" aria-labelledby="changelog-title">
+      <div class="changelog-heading">
+        <div>
+          <p class="eyebrow">Release notes</p>
+          <h2 id="changelog-title">God Mode changelog</h2>
+          <p class="changelog-summary">
+            The current changelog records added features while keeping release state draft-unverified.
+          </p>
+        </div>
+        <span class="changelog-badge" id="changelog-badge">draft-unverified</span>
+      </div>
+      <div class="changelog-grid" id="changelog-grid" aria-live="polite"></div>
+    </section>
+
+    <section id="content" class="content card" aria-live="polite"></section>
+
+    <section class="card metrics">
+      <h2>Shared Contract & Analytics Snapshot</h2>
+      <ul id="contract-metrics"></ul>
+    </section>
+
+    <section class="card events">
+      <div class="events-header">
+        <h2>Recent Events</h2>
+        <button type="button" id="events-copy" class="ghost-button">Copy JSON</button>
+      </div>
+      <pre id="event-log" role="status" aria-live="polite"></pre>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Designed for iOS / macOS preview and deep-link parity.</p>
+    <p>Contract-first architecture. No backend required.</p>
+  </footer>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("service-worker.js").catch(() => {
+          // best effort
+        });
+      });
+    }
+  </script>
+  <script src="script.js" defer></script>
+</body>
+</html>

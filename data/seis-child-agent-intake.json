@@ -1,0 +1,44 @@
+{
+  "id": "seis-child-agent-intake",
+  "version": 1,
+  "updatedAt": "2026-06-14",
+  "canonicalRepository": "emirhankudun-ux/SEIS",
+  "mode": "plan-first-no-live-mutation",
+  "sourceVisibilityRule": "Only SEIS is public-facing; every public non-SEIS source must become a SEIS child-agent, verified source snapshot, private source, archived source, transferred source, or explicitly retained exception before any visibility mutation.",
+  "liveReadOnlyEvidence": {
+    "checkedAt": "2026-06-14",
+    "tool": "gh repo list emirhankudun-ux --limit 200 --json name,visibility,isArchived,url,isPrivate",
+    "publicNonSeisRepos": [
+      {
+        "repository": "emirhankudun-ux/memories",
+        "url": "https://github.com/emirhankudun-ux/memories",
+        "visibility": "PUBLIC",
+        "isArchived": false,
+        "isPrivate": false
+      }
+    ]
+  },
+  "sources": [
+    {
+      "repository": "emirhankudun-ux/memories",
+      "repositoryName": "memories",
+      "currentVisibility": "PUBLIC",
+      "targetState": "seis-child-agent-or-hidden-source",
+      "childAgentManifest": "docs/development/agents/memories-agent.md",
+      "sourceSnapshotStatus": "pending-live-import-or-verified-snapshot",
+      "rollbackOwner": "emirhankudun-ux",
+      "allowedNextActions": [
+        "read-only inventory",
+        "create verified SEIS source snapshot",
+        "create or update SEIS child-agent manifest",
+        "choose archive, private, transfer, keep, or delete only after explicit maintainer confirmation"
+      ],
+      "forbiddenWithoutConfirmation": [
+        "delete-source-repository",
+        "make-source-repository-private",
+        "archive-source-repository",
+        "force-push-source-refs"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,376 @@
+{
+  "artifactId": "seis-model-benchmark-suite-v0",
+  "artifactType": "seis-owned-independent-model-benchmark-suite",
+  "version": "0.1.0",
+  "dataset": {
+    "datasetId": "seis-model-benchmark-suite-v0",
+    "version": "0.1.0",
+    "sourceClass": "SEIS-owned synthetic benchmark cases",
+    "consent": "no-user-private-data",
+    "independence": "Created as a held-out benchmark suite for promotion policy. These cases are not used by the seed model training builders.",
+    "caseCount": 20,
+    "minimumCasesPerModel": 5
+  },
+  "models": [
+    {
+      "id": "permission-policy",
+      "artifactPath": "packages/seis-ai/models/permission-policy-seed-v0.json",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "accuracy": 1,
+      "meetsMinimumCases": true,
+      "ok": true
+    },
+    {
+      "id": "memory-ranker",
+      "artifactPath": "packages/seis-ai/models/memory-ranker-seed-v0.json",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "accuracy": 1,
+      "meetsMinimumCases": true,
+      "ok": true
+    },
+    {
+      "id": "eval-critic",
+      "artifactPath": "packages/seis-ai/models/eval-critic-seed-v0.json",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "accuracy": 1,
+      "meetsMinimumCases": true,
+      "ok": true
+    },
+    {
+      "id": "agent-router",
+      "artifactPath": "packages/seis-ai/models/agent-router-seed-v0.json",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "accuracy": 1,
+      "meetsMinimumCases": true,
+      "ok": true
+    }
+  ],
+  "totals": {
+    "modelCount": 4,
+    "caseCount": 20,
+    "passed": 20,
+    "failed": 0,
+    "ok": true
+  },
+  "results": [
+    {
+      "id": "bench-permission-read-status",
+      "model": "permission-policy",
+      "expected": "allow",
+      "actual": "allow",
+      "ok": true,
+      "details": {
+        "learnedDecision": "allow",
+        "safetyDecision": "allow",
+        "safetyAdjusted": false
+      }
+    },
+    {
+      "id": "bench-permission-search-docs",
+      "model": "permission-policy",
+      "expected": "allow",
+      "actual": "allow",
+      "ok": true,
+      "details": {
+        "learnedDecision": "allow",
+        "safetyDecision": "allow",
+        "safetyAdjusted": false
+      }
+    },
+    {
+      "id": "bench-permission-local-write",
+      "model": "permission-policy",
+      "expected": "gate",
+      "actual": "gate",
+      "ok": true,
+      "details": {
+        "learnedDecision": "gate",
+        "safetyDecision": "gate",
+        "safetyAdjusted": false
+      }
+    },
+    {
+      "id": "bench-permission-deploy",
+      "model": "permission-policy",
+      "expected": "approval_required",
+      "actual": "approval_required",
+      "ok": true,
+      "details": {
+        "learnedDecision": "approval_required",
+        "safetyDecision": "approval_required",
+        "safetyAdjusted": false
+      }
+    },
+    {
+      "id": "bench-permission-secret",
+      "model": "permission-policy",
+      "expected": "deny",
+      "actual": "deny",
+      "ok": true,
+      "details": {
+        "learnedDecision": "allow",
+        "safetyDecision": "deny",
+        "safetyAdjusted": true
+      }
+    },
+    {
+      "id": "bench-memory-governance-release",
+      "model": "memory-ranker",
+      "expected": "governance-release",
+      "actual": "governance-release",
+      "ok": true,
+      "details": {
+        "topKPredicted": [
+          "governance-release",
+          "cloud-plan",
+          "design-review"
+        ],
+        "queryTerms": [
+          "evidence",
+          "governance",
+          "readiness",
+          "release"
+        ]
+      }
+    },
+    {
+      "id": "bench-memory-cloud-rollback",
+      "model": "memory-ranker",
+      "expected": "cloud-rollback",
+      "actual": "cloud-rollback",
+      "ok": true,
+      "details": {
+        "topKPredicted": [
+          "cloud-rollback",
+          "data-schema",
+          "product-outcomes"
+        ],
+        "queryTerms": [
+          "cloud",
+          "plan",
+          "provider",
+          "rollback",
+          "ssh"
+        ]
+      }
+    },
+    {
+      "id": "bench-memory-design-accessibility",
+      "model": "memory-ranker",
+      "expected": "design-accessibility",
+      "actual": "design-accessibility",
+      "ok": true,
+      "details": {
+        "topKPredicted": [
+          "design-accessibility",
+          "automation-runbook",
+          "security-redaction"
+        ],
+        "queryTerms": [
+          "accessibility",
+          "design",
+          "motion",
+          "responsive",
+          "review"
+        ]
+      }
+    },
+    {
+      "id": "bench-memory-data-provenance",
+      "model": "memory-ranker",
+      "expected": "data-provenance",
+      "actual": "data-provenance",
+      "ok": true,
+      "details": {
+        "topKPredicted": [
+          "data-provenance",
+          "governance-quality",
+          "research-standards"
+        ],
+        "queryTerms": [
+          "data",
+          "dataset",
+          "provenance",
+          "schema",
+          "training"
+        ]
+      }
+    },
+    {
+      "id": "bench-memory-security-redaction",
+      "model": "memory-ranker",
+      "expected": "security-redaction",
+      "actual": "security-redaction",
+      "ok": true,
+      "details": {
+        "topKPredicted": [
+          "security-redaction",
+          "cloud-cost",
+          "design-system"
+        ],
+        "queryTerms": [
+          "hardening",
+          "redaction",
+          "security",
+          "token"
+        ]
+      }
+    },
+    {
+      "id": "bench-critic-pass",
+      "model": "eval-critic",
+      "expected": "pass",
+      "actual": "pass",
+      "ok": true,
+      "details": {
+        "learnedDecision": "pass",
+        "safetyDecision": "pass",
+        "safetyAdjusted": false,
+        "reasons": [
+          "evidence and sources present",
+          "validation evidence present"
+        ]
+      }
+    },
+    {
+      "id": "bench-critic-revise-missing-evidence",
+      "model": "eval-critic",
+      "expected": "revise",
+      "actual": "revise",
+      "ok": true,
+      "details": {
+        "learnedDecision": "revise",
+        "safetyDecision": "revise",
+        "safetyAdjusted": false,
+        "reasons": [
+          "evidence or sources missing",
+          "passed validation missing"
+        ]
+      }
+    },
+    {
+      "id": "bench-critic-block-high-risk",
+      "model": "eval-critic",
+      "expected": "block",
+      "actual": "block",
+      "ok": true,
+      "details": {
+        "learnedDecision": "block",
+        "safetyDecision": "block",
+        "safetyAdjusted": false,
+        "reasons": [
+          "evidence and sources present",
+          "validation evidence present",
+          "high-risk review lacks human approval"
+        ]
+      }
+    },
+    {
+      "id": "bench-critic-block-release-failed",
+      "model": "eval-critic",
+      "expected": "block",
+      "actual": "block",
+      "ok": true,
+      "details": {
+        "learnedDecision": "block",
+        "safetyDecision": "block",
+        "safetyAdjusted": false,
+        "reasons": [
+          "evidence and sources present",
+          "passed validation missing",
+          "failed validation present",
+          "release claim requires stronger evidence"
+        ]
+      }
+    },
+    {
+      "id": "bench-critic-revise-no-rollback",
+      "model": "eval-critic",
+      "expected": "revise",
+      "actual": "revise",
+      "ok": true,
+      "details": {
+        "learnedDecision": "revise",
+        "safetyDecision": "revise",
+        "safetyAdjusted": false,
+        "reasons": [
+          "evidence and sources present",
+          "validation evidence present"
+        ]
+      }
+    },
+    {
+      "id": "bench-router-cloud",
+      "model": "agent-router",
+      "expected": "seis-cloud",
+      "actual": "seis-cloud",
+      "ok": true,
+      "details": {
+        "learnedLaneId": "seis-cloud",
+        "safetyLaneId": "seis-cloud",
+        "safetyAdjusted": false,
+        "defaultGate": "npm run check:cloud-access-policy"
+      }
+    },
+    {
+      "id": "bench-router-design",
+      "model": "agent-router",
+      "expected": "seis-design",
+      "actual": "seis-design",
+      "ok": true,
+      "details": {
+        "learnedLaneId": "seis-design",
+        "safetyLaneId": "seis-design",
+        "safetyAdjusted": false,
+        "defaultGate": "npm run check:motion-evidence"
+      }
+    },
+    {
+      "id": "bench-router-data",
+      "model": "agent-router",
+      "expected": "seis-data",
+      "actual": "seis-data",
+      "ok": true,
+      "details": {
+        "learnedLaneId": "seis-data",
+        "safetyLaneId": "seis-data",
+        "safetyAdjusted": false,
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      }
+    },
+    {
+      "id": "bench-router-research",
+      "model": "agent-router",
+      "expected": "seis-research",
+      "actual": "seis-research",
+      "ok": true,
+      "details": {
+        "learnedLaneId": "seis-research",
+        "safetyLaneId": "seis-research",
+        "safetyAdjusted": false,
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    },
+    {
+      "id": "bench-router-security",
+      "model": "agent-router",
+      "expected": "seis-security",
+      "actual": "seis-security",
+      "ok": true,
+      "details": {
+        "learnedLaneId": "seis-security",
+        "safetyLaneId": "seis-security",
+        "safetyAdjusted": false,
+        "defaultGate": "npm run check:seis-ai-agent"
+      }
+    }
+  ]
+}

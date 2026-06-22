@@ -1,0 +1,11 @@
+{
+  "type": "record",
+  "name": "SeisReleaseEvent",
+  "namespace": "seis.release",
+  "fields": [
+    { "name": "targetConfirmed", "type": "boolean", "default": false },
+    { "name": "accessibilityReviewed", "type": "boolean", "default": false },
+    { "name": "rollbackPlanned", "type": "boolean", "default": false },
+    { "name": "promotionRule", "type": "string", "default": "contracts before services" }
+  ]
+}

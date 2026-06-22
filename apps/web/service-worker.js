@@ -1,92 +1,85 @@
-const CACHE_NAME = "seis-foundation-v10";
-const CORE_ASSETS = [
-  "./",
-  "./index.html",
-  "./seis-code.html",
-  "./seis-code.css",
-  "./seis-code.js",
-  "./mythic-gacha.html",
-  "./mythic-gacha.css",
-  "./mythic-gacha.js",
-  "./favicon.svg",
-  "./favicon.ico",
-  "./manifest.webmanifest",
-  "./showcase/nature.html",
-  "./showcase/still-life.html",
-  "./showcase/materials.html",
-  "./showcase/metal-parts.html",
-  "./showcase/video-hero.css",
-  "./showcase/video-hero.js",
-  "./showcase/video-heroes.json",
-  "./public/media/mythic/shan-hai-creature-atlas.png",
-  "./src/config/routes.json",
-  "./assets/styles/seis.tokens.css",
-  "./src/styles/base.css",
-  "./src/styles/motion.css",
-  "./src/styles/responsive.css",
-  "./src/scripts/motion-system.js",
-  "./src/scripts/development-mode.js",
-  "./src/scripts/efficiency-governor.js",
-  "./src/scripts/gallery-system.js",
-  "./src/scripts/handoff-system.js",
-  "./src/scripts/i18n-system.js",
-  "./src/scripts/system-pulse.js",
-  "./src/scripts/weekly-usage-governor.js",
-  "./src/scripts/pwa-system.js",
-  "./src/i18n/locales.js",
-  "./src/content/artworks.js",
-  "./content/lab/development-mode.json",
-  "./content/lab/efficiency-governor.json",
-  "./content/lab/system-pulse.json",
-  "./content/lab/weekly-usage-governor.json",
-  "./content/lab/handoff-checklist.json"
-];
+/* Emirhan Kudun Portfolio — Service Worker */
+(function () {
+  "use strict";
 
-self.addEventListener("install", event => {
-  event.waitUntil(cacheCoreAssets());
-  self.skipWaiting();
-});
+  const CACHE_NAME = "ek-portfolio-v1";
 
-self.addEventListener("activate", event => {
-  event.waitUntil(clearOldCaches());
-  self.clients.claim();
-});
+  const PRECACHE = [
+    "./",
+    "./index.html",
+    "./style.css",
+    "./script.js",
+    "./translations.json",
+    "./manifest.json",
+    "./site-config.json",
+    "./favicon.svg"
+  ];
 
-self.addEventListener("fetch", event => {
-  const request = event.request;
-  if (request.method !== "GET") return;
-  if (!isSameOrigin(request.url)) return;
+  self.addEventListener("install", function (event) {
+    event.waitUntil(
+      caches.open(CACHE_NAME).then(function (cache) {
+        return cache.addAll(PRECACHE);
+      })
+    );
+    self.skipWaiting();
+  });
 
-  event.respondWith(cacheFirst(request));
-});
+  self.addEventListener("activate", function (event) {
+    event.waitUntil(
+      caches.keys().then(function (keys) {
+        return Promise.all(
+          keys
+            .filter(function (key) { return key !== CACHE_NAME; })
+            .map(function (key) { return caches.delete(key); })
+        );
+      })
+    );
+    self.clients.claim();
+  });
 
-async function cacheCoreAssets() {
-  const cache = await caches.open(CACHE_NAME);
-  const urls = CORE_ASSETS.map(path => new URL(path, self.registration.scope).toString());
-  await cache.addAll(urls);
-}
+  self.addEventListener("fetch", function (event) {
+    const request = event.request;
+    if (request.method !== "GET") { return; }
 
-async function clearOldCaches() {
-  const keys = await caches.keys();
-  await Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)));
-}
+    const url = new URL(request.url);
+    if (url.origin !== self.location.origin) { return; }
 
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
+    /* Navigation (HTML): network-first, fall back to cached index.html */
+    if (request.mode === "navigate") {
+      event.respondWith(
+        fetch(request)
+          .then(function (response) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(function (cache) {
+              cache.put(request, clone);
+            });
+            return response;
+          })
+          .catch(function () {
+            return caches.match("./index.html");
+          })
+      );
+      return;
     }
-    return response;
-  } catch (_error) {
-    return caches.match(new URL("./index.html", self.registration.scope).toString());
-  }
-}
 
-function isSameOrigin(url) {
-  return new URL(url).origin === self.location.origin;
-}
+    /* Static assets: stale-while-revalidate */
+    event.respondWith(
+      caches.match(request).then(function (cached) {
+        const fetched = fetch(request)
+          .then(function (response) {
+            if (response.ok) {
+              const clone = response.clone();
+              caches.open(CACHE_NAME).then(function (cache) {
+                cache.put(request, clone);
+              });
+            }
+            return response;
+          })
+          .catch(function () {
+            return cached || new Response("Network error", { status: 503 });
+          });
+        return cached || fetched;
+      })
+    );
+  });
+})();

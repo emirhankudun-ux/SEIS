@@ -1,0 +1,106 @@
+{
+  "id": "seis-specialist-plugins",
+  "version": 1,
+  "updatedAt": "2026-06-15",
+  "mode": "single-seis-agent-embedded-lanes",
+  "summary": "SEIS-Agent is the only repo marketplace plugin. SEIS Hub, SEIS Governance, SEIS Cloud, SEIS-Code, SEIS-Design, and SEIS-DATA are embedded lane skills and profiles inside the single agent, while standalone lane directories remain source mirrors for focused development.",
+  "consolidation": {
+    "primaryInstallId": "seis-ai-agent@seis-repo",
+    "defaultInstallMode": "single-agent",
+    "legacyPersonalMarketplace": "compatibility-mirror-only",
+    "standaloneLaneInstallMode": "disabled",
+    "marketplacePolicy": "only-seis-ai-agent-is-published"
+  },
+  "sourceEvidence": [
+    "data/seis-plugin-package-intake-2026-06-13.json",
+    "docs/platform/seis-plugin-package-intake.md"
+  ],
+  "marketplace": {
+    "path": ".agents/plugins/marketplace.json",
+    "name": "seis-repo",
+    "publishedPlugin": "seis-ai-agent",
+    "entryPolicy": {
+      "installation": "AVAILABLE",
+      "authentication": "ON_INSTALL"
+    }
+  },
+  "centralMcpTools": [
+    "seis_specialist_lanes",
+    "seis_specialist_lane_status",
+    "seis_specialist_lane_plan"
+  ],
+  "plugins": [
+    {
+      "name": "seis-governance",
+      "displayName": "SEIS Governance",
+      "category": "Developer",
+      "accessModel": "public-repo-governance-with-release-readiness-validation",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-governance",
+      "skill": "skills/seis-governance/SKILL.md",
+      "mcpServer": "seis-governance",
+      "tools": ["seis_governance_status", "seis_governance_plan"],
+      "laneProfile": "assets/lanes/seis-governance.json"
+    },
+    {
+      "name": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "category": "Developer",
+      "accessModel": "public-cloud-for-everyone-and-team-vpn-cloud-for-workplaces-and-teams",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-cloud",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-cloud",
+      "skill": "skills/seis-cloud/SKILL.md",
+      "mcpServer": "seis-cloud",
+      "tools": ["seis_cloud_status", "seis_cloud_plan"],
+      "laneProfile": "assets/lanes/seis-cloud.json"
+    },
+    {
+      "name": "seis-code",
+      "displayName": "SEIS-Code",
+      "category": "Developer",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-code",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-code",
+      "skill": "skills/seis-code/SKILL.md",
+      "mcpServer": "seis-code",
+      "tools": ["seis_code_status", "seis_code_plan"],
+      "laneProfile": "assets/lanes/seis-code.json"
+    },
+    {
+      "name": "seis-design",
+      "displayName": "SEIS-Design",
+      "category": "Design",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-design",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-design",
+      "skill": "skills/seis-design/SKILL.md",
+      "mcpServer": "seis-design",
+      "tools": ["seis_design_status", "seis_design_plan"],
+      "laneProfile": "assets/lanes/seis-design.json"
+    },
+    {
+      "name": "seis-data",
+      "displayName": "SEIS-DATA",
+      "category": "Data",
+      "repoRoot": "plugins/seis-ai-agent",
+      "sourceMirror": "plugins/seis-data",
+      "installId": "seis-ai-agent@seis-repo",
+      "embeddedInstallId": "seis-ai-agent@seis-repo#seis-data",
+      "skill": "skills/seis-data/SKILL.md",
+      "mcpServer": "seis-data",
+      "tools": ["seis_data_status", "seis_data_plan"],
+      "laneProfile": "assets/lanes/seis-data.json"
+    }
+  ],
+  "validation": [
+    "npm run check:seis-specialist-plugins",
+    "npm run check:seis-ai-agent",
+    "python3 /Users/emirhankudun/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py plugins/seis-ai-agent"
+  ]
+}

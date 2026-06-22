@@ -1,0 +1,40 @@
+# Node.js / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.eslintcache
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# OS
+Thumbs.db
+
+# Local sync safety
+.sync-backups/
+.serena/
+logs/
+UIX-Apps-codex-delivery/
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md

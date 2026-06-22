@@ -1,0 +1,437 @@
+# Instincts generated from https://github.com/emirhankudun-ux/UIX-Apps
+# Generated: 2026-06-01T22:11:24.184Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: UIX-Apps-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Commit Length
+
+## Action
+
+Write moderate-length commit messages (~61 characters)
+
+## Evidence
+
+- Average commit message length: 61 chars
+- Based on 10 commits
+
+---
+id: UIX-Apps-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: UIX-Apps-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: UIX-Apps-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: UIX-Apps-workflow-feature-development
+trigger: "when implementing a new feature"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Workflow Feature Development
+
+## Action
+
+Follow the feature-development workflow:
+1. Add feature implementation
+2. Add tests for feature
+3. Update documentation
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~30x per month
+- Files: 
+
+---
+id: UIX-Apps-workflow-add-or-enhance-animated-ui-section
+trigger: "when doing add or enhance animated ui section"
+confidence: 0.7
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Workflow Add Or Enhance Animated Ui Section
+
+## Action
+
+Follow the add-or-enhance-animated-ui-section workflow:
+1. Update or add new section markup in index.html
+2. Add or modify corresponding styles and keyframes in style.css
+3. Implement or extend animation logic in three-scene.js (or relevant JS file)
+4. Integrate with motion/accessibility systems (e.g. prefers-reduced-motion, IntersectionObserver, ScrollTrigger)
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~4x per month
+- Files: index.html, style.css, three-scene.js
+
+---
+id: UIX-Apps-workflow-refine-or-optimize-animation-performance
+trigger: "when doing refine or optimize animation performance"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Workflow Refine Or Optimize Animation Performance
+
+## Action
+
+Follow the refine-or-optimize-animation-performance workflow:
+1. Identify performance bottlenecks or animation issues in JS and CSS
+2. Update style.css to optimize transitions, will-change usage, or motion gating
+3. Refactor animation logic in three-scene.js for efficiency (e.g. caching, sharing objects, guarding calculations)
+4. Test changes under various motion/accessibility settings
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: style.css, three-scene.js
+
+---
+id: UIX-Apps-workflow-add-or-enhance-3d-effects-or-postprocessing
+trigger: "when doing add or enhance 3d effects or postprocessing"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/emirhankudun-ux/UIX-Apps
+---
+
+# UIX Apps Workflow Add Or Enhance 3d Effects Or Postprocessing
+
+## Action
+
+Follow the add-or-enhance-3d-effects-or-postprocessing workflow:
+1. Implement or extend effect logic in three-scene.js (e.g. add postprocessing, new particle systems, animation triggers)
+2. Update style.css for any related visual cues or overlays
+3. Optionally update index.html if new DOM elements or containers are needed
+4. Integrate effect with accessibility/motion systems
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: three-scene.js, style.css, index.html
+
+---
+id: uix-apps-instinct-file-naming-camelcase
+trigger: "When creating or renaming a source file"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct File Naming Camelcase
+
+## Action
+
+Use camelCase for file names (e.g. threeScene.js, styleGuide.js)
+
+## Evidence
+
+- Pattern in namingConventions.files
+- Observed in files: three-scene.js
+
+---
+id: uix-apps-instinct-function-naming-camelcase
+trigger: "When defining a function"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Function Naming Camelcase
+
+## Action
+
+Use camelCase for function names
+
+## Evidence
+
+- Pattern in namingConventions.functions
+
+---
+id: uix-apps-instinct-class-naming-pascalcase
+trigger: "When defining a class"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Class Naming Pascalcase
+
+## Action
+
+Use PascalCase for class names
+
+## Evidence
+
+- Pattern in namingConventions.classes
+
+---
+id: uix-apps-instinct-constant-naming-screaming-snake-case
+trigger: "When defining a constant"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Constant Naming Screaming Snake Case
+
+## Action
+
+Use SCREAMING_SNAKE_CASE for constant names
+
+## Evidence
+
+- Pattern in namingConventions.constants
+
+---
+id: uix-apps-instinct-import-absolute
+trigger: "When importing modules"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Import Absolute
+
+## Action
+
+Use absolute import paths
+
+## Evidence
+
+- Pattern in importStyle: absolute
+
+---
+id: uix-apps-instinct-export-named
+trigger: "When exporting functions, classes, or constants"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Export Named
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: uix-apps-instinct-test-add-after-feature
+trigger: "When adding a new feature"
+confidence: 0.85
+domain: testing
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Test Add After Feature
+
+## Action
+
+Add corresponding tests for the feature after implementation
+
+## Evidence
+
+- feature-development workflow: 'Add tests for feature' follows 'Add feature implementation'
+
+---
+id: uix-apps-instinct-test-location-separate
+trigger: "When creating or updating tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Test Location Separate
+
+## Action
+
+Place test files in a separate location from source files
+
+## Evidence
+
+- architecture.testLocation: separate
+
+---
+id: uix-apps-instinct-commit-prefix-perf-for-performance
+trigger: "When committing performance or optimization changes"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Commit Prefix Perf For Performance
+
+## Action
+
+Prefix commit message with 'perf:'
+
+## Evidence
+
+- commits.prefixes includes 'perf'
+- Seen in commit: 'perf: address all Gemini code review findings'
+
+---
+id: uix-apps-instinct-commit-add-for-features
+trigger: "When committing a new feature or section"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Commit Add For Features
+
+## Action
+
+Start commit message with 'Add' (e.g., 'Add skills orbit cloud and testimonials sections')
+
+## Evidence
+
+- Seen in commits: 'Add fully-featured 3D animated portfolio layer', 'Add skills orbit cloud and testimonials sections'
+
+---
+id: uix-apps-instinct-animated-ui-section-workflow
+trigger: "When introducing a new visually rich section or feature with animation/interactivity"
+confidence: 0.95
+domain: workflow
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Animated Ui Section Workflow
+
+## Action
+
+Update/add section markup in index.html, modify styles/keyframes in style.css, implement/extend animation logic in three-scene.js, and integrate with motion/accessibility systems
+
+## Evidence
+
+- add-or-enhance-animated-ui-section workflow
+- Example commits and files: index.html, style.css, three-scene.js
+
+---
+id: uix-apps-instinct-optimize-animation-workflow
+trigger: "When improving performance, fixing animation bugs, or addressing code review feedback on UI interactions"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct Optimize Animation Workflow
+
+## Action
+
+Identify bottlenecks in JS/CSS, optimize transitions and will-change in style.css, refactor animation logic in three-scene.js, and test under motion/accessibility settings
+
+## Evidence
+
+- refine-or-optimize-animation-performance workflow
+- Example commits and files: style.css, three-scene.js
+
+---
+id: uix-apps-instinct-3d-effects-workflow
+trigger: "When adding or enhancing 3D visual effects for richer UI depth"
+confidence: 0.88
+domain: workflow
+source: repo-analysis
+source_repo: emirhankudun-ux/UIX-Apps
+---
+
+# Uix Apps Instinct 3d Effects Workflow
+
+## Action
+
+Implement/extend effect logic in three-scene.js, update style.css for overlays, optionally update index.html, and integrate with accessibility/motion systems
+
+## Evidence
+
+- add-or-enhance-3d-effects-or-postprocessing workflow
+- Example commits and files: three-scene.js, style.css, index.html
+

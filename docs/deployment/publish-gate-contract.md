@@ -8,13 +8,13 @@ Machine-readable source: [`content/development/publish-gate-contract.json`](../.
 
 | Level | Meaning | Allows | Still blocks |
 | --- | --- | --- | --- |
-| `configured` | `origin` points at `https://github.com/emirhankudun-ux/SEIS`. | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
-| `publish-preflight` | Branch is `seis/product-experience-suite`, upstream is `origin/seis/product-experience-suite`, worktree is clean, GitHub auth is ready, and push approval exists. | Bounded push preflight and fast-forward-safe publish attempt. | Automatic deploy without confirmed target. |
+| `configured` | `origin` points at the configured SEIS repository (`git@github.com:emirhankudun-ux/SEIS.git`). | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
+| `publish-preflight` | Branch is `main`, upstream is `origin/main`, worktree is clean, and GitHub auth is ready. | Bounded push preflight and fast-forward-safe publish attempt. | Automatic deploy without confirmed target. |
 | `deployment-ready` | Publish preflight is ready and server/deployment target has domain, path, owner, and rollback confirmation. | Release artifact upload after human confirmation. | Unconfirmed overwrite and branch cleanup without review. |
 
 ## Current Environment Policy
 
-This environment is expected to be **configured but not publish-ready** unless `seis/product-experience-suite`, upstream, clean worktree, GitHub authentication, and human push approval all become available. The current network probe status is `not-run-in-current-local-pass`, so remote configuration should not be treated as GitHub authentication or push proof.
+This environment is expected to be **configured but not publish-ready** unless `main`, upstream, clean worktree, and GitHub authentication all become available. The previous network probe returned `Branch protection and signature rules can still block or warn on direct pushes`, so remote configuration should not be treated as GitHub authentication or push proof.
 
 ## Validation
 

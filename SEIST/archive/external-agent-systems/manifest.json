@@ -1,0 +1,63 @@
+{
+  "intakeDate": "2026-06-01",
+  "safety": {
+    "globalInstallPerformed": false,
+    "installersExecuted": false,
+    "recommendedNextStep": "Audit installer and connector surfaces before any runtime activation."
+  },
+  "systems": [
+    {
+      "name": "OpenClaw",
+      "officialSite": "https://openclaw.ai",
+      "repository": "https://github.com/openclaw/openclaw",
+      "localPath": "openclaw",
+      "commit": "bcdc93d651c434cebc9ef460f0b4c6672ee94af5",
+      "releaseTag": "v2026.5.28",
+      "license": "MIT",
+      "seisFit": [
+        "multi-channel AI gateway",
+        "MCP configuration patterns",
+        "plugin and channel governance",
+        "local companion app patterns"
+      ]
+    },
+    {
+      "name": "Hermes Agent",
+      "officialSite": "https://hermes-agent.nousresearch.com",
+      "repository": "https://github.com/NousResearch/hermes-agent",
+      "localPath": "hermes-agent",
+      "commit": "ef3a650f05d2e9ce14855af1d0184f3ee93455da",
+      "releaseTag": "v2026.5.29.2",
+      "license": "MIT",
+      "seisFit": [
+        "self-improving skill loop",
+        "profile isolation",
+        "scheduled automations",
+        "MCP tool filtering",
+        "subagent delegation"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "OpenClaw macOS app DMG",
+      "path": "apps/OpenClaw-2026.5.28.dmg",
+      "sha256": "e11f93f313d8b2fffdce71676722e9d6ae742ff6aa9ce9a8bbc93c98a22c6a28"
+    },
+    {
+      "name": "OpenClaw dependency evidence",
+      "path": "apps/openclaw-2026.5.28-dependency-evidence.zip",
+      "sha256": "7d39ecf04a6962f3bca86f3686e38e24aa719bec9d7921f45eb4188859be6dc6"
+    },
+    {
+      "name": "Hermes Python wheel",
+      "path": "apps/hermes_agent-0.15.2-py3-none-any.whl",
+      "sha256": "1484b0bf66d269c8d90336509b41a9c1041fc7e6124f138df71c248a955cdc3b"
+    },
+    {
+      "name": "Hermes Python source distribution",
+      "path": "apps/hermes_agent-0.15.2.tar.gz",
+      "sha256": "3192f8d5d11b1d368b8a8090d68a7fb0a1e485d991f99ff7ed98b53d93e5ce78"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "id": "seis-agent-lane-status",
+  "version": "2026.06.18",
+  "status": "active",
+  "purpose": "Track safe, observable, source-controlled SEIS agent lanes for God Mode development.",
+  "qualityGate": "npm run check:seis-agent-lane-status",
+  "safetyRules": [
+    "Agents must be observable and controllable.",
+    "Agents must not expose secrets or credentials.",
+    "Agents must not perform destructive operations without explicit approval.",
+    "Agents must report validation duties and evidence gaps.",
+    "Agents must stay within declared skill and tool boundaries."
+  ],
+  "lanes": [
+    {
+      "id": "seis-god-mode-developer",
+      "displayName": "SEIS God Mode Developer",
+      "status": "active",
+      "skillPath": "plugins/seis/skills/seis-god-mode-developer/SKILL.md",
+      "agentManifest": "plugins/seis/skills/seis-god-mode-developer/agents/openai.yaml",
+      "autonomyLevel": "supervised-cross-layer-development",
+      "toolBoundary": "Codex execution, repository edits, governance artifacts, and validation reporting.",
+      "safetyBoundary": "No secret exposure, no destructive commands without explicit approval, no completion claim without evidence.",
+      "validationDuty": "Run or request God Mode, module coverage, plugin bundle, and quality governance gates."
+    },
+    {
+      "id": "seis-focus-mode",
+      "displayName": "SEIS Focus Mode",
+      "status": "active",
+      "skillPath": "plugins/seis/skills/seis-focus-mode/SKILL.md",
+      "agentManifest": "plugins/seis/skills/seis-focus-mode/agents/openai.yaml",
+      "autonomyLevel": "supervised-attention-control",
+      "toolBoundary": "Focus state, compact event logs, and concentrated SEIS work.",
+      "safetyBoundary": "No hiding material risks or validation gaps while reducing noise.",
+      "validationDuty": "Run or request focus mode checks before release claims."
+    },
+    {
+      "id": "seis-master-prompt",
+      "displayName": "SEIS Master Prompt Governance",
+      "status": "active",
+      "skillPath": "plugins/seis/skills/seis-master-prompt/SKILL.md",
+      "agentManifest": "plugins/seis/skills/seis-master-prompt/agents/openai.yaml",
+      "autonomyLevel": "supervised-governance",
+      "toolBoundary": "Architecture, operating principles, long-term mission, and quality rules.",
+      "safetyBoundary": "No scope shrinkage when the user requests ecosystem-level progress.",
+      "validationDuty": "Run or request master prompt governance checks."
+    },
+    {
+      "id": "seis-security-review",
+      "displayName": "SEIS Security Review",
+      "status": "active",
+      "skillPath": "plugins/seis/skills/seis-security-review/SKILL.md",
+      "agentManifest": "plugins/seis/skills/seis-security-review/agents/openai.yaml",
+      "autonomyLevel": "supervised-security-review",
+      "toolBoundary": "Threat review, secret-safety checks, and rollback/security evidence.",
+      "safetyBoundary": "Never weaken security for speed or convenience.",
+      "validationDuty": "Run or request security and governance checks for security-sensitive changes."
+    },
+    {
+      "id": "seis-github-workflow",
+      "displayName": "SEIS GitHub Workflow",
+      "status": "active",
+      "skillPath": "plugins/seis/skills/seis-github-workflow/SKILL.md",
+      "agentManifest": "plugins/seis/skills/seis-github-workflow/agents/openai.yaml",
+      "autonomyLevel": "supervised-repository-workflow",
+      "toolBoundary": "Branch, commit, CI, PR, release, and repository hygiene workflows.",
+      "safetyBoundary": "Do not discard user work, rewrite unrelated history, or push unverified release claims.",
+      "validationDuty": "Run or request repository health and CI governance checks before push or release."
+    }
+  ]
+}

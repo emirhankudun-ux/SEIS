@@ -1,0 +1,105 @@
+name: 🛡️ SEIS Guardian Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Her gün saat 02:00'da otomatik tarama
+    - cron: '0 2 * * *'
+
+jobs:
+  security-scan:
+    name: Secret & Vulnerability Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0 # Tüm geçmişi getir (gitleaks için gerekli)
+
+      - name: Install GitLeaks
+        run: |
+          GITLEAKS_VERSION="8.30.1"
+          GITLEAKS_ARCHIVE="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          wget -q "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/${GITLEAKS_ARCHIVE}"
+          tar -xzf "${GITLEAKS_ARCHIVE}"
+          sudo mv gitleaks /usr/local/bin/
+          rm "${GITLEAKS_ARCHIVE}"
+
+      - name: Run GitLeaks Scan
+        run: |
+          echo "🔍 SEIS Guardian: Tüm geçmiş taranıyor..."
+          if gitleaks detect --source . --config .gitleaks.toml --redact --verbose --exit-code 2; then
+            echo "✅ Güvenlik Taraması Başarılı!"
+          else
+            echo "🚨 Kritik Güvenlik İhlali Tespit Edildi!"
+            exit 1
+          fi
+
+      - name: Dependency Audit (NPM)
+        if: always()
+        run: |
+          if [ -f "package.json" ]; then
+            npm audit --audit-level=high || true
+          fi
+
+  v14-compliance:
+    name: V14 Compliance Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Check Documentation Presence
+        run: |
+          echo "📄 Dokümantasyon Kontrolü..."
+          files=("README.md" "SECURITY.md" "CONTRIBUTING.md")
+          missing=0
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Eksik: $file"
+              ((missing++))
+            else
+              echo "✅ Mevcut: $file"
+            fi
+          done
+          if [ $missing -gt 0 ]; then
+            echo "⚠️ $missing adet kritik dokümantasyon dosyası eksik."
+          fi
+
+      - name: Design System Validation
+        run: |
+          echo "🎨 Tasarım Sistemi Kontrolü..."
+          if [ -f "apps/web/src/styles/design-system.css" ]; then
+            echo "✅ Tasarım sistemi dosyası mevcut."
+          else
+            echo "⚠️ Tasarım sistemi dosyası bulunamadı."
+          fi
+
+  summary:
+    name: Security Summary
+    needs: [security-scan, v14-compliance]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: always()
+    steps:
+      - name: Generate Summary
+        run: |
+          echo "## 🛡️ SEIS Güvenlik ve Uyumluluk Raporu" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test | Durum |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Secret Scan | ${{ needs.security-scan.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| V14 Compliance | ${{ needs.v14-compliance.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "${{ needs.security-scan.result }}" == "failure" ]; then
+            echo "🚨 **KRİTİK:** Güvenlik taramasında ihlal tespit edildi!" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          else
+            echo "✅ Tüm güvenlik kontrolleri başarılı." >> $GITHUB_STEP_SUMMARY
+          fi
