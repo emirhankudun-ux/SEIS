@@ -126,7 +126,7 @@ class CdpClient {
     });
   }
 
-  send(method, params = {}) {
+  send(method, params = {}, timeoutMs = 10000) {
     const id = this.nextId++;
     this.ws.send(JSON.stringify({ id, method, params }));
     return new Promise((resolvePending, rejectPending) => {
@@ -135,7 +135,7 @@ class CdpClient {
         if (!this.pending.has(id)) return;
         this.pending.delete(id);
         rejectPending(new Error(`CDP command timed out: ${method}`));
-      }, 10000);
+      }, timeoutMs);
     });
   }
 
@@ -172,7 +172,7 @@ async function evaluate(client, expression) {
 }
 
 async function goto(client, url) {
-  await client.send("Page.navigate", { url });
+  await client.send("Page.navigate", { url }, 20000);
   const deadline = Date.now() + 12000;
 
   while (Date.now() < deadline) {
@@ -197,7 +197,7 @@ async function screenshot(client, name) {
     format: "png",
     fromSurface: true,
     captureBeyondViewport: false
-  });
+  }, 30000);
   const file = join(SCREENSHOT_DIR, name);
   writeFileSync(file, Buffer.from(result.data, "base64"));
   return file;

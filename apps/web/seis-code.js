@@ -268,7 +268,7 @@ function normalizePath(input, base = app.cwd) {
     parts.push(part);
   });
   const normalized = `/${parts.join("/")}`;
-  if (!normalized.startsWith(WORKSPACE)) {
+  if (normalized !== WORKSPACE && !normalized.startsWith(`${WORKSPACE}/`)) {
     throw new Error("Path is outside the browser workspace.");
   }
   return normalized;

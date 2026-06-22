@@ -11,6 +11,11 @@ SEIS should use OpenAI/Codex plugin families first for core work. The primary fa
 
 External or non-installed plugin URI families are fallback paths unless the OpenAI/Codex route cannot satisfy the request or the user explicitly asks for a specific provider.
 
+This policy is about installed Codex/plugin routing for repository work. It is
+not a model-provider lock-in rule for SEIS AI Core. Live model routing remains
+provider-neutral, no-key by default, and governed by `SECURITY.md` plus the
+SEIS AI Core contracts under `docs/ai/`.
+
 ## Why This Fits SEIS
 
 SEIS is a closed-code command center for repository consolidation, plugin coordination, full-stack/product work, and governance. OpenAI/Codex plugins are the best default layer because they are already installed, audited in SEIS, visible through the Codex runtime, and easier to keep aligned with repo governance.

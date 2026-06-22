@@ -8,6 +8,8 @@ Date: 2026-06-22
 | --- | --- |
 | [SEIS_MASTER_INDEX.md](SEIS_MASTER_INDEX.md) | Current master navigation for SEIS lanes, evidence, blockers, and next safe actions. |
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
+| [../ARCHITECTURE.md](../ARCHITECTURE.md) | Root architecture pointer for agents and contributors. |
+| [../ROADMAP.md](../ROADMAP.md) | Root roadmap pointer for agents and contributors. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
 | [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite, year controls, H1/H2 cadence, and coverage metrics. |
@@ -36,6 +38,9 @@ Date: 2026-06-22
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
+| [ai/model-router.md](ai/model-router.md) | Provider-neutral model routing contract and evidence requirements. |
+| [ai/prompt-engine.md](ai/prompt-engine.md) | Versioned prompt-pack contract and prompt safety rules. |
+| [ai/agent-runtime.md](ai/agent-runtime.md) | Human-supervised agent runtime contract and permission boundaries. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
 | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
 

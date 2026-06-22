@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 427,
+  "inspectedFiles": 432,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -58,7 +58,7 @@
         },
         {
           "path": "README.md",
-          "line": 74,
+          "line": 76,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22647,7 +22647,7 @@
         },
         {
           "path": "README.md",
-          "line": 71,
+          "line": 75,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -22655,7 +22655,7 @@
         },
         {
           "path": "README.md",
-          "line": 76,
+          "line": 78,
           "matchTypes": [
             "model:deepseek"
           ],
@@ -22962,7 +22962,7 @@
         },
         {
           "path": "README.md",
-          "line": 72,
+          "line": 74,
           "matchTypes": [
             "model:gemini-"
           ],
@@ -23245,7 +23245,7 @@
         },
         {
           "path": ".agents/skills/UIX-Apps/SKILL.md",
-          "line": 55,
+          "line": 57,
           "matchTypes": [
             "model:nim"
           ],
@@ -24085,7 +24085,7 @@
         },
         {
           "path": "apps/web/index.html",
-          "line": 71,
+          "line": 73,
           "matchTypes": [
             "model:nim"
           ],
@@ -24772,6 +24772,14 @@
           "surface": "deployment-config"
         },
         {
+          "path": "docs/ai/agent-runtime.md",
+          "line": 79,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "docs/architecture/animation-system-plan.md",
           "line": 1,
           "matchTypes": [
@@ -24821,7 +24829,7 @@
         },
         {
           "path": "docs/architecture/animation-system-plan.md",
-          "line": 47,
+          "line": 49,
           "matchTypes": [
             "model:nim"
           ],
@@ -25325,7 +25333,7 @@
         },
         {
           "path": "scripts/check-foundation.mjs",
-          "line": 117,
+          "line": 121,
           "matchTypes": [
             "model:nim"
           ],

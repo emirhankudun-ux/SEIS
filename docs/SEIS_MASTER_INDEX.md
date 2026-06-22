@@ -15,6 +15,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | --- | --- |
 | Repository operating rules | [../AGENTS.md](../AGENTS.md) |
 | Product overview | [../README.md](../README.md) |
+| Root architecture pointer | [../ARCHITECTURE.md](../ARCHITECTURE.md) |
+| Root roadmap pointer | [../ROADMAP.md](../ROADMAP.md) |
 | Current status | [STATUS.md](STATUS.md) |
 | Documentation index | [INDEX.md](INDEX.md) |
 | Integration and GitHub development policy | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) |
@@ -43,6 +45,9 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |
 | Mythic Gacha | [product/mythic-gacha.md](product/mythic-gacha.md) |
 | SEIS AI Core | [ai/seis-ai-core.md](ai/seis-ai-core.md) |
+| Model Router contract | [ai/model-router.md](ai/model-router.md) |
+| Prompt Engine contract | [ai/prompt-engine.md](ai/prompt-engine.md) |
+| Agent Runtime contract | [ai/agent-runtime.md](ai/agent-runtime.md) |
 | Security baseline | [security/security-baseline.md](security/security-baseline.md) |
 | AI provider audit | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) |
 

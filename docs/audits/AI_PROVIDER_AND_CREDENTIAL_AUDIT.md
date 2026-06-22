@@ -17,7 +17,7 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 427
+Inspected files: 432
 
 ## Provider Matrix
 
@@ -27,7 +27,7 @@ Inspected files: 427
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 3 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 35 | no | no | Retain | Review manually before enabling. |
 | Google Gemini | cloud model provider | Unknown | GEMINI_API_KEY | 31 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 275 | no | no | Retain | Review manually before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 276 | no | no | Retain | Review manually before enabling. |
 | Ollama | local model provider | Unknown | OLLAMA_BASE_URL, OLLAMA_HOST | 17 | no | no | Retain | Review manually before enabling. |
 | OpenAI | cloud model provider | Unknown | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 4 | no | no | Retain | Review manually before enabling. |
 | Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 36 | no | no | Retain | Review manually before enabling. |

@@ -14,6 +14,30 @@ Date: 2026-06-22
 | Validation | `jq empty content/development/seis-integration-map.json`, documentation review, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON updates; approval required for cross-worktree merge, push, or deletion. |
 
+## PR 0A: Open PR Stack Triage
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/pr-stack-triage` |
+| Priority | P0 |
+| Goal | Classify the 23 open PRs visible in the read-only GitHub inventory into merge-ready, replace, close, archive, superseded, or needs-human-review buckets. |
+| Include | `docs/reviews/PR_STACK_REVIEW.md`, PR number/title/head/base/state table, duplication notes, security/readiness risks, and recommended replacement order. |
+| Exclude | Closing PRs, merging PRs, reopening PRs, force-push, branch deletion, cross-worktree cherry-pick, and history rewrite. |
+| Validation | Read-only `gh pr list`, local docs review, `git diff --check`. |
+| Approval needed | None for the review document; approval required for any GitHub write action. |
+
+## PR 0B: CI Foundation Workflow Alignment
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `ci/foundation-workflow-alignment` |
+| Priority | P0 |
+| Goal | Align `.github/workflows/foundation-check.yml` with package scripts that actually exist, without weakening validation. |
+| Include | `.github/workflows/foundation-check.yml`, `package.json` only if narrow script aliases are chosen, status/backlog notes. |
+| Exclude | Disabling CI, removing security/governance checks, dependency installation, and branch-protection changes. |
+| Validation | `npm run check:foundation`, selected replacement scripts, `git diff --check`. |
+| Approval needed | None for script alignment; approval required for branch protection changes or weakened checks. |
+
 ## PR 1: Goal Tracking OS Foundation
 
 | Field | Value |
@@ -138,6 +162,17 @@ Date: 2026-06-22
 | Validation | `npm run audit:ai-providers`, `.env` ignore checks, no-key startup fixture, bundle exposure scan when build exists. |
 | Approval needed | Yes for secret rotation or history rewrite only. |
 
+## PR 4A: AI Core Contract Completion
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Keep model-router, prompt-engine, and agent-runtime contracts explicit before live provider work. |
+| Include | `docs/ai/model-router.md`, `docs/ai/prompt-engine.md`, `docs/ai/agent-runtime.md`, `docs/ai/seis-ai-core.md`, docs indexes, status, and provider audit notes. |
+| Exclude | Live provider calls, SDK installation, API key collection, model training, or runtime gateway claims. |
+| Validation | Documentation review, `npm run audit:ai-providers`, `git diff --check`. |
+| Approval needed | None for documentation-only work. |
+
 ## PR 5: Command Center Lane Status View
 
 | Field | Value |
@@ -192,6 +227,17 @@ Date: 2026-06-22
 | Exclude | Live image generation, real-money purchase flows, provider keys, dependency installation, deployment, SSH, or asset claims without provenance review. |
 | Validation | `npm run check:mythic-gacha`, `npm run check:product-experience-browser-smoke`, `node --check apps/web/mythic-gacha.js`, `node --check apps/web/seis-code.js`, browser/mobile screenshot review when needed. |
 | Approval needed | None for the static foundation; approval required for live image generation, dependency installation, public release, or external asset pipeline changes. |
+
+## PR 8: Public Readiness And Accessibility Hardening
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Resolve preview/public indexing intent, GitHub review templates, keyboard navigation QA, and asset provenance before public or release readiness claims. |
+| Include | PR template, issue templates, CODEOWNERS proposal, public exposure checklist, SEO intent decision, keyboard-navigation QA notes, Video Hero and Mythic Gacha asset provenance notes. |
+| Exclude | Public visibility changes, deployment, release/tag creation, external asset purchases, model-provider calls, and branch protection changes. |
+| Validation | `npm run check:workspace`, product validators, manual accessibility checklist, `git diff --check`. |
+| Approval needed | None for docs/templates; approval required for repository settings or public visibility changes. |
 
 ## Human Approval Needed
 

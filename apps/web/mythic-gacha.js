@@ -103,7 +103,12 @@ const elements = {
   state: document.querySelector("[data-filter-state]"),
   dialog: document.querySelector("[data-detail-dialog]"),
   detail: document.querySelector("[data-detail-content]"),
-  exportStatus: document.querySelector("[data-export-status]")
+  exportStatus: document.querySelector("[data-export-status]"),
+  favoriteActive: document.querySelector("[data-action=\"favorite-active\"]"),
+  exportActive: document.querySelector("[data-action=\"export-active\"]"),
+  openActive: document.querySelector("[data-action=\"open-active\"]"),
+  drawTen: document.querySelector("[data-action=\"draw-ten\"]"),
+  dailyDraw: document.querySelector("[data-action=\"daily-draw\"]")
 };
 
 const creatures = creatureSeeds.map((seed, index) => {
@@ -315,7 +320,16 @@ function chooseCreature(rarityName) {
 function draw(count, options = {}) {
   const cost = options.free ? 0 : count === 10 ? 900 : 100;
   if (state.currency < cost) {
-    state.currency += 120;
+    if (count === 1 && !options.free) {
+      state.currency += 120;
+      setExportStatus("A 120 jade field stipend was added for a single draw.");
+    }
+    if (state.currency < cost) {
+      setExportStatus(`Ten Draw needs ${cost} jade. Complete single draws or wait for the daily free draw.`);
+      render();
+      saveState();
+      return;
+    }
   }
   state.currency -= cost;
 
@@ -382,9 +396,29 @@ function passesFilters(creature, unlocked) {
 
 function render() {
   const unlockedCount = Object.keys(state.inventory).length;
+  const hasLastDraw = Boolean(state.lastDraw);
+  const dailyClaimed = state.dailyKey === todayKey();
   elements.currency.textContent = String(state.currency);
   elements.pity.textContent = String(state.pity);
   elements.completion.textContent = `${Math.round((unlockedCount / creatures.length) * 100)}%`;
+  for (const control of [elements.favoriteActive, elements.exportActive, elements.openActive]) {
+    if (!control) continue;
+    control.disabled = !hasLastDraw;
+    control.setAttribute("aria-disabled", String(!hasLastDraw));
+    control.title = hasLastDraw ? "" : "Draw a creature first.";
+  }
+  if (elements.drawTen) {
+    const disabled = state.currency < 900;
+    elements.drawTen.disabled = disabled;
+    elements.drawTen.setAttribute("aria-disabled", String(disabled));
+    elements.drawTen.title = disabled ? "Ten Draw needs 900 jade." : "";
+  }
+  if (elements.dailyDraw) {
+    elements.dailyDraw.disabled = dailyClaimed;
+    elements.dailyDraw.setAttribute("aria-disabled", String(dailyClaimed));
+    elements.dailyDraw.textContent = dailyClaimed ? "Daily Claimed" : "Daily Free";
+    elements.dailyDraw.title = dailyClaimed ? "The free daily draw has already been used today." : "";
+  }
   elements.history.innerHTML = state.history.length
     ? state.history.slice(0, 16).map((item) => {
         const creature = creatures.find((entry) => entry.id === item.id);
@@ -460,6 +494,8 @@ function bindEvents() {
     if (action === "daily-draw" && state.dailyKey !== todayKey()) {
       state.dailyKey = todayKey();
       draw(1, { free: true });
+    } else if (action === "daily-draw") {
+      setExportStatus("The free daily draw has already been used today.");
     }
     if (action === "favorite-active" && state.lastDraw) {
       state.favorites[state.lastDraw] = !state.favorites[state.lastDraw];

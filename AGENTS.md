@@ -59,7 +59,7 @@ SEIS is a humane digital ecosystem focused on cinematic design, premium UI/UX, m
 
 ## iCloud Workspace Intake
 
-- Treat `/Users/emirhan/Library/Mobile Documents/com~apple~CloudDocs/Github` as the canonical SEIS workspace root, not as a single Git repository.
+- Treat the local iCloud `Github` workspace as a discoverable SEIS workspace root when present, not as a single Git repository. Do not commit user-specific absolute machine paths.
 - Use this repository as the active GitHub development surface for UIX-Apps on `UIXAppTTR`.
 - Before merging root workspace material, follow `docs/governance/icloud-github-workspace-ingestion.md`.
 - Do not bulk-import archives, personal media, `.DS_Store`, nested `.git` directories, or symlink mirrors into this repository.

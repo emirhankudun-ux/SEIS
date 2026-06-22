@@ -7,8 +7,9 @@ Date: 2026-06-22
 This pass strengthens the requested SEIS foundation lanes without deleting,
 restoring, deploying, pushing, or calling external providers. The repository is
 not ready for merge, release, deployment, or public preparation because the
-worktree is still dirty and needs scoped review/staging, separate SEIS
-workstreams still need one-by-one reconciliation through GitHub PRs, and full
+worktree is still dirty and needs scoped review/staging, open PRs need
+read-only triage before any GitHub write action, separate SEIS workstreams still
+need one-by-one reconciliation through GitHub PRs, and full
 secret-history/runtime-provider validation has not been performed.
 
 ## Repository State
@@ -19,7 +20,7 @@ secret-history/runtime-provider validation has not been performed.
 | Main rule | `main` remains sacred; no direct main push or merge performed. |
 | Worktree hygiene | Dirty worktree with modified and untracked foundation/product files; no tracked deletions currently visible in `git status --short`. |
 | Integration posture | Documented in `docs/governance/seis-integration-and-github-development.md` and `content/development/seis-integration-map.json`. |
-| External PR inspection | Not performed. |
+| External PR inspection | Read-only `gh pr list` was performed. 25 open PRs were returned; 13 recently closed PRs were returned and all were merged in that result set. |
 | Dangerous actions | Not performed. |
 
 ## Source-of-Truth Review
@@ -28,6 +29,8 @@ secret-history/runtime-provider validation has not been performed.
 | --- | --- |
 | `AGENTS.md` | Found. Operating guidance emphasizes calm modular engineering, main branch safety, and secret hygiene. |
 | `README.md` | Found. It identifies SEIS as the closed-code operating repository and links current platform lanes. |
+| `ARCHITECTURE.md` | Added as a root pointer to canonical architecture docs. |
+| `ROADMAP.md` | Added as a root pointer to canonical roadmap docs. |
 | `SECURITY.md` | Found. Defines current secret, provider, SSH, and reporting boundaries. |
 | `docs/STATUS.md` | Updated with broader lane matrix. |
 | `docs/INDEX.md` | Updated with master index and lane links. |
@@ -38,10 +41,10 @@ secret-history/runtime-provider validation has not been performed.
 | --- | --- |
 | Secret values | No secret values intentionally printed or added. |
 | `.gitignore` | Hardened for env, key, service-account, and secret-folder patterns. |
-| `.env.example` | Added with placeholders and empty optional token slots only. |
+| `.env.example` | Placeholder-only template retained; unverified provider model aliases were removed from default values. |
 | Provider keys | No provider keys requested or verified. Redacted static audit added. |
 | SSH | No SSH command executed. |
-| Remaining blocker | Full secret-history scan and runtime provider verification were not run. |
+| Remaining blocker | Full secret-history scan, typed environment validation, and runtime provider verification were not run. |
 
 ## Architecture Review
 
@@ -70,10 +73,13 @@ per-card artwork provenance review are still missing.
 
 ## AI Core Review
 
-SEIS AI Core remains planned. This pass documents provider-neutral boundaries,
-no-key startup, provider status states, and the rule that provider routing or
-prompt engineering is not model ownership. A redacted static provider and
-credential audit now exists at `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`.
+SEIS AI Core remains documented, not implemented. This pass documents
+provider-neutral boundaries, no-key startup, provider status states, and the
+rule that provider routing or prompt engineering is not model ownership. A
+redacted static provider and credential audit now exists at
+`docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`. Dedicated foundation
+contracts now exist for `docs/ai/model-router.md`,
+`docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md`.
 
 ## Integration Review
 
@@ -85,8 +91,20 @@ Broken local worktree metadata is not treated as implementation evidence.
 
 ## GitHub / PR Review
 
-No GitHub PR API inspection was performed. GitHub read/write operations,
-branch deletion, merge, force-push, and history rewrite remain approval-gated.
+Read-only GitHub PR inventory was performed through `gh pr list`. It returned
+25 open PRs against `main`, including draft AI Core and specialist integration
+work plus older consolidation/evolution PRs. It returned 13 recently closed PRs
+and all were merged in the returned set. GitHub read/write operations, branch
+deletion, merge, force-push, and history rewrite remain approval-gated.
+
+## Specialist Review Inputs
+
+| Reviewer role | Result |
+| --- | --- |
+| Architecture/product reviewer | Confirmed source-of-truth alignment around SEIS as a Command Center / Platform OS, flagged missing root architecture/roadmap pointers, CI script drift, and public-safe path cleanup. |
+| Public readiness/UX reviewer | Flagged CI drift, public-indexing ambiguity, missing GitHub templates/CODEOWNERS, keyboard accessibility gaps, and asset provenance blockers. |
+| Contradiction/archive reviewer | Pending at the time this section was updated. |
+| Product/design reviewer | Pending at the time this section was updated. |
 
 ## Documentation Review
 
@@ -97,7 +115,9 @@ distinguish current, planned, scaffolded, blocked, and evidence-backed states.
 
 Not ready. Blockers include dirty worktree review/staging, no full
 secret-history scan, no runtime provider verification, unreconciled workstreams,
-and no public exposure checklist.
+public-indexing ambiguity, missing GitHub templates/CODEOWNERS, incomplete
+keyboard accessibility evidence, asset provenance gaps, and no public exposure
+checklist.
 
 ## Release Readiness Review
 
@@ -106,6 +126,7 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 ## Evidence Gaps
 
 - No external PR state.
+- Open PRs have only been inventoried, not classified in a dedicated PR stack review.
 - No full secret-history scan.
 - No typed environment validation.
 - No runtime AI provider verification.
@@ -119,9 +140,11 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 
 | Blocker | Risk | Required handling |
 | --- | --- | --- |
-| Pre-existing tracked deletions | Accidental loss of source-of-truth docs/scripts | Dedicated repository hygiene PR. |
+| Dirty worktree review/staging | Accidental staging of unrelated product, script, or generated-output changes | Dedicated scoped review before commit or PR. |
 | Provider docs without runtime verification | Overclaiming live AI readiness | Add typed env validation, provider registry tests, and no-key startup checks before live integration work. |
 | Cloud readiness without live verification | Deployment overclaim | Keep cloud work dry-run until approved. |
+| CI workflow script drift | GitHub Actions can fail or pass without meaningful checks | Align workflow scripts with `package.json` in a dedicated CI PR. |
+| Public indexing ambiguity | Internal preview pages may be crawled or public pages may remain hidden | Decide preview/private/public SEO posture before release. |
 
 ## Safe Changes Applied
 
@@ -133,8 +156,10 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Added SEIS AI Core foundation.
 - Added cloud, code, design, data, and security foundation docs.
 - Added root security policy.
+- Added root `ARCHITECTURE.md` and `ROADMAP.md` pointers.
 - Added repeatable redacted AI provider and credential audit command.
 - Generated audit Markdown and JSON reports.
+- Added AI Core model-router, prompt-engine, and agent-runtime foundation contracts.
 - Added validator-backed data schema registry.
 - Expanded status, backlog, and next PR queue.
 - Hardened `.gitignore`.
@@ -156,6 +181,12 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Cross-worktree code merge, cherry-pick, or bulk copy.
 - GitHub PR rescue.
 - Typed environment validation.
+- CI workflow script alignment.
+- Open PR stack classification and replacement plan.
+- GitHub PR/issue templates and CODEOWNERS.
+- Public indexing and exposure checklist decision.
+- Release zip artifact policy and possible artifact migration.
+- Legacy UIXAppTTR-era agent/archive material classification.
 - Live provider calls.
 - SSH and deployment.
 - Full SEIS Desktop implementation and the remaining 60+ app operating system target.
@@ -179,15 +210,16 @@ See `docs/STATUS.md` for the final validation table after this pass.
 ## Recommended Next PRs
 
 1. Repository hygiene recovery.
-2. SEIS integration spine PR.
-3. Typed server-only environment validation.
-4. AI provider registry contract.
-5. Plugin interface validation and browser QA.
-6. SEIS Code interaction and persistence QA.
-7. Video Hero browser playback QA.
-8. Command Center lane status view.
-9. Mythic Gacha browser QA and artwork provenance.
-9. Data schema registry semantic expansion.
+2. Open PR stack triage.
+3. CI foundation workflow alignment.
+4. SEIS integration spine PR.
+5. Typed server-only environment validation and AI provider registry contract.
+6. GitHub templates/CODEOWNERS and public exposure checklist.
+7. Accessibility keyboard-navigation QA.
+8. Plugin interface validation and browser QA.
+9. SEIS Code interaction and persistence QA.
+10. Video Hero and Mythic Gacha asset provenance and browser QA.
+11. Data schema registry semantic expansion.
 
 ## Human Approval Needed
 

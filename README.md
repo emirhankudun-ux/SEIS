@@ -10,6 +10,8 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 - OpenAI-first plugin policy: [`docs/platform/openai-first-plugin-policy.md`](./docs/platform/openai-first-plugin-policy.md)
 - Closed-code operating brief: [`SEIS_CLOSED_CODE.md`](./SEIS_CLOSED_CODE.md)
 - Closed-code license notice: [`LICENSE`](./LICENSE)
+- Root architecture pointer: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
+- Root roadmap pointer: [`ROADMAP.md`](./ROADMAP.md)
 - Architecture: [`docs/platform/seis-closed-code-architecture.md`](./docs/platform/seis-closed-code-architecture.md)
 - SEIS evolution model: [`docs/strategy/seis-evolution-model.md`](./docs/strategy/seis-evolution-model.md)
 - GitHub remote configuration: [`docs/deployment/github-remote-configuration.md`](./docs/deployment/github-remote-configuration.md)
