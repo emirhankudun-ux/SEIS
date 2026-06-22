@@ -31,7 +31,7 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 | Panel | Purpose |
 | --- | --- |
 | `progressCards` | Counts only; no fake percentages. |
-| `goalList` | Goals with status, category, evidence, blockers, and next action. |
+| `goalList` | Goals with status, category, metadata, evidence, blockers, and next action. |
 | `milestoneTimeline` | Static milestone timeline derived for the foundation scope. |
 | `nextActionQueue` | Task-backed next safe actions. |
 | `blockedItems` | Blockers kept visible. |

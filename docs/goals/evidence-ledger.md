@@ -28,3 +28,4 @@ claims unless the named scope is fully proved.
 | `SEIS-EVID-006` | passed | Static Command Center Goal Tracking view generated. |
 | `SEIS-EVID-007` | passed | Review cadence and progress ledger records validate. |
 | `SEIS-EVID-008` | passed | Goal hierarchy records validate. |
+| `SEIS-EVID-009` | passed | Goal metadata fields validate. |

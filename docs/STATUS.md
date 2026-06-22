@@ -10,7 +10,7 @@ deployment, public-readiness, or merge-readiness claim.
 | Area | Status | Evidence | Next action |
 | --- | --- | --- | --- |
 | Branch | Non-main branch | `seis/product-experience-suite` | Keep work scoped and push only this branch. |
-| Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, and hierarchy map added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, and hierarchy checks passing. |
+| Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, hierarchy map, and goal metadata added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, and metadata checks passing. |
 | Worktree hygiene | Blocked | Pre-existing unstaged tracked deletions are present. | Do not stage unrelated deletions. |
 | GitHub PR state | Unverified | No external GitHub API/CLI inspection was performed. | Inspect only after approval. |
 | Public readiness | Not ready | Repository hygiene and readiness checks are incomplete. | Resolve blockers first. |
@@ -27,7 +27,8 @@ deployment, public-readiness, or merge-readiness claim.
 | `@seis-code` | Planned/scaffolded | `docs/product/seis-code-foundation.md`, `content/development/code-automation-plan.json` | No browser IDE implementation. | Define virtual file system and SEIS Code MVP contract. |
 | `@seis-design` | Documented/scaffolded | `docs/design-system/seis-design-foundation.md`, `packages/design-tokens/seis.tokens.css` | No component inventory. | Add design QA checklist and inventory. |
 | `@seis-data` | Documented/scaffolded | `docs/data/seis-data-foundation.md`, `data/*.json`, `content/development/*.json` | Schema registry incomplete. | Add schema registry and freshness policy. |
-| Command Center | Scaffolded/planned | `docs/product/command-center-foundation.md`, `apps/web/goal-tracking.html` | Broader modules are not implemented. | Generate lane status from source records. |
+| Plugin Interface Suite | Documented static interface | `apps/web/index.html`, `content/development/seis-plugin-interface-roadmap.json`, `docs/product/plugin-interface-suite.md` | Browser QA and schema validation are not yet dedicated checks. | Add manual QA evidence and a schema check for the roadmap record. |
+| Command Center | Scaffolded/planned | `docs/product/command-center-foundation.md`, `apps/web/goal-tracking.html`, `apps/web/index.html#plugin-interfaces` | Broader modules are not implemented. | Keep lane status generated from source records. |
 | AI Core | Planned with static provider audit | `docs/ai/seis-ai-core.md`, `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No provider registry, router, gateway, or runtime verification. | Add typed provider registry before live AI integration. |
 | Model Router | Planned | `docs/ai/seis-ai-core.md` | No implementation evidence. | Define typed provider registry later. |
 | Prompt Engine | Planned | `docs/ai/seis-ai-core.md` | No versioned prompt registry. | Add prompt format and regression policy later. |
@@ -42,7 +43,7 @@ deployment, public-readiness, or merge-readiness claim.
 | `node --check scripts/check-goal-tracking.mjs` | Passed | Validator syntax is valid. |
 | `node --check scripts/create-goal-command-center-view.mjs` | Passed | View generator syntax is valid. |
 | `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json content/development/seis-goal-review-cadence.json content/development/seis-goal-progress-ledger.json content/development/seis-goal-hierarchy.json content/development/seis-goal-command-center-view.json` | Passed | Structured records and generated view model parse as JSON. |
-| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 8 evidence records, 3 tasks, 2 blockers, 2 decisions, 3 review records, 3 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, generated view model, and static page validate. |
+| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 9 evidence records, 3 tasks, 2 blockers, 2 decisions, 3 review records, 3 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, goal metadata fields, generated view model, and static page validate. |
 | `npm run check:goal-command-center-view` | Passed | Generated view model and static page are fresh. |
 | `git diff --check` | Passed | No whitespace errors in the scoped diff. |
 | Scoped sensitive-pattern scan | Passed | No private-path, file URI, editor URI, key block, token assignment, API key assignment, or password assignment hits were found in scoped Goal Tracking files. |

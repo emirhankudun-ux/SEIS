@@ -125,6 +125,12 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         priority: goal.priority,
         status: goal.status,
         ownerRole: goal.owner_role,
+        createdAt: goal.created_at,
+        relatedMilestone: goal.related_milestone,
+        relatedEpic: goal.related_epic,
+        lastReviewed: goal.last_reviewed,
+        reviewCadence: goal.review_cadence,
+        notes: goal.notes,
         evidenceLinks: goal.evidence_links,
         blockers: goal.blockers,
         nextAction: goal.next_action
@@ -370,7 +376,7 @@ function buildHtml(model) {
       <h2>Goal List</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Goal</th><th>Status</th><th>Category</th><th>Evidence</th><th>Next Action</th></tr></thead>
+          <thead><tr><th>Goal</th><th>Status</th><th>Category</th><th>Planning Link</th><th>Evidence</th><th>Next Action</th></tr></thead>
           <tbody>${panels.goalList.map(renderGoal).join("")}</tbody>
         </table>
       </div>
@@ -453,7 +459,8 @@ function renderCard(card) {
 }
 
 function renderGoal(goal) {
-  return `<tr><td><strong>${escapeHtml(goal.id)}</strong><br>${escapeHtml(goal.title)}</td><td><span class="badge ${statusClass(goal.status)}">${escapeHtml(goal.status)}</span></td><td>${escapeHtml(goal.category)}</td><td>${escapeHtml((goal.evidenceLinks || []).join(", "))}</td><td>${escapeHtml(goal.nextAction)}</td></tr>`;
+  const planning = `${goal.relatedMilestone} · ${goal.relatedEpic} · ${goal.reviewCadence}`;
+  return `<tr><td><strong>${escapeHtml(goal.id)}</strong><br>${escapeHtml(goal.title)}<br><span class="muted">Created ${escapeHtml(goal.createdAt)} · reviewed ${escapeHtml(goal.lastReviewed)}</span></td><td><span class="badge ${statusClass(goal.status)}">${escapeHtml(goal.status)}</span></td><td>${escapeHtml(goal.category)}</td><td>${escapeHtml(planning)}</td><td>${escapeHtml((goal.evidenceLinks || []).join(", "))}</td><td>${escapeHtml(goal.nextAction)}</td></tr>`;
 }
 
 function renderMilestone(item) {

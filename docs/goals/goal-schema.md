@@ -16,18 +16,18 @@ The first Goal Tracking OS schema is intentionally lightweight and file-backed.
 | `target_phase` | yes | Foundation, readiness, research, or later phase. |
 | `related_docs` | yes | Repo-relative docs. |
 | `related_files` | yes | Repo-relative files or directories. |
-| `created_at` | planned | Placeholder for future dated goal creation tracking. |
-| `related_milestone` | planned | Placeholder for a milestone id such as `SEIS-MS-001`. |
-| `related_epic` | planned | Placeholder for an epic id such as `SEIS-EPIC-001`. |
+| `created_at` | yes | Dated goal-record creation field. |
+| `related_milestone` | yes | Milestone id such as `SEIS-MS-001` or `milestone not assigned`. |
+| `related_epic` | yes | Epic id such as `SEIS-EPIC-001` or `epic not assigned`. |
 | `dependencies` | yes | Named dependencies. |
 | `blockers` | yes | Named blockers or `none`. |
 | `risks` | yes | Named risks. |
 | `evidence_links` | yes | Repo-relative evidence or `evidence unavailable`. |
 | `validation_method` | yes | How the claim will be validated. |
 | `next_action` | yes | Next safe action. |
-| `last_reviewed` | planned | Placeholder for future dated review evidence. |
-| `review_cadence` | planned | Placeholder for daily, weekly, monthly, or custom cadence. |
-| `notes` | planned | Placeholder for future non-secret notes. |
+| `last_reviewed` | yes | Placeholder or dated review evidence. |
+| `review_cadence` | yes | Daily, weekly, monthly, quarterly, yearly, or custom cadence. |
+| `notes` | yes | Non-secret notes array. |
 
 ## Evidence Object
 

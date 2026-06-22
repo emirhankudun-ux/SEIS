@@ -21,6 +21,7 @@ Date: 2026-06-22
 - Planned daily, weekly, and monthly review cadence records.
 - Completed, deferred, and follow-up progress ledger records.
 - Yearly, quarterly, monthly, weekly, project, epic, and subtask hierarchy records.
+- Required goal metadata fields for creation date, milestone, epic, last review, cadence, and notes.
 
 ## Findings
 
@@ -32,6 +33,7 @@ Date: 2026-06-22
 | Live GitHub PR state was not inspected. | medium | unverified | Use GitHub API/CLI only when approved. |
 | Recurring daily, weekly, and monthly reviews are planned, not performed. | medium | planned | Record performed reviews only when current-period evidence exists. |
 | Hierarchy records are file-backed, not live issue/project sync. | medium | planned | Add repository intelligence or GitHub sync only in a separate approved pass. |
+| Goal metadata includes placeholders until real review evidence exists. | low | active | Replace placeholders only with dated review records. |
 
 ## Decision
 

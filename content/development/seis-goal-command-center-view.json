@@ -20,9 +20,9 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 8,
+    "totalEvidenceRecords": 9,
     "evidenceByStatus": {
-      "passed": 7,
+      "passed": 8,
       "blocked": 1
     },
     "totalTasks": 3,
@@ -103,7 +103,7 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 8,
+      "value": 9,
       "description": "Evidence records with limitations and next actions."
     },
     {
@@ -170,6 +170,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "AI Core",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-006",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -185,6 +193,14 @@
         "priority": "P1 high",
         "status": "active",
         "ownerRole": "Command Center",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-004",
+        "relatedEpic": "SEIS-EPIC-002",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/product/goal-tracking-center.md"
         ],
@@ -200,6 +216,14 @@
         "priority": "P0 critical",
         "status": "active",
         "ownerRole": "Program System",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-001",
+        "relatedEpic": "SEIS-EPIC-001",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/reviews/GOAL_TRACKING_REVIEW.md"
         ],
@@ -215,6 +239,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "Repository Intelligence",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-006",
+        "relatedEpic": "SEIS-EPIC-003",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -230,6 +262,14 @@
         "priority": "P1 high",
         "status": "active",
         "ownerRole": "Documentation",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-001",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/INDEX.md"
         ],
@@ -245,6 +285,14 @@
         "priority": "P1 high",
         "status": "active",
         "ownerRole": "Security",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-003",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "AGENTS.md"
         ],
@@ -260,6 +308,14 @@
         "priority": "P1 high",
         "status": "blocked",
         "ownerRole": "GitHub Governance",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-005",
+        "relatedEpic": "SEIS-EPIC-003",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/STATUS.md"
         ],
@@ -275,6 +331,14 @@
         "priority": "P1 high",
         "status": "blocked",
         "ownerRole": "Public Readiness",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-005",
+        "relatedEpic": "SEIS-EPIC-003",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/STATUS.md"
         ],
@@ -290,6 +354,14 @@
         "priority": "P1 high",
         "status": "blocked",
         "ownerRole": "Release",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-005",
+        "relatedEpic": "SEIS-EPIC-003",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/STATUS.md"
         ],
@@ -305,6 +377,14 @@
         "priority": "P2 medium",
         "status": "planned",
         "ownerRole": "Design System",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -320,6 +400,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "Agent Runtime",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -335,6 +423,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "Automation",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -350,6 +446,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "Model Router",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -365,6 +469,14 @@
         "priority": "P1 high",
         "status": "planned",
         "ownerRole": "Prompt Engine",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -380,6 +492,14 @@
         "priority": "P2 medium",
         "status": "planned",
         "ownerRole": "Evaluation",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -395,6 +515,14 @@
         "priority": "P2 medium",
         "status": "planned",
         "ownerRole": "Knowledge System",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/INDEX.md"
         ],
@@ -410,6 +538,14 @@
         "priority": "P2 medium",
         "status": "planned",
         "ownerRole": "Infrastructure",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -425,6 +561,14 @@
         "priority": "P2 medium",
         "status": "planned",
         "ownerRole": "Research",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -440,6 +584,14 @@
         "priority": "P3 low",
         "status": "planned",
         "ownerRole": "Creative Systems",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "milestone not assigned",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "monthly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "evidence unavailable"
         ],
@@ -455,6 +607,14 @@
         "priority": "P1 high",
         "status": "active",
         "ownerRole": "Product Strategy",
+        "createdAt": "2026-06-22",
+        "relatedMilestone": "SEIS-MS-001",
+        "relatedEpic": "epic not assigned",
+        "lastReviewed": "not reviewed",
+        "reviewCadence": "weekly",
+        "notes": [
+          "Foundation metadata placeholder; update only with evidence-backed review notes."
+        ],
         "evidenceLinks": [
           "docs/goals/seis-vision.md"
         ],
@@ -731,6 +891,22 @@
           "Does not resolve unrelated tracked deletions."
         ],
         "nextAction": "Keep hierarchy records synchronized with roadmap, status, and generated Goal Tracking Center panels."
+      },
+      {
+        "id": "SEIS-EVID-009",
+        "title": "Goal metadata fields validate",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "Goal registry records include created_at, related_milestone, related_epic, last_reviewed, review_cadence, and notes fields validated by the local checker and surfaced in the generated view model.",
+        "limitations": [
+          "Metadata values are foundation records and placeholders where review evidence has not yet been performed.",
+          "Does not prove live project sync, recurring review completion, public readiness, release readiness, deployment, SSH, benchmark, provider, or dataset state."
+        ],
+        "nextAction": "Replace placeholder metadata only with dated review evidence or approved project records."
       }
     ],
     "readinessConnections": [

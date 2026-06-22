@@ -38,6 +38,18 @@ Date: 2026-06-22
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
+## PR 1C: Goal Metadata Contract
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/product-experience-suite` |
+| Priority | P1 |
+| Goal | Make goal object metadata fields real registry fields: creation date, milestone, epic, last reviewed, review cadence, and notes. |
+| Include | `content/development/seis-goal-tracking.json`, `content/development/seis-goal-evidence.json`, `docs/goals/goal-schema.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
+| Exclude | Fake performed reviews, live GitHub issue/project sync, unrelated tracked deletions, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON/generated-static work. |
+
 ## PR 2: Repository Hygiene Recovery
 
 | Field | Value |
@@ -55,15 +67,15 @@ Date: 2026-06-22
 | Validation | `npm run check:goal-command-center-view`, `npm run check:goal-tracking`. |
 | Approval needed | None unless adding dependencies or live integrations. |
 
-## PR 4: Security Policy And Provider Audit
+## PR 4: Provider Environment Validation
 
 | Field | Value |
 | --- | --- |
 | Priority | P0 |
-| Goal | Add root `SECURITY.md`, redacted provider/credential audit, and typed environment validation plan. |
-| Include | Root security policy, audit report, no-key startup rules, server-only credential boundaries. |
+| Goal | Add typed server-only provider environment validation on top of the existing root `SECURITY.md` and redacted provider audit. |
+| Include | Provider config schema, Missing Key vs Disabled vs Error rules, sanitized diagnostics, no-key startup tests or documented fixtures. |
 | Exclude | Real credential values, provider calls, secret rotation, history rewrite. |
-| Validation | Redacted audit command, `.env` ignore checks, bundle exposure scan when build exists. |
+| Validation | `npm run audit:ai-providers`, `.env` ignore checks, no-key startup fixture, bundle exposure scan when build exists. |
 | Approval needed | Yes for secret rotation or history rewrite only. |
 
 ## PR 5: Command Center Lane Status View
@@ -71,11 +83,22 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Add a read-only Command Center lane status view for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
-| Include | Generated JSON view model and static page updates. |
+| Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a five-year development horizon. |
+| Include | `apps/web/index.html`, `apps/web/app.js`, `apps/web/styles.css`, `content/development/seis-plugin-interface-roadmap.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
 | Exclude | Live cloud, GitHub write, SSH, or AI provider actions. |
-| Validation | Static build, keyboard/manual QA, source record check. |
+| Validation | `node --check apps/web/app.js`, `jq empty content/development/seis-plugin-interface-roadmap.json`, `git diff --check`, keyboard/manual QA when browser verification is available. |
 | Approval needed | None unless adding dependencies. |
+
+## PR 5A: Plugin Interface Validation And QA
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Add dedicated validation and manual QA evidence for the static plugin interface suite. |
+| Include | Schema expectations for `content/development/seis-plugin-interface-roadmap.json`, browser QA notes for lane tabs, evidence links, mobile layout, and reduced-motion behavior. |
+| Exclude | Dependency installation, live provider calls, SSH, deployment, or destructive actions. |
+| Validation | Static JSON schema check, browser screenshot/manual QA, keyboard navigation review. |
+| Approval needed | None unless adding dependencies or external tooling. |
 
 ## PR 6: SEIS Code, Data, And Design Contracts
 

@@ -88,6 +88,7 @@ if (registry) {
   const statuses = new Set(registry.allowedStatuses || []);
   const priorities = new Set(registry.allowedPriorities || []);
   const riskLevels = new Set(registry.allowedRiskLevels || []);
+  const reviewCadences = new Set(["daily", "weekly", "monthly", "quarterly", "yearly", "custom"]);
   const goalIds = new Set();
 
   for (const category of requiredCategories) {
@@ -109,7 +110,10 @@ if (registry) {
       "priority",
       "status",
       "owner_role",
+      "created_at",
       "target_phase",
+      "related_milestone",
+      "related_epic",
       "related_docs",
       "related_files",
       "dependencies",
@@ -117,7 +121,10 @@ if (registry) {
       "risks",
       "evidence_links",
       "validation_method",
-      "next_action"
+      "next_action",
+      "last_reviewed",
+      "review_cadence",
+      "notes"
     ]) {
       if (!(field in goal)) {
         failures.push(`${label} missing field: ${field}`);
@@ -142,7 +149,22 @@ if (registry) {
     if (!riskLevels.has(goal.risk_level)) {
       failures.push(`${label} risk_level is not allowed: ${goal.risk_level}`);
     }
-    for (const field of ["related_docs", "related_files", "dependencies", "blockers", "risks", "evidence_links"]) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(goal.created_at || "")) {
+      failures.push(`${label} created_at must use YYYY-MM-DD`);
+    }
+    if (!/^SEIS-MS-\d{3}$/.test(goal.related_milestone || "") && goal.related_milestone !== "milestone not assigned") {
+      failures.push(`${label} related_milestone is invalid: ${goal.related_milestone}`);
+    }
+    if (!/^SEIS-EPIC-\d{3}$/.test(goal.related_epic || "") && goal.related_epic !== "epic not assigned") {
+      failures.push(`${label} related_epic is invalid: ${goal.related_epic}`);
+    }
+    if (typeof goal.last_reviewed !== "string" || goal.last_reviewed.length === 0) {
+      failures.push(`${label} last_reviewed must be a string placeholder or date`);
+    }
+    if (!reviewCadences.has(goal.review_cadence)) {
+      failures.push(`${label} review_cadence is not allowed: ${goal.review_cadence}`);
+    }
+    for (const field of ["related_docs", "related_files", "dependencies", "blockers", "risks", "evidence_links", "notes"]) {
       if (!Array.isArray(goal[field])) {
         failures.push(`${label} ${field} must be an array`);
       }
