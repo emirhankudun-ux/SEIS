@@ -259,6 +259,20 @@
       "secretPolicy": "must not contain credentials or machine-specific paths"
     },
     {
+      "id": "product-experience-browser-smoke",
+      "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
+      "lane": "@seis-code",
+      "currentStatus": "validated",
+      "sourceType": "browser-smoke-evidence",
+      "expectedShape": "text",
+      "requiredTopLevelKeys": [],
+      "validationCommands": [
+        "npm run check:product-experience-browser-smoke"
+      ],
+      "freshness": "review after SEIS Code, Mythic Gacha, or shared workspace export behavior changes",
+      "secretPolicy": "must not contain credentials, private paths, or committed screenshot binaries"
+    },
+    {
       "id": "gap-closure-register",
       "path": "data/gap-closure-register.json",
       "lane": "@seis-data",
