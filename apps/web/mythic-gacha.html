@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A mobile-first Shan Hai Jing inspired mythic gacha with persistent bestiary, lore, pity, and no runtime image API key.">
+    <meta name="theme-color" content="#15120e">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SEIS Mythic Gacha</title>
+    <link rel="stylesheet" href="./mythic-gacha.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#bestiary">Skip to bestiary</a>
+    <main class="mythic-shell">
+      <section class="ritual-panel" aria-labelledby="mythic-title">
+        <header class="mythic-header">
+          <a href="./index.html#showcase" class="back-link">SEIS</a>
+          <div>
+            <p class="eyebrow">Shan Hai Jing inspired archive</p>
+            <h1 id="mythic-title">Mythic Gacha</h1>
+          </div>
+          <button class="icon-button" type="button" data-action="toggle-motion" aria-pressed="false">Motion</button>
+        </header>
+
+        <div class="ritual-stage" data-ritual-stage>
+          <div class="seal-ring" aria-hidden="true"></div>
+          <div class="draw-card" data-draw-card>
+            <div class="draw-card__back">
+              <span>山海</span>
+            </div>
+            <div class="draw-card__front">
+              <div class="creature-art" data-active-art></div>
+              <div>
+                <p data-active-rarity>Undiscovered</p>
+                <h2 data-active-name>Summon a creature</h2>
+                <span data-active-meta>Ink, jade, mist, and mountain records</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="draw-actions" aria-label="Draw actions">
+          <button class="primary-button" type="button" data-action="draw-one">Single Draw</button>
+          <button class="primary-button" type="button" data-action="draw-ten">Ten Draw</button>
+          <button class="secondary-button" type="button" data-action="daily-draw">Daily Free</button>
+        </div>
+
+        <div class="resource-row" aria-live="polite">
+          <span>Jade <strong data-currency>0</strong></span>
+          <span>Pity <strong data-pity>0</strong>/80</span>
+          <span>Unlocked <strong data-completion>0%</strong></span>
+        </div>
+
+        <section class="lore-panel" data-lore-panel aria-live="polite">
+          <p class="eyebrow">Latest record</p>
+          <h2 data-lore-name>No creature drawn yet</h2>
+          <p data-lore-line>Draw to reveal the first field note.</p>
+          <div class="lore-grid">
+            <span data-lore-region>Region: unknown</span>
+            <span data-lore-element>Element: unknown</span>
+            <span data-lore-temperament>Temperament: unknown</span>
+          </div>
+          <p data-lore-body>The bestiary keeps all discoveries local in IndexedDB. No image-generation provider key is required for ordinary play.</p>
+          <div class="lore-actions">
+            <button type="button" data-action="favorite-active">Favorite</button>
+            <button type="button" data-action="export-active">Export Card</button>
+            <button type="button" data-action="open-active">Open In Bestiary</button>
+          </div>
+          <p class="export-status" data-export-status>Exports save into the SEIS Code workspace when browser storage is available.</p>
+        </section>
+      </section>
+
+      <section id="bestiary" class="bestiary-panel" aria-labelledby="bestiary-title">
+        <div class="bestiary-head">
+          <div>
+            <p class="eyebrow">Persistent bestiary</p>
+            <h2 id="bestiary-title">Unlocked creatures</h2>
+          </div>
+          <button type="button" data-action="reset-progress">Reset Local Progress</button>
+        </div>
+
+        <div class="filter-bar" aria-label="Bestiary filters">
+          <input data-filter-search type="search" placeholder="Search name, lore, power">
+          <select data-filter-rarity aria-label="Filter rarity">
+            <option value="all">All rarities</option>
+            <option>Common</option>
+            <option>Uncommon</option>
+            <option>Rare</option>
+            <option>Epic</option>
+            <option>Legendary</option>
+          </select>
+          <select data-filter-element aria-label="Filter element">
+            <option value="all">All elements</option>
+            <option>Mountain</option>
+            <option>River</option>
+            <option>Mist</option>
+            <option>Jade</option>
+            <option>Thunder</option>
+            <option>Ember</option>
+          </select>
+          <select data-filter-state aria-label="Filter unlock state">
+            <option value="all">All cards</option>
+            <option value="unlocked">Unlocked</option>
+            <option value="locked">Locked</option>
+            <option value="favorite">Favorites</option>
+          </select>
+        </div>
+
+        <div class="draw-history" data-draw-history aria-label="Draw history"></div>
+        <div class="bestiary-grid" data-bestiary-grid></div>
+      </section>
+
+      <dialog class="detail-dialog" data-detail-dialog>
+        <button class="dialog-close" type="button" data-action="close-detail">Close</button>
+        <div class="detail-content" data-detail-content></div>
+      </dialog>
+    </main>
+    <script src="./mythic-gacha.js" defer></script>
+  </body>
+</html>

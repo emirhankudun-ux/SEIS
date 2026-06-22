@@ -12,6 +12,7 @@ const requiredDocs = [
   "docs/goals/cycle-plan.md",
   "docs/goals/risk-register.md",
   "docs/goals/validation-steps.md",
+  "docs/goals/roadmap-links.md",
   "docs/goals/progress-review.md",
   "docs/goals/review-cadence.md",
   "docs/goals/progress-ledger.md",
@@ -63,6 +64,7 @@ const archiveLedgerPath = "content/development/seis-goal-archive-ledger.json";
 const cyclePlanPath = "content/development/seis-goal-cycle-plan.json";
 const riskRegisterPath = "content/development/seis-goal-risk-register.json";
 const validationStepsPath = "content/development/seis-goal-validation-steps.json";
+const roadmapLinksPath = "content/development/seis-goal-roadmap-links.json";
 const viewPath = "content/development/seis-goal-command-center-view.json";
 const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
@@ -73,7 +75,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, viewPath, staticPagePath]) {
+for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, roadmapLinksPath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }
@@ -89,6 +91,7 @@ const archiveLedger = existsSync(archiveLedgerPath) ? readJson(archiveLedgerPath
 const cyclePlan = existsSync(cyclePlanPath) ? readJson(cyclePlanPath) : null;
 const riskRegister = existsSync(riskRegisterPath) ? readJson(riskRegisterPath) : null;
 const validationSteps = existsSync(validationStepsPath) ? readJson(validationStepsPath) : null;
+const roadmapLinks = existsSync(roadmapLinksPath) ? readJson(roadmapLinksPath) : null;
 const commandCenterView = existsSync(viewPath) ? readJson(viewPath) : null;
 
 if (registry) {
@@ -648,7 +651,57 @@ if (validationSteps && registry && evidence) {
   }
 }
 
-if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger && cyclePlan && riskRegister && validationSteps) {
+if (roadmapLinks && registry) {
+  assert(roadmapLinks.schemaVersion === 1, "goal roadmap links schemaVersion must be 1");
+  assert(roadmapLinks.mode === "non_llm_goal_roadmap_links", "goal roadmap links mode is invalid");
+  assert(Array.isArray(roadmapLinks.links), "goal roadmap links must be an array");
+  const goalIds = new Set(registry.goals.map((goal) => goal.id));
+  const statuses = new Set(registry.allowedStatuses || []);
+  const linkGoalIds = new Set();
+  const linkIds = new Set();
+
+  for (const link of roadmapLinks.links || []) {
+    const label = link.id || "(missing roadmap link id)";
+    if (!/^SEIS-ROADMAP-LINK-\d{3}$/.test(link.id || "")) {
+      failures.push(`${label} id must match SEIS-ROADMAP-LINK-000`);
+    }
+    if (linkIds.has(link.id)) {
+      failures.push(`duplicate roadmap link id: ${link.id}`);
+    }
+    linkIds.add(link.id);
+    if (!goalIds.has(link.goal_id)) {
+      failures.push(`${label} references unknown goal id: ${link.goal_id}`);
+    }
+    if (linkGoalIds.has(link.goal_id)) {
+      failures.push(`${label} duplicates roadmap coverage for goal id: ${link.goal_id}`);
+    }
+    linkGoalIds.add(link.goal_id);
+    if (!statuses.has(link.status)) {
+      failures.push(`${label} status is not allowed: ${link.status}`);
+    }
+    for (const field of ["title", "next_action"]) {
+      if (typeof link[field] !== "string" || link[field].length === 0) {
+        failures.push(`${label} ${field} must be a non-empty string`);
+      }
+    }
+    for (const field of ["roadmap_refs", "pr_queue_refs", "status_refs", "related_paths"]) {
+      if (!Array.isArray(link[field]) || link[field].length === 0) {
+        failures.push(`${label} ${field} must be a non-empty array`);
+      }
+    }
+    for (const path of link.related_paths || []) {
+      validatePath(label, path);
+    }
+  }
+
+  for (const goalId of goalIds) {
+    if (!linkGoalIds.has(goalId)) {
+      failures.push(`goal roadmap links missing coverage for goal id: ${goalId}`);
+    }
+  }
+}
+
+if (commandCenterView && registry && evidence && execution && reviewCadence && progressLedger && hierarchy && archiveLedger && cyclePlan && riskRegister && validationSteps && roadmapLinks) {
   assert(commandCenterView.schemaVersion === 1, "command center view schemaVersion must be 1");
   assert(commandCenterView.mode === "non_llm_command_center_goal_view", "command center view mode is invalid");
   if (commandCenterView.summary?.totalGoals !== registry.goals.length) {
@@ -705,12 +758,15 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
   if (commandCenterView.summary?.totalValidationSteps !== validationSteps.steps.length) {
     failures.push("command center view totalValidationSteps does not match validation steps");
   }
-  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath]) {
+  if (commandCenterView.summary?.totalRoadmapLinks !== roadmapLinks.links.length) {
+    failures.push("command center view totalRoadmapLinks does not match roadmap links");
+  }
+  for (const source of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, roadmapLinksPath]) {
     if (!commandCenterView.sourceRecords?.includes(source)) {
       failures.push(`command center view missing source: ${source}`);
     }
   }
-  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems", "yearlyGoals", "quarterlyGoals", "monthlyGoals", "weeklyPriorities", "risks", "validationSteps"]) {
+  for (const panel of ["goalList", "milestoneTimeline", "nextActionQueue", "blockedItems", "evidence", "readinessConnections", "reviewCadence", "completedItems", "deferredItems", "followUpActions", "planningHorizons", "activeProjects", "epics", "subtasks", "archiveItems", "yearlyGoals", "quarterlyGoals", "monthlyGoals", "weeklyPriorities", "risks", "validationSteps", "roadmapLinks"]) {
     if (!Array.isArray(commandCenterView.panels?.[panel]) || commandCenterView.panels[panel].length === 0) {
       failures.push(`command center view missing panel: ${panel}`);
     }
@@ -719,7 +775,7 @@ if (commandCenterView && registry && evidence && execution && reviewCadence && p
 
 if (existsSync(staticPagePath)) {
   const html = readFileSync(staticPagePath, "utf8");
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Cycle Plan", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Cycle Plan", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Roadmap Links", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001", "SEIS-ROADMAP-LINK-001"]) {
     if (!html.includes(text)) {
       failures.push(`static Goal Tracking page missing: ${text}`);
     }
@@ -762,6 +818,7 @@ console.log(JSON.stringify({
   weeklyPriorities: cyclePlan.weeklyPriorities.length,
   risks: riskRegister.risks.length,
   validationSteps: validationSteps.steps.length,
+  roadmapLinks: roadmapLinks.links.length,
   commandCenterView: commandCenterView.id,
   staticPage: staticPagePath
 }, null, 2));

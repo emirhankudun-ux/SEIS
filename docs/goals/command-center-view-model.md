@@ -29,6 +29,7 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 - `content/development/seis-goal-cycle-plan.json`
 - `content/development/seis-goal-risk-register.json`
 - `content/development/seis-goal-validation-steps.json`
+- `content/development/seis-goal-roadmap-links.json`
 
 ## Required Panels
 
@@ -57,6 +58,7 @@ Command Center Goal Tracking Center surface without an LLM or external API.
 | `weeklyPriorities` | Weekly priority records. |
 | `risks` | First-class risk records with severity, mitigation, and next action. |
 | `validationSteps` | Repeatable validation commands or review methods with success conditions. |
+| `roadmapLinks` | Goal-to-roadmap, queue, and status mappings. |
 
 ## Commands
 
@@ -85,3 +87,4 @@ npm run check:goal-tracking
 - Not proof that a weekly or monthly review has been performed.
 - Not proof that every risk is mitigated.
 - Not proof that every validation step has been performed.
+- Not proof that roadmap-linked PRs were opened, merged, or released.

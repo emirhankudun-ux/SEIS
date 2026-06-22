@@ -13,7 +13,8 @@
     "content/development/seis-goal-archive-ledger.json",
     "content/development/seis-goal-cycle-plan.json",
     "content/development/seis-goal-risk-register.json",
-    "content/development/seis-goal-validation-steps.json"
+    "content/development/seis-goal-validation-steps.json",
+    "content/development/seis-goal-roadmap-links.json"
   ],
   "summary": {
     "finalState": "blocked_by_repository_hygiene",
@@ -24,9 +25,9 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 12,
+    "totalEvidenceRecords": 13,
     "evidenceByStatus": {
-      "passed": 11,
+      "passed": 12,
       "blocked": 1
     },
     "totalTasks": 3,
@@ -112,6 +113,12 @@
     "validationStepsByStatus": {
       "active": 3
     },
+    "totalRoadmapLinks": 20,
+    "roadmapLinksByStatus": {
+      "planned": 12,
+      "active": 5,
+      "blocked": 3
+    },
     "nextSafeAction": "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
   },
   "progressCards": [
@@ -142,7 +149,7 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 12,
+      "value": 13,
       "description": "Evidence records with limitations and next actions."
     },
     {
@@ -222,6 +229,12 @@
       "label": "Validation Steps",
       "value": 3,
       "description": "Scoped checks with success conditions."
+    },
+    {
+      "id": "roadmap",
+      "label": "Roadmap Links",
+      "value": 20,
+      "description": "Goal-to-roadmap and PR queue mappings."
     }
   ],
   "panels": {
@@ -1028,6 +1041,40 @@
           "Does not resolve unrelated tracked deletions or broader worktree drift."
         ],
         "nextAction": "Keep risks and validation steps visible in the generated Goal Tracking Center and update observed results only after checks run."
+      },
+      {
+        "id": "SEIS-EVID-013",
+        "title": "Goal roadmap links validate",
+        "type": "validation",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-001",
+          "SEIS-GOAL-002",
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-004",
+          "SEIS-GOAL-005",
+          "SEIS-GOAL-006",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-008",
+          "SEIS-GOAL-009",
+          "SEIS-GOAL-010",
+          "SEIS-GOAL-011",
+          "SEIS-GOAL-012",
+          "SEIS-GOAL-013",
+          "SEIS-GOAL-014",
+          "SEIS-GOAL-015",
+          "SEIS-GOAL-016",
+          "SEIS-GOAL-017",
+          "SEIS-GOAL-018",
+          "SEIS-GOAL-019",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "Every tracked goal has an explicit roadmap-link record connecting it to roadmap, PR queue, and status references.",
+        "limitations": [
+          "Roadmap links do not prove PRs were opened, merged, validated, or released.",
+          "Does not resolve duplicate legacy backlog ids, unrelated tracked deletions, live GitHub state, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state."
+        ],
+        "nextAction": "Keep roadmap-link records synchronized when goals, backlog, PR queue, or status records change."
       }
     ],
     "readinessConnections": [
@@ -1832,6 +1879,355 @@
         ],
         "successCondition": "No secret assignment, key block, private path, file URI, or editor URI appears in scoped Goal Tracking files.",
         "nextAction": "Keep scan output value-free and report only path/category if a finding appears."
+      }
+    ],
+    "roadmapLinks": [
+      {
+        "id": "SEIS-ROADMAP-LINK-001",
+        "goalId": "SEIS-GOAL-001",
+        "title": "AI Core roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015",
+          "SEIS-BL-018"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#ai-core"
+        ],
+        "nextAction": "Keep AI Core as planned until provider registry, router, and runtime evidence exist."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-002",
+        "goalId": "SEIS-GOAL-002",
+        "title": "Command Center roadmap link",
+        "status": "active",
+        "roadmapRefs": [
+          "SEIS-BL-003",
+          "SEIS-BL-017"
+        ],
+        "prQueueRefs": [
+          "PR 3"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#command-center"
+        ],
+        "nextAction": "Keep the generated Goal Tracking Center fresh and avoid live-module claims."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-003",
+        "goalId": "SEIS-GOAL-003",
+        "title": "Goal Tracking OS roadmap link",
+        "status": "active",
+        "roadmapRefs": [
+          "SEIS-BL-001",
+          "SEIS-BL-004",
+          "SEIS-BL-005",
+          "SEIS-BL-006",
+          "SEIS-BL-007",
+          "SEIS-BL-008",
+          "SEIS-BL-009"
+        ],
+        "prQueueRefs": [
+          "PR 1",
+          "PR 1A",
+          "PR 1B",
+          "PR 1C",
+          "PR 1D",
+          "PR 1E",
+          "PR 1F"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#goal-tracking-os"
+        ],
+        "nextAction": "Keep source records, generated view, and validator synchronized."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-004",
+        "goalId": "SEIS-GOAL-004",
+        "title": "Repository Intelligence roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-010"
+        ],
+        "prQueueRefs": [
+          "PR 2"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#repository-hygiene"
+        ],
+        "nextAction": "Define read-only scanner outputs after repository hygiene review."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-005",
+        "goalId": "SEIS-GOAL-005",
+        "title": "Documentation System roadmap link",
+        "status": "active",
+        "roadmapRefs": [
+          "SEIS-BL-001",
+          "SEIS-BL-021"
+        ],
+        "prQueueRefs": [
+          "PR 0",
+          "PR 1"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#documentation-foundation"
+        ],
+        "nextAction": "Keep source-of-truth docs aligned with structured records."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-006",
+        "goalId": "SEIS-GOAL-006",
+        "title": "Security and Governance roadmap link",
+        "status": "active",
+        "roadmapRefs": [
+          "SEIS-BL-011",
+          "SEIS-BL-020"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#security-notes"
+        ],
+        "nextAction": "Keep no-secret and approval-gated boundaries visible."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-007",
+        "goalId": "SEIS-GOAL-007",
+        "title": "GitHub Workflow roadmap link",
+        "status": "blocked",
+        "roadmapRefs": [
+          "SEIS-BL-002",
+          "SEIS-BL-012",
+          "SEIS-BL-021"
+        ],
+        "prQueueRefs": [
+          "PR 0",
+          "PR 2"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#worktree-hygiene"
+        ],
+        "nextAction": "Resolve unrelated tracked deletions in a dedicated repository hygiene PR."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-008",
+        "goalId": "SEIS-GOAL-008",
+        "title": "Public Readiness roadmap link",
+        "status": "blocked",
+        "roadmapRefs": [
+          "SEIS-BL-013"
+        ],
+        "prQueueRefs": [
+          "PR 2"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#public-readiness"
+        ],
+        "nextAction": "Run public readiness dry-run only after repository hygiene is resolved."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-009",
+        "goalId": "SEIS-GOAL-009",
+        "title": "Release Readiness roadmap link",
+        "status": "blocked",
+        "roadmapRefs": [
+          "SEIS-BL-014"
+        ],
+        "prQueueRefs": [
+          "PR 2"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#release-readiness"
+        ],
+        "nextAction": "Run release dry-run only after hygiene and readiness blockers are cleared."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-010",
+        "goalId": "SEIS-GOAL-010",
+        "title": "Design System roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015"
+        ],
+        "prQueueRefs": [
+          "PR 6"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#seis-design"
+        ],
+        "nextAction": "Keep design-system claims tied to component inventory and visual QA evidence."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-011",
+        "goalId": "SEIS-GOAL-011",
+        "title": "Agent Runtime roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#agent-runtime"
+        ],
+        "nextAction": "Define bounded agent permissions before automation expansion."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-012",
+        "goalId": "SEIS-GOAL-012",
+        "title": "Automation Queue roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-009",
+          "SEIS-BL-021"
+        ],
+        "prQueueRefs": [
+          "PR 1F",
+          "PR 3"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#goal-tracking-os"
+        ],
+        "nextAction": "Keep automation queue work dry-run and approval-gated."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-013",
+        "goalId": "SEIS-GOAL-013",
+        "title": "Model Router roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015",
+          "SEIS-BL-018"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#model-router"
+        ],
+        "nextAction": "Define typed provider registry before live routing."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-014",
+        "goalId": "SEIS-GOAL-014",
+        "title": "Prompt Engine roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#prompt-engine"
+        ],
+        "nextAction": "Add prompt format and regression policy before prompt packs."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-015",
+        "goalId": "SEIS-GOAL-015",
+        "title": "Evaluation Lab roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#evaluation"
+        ],
+        "nextAction": "Add evaluation strategy after AI audit and no-key provider policy."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-016",
+        "goalId": "SEIS-GOAL-016",
+        "title": "Knowledge Graph roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-001",
+          "SEIS-BL-009"
+        ],
+        "prQueueRefs": [
+          "PR 1F"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#goal-tracking-os"
+        ],
+        "nextAction": "Keep knowledge records provenance-aware and separate from archive material."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-017",
+        "goalId": "SEIS-GOAL-017",
+        "title": "SSH and Cloud Workspace roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-016"
+        ],
+        "prQueueRefs": [
+          "PR 2"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#ssh-cloud"
+        ],
+        "nextAction": "Keep SSH/cloud work documentation-only until explicit approval."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-018",
+        "goalId": "SEIS-GOAL-018",
+        "title": "SEIS Universe Research roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-015"
+        ],
+        "prQueueRefs": [
+          "PR 4"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#ai-core"
+        ],
+        "nextAction": "Keep model research honest until datasets, checkpoints, evals, and model cards exist."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-019",
+        "goalId": "SEIS-GOAL-019",
+        "title": "Portfolio and Creative Systems roadmap link",
+        "status": "planned",
+        "roadmapRefs": [
+          "SEIS-BL-019"
+        ],
+        "prQueueRefs": [
+          "PR 5",
+          "PR 6"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#plugin-interface-suite"
+        ],
+        "nextAction": "Keep creative/product surfaces tied to provenance and validation evidence."
+      },
+      {
+        "id": "SEIS-ROADMAP-LINK-020",
+        "goalId": "SEIS-GOAL-020",
+        "title": "Long-Term Product Vision roadmap link",
+        "status": "active",
+        "roadmapRefs": [
+          "SEIS-BL-001",
+          "SEIS-BL-021"
+        ],
+        "prQueueRefs": [
+          "PR 0",
+          "PR 1"
+        ],
+        "statusRefs": [
+          "docs/STATUS.md#source-of-truth"
+        ],
+        "nextAction": "Keep long-term direction connected to status, backlog, reviews, and next actions."
       }
     ]
   },

@@ -15,6 +15,7 @@ records.
 - `content/development/seis-goal-cycle-plan.json`
 - `content/development/seis-goal-risk-register.json`
 - `content/development/seis-goal-validation-steps.json`
+- `content/development/seis-goal-roadmap-links.json`
 - `content/development/seis-goal-command-center-view.json`
 - `apps/web/goal-tracking.html`
 - `docs/roadmap/MASTER_BACKLOG.md`
@@ -39,6 +40,7 @@ records.
 | Cycle plan panel | Shows yearly, quarterly, monthly, and weekly execution cycle records. |
 | Risk register panel | Shows risks with severity, mitigation, evidence, and next action. |
 | Validation steps panel | Shows repeatable checks with success conditions and scoped claims. |
+| Roadmap links panel | Shows explicit goal-to-roadmap, queue, and status links. |
 | Readiness panel | Public and release readiness stay blocked until validated. |
 
 ## Generated Surface

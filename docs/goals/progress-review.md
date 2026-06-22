@@ -20,6 +20,7 @@ This review records current foundation progress on branch
 | Cycle plan | active | `content/development/seis-goal-cycle-plan.json`, `docs/goals/cycle-plan.md` | Keep yearly goals, quarterly goals, monthly goals, and weekly priorities evidence-linked. |
 | Risk register | active | `content/development/seis-goal-risk-register.json`, `docs/goals/risk-register.md` | Keep risks explicit, evidence-linked, and mitigation-focused. |
 | Validation steps | active | `content/development/seis-goal-validation-steps.json`, `docs/goals/validation-steps.md` | Keep validation commands scoped and avoid broad readiness claims. |
+| Roadmap links | active | `content/development/seis-goal-roadmap-links.json`, `docs/goals/roadmap-links.md` | Keep every goal connected to roadmap, PR queue, and status references. |
 | Command Center Goal view | active | `docs/product/goal-tracking-center.md`, `docs/goals/command-center-view-model.md`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html` | Keep generated view fresh with `npm run check:goal-command-center-view`. |
 | GitHub workflow | blocked | `docs/STATUS.md` | Do not stage unrelated deletions. |
 | Public readiness | blocked | `docs/STATUS.md` | Resolve repository hygiene first. |
@@ -40,6 +41,7 @@ This review records current foundation progress on branch
 - Cycle plan for yearly goals, quarterly goals, monthly goals, and weekly priorities.
 - Risk register for repository hygiene, overclaim, and generated-view drift risks.
 - Validation step ledger for scoped checks and success conditions.
+- Roadmap-link map for all 20 tracked goals.
 
 ## Not Complete
 

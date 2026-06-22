@@ -9,16 +9,16 @@ Machine-readable source: [`content/development/github-remote-configuration.json`
 | Field | Value |
 | --- | --- |
 | Remote name | `origin` |
-| Remote URL | `https://github.com/emirhankudun-ux/UIX-Apps.git` |
-| Target branch | `UIXAppTTR` |
-| Local execution branch | `work` |
-| Local tracking target | `origin/UIXAppTTR` |
+| Remote URL | `https://github.com/emirhankudun-ux/SEIS` |
+| Target branch | `seis/product-experience-suite` |
+| Local execution branch | `seis/product-experience-suite` |
+| Local tracking target | `origin/seis/product-experience-suite` |
 
 ## Publication Rule
 
-The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, and the publish path uses the `UIXAppTTR` branch contract.
+The remote is configured locally, but publication remains gated. A push should not be claimed until the repository is clean, GitHub authentication is ready, remote branch state is reviewed, human approval is explicit, and the publish path stays off `main`.
 
-The network probe attempted from this environment was blocked by a `CONNECT tunnel failed, response 403` limitation, so this record treats remote configuration as local Git configuration only, not proof of GitHub authentication or push readiness.
+The current network probe status is `not-run-in-current-local-pass`, so this record treats remote configuration as local Git configuration only, not proof of GitHub authentication or push readiness.
 
 ## Validation
 

@@ -24,8 +24,11 @@
       <a class="brand" href="#top">UI-UX Digital Lab</a>
       <nav class="site-nav" aria-label="Primary">
         <a href="#modes">Modes</a>
+        <a href="#showcase">Showcase</a>
+        <a href="#mythic">Mythic</a>
         <a href="#development">Develop</a>
         <a href="#plugins">Plugins</a>
+        <a href="#plugin-interfaces">Interfaces</a>
         <a href="#pulse">Pulse</a>
         <a href="#archive">Archive</a>
         <a href="#roadmap">Roadmap</a>
@@ -76,6 +79,62 @@
             <h3>Cinematic</h3>
             <p>Layered reveals, depth, and optional intensity.</p>
           </article>
+        </div>
+      </section>
+
+      <section id="showcase" class="section-reveal system-section">
+        <p class="eyebrow">Video hero gallery</p>
+        <h2>Immersive product openings with real video controls.</h2>
+        <p class="section-copy">
+          Four full-screen showcase routes pair high-quality looping video, quiet typography, CTA
+          actions, reduced-motion fallbacks, and loading-conscious playback behavior.
+        </p>
+        <div class="showcase-preview-grid" aria-label="Video hero showcase pages">
+          <a class="showcase-preview-card showcase-preview-card--nature" href="./showcase/nature.html">
+            <span>Nature</span>
+            <strong>Untamed Silence</strong>
+            <p>Forest-shadow atmosphere and ocean motion for elemental brand openings.</p>
+          </a>
+          <a class="showcase-preview-card showcase-preview-card--still-life" href="./showcase/still-life.html">
+            <span>Still Life</span>
+            <strong>Objects in Quiet Light</strong>
+            <p>Ceramics, glassware, refraction, and controlled studio shadows.</p>
+          </a>
+          <a class="showcase-preview-card showcase-preview-card--materials" href="./showcase/materials.html">
+            <span>Materials</span>
+            <strong>Tactile Memory</strong>
+            <p>Leather, fabric, fibers, and macro texture for material-led stories.</p>
+          </a>
+          <a class="showcase-preview-card showcase-preview-card--metal" href="./showcase/metal-parts.html">
+            <span>Metal Parts</span>
+            <strong>Precision in Motion</strong>
+            <p>Mechanical gears and machined detail for engineered product narratives.</p>
+          </a>
+        </div>
+      </section>
+
+      <section id="mythic" class="section-reveal system-section">
+        <p class="eyebrow">Mythic gacha</p>
+        <h2>A no-key Shan Hai Jing inspired draw system.</h2>
+        <p class="section-copy">
+          The playable Mythic Gacha route uses a local artwork atlas, 60 collectible creature
+          records, IndexedDB progress, pity logic, daily draw state, favorites, export, and
+          bestiary filters without requiring a live image-generation provider.
+        </p>
+        <div class="mythic-preview-panel">
+          <div>
+            <strong>60</strong>
+            <span>creature records</span>
+          </div>
+          <div>
+            <strong>80</strong>
+            <span>legendary pity cap</span>
+          </div>
+          <div>
+            <strong>0</strong>
+            <span>runtime provider keys</span>
+          </div>
+          <a class="showcase-cta" href="./mythic-gacha.html">Open Mythic Gacha</a>
         </div>
       </section>
 
@@ -184,6 +243,67 @@
                 <p>Use as model sourcing for future AI-assisted marketplace content and QA.</p>
               </article>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plugin-interfaces" class="section-reveal system-section" data-plugin-interfaces>
+        <p class="eyebrow">SEIS plugin interfaces</p>
+        <h2>Five plugin lanes, one governed interface system.</h2>
+        <p class="section-copy">
+          A read-only Command Center slice for `@seis`, `@seis-cloud`, `@seis-code`,
+          `@seis-design`, and `@seis-data`. It shows current evidence, blocked live
+          work, and the five-year development horizon without pretending any live
+          deployment, AI provider, or SSH integration is active.
+        </p>
+        <p class="status-line" data-plugin-interface-status>Static plugin interface view loading.</p>
+
+        <div class="plugin-interface-layout">
+          <div class="plugin-interface-tabs" role="tablist" aria-label="SEIS plugin lanes" data-plugin-interface-tabs>
+            <button class="plugin-interface-tab is-active" type="button" role="tab" aria-selected="true" data-plugin-interface-tab="seis">
+              <span>@seis</span>
+              <strong>Command</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-cloud">
+              <span>@seis-cloud</span>
+              <strong>Cloud</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-code">
+              <span>@seis-code</span>
+              <strong>Code</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-design">
+              <span>@seis-design</span>
+              <strong>Design</strong>
+            </button>
+            <button class="plugin-interface-tab" type="button" role="tab" aria-selected="false" data-plugin-interface-tab="seis-data">
+              <span>@seis-data</span>
+              <strong>Data</strong>
+            </button>
+          </div>
+
+          <article class="plugin-interface-detail" role="tabpanel" aria-live="polite" data-plugin-interface-detail>
+            <span>Loading</span>
+            <h3>Plugin lane details</h3>
+            <p>Loading local interface records.</p>
+          </article>
+        </div>
+
+        <div class="plugin-interface-evidence" data-plugin-interface-evidence aria-label="Current evidence links"></div>
+
+        <div class="five-year-panel">
+          <div>
+            <p class="eyebrow">Five-year development horizon</p>
+            <h3>2026 through 2030, staged instead of overclaimed.</h3>
+          </div>
+          <div class="five-year-program">
+            <div class="five-year-controls" data-five-year-controls aria-label="Five-year development years"></div>
+            <div class="five-year-grid" data-five-year-grid></div>
+            <article class="five-year-detail" data-five-year-detail aria-live="polite">
+              <span>Loading</span>
+              <h4>Development program</h4>
+              <p>Loading yearly lane commitments.</p>
+            </article>
           </div>
         </div>
       </section>

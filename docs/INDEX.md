@@ -10,6 +10,8 @@ Date: 2026-06-22
 | [STATUS.md](STATUS.md) | Current branch status matrix. |
 | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) | Integration policy for keeping every SEIS workstream tied to GitHub, evidence, and PR sequencing. |
 | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) | Foundation audit and review report. |
+| [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite and year controls. |
+| [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) | QA evidence and release boundary for the four-page cinematic Video Hero showcase. |
 | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) | Master backlog for reviewable SEIS work. |
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Recommended next PR queue and approval gates. |
 
@@ -21,6 +23,7 @@ Date: 2026-06-22
 | [operations/seis-cloud-foundation.md](operations/seis-cloud-foundation.md) | Cloud, deployment, and SSH safety foundation. |
 | [product/seis-code-foundation.md](product/seis-code-foundation.md) | SEIS Code workspace foundation. |
 | [design-system/seis-design-foundation.md](design-system/seis-design-foundation.md) | Design-system foundation and evidence rules. |
+| [design-system/component-inventory.md](design-system/component-inventory.md) | Validator-backed component inventory for current web surfaces. |
 | [data/seis-data-foundation.md](data/seis-data-foundation.md) | Data foundation, records, and validation expectations. |
 | [data/schema-registry.md](data/schema-registry.md) | Validator-backed registry for current structured records. |
 
@@ -30,6 +33,8 @@ Date: 2026-06-22
 | --- | --- |
 | [product/command-center-foundation.md](product/command-center-foundation.md) | Command Center module contract and evidence rules. |
 | [product/plugin-interface-suite.md](product/plugin-interface-suite.md) | Read-only interface foundation for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
+| [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
+| [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
 | [ai/seis-ai-core.md](ai/seis-ai-core.md) | Provider-neutral SEIS AI Core foundation. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
 | [audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md](audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md) | Redacted static provider and credential audit. |
@@ -73,5 +78,10 @@ Date: 2026-06-22
 | [../content/development/seis-goal-archive-ledger.json](../content/development/seis-goal-archive-ledger.json) | Archive boundary records. |
 | [../content/development/seis-goal-command-center-view.json](../content/development/seis-goal-command-center-view.json) | Generated Command Center view data. |
 | [../content/development/seis-integration-map.json](../content/development/seis-integration-map.json) | Canonical workstream-to-GitHub integration map. |
-| [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) | Static plugin interface lane records and five-year roadmap. |
+| [../content/development/seis-plugin-interface-roadmap.json](../content/development/seis-plugin-interface-roadmap.json) | Static plugin interface lane records, five-year roadmap, and development-program commitments. |
+| [../content/development/plugin-skill-capability-map.json](../content/development/plugin-skill-capability-map.json) | Static capability records for the plugin interface suite. |
+| [../content/lab/cinematic-engine.json](../content/lab/cinematic-engine.json) | Static command deck for the web interface. |
+| [../content/lab/quality-console.json](../content/lab/quality-console.json) | Static quality signals for the plugin interface suite. |
+| [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) | Schema registry for current structured records. |
+| [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) | Component inventory for current web and showcase surfaces. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

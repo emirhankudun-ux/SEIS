@@ -23,6 +23,7 @@ completed work, deferred work, and next safe actions.
 | Risk | Condition that can cause failure or harm. |
 | Risk register item | Structured risk with severity, mitigation, evidence, and next action. |
 | Validation step | Repeatable command or review method with a success condition. |
+| Roadmap link | Explicit goal-to-roadmap, queue, and status mapping. |
 | Completed item | Scoped work finished with evidence. |
 | Deferred item | Work intentionally delayed. |
 | Archived item | Historical material not active by default. |
@@ -65,6 +66,7 @@ Rules:
 - `content/development/seis-goal-cycle-plan.json`
 - `content/development/seis-goal-risk-register.json`
 - `content/development/seis-goal-validation-steps.json`
+- `content/development/seis-goal-roadmap-links.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
@@ -75,6 +77,7 @@ Rules:
 - `docs/goals/cycle-plan.md`
 - `docs/goals/risk-register.md`
 - `docs/goals/validation-steps.md`
+- `docs/goals/roadmap-links.md`
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
 

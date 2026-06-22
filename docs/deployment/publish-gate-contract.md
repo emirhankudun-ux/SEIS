@@ -8,13 +8,13 @@ Machine-readable source: [`content/development/publish-gate-contract.json`](../.
 
 | Level | Meaning | Allows | Still blocks |
 | --- | --- | --- | --- |
-| `configured` | `origin` points at `https://github.com/emirhankudun-ux/UIX-Apps.git`. | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
-| `publish-preflight` | Branch is `UIXAppTTR`, upstream is `origin/UIXAppTTR`, worktree is clean, and GitHub auth is ready. | Bounded push preflight and fast-forward-safe publish attempt. | Automatic deploy without confirmed target. |
+| `configured` | `origin` points at `https://github.com/emirhankudun-ux/SEIS`. | Local validation, commits, readiness reporting. | Push claims and deployment claims. |
+| `publish-preflight` | Branch is `seis/product-experience-suite`, upstream is `origin/seis/product-experience-suite`, worktree is clean, GitHub auth is ready, and push approval exists. | Bounded push preflight and fast-forward-safe publish attempt. | Automatic deploy without confirmed target. |
 | `deployment-ready` | Publish preflight is ready and server/deployment target has domain, path, owner, and rollback confirmation. | Release artifact upload after human confirmation. | Unconfirmed overwrite and branch cleanup without review. |
 
 ## Current Environment Policy
 
-This environment is expected to be **configured but not publish-ready** unless `UIXAppTTR`, upstream, clean worktree, and GitHub authentication all become available. The previous network probe returned `CONNECT tunnel failed, response 403`, so remote configuration should not be treated as GitHub authentication or push proof.
+This environment is expected to be **configured but not publish-ready** unless `seis/product-experience-suite`, upstream, clean worktree, GitHub authentication, and human push approval all become available. The current network probe status is `not-run-in-current-local-pass`, so remote configuration should not be treated as GitHub authentication or push proof.
 
 ## Validation
 
@@ -30,4 +30,4 @@ Use the existing publish-readiness reporter to see the current blocker:
 npm run automation:publish-readiness
 ```
 
-A blocked publish-readiness result is acceptable during local development when the blocker is explicit and the contract still proves that `origin` points at `UIX-Apps`.
+A blocked publish-readiness result is acceptable during local development when the blocker is explicit and the contract still proves that `origin` points at `SEIS`.

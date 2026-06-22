@@ -1,0 +1,77 @@
+# Plugin Interface Suite QA
+
+Date: 2026-06-22
+
+## Purpose
+
+Record the current browser QA evidence for the static plugin interface suite
+covering `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and
+`@seis-data`.
+
+## Scope
+
+This QA pass validates the static read-only interface, five-year horizon, and
+interactive year-by-year lane program. It does not validate live plugin
+execution, deployment, SSH, provider calls, repository writes, or production
+release readiness.
+
+## Environment
+
+| Item | Value |
+| --- | --- |
+| Server | Local static server from repository root |
+| URL | `http://127.0.0.1:4183/apps/web/index.html#plugin-interfaces` |
+| Browser | System Google Chrome through Playwright |
+| Desktop viewport | `1440 x 1100` |
+| Mobile viewport | `390 x 920` |
+
+## Results
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Plugin roadmap source loads | Passed | `content/development/seis-plugin-interface-roadmap.json` returned HTTP 200. |
+| Capability map source loads | Passed | `content/development/plugin-skill-capability-map.json` returned HTTP 200. |
+| Cinematic command deck loads | Passed | `content/lab/cinematic-engine.json` returned HTTP 200. |
+| Quality console source loads | Passed | `content/lab/quality-console.json` returned HTTP 200. |
+| Lane count | Passed | Status text reported 5 plugin lanes. |
+| `@seis` tab | Passed | Selected state became `true`; 4 evidence links rendered. |
+| `@seis-cloud` tab | Passed | Selected state became `true`; 3 evidence links rendered. |
+| `@seis-code` tab | Passed | Selected state became `true`; 3 evidence links rendered. |
+| `@seis-design` tab | Passed | Selected state became `true`; 3 evidence links rendered. |
+| `@seis-data` tab | Passed | Selected state became `true`; 3 evidence links rendered. |
+| Five-year horizon | Passed | 2026, 2027, 2028, 2029, and 2030 rendered. |
+| Year controls | Passed | 2026, 2027, 2028, 2029, and 2030 controls selected the yearly program detail. |
+| Lane program rows | Passed | Program rows selected the matching `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data` lane. |
+| Desktop overflow | Passed | No horizontal document overflow detected. |
+| Mobile overflow | Passed | No horizontal document overflow detected. |
+| JavaScript page errors | Passed | No page errors were reported. |
+| Application data HTTP errors | Passed | No tracked application data request returned HTTP 4xx or 5xx. |
+| Visual inspection | Passed | Desktop and mobile screenshots were inspected locally; the plugin suite is readable and responsive. |
+
+## HTTP Notes
+
+Previously missing optional fallback-backed records now have local static
+sources:
+
+- `content/development/plugin-skill-capability-map.json`
+- `content/lab/cinematic-engine.json`
+- `content/lab/quality-console.json`
+
+The browser still requested `/favicon.ico`, which returned 404 because the page
+uses `apps/web/favicon.svg`. This is not part of the plugin interface data
+path, but can be cleaned up before release readiness.
+
+## Validation Commands
+
+```bash
+npm run check:plugin-interface-roadmap
+npm run check:data-schema-registry
+node --check apps/web/app.js
+jq empty content/development/seis-plugin-interface-roadmap.json content/development/plugin-skill-capability-map.json content/lab/cinematic-engine.json content/lab/quality-console.json
+```
+
+## Next Safe Action
+
+Keep this QA note current when the plugin interface layout, data source,
+five-year horizon, or development-program controls change. Clean up the
+`/favicon.ico` fallback request before claiming release readiness.

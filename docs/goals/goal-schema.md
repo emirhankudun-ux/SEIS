@@ -86,10 +86,17 @@ review method, owner role, goal links, evidence ids, related paths, success
 condition, and next action. A validation step proves only the scope named by its
 success condition.
 
+## Roadmap Link Object
+
+Roadmap link records include id, goal id, title, status, roadmap references, PR
+queue references, status references, related paths, and next action. Every
+tracked goal must have exactly one roadmap-link record.
+
 ## Validation
 
 `npm run check:goal-tracking` validates required docs, strategic categories,
 record ids, category coverage, repo-relative links, review cadence references,
 progress ledger references, hierarchy references, archive ledger references,
 cycle plan references, risk register references, validation step references,
-generated view panels, and no active goal with unavailable evidence.
+roadmap link coverage, generated view panels, and no active goal with
+unavailable evidence.

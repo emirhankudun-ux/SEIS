@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "seis-cinematic-engine",
+  "generatedAt": "2026-06-22",
+  "mode": "static_command_deck",
+  "summary": "Static local command deck for the SEIS web surface. This is not a live automation engine.",
+  "commandDeck": [
+    {
+      "id": "plugin-interface-suite",
+      "label": "Plugin Interface Suite",
+      "status": "active",
+      "metric": "5 lanes",
+      "action": "Review @seis, @seis-cloud, @seis-code, @seis-design, and @seis-data from one static interface."
+    },
+    {
+      "id": "five-year-horizon",
+      "label": "Five-Year Horizon",
+      "status": "active",
+      "metric": "2026-2030",
+      "action": "Keep each lane staged as foundation, alpha, workflow integration, governed automation, and maturity."
+    },
+    {
+      "id": "local-validation",
+      "label": "Local Validation",
+      "status": "ready",
+      "metric": "no keys",
+      "action": "Run static checks without deployment, SSH, provider calls, or external credentials."
+    }
+  ]
+}

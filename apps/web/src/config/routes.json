@@ -3,8 +3,38 @@
   "routes": [
     {
       "path": "/",
-      "sections": ["hero", "system", "lab", "development", "plugins", "marketplace", "pulse", "efficiency", "development-mode", "weekly-usage", "roadmap", "motion", "archive", "quality", "handoff", "deploy"],
+      "sections": ["hero", "system", "lab", "showcase", "development", "plugins", "marketplace", "pulse", "efficiency", "development-mode", "weekly-usage", "roadmap", "motion", "archive", "quality", "handoff", "deploy"],
       "status": "static-foundation"
+    },
+    {
+      "path": "/seis-code.html",
+      "sections": ["ide-shell", "activity-bar", "editor", "terminal", "extensions"],
+      "status": "browser-ide-foundation"
+    },
+    {
+      "path": "/mythic-gacha.html",
+      "sections": ["ritual", "draw-system", "bestiary", "indexeddb"],
+      "status": "playable-static-gacha"
+    },
+    {
+      "path": "/showcase/nature.html",
+      "sections": ["video-hero", "story"],
+      "status": "static-video-showcase"
+    },
+    {
+      "path": "/showcase/still-life.html",
+      "sections": ["video-hero", "story"],
+      "status": "static-video-showcase"
+    },
+    {
+      "path": "/showcase/materials.html",
+      "sections": ["video-hero", "story"],
+      "status": "static-video-showcase"
+    },
+    {
+      "path": "/showcase/metal-parts.html",
+      "sections": ["video-hero", "story"],
+      "status": "static-video-showcase"
     }
   ]
 }

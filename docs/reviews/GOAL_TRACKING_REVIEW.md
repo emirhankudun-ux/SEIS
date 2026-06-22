@@ -25,6 +25,7 @@ Date: 2026-06-22
 - Archive ledger records for historical reference, repository hygiene review candidates, and deferred readiness claims.
 - Cycle plan records for yearly goals, quarterly goals, monthly goals, and weekly priorities.
 - Risk register and validation step records for first-class risk/quality gates.
+- Roadmap-link records connecting every tracked goal to roadmap, PR queue, and status references.
 
 ## Findings
 
@@ -40,6 +41,7 @@ Date: 2026-06-22
 | Archive material remains separated from active official goals. | medium | active | Promote archive material only through reviewed source-of-truth updates. |
 | Cycle plan is file-backed, not a completed review ceremony. | low | active | Mark weekly or monthly reviews performed only with dated review evidence. |
 | Risk and validation records are scoped, not broad readiness proof. | medium | active | Record only the specific command or review evidence that was actually performed. |
+| Roadmap links expose planning relationships, not PR completion. | medium | active | Treat PR queue and backlog references as planning evidence until GitHub state is inspected. |
 
 ## Decision
 

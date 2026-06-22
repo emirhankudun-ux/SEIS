@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "purpose": "Source manifest for the SEIS cinematic video hero showcase pages.",
+  "mediaPolicy": {
+    "runtimeStorage": "Remote MP4 sources are referenced at runtime to avoid committing large video binaries.",
+    "loading": "Pages use metadata preload, local CSS poster surfaces, visibility-based pause, reduced-motion fallback, and intent-based next-video preload.",
+    "license": "Pexels videos are free to use under the Pexels License. Attribution is not required, but source pages are retained for provenance."
+  },
+  "heroes": [
+    {
+      "id": "nature",
+      "title": "Untamed Silence",
+      "theme": "Nature",
+      "sourcePage": "https://www.pexels.com/video/stunning-coastal-cliffs-and-ocean-waves-37922027/",
+      "videoUrl": "https://videos.pexels.com/video-files/37922027/16091983_1080_1920_30fps.mp4",
+      "format": "video/mp4",
+      "orientation": "portrait",
+      "status": "remote-video"
+    },
+    {
+      "id": "still-life",
+      "title": "Objects in Quiet Light",
+      "theme": "Still Life",
+      "sourcePage": "https://www.pexels.com/video/vintage-still-life-with-pottery-and-glassware-29569494/",
+      "videoUrl": "https://videos.pexels.com/video-files/29569494/12727864_1920_1080_60fps.mp4",
+      "format": "video/mp4",
+      "orientation": "landscape",
+      "status": "remote-video"
+    },
+    {
+      "id": "materials",
+      "title": "Tactile Memory",
+      "theme": "Materials",
+      "sourcePage": "https://www.pexels.com/video/crinkled-black-satin-7677747/",
+      "videoUrl": "https://videos.pexels.com/video-files/7677747/7677747-hd_1080_1920_25fps.mp4",
+      "format": "video/mp4",
+      "orientation": "portrait",
+      "status": "remote-video"
+    },
+    {
+      "id": "metal-parts",
+      "title": "Precision in Motion",
+      "theme": "Metal Parts",
+      "sourcePage": "https://www.pexels.com/video/mesmerizing-close-up-of-industrial-gears-in-motion-31802320/",
+      "videoUrl": "https://videos.pexels.com/video-files/31802320/13549420_1920_1080_25fps.mp4",
+      "format": "video/mp4",
+      "orientation": "landscape",
+      "status": "remote-video"
+    }
+  ]
+}

@@ -10,8 +10,21 @@ build/
 
 # Environment variables
 .env
+.env.*
+!.env.example
+!.env.*.example
 .env.local
 .env.*.local
+
+# Private credentials
+*.pem
+*.key
+*.p12
+*.pfx
+.secrets/
+secrets/
+credentials.local.json
+service-account*.json
 
 # IDE
 .vscode/

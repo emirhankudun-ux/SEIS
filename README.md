@@ -19,6 +19,11 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 - Roadmap: [`roadmap/seis-closed-code-backlog.md`](./roadmap/seis-closed-code-backlog.md)
 - Documentation index: [`docs/INDEX.md`](./docs/INDEX.md)
 - Current status: [`docs/STATUS.md`](./docs/STATUS.md)
+- Integration and GitHub development policy: [`docs/governance/seis-integration-and-github-development.md`](./docs/governance/seis-integration-and-github-development.md)
+- Security policy: [`SECURITY.md`](./SECURITY.md)
+- AI provider audit: [`docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`](./docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md)
+- Plugin interface suite: [`docs/product/plugin-interface-suite.md`](./docs/product/plugin-interface-suite.md)
+- Mythic Gacha: [`docs/product/mythic-gacha.md`](./docs/product/mythic-gacha.md)
 - Goal Tracking OS: [`docs/goals/goal-tracking-system.md`](./docs/goals/goal-tracking-system.md)
 - Goal Tracking Center: [`docs/product/goal-tracking-center.md`](./docs/product/goal-tracking-center.md)
 - Static Goal Tracking page: [`apps/web/goal-tracking.html`](./apps/web/goal-tracking.html)
@@ -90,11 +95,18 @@ Some source repositories are no longer visible through GitHub lookup, but SEIS k
 
 ```bash
 npm run check:workspace
+npm run check:data-schema-registry
+npm run check:plugin-interface-roadmap
+npm run check:seis-code
+npm run check:video-hero-showcase
+npm run check:mythic-gacha
+npm run check:design-component-inventory
 npm run check:seis-evolution-model
 npm run check:github-remote-configuration
 npm run check:publish-gate-contract
 npm run check:release-sync
 npm run check:ai-stack
+npm run audit:ai-providers
 npm run check:cloud-environment
 npm run check:monthly-branch-hardening
 npm run check:trusted-marketplace-intake

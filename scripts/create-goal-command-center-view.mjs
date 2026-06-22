@@ -15,6 +15,7 @@ const paths = {
   cyclePlan: "content/development/seis-goal-cycle-plan.json",
   riskRegister: "content/development/seis-goal-risk-register.json",
   validationSteps: "content/development/seis-goal-validation-steps.json",
+  roadmapLinks: "content/development/seis-goal-roadmap-links.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -29,7 +30,8 @@ const archiveLedger = readJson(paths.archiveLedger);
 const cyclePlan = readJson(paths.cyclePlan);
 const riskRegister = readJson(paths.riskRegister);
 const validationSteps = readJson(paths.validationSteps);
-const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan, riskRegister, validationSteps);
+const roadmapLinks = readJson(paths.roadmapLinks);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan, riskRegister, validationSteps, roadmapLinks);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -55,7 +57,7 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords, riskRegisterRecords, validationStepRecords) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords, riskRegisterRecords, validationStepRecords, roadmapLinkRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
@@ -76,6 +78,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
   const weeklyPriorities = cyclePlanRecords.weeklyPriorities || [];
   const risks = riskRegisterRecords.risks || [];
   const validationSteps = validationStepRecords.steps || [];
+  const roadmapLinks = roadmapLinkRecords.links || [];
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -84,7 +87,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan, paths.riskRegister, paths.validationSteps],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan, paths.riskRegister, paths.validationSteps, paths.roadmapLinks],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -127,6 +130,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       risksBySeverity: countBy(risks, "severity"),
       totalValidationSteps: validationSteps.length,
       validationStepsByStatus: countBy(validationSteps, "status"),
+      totalRoadmapLinks: roadmapLinks.length,
+      roadmapLinksByStatus: countBy(roadmapLinks, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -149,7 +154,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       card("archive", "Archive", archiveItems.length, "Historical, deferred, and review-candidate records."),
       card("cycle", "Cycle Plan", yearlyGoals.length + quarterlyGoals.length + monthlyGoals.length + weeklyPriorities.length, "Yearly, quarterly, monthly, and weekly execution records."),
       card("risks", "Risks", risks.length, "Risk records with severity and mitigation."),
-      card("validation", "Validation Steps", validationSteps.length, "Scoped checks with success conditions.")
+      card("validation", "Validation Steps", validationSteps.length, "Scoped checks with success conditions."),
+      card("roadmap", "Roadmap Links", roadmapLinks.length, "Goal-to-roadmap and PR queue mappings.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -342,6 +348,16 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         evidenceIds: step.evidence_ids,
         successCondition: step.success_condition,
         nextAction: step.next_action
+      })),
+      roadmapLinks: roadmapLinks.map((link) => ({
+        id: link.id,
+        goalId: link.goal_id,
+        title: link.title,
+        status: link.status,
+        roadmapRefs: link.roadmap_refs,
+        prQueueRefs: link.pr_queue_refs,
+        statusRefs: link.status_refs,
+        nextAction: link.next_action
       }))
     },
     uxGuards: [
@@ -540,6 +556,16 @@ function buildHtml(model) {
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Roadmap Links</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Goal</th><th>Status</th><th>Roadmap</th><th>Queue</th><th>Next Action</th></tr></thead>
+          <tbody>${panels.roadmapLinks.map(renderRoadmapLink).join("")}</tbody>
+        </table>
+      </div>
+    </section>
+
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
         <h2>Evidence Links</h2>
@@ -643,9 +669,13 @@ function renderValidationStep(item) {
   return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.title)}</h3><p class="muted">${escapeHtml(item.id)} · ${escapeHtml(item.priority)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p><strong>${escapeHtml(item.command)}</strong></p><p class="muted">${escapeHtml(item.successCondition)}</p><p>${escapeHtml(item.nextAction)}</p></article>`;
 }
 
+function renderRoadmapLink(item) {
+  return `<tr><td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.goalId)} · ${escapeHtml(item.title)}</td><td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml((item.roadmapRefs || []).join(", "))}</td><td>${escapeHtml((item.prQueueRefs || []).join(", "))}</td><td>${escapeHtml(item.nextAction)}</td></tr>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Roadmap Links", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001", "SEIS-ROADMAP-LINK-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }

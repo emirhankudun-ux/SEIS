@@ -98,6 +98,18 @@ Date: 2026-06-22
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
+## PR 1G: Goal Roadmap Links
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/product-experience-suite` |
+| Priority | P1 |
+| Goal | Add explicit roadmap, PR queue, and status link records for every tracked Goal Tracking OS goal. |
+| Include | `content/development/seis-goal-roadmap-links.json`, `docs/goals/roadmap-links.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
+| Exclude | Fake opened/merged PR state, live GitHub issue/project sync, unrelated tracked deletions, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON/generated-static work. |
+
 ## PR 2: Repository Hygiene Recovery
 
 | Field | Value |
@@ -131,10 +143,10 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a five-year development horizon. |
-| Include | `apps/web/index.html`, `apps/web/app.js`, `apps/web/styles.css`, `content/development/seis-plugin-interface-roadmap.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
+| Goal | Add and maintain a read-only Command Center lane interface for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`, including a selectable five-year development program. |
+| Include | `apps/web/index.html`, `apps/web/app.js`, `apps/web/styles.css`, `content/development/seis-plugin-interface-roadmap.json`, `content/development/plugin-skill-capability-map.json`, `content/lab/cinematic-engine.json`, `content/lab/quality-console.json`, `docs/product/plugin-interface-suite.md`, status/backlog/index updates. |
 | Exclude | Live cloud, GitHub write, SSH, or AI provider actions. |
-| Validation | `node --check apps/web/app.js`, `jq empty content/development/seis-plugin-interface-roadmap.json`, `git diff --check`, keyboard/manual QA when browser verification is available. |
+| Validation | `npm run check:plugin-interface-roadmap`, `node --check apps/web/app.js`, `jq empty content/development/seis-plugin-interface-roadmap.json`, `git diff --check`, keyboard/manual QA when browser verification is available. |
 | Approval needed | None unless adding dependencies. |
 
 ## PR 5A: Plugin Interface Validation And QA
@@ -142,10 +154,10 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Add dedicated validation and manual QA evidence for the static plugin interface suite. |
-| Include | Schema expectations for `content/development/seis-plugin-interface-roadmap.json`, browser QA notes for lane tabs, evidence links, mobile layout, and reduced-motion behavior. |
+| Goal | Keep dedicated validation and manual QA evidence for the static plugin interface suite, including lane tabs, year controls, and program rows. |
+| Include | `scripts/check-plugin-interface-roadmap.mjs`, `npm run check:plugin-interface-roadmap`, `docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md`, support data files, browser QA notes for lane tabs, evidence links, mobile layout, HTTP status, and reduced-motion behavior. |
 | Exclude | Dependency installation, live provider calls, SSH, deployment, or destructive actions. |
-| Validation | Static JSON schema check, browser screenshot/manual QA, keyboard navigation review. |
+| Validation | `npm run check:plugin-interface-roadmap`, browser screenshot/manual QA, keyboard navigation review. |
 | Approval needed | None unless adding dependencies or external tooling. |
 
 ## PR 6: SEIS Code, Data, And Design Contracts
@@ -153,11 +165,33 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Define SEIS Code MVP, expand the data schema registry, and add design component inventory as reviewable contracts. |
-| Include | Virtual file system, Monaco, terminal, no-key AI REPL acceptance criteria, JSON schema expectations, component inventory, reduced-motion QA. |
+| Goal | Harden SEIS Code browser foundation, expand the data schema registry, and add visual QA on top of the validator-backed design component inventory. |
+| Include | SEIS Code interaction tests, virtual file system persistence checks, Monaco/fallback editor QA, terminal and no-key AI REPL checks, JSON schema expectations, component inventory visual QA, Video Hero QA evidence, reduced-motion QA. |
 | Exclude | Full product implementation or dependency installation unless separately approved. |
-| Validation | `npm run check:data-schema-registry`, documentation review, JSON checks, manual accessibility checklist. |
+| Validation | `npm run check:seis-code`, `npm run check:video-hero-showcase`, `npm run check:design-component-inventory`, `npm run check:data-schema-registry`, documentation review, JSON checks, manual accessibility checklist. |
 | Approval needed | Yes for dependency installation. |
+
+## PR 6A: Video Hero Visual QA
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Convert the four Video Hero showcase pages from validated static contract to visual QA evidence for desktop, mobile, reduced-motion, and media fallback behavior. |
+| Include | `docs/product/video-hero-showcase.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`, browser smoke notes, screenshots, reduced-motion evidence, media provenance review, and static package verification. |
+| Exclude | Deployment, live media CDN migration, dependency installation, paid media purchases, model-provider image generation, and release publication. |
+| Validation | `npm run check:video-hero-showcase`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
+| Approval needed | None for local QA/docs; approval required for dependency installation, hosted media migration, deployment, or release. |
+
+## PR 7: Mythic Gacha Playable Foundation
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Keep the Shan Hai Jing inspired gacha route playable without a runtime image-generation provider key. |
+| Include | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.css`, `apps/web/mythic-gacha.js`, `apps/web/seis-code.js` export listener, `apps/web/public/media/mythic/shan-hai-creature-atlas.png`, `docs/product/mythic-gacha.md`, route/cache/sitemap bindings, and `scripts/check-mythic-gacha.mjs`. |
+| Exclude | Live image generation, real-money purchase flows, provider keys, dependency installation, deployment, SSH, or asset claims without provenance review. |
+| Validation | `npm run check:mythic-gacha`, `node --check apps/web/mythic-gacha.js`, `node --check apps/web/seis-code.js`, browser/mobile QA when available. |
+| Approval needed | None for the static foundation; approval required for live image generation, dependency installation, public release, or external asset pipeline changes. |
 
 ## Human Approval Needed
 

@@ -10,12 +10,12 @@ deployment, public-readiness, or merge-readiness claim.
 | Area | Status | Evidence | Next action |
 | --- | --- | --- | --- |
 | Branch | Non-main branch | `seis/product-experience-suite` | Keep work scoped and push only this branch. |
-| Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, hierarchy map, goal metadata, archive ledger, cycle plan, risk register, and validation steps added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, metadata, archive, cycle plan, risk, and validation-step checks passing. |
-| Worktree hygiene | Blocked | Pre-existing unstaged tracked deletions are present. | Do not stage unrelated deletions. |
+| Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, hierarchy map, goal metadata, archive ledger, cycle plan, risk register, validation steps, and roadmap links added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, metadata, archive, cycle plan, risk, validation-step, and roadmap-link checks passing. |
+| Worktree hygiene | Dirty but no tracked deletions currently visible | `git status --short` shows modified and untracked foundation/product files, but no `D` entries. | Review and stage only the coherent foundation/product slice. |
 | SEIS integration posture | Documented | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json` | Use the integration map to reconcile one SEIS workstream per PR. |
 | GitHub PR state | Unverified | No external GitHub API/CLI inspection was performed. | Inspect only after approval. |
-| Public readiness | Not ready | Repository hygiene and readiness checks are incomplete. | Resolve blockers first. |
-| Release readiness | Not ready | No release dry-run was performed. | Defer until foundation recovery. |
+| Public readiness | Not ready | Worktree is dirty, full secret-history scan and browser QA are incomplete. | Resolve blockers before public preparation. |
+| Release readiness | Not ready | Static build passed, but no release dry-run, tag, deployment, or rollback drill was performed. | Defer release work until review. |
 
 ## Extended Lane Status
 
@@ -25,10 +25,11 @@ deployment, public-readiness, or merge-readiness claim.
 | Documentation foundation | Expanded | `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, lane docs | Some README links point to deleted files. | Reconcile links after deletion decisions. |
 | `@seis` | Documented foundation | `docs/architecture/seis-platform-lanes.md` | Not public/release ready. | Keep source-of-truth docs aligned. |
 | `@seis-cloud` | Documented/scaffolded | `docs/operations/seis-cloud-foundation.md`, `deploy/cloud-environment.json` | No live cloud verification. | Keep dry-run only until approval. |
-| `@seis-code` | Planned/scaffolded | `docs/product/seis-code-foundation.md`, `content/development/code-automation-plan.json` | No browser IDE implementation. | Define virtual file system and SEIS Code MVP contract. |
-| `@seis-design` | Documented/scaffolded | `docs/design-system/seis-design-foundation.md`, `packages/design-tokens/seis.tokens.css` | No component inventory. | Add design QA checklist and inventory. |
+| `@seis-code` | Browser foundation | `apps/web/seis-code.html`, `apps/web/seis-code.js`, `docs/product/seis-code-foundation.md`, `npm run check:seis-code` | No browser screenshot, Playwright, or refresh-persistence QA yet. | Add interaction smoke tests. |
+| `@seis-design` | Validator-backed inventory and browser-smoked showcase | `docs/design-system/seis-design-foundation.md`, `docs/design-system/component-inventory.md`, `content/development/seis-design-component-inventory.json`, `docs/product/video-hero-showcase.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`, `npm run check:design-component-inventory`, `npm run check:video-hero-showcase` | No committed browser visual regression screenshots or performance budget. | Make Video Hero smoke repeatable and add visual QA evidence for current components. |
+| Mythic Gacha | Playable static foundation with SEIS Code export bridge | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.js`, `apps/web/mythic-gacha.css`, `docs/product/mythic-gacha.md`, `npm run check:mythic-gacha` | No browser/mobile screenshot QA, no cross-tab export screenshot, and no per-card artwork provenance review. | Add interaction/persistence QA and asset provenance review. |
 | `@seis-data` | Registry-backed foundation | `docs/data/seis-data-foundation.md`, `docs/data/schema-registry.md`, `content/development/seis-data-schema-registry.json` | Registry coverage is partial and top-level only. | Add semantic checks for critical records. |
-| Plugin Interface Suite | Documented static interface | `apps/web/index.html`, `content/development/seis-plugin-interface-roadmap.json`, `docs/product/plugin-interface-suite.md` | Browser QA and schema validation are not yet dedicated checks. | Add manual QA evidence and a schema check for the roadmap record. |
+| Plugin Interface Suite | Validator-backed static interface with interactive year program | `apps/web/index.html`, `content/development/seis-plugin-interface-roadmap.json`, `content/development/plugin-skill-capability-map.json`, `content/lab/cinematic-engine.json`, `content/lab/quality-console.json`, `docs/product/plugin-interface-suite.md`, `docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md`, `scripts/check-plugin-interface-roadmap.mjs` | `/favicon.ico` fallback request still returns 404 in local browser QA. | Keep validator passing, verify year controls in browser QA, and clean favicon fallback before release readiness. |
 | Command Center | Scaffolded/planned | `docs/product/command-center-foundation.md`, `apps/web/goal-tracking.html`, `apps/web/index.html#plugin-interfaces` | Broader modules are not implemented. | Keep lane status generated from source records. |
 | AI Core | Planned with static provider audit | `docs/ai/seis-ai-core.md`, `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No provider registry, router, gateway, or runtime verification. | Add typed provider registry before live AI integration. |
 | AI Core local workstream | Separate branch work | `content/development/seis-integration-map.json` | Local changes are not reconciled into this branch. | Review diff and extract contracts into a dedicated PR. |
@@ -46,21 +47,29 @@ deployment, public-readiness, or merge-readiness claim.
 | --- | --- | --- |
 | `node --check scripts/check-goal-tracking.mjs` | Passed | Validator syntax is valid. |
 | `node --check scripts/create-goal-command-center-view.mjs` | Passed | View generator syntax is valid. |
-| `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json content/development/seis-goal-review-cadence.json content/development/seis-goal-progress-ledger.json content/development/seis-goal-hierarchy.json content/development/seis-goal-archive-ledger.json content/development/seis-goal-cycle-plan.json content/development/seis-goal-risk-register.json content/development/seis-goal-validation-steps.json content/development/seis-goal-command-center-view.json` | Passed | Structured records and generated view model parse as JSON. |
+| `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json content/development/seis-goal-review-cadence.json content/development/seis-goal-progress-ledger.json content/development/seis-goal-hierarchy.json content/development/seis-goal-archive-ledger.json content/development/seis-goal-cycle-plan.json content/development/seis-goal-risk-register.json content/development/seis-goal-validation-steps.json content/development/seis-goal-roadmap-links.json content/development/seis-goal-command-center-view.json` | Passed | Structured records and generated view model parse as JSON. |
 | `jq empty content/development/seis-integration-map.json content/development/seis-goal-command-center-view.json` | Passed | Integration map and generated Goal Tracking view parse as JSON. |
-| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 12 evidence records, 3 tasks, 2 blockers, 2 decisions, 3 review records, 3 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, 3 archive items, 1 yearly goal, 1 quarterly goal, 1 monthly goal, 3 weekly priorities, 3 risks, 3 validation steps, goal metadata fields, generated view model, and static page validate. |
+| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 13 evidence records, 3 tasks, 2 blockers, 2 decisions, 3 review records, 3 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, 3 archive items, 1 yearly goal, 1 quarterly goal, 1 monthly goal, 3 weekly priorities, 3 risks, 3 validation steps, 20 roadmap links, generated view model, and static page validate. |
 | `npm run check:goal-command-center-view` | Passed | Generated view model and static page are fresh. |
-| `npm run check:data-schema-registry` | Passed | Data schema registry validates 11 current records, required top-level keys, and referenced validation commands. |
+| `npm run check:data-schema-registry` | Passed | Data schema registry validates current records, required top-level keys, and referenced validation commands, including plugin interface support data. |
+| `npm run check:plugin-interface-roadmap` | Passed | Validates five plugin lanes, evidence paths, the 2026-2030 horizon, development-program commitments, and static web bindings. |
+| `npm run check:seis-code` | Passed | Validates SEIS Code route, runtime script, Monaco hook, 8 top menus, 5 activity views, bottom panels, IndexedDB, 25 language modes, terminal commands, Local Demo REPL slash commands, route/cache/sitemap bindings. |
+| `npm run check:video-hero-showcase` | Passed | Validates four themed Video Hero pages, manifest provenance, controls, reduced-motion/runtime hooks, and route/cache/sitemap bindings. |
+| Headless Chrome DevTools Video Hero smoke | Passed | Verified all four routes at desktop and mobile viewports, Nature play/mute/fullscreen/CTA interactions, reduced-motion Materials state, no horizontal overflow, and no framework overlay text; `/favicon.ico` returned a local 404. |
+| `npm run check:mythic-gacha` | Passed | Validates the Mythic Gacha route, 60 creature markers, IndexedDB persistence hooks, draw controls, filters, pity marker, local atlas, local JSON export, and route/cache/sitemap bindings. |
+| `npm run check:design-component-inventory` | Passed | Validates 12 component records, source files, selector evidence, accessibility notes, motion policies, and validation commands. |
 | `git diff --check` | Passed | No whitespace errors in the scoped diff. |
 | Scoped sensitive-pattern scan | Passed | No private-path, file URI, editor URI, key block, token assignment, API key assignment, or password assignment hits were found in scoped Goal Tracking files. |
-| `npm run check:workspace` | Failed | Current worktree has unstaged `apps/web` and `release/web` sync drift; `automation:refresh-release` was not run because those changes are outside this Goal Tracking slice. |
+| `npm run check:workspace` | Passed | Existing workspace check passed after refreshing the local `release/web` mirror. |
 | `npm run check:cloud-environment` | Passed | Existing cloud-environment check passed without live deployment. |
 | `npm run check:code-automation-plan` | Passed | Existing SEIS Code automation plan check passed. |
 | `npm run check:motion-evidence` | Passed | Existing motion evidence check passed. |
 | `npm run check:mobile-ergonomics` | Passed | Existing mobile ergonomics check passed. |
 | `npm run audit:ai-providers` | Passed | Redacted static provider/credential audit generated Markdown and JSON without live provider calls. |
 | `.env` ignore check | Passed | `.env`, `.env.local`, `.env.development.local`, `secrets/*`, `service-account*.json`, and `*.pem` are ignored; `.env.example` is not ignored. |
-| `npm run check:foundation` | Failed | Missing pre-existing branch files: `docs/architecture/animation-system-plan.md`, `docs/deployment/server-target-selection.md`, and `docs/governance/development-process.md`. |
+| `npm run check:foundation` | Passed | Current foundation validator completed after repository hygiene recovery on this branch. |
+| `npm run build:static` | Passed | Static server package was produced locally at `dist/seis-static.zip`; no deployment was performed. |
+| Local HTTP route smoke | Passed | `curl -I` returned 200 for `/`, `/mythic-gacha.html`, `/seis-code.html`, and `/showcase/nature.html` on `http://127.0.0.1:4173`. |
 
 ## Validation Not Performed
 
@@ -70,6 +79,7 @@ deployment, public-readiness, or merge-readiness claim.
   training, benchmark, or dataset download.
 - No live model-provider call.
 - No full Git history secret scan.
+- No browser click-through or screenshot QA for Mythic Gacha, including the SEIS Code export bridge.
 
 ## Security Notes
 
