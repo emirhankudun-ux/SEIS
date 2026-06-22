@@ -166,6 +166,10 @@ for (const required of ["indexedDB.open", "createObjectStore", "terminalHistory"
   ensure(js.includes(required), `SEIS Code runtime missing required capability marker: ${required}`);
 }
 
+for (const required of ["normalized !== WORKSPACE", "startsWith(`${WORKSPACE}/`)"]) {
+  ensure(js.includes(required), `SEIS Code runtime missing workspace path-boundary marker: ${required}`);
+}
+
 for (const required of [".monaco-host", ".terminal-output", ".activity-button", "@media", "prefers-reduced-motion"]) {
   ensure(css.includes(required), `SEIS Code CSS missing required selector or media rule: ${required}`);
 }

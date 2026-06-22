@@ -94,6 +94,15 @@ for (const marker of [
 }
 
 for (const marker of [
+  "Ten Draw needs",
+  "control.disabled = !hasLastDraw",
+  "elements.drawTen.disabled",
+  "state.currency < cost"
+]) {
+  ensure(js.includes(marker), `Mythic Gacha runtime missing interaction-safety marker: ${marker}`);
+}
+
+for (const marker of [
   ".ritual-stage",
   ".draw-card",
   ".bestiary-grid",
