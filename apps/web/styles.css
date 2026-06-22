@@ -819,7 +819,9 @@ html[data-motion-mode="cinematic"] .hero {
   .system-grid,
   .marketplace-layout,
   .plugin-interface-layout,
+  .plugin-maturity-signals,
   .plugin-interface-coverage,
+  .plugin-readiness-columns,
   .five-year-grid,
   .artwork-grid,
   .timeline {
