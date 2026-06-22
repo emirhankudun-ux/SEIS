@@ -7,6 +7,8 @@ const schemaPath = "packages/evals/schemas/fixture-evaluation-report.schema.json
 const promptFixturePath = "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json";
 const sharedFixturePath = "packages/shared-types/fixtures/ai-core-command-center-foundation.json";
 const knowledgeFixturePath = "packages/data/fixtures/knowledge-source-classification.json";
+const retrievalAdapterFixturePath = "packages/data/fixtures/local-readonly-retrieval-query-adapter.json";
+const retrievalSearchTranscriptFixturePath = "packages/data/fixtures/local-readonly-retrieval-search-transcript.json";
 const tokenFeedFixturePath = "packages/data/fixtures/seis-10m-token-feed-budget.json";
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
@@ -130,12 +132,16 @@ const schemaText = readText(schemaPath);
 const promptFixtureText = readText(promptFixturePath);
 const sharedFixtureText = readText(sharedFixturePath);
 const knowledgeFixtureText = readText(knowledgeFixturePath);
+const retrievalAdapterFixtureText = readText(retrievalAdapterFixturePath);
+const retrievalSearchTranscriptFixtureText = readText(retrievalSearchTranscriptFixturePath);
 const tokenFeedFixtureText = readText(tokenFeedFixturePath);
 const appFixtureText = readText(appFixturePath);
 const schema = readJson(schemaPath);
 const promptSuite = readJson(promptFixturePath);
 const sharedFixture = readJson(sharedFixturePath);
 const knowledgeFixture = readJson(knowledgeFixturePath);
+const retrievalAdapterFixture = readJson(retrievalAdapterFixturePath);
+const retrievalSearchTranscriptFixture = readJson(retrievalSearchTranscriptFixturePath);
 const tokenFeedFixture = readJson(tokenFeedFixturePath);
 const appFixture = readAppFixture(appFixtureText);
 
@@ -144,6 +150,8 @@ for (const [filePath, text] of [
   [promptFixturePath, promptFixtureText],
   [sharedFixturePath, sharedFixtureText],
   [knowledgeFixturePath, knowledgeFixtureText],
+  [retrievalAdapterFixturePath, retrievalAdapterFixtureText],
+  [retrievalSearchTranscriptFixturePath, retrievalSearchTranscriptFixtureText],
   [tokenFeedFixturePath, tokenFeedFixtureText],
   [appFixturePath, appFixtureText]
 ]) {
@@ -186,6 +194,9 @@ for (const key of [
   "agentTasks",
   "toolRegistryEntries",
   "knowledgeSources",
+  "retrievalQueryAdapters",
+  "retrievalResultCards",
+  "noContentSearchTranscripts",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -345,6 +356,74 @@ const retrievalEvaluations = [
     ]
   },
   {
+    id: "eval-retrieval-local-readonly-query-adapter",
+    layer: "retrieval",
+    targetType: "retrieval",
+    targetId: retrievalAdapterFixture.id,
+    sourceFixture: retrievalAdapterFixturePath,
+    privacyClass: "metadata-only",
+    rubric: [
+      "local-only query adapter declared",
+      "approved knowledge source ids declared",
+      "blocked archive guard declared",
+      "provider, secret, memory, embedding, and privileged actions disabled"
+    ],
+    passCriteria: [
+      "adapter mode is local-only",
+      "providerCallPerformed is false",
+      "browserReceivesProviderKey is false",
+      "writesPersistentMemory is false",
+      "createsEmbeddingIndex is false",
+      "discarded assistant archive remains forbidden"
+    ],
+    observedOutputSummary: "Local read-only retrieval query adapter fixture gives the Command Center a metadata-only lookup contract for approved SEIS knowledge sources while blocking discarded assistant archive retrieval.",
+    limitations: [
+      "Static fixture validation only; no live retrieval index, provider call, embedding database, or memory write is created.",
+      "Pass does not approve raw archive content, external provider routing, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
+    ],
+    reviewer: "codex-local-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      retrievalAdapterFixturePath,
+      "scripts/check-retrieval-query-adapter.mjs",
+      "apps/seis-core/index.html"
+    ]
+  },
+  {
+    id: "eval-retrieval-local-search-transcript",
+    layer: "retrieval",
+    targetType: "retrieval",
+    targetId: retrievalSearchTranscriptFixture.id,
+    sourceFixture: retrievalSearchTranscriptFixturePath,
+    privacyClass: "metadata-only",
+    rubric: [
+      "local-only result cards declared",
+      "no-content search transcripts declared",
+      "raw content return remains disabled",
+      "provider, memory, embedding, and privileged actions remain disabled"
+    ],
+    passCriteria: [
+      "retrieval result cards expose metadata and evidence links only",
+      "no-content transcripts keep resultCount at 0",
+      "blocked archive transcript remains blocked",
+      "providerCallPerformed, rawContentReturned, writesPersistentMemory, and createsEmbeddingIndex are false"
+    ],
+    observedOutputSummary: "Local read-only retrieval search transcript fixture lets the Command Center render approved metadata result cards and blocked or empty search states without exposing raw content or routing to a provider.",
+    limitations: [
+      "Static fixture validation only; no live search, retrieval index, provider call, embedding database, or memory write is created.",
+      "Pass does not approve raw archive content, secret lookup, external provider routing, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
+    ],
+    reviewer: "codex-local-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      retrievalSearchTranscriptFixturePath,
+      "scripts/check-retrieval-search-transcript.mjs",
+      "apps/seis-core/index.html"
+    ]
+  },
+  {
     id: "eval-retrieval-seis-10m-token-feed-budget",
     layer: "retrieval",
     targetType: "retrieval",
@@ -393,6 +472,8 @@ const report = {
     promptFixturePath,
     sharedFixturePath,
     knowledgeFixturePath,
+    retrievalAdapterFixturePath,
+    retrievalSearchTranscriptFixturePath,
     tokenFeedFixturePath
   ],
   summary: {
@@ -407,7 +488,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add local read-only retrieval query adapter fixtures.",
+    summary: "Add local query filtering controls and evidence-card empty-state tests.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",

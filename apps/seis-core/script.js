@@ -164,6 +164,11 @@ const aiCoreContract = window.seisAiCoreContractFixture ?? {
   modelRoutes: [],
   promptVersions: [],
   agentTasks: [],
+  toolRegistryEntries: [],
+  knowledgeSources: [],
+  retrievalQueryAdapters: [],
+  retrievalResultCards: [],
+  noContentSearchTranscripts: [],
   approvalRequests: [],
   evaluationResults: [],
   auditEvents: [],
@@ -175,6 +180,15 @@ const aiCoreContract = window.seisAiCoreContractFixture ?? {
   repositoryIntelligence: [],
   goalTrackingStates: []
 };
+
+const aiCoreBoundaryFacts = [
+  ["Live model execution", "No live model execution is performed."],
+  ["Provider calls", "No external provider call or provider quality claim is performed."],
+  ["Secrets", "No provider key, SSH private key, token, cookie, environment-file value, or service credential is included."],
+  ["Memory and retrieval", "No embedding index, vector database, raw archive ingestion, or persistent memory write is created."],
+  ["Automation authority", "No GitHub push, merge, PR mutation, SSH command, deployment, payment, or infrastructure mutation is enabled."],
+  ["Model ownership", "No benchmark, safety certification, trained model, checkpoint, model card, BCI, or SEIS-owned model claim is created."]
+];
 
 const pluginFamilies = [
   {
@@ -256,6 +270,11 @@ const securityReports = [
     name: "Dependency Surface",
     status: "Ready",
     detail: "Phase 1 stays dependency-free; future frameworks require explicit architecture gates."
+  },
+  {
+    name: "Browser Local State",
+    status: "Review",
+    detail: "Goal and setting drafts are browser-local only. Do not enter secrets, tokens, private keys, environment-file content, provider credentials, or personal confidential data."
   }
 ];
 
@@ -641,6 +660,24 @@ function renderAgents() {
 }
 
 function renderContractCard(item, title, detail, chips = []) {
+  const actionBoundary = item.allowedActions || item.forbiddenActions ? `
+      <details class="action-boundary">
+        <summary>Action boundary</summary>
+        ${item.allowedActions ? `
+          <div>
+            <strong>Allowed</strong>
+            <ul>${item.allowedActions.map((action) => `<li>${action}</li>`).join("")}</ul>
+          </div>
+        ` : ""}
+        ${item.forbiddenActions ? `
+          <div>
+            <strong>Forbidden</strong>
+            <ul>${item.forbiddenActions.map((action) => `<li>${action}</li>`).join("")}</ul>
+          </div>
+        ` : ""}
+      </details>
+    ` : "";
+
   return `
     <article class="contract-card">
       <div class="card-topline">
@@ -648,6 +685,7 @@ function renderContractCard(item, title, detail, chips = []) {
         <span class="status-pill ${statusClass(item.status ?? item.approvalState ?? item.decisionState ?? item.result)}">${item.status ?? item.approvalState ?? item.decisionState ?? item.result}</span>
       </div>
       <p>${detail}</p>
+      ${actionBoundary}
       <div class="meta-row">
         ${chips.map((chip) => `<span class="meta-chip">${chip}</span>`).join("")}
         <span class="meta-chip">${item.evidence}</span>
@@ -661,6 +699,9 @@ function renderAiCore() {
   const routeCount = contract.modelRoutes.length;
   const toolCount = contract.toolRegistryEntries.length;
   const knowledgeSourceCount = contract.knowledgeSources.length;
+  const retrievalAdapterCount = contract.retrievalQueryAdapters.length;
+  const retrievalResultCount = contract.retrievalResultCards.length;
+  const noContentTranscriptCount = contract.noContentSearchTranscripts.length;
   const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
     contract.modelRoutes.filter((route) => route.approvalState === "approval-needed").length;
   const validatedEvidence = [
@@ -680,6 +721,9 @@ function renderAiCore() {
     ["Routes", routeCount, "model-router fixtures"],
     ["Tools", toolCount, "permission registry"],
     ["Sources", knowledgeSourceCount, "retrieval boundary"],
+    ["Retrieval", retrievalAdapterCount, "local query adapters"],
+    ["Result Cards", retrievalResultCount, "metadata only"],
+    ["No Content", noContentTranscriptCount, "blocked or empty"],
     ["Execution Modes", contract.llmExecutionModes.length, "privacy modes"],
     ["Approvals", approvalNeeded, "human gates"],
     ["Evidence", validatedEvidence, "validated metadata records"]
@@ -688,6 +732,13 @@ function renderAiCore() {
       <span>${label}</span>
       <strong>${value}</strong>
       <small>${detail}</small>
+    </article>
+  `).join("");
+
+  $("#ai-core-boundary-grid").innerHTML = aiCoreBoundaryFacts.map(([label, detail]) => `
+    <article class="boundary-card">
+      <strong>${label}</strong>
+      <p>${detail}</p>
     </article>
   `).join("");
 
@@ -719,11 +770,54 @@ function renderAiCore() {
     [request.riskClass, request.decisionState]
   )).join("");
 
+  $("#ai-core-retrieval-adapters").innerHTML = contract.retrievalQueryAdapters.map((adapter) => renderContractCard(
+    adapter,
+    adapter.adapterName,
+    adapter.resultShape,
+    [
+      adapter.mode,
+      adapter.privacyMode,
+      adapter.approvalState,
+      `${adapter.resultLimit} max`,
+      `provider:${adapter.providerCallPerformed}`,
+      `memory:${adapter.writesPersistentMemory}`
+    ]
+  )).join("");
+
+  $("#ai-core-retrieval-results").innerHTML = contract.retrievalResultCards.map((card) => renderContractCard(
+    card,
+    card.sourceName,
+    card.summary,
+    [
+      card.sourceClass,
+      card.retrievalState,
+      card.privacyMode,
+      `raw:${card.rawContentReturned}`,
+      `provider:${card.providerCallPerformed}`
+    ]
+  )).join("");
+
+  $("#ai-core-no-content-transcripts").innerHTML = contract.noContentSearchTranscripts.map((transcript) => renderContractCard(
+    transcript,
+    transcript.query,
+    transcript.emptyState,
+    [
+      transcript.decisionState,
+      `${transcript.resultCount} results`,
+      `${transcript.blockedSources.length} blocked`,
+      `raw:${transcript.rawContentReturned}`,
+      `provider:${transcript.providerCallPerformed}`
+    ]
+  )).join("");
+
   const evidenceItems = [
     ...contract.evaluationResults.map((item) => ({ ...item, group: "Evaluation", title: item.targetType, detail: item.result })),
     ...contract.auditEvents.map((item) => ({ ...item, group: "Audit", title: item.actor, detail: item.action })),
     ...contract.toolRegistryEntries.map((item) => ({ ...item, group: "Tool", title: item.riskClass, detail: `${item.toolName}: ${item.permissionState}` })),
     ...contract.knowledgeSources.map((item) => ({ ...item, group: "Source", title: item.sourceClass, detail: `${item.sourceName}: ${item.retrievalState}` })),
+    ...contract.retrievalQueryAdapters.map((item) => ({ ...item, group: "Retrieval", title: item.queryIntent, detail: `${item.adapterName}: ${item.mode}` })),
+    ...contract.retrievalResultCards.map((item) => ({ ...item, group: "Result", title: item.sourceClass, detail: `${item.sourceName}: ${item.retrievalState}` })),
+    ...contract.noContentSearchTranscripts.map((item) => ({ ...item, group: "No Content", title: item.decisionState, detail: item.emptyState })),
     ...contract.securityFindings.map((item) => ({ ...item, group: "Security", title: item.category, detail: item.riskClass })),
     ...contract.roadmapItems.map((item) => ({ ...item, group: "Roadmap", title: item.horizon, detail: item.track })),
     ...contract.goalTrackingStates.map((item) => ({ ...item, group: "Goal", title: item.progressState, detail: item.goal }))

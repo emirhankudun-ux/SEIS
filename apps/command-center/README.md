@@ -10,6 +10,9 @@ already exists.
 ## Current Rule
 
 - Use `apps/seis-core` for the current local-first shell.
+- Treat `apps/seis-core` as the current website implementation evidence for AI
+  Core route, prompt, agent, approval, evaluation, safety-boundary, and Local
+  Retrieval panels.
 - Use `docs/product/*` for product contracts.
 - Use `docs/product/seis-ai-app.md` for the LLM operating layer inside the app.
 - Use `docs/architecture/ai-core-app-shared-contracts.md` for shared AI/app

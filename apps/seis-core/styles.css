@@ -599,6 +599,7 @@ select {
 .repo-grid,
 .agent-grid,
 .ai-core-summary-grid,
+.boundary-grid,
 .plugin-grid,
 .automation-grid,
 .system-grid,
@@ -629,6 +630,21 @@ select {
   align-items: start;
 }
 
+.retrieval-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.retrieval-layout h4 {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 760;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .contract-grid,
 .evidence-grid {
   display: grid;
@@ -638,6 +654,56 @@ select {
 .contract-card {
   background: rgba(255, 255, 255, 0.58);
   box-shadow: none;
+}
+
+.boundary-panel {
+  border-color: rgba(185, 109, 0, 0.22);
+}
+
+.boundary-card {
+  display: grid;
+  gap: 6px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.boundary-card p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.action-boundary {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.42);
+  padding: 9px 10px;
+}
+
+.action-boundary summary {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 760;
+  text-transform: uppercase;
+}
+
+.action-boundary div {
+  margin-top: 8px;
+}
+
+.action-boundary strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.action-boundary ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .module-spacer {

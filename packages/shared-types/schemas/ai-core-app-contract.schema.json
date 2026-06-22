@@ -17,6 +17,9 @@
     "agentTasks",
     "toolRegistryEntries",
     "knowledgeSources",
+    "retrievalQueryAdapters",
+    "retrievalResultCards",
+    "noContentSearchTranscripts",
     "approvalRequests",
     "evaluationResults",
     "auditEvents",
@@ -103,6 +106,27 @@
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/knowledgeSource"
+      }
+    },
+    "retrievalQueryAdapters": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/retrievalQueryAdapter"
+      }
+    },
+    "retrievalResultCards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/retrievalResultCard"
+      }
+    },
+    "noContentSearchTranscripts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/noContentSearchTranscript"
       }
     },
     "approvalRequests": {
@@ -461,6 +485,176 @@
         "storesRawContent": { "type": "boolean" },
         "status": { "$ref": "#/$defs/state" },
         "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "retrievalQueryAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "adapterName",
+        "queryIntent",
+        "mode",
+        "privacyMode",
+        "readOnly",
+        "providerCallPerformed",
+        "externalProviderRouting",
+        "browserReceivesProviderKey",
+        "secretMaterialStored",
+        "storesRawContent",
+        "writesPersistentMemory",
+        "createsEmbeddingIndex",
+        "allowedKnowledgeSourceIds",
+        "forbiddenKnowledgeSourceIds",
+        "resultShape",
+        "resultLimit",
+        "approvalState",
+        "allowedActions",
+        "forbiddenActions",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "adapterName": { "type": "string" },
+        "queryIntent": {
+          "enum": [
+            "command-center-evidence-lookup",
+            "documentation-metadata-summary",
+            "validation-status-lookup",
+            "blocked-archive-guard"
+          ]
+        },
+        "mode": { "enum": ["local-only", "disabled"] },
+        "privacyMode": { "$ref": "#/$defs/llmExecutionMode" },
+        "readOnly": { "type": "boolean" },
+        "providerCallPerformed": { "type": "boolean" },
+        "externalProviderRouting": { "type": "boolean" },
+        "browserReceivesProviderKey": { "type": "boolean" },
+        "secretMaterialStored": { "type": "boolean" },
+        "storesRawContent": { "type": "boolean" },
+        "writesPersistentMemory": { "type": "boolean" },
+        "createsEmbeddingIndex": { "type": "boolean" },
+        "allowedKnowledgeSourceIds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" },
+          "uniqueItems": true
+        },
+        "forbiddenKnowledgeSourceIds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "resultShape": {
+          "type": "string"
+        },
+        "resultLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 25
+        },
+        "approvalState": {
+          "enum": ["not-required", "approval-needed", "approved", "denied", "blocked"]
+        },
+        "allowedActions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "forbiddenActions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "retrievalResultCard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "adapterId",
+        "sourceId",
+        "sourceName",
+        "sourceClass",
+        "retrievalState",
+        "privacyMode",
+        "freshness",
+        "summary",
+        "providerCallPerformed",
+        "externalProviderRouting",
+        "storesRawContent",
+        "rawContentReturned",
+        "writesPersistentMemory",
+        "createsEmbeddingIndex",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "adapterId": { "$ref": "#/$defs/id" },
+        "sourceId": { "$ref": "#/$defs/id" },
+        "sourceName": { "type": "string" },
+        "sourceClass": { "$ref": "#/$defs/sourceClass" },
+        "retrievalState": { "$ref": "#/$defs/retrievalState" },
+        "privacyMode": { "$ref": "#/$defs/llmExecutionMode" },
+        "freshness": { "$ref": "#/$defs/freshness" },
+        "summary": { "type": "string" },
+        "providerCallPerformed": { "type": "boolean" },
+        "externalProviderRouting": { "type": "boolean" },
+        "storesRawContent": { "type": "boolean" },
+        "rawContentReturned": { "type": "boolean" },
+        "writesPersistentMemory": { "type": "boolean" },
+        "createsEmbeddingIndex": { "type": "boolean" },
+        "status": { "$ref": "#/$defs/state" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "noContentSearchTranscript": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "query",
+        "adapterId",
+        "resultCount",
+        "emptyState",
+        "blockedSources",
+        "providerCallPerformed",
+        "externalProviderRouting",
+        "storesRawContent",
+        "rawContentReturned",
+        "writesPersistentMemory",
+        "createsEmbeddingIndex",
+        "decisionState",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "query": { "type": "string" },
+        "adapterId": { "$ref": "#/$defs/id" },
+        "resultCount": { "type": "integer", "minimum": 0, "maximum": 0 },
+        "emptyState": { "type": "string" },
+        "blockedSources": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/id" },
+          "uniqueItems": true
+        },
+        "providerCallPerformed": { "type": "boolean" },
+        "externalProviderRouting": { "type": "boolean" },
+        "storesRawContent": { "type": "boolean" },
+        "rawContentReturned": { "type": "boolean" },
+        "writesPersistentMemory": { "type": "boolean" },
+        "createsEmbeddingIndex": { "type": "boolean" },
+        "decisionState": { "enum": ["empty", "blocked"] },
+        "status": { "$ref": "#/$defs/state" },
         "evidence": { "$ref": "#/$defs/evidenceLink" }
       }
     },

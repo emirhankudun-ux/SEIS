@@ -51,7 +51,7 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add local read-only retrieval query adapter fixtures.
+1. Add retrieval result card rendering and no-content search transcript fixtures.
 
 ## Follow-Up Contract Slice
 
@@ -235,3 +235,43 @@ providers, copy unsafe implementation plans, execute active countermeasures,
 inject poisoned data, perform memetic manipulation, make autonomous payments,
 provision infrastructure, claim BCI/consciousness capabilities, or claim model
 training, checkpoints, benchmarks, or SEIS-owned model weights.
+
+## Local Read-Only Retrieval Query Adapter Slice
+
+Status: Added after the knowledge-source classification slice.
+
+Evidence:
+
+- `packages/data/schemas/retrieval-query-adapter.schema.json`
+- `packages/data/fixtures/local-readonly-retrieval-query-adapter.json`
+- `scripts/check-retrieval-query-adapter.mjs`
+- `apps/seis-core/index.html`
+- `npm run check:retrieval-query-adapter`
+
+This slice completes the local read-only retrieval query adapter fixture and
+connects it to the Command Center website surface. It remains fixture-backed and
+metadata-only: it does not call providers, expose provider keys, ingest raw
+assistant archive content, create embeddings, write persistent memory, mutate
+GitHub, execute SSH, deploy, pay, provision infrastructure, or claim model
+training, checkpoints, benchmarks, BCI, consciousness, or SEIS-owned model
+weights.
+
+## Local Retrieval Result Cards And No-Content Search Transcript Slice
+
+Status: Added after the local read-only retrieval query adapter slice.
+
+Evidence:
+
+- `packages/data/schemas/retrieval-search-transcript.schema.json`
+- `packages/data/fixtures/local-readonly-retrieval-search-transcript.json`
+- `scripts/check-retrieval-search-transcript.mjs`
+- `apps/seis-core/index.html`
+- `npm run check:retrieval-search-transcript`
+
+This slice completes the first local retrieval result cards and no-content
+search transcript fixtures for the Command Center website surface. It remains
+fixture-backed and metadata-only: it does not create a live search engine,
+retrieval index, embedding database, persistent memory, provider context,
+secret lookup, raw archive content return, GitHub write path, SSH execution
+path, deployment path, payment flow, infrastructure mutation, benchmark claim,
+or model-training evidence.

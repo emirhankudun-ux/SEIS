@@ -52,7 +52,8 @@ apps/seis-core/
 - Agents: mode cards, AI system support, and inspector sync.
 - AI Core: fixture-backed model routes, prompt versions, supervised agent tasks,
   approval gates, evaluation results, audit events, safety findings, roadmap
-  items, and goal evidence from the shared contract fixture.
+  items, Local Retrieval adapters, Retrieval Result Cards, No-Content Search
+  Transcripts, and goal evidence from the shared contract fixture.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
@@ -66,6 +67,12 @@ apps/seis-core/
 - Filter repositories by health.
 - Switch active AI agent mode.
 - Inspect AI Core shared-contract routes, prompts, approvals, evaluations, and evidence without live provider access.
+- Inspect local-only retrieval adapters, blocked archive guards, and no-content
+  source boundaries without raw-content ingestion.
+- Inspect Retrieval Result Cards and No-Content Search Transcripts from
+  `local-readonly-retrieval-search-transcript.json` without live search,
+  provider calls, embeddings, persistent memory writes, secret lookup, or raw
+  content return.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.

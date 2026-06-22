@@ -10,13 +10,15 @@
     "packages/prompt-engine/fixtures/assistant-surface-regression-suite.json",
     "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
     "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+    "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
     "packages/data/fixtures/seis-10m-token-feed-budget.json"
   ],
   "summary": {
     "promptEvaluationCount": 7,
     "appStateEvaluationCount": 2,
-    "retrievalEvaluationCount": 2,
-    "passed": 11,
+    "retrievalEvaluationCount": 4,
+    "passed": 13,
     "failed": 0,
     "blocked": 0,
     "unknown": 0
@@ -360,6 +362,74 @@
       ]
     },
     {
+      "id": "eval-retrieval-local-readonly-query-adapter",
+      "layer": "retrieval",
+      "targetType": "retrieval",
+      "targetId": "local-readonly-retrieval-query-adapter",
+      "sourceFixture": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+      "privacyClass": "metadata-only",
+      "rubric": [
+        "local-only query adapter declared",
+        "approved knowledge source ids declared",
+        "blocked archive guard declared",
+        "provider, secret, memory, embedding, and privileged actions disabled"
+      ],
+      "passCriteria": [
+        "adapter mode is local-only",
+        "providerCallPerformed is false",
+        "browserReceivesProviderKey is false",
+        "writesPersistentMemory is false",
+        "createsEmbeddingIndex is false",
+        "discarded assistant archive remains forbidden"
+      ],
+      "observedOutputSummary": "Local read-only retrieval query adapter fixture gives the Command Center a metadata-only lookup contract for approved SEIS knowledge sources while blocking discarded assistant archive retrieval.",
+      "limitations": [
+        "Static fixture validation only; no live retrieval index, provider call, embedding database, or memory write is created.",
+        "Pass does not approve raw archive content, external provider routing, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
+      ],
+      "reviewer": "codex-local-fixture-check",
+      "result": "pass",
+      "status": "validated",
+      "evidenceLinks": [
+        "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+        "scripts/check-retrieval-query-adapter.mjs",
+        "apps/seis-core/index.html"
+      ]
+    },
+    {
+      "id": "eval-retrieval-local-search-transcript",
+      "layer": "retrieval",
+      "targetType": "retrieval",
+      "targetId": "local-readonly-retrieval-search-transcript",
+      "sourceFixture": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
+      "privacyClass": "metadata-only",
+      "rubric": [
+        "local-only result cards declared",
+        "no-content search transcripts declared",
+        "raw content return remains disabled",
+        "provider, memory, embedding, and privileged actions remain disabled"
+      ],
+      "passCriteria": [
+        "retrieval result cards expose metadata and evidence links only",
+        "no-content transcripts keep resultCount at 0",
+        "blocked archive transcript remains blocked",
+        "providerCallPerformed, rawContentReturned, writesPersistentMemory, and createsEmbeddingIndex are false"
+      ],
+      "observedOutputSummary": "Local read-only retrieval search transcript fixture lets the Command Center render approved metadata result cards and blocked or empty search states without exposing raw content or routing to a provider.",
+      "limitations": [
+        "Static fixture validation only; no live search, retrieval index, provider call, embedding database, or memory write is created.",
+        "Pass does not approve raw archive content, secret lookup, external provider routing, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
+      ],
+      "reviewer": "codex-local-fixture-check",
+      "result": "pass",
+      "status": "validated",
+      "evidenceLinks": [
+        "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
+        "scripts/check-retrieval-search-transcript.mjs",
+        "apps/seis-core/index.html"
+      ]
+    },
+    {
       "id": "eval-retrieval-seis-10m-token-feed-budget",
       "layer": "retrieval",
       "targetType": "retrieval",
@@ -401,7 +471,7 @@
     "No secret values, provider keys, private keys, or raw private configuration are included."
   ],
   "nextRecommendedSlice": {
-    "summary": "Add local read-only retrieval query adapter fixtures.",
+    "summary": "Add local query filtering controls and evidence-card empty-state tests.",
     "sourceLinks": [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",

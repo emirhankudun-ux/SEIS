@@ -52,6 +52,9 @@ const requiredTopLevel = [
   "agentTasks",
   "toolRegistryEntries",
   "knowledgeSources",
+  "retrievalQueryAdapters",
+  "retrievalResultCards",
+  "noContentSearchTranscripts",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",
@@ -132,6 +135,9 @@ const objectToArray = {
   agentTask: "agentTasks",
   toolRegistryEntry: "toolRegistryEntries",
   knowledgeSource: "knowledgeSources",
+  retrievalQueryAdapter: "retrievalQueryAdapters",
+  retrievalResultCard: "retrievalResultCards",
+  noContentSearchTranscript: "noContentSearchTranscripts",
   approvalRequest: "approvalRequests",
   evaluationResult: "evaluationResults",
   auditEvent: "auditEvents",
@@ -150,7 +156,8 @@ const secretPatterns = [
   /(^|[^A-Za-z0-9_])gho_[A-Za-z0-9_]{20,}/,
   /BEGIN (RSA|OPENSSH|EC|DSA) PRIVATE KEY/,
   /id_ed25519/,
-  /id_rsa/
+  /id_rsa/,
+  /\/Users\//
 ];
 
 function readAppFixture(text) {
@@ -331,6 +338,144 @@ for (const source of fixture.knowledgeSources || []) {
   }
 }
 
+const knowledgeSourcesById = new Map((fixture.knowledgeSources || []).map((source) => [source.id, source]));
+const retrievalAdaptersById = new Map((fixture.retrievalQueryAdapters || []).map((adapter) => [adapter.id, adapter]));
+for (const adapter of fixture.retrievalQueryAdapters || []) {
+  if (adapter.readOnly !== true) {
+    fail(`retrievalQueryAdapter ${adapter.id} must be read-only`);
+  }
+
+  for (const flag of [
+    "providerCallPerformed",
+    "externalProviderRouting",
+    "browserReceivesProviderKey",
+    "secretMaterialStored",
+    "storesRawContent",
+    "writesPersistentMemory",
+    "createsEmbeddingIndex"
+  ]) {
+    if (adapter[flag] !== false) {
+      fail(`retrievalQueryAdapter ${adapter.id} must keep ${flag} false`);
+    }
+  }
+
+  if (adapter.status === "validated" && adapter.mode !== "local-only") {
+    fail(`retrievalQueryAdapter ${adapter.id} validated adapter must be local-only`);
+  }
+
+  if (adapter.status === "blocked" && adapter.approvalState !== "blocked") {
+    fail(`retrievalQueryAdapter ${adapter.id} blocked adapter must have blocked approvalState`);
+  }
+
+  if (!adapter.forbiddenKnowledgeSourceIds?.includes("knowledge-discarded-assistant-archive")) {
+    fail(`retrievalQueryAdapter ${adapter.id} must forbid discarded assistant archive`);
+  }
+
+  for (const sourceId of adapter.allowedKnowledgeSourceIds || []) {
+    const source = knowledgeSourcesById.get(sourceId);
+    if (!source) {
+      fail(`retrievalQueryAdapter ${adapter.id} references unknown source ${sourceId}`);
+      continue;
+    }
+
+    if (["archive", "live", "unknown"].includes(source.sourceClass)) {
+      fail(`retrievalQueryAdapter ${adapter.id} allowed source must not be ${source.sourceClass}: ${sourceId}`);
+    }
+
+    if (!["approved", "local-only"].includes(source.retrievalState)) {
+      fail(`retrievalQueryAdapter ${adapter.id} allowed source must be approved or local-only: ${sourceId}`);
+    }
+
+    if (source.externalRoutingAllowed !== false || source.storesRawContent !== false) {
+      fail(`retrievalQueryAdapter ${adapter.id} allowed source must not route externally or store raw content: ${sourceId}`);
+    }
+  }
+}
+
+for (const card of fixture.retrievalResultCards || []) {
+  const adapter = retrievalAdaptersById.get(card.adapterId);
+  if (!adapter) {
+    fail(`retrievalResultCard ${card.id} references unknown adapter ${card.adapterId}`);
+  }
+
+  const source = knowledgeSourcesById.get(card.sourceId);
+  if (!source) {
+    fail(`retrievalResultCard ${card.id} references unknown source ${card.sourceId}`);
+  } else {
+    if (card.sourceClass !== source.sourceClass) {
+      fail(`retrievalResultCard ${card.id} sourceClass must match ${card.sourceId}`);
+    }
+    if (card.retrievalState !== source.retrievalState) {
+      fail(`retrievalResultCard ${card.id} retrievalState must match ${card.sourceId}`);
+    }
+    if (["archive", "live", "unknown"].includes(source.sourceClass)) {
+      fail(`retrievalResultCard ${card.id} must not expose forbidden source class ${source.sourceClass}`);
+    }
+    if (!["approved", "local-only"].includes(source.retrievalState)) {
+      fail(`retrievalResultCard ${card.id} source must be approved or local-only`);
+    }
+    if (source.externalRoutingAllowed !== false || source.storesRawContent !== false) {
+      fail(`retrievalResultCard ${card.id} source must not route externally or store raw content`);
+    }
+  }
+
+  for (const flag of [
+    "providerCallPerformed",
+    "externalProviderRouting",
+    "storesRawContent",
+    "rawContentReturned",
+    "writesPersistentMemory",
+    "createsEmbeddingIndex"
+  ]) {
+    if (card[flag] !== false) {
+      fail(`retrievalResultCard ${card.id} must keep ${flag} false`);
+    }
+  }
+}
+
+for (const transcript of fixture.noContentSearchTranscripts || []) {
+  const adapter = retrievalAdaptersById.get(transcript.adapterId);
+  if (!adapter) {
+    fail(`noContentSearchTranscript ${transcript.id} references unknown adapter ${transcript.adapterId}`);
+  }
+
+  if (transcript.resultCount !== 0) {
+    fail(`noContentSearchTranscript ${transcript.id} must keep resultCount at 0`);
+  }
+
+  if (!["empty", "blocked"].includes(transcript.decisionState)) {
+    fail(`noContentSearchTranscript ${transcript.id} decisionState must be empty or blocked`);
+  }
+
+  if (transcript.decisionState === "blocked" && !transcript.blockedSources?.includes("knowledge-discarded-assistant-archive")) {
+    fail(`noContentSearchTranscript ${transcript.id} blocked transcript must include knowledge-discarded-assistant-archive`);
+  }
+
+  for (const sourceId of transcript.blockedSources || []) {
+    const source = knowledgeSourcesById.get(sourceId);
+    if (!source) {
+      fail(`noContentSearchTranscript ${transcript.id} references unknown blocked source ${sourceId}`);
+      continue;
+    }
+    if (source.externalRoutingAllowed !== false || source.storesRawContent !== false) {
+      fail(`noContentSearchTranscript ${transcript.id} blocked source must not route externally or store raw content`);
+    }
+  }
+
+  for (const flag of [
+    "providerCallPerformed",
+    "externalProviderRouting",
+    "storesRawContent",
+    "rawContentReturned",
+    "writesPersistentMemory",
+    "createsEmbeddingIndex"
+  ]) {
+    if (transcript[flag] !== false) {
+      fail(`noContentSearchTranscript ${transcript.id} must keep ${flag} false`);
+    }
+  }
+}
+
 for (const evaluation of fixture.evaluationResults || []) {
   assertAllowed(
     `evaluationResult.${evaluation.id}.targetType`,
@@ -382,6 +527,9 @@ for (const key of [
   "agentTasks",
   "toolRegistryEntries",
   "knowledgeSources",
+  "retrievalQueryAdapters",
+  "retrievalResultCards",
+  "noContentSearchTranscripts",
   "approvalRequests",
   "evaluationResults",
   "auditEvents",

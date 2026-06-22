@@ -63,6 +63,37 @@ countermeasures, poisoned data injection, memetic manipulation, autonomous
 payment or infrastructure provisioning, fake BCI claims, and fake model
 ownership claims are exclusion records, not implementation plans.
 
+## Local Read-Only Retrieval Query Adapter
+
+The first query adapter fixture is
+`packages/data/fixtures/local-readonly-retrieval-query-adapter.json`, with its
+schema in `packages/data/schemas/retrieval-query-adapter.schema.json`. It is
+validated by `npm run check:retrieval-query-adapter`.
+
+This adapter is a local Command Center contract for metadata lookup only. It can
+select approved/local knowledge-source ids, return source metadata, and show
+repository-relative evidence links. It cannot return raw archive content, create
+embeddings, write persistent memory, call providers, expose provider keys,
+execute GitHub writes, run SSH/deployment/payment/infrastructure actions, or
+claim model training. The discarded assistant archive remains blocked through a
+disabled guard adapter.
+
+## Local Retrieval Result Cards And No-Content Search Transcripts
+
+The first local retrieval-result surface is
+`packages/data/fixtures/local-readonly-retrieval-search-transcript.json`, with
+its schema in `packages/data/schemas/retrieval-search-transcript.schema.json`.
+It is validated by `npm run check:retrieval-search-transcript`.
+
+This fixture gives Command Center a safe way to display approved metadata
+results and blocked/empty search transcripts. Result cards expose source class,
+retrieval state, freshness, privacy mode, summary, and evidence links only.
+No-content transcripts keep `resultCount` at `0` and explain why a query is
+empty or blocked. The fixture does not return raw content, search secrets,
+create embeddings, write persistent memory, call providers, route data
+externally, mutate GitHub, execute SSH, deploy, pay, provision infrastructure,
+or claim model training.
+
 ## SEIS 10,000,000 Token Feed Budget
 
 The first token-feed capacity contract is

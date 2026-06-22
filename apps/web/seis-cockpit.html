@@ -25,6 +25,7 @@
       <nav class="site-nav" aria-label="Primary">
         <a href="#modes">Modes</a>
         <a href="#development">Develop</a>
+        <a href="#command-center">Command Center</a>
         <a href="#plugins">Plugins</a>
         <a href="#ai-release">AI</a>
         <a href="#languages">Languages</a>
@@ -132,6 +133,39 @@
             <div class="publish-gate-levels" data-publish-gate-levels></div>
           </div>
         </div>
+      </section>
+
+      <section id="command-center" class="section-reveal system-section">
+        <p class="eyebrow">Command Center</p>
+        <h2>AI Core and local retrieval now live in the SEIS Command Center shell.</h2>
+        <p class="section-copy">
+          The current implementation evidence is the local-first `apps/seis-core` website. It shows
+          fixture-backed AI Core routes, prompts, supervised agent tasks, approval gates, safety
+          boundaries, and local-only retrieval adapters without live provider calls or secret access.
+        </p>
+        <div class="system-grid">
+          <article class="system-card status-ready">
+            <span>Surface</span>
+            <strong>Local</strong>
+            <h3>Command Center shell</h3>
+            <p>Use the SEIS Core app for the current Command Center implementation evidence.</p>
+          </article>
+          <article class="system-card status-ready">
+            <span>Retrieval</span>
+            <strong>Safe</strong>
+            <h3>Metadata-only lookup</h3>
+            <p>Local Retrieval returns source metadata and evidence links while blocked archive material stays disabled.</p>
+          </article>
+          <article class="system-card status-blocked">
+            <span>Provider</span>
+            <strong>Off</strong>
+            <h3>No live provider calls</h3>
+            <p>Provider routing, secrets, embeddings, memory writes, SSH, deployment, and GitHub writes remain disabled.</p>
+          </article>
+        </div>
+        <p class="status-line">
+          Open locally: <a href="../seis-core/index.html">apps/seis-core/index.html</a>
+        </p>
       </section>
 
       <div id="marketplace" class="anchor-alias" aria-hidden="true"></div>

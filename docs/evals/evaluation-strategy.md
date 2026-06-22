@@ -67,6 +67,27 @@ class, freshness, privacy mode, blocked archive handling, and non-claims. It doe
 not create embeddings, persistent memory, provider context, benchmark claims, or
 model-training evidence.
 
+The first local read-only retrieval query adapter evaluation is fixture-backed
+through `packages/data/fixtures/local-readonly-retrieval-query-adapter.json` and
+`npm run check:retrieval-query-adapter`. It verifies that Command Center
+retrieval returns metadata/evidence links only, selects approved/local
+knowledge-source ids, and keeps discarded assistant archive material blocked. It
+does not create a retrieval index, embedding database, persistent memory,
+provider context, GitHub write path, SSH execution path, deployment path,
+payment flow, infrastructure mutation, benchmark claim, or model-training
+evidence.
+
+The first local retrieval result card and no-content transcript evaluation is
+fixture-backed through
+`packages/data/fixtures/local-readonly-retrieval-search-transcript.json` and
+`npm run check:retrieval-search-transcript`. It verifies that Command Center
+can render metadata-only retrieval cards and blocked/empty transcripts while
+keeping `resultCount` at `0` for no-content searches. It does not create a live
+search engine, retrieval index, embedding database, persistent memory,
+provider context, secret lookup, GitHub write path, SSH execution path,
+deployment path, payment flow, infrastructure mutation, benchmark claim, or
+model-training evidence.
+
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and
 `npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only

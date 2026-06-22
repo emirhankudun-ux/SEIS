@@ -78,7 +78,7 @@ docs, UI, reports, releases, or PR descriptions.
 | --- | --- | --- |
 | AI Core | Router, prompts, agents, tools, memory, evals, provider modes | Contract docs and package README files |
 | Command Center / App | Human interface for AI Core, approvals, evidence, roadmap, security | Product and architecture docs |
-| Shared Contracts | Stable objects between AI Core and app | `modelRoute`, `promptVersion`, `agentTask`, `toolRegistryEntry`, `knowledgeSource`, `approvalRequest`, `evaluationResult`, `auditEvent` |
+| Shared Contracts | Stable objects between AI Core and app | `modelRoute`, `promptVersion`, `agentTask`, `toolRegistryEntry`, `knowledgeSource`, `retrievalQueryAdapter`, `retrievalResultCard`, `noContentSearchTranscript`, `approvalRequest`, `evaluationResult`, `auditEvent` |
 | Evaluation | Prompt, route, agent, app-state, retrieval, and model research checks | `docs/evals/evaluation-strategy.md` |
 | Security and Privacy | Provider data handling, secret isolation, approval gates, SSH safety | `docs/security/model-provider-data-policy.md`, `SECURITY.md` |
 | Knowledge System | Retrieval and memory boundaries, source class, freshness, privacy mode | `docs/ai/context-memory-boundary.md` |
@@ -298,7 +298,7 @@ Human approval is required before:
 
 ## Immediate Next PR Slices
 
-1. Add local read-only retrieval query adapter fixtures.
+1. Add retrieval result card rendering and no-content search transcript fixtures.
 
 Completed foundation slice:
 
@@ -331,6 +331,19 @@ Completed foundation slice:
 - Retrieval and knowledge source classification fixtures now live under
   `packages/data/` and are checked by
   `npm run check:knowledge-source-classification`.
+- Local read-only retrieval query adapter fixtures now live under
+  `packages/data/`, are rendered in the `apps/seis-core` Command Center Local
+  Retrieval panel, and are checked by `npm run check:retrieval-query-adapter`.
+- Local retrieval result card and no-content search transcript fixtures now
+  live under `packages/data/`, are rendered in the `apps/seis-core` Command
+  Center Local Retrieval panel, and are checked by
+  `npm run check:retrieval-search-transcript`.
+
+## Next Safe Slice
+
+Add local query filtering controls and evidence-card empty-state tests while
+keeping the surface fixture-backed, no-provider, no-embedding, no-memory-write,
+and no raw-content by default.
 
 ## Relationship to Existing Roadmaps
 

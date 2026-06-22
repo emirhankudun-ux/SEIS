@@ -4,8 +4,8 @@
 - Status: fixture-backed
 - Prompt evaluations: 7
 - App-state evaluations: 2
-- Retrieval evaluations: 2
-- Passed: 11
+- Retrieval evaluations: 4
+- Passed: 13
 - Failed: 0
 - Blocked: 0
 - Unknown: 0
@@ -24,6 +24,8 @@
 | eval-app-state-shared-contract-fixture | app-state | app-state:ai-core-command-center-foundation | pass | packages/shared-types/fixtures/ai-core-command-center-foundation.json, apps/seis-core/ai-core-contract-fixture.js, scripts/check-ai-core-app-contracts.mjs |
 | eval-app-state-repository-assistant-local-alpha | app-state | app-state:local-readonly-repository-assistant | pass | packages/repository-assistant/fixtures/local-readonly-repository-assistant.json, scripts/check-repository-assistant-prototype.mjs, docs/product/repository-assistant.md |
 | eval-retrieval-knowledge-source-classification | retrieval | retrieval:knowledge-source-classification | pass | packages/data/fixtures/knowledge-source-classification.json, scripts/check-knowledge-source-classification.mjs, docs/ai/context-memory-boundary.md |
+| eval-retrieval-local-readonly-query-adapter | retrieval | retrieval:local-readonly-retrieval-query-adapter | pass | packages/data/fixtures/local-readonly-retrieval-query-adapter.json, scripts/check-retrieval-query-adapter.mjs, apps/seis-core/index.html |
+| eval-retrieval-local-search-transcript | retrieval | retrieval:local-readonly-retrieval-search-transcript | pass | packages/data/fixtures/local-readonly-retrieval-search-transcript.json, scripts/check-retrieval-search-transcript.mjs, apps/seis-core/index.html |
 | eval-retrieval-seis-10m-token-feed-budget | retrieval | retrieval:seis-10m-token-feed-budget | pass | packages/data/fixtures/seis-10m-token-feed-budget.json, scripts/check-token-feed-budget.mjs, docs/ai/context-memory-boundary.md |
 
 ## Non-Claims
@@ -36,7 +38,7 @@
 
 ## Next Recommended Slice
 
-Add local read-only retrieval query adapter fixtures.
+Add local query filtering controls and evidence-card empty-state tests.
 
 Source links:
 
