@@ -22,6 +22,19 @@ material separate from active official Goal Tracking OS records.
 | `SEIS-ARCHIVE-002` | review-candidate | repository_hygiene | Tracked deletion review candidates. |
 | `SEIS-ARCHIVE-003` | deferred-readiness | unsupported_claim | Deferred public and release readiness claims. |
 
+## Reference-Only Material To Classify
+
+These paths should remain reference-only until a dedicated archive-ledger PR
+adds structured source records and validation coverage:
+
+- `archive/external-agent-systems/`
+- `.agents/`
+- `.claude/`
+- `.codex/`
+
+They may contain useful assistant patterns, but they do not override
+`AGENTS.md`, `SECURITY.md`, architecture docs, or current SEIS AI Core policy.
+
 ## Rules
 
 - Archive material is historical reference by default.
