@@ -190,6 +190,29 @@ TypeScript typings for the audit reports: `packages/seis-ai/types/seis-ai.d.ts`.
 
 ---
 
+## SEIS AI integration & training ledger
+
+`scripts/seis-ai-integration-training.mjs` unifies the four SEIS AI surfaces into a
+single, self-verifying capability map so the agent operates from one coherent view
+of its own tooling. It records the ledger at `data/seis-ai-integration-training.json`.
+
+| Lane | What is integrated |
+|------|--------------------|
+| Unified tools | MCP tools (`server.tool`), `packages/seis-ai/bin/*` binaries, polyglot lanes |
+| Knowledge | `.claude/skills/seis-ai/SKILL.md` + `CLAUDE.md` reference docs |
+| Audit | One-command entry points: `npm run seis:check`, `./scripts/polyglot-check.sh` |
+| Agent | Composed `plugins/seis-ai-agent/` lanes + skills |
+
+```bash
+npm run seis:integrate                       # regenerate the ledger (alias: automation:seis-ai-integration-training)
+npm run check:seis-ai-integration-training   # fail if any lane drifts or the ledger is stale
+```
+
+The `--check` mode fails when a referenced file is missing, a lane count regresses,
+or the committed ledger no longer matches reality — keeping all surfaces in lock-step.
+
+---
+
 ## Development conventions
 
 - All source is ESM (`.mjs`). No transpilation.

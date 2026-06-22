@@ -137,6 +137,19 @@ All four checks must pass before committing. The most common failures:
 
 ---
 
+## Integration & training ledger
+
+All four SEIS AI surfaces (MCP tools + bin CLIs, polyglot lanes, audit entry points,
+and the composed agent lanes/skills) are unified into one self-verifying capability
+map. Regenerate or verify it with:
+
+```bash
+npm run seis:integrate                       # write data/seis-ai-integration-training.json
+npm run check:seis-ai-integration-training   # fail on drift or a stale ledger
+```
+
+---
+
 ## i18n system quick reference
 
 - 5 locales: `tr` (default), `en`, `fr`, `it`, `de`

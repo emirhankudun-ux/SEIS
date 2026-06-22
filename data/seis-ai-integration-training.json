@@ -1,0 +1,52 @@
+{
+  "name": "seis-ai-integration-training",
+  "description": "Unified integration ledger that trains SEIS AI on its own capability surface.",
+  "generatedBy": "scripts/seis-ai-integration-training.mjs",
+  "lanes": {
+    "unifiedTools": {
+      "mcpToolCount": 17,
+      "binaries": [
+        "seis-agent.mjs",
+        "seis-check.mjs",
+        "seis-mcp.mjs"
+      ],
+      "polyglotLanguageCount": 115
+    },
+    "knowledge": {
+      "skillGuide": ".claude/skills/seis-ai/SKILL.md",
+      "rootGuide": "CLAUDE.md"
+    },
+    "audit": {
+      "entryPoints": [
+        "npm run seis:check",
+        "./scripts/polyglot-check.sh"
+      ]
+    },
+    "agent": {
+      "lanes": [
+        "seis-automation",
+        "seis-cloud",
+        "seis-code",
+        "seis-data",
+        "seis-design",
+        "seis-governance",
+        "seis-product",
+        "seis-research",
+        "seis-security"
+      ],
+      "skills": [
+        "seis-ai-agent",
+        "seis-automation",
+        "seis-cloud",
+        "seis-code",
+        "seis-data",
+        "seis-design",
+        "seis-governance",
+        "seis-hub",
+        "seis-product",
+        "seis-research",
+        "seis-security"
+      ]
+    }
+  }
+}
