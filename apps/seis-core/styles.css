@@ -636,6 +636,42 @@ select {
   gap: 16px;
 }
 
+.retrieval-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(150px, 190px) minmax(150px, 190px) auto;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.retrieval-filter-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.retrieval-filter-field span,
+.retrieval-filter-status {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.retrieval-filter-field input,
+.retrieval-filter-field select {
+  width: 100%;
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--ink);
+}
+
+.retrieval-filter-status {
+  grid-column: 1 / -1;
+}
+
 .retrieval-layout h4 {
   margin: 0 0 9px;
   color: var(--muted);
@@ -654,6 +690,21 @@ select {
 .contract-card {
   background: rgba(255, 255, 255, 0.58);
   box-shadow: none;
+}
+
+.retrieval-empty-state {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.retrieval-empty-state p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .boundary-panel {
@@ -947,6 +998,7 @@ select {
   .dashboard-layout,
   .doc-layout,
   .ai-core-layout,
+  .retrieval-controls,
   .architecture-strip,
   .architecture-map,
   .architecture-layout,

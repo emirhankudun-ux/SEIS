@@ -53,6 +53,8 @@ const requiredTopLevel = [
   "toolRegistryEntries",
   "knowledgeSources",
   "retrievalQueryAdapters",
+  "retrievalFilterControls",
+  "retrievalEmptyStateTestCases",
   "retrievalResultCards",
   "noContentSearchTranscripts",
   "approvalRequests",
@@ -136,6 +138,8 @@ const objectToArray = {
   toolRegistryEntry: "toolRegistryEntries",
   knowledgeSource: "knowledgeSources",
   retrievalQueryAdapter: "retrievalQueryAdapters",
+  retrievalFilterControl: "retrievalFilterControls",
+  retrievalEmptyStateTestCase: "retrievalEmptyStateTestCases",
   retrievalResultCard: "retrievalResultCards",
   noContentSearchTranscript: "noContentSearchTranscripts",
   approvalRequest: "approvalRequests",
@@ -392,6 +396,44 @@ for (const adapter of fixture.retrievalQueryAdapters || []) {
   }
 }
 
+for (const control of fixture.retrievalFilterControls || []) {
+  if (!["text", "select", "button"].includes(control.controlType)) {
+    fail(`retrievalFilterControl ${control.id} has unsupported controlType ${control.controlType}`);
+  }
+  if (!["query", "sourceClass", "transcriptState", "reset"].includes(control.target)) {
+    fail(`retrievalFilterControl ${control.id} has unsupported target ${control.target}`);
+  }
+  for (const flag of ["providerCallPerformed", "externalProviderRouting", "writesPersistentMemory"]) {
+    if (control[flag] !== false) {
+      fail(`retrievalFilterControl ${control.id} must keep ${flag} false`);
+    }
+  }
+}
+
+const retrievalFilterTargets = new Set((fixture.retrievalFilterControls || []).map((control) => control.target));
+for (const target of ["query", "sourceClass", "transcriptState", "reset"]) {
+  if (!retrievalFilterTargets.has(target)) {
+    fail(`retrievalFilterControls missing ${target}`);
+  }
+}
+
+for (const testCase of fixture.retrievalEmptyStateTestCases || []) {
+  if (testCase.expectedResultCardCount !== 0 || testCase.expectedTranscriptCount !== 0) {
+    fail(`retrievalEmptyStateTestCase ${testCase.id} must expect zero result cards and zero transcripts`);
+  }
+  if (testCase.expectedResultMessage !== "No local metadata card matches the current filters.") {
+    fail(`retrievalEmptyStateTestCase ${testCase.id} must use the standard result-card empty-state message`);
+  }
+  if (testCase.expectedTranscriptMessage !== "No local no-content transcript matches the current filters.") {
+    fail(`retrievalEmptyStateTestCase ${testCase.id} must use the standard transcript empty-state message`);
+  }
+  for (const flag of ["providerCallPerformed", "externalProviderRouting", "writesPersistentMemory"]) {
+    if (testCase[flag] !== false) {
+      fail(`retrievalEmptyStateTestCase ${testCase.id} must keep ${flag} false`);
+    }
+  }
+}
+
 for (const card of fixture.retrievalResultCards || []) {
   const adapter = retrievalAdaptersById.get(card.adapterId);
   if (!adapter) {
@@ -528,6 +570,8 @@ for (const key of [
   "toolRegistryEntries",
   "knowledgeSources",
   "retrievalQueryAdapters",
+  "retrievalFilterControls",
+  "retrievalEmptyStateTestCases",
   "retrievalResultCards",
   "noContentSearchTranscripts",
   "approvalRequests",

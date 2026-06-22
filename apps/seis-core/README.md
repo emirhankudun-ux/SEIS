@@ -73,6 +73,12 @@ apps/seis-core/
   `local-readonly-retrieval-search-transcript.json` without live search,
   provider calls, embeddings, persistent memory writes, secret lookup, or raw
   content return.
+- Filter local retrieval metadata by query text, source class, and transcript
+  state. These controls work only on already-loaded fixture records and do not
+  perform network requests.
+- Validate those local retrieval filters with a JSDOM interaction test that
+  exercises query, source-class, transcript-state, reset, and rendered
+  empty-state output.
 - Inspect plugin, automation, security, and AI system surfaces.
 - Inspect the unified SEIS operating model across repositories, AI agents, MCP systems, plugins, automation, cloud, security, and knowledge.
 - Use command palette with `Command/Ctrl + K`.

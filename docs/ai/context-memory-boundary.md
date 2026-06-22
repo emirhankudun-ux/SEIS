@@ -94,6 +94,12 @@ create embeddings, write persistent memory, call providers, route data
 externally, mutate GitHub, execute SSH, deploy, pay, provision infrastructure,
 or claim model training.
 
+The Command Center filter toolbar uses this fixture as already-loaded local
+metadata. Filtering by text, source class, or transcript state must not trigger
+network access, provider fallback, secret lookup, embedding creation, or memory
+write. Result-card and no-content transcript panels keep separate no-result
+messages. Empty states are test cases, not evidence that a live search was run.
+
 ## SEIS 10,000,000 Token Feed Budget
 
 The first token-feed capacity contract is

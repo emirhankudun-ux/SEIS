@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import assert from "node:assert/strict";
+import { JSDOM } from "jsdom";
 
 const root = new URL("../", import.meta.url);
 
@@ -55,8 +56,11 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(fixture, /knowledge-discarded-assistant-archive/);
   assert.match(script, /knowledgeSources/);
   assert.match(script, /retrievalQueryAdapters/);
+  assert.match(script, /retrievalFilters/);
   assert.match(script, /retrievalResultCards/);
   assert.match(script, /noContentSearchTranscripts/);
+  assert.match(script, /matchesRetrievalQuery/);
+  assert.match(script, /renderEmptyRetrievalState/);
   assert.match(script, /renderContractCard/);
   assert.match(script, /ai-core-boundary-grid/);
   assert.match(script, /ai-core-retrieval-adapters/);
@@ -115,9 +119,18 @@ test("SEIS Command Center exposes local-only retrieval boundaries", async () => 
   assert.match(html, /No content ingestion/);
   assert.match(html, /Retrieval Result Cards/);
   assert.match(html, /No-Content Search Transcripts/);
+  assert.match(html, /id="ai-core-retrieval-query"/);
+  assert.match(html, /id="ai-core-retrieval-source-class"/);
+  assert.match(html, /id="ai-core-retrieval-transcript-state"/);
+  assert.match(html, /id="ai-core-retrieval-reset"/);
+  assert.match(html, /id="ai-core-retrieval-filter-status"/);
   assert.match(html, /Safety Boundary/);
   assert.match(fixture, /local-readonly-retrieval-query-adapter/);
   assert.match(fixture, /local-readonly-retrieval-search-transcript/);
+  assert.match(fixture, /filter-local-retrieval-query/);
+  assert.match(fixture, /empty-state-no-matching-source-class/);
+  assert.match(fixture, /expectedResultMessage/);
+  assert.match(fixture, /expectedTranscriptMessage/);
   assert.match(fixture, /result-official-ai-core-docs/);
   assert.match(fixture, /transcript-blocked-discarded-archive/);
   assert.match(fixture, /adapter-command-center-evidence/);
@@ -127,7 +140,63 @@ test("SEIS Command Center exposes local-only retrieval boundaries", async () => 
   assert.match(fixture, /browserReceivesProviderKey: false|\"browserReceivesProviderKey\": false/);
   assert.match(fixture, /writesPersistentMemory: false|\"writesPersistentMemory\": false/);
   assert.match(script, /No live model execution is performed/);
+  assert.match(script, /No local metadata card matches the current filters/);
+  assert.match(script, /No local no-content transcript matches the current filters/);
   assert.match(script, /No GitHub push, merge, PR mutation, SSH command, deployment, payment, or infrastructure mutation is enabled/);
+});
+
+test("SEIS Command Center local retrieval filters render empty states and reset", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
+
+  const dom = new JSDOM(html, {
+    runScripts: "outside-only",
+    url: "https://seis.local/command-center"
+  });
+  dom.window.structuredClone = globalThis.structuredClone;
+  dom.window.eval(fixture);
+  dom.window.eval(script);
+
+  const document = dom.window.document;
+  const dispatch = (element, eventName) => {
+    element.dispatchEvent(new dom.window.Event(eventName, { bubbles: true }));
+  };
+
+  const queryInput = document.querySelector("#ai-core-retrieval-query");
+  const sourceSelect = document.querySelector("#ai-core-retrieval-source-class");
+  const transcriptSelect = document.querySelector("#ai-core-retrieval-transcript-state");
+  const resetButton = document.querySelector("#ai-core-retrieval-reset");
+
+  queryInput.value = "official docs";
+  dispatch(queryInput, "input");
+  sourceSelect.value = "scan-generated";
+  dispatch(sourceSelect, "change");
+  transcriptSelect.value = "empty";
+  dispatch(transcriptSelect, "change");
+
+  assert.match(
+    document.querySelector("#ai-core-retrieval-results").textContent,
+    /No local metadata card matches the current filters/
+  );
+  assert.match(
+    document.querySelector("#ai-core-no-content-transcripts").textContent,
+    /No local no-content transcript matches the current filters/
+  );
+  assert.match(
+    document.querySelector("#ai-core-retrieval-filter-status").textContent,
+    /0 result cards, 0 no-content transcripts/
+  );
+
+  resetButton.click();
+
+  assert.equal(queryInput.value, "");
+  assert.equal(sourceSelect.value, "all");
+  assert.equal(transcriptSelect.value, "all");
+  assert.match(
+    document.querySelector("#ai-core-retrieval-filter-status").textContent,
+    /[1-9]\d* result cards, [1-9]\d* no-content transcripts/
+  );
 });
 
 test("SEIS Command Center browser bundle does not contain live provider or secret transport hooks", async () => {

@@ -15,6 +15,8 @@ concepts, state names, evidence links, approval gates, and audit events.
 | `toolRegistryEntry` | Tool/plugin permission, risk class, and approval boundary. | Tool registry row and disabled/approval state. |
 | `knowledgeSource` | Retrieval source class, privacy mode, freshness, and ingestion boundary. | Knowledge source row and blocked/approved retrieval state. |
 | `retrievalQueryAdapter` | Local query adapter that selects approved metadata-only sources and blocks unsafe sources. | Local Retrieval card, no-content lookup boundary, and blocked archive guard. |
+| `retrievalFilterControl` | Local-only filter control for narrowing fixture-backed retrieval metadata. | Query, source-class, transcript-state, and reset controls that never call providers. |
+| `retrievalEmptyStateTestCase` | Expected empty-state case for local metadata filtering. | Evidence-card and no-content transcript empty-state regression with separate no-result copy. |
 | `retrievalResultCard` | Metadata-only evidence result selected from approved/local knowledge sources. | Retrieval Result Cards area with source class, freshness, privacy mode, and evidence link. |
 | `noContentSearchTranscript` | Empty or blocked local search transcript that returns no raw content. | No-Content Search Transcripts area with blocked/empty state and safe explanation. |
 | `approvalRequest` | Gate before privileged action. | Approval center item and decision state. |
@@ -86,6 +88,7 @@ The first shared contract implementation is fixture-backed:
 
 The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
 `toolRegistryEntry`, `knowledgeSource`, `retrievalQueryAdapter`,
+`retrievalFilterControl`, `retrievalEmptyStateTestCase`,
 `retrievalResultCard`, `noContentSearchTranscript`, `approvalRequest`,
 `evaluationResult`, `auditEvent`, `repositoryFinding`, `documentationStatus`,
 `securityFinding`, `roadmapItem`, `moduleMaturity`, `llmExecutionMode`,
@@ -129,6 +132,14 @@ source metadata and evidence links only. No-content transcripts keep
 live search engine, retrieval index, embedding system, provider call, secret
 lookup, memory write, GitHub write, SSH execution, deployment, payment,
 infrastructure mutation, benchmark, or model-training claim.
+
+The same fixture now declares local `retrievalFilterControl` records and
+`retrievalEmptyStateTestCase` records for the Command Center filter toolbar.
+The empty-state cases keep separate expected messages for Retrieval Result
+Cards and No-Content Search Transcripts, matching the two rendered panels.
+These controls filter already loaded fixture metadata in the browser only; they
+do not perform network requests, create live retrieval, read secrets, write
+memory, create embeddings, or escalate to provider routing.
 
 It also includes the `seis-10m-token-feed-budget` fixture, which connects a
 10,000,000 token metadata-only budget plan to model-router, knowledge-source,

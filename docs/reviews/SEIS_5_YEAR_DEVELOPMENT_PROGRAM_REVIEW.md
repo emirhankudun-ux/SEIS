@@ -275,3 +275,11 @@ retrieval index, embedding database, persistent memory, provider context,
 secret lookup, raw archive content return, GitHub write path, SSH execution
 path, deployment path, payment flow, infrastructure mutation, benchmark claim,
 or model-training evidence.
+
+Follow-up work added local filtering controls and empty-state test cases for
+these records. The controls filter already-loaded fixture metadata by text,
+source class, and transcript state only. The empty-state contract mirrors the
+UI's two panels with separate result-card and no-content transcript messages,
+and the Command Center test suite executes the filter/reset flow in JSDOM. The
+controls do not perform live retrieval, provider calls, secret search,
+embeddings, memory writes, or infrastructure actions.

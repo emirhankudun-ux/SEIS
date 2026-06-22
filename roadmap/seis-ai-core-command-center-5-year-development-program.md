@@ -338,12 +338,18 @@ Completed foundation slice:
   live under `packages/data/`, are rendered in the `apps/seis-core` Command
   Center Local Retrieval panel, and are checked by
   `npm run check:retrieval-search-transcript`.
+- Local query filtering controls and evidence-card empty-state tests are now
+  represented by fixture records and rendered by the Command Center Local
+  Retrieval panel without network, provider, embedding, memory-write, or
+  raw-content behavior. The Command Center static suite also runs a JSDOM
+  interaction check for query, source-class, transcript-state, reset, and
+  two-panel empty-state output.
 
 ## Next Safe Slice
 
-Add local query filtering controls and evidence-card empty-state tests while
-keeping the surface fixture-backed, no-provider, no-embedding, no-memory-write,
-and no raw-content by default.
+Add keyboard-focused retrieval filter QA and fixture-backed focus-state coverage
+without adding live retrieval, providers, embeddings, memory writes, or
+raw-content behavior.
 
 ## Relationship to Existing Roadmaps
 

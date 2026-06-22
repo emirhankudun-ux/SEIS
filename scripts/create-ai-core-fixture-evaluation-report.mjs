@@ -400,16 +400,21 @@ const retrievalEvaluations = [
     rubric: [
       "local-only result cards declared",
       "no-content search transcripts declared",
+      "local filter controls declared",
+      "two-panel empty-state test cases declared",
       "raw content return remains disabled",
       "provider, memory, embedding, and privileged actions remain disabled"
     ],
     passCriteria: [
       "retrieval result cards expose metadata and evidence links only",
       "no-content transcripts keep resultCount at 0",
+      "filter controls operate on local fixture state only",
+      "empty-state test cases expect zero result cards and zero transcripts",
+      "empty-state test cases keep separate result-card and no-content transcript messages",
       "blocked archive transcript remains blocked",
       "providerCallPerformed, rawContentReturned, writesPersistentMemory, and createsEmbeddingIndex are false"
     ],
-    observedOutputSummary: "Local read-only retrieval search transcript fixture lets the Command Center render approved metadata result cards and blocked or empty search states without exposing raw content or routing to a provider.",
+    observedOutputSummary: "Local read-only retrieval search transcript fixture lets the Command Center render approved metadata result cards, local filter controls, two-panel empty-state test cases, and blocked or empty search states without exposing raw content or routing to a provider.",
     limitations: [
       "Static fixture validation only; no live search, retrieval index, provider call, embedding database, or memory write is created.",
       "Pass does not approve raw archive content, secret lookup, external provider routing, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
@@ -488,7 +493,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add local query filtering controls and evidence-card empty-state tests.",
+    summary: "Add keyboard-focused retrieval filter QA and focus-state coverage.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",

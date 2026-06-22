@@ -88,6 +88,14 @@ provider context, secret lookup, GitHub write path, SSH execution path,
 deployment path, payment flow, infrastructure mutation, benchmark claim, or
 model-training evidence.
 
+The same evaluation covers local query filtering controls and evidence-card
+empty-state cases. The contract keeps separate no-result messages for Retrieval
+Result Cards and No-Content Search Transcripts, and the Command Center static
+test executes the filter toolbar in JSDOM to verify query, source-class,
+transcript-state, reset, and rendered empty states. These are UI/state
+regressions over fixture data only; a pass does not imply live search coverage
+or provider readiness.
+
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and
 `npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only

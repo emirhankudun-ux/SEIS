@@ -38,7 +38,7 @@
 
 ## Next Recommended Slice
 
-Add local query filtering controls and evidence-card empty-state tests.
+Add keyboard-focused retrieval filter QA and focus-state coverage.
 
 Source links:
 

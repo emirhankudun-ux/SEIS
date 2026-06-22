@@ -36,6 +36,9 @@ This package should keep raw local file paths and secrets out of runtime client 
   links only; they do not expose raw content, call providers, create
   embeddings, write persistent memory, search secrets, mutate GitHub, execute
   SSH, deploy, pay, or provision infrastructure.
+  The same fixture defines local filter controls and two-panel empty-state test
+  cases for the Command Center toolbar; those controls filter already-loaded
+  fixture metadata only.
 - `schemas/token-feed-budget.schema.json` and
   `fixtures/seis-10m-token-feed-budget.json` define the first 10,000,000 token
   metadata-only feed budget for SEIS. The fixture keeps `tokensExecuted` at `0`
@@ -57,6 +60,9 @@ This package should keep raw local file paths and secrets out of runtime client 
   `resultCount` at `0`, blocked archive requests stay blocked, and all raw
   content, provider, embedding, memory-write, GitHub, SSH, deployment, payment,
   and infrastructure actions remain disabled.
+  It also validates that local filter controls and empty-state test cases do
+  not call providers, route externally, or write persistent memory, and that
+  result-card and no-content transcript panels keep their own no-result copy.
 - `npm run check:token-feed-budget` validates that the planned allocations total
   10,000,000 tokens, no token ingestion is claimed, and provider calls,
   embeddings, persistent memory writes, raw-content storage, and model training

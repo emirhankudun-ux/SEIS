@@ -30,6 +30,8 @@ const requiredTopLevel = [
   "writesPersistentMemory",
   "createsEmbeddingIndex",
   "sourceDocuments",
+  "filterControls",
+  "emptyStateTestCases",
   "retrievalResultCards",
   "noContentSearchTranscripts",
   "nonClaims"
@@ -39,6 +41,8 @@ const requiredSharedTexts = [
   "local-readonly-retrieval-search-transcript",
   "result-official-ai-core-docs",
   "transcript-blocked-discarded-archive",
+  "filter-local-retrieval-query",
+  "empty-state-no-matching-source-class",
   "eval-local-readonly-retrieval-search-transcript",
   "audit-local-readonly-retrieval-search-transcript"
 ];
@@ -52,6 +56,12 @@ const falseFlags = [
   "rawContentReturned",
   "writesPersistentMemory",
   "createsEmbeddingIndex"
+];
+
+const filterFalseFlags = [
+  "providerCallPerformed",
+  "externalProviderRouting",
+  "writesPersistentMemory"
 ];
 
 const secretPatterns = [
@@ -127,6 +137,14 @@ function assertRepoPath(label, value) {
 
 function assertFalseFlags(label, item) {
   for (const flag of falseFlags) {
+    if (item[flag] !== false) {
+      fail(`${label} must keep ${flag} false`);
+    }
+  }
+}
+
+function assertFilterFalseFlags(label, item) {
+  for (const flag of filterFalseFlags) {
     if (item[flag] !== false) {
       fail(`${label} must keep ${flag} false`);
     }
@@ -227,6 +245,40 @@ for (const sourceDocument of fixture.sourceDocuments || []) {
 const adapterIds = new Set((adapterFixture.queryAdapters || []).map((adapter) => adapter.id));
 const sourceById = new Map((knowledgeFixture.knowledgeSources || []).map((source) => [source.id, source]));
 
+assertUniqueIds("filterControls", fixture.filterControls);
+for (const control of fixture.filterControls || []) {
+  if (!["text", "select", "button"].includes(control.controlType)) {
+    fail(`${control.id} has unsupported controlType: ${control.controlType}`);
+  }
+  if (!["query", "sourceClass", "transcriptState", "reset"].includes(control.target)) {
+    fail(`${control.id} has unsupported target: ${control.target}`);
+  }
+  assertRepoPath(`${control.id}.evidence`, control.evidence);
+  assertFilterFalseFlags(control.id, control);
+}
+
+const filterTargets = new Set((fixture.filterControls || []).map((control) => control.target));
+for (const target of ["query", "sourceClass", "transcriptState", "reset"]) {
+  if (!filterTargets.has(target)) {
+    fail(`filterControls missing ${target}`);
+  }
+}
+
+assertUniqueIds("emptyStateTestCases", fixture.emptyStateTestCases);
+for (const testCase of fixture.emptyStateTestCases || []) {
+  if (testCase.expectedResultCardCount !== 0 || testCase.expectedTranscriptCount !== 0) {
+    fail(`${testCase.id} must define an empty evidence-card result`);
+  }
+  if (testCase.expectedResultMessage !== "No local metadata card matches the current filters.") {
+    fail(`${testCase.id} must use the standard result-card empty-state message`);
+  }
+  if (testCase.expectedTranscriptMessage !== "No local no-content transcript matches the current filters.") {
+    fail(`${testCase.id} must use the standard transcript empty-state message`);
+  }
+  assertRepoPath(`${testCase.id}.evidence`, testCase.evidence);
+  assertFilterFalseFlags(testCase.id, testCase);
+}
+
 assertUniqueIds("retrievalResultCards", fixture.retrievalResultCards);
 for (const card of fixture.retrievalResultCards || []) {
   if (!adapterIds.has(card.adapterId)) {
@@ -304,6 +356,14 @@ for (const requiredText of requiredSharedTexts) {
 
 if (JSON.stringify(sharedFixture.retrievalResultCards) !== JSON.stringify(appFixture.retrievalResultCards)) {
   fail("app fixture projection is out of sync for retrievalResultCards");
+}
+
+if (JSON.stringify(sharedFixture.retrievalFilterControls) !== JSON.stringify(appFixture.retrievalFilterControls)) {
+  fail("app fixture projection is out of sync for retrievalFilterControls");
+}
+
+if (JSON.stringify(sharedFixture.retrievalEmptyStateTestCases) !== JSON.stringify(appFixture.retrievalEmptyStateTestCases)) {
+  fail("app fixture projection is out of sync for retrievalEmptyStateTestCases");
 }
 
 if (JSON.stringify(sharedFixture.noContentSearchTranscripts) !== JSON.stringify(appFixture.noContentSearchTranscripts)) {

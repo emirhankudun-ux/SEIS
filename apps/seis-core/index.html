@@ -291,6 +291,31 @@
                 <h3>Local Retrieval</h3>
                 <span class="status-pill ready">No content ingestion</span>
               </div>
+              <div class="retrieval-controls" aria-label="Local retrieval filters">
+                <label class="retrieval-filter-field" for="ai-core-retrieval-query">
+                  <span>Local query filter</span>
+                  <input id="ai-core-retrieval-query" type="search" autocomplete="off" placeholder="Filter metadata, evidence, or transcript text" />
+                </label>
+                <label class="retrieval-filter-field" for="ai-core-retrieval-source-class">
+                  <span>Source class</span>
+                  <select id="ai-core-retrieval-source-class">
+                    <option value="all">All source classes</option>
+                    <option value="official">Official</option>
+                    <option value="scan-generated">Scan-generated</option>
+                    <option value="mock">Mock fixture</option>
+                  </select>
+                </label>
+                <label class="retrieval-filter-field" for="ai-core-retrieval-transcript-state">
+                  <span>Transcript state</span>
+                  <select id="ai-core-retrieval-transcript-state">
+                    <option value="all">All transcript states</option>
+                    <option value="empty">Empty</option>
+                    <option value="blocked">Blocked</option>
+                  </select>
+                </label>
+                <button class="secondary-button" id="ai-core-retrieval-reset" type="button">Reset filters</button>
+                <output id="ai-core-retrieval-filter-status" class="retrieval-filter-status" aria-live="polite">0 result cards, 0 no-content transcripts</output>
+              </div>
               <div class="retrieval-layout">
                 <div>
                   <h4>Query Adapters</h4>

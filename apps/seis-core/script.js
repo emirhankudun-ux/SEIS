@@ -4,6 +4,11 @@ const seedState = {
   activeView: "dashboard",
   activeAgent: "Architect",
   repositoryFilter: "all",
+  retrievalFilters: {
+    query: "",
+    sourceClass: "all",
+    transcriptState: "all"
+  },
   settings: {
     compact: false,
     reduceMotion: false
@@ -429,7 +434,12 @@ let state = loadState();
 function loadState() {
   try {
     const stored = JSON.parse(localStorage.getItem(storageKey));
-    return { ...seedState, ...stored, settings: { ...seedState.settings, ...stored?.settings } };
+    return {
+      ...seedState,
+      ...stored,
+      settings: { ...seedState.settings, ...stored?.settings },
+      retrievalFilters: { ...seedState.retrievalFilters, ...stored?.retrievalFilters }
+    };
   } catch {
     return structuredClone(seedState);
   }
@@ -457,6 +467,21 @@ function labelFromId(value) {
     .filter(Boolean)
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
+}
+
+function matchesRetrievalQuery(record, query) {
+  if (!query) return true;
+  return JSON.stringify(record).toLowerCase().includes(query.toLowerCase());
+}
+
+function renderEmptyRetrievalState(target, message) {
+  $(target).innerHTML = `
+    <article class="retrieval-empty-state">
+      <strong>No local metadata match</strong>
+      <p>${message}</p>
+      <span class="meta-chip">fixture-backed</span>
+    </article>
+  `;
 }
 
 function render() {
@@ -702,6 +727,16 @@ function renderAiCore() {
   const retrievalAdapterCount = contract.retrievalQueryAdapters.length;
   const retrievalResultCount = contract.retrievalResultCards.length;
   const noContentTranscriptCount = contract.noContentSearchTranscripts.length;
+  const retrievalFilters = state.retrievalFilters;
+  const query = retrievalFilters.query.trim();
+  const filteredResultCards = contract.retrievalResultCards.filter((card) =>
+    matchesRetrievalQuery(card, query) &&
+    (retrievalFilters.sourceClass === "all" || card.sourceClass === retrievalFilters.sourceClass)
+  );
+  const filteredTranscripts = contract.noContentSearchTranscripts.filter((transcript) =>
+    matchesRetrievalQuery(transcript, query) &&
+    (retrievalFilters.transcriptState === "all" || transcript.decisionState === retrievalFilters.transcriptState)
+  );
   const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
     contract.modelRoutes.filter((route) => route.approvalState === "approval-needed").length;
   const validatedEvidence = [
@@ -784,31 +819,45 @@ function renderAiCore() {
     ]
   )).join("");
 
-  $("#ai-core-retrieval-results").innerHTML = contract.retrievalResultCards.map((card) => renderContractCard(
-    card,
-    card.sourceName,
-    card.summary,
-    [
-      card.sourceClass,
-      card.retrievalState,
-      card.privacyMode,
-      `raw:${card.rawContentReturned}`,
-      `provider:${card.providerCallPerformed}`
-    ]
-  )).join("");
+  $("#ai-core-retrieval-query").value = retrievalFilters.query;
+  $("#ai-core-retrieval-source-class").value = retrievalFilters.sourceClass;
+  $("#ai-core-retrieval-transcript-state").value = retrievalFilters.transcriptState;
+  $("#ai-core-retrieval-filter-status").textContent =
+    `${filteredResultCards.length} result cards, ${filteredTranscripts.length} no-content transcripts`;
 
-  $("#ai-core-no-content-transcripts").innerHTML = contract.noContentSearchTranscripts.map((transcript) => renderContractCard(
-    transcript,
-    transcript.query,
-    transcript.emptyState,
-    [
-      transcript.decisionState,
-      `${transcript.resultCount} results`,
-      `${transcript.blockedSources.length} blocked`,
-      `raw:${transcript.rawContentReturned}`,
-      `provider:${transcript.providerCallPerformed}`
-    ]
-  )).join("");
+  if (filteredResultCards.length > 0) {
+    $("#ai-core-retrieval-results").innerHTML = filteredResultCards.map((card) => renderContractCard(
+      card,
+      card.sourceName,
+      card.summary,
+      [
+        card.sourceClass,
+        card.retrievalState,
+        card.privacyMode,
+        `raw:${card.rawContentReturned}`,
+        `provider:${card.providerCallPerformed}`
+      ]
+    )).join("");
+  } else {
+    renderEmptyRetrievalState("#ai-core-retrieval-results", "No local metadata card matches the current filters.");
+  }
+
+  if (filteredTranscripts.length > 0) {
+    $("#ai-core-no-content-transcripts").innerHTML = filteredTranscripts.map((transcript) => renderContractCard(
+      transcript,
+      transcript.query,
+      transcript.emptyState,
+      [
+        transcript.decisionState,
+        `${transcript.resultCount} results`,
+        `${transcript.blockedSources.length} blocked`,
+        `raw:${transcript.rawContentReturned}`,
+        `provider:${transcript.providerCallPerformed}`
+      ]
+    )).join("");
+  } else {
+    renderEmptyRetrievalState("#ai-core-no-content-transcripts", "No local no-content transcript matches the current filters.");
+  }
 
   const evidenceItems = [
     ...contract.evaluationResults.map((item) => ({ ...item, group: "Evaluation", title: item.targetType, detail: item.result })),
@@ -996,6 +1045,26 @@ function bindEvents() {
       state.repositoryFilter = chip.dataset.filter;
       render();
     });
+  });
+
+  $("#ai-core-retrieval-query").addEventListener("input", (event) => {
+    state.retrievalFilters.query = event.target.value;
+    render();
+  });
+
+  $("#ai-core-retrieval-source-class").addEventListener("change", (event) => {
+    state.retrievalFilters.sourceClass = event.target.value;
+    render();
+  });
+
+  $("#ai-core-retrieval-transcript-state").addEventListener("change", (event) => {
+    state.retrievalFilters.transcriptState = event.target.value;
+    render();
+  });
+
+  $("#ai-core-retrieval-reset").addEventListener("click", () => {
+    state.retrievalFilters = structuredClone(seedState.retrievalFilters);
+    render();
   });
 
   $("#global-search").addEventListener("input", (event) => {

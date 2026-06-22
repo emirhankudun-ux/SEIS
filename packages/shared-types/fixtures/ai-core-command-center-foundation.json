@@ -1363,5 +1363,100 @@
       "status": "validated",
       "evidence": "docs/ai/context-memory-boundary.md"
     }
+  ],
+  "retrievalFilterControls": [
+    {
+      "id": "filter-local-retrieval-query",
+      "label": "Filter local metadata",
+      "controlType": "text",
+      "target": "query",
+      "defaultValue": "",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-source-class",
+      "label": "Source class",
+      "controlType": "select",
+      "target": "sourceClass",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "official",
+        "scan-generated",
+        "mock"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-transcript-state",
+      "label": "Transcript state",
+      "controlType": "select",
+      "target": "transcriptState",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "empty",
+        "blocked"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-reset",
+      "label": "Reset local filters",
+      "controlType": "button",
+      "target": "reset",
+      "defaultValue": "reset",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    }
+  ],
+  "retrievalEmptyStateTestCases": [
+    {
+      "id": "empty-state-no-matching-source-class",
+      "query": "official docs",
+      "sourceClass": "scan-generated",
+      "transcriptState": "empty",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    },
+    {
+      "id": "empty-state-secret-search-blocked",
+      "query": "provider keys",
+      "sourceClass": "all",
+      "transcriptState": "blocked",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    }
   ]
 }
