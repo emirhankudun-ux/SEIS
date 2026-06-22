@@ -17,6 +17,10 @@ It coordinates Android, Web, macOS, full-stack, data, Google Workspace operation
 - Plugin stack: [`docs/platform/plugin-stack.md`](./docs/platform/plugin-stack.md)
 - Google Workspace ops: [`docs/platform/google-workspace-ops.md`](./docs/platform/google-workspace-ops.md)
 - Roadmap: [`roadmap/seis-closed-code-backlog.md`](./roadmap/seis-closed-code-backlog.md)
+- Documentation index: [`docs/INDEX.md`](./docs/INDEX.md)
+- Current status: [`docs/STATUS.md`](./docs/STATUS.md)
+- Goal Tracking OS: [`docs/goals/goal-tracking-system.md`](./docs/goals/goal-tracking-system.md)
+- Goal Tracking Center: [`docs/product/goal-tracking-center.md`](./docs/product/goal-tracking-center.md)
 
 ## OpenAI-curated Build Route
 

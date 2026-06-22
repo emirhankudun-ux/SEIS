@@ -7,6 +7,7 @@
   "scripts": {
     "check:workspace": "node scripts/check-workspace.cjs",
     "check:foundation": "node scripts/check-foundation.mjs",
+    "check:goal-tracking": "node scripts/check-goal-tracking.mjs",
     "check:release-sync": "node scripts/check-release-sync.cjs",
     "check:ai-stack": "node scripts/check-ai-stack.cjs",
     "check:cloud-environment": "node scripts/check-cloud-environment.cjs",

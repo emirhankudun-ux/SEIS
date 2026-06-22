@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-execution",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_execution_foundation",
+  "tasks": [
+    {"id":"SEIS-TASK-001","title":"Validate Goal Tracking foundation records","status":"active","priority":"P0 critical","owner_role":"Program System","supports_goal_ids":["SEIS-GOAL-003"],"evidence_ids":["SEIS-EVID-005"],"next_action":"Run npm run check:goal-tracking and fix any schema or link failures."},
+    {"id":"SEIS-TASK-002","title":"Keep unrelated deletions out of this PR","status":"blocked","priority":"P0 critical","owner_role":"GitHub Governance","supports_goal_ids":["SEIS-GOAL-007"],"evidence_ids":["SEIS-EVID-004"],"next_action":"Stage only scoped Goal Tracking OS files."},
+    {"id":"SEIS-TASK-003","title":"Plan static Command Center Goal view","status":"planned","priority":"P1 high","owner_role":"Command Center","supports_goal_ids":["SEIS-GOAL-002","SEIS-GOAL-003"],"evidence_ids":["SEIS-EVID-003"],"next_action":"Create generated view model and static page after this foundation validates."}
+  ],
+  "blockers": [
+    {"id":"SEIS-BLOCKER-001","title":"Pre-existing tracked deletions","status":"active","severity":"high","supports_goal_ids":["SEIS-GOAL-007","SEIS-GOAL-008","SEIS-GOAL-009"],"evidence_ids":["SEIS-EVID-004"],"next_action":"Handle deletions in a dedicated repository hygiene PR."},
+    {"id":"SEIS-BLOCKER-002","title":"No live GitHub PR state checked","status":"active","severity":"medium","supports_goal_ids":["SEIS-GOAL-007"],"evidence_ids":["SEIS-EVID-002"],"next_action":"Use GitHub API or CLI only when approved and record results."}
+  ],
+  "decisions": [
+    {"id":"SEIS-DEC-001","title":"Use file-backed non-LLM goal records first","status":"accepted","date":"2026-06-22","supports_goal_ids":["SEIS-GOAL-003"],"evidence_ids":["SEIS-EVID-001","SEIS-EVID-005"],"decision":"Start with JSON and Markdown records before adding live integrations.","consequence":"The Goal Tracking OS remains inspectable and useful without a model provider."},
+    {"id":"SEIS-DEC-002","title":"Do not stage unrelated deletion set","status":"accepted","date":"2026-06-22","supports_goal_ids":["SEIS-GOAL-007"],"evidence_ids":["SEIS-EVID-004"],"decision":"This slice excludes pre-existing unstaged deletions.","consequence":"Repository hygiene stays visible as a blocker instead of being hidden in a Goal Tracking commit."}
+  ]
+}
