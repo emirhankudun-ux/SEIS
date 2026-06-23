@@ -146,16 +146,17 @@ viewports, step order, panel counts, safety flags, artifact paths, and
 non-claims. `npm run check:ai-core-eval-evidence` aggregates the fixture report,
 browser QA evidence, and Command Center checks as a read-only metadata gate.
 The CI/local browser split is documented in
-`docs/evals/ai-core-browser-evidence-gates.md`: CI should keep metadata gates,
-while `npm run qa:seis-core:ai-core-evidence` remains local or
-browser-enabled-runner evidence until Chrome/Chromium setup is reviewed. The
-review-ready CI proposal lives in `docs/evals/ai-core-browser-ci-proposal.md`
-and does not enable the browser artifact gate by itself. The review-only
-workflow shape lives in `docs/evals/ai-core-browser-ci-workflow-draft.md`; it is
-not an active `.github/workflows/` workflow and does not change CI behavior.
-The activation approval packet lives in
-`docs/evals/ai-core-browser-ci-activation-approval.md` and records the required
-human approval, validation, and rollback plan before an active workflow PR.
+`docs/evals/ai-core-browser-evidence-gates.md`: default CI should keep
+metadata gates, while `npm run qa:seis-core:ai-core-evidence` runs locally or
+through the separate manual browser-enabled workflow at
+`.github/workflows/ai-core-browser-evidence.yml`. The review-ready CI proposal
+lives in `docs/evals/ai-core-browser-ci-proposal.md`, the review-only workflow
+shape lives in `docs/evals/ai-core-browser-ci-workflow-draft.md`, and the
+activation approval packet lives in
+`docs/evals/ai-core-browser-ci-activation-approval.md`. The active workflow is
+`workflow_dispatch` only, keeps `.github/workflows/ci.yml` metadata-only, and
+requires first-run GitHub artifact evidence before any branch-protection
+decision.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

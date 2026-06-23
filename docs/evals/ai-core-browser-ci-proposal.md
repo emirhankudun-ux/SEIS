@@ -19,8 +19,8 @@ does not install Chrome/Chromium and does not run browser-required QA commands.
 
 ## Proposed Browser-Enabled Workflow Shape
 
-A future, separately reviewed workflow may run the browser artifact gate only
-after all of these conditions are met:
+The separately reviewed manual workflow may run the browser artifact gate only
+while all of these conditions remain true:
 
 1. The workflow installs or provides a pinned Chrome/Chromium-compatible binary.
 2. `SEIS_BROWSER_BIN` is set when auto-detection is not reliable.
@@ -94,12 +94,11 @@ download.
 - Chrome/Chromium setup is explicit and reproducible.
 - `npm run check:ai-core-eval-evidence` still runs as metadata-only CI evidence.
 - `npm run qa:seis-core:ai-core-evidence` runs only in the browser-enabled job.
-- The review-only workflow draft in
-  `docs/evals/ai-core-browser-ci-workflow-draft.md` is approved before an
-  active `.github/workflows/` workflow is added.
+- The active browser evidence workflow stays separate from the metadata-only
+  `.github/workflows/ci.yml` path.
 - The approval packet in
-  `docs/evals/ai-core-browser-ci-activation-approval.md` is accepted before an
-  active workflow PR is prepared.
+  `docs/evals/ai-core-browser-ci-activation-approval.md` remains the activation
+  boundary for artifact upload, runner setup, and rollback behavior.
 - `reports/tmp/` artifacts remain ignored and are not committed.
 - Provider, SSH, deployment, payment, and infrastructure mutation remain absent.
 - Failure output explains whether the issue is missing browser setup or evidence
@@ -108,6 +107,7 @@ download.
 ## Related Documents
 
 - `docs/evals/ai-core-browser-evidence-gates.md`
+- `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
@@ -116,9 +116,7 @@ download.
 
 ## Next Safe Action
 
-Review the non-active workflow draft in
-`docs/evals/ai-core-browser-ci-workflow-draft.md` and the activation approval
-packet in `docs/evals/ai-core-browser-ci-activation-approval.md`. Create a
-separate active CI workflow change only if human approval confirms the
-repository is ready to pin and maintain a Chrome/Chromium setup for browser
-artifact evidence.
+Run `.github/workflows/ai-core-browser-evidence.yml` manually with
+`workflow_dispatch`, inspect the uploaded browser evidence artifacts, and keep
+branch-protection requirements unchanged until the first run evidence is
+reviewed.

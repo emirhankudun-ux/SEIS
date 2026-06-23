@@ -5,9 +5,11 @@
 Define the human approval packet required before turning the review-only AI Core
 browser evidence workflow draft into an active GitHub Actions workflow.
 
-This document does not enable CI behavior. It records what must be reviewed,
-approved, validated, and rollback-ready before an active workflow PR is created.
-Approval required. No active workflow is created by this packet.
+This document records the human approval boundary for CI behavior. The active
+manual workflow lives separately at `.github/workflows/ai-core-browser-evidence.yml`;
+this packet is planning evidence only, not browser QA pass evidence and not a
+branch-protection approval.
+Canonical activation invariant: active manual workflow; not a branch-protection approval.
 
 ## Scope
 
@@ -15,19 +17,24 @@ This approval packet covers only the proposed
 `.github/workflows/ai-core-browser-evidence.yml` workflow for
 `npm run qa:seis-core:ai-core-evidence`.
 
-It does not change `.github/workflows/ci.yml`, does not add an active workflow,
-and does not authorize live providers, SSH, deployment, payment, infrastructure
-mutation, benchmark execution, model training, checkpoint publication, or
-dataset download.
+It does not change `.github/workflows/ci.yml`, does not make browser evidence a
+required check, and does not authorize live providers, SSH, deployment, payment,
+infrastructure mutation, benchmark execution, model training, checkpoint
+publication, or dataset download.
 
 ## Current Status
 
 - Active CI remains metadata-only through `npm run quality:governance`.
+- The separate browser evidence workflow exists at
+  `.github/workflows/ai-core-browser-evidence.yml` and is manually triggered
+  with `workflow_dispatch`.
 - Browser-run AI Core QA evidence is available locally through
   `npm run qa:seis-core:ai-core-evidence`.
 - The review-only draft lives in
   `docs/evals/ai-core-browser-ci-workflow-draft.md`.
-- This approval packet is planning evidence only, not browser QA pass evidence.
+- This approval packet is planning evidence only, not browser QA pass evidence;
+  the active workflow still requires a manual GitHub run before it becomes
+  branch-protection evidence.
 
 ## Required Human Approval
 
@@ -135,6 +142,7 @@ deployment readiness, or production availability.
 
 ## Related Documents
 
+- `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
@@ -144,5 +152,6 @@ deployment readiness, or production availability.
 
 ## Next Safe Action
 
-If human approval is granted, prepare a separate PR that adds only the active
-browser evidence workflow with approved pinned actions and the boundaries above.
+Run the active browser evidence workflow manually with `workflow_dispatch`,
+inspect the uploaded artifact package, and record the GitHub run evidence before
+making the workflow a required branch-protection check.

@@ -51,12 +51,12 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Request human review of the activation approval packet. Only after approval,
-   prepare a separate active workflow PR for AI Core browser artifact gates. The
-   active workflow change must keep `.github/workflows/ci.yml` metadata-only,
-   replace the upload-artifact placeholder with an approved pinned SHA, verify
-   the runner Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and avoid
-   providers, SSH, deployment, payment, and infrastructure mutation.
+1. Run the manual AI Core Browser Evidence workflow with `workflow_dispatch`,
+   inspect the uploaded artifact package, and record the GitHub run evidence
+   before considering it as a required branch-protection check. The default
+   `.github/workflows/ci.yml` path must remain metadata-only, and the browser
+   workflow must remain provider-free, SSH-free, deployment-free, payment-free,
+   and infrastructure-mutation-free.
 
 ## Follow-Up Contract Slice
 
@@ -460,7 +460,31 @@ Evidence:
 This slice documents the human approval packet required before the review-only
 workflow draft can become an active GitHub Actions workflow. It records approval
 requirements, future active workflow PR contents, validation plan, rollback
-plan, security boundaries, and non-claims. It remains planning evidence only:
-it does not create `.github/workflows/ai-core-browser-evidence.yml`, does not
-change `.github/workflows/ci.yml`, and does not add providers, SSH, deployment,
-payment, infrastructure mutation, benchmark claims, or model-training evidence.
+plan, security boundaries, and non-claims. It remains planning evidence only,
+not browser QA pass evidence. It does not change `.github/workflows/ci.yml`,
+does not make browser evidence required, and does not add providers, SSH,
+deployment, payment, infrastructure mutation, benchmark claims, or
+model-training evidence.
+
+## Browser-Run AI Core Manual Workflow Slice
+
+Status: Added after user approval of the activation packet.
+
+Evidence:
+
+- `.github/workflows/ai-core-browser-evidence.yml`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
+- `docs/evals/ai-core-browser-evidence-gates.md`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+
+This slice adds a separate manual GitHub Actions workflow for browser-run AI
+Core QA evidence. It uses `workflow_dispatch`, read-only `contents`
+permission, pinned checkout/setup-node/upload-artifact actions, mock/local-only
+environment variables, Chrome/Chromium binary verification, bounded timeout,
+and 7-day artifact retention for
+`reports/tmp/seis-core-ai-core-panel-navigation/`. It does not change
+`.github/workflows/ci.yml`, does not add push or pull-request triggers, does
+not make browser evidence a required check, and does not add providers, SSH,
+deployment, payment, infrastructure mutation, benchmark claims, or
+model-training evidence.

@@ -10,6 +10,7 @@ const files = {
   fixtureReportGenerator: "scripts/create-ai-core-fixture-evaluation-report.mjs",
   commandCenterCheck: "scripts/check-seis-command-center.mjs",
   ciWorkflow: ".github/workflows/ci.yml",
+  browserEvidenceWorkflow: ".github/workflows/ai-core-browser-evidence.yml",
   schema: "packages/evals/schemas/fixture-evaluation-report.schema.json",
   evalsReadme: "packages/evals/README.md",
   browserEvidenceGates: "docs/evals/ai-core-browser-evidence-gates.md",
@@ -220,6 +221,7 @@ const fixtureReportMarkdown = readText(files.fixtureReportMarkdown);
 const fixtureReportGenerator = readText(files.fixtureReportGenerator, { scanSecrets: false });
 const commandCenterCheck = readText(files.commandCenterCheck, { scanSecrets: false });
 const ciWorkflow = readText(files.ciWorkflow, { scanSecrets: false });
+const browserEvidenceWorkflow = readText(files.browserEvidenceWorkflow, { scanSecrets: false });
 const schema = readText(files.schema);
 const evalsReadme = readText(files.evalsReadme);
 const browserEvidenceGates = readText(files.browserEvidenceGates);
@@ -344,10 +346,11 @@ lowerIncludesAll("AI Core browser CI proposal", browserCiProposal, [
 
 lowerIncludesAll("AI Core browser CI activation approval", browserCiActivationApproval, [
   "AI Core Browser CI Activation Approval Packet",
-  "human approval packet",
-  "does not enable CI behavior",
-  "approval required",
-  "no active workflow",
+  "human approval boundary",
+  "active manual workflow",
+  "planning evidence only",
+  "not browser QA pass evidence",
+  "not a branch-protection approval",
   ".github/workflows/ai-core-browser-evidence.yml",
   "npm run qa:seis-core:ai-core-evidence",
   "npm run check:ai-core-eval-evidence",
@@ -373,8 +376,6 @@ lowerIncludesAll("AI Core browser CI activation approval", browserCiActivationAp
   "secret-free",
   "local-only",
   "mock-data-only",
-  "planning evidence only",
-  "not browser QA pass evidence",
   "live provider routing",
   "live retrieval",
   "backend integration",
@@ -432,14 +433,16 @@ lowerIncludesAll("evals package README", evalsReadme, [
   "docs/evals/ai-core-browser-ci-proposal.md",
   "docs/evals/ai-core-browser-ci-activation-approval.md",
   "docs/evals/ai-core-browser-ci-workflow-draft.md",
+  ".github/workflows/ai-core-browser-evidence.yml",
   "reports/evals/ai-core-panel-navigation-browser-qa.md",
   "npm run check:ai-core-browser-qa-evidence",
   "npm run check:ai-core-eval-evidence",
   "npm run qa:seis-core:ai-core-evidence",
   "metadata-only",
   "artifact gate",
-  "without enabling browser-required QA",
-  "not an active GitHub Actions workflow"
+  "workflow_dispatch",
+  "manual evidence",
+  "not a required branch-protection check"
 ]);
 
 includesAll("fixture report generator", fixtureReportGenerator, [
@@ -447,6 +450,7 @@ includesAll("fixture report generator", fixtureReportGenerator, [
   "browserCiProposalPath",
   "browserCiActivationApprovalPath",
   "browserCiWorkflowDraftPath",
+  "browserCiActiveWorkflowPath",
   "browserUiEvaluations",
   "eval-browser-ui-ai-core-panel-navigation-qa",
   "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -458,14 +462,44 @@ includesAll("CI workflow", ciWorkflow, [
 ]);
 
 if (ciWorkflow.includes("qa:seis-core:ai-core-evidence") || ciWorkflow.includes("qa:seis-core:ai-core-panels")) {
-  fail("CI workflow must not run browser-required AI Core QA until browser setup is reviewed");
+  fail("CI workflow must remain metadata-only and must not run browser-required AI Core QA");
+}
+
+includesAll("AI Core browser evidence workflow", browserEvidenceWorkflow, [
+  "name: AI Core Browser Evidence",
+  "workflow_dispatch:",
+  "permissions:",
+  "contents: read",
+  "timeout-minutes: 8",
+  "SEIS_BROWSER_BIN: /usr/bin/google-chrome",
+  "SEIS_DATA_MODE: mock",
+  "SEIS_PRIVACY_MODE: local-only",
+  "CI: \"true\"",
+  "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10",
+  "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e",
+  "node-version: \"20\"",
+  "Verify Chrome/Chromium binary",
+  "test -x \"$SEIS_BROWSER_BIN\"",
+  "\"$SEIS_BROWSER_BIN\" --version",
+  "npm run qa:seis-core:ai-core-evidence",
+  "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+  "reports/tmp/seis-core-ai-core-panel-navigation/",
+  "if-no-files-found: error",
+  "retention-days: 7"
+]);
+
+if (/(^|\n)\s+(push|pull_request|schedule):/.test(browserEvidenceWorkflow)) {
+  fail("AI Core browser evidence workflow must remain manually triggered by workflow_dispatch only");
 }
 
 for (const workflowFile of readdirSync(".github/workflows").filter((name) => /\.ya?ml$/i.test(name))) {
   const workflowPath = `.github/workflows/${workflowFile}`;
   const workflowText = readText(workflowPath, { scanSecrets: false });
+  const isApprovedBrowserWorkflow = workflowPath === files.browserEvidenceWorkflow;
   if (workflowText.includes("qa:seis-core:ai-core-evidence") || workflowText.includes("qa:seis-core:ai-core-panels")) {
-    fail(`${workflowPath} must not run browser-required AI Core QA until browser setup is reviewed`);
+    if (!isApprovedBrowserWorkflow) {
+      fail(`${workflowPath} must not run browser-required AI Core QA; only ${files.browserEvidenceWorkflow} is approved`);
+    }
   }
 }
 
@@ -520,6 +554,14 @@ if (!fixtureReport.nextRecommendedSlice?.sourceLinks?.includes(files.browserCiAc
 
 if (!fixtureReport.sourceDocuments?.includes(files.browserCiWorkflowDraft)) {
   fail("fixture report sourceDocuments must include the AI Core browser CI workflow draft");
+}
+
+if (!fixtureReport.sourceDocuments?.includes(files.browserEvidenceWorkflow)) {
+  fail("fixture report sourceDocuments must include the active AI Core browser evidence workflow");
+}
+
+if (!fixtureReport.nextRecommendedSlice?.sourceLinks?.includes(files.browserEvidenceWorkflow)) {
+  fail("fixture report nextRecommendedSlice sourceLinks must include the active AI Core browser evidence workflow");
 }
 
 if (fixtureReport.summary?.browserUiEvaluationCount !== 2) {

@@ -38,15 +38,17 @@ running `npm run qa:seis-core:ai-core-panels`, the stronger artifact gate is
 combined `npm run qa:seis-core:ai-core-evidence`.
 
 The browser-enabled CI proposal is documented in
-`docs/evals/ai-core-browser-ci-proposal.md`. It describes the future workflow
-shape without enabling browser-required QA in the current CI workflow.
+`docs/evals/ai-core-browser-ci-proposal.md`. The active manual workflow is
+`.github/workflows/ai-core-browser-evidence.yml`; it runs only through
+`workflow_dispatch` and keeps the default metadata-only CI workflow unchanged.
 The non-active workflow draft is documented in
 `docs/evals/ai-core-browser-ci-workflow-draft.md`; it is review-only and is not
 an active GitHub Actions workflow.
-Status invariant: not an active GitHub Actions workflow.
+Status invariant: the default CI workflow remains metadata-only; the browser
+workflow is manual evidence only, not a required branch-protection check.
 The activation approval packet is documented in
 `docs/evals/ai-core-browser-ci-activation-approval.md`; it is planning evidence
-only and does not authorize CI behavior changes.
+only, not browser QA pass evidence.
 
 Canonical validator phrase: browser-run AI Core QA evidence.
 

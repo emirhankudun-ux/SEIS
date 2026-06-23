@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-If human approval is granted, prepare a separate active workflow PR for AI Core browser evidence using the accepted activation approval packet; keep .github/workflows/ci.yml metadata-only, pin browser/setup and upload-artifact actions, run npm run qa:seis-core:ai-core-evidence only in the separate workflow, upload only ignored reports/tmp/seis-core-ai-core-panel-navigation/ artifacts with 7-day-or-less retention, and preserve provider-free, SSH-free, deployment-free, payment-free, infrastructure-mutation-free boundaries.
+Run the AI Core Browser Evidence workflow manually with workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record the GitHub run evidence in the next review slice, and only then decide whether the browser evidence workflow should become a required branch-protection check.
 
 Source links:
 
@@ -54,3 +54,4 @@ Source links:
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
+- `.github/workflows/ai-core-browser-evidence.yml`

@@ -18,10 +18,15 @@ does not enable browser-required QA by itself.
 ## Current Status
 
 The active GitHub Actions workflow remains metadata-only through
-`npm run quality:governance`. Browser-run AI Core QA evidence is currently a
-local or browser-enabled-runner gate, not an active CI gate.
+`npm run quality:governance`. Browser-run AI Core QA evidence is available as a
+separate manual browser-enabled workflow, not as a default CI or branch
+protection gate.
 
 The metadata validator remains `npm run check:ai-core-browser-qa-evidence`.
+
+After activation approval, the implemented manual workflow lives at
+`.github/workflows/ai-core-browser-evidence.yml`. It keeps the default CI path
+metadata-only and runs only through `workflow_dispatch`.
 
 ## Review-Only Workflow Draft
 
@@ -123,6 +128,7 @@ publication, or dataset download.
 
 ## Related Documents
 
+- `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
@@ -132,6 +138,6 @@ publication, or dataset download.
 
 ## Next Safe Action
 
-Review the draft as a CI behavior change proposal. Only after approval, create
-an active `.github/workflows/ai-core-browser-evidence.yml` change with pinned
-actions, the activation approval packet, and the same safety boundaries.
+Use the active manual workflow as the implementation reference. Run it through
+`workflow_dispatch`, inspect artifact output, and only then decide whether it
+should become a required branch-protection check.

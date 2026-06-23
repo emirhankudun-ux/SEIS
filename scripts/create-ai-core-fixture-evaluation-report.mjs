@@ -18,6 +18,7 @@ const browserEvidenceGatesPath = "docs/evals/ai-core-browser-evidence-gates.md";
 const browserCiProposalPath = "docs/evals/ai-core-browser-ci-proposal.md";
 const browserCiActivationApprovalPath = "docs/evals/ai-core-browser-ci-activation-approval.md";
 const browserCiWorkflowDraftPath = "docs/evals/ai-core-browser-ci-workflow-draft.md";
+const browserCiActiveWorkflowPath = ".github/workflows/ai-core-browser-evidence.yml";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -63,6 +64,9 @@ const secretPatterns = [
 ];
 
 const repoPathPattern = /^(docs|packages|roadmap|reports|apps|content|data|scripts)\//;
+const explicitlyAllowedEvidencePaths = new Set([
+  ".github/workflows/ai-core-browser-evidence.yml"
+]);
 
 const failures = [];
 
@@ -109,7 +113,12 @@ function readAppFixture(text) {
 }
 
 function assertRepoPath(label, value) {
-  if (typeof value !== "string" || value.startsWith("/") || value.includes("..") || !repoPathPattern.test(value)) {
+  if (
+    typeof value !== "string" ||
+    value.startsWith("/") ||
+    value.includes("..") ||
+    (!repoPathPattern.test(value) && !explicitlyAllowedEvidencePaths.has(value))
+  ) {
     fail(`${label} must be a relative repository evidence path: ${value}`);
     return;
   }
@@ -569,6 +578,7 @@ const report = {
     browserCiProposalPath,
     browserCiActivationApprovalPath,
     browserCiWorkflowDraftPath,
+    browserCiActiveWorkflowPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
     panelNavigationQaEvidenceCheckPath
@@ -586,7 +596,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "If human approval is granted, prepare a separate active workflow PR for AI Core browser evidence using the accepted activation approval packet; keep .github/workflows/ci.yml metadata-only, pin browser/setup and upload-artifact actions, run npm run qa:seis-core:ai-core-evidence only in the separate workflow, upload only ignored reports/tmp/seis-core-ai-core-panel-navigation/ artifacts with 7-day-or-less retention, and preserve provider-free, SSH-free, deployment-free, payment-free, infrastructure-mutation-free boundaries.",
+    summary: "Run the AI Core Browser Evidence workflow manually with workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record the GitHub run evidence in the next review slice, and only then decide whether the browser evidence workflow should become a required branch-protection check.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -596,7 +606,8 @@ const report = {
       browserEvidenceGatesPath,
       browserCiProposalPath,
       browserCiActivationApprovalPath,
-      browserCiWorkflowDraftPath
+      browserCiWorkflowDraftPath,
+      browserCiActiveWorkflowPath
     ]
   }
 };

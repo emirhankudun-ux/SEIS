@@ -11,7 +11,8 @@ Canonical validator phrase: browser-run AI Core QA evidence.
 ## Scope
 
 This document covers the `apps/seis-core` AI Core panel navigation evidence
-path, the metadata-only CI gate, and the local browser artifact gate.
+path, the metadata-only CI gate, the local browser artifact gate, and the
+manual GitHub Actions browser evidence workflow.
 
 ## Current Status
 
@@ -20,6 +21,7 @@ path, the metadata-only CI gate, and the local browser artifact gate.
 | Metadata drift gate | `npm run check:ai-core-browser-qa-evidence` | CI and local | No | No | No |
 | Aggregate metadata gate | `npm run check:ai-core-eval-evidence` | CI and local | No | No | No |
 | Browser artifact gate | `npm run qa:seis-core:ai-core-evidence` | Local or browser-enabled runner | Yes | Ignored `reports/tmp/` only | No |
+| Manual browser workflow | `.github/workflows/ai-core-browser-evidence.yml` | `workflow_dispatch` only | Yes | Uploaded ignored `reports/tmp/` artifact | No |
 | Browser runner only | `npm run qa:seis-core:ai-core-panels` | Local or browser-enabled runner | Yes | Ignored `reports/tmp/` only | No |
 
 ## CI Policy
@@ -29,14 +31,15 @@ include `npm run check:ai-core-browser-qa-evidence` because it is metadata-only:
 it checks committed reports, scripts, schema, generated fixture reports, docs,
 and ignored-artifact policy without launching a browser.
 
-CI must not run `npm run qa:seis-core:ai-core-evidence` unless the workflow
-explicitly installs or provides a Chrome/Chromium-compatible binary and the
-change is reviewed. Browser setup is operational infrastructure, so it should
-be added as a separate reviewable change. The proposed browser-enabled CI shape
-is documented in `docs/evals/ai-core-browser-ci-proposal.md`, with a
-review-only workflow draft in
-`docs/evals/ai-core-browser-ci-workflow-draft.md` and an activation approval
-packet in `docs/evals/ai-core-browser-ci-activation-approval.md`.
+Default CI must not run `npm run qa:seis-core:ai-core-evidence`. The separate
+manual browser workflow may run it only through `workflow_dispatch`, with
+Chrome/Chromium verification, read-only repository permission, mock/local-only
+environment, pinned actions, bounded timeout, and short artifact retention.
+The browser-enabled workflow is documented in
+`docs/evals/ai-core-browser-ci-proposal.md`,
+`docs/evals/ai-core-browser-ci-workflow-draft.md`,
+`docs/evals/ai-core-browser-ci-activation-approval.md`, and
+`.github/workflows/ai-core-browser-evidence.yml`.
 
 ## Local Browser Policy
 
@@ -99,6 +102,7 @@ production availability.
 ## Related Documents
 
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
@@ -109,8 +113,6 @@ production availability.
 
 ## Next Safe Action
 
-If browser evidence should run in GitHub Actions, use
-`docs/evals/ai-core-browser-ci-proposal.md` and
-`docs/evals/ai-core-browser-ci-workflow-draft.md` plus
-`docs/evals/ai-core-browser-ci-activation-approval.md` as the proposal contract
-before enabling the browser artifact gate in an active workflow.
+Run `.github/workflows/ai-core-browser-evidence.yml` manually with
+`workflow_dispatch`, review the uploaded artifact package, and keep it out of
+branch protection until first-run evidence is accepted.

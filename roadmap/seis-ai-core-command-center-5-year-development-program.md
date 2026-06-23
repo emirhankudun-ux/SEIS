@@ -397,16 +397,20 @@ Completed foundation slice:
   approval requirements, active workflow PR contents, local validation plan,
   rollback plan, security boundaries, and non-claims before an active workflow
   is created.
+- Browser-run AI Core manual workflow is added at
+  `.github/workflows/ai-core-browser-evidence.yml`, using `workflow_dispatch`,
+  read-only permissions, pinned actions, mock/local-only environment variables,
+  Chrome/Chromium verification, bounded timeout, and short artifact retention.
 
 ## Next Safe Slice
 
-Request human review of the activation approval packet. Only after approval,
-prepare a separate active workflow PR for AI Core browser artifact gates. The
-active workflow change must keep `.github/workflows/ci.yml` metadata-only,
-replace the upload-artifact placeholder with an approved pinned SHA, verify the
-runner Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and remain
-provider-free, SSH-free, deployment-free, payment-free, and
-infrastructure-mutation-free.
+Run `.github/workflows/ai-core-browser-evidence.yml` manually with
+`workflow_dispatch`, inspect the uploaded
+`reports/tmp/seis-core-ai-core-panel-navigation/` artifact package, and record
+the GitHub run evidence before deciding whether browser evidence should become a
+required branch-protection check. The default `.github/workflows/ci.yml` path
+must remain metadata-only, and the browser workflow must remain provider-free,
+SSH-free, deployment-free, payment-free, and infrastructure-mutation-free.
 
 ## Relationship to Existing Roadmaps
 
