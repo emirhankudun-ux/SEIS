@@ -108,6 +108,7 @@ download.
 
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `.github/workflows/ai-core-browser-evidence.yml`
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
@@ -116,7 +117,8 @@ download.
 
 ## Next Safe Action
 
-Run `.github/workflows/ai-core-browser-evidence.yml` manually with
-`workflow_dispatch`, inspect the uploaded browser evidence artifacts, and keep
-branch-protection requirements unchanged until the first run evidence is
-reviewed.
+Open or review the feature branch through a pull request so
+`.github/workflows/ai-core-browser-evidence.yml` can reach the default branch.
+After human-approved merge, run it manually with `workflow_dispatch`, inspect
+uploaded browser evidence artifacts, and keep branch-protection requirements
+unchanged until first-run evidence is reviewed.

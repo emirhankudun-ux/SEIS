@@ -49,6 +49,10 @@ workflow is manual evidence only, not a required branch-protection check.
 The activation approval packet is documented in
 `docs/evals/ai-core-browser-ci-activation-approval.md`; it is planning evidence
 only, not browser QA pass evidence.
+The dispatch availability review is documented in
+`docs/evals/ai-core-browser-workflow-dispatch-review.md`; it records that the
+manual workflow cannot be dispatched until the workflow file exists on the
+default branch.
 
 Canonical validator phrase: browser-run AI Core QA evidence.
 

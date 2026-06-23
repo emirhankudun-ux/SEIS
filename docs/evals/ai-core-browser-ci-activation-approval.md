@@ -143,6 +143,7 @@ deployment readiness, or production availability.
 ## Related Documents
 
 - `.github/workflows/ai-core-browser-evidence.yml`
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
@@ -152,6 +153,8 @@ deployment readiness, or production availability.
 
 ## Next Safe Action
 
-Run the active browser evidence workflow manually with `workflow_dispatch`,
-inspect the uploaded artifact package, and record the GitHub run evidence before
-making the workflow a required branch-protection check.
+Open or review the feature branch through a pull request. After human-approved
+merge places the workflow on the default branch, run the active browser evidence
+workflow manually with `workflow_dispatch`, inspect the uploaded artifact
+package, and record GitHub run evidence before making the workflow a required
+branch-protection check.

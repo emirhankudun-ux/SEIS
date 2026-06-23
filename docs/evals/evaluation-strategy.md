@@ -156,7 +156,10 @@ activation approval packet lives in
 `docs/evals/ai-core-browser-ci-activation-approval.md`. The active workflow is
 `workflow_dispatch` only, keeps `.github/workflows/ci.yml` metadata-only, and
 requires first-run GitHub artifact evidence before any branch-protection
-decision.
+decision. The dispatch availability check is recorded in
+`docs/evals/ai-core-browser-workflow-dispatch-review.md`; the first attempt
+returned the expected default-branch visibility blocker, so no GitHub run or
+artifact evidence exists yet.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

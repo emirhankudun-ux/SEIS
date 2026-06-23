@@ -17,6 +17,7 @@ const files = {
   browserCiProposal: "docs/evals/ai-core-browser-ci-proposal.md",
   browserCiActivationApproval: "docs/evals/ai-core-browser-ci-activation-approval.md",
   browserCiWorkflowDraft: "docs/evals/ai-core-browser-ci-workflow-draft.md",
+  browserCiDispatchReview: "docs/evals/ai-core-browser-workflow-dispatch-review.md",
   readme: "apps/seis-core/README.md",
   evaluationStrategy: "docs/evals/evaluation-strategy.md",
   roadmap: "roadmap/seis-ai-core-command-center-5-year-development-program.md",
@@ -228,6 +229,7 @@ const browserEvidenceGates = readText(files.browserEvidenceGates);
 const browserCiProposal = readText(files.browserCiProposal);
 const browserCiActivationApproval = readText(files.browserCiActivationApproval);
 const browserCiWorkflowDraft = readText(files.browserCiWorkflowDraft);
+const browserCiDispatchReview = readText(files.browserCiDispatchReview);
 const readme = readText(files.readme);
 const evaluationStrategy = readText(files.evaluationStrategy);
 const roadmap = readText(files.roadmap);
@@ -433,6 +435,7 @@ lowerIncludesAll("evals package README", evalsReadme, [
   "docs/evals/ai-core-browser-ci-proposal.md",
   "docs/evals/ai-core-browser-ci-activation-approval.md",
   "docs/evals/ai-core-browser-ci-workflow-draft.md",
+  "docs/evals/ai-core-browser-workflow-dispatch-review.md",
   ".github/workflows/ai-core-browser-evidence.yml",
   "reports/evals/ai-core-panel-navigation-browser-qa.md",
   "npm run check:ai-core-browser-qa-evidence",
@@ -451,6 +454,7 @@ includesAll("fixture report generator", fixtureReportGenerator, [
   "browserCiActivationApprovalPath",
   "browserCiWorkflowDraftPath",
   "browserCiActiveWorkflowPath",
+  "browserCiDispatchReviewPath",
   "browserUiEvaluations",
   "eval-browser-ui-ai-core-panel-navigation-qa",
   "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -486,6 +490,34 @@ includesAll("AI Core browser evidence workflow", browserEvidenceWorkflow, [
   "reports/tmp/seis-core-ai-core-panel-navigation/",
   "if-no-files-found: error",
   "retention-days: 7"
+]);
+
+lowerIncludesAll("AI Core browser workflow dispatch review", browserCiDispatchReview, [
+  "AI Core Browser Workflow Dispatch Review",
+  ".github/workflows/ai-core-browser-evidence.yml",
+  "seis/ai-core-app-foundation-continuation",
+  "gh workflow run ai-core-browser-evidence.yml --ref seis/ai-core-app-foundation-continuation",
+  "HTTP 404",
+  "not found on the default branch",
+  "No GitHub Actions run was created",
+  "No browser artifacts were uploaded",
+  "workflow visibility blocker",
+  "human-approved merge",
+  "workflow_dispatch",
+  "GitHub run ID",
+  "Artifact retention",
+  "reports/tmp/seis-core-ai-core-panel-navigation/",
+  "provider-free",
+  "SSH-free",
+  "deployment-free",
+  "payment-free",
+  "infrastructure-mutation-free",
+  "secret-free",
+  "local-only",
+  "mock-data-only",
+  "branch-protection decision",
+  "live provider routing",
+  "SEIS-owned model training"
 ]);
 
 if (/(^|\n)\s+(push|pull_request|schedule):/.test(browserEvidenceWorkflow)) {
@@ -560,8 +592,16 @@ if (!fixtureReport.sourceDocuments?.includes(files.browserEvidenceWorkflow)) {
   fail("fixture report sourceDocuments must include the active AI Core browser evidence workflow");
 }
 
+if (!fixtureReport.sourceDocuments?.includes(files.browserCiDispatchReview)) {
+  fail("fixture report sourceDocuments must include the AI Core browser workflow dispatch review");
+}
+
 if (!fixtureReport.nextRecommendedSlice?.sourceLinks?.includes(files.browserEvidenceWorkflow)) {
   fail("fixture report nextRecommendedSlice sourceLinks must include the active AI Core browser evidence workflow");
+}
+
+if (!fixtureReport.nextRecommendedSlice?.sourceLinks?.includes(files.browserCiDispatchReview)) {
+  fail("fixture report nextRecommendedSlice sourceLinks must include the AI Core browser workflow dispatch review");
 }
 
 if (fixtureReport.summary?.browserUiEvaluationCount !== 2) {
@@ -604,7 +644,9 @@ if (!panelEvaluation) {
   for (const planningOnlyLink of [
     files.browserCiProposal,
     files.browserCiActivationApproval,
-    files.browserCiWorkflowDraft
+    files.browserCiWorkflowDraft,
+    files.browserEvidenceWorkflow,
+    files.browserCiDispatchReview
   ]) {
     if (panelEvaluation.evidenceLinks?.includes(planningOnlyLink)) {
       fail(`panel browser UI evaluation must not treat planning-only CI source as pass evidence: ${planningOnlyLink}`);

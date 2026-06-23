@@ -51,12 +51,14 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Run the manual AI Core Browser Evidence workflow with `workflow_dispatch`,
-   inspect the uploaded artifact package, and record the GitHub run evidence
-   before considering it as a required branch-protection check. The default
-   `.github/workflows/ci.yml` path must remain metadata-only, and the browser
-   workflow must remain provider-free, SSH-free, deployment-free, payment-free,
-   and infrastructure-mutation-free.
+1. Open or review the feature branch through a pull request so the manual AI
+   Core Browser Evidence workflow can reach the default branch. After
+   human-approved merge, run it with `workflow_dispatch`, inspect the uploaded
+   artifact package, and record GitHub run evidence before considering it as a
+   required branch-protection check. The default `.github/workflows/ci.yml` path
+   must remain metadata-only, and the browser workflow must remain
+   provider-free, SSH-free, deployment-free, payment-free, and
+   infrastructure-mutation-free.
 
 ## Follow-Up Contract Slice
 
@@ -488,3 +490,22 @@ and 7-day artifact retention for
 not make browser evidence a required check, and does not add providers, SSH,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.
+
+## Browser-Run AI Core Dispatch Availability Slice
+
+Status: Added after manual workflow push.
+
+Evidence:
+
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`
+- `.github/workflows/ai-core-browser-evidence.yml`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+
+This slice records the first GitHub Actions dispatch availability check. The
+attempted `gh workflow run ai-core-browser-evidence.yml --ref
+seis/ai-core-app-foundation-continuation` command returned `HTTP 404` because
+the workflow file is not yet on the repository default branch. No GitHub Actions
+run was created and no browser artifacts were uploaded. This is a workflow
+visibility blocker, not a browser QA failure. The next safe step is PR review
+and human-approved merge before a real `workflow_dispatch` run can produce
+GitHub artifact evidence.

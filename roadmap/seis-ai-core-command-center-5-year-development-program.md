@@ -401,16 +401,22 @@ Completed foundation slice:
   `.github/workflows/ai-core-browser-evidence.yml`, using `workflow_dispatch`,
   read-only permissions, pinned actions, mock/local-only environment variables,
   Chrome/Chromium verification, bounded timeout, and short artifact retention.
+- Browser workflow dispatch availability is reviewed in
+  `docs/evals/ai-core-browser-workflow-dispatch-review.md`; the first dispatch
+  attempt returned the expected default-branch visibility blocker and created no
+  GitHub run.
 
 ## Next Safe Slice
 
-Run `.github/workflows/ai-core-browser-evidence.yml` manually with
-`workflow_dispatch`, inspect the uploaded
-`reports/tmp/seis-core-ai-core-panel-navigation/` artifact package, and record
-the GitHub run evidence before deciding whether browser evidence should become a
-required branch-protection check. The default `.github/workflows/ci.yml` path
-must remain metadata-only, and the browser workflow must remain provider-free,
-SSH-free, deployment-free, payment-free, and infrastructure-mutation-free.
+Open or review the feature branch through a pull request so
+`.github/workflows/ai-core-browser-evidence.yml` can reach the default branch.
+After human-approved merge, run it manually with `workflow_dispatch`, inspect
+the uploaded `reports/tmp/seis-core-ai-core-panel-navigation/` artifact package,
+and record GitHub run evidence before deciding whether browser evidence should
+become a required branch-protection check. The default `.github/workflows/ci.yml`
+path must remain metadata-only, and the browser workflow must remain
+provider-free, SSH-free, deployment-free, payment-free, and
+infrastructure-mutation-free.
 
 ## Relationship to Existing Roadmaps
 

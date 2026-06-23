@@ -8,30 +8,30 @@
     "fullstackLanguageMatrix": "content/development/fullstack-language-matrix.json"
   },
   "summary": {
-    "countedFileCount": 903,
-    "countedBytes": 5345058,
-    "javascriptBytes": 1999383,
-    "javascriptPercent": 37.41,
+    "countedFileCount": 904,
+    "countedBytes": 5348087,
+    "javascriptBytes": 2001213,
+    "javascriptPercent": 37.42,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 4175813,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4181498,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1999383,
-      "percent": 37.41
+      "bytes": 2001213,
+      "percent": 37.42
     },
     {
       "language": "JSON",
       "bytes": 1000586,
-      "percent": 18.72
+      "percent": 18.71
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 10.74
+      "percent": 10.73
     },
     {
       "language": "Python",
@@ -65,8 +65,8 @@
     },
     {
       "language": "YAML",
-      "bytes": 39117,
-      "percent": 0.73
+      "bytes": 40316,
+      "percent": 0.75
     },
     {
       "language": "Go",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1999383,
-      "percent": 37.41,
+      "bytes": 2001213,
+      "percent": 37.42,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2925441,
-      "percent": 54.73,
+      "bytes": 2926640,
+      "percent": 54.72,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -650,7 +650,7 @@
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
         "bytes": 1526886,
-        "percent": 28.57,
+        "percent": 28.55,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2411170,
-        "percent": 45.11,
+        "bytes": 2413000,
+        "percent": 45.12,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -720,8 +720,8 @@
       {
         "id": "go-infrastructure",
         "label": "Go / Infrastructure",
-        "bytes": 161476,
-        "percent": 3.02,
+        "bytes": 162675,
+        "percent": 3.04,
         "minPercent": 5.0,
         "maxPercent": 8.0,
         "status": "below_target",
@@ -775,7 +775,7 @@
     ],
     "unassigned": {
       "bytes": 163345,
-      "percent": 3.06,
+      "percent": 3.05,
       "languages": [
         "ABAP",
         "AWK",
@@ -882,7 +882,7 @@
     {
       "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
       "language": "JavaScript",
-      "bytes": 28031
+      "bytes": 28251
     },
     {
       "path": "scripts/sync-plugin-environment-sources.cjs",
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1578793,
-    "linguist-generated": 3016444,
+    "documentation": 1581184,
+    "linguist-generated": 3016628,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "6f4dc76679499d46d4ee7d47f2481ba0017fb65db26b775644e120bc12895120",
+    "hash": "2f9dfcdc2589e6dce8188be49f9f376105f418ef6b88504faea4a276141f8815",
     "algorithm": "sha256"
   }
 }

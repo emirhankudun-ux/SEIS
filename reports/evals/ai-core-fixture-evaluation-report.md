@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Run the AI Core Browser Evidence workflow manually with workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record the GitHub run evidence in the next review slice, and only then decide whether the browser evidence workflow should become a required branch-protection check.
+Open or review the feature branch through a pull request so the AI Core Browser Evidence workflow can reach the default branch; after human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.
 
 Source links:
 
@@ -55,3 +55,4 @@ Source links:
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `.github/workflows/ai-core-browser-evidence.yml`
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`

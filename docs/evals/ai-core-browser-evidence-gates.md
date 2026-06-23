@@ -103,6 +103,7 @@ production availability.
 
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `.github/workflows/ai-core-browser-evidence.yml`
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
 - `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
@@ -113,6 +114,8 @@ production availability.
 
 ## Next Safe Action
 
-Run `.github/workflows/ai-core-browser-evidence.yml` manually with
-`workflow_dispatch`, review the uploaded artifact package, and keep it out of
-branch protection until first-run evidence is accepted.
+Open or review the feature branch through a pull request so
+`.github/workflows/ai-core-browser-evidence.yml` can reach the default branch.
+After human-approved merge, run it manually with `workflow_dispatch`, review the
+uploaded artifact package, and keep it out of branch protection until first-run
+evidence is accepted.
