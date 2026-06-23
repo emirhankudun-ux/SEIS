@@ -25,9 +25,9 @@
       "blocked": 3
     },
     "totalCategories": 20,
-    "totalEvidenceRecords": 13,
+    "totalEvidenceRecords": 14,
     "evidenceByStatus": {
-      "passed": 12,
+      "passed": 13,
       "blocked": 1
     },
     "totalTasks": 3,
@@ -40,11 +40,12 @@
       "active": 2
     },
     "totalDecisions": 2,
-    "totalReviewRecords": 3,
+    "totalReviewRecords": 4,
     "reviewRecordsByStatus": {
-      "planned": 3
+      "planned": 3,
+      "performed": 1
     },
-    "totalCompletedItems": 3,
+    "totalCompletedItems": 4,
     "totalDeferredItems": 3,
     "totalFollowUpActions": 3,
     "followUpActionsByStatus": {
@@ -119,7 +120,7 @@
       "active": 5,
       "blocked": 3
     },
-    "nextSafeAction": "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
+    "nextSafeAction": "Keep primary checkout merge-conflict state out of Goal Tracking commits and handle repository hygiene in a dedicated pass."
   },
   "progressCards": [
     {
@@ -149,7 +150,7 @@
     {
       "id": "evidence",
       "label": "Evidence",
-      "value": 13,
+      "value": 14,
       "description": "Evidence records with limitations and next actions."
     },
     {
@@ -161,13 +162,13 @@
     {
       "id": "reviews",
       "label": "Reviews",
-      "value": 3,
+      "value": 4,
       "description": "Daily, weekly, and monthly cadence records."
     },
     {
       "id": "completed",
       "label": "Completed",
-      "value": 3,
+      "value": 4,
       "description": "Scoped items finished with evidence."
     },
     {
@@ -304,7 +305,7 @@
           "docs/reviews/GOAL_TRACKING_REVIEW.md"
         ],
         "blockers": [
-          "Pre-existing deletion set remains unresolved"
+          "Primary checkout merge conflicts remain unresolved"
         ],
         "nextAction": "Run validator and keep completion claims scoped."
       },
@@ -350,7 +351,7 @@
           "docs/INDEX.md"
         ],
         "blockers": [
-          "Some branch docs are pre-existing deleted files"
+          "Primary checkout source-of-truth docs have unresolved merge conflicts"
         ],
         "nextAction": "Keep docs updated when records change."
       },
@@ -396,9 +397,9 @@
           "docs/STATUS.md"
         ],
         "blockers": [
-          "Pre-existing tracked deletions remain unstaged"
+          "Primary checkout merge conflicts remain unresolved"
         ],
-        "nextAction": "Stage only scoped Goal Tracking files."
+        "nextAction": "Keep this branch scoped and resolve the primary checkout merge conflicts separately."
       },
       {
         "id": "SEIS-GOAL-008",
@@ -419,9 +420,9 @@
           "docs/STATUS.md"
         ],
         "blockers": [
-          "Dirty worktree and deleted files"
+          "Primary checkout merge conflicts and unresolved repository hygiene"
         ],
-        "nextAction": "Resolve repo hygiene before public readiness dry-run."
+        "nextAction": "Resolve primary checkout merge conflicts before public readiness dry-run."
       },
       {
         "id": "SEIS-GOAL-009",
@@ -444,7 +445,7 @@
         "blockers": [
           "No release dry-run in this slice"
         ],
-        "nextAction": "Run release dry-run only after foundation recovery."
+        "nextAction": "Run release dry-run only after primary checkout hygiene recovery."
       },
       {
         "id": "SEIS-GOAL-010",
@@ -750,7 +751,7 @@
           "SEIS-GOAL-008",
           "SEIS-GOAL-009"
         ],
-        "nextAction": "Handle tracked deletions in a dedicated repository hygiene PR."
+        "nextAction": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass."
       },
       {
         "id": "SEIS-MS-006",
@@ -779,7 +780,7 @@
       },
       {
         "id": "SEIS-TASK-002",
-        "title": "Keep unrelated deletions out of this PR",
+        "title": "Keep primary checkout merge conflicts out of this PR",
         "status": "blocked",
         "priority": "P0 critical",
         "ownerRole": "GitHub Governance",
@@ -787,9 +788,10 @@
           "SEIS-GOAL-007"
         ],
         "evidenceIds": [
-          "SEIS-EVID-004"
+          "SEIS-EVID-004",
+          "SEIS-EVID-014"
         ],
-        "nextAction": "Stage only scoped Goal Tracking OS files."
+        "nextAction": "Continue Goal Tracking work only from the clean isolated worktree and resolve the primary checkout merge in a dedicated hygiene pass."
       },
       {
         "id": "SEIS-TASK-003",
@@ -811,7 +813,7 @@
     "blockedItems": [
       {
         "id": "SEIS-BLOCKER-001",
-        "title": "Pre-existing tracked deletions",
+        "title": "Primary checkout unresolved merge and repository hygiene drift",
         "status": "active",
         "severity": "high",
         "supportsGoalIds": [
@@ -820,9 +822,10 @@
           "SEIS-GOAL-009"
         ],
         "evidenceIds": [
-          "SEIS-EVID-004"
+          "SEIS-EVID-004",
+          "SEIS-EVID-014"
         ],
-        "nextAction": "Handle deletions in a dedicated repository hygiene PR."
+        "nextAction": "Resolve the primary checkout merge conflicts in a dedicated repository hygiene pass before any merge or release readiness claim."
       },
       {
         "id": "SEIS-BLOCKER-002",
@@ -896,11 +899,11 @@
           "SEIS-GOAL-008",
           "SEIS-GOAL-009"
         ],
-        "summary": "Current branch has pre-existing unstaged tracked deletions that are not part of this slice.",
+        "summary": "The primary SEIS checkout has an in-progress merge with unresolved conflicts and a large staged import set. Goal Tracking work continues in a clean isolated worktree to avoid overwriting that state.",
         "limitations": [
-          "Does not decide restore, archive, or deletion outcomes."
+          "Does not resolve merge conflicts, approve file deletion, decide restore/archive outcomes, or merge the isolated branch."
         ],
-        "nextAction": "Do not stage unrelated deletions."
+        "nextAction": "Resolve the primary checkout merge conflicts in a dedicated repository hygiene pass before merging this branch."
       },
       {
         "id": "SEIS-EVID-005",
@@ -929,7 +932,7 @@
         "summary": "A static non-LLM Goal Tracking Center view model and HTML page are generated from structured goal, evidence, and execution records.",
         "limitations": [
           "Does not prove live GitHub state, routed app navigation, deployment, public readiness, release readiness, SSH, model-provider, benchmark, or dataset state.",
-          "Does not resolve pre-existing tracked deletions."
+          "Does not resolve primary checkout merge conflicts."
         ],
         "nextAction": "Keep generated outputs fresh with npm run check:goal-command-center-view."
       },
@@ -945,7 +948,7 @@
         "summary": "Planned daily, weekly, and monthly review cadence records plus scoped completed, deferred, and follow-up ledger records validate without claiming that recurring reviews have been performed.",
         "limitations": [
           "No recurring daily, weekly, or monthly review has been performed by this record.",
-          "Does not resolve unrelated tracked deletions, public readiness, release readiness, live integrations, SSH, model-provider, benchmark, or dataset state."
+          "Does not resolve primary checkout merge conflicts, public readiness, release readiness, live integrations, SSH, model-provider, benchmark, or dataset state."
         ],
         "nextAction": "Keep real performed reviews separate from planned cadence records and record only current-period evidence."
       },
@@ -964,7 +967,7 @@
         "summary": "Yearly, quarterly, monthly, weekly, project, epic, and subtask records are represented as file-backed Goal Tracking OS hierarchy data and validate through the local checker.",
         "limitations": [
           "Does not prove a live project-management application, routed Command Center module, GitHub issue sync, deployment, public readiness, release readiness, SSH, benchmark, model-provider, or dataset state.",
-          "Does not resolve unrelated tracked deletions."
+          "Does not resolve primary checkout merge conflicts."
         ],
         "nextAction": "Keep hierarchy records synchronized with roadmap, status, and generated Goal Tracking Center panels."
       },
@@ -1017,7 +1020,7 @@
         "summary": "Yearly goals, quarterly goals, monthly goals, and weekly priorities are represented as file-backed cycle records and validate through the local checker.",
         "limitations": [
           "Does not prove a performed weekly or monthly review, live issue sync, public readiness, release readiness, deployment, SSH, benchmark, provider, or dataset state.",
-          "Does not resolve unrelated tracked deletions or web/release sync drift."
+          "Does not resolve primary checkout merge conflicts or web/release sync drift."
         ],
         "nextAction": "Keep cycle records synchronized with horizon records, status, and next PR queue."
       },
@@ -1038,7 +1041,7 @@
         "summary": "Goal Tracking OS risk records and validation-step records are represented as file-backed ledgers and validate through the local checker.",
         "limitations": [
           "Does not prove a full security scan, public readiness, release readiness, live GitHub state, deployment, SSH, model-provider, benchmark, or dataset state.",
-          "Does not resolve unrelated tracked deletions or broader worktree drift."
+          "Does not resolve primary checkout merge conflicts or broader worktree drift."
         ],
         "nextAction": "Keep risks and validation steps visible in the generated Goal Tracking Center and update observed results only after checks run."
       },
@@ -1072,9 +1075,25 @@
         "summary": "Every tracked goal has an explicit roadmap-link record connecting it to roadmap, PR queue, and status references.",
         "limitations": [
           "Roadmap links do not prove PRs were opened, merged, validated, or released.",
-          "Does not resolve duplicate legacy backlog ids, unrelated tracked deletions, live GitHub state, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state."
+          "Does not resolve duplicate legacy backlog ids, primary checkout merge conflicts, live GitHub state, public readiness, release readiness, deployment, SSH, model-provider, benchmark, or dataset state."
         ],
         "nextAction": "Keep roadmap-link records synchronized when goals, backlog, PR queue, or status records change."
+      },
+      {
+        "id": "SEIS-EVID-014",
+        "title": "Current Goal Tracking daily review performed",
+        "type": "review",
+        "status": "passed",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-020"
+        ],
+        "summary": "The current objective was read, the primary checkout merge-conflict blocker was identified, the already committed product branch head was pushed, a clean isolated Goal Tracking worktree was created, and the Goal Tracking validators were run before this update.",
+        "limitations": [
+          "Does not resolve the primary checkout merge conflicts, merge a PR, deploy, release, inspect live GitHub write state, run SSH, call model providers, train models, run benchmarks, or download datasets."
+        ],
+        "nextAction": "Keep this performed review scoped to the dated evidence and continue with repository hygiene or Goal Tracking PR review as separate safe work."
       }
     ],
     "readinessConnections": [
@@ -1084,7 +1103,7 @@
         "evidenceLinks": [
           "docs/STATUS.md"
         ],
-        "nextAction": "Resolve repo hygiene before public readiness dry-run."
+        "nextAction": "Resolve primary checkout merge conflicts before public readiness dry-run."
       },
       {
         "category": "Release Readiness",
@@ -1092,7 +1111,7 @@
         "evidenceLinks": [
           "docs/STATUS.md"
         ],
-        "nextAction": "Run release dry-run only after foundation recovery."
+        "nextAction": "Run release dry-run only after primary checkout hygiene recovery."
       },
       {
         "category": "SEIS AI Core",
@@ -1129,9 +1148,9 @@
       },
       {
         "id": "SEIS-DEC-002",
-        "title": "Do not stage unrelated deletion set",
+        "title": "Do not stage unresolved primary checkout merge state",
         "status": "accepted",
-        "decision": "This slice excludes pre-existing unstaged deletions.",
+        "decision": "This slice excludes the primary checkout's unresolved merge/conflict state and continues from an isolated clean Goal Tracking worktree.",
         "consequence": "Repository hygiene stays visible as a blocker instead of being hidden in a Goal Tracking commit."
       }
     ],
@@ -1141,6 +1160,7 @@
         "title": "Daily Goal Tracking review",
         "cadence": "daily",
         "status": "planned",
+        "performedAt": "not performed",
         "ownerRole": "Program System",
         "relatedGoalIds": [
           "SEIS-GOAL-003",
@@ -1159,6 +1179,7 @@
           "next safe action"
         ],
         "completionRule": "Only mark performed when a dated daily review record exists.",
+        "reviewSummary": "",
         "nextAction": "Use docs/goals/daily-review-template.md when a real daily review is performed."
       },
       {
@@ -1166,6 +1187,7 @@
         "title": "Weekly Goal Tracking review",
         "cadence": "weekly",
         "status": "planned",
+        "performedAt": "not performed",
         "ownerRole": "Program System",
         "relatedGoalIds": [
           "SEIS-GOAL-003",
@@ -1187,6 +1209,7 @@
           "priorities"
         ],
         "completionRule": "Only mark performed when current-week evidence exists.",
+        "reviewSummary": "",
         "nextAction": "Use docs/goals/weekly-priorities-template.md for the next real weekly review."
       },
       {
@@ -1194,6 +1217,7 @@
         "title": "Monthly Goal Tracking review",
         "cadence": "monthly",
         "status": "planned",
+        "performedAt": "not performed",
         "ownerRole": "Program System",
         "relatedGoalIds": [
           "SEIS-GOAL-001",
@@ -1220,7 +1244,39 @@
           "SEIS Universe research"
         ],
         "completionRule": "Only mark performed when current-month evidence exists.",
+        "reviewSummary": "",
         "nextAction": "Use docs/goals/monthly-review-template.md for the next real monthly review."
+      },
+      {
+        "id": "SEIS-REVIEW-004",
+        "title": "Current Goal Tracking objective review",
+        "cadence": "daily",
+        "status": "performed",
+        "performedAt": "2026-06-22",
+        "ownerRole": "Program System",
+        "relatedGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-020"
+        ],
+        "relatedTaskIds": [
+          "SEIS-TASK-001",
+          "SEIS-TASK-002"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-014"
+        ],
+        "checklist": [
+          "objective file read",
+          "primary checkout state inspected",
+          "merge-conflict blocker recorded",
+          "clean worktree created",
+          "validators run",
+          "next safe action identified"
+        ],
+        "completionRule": "Performed status is valid only for this dated review and its evidence record.",
+        "reviewSummary": "Read the active Goal Tracking OS objective, inspected repository state, preserved the unresolved primary checkout merge, pushed the already committed branch head, created a clean isolated Goal Tracking worktree, and ran Goal Tracking validation before updating records.",
+        "nextAction": "Keep future daily, weekly, or monthly reviews planned until they have their own dated evidence."
       }
     ],
     "completedItems": [
@@ -1278,6 +1334,25 @@
           "Does not prove routed app navigation, live GitHub state, deployment, public readiness, or release readiness."
         ],
         "nextAction": "Keep generated outputs fresh with npm run check:goal-command-center-view."
+      },
+      {
+        "id": "SEIS-COMPLETE-004",
+        "title": "Current Goal Tracking objective review",
+        "status": "completed",
+        "completedAt": "2026-06-22",
+        "supportsGoalIds": [
+          "SEIS-GOAL-003",
+          "SEIS-GOAL-007",
+          "SEIS-GOAL-020"
+        ],
+        "evidenceIds": [
+          "SEIS-EVID-014"
+        ],
+        "summary": "The active objective was re-read, the current repository blocker was documented, a clean isolated Goal Tracking branch was used, and Goal Tracking validators were run.",
+        "limitations": [
+          "Does not resolve the primary checkout merge conflicts, merge a PR, deploy, release, run SSH, call providers, train models, run benchmarks, or download datasets."
+        ],
+        "nextAction": "Push the isolated Goal Tracking branch after validators pass."
       }
     ],
     "deferredItems": [
@@ -1285,14 +1360,14 @@
         "id": "SEIS-DEFER-001",
         "title": "Repository hygiene recovery",
         "status": "deferred",
-        "reason": "Pre-existing tracked deletions are outside this Goal Tracking OS slice and require dedicated review.",
+        "reason": "The primary checkout has unresolved merge/conflict state and a large staged import set outside this isolated Goal Tracking OS slice.",
         "supportsGoalIds": [
           "SEIS-GOAL-007",
           "SEIS-GOAL-008",
           "SEIS-GOAL-009"
         ],
-        "approvalRequired": "File deletion decisions require explicit approval.",
-        "nextAction": "Handle deletion recovery in a separate repository hygiene PR."
+        "approvalRequired": "Conflict resolution, file deletion decisions, branch reconciliation, or history changes require explicit review and approval where applicable.",
+        "nextAction": "Handle primary checkout merge recovery in a separate repository hygiene PR or operator pass."
       },
       {
         "id": "SEIS-DEFER-002",
@@ -1309,7 +1384,7 @@
         "id": "SEIS-DEFER-003",
         "title": "Public and release readiness claims",
         "status": "deferred",
-        "reason": "Foundation validation is blocked by pre-existing deleted files and readiness dry-runs were not performed.",
+        "reason": "Public/release readiness remains blocked by unresolved primary checkout hygiene and missing readiness dry-runs.",
         "supportsGoalIds": [
           "SEIS-GOAL-008",
           "SEIS-GOAL-009"
@@ -1407,7 +1482,7 @@
           "SEIS-EVID-008"
         ],
         "successCondition": "Repository hygiene, read-only scanner planning, public dry-run, and release dry-run have current evidence.",
-        "nextAction": "Resolve tracked deletion decisions in a dedicated repository hygiene PR before readiness claims."
+        "nextAction": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass before readiness claims."
       },
       {
         "id": "SEIS-HORIZON-003",
@@ -1441,7 +1516,7 @@
           "SEIS-EVID-006",
           "SEIS-EVID-008"
         ],
-        "successCondition": "Scoped Goal Tracking changes validate, unrelated deletions remain unstaged, and branch pushes stay isolated.",
+        "successCondition": "Scoped Goal Tracking changes validate, primary checkout merge state remains untouched, and branch pushes stay isolated.",
         "nextAction": "Keep weekly priorities as planned until a real dated weekly review is recorded."
       }
     ],
@@ -1486,7 +1561,7 @@
         "evidenceIds": [
           "SEIS-EVID-004"
         ],
-        "nextAction": "Decide restore, archive, replace, or approved removal for tracked deletions in a separate PR."
+        "nextAction": "Resolve the primary checkout merge conflicts in a separate repository hygiene pass."
       },
       {
         "id": "SEIS-PROJECT-003",
@@ -1538,7 +1613,7 @@
       {
         "id": "SEIS-EPIC-003",
         "projectId": "SEIS-PROJECT-002",
-        "title": "Tracked deletion triage",
+        "title": "Primary checkout merge-conflict triage",
         "status": "blocked",
         "supportsGoalIds": [
           "SEIS-GOAL-007",
@@ -1548,7 +1623,7 @@
         "evidenceIds": [
           "SEIS-EVID-004"
         ],
-        "nextAction": "Prepare a repository hygiene review before staging deletion changes."
+        "nextAction": "Prepare a repository hygiene review before resolving or staging merge-conflict changes."
       }
     ],
     "subtasks": [
@@ -1585,7 +1660,7 @@
         "id": "SEIS-SUBTASK-003",
         "taskId": "SEIS-TASK-002",
         "epicId": "SEIS-EPIC-003",
-        "title": "Keep repository hygiene deletions out of Goal Tracking commits",
+        "title": "Keep primary checkout merge state out of Goal Tracking commits",
         "status": "blocked",
         "supportsGoalIds": [
           "SEIS-GOAL-007"
@@ -1593,7 +1668,7 @@
         "evidenceIds": [
           "SEIS-EVID-004"
         ],
-        "nextAction": "Do not stage tracked deletions in Goal Tracking OS commits."
+        "nextAction": "Do not stage primary checkout merge-conflict changes in Goal Tracking OS commits."
       }
     ],
     "archiveItems": [
@@ -1690,7 +1765,7 @@
           "SEIS-EVID-011"
         ],
         "successCondition": "Repository hygiene decisions are separated from Goal Tracking commits and scanner planning is ready for review.",
-        "nextAction": "Resolve tracked deletion decisions in a dedicated repository hygiene PR."
+        "nextAction": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass."
       }
     ],
     "monthlyGoals": [
@@ -1735,7 +1810,7 @@
       },
       {
         "id": "SEIS-WEEK-002",
-        "title": "Keep unrelated repository hygiene work unstaged",
+        "title": "Keep primary checkout merge state isolated",
         "status": "blocked",
         "priority": "P0 critical",
         "horizonId": "SEIS-HORIZON-004",
@@ -1749,7 +1824,7 @@
           "SEIS-EVID-010",
           "SEIS-EVID-011"
         ],
-        "nextAction": "Do not stage tracked deletions or unrelated web/release drift in Goal Tracking commits."
+        "nextAction": "Do not stage primary checkout merge-conflict or unrelated web/release drift in Goal Tracking commits."
       },
       {
         "id": "SEIS-WEEK-003",
@@ -1785,8 +1860,8 @@
           "SEIS-EVID-004",
           "SEIS-EVID-012"
         ],
-        "mitigation": "Stage only scoped Goal Tracking files and keep tracked deletion decisions in a dedicated repository hygiene PR.",
-        "nextAction": "Prepare repository hygiene review before staging deletion changes."
+        "mitigation": "Stage only scoped Goal Tracking files and keep the primary checkout merge-conflict state in a dedicated repository hygiene pass.",
+        "nextAction": "Prepare repository hygiene review before resolving or staging merge-conflict changes."
       },
       {
         "id": "SEIS-RISK-002",
@@ -2012,7 +2087,7 @@
         "statusRefs": [
           "docs/STATUS.md#worktree-hygiene"
         ],
-        "nextAction": "Resolve unrelated tracked deletions in a dedicated repository hygiene PR."
+        "nextAction": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass."
       },
       {
         "id": "SEIS-ROADMAP-LINK-008",

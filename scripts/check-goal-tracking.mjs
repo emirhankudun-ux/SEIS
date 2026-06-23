@@ -295,7 +295,15 @@ if (reviewCadence && registry && evidence && execution) {
       }
     }
     if (record.status === "performed") {
-      failures.push(`${label} must not be marked performed without dated review evidence in this foundation pass`);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(record.performed_at || "")) {
+        failures.push(`${label} performed_at must use YYYY-MM-DD when status is performed`);
+      }
+      if ((record.evidence_ids || []).length === 0) {
+        failures.push(`${label} performed reviews must cite evidence ids`);
+      }
+      if (typeof record.review_summary !== "string" || record.review_summary.length < 20) {
+        failures.push(`${label} performed reviews must include a review_summary`);
+      }
     }
   }
 }

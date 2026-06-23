@@ -11,7 +11,7 @@ structured records instead of burying them inside prose.
 
 | ID | Status | Severity | Risk | Next action |
 | --- | --- | --- | --- | --- |
-| `SEIS-RISK-001` | active | high | Repository hygiene drift enters Goal Tracking commits. | Prepare repository hygiene review before staging deletion changes. |
+| `SEIS-RISK-001` | active | high | Repository hygiene drift enters Goal Tracking commits. | Prepare repository hygiene review before resolving or staging merge-conflict changes. |
 | `SEIS-RISK-002` | active | medium | Progress overclaim from planned review records. | Record performed reviews only with current-period evidence. |
 | `SEIS-RISK-003` | active | medium | Generated Goal Tracking Center becomes stale. | Keep `npm run check:goal-command-center-view` in validation. |
 

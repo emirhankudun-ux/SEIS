@@ -28,7 +28,7 @@
       "evidence_ids": ["SEIS-EVID-002", "SEIS-EVID-004", "SEIS-EVID-011"],
       "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md", "docs/goals/cycle-plan.md"],
       "success_condition": "Repository hygiene decisions are separated from Goal Tracking commits and scanner planning is ready for review.",
-      "next_action": "Resolve tracked deletion decisions in a dedicated repository hygiene PR."
+      "next_action": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass."
     }
   ],
   "monthlyGoals": [
@@ -59,14 +59,14 @@
     },
     {
       "id": "SEIS-WEEK-002",
-      "title": "Keep unrelated repository hygiene work unstaged",
+      "title": "Keep primary checkout merge state isolated",
       "status": "blocked",
       "priority": "P0 critical",
       "horizon_id": "SEIS-HORIZON-004",
       "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
       "evidence_ids": ["SEIS-EVID-004", "SEIS-EVID-010", "SEIS-EVID-011"],
       "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
-      "next_action": "Do not stage tracked deletions or unrelated web/release drift in Goal Tracking commits."
+      "next_action": "Do not stage primary checkout merge-conflict or unrelated web/release drift in Goal Tracking commits."
     },
     {
       "id": "SEIS-WEEK-003",

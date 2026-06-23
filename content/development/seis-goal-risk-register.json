@@ -14,8 +14,8 @@
       "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
       "evidence_ids": ["SEIS-EVID-004", "SEIS-EVID-012"],
       "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
-      "mitigation": "Stage only scoped Goal Tracking files and keep tracked deletion decisions in a dedicated repository hygiene PR.",
-      "next_action": "Prepare repository hygiene review before staging deletion changes."
+      "mitigation": "Stage only scoped Goal Tracking files and keep the primary checkout merge-conflict state in a dedicated repository hygiene pass.",
+      "next_action": "Prepare repository hygiene review before resolving or staging merge-conflict changes."
     },
     {
       "id": "SEIS-RISK-002",

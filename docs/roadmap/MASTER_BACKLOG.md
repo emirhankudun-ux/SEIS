@@ -5,7 +5,7 @@ Date: 2026-06-22
 | ID | Priority | Lane | Work | Acceptance evidence |
 | --- | --- | --- | --- | --- |
 | `SEIS-BL-001` | P0 | Goal Tracking OS | Keep structured goal, evidence, and execution records valid. | `npm run check:goal-tracking` passes. |
-| `SEIS-BL-002` | P0 | Repository hygiene | Resolve pre-existing tracked deletions outside this slice. | `git status --short` no longer shows unexplained deletions. |
+| `SEIS-BL-002` | P0 | Repository hygiene | Resolve the primary checkout merge conflicts and repository hygiene drift outside this isolated Goal Tracking branch. | `git status --short` in the primary checkout no longer shows unmerged paths. |
 | `SEIS-BL-003` | P1 | Command Center | Maintain generated/static Goal Tracking view model. | `npm run check:goal-command-center-view` passes and the static page reads JSON records without LLM. |
 | `SEIS-BL-004` | P1 | Goal Tracking OS | Keep review cadence and progress ledger records synchronized with evidence. | `SEIS-EVID-007` exists and `npm run check:goal-tracking` validates review and ledger panels. |
 | `SEIS-BL-005` | P1 | Goal Tracking OS | Keep horizon, project, epic, and subtask hierarchy records synchronized with evidence. | `SEIS-EVID-008` exists and `npm run check:goal-tracking` validates hierarchy panels. |

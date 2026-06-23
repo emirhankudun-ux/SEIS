@@ -133,7 +133,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       totalRoadmapLinks: roadmapLinks.length,
       roadmapLinksByStatus: countBy(roadmapLinks, "status"),
       nextSafeAction: activeBlockers.length > 0
-        ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
+        ? "Keep primary checkout merge-conflict state out of Goal Tracking commits and handle repository hygiene in a dedicated pass."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
     },
     progressCards: [
@@ -180,7 +180,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         milestone("SEIS-MS-002", "Structured goal records", "active", ["SEIS-GOAL-003"], "Keep JSON records validator-clean."),
         milestone("SEIS-MS-003", "Local validator", "active", ["SEIS-GOAL-003", "SEIS-GOAL-006"], "Run npm run check:goal-tracking before every commit."),
         milestone("SEIS-MS-004", "Static Command Center Goal view", "active", ["SEIS-GOAL-002", "SEIS-GOAL-003"], "Keep generated view and page fresh from source records."),
-        milestone("SEIS-MS-005", "Repository hygiene recovery", "blocked", ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"], "Handle tracked deletions in a dedicated repository hygiene PR."),
+        milestone("SEIS-MS-005", "Repository hygiene recovery", "blocked", ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"], "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass."),
         milestone("SEIS-MS-006", "Repository intelligence scanner", "planned", ["SEIS-GOAL-004"], "Design read-only scanner outputs after foundation review.")
       ],
       nextActionQueue: tasks.map((task) => ({
@@ -233,12 +233,14 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         title: record.title,
         cadence: record.cadence,
         status: record.status,
+        performedAt: record.performed_at || "not performed",
         ownerRole: record.owner_role,
         relatedGoalIds: record.related_goal_ids,
         relatedTaskIds: record.related_task_ids,
         evidenceIds: record.evidence_ids,
         checklist: record.checklist,
         completionRule: record.completion_rule,
+        reviewSummary: record.review_summary || "",
         nextAction: record.next_action
       })),
       completedItems: completedItems.map((item) => ({
@@ -624,7 +626,8 @@ function renderDecision(decision) {
 }
 
 function renderReview(record) {
-  return `<tr><td><strong>${escapeHtml(record.id)}</strong><br>${escapeHtml(record.title)}</td><td><span class="badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></td><td>${escapeHtml(record.cadence)}</td><td>${escapeHtml((record.evidenceIds || []).join(", "))}</td><td>${escapeHtml(record.nextAction)}</td></tr>`;
+  const summary = record.reviewSummary ? `<br><span class="muted">${escapeHtml(record.reviewSummary)}</span>` : "";
+  return `<tr><td><strong>${escapeHtml(record.id)}</strong><br>${escapeHtml(record.title)}${summary}</td><td><span class="badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></td><td>${escapeHtml(record.cadence)}<br><span class="muted">${escapeHtml(record.performedAt)}</span></td><td>${escapeHtml((record.evidenceIds || []).join(", "))}</td><td>${escapeHtml(record.nextAction)}</td></tr>`;
 }
 
 function renderCompleted(item) {

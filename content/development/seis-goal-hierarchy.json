@@ -24,7 +24,7 @@
       "evidence_ids": ["SEIS-EVID-002", "SEIS-EVID-004", "SEIS-EVID-008"],
       "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md", "docs/goals/horizon-map.md"],
       "success_condition": "Repository hygiene, read-only scanner planning, public dry-run, and release dry-run have current evidence.",
-      "next_action": "Resolve tracked deletion decisions in a dedicated repository hygiene PR before readiness claims."
+      "next_action": "Resolve primary checkout merge conflicts in a dedicated repository hygiene pass before readiness claims."
     },
     {
       "id": "SEIS-HORIZON-003",
@@ -45,7 +45,7 @@
       "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-007"],
       "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-006", "SEIS-EVID-008"],
       "related_paths": ["docs/goals/weekly-priorities-template.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
-      "success_condition": "Scoped Goal Tracking changes validate, unrelated deletions remain unstaged, and branch pushes stay isolated.",
+      "success_condition": "Scoped Goal Tracking changes validate, primary checkout merge state remains untouched, and branch pushes stay isolated.",
       "next_action": "Keep weekly priorities as planned until a real dated weekly review is recorded."
     }
   ],
@@ -70,7 +70,7 @@
       "milestone_ids": ["SEIS-MS-005"],
       "evidence_ids": ["SEIS-EVID-004"],
       "related_paths": ["docs/STATUS.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
-      "next_action": "Decide restore, archive, replace, or approved removal for tracked deletions in a separate PR."
+      "next_action": "Resolve the primary checkout merge conflicts in a separate repository hygiene pass."
     },
     {
       "id": "SEIS-PROJECT-003",
@@ -108,12 +108,12 @@
     {
       "id": "SEIS-EPIC-003",
       "project_id": "SEIS-PROJECT-002",
-      "title": "Tracked deletion triage",
+      "title": "Primary checkout merge-conflict triage",
       "status": "blocked",
       "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
       "evidence_ids": ["SEIS-EVID-004"],
       "related_paths": ["docs/STATUS.md"],
-      "next_action": "Prepare a repository hygiene review before staging deletion changes."
+      "next_action": "Prepare a repository hygiene review before resolving or staging merge-conflict changes."
     }
   ],
   "subtasks": [
@@ -143,12 +143,12 @@
       "id": "SEIS-SUBTASK-003",
       "task_id": "SEIS-TASK-002",
       "epic_id": "SEIS-EPIC-003",
-      "title": "Keep repository hygiene deletions out of Goal Tracking commits",
+      "title": "Keep primary checkout merge state out of Goal Tracking commits",
       "status": "blocked",
       "supports_goal_ids": ["SEIS-GOAL-007"],
       "evidence_ids": ["SEIS-EVID-004"],
       "related_paths": ["docs/STATUS.md"],
-      "next_action": "Do not stage tracked deletions in Goal Tracking OS commits."
+      "next_action": "Do not stage primary checkout merge-conflict changes in Goal Tracking OS commits."
     }
   ]
 }

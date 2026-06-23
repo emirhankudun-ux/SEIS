@@ -6,7 +6,7 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P0 |
 | Goal | Keep every SEIS workstream connected to the canonical GitHub repository through evidence, validation, and PR sequencing. |
 | Include | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/STATUS.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, `docs/roadmap/MASTER_BACKLOG.md`, `docs/roadmap/NEXT_PR_QUEUE.md`, `docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md`. |
@@ -46,7 +46,7 @@ Date: 2026-06-22
 | Priority | P0 |
 | Goal | Add file-backed Goal Tracking OS docs, JSON records, validator, status, backlog, and PR queue. |
 | Include | `docs/goals/*`, `docs/product/*`, `docs/reviews/GOAL_TRACKING_REVIEW.md`, `docs/roadmap/*`, `docs/STATUS.md`, `docs/INDEX.md`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `package.json`. |
-| Exclude | Unrelated tracked deletions, live GitHub API calls, SSH, deployment, release actions, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Primary checkout merge-conflict state, live GitHub API calls, SSH, deployment, release actions, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `node --check scripts/check-goal-tracking.mjs`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/validator work. |
 
@@ -54,11 +54,11 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
-| Goal | Add planned review cadence records plus completed/deferred/follow-up ledger records to the generated Goal Tracking Center. |
-| Include | `content/development/seis-goal-review-cadence.json`, `content/development/seis-goal-progress-ledger.json`, `docs/goals/review-cadence.md`, `docs/goals/progress-ledger.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html`. |
-| Exclude | Fake performed recurring reviews, live GitHub API calls, unrelated tracked deletions, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Goal | Add planned review cadence records, the current dated performed review, plus completed/deferred/follow-up ledger records to the generated Goal Tracking Center. |
+| Include | `content/development/seis-goal-review-cadence.json`, `content/development/seis-goal-progress-ledger.json`, `docs/goals/review-cadence.md`, `docs/goals/progress-ledger.md`, `docs/reviews/GOAL_TRACKING_PR_READINESS.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html`. |
+| Exclude | Fake performed recurring reviews, live GitHub API calls, primary checkout merge-conflict state, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
@@ -66,11 +66,11 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Add yearly, quarterly, monthly, weekly, active project, epic, and subtask hierarchy records to the generated Goal Tracking Center. |
 | Include | `content/development/seis-goal-hierarchy.json`, `docs/goals/horizon-map.md`, `docs/goals/project-epic-task-map.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html`. |
-| Exclude | Live GitHub issue/project sync, unrelated tracked deletions, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Live GitHub issue/project sync, primary checkout merge-conflict state, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
@@ -78,11 +78,11 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Make goal object metadata fields real registry fields: creation date, milestone, epic, last reviewed, review cadence, and notes. |
 | Include | `content/development/seis-goal-tracking.json`, `content/development/seis-goal-evidence.json`, `docs/goals/goal-schema.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
-| Exclude | Fake performed reviews, live GitHub issue/project sync, unrelated tracked deletions, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Fake performed reviews, live GitHub issue/project sync, primary checkout merge-conflict state, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
@@ -90,7 +90,7 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Keep historical reference, repository hygiene review candidates, and deferred readiness claims separate from active official goals. |
 | Include | `content/development/seis-goal-archive-ledger.json`, `docs/goals/archive-ledger.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
@@ -102,11 +102,11 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Add yearly goals, quarterly goals, monthly goals, and weekly priorities as file-backed Goal Tracking OS cycle records. |
 | Include | `content/development/seis-goal-cycle-plan.json`, `docs/goals/cycle-plan.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
-| Exclude | Fake performed weekly/monthly reviews, live GitHub issue/project sync, unrelated tracked deletions, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Fake performed weekly/monthly reviews, live GitHub issue/project sync, primary checkout merge-conflict state, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
@@ -114,11 +114,11 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Add first-class risk and validation-step ledgers to the non-LLM Goal Tracking OS. |
 | Include | `content/development/seis-goal-risk-register.json`, `content/development/seis-goal-validation-steps.json`, `docs/goals/risk-register.md`, `docs/goals/validation-steps.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
-| Exclude | Fake risk mitigation, fake performed validation, live GitHub issue/project sync, unrelated tracked deletions, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Fake risk mitigation, fake performed validation, live GitHub issue/project sync, primary checkout merge-conflict state, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
@@ -126,21 +126,24 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
-| Suggested branch | `seis/product-experience-suite` |
+| Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Add explicit roadmap, PR queue, and status link records for every tracked Goal Tracking OS goal. |
 | Include | `content/development/seis-goal-roadmap-links.json`, `docs/goals/roadmap-links.md`, `content/development/seis-goal-evidence.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, generated Goal Tracking Center outputs. |
-| Exclude | Fake opened/merged PR state, live GitHub issue/project sync, unrelated tracked deletions, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
+| Exclude | Fake opened/merged PR state, live GitHub issue/project sync, primary checkout merge-conflict state, web/release sync drift, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
-## PR 2: Repository Hygiene Recovery
+## PR 2: Primary Checkout Repository Hygiene Recovery
 
 | Field | Value |
 | --- | --- |
 | Priority | P0 |
-| Goal | Decide restore, replace, archive, or approved removal for pre-existing tracked deletions. |
-| Approval needed | File deletion if any deleted files are intentionally removed. |
+| Goal | Resolve the primary `/SEIS` checkout's in-progress merge conflicts and large staged import set without overwriting user work. |
+| Include | Conflict inventory, keep/restore/archive decisions, generated-file regeneration where appropriate, and a clean `git status --short` result for the primary checkout. |
+| Exclude | Force-push, history rewrite, branch deletion, unreviewed file deletion, deployment, release/tag creation, SSH, provider calls, benchmarks, or dataset downloads. |
+| Validation | `git diff --name-only --diff-filter=U` returns empty, `git status --short` has no unmerged entries, targeted validators for any resolved files. |
+| Approval needed | File deletion, branch deletion, force-push, history rewrite, merge, deployment, release/tag creation, SSH, secret rotation, benchmark execution, or dataset download. |
 
 ## PR 3: Static Goal Tracking Center Maintenance
 

@@ -9,12 +9,12 @@ deployment, public-readiness, or merge-readiness claim.
 
 | Area | Status | Evidence | Next action |
 | --- | --- | --- | --- |
-| Branch | Non-main branch | `seis/product-experience-suite` | Keep work scoped and push only this branch. |
-| Goal Tracking OS | Foundation plus generated static view, review cadence, progress ledger, hierarchy map, goal metadata, archive ledger, cycle plan, risk register, validation steps, and roadmap links added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, metadata, archive, cycle plan, risk, validation-step, and roadmap-link checks passing. |
-| Worktree hygiene | Dirty but no tracked deletions currently visible | `git status --short` shows modified and untracked foundation/product files, but no `D` entries. | Review and stage only the coherent foundation/product slice. |
+| Branch | Non-main isolated worktree branch | `seis/goal-tracking-os-foundation`, based on pushed `origin/seis/product-experience-suite` | Keep this branch scoped and push only this branch. |
+| Goal Tracking OS | Foundation plus generated static view, planned and performed review records, progress ledger, hierarchy map, goal metadata, archive ledger, cycle plan, risk register, validation steps, and roadmap links added | `docs/goals/*`, `content/development/seis-goal-*.json`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `apps/web/goal-tracking.html` | Keep validator, generated view freshness, review cadence, ledger, hierarchy, metadata, archive, cycle plan, risk, validation-step, and roadmap-link checks passing. |
+| Worktree hygiene | Isolated branch clean before this update; primary `/SEIS` checkout is merge-conflicted | `git status --short` in this worktree started clean; `SEIS-EVID-004` and `SEIS-EVID-014` document the primary checkout merge blocker. | Keep this branch isolated and resolve primary checkout conflicts in a dedicated repository hygiene pass. |
 | SEIS integration posture | Documented | `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json` | Use the integration map to reconcile one SEIS workstream per PR. |
 | GitHub PR state | Read-only inspected | `gh pr list --state open --limit 30` found 25 open PRs; `gh pr list --state closed --limit 30` found 13 recently closed PRs, all merged in the returned set. | Do not merge, close, or reopen without approval; triage into a dedicated PR-stack review. |
-| Public readiness | Not ready | Worktree is dirty, full secret-history scan and browser QA are incomplete. | Resolve blockers before public preparation. |
+| Public readiness | Not ready | Primary checkout is merge-conflicted; full secret-history scan and public-readiness dry-run are incomplete. | Resolve blockers before public preparation. |
 | Release readiness | Not ready | Static build passed, but no release dry-run, tag, deployment, or rollback drill was performed. | Defer release work until review. |
 | GitHub Actions | Needs alignment | `.github/workflows/foundation-check.yml` references `npm run check:js` and `npm run package:server`, which are not declared in `package.json`. | Align CI scripts in a dedicated CI PR without weakening checks. |
 
@@ -50,7 +50,7 @@ deployment, public-readiness, or merge-readiness claim.
 | `node --check scripts/create-goal-command-center-view.mjs` | Passed | View generator syntax is valid. |
 | `jq empty content/development/seis-goal-tracking.json content/development/seis-goal-evidence.json content/development/seis-goal-execution.json content/development/seis-goal-review-cadence.json content/development/seis-goal-progress-ledger.json content/development/seis-goal-hierarchy.json content/development/seis-goal-archive-ledger.json content/development/seis-goal-cycle-plan.json content/development/seis-goal-risk-register.json content/development/seis-goal-validation-steps.json content/development/seis-goal-roadmap-links.json content/development/seis-goal-command-center-view.json` | Passed | Structured records and generated view model parse as JSON. |
 | `jq empty content/development/seis-integration-map.json content/development/seis-goal-command-center-view.json` | Passed | Integration map and generated Goal Tracking view parse as JSON. |
-| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 13 evidence records, 3 tasks, 2 blockers, 2 decisions, 3 review records, 3 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, 3 archive items, 1 yearly goal, 1 quarterly goal, 1 monthly goal, 3 weekly priorities, 3 risks, 3 validation steps, 20 roadmap links, generated view model, and static page validate. |
+| `npm run check:goal-tracking` | Passed | 20 goals, 20 categories, 14 evidence records, 3 tasks, 2 blockers, 2 decisions, 4 review records, 4 completed items, 3 deferred items, 3 follow-up actions, 4 horizons, 3 projects, 3 epics, 3 subtasks, 3 archive items, 1 yearly goal, 1 quarterly goal, 1 monthly goal, 3 weekly priorities, 3 risks, 3 validation steps, 20 roadmap links, generated view model, and static page validate. |
 | `npm run check:goal-command-center-view` | Passed | Generated view model and static page are fresh. |
 | `npm run check:data-schema-registry` | Passed | Data schema registry validates current records, required top-level keys, and referenced validation commands, including plugin interface support data and product browser-smoke evidence. |
 | `npm run check:plugin-interface-roadmap` | Passed | Validates five plugin lanes, evidence paths, the 2026-2030 horizon, development-program commitments, H1/H2 cadence routines, maturity signals, readiness gates, coverage metrics, and static web bindings. |
@@ -97,4 +97,5 @@ deployment, public-readiness, or merge-readiness claim.
   files, and secret folders while keeping example env files trackable.
 - No SSH, deployment, dependency installation, model training, benchmark, or
   dataset download was performed.
-- Unrelated deletion handling remains approval-gated.
+- Primary checkout merge-conflict recovery, file deletion decisions, and branch
+  reconciliation remain approval/review-gated as applicable.
