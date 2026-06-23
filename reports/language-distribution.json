@@ -9,39 +9,39 @@
   },
   "summary": {
     "countedFileCount": 901,
-    "countedBytes": 5296213,
-    "javascriptBytes": 1951346,
-    "javascriptPercent": 36.84,
+    "countedBytes": 5300000,
+    "javascriptBytes": 1954829,
+    "javascriptPercent": 36.88,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 3995910,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4008709,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1951346,
-      "percent": 36.84
+      "bytes": 1954829,
+      "percent": 36.88
     },
     {
       "language": "JSON",
-      "bytes": 999785,
-      "percent": 18.88
+      "bytes": 1000089,
+      "percent": 18.87
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 10.84
+      "percent": 10.83
     },
     {
       "language": "Python",
       "bytes": 507341,
-      "percent": 9.58
+      "percent": 9.57
     },
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 7.78
+      "percent": 7.77
     },
     {
       "language": "CSS",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1951346,
-      "percent": 36.84,
+      "bytes": 1954829,
+      "percent": 36.88,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 7.78,
+      "percent": 7.77,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2924633,
-      "percent": 55.22,
+      "bytes": 2924937,
+      "percent": 55.19,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -634,7 +634,7 @@
         "id": "apple-swift-ecosystem",
         "label": "Apple / Swift ecosystem",
         "bytes": 583379,
-        "percent": 11.02,
+        "percent": 11.01,
         "minPercent": 25.0,
         "maxPercent": 30.0,
         "status": "below_target",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1526085,
-        "percent": 28.81,
+        "bytes": 1526389,
+        "percent": 28.8,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2363133,
-        "percent": 44.62,
+        "bytes": 2366616,
+        "percent": 44.65,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -761,7 +761,7 @@
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
         "bytes": 437446,
-        "percent": 8.26,
+        "percent": 8.25,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -885,6 +885,11 @@
       "bytes": 27637
     },
     {
+      "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
+      "language": "JavaScript",
+      "bytes": 26349
+    },
+    {
       "path": "packages/seis-ai/test/checks.test.mjs",
       "language": "JavaScript",
       "bytes": 25298
@@ -893,17 +898,12 @@
       "path": "scripts/create-seis-ecosystem-intake.cjs",
       "language": "JavaScript",
       "bytes": 25262
-    },
-    {
-      "path": "packages/seis-ai/src/lib/checks.mjs",
-      "language": "JavaScript",
-      "bytes": 24228
     }
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1537166,
-    "linguist-generated": 3012748,
+    "documentation": 1540696,
+    "linguist-generated": 3015159,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "befc513fb344e21492e9962cefa81fc3bd450e855ff16467f8380b77bc91c9b5",
+    "hash": "a43c9799561ca99f37c60aa88e27dd81747e37c200b2320f9d2fbb128831212c",
     "algorithm": "sha256"
   }
 }

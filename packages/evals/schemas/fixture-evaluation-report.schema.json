@@ -43,6 +43,7 @@
         "promptEvaluationCount",
         "appStateEvaluationCount",
         "retrievalEvaluationCount",
+        "browserUiEvaluationCount",
         "passed",
         "failed",
         "blocked",
@@ -58,6 +59,10 @@
           "minimum": 1
         },
         "retrievalEvaluationCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "browserUiEvaluationCount": {
           "type": "integer",
           "minimum": 0
         },
@@ -144,10 +149,10 @@
           "$ref": "#/$defs/id"
         },
         "layer": {
-          "enum": ["prompt-regression", "app-state", "retrieval"]
+          "enum": ["prompt-regression", "app-state", "retrieval", "browser-ui"]
         },
         "targetType": {
-          "enum": ["prompt", "app-state", "retrieval"]
+          "enum": ["prompt", "app-state", "retrieval", "retrieval-ui", "browser-ui"]
         },
         "targetId": {
           "$ref": "#/$defs/id"
@@ -156,7 +161,7 @@
           "$ref": "#/$defs/repoPath"
         },
         "privacyClass": {
-          "enum": ["synthetic", "metadata-only", "local-fixture", "restricted-archive"]
+          "enum": ["synthetic", "metadata-only", "local-fixture", "local-browser-fixture", "restricted-archive"]
         },
         "rubric": {
           "type": "array",

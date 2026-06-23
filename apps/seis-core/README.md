@@ -151,3 +151,22 @@ intentionally ignored by Git. The committed evidence contract lives in
 This visual QA path is fixture-backed only. It does not call providers, run live
 retrieval, create embeddings, write memory, inspect secrets, execute SSH,
 deploy, or mutate infrastructure.
+
+Run the browser-backed AI Core panel navigation QA path with:
+
+```bash
+npm run qa:seis-core:ai-core-panels
+```
+
+The command starts a temporary local server, opens the Command Center from the
+Dashboard, navigates to AI Core through sidebar navigation, the command palette,
+and global search, then verifies route, prompt, agent, approval, evaluation,
+evidence, and Local Retrieval sections across desktop and mobile browser
+viewports. It writes ignored DOM dumps, sanitized JSON interaction reports, and
+a manifest under `reports/tmp/seis-core-ai-core-panel-navigation/`. The
+committed evidence contract lives in
+`reports/evals/ai-core-panel-navigation-browser-qa.md`.
+
+This panel QA path is fixture-backed only. It does not call providers, run live
+retrieval, create embeddings, write memory, inspect secrets, execute SSH,
+deploy, or mutate infrastructure.

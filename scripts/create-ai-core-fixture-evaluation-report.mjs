@@ -12,6 +12,7 @@ const retrievalSearchTranscriptFixturePath = "packages/data/fixtures/local-reado
 const tokenFeedFixturePath = "packages/data/fixtures/seis-10m-token-feed-budget.json";
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const browserQaReportPath = "reports/evals/local-retrieval-browser-visual-qa.md";
+const panelNavigationQaReportPath = "reports/evals/ai-core-panel-navigation-browser-qa.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -461,10 +462,13 @@ const retrievalEvaluations = [
       "scripts/check-token-feed-budget.mjs",
       "docs/ai/context-memory-boundary.md"
     ]
-  },
+  }
+];
+
+const browserUiEvaluations = [
   {
-    id: "eval-retrieval-local-browser-interaction-qa",
-    layer: "retrieval",
+    id: "eval-browser-ui-local-retrieval-interaction-qa",
+    layer: "browser-ui",
     targetType: "retrieval-ui",
     targetId: "local-retrieval-browser-interaction-qa",
     sourceFixture: browserQaReportPath,
@@ -496,10 +500,46 @@ const retrievalEvaluations = [
       "scripts/capture-seis-core-local-retrieval-visual.mjs",
       "apps/seis-core/test/seis-core-static.test.js"
     ]
+  },
+  {
+    id: "eval-browser-ui-ai-core-panel-navigation-qa",
+    layer: "browser-ui",
+    targetType: "browser-ui",
+    targetId: "ai-core-panel-navigation-browser-qa",
+    sourceFixture: panelNavigationQaReportPath,
+    privacyClass: "local-browser-fixture",
+    rubric: [
+      "browser-run AI Core panel navigation evidence documented",
+      "sidebar, command palette, and global search navigation documented",
+      "route, prompt, agent, approval, evaluation, evidence, and Local Retrieval sections documented",
+      "desktop and mobile scenarios documented",
+      "provider, raw content, memory, embedding, GitHub write, SSH, deployment, and infrastructure actions remain disabled"
+    ],
+    passCriteria: [
+      "QA command is npm run qa:seis-core:ai-core-panels",
+      "desktop and mobile panel navigation scenarios are declared",
+      "sidebar, command palette, and global search steps are verified",
+      "route, prompt, agent, approval, evidence, and Local Retrieval panels are verified",
+      "generated browser artifacts stay under ignored reports/tmp",
+      "non-claims exclude live providers, live retrieval, embeddings, memory writes, raw content, and privileged actions"
+    ],
+    observedOutputSummary: "Browser-run AI Core panel navigation QA covers Dashboard-to-AI-Core navigation through sidebar, command palette, and global search, then verifies fixture-backed route, prompt, agent, approval, evidence, and Local Retrieval panels across desktop and mobile scenarios.",
+    limitations: [
+      "Browser artifacts are local and ignored; the committed report documents the repeatable evidence contract.",
+      "Pass does not create live provider routing, live retrieval, embedding search, persistent memory, raw-content return, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
+    ],
+    reviewer: "codex-browser-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      panelNavigationQaReportPath,
+      "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
+      "apps/seis-core/README.md"
+    ]
   }
 ];
 
-const evaluations = [...promptEvaluations, ...appStateEvaluations, ...retrievalEvaluations];
+const evaluations = [...promptEvaluations, ...appStateEvaluations, ...retrievalEvaluations, ...browserUiEvaluations];
 
 const report = {
   version: 1,
@@ -516,12 +556,14 @@ const report = {
     retrievalAdapterFixturePath,
     retrievalSearchTranscriptFixturePath,
     tokenFeedFixturePath,
-    browserQaReportPath
+    browserQaReportPath,
+    panelNavigationQaReportPath
   ],
   summary: {
     promptEvaluationCount: promptEvaluations.length,
     appStateEvaluationCount: appStateEvaluations.length,
     retrievalEvaluationCount: retrievalEvaluations.length,
+    browserUiEvaluationCount: browserUiEvaluations.length,
     passed: countByResult(evaluations, "pass"),
     failed: countByResult(evaluations, "fail"),
     blocked: countByResult(evaluations, "blocked"),
@@ -530,11 +572,12 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add browser-run AI Core panel navigation QA across desktop and mobile viewports.",
+    summary: "Add report and validator drift hardening for browser-run AI Core QA evidence.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
-      "apps/seis-core/README.md"
+      "apps/seis-core/README.md",
+      "reports/evals/ai-core-panel-navigation-browser-qa.md"
     ]
   }
 };
@@ -599,6 +642,7 @@ function createMarkdown(reportData) {
     `- Prompt evaluations: ${reportData.summary.promptEvaluationCount}`,
     `- App-state evaluations: ${reportData.summary.appStateEvaluationCount}`,
     `- Retrieval evaluations: ${reportData.summary.retrievalEvaluationCount}`,
+    `- Browser UI evaluations: ${reportData.summary.browserUiEvaluationCount}`,
     `- Passed: ${reportData.summary.passed}`,
     `- Failed: ${reportData.summary.failed}`,
     `- Blocked: ${reportData.summary.blocked}`,

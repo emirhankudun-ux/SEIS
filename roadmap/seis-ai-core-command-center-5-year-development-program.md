@@ -365,13 +365,20 @@ Completed foundation slice:
   source-class selection, transcript-state selection, reset behavior, focus
   preservation, status text, credential-boundary filtering, and empty-state
   behavior across desktop and mobile browser scenarios.
+- Browser-run AI Core panel navigation QA now extends the Command Center
+  evidence path through `npm run qa:seis-core:ai-core-panels`, verifying
+  sidebar navigation, command palette navigation, global search navigation,
+  route, prompt, agent, approval, evaluation, evidence, and Local Retrieval
+  sections across desktop and mobile browser scenarios.
 
 ## Next Safe Slice
 
-Add browser-run AI Core panel navigation QA for route, prompt, agent, approval,
-evaluation, evidence, and Local Retrieval sections across desktop and mobile
-viewports without adding live providers, embeddings, memory writes, raw-content
-behavior, GitHub writes, SSH, deployment, or infrastructure mutation.
+Add report and validator drift hardening for browser-run AI Core QA evidence so
+the schema, generated evaluation report, Command Center validator, README,
+evaluation strategy, and five-year roadmap fail fast when browser UI evidence is
+missing or stale. This must remain fixture-backed and must not add live
+providers, embeddings, memory writes, raw-content behavior, GitHub writes, SSH,
+deployment, payment, or infrastructure mutation.
 
 ## Relationship to Existing Roadmaps
 

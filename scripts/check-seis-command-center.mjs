@@ -15,7 +15,9 @@ const requiredFiles = [
 ];
 const requiredRootFiles = [
   "scripts/capture-seis-core-local-retrieval-visual.mjs",
-  "reports/evals/local-retrieval-browser-visual-qa.md"
+  "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
+  "reports/evals/local-retrieval-browser-visual-qa.md",
+  "reports/evals/ai-core-panel-navigation-browser-qa.md"
 ];
 
 const requiredModules = [
@@ -100,6 +102,7 @@ const manifest = JSON.parse(await readFile(path.join(appRoot, "manifest.webmanif
 const readme = await readFile(path.join(appRoot, "README.md"), "utf8");
 const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
 const visualQaReport = await readFile(path.join(root, "reports", "evals", "local-retrieval-browser-visual-qa.md"), "utf8");
+const panelNavigationQaReport = await readFile(path.join(root, "reports", "evals", "ai-core-panel-navigation-browser-qa.md"), "utf8");
 const architectureDocPath = path.join(root, "docs", "architecture", "seis-command-center.md");
 
 if (!existsSync(architectureDocPath)) {
@@ -150,8 +153,16 @@ if (!packageJson.scripts?.["qa:seis-core:local-retrieval:visual"]) {
   fail("package.json must expose qa:seis-core:local-retrieval:visual");
 }
 
+if (!packageJson.scripts?.["qa:seis-core:ai-core-panels"]) {
+  fail("package.json must expose qa:seis-core:ai-core-panels");
+}
+
 if (!readme.includes("npm run qa:seis-core:local-retrieval:visual")) {
   fail("README must document Local Retrieval visual QA command");
+}
+
+if (!readme.includes("npm run qa:seis-core:ai-core-panels")) {
+  fail("README must document AI Core panel navigation QA command");
 }
 
 if (
@@ -161,6 +172,25 @@ if (
   !visualQaReport.includes("Non-Claims")
 ) {
   fail("Local Retrieval browser QA report must document visual evidence, interaction evidence, and non-claims");
+}
+
+const normalizedPanelNavigationQaReport = panelNavigationQaReport.toLowerCase();
+for (const requiredText of [
+  "Browser-run AI Core panel navigation QA evidence",
+  "route",
+  "prompt",
+  "agent",
+  "approval",
+  "evaluation",
+  "evidence",
+  "Local Retrieval",
+  "desktop",
+  "mobile",
+  "Non-Claims"
+]) {
+  if (!normalizedPanelNavigationQaReport.includes(requiredText.toLowerCase())) {
+    fail(`AI Core panel navigation QA report missing required text: ${requiredText}`);
+  }
 }
 
 console.log("SEIS Command Center check passed.");

@@ -125,6 +125,16 @@ fixture-backed Local Retrieval toolbar without turning the UI into live
 retrieval, provider routing, embedding search, memory write behavior,
 raw-content return, or a pixel-baseline regression suite.
 
+The browser-run AI Core panel navigation QA path is documented in
+`reports/evals/ai-core-panel-navigation-browser-qa.md` and executed with
+`npm run qa:seis-core:ai-core-panels`. It starts from Dashboard, opens AI Core
+through sidebar navigation, the command palette, and global search, then
+verifies fixture-backed route, prompt, agent, approval, evaluation, evidence,
+and Local Retrieval sections across desktop and mobile browser scenarios. This
+adds rendered-browser navigation evidence for the AI Core panel without adding
+live providers, live retrieval, embeddings, persistent memory writes, raw
+content, GitHub writes, SSH, deployment, payment, or infrastructure mutation.
+
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and
 `npm run check:token-feed-budget`. It verifies a 10,000,000 token metadata-only

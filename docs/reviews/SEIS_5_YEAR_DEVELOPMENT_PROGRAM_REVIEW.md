@@ -51,7 +51,9 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add retrieval result card rendering and no-content search transcript fixtures.
+1. Add report and validator drift hardening for browser-run AI Core QA evidence
+   so schema, generated reports, validators, and docs fail fast when evidence is
+   missing or stale.
 
 ## Follow-Up Contract Slice
 
@@ -331,3 +333,26 @@ create live retrieval, provider routing, embeddings, persistent memory writes,
 raw-content return, secret lookup, GitHub write actions, SSH execution,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.
+
+## Browser-Run AI Core Panel Navigation QA Slice
+
+Status: Added after the browser-run Local Retrieval interaction QA slice.
+
+Evidence:
+
+- `scripts/capture-seis-core-ai-core-panel-navigation.mjs`
+- `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `apps/seis-core/README.md`
+- `docs/evals/evaluation-strategy.md`
+- `npm run qa:seis-core:ai-core-panels`
+- `npm run check:seis-command-center`
+
+This slice extends browser-run evidence from the Local Retrieval toolbar to the
+broader AI Core panel. It starts from Dashboard, opens AI Core through sidebar
+navigation, the command palette, and global search, then verifies fixture-backed
+route, prompt, agent, approval, evaluation, evidence, and Local Retrieval
+sections across desktop and mobile browser viewports. It remains fixture-backed
+and local-only: it does not create live provider routing, live retrieval,
+embeddings, persistent memory writes, raw-content return, secret lookup, GitHub
+write actions, SSH execution, deployment, payment, infrastructure mutation,
+benchmark claims, or model-training evidence.
