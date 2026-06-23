@@ -145,6 +145,15 @@ the ignored manifest and desktop/mobile JSON reports under
 viewports, step order, panel counts, safety flags, artifact paths, and
 non-claims. `npm run check:ai-core-eval-evidence` aggregates the fixture report,
 browser QA evidence, and Command Center checks as a read-only metadata gate.
+
+The shared AI Core/App fixture now includes `goalEvidenceGates`. These gates
+map each active goal to required documentation, fixture, validation,
+browser-evidence, and security-boundary checks. `npm run
+check:ai-core-app-contracts` fails if a goal is marked validated or complete
+while a required gate is not passing, or if a gate points to missing evidence.
+This keeps operating scorecards derived from evidence gates rather than
+subjective readiness labels.
+
 The CI/local browser split is documented in
 `docs/evals/ai-core-browser-evidence-gates.md`: default CI should keep
 metadata gates, while `npm run qa:seis-core:ai-core-evidence` runs locally or

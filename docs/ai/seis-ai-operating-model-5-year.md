@@ -156,7 +156,14 @@ Forbidden subagent behavior:
 
 ## Command Center Integration
 
-Command Center should expose this operating model through:
+Command Center now exposes this operating model through a read-only,
+fixture-backed AI Operating Model panel in `apps/seis-core/index.html`. That
+panel is backed by `task-ai-operating-model`, `eval-ai-operating-model`,
+`audit-ai-operating-model`, `roadmap-year-1-ai-operating-model`,
+`goal-five-year-development`, and the related `goalEvidenceGates` records in
+`packages/shared-types/fixtures/ai-core-command-center-foundation.json`.
+
+Command Center should continue exposing this operating model through:
 
 - Agent Center role cards.
 - AI Core route and prompt panels.
@@ -183,6 +190,10 @@ It must not show:
 - fake deployment state
 - fake benchmark numbers
 - hidden autonomous authority
+
+The current Command Center panel does not make provider calls, spawn live
+agents, execute SSH commands, mutate GitHub, deploy infrastructure, run model
+training, run benchmarks, or claim a completed SEIS-owned model.
 
 ## Operating Metrics
 

@@ -211,6 +211,36 @@ provider keys, GitHub write actions, SSH execution, deployment, scheduled jobs,
 payments, dataset downloads, model training, benchmarks, checkpoints, or model
 cards.
 
+## AI Operating Model Evidence Gate Registry Slice
+
+Status: Added after the follow-up AI operating model slice.
+
+Evidence:
+
+- `packages/shared-types/schemas/ai-core-app-contract.schema.json`
+- `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `apps/seis-core/ai-core-contract-fixture.js`
+- `apps/seis-core/index.html`
+- `apps/seis-core/script.js`
+- `apps/seis-core/test/seis-core-static.test.js`
+- `scripts/check-ai-core-app-contracts.mjs`
+- `scripts/check-seis-command-center.mjs`
+- `docs/architecture/ai-core-app-shared-contracts.md`
+- `docs/evals/evaluation-strategy.md`
+- `docs/ai/seis-ai-operating-model-5-year.md`
+- `npm run check:ai-core-app-contracts`
+- `npm run test:seis-command-center`
+
+This slice adds `goalEvidenceGate` records to the shared AI Core/App contract.
+Each active goal now maps to required evidence gates with gate status, evidence
+path, blocker, non-claims, and next safe action. The validator fails if a goal
+is marked validated or complete while a required gate is not passing, or if a
+gate points to missing evidence. Command Center also renders the five-year AI
+operating model and its gates as read-only fixture cards. This is not a live
+agent scheduler, provider health check, production orchestration claim,
+training run, benchmark, checkpoint, model-card claim, SSH execution, GitHub
+mutation, deployment, payment, or infrastructure action.
+
 ## Follow-Up 10,000,000 Token Feed Budget Slice
 
 Status: Added after the knowledge-source classification and route contract

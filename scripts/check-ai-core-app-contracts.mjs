@@ -66,6 +66,7 @@ const requiredTopLevel = [
   "roadmapItems",
   "aiSurfaces",
   "repositoryIntelligence",
+  "goalEvidenceGates",
   "goalTrackingStates"
 ];
 
@@ -131,6 +132,24 @@ const expectedRetrievalStates = [
   "blocked"
 ];
 
+const expectedGoalGateTypes = [
+  "documentation",
+  "schema",
+  "fixture",
+  "validation",
+  "browser-evidence",
+  "security-boundary",
+  "human-approval",
+  "non-claim"
+];
+
+const expectedGoalGateStatuses = [
+  "pass",
+  "fail",
+  "blocked",
+  "unknown"
+];
+
 const objectToArray = {
   modelRoute: "modelRoutes",
   promptVersion: "promptVersions",
@@ -151,6 +170,7 @@ const objectToArray = {
   roadmapItem: "roadmapItems",
   aiSurface: "aiSurfaces",
   repositoryIntelligence: "repositoryIntelligence",
+  goalEvidenceGate: "goalEvidenceGates",
   goalTrackingState: "goalTrackingStates"
 };
 
@@ -540,6 +560,56 @@ for (const goal of fixture.goalTrackingStates || []) {
   }
 }
 
+const goalsById = new Map((fixture.goalTrackingStates || []).map((goal) => [goal.id, goal]));
+const gatesByGoalId = new Map();
+
+for (const gate of fixture.goalEvidenceGates || []) {
+  assertAllowed(`goalEvidenceGate.${gate.id}.gateType`, gate.gateType, expectedGoalGateTypes);
+  assertAllowed(`goalEvidenceGate.${gate.id}.gateStatus`, gate.gateStatus, expectedGoalGateStatuses);
+
+  if (!goalsById.has(gate.goalId)) {
+    fail(`goalEvidenceGate ${gate.id} references unknown goal ${gate.goalId}`);
+  }
+
+  assertEvidencePath(`goalEvidenceGate.${gate.id}`, gate.evidence);
+
+  if (!existsSync(gate.evidence)) {
+    fail(`goalEvidenceGate ${gate.id} evidence path does not exist: ${gate.evidence}`);
+  }
+
+  if (gate.gateStatus !== "pass" && gate.blocker === "none") {
+    fail(`goalEvidenceGate ${gate.id} must name a blocker when gateStatus is ${gate.gateStatus}`);
+  }
+
+  if (!Array.isArray(gate.nonClaims) || gate.nonClaims.length === 0) {
+    fail(`goalEvidenceGate ${gate.id} must include non-claims`);
+  }
+
+  if (!gatesByGoalId.has(gate.goalId)) {
+    gatesByGoalId.set(gate.goalId, []);
+  }
+  gatesByGoalId.get(gate.goalId).push(gate);
+}
+
+for (const goal of fixture.goalTrackingStates || []) {
+  const gates = gatesByGoalId.get(goal.id) || [];
+  if (gates.length === 0) {
+    fail(`goalTrackingState ${goal.id} must have at least one goalEvidenceGate`);
+  }
+
+  const requiredGates = gates.filter((gate) => gate.required === true);
+  if (requiredGates.length === 0) {
+    fail(`goalTrackingState ${goal.id} must have at least one required goalEvidenceGate`);
+  }
+
+  if (goal.progressState === "validated" || goal.progressState === "complete" || goal.completionEvidence === "validated") {
+    const failingGate = requiredGates.find((gate) => gate.gateStatus !== "pass");
+    if (failingGate) {
+      fail(`goalTrackingState ${goal.id} cannot be validated or complete while required gate ${failingGate.id} is ${failingGate.gateStatus}`);
+    }
+  }
+}
+
 const fixtureText = JSON.stringify(fixture);
 for (const pattern of secretPatterns) {
   if (pattern.test(fixtureText)) {
@@ -583,6 +653,7 @@ for (const key of [
   "roadmapItems",
   "aiSurfaces",
   "repositoryIntelligence",
+  "goalEvidenceGates",
   "goalTrackingStates"
 ]) {
   if (JSON.stringify(appFixture[key]) !== JSON.stringify(fixture[key])) {
@@ -595,7 +666,11 @@ for (const requiredFixtureRecord of [
   "task-ai-operating-model",
   "eval-ai-operating-model",
   "audit-ai-operating-model",
-  "roadmap-year-1-ai-operating-model"
+  "roadmap-year-1-ai-operating-model",
+  "gate-five-year-operating-model-doc",
+  "gate-five-year-agent-runtime-validation",
+  "gate-five-year-command-center-surface",
+  "gate-five-year-provider-boundary"
 ]) {
   if (!JSON.stringify(fixture).includes(requiredFixtureRecord)) {
     fail(`${fixturePath} must include ${requiredFixtureRecord}`);

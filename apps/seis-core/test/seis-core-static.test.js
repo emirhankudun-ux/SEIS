@@ -89,13 +89,25 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /retrievalFilters/);
   assert.match(script, /retrievalResultCards/);
   assert.match(script, /noContentSearchTranscripts/);
+  assert.match(script, /goalEvidenceGates/);
   assert.match(script, /matchesRetrievalQuery/);
   assert.match(script, /renderEmptyRetrievalState/);
   assert.match(script, /renderContractCard/);
   assert.match(script, /ai-core-boundary-grid/);
+  assert.match(script, /ai-core-operating-model/);
   assert.match(script, /ai-core-retrieval-adapters/);
   assert.match(script, /ai-core-retrieval-results/);
   assert.match(script, /ai-core-no-content-transcripts/);
+  assert.match(fixture, /task-ai-operating-model/);
+  assert.match(fixture, /eval-ai-operating-model/);
+  assert.match(fixture, /audit-ai-operating-model/);
+  assert.match(fixture, /roadmap-year-1-ai-operating-model/);
+  assert.match(fixture, /goal-five-year-development/);
+  assert.match(fixture, /gate-five-year-operating-model-doc/);
+  assert.match(fixture, /gate-five-year-agent-runtime-validation/);
+  assert.match(fixture, /gate-five-year-command-center-surface/);
+  assert.match(fixture, /gate-five-year-provider-boundary/);
+  assert.match(fixture, /docs\/ai\/seis-ai-operating-model-5-year\.md/);
   assert.match(script, /Browser Local State/);
   assert.match(script, /operatingDomains/);
   assert.match(script, /platformPhases/);
@@ -215,6 +227,43 @@ test("SEIS Command Center local retrieval toolbar preserves desktop and mobile v
       document.querySelector("#ai-core-retrieval-filter-status").textContent,
       /^0 result cards, 0 no-content transcripts$/
     );
+  }
+});
+
+test("SEIS Command Center renders AI operating model evidence gates", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
+
+  assert.match(html, /AI Operating Model/);
+  assert.match(html, /id="ai-core-operating-model"/);
+  assert.match(fixture, /goalEvidenceGates/);
+  assert.match(fixture, /gate-five-year-operating-model-doc/);
+  assert.match(fixture, /gate-five-year-agent-runtime-validation/);
+  assert.match(fixture, /gate-five-year-command-center-surface/);
+  assert.match(fixture, /gate-five-year-provider-boundary/);
+
+  for (const viewport of [
+    { name: "desktop", width: 1440, height: 900 },
+    { name: "mobile", width: 390, height: 844 }
+  ]) {
+    const dom = await renderCommandCenter(viewport);
+    const document = dom.window.document;
+    const panel = document.querySelector("#ai-core-operating-model");
+    const panelText = panel.textContent;
+
+    assert.match(panelText, /Agent Runtime Agent/, `${viewport.name} panel renders operating-model task`);
+    assert.match(panelText, /bounded subagent/, `${viewport.name} panel renders bounded subagent guardrail`);
+    assert.match(panelText, /pass/, `${viewport.name} panel renders evaluation gate result`);
+    assert.match(panelText, /metadata-only/, `${viewport.name} panel renders redaction boundary`);
+    assert.match(panelText, /approval/, `${viewport.name} panel renders approval boundary language`);
+    assert.match(panelText, /docs\/ai\/seis-ai-operating-model-5-year\.md/, `${viewport.name} panel renders evidence path`);
+    assert.match(panelText, /Gate: Browser Evidence/, `${viewport.name} panel renders browser evidence gate`);
+    assert.match(panelText, /Gate: Security Boundary/, `${viewport.name} panel renders security boundary gate`);
+    assert.equal(panel.querySelectorAll("button").length, 0, `${viewport.name} panel adds no fake action buttons`);
+    assert.doesNotMatch(panelText, /production orchestration ready/i);
+    assert.doesNotMatch(panelText, /provider health available/i);
+    assert.doesNotMatch(panelText, /SSH execution enabled/i);
+    assert.doesNotMatch(panelText, /trained model/i);
   }
 });
 

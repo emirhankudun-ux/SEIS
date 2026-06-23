@@ -1206,6 +1206,98 @@
       "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
     }
   ],
+  "goalEvidenceGates": [
+    {
+      "id": "gate-five-year-operating-model-doc",
+      "goalId": "goal-five-year-development",
+      "gateType": "documentation",
+      "requirement": "The five-year AI operating model must be documented as fixture-backed, bounded, and human-supervised.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md",
+      "blocker": "none",
+      "nonClaims": [
+        "No live autonomous orchestration is enabled.",
+        "No production subagent scheduler is claimed."
+      ],
+      "nextSafeAction": "Expose the documented operating model through Command Center evidence surfaces."
+    },
+    {
+      "id": "gate-five-year-agent-runtime-validation",
+      "goalId": "goal-five-year-development",
+      "gateType": "validation",
+      "requirement": "Agent runtime lifecycle checks must validate bounded delegation policy, execution budget, escalation path, and operating-model fixture coverage.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "scripts/check-agent-runtime-lifecycle.mjs",
+      "blocker": "none",
+      "nonClaims": [
+        "Validation does not run live agents.",
+        "Validation does not approve provider, SSH, GitHub, deploy, payment, training, or benchmark actions."
+      ],
+      "nextSafeAction": "Keep agent-runtime contract checks in the AI Core validation path."
+    },
+    {
+      "id": "gate-five-year-command-center-surface",
+      "goalId": "goal-five-year-development",
+      "gateType": "browser-evidence",
+      "requirement": "Command Center must render the AI operating model as read-only fixture evidence with no fake live controls.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js",
+      "blocker": "none",
+      "nonClaims": [
+        "The browser panel is not a live provider health check.",
+        "The browser panel does not execute autonomous subagent workflows."
+      ],
+      "nextSafeAction": "Keep the panel tied to fixture records and validator-enforced evidence gates."
+    },
+    {
+      "id": "gate-five-year-provider-boundary",
+      "goalId": "goal-five-year-development",
+      "gateType": "security-boundary",
+      "requirement": "Operating-model claims must preserve local-only, no-key, and provider-privacy boundaries until explicit approval changes the mode.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "docs/security/model-provider-data-policy.md",
+      "blocker": "none",
+      "nonClaims": [
+        "No sensitive repository data is routed to external providers.",
+        "No provider key is exposed to the browser."
+      ],
+      "nextSafeAction": "Add provider status only after backend-only gateway and credential validation exist."
+    },
+    {
+      "id": "gate-token-feed-fixture-contract",
+      "goalId": "goal-seis-10m-token-feed",
+      "gateType": "fixture",
+      "requirement": "The token-feed target must be represented by a metadata-only fixture rather than raw prompt dumps or unrestricted context ingestion.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json",
+      "blocker": "none",
+      "nonClaims": [
+        "The fixture is not a live long-context provider call.",
+        "The fixture is not persistent AI memory."
+      ],
+      "nextSafeAction": "Keep token-feed evidence metadata-only and linked from Command Center contracts."
+    },
+    {
+      "id": "gate-token-feed-validation",
+      "goalId": "goal-seis-10m-token-feed",
+      "gateType": "validation",
+      "requirement": "The token-feed budget fixture must pass its schema and shared-contract checks before informing AI Core status.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "scripts/check-token-feed-budget.mjs",
+      "blocker": "none",
+      "nonClaims": [
+        "Validation does not send repository content to a model.",
+        "Validation does not claim model training, benchmark performance, checkpoint creation, or model-card completion."
+      ],
+      "nextSafeAction": "Derive future scorecards from passed gates rather than subjective readiness labels."
+    }
+  ],
   "goalTrackingStates": [
     {
       "id": "goal-five-year-development",

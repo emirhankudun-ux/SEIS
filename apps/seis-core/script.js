@@ -183,6 +183,7 @@ const aiCoreContract = window.seisAiCoreContractFixture ?? {
   roadmapItems: [],
   aiSurfaces: [],
   repositoryIntelligence: [],
+  goalEvidenceGates: [],
   goalTrackingStates: []
 };
 
@@ -737,6 +738,21 @@ function renderAiCore() {
     matchesRetrievalQuery(transcript, query) &&
     (retrievalFilters.transcriptState === "all" || transcript.decisionState === retrievalFilters.transcriptState)
   );
+  const operatingModelTask = contract.agentTasks.find((task) => task.id === "task-ai-operating-model");
+  const operatingModelEval = contract.evaluationResults.find((result) => result.id === "eval-ai-operating-model");
+  const operatingModelAudit = contract.auditEvents.find((event) => event.id === "audit-ai-operating-model");
+  const operatingModelRoadmap = contract.roadmapItems.find((item) => item.id === "roadmap-year-1-ai-operating-model");
+  const operatingModelGoal = contract.goalTrackingStates.find((goal) => goal.id === "goal-five-year-development");
+  const goalEvidenceGates = contract.goalEvidenceGates ?? [];
+  const operatingModelGates = goalEvidenceGates.filter((gate) => gate.goalId === "goal-five-year-development");
+  const operatingModelCards = [
+    operatingModelTask,
+    operatingModelEval,
+    operatingModelAudit,
+    operatingModelRoadmap,
+    operatingModelGoal,
+    ...operatingModelGates
+  ].filter(Boolean);
   const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
     contract.modelRoutes.filter((route) => route.approvalState === "approval-needed").length;
   const validatedEvidence = [
@@ -759,6 +775,8 @@ function renderAiCore() {
     ["Retrieval", retrievalAdapterCount, "local query adapters"],
     ["Result Cards", retrievalResultCount, "metadata only"],
     ["No Content", noContentTranscriptCount, "blocked or empty"],
+    ["Operating Model", operatingModelCards.length, "bounded agents"],
+    ["Evidence Gates", goalEvidenceGates.length, "goal validation"],
     ["Execution Modes", contract.llmExecutionModes.length, "privacy modes"],
     ["Approvals", approvalNeeded, "human gates"],
     ["Evidence", validatedEvidence, "validated metadata records"]
@@ -804,6 +822,71 @@ function renderAiCore() {
     request.requestType,
     [request.riskClass, request.decisionState]
   )).join("");
+
+  $("#ai-core-operating-model").innerHTML = operatingModelCards.map((item) => {
+    if (item.id === "task-ai-operating-model") {
+      return renderContractCard(
+        item,
+        item.agentRole,
+        item.intent,
+        [
+          item.approvalState,
+          item.maturity,
+          "bounded subagent governance",
+          `${item.allowedActions.length} allowed`,
+          `${item.forbiddenActions.length} forbidden`
+        ]
+      );
+    }
+
+    if (item.id === "eval-ai-operating-model") {
+      return renderContractCard(
+        item,
+        "Evaluation Gate",
+        `${labelFromId(item.targetType)} ${item.result}`,
+        [item.status, item.targetId, "evidence gate"]
+      );
+    }
+
+    if (item.id === "audit-ai-operating-model") {
+      return renderContractCard(
+        item,
+        item.actor,
+        item.action,
+        [item.redactionState, item.status, "metadata-only"]
+      );
+    }
+
+    if (item.id === "roadmap-year-1-ai-operating-model") {
+      return renderContractCard(
+        item,
+        "Year 1 Roadmap",
+        item.track,
+        [item.horizon, item.maturity, item.status]
+      );
+    }
+
+    if (item.goalId) {
+      return renderContractCard(
+        { ...item, status: item.gateStatus === "pass" ? "validated" : "blocked" },
+        `Gate: ${labelFromId(item.gateType)}`,
+        item.requirement,
+        [
+          item.gateStatus,
+          item.required ? "required" : "optional",
+          item.blocker,
+          item.nextSafeAction
+        ]
+      );
+    }
+
+    return renderContractCard(
+      item,
+      "Five-Year Goal",
+      item.goal,
+      [item.progressState, item.completionEvidence, "human-supervised"]
+    );
+  }).join("");
 
   $("#ai-core-retrieval-adapters").innerHTML = contract.retrievalQueryAdapters.map((adapter) => renderContractCard(
     adapter,
@@ -869,6 +952,7 @@ function renderAiCore() {
     ...contract.noContentSearchTranscripts.map((item) => ({ ...item, group: "No Content", title: item.decisionState, detail: item.emptyState })),
     ...contract.securityFindings.map((item) => ({ ...item, group: "Security", title: item.category, detail: item.riskClass })),
     ...contract.roadmapItems.map((item) => ({ ...item, group: "Roadmap", title: item.horizon, detail: item.track })),
+    ...goalEvidenceGates.map((item) => ({ ...item, group: "Gate", title: item.gateType, detail: item.requirement, status: item.gateStatus === "pass" ? "validated" : "blocked" })),
     ...contract.goalTrackingStates.map((item) => ({ ...item, group: "Goal", title: item.progressState, detail: item.goal }))
   ];
 

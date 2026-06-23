@@ -44,6 +44,8 @@ const requiredScriptSignals = [
   "aiCoreContract",
   "renderAiCore",
   "seisAiCoreContractFixture",
+  "goalEvidenceGates",
+  "ai-core-operating-model",
   "operatingDomains",
   "platformPhases",
   "renderCommandResults"
@@ -148,6 +150,10 @@ if (!manifest.name?.includes("SEIS Command Center")) {
 
 if (!readme.includes("SEIS Command Center") || !readme.includes("Plugins & Extensions") || !readme.includes("Operating Model")) {
   fail("README must describe SEIS Command Center, operating model, and plugin surface");
+}
+
+if (!html.includes("AI Operating Model") || !html.includes('id="ai-core-operating-model"')) {
+  fail("AI Core view must expose the fixture-backed AI Operating Model panel");
 }
 
 if (!packageJson.scripts?.["qa:seis-core:local-retrieval:visual"]) {

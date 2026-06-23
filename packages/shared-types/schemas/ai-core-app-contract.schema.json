@@ -31,6 +31,7 @@
     "roadmapItems",
     "aiSurfaces",
     "repositoryIntelligence",
+    "goalEvidenceGates",
     "goalTrackingStates"
   ],
   "properties": {
@@ -206,6 +207,13 @@
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/repositoryIntelligence"
+      }
+    },
+    "goalEvidenceGates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/goalEvidenceGate"
       }
     },
     "goalTrackingStates": {
@@ -896,6 +904,49 @@
         "completionEvidence": { "enum": ["missing", "partial", "validated"] },
         "status": { "$ref": "#/$defs/state" },
         "evidence": { "$ref": "#/$defs/evidenceLink" }
+      }
+    },
+    "goalEvidenceGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "goalId",
+        "gateType",
+        "requirement",
+        "required",
+        "gateStatus",
+        "evidence",
+        "blocker",
+        "nonClaims",
+        "nextSafeAction"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "goalId": { "$ref": "#/$defs/id" },
+        "gateType": {
+          "enum": [
+            "documentation",
+            "schema",
+            "fixture",
+            "validation",
+            "browser-evidence",
+            "security-boundary",
+            "human-approval",
+            "non-claim"
+          ]
+        },
+        "requirement": { "type": "string" },
+        "required": { "type": "boolean" },
+        "gateStatus": { "enum": ["pass", "fail", "blocked", "unknown"] },
+        "evidence": { "$ref": "#/$defs/evidenceLink" },
+        "blocker": { "type": "string" },
+        "nonClaims": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "nextSafeAction": { "type": "string" }
       }
     }
   }
