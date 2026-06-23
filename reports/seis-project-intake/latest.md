@@ -3,14 +3,14 @@
 Generated at: 2026-06-23T05:51:41.434Z
 
 ## Repository
-- Root: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
+- Root: repository root
 - Is Git repo: true
 - Branch: codex/product-experience-desktop-os
 - Remote: https://github.com/emirhankudun-ux/SEIS
 - Worktree clean: false
 
 ## Intake Evidence
-- Workspace root: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
+- Workspace root: repository root
 - AGENTS present: true
 - Command policy: read-only
 - Required instruction files:

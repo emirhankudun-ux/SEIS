@@ -3,7 +3,7 @@
 Generated at: 2026-06-23T05:51:42.667Z
 
 ## Context
-- Scope: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
+- Scope: repository root
 - Mode: deterministic
 - Policy version: seis-action-decision-v0
 - Contract: seis-action-decision-kernel
