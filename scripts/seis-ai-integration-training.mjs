@@ -79,26 +79,32 @@ function verify(ledger) {
     if (!cond) failures.push(msg);
   };
 
+  const lanes = ledger?.lanes;
+  if (!lanes) {
+    failures.push("ledger is missing the 'lanes' property or is malformed");
+    return failures;
+  }
+
   // Lane 1 — unified tools
-  const t = ledger.lanes.unifiedTools;
-  ensure(t.mcpToolCount >= 16, `expected >=16 MCP tools, ledger has ${t.mcpToolCount}`);
-  ensure(t.binaries.length >= 3, `expected >=3 seis-ai binaries, ledger has ${t.binaries.length}`);
-  for (const bin of t.binaries) ensure(exists(`packages/seis-ai/bin/${bin}`), `missing binary ${bin}`);
-  ensure(t.polyglotLanguageCount >= 33, `expected >=33 polyglot lanes, ledger has ${t.polyglotLanguageCount}`);
+  const t = lanes.unifiedTools;
+  ensure(t?.mcpToolCount >= 16, `expected >=16 MCP tools, ledger has ${t?.mcpToolCount ?? "undefined"}`);
+  ensure(t?.binaries?.length >= 3, `expected >=3 seis-ai binaries, ledger has ${t?.binaries?.length ?? "undefined"}`);
+  for (const bin of t?.binaries ?? []) ensure(exists(`packages/seis-ai/bin/${bin}`), `missing binary ${bin}`);
+  ensure(t?.polyglotLanguageCount >= 33, `expected >=33 polyglot lanes, ledger has ${t?.polyglotLanguageCount ?? "undefined"}`);
 
   // Lane 2 — knowledge
-  ensure(exists(ledger.lanes.knowledge.skillGuide), "missing skill guide");
-  ensure(exists(ledger.lanes.knowledge.rootGuide), "missing CLAUDE.md");
+  ensure(lanes.knowledge?.skillGuide && exists(lanes.knowledge.skillGuide), "missing skill guide");
+  ensure(lanes.knowledge?.rootGuide && exists(lanes.knowledge.rootGuide), "missing CLAUDE.md");
 
   // Lane 3 — audit
   ensure(exists("packages/seis-ai/bin/seis-check.mjs"), "missing seis-check audit entry");
   ensure(exists("scripts/polyglot-check.sh"), "missing polyglot-check.sh audit entry");
 
   // Lane 4 — agent
-  ensure(ledger.lanes.agent.lanes.length > 0, "no agent lanes discovered");
-  for (const lane of ledger.lanes.agent.lanes)
+  ensure(lanes.agent?.lanes?.length > 0, "no agent lanes discovered");
+  for (const lane of lanes.agent?.lanes ?? [])
     ensure(exists(`plugins/seis-ai-agent/assets/lanes/${lane}.json`), `missing agent lane ${lane}`);
-  for (const skill of ledger.lanes.agent.skills)
+  for (const skill of lanes.agent?.skills ?? [])
     ensure(exists(`plugins/seis-ai-agent/skills/${skill}`), `missing agent skill ${skill}`);
 
   return failures;
@@ -111,7 +117,13 @@ if (isCheck) {
     console.error("SEIS AI integration ledger missing — run: npm run automation:seis-ai-integration-training");
     process.exit(1);
   }
-  const committed = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  let committed;
+  try {
+    committed = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  } catch (err) {
+    console.error(`SEIS AI integration ledger is not valid JSON: ${err.message}`);
+    process.exit(1);
+  }
   const failures = verify(committed);
   if (JSON.stringify(committed.lanes) !== JSON.stringify(live.lanes)) {
     failures.push("ledger is stale — re-run automation:seis-ai-integration-training");
