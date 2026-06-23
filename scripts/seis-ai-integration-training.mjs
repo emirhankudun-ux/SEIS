@@ -46,6 +46,17 @@ const readScripts = () => {
     return {};
   }
 };
+const fileContains = (rel, needle) => {
+  const file = path.join(root, rel);
+  return fs.existsSync(file) && fs.readFileSync(file, "utf8").includes(needle);
+};
+
+// Required SEIS CLI binaries by exact name — pinned so that swapping one out
+// (deleting seis-agent.mjs and adding another .mjs) cannot pass the count check.
+const REQUIRED_BINARIES = Object.freeze(["seis-agent.mjs", "seis-check.mjs", "seis-mcp.mjs"]);
+// Markers each knowledge doc must still teach, so a doc that keeps existing but
+// loses the integration/training section is caught.
+const KNOWLEDGE_MARKERS = Object.freeze(["seis:integrate", "check:seis-ai-integration-training"]);
 
 // Pinned lane baselines. These are committed in code (not the generated JSON),
 // so a regression — deleting an MCP tool, polyglot lane, agent lane, etc. and
@@ -123,11 +134,16 @@ function verify(ledger) {
   ensure(t?.mcpToolCount >= BASELINE.mcpToolCount, `expected >=${BASELINE.mcpToolCount} MCP tools, ledger has ${t?.mcpToolCount ?? "undefined"}`);
   ensure(t?.binaries?.length >= BASELINE.binaries, `expected >=${BASELINE.binaries} seis-ai binaries, ledger has ${t?.binaries?.length ?? "undefined"}`);
   for (const bin of t?.binaries ?? []) ensure(exists(`packages/seis-ai/bin/${bin}`), `missing binary ${bin}`);
+  for (const bin of REQUIRED_BINARIES)
+    ensure(t?.binaries?.includes(bin) && exists(`packages/seis-ai/bin/${bin}`), `missing required binary ${bin}`);
   ensure(t?.polyglotLanguageCount >= BASELINE.polyglotLanguageCount, `expected >=${BASELINE.polyglotLanguageCount} polyglot lanes, ledger has ${t?.polyglotLanguageCount ?? "undefined"}`);
 
-  // Lane 2 — knowledge
-  ensure(lanes.knowledge?.skillGuide && exists(lanes.knowledge.skillGuide), "missing skill guide");
-  ensure(lanes.knowledge?.rootGuide && exists(lanes.knowledge.rootGuide), "missing CLAUDE.md");
+  // Lane 2 — knowledge: files must exist AND still teach the integration surface
+  for (const doc of [lanes.knowledge?.skillGuide, lanes.knowledge?.rootGuide]) {
+    ensure(doc && exists(doc), `missing knowledge doc: ${doc ?? "undefined"}`);
+    for (const marker of KNOWLEDGE_MARKERS)
+      ensure(doc && fileContains(doc, marker), `knowledge doc ${doc} no longer documents "${marker}"`);
+  }
 
   // Lane 3 — audit: every advertised entry point must resolve. `npm run X`
   // entries are validated against package.json scripts (not just the underlying
@@ -150,7 +166,7 @@ function verify(ledger) {
   for (const lane of lanes.agent?.lanes ?? [])
     ensure(exists(`plugins/seis-ai-agent/assets/lanes/${lane}.json`), `missing agent lane ${lane}`);
   for (const skill of lanes.agent?.skills ?? [])
-    ensure(exists(`plugins/seis-ai-agent/skills/${skill}`), `missing agent skill ${skill}`);
+    ensure(exists(`plugins/seis-ai-agent/skills/${skill}/SKILL.md`), `agent skill ${skill} missing SKILL.md`);
 
   return failures;
 }
