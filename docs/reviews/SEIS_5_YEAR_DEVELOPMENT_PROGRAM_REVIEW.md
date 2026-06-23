@@ -53,8 +53,9 @@ Safe to claim live provider routing: no.
 
 1. Review PR #44 conflict state before any merge attempt. GitHub reports the
    AI Core app foundation continuation PR as `CONFLICTING` against `main`, so
-   the next safe slice is a file-classification review for divergent AI Core,
-   Command Center, workflow, generated report, and governance files.
+   the next safe slice is the file-classification review at
+   `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md` for divergent
+   AI Core, Command Center, workflow, generated report, and governance files.
 2. After conflict resolution and human-approved merge place the manual AI Core
    Browser Evidence workflow on the default branch, run it with
    `workflow_dispatch`, inspect the uploaded artifact package, and record
@@ -629,6 +630,7 @@ Status: Added after PR #44 state inspection.
 Evidence:
 
 - `docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md`
+- `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md`
 - `docs/evals/ai-core-browser-workflow-dispatch-review.md`
 
 This slice records that PR #44 exists for
@@ -639,3 +641,20 @@ scorecard slice. The review does not merge, deploy, force-push, rewrite
 history, run SSH, call providers, train models, or create branch-protection
 claims. The next safe step is conflict-resolution classification before any
 merge attempt or default-branch `workflow_dispatch` run.
+
+## AI Core PR44 Conflict Resolution Review Slice
+
+Status: Added after the PR #44 state review slice.
+
+Evidence:
+
+- `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md`
+- `docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md`
+
+This slice classifies the broad divergence between PR #44 and current `main`.
+It records merge-base evidence, changed-path counts, shared conflict hotspots,
+branch assets to keep or re-port, current-main assets to preserve, generated
+report handling, excluded automatic-merge material, and a recommended
+resolution order. It does not resolve conflicts, merge, rebase, force-push,
+change branch protection, run workflow dispatch, call providers, run SSH,
+deploy, train models, publish checkpoints, or create production claims.

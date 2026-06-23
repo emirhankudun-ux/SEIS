@@ -100,8 +100,9 @@ production availability.
 
 ## Next Safe Action
 
-Review PR #44 conflict state and classify the divergent files before any merge
-attempt. After conflict resolution and human-approved merge place
+Use `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md` to resolve
+PR #44 through reviewed file classes before any merge attempt. After conflict
+resolution and human-approved merge place
 `.github/workflows/ai-core-browser-evidence.yml` on the default branch, run the
 manual workflow with `workflow_dispatch`, inspect the uploaded artifact package,
 and record first-run evidence before any branch-protection decision.

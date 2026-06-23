@@ -21,6 +21,7 @@ const browserCiWorkflowDraftPath = "docs/evals/ai-core-browser-ci-workflow-draft
 const browserCiActiveWorkflowPath = ".github/workflows/ai-core-browser-evidence.yml";
 const browserCiDispatchReviewPath = "docs/evals/ai-core-browser-workflow-dispatch-review.md";
 const aiCoreFoundationPrReviewPath = "docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md";
+const aiCorePr44ConflictResolutionReviewPath = "docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -587,6 +588,7 @@ const report = {
     browserCiActiveWorkflowPath,
     browserCiDispatchReviewPath,
     aiCoreFoundationPrReviewPath,
+    aiCorePr44ConflictResolutionReviewPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
     panelNavigationQaEvidenceCheckPath
@@ -604,7 +606,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Review PR #44 conflict state before any merge attempt. GitHub reports the AI Core app foundation continuation PR as CONFLICTING against main; after conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
+    summary: "Use the PR #44 conflict-resolution review to recover AI Core foundation work in smaller, source-of-truth-safe slices before any merge attempt. After conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -617,7 +619,8 @@ const report = {
       browserCiWorkflowDraftPath,
       browserCiActiveWorkflowPath,
       browserCiDispatchReviewPath,
-      aiCoreFoundationPrReviewPath
+      aiCoreFoundationPrReviewPath,
+      aiCorePr44ConflictResolutionReviewPath
     ]
   }
 };

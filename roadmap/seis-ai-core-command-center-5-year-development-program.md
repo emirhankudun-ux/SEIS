@@ -423,8 +423,9 @@ Completed foundation slice:
 
 PR #44 now exists for this feature branch, but GitHub reports it as
 `CONFLICTING` against `main`. The next safe slice is a conflict-resolution
-review that classifies divergent AI Core, Command Center, workflow, generated
-report, and governance files before any merge attempt.
+review at `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md` that
+classifies divergent AI Core, Command Center, workflow, generated report, and
+governance files before any merge attempt.
 
 After conflict resolution and human-approved merge place
 `.github/workflows/ai-core-browser-evidence.yml` on the default branch, run it

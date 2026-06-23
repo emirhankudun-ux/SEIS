@@ -101,7 +101,9 @@ merge readiness against current main.
 
 ## Recommended Next Safe Action
 
-Create a conflict-resolution review for PR #44 with a file classification table:
+Use the conflict-resolution review in
+`docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md` before any merge
+attempt. The review classifies divergent files into:
 
 1. Keep AI Core foundation assets as-is.
 2. Replace with current main equivalents.
@@ -109,9 +111,9 @@ Create a conflict-resolution review for PR #44 with a file classification table:
 4. Archive as historical foundation evidence.
 5. Exclude because the content is generated, stale, duplicated, or superseded.
 
-After that review, either update PR #44 with a deliberate merge-resolution commit
-or create a smaller replacement PR that carries only the still-needed AI Core
-foundation evidence.
+After that classification, either update PR #44 with a deliberate
+merge-resolution commit or create smaller replacement PRs that carry only the
+still-needed AI Core foundation evidence.
 
 ## Final Decision
 

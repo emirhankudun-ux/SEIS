@@ -9,18 +9,18 @@
   },
   "summary": {
     "countedFileCount": 904,
-    "countedBytes": 5404842,
-    "javascriptBytes": 2038054,
+    "countedBytes": 5405044,
+    "javascriptBytes": 2038256,
     "javascriptPercent": 37.71,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 4300177,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4300936,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 2038054,
+      "bytes": 2038256,
       "percent": 37.71
     },
     {
@@ -502,7 +502,7 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 2038054,
+      "bytes": 2038256,
       "percent": 37.71,
       "sourceLanguages": [
         "JavaScript"
@@ -527,7 +527,7 @@
     {
       "language": "Other",
       "bytes": 2946554,
-      "percent": 54.52,
+      "percent": 54.51,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -671,7 +671,7 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2449841,
+        "bytes": 2450043,
         "percent": 45.33,
         "minPercent": 15.0,
         "maxPercent": 20.0,
@@ -882,7 +882,7 @@
     {
       "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
       "language": "JavaScript",
-      "bytes": 28703
+      "bytes": 28905
     },
     {
       "path": "scripts/sync-plugin-environment-sources.cjs",
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1613014,
-    "linguist-generated": 3017005,
+    "documentation": 1618928,
+    "linguist-generated": 3017144,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "496493e6d105d44e0d8c723001a93761576c4786bff6f0f7d87a316ca7ae9fca",
+    "hash": "05b5f84d47c4e17bbe3e50bb9e624820fafdf79e03b449b229f4b538f645e4f6",
     "algorithm": "sha256"
   }
 }

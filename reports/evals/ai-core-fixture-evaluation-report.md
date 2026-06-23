@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Review PR #44 conflict state before any merge attempt. GitHub reports the AI Core app foundation continuation PR as CONFLICTING against main; after conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.
+Use the PR #44 conflict-resolution review to recover AI Core foundation work in smaller, source-of-truth-safe slices before any merge attempt. After conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.
 
 Source links:
 
@@ -57,3 +57,4 @@ Source links:
 - `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-workflow-dispatch-review.md`
 - `docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md`
+- `docs/reviews/SEIS_AI_CORE_PR44_CONFLICT_RESOLUTION_REVIEW.md`

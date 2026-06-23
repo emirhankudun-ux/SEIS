@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 904
-- Counted bytes: 5404842
-- JavaScript: 2038054 bytes (37.71%)
+- Counted bytes: 5405044
+- JavaScript: 2038256 bytes (37.71%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 4300177
+- Additional non-JavaScript bytes needed for strict target: 4300936
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 2038054 | 37.71% | JavaScript |
+| JavaScript | 2038256 | 37.71% | JavaScript |
 | TypeScript | 411787 | 7.62% | TypeScript |
 | Objective-C | 8447 | 0.16% | Objective-C |
-| Other | 2946554 | 54.52% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2946554 | 54.51% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -40,7 +40,7 @@ Unassigned counted languages: 3.02% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 2038054 | 37.71% |
+| JavaScript | 2038256 | 37.71% |
 | JSON | 1018868 | 18.85% |
 | Swift | 574078 | 10.62% |
 | Python | 507341 | 9.39% |
@@ -77,7 +77,7 @@ Unassigned counted languages: 3.02% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
 | `scripts/check-cloud-environment.cjs` | 31248 |
-| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28703 |
+| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28905 |
 | `scripts/sync-plugin-environment-sources.cjs` | 27637 |
 | `scripts/check-ai-core-browser-qa-evidence.mjs` | 26109 |
 | `scripts/check-ai-core-app-contracts.mjs` | 25592 |
