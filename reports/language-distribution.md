@@ -2,20 +2,20 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 904
-- Counted bytes: 5380027
-- JavaScript: 2018512 bytes (37.52%)
+- Counted bytes: 5392008
+- JavaScript: 2026326 bytes (37.58%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 4231934
+- Additional non-JavaScript bytes needed for strict target: 4257163
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 2018512 | 37.52% | JavaScript |
-| TypeScript | 411787 | 7.65% | TypeScript |
+| JavaScript | 2026326 | 37.58% | JavaScript |
+| TypeScript | 411787 | 7.64% | TypeScript |
 | Objective-C | 8447 | 0.16% | Objective-C |
-| Other | 2941281 | 54.67% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
+| Other | 2945448 | 54.63% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
 
 ## GitHub Language Balance Targets
 
@@ -25,27 +25,27 @@
 
 | Platform family | Current | Target | Status | Source languages |
 | --- | ---: | ---: | --- | --- |
-| Apple / Swift ecosystem | 10.84% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
-| AI, Data, Python, SQL | 28.64% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 45.17% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| Apple / Swift ecosystem | 10.82% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
+| AI, Data, Python, SQL | 28.66% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
+| TypeScript / JavaScript tooling | 45.22% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.44% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.55% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
 | Go / Infrastructure | 3.02% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
 | Windows / .NET | 0.15% | 5.0-8.0% | `below_target` | C#, F#, Visual Basic, PowerShell |
-| HTML / CSS previews | 8.14% | 0.0-3.0% | `above_target` | HTML, CSS |
+| HTML / CSS previews | 8.12% | 0.0-3.0% | `above_target` | HTML, CSS |
 
-Unassigned counted languages: 3.04% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
+Unassigned counted languages: 3.03% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake, COBOL, Cairo, Common Lisp, Crystal, D, +46 more).
 
 ## Counted Languages
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 2018512 | 37.52% |
-| JSON | 1014701 | 18.86% |
-| Swift | 574078 | 10.67% |
-| Python | 507341 | 9.43% |
-| TypeScript | 411787 | 7.65% |
-| CSS | 290352 | 5.4% |
+| JavaScript | 2026326 | 37.58% |
+| JSON | 1018868 | 18.9% |
+| Swift | 574078 | 10.65% |
+| Python | 507341 | 9.41% |
+| TypeScript | 411787 | 7.64% |
+| CSS | 290352 | 5.38% |
 | HTML | 147620 | 2.74% |
 | Shell | 97083 | 1.8% |
 | Other | 41564 | 0.77% |
@@ -72,15 +72,15 @@ Unassigned counted languages: 3.04% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `emirhan-kudun-portfolio/apps/uix-web/src/i18n/locales.js` | 105051 |
 | `emirhan-kudun-portfolio/packages/content/src/uix-static/locales.js` | 105051 |
 | `apps/web/script.js` | 79540 |
-| `apps/seis-core/ai-core-contract-fixture.js` | 59225 |
-| `apps/seis-core/script.js` | 43497 |
+| `apps/seis-core/ai-core-contract-fixture.js` | 61467 |
+| `apps/seis-core/script.js` | 44665 |
 | `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
 | `scripts/check-cloud-environment.cjs` | 31248 |
-| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28274 |
+| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28303 |
 | `scripts/sync-plugin-environment-sources.cjs` | 27637 |
+| `scripts/check-ai-core-app-contracts.mjs` | 25592 |
 | `packages/seis-ai/test/checks.test.mjs` | 25298 |
-| `scripts/create-seis-ecosystem-intake.cjs` | 25262 |
 
 ## Linguist Controls
 

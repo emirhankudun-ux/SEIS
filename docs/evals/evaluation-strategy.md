@@ -152,7 +152,12 @@ browser-evidence, and security-boundary checks. `npm run
 check:ai-core-app-contracts` fails if a goal is marked validated or complete
 while a required gate is not passing, or if a gate points to missing evidence.
 This keeps operating scorecards derived from evidence gates rather than
-subjective readiness labels.
+subjective readiness labels. The shared contract also includes
+`goalOperatingScorecards`; `npm run check:ai-core-app-contracts` recomputes
+their counts and score from `goalEvidenceGates` so a score cannot be manually
+inflated. A 100 score is scoped to the current fixture slice unless the
+scorecard explicitly uses `full-goal` and the goal itself is complete with
+validated evidence.
 
 The CI/local browser split is documented in
 `docs/evals/ai-core-browser-evidence-gates.md`: default CI should keep

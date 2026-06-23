@@ -90,6 +90,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /retrievalResultCards/);
   assert.match(script, /noContentSearchTranscripts/);
   assert.match(script, /goalEvidenceGates/);
+  assert.match(script, /goalOperatingScorecards/);
   assert.match(script, /matchesRetrievalQuery/);
   assert.match(script, /renderEmptyRetrievalState/);
   assert.match(script, /renderContractCard/);
@@ -107,6 +108,8 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(fixture, /gate-five-year-agent-runtime-validation/);
   assert.match(fixture, /gate-five-year-command-center-surface/);
   assert.match(fixture, /gate-five-year-provider-boundary/);
+  assert.match(fixture, /score-five-year-operating-model-current-slice/);
+  assert.match(fixture, /score-token-feed-current-slice/);
   assert.match(fixture, /docs\/ai\/seis-ai-operating-model-5-year\.md/);
   assert.match(script, /Browser Local State/);
   assert.match(script, /operatingDomains/);
@@ -241,6 +244,8 @@ test("SEIS Command Center renders AI operating model evidence gates", async () =
   assert.match(fixture, /gate-five-year-agent-runtime-validation/);
   assert.match(fixture, /gate-five-year-command-center-surface/);
   assert.match(fixture, /gate-five-year-provider-boundary/);
+  assert.match(fixture, /goalOperatingScorecards/);
+  assert.match(fixture, /score-five-year-operating-model-current-slice/);
 
   for (const viewport of [
     { name: "desktop", width: 1440, height: 900 },
@@ -257,9 +262,13 @@ test("SEIS Command Center renders AI operating model evidence gates", async () =
     assert.match(panelText, /metadata-only/, `${viewport.name} panel renders redaction boundary`);
     assert.match(panelText, /approval/, `${viewport.name} panel renders approval boundary language`);
     assert.match(panelText, /docs\/ai\/seis-ai-operating-model-5-year\.md/, `${viewport.name} panel renders evidence path`);
+    assert.match(panelText, /Scorecard: Current Fixture Slice/, `${viewport.name} panel renders gate-derived scorecard`);
+    assert.match(panelText, /100% required gate coverage/, `${viewport.name} panel renders derived score percentage`);
+    assert.match(panelText, /4\/4 required/, `${viewport.name} panel renders required gate count`);
     assert.match(panelText, /Gate: Browser Evidence/, `${viewport.name} panel renders browser evidence gate`);
     assert.match(panelText, /Gate: Security Boundary/, `${viewport.name} panel renders security boundary gate`);
     assert.equal(panel.querySelectorAll("button").length, 0, `${viewport.name} panel adds no fake action buttons`);
+    assert.doesNotMatch(panelText, /full goal complete/i);
     assert.doesNotMatch(panelText, /production orchestration ready/i);
     assert.doesNotMatch(panelText, /provider health available/i);
     assert.doesNotMatch(panelText, /SSH execution enabled/i);

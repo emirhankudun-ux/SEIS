@@ -160,7 +160,8 @@ Command Center now exposes this operating model through a read-only,
 fixture-backed AI Operating Model panel in `apps/seis-core/index.html`. That
 panel is backed by `task-ai-operating-model`, `eval-ai-operating-model`,
 `audit-ai-operating-model`, `roadmap-year-1-ai-operating-model`,
-`goal-five-year-development`, and the related `goalEvidenceGates` records in
+`goal-five-year-development`, the related `goalEvidenceGates`, and the
+gate-derived `goalOperatingScorecards` records in
 `packages/shared-types/fixtures/ai-core-command-center-foundation.json`.
 
 Command Center should continue exposing this operating model through:
@@ -179,6 +180,7 @@ The UI must show:
 - current status
 - maturity state
 - evidence path
+- gate-derived scorecard
 - blocker
 - next safe action
 - approval requirement
@@ -197,7 +199,10 @@ training, run benchmarks, or claim a completed SEIS-owned model.
 
 ## Operating Metrics
 
-Track these as metadata before automating them:
+Track these as metadata before automating them. Scorecards must be derived from
+evidence gates; they are not subjective readiness scores and they do not prove
+full goal completion unless the related goal is complete with validated
+evidence.
 
 - evidence coverage by module
 - validation pass/fail/blocked rate

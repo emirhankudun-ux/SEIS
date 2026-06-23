@@ -184,6 +184,7 @@ const aiCoreContract = window.seisAiCoreContractFixture ?? {
   aiSurfaces: [],
   repositoryIntelligence: [],
   goalEvidenceGates: [],
+  goalOperatingScorecards: [],
   goalTrackingStates: []
 };
 
@@ -744,13 +745,16 @@ function renderAiCore() {
   const operatingModelRoadmap = contract.roadmapItems.find((item) => item.id === "roadmap-year-1-ai-operating-model");
   const operatingModelGoal = contract.goalTrackingStates.find((goal) => goal.id === "goal-five-year-development");
   const goalEvidenceGates = contract.goalEvidenceGates ?? [];
+  const goalOperatingScorecards = contract.goalOperatingScorecards ?? [];
   const operatingModelGates = goalEvidenceGates.filter((gate) => gate.goalId === "goal-five-year-development");
+  const operatingModelScorecards = goalOperatingScorecards.filter((scorecard) => scorecard.goalId === "goal-five-year-development");
   const operatingModelCards = [
     operatingModelTask,
     operatingModelEval,
     operatingModelAudit,
     operatingModelRoadmap,
     operatingModelGoal,
+    ...operatingModelScorecards,
     ...operatingModelGates
   ].filter(Boolean);
   const approvalNeeded = contract.approvalRequests.filter((request) => request.decisionState === "approval-needed").length +
@@ -777,6 +781,7 @@ function renderAiCore() {
     ["No Content", noContentTranscriptCount, "blocked or empty"],
     ["Operating Model", operatingModelCards.length, "bounded agents"],
     ["Evidence Gates", goalEvidenceGates.length, "goal validation"],
+    ["Scorecards", goalOperatingScorecards.length, "gate-derived"],
     ["Execution Modes", contract.llmExecutionModes.length, "privacy modes"],
     ["Approvals", approvalNeeded, "human gates"],
     ["Evidence", validatedEvidence, "validated metadata records"]
@@ -867,6 +872,22 @@ function renderAiCore() {
     }
 
     if (item.goalId) {
+      if (Number.isInteger(item.scorePercent)) {
+        return renderContractCard(
+          item,
+          `Scorecard: ${labelFromId(item.scoreScope)}`,
+          `${item.scorePercent}% required gate coverage for ${labelFromId(item.goalId)}; current fixture slice only.`,
+          [
+            item.requiredGatesPassed ? "required gates passed" : "required gates open",
+            `${item.passingRequiredGateCount}/${item.requiredGateCount} required`,
+            `${item.passingTotalGateCount}/${item.totalGateCount} total`,
+            item.maturity,
+            item.nonClaims?.[0],
+            item.nextSafeAction
+          ].filter(Boolean)
+        );
+      }
+
       return renderContractCard(
         { ...item, status: item.gateStatus === "pass" ? "validated" : "blocked" },
         `Gate: ${labelFromId(item.gateType)}`,
@@ -953,6 +974,7 @@ function renderAiCore() {
     ...contract.securityFindings.map((item) => ({ ...item, group: "Security", title: item.category, detail: item.riskClass })),
     ...contract.roadmapItems.map((item) => ({ ...item, group: "Roadmap", title: item.horizon, detail: item.track })),
     ...goalEvidenceGates.map((item) => ({ ...item, group: "Gate", title: item.gateType, detail: item.requirement, status: item.gateStatus === "pass" ? "validated" : "blocked" })),
+    ...goalOperatingScorecards.map((item) => ({ ...item, group: "Scorecard", title: item.scoreScope, detail: `${item.scorePercent}% ${item.scoreBasis}` })),
     ...contract.goalTrackingStates.map((item) => ({ ...item, group: "Goal", title: item.progressState, detail: item.goal }))
   ];
 

@@ -45,6 +45,7 @@ const requiredScriptSignals = [
   "renderAiCore",
   "seisAiCoreContractFixture",
   "goalEvidenceGates",
+  "goalOperatingScorecards",
   "ai-core-operating-model",
   "operatingDomains",
   "platformPhases",

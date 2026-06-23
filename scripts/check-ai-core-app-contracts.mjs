@@ -67,6 +67,7 @@ const requiredTopLevel = [
   "aiSurfaces",
   "repositoryIntelligence",
   "goalEvidenceGates",
+  "goalOperatingScorecards",
   "goalTrackingStates"
 ];
 
@@ -150,6 +151,11 @@ const expectedGoalGateStatuses = [
   "unknown"
 ];
 
+const expectedScoreScopes = [
+  "current-fixture-slice",
+  "full-goal"
+];
+
 const objectToArray = {
   modelRoute: "modelRoutes",
   promptVersion: "promptVersions",
@@ -171,6 +177,7 @@ const objectToArray = {
   aiSurface: "aiSurfaces",
   repositoryIntelligence: "repositoryIntelligence",
   goalEvidenceGate: "goalEvidenceGates",
+  goalOperatingScorecard: "goalOperatingScorecards",
   goalTrackingState: "goalTrackingStates"
 };
 
@@ -610,6 +617,81 @@ for (const goal of fixture.goalTrackingStates || []) {
   }
 }
 
+const scorecardKeys = new Set();
+
+for (const scorecard of fixture.goalOperatingScorecards || []) {
+  assertAllowed(`goalOperatingScorecard.${scorecard.id}.scoreScope`, scorecard.scoreScope, expectedScoreScopes);
+
+  if (!goalsById.has(scorecard.goalId)) {
+    fail(`goalOperatingScorecard ${scorecard.id} references unknown goal ${scorecard.goalId}`);
+  }
+
+  const scorecardKey = `${scorecard.goalId}:${scorecard.scoreScope}`;
+  if (scorecardKeys.has(scorecardKey)) {
+    fail(`goalOperatingScorecard ${scorecard.id} duplicates score scope for ${scorecardKey}`);
+  }
+  scorecardKeys.add(scorecardKey);
+
+  assertEvidencePath(`goalOperatingScorecard.${scorecard.id}`, scorecard.evidence);
+
+  if (!existsSync(scorecard.evidence)) {
+    fail(`goalOperatingScorecard ${scorecard.id} evidence path does not exist: ${scorecard.evidence}`);
+  }
+
+  const gates = gatesByGoalId.get(scorecard.goalId) || [];
+  const requiredGates = gates.filter((gate) => gate.required === true);
+  const passingGates = gates.filter((gate) => gate.gateStatus === "pass");
+  const passingRequiredGates = requiredGates.filter((gate) => gate.gateStatus === "pass");
+  const failingGates = gates.filter((gate) => gate.gateStatus === "fail");
+  const blockedGates = gates.filter((gate) => gate.gateStatus === "blocked");
+  const unknownGates = gates.filter((gate) => gate.gateStatus === "unknown");
+  const expectedScorePercent = requiredGates.length === 0
+    ? 0
+    : Math.round((passingRequiredGates.length / requiredGates.length) * 100);
+
+  const derivedValues = {
+    totalGateCount: gates.length,
+    requiredGateCount: requiredGates.length,
+    passingTotalGateCount: passingGates.length,
+    passingRequiredGateCount: passingRequiredGates.length,
+    failingGateCount: failingGates.length,
+    blockedGateCount: blockedGates.length,
+    unknownGateCount: unknownGates.length,
+    scorePercent: expectedScorePercent
+  };
+
+  for (const [field, expectedValue] of Object.entries(derivedValues)) {
+    if (scorecard[field] !== expectedValue) {
+      fail(`goalOperatingScorecard ${scorecard.id} ${field} must be ${expectedValue}, got ${scorecard[field]}`);
+    }
+  }
+
+  const requiredGatesPassed = requiredGates.length > 0 && passingRequiredGates.length === requiredGates.length;
+  if (scorecard.requiredGatesPassed !== requiredGatesPassed) {
+    fail(`goalOperatingScorecard ${scorecard.id} requiredGatesPassed must be ${requiredGatesPassed}`);
+  }
+
+  if (scorecard.status === "validated" && !requiredGatesPassed) {
+    fail(`goalOperatingScorecard ${scorecard.id} cannot be validated until all required gates pass`);
+  }
+
+  if (scorecard.scoreScope === "full-goal") {
+    const goal = goalsById.get(scorecard.goalId);
+    if (goal?.progressState !== "complete" || goal?.completionEvidence !== "validated") {
+      fail(`goalOperatingScorecard ${scorecard.id} cannot use full-goal scope before the goal is complete with validated evidence`);
+    }
+  }
+
+  if (!Array.isArray(scorecard.nonClaims) || scorecard.nonClaims.length === 0) {
+    fail(`goalOperatingScorecard ${scorecard.id} must include non-claims`);
+  }
+
+  const scorecardText = JSON.stringify(scorecard).toLowerCase();
+  if (scorecardText.includes("readiness") || scorecardText.includes("health")) {
+    fail(`goalOperatingScorecard ${scorecard.id} must use gate coverage language instead of readiness or health language`);
+  }
+}
+
 const fixtureText = JSON.stringify(fixture);
 for (const pattern of secretPatterns) {
   if (pattern.test(fixtureText)) {
@@ -654,6 +736,7 @@ for (const key of [
   "aiSurfaces",
   "repositoryIntelligence",
   "goalEvidenceGates",
+  "goalOperatingScorecards",
   "goalTrackingStates"
 ]) {
   if (JSON.stringify(appFixture[key]) !== JSON.stringify(fixture[key])) {
@@ -670,7 +753,9 @@ for (const requiredFixtureRecord of [
   "gate-five-year-operating-model-doc",
   "gate-five-year-agent-runtime-validation",
   "gate-five-year-command-center-surface",
-  "gate-five-year-provider-boundary"
+  "gate-five-year-provider-boundary",
+  "score-five-year-operating-model-current-slice",
+  "score-token-feed-current-slice"
 ]) {
   if (!JSON.stringify(fixture).includes(requiredFixtureRecord)) {
     fail(`${fixturePath} must include ${requiredFixtureRecord}`);

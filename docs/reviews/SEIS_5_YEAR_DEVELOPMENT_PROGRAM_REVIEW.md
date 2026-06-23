@@ -241,6 +241,34 @@ agent scheduler, provider health check, production orchestration claim,
 training run, benchmark, checkpoint, model-card claim, SSH execution, GitHub
 mutation, deployment, payment, or infrastructure action.
 
+## AI Operating Model Gate-Derived Scorecard Slice
+
+Status: Added after the evidence gate registry slice.
+
+Evidence:
+
+- `packages/shared-types/schemas/ai-core-app-contract.schema.json`
+- `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `apps/seis-core/ai-core-contract-fixture.js`
+- `apps/seis-core/script.js`
+- `apps/seis-core/test/seis-core-static.test.js`
+- `scripts/check-ai-core-app-contracts.mjs`
+- `scripts/check-seis-command-center.mjs`
+- `docs/architecture/ai-core-app-shared-contracts.md`
+- `docs/evals/evaluation-strategy.md`
+- `docs/ai/seis-ai-operating-model-5-year.md`
+- `npm run check:ai-core-app-contracts`
+- `npm run test:seis-command-center`
+
+This slice adds `goalOperatingScorecard` records that are derived from
+`goalEvidenceGate` records. The validator recomputes gate totals, required gate
+totals, pass/fail/blocked/unknown counts, required-gate completion, and
+percentage score from the gate registry. A current-slice score can be 100 while
+the parent five-year goal remains in progress; the scorecard is not allowed to
+claim full-goal completion unless the goal is complete with validated evidence.
+Command Center renders the scorecard inside the AI Operating Model panel without
+adding fake controls or live orchestration.
+
 ## Follow-Up 10,000,000 Token Feed Budget Slice
 
 Status: Added after the knowledge-source classification and route contract

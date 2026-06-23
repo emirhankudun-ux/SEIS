@@ -1298,6 +1298,54 @@
       "nextSafeAction": "Derive future scorecards from passed gates rather than subjective readiness labels."
     }
   ],
+  "goalOperatingScorecards": [
+    {
+      "id": "score-five-year-operating-model-current-slice",
+      "goalId": "goal-five-year-development",
+      "scoreScope": "current-fixture-slice",
+      "scoreBasis": "Required gate coverage for the current AI operating model foundation slice.",
+      "totalGateCount": 4,
+      "requiredGateCount": 4,
+      "passingTotalGateCount": 4,
+      "passingRequiredGateCount": 4,
+      "failingGateCount": 0,
+      "blockedGateCount": 0,
+      "unknownGateCount": 0,
+      "requiredGatesPassed": true,
+      "scorePercent": 100,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md",
+      "nonClaims": [
+        "A 100 score means current required fixture gates pass; it does not mean the five-year program is complete.",
+        "The scorecard does not prove live autonomous orchestration, provider routing, SSH execution, deployment, model training, benchmarks, checkpoints, or model cards."
+      ],
+      "nextSafeAction": "Add future scorecards only when new required evidence gates exist."
+    },
+    {
+      "id": "score-token-feed-current-slice",
+      "goalId": "goal-seis-10m-token-feed",
+      "scoreScope": "current-fixture-slice",
+      "scoreBasis": "Required gate coverage for the metadata-only 10,000,000 token feed budget foundation slice.",
+      "totalGateCount": 2,
+      "requiredGateCount": 2,
+      "passingTotalGateCount": 2,
+      "passingRequiredGateCount": 2,
+      "failingGateCount": 0,
+      "blockedGateCount": 0,
+      "unknownGateCount": 0,
+      "requiredGatesPassed": true,
+      "scorePercent": 100,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json",
+      "nonClaims": [
+        "A 100 score means current required fixture gates pass; it does not mean long-context ingestion has run.",
+        "The scorecard does not prove provider context upload, persistent memory writes, embeddings, model training, benchmarks, checkpoints, or model cards."
+      ],
+      "nextSafeAction": "Keep token-feed status metadata-only until ingestion, memory, and provider-routing gates are explicitly approved."
+    }
+  ],
   "goalTrackingStates": [
     {
       "id": "goal-five-year-development",

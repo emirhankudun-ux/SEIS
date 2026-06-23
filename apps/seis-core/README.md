@@ -52,9 +52,9 @@ apps/seis-core/
 - Agents: mode cards, AI system support, and inspector sync.
 - AI Core: fixture-backed model routes, prompt versions, supervised agent tasks,
   approval gates, evaluation results, audit events, safety findings, roadmap
-  items, AI Operating Model evidence gates, Local Retrieval adapters, Retrieval
-  Result Cards, No-Content Search Transcripts, and goal evidence from the shared
-  contract fixture.
+  items, AI Operating Model evidence gates, gate-derived operating scorecards,
+  Local Retrieval adapters, Retrieval Result Cards, No-Content Search
+  Transcripts, and goal evidence from the shared contract fixture.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, history, and execution gates.
 - Security Center: risk reports, access model, permission reviews, dependency posture, and no-secret policy.
@@ -69,8 +69,9 @@ apps/seis-core/
 - Switch active AI agent mode.
 - Inspect AI Core shared-contract routes, prompts, approvals, evaluations, and evidence without live provider access.
 - Inspect the fixture-backed AI Operating Model panel and its goal evidence
-  gates without live subagent orchestration, provider calls, GitHub mutation,
-  SSH execution, deployment, training, benchmark, or model-card claims.
+  gates plus gate-derived scorecards without live subagent orchestration,
+  provider calls, GitHub mutation, SSH execution, deployment, training,
+  benchmark, or model-card claims.
 - Inspect local-only retrieval adapters, blocked archive guards, and no-content
   source boundaries without raw-content ingestion.
 - Inspect Retrieval Result Cards and No-Content Search Transcripts from

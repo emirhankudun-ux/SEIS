@@ -32,6 +32,7 @@
     "aiSurfaces",
     "repositoryIntelligence",
     "goalEvidenceGates",
+    "goalOperatingScorecards",
     "goalTrackingStates"
   ],
   "properties": {
@@ -214,6 +215,13 @@
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/goalEvidenceGate"
+      }
+    },
+    "goalOperatingScorecards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/goalOperatingScorecard"
       }
     },
     "goalTrackingStates": {
@@ -941,6 +949,54 @@
         "gateStatus": { "enum": ["pass", "fail", "blocked", "unknown"] },
         "evidence": { "$ref": "#/$defs/evidenceLink" },
         "blocker": { "type": "string" },
+        "nonClaims": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "nextSafeAction": { "type": "string" }
+      }
+    },
+    "goalOperatingScorecard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "goalId",
+        "scoreScope",
+        "scoreBasis",
+        "totalGateCount",
+        "requiredGateCount",
+        "passingTotalGateCount",
+        "passingRequiredGateCount",
+        "failingGateCount",
+        "blockedGateCount",
+        "unknownGateCount",
+        "requiredGatesPassed",
+        "scorePercent",
+        "status",
+        "maturity",
+        "evidence",
+        "nonClaims",
+        "nextSafeAction"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "goalId": { "$ref": "#/$defs/id" },
+        "scoreScope": { "enum": ["current-fixture-slice", "full-goal"] },
+        "scoreBasis": { "type": "string" },
+        "totalGateCount": { "type": "integer", "minimum": 0 },
+        "requiredGateCount": { "type": "integer", "minimum": 0 },
+        "passingTotalGateCount": { "type": "integer", "minimum": 0 },
+        "passingRequiredGateCount": { "type": "integer", "minimum": 0 },
+        "failingGateCount": { "type": "integer", "minimum": 0 },
+        "blockedGateCount": { "type": "integer", "minimum": 0 },
+        "unknownGateCount": { "type": "integer", "minimum": 0 },
+        "requiredGatesPassed": { "type": "boolean" },
+        "scorePercent": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "status": { "$ref": "#/$defs/state" },
+        "maturity": { "$ref": "#/$defs/moduleMaturity" },
+        "evidence": { "$ref": "#/$defs/evidenceLink" },
         "nonClaims": {
           "type": "array",
           "items": { "type": "string" },

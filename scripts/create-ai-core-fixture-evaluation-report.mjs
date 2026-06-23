@@ -224,6 +224,7 @@ for (const key of [
   "aiSurfaces",
   "repositoryIntelligence",
   "goalEvidenceGates",
+  "goalOperatingScorecards",
   "goalTrackingStates"
 ]) {
   if (JSON.stringify(appFixture[key]) !== JSON.stringify(sharedFixture[key])) {
