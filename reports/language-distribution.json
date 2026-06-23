@@ -9,29 +9,29 @@
   },
   "summary": {
     "countedFileCount": 903,
-    "countedBytes": 5339990,
-    "javascriptBytes": 1994315,
-    "javascriptPercent": 37.35,
+    "countedBytes": 5343145,
+    "javascriptBytes": 1997470,
+    "javascriptPercent": 37.38,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 4156748,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4168616,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1994315,
-      "percent": 37.35
+      "bytes": 1997470,
+      "percent": 37.38
     },
     {
       "language": "JSON",
       "bytes": 1000586,
-      "percent": 18.74
+      "percent": 18.73
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 10.75
+      "percent": 10.74
     },
     {
       "language": "Python",
@@ -46,7 +46,7 @@
     {
       "language": "CSS",
       "bytes": 290352,
-      "percent": 5.44
+      "percent": 5.43
     },
     {
       "language": "HTML",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1994315,
-      "percent": 37.35,
+      "bytes": 1997470,
+      "percent": 37.38,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -527,7 +527,7 @@
     {
       "language": "Other",
       "bytes": 2925441,
-      "percent": 54.78,
+      "percent": 54.75,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -650,7 +650,7 @@
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
         "bytes": 1526886,
-        "percent": 28.59,
+        "percent": 28.58,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2406102,
-        "percent": 45.06,
+        "bytes": 2409257,
+        "percent": 45.09,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -704,7 +704,7 @@
         "id": "rust-c-cpp-systems",
         "label": "Rust / C / C++ systems",
         "bytes": 29643,
-        "percent": 0.56,
+        "percent": 0.55,
         "minPercent": 10.0,
         "maxPercent": 15.0,
         "status": "below_target",
@@ -880,14 +880,14 @@
       "bytes": 31248
     },
     {
+      "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
+      "language": "JavaScript",
+      "bytes": 27904
+    },
+    {
       "path": "scripts/sync-plugin-environment-sources.cjs",
       "language": "JavaScript",
       "bytes": 27637
-    },
-    {
-      "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
-      "language": "JavaScript",
-      "bytes": 27320
     },
     {
       "path": "packages/seis-ai/test/checks.test.mjs",
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1563697,
-    "linguist-generated": 3015999,
+    "documentation": 1571304,
+    "linguist-generated": 3016533,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "9cb768f8903006f3a302352eca4e035475b4f1b2a170bf615fc0ba929976d85a",
+    "hash": "9c457b50a0cfe673243a040608f7bba3911a1e7959359f8ebc8ee3a98b790115",
     "algorithm": "sha256"
   }
 }

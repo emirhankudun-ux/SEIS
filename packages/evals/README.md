@@ -44,6 +44,9 @@ The non-active workflow draft is documented in
 `docs/evals/ai-core-browser-ci-workflow-draft.md`; it is review-only and is not
 an active GitHub Actions workflow.
 Status invariant: not an active GitHub Actions workflow.
+The activation approval packet is documented in
+`docs/evals/ai-core-browser-ci-activation-approval.md`; it is planning evidence
+only and does not authorize CI behavior changes.
 
 Canonical validator phrase: browser-run AI Core QA evidence.
 

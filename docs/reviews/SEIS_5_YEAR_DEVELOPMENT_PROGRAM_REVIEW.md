@@ -51,12 +51,12 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Prepare an approval-gated active workflow PR for AI Core browser artifact
-   gates only after the review-only draft is accepted. The active workflow
-   change must keep `.github/workflows/ci.yml` metadata-only, replace the
-   upload-artifact placeholder with an approved pinned SHA, verify the runner
-   Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and avoid providers,
-   SSH, deployment, payment, and infrastructure mutation.
+1. Request human review of the activation approval packet. Only after approval,
+   prepare a separate active workflow PR for AI Core browser artifact gates. The
+   active workflow change must keep `.github/workflows/ci.yml` metadata-only,
+   replace the upload-artifact placeholder with an approved pinned SHA, verify
+   the runner Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and avoid
+   providers, SSH, deployment, payment, and infrastructure mutation.
 
 ## Follow-Up Contract Slice
 
@@ -420,6 +420,7 @@ Status: Added after the browser-run AI Core evidence gate availability slice.
 Evidence:
 
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `docs/evals/evaluation-strategy.md`
@@ -442,3 +443,24 @@ evidence, do not change
 persistent memory writes, raw-content return, GitHub write actions, SSH,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.
+
+## Browser-Run AI Core CI Activation Approval Slice
+
+Status: Added after the browser-run AI Core CI workflow draft slice.
+
+Evidence:
+
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
+- `docs/evals/ai-core-browser-ci-proposal.md`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `scripts/create-ai-core-fixture-evaluation-report.mjs`
+- `npm run check:ai-core-browser-qa-evidence`
+
+This slice documents the human approval packet required before the review-only
+workflow draft can become an active GitHub Actions workflow. It records approval
+requirements, future active workflow PR contents, validation plan, rollback
+plan, security boundaries, and non-claims. It remains planning evidence only:
+it does not create `.github/workflows/ai-core-browser-evidence.yml`, does not
+change `.github/workflows/ci.yml`, and does not add providers, SSH, deployment,
+payment, infrastructure mutation, benchmark claims, or model-training evidence.

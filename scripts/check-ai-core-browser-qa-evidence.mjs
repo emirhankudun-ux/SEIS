@@ -14,6 +14,7 @@ const files = {
   evalsReadme: "packages/evals/README.md",
   browserEvidenceGates: "docs/evals/ai-core-browser-evidence-gates.md",
   browserCiProposal: "docs/evals/ai-core-browser-ci-proposal.md",
+  browserCiActivationApproval: "docs/evals/ai-core-browser-ci-activation-approval.md",
   browserCiWorkflowDraft: "docs/evals/ai-core-browser-ci-workflow-draft.md",
   readme: "apps/seis-core/README.md",
   evaluationStrategy: "docs/evals/evaluation-strategy.md",
@@ -223,6 +224,7 @@ const schema = readText(files.schema);
 const evalsReadme = readText(files.evalsReadme);
 const browserEvidenceGates = readText(files.browserEvidenceGates);
 const browserCiProposal = readText(files.browserCiProposal);
+const browserCiActivationApproval = readText(files.browserCiActivationApproval);
 const browserCiWorkflowDraft = readText(files.browserCiWorkflowDraft);
 const readme = readText(files.readme);
 const evaluationStrategy = readText(files.evaluationStrategy);
@@ -318,6 +320,7 @@ lowerIncludesAll("AI Core browser evidence gates doc", browserEvidenceGates, [
 
 lowerIncludesAll("AI Core browser CI proposal", browserCiProposal, [
   "AI Core Browser CI Proposal",
+  "docs/evals/ai-core-browser-ci-activation-approval.md",
   "docs/evals/ai-core-browser-ci-workflow-draft.md",
   "browser-run AI Core QA evidence",
   "GitHub Actions",
@@ -338,6 +341,65 @@ lowerIncludesAll("AI Core browser CI proposal", browserCiProposal, [
   "metadata-only",
   "future CI change"
 ]);
+
+lowerIncludesAll("AI Core browser CI activation approval", browserCiActivationApproval, [
+  "AI Core Browser CI Activation Approval Packet",
+  "human approval packet",
+  "does not enable CI behavior",
+  "approval required",
+  "no active workflow",
+  ".github/workflows/ai-core-browser-evidence.yml",
+  "npm run qa:seis-core:ai-core-evidence",
+  "npm run check:ai-core-eval-evidence",
+  "actions/upload-artifact",
+  "approved pinned SHA",
+  "Chrome/Chromium",
+  "SEIS_BROWSER_BIN",
+  "SEIS_DATA_MODE=mock",
+  "SEIS_PRIVACY_MODE=local-only",
+  "workflow_dispatch",
+  "contents permission",
+  "metadata-only",
+  "reports/tmp/seis-core-ai-core-panel-navigation/",
+  "7 days or less",
+  "fail-closed",
+  "retention",
+  "rollback plan",
+  "provider-free",
+  "SSH-free",
+  "deployment-free",
+  "payment-free",
+  "infrastructure-mutation-free",
+  "secret-free",
+  "local-only",
+  "mock-data-only",
+  "planning evidence only",
+  "not browser QA pass evidence",
+  "live provider routing",
+  "live retrieval",
+  "backend integration",
+  "cross-browser certification",
+  "benchmark performance",
+  "model safety",
+  "SEIS-owned model training",
+  "checkpoint validity",
+  "deployment readiness",
+  "production availability"
+]);
+
+for (const [label, text] of [
+  ["AI Core browser CI proposal", browserCiProposal],
+  ["AI Core browser CI workflow draft", browserCiWorkflowDraft],
+  ["AI Core browser evidence gates doc", browserEvidenceGates],
+  ["evals package README", evalsReadme],
+  ["evaluation strategy", evaluationStrategy],
+  ["five-year roadmap", roadmap],
+  ["five-year review", programReview]
+]) {
+  lowerIncludesAll(`${label} activation approval link`, text, [
+    "docs/evals/ai-core-browser-ci-activation-approval.md"
+  ]);
+}
 
 lowerIncludesAll("AI Core browser CI workflow draft", browserCiWorkflowDraft, [
   "AI Core Browser CI Workflow Draft",
@@ -368,6 +430,7 @@ lowerIncludesAll("AI Core browser CI workflow draft", browserCiWorkflowDraft, [
 lowerIncludesAll("evals package README", evalsReadme, [
   "docs/evals/ai-core-browser-evidence-gates.md",
   "docs/evals/ai-core-browser-ci-proposal.md",
+  "docs/evals/ai-core-browser-ci-activation-approval.md",
   "docs/evals/ai-core-browser-ci-workflow-draft.md",
   "reports/evals/ai-core-panel-navigation-browser-qa.md",
   "npm run check:ai-core-browser-qa-evidence",
@@ -382,6 +445,7 @@ lowerIncludesAll("evals package README", evalsReadme, [
 includesAll("fixture report generator", fixtureReportGenerator, [
   "panelNavigationQaReportPath",
   "browserCiProposalPath",
+  "browserCiActivationApprovalPath",
   "browserCiWorkflowDraftPath",
   "browserUiEvaluations",
   "eval-browser-ui-ai-core-panel-navigation-qa",
@@ -422,6 +486,7 @@ for (const [label, text] of [
   ["evals package README", evalsReadme],
   ["browser evidence gates", browserEvidenceGates],
   ["browser CI proposal", browserCiProposal],
+  ["browser CI activation approval", browserCiActivationApproval],
   ["browser CI workflow draft", browserCiWorkflowDraft],
   ["evaluation strategy", evaluationStrategy],
   ["five-year roadmap", roadmap],
@@ -443,6 +508,14 @@ if (!fixtureReport.sourceDocuments?.includes("scripts/check-ai-core-browser-qa-e
 
 if (!fixtureReport.sourceDocuments?.includes(files.browserCiProposal)) {
   fail("fixture report sourceDocuments must include the AI Core browser CI proposal");
+}
+
+if (!fixtureReport.sourceDocuments?.includes(files.browserCiActivationApproval)) {
+  fail("fixture report sourceDocuments must include the AI Core browser CI activation approval packet");
+}
+
+if (!fixtureReport.nextRecommendedSlice?.sourceLinks?.includes(files.browserCiActivationApproval)) {
+  fail("fixture report nextRecommendedSlice sourceLinks must include the AI Core browser CI activation approval packet");
 }
 
 if (!fixtureReport.sourceDocuments?.includes(files.browserCiWorkflowDraft)) {
@@ -488,6 +561,7 @@ if (!panelEvaluation) {
 
   for (const planningOnlyLink of [
     files.browserCiProposal,
+    files.browserCiActivationApproval,
     files.browserCiWorkflowDraft
   ]) {
     if (panelEvaluation.evidenceLinks?.includes(planningOnlyLink)) {

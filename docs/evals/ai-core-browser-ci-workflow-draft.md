@@ -7,7 +7,7 @@ Core QA evidence after browser infrastructure is approved.
 
 This document is not an active workflow. It must not be copied into
 `.github/workflows/` until the browser runner, action pinning, artifact
-retention, and failure semantics are reviewed.
+retention, failure semantics, and activation approval packet are reviewed.
 
 ## Scope
 
@@ -75,6 +75,9 @@ jobs:
 ## Activation Requirements
 
 - Keep this as review-only documentation until CI behavior change is approved.
+- Accept the activation approval packet in
+  `docs/evals/ai-core-browser-ci-activation-approval.md` before creating an
+  active workflow PR.
 - Replace `actions/upload-artifact@<approved-pinned-sha>` with a reviewed,
   pinned action SHA before activation.
 - Confirm the selected runner image provides the expected Chrome/Chromium
@@ -121,6 +124,7 @@ publication, or dataset download.
 ## Related Documents
 
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `docs/evals/evaluation-strategy.md`
@@ -130,4 +134,4 @@ publication, or dataset download.
 
 Review the draft as a CI behavior change proposal. Only after approval, create
 an active `.github/workflows/ai-core-browser-evidence.yml` change with pinned
-actions and the same safety boundaries.
+actions, the activation approval packet, and the same safety boundaries.

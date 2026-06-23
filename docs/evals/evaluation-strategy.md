@@ -153,6 +153,9 @@ review-ready CI proposal lives in `docs/evals/ai-core-browser-ci-proposal.md`
 and does not enable the browser artifact gate by itself. The review-only
 workflow shape lives in `docs/evals/ai-core-browser-ci-workflow-draft.md`; it is
 not an active `.github/workflows/` workflow and does not change CI behavior.
+The activation approval packet lives in
+`docs/evals/ai-core-browser-ci-activation-approval.md` and records the required
+human approval, validation, and rollback plan before an active workflow PR.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

@@ -35,7 +35,8 @@ change is reviewed. Browser setup is operational infrastructure, so it should
 be added as a separate reviewable change. The proposed browser-enabled CI shape
 is documented in `docs/evals/ai-core-browser-ci-proposal.md`, with a
 review-only workflow draft in
-`docs/evals/ai-core-browser-ci-workflow-draft.md`.
+`docs/evals/ai-core-browser-ci-workflow-draft.md` and an activation approval
+packet in `docs/evals/ai-core-browser-ci-activation-approval.md`.
 
 ## Local Browser Policy
 
@@ -99,6 +100,7 @@ production availability.
 
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/evaluation-strategy.md`
 - `apps/seis-core/README.md`
@@ -109,5 +111,6 @@ production availability.
 
 If browser evidence should run in GitHub Actions, use
 `docs/evals/ai-core-browser-ci-proposal.md` and
-`docs/evals/ai-core-browser-ci-workflow-draft.md` as the proposal contract
+`docs/evals/ai-core-browser-ci-workflow-draft.md` plus
+`docs/evals/ai-core-browser-ci-activation-approval.md` as the proposal contract
 before enabling the browser artifact gate in an active workflow.

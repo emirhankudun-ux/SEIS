@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Prepare an approval-gated active workflow PR for AI Core browser evidence after the review-only draft is accepted.
+If human approval is granted, prepare a separate active workflow PR for AI Core browser evidence using the accepted activation approval packet; keep .github/workflows/ci.yml metadata-only, pin browser/setup and upload-artifact actions, run npm run qa:seis-core:ai-core-evidence only in the separate workflow, upload only ignored reports/tmp/seis-core-ai-core-panel-navigation/ artifacts with 7-day-or-less retention, and preserve provider-free, SSH-free, deployment-free, payment-free, infrastructure-mutation-free boundaries.
 
 Source links:
 
@@ -52,4 +52,5 @@ Source links:
 - `scripts/check-ai-core-browser-qa-evidence.mjs`
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`

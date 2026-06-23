@@ -16,6 +16,7 @@ const panelNavigationQaReportPath = "reports/evals/ai-core-panel-navigation-brow
 const panelNavigationQaEvidenceCheckPath = "scripts/check-ai-core-browser-qa-evidence.mjs";
 const browserEvidenceGatesPath = "docs/evals/ai-core-browser-evidence-gates.md";
 const browserCiProposalPath = "docs/evals/ai-core-browser-ci-proposal.md";
+const browserCiActivationApprovalPath = "docs/evals/ai-core-browser-ci-activation-approval.md";
 const browserCiWorkflowDraftPath = "docs/evals/ai-core-browser-ci-workflow-draft.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
@@ -566,6 +567,7 @@ const report = {
     tokenFeedFixturePath,
     browserEvidenceGatesPath,
     browserCiProposalPath,
+    browserCiActivationApprovalPath,
     browserCiWorkflowDraftPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
@@ -584,7 +586,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Prepare an approval-gated active workflow PR for AI Core browser evidence after the review-only draft is accepted.",
+    summary: "If human approval is granted, prepare a separate active workflow PR for AI Core browser evidence using the accepted activation approval packet; keep .github/workflows/ci.yml metadata-only, pin browser/setup and upload-artifact actions, run npm run qa:seis-core:ai-core-evidence only in the separate workflow, upload only ignored reports/tmp/seis-core-ai-core-panel-navigation/ artifacts with 7-day-or-less retention, and preserve provider-free, SSH-free, deployment-free, payment-free, infrastructure-mutation-free boundaries.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -593,6 +595,7 @@ const report = {
       panelNavigationQaEvidenceCheckPath,
       browserEvidenceGatesPath,
       browserCiProposalPath,
+      browserCiActivationApprovalPath,
       browserCiWorkflowDraftPath
     ]
   }

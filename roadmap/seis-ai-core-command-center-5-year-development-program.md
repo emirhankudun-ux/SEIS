@@ -392,15 +392,21 @@ Completed foundation slice:
   permissions, pinned existing checkout/setup-node actions, bounded timeout,
   short artifact retention, and explicit provider/SSH/deployment/payment/infra
   non-claims.
+- Browser-run AI Core activation approval is documented in
+  `docs/evals/ai-core-browser-ci-activation-approval.md`, recording the human
+  approval requirements, active workflow PR contents, local validation plan,
+  rollback plan, security boundaries, and non-claims before an active workflow
+  is created.
 
 ## Next Safe Slice
 
-Prepare an approval-gated active workflow PR for AI Core browser artifact gates
-only after the review-only draft is accepted. The active workflow change must
-keep `.github/workflows/ci.yml` metadata-only, replace the upload-artifact
-placeholder with an approved pinned SHA, verify the runner Chrome/Chromium
-binary, preserve `SEIS_BROWSER_BIN`, and remain provider-free, SSH-free,
-deployment-free, payment-free, and infrastructure-mutation-free.
+Request human review of the activation approval packet. Only after approval,
+prepare a separate active workflow PR for AI Core browser artifact gates. The
+active workflow change must keep `.github/workflows/ci.yml` metadata-only,
+replace the upload-artifact placeholder with an approved pinned SHA, verify the
+runner Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and remain
+provider-free, SSH-free, deployment-free, payment-free, and
+infrastructure-mutation-free.
 
 ## Relationship to Existing Roadmaps
 

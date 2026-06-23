@@ -97,6 +97,9 @@ download.
 - The review-only workflow draft in
   `docs/evals/ai-core-browser-ci-workflow-draft.md` is approved before an
   active `.github/workflows/` workflow is added.
+- The approval packet in
+  `docs/evals/ai-core-browser-ci-activation-approval.md` is accepted before an
+  active workflow PR is prepared.
 - `reports/tmp/` artifacts remain ignored and are not committed.
 - Provider, SSH, deployment, payment, and infrastructure mutation remain absent.
 - Failure output explains whether the issue is missing browser setup or evidence
@@ -105,6 +108,7 @@ download.
 ## Related Documents
 
 - `docs/evals/ai-core-browser-evidence-gates.md`
+- `docs/evals/ai-core-browser-ci-activation-approval.md`
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `docs/evals/evaluation-strategy.md`
@@ -113,6 +117,8 @@ download.
 ## Next Safe Action
 
 Review the non-active workflow draft in
-`docs/evals/ai-core-browser-ci-workflow-draft.md`. Create a separate active CI
-workflow change only if the repository is ready to pin and maintain a
-Chrome/Chromium setup for browser artifact evidence.
+`docs/evals/ai-core-browser-ci-workflow-draft.md` and the activation approval
+packet in `docs/evals/ai-core-browser-ci-activation-approval.md`. Create a
+separate active CI workflow change only if human approval confirms the
+repository is ready to pin and maintain a Chrome/Chromium setup for browser
+artifact evidence.
