@@ -43,6 +43,36 @@ Each run should include:
 - `auditEvents`
 - `status`
 
+## Bounded Subagent Model
+
+SEIS may use subagents for focused exploration, implementation, validation, or
+review, but subagents are not unlimited autonomous workers. Each delegated run
+must inherit the parent task's privacy, security, and approval boundaries.
+
+Each bounded subagent run should define:
+
+- `parentRunId`
+- `delegationDepth`
+- `maxDelegationDepth`
+- `childAgentLimit`
+- `spawnPolicy`
+- `requiresHandoff`
+- `stepBudget`
+- `timeBudgetMinutes`
+- `costBudgetMode`
+- `contextBudgetMode`
+- `escalationPath`
+
+Foundation fixtures keep `maxDelegationDepth` at `0` or `1`. Higher depth,
+write-capable delegation, provider routing, GitHub writes, SSH execution,
+deployment, dataset access, or model research execution require separate human
+approval, validation, and rollback evidence.
+
+The five-year operating model is documented in
+`docs/ai/seis-ai-operating-model-5-year.md`. It defines the agent organization,
+operating cadence, maturity path, Command Center integration, metrics, and
+non-claims for SEIS AI operation.
+
 ## Forbidden Defaults
 
 Agents must not:
@@ -73,6 +103,7 @@ The first agent-runtime task lifecycle fixture pack lives under
 It covers:
 
 - a validated documentation review task with no privileged operation
+- a validated five-year AI operating model review with bounded subagent rules
 - an approval-needed external-provider-routing task that performs no provider
   call
 - a blocked SSH/deployment review task that performs no command execution

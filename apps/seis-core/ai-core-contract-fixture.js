@@ -22,7 +22,8 @@ window.seisAiCoreContractFixture = {
     "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
     "packages/data/schemas/retrieval-query-adapter.schema.json",
     "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
-    "packages/data/schemas/retrieval-search-transcript.schema.json"
+    "packages/data/schemas/retrieval-search-transcript.schema.json",
+    "docs/ai/seis-ai-operating-model-5-year.md"
   ],
   "stateVocabulary": [
     "ready",
@@ -243,6 +244,27 @@ window.seisAiCoreContractFixture = {
       "status": "blocked",
       "maturity": "blocked",
       "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "task-ai-operating-model",
+      "agentRole": "Agent Runtime Agent",
+      "intent": "Define a five-year SEIS AI operating model with bounded subagent delegation, evidence gates, cadence, and non-claims.",
+      "allowedActions": [
+        "read official AI Core and agent-runtime docs",
+        "summarize bounded subagent operating rules",
+        "attach fixture-backed evidence to Command Center contracts"
+      ],
+      "forbiddenActions": [
+        "spawn live autonomous agents",
+        "self-approve permission expansion",
+        "call external providers",
+        "execute SSH or deployment commands",
+        "claim production orchestration readiness"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
     }
   ],
   "toolRegistryEntries": [
@@ -600,6 +622,14 @@ window.seisAiCoreContractFixture = {
       "result": "pass",
       "status": "validated",
       "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    },
+    {
+      "id": "eval-ai-operating-model",
+      "targetType": "agent",
+      "targetId": "task-ai-operating-model",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-agent-runtime-lifecycle.mjs"
     }
   ],
   "auditEvents": [
@@ -682,6 +712,14 @@ window.seisAiCoreContractFixture = {
       "redactionState": "metadata-only",
       "status": "validated",
       "evidence": "scripts/check-retrieval-search-transcript.mjs"
+    },
+    {
+      "id": "audit-ai-operating-model",
+      "actor": "Agent Runtime Agent",
+      "action": "documented fixture-backed five-year AI operating model with bounded subagent delegation and non-claims",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
     }
   ],
   "repositoryFindings": [
@@ -948,6 +986,14 @@ window.seisAiCoreContractFixture = {
       "status": "validated",
       "maturity": "fixture-backed",
       "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      "id": "roadmap-year-1-ai-operating-model",
+      "horizon": "year-1",
+      "track": "AI operating model and bounded subagent governance",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
     }
   ],
   "aiSurfaces": [
@@ -1164,7 +1210,7 @@ window.seisAiCoreContractFixture = {
   "goalTrackingStates": [
     {
       "id": "goal-five-year-development",
-      "goal": "Uzun sureli olarak gelistir 5 yil",
+      "goal": "Keep the five-year AI Core and Command Center program moving through fixture-backed contracts, bounded subagent governance, and evidence gates.",
       "progressState": "in-progress",
       "completionEvidence": "partial",
       "status": "running",

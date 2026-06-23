@@ -100,6 +100,9 @@
         "allowedActions",
         "forbiddenActions",
         "approvalGates",
+        "delegationPolicy",
+        "executionBudget",
+        "escalationPath",
         "expectedOutputs",
         "validation",
         "auditMetadata",
@@ -122,6 +125,12 @@
             "Repository Intelligence Agent",
             "Command Center Operator",
             "AI Systems Agent",
+            "Agent Runtime Agent",
+            "Product Agent",
+            "QA and Evaluation Agent",
+            "UX and Design System Agent",
+            "Research Agent",
+            "Knowledge Agent",
             "DevOps Agent"
           ]
         },
@@ -129,6 +138,8 @@
           "enum": [
             "documentation-review",
             "repository-assistance",
+            "ai-operating-model-review",
+            "agent-runtime-governance",
             "external-provider-routing",
             "ssh-deployment-review"
           ]
@@ -180,6 +191,19 @@
             "type": "string"
           }
         },
+        "delegationPolicy": {
+          "$ref": "#/$defs/delegationPolicy"
+        },
+        "executionBudget": {
+          "$ref": "#/$defs/executionBudget"
+        },
+        "escalationPath": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
         "expectedOutputs": {
           "type": "array",
           "minItems": 1,
@@ -213,6 +237,73 @@
         },
         "maturity": {
           "enum": ["fixture-backed", "local-alpha", "draft", "blocked"]
+        }
+      }
+    },
+    "delegationPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spawnPolicy",
+        "parentRunId",
+        "delegationDepth",
+        "maxDelegationDepth",
+        "childAgentLimit",
+        "requiresHandoff"
+      ],
+      "properties": {
+        "spawnPolicy": {
+          "enum": ["none", "read-only-parallel", "bounded-tree", "blocked"]
+        },
+        "parentRunId": {
+          "type": ["string", "null"],
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "delegationDepth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "maxDelegationDepth": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "childAgentLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "requiresHandoff": {
+          "type": "boolean"
+        }
+      }
+    },
+    "executionBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stepBudget",
+        "timeBudgetMinutes",
+        "costBudgetMode",
+        "contextBudgetMode"
+      ],
+      "properties": {
+        "stepBudget": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500
+        },
+        "timeBudgetMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 480
+        },
+        "costBudgetMode": {
+          "enum": ["none", "metadata-only", "approval-needed"]
+        },
+        "contextBudgetMode": {
+          "enum": ["bounded", "metadata-only", "approval-needed"]
         }
       }
     },

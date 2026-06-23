@@ -9,6 +9,7 @@ const sharedFixturePath = "packages/shared-types/fixtures/ai-core-command-center
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const reviewPath = "docs/reviews/SEIS_5_YEAR_DEVELOPMENT_PROGRAM_REVIEW.md";
 const roadmapPath = "roadmap/seis-ai-core-command-center-5-year-development-program.md";
+const operatingModelDocPath = "docs/ai/seis-ai-operating-model-5-year.md";
 
 const failures = [];
 
@@ -44,7 +45,8 @@ const requiredApprovalStates = [
 const requiredRunIds = [
   "run-docs-foundation-review-validated",
   "run-provider-routing-approval-needed",
-  "run-ssh-deployment-review-blocked"
+  "run-ssh-deployment-review-blocked",
+  "run-ai-operating-model-validated"
 ];
 
 const requiredNonClaimTerms = [
@@ -52,7 +54,8 @@ const requiredNonClaimTerms = [
   "No agent self-approval",
   "No GitHub write action",
   "No SSH command",
-  "No external provider call"
+  "No external provider call",
+  "No unbounded subagent delegation"
 ];
 
 const secretPatterns = [
@@ -162,6 +165,7 @@ for (const [filePath, text] of [
   [fixturePath, fixtureText],
   [readmePath, readText(readmePath)],
   [agentRuntimeDocPath, readText(agentRuntimeDocPath)],
+  [operatingModelDocPath, readText(operatingModelDocPath)],
   [sharedDocsPath, readText(sharedDocsPath)],
   [reviewPath, readText(reviewPath)],
   [roadmapPath, readText(roadmapPath)]
@@ -245,6 +249,45 @@ for (const run of fixture.runs || []) {
     fail(`${run.id} audit metadata must include run id`);
   }
 
+  if (!run.delegationPolicy) {
+    fail(`${run.id} must define delegationPolicy`);
+  } else {
+    const policy = run.delegationPolicy;
+    if (policy.delegationDepth > policy.maxDelegationDepth) {
+      fail(`${run.id} delegationDepth cannot exceed maxDelegationDepth`);
+    }
+    if (policy.spawnPolicy === "blocked" && policy.childAgentLimit !== 0) {
+      fail(`${run.id} blocked spawn policy must keep childAgentLimit at 0`);
+    }
+    if (policy.spawnPolicy !== "none" && policy.requiresHandoff !== true) {
+      fail(`${run.id} non-none spawn policy must require handoff`);
+    }
+    if (policy.maxDelegationDepth > 1 && run.maturity === "fixture-backed") {
+      fail(`${run.id} fixture-backed runs must not exceed delegation depth 1`);
+    }
+  }
+
+  if (!run.executionBudget) {
+    fail(`${run.id} must define executionBudget`);
+  } else {
+    if (run.executionBudget.stepBudget < 1) {
+      fail(`${run.id} executionBudget.stepBudget must be positive`);
+    }
+    if (run.executionBudget.timeBudgetMinutes < 1) {
+      fail(`${run.id} executionBudget.timeBudgetMinutes must be positive`);
+    }
+    if (
+      (run.taskType === "external-provider-routing" || run.taskType === "ssh-deployment-review") &&
+      run.executionBudget.costBudgetMode !== "approval-needed"
+    ) {
+      fail(`${run.id} privileged or provider task must keep costBudgetMode approval-needed`);
+    }
+  }
+
+  if (!Array.isArray(run.escalationPath) || !run.escalationPath.includes("Human maintainer")) {
+    fail(`${run.id} escalationPath must include Human maintainer`);
+  }
+
   for (const sourceLink of run.sourceLinks || []) {
     assertRepoPath(`${run.id}.sourceLinks`, sourceLink);
   }
@@ -271,8 +314,13 @@ for (const [filePath, requiredText] of [
   [readmePath, "check:agent-runtime-lifecycle"],
   [agentRuntimeDocPath, "agent-runtime-task-lifecycle.json"],
   [agentRuntimeDocPath, "check:agent-runtime-lifecycle"],
+  [agentRuntimeDocPath, "Bounded Subagent Model"],
+  [operatingModelDocPath, "Bounded Subagent"],
+  [operatingModelDocPath, "No live autonomous orchestration"],
   [sharedDocsPath, "agent-runtime-task-lifecycle.json"],
+  [sharedDocsPath, "seis-ai-operating-model-5-year.md"],
   [reviewPath, "check:agent-runtime-lifecycle"],
+  [reviewPath, "AI Operating Model"],
   [roadmapPath, "check:agent-runtime-lifecycle"]
 ]) {
   const text = readText(filePath);

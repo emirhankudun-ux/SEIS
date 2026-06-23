@@ -590,6 +590,21 @@ for (const key of [
   }
 }
 
+for (const requiredFixtureRecord of [
+  "docs/ai/seis-ai-operating-model-5-year.md",
+  "task-ai-operating-model",
+  "eval-ai-operating-model",
+  "audit-ai-operating-model",
+  "roadmap-year-1-ai-operating-model"
+]) {
+  if (!JSON.stringify(fixture).includes(requiredFixtureRecord)) {
+    fail(`${fixturePath} must include ${requiredFixtureRecord}`);
+  }
+  if (!JSON.stringify(appFixture).includes(requiredFixtureRecord)) {
+    fail(`${appFixturePath} must include ${requiredFixtureRecord}`);
+  }
+}
+
 for (const objectName of Object.keys(objectToArray)) {
   if (!docs.includes(`\`${objectName}\``)) {
     fail(`shared contract docs must mention ${objectName}`);

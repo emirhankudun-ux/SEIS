@@ -186,6 +186,31 @@ autonomous orchestration, agent self-approval, provider calls, provider keys,
 GitHub write actions, SSH execution, deployment, model training, checkpoints,
 or model cards.
 
+## Follow-Up AI Operating Model Slice
+
+Status: Added after the bounded agent-runtime lifecycle foundation.
+
+Evidence:
+
+- `docs/ai/seis-ai-operating-model-5-year.md`
+- `docs/ai/agent-runtime.md`
+- `packages/agent-runtime/schemas/agent-runtime-task-lifecycle.schema.json`
+- `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json`
+- `packages/shared-types/fixtures/ai-core-command-center-foundation.json`
+- `scripts/check-agent-runtime-lifecycle.mjs`
+- `npm run check:agent-runtime-lifecycle`
+- `npm run check:ai-core-app-contracts`
+
+This slice defines the five-year SEIS AI operating model: agent organization,
+bounded subagent delegation, operating cadence, Command Center integration,
+operating metrics, evidence requirements, and explicit non-claims. It turns
+the user's long-horizon "use subagents like a major technology company" goal
+into a reviewable fixture-backed contract rather than unbounded autonomous
+execution. It does not add live subagent spawning, external provider calls,
+provider keys, GitHub write actions, SSH execution, deployment, scheduled jobs,
+payments, dataset downloads, model training, benchmarks, checkpoints, or model
+cards.
+
 ## Follow-Up 10,000,000 Token Feed Budget Slice
 
 Status: Added after the knowledge-source classification and route contract

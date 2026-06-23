@@ -36,3 +36,15 @@ must remain local or blocked.
 Provider routing logs must use redacted metadata. They should record task class,
 provider id, model profile, privacy mode, approval state, timestamp, and result
 status. They must not store secret-bearing prompts or raw private payloads.
+
+## Subagent Privacy Inheritance
+
+Subagents inherit the parent run's data class, privacy mode, provider routing
+policy, approval state, and forbidden actions. A subagent cannot loosen a
+local-only or metadata-only boundary, cannot promote sensitive context to an
+external provider route, and cannot request or store provider credentials.
+
+If a subagent needs broader context, external routing, provider execution,
+GitHub write permission, SSH execution, deployment, dataset access, or model
+training authority, the run must stop in `approval-needed` or `blocked` state
+until a human approval record and rollback/evidence plan exist.

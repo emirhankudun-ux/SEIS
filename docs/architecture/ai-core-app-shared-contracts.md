@@ -95,6 +95,14 @@ The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
 `aiSurface`, `repositoryIntelligence`, and
 `goalTrackingState`.
 
+The shared fixture also links the five-year AI operating model in
+`docs/ai/seis-ai-operating-model-5-year.md`. Command Center can show this as an
+`agentTask`, `evaluationResult`, `auditEvent`, and `roadmapItem`, but that is
+still a fixture-backed operating contract. It does not enable live subagent
+spawning, autonomous orchestration, provider routing, GitHub writes, SSH
+execution, deployment, model training, checkpoints, benchmarks, or model-card
+claims.
+
 The shared fixture now includes model-router contract evidence for local-only,
 metadata-only, and approval-needed provider routes. Provider-backed routes remain
 approval-needed and do not imply live provider readiness.
@@ -103,6 +111,11 @@ It also includes agent-runtime lifecycle evidence for validated,
 approval-needed, and blocked task states. Approval-needed and blocked task
 records do not imply autonomous execution, provider access, SSH execution, or
 GitHub write authority.
+
+The agent-runtime evidence now includes bounded delegation policy, execution
+budget, and escalation-path metadata for each run. These fields are operating
+guardrails for future subagent workflows, not proof that production subagents
+are running.
 
 It also includes tool-registry evidence for read-only, local-write,
 external-write, and privileged tool classes. Approval-needed and blocked tool

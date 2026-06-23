@@ -168,6 +168,20 @@ budget plan and Command Center integration while keeping executed ingestion at
 0 tokens. It does not create embeddings, persistent memory, provider context,
 benchmark claims, or model-training evidence.
 
+## Agent Delegation Safety Evidence
+
+The five-year AI operating model and bounded subagent rules are fixture-backed
+through `docs/ai/seis-ai-operating-model-5-year.md`,
+`packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json`, and
+`npm run check:agent-runtime-lifecycle`. This evaluation layer verifies that
+agent runs declare delegation policy, execution budget, escalation path,
+approval state, forbidden actions, safe audit metadata, and non-claims.
+
+This is not live autonomous orchestration evidence. It does not spawn
+production subagents, approve provider routing, perform GitHub writes, execute
+SSH, deploy, download datasets, train models, create checkpoints, publish
+benchmarks, or create model cards.
+
 ## Non-Claims
 
 SEIS must not publish benchmark, safety, or model capability claims without

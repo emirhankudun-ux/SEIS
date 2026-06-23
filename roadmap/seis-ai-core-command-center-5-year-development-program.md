@@ -29,6 +29,7 @@ usable AI-native operating platform.
 | Model router | Foundation documented | `docs/ai/model-router.md`, `packages/model-router/README.md` |
 | Prompt engine | Foundation documented | `docs/ai/prompt-engine.md`, `packages/prompt-engine/README.md` |
 | Agent runtime | Fixture-backed contract | `docs/ai/agent-runtime.md`, `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` |
+| AI operating model | Fixture-backed contract | `docs/ai/seis-ai-operating-model-5-year.md`, `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json` |
 | Tool registry | Fixture-backed contract | `docs/ai/tool-use-policy.md`, `packages/tool-registry/fixtures/tool-registry-permissions.json` |
 | 10,000,000 token feed budget | Fixture-backed metadata-only plan | `packages/data/fixtures/seis-10m-token-feed-budget.json`, `npm run check:token-feed-budget` |
 | AI App / Command Center | Foundation documented | `docs/product/seis-ai-app.md`, `docs/product/command-center.md` |
@@ -99,6 +100,8 @@ Primary work:
 - Add prompt pack metadata and prompt regression fixture format.
 - Add model-router route request/response contract.
 - Add agent-runtime task lifecycle states and approval state contract.
+- Add bounded subagent operating-model fields for delegation depth, child
+  limits, handoff, execution budget, and escalation.
 - Add eval result schema for prompt, route, agent, app-state, and retrieval
   checks.
 - Add a 10,000,000 token metadata-only feed budget fixture that can feed
@@ -110,6 +113,7 @@ Promotion gates:
 
 - `git diff --check`
 - repo governance checks
+- `npm run check:agent-runtime-lifecycle`
 - AI Core and app docs match contracts
 - no provider key exposure
 - no trained-model ownership claims
