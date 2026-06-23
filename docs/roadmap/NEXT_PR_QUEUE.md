@@ -173,6 +173,17 @@ Date: 2026-06-22
 | Validation | Documentation review, `npm run audit:ai-providers`, `git diff --check`. |
 | Approval needed | None for documentation-only work. |
 
+## PR 4C: Installed AI Workforce Training Control Plane
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Let installed assistants support SEIS-owned seed-model improvement through sanitized review, deterministic local training artifacts, and zero-runtime-authority promotion gates. |
+| Include | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs`, generated local seed artifacts, and AI Core/provider-registry notes. |
+| Exclude | Live provider calls, cloud fine-tuning, credential reads, dataset downloads, SSH execution, deployment, runtime autonomy, or foundation-model ownership claims. |
+| Validation | `npm run automation:seis-ai-workforce-training`, `npm run check:seis-ai-workforce-training`, SEIS seed-model validators, provider audit, targeted unit tests, `git diff --check`. |
+| Approval needed | Required before enabling live providers, external datasets, cloud training, SSH execution, or runtime authority above zero. |
+
 ## PR 5: Command Center Lane Status View
 
 | Field | Value |

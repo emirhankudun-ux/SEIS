@@ -52,29 +52,29 @@
       "artifactId": "seis-permission-policy-learned-seed-v0",
       "artifactType": "seis-owned-local-model-experiment",
       "version": "0.2.0",
-      "trainingCaseCount": 12,
+      "trainingCaseCount": 13,
       "dataset": {
         "datasetId": "seis-permission-policy-seed-eval",
         "version": "0.2.0",
         "sourceClass": "SEIS-owned synthetic examples",
         "consent": "no-user-private-data",
-        "caseCount": 20
+        "caseCount": 22
       },
       "eval": {
         "train": {
           "ok": true,
-          "total": 12,
-          "passed": 12,
+          "total": 13,
+          "passed": 13,
           "failed": 0,
-          "learnedPassed": 12,
+          "learnedPassed": 13,
           "safetyAdjusted": 0
         },
         "eval": {
           "ok": true,
-          "total": 8,
-          "passed": 8,
+          "total": 9,
+          "passed": 9,
           "failed": 0,
-          "learnedPassed": 7,
+          "learnedPassed": 8,
           "safetyAdjusted": 1
         }
       },
@@ -134,30 +134,30 @@
       "artifactId": "seis-eval-critic-seed-v0",
       "artifactType": "seis-owned-local-evaluator-experiment",
       "version": "0.1.0",
-      "trainingCaseCount": 8,
+      "trainingCaseCount": 9,
       "dataset": {
         "datasetId": "seis-eval-critic-seed-v0",
         "version": "0.1.0",
         "sourceClass": "SEIS-owned synthetic examples",
         "consent": "no-user-private-data",
-        "caseCount": 13
+        "caseCount": 15
       },
       "eval": {
         "train": {
           "ok": true,
-          "total": 8,
-          "passed": 8,
+          "total": 9,
+          "passed": 9,
           "failed": 0,
-          "learnedPassed": 8,
-          "safetyAdjusted": 0
+          "learnedPassed": 7,
+          "safetyAdjusted": 2
         },
         "eval": {
           "ok": true,
-          "total": 5,
-          "passed": 5,
+          "total": 6,
+          "passed": 6,
           "failed": 0,
           "learnedPassed": 3,
-          "safetyAdjusted": 2
+          "safetyAdjusted": 3
         }
       },
       "evidence": {
@@ -177,30 +177,30 @@
       "artifactId": "seis-agent-router-seed-v0",
       "artifactType": "seis-owned-local-agent-routing-experiment",
       "version": "0.1.0",
-      "trainingCaseCount": 12,
+      "trainingCaseCount": 13,
       "dataset": {
         "datasetId": "seis-agent-router-seed-v0",
         "version": "0.1.0",
         "sourceClass": "SEIS-owned synthetic examples",
         "consent": "no user-private data",
-        "caseCount": 22
+        "caseCount": 24
       },
       "eval": {
         "train": {
           "ok": true,
-          "total": 12,
-          "passed": 12,
+          "total": 13,
+          "passed": 13,
           "failed": 0,
-          "learnedPassed": 12,
+          "learnedPassed": 13,
           "safetyAdjusted": 0
         },
         "eval": {
           "ok": true,
-          "total": 10,
-          "passed": 10,
+          "total": 11,
+          "passed": 11,
           "failed": 0,
           "learnedPassed": 10,
-          "safetyAdjusted": 0
+          "safetyAdjusted": 1
         }
       },
       "evidence": {

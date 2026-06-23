@@ -98,6 +98,17 @@ or environment variable references as live provider support.
 Placeholder or documentation-only references are retained as planning material
 only. They do not require API keys for core SEIS.
 
+## SEIS AI Core Provider Registry Boundary
+
+SEIS AI Core provider registry work must remain server-only and credential-safe.
+
+- Provider registry evidence lives in `content/development/seis-ai-core-provider-registry.json` when present.
+- Browser-facing code must never receive provider API keys, tokens, cookies, or service credentials.
+- Missing provider keys must be reported as `Missing Key`, not `Error`.
+- Local Demo mode and zero-key deterministic behavior remain valid core product states.
+- Provider routing must not silently switch models when privacy mode, local-only mode, or approval requirements block a provider.
+- New live provider adapters require explicit validation for no-key startup, fallback identity, redaction, and client-bundle secret exposure.
+
 ## Final Required API Key List
 
 ### Required For Core SEIS

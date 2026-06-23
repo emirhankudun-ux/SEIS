@@ -30,6 +30,7 @@ The foundation includes:
 | Prompt engine | Documented, not implemented | `docs/ai/prompt-engine.md` | No versioned prompt registry or regression suite exists. | Define prompt-pack schema and fixtures. |
 | Agent runtime | Documented, not implemented | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, plugin docs | No bounded runtime schema or permission registry exists. | Define agent role schema before automation. |
 | Provider credentials | Statically audited | `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md` | No runtime verification was performed. | Keep keys optional, server-only, and disabled until adapter tests exist. |
+| AI Workforce Training | Active local seed training contract | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs` | No live provider calls, credential reads, cloud fine-tuning, dataset downloads, SSH, deployment, or runtime authority are performed. | Rebuild deterministic local seed artifacts with `npm run automation:seis-ai-workforce-training`. |
 | Local model mode | Planned | No local model adapter found in this branch. | No runtime integration. | Define Ollama/localhost as optional zero-key future mode. |
 | Evaluation | Planned | Goal validation exists; AI evals do not. | No eval suite. | Add prompt/model evaluation strategy later. |
 
@@ -65,6 +66,34 @@ AI features need evidence before being marked implemented:
 - redaction test
 - client-bundle secret exposure check
 - documented provider matrix
+
+## AI Workforce Training
+
+SEIS can use installed assistants as a supervised training workforce only inside
+the local seed-model contract. In this context, training means sanitized review,
+SEIS-owned synthetic case creation, deterministic local artifact rebuilds, and
+promotion-gate evidence. It does not mean cloud provider fine-tuning, live
+provider calls, credential validation, dataset downloads, SSH, deployment,
+background autonomy, runtime authority, or foundation-model ownership.
+
+Machine-readable source:
+`content/development/seis-ai-workforce-training-plan.json`.
+
+Human-readable contract:
+`docs/ai/ai-workforce-training.md`.
+
+Validation and execution:
+
+```bash
+npm run check:seis-ai-workforce-training
+npm run automation:seis-ai-workforce-training
+```
+
+Installed assistants may propose candidate cases from sanitized context, but
+Codex remains the integration owner and every accepted case must remain
+SEIS-owned synthetic data with no user-private content. The promotion policy
+must keep runtime authority at zero until independent benchmark, observability,
+rollback, human approval, and security gates pass.
 
 ## Related Documents
 

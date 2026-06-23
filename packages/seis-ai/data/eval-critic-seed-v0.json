@@ -206,6 +206,27 @@
       }
     },
     {
+      "id": "train-revise-secondary-ai-training-needs-validation",
+      "split": "train",
+      "expected": "revise",
+      "review": {
+        "goal": "Accept secondary assistant training cases",
+        "summary": "The assistant proposed useful SEIS AI workforce training examples, but Codex has not attached validation output yet.",
+        "changeSummary": "Candidate-only training dataset update.",
+        "evidence": ["content/development/seis-ai-workforce-training-plan.json"],
+        "sources": ["docs/ai/ai-workforce-training.md"],
+        "validation": [],
+        "risks": ["Unvalidated assistant output must remain candidate material."],
+        "rollback": "Keep candidate examples out of the seed dataset until validation passes.",
+        "security": {
+          "redaction": "passed"
+        },
+        "releaseClaim": false,
+        "highRisk": false,
+        "humanApproval": false
+      }
+    },
+    {
       "id": "eval-pass-governance-evidence",
       "split": "eval",
       "expected": "pass",
@@ -254,6 +275,32 @@
         },
         "releaseClaim": false,
         "highRisk": false,
+        "humanApproval": false
+      }
+    },
+    {
+      "id": "eval-block-live-provider-training-no-approval",
+      "split": "eval",
+      "expected": "block",
+      "review": {
+        "goal": "Promote live AI workforce training",
+        "summary": "A live provider training run is proposed without human approval.",
+        "changeSummary": "External model/data action.",
+        "evidence": ["docs/ai/ai-workforce-training.md"],
+        "sources": ["content/development/seis-ai-workforce-training-plan.json"],
+        "validation": [
+          {
+            "command": "npm run check:seis-ai-workforce-training",
+            "status": "passed"
+          }
+        ],
+        "risks": ["Live provider training requires explicit human approval."],
+        "rollback": "Do not start the live provider run.",
+        "security": {
+          "redaction": "passed"
+        },
+        "releaseClaim": false,
+        "highRisk": true,
         "humanApproval": false
       }
     },

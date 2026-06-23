@@ -403,6 +403,19 @@ or environment variable references as live provider support.
 Placeholder or documentation-only references are retained as planning material
 only. They do not require API keys for core SEIS.
 
+## SEIS AI Core Provider Registry Boundary
+
+The provider registry source of truth is
+\`content/development/seis-ai-core-provider-registry.json\`.
+
+The local read-only status tool is \`seis_ai_core_provider_status\`.
+
+The MCP resource URI is \`seis://ai/provider-registry.json\`.
+
+These surfaces expose provider state evidence only. They do not perform live
+provider calls, credential validation, network health checks, SSH, deployment,
+or GitHub mutation.
+
 ## Final Required API Key List
 
 ### Required For Core SEIS
