@@ -1,6 +1,6 @@
 # SEIS Status
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 This status captures the current branch foundation state. It is not a release,
 deployment, public-readiness, or merge-readiness claim.
@@ -26,6 +26,7 @@ deployment, public-readiness, or merge-readiness claim.
 | Documentation foundation | Expanded | `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, lane docs | Full automated link integrity is not yet part of CI. | Add a lightweight docs link check later. |
 | `@seis` | Documented foundation | `docs/architecture/seis-platform-lanes.md` | Not public/release ready. | Keep source-of-truth docs aligned. |
 | `@seis-cloud` | Documented/scaffolded | `docs/operations/seis-cloud-foundation.md`, `deploy/cloud-environment.json` | No live cloud verification. | Keep dry-run only until approval. |
+| SEIS Desktop OS | Browser-smoked static foundation with 66 app surfaces, browser-local terminal, desktop-to-SEIS-Code workspace bridge, Local Demo `claude`, and mobile no-overflow evidence | `apps/web/desktop.html`, `apps/web/desktop.css`, `apps/web/desktop.js`, `scripts/check-desktop-os.mjs`, `scripts/check-desktop-os-browser-smoke.mjs`, `docs/product/seis-desktop-os.md`, `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke` | Not a host OS emulator, not production desktop replacement, no committed visual-regression baseline, and app workflows are still browser-local foundations. The bridge covers desktop-created `/home/seis` files into SEIS Code, not every route. | Keep desktop smoke passing and deepen Files, Terminal, SEIS Code handoff, Settings, App Center, Tasks, Notes, and AI Assistant workflows. |
 | `@seis-code` | Browser foundation with repeatable product smoke and path-boundary regression marker | `apps/web/seis-code.html`, `apps/web/seis-code.js`, `scripts/check-seis-code.mjs`, `docs/product/seis-code-foundation.md`, `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `npm run check:seis-code`, `npm run check:product-experience-browser-smoke` | No committed visual regression baseline or Playwright suite yet. | Keep smoke passing and attach generated screenshots to PR review evidence when needed. |
 | `@seis-design` | Validator-backed inventory and repeatable browser-smoked showcase with static loading budget | `docs/design-system/seis-design-foundation.md`, `docs/design-system/component-inventory.md`, `content/development/seis-design-component-inventory.json`, `docs/product/video-hero-showcase.md`, `docs/reviews/VIDEO_HERO_SHOWCASE_QA.md`, `docs/reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md`, `npm run check:design-component-inventory`, `npm run check:video-hero-showcase`, `npm run check:video-hero-browser-smoke`, `npm run check:video-hero-performance-budget` | No committed browser visual regression screenshots or measured network-transfer budget. | Attach generated Video Hero screenshots to PR evidence and add Lighthouse/media-transfer evidence after release hosting is selected. |
 | Mythic Gacha | Playable static foundation with SEIS Code export bridge, interaction-safety guards, and repeatable product smoke | `apps/web/mythic-gacha.html`, `apps/web/mythic-gacha.js`, `apps/web/mythic-gacha.css`, `scripts/check-mythic-gacha.mjs`, `docs/product/mythic-gacha.md`, `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `npm run check:mythic-gacha`, `npm run check:product-experience-browser-smoke` | No committed visual regression baseline and no per-card artwork provenance review. | Keep draw/export smoke passing and add asset provenance review. |
@@ -54,6 +55,8 @@ deployment, public-readiness, or merge-readiness claim.
 | `npm run check:goal-command-center-view` | Passed | Generated view model and static page are fresh. |
 | `npm run check:data-schema-registry` | Passed | Data schema registry validates current records, required top-level keys, and referenced validation commands, including plugin interface support data and product browser-smoke evidence. |
 | `npm run check:plugin-interface-roadmap` | Passed | Validates five plugin lanes, evidence paths, the 2026-2030 horizon, development-program commitments, H1/H2 cadence routines, maturity signals, readiness gates, coverage metrics, and static web bindings. |
+| `npm run check:desktop-os` | Passed | Validates the SEIS Desktop OS static route, 50+ app catalog, 12+ terminal commands, IndexedDB/localStorage persistence markers, Local Demo `claude`, route/cache bindings, jsdom runtime boot, app-window coverage, primary workflow actions, and 80%+ interactivity requirement. |
+| `npm run check:desktop-os-browser-smoke` | Passed | Starts a local static server and system Chrome through DevTools; verifies 66 apps, 38 terminal commands, 66 openable app windows, 43 primary workflow surfaces, terminal file write/read, desktop-created file visibility in SEIS Code, Local Demo `claude`, 100% measured clickable-response coverage, mobile no-overflow, and zero cramped mobile targets. |
 | `npm run check:seis-code` | Passed | Validates SEIS Code route, runtime script, Monaco hook, 8 top menus, 5 activity views, bottom panels, IndexedDB, 25 language modes, terminal commands, Local Demo REPL slash commands, workspace path-boundary marker, route/cache/sitemap bindings. |
 | `npm run check:product-experience-browser-smoke` | Passed | Starts a local static server and system Chrome through DevTools; verifies SEIS Code menus/activity views/bottom panels, Monaco or fallback readiness, virtual terminal writes, Local Demo REPL identity, Mythic Gacha draw/favorite/export/detail, SEIS Code terminal visibility for exported MythicArchive files, and desktop/mobile overflow. |
 | `npm run check:video-hero-showcase` | Passed | Validates four themed Video Hero pages, manifest provenance, controls, reduced-motion/runtime hooks, and route/cache/sitemap bindings. |
@@ -86,7 +89,7 @@ deployment, public-readiness, or merge-readiness claim.
   training, benchmark, or dataset download.
 - No live model-provider call.
 - No full Git history secret scan.
-- No committed visual-regression baseline for Mythic Gacha or SEIS Code. Browser smoke screenshots are generated locally under ignored `dist/qa/product-experience-smoke`.
+- No committed visual-regression baseline for SEIS Desktop OS, Mythic Gacha, or SEIS Code. Browser smoke screenshots are generated locally under ignored `dist/qa/desktop-os-smoke` and `dist/qa/product-experience-smoke`.
 
 ## Security Notes
 

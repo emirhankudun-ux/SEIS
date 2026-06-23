@@ -217,6 +217,17 @@ Date: 2026-06-22
 | Validation | `npm run check:video-hero-showcase`, `npm run check:video-hero-performance-budget`, `npm run check:video-hero-browser-smoke`, `npm run build:static`, browser screenshot review, reduced-motion review, `git diff --check`. |
 | Approval needed | None for local QA/docs; approval required for dependency installation, hosted media migration, deployment, or release. |
 
+## PR 6B: SEIS Desktop OS Browser Foundation
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Keep the browser-based SEIS Desktop OS foundation functional, mobile-safe, and honest about browser-local limits while the product suite grows. |
+| Include | `apps/web/desktop.html`, `apps/web/desktop.css`, `apps/web/desktop.js`, desktop-to-SEIS-Code workspace handoff for `/home/seis` files, `scripts/check-desktop-os.mjs`, `scripts/check-desktop-os-browser-smoke.mjs`, `docs/product/seis-desktop-os.md`, status/backlog/review updates, and ignored screenshot evidence under `dist/qa/desktop-os-smoke/`. |
+| Exclude | Host OS command execution, SSH, dependency installation, live AI provider calls, production credential storage, deployment, release publication, and claims that every app is production complete. |
+| Validation | `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke`, `node --check apps/web/desktop.js`, `node --check scripts/check-desktop-os-browser-smoke.mjs`, browser/mobile/bridge screenshot review, `git diff --check`. |
+| Approval needed | None for the static browser foundation; approval required for dependencies, live providers, host integrations, SSH, or deployment. |
+
 ## PR 7: Mythic Gacha Playable Foundation
 
 | Field | Value |

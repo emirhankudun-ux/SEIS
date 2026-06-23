@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 1554,
+  "inspectedFiles": 1589,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -22553,8 +22553,24 @@
           "surface": "repository"
         },
         {
+          "path": "apps/web/desktop.js",
+          "line": 1751,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 1760,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "frontend"
+        },
+        {
           "path": "apps/web/seis-code.js",
-          "line": 1591,
+          "line": 1616,
           "matchTypes": [
             "model:claude-"
           ],
@@ -34545,6 +34561,14 @@
           "surface": "documentation"
         },
         {
+          "path": "docs/product/seis-desktop-os.md",
+          "line": 35,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "docs/repository-depot-migration-status.md",
           "line": 31,
           "matchTypes": [
@@ -34562,7 +34586,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 66,
+          "line": 86,
           "matchTypes": [
             "model:claude-"
           ],
@@ -46169,8 +46193,16 @@
           "surface": "backend"
         },
         {
+          "path": "scripts/check-desktop-os.mjs",
+          "line": 43,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "backend"
+        },
+        {
           "path": "scripts/check-seis-code.mjs",
-          "line": 158,
+          "line": 390,
           "matchTypes": [
             "model:claude-"
           ],
@@ -46456,6 +46488,62 @@
         {
           "path": "apps/web/app.js",
           "line": 558,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 770,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 778,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 786,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.html",
+          "line": 84,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 191,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 1805,
+          "matchTypes": [
+            "model:command-r"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 1806,
           "matchTypes": [
             "model:command-r"
           ],
@@ -51474,6 +51562,86 @@
           "surface": "frontend"
         },
         {
+          "path": "apps/web/desktop.css",
+          "line": 347,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 1173,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.html",
+          "line": 114,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 734,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 750,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 780,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 802,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 824,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 825,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 1061,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
           "path": "apps/web/index.html",
           "line": 19,
           "matchTypes": [
@@ -51515,7 +51683,7 @@
         },
         {
           "path": "apps/web/index.html",
-          "line": 246,
+          "line": 250,
           "matchTypes": [
             "model:nim"
           ],
@@ -51651,7 +51819,7 @@
         },
         {
           "path": "apps/web/seis-code.css",
-          "line": 986,
+          "line": 990,
           "matchTypes": [
             "model:nim"
           ],
@@ -51667,7 +51835,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 227,
+          "line": 228,
           "matchTypes": [
             "model:nim"
           ],
@@ -51675,7 +51843,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 667,
+          "line": 673,
           "matchTypes": [
             "model:nim"
           ],
@@ -51683,7 +51851,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 729,
+          "line": 754,
           "matchTypes": [
             "model:nim"
           ],
@@ -51691,7 +51859,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 974,
+          "line": 999,
           "matchTypes": [
             "model:nim"
           ],
@@ -51699,7 +51867,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1045,
+          "line": 1070,
           "matchTypes": [
             "model:nim"
           ],
@@ -51707,7 +51875,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1046,
+          "line": 1071,
           "matchTypes": [
             "model:nim"
           ],
@@ -51715,7 +51883,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1048,
+          "line": 1073,
           "matchTypes": [
             "model:nim"
           ],
@@ -51723,7 +51891,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1049,
+          "line": 1074,
           "matchTypes": [
             "model:nim"
           ],
@@ -52963,7 +53131,7 @@
         },
         {
           "path": "docs/STATUS.md",
-          "line": 61,
+          "line": 64,
           "matchTypes": [
             "model:nim"
           ],
@@ -57728,6 +57896,14 @@
           "surface": "documentation"
         },
         {
+          "path": "reports/seis-project-intake/latest.json",
+          "line": 723,
+          "matchTypes": [
+            "model:gpt-"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "scripts/ai-launcher.cjs",
           "line": 16,
           "matchTypes": [
@@ -60082,7 +60258,7 @@
         },
         {
           "path": "package.json",
-          "line": 58,
+          "line": 60,
           "matchTypes": [
             "model:runway"
           ],
@@ -60090,7 +60266,7 @@
         },
         {
           "path": "package.json",
-          "line": 151,
+          "line": 153,
           "matchTypes": [
             "model:runway"
           ],
@@ -60827,6 +61003,38 @@
         {
           "path": "reports/seis-execution-runway.md",
           "line": 3,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "reports/seis-project-intake/latest.json",
+          "line": 543,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "reports/seis-project-intake/latest.json",
+          "line": 1023,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "reports/seis-project-intake/latest.json",
+          "line": 1185,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "reports/seis-project-intake/latest.json",
+          "line": 1188,
           "matchTypes": [
             "model:runway"
           ],
@@ -62411,56 +62619,7 @@
       "surface": "backend"
     }
   ],
-  "secretFindings": [
-    {
-      "type": "assignment_like_secret",
-      "path": "reports/seis-action-decisions/latest-learned.md",
-      "line": 33,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "reports/seis-action-decisions/latest.md",
-      "line": 33,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "reports/seis-action-execution/latest-learned.md",
-      "line": 29,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "reports/seis-action-execution/latest-run.md",
-      "line": 29,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "reports/seis-action-execution/latest.md",
-      "line": 29,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "scripts/check-seis-enterprise-gates.mjs",
-      "line": 83,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "scripts/check-seis-enterprise-gates.mjs",
-      "line": 95,
-      "severity": "high"
-    },
-    {
-      "type": "assignment_like_secret",
-      "path": "server/cloud/ssh-ai-shell/ai_engine.py",
-      "line": 169,
-      "severity": "high"
-    }
-  ],
+  "secretFindings": [],
   "finalRequiredCredentialList": {
     "requiredForCoreSEIS": [],
     "requiredForEnabledLiveFeatures": [],

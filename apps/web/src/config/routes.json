@@ -7,6 +7,11 @@
       "status": "static-foundation"
     },
     {
+      "path": "/desktop.html",
+      "sections": ["desktop-shell", "launcher", "window-manager", "virtual-files", "terminal", "apps"],
+      "status": "browser-desktop-foundation"
+    },
+    {
       "path": "/seis-code.html",
       "sections": ["ide-shell", "activity-bar", "editor", "terminal", "extensions"],
       "status": "browser-ide-foundation"

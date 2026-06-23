@@ -2,6 +2,7 @@ const DB_NAME = "seis-code-workspace-v1";
 const DB_VERSION = 1;
 const WORKSPACE = "/workspace";
 const WORKSPACE_CHANNEL = "seis-code-workspace";
+const MONACO_LOADER_URL = "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js";
 
 const languageByExtension = {
   js: "javascript",
@@ -356,14 +357,21 @@ async function saveFile(entry) {
 
 async function seedWorkspace() {
   const files = await getAll("files");
-  if (files.length) return;
+  app.files = new Map(files.map((file) => [file.path, file]));
+  const hasRequiredSeed = defaultFiles.every((file) => app.files.has(file.path));
+  if (hasRequiredSeed) return;
   await put("files", createFileEntry(WORKSPACE, "", "folder"));
+  app.files.set(WORKSPACE, createFileEntry(WORKSPACE, "", "folder"));
   const folders = new Set(defaultFiles.map((file) => dirname(file.path)));
   for (const folder of folders) {
     if (folder !== WORKSPACE) await ensureFolder(folder);
   }
   for (const file of defaultFiles) {
-    await put("files", createFileEntry(file.path, file.content, "file"));
+    if (!app.files.has(file.path)) {
+      const entry = createFileEntry(file.path, file.content, "file");
+      app.files.set(entry.path, entry);
+      await put("files", entry);
+    }
   }
   for (const extension of extensionCatalog) await put("extensions", extension);
   await saveSetting("openTabs", ["/workspace/README.md", "/workspace/src/main.ts"]);
@@ -610,91 +618,108 @@ function setupMonaco() {
       settled = true;
       resolve(value);
     };
-    const fallbackTimer = window.setTimeout(() => {
-      if (!app.monacoReady) {
-        setupFallbackEditor();
-        finish(false);
-      }
-    }, 5000);
-
-    if (!window.require) {
-      window.clearTimeout(fallbackTimer);
+    const useFallback = () => {
+      if (settled || app.monacoReady) return;
       setupFallbackEditor();
       finish(false);
-      return;
-    }
+    };
+    const fallbackTimer = window.setTimeout(() => {
+      useFallback();
+    }, 5000);
 
-    window.require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
-    window.require(["vs/editor/editor.main"], () => {
-      window.clearTimeout(fallbackTimer);
-      if (app.fallbackReady) {
-        const textarea = $("[data-fallback-textarea]");
-        const file = app.files.get(app.activePath);
-        if (textarea && file && file.type === "file") {
-          file.content = textarea.value;
+    const startMonaco = () => {
+      if (settled || !window.require) return;
+      window.require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
+      window.require(["vs/editor/editor.main"], () => {
+        if (settled) return;
+        window.clearTimeout(fallbackTimer);
+        if (app.fallbackReady) {
+          const textarea = $("[data-fallback-textarea]");
+          const file = app.files.get(app.activePath);
+          if (textarea && file && file.type === "file") {
+            file.content = textarea.value;
+            file.updatedAt = new Date().toISOString();
+            app.files.set(file.path, file);
+            put("files", file);
+          }
+        }
+        app.monaco = window.monaco;
+        app.monacoReady = true;
+        app.fallbackReady = false;
+        $("#monaco-editor").hidden = false;
+        $("[data-editor-fallback]").hidden = true;
+        app.monaco.editor.defineTheme("seis-dark", {
+          base: "vs-dark",
+          inherit: true,
+          rules: [
+            { token: "comment", foreground: "728296" },
+            { token: "keyword", foreground: "70a5ff" },
+            { token: "string", foreground: "86e3a8" },
+            { token: "number", foreground: "f2bd6b" }
+          ],
+          colors: {
+            "editor.background": "#101820",
+            "editor.foreground": "#e7edf5",
+            "editorLineNumber.foreground": "#536274",
+            "editorCursor.foreground": "#72dfc1",
+            "editor.selectionBackground": "#2d4663"
+          }
+        });
+        app.editor = app.monaco.editor.create($("#monaco-editor"), {
+          value: "",
+          language: "markdown",
+          theme: "seis-dark",
+          automaticLayout: true,
+          minimap: { enabled: app.settings.minimap },
+          wordWrap: app.settings.wordWrap,
+          fontFamily: "SFMono-Regular, Cascadia Code, Menlo, Consolas, monospace",
+          fontSize: 13,
+          lineHeight: 20,
+          tabSize: 2,
+          renderWhitespace: "selection",
+          scrollBeyondLastLine: false
+        });
+        app.editor.onDidChangeModelContent(() => {
+          const file = app.files.get(app.activePath);
+          if (!file || file.type !== "file") return;
+          file.content = app.editor.getValue();
           file.updatedAt = new Date().toISOString();
           app.files.set(file.path, file);
           put("files", file);
-        }
-      }
-      app.monaco = window.monaco;
-      app.monacoReady = true;
-      app.fallbackReady = false;
-      $("#monaco-editor").hidden = false;
-      $("[data-editor-fallback]").hidden = true;
-      app.monaco.editor.defineTheme("seis-dark", {
-        base: "vs-dark",
-        inherit: true,
-        rules: [
-          { token: "comment", foreground: "728296" },
-          { token: "keyword", foreground: "70a5ff" },
-          { token: "string", foreground: "86e3a8" },
-          { token: "number", foreground: "f2bd6b" }
-        ],
-        colors: {
-          "editor.background": "#101820",
-          "editor.foreground": "#e7edf5",
-          "editorLineNumber.foreground": "#536274",
-          "editorCursor.foreground": "#72dfc1",
-          "editor.selectionBackground": "#2d4663"
-        }
+          renderTabs();
+          renderSourceControl();
+          renderProblems();
+        });
+        app.editor.onDidChangeCursorPosition((event) => {
+          const status = $("[data-cursor-status]");
+          if (status) status.textContent = `Ln ${event.position.lineNumber}, Col ${event.position.column}`;
+        });
+        openFile(app.activePath);
+        finish(true);
+      }, () => {
+        window.clearTimeout(fallbackTimer);
+        useFallback();
       });
-      app.editor = app.monaco.editor.create($("#monaco-editor"), {
-        value: "",
-        language: "markdown",
-        theme: "seis-dark",
-        automaticLayout: true,
-        minimap: { enabled: app.settings.minimap },
-        wordWrap: app.settings.wordWrap,
-        fontFamily: "SFMono-Regular, Cascadia Code, Menlo, Consolas, monospace",
-        fontSize: 13,
-        lineHeight: 20,
-        tabSize: 2,
-        renderWhitespace: "selection",
-        scrollBeyondLastLine: false
-      });
-      app.editor.onDidChangeModelContent(() => {
-        const file = app.files.get(app.activePath);
-        if (!file || file.type !== "file") return;
-        file.content = app.editor.getValue();
-        file.updatedAt = new Date().toISOString();
-        app.files.set(file.path, file);
-        put("files", file);
-        renderTabs();
-        renderSourceControl();
-        renderProblems();
-      });
-      app.editor.onDidChangeCursorPosition((event) => {
-        const status = $("[data-cursor-status]");
-        if (status) status.textContent = `Ln ${event.position.lineNumber}, Col ${event.position.column}`;
-      });
-      openFile(app.activePath);
-      finish(true);
-    }, () => {
+    };
+
+    if (window.require) {
+      startMonaco();
+      return;
+    }
+
+    let loader = document.querySelector("[data-monaco-loader]");
+    if (!loader) {
+      loader = document.createElement("script");
+      loader.src = MONACO_LOADER_URL;
+      loader.async = true;
+      loader.dataset.monacoLoader = "true";
+      document.head.append(loader);
+    }
+    loader.addEventListener("load", startMonaco, { once: true });
+    loader.addEventListener("error", () => {
       window.clearTimeout(fallbackTimer);
-      setupFallbackEditor();
-      finish(false);
-    });
+      useFallback();
+    }, { once: true });
   });
 }
 
@@ -1500,7 +1525,7 @@ function statVirtual(path) {
 function startClaudeRepl() {
   app.repl.active = true;
   switchBottomPanel("terminal");
-  appendTermLine("Entering Claude Code-style REPL. Runtime identity: Local Demo. No Anthropic request is made.", "muted");
+  appendTermLine(`Entering Claude Code-style REPL. Runtime identity: Local Demo (${aiTruthfulnessMarker}). No Anthropic request is made.`, "muted");
   appendTermLine("Use /help, /tools, /files, /model, /status, /exit. Natural language prompts stream a local demo response.", "muted");
   renderStatus();
   $("[data-terminal-input]")?.focus();
@@ -1533,10 +1558,10 @@ async function handleSlashCommand(command) {
       appendTermLine("Exited Claude Code-style REPL. Returning to virtual shell.", "muted");
       break;
     case "/model":
-      appendTermLine("Current model: Local Demo. A real Claude response requires a configured backend Anthropic provider.");
+      appendTermLine(`Current model: Local Demo (${aiTruthfulnessMarker}). A real Claude response requires a configured backend Anthropic provider.`);
       break;
     case "/status":
-      appendTermLine("Status: Local Demo available; Anthropic missing key; cloud fallback disabled in this static single URL.");
+      appendTermLine(`Status: Local Demo available (${aiTruthfulnessMarker}); Anthropic missing key; cloud fallback disabled in this static single URL.`);
       break;
     case "/files":
       appendTermLine(findVirtual(WORKSPACE));
@@ -1779,6 +1804,40 @@ function setupWorkspaceBridge() {
   });
 }
 
+function exposeDiagnostics() {
+  window.__SEIS_CODE__ = {
+    languageModes: () => supportedLanguageModes.slice(),
+    filePaths: () => Array.from(app.files.keys()).sort(),
+    openTabs: () => app.openTabs.slice(),
+    activePath: () => app.activePath,
+    activeView: () => app.activeView,
+    bottomPanel: () => $$("[data-bottom-content]").find((node) => node.classList.contains("is-active"))?.dataset.bottomContent || "",
+    menuCount: () => $$("[data-menu]").length,
+    activityViewCount: () => $$("[data-view-button]").length,
+    bottomPanelCount: () => $$("[data-bottom-panel]").length,
+    extensionCount: () => app.extensions.length,
+    installedExtensionCount: () => app.extensions.filter((item) => item.installed).length,
+    monacoReady: () => app.monacoReady,
+    fallbackReady: () => app.fallbackReady,
+    providerText: () => $("[data-provider-status]")?.textContent || "",
+    terminalText: () => $("[data-terminal-output]")?.textContent || "",
+    outputText: () => $("[data-output-log]")?.textContent || "",
+    replActive: () => app.repl.active,
+    switchView,
+    switchBottomPanel,
+    openFile,
+    installExtension: (id) => updateExtension(id, { installed: true, enabled: true }),
+    async runTerminalCommand(command) {
+      const input = $("[data-terminal-input]");
+      const form = $("[data-terminal-form]");
+      if (!input || !form) throw new Error("Terminal form is unavailable.");
+      input.value = command;
+      form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      await new Promise((resolve) => window.setTimeout(resolve, 20));
+    }
+  };
+}
+
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -1804,6 +1863,7 @@ async function init() {
   await setupMonaco();
   renderAll();
   renderSearchResults();
+  exposeDiagnostics();
   appendOutput("SEIS Code booted with IndexedDB persistence.");
 }
 

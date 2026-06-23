@@ -22,7 +22,7 @@
       "order": 1,
       "label": "JavaScript",
       "layer": "frontend-and-experience",
-      "githubBytes": 2310662,
+      "githubBytes": 2620692,
       "entrypoints": [
         "apps/web/src/scripts/motion-system.js",
         "apps/web/src/scripts/gallery-system.js",
@@ -56,7 +56,7 @@
       "order": 4,
       "label": "Python",
       "layer": "backend-and-api",
-      "githubBytes": 508621,
+      "githubBytes": 513980,
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
         "polyglot/python/seis_image_audit.py",
@@ -191,7 +191,7 @@
       "order": 17,
       "label": "Shell",
       "layer": "cloud-devops-and-config",
-      "githubBytes": 97489,
+      "githubBytes": 98373,
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
         "scripts/polyglot-check.sh"
@@ -324,7 +324,7 @@
       "order": 31,
       "label": "Zig",
       "layer": "mobile-and-native",
-      "githubBytes": 711,
+      "githubBytes": 712,
       "entrypoints": [
         "polyglot/zig/readiness_contract.zig"
       ]
@@ -352,7 +352,7 @@
       "order": 34,
       "label": "D",
       "layer": "mobile-and-native",
-      "githubBytes": 455,
+      "githubBytes": 456,
       "entrypoints": [
         "polyglot/d/readiness_policy.d"
       ]
@@ -508,7 +508,7 @@
       "order": 51,
       "label": "HTML",
       "layer": "frontend-and-experience",
-      "githubBytes": 161998,
+      "githubBytes": 252871,
       "entrypoints": [
         "apps/web/index.html",
         "apps/web/seis-cockpit.html"
@@ -518,7 +518,7 @@
       "order": 52,
       "label": "CSS",
       "layer": "frontend-and-experience",
-      "githubBytes": 325296,
+      "githubBytes": 365496,
       "entrypoints": [
         "apps/web/style.css",
         "apps/web/styles.css"

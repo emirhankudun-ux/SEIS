@@ -27,6 +27,8 @@
     "check:data-schema-registry": "node scripts/check-data-schema-registry.mjs",
     "check:goal-tracking": "node scripts/check-goal-tracking.mjs",
     "check:plugin-interface-roadmap": "node scripts/check-plugin-interface-roadmap.mjs",
+    "check:desktop-os": "node scripts/check-desktop-os.mjs",
+    "check:desktop-os-browser-smoke": "node scripts/check-desktop-os-browser-smoke.mjs",
     "check:seis-code": "node scripts/check-seis-code.mjs",
     "check:mythic-gacha": "node scripts/check-mythic-gacha.mjs",
     "check:video-hero-showcase": "node scripts/check-video-hero-showcase.mjs",

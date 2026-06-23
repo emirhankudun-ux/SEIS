@@ -162,6 +162,13 @@ apps/web/content/
 
 # Documentation
 docs/*
+!docs/STATUS.md
+!docs/product/
+!docs/product/*.md
+!docs/reviews/
+!docs/reviews/*.md
+!docs/roadmap/
+!docs/roadmap/*.md
 !docs/development/
 !docs/development/local-ai-workbench.md
 !docs/governance/

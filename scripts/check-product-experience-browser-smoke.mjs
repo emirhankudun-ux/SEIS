@@ -313,6 +313,12 @@ async function smokeSeisCode(client, baseUrl) {
     bottomPanelCount: document.querySelectorAll('[data-bottom-panel]').length,
     terminalReady: Boolean(document.querySelector('[data-terminal-input]')),
     fallbackReady: !document.querySelector('[data-editor-fallback]')?.hidden,
+    fallbackVisible: (() => {
+      const element = document.querySelector('[data-editor-fallback]');
+      if (!element) return false;
+      const styles = window.getComputedStyle(element);
+      return styles.display !== 'none' && styles.visibility !== 'hidden' && element.getClientRects().length > 0;
+    })(),
     monacoReady: Boolean(document.querySelector('.monaco-editor')),
     horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth + 1,
     providerText: document.querySelector('[data-provider-status]')?.textContent.trim() || '',
@@ -327,6 +333,7 @@ async function smokeSeisCode(client, baseUrl) {
   ensure(initial.bottomPanelCount === 4, `SEIS Code expected 4 bottom panels, got ${initial.bottomPanelCount}`);
   ensure(initial.terminalReady, "SEIS Code terminal input missing");
   ensure(initial.monacoReady || initial.fallbackReady, "SEIS Code needs Monaco or fallback editor ready");
+  ensure(!(initial.monacoReady && initial.fallbackVisible), "SEIS Code fallback editor must be visually hidden when Monaco is active");
   ensure(initial.providerText.includes("Local Demo"), "SEIS Code provider status must remain Local Demo without keys");
   ensure(!initial.horizontalOverflow, "SEIS Code desktop horizontal overflow detected");
   ensure(!initial.overlayText, "SEIS Code framework/error overlay text detected");

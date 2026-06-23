@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS Desktop is an original browser-based Linux-style operating surface with a persistent virtual workspace and 50+ functional apps.">
+    <meta name="theme-color" content="#12181b">
+    <meta name="color-scheme" content="dark light">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SEIS Desktop</title>
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="apple-touch-icon" href="./public/icons/apple-touch-icon.svg">
+    <link rel="stylesheet" href="./desktop.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#desktop-root">Skip to desktop</a>
+    <main id="desktop-root" class="desktop-shell" aria-label="SEIS Desktop">
+      <header class="topbar" aria-label="System bar">
+        <button class="topbar-brand" type="button" data-action="toggle-launcher" aria-label="Open applications">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span>SEIS Desktop</span>
+        </button>
+        <nav class="workspace-switcher" aria-label="Workspaces">
+          <button type="button" class="workspace-button is-active" data-workspace="1">1</button>
+          <button type="button" class="workspace-button" data-workspace="2">2</button>
+          <button type="button" class="workspace-button" data-workspace="3">3</button>
+        </nav>
+        <button class="topbar-search" type="button" data-action="open-search" aria-label="Search apps, files, commands">
+          <span aria-hidden="true">⌘</span>
+          <span>Search apps, files, commands</span>
+        </button>
+        <div class="topbar-status" aria-label="System status">
+          <button type="button" data-action="toggle-network" aria-label="Network status">Wi-Fi</button>
+          <button type="button" data-action="toggle-audio" aria-label="Audio status">72%</button>
+          <button type="button" data-action="toggle-theme" aria-label="Toggle theme">Theme</button>
+          <button type="button" data-action="toggle-status" aria-label="Open quick status">
+            <time data-clock>--:--</time>
+          </button>
+        </div>
+      </header>
+
+      <aside class="dock" aria-label="Favorite applications" data-dock></aside>
+
+      <section class="desktop-canvas" data-desktop-canvas aria-label="Desktop workspace">
+        <div class="wallpaper" aria-hidden="true">
+          <div class="wallpaper-grid"></div>
+          <div class="wallpaper-horizon"></div>
+        </div>
+
+        <section class="desktop-icons" aria-label="Desktop shortcuts" data-desktop-icons></section>
+        <section class="windows-layer" aria-label="Open windows" data-window-layer></section>
+      </section>
+
+      <section class="launcher" data-launcher hidden aria-label="Applications launcher">
+        <div class="launcher-panel" role="dialog" aria-modal="false" aria-labelledby="launcher-title">
+          <aside class="launcher-rail" aria-label="Application categories" data-launcher-categories></aside>
+          <div class="launcher-main">
+            <div class="launcher-head">
+              <div>
+                <h1 id="launcher-title">Applications</h1>
+                <p><span data-app-count>0</span> apps installed · <span data-open-count>0</span> windows open</p>
+              </div>
+              <button type="button" class="icon-button" data-action="close-launcher" aria-label="Close launcher">×</button>
+            </div>
+            <label class="search-field">
+              <span aria-hidden="true">⌕</span>
+              <input type="search" data-launcher-search placeholder="Search apps, files, commands" autocomplete="off">
+            </label>
+            <div class="launcher-grid" data-launcher-grid></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="command-palette" data-command-palette hidden aria-label="Command palette">
+        <div class="command-panel" role="dialog" aria-modal="false" aria-labelledby="command-title">
+          <div class="command-titlebar">
+            <h2 id="command-title">Run Command</h2>
+            <button type="button" class="icon-button" data-action="close-search" aria-label="Close search">×</button>
+          </div>
+          <label class="command-input">
+            <span aria-hidden="true">⌘</span>
+            <input type="search" data-command-input placeholder="Open app, find file, or run command">
+          </label>
+          <div class="command-results" data-command-results></div>
+        </div>
+      </section>
+
+      <section class="quick-status" data-quick-status hidden aria-label="Quick settings">
+        <div class="quick-card">
+          <div>
+            <strong>Ready</strong>
+            <span>Local browser workspace active</span>
+          </div>
+          <button type="button" data-action="toggle-theme">Toggle theme</button>
+          <button type="button" data-action="open-app" data-app-id="settings">Settings</button>
+          <button type="button" data-action="open-app" data-app-id="system-monitor">System Monitor</button>
+        </div>
+      </section>
+
+      <footer class="taskbar" aria-label="Taskbar">
+        <div class="taskbar-windows" data-taskbar-windows></div>
+        <button type="button" class="taskbar-button" data-action="toggle-launcher">Apps</button>
+      </footer>
+    </main>
+
+    <template id="window-template">
+      <article class="app-window" role="dialog" aria-modal="false">
+        <header class="window-titlebar">
+          <div class="window-identity">
+            <span class="window-icon" aria-hidden="true"></span>
+            <strong class="window-title"></strong>
+          </div>
+          <div class="window-controls">
+            <button type="button" data-window-action="minimize" aria-label="Minimize">−</button>
+            <button type="button" data-window-action="maximize" aria-label="Maximize">□</button>
+            <button type="button" data-window-action="close" aria-label="Close">×</button>
+          </div>
+        </header>
+        <div class="window-body"></div>
+      </article>
+    </template>
+
+    <script src="./desktop.js" type="module"></script>
+  </body>
+</html>

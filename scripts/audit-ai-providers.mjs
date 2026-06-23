@@ -142,7 +142,7 @@ for (const file of files) {
     const lineNumber = index + 1;
     for (const [type, regex] of hardcodedSecretRegexes) {
       if (regex.test(line)) {
-        if (type === "assignment_like_secret" && /(process\.env|os\.environ|envSet\(|getenv\()/i.test(line)) {
+        if (!shouldReportSecretPattern(type, line)) {
           continue;
         }
         secretFindings.push({ type, path: rel, line: lineNumber, severity: type === "private_key_block" ? "critical" : "high" });
@@ -450,6 +450,36 @@ function table(headers, rows) {
     `| ${headers.map(() => "---").join(" | ")} |`,
     ...rows.map((row) => `| ${row.map(escapeCell).join(" | ")} |`)
   ].join("\n");
+}
+
+function shouldReportSecretPattern(type, line) {
+  if (type !== "assignment_like_secret") {
+    return true;
+  }
+
+  if (/(process\.env|os\.environ|envSet\(|getenv\()/i.test(line)) {
+    return false;
+  }
+
+  const match = line.match(/\b([A-Z0-9_]*(?:API_KEY|TOKEN|SECRET|PASSWORD)[A-Z0-9_]*)\b\s*[:=]\s*["']?([^"',\s)]+)/i);
+  if (!match) {
+    return false;
+  }
+
+  const value = match[2];
+  if (/^(<|REDACTED|redacted|placeholder|example|not-needed|not_required|null|undefined|false|true)$/i.test(value)) {
+    return false;
+  }
+
+  if (/^(npm|github\/|policyVersion|check:|##)/i.test(value)) {
+    return false;
+  }
+
+  if (/^(sk-|gh[pousr]_|xox[baprs]-|AKIA|AIza|ya29\.|pk_live_|rk_live_|sk_live_)/.test(value)) {
+    return true;
+  }
+
+  return value.length >= 24 && /[A-Za-z]/.test(value) && /\d/.test(value) && !/[\/\s]/.test(value);
 }
 
 function classifySurface(rel) {
