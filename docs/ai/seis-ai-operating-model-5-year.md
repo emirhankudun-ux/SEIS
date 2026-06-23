@@ -164,6 +164,12 @@ scorecard panel in `apps/seis-core/index.html`. Those surfaces are backed by
 `goal-five-year-development`, the related `goalEvidenceGates`, and the
 gate-derived `goalOperatingScorecards` records in
 `packages/shared-types/fixtures/ai-core-command-center-foundation.json`.
+The browser-run AI Core panel navigation QA path also verifies the Goals
+scorecard panel as current fixture slice only evidence: it checks
+`goal-evidence-scorecards`, fixture-derived `goalOperatingScorecards`,
+`goalEvidenceGates`, gate-chip counts, and non-claim text without making live
+provider, SSH, deployment, model-training, benchmark, checkpoint, or model-card
+claims.
 
 Command Center should continue exposing this operating model through:
 

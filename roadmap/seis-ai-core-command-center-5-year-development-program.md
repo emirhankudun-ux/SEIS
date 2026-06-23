@@ -371,9 +371,10 @@ Completed foundation slice:
   behavior across desktop and mobile browser scenarios.
 - Browser-run AI Core panel navigation QA now extends the Command Center
   evidence path through `npm run qa:seis-core:ai-core-panels`, verifying
-  sidebar navigation, command palette navigation, global search navigation,
-  route, prompt, agent, approval, evaluation, evidence, and Local Retrieval
-  sections across desktop and mobile browser scenarios.
+  Goals surface evidence scorecards, sidebar navigation, command palette
+  navigation, global search navigation, route, prompt, agent, approval,
+  evaluation, evidence, and Local Retrieval sections across desktop and mobile
+  browser scenarios.
 - Browser-run AI Core QA evidence drift hardening now guards the panel QA
   report, browser runner, fixture evaluation report, schema, Command Center
   validator, README, evaluation strategy, five-year roadmap, and five-year
@@ -413,7 +414,10 @@ Completed foundation slice:
   into the Command Center Goals surface as read-only current-fixture-slice gate
   coverage, without claiming full program completion, live provider health, SSH
   execution, deployment, training, benchmark, checkpoint, or model-card
-  evidence.
+  evidence. Browser-run AI Core panel navigation QA now verifies that Goals
+  surface projection by checking `goalOperatingScorecards`,
+  `goalEvidenceGates`, scorecard counts, gate-chip counts, current fixture
+  slice language, and explicit non-claims.
 
 ## Next Safe Slice
 

@@ -527,6 +527,7 @@ const browserUiEvaluations = [
     privacyClass: "local-browser-fixture",
     rubric: [
       "browser-run AI Core panel navigation evidence documented",
+      "Goals surface evidence scorecards documented",
       "sidebar, command palette, and global search navigation documented",
       "route, prompt, agent, approval, evaluation, evidence, and Local Retrieval sections documented",
       "desktop and mobile scenarios documented",
@@ -536,13 +537,14 @@ const browserUiEvaluations = [
     passCriteria: [
       "QA command is npm run qa:seis-core:ai-core-panels",
       "desktop and mobile panel navigation scenarios are declared",
+      "Goals surface goal evidence scorecards and fixture gate chips are verified",
       "sidebar, command palette, and global search steps are verified",
       "route, prompt, agent, approval, evidence, and Local Retrieval panels are verified",
       "generated browser artifacts stay under ignored reports/tmp",
       "artifact-required check validates manifest, scenario ids, viewports, steps, panel counts, safety flags, artifact paths, and non-claims",
       "non-claims exclude live providers, live retrieval, embeddings, memory writes, raw content, and privileged actions"
     ],
-    observedOutputSummary: "Browser-run AI Core panel navigation QA covers Dashboard-to-AI-Core navigation through sidebar, command palette, and global search, verifies fixture-backed route, prompt, agent, approval, evidence, and Local Retrieval panels across desktop and mobile scenarios, and is guarded by a metadata plus artifact-required evidence check.",
+    observedOutputSummary: "Browser-run AI Core panel navigation QA covers Dashboard-to-Goals scorecard verification plus Dashboard-to-AI-Core navigation through sidebar, command palette, and global search, verifies fixture-backed route, prompt, agent, approval, evidence, and Local Retrieval panels across desktop and mobile scenarios, and is guarded by a metadata plus artifact-required evidence check.",
     limitations: [
       "Browser artifacts are local and ignored; the committed report documents the repeatable evidence contract.",
       "Pass does not create live provider routing, live retrieval, embedding search, persistent memory, raw-content return, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."

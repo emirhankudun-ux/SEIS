@@ -11,8 +11,9 @@ Canonical validator phrase: browser-run AI Core QA evidence.
 ## Scope
 
 This document covers the `apps/seis-core` AI Core panel navigation evidence
-path, the metadata-only CI gate, the local browser artifact gate, and the
-manual GitHub Actions browser evidence workflow.
+path, the Goals surface scorecard projection evidence, the metadata-only CI
+gate, the local browser artifact gate, and the manual GitHub Actions browser
+evidence workflow.
 
 ## Current Status
 
@@ -66,8 +67,15 @@ The browser artifact gate must prove:
 
 - Desktop scenario `desktop-ai-core-panel-navigation` runs at `1440x900`.
 - Mobile scenario `mobile-ai-core-panel-navigation` runs at `390x844`.
-- Step order is `initial-dashboard`, `sidebar-ai-core`,
-  `command-palette-ai-core`, `global-search-ai-core`.
+- Step order is `initial-dashboard`, `sidebar-goals-evidence`,
+  `sidebar-ai-core`, `command-palette-ai-core`, `global-search-ai-core`.
+- The Goals surface renders `Goal Evidence Scorecards` from
+  `goalOperatingScorecards` and `goalEvidenceGates`.
+- Goals scorecard artifacts preserve `current fixture slice only`, `required gate coverage`, and `not a complete program claim` language.
+- Goals scorecard artifacts do not claim full program completion, live
+  orchestration, live provider health, SSH execution, deployment evidence,
+  model training evidence, benchmark evidence, checkpoint evidence, or
+  model-card evidence.
 - AI Core view and navigation state are active after every AI Core navigation
   step.
 - Model route, prompt, agent task, approval, retrieval, no-content transcript,

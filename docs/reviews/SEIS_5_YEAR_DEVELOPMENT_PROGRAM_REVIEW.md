@@ -469,6 +469,32 @@ embeddings, persistent memory writes, raw-content return, secret lookup, GitHub
 write actions, SSH execution, deployment, payment, infrastructure mutation,
 benchmark claims, or model-training evidence.
 
+## Browser-Run Goals Evidence Scorecard QA Slice
+
+Status: Added after the Goals evidence scorecard projection slice.
+
+Evidence:
+
+- `scripts/capture-seis-core-ai-core-panel-navigation.mjs`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `apps/seis-core/README.md`
+- `docs/evals/evaluation-strategy.md`
+- `docs/ai/seis-ai-operating-model-5-year.md`
+- `roadmap/seis-ai-core-command-center-5-year-development-program.md`
+- `npm run qa:seis-core:ai-core-panels`
+- `npm run check:ai-core-browser-qa-evidence`
+
+This slice extends the browser-run AI Core panel navigation QA path to the
+Command Center Goals surface. The browser runner now starts from Dashboard,
+opens Goals through sidebar navigation, verifies `Goal Evidence Scorecards`
+from `goalOperatingScorecards` and `goalEvidenceGates`, checks fixture-derived
+scorecard and gate-chip counts, verifies `current fixture slice only` language,
+and blocks unsafe completion or capability claims. It does not claim full
+program completion, live orchestration, live provider health, SSH execution,
+deployment evidence, model training evidence, benchmark evidence, checkpoint
+evidence, or model-card evidence.
+
 ## Browser-Run AI Core QA Evidence Drift-Hardening Slice
 
 Status: Added after the browser-run AI Core panel navigation QA slice.

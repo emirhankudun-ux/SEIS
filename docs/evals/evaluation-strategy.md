@@ -127,13 +127,16 @@ raw-content return, or a pixel-baseline regression suite.
 
 The browser-run AI Core panel navigation QA path is documented in
 `reports/evals/ai-core-panel-navigation-browser-qa.md` and executed with
-`npm run qa:seis-core:ai-core-panels`. It starts from Dashboard, opens AI Core
-through sidebar navigation, the command palette, and global search, then
-verifies fixture-backed route, prompt, agent, approval, evaluation, evidence,
-and Local Retrieval sections across desktop and mobile browser scenarios. This
-adds rendered-browser navigation evidence for the AI Core panel without adding
-live providers, live retrieval, embeddings, persistent memory writes, raw
-content, GitHub writes, SSH, deployment, payment, or infrastructure mutation.
+`npm run qa:seis-core:ai-core-panels`. It starts from Dashboard, opens the
+Goals surface to verify Goal Evidence Scorecards from `goalOperatingScorecards`
+and `goalEvidenceGates`, then opens AI Core through sidebar navigation, the
+command palette, and global search. It verifies fixture-backed route, prompt,
+agent, approval, evaluation, evidence, and Local Retrieval sections across
+desktop and mobile browser scenarios. This adds rendered-browser navigation
+evidence for the AI Core panel and rendered-browser evidence for the Goals
+surface scorecard projection without adding live providers, live retrieval,
+embeddings, persistent memory writes, raw content, GitHub writes, SSH,
+deployment, payment, or infrastructure mutation.
 The browser-run AI Core QA evidence contract is guarded by
 `npm run check:ai-core-browser-qa-evidence`, which verifies the report, browser
 runner, schema, generated fixture evaluation report, Command Center validator,
@@ -142,9 +145,10 @@ sync without launching a browser or calling a provider. After a browser run,
 `npm run check:ai-core-browser-qa-evidence -- --require-artifacts` also reads
 the ignored manifest and desktop/mobile JSON reports under
 `reports/tmp/seis-core-ai-core-panel-navigation/` to validate scenario IDs,
-viewports, step order, panel counts, safety flags, artifact paths, and
-non-claims. `npm run check:ai-core-eval-evidence` aggregates the fixture report,
-browser QA evidence, and Command Center checks as a read-only metadata gate.
+viewports, step order, AI Core panel counts, Goals scorecard counts, safety
+flags, artifact paths, and non-claims. `npm run check:ai-core-eval-evidence`
+aggregates the fixture report, browser QA evidence, and Command Center checks
+as a read-only metadata gate.
 
 The shared AI Core/App fixture now includes `goalEvidenceGates`. These gates
 map each active goal to required documentation, fixture, validation,
@@ -163,7 +167,10 @@ Goals surface as read-only gate coverage. The Goals surface must preserve the
 same current-fixture-slice and non-claim language; it must not present a
 scorecard as full program completion, live orchestration, provider health, SSH
 execution, deployment, model training, benchmark evidence, or model-card
-evidence.
+evidence. The browser-run AI Core panel navigation QA now verifies this Goals
+surface projection by checking the `goal-evidence-scorecards` cards, fixture
+gate chips, `current fixture slice only` language, and explicit non-claim
+copy.
 
 The CI/local browser split is documented in
 `docs/evals/ai-core-browser-evidence-gates.md`: default CI should keep

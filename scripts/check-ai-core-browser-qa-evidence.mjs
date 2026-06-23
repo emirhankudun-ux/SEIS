@@ -37,8 +37,15 @@ const expectedScenarios = [
     viewport: { width: 390, height: 844 }
   }
 ];
-const expectedSteps = ["initial-dashboard", "sidebar-ai-core", "command-palette-ai-core", "global-search-ai-core"];
+const expectedSteps = [
+  "initial-dashboard",
+  "sidebar-goals-evidence",
+  "sidebar-ai-core",
+  "command-palette-ai-core",
+  "global-search-ai-core"
+];
 const requiredPanelMinimums = {
+  goalEvidenceCards: 2,
   summaryCards: 10,
   boundaryCards: 6,
   routeCards: 4,
@@ -132,8 +139,30 @@ function ensureScenarioSteps(label, steps) {
       if (step.activeView !== "dashboard" || step.activeNav !== "dashboard") {
         fail(`${label} initial dashboard step must keep dashboard active`);
       }
+    } else if (step.step === "sidebar-goals-evidence") {
+      if (step.activeView !== "goals" || step.activeNav !== "goals" || !String(step.viewTitle || "").includes("Goal tracking")) {
+        fail(`${label} step ${step.step} must activate the Goals view`);
+      }
     } else if (step.activeView !== "ai-core" || step.activeNav !== "ai-core" || !String(step.viewTitle || "").includes("AI Core")) {
       fail(`${label} step ${step.step} must activate the AI Core view`);
+    }
+  }
+}
+
+function ensureGoalEvidence(label, goalEvidence) {
+  const expected = {
+    scorecardCards: 2,
+    expectedScorecards: 2,
+    gateChips: 6,
+    expectedGates: 6,
+    actionButtons: 0,
+    fixtureSliceLabelPresent: true,
+    nonClaimPresent: true
+  };
+
+  for (const [key, value] of Object.entries(expected)) {
+    if (goalEvidence?.[key] !== value) {
+      fail(`${label} goalEvidence.${key} must be ${value}`);
     }
   }
 }
@@ -172,6 +201,7 @@ function validateArtifacts() {
 
     ensureScenarioSteps(`${expectedScenario.id} manifest`, scenario.steps);
     ensurePanelCounts(`${expectedScenario.id} manifest`, scenario.panels);
+    ensureGoalEvidence(`${expectedScenario.id} manifest`, scenario.goalEvidence);
 
     if (scenario.domDump !== `${artifactRoot}/${expectedScenario.id}.html`) {
       fail(`${expectedScenario.id} manifest domDump path is not stable`);
@@ -188,6 +218,7 @@ function validateArtifacts() {
 
     ensureScenarioSteps(`${expectedScenario.id} artifact report`, report.steps);
     ensurePanelCounts(`${expectedScenario.id} artifact report`, report.panels);
+    ensureGoalEvidence(`${expectedScenario.id} artifact report`, report.goalEvidence);
 
     for (const [key, value] of Object.entries({
       providerCallPerformed: false,
@@ -263,6 +294,7 @@ includesAll("AI Core browser QA script", browserQaScript, [
   "outputRootRelative",
   "reports/tmp/seis-core-ai-core-panel-navigation",
   "qa-ai-core-panel-navigation-report",
+  "sidebar-goals-evidence",
   "sidebar-ai-core",
   "command-palette-ai-core",
   "global-search-ai-core",
@@ -270,7 +302,14 @@ includesAll("AI Core browser QA script", browserQaScript, [
   "rawContentReturned: false",
   "persistentMemoryWrite: false",
   "privilegedActionEnabled: false",
+  "assertGoalsActive",
+  "assertGoalEvidenceScorecards",
   "assertAiCorePanels",
+  "Goal Evidence Scorecards",
+  "goalOperatingScorecards",
+  "goalEvidenceGates",
+  "current fixture slice only",
+  "not a complete program claim",
   "Local Retrieval default status"
 ]);
 
@@ -282,6 +321,12 @@ lowerIncludesAll("AI Core browser QA report", browserQaReport, [
   "Desktop AI Core panel navigation",
   "Mobile AI Core panel navigation",
   "sidebar navigation",
+  "Goals surface",
+  "Goal Evidence Scorecards",
+  "goalOperatingScorecards",
+  "goalEvidenceGates",
+  "current fixture slice only",
+  "required gate coverage",
   "command palette",
   "global search",
   "Model Routes",
@@ -290,6 +335,15 @@ lowerIncludesAll("AI Core browser QA report", browserQaReport, [
   "Approvals",
   "Evaluation/Evidence",
   "Local Retrieval",
+  "not full program completion",
+  "not live orchestration",
+  "not live provider health",
+  "not SSH execution",
+  "not deployment evidence",
+  "not model training evidence",
+  "not benchmark evidence",
+  "not checkpoint evidence",
+  "not model-card evidence",
   "No provider key marker",
   "Non-Claims",
   "npm run check:ai-core-browser-qa-evidence"
@@ -309,9 +363,15 @@ lowerIncludesAll("AI Core browser evidence gates doc", browserEvidenceGates, [
   "desktop-ai-core-panel-navigation",
   "mobile-ai-core-panel-navigation",
   "initial-dashboard",
+  "sidebar-goals-evidence",
   "sidebar-ai-core",
   "command-palette-ai-core",
   "global-search-ai-core",
+  "Goal Evidence Scorecards",
+  "goalOperatingScorecards",
+  "goalEvidenceGates",
+  "current fixture slice only",
+  "required gate coverage",
   "provider calls",
   "raw-content return",
   "persistent memory writes",
@@ -656,6 +716,8 @@ if (!panelEvaluation) {
   lowerIncludesAll("panel browser UI pass criteria", (panelEvaluation.passCriteria || []).join("\n"), [
     "npm run qa:seis-core:ai-core-panels",
     "desktop and mobile",
+    "Goals surface",
+    "goal evidence scorecards",
     "sidebar",
     "command palette",
     "global search",

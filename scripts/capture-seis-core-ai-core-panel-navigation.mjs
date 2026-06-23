@@ -163,6 +163,12 @@ function panelNavigationScript() {
       assert(document.querySelector('.nav-item.is-active')?.dataset.view === "ai-core", step + " did not activate AI Core nav item");
       assert(text("#view-title").includes("AI Core"), step + " did not update the view title");
     };
+    const assertGoalsActive = (step) => {
+      assert(document.querySelector('.view-panel.is-active')?.dataset.panel === "goals", step + " did not activate Goals panel");
+      assert(document.querySelector('.nav-item.is-active')?.dataset.view === "goals", step + " did not activate Goals nav item");
+      assert(text("#view-kicker").includes("Goals"), step + " did not update the view kicker");
+      assert(text("#view-title").includes("Goal tracking"), step + " did not update the view title");
+    };
     const assertPanelText = (selector, requiredText, label) => {
       const value = text(selector);
       assert(value.trim().length > 0, label + " is empty");
@@ -190,6 +196,7 @@ function panelNavigationScript() {
       assertPanelText("#ai-core-evidence", ["Evaluation:", "Audit:", "Source:", "Retrieval:", "No Content:"], "AI Core evidence");
 
       report.panels = {
+        ...report.panels,
         summaryCards: count("#ai-core-summary-grid .metric-card"),
         boundaryCards: count("#ai-core-boundary-grid .boundary-card"),
         routeCards: count("#ai-core-routes .contract-card"),
@@ -209,10 +216,65 @@ function panelNavigationScript() {
       assert(report.panels.approvalCards >= 5, "AI Core approvals should expose at least 5 cards");
       assert(report.panels.evidenceCards >= 10, "AI Core evidence should expose at least 10 cards");
     };
+    const assertGoalEvidenceScorecards = () => {
+      const fixture = window.seisAiCoreContractFixture ?? {};
+      const panelText = assertPanelText(".goal-evidence-panel", [
+        "Goal Evidence Scorecards",
+        "Read-only gate coverage from AI Core contracts",
+        "current fixture slice only",
+        "not a complete program claim",
+        "Scorecard: Current Fixture Slice",
+        "100% required gate coverage",
+        "4/4 required",
+        "2/2 required",
+        "docs/ai/seis-ai-operating-model-5-year.md",
+        "packages/data/fixtures/seis-10m-token-feed-budget.json",
+        "Goal state",
+        "Evidence",
+        "Non-claim",
+        "Next safe action",
+        "Browser Evidence: pass",
+        "Fixture: pass"
+      ], "Goals evidence scorecards");
+
+      const scorecardCards = count("#goal-evidence-scorecards .goal-evidence-card");
+      const expectedScorecards = fixture.goalOperatingScorecards?.length ?? 0;
+      const gateChips = count("#goal-evidence-scorecards .goal-gate-strip .meta-chip");
+      const expectedGates = fixture.goalEvidenceGates?.length ?? 0;
+      const actionButtons = count(".goal-evidence-panel button");
+
+      assert(expectedScorecards >= 2, "Goals evidence fixture should expose at least 2 scorecards");
+      assert(scorecardCards === expectedScorecards, "Goals evidence scorecard count drifted from fixture");
+      assert(expectedGates >= 6, "Goals evidence fixture should expose at least 6 gates");
+      assert(gateChips === expectedGates, "Goals evidence gate chip count drifted from fixture");
+      assert(actionButtons === 0, "Goals evidence scorecards must not expose action buttons");
+      assert(!/full goal complete|production orchestration ready|provider health available|SSH execution enabled|trained model/i.test(panelText), "Goals evidence scorecards contain an unsafe completion or capability claim");
+
+      report.panels = {
+        ...report.panels,
+        goalEvidenceCards: scorecardCards
+      };
+      report.goalEvidence = {
+        scorecardCards,
+        expectedScorecards,
+        gateChips,
+        expectedGates,
+        actionButtons,
+        fixtureSliceLabelPresent: panelText.includes("current fixture slice only"),
+        nonClaimPresent: /not a complete program claim/i.test(panelText)
+      };
+
+      assert(report.panels.goalEvidenceCards >= 2, "Goals evidence scorecards should expose at least 2 cards");
+    };
 
     try {
       assert(text("body").includes("SEIS Command Center"), "Command Center shell did not render");
       record("initial-dashboard");
+
+      click('.sidebar-nav [data-view="goals"]');
+      assertGoalsActive("sidebar goals navigation");
+      assertGoalEvidenceScorecards();
+      record("sidebar-goals-evidence", { panels: report.panels });
 
       click('[data-view="ai-core"]');
       assertAiCoreActive("sidebar navigation");
@@ -407,13 +469,13 @@ function extractNavigationReport(scenario, domText) {
     fail(`${scenario.id} panel navigation report failed: ${report.error ?? "unknown error"}`);
   }
 
-  const expectedSteps = ["initial-dashboard", "sidebar-ai-core", "command-palette-ai-core", "global-search-ai-core"];
+  const expectedSteps = ["initial-dashboard", "sidebar-goals-evidence", "sidebar-ai-core", "command-palette-ai-core", "global-search-ai-core"];
   const actualSteps = report.steps.map((step) => step.step);
   if (actualSteps.join(",") !== expectedSteps.join(",")) {
     fail(`${scenario.id} panel navigation steps were ${actualSteps.join(",")}`);
   }
 
-  for (const key of ["routeCards", "promptCards", "agentTaskCards", "approvalCards", "evidenceCards"]) {
+  for (const key of ["goalEvidenceCards", "routeCards", "promptCards", "agentTaskCards", "approvalCards", "evidenceCards"]) {
     if (!Number.isInteger(report.panels?.[key]) || report.panels[key] <= 0) {
       fail(`${scenario.id} panel navigation report has invalid ${key}`);
     }
@@ -476,7 +538,8 @@ try {
         activeNav: step.activeNav,
         viewTitle: step.viewTitle
       })),
-      panels: report.panels
+      panels: report.panels,
+      goalEvidence: report.goalEvidence
     });
 
     rmSync(userDataDir, { force: true, recursive: true });
