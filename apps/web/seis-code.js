@@ -66,6 +66,59 @@ const supportedLanguageModes = [
 
 const aiTruthfulnessMarker = "not Anthropic";
 
+const evolutionPhases = [
+  {
+    id: "v0.1-foundation",
+    horizon: "Year 1",
+    title: "Foundation",
+    status: "Validated local workspace",
+    evidence: "Monaco, terminal, IndexedDB, activity views, menus, and Local Demo REPL.",
+    mission: "Make the browser IDE feel complete without cloud keys, fake providers, or decorative controls.",
+    qualityGate: "100% interactivity smoke, no-key startup, and shared virtual file persistence.",
+    nextAction: "Keep hardening the command surface and preserve the Local Demo truth boundary."
+  },
+  {
+    id: "v0.2-coherence",
+    horizon: "Year 2",
+    title: "Coherence",
+    status: "Designed",
+    evidence: "Command Lens, evidence-first status, shared file context, and keyboard-led operations.",
+    mission: "Unify editor, terminal, search, source control, and AI Core status into one calm operator flow.",
+    qualityGate: "Every command palette item maps to a real action, selected state, modal, or file operation.",
+    nextAction: "Promote the Command Lens from status rail to context-aware operating surface."
+  },
+  {
+    id: "v0.3-collaboration",
+    horizon: "Year 3",
+    title: "Collaboration",
+    status: "Planned",
+    evidence: "Safe repository adapters, review queues, and audited workspace sharing.",
+    mission: "Add human-reviewed collaboration flows without pretending browser-local Git is live GitHub.",
+    qualityGate: "Repository actions are simulated, read-only, or write-gated with visible approval status.",
+    nextAction: "Define adapter contracts before introducing any live repository writes."
+  },
+  {
+    id: "v0.4-intelligence",
+    horizon: "Year 4",
+    title: "Intelligence",
+    status: "Planned",
+    evidence: "Provider-neutral AI Core through a backend gateway, with local-first policy.",
+    mission: "Route AI work through capability-aware, provider-neutral infrastructure with truthful identity.",
+    qualityGate: "Missing keys do not crash the IDE, local-only mode blocks cloud fallback, and logs are redacted.",
+    nextAction: "Keep provider setup backend-only and make actual model identity visible in every AI surface."
+  },
+  {
+    id: "v0.5-platform",
+    horizon: "Year 5",
+    title: "Platform",
+    status: "Planned",
+    evidence: "Extensible design system, capability-scoped agents, and validated release workflows.",
+    mission: "Turn SEIS Code into a durable platform shell for extensions, agents, evidence, and release review.",
+    qualityGate: "Extension permissions, agent scopes, release evidence, and public readiness are independently auditable.",
+    nextAction: "Keep future platform work staged behind explicit contracts and validation gates."
+  }
+];
+
 const extensionCatalog = [
   { id: "theme.midnight-command", name: "Midnight Command Theme", capability: "Theme", installed: true, enabled: true },
   { id: "lang.polyglot-pack", name: "SEIS Polyglot Language Pack", capability: "24 language highlighting", installed: true, enabled: true },
@@ -75,6 +128,23 @@ const extensionCatalog = [
   { id: "scm.browser-safe", name: "Browser Source Control", capability: "Simulated Git", installed: true, enabled: true },
   { id: "format.json-css", name: "JSON and CSS Formatter", capability: "Formatting", installed: false, enabled: false },
   { id: "terminal.virtual-unix", name: "Virtual Unix Commands", capability: "Terminal", installed: true, enabled: true }
+];
+
+const claudeToolDefinitions = [
+  { name: "list_files", destructive: false, description: "List virtual workspace paths." },
+  { name: "read_file", destructive: false, description: "Read a virtual file." },
+  { name: "create_file", destructive: false, description: "Create a virtual file." },
+  { name: "write_file", destructive: false, description: "Overwrite one virtual file." },
+  { name: "append_file", destructive: false, description: "Append text to one virtual file." },
+  { name: "apply_patch", destructive: false, description: "Apply a constrained search/replace patch to one virtual file." },
+  { name: "rename_file", destructive: false, description: "Rename one virtual file." },
+  { name: "move_file", destructive: false, description: "Move one virtual file." },
+  { name: "delete_file", destructive: true, description: "Delete one virtual file after local policy checks." },
+  { name: "search_files", destructive: false, description: "Search file contents." },
+  { name: "get_file_metadata", destructive: false, description: "Inspect virtual file metadata." },
+  { name: "run_virtual_command", destructive: false, description: "Run a browser-safe terminal command." },
+  { name: "open_file_in_editor", destructive: false, description: "Open a virtual file in the editor." },
+  { name: "show_diff", destructive: false, description: "Show active file differences against the clean baseline." }
 ];
 
 const defaultFiles = [
@@ -210,6 +280,11 @@ const app = {
   cwd: WORKSPACE,
   terminalHistory: [],
   historyIndex: -1,
+  terminalQueue: Promise.resolve(),
+  terminalBusy: false,
+  paletteItems: [],
+  paletteActiveIndex: 0,
+  paletteRecentCommandIds: [],
   env: {
     SEIS_ENVIRONMENT: "local",
     SEIS_DATA_MODE: "indexeddb",
@@ -221,12 +296,15 @@ const app = {
   repl: {
     active: false,
     model: "Local Demo",
-    history: []
+    history: [],
+    toolRuns: []
   },
   settings: {
     wordWrap: "off",
     minimap: true,
-    theme: "seis-dark"
+    theme: "seis-dark",
+    commandLens: true,
+    evolutionPhaseId: "v0.1-foundation"
   },
   monaco: null,
   editor: null,
@@ -394,7 +472,8 @@ async function reloadState() {
   app.activePath = await loadSetting("activePath", app.openTabs[0] || "/workspace/README.md");
   app.cwd = await loadSetting("cwd", WORKSPACE);
   app.terminalHistory = await loadSetting("terminalHistory", []);
-  app.settings = await loadSetting("settings", app.settings);
+  app.paletteRecentCommandIds = await loadSetting("paletteRecentCommandIds", []);
+  app.settings = { ...app.settings, ...(await loadSetting("settings", app.settings)) };
   app.extensions = await getAll("extensions");
   if (!app.extensions.length) {
     app.extensions = extensionCatalog;
@@ -427,6 +506,79 @@ function renderStatus() {
   if (mode) mode.textContent = app.repl.active ? "Claude Code REPL" : "Shell";
   const prompt = $("[data-terminal-prompt]");
   if (prompt) prompt.textContent = app.repl.active ? "claude(local-demo)> " : `${app.cwd} $`;
+  renderCommandLens();
+}
+
+function renderCommandLens() {
+  const workspace = $(".workspace");
+  const lens = $("[data-command-lens]");
+  const toggle = $("[data-action=\"toggle-command-lens\"]");
+  if (workspace) workspace.classList.toggle("lens-hidden", !app.settings.commandLens);
+  if (lens) lens.setAttribute("aria-hidden", String(!app.settings.commandLens));
+  if (toggle) toggle.setAttribute("aria-pressed", String(Boolean(app.settings.commandLens)));
+  if (!lens) return;
+
+  const activeFile = app.files.get(app.activePath);
+  const dirty = activeFile?.type === "file" && activeFile.content !== activeFile.baseContent;
+  const installedExtensions = app.extensions.filter((item) => item.installed).length;
+  const summary = $("[data-command-lens-summary]", lens);
+  const active = $("[data-lens-active-file]", lens);
+  const provider = $("[data-lens-provider]", lens);
+  const storage = $("[data-lens-storage]", lens);
+  const rail = $("[data-evolution-rail]", lens);
+  const detail = $("[data-evolution-detail]", lens);
+  const selectedPhase = getSelectedEvolutionPhase();
+
+  if (summary) {
+    summary.textContent = `Apple-grade Command Lens tracks the active file, Local Demo AI state, and selected horizon: ${selectedPhase.horizon} / ${selectedPhase.title}.`;
+  }
+  if (active) {
+    active.textContent = `${app.activePath || WORKSPACE} - ${getLanguage(app.activePath || "")}${dirty ? " - unsaved" : ""}`;
+  }
+  if (provider) {
+    provider.textContent = app.repl.active
+      ? `Claude command active, runtime Local Demo (${aiTruthfulnessMarker})`
+      : "Local Demo available, cloud providers disabled";
+  }
+  if (storage) {
+    storage.textContent = `${app.files.size} nodes, ${app.openTabs.length} tabs, ${app.terminalHistory.length} commands, ${installedExtensions} extensions`;
+  }
+  if (rail) {
+    rail.innerHTML = evolutionPhases.map((phase) => `
+      <button
+        class="evolution-phase ${phase.id === selectedPhase.id ? "is-active" : ""}"
+        type="button"
+        data-action="select-evolution-phase"
+        data-evolution-phase="${escapeHtml(phase.id)}"
+        aria-pressed="${phase.id === selectedPhase.id}"
+        aria-label="${escapeHtml(`${phase.horizon}: ${phase.title}`)}"
+      >
+        <em>${escapeHtml(phase.horizon)} - ${escapeHtml(phase.status)}</em>
+        <strong>${escapeHtml(phase.title)}</strong>
+        <span>${escapeHtml(phase.evidence)}</span>
+      </button>
+    `).join("");
+  }
+  if (detail) {
+    detail.innerHTML = `
+      <strong>${escapeHtml(selectedPhase.horizon)} / ${escapeHtml(selectedPhase.title)}</strong>
+      <p>${escapeHtml(selectedPhase.mission)}</p>
+      <dl>
+        <div>
+          <dt>Proof gate</dt>
+          <dd>${escapeHtml(selectedPhase.qualityGate)}</dd>
+        </div>
+        <div>
+          <dt>Next action</dt>
+          <dd>${escapeHtml(selectedPhase.nextAction)}</dd>
+        </div>
+      </dl>
+    `;
+  }
+}
+
+function getSelectedEvolutionPhase() {
+  return evolutionPhases.find((phase) => phase.id === app.settings.evolutionPhaseId) || evolutionPhases[0];
 }
 
 function renderFileTree() {
@@ -996,6 +1148,8 @@ function setupActions() {
       "copy-path": () => navigator.clipboard?.writeText(app.activePath),
       "reveal-file": () => switchView("explorer"),
       "toggle-sidebar": toggleSidebar,
+      "toggle-command-lens": toggleCommandLens,
+      "select-evolution-phase": () => selectEvolutionPhase(target.dataset.evolutionPhase),
       "toggle-minimap": toggleMinimap,
       "toggle-word-wrap": toggleWordWrap,
       "quick-open": showPalette,
@@ -1011,6 +1165,9 @@ function setupActions() {
       "new-terminal": () => appendTermLine("New terminal tab created in this sandbox session.", "muted"),
       "clear-terminal": clearTerminal,
       "start-claude": startClaudeRepl,
+      "open-ai-repl": startClaudeRepl,
+      "focus-terminal": focusTerminal,
+      "show-five-year-plan": showFiveYearPlan,
       "show-shortcuts": showShortcuts,
       "show-about": showAbout,
       "reset-demo": resetDemo,
@@ -1065,6 +1222,29 @@ function switchBottomPanel(panel) {
 
 function toggleSidebar() {
   $(".workspace").classList.toggle("sidebar-hidden");
+}
+
+async function toggleCommandLens() {
+  app.settings.commandLens = !app.settings.commandLens;
+  await saveSetting("settings", app.settings);
+  renderCommandLens();
+  appendOutput(`Command Lens ${app.settings.commandLens ? "shown" : "hidden"}.`);
+}
+
+function focusTerminal() {
+  switchBottomPanel("terminal");
+  const input = $("[data-terminal-input]");
+  input?.focus();
+  appendTermLine("Command Lens focused the virtual terminal.", "muted");
+}
+
+async function selectEvolutionPhase(phaseId) {
+  const phase = evolutionPhases.find((item) => item.id === phaseId) || evolutionPhases[0];
+  app.settings.evolutionPhaseId = phase.id;
+  app.settings.commandLens = true;
+  await saveSetting("settings", app.settings);
+  renderCommandLens();
+  appendOutput(`Command Lens selected ${phase.horizon}: ${phase.title}. Next action: ${phase.nextAction}`);
 }
 
 async function toggleMinimap() {
@@ -1165,18 +1345,12 @@ function setupTerminal() {
   const form = $("[data-terminal-form]");
   const input = $("[data-terminal-input]");
   appendTermLine("SEIS Code virtual terminal. Type help, ls, cat README.md, or claude.", "muted");
-  form.addEventListener("submit", async (event) => {
+  form.addEventListener("submit", (event) => {
     event.preventDefault();
     const command = input.value.trim();
     if (!command) return;
     input.value = "";
-    app.terminalHistory.push(command);
-    app.historyIndex = app.terminalHistory.length;
-    await saveSetting("terminalHistory", app.terminalHistory.slice(-200));
-    appendTermLine(`${app.repl.active ? "claude(local-demo)> " : `${app.cwd} $ `}${command}`, "command");
-    if (app.repl.active) await handleClaudeInput(command);
-    else await handleShellInput(command);
-    renderStatus();
+    queueTerminalCommand(command);
   });
   input.addEventListener("keydown", (event) => {
     if (event.key === "ArrowUp") {
@@ -1194,6 +1368,28 @@ function setupTerminal() {
       input.value = completeCommand(input.value);
     }
   });
+}
+
+function queueTerminalCommand(command) {
+  app.terminalQueue = app.terminalQueue
+    .catch(() => undefined)
+    .then(() => processTerminalCommand(command));
+  return app.terminalQueue;
+}
+
+async function processTerminalCommand(command) {
+  app.terminalBusy = true;
+  try {
+    app.terminalHistory.push(command);
+    app.historyIndex = app.terminalHistory.length;
+    await saveSetting("terminalHistory", app.terminalHistory.slice(-200));
+    appendTermLine(`${app.repl.active ? "claude(local-demo)> " : `${app.cwd} $ `}${command}`, "command");
+    if (app.repl.active) await handleClaudeInput(command);
+    else await handleShellInput(command);
+  } finally {
+    app.terminalBusy = false;
+    renderStatus();
+  }
 }
 
 function completeCommand(value) {
@@ -1522,6 +1718,40 @@ function statVirtual(path) {
   ].join("\n");
 }
 
+function extractRequestedPath(prompt) {
+  const explicit = String(prompt).match(/(?:path|file|open|read|write|append|patch|delete|remove|rename|move)\s+((?:\/workspace\/)?[A-Za-z0-9._/-]+\.[A-Za-z0-9]+)/i);
+  if (explicit?.[1]) return explicit[1].startsWith("/") ? explicit[1] : normalizePath(explicit[1]);
+  const loose = String(prompt).match(/(\/workspace\/[A-Za-z0-9._/-]+|[A-Za-z0-9._/-]+\.[A-Za-z0-9]+)/);
+  if (!loose?.[1]) return "";
+  return loose[1].startsWith("/") ? loose[1] : normalizePath(loose[1]);
+}
+
+function extractQuotedContent(prompt) {
+  const match = String(prompt).match(/"([^"]+)"|'([^']+)'|`([^`]+)`/);
+  return match?.[1] || match?.[2] || match?.[3] || "";
+}
+
+function showVirtualDiff(path) {
+  const safePath = normalizePath(path);
+  const file = app.files.get(safePath);
+  if (!file || file.type !== "file") throw new Error(`show_diff: no such file: ${safePath}`);
+  if (file.content === file.baseContent) return `No diff for ${safePath}.`;
+  const before = file.baseContent.split("\n");
+  const after = file.content.split("\n");
+  const max = Math.max(before.length, after.length);
+  const lines = [`diff -- ${safePath}`];
+  for (let index = 0; index < max; index += 1) {
+    if (before[index] === after[index]) continue;
+    if (before[index] !== undefined) lines.push(`- ${before[index]}`);
+    if (after[index] !== undefined) lines.push(`+ ${after[index]}`);
+    if (lines.length >= 20) {
+      lines.push("... diff truncated in Local Demo");
+      break;
+    }
+  }
+  return lines.join("\n");
+}
+
 function startClaudeRepl() {
   app.repl.active = true;
   switchBottomPanel("terminal");
@@ -1556,6 +1786,7 @@ async function handleSlashCommand(command) {
     case "/exit":
       app.repl.active = false;
       appendTermLine("Exited Claude Code-style REPL. Returning to virtual shell.", "muted");
+      renderStatus();
       break;
     case "/model":
       appendTermLine(`Current model: Local Demo (${aiTruthfulnessMarker}). A real Claude response requires a configured backend Anthropic provider.`);
@@ -1570,7 +1801,11 @@ async function handleSlashCommand(command) {
       appendTermLine(app.repl.history.map((item, index) => `${index + 1}. ${item.role}: ${item.content}`).join("\n") || "No REPL history.");
       break;
     case "/tools":
-      appendTermLine("Tools: list_files read_file create_file write_file append_file apply_patch rename_file move_file delete_file search_files get_file_metadata run_virtual_command open_file_in_editor show_diff");
+      appendTermLine(
+        claudeToolDefinitions
+          .map((tool) => `${tool.name}${tool.destructive ? " [approval-gated]" : ""} - ${tool.description}`)
+          .join("\n")
+      );
       break;
     case "/compact":
       app.repl.history = app.repl.history.slice(-6);
@@ -1610,46 +1845,174 @@ async function handleSlashCommand(command) {
 function inferToolCalls(prompt) {
   const lower = prompt.toLowerCase();
   const calls = [];
-  if (lower.includes("list") || lower.includes("files")) calls.push({ name: "list_files", args: { path: WORKSPACE } });
-  if (lower.includes("read") || lower.includes("summarize")) calls.push({ name: "read_file", args: { path: app.activePath } });
-  if (lower.includes("search")) calls.push({ name: "search_files", args: { query: "SEIS" } });
-  if (lower.includes("create")) calls.push({ name: "create_file", args: { path: "/workspace/notes/claude-created.md" } });
+  const requestedPath = extractRequestedPath(prompt);
+  const quotedContent = extractQuotedContent(prompt);
+  if (lower.includes("list") || lower.includes("files")) calls.push({ name: "list_files", args: { path: requestedPath || WORKSPACE } });
+  if (lower.includes("read") || lower.includes("summarize")) calls.push({ name: "read_file", args: { path: requestedPath || app.activePath } });
+  if (lower.includes("search")) calls.push({ name: "search_files", args: { query: quotedContent || "SEIS" } });
+  if (lower.includes("create")) calls.push({ name: "create_file", args: { path: requestedPath || "/workspace/notes/claude-created.md" } });
+  if (lower.includes("write")) {
+    calls.push({
+      name: "write_file",
+      args: {
+        path: requestedPath || "/workspace/notes/claude-written.md",
+        content: quotedContent || "# Written by Local Demo REPL\n\nThis file was written through the browser-local tool registry.\n"
+      }
+    });
+  }
+  if (lower.includes("append")) {
+    calls.push({
+      name: "append_file",
+      args: {
+        path: requestedPath || app.activePath,
+        content: quotedContent || "\n\nAppended by Local Demo REPL.\n"
+      }
+    });
+  }
+  if (lower.includes("patch")) {
+    calls.push({
+      name: "apply_patch",
+      args: {
+        path: requestedPath || app.activePath,
+        search: "browser workspace slice",
+        replace: "single-URL VS Code Web replica"
+      }
+    });
+  }
+  if (lower.includes("rename")) {
+    calls.push({
+      name: "rename_file",
+      args: {
+        from: requestedPath || "/workspace/notes/claude-created.md",
+        to: "/workspace/notes/claude-renamed.md"
+      }
+    });
+  }
+  if (lower.includes("move")) {
+    calls.push({
+      name: "move_file",
+      args: {
+        from: requestedPath || "/workspace/notes/claude-renamed.md",
+        to: "/workspace/notes/archive/claude-renamed.md"
+      }
+    });
+  }
+  if (lower.includes("delete") || lower.includes("remove")) {
+    calls.push({
+      name: "delete_file",
+      args: {
+        path: requestedPath || "/workspace/notes/archive/claude-renamed.md",
+        cancelled: lower.includes("workspace") || lower.includes("all files")
+      }
+    });
+  }
+  if (lower.includes("command") || lower.includes("terminal") || lower.includes("run ")) {
+    calls.push({ name: "run_virtual_command", args: { command: quotedContent || "pwd" } });
+  }
+  if (lower.includes("open")) calls.push({ name: "open_file_in_editor", args: { path: requestedPath || app.activePath } });
+  if (lower.includes("diff")) calls.push({ name: "show_diff", args: { path: requestedPath || app.activePath } });
   if (!calls.length) calls.push({ name: "get_file_metadata", args: { path: app.activePath } });
-  return calls.slice(0, 3);
+  return calls.slice(0, 5);
 }
 
 async function runDemoToolCall(name, args) {
-  const node = appendTermHtml(`<span class="tool-call">${escapeHtml(name)} pending</span>`);
+  const definition = claudeToolDefinitions.find((tool) => tool.name === name);
+  if (!definition) {
+    appendTermLine(`Tool is not registered: ${name}`, "error");
+    return;
+  }
+  const run = {
+    name,
+    args,
+    status: "pending",
+    startedAt: new Date().toISOString(),
+    finishedAt: ""
+  };
+  app.repl.toolRuns.push(run);
+  const node = appendTermHtml(`<span class="tool-call is-pending">${escapeHtml(name)} pending</span>`);
   await wait(240);
-  node.innerHTML = `<span class="tool-call">${escapeHtml(name)} running</span>`;
+  if (args.cancelled) {
+    run.status = "cancelled";
+    run.finishedAt = new Date().toISOString();
+    node.innerHTML = `<span class="tool-call is-cancelled">${escapeHtml(name)} cancelled</span>`;
+    appendTermLine("Tool cancelled by Local Demo safety policy. Broad workspace deletion is not allowed.", "muted");
+    return;
+  }
+  run.status = "running";
+  node.innerHTML = `<span class="tool-call is-running">${escapeHtml(name)} running</span>`;
   let output = "";
   try {
     const toolPath = args.path ? normalizePath(args.path) : app.activePath;
     if (name === "list_files") output = findVirtual(toolPath);
     if (name === "read_file") output = readVirtualFile(toolPath).slice(0, 500);
-    if (name === "search_files") output = searchFiles(args.query).slice(0, 5).map((match) => `${match.path}:${match.line}`).join("\n");
     if (name === "create_file") {
       await writeVirtualFile(toolPath, "# Created by Local Demo REPL\n\nThis file was created by an approved browser-local tool call.\n");
       output = `created ${toolPath}`;
     }
+    if (name === "write_file") {
+      await writeVirtualFile(toolPath, args.content || "");
+      output = `wrote ${toolPath}`;
+    }
+    if (name === "append_file") {
+      const previous = app.files.get(toolPath)?.content || "";
+      await writeVirtualFile(toolPath, `${previous}${args.content || ""}`);
+      output = `appended ${toolPath}`;
+    }
+    if (name === "apply_patch") {
+      const file = app.files.get(toolPath);
+      if (!file || file.type !== "file") throw new Error(`apply_patch: no such file: ${toolPath}`);
+      const search = args.search || "";
+      const replacement = args.replace || "";
+      file.content = search && file.content.includes(search)
+        ? file.content.replace(search, replacement)
+        : `${file.content}\n\n${replacement || "Patch note from Local Demo REPL."}\n`;
+      await saveFile(file);
+      if (toolPath === app.activePath) setEditorContent(file);
+      output = `patched ${toolPath}`;
+    }
+    if (name === "rename_file" || name === "move_file") {
+      const from = normalizePath(args.from || toolPath);
+      const to = normalizePath(args.to || `${dirname(from)}/${basename(from).replace(/(\.[^.]+)?$/, "-moved$1")}`);
+      await moveVirtual(from, to);
+      output = `${name === "rename_file" ? "renamed" : "moved"} ${from} -> ${to}`;
+    }
+    if (name === "delete_file") {
+      if (definition.destructive && app.files.get(toolPath)?.type === "folder") {
+        throw new Error("delete_file: folder deletion requires explicit multi-file approval and is blocked in Local Demo.");
+      }
+      await removeVirtual([toolPath]);
+      output = `deleted ${toolPath}`;
+    }
+    if (name === "search_files") output = searchFiles(args.query || "SEIS").slice(0, 5).map((match) => `${match.path}:${match.line}`).join("\n") || "No matches.";
     if (name === "get_file_metadata") output = statVirtual(toolPath);
+    if (name === "run_virtual_command") output = (await executePipeline(args.command || "pwd")).output || "(no output)";
+    if (name === "open_file_in_editor") {
+      await openFile(toolPath);
+      output = `opened ${toolPath}`;
+    }
+    if (name === "show_diff") output = showVirtualDiff(toolPath);
     await wait(260);
-    node.innerHTML = `<span class="tool-call">${escapeHtml(name)} success</span>`;
+    run.status = "success";
+    run.finishedAt = new Date().toISOString();
+    node.innerHTML = `<span class="tool-call is-success">${escapeHtml(name)} success</span>`;
     if (output) appendTermLine(output, "muted");
   } catch (error) {
-    node.innerHTML = `<span class="tool-call">${escapeHtml(name)} failed</span>`;
+    run.status = "failed";
+    run.finishedAt = new Date().toISOString();
+    node.innerHTML = `<span class="tool-call is-failed">${escapeHtml(name)} failed</span>`;
     appendTermLine(error.message, "error");
   }
 }
 
 async function streamDemoResponse(prompt, calls) {
-  const line = appendTermLine("", "");
+  const line = appendTermLine("Local Demo response: not Anthropic Claude output. ", "");
   const toolText = calls.map((call) => call.name).join(", ");
-  const text = `Local Demo response: I inspected the browser workspace using ${toolText}. This is not an Anthropic Claude response. For "${prompt}", the safe next step is to edit only virtual files, keep provider identity visible, and save changes to IndexedDB.`;
-  for (const char of text) {
-    line.textContent += char;
+  const text = `I inspected the browser workspace using ${toolText}. It is browser-local demo text. For "${prompt}", the safe next step is to edit only virtual files, keep provider identity visible, and save changes to IndexedDB.`;
+  const chunks = text.match(/.{1,48}/g) || [text];
+  for (const chunk of chunks) {
+    line.textContent += chunk;
     $("[data-terminal-output]").scrollTop = $("[data-terminal-output]").scrollHeight;
-    await wait(14);
+    await wait(32);
   }
   app.repl.history.push({ role: "assistant", content: text, createdAt: new Date().toISOString() });
 }
@@ -1663,45 +2026,186 @@ function showPalette() {
   palette.hidden = false;
   const input = $("[data-palette-input]");
   input.value = "";
+  app.paletteActiveIndex = 0;
   renderPalette("");
   input.focus();
 }
 
 function hidePalette() {
   $("[data-palette]").hidden = true;
+  const input = $("[data-palette-input]");
+  if (input) input.setAttribute("aria-activedescendant", "");
 }
 
 function renderPalette(query) {
   const results = $("[data-palette-results]");
-  results.replaceChildren();
-  const commands = [
-    { label: "New File", action: createNewFile, detail: "Create a virtual file" },
-    { label: "Save File", action: saveActiveFile, detail: app.activePath },
-    { label: "Start Claude REPL", action: startClaudeRepl, detail: "Local Demo runtime" },
-    { label: "Toggle Sidebar", action: toggleSidebar, detail: "View" },
-    { label: "Run Active File", action: runActiveFile, detail: "Browser sandbox" },
-    ...Array.from(app.files.values()).filter((file) => file.type === "file").map((file) => ({
-      label: file.path.replace(`${WORKSPACE}/`, ""),
-      detail: file.language,
-      action: () => openFile(file.path)
-    }))
-  ].filter((item) => !query || `${item.label} ${item.detail}`.toLowerCase().includes(query.toLowerCase()));
+  if (!results) return;
+  const input = $("[data-palette-input]");
+  const normalizedQuery = String(query || "").trim().toLowerCase();
+  const allItems = buildPaletteItems();
+  const matchesQuery = (item) => {
+    if (!normalizedQuery) return true;
+    return [item.label, item.detail, item.group, ...(item.keywords || [])]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalizedQuery);
+  };
+  const recentIds = new Set(app.paletteRecentCommandIds);
+  const recentItems = app.paletteRecentCommandIds
+    .map((id) => allItems.find((item) => item.id === id))
+    .filter(Boolean)
+    .filter(matchesQuery);
+  const otherItems = allItems
+    .filter((item) => !recentIds.has(item.id))
+    .filter(matchesQuery);
+  const grouped = [];
+  if (recentItems.length) grouped.push({ group: "Recent", items: recentItems.slice(0, 5) });
+  for (const groupName of ["Commands", "Five-Year Rail", "Files"]) {
+    const items = otherItems.filter((item) => item.group === groupName).slice(0, groupName === "Files" ? 8 : 10);
+    if (items.length) grouped.push({ group: groupName, items });
+  }
 
-  commands.slice(0, 12).forEach((item) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "palette-result";
-    button.innerHTML = `<span>${escapeHtml(item.label)}</span><span>${escapeHtml(item.detail || "")}</span>`;
-    button.addEventListener("click", async () => {
-      hidePalette();
-      await item.action();
+  app.paletteItems = grouped.flatMap((group) => group.items);
+  if (app.paletteActiveIndex >= app.paletteItems.length) app.paletteActiveIndex = Math.max(0, app.paletteItems.length - 1);
+  if (app.paletteActiveIndex < 0) app.paletteActiveIndex = 0;
+  results.replaceChildren();
+
+  const status = $("[data-palette-status]");
+  if (status) status.textContent = `${app.paletteItems.length} result${app.paletteItems.length === 1 ? "" : "s"} - arrows move, Enter runs`;
+  const recentStatus = $("[data-palette-recent-status]");
+  if (recentStatus) recentStatus.textContent = app.paletteRecentCommandIds.length
+    ? `${Math.min(app.paletteRecentCommandIds.length, 5)} recent command${app.paletteRecentCommandIds.length === 1 ? "" : "s"}`
+    : "No recent commands yet";
+
+  if (!app.paletteItems.length) {
+    const empty = document.createElement("div");
+    empty.className = "palette-empty";
+    empty.textContent = "No matching command, phase, or file.";
+    results.append(empty);
+    if (input) input.setAttribute("aria-activedescendant", "");
+    return;
+  }
+
+  let runningIndex = 0;
+  grouped.forEach((group) => {
+    const heading = document.createElement("div");
+    heading.className = "palette-group";
+    heading.textContent = group.group;
+    results.append(heading);
+    group.items.forEach((item) => {
+      const index = runningIndex;
+      runningIndex += 1;
+      const selected = index === app.paletteActiveIndex;
+      const buttonId = `palette-result-${index}`;
+      const button = document.createElement("button");
+      button.id = buttonId;
+      button.type = "button";
+      button.className = `palette-result ${selected ? "is-active" : ""}`;
+      button.dataset.paletteIndex = String(index);
+      button.dataset.commandId = item.id;
+      button.setAttribute("role", "option");
+      button.setAttribute("aria-selected", String(selected));
+      button.innerHTML = `
+        <span class="palette-result-main">
+          <strong>${escapeHtml(item.label)}</strong>
+          <em>${escapeHtml(item.group)}</em>
+        </span>
+        <span class="palette-result-detail">${escapeHtml(item.detail || "")}</span>
+      `;
+      button.addEventListener("click", async () => {
+        app.paletteActiveIndex = index;
+        await runPaletteItem(index);
+      });
+      results.append(button);
     });
-    results.append(button);
   });
+
+  if (input) input.setAttribute("aria-activedescendant", `palette-result-${app.paletteActiveIndex}`);
+}
+
+function buildPaletteItems() {
+  return [
+    { id: "new-file", group: "Commands", label: "New File", action: createNewFile, detail: "Create a virtual file", keywords: ["file", "create"] },
+    { id: "save-file", group: "Commands", label: "Save File", action: saveActiveFile, detail: app.activePath, keywords: ["write", "persist"] },
+    { id: "start-claude", group: "Commands", label: "Start Claude REPL", action: startClaudeRepl, detail: "Local Demo runtime", keywords: ["ai", "terminal", "local demo"] },
+    { id: "toggle-command-lens", group: "Commands", label: "Toggle Command Lens", action: toggleCommandLens, detail: "Apple-grade control rail", keywords: ["lens", "inspector"] },
+    { id: "focus-terminal", group: "Commands", label: "Focus Terminal", action: focusTerminal, detail: "Virtual shell", keywords: ["shell", "terminal"] },
+    { id: "open-five-year-plan", group: "Commands", label: "Open Five-Year Plan", action: showFiveYearPlan, detail: "SEIS Code evolution map", keywords: ["roadmap", "apple"] },
+    { id: "toggle-sidebar", group: "Commands", label: "Toggle Sidebar", action: toggleSidebar, detail: "Explorer rail", keywords: ["view", "side"] },
+    { id: "toggle-word-wrap", group: "Commands", label: "Toggle Word Wrap", action: toggleWordWrap, detail: app.settings.wordWrap, keywords: ["editor", "wrap"] },
+    { id: "toggle-minimap", group: "Commands", label: "Toggle Minimap", action: toggleMinimap, detail: app.settings.minimap ? "enabled" : "disabled", keywords: ["editor", "map"] },
+    { id: "run-active", group: "Commands", label: "Run Active File", action: runActiveFile, detail: "Browser sandbox", keywords: ["debug", "preview"] },
+    { id: "format-active", group: "Commands", label: "Format Document", action: formatActiveFile, detail: getLanguage(app.activePath), keywords: ["editor", "format"] },
+    { id: "show-provider-status", group: "Commands", label: "Show AI Provider Status", action: showProviderStatus, detail: "Local Demo truth boundary", keywords: ["ai", "provider", "keys"] },
+    ...evolutionPhases.map((phase) => ({
+      id: `phase:${phase.id}`,
+      group: "Five-Year Rail",
+      label: `Command Lens: ${phase.horizon} ${phase.title}`,
+      detail: `${phase.status} - ${phase.nextAction}`,
+      keywords: ["five year", "apple", "roadmap", phase.id, phase.qualityGate],
+      action: () => selectEvolutionPhase(phase.id)
+    })),
+    ...Array.from(app.files.values())
+      .filter((file) => file.type === "file")
+      .sort((a, b) => a.path.localeCompare(b.path))
+      .map((file) => ({
+        id: `file:${file.path}`,
+        group: "Files",
+        label: file.path.replace(`${WORKSPACE}/`, ""),
+        detail: file.language,
+        keywords: [file.path, basename(file.path), dirname(file.path)],
+        action: () => openFile(file.path)
+      }))
+  ];
+}
+
+async function runPaletteItem(index = app.paletteActiveIndex) {
+  const item = app.paletteItems[index];
+  if (!item) return;
+  hidePalette();
+  await rememberPaletteCommand(item.id);
+  await item.action();
+}
+
+async function rememberPaletteCommand(id) {
+  app.paletteRecentCommandIds = [id, ...app.paletteRecentCommandIds.filter((item) => item !== id)].slice(0, 8);
+  await saveSetting("paletteRecentCommandIds", app.paletteRecentCommandIds);
+}
+
+function movePaletteSelection(delta) {
+  if (!app.paletteItems.length) return;
+  app.paletteActiveIndex = (app.paletteActiveIndex + delta + app.paletteItems.length) % app.paletteItems.length;
+  renderPalette($("[data-palette-input]")?.value || "");
 }
 
 function setupPalette() {
-  $("[data-palette-input]")?.addEventListener("input", (event) => renderPalette(event.target.value));
+  $("[data-palette-input]")?.addEventListener("input", (event) => {
+    app.paletteActiveIndex = 0;
+    renderPalette(event.target.value);
+  });
+  $("[data-palette-input]")?.addEventListener("keydown", async (event) => {
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      movePaletteSelection(1);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      movePaletteSelection(-1);
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      app.paletteActiveIndex = 0;
+      renderPalette(event.currentTarget.value);
+    } else if (event.key === "End") {
+      event.preventDefault();
+      app.paletteActiveIndex = Math.max(0, app.paletteItems.length - 1);
+      renderPalette(event.currentTarget.value);
+    } else if (event.key === "Enter") {
+      event.preventDefault();
+      await runPaletteItem();
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      hidePalette();
+    }
+  });
   $("[data-palette]")?.addEventListener("click", (event) => {
     if (event.target.matches("[data-palette]")) hidePalette();
   });
@@ -1735,6 +2239,24 @@ function showAbout() {
     `<p>SEIS Code is a single URL static IDE slice with Monaco, IndexedDB persistence, browser-safe terminal commands, five activity views, eight top menus, and a Claude Code-style Local Demo REPL.</p>
     <p>Provider identity remains truthful: Local Demo is not Anthropic.</p>
     <p class="notice">Live AI is intentionally not claimed here. A real Claude response requires a backend Anthropic integration.</p>`
+  );
+}
+
+function showFiveYearPlan() {
+  showModal(
+    "SEIS Code Five-Year Evolution",
+    `<p class="notice">This plan is product direction, not a claim that every phase is implemented. Current live evidence is limited to the local browser IDE foundation.</p>
+    <table>
+      <tr><th>Horizon</th><th>Phase</th><th>Status</th><th>Evidence</th></tr>
+      ${evolutionPhases.map((phase) => `
+        <tr>
+          <td>${escapeHtml(phase.horizon)}</td>
+          <td>${escapeHtml(phase.title)}</td>
+          <td>${escapeHtml(phase.status)}</td>
+          <td>${escapeHtml(`${phase.evidence} Gate: ${phase.qualityGate}`)}</td>
+        </tr>
+      `).join("")}
+    </table>`
   );
 }
 
@@ -1823,6 +2345,19 @@ function exposeDiagnostics() {
     terminalText: () => $("[data-terminal-output]")?.textContent || "",
     outputText: () => $("[data-output-log]")?.textContent || "",
     replActive: () => app.repl.active,
+    replToolRunCount: () => app.repl.toolRuns.length,
+    replToolStatuses: () => app.repl.toolRuns.map((run) => `${run.name}:${run.status}`),
+    terminalHistoryLength: () => app.terminalHistory.length,
+    terminalBusy: () => app.terminalBusy,
+    commandLensVisible: () => !$(".workspace")?.classList.contains("lens-hidden"),
+    commandLensSummary: () => $("[data-command-lens-summary]")?.textContent || "",
+    evolutionPhaseCount: () => $$("[data-evolution-phase]").length,
+    selectedEvolutionPhase: () => getSelectedEvolutionPhase().id,
+    evolutionDetailText: () => $("[data-evolution-detail]")?.textContent || "",
+    paletteResultText: () => $("[data-palette-results]")?.textContent || "",
+    paletteStatusText: () => $("[data-palette-status]")?.textContent || "",
+    paletteActiveLabel: () => $(".palette-result.is-active .palette-result-main strong")?.textContent || "",
+    paletteRecentCommandIds: () => app.paletteRecentCommandIds.slice(),
     switchView,
     switchBottomPanel,
     openFile,
@@ -1833,7 +2368,7 @@ function exposeDiagnostics() {
       if (!input || !form) throw new Error("Terminal form is unavailable.");
       input.value = command;
       form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-      await new Promise((resolve) => window.setTimeout(resolve, 20));
+      await app.terminalQueue;
     }
   };
 }

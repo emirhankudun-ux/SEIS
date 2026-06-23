@@ -94,6 +94,9 @@
         <button class="command-button" type="button" data-action="command-palette" title="Open command palette">
           Command Palette
         </button>
+        <button class="command-button lens-toggle" type="button" data-action="toggle-command-lens" aria-pressed="true" title="Toggle Command Lens">
+          Command Lens
+        </button>
         <div class="title-status" aria-live="polite">
           <span data-persistence-status>IndexedDB loading</span>
         </div>
@@ -251,6 +254,50 @@
             </div>
           </section>
         </section>
+
+        <aside class="command-lens" data-command-lens aria-label="SEIS Code command lens">
+          <div class="lens-heading">
+            <span class="lens-kicker">Apple-grade Command Lens</span>
+            <h2>SEIS Code Control</h2>
+            <p data-command-lens-summary>Local Demo workspace status is loading.</p>
+          </div>
+
+          <section class="lens-card" aria-labelledby="lens-active-file-title">
+            <h3 id="lens-active-file-title">Active Context</h3>
+            <dl class="lens-metric-grid">
+              <div>
+                <dt>File</dt>
+                <dd data-lens-active-file>/workspace</dd>
+              </div>
+              <div>
+                <dt>Provider</dt>
+                <dd data-lens-provider>Local Demo</dd>
+              </div>
+              <div>
+                <dt>Storage</dt>
+                <dd data-lens-storage>IndexedDB</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="lens-card" aria-labelledby="lens-actions-title">
+            <h3 id="lens-actions-title">Operator Actions</h3>
+            <div class="lens-actions">
+              <button type="button" data-action="focus-terminal">Focus Terminal</button>
+              <button type="button" data-action="open-ai-repl">Open Local Demo REPL</button>
+              <button type="button" data-action="show-five-year-plan">Five-Year Plan</button>
+            </div>
+          </section>
+
+          <section class="lens-card" aria-labelledby="lens-evolution-title">
+            <div class="lens-card-header">
+              <h3 id="lens-evolution-title">5-Year Evolution Rail</h3>
+              <button type="button" data-action="show-five-year-plan">Open</button>
+            </div>
+            <article class="evolution-detail" data-evolution-detail aria-live="polite"></article>
+            <div class="evolution-rail" data-evolution-rail></div>
+          </section>
+        </aside>
       </main>
 
       <footer class="statusbar" aria-label="Status bar">
@@ -274,8 +321,12 @@
 
     <div class="palette" data-palette hidden>
       <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
-        <input data-palette-input type="search" placeholder="Type a command or file path">
-        <div data-palette-results></div>
+        <input data-palette-input type="search" placeholder="Type a command, phase, or file path" role="combobox" aria-expanded="true" aria-controls="palette-results" aria-activedescendant="">
+        <div class="palette-meta" aria-live="polite">
+          <span data-palette-status>Ready</span>
+          <span data-palette-recent-status>No recent commands yet</span>
+        </div>
+        <div id="palette-results" data-palette-results role="listbox" aria-label="Command palette results"></div>
       </div>
     </div>
 
