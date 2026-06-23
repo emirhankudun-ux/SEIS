@@ -40,6 +40,12 @@ const countMatches = (rel, needle) => {
   return fs.readFileSync(file, "utf8").split(needle).length - 1;
 };
 
+/**
+ * Scan the repo and assemble the unified SEIS AI capability ledger.
+ * Counts MCP tools, bin entry points, polyglot lanes, and agent lanes/skills
+ * into a structured object suitable for serialization and verification.
+ * @returns {object} The freshly derived integration/training ledger.
+ */
 function buildLedger() {
   const binaries = listFiles("packages/seis-ai/bin", ".mjs");
   const polyglotLanguages = listDirs("polyglot");
@@ -73,6 +79,13 @@ function buildLedger() {
   };
 }
 
+/**
+ * Validate a ledger against on-disk reality: minimum lane counts and the
+ * existence of every referenced binary, doc, agent lane, and skill.
+ * Defensive against a missing or malformed ledger object.
+ * @param {object} ledger The ledger to verify (committed or freshly built).
+ * @returns {string[]} A list of failure messages; empty when everything passes.
+ */
 function verify(ledger) {
   const failures = [];
   const ensure = (cond, msg) => {
