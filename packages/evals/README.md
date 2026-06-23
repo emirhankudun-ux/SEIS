@@ -40,6 +40,10 @@ combined `npm run qa:seis-core:ai-core-evidence`.
 The browser-enabled CI proposal is documented in
 `docs/evals/ai-core-browser-ci-proposal.md`. It describes the future workflow
 shape without enabling browser-required QA in the current CI workflow.
+The non-active workflow draft is documented in
+`docs/evals/ai-core-browser-ci-workflow-draft.md`; it is review-only and is not
+an active GitHub Actions workflow.
+Status invariant: not an active GitHub Actions workflow.
 
 Canonical validator phrase: browser-run AI Core QA evidence.
 

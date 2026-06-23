@@ -51,11 +51,12 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Prepare a separate browser-enabled CI workflow draft for AI Core browser
-   artifact gates. The draft must keep the active CI metadata-only, use explicit
-   Chrome/Chromium setup, preserve `SEIS_BROWSER_BIN`, timeout, artifact, and
-   failure semantics from `docs/evals/ai-core-browser-ci-proposal.md`, and avoid
-   providers, SSH, deployment, payment, and infrastructure mutation.
+1. Prepare an approval-gated active workflow PR for AI Core browser artifact
+   gates only after the review-only draft is accepted. The active workflow
+   change must keep `.github/workflows/ci.yml` metadata-only, replace the
+   upload-artifact placeholder with an approved pinned SHA, verify the runner
+   Chrome/Chromium binary, preserve `SEIS_BROWSER_BIN`, and avoid providers,
+   SSH, deployment, payment, and infrastructure mutation.
 
 ## Follow-Up Contract Slice
 
@@ -419,6 +420,7 @@ Status: Added after the browser-run AI Core evidence gate availability slice.
 Evidence:
 
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `docs/evals/evaluation-strategy.md`
 - `packages/evals/README.md`
@@ -430,9 +432,13 @@ This slice documents the review-ready CI proposal for running browser-run AI
 Core QA evidence in GitHub Actions without enabling the browser-required gate in
 the active CI workflow. It covers Chrome/Chromium setup, `SEIS_BROWSER_BIN`,
 bounded timeout behavior, temporary `reports/tmp/` artifact handling, failure
-semantics, and the approval boundary. The proposal remains metadata-validated
-planning evidence: it is not browser QA pass evidence, does not change
-`.github/workflows/ci.yml`, and does not add live providers, embeddings,
+semantics, and the approval boundary. It also adds a non-active workflow draft
+that uses `workflow_dispatch`, read-only permissions, pinned existing
+checkout/setup-node actions, a bounded timeout, short artifact retention, and an
+explicit upload-artifact pinning placeholder for later review. The proposal and
+draft remain metadata-validated planning evidence: they are not browser QA pass
+evidence, do not change
+`.github/workflows/ci.yml`, and do not add live providers, embeddings,
 persistent memory writes, raw-content return, GitHub write actions, SSH,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.

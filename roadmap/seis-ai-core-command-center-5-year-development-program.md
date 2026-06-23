@@ -386,15 +386,21 @@ Completed foundation slice:
   `SEIS_BROWSER_BIN`, bounded timeout behavior, temporary artifact retention,
   failure semantics, and the approval boundary without enabling the browser
   gate in the active GitHub Actions workflow.
+- Browser-run AI Core CI workflow draft is documented in
+  `docs/evals/ai-core-browser-ci-workflow-draft.md` as a non-active,
+  review-only GitHub Actions shape with `workflow_dispatch`, read-only
+  permissions, pinned existing checkout/setup-node actions, bounded timeout,
+  short artifact retention, and explicit provider/SSH/deployment/payment/infra
+  non-claims.
 
 ## Next Safe Slice
 
-Prepare a separate browser-enabled CI workflow draft for AI Core browser
-artifact gates. The draft should keep `.github/workflows/ci.yml`
-metadata-only, use explicit Chrome/Chromium setup, preserve bounded timeout and
-artifact rules from `docs/evals/ai-core-browser-ci-proposal.md`, and remain
-provider-free, SSH-free, deployment-free, payment-free, and
-infrastructure-mutation-free until reviewed.
+Prepare an approval-gated active workflow PR for AI Core browser artifact gates
+only after the review-only draft is accepted. The active workflow change must
+keep `.github/workflows/ci.yml` metadata-only, replace the upload-artifact
+placeholder with an approved pinned SHA, verify the runner Chrome/Chromium
+binary, preserve `SEIS_BROWSER_BIN`, and remain provider-free, SSH-free,
+deployment-free, payment-free, and infrastructure-mutation-free.
 
 ## Relationship to Existing Roadmaps
 

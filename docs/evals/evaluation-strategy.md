@@ -150,7 +150,9 @@ The CI/local browser split is documented in
 while `npm run qa:seis-core:ai-core-evidence` remains local or
 browser-enabled-runner evidence until Chrome/Chromium setup is reviewed. The
 review-ready CI proposal lives in `docs/evals/ai-core-browser-ci-proposal.md`
-and does not enable the browser artifact gate by itself.
+and does not enable the browser artifact gate by itself. The review-only
+workflow shape lives in `docs/evals/ai-core-browser-ci-workflow-draft.md`; it is
+not an active `.github/workflows/` workflow and does not change CI behavior.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

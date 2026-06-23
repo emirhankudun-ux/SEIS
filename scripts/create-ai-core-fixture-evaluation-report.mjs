@@ -16,6 +16,7 @@ const panelNavigationQaReportPath = "reports/evals/ai-core-panel-navigation-brow
 const panelNavigationQaEvidenceCheckPath = "scripts/check-ai-core-browser-qa-evidence.mjs";
 const browserEvidenceGatesPath = "docs/evals/ai-core-browser-evidence-gates.md";
 const browserCiProposalPath = "docs/evals/ai-core-browser-ci-proposal.md";
+const browserCiWorkflowDraftPath = "docs/evals/ai-core-browser-ci-workflow-draft.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -565,6 +566,7 @@ const report = {
     tokenFeedFixturePath,
     browserEvidenceGatesPath,
     browserCiProposalPath,
+    browserCiWorkflowDraftPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
     panelNavigationQaEvidenceCheckPath
@@ -582,7 +584,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Prepare an optional browser-enabled CI workflow draft for AI Core evidence gates without enabling it in the active workflow.",
+    summary: "Prepare an approval-gated active workflow PR for AI Core browser evidence after the review-only draft is accepted.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -590,7 +592,8 @@ const report = {
       "reports/evals/ai-core-panel-navigation-browser-qa.md",
       panelNavigationQaEvidenceCheckPath,
       browserEvidenceGatesPath,
-      browserCiProposalPath
+      browserCiProposalPath,
+      browserCiWorkflowDraftPath
     ]
   }
 };

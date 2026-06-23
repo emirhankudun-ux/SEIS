@@ -94,6 +94,9 @@ download.
 - Chrome/Chromium setup is explicit and reproducible.
 - `npm run check:ai-core-eval-evidence` still runs as metadata-only CI evidence.
 - `npm run qa:seis-core:ai-core-evidence` runs only in the browser-enabled job.
+- The review-only workflow draft in
+  `docs/evals/ai-core-browser-ci-workflow-draft.md` is approved before an
+  active `.github/workflows/` workflow is added.
 - `reports/tmp/` artifacts remain ignored and are not committed.
 - Provider, SSH, deployment, payment, and infrastructure mutation remain absent.
 - Failure output explains whether the issue is missing browser setup or evidence
@@ -102,11 +105,14 @@ download.
 ## Related Documents
 
 - `docs/evals/ai-core-browser-evidence-gates.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `docs/evals/evaluation-strategy.md`
 - `apps/seis-core/README.md`
 
 ## Next Safe Action
 
-Create a separate, reviewable CI workflow change only if the repository is ready
-to pin and maintain a Chrome/Chromium setup for browser artifact evidence.
+Review the non-active workflow draft in
+`docs/evals/ai-core-browser-ci-workflow-draft.md`. Create a separate active CI
+workflow change only if the repository is ready to pin and maintain a
+Chrome/Chromium setup for browser artifact evidence.

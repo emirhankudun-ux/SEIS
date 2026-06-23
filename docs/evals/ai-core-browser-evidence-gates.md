@@ -33,7 +33,9 @@ CI must not run `npm run qa:seis-core:ai-core-evidence` unless the workflow
 explicitly installs or provides a Chrome/Chromium-compatible binary and the
 change is reviewed. Browser setup is operational infrastructure, so it should
 be added as a separate reviewable change. The proposed browser-enabled CI shape
-is documented in `docs/evals/ai-core-browser-ci-proposal.md`.
+is documented in `docs/evals/ai-core-browser-ci-proposal.md`, with a
+review-only workflow draft in
+`docs/evals/ai-core-browser-ci-workflow-draft.md`.
 
 ## Local Browser Policy
 
@@ -97,6 +99,7 @@ production availability.
 
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `docs/evals/evaluation-strategy.md`
 - `apps/seis-core/README.md`
 - `packages/evals/README.md`
@@ -105,5 +108,6 @@ production availability.
 ## Next Safe Action
 
 If browser evidence should run in GitHub Actions, use
-`docs/evals/ai-core-browser-ci-proposal.md` as the proposal contract before
-enabling the browser artifact gate in the workflow.
+`docs/evals/ai-core-browser-ci-proposal.md` and
+`docs/evals/ai-core-browser-ci-workflow-draft.md` as the proposal contract
+before enabling the browser artifact gate in an active workflow.

@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Prepare an optional browser-enabled CI workflow draft for AI Core evidence gates without enabling it in the active workflow.
+Prepare an approval-gated active workflow PR for AI Core browser evidence after the review-only draft is accepted.
 
 Source links:
 
@@ -52,3 +52,4 @@ Source links:
 - `scripts/check-ai-core-browser-qa-evidence.mjs`
 - `docs/evals/ai-core-browser-evidence-gates.md`
 - `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-ci-workflow-draft.md`
