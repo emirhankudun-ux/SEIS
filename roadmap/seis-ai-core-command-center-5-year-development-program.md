@@ -409,6 +409,11 @@ Completed foundation slice:
   `docs/evals/ai-core-browser-workflow-dispatch-review.md`; the first dispatch
   attempt returned the expected default-branch visibility blocker and created no
   GitHub run.
+- Goal evidence gates and gate-derived operating scorecards are now projected
+  into the Command Center Goals surface as read-only current-fixture-slice gate
+  coverage, without claiming full program completion, live provider health, SSH
+  execution, deployment, training, benchmark, checkpoint, or model-card
+  evidence.
 
 ## Next Safe Slice
 

@@ -157,8 +157,9 @@ Forbidden subagent behavior:
 ## Command Center Integration
 
 Command Center now exposes this operating model through a read-only,
-fixture-backed AI Operating Model panel in `apps/seis-core/index.html`. That
-panel is backed by `task-ai-operating-model`, `eval-ai-operating-model`,
+fixture-backed AI Operating Model panel and a read-only Goals evidence
+scorecard panel in `apps/seis-core/index.html`. Those surfaces are backed by
+`task-ai-operating-model`, `eval-ai-operating-model`,
 `audit-ai-operating-model`, `roadmap-year-1-ai-operating-model`,
 `goal-five-year-development`, the related `goalEvidenceGates`, and the
 gate-derived `goalOperatingScorecards` records in
@@ -180,7 +181,7 @@ The UI must show:
 - current status
 - maturity state
 - evidence path
-- gate-derived scorecard
+- gate-derived scorecard in AI Core and Goals surfaces
 - blocker
 - next safe action
 - approval requirement

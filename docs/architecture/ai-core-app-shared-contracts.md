@@ -31,7 +31,7 @@ concepts, state names, evidence links, approval gates, and audit events.
 | `aiSurface` | A named LLM-powered surface with context/tool/approval rules. | App module or assistant view. |
 | `repositoryIntelligence` | Structured repo, PR, docs, validation, and maturity evidence. | Evidence-backed status cards and assistant context. |
 | `goalEvidenceGate` | Required evidence gate that constrains whether a goal can be treated as validated or complete. | Goal and AI Core evidence panel gate card. |
-| `goalOperatingScorecard` | Derived scorecard whose counts and score must match the goal's evidence gates. | AI Core scorecard card with gate-derived percentage and non-claims. |
+| `goalOperatingScorecard` | Derived scorecard whose counts and score must match the goal's evidence gates. | Goal and AI Core scorecard cards with gate-derived percentage and non-claims. |
 | `goalTrackingState` | Goal progress, blockers, validation, and completion evidence. | Goal center and assistant status. |
 
 ## State Vocabulary
@@ -101,15 +101,16 @@ The schema and fixture cover `modelRoute`, `promptVersion`, `agentTask`,
 The shared fixture also links the five-year AI operating model in
 `docs/ai/seis-ai-operating-model-5-year.md`. Command Center can show this as an
 `agentTask`, `evaluationResult`, `auditEvent`, `roadmapItem`, and
-`goalEvidenceGate`, but that is still a fixture-backed operating contract. Goal
-evidence gates define which required checks must pass before a goal can be
-treated as validated or complete. Goal operating scorecards are derived from
-those gates; their counts, required-gate pass state, and percentage must match
-the gate registry. A 100 score for a current fixture slice does not mean the
-full five-year goal is complete. These records do not enable live subagent
-spawning, autonomous orchestration, provider routing, GitHub writes, SSH
-execution, deployment, model training, checkpoints, benchmarks, or model-card
-claims.
+`goalEvidenceGate`, and the Goals surface can show the same gate-derived
+`goalOperatingScorecard` records, but that is still a fixture-backed operating
+contract. Goal evidence gates define which required checks must pass before a
+goal can be treated as validated or complete. Goal operating scorecards are
+derived from those gates; their counts, required-gate pass state, and percentage
+must match the gate registry. A 100 score for a current fixture slice does not
+mean the full five-year goal is complete. These records do not enable live
+subagent spawning, autonomous orchestration, provider routing, GitHub writes,
+SSH execution, deployment, model training, checkpoints, benchmarks, or
+model-card claims.
 
 The shared fixture now includes model-router contract evidence for local-only,
 metadata-only, and approval-needed provider routes. Provider-backed routes remain

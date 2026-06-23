@@ -599,6 +599,7 @@ function renderDashboard() {
 }
 
 function renderGoals() {
+  renderGoalEvidenceScorecards();
   $("#goal-board").innerHTML = state.goals.map((goal) => `
     <article class="goal-card">
       <div class="card-topline">
@@ -616,6 +617,59 @@ function renderGoals() {
       </div>
     </article>
   `).join("");
+}
+
+function renderGoalEvidenceScorecards() {
+  const contract = aiCoreContract;
+  const scorecards = contract.goalOperatingScorecards ?? [];
+  const gates = contract.goalEvidenceGates ?? [];
+  const goalsById = new Map((contract.goalTrackingStates ?? []).map((goal) => [goal.id, goal]));
+
+  $("#goal-evidence-scorecards").innerHTML = scorecards.map((scorecard) => {
+    const goal = goalsById.get(scorecard.goalId);
+    const goalLabel = goal?.goal ?? labelFromId(scorecard.goalId);
+    const goalProgress = goal ? `${labelFromId(goal.progressState)} / ${labelFromId(goal.completionEvidence)}` : "Evidence linked";
+    const gateSummary = [
+      `${scorecard.passingRequiredGateCount}/${scorecard.requiredGateCount} required`,
+      `${scorecard.passingTotalGateCount}/${scorecard.totalGateCount} total`,
+      `${scorecard.blockedGateCount} blocked`,
+      `${scorecard.unknownGateCount} unknown`
+    ];
+    const goalGates = gates.filter((gate) => gate.goalId === scorecard.goalId);
+
+    return `
+      <article class="goal-evidence-card">
+        <div class="card-topline">
+          <h3>Scorecard: ${labelFromId(scorecard.scoreScope)}</h3>
+          <span class="status-pill ${statusClass(scorecard.status)}">${scorecard.status}</span>
+        </div>
+        <p>${scorecard.scorePercent}% required gate coverage for ${goalLabel}; current fixture slice only.</p>
+        <div class="meta-row">
+          ${gateSummary.map((chip) => `<span class="meta-chip">${chip}</span>`).join("")}
+          <span class="meta-chip">${scorecard.maturity}</span>
+        </div>
+        <div class="goal-evidence-detail">
+          <strong>Goal state</strong>
+          <p>${goalProgress}</p>
+        </div>
+        <div class="goal-evidence-detail">
+          <strong>Evidence</strong>
+          <p>${scorecard.evidence}</p>
+        </div>
+        <div class="goal-evidence-detail">
+          <strong>Non-claim</strong>
+          <p>${scorecard.nonClaims?.[0] ?? "This scorecard is not a live execution claim."}</p>
+        </div>
+        <div class="goal-evidence-detail">
+          <strong>Next safe action</strong>
+          <p>${scorecard.nextSafeAction}</p>
+        </div>
+        <div class="goal-gate-strip">
+          ${goalGates.map((gate) => `<span class="meta-chip">${labelFromId(gate.gateType)}: ${gate.gateStatus}</span>`).join("")}
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
 function renderRepositories() {

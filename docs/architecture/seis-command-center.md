@@ -17,18 +17,20 @@ SEIS Command Center is the local-first operating surface for the SEIS ecosystem.
 The shell is organized around eleven persistent modules: Dashboard, Goals,
 Repositories, Documentation, Agents, AI Core, Plugins, Automation, Security,
 Architecture, and Knowledge. Cards are reserved for repeated operational
-entities such as AI Core contract records, plugins, automation workflows,
-security reports, and system signals. Navigation changes state locally and
-re-renders the active command context without a backend dependency.
+entities such as local goals, gate-derived goal evidence scorecards, AI Core
+contract records, plugins, automation workflows, security reports, and system
+signals. Navigation changes state locally and re-renders the active command
+context without a backend dependency.
 
 ## Data Model
 
 Command Center uses static local datasets in `script.js` and
 `apps/seis-core/ai-core-contract-fixture.js` for AI Core contract records,
 plugin families, automation workflows, security reports, AI systems,
-architecture signals, and knowledge records. Each record keeps a stable label,
-status, owner or lane, evidence path, and a concise operating signal so the UI
-can be scanned quickly and tested without network access.
+architecture signals, goal evidence gates, goal operating scorecards, and
+knowledge records. Each record keeps a stable label, status, owner or lane,
+evidence path, and a concise operating signal so the UI can be scanned quickly
+and tested without network access.
 
 ## Operating Model
 
@@ -40,7 +42,11 @@ The current implementation is intentionally local-first. Browser APIs provide pe
 
 ## Testing Strategy
 
-The primary check is `npm run test:seis-command-center`, which validates required modules, local workflows, and design tokens. The governance check `npm run check:seis-command-center` verifies required files, script signals, CSS selectors, manifest identity, README coverage, and this architecture document.
+The primary check is `npm run test:seis-command-center`, which validates
+required modules, local workflows, design tokens, AI Core evidence panels, and
+the Goals surface scorecard projection. The governance check `npm run
+check:seis-command-center` verifies required files, script signals, CSS
+selectors, manifest identity, README coverage, and this architecture document.
 
 ## Roadmap
 

@@ -54,6 +54,8 @@ test("SEIS Command Center shell exposes required modules", async () => {
   }
   assert.match(html, /SEIS Command Center/);
   assert.match(html, /ai-core-contract-fixture\.js/);
+  assert.match(html, /Goal Evidence Scorecards/);
+  assert.match(html, /id="goal-evidence-scorecards"/);
   assert.match(html, /id="command-dialog"/);
   assert.match(html, /id="settings-dialog"/);
 });
@@ -71,6 +73,7 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /aiSystems/);
   assert.match(script, /aiCoreContract/);
   assert.match(script, /renderAiCore/);
+  assert.match(script, /renderGoalEvidenceScorecards/);
   assert.match(script, /seisAiCoreContractFixture/);
   assert.match(fixture, /local-readonly-repository-assistant/);
   assert.match(fixture, /surface-repository-assistant/);
@@ -143,6 +146,8 @@ test("SEIS Command Center design system preserves required tokens", async () => 
     assert.match(css, new RegExp(token));
   }
   assert.match(css, /plugin-card/);
+  assert.match(css, /goal-evidence-card/);
+  assert.match(css, /goal-evidence-grid/);
   assert.match(css, /contract-card/);
   assert.match(css, /boundary-card/);
   assert.match(css, /action-boundary/);
@@ -273,6 +278,53 @@ test("SEIS Command Center renders AI operating model evidence gates", async () =
     assert.doesNotMatch(panelText, /provider health available/i);
     assert.doesNotMatch(panelText, /SSH execution enabled/i);
     assert.doesNotMatch(panelText, /trained model/i);
+  }
+});
+
+test("SEIS Command Center renders goal evidence scorecards in the Goals surface", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+
+  assert.match(html, /Read-only gate coverage from AI Core contracts/);
+  assert.match(script, /current fixture slice only/);
+  assert.match(script, /not a live execution claim/);
+
+  for (const viewport of [
+    { name: "desktop", width: 1440, height: 900 },
+    { name: "mobile", width: 390, height: 844 }
+  ]) {
+    const dom = await renderCommandCenter(viewport);
+    const document = dom.window.document;
+    const panel = document.querySelector(".goal-evidence-panel");
+    const panelText = panel.textContent;
+    const expectedScorecardCount = dom.window.seisAiCoreContractFixture.goalOperatingScorecards.length;
+
+    assert.match(panelText, /Scorecard: Current Fixture Slice/, `${viewport.name} Goals surface renders scorecard title`);
+    assert.equal(
+      panel.querySelectorAll("#goal-evidence-scorecards .goal-evidence-card").length,
+      expectedScorecardCount,
+      `${viewport.name} Goals surface renders all fixture scorecards`
+    );
+    assert.match(panelText, /100% required gate coverage/, `${viewport.name} Goals surface renders required gate percentage`);
+    assert.match(panelText, /4\/4 required/, `${viewport.name} Goals surface renders five-year required gate count`);
+    assert.match(panelText, /2\/2 required/, `${viewport.name} Goals surface renders token-feed required gate count`);
+    assert.match(panelText, /docs\/ai\/seis-ai-operating-model-5-year\.md/, `${viewport.name} Goals surface renders five-year evidence path`);
+    assert.match(panelText, /packages\/data\/fixtures\/seis-10m-token-feed-budget\.json/, `${viewport.name} Goals surface renders token-feed evidence path`);
+    assert.match(panelText, /current fixture slice only/, `${viewport.name} Goals surface preserves fixture-slice label`);
+    assert.match(panelText, /not a complete program claim/i, `${viewport.name} Goals surface rejects full-program overclaim`);
+    assert.match(panelText, /Goal state/, `${viewport.name} Goals surface renders linked goal state`);
+    assert.match(panelText, /Evidence/, `${viewport.name} Goals surface renders evidence path label`);
+    assert.match(panelText, /Non-claim/, `${viewport.name} Goals surface renders non-claim guardrail`);
+    assert.match(panelText, /Next safe action/, `${viewport.name} Goals surface renders next safe action`);
+    assert.match(panelText, /Browser Evidence: pass/, `${viewport.name} Goals surface renders gate strip`);
+    assert.match(panelText, /Fixture: pass/, `${viewport.name} Goals surface renders token-feed gate strip`);
+    assert.equal(panel.querySelectorAll("button").length, 0, `${viewport.name} Goals surface adds no fake action buttons`);
+    assert.doesNotMatch(panelText, /full goal complete/i);
+    assert.doesNotMatch(panelText, /production orchestration ready/i);
+    assert.doesNotMatch(panelText, /provider health available/i);
+    assert.doesNotMatch(panelText, /SSH execution enabled/i);
+    assert.doesNotMatch(panelText, /trained model/i);
+    assert.doesNotMatch(panelText, /readiness/i);
   }
 });
 

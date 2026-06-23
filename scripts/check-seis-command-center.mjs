@@ -43,9 +43,11 @@ const requiredScriptSignals = [
   "aiSystems",
   "aiCoreContract",
   "renderAiCore",
+  "renderGoalEvidenceScorecards",
   "seisAiCoreContractFixture",
   "goalEvidenceGates",
   "goalOperatingScorecards",
+  "goal-evidence-scorecards",
   "ai-core-operating-model",
   "operatingDomains",
   "platformPhases",
@@ -133,7 +135,7 @@ for (const domain of requiredOperatingDomains) {
   }
 }
 
-for (const selector of [".plugin-card", ".contract-card", ".ai-core-layout", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
+for (const selector of [".plugin-card", ".goal-evidence-card", ".goal-evidence-grid", ".contract-card", ".ai-core-layout", ".automation-card", ".security-card", ".system-card", ".domain-card", ".phase-row"]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);
   }
@@ -151,6 +153,14 @@ if (!manifest.name?.includes("SEIS Command Center")) {
 
 if (!readme.includes("SEIS Command Center") || !readme.includes("Plugins & Extensions") || !readme.includes("Operating Model")) {
   fail("README must describe SEIS Command Center, operating model, and plugin surface");
+}
+
+if (
+  !html.includes("Goal Evidence Scorecards") ||
+  !html.includes('id="goal-evidence-scorecards"') ||
+  !readme.includes("read-only goal evidence scorecards")
+) {
+  fail("Goals surface must document and expose read-only goal evidence scorecards");
 }
 
 if (!html.includes("AI Operating Model") || !html.includes('id="ai-core-operating-model"')) {

@@ -266,8 +266,8 @@ totals, pass/fail/blocked/unknown counts, required-gate completion, and
 percentage score from the gate registry. A current-slice score can be 100 while
 the parent five-year goal remains in progress; the scorecard is not allowed to
 claim full-goal completion unless the goal is complete with validated evidence.
-Command Center renders the scorecard inside the AI Operating Model panel without
-adding fake controls or live orchestration.
+Command Center renders the scorecard inside the AI Operating Model panel and
+the Goals surface without adding fake controls or live orchestration.
 
 ## Follow-Up 10,000,000 Token Feed Budget Slice
 

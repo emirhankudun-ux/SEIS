@@ -380,6 +380,7 @@ h3 {
 .metric-card,
 .panel,
 .goal-card,
+.goal-evidence-card,
 .repo-card,
 .agent-card,
 .contract-card,
@@ -596,6 +597,7 @@ select {
 }
 
 .goal-board,
+.goal-evidence-grid,
 .repo-grid,
 .agent-grid,
 .ai-core-summary-grid,
@@ -610,6 +612,7 @@ select {
 }
 
 .goal-card,
+.goal-evidence-card,
 .repo-card,
 .agent-card,
 .contract-card,
@@ -621,6 +624,38 @@ select {
   display: grid;
   gap: 12px;
   padding: 15px;
+}
+
+.goal-evidence-panel {
+  margin-bottom: 14px;
+}
+
+.goal-evidence-panel .panel-header {
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.goal-evidence-panel .panel-header p,
+.goal-evidence-detail p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.goal-evidence-card {
+  box-shadow: none;
+}
+
+.goal-evidence-detail {
+  display: grid;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.goal-gate-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
 }
 
 .ai-core-layout {

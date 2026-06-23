@@ -46,7 +46,8 @@ apps/seis-core/
 - App shell: sidebar, topbar, workspace grid, inspector.
 - Dashboard: metrics, active goals, repository health, architecture alerts.
 - Operating Model: ecosystem domains for repositories, AI agents, MCP systems, plugins, docs, roadmap, goals, automation, cloud, knowledge, and security.
-- Goals: creation form, editable status actions, risk and next-action fields.
+- Goals: creation form, editable status actions, risk and next-action fields,
+  plus read-only goal evidence scorecards derived from AI Core contract gates.
 - Repositories: filter chips, health cards, documentation coverage.
 - Documentation: index and coverage plan.
 - Agents: mode cards, AI system support, and inspector sync.
@@ -72,6 +73,9 @@ apps/seis-core/
   gates plus gate-derived scorecards without live subagent orchestration,
   provider calls, GitHub mutation, SSH execution, deployment, training,
   benchmark, or model-card claims.
+- Inspect the Goals surface scorecards as current fixture-slice gate coverage,
+  not as full-program completion, live orchestration, provider, SSH,
+  deployment, training, benchmark, or model-card evidence.
 - Inspect local-only retrieval adapters, blocked archive guards, and no-content
   source boundaries without raw-content ingestion.
 - Inspect Retrieval Result Cards and No-Content Search Transcripts from

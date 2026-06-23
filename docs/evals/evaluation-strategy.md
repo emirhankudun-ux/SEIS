@@ -158,6 +158,12 @@ their counts and score from `goalEvidenceGates` so a score cannot be manually
 inflated. A 100 score is scoped to the current fixture slice unless the
 scorecard explicitly uses `full-goal` and the goal itself is complete with
 validated evidence.
+Command Center renders these scorecards in the AI Operating Model panel and the
+Goals surface as read-only gate coverage. The Goals surface must preserve the
+same current-fixture-slice and non-claim language; it must not present a
+scorecard as full program completion, live orchestration, provider health, SSH
+execution, deployment, model training, benchmark evidence, or model-card
+evidence.
 
 The CI/local browser split is documented in
 `docs/evals/ai-core-browser-evidence-gates.md`: default CI should keep
