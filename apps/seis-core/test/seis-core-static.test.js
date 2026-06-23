@@ -13,6 +13,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
     "Repositories",
     "Documentation",
     "Agents",
+    "AI Core",
     "Plugins",
     "Automation",
     "Security",
@@ -24,6 +25,7 @@ test("SEIS Command Center shell exposes required modules", async () => {
   assert.match(html, /SEIS Command Center/);
   assert.match(html, /id="command-dialog"/);
   assert.match(html, /id="settings-dialog"/);
+  assert.match(html, /ai-core-contract-fixture\.js/);
 });
 
 test("SEIS Command Center script implements local workflows", async () => {
@@ -74,12 +76,63 @@ test("SEIS Command Center script implements local workflows", async () => {
   assert.match(script, /handoffAudit/);
   assert.match(script, /agent-routing-matrix/);
   assert.match(script, /renderAgentRoutingMatrix/);
+  assert.match(script, /seisAiCoreContractFixture/);
+  assert.match(script, /aiCoreContract/);
+  assert.match(script, /retrievalFilters/);
+  assert.match(script, /renderAiCore/);
+  assert.match(script, /renderAiCoreRetrievalFilters/);
+  assert.match(script, /matchesAiCoreQuery/);
+  assert.match(script, /ai-core-retrieval-query/);
+  assert.match(script, /ai-core-retrieval-source-class/);
+  assert.match(script, /ai-core-retrieval-transcript-state/);
   assert.match(script, /knowledgeGraphNodes/);
   assert.match(script, /knowledgeEdges/);
   assert.match(script, /memoryEvidence/);
   assert.match(script, /decisionHistory/);
   assert.match(script, /reusablePatterns/);
   assert.match(script, /openCommandPalette/);
+});
+
+test("SEIS Command Center exposes AI Core contract projection", async () => {
+  const html = await readFile(new URL("index.html", root), "utf8");
+  const script = await readFile(new URL("script.js", root), "utf8");
+  const fixture = await readFile(new URL("ai-core-contract-fixture.js", root), "utf8");
+  for (const id of [
+    "ai-core-contract-status",
+    "ai-core-summary-grid",
+    "ai-core-boundary-grid",
+    "ai-core-routes",
+    "ai-core-prompts",
+    "ai-core-agent-tasks",
+    "ai-core-approvals",
+    "ai-core-retrieval-query",
+    "ai-core-retrieval-source-class",
+    "ai-core-retrieval-transcript-state",
+    "ai-core-retrieval-reset",
+    "ai-core-retrieval-filter-status",
+    "ai-core-retrieval-adapters",
+    "ai-core-retrieval-results",
+    "ai-core-no-content-transcripts",
+    "ai-core-evidence"
+  ]) {
+    assert.match(html, new RegExp(`id="${id}"`));
+  }
+  for (const signal of [
+    "modelRoutes",
+    "promptVersions",
+    "agentTasks",
+    "approvalRequests",
+    "retrievalQueryAdapters",
+    "retrievalResultCards",
+    "noContentSearchTranscripts",
+    "evaluationResults",
+    "auditEvents"
+  ]) {
+    assert.match(script, new RegExp(signal));
+    assert.match(fixture, new RegExp(signal));
+  }
+  assert.match(html, /without making live provider calls/);
+  assert.match(script, /no-provider-call/);
 });
 
 test("SEIS Command Center exposes 10-lane router contract", async () => {
@@ -208,6 +261,13 @@ test("SEIS Command Center design system preserves required tokens", async () => 
   assert.match(css, /memory-evidence-row/);
   assert.match(css, /decision-history-row/);
   assert.match(css, /pattern-card/);
+  assert.match(css, /ai-core-summary-grid/);
+  assert.match(css, /ai-core-layout/);
+  assert.match(css, /contract-card/);
+  assert.match(css, /boundary-card/);
+  assert.match(css, /retrieval-controls/);
+  assert.match(css, /retrieval-filter-field/);
+  assert.match(css, /retrieval-empty-state/);
   assert.match(css, /@media \(max-width: 900px\)/);
   assert.match(css, /prefers-reduced-motion/);
 });

@@ -1,0 +1,243 @@
+{
+  "version": 1,
+  "id": "tool-registry-permissions",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/ai/tool-use-policy.md",
+    "packages/tool-registry/README.md",
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "SECURITY.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+  ],
+  "riskClasses": [
+    "read-only",
+    "local-write",
+    "external-read",
+    "external-write",
+    "privileged",
+    "destructive"
+  ],
+  "permissionStates": [
+    "allowed",
+    "scoped",
+    "approval-needed",
+    "blocked",
+    "disabled"
+  ],
+  "tools": [
+    {
+      "id": "tool-local-repository-inspection",
+      "toolName": "Local Repository Inspection",
+      "surfaceType": "cli-script",
+      "riskClass": "read-only",
+      "permissionState": "allowed",
+      "approvalState": "not-required",
+      "allowedActions": [
+        "read repository status metadata",
+        "read official docs",
+        "read validation summaries"
+      ],
+      "forbiddenActions": [
+        "write files",
+        "stage files",
+        "commit files",
+        "print secrets",
+        "call external providers",
+        "self-approve expanded scope"
+      ],
+      "approvalGates": [],
+      "validation": {
+        "result": "pass",
+        "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
+        "notes": "Read-only local inspection remains allowed when scoped to metadata and source-linked evidence."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolExecuted": false,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "privilegedOperationPerformed": false,
+        "secretMaterialAccessible": false,
+        "safeMetadata": [
+          "tool id",
+          "surface type",
+          "risk class",
+          "permission state",
+          "approval state"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/tool-use-policy.md",
+        "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed"
+    },
+    {
+      "id": "tool-scoped-local-file-edit",
+      "toolName": "Scoped Local File Edit",
+      "surfaceType": "cli-script",
+      "riskClass": "local-write",
+      "permissionState": "scoped",
+      "approvalState": "not-required",
+      "allowedActions": [
+        "edit scoped repository files",
+        "update source-linked docs",
+        "update fixture-backed contracts"
+      ],
+      "forbiddenActions": [
+        "overwrite unrelated work",
+        "edit secrets",
+        "commit unrelated files",
+        "rewrite git history",
+        "self-approve privileged scope"
+      ],
+      "approvalGates": [
+        "scope review for unrelated files",
+        "validation before commit"
+      ],
+      "validation": {
+        "result": "pass",
+        "evidence": "docs/ai/tool-use-policy.md",
+        "notes": "Scoped local edits are allowed only when unrelated work is preserved and validation is reported honestly."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolExecuted": false,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "privilegedOperationPerformed": false,
+        "secretMaterialAccessible": false,
+        "safeMetadata": [
+          "tool id",
+          "surface type",
+          "risk class",
+          "permission state",
+          "approval state"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/tool-use-policy.md"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed"
+    },
+    {
+      "id": "tool-github-pr-publish",
+      "toolName": "GitHub PR Publish",
+      "surfaceType": "plugin",
+      "riskClass": "external-write",
+      "permissionState": "approval-needed",
+      "approvalState": "approval-needed",
+      "allowedActions": [
+        "prepare PR summary",
+        "collect validation evidence",
+        "identify publish blockers"
+      ],
+      "forbiddenActions": [
+        "push without approval",
+        "merge pull requests",
+        "close pull requests",
+        "expose secrets",
+        "expose tokens",
+        "self-approve external writes",
+        "bypass branch protections"
+      ],
+      "approvalGates": [
+        "human approval before push",
+        "publish gate contract",
+        "branch policy review"
+      ],
+      "validation": {
+        "result": "blocked",
+        "evidence": "docs/deployment/publish-gate-contract.md",
+        "notes": "Publish remains approval-needed and branch-policy gated in this fixture."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolExecuted": false,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "privilegedOperationPerformed": false,
+        "secretMaterialAccessible": false,
+        "safeMetadata": [
+          "tool id",
+          "surface type",
+          "risk class",
+          "permission state",
+          "approval state",
+          "blocked reason"
+        ]
+      },
+      "sourceLinks": [
+        "docs/deployment/publish-gate-contract.md",
+        "docs/ai/tool-use-policy.md"
+      ],
+      "status": "approval-needed",
+      "maturity": "fixture-backed"
+    },
+    {
+      "id": "tool-ssh-deployment-command",
+      "toolName": "SSH Deployment Command",
+      "surfaceType": "ssh-operation",
+      "riskClass": "privileged",
+      "permissionState": "blocked",
+      "approvalState": "blocked",
+      "allowedActions": [
+        "document missing approval",
+        "prepare dry-run checklist",
+        "summarize rollback requirements"
+      ],
+      "forbiddenActions": [
+        "execute SSH commands",
+        "modify firewall",
+        "modify sudo configuration",
+        "deploy services",
+        "expose secrets",
+        "access private keys",
+        "self-approve infrastructure changes"
+      ],
+      "approvalGates": [
+        "human approval for SSH execution",
+        "target host verification",
+        "rollback plan review"
+      ],
+      "validation": {
+        "result": "blocked",
+        "evidence": "SECURITY.md",
+        "notes": "SSH deployment commands remain blocked in the foundation fixture."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolExecuted": false,
+        "writesPerformed": false,
+        "externalNetworkUsed": false,
+        "privilegedOperationPerformed": false,
+        "secretMaterialAccessible": false,
+        "safeMetadata": [
+          "tool id",
+          "surface type",
+          "risk class",
+          "permission state",
+          "approval state",
+          "blocked reason"
+        ]
+      },
+      "sourceLinks": [
+        "SECURITY.md",
+        "docs/deployment/seis-ssh-access-model.md",
+        "docs/ai/tool-use-policy.md"
+      ],
+      "status": "blocked",
+      "maturity": "blocked"
+    }
+  ],
+  "nonClaims": [
+    "No tool execution is performed by this registry fixture.",
+    "No plugin install, provider call, SSH command, GitHub push, PR mutation, deployment, or destructive action is performed.",
+    "No SSH command execution, SSH connection, deployment, or remote infrastructure change is performed.",
+    "No secret values, provider keys, SSH private keys, tokens, cookies, or service credentials are included.",
+    "Approval-needed and blocked tools are not enabled runtime capabilities.",
+    "Browser clients do not receive provider keys, SSH secrets, GitHub tokens, or privileged execution authority."
+  ]
+}

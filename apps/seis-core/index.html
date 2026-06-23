@@ -11,7 +11,7 @@
   <title>SEIS Command Center</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=ai-core-qa-final-20260623" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -50,6 +50,10 @@
         <button class="nav-item" type="button" data-view="agents">
           <span class="nav-icon" aria-hidden="true">A</span>
           <span>Agents</span>
+        </button>
+        <button class="nav-item" type="button" data-view="ai-core">
+          <span class="nav-icon" aria-hidden="true">AI</span>
+          <span>AI Core</span>
         </button>
         <button class="nav-item" type="button" data-view="plugins">
           <span class="nav-icon" aria-hidden="true">P</span>
@@ -381,6 +385,103 @@
             </section>
           </section>
 
+          <section class="view-panel" data-panel="ai-core" aria-labelledby="ai-core-title">
+            <div class="section-heading">
+              <h2 id="ai-core-title">SEIS AI Core</h2>
+              <p>Inspect fixture-backed model routes, prompt versions, agent tasks, approval gates, retrieval boundaries, and evaluation evidence without making live provider calls.</p>
+            </div>
+            <section class="panel" aria-labelledby="ai-core-contract-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="ai-core-contract-title">AI Core Contract Projection</h3>
+                  <p class="panel-summary">Local, source-linked contract fixture for Command Center AI surfaces. Mock and planned states stay clearly labeled.</p>
+                </div>
+                <span class="status-pill attention" id="ai-core-contract-status">Fixture-backed</span>
+              </div>
+              <div class="ai-core-summary-grid" id="ai-core-summary-grid"></div>
+              <div class="contract-grid" id="ai-core-boundary-grid"></div>
+            </section>
+            <div class="ai-core-layout module-spacer">
+              <section class="panel" aria-labelledby="ai-core-routes-title">
+                <div class="panel-header">
+                  <h3 id="ai-core-routes-title">Model Routes</h3>
+                  <span class="status-pill attention">No live calls</span>
+                </div>
+                <div class="contract-list" id="ai-core-routes"></div>
+              </section>
+              <section class="panel" aria-labelledby="ai-core-prompts-title">
+                <div class="panel-header">
+                  <h3 id="ai-core-prompts-title">Prompt Versions</h3>
+                  <span class="status-pill ready">Versioned</span>
+                </div>
+                <div class="contract-list" id="ai-core-prompts"></div>
+              </section>
+            </div>
+            <div class="ai-core-layout module-spacer">
+              <section class="panel" aria-labelledby="ai-core-agent-tasks-title">
+                <div class="panel-header">
+                  <h3 id="ai-core-agent-tasks-title">Agent Tasks</h3>
+                  <span class="status-pill attention">Human governed</span>
+                </div>
+                <div class="contract-list" id="ai-core-agent-tasks"></div>
+              </section>
+              <section class="panel" aria-labelledby="ai-core-approvals-title">
+                <div class="panel-header">
+                  <h3 id="ai-core-approvals-title">Approval Gates</h3>
+                  <span class="status-pill blocked">Privileged actions blocked</span>
+                </div>
+                <div class="contract-list" id="ai-core-approvals"></div>
+              </section>
+            </div>
+            <section class="panel module-spacer" aria-labelledby="ai-core-retrieval-title">
+              <div class="panel-header">
+                <div>
+                  <h3 id="ai-core-retrieval-title">Local Retrieval Boundary</h3>
+                  <p class="panel-summary">Filter approved metadata sources and no-content search transcripts. This panel does not store raw content, embeddings, memory, or provider prompts.</p>
+                </div>
+                <span class="status-pill ready">Local-only</span>
+              </div>
+              <div class="retrieval-controls">
+                <label class="retrieval-filter-field" for="ai-core-retrieval-query">
+                  <span>Search</span>
+                  <input id="ai-core-retrieval-query" type="search" placeholder="Route, source, transcript, evidence..." />
+                </label>
+                <label class="retrieval-filter-field" for="ai-core-retrieval-source-class">
+                  <span>Source class</span>
+                  <select id="ai-core-retrieval-source-class">
+                    <option value="all">All classes</option>
+                  </select>
+                </label>
+                <label class="retrieval-filter-field" for="ai-core-retrieval-transcript-state">
+                  <span>Transcript state</span>
+                  <select id="ai-core-retrieval-transcript-state">
+                    <option value="all">All states</option>
+                  </select>
+                </label>
+                <button class="secondary-button" type="button" id="ai-core-retrieval-reset">Reset</button>
+              </div>
+              <p class="retrieval-filter-status" id="ai-core-retrieval-filter-status">No filters applied.</p>
+              <div class="retrieval-layout">
+                <div>
+                  <h4>Knowledge Sources</h4>
+                  <div class="contract-list" id="ai-core-retrieval-adapters"></div>
+                </div>
+                <div>
+                  <h4>Search Transcripts</h4>
+                  <div class="contract-list" id="ai-core-retrieval-results"></div>
+                </div>
+              </div>
+              <div class="contract-list module-spacer" id="ai-core-no-content-transcripts"></div>
+            </section>
+            <section class="panel module-spacer" aria-labelledby="ai-core-evidence-title">
+              <div class="panel-header">
+                <h3 id="ai-core-evidence-title">Evaluation and Audit Evidence</h3>
+                <span class="status-pill ready">Source-linked</span>
+              </div>
+              <div class="contract-list" id="ai-core-evidence"></div>
+            </section>
+          </section>
+
           <section class="view-panel" data-panel="plugins" aria-labelledby="plugins-title">
             <div class="section-heading">
               <h2 id="plugins-title">Plugins &amp; Extensions</h2>
@@ -603,6 +704,7 @@
     </label>
   </dialog>
 
-  <script src="script.js" defer></script>
+  <script src="ai-core-contract-fixture.js?v=ai-core-qa-final-20260623" defer></script>
+  <script src="script.js?v=ai-core-qa-final-20260623" defer></script>
 </body>
 </html>

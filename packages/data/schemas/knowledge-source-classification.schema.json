@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://seis.dev/schemas/knowledge-source-classification.schema.json",
+  "title": "SEIS Knowledge Source Classification Contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "status",
+    "sourceDocuments",
+    "sourceClasses",
+    "retrievalStates",
+    "privacyModes",
+    "knowledgeSources",
+    "excludedUnsafePatterns",
+    "nonClaims"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "status": {
+      "enum": ["fixture-backed", "blocked"]
+    },
+    "sourceDocuments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/repoPath"
+      }
+    },
+    "sourceClasses": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "$ref": "#/$defs/sourceClass"
+      },
+      "uniqueItems": true
+    },
+    "retrievalStates": {
+      "type": "array",
+      "minItems": 7,
+      "items": {
+        "$ref": "#/$defs/retrievalState"
+      },
+      "uniqueItems": true
+    },
+    "privacyModes": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "$ref": "#/$defs/privacyMode"
+      },
+      "uniqueItems": true
+    },
+    "knowledgeSources": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "$ref": "#/$defs/knowledgeSource"
+      }
+    },
+    "excludedUnsafePatterns": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "string"
+      }
+    },
+    "nonClaims": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "repoPath": {
+      "type": "string",
+      "pattern": "^(docs|packages|roadmap|reports|apps|content|data|scripts)/"
+    },
+    "sourceClass": {
+      "enum": [
+        "official",
+        "review",
+        "archive",
+        "mock",
+        "scan-generated",
+        "live",
+        "planned",
+        "unknown"
+      ]
+    },
+    "retrievalState": {
+      "enum": [
+        "approved",
+        "pending-review",
+        "local-only",
+        "redacted",
+        "restricted",
+        "expired",
+        "blocked"
+      ]
+    },
+    "privacyMode": {
+      "enum": [
+        "local-only",
+        "local-preferred",
+        "external-provider-allowed",
+        "external-provider-redacted",
+        "metadata-only",
+        "offline",
+        "disabled",
+        "research-only"
+      ]
+    },
+    "freshness": {
+      "enum": ["current", "needs-review", "stale", "unknown"]
+    },
+    "knowledgeSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "sourceName",
+        "sourceClass",
+        "retrievalState",
+        "privacyMode",
+        "freshness",
+        "ingestionPolicy",
+        "approvedUses",
+        "forbiddenUses",
+        "externalRoutingAllowed",
+        "storesRawContent",
+        "status",
+        "maturity",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceName": {
+          "type": "string"
+        },
+        "sourceClass": {
+          "$ref": "#/$defs/sourceClass"
+        },
+        "retrievalState": {
+          "$ref": "#/$defs/retrievalState"
+        },
+        "privacyMode": {
+          "$ref": "#/$defs/privacyMode"
+        },
+        "freshness": {
+          "$ref": "#/$defs/freshness"
+        },
+        "ingestionPolicy": {
+          "enum": [
+            "approved-metadata",
+            "approved-content",
+            "review-only",
+            "blocked",
+            "future"
+          ]
+        },
+        "approvedUses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "forbiddenUses": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "externalRoutingAllowed": {
+          "type": "boolean"
+        },
+        "storesRawContent": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "draft",
+            "planned",
+            "blocked",
+            "approval-needed",
+            "degraded",
+            "unknown",
+            "running",
+            "failed",
+            "validated"
+          ]
+        },
+        "maturity": {
+          "enum": [
+            "planned",
+            "draft",
+            "fixture-backed",
+            "local-alpha",
+            "provider-alpha",
+            "beta",
+            "stable",
+            "research-only",
+            "blocked"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/repoPath"
+        }
+      }
+    }
+  }
+}
