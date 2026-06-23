@@ -158,6 +158,13 @@ Run the browser-backed AI Core panel navigation QA path with:
 npm run qa:seis-core:ai-core-panels
 ```
 
+Run the browser-backed panel QA and require the generated manifest/JSON
+artifacts to match the committed evidence contract with:
+
+```bash
+npm run qa:seis-core:ai-core-evidence
+```
+
 The command starts a temporary local server, opens the Command Center from the
 Dashboard, navigates to AI Core through sidebar navigation, the command palette,
 and global search, then verifies route, prompt, agent, approval, evaluation,
@@ -170,3 +177,26 @@ committed evidence contract lives in
 This panel QA path is fixture-backed only. It does not call providers, run live
 retrieval, create embeddings, write memory, inspect secrets, execute SSH,
 deploy, or mutate infrastructure.
+
+Run the browser-run AI Core QA evidence drift check with:
+
+```bash
+npm run check:ai-core-browser-qa-evidence
+```
+
+The check verifies that the panel navigation report, browser QA script, fixture
+evaluation report, schema, Command Center validator, README, evaluation
+strategy, five-year roadmap, and five-year review all keep the same
+fixture-backed browser-run AI Core QA evidence contract. It does not launch a
+browser or call any provider; use `npm run qa:seis-core:ai-core-panels` for the
+actual browser run.
+
+Run the metadata-only AI Core evaluation evidence aggregate with:
+
+```bash
+npm run check:ai-core-eval-evidence
+```
+
+The aggregate runs the fixture evaluation freshness check, the browser QA
+evidence drift check, and the Command Center validator. It remains read-only and
+does not launch a browser.

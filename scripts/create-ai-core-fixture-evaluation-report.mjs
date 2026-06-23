@@ -13,6 +13,7 @@ const tokenFeedFixturePath = "packages/data/fixtures/seis-10m-token-feed-budget.
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const browserQaReportPath = "reports/evals/local-retrieval-browser-visual-qa.md";
 const panelNavigationQaReportPath = "reports/evals/ai-core-panel-navigation-browser-qa.md";
+const panelNavigationQaEvidenceCheckPath = "scripts/check-ai-core-browser-qa-evidence.mjs";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -513,6 +514,7 @@ const browserUiEvaluations = [
       "sidebar, command palette, and global search navigation documented",
       "route, prompt, agent, approval, evaluation, evidence, and Local Retrieval sections documented",
       "desktop and mobile scenarios documented",
+      "artifact-required evidence check documented",
       "provider, raw content, memory, embedding, GitHub write, SSH, deployment, and infrastructure actions remain disabled"
     ],
     passCriteria: [
@@ -521,9 +523,10 @@ const browserUiEvaluations = [
       "sidebar, command palette, and global search steps are verified",
       "route, prompt, agent, approval, evidence, and Local Retrieval panels are verified",
       "generated browser artifacts stay under ignored reports/tmp",
+      "artifact-required check validates manifest, scenario ids, viewports, steps, panel counts, safety flags, artifact paths, and non-claims",
       "non-claims exclude live providers, live retrieval, embeddings, memory writes, raw content, and privileged actions"
     ],
-    observedOutputSummary: "Browser-run AI Core panel navigation QA covers Dashboard-to-AI-Core navigation through sidebar, command palette, and global search, then verifies fixture-backed route, prompt, agent, approval, evidence, and Local Retrieval panels across desktop and mobile scenarios.",
+    observedOutputSummary: "Browser-run AI Core panel navigation QA covers Dashboard-to-AI-Core navigation through sidebar, command palette, and global search, verifies fixture-backed route, prompt, agent, approval, evidence, and Local Retrieval panels across desktop and mobile scenarios, and is guarded by a metadata plus artifact-required evidence check.",
     limitations: [
       "Browser artifacts are local and ignored; the committed report documents the repeatable evidence contract.",
       "Pass does not create live provider routing, live retrieval, embedding search, persistent memory, raw-content return, GitHub writes, SSH execution, deployment, payment, or infrastructure mutation."
@@ -534,6 +537,7 @@ const browserUiEvaluations = [
     evidenceLinks: [
       panelNavigationQaReportPath,
       "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
+      panelNavigationQaEvidenceCheckPath,
       "apps/seis-core/README.md"
     ]
   }
@@ -557,7 +561,8 @@ const report = {
     retrievalSearchTranscriptFixturePath,
     tokenFeedFixturePath,
     browserQaReportPath,
-    panelNavigationQaReportPath
+    panelNavigationQaReportPath,
+    panelNavigationQaEvidenceCheckPath
   ],
   summary: {
     promptEvaluationCount: promptEvaluations.length,
@@ -572,12 +577,13 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add report and validator drift hardening for browser-run AI Core QA evidence.",
+    summary: "Add CI/browser availability documentation for browser-run AI Core evidence gates.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
       "apps/seis-core/README.md",
-      "reports/evals/ai-core-panel-navigation-browser-qa.md"
+      "reports/evals/ai-core-panel-navigation-browser-qa.md",
+      panelNavigationQaEvidenceCheckPath
     ]
   }
 };

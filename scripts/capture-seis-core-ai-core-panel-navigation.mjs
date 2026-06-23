@@ -6,7 +6,8 @@ import { spawn, spawnSync } from "node:child_process";
 
 const root = process.cwd();
 const appRoot = path.join(root, "apps", "seis-core");
-const outputRoot = path.join(root, "reports", "tmp", "seis-core-ai-core-panel-navigation");
+const outputRootRelative = "reports/tmp/seis-core-ai-core-panel-navigation";
+const outputRoot = path.join(root, ...outputRootRelative.split("/"));
 const generatedAt = new Date().toISOString();
 const storageKey = "seis-core-state-v1";
 
@@ -492,7 +493,7 @@ const manifest = {
     binaryName: path.basename(browserBinary)
   },
   app: "apps/seis-core",
-  artifactRoot: path.relative(root, outputRoot),
+  artifactRoot: outputRootRelative,
   scenarios: runResults,
   nonClaims: [
     "This is browser-run AI Core panel navigation QA evidence, not live provider or backend integration evidence.",

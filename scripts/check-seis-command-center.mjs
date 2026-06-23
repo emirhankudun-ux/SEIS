@@ -16,6 +16,7 @@ const requiredFiles = [
 const requiredRootFiles = [
   "scripts/capture-seis-core-local-retrieval-visual.mjs",
   "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
+  "scripts/check-ai-core-browser-qa-evidence.mjs",
   "reports/evals/local-retrieval-browser-visual-qa.md",
   "reports/evals/ai-core-panel-navigation-browser-qa.md"
 ];
@@ -157,12 +158,36 @@ if (!packageJson.scripts?.["qa:seis-core:ai-core-panels"]) {
   fail("package.json must expose qa:seis-core:ai-core-panels");
 }
 
+if (!packageJson.scripts?.["qa:seis-core:ai-core-evidence"]) {
+  fail("package.json must expose qa:seis-core:ai-core-evidence");
+}
+
+if (!packageJson.scripts?.["check:ai-core-browser-qa-evidence"]) {
+  fail("package.json must expose check:ai-core-browser-qa-evidence");
+}
+
+if (!packageJson.scripts?.["check:ai-core-eval-evidence"]) {
+  fail("package.json must expose check:ai-core-eval-evidence");
+}
+
 if (!readme.includes("npm run qa:seis-core:local-retrieval:visual")) {
   fail("README must document Local Retrieval visual QA command");
 }
 
 if (!readme.includes("npm run qa:seis-core:ai-core-panels")) {
   fail("README must document AI Core panel navigation QA command");
+}
+
+if (!readme.includes("npm run qa:seis-core:ai-core-evidence")) {
+  fail("README must document AI Core browser artifact evidence QA command");
+}
+
+if (!readme.includes("npm run check:ai-core-browser-qa-evidence")) {
+  fail("README must document AI Core browser QA evidence check command");
+}
+
+if (!readme.includes("npm run check:ai-core-eval-evidence")) {
+  fail("README must document AI Core eval evidence aggregate check command");
 }
 
 if (

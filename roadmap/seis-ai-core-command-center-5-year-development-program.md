@@ -370,15 +370,23 @@ Completed foundation slice:
   sidebar navigation, command palette navigation, global search navigation,
   route, prompt, agent, approval, evaluation, evidence, and Local Retrieval
   sections across desktop and mobile browser scenarios.
+- Browser-run AI Core QA evidence drift hardening now guards the panel QA
+  report, browser runner, fixture evaluation report, schema, Command Center
+  validator, README, evaluation strategy, five-year roadmap, and five-year
+  review through `npm run check:ai-core-browser-qa-evidence`.
+- Browser-run AI Core QA evidence aggregation now provides
+  `npm run qa:seis-core:ai-core-evidence` for browser run plus artifact
+  verification and `npm run check:ai-core-eval-evidence` for metadata-only
+  fixture/report/Command Center consistency.
 
 ## Next Safe Slice
 
-Add report and validator drift hardening for browser-run AI Core QA evidence so
-the schema, generated evaluation report, Command Center validator, README,
-evaluation strategy, and five-year roadmap fail fast when browser UI evidence is
-missing or stale. This must remain fixture-backed and must not add live
-providers, embeddings, memory writes, raw-content behavior, GitHub writes, SSH,
-deployment, payment, or infrastructure mutation.
+Add CI/browser availability documentation for browser-run AI Core evidence
+gates so local Chrome/Chromium requirements, metadata-only CI checks,
+artifact-required local checks, and skipped-browser fallback expectations are
+clear without introducing live providers, embeddings, memory writes,
+raw-content behavior, GitHub writes, SSH, deployment, payment, or
+infrastructure mutation.
 
 ## Relationship to Existing Roadmaps
 

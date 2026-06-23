@@ -134,6 +134,17 @@ and Local Retrieval sections across desktop and mobile browser scenarios. This
 adds rendered-browser navigation evidence for the AI Core panel without adding
 live providers, live retrieval, embeddings, persistent memory writes, raw
 content, GitHub writes, SSH, deployment, payment, or infrastructure mutation.
+The browser-run AI Core QA evidence contract is guarded by
+`npm run check:ai-core-browser-qa-evidence`, which verifies the report, browser
+runner, schema, generated fixture evaluation report, Command Center validator,
+README, evaluation strategy, five-year roadmap, and five-year review stay in
+sync without launching a browser or calling a provider. After a browser run,
+`npm run check:ai-core-browser-qa-evidence -- --require-artifacts` also reads
+the ignored manifest and desktop/mobile JSON reports under
+`reports/tmp/seis-core-ai-core-panel-navigation/` to validate scenario IDs,
+viewports, step order, panel counts, safety flags, artifact paths, and
+non-claims. `npm run check:ai-core-eval-evidence` aggregates the fixture report,
+browser QA evidence, and Command Center checks as a read-only metadata gate.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

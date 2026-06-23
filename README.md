@@ -243,6 +243,8 @@ npm run check:ai-core-app-contracts
 npm run check:prompt-regression-fixtures
 npm run check:repository-assistant-prototype
 npm run check:ai-core-fixture-evaluation-report
+npm run check:ai-core-browser-qa-evidence
+npm run check:ai-core-eval-evidence
 npm run check:model-router-contracts
 npm run check:agent-runtime-lifecycle
 npm run check:tool-registry-permissions

@@ -51,9 +51,10 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add report and validator drift hardening for browser-run AI Core QA evidence
-   so schema, generated reports, validators, and docs fail fast when evidence is
-   missing or stale.
+1. Add CI/browser availability documentation for browser-run AI Core evidence
+   gates so local Chrome/Chromium requirements, metadata-only CI checks,
+   artifact-required local checks, and skipped-browser fallback expectations are
+   explicit without enabling live providers or privileged actions.
 
 ## Follow-Up Contract Slice
 
@@ -356,3 +357,32 @@ and local-only: it does not create live provider routing, live retrieval,
 embeddings, persistent memory writes, raw-content return, secret lookup, GitHub
 write actions, SSH execution, deployment, payment, infrastructure mutation,
 benchmark claims, or model-training evidence.
+
+## Browser-Run AI Core QA Evidence Drift-Hardening Slice
+
+Status: Added after the browser-run AI Core panel navigation QA slice.
+
+Evidence:
+
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `scripts/create-ai-core-fixture-evaluation-report.mjs`
+- `scripts/check-seis-command-center.mjs`
+- `apps/seis-core/README.md`
+- `docs/evals/evaluation-strategy.md`
+- `roadmap/seis-ai-core-command-center-5-year-development-program.md`
+- `npm run check:ai-core-browser-qa-evidence`
+- `npm run qa:seis-core:ai-core-evidence`
+- `npm run check:ai-core-eval-evidence`
+
+This slice adds a metadata-only drift check for browser-run AI Core QA evidence.
+It verifies that the panel navigation report, browser runner, generated fixture
+evaluation report, schema, Command Center validator, README, evaluation
+strategy, five-year roadmap, and this review agree on the same browser-run AI
+Core QA evidence contract. The artifact-required mode reads the ignored
+manifest and desktop/mobile JSON reports produced by the browser QA run to
+verify scenario IDs, viewports, step order, panel counts, safety flags, artifact
+paths, and non-claims. It does not call providers, run live retrieval, create
+embeddings, write memory, return raw content, execute GitHub writes, SSH,
+deployment, payment, infrastructure mutation, benchmark claims, or
+model-training evidence.

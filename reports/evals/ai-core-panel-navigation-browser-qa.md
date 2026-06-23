@@ -10,6 +10,12 @@ Command:
 npm run qa:seis-core:ai-core-panels
 ```
 
+Browser-run artifact evidence gate:
+
+```bash
+npm run qa:seis-core:ai-core-evidence
+```
+
 Artifact root:
 
 ```text
@@ -67,6 +73,26 @@ provider routing, live retrieval, model execution, pixel-baseline regression,
 cross-browser certification, production deployment, benchmark evidence, or
 model-training evidence. The generated artifacts under `reports/tmp/` are local
 and intentionally ignored by Git.
+
+## Validator Drift Hardening
+
+Run the browser-run AI Core QA evidence drift check with:
+
+```bash
+npm run check:ai-core-browser-qa-evidence
+```
+
+This metadata-only check verifies that this committed evidence report, the
+browser QA runner, fixture evaluation report, schema, Command Center validator,
+README, evaluation strategy, five-year roadmap, and five-year review keep the
+same browser-run AI Core QA evidence contract. When the check is run with
+`--require-artifacts`, it also reads
+`reports/tmp/seis-core-ai-core-panel-navigation/manifest.json` and the
+desktop/mobile JSON reports created by `npm run qa:seis-core:ai-core-panels`,
+then verifies scenario IDs, viewports, step order, panel counts, safety flags,
+artifact paths, and non-claims. It does not call providers, run live retrieval,
+create embeddings, write memory, return raw content, execute GitHub writes,
+SSH, deployment, payment, or infrastructure mutation.
 
 ## Browser Requirement
 
