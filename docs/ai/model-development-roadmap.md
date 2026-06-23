@@ -27,3 +27,12 @@ behavior toward SEIS-owned model research.
 
 The near-term work is documentation, contracts, fixtures, and evaluation
 strategy. Full model training is out of scope for this foundation pass.
+
+## Phase 0/1 Documents
+
+- `docs/ai/SEIS_MODEL_BASELINE.md`
+- `docs/ai/COMPUTE_CAPACITY.md`
+- `docs/ai/MODEL_GAP_ANALYSIS.md`
+- `docs/ai/SEIS_MODEL_CONSTITUTION.md`
+- `docs/ai/SEIS_MODEL_SPECIFICATION.md`
+- `docs/ai/SEIS_MODEL_ROADMAP.md`

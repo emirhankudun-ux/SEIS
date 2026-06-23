@@ -42,3 +42,18 @@ A SEIS-owned model claim requires:
 
 The current SEIS AI Core foundation is an LLM-powered application layer. It
 does not prove SEIS-owned trained model weights.
+
+## Phase 0/1 Research Foundation
+
+The current research foundation is tracked in:
+
+- `docs/ai/SEIS_MODEL_BASELINE.md`
+- `docs/ai/COMPUTE_CAPACITY.md`
+- `docs/ai/MODEL_GAP_ANALYSIS.md`
+- `docs/ai/SEIS_MODEL_CONSTITUTION.md`
+- `docs/ai/SEIS_MODEL_SPECIFICATION.md`
+- `docs/ai/SEIS_MODEL_ROADMAP.md`
+
+These documents define the baseline, gaps, compute boundaries, constitution,
+specification, and roadmap for future model research. They do not authorize or
+claim training.
