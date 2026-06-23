@@ -1,6 +1,6 @@
 # Plugin Interface Suite QA
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 ## Purpose
 
@@ -69,6 +69,24 @@ The browser favicon fallback has been cleaned up with `apps/web/favicon.ico`
 and explicit favicon links on the static product pages. This resolves the
 previous local `/favicon.ico` 404 note, but does not by itself prove release
 readiness.
+
+## PR Handoff Notes
+
+This QA note is ready to travel as a narrow stacked review on top of the open
+SEIS Desktop OS product branch. The intended stack relationship is:
+
+| Item | Value |
+| --- | --- |
+| Parent PR | `#47` |
+| Parent base | `seis/product-experience-suite` |
+| Parent head | `codex/product-experience-desktop-os` |
+| Handoff branch | `codex/plugin-interface-handoff-20260623` |
+| Handoff scope | QA evidence and review context for the five requested plugin interfaces. |
+
+The handoff PR should remain documentation-only unless the plugin interface
+contract, static data sources, or validation script changes during review.
+It must not add live GitHub writes, SSH actions, provider calls, deployment
+actions, credentials, or browser-stored secrets.
 
 ## Validation Commands
 
