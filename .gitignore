@@ -171,6 +171,25 @@ docs/*
 !docs/adr/*.md
 !docs/decisions/
 !docs/decisions/*.md
+!docs/ai/
+!docs/ai/agent-runtime.md
+!docs/ai/checkpoint-governance.md
+!docs/ai/fine-tuning-strategy.md
+!docs/ai/local-model-strategy.md
+!docs/ai/model-card-template.md
+!docs/ai/model-development-roadmap.md
+!docs/ai/model-router.md
+!docs/ai/prompt-engine.md
+!docs/ai/provider-routing-policy.md
+!docs/ai/seis-ai-core.md
+!docs/ai/seis-universe-research.md
+!docs/evals/
+!docs/evals/benchmark-integrity.md
+!docs/evals/evaluation-strategy.md
+!docs/security/
+!docs/security/model-provider-data-policy.md
+!docs/reviews/
+!docs/reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md
 
 # Local accidental artifacts from monorepo preparation
 SEİS/

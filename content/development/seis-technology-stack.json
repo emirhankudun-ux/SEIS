@@ -71,7 +71,7 @@
       "label": "Python",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 508621,
+      "githubBytes": 513979,
       "layer": "backend-and-api",
       "entrypoints": [
         "polyglot/python/seis_manifest.py",
@@ -245,7 +245,7 @@
       "label": "Shell",
       "kind": "source-language",
       "githubLanguageSurface": true,
-      "githubBytes": 97489,
+      "githubBytes": 98334,
       "layer": "cloud-devops-and-config",
       "entrypoints": [
         "polyglot/bash/deploy_guard.sh",
