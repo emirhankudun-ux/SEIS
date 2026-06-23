@@ -1552,6 +1552,94 @@ select {
   grid-column: 1 / -1;
 }
 
+.ai-core-summary-grid,
+.contract-grid,
+.ai-core-layout,
+.retrieval-layout,
+.retrieval-controls {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-core-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.contract-grid,
+.ai-core-layout,
+.retrieval-layout {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.contract-list {
+  display: grid;
+  gap: 10px;
+}
+
+.contract-card,
+.boundary-card,
+.retrieval-empty-state {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 13px;
+  background: #fbfbfa;
+  box-shadow: none;
+}
+
+.contract-card strong,
+.boundary-card strong,
+.retrieval-empty-state strong {
+  color: var(--ink);
+}
+
+.contract-card p,
+.boundary-card p,
+.retrieval-empty-state p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.contract-card small {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.retrieval-controls {
+  grid-template-columns: minmax(220px, 1.4fr) minmax(160px, 0.8fr) minmax(160px, 0.8fr) auto;
+  align-items: end;
+}
+
+.retrieval-filter-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.retrieval-filter-field input,
+.retrieval-filter-field select {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  background: var(--surface-solid);
+  color: var(--ink);
+  font: inherit;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.retrieval-filter-status {
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
 .phase-list {
   display: grid;
   gap: 10px;
@@ -1674,6 +1762,9 @@ select {
 .compact .pattern-card,
 .compact .phase-row,
 .compact .knowledge-card,
+.compact .contract-card,
+.compact .boundary-card,
+.compact .retrieval-empty-state,
 .compact .metric-card {
   padding: 12px;
 }
@@ -1748,6 +1839,11 @@ select {
   .knowledge-ops-layout,
   .ledger-summary-grid,
   .router-summary-grid,
+  .ai-core-summary-grid,
+  .contract-grid,
+  .ai-core-layout,
+  .retrieval-layout,
+  .retrieval-controls,
   .routing-matrix-row,
   .feature-growth-grid,
   .inspector {

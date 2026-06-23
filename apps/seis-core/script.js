@@ -16,6 +16,11 @@ const seedState = {
   godModeLane: "Build",
   godModeMission: "Build the next safe SEIS AI operating slice with clear evidence, rollback, and no-secret boundaries.",
   repositoryFilter: "all",
+  retrievalFilters: {
+    query: "",
+    sourceClass: "all",
+    transcriptState: "all"
+  },
   settings: {
     compact: false,
     reduceMotion: false
@@ -65,6 +70,31 @@ const seedState = {
     }
   ]
 };
+
+const aiCoreContract = window.seisAiCoreContractFixture ?? {
+  sourceFixture: "unavailable",
+  id: "ai-core-command-center-foundation",
+  status: "unknown",
+  modelRoutes: [],
+  promptVersions: [],
+  agentTasks: [],
+  approvalRequests: [],
+  knowledgeSources: [],
+  evaluationResults: [],
+  auditEvents: [],
+  retrievalQueryAdapters: [],
+  retrievalResultCards: [],
+  noContentSearchTranscripts: [],
+  retrievalFilterControls: [],
+  sourceDocuments: []
+};
+
+const aiCoreBoundaryFacts = [
+  ["Application layer", "AI Core routes prompts, tasks, tools, retrieval, approvals, and evidence; it is not a claimed trained model."],
+  ["Provider boundary", "External provider routes remain approval-gated and server-side only; this surface performs no provider calls."],
+  ["Local retrieval", "Cards are metadata-only and do not create embeddings, persistent memory writes, or raw-content stores."],
+  ["Research honesty", "SEIS Universe remains research direction until datasets, checkpoints, logs, benchmarks, and model cards exist."]
+];
 
 const repositories = [
   {
@@ -1458,6 +1488,7 @@ const viewMeta = {
   repositories: ["Repositories", "Repository management", "Scan repository health, documentation coverage, security posture, and testing status.", "Refresh"],
   documentation: ["Documentation", "Documentation management", "Track architecture notes, ADR records, roadmap, and knowledge base coverage.", "Add Note"],
   agents: ["Agents", "AI agent management", "Switch operating modes and inspect responsibility boundaries.", "Run Agent"],
+  "ai-core": ["AI Core", "SEIS AI Core", "Inspect fixture-backed model routes, prompt versions, agent tasks, retrieval boundaries, approvals, and evidence.", "Review Routes"],
   plugins: ["Plugins", "Plugins and extensions", "Inspect plugin families, marketplace posture, permissions, updates, and activation policy.", "Review Plugins"],
   automation: ["Automation", "Automation center", "Inspect workflows, triggers, scheduled tasks, automation history, and safe execution gates.", "Run Check"],
   security: ["Security", "Security center", "Track risk reports, permission reviews, dependency scanning, access models, and auditability.", "Review Risk"],
@@ -1470,7 +1501,12 @@ let state = loadState();
 function loadState() {
   try {
     const stored = JSON.parse(localStorage.getItem(storageKey));
-    return { ...seedState, ...stored, settings: { ...seedState.settings, ...stored?.settings } };
+    return {
+      ...seedState,
+      ...stored,
+      retrievalFilters: { ...seedState.retrievalFilters, ...stored?.retrievalFilters },
+      settings: { ...seedState.settings, ...stored?.settings }
+    };
   } catch {
     return structuredClone(seedState);
   }
@@ -1484,8 +1520,9 @@ const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
 function statusClass(status) {
-  if (status === "Ready" || status === "Active" || status === "Done") return "ready";
-  if (status === "Blocked") return "blocked";
+  const normalized = String(status ?? "").toLowerCase();
+  if (["ready", "active", "done", "validated", "pass", "local-alpha", "fixture-backed"].includes(normalized)) return "ready";
+  if (["blocked", "failed", "disabled"].includes(normalized)) return "blocked";
   return "attention";
 }
 
@@ -1500,6 +1537,7 @@ function render() {
   renderRepositories();
   renderDocumentation();
   renderAgents();
+  renderAiCore();
   renderPlugins();
   renderAutomation();
   renderSecurity();
@@ -2243,6 +2281,230 @@ function renderAgentDetail(label, items) {
   `;
 }
 
+function renderAiCore() {
+  const statusElement = $("#ai-core-contract-status");
+  if (!statusElement) return;
+
+  const routes = aiCoreContract.modelRoutes ?? [];
+  const prompts = aiCoreContract.promptVersions ?? [];
+  const tasks = aiCoreContract.agentTasks ?? [];
+  const approvals = aiCoreContract.approvalRequests ?? [];
+  const evaluations = aiCoreContract.evaluationResults ?? [];
+  const auditEvents = aiCoreContract.auditEvents ?? [];
+  const adapters = aiCoreContract.retrievalQueryAdapters ?? [];
+  const resultCards = aiCoreContract.retrievalResultCards ?? [];
+  const transcripts = aiCoreContract.noContentSearchTranscripts ?? [];
+  const knowledgeSources = aiCoreContract.knowledgeSources ?? [];
+
+  statusElement.textContent = aiCoreContract.status ?? "unknown";
+  statusElement.className = `status-pill ${statusClass(aiCoreContract.status)}`;
+
+  $("#ai-core-summary-grid").innerHTML = [
+    ["Routes", routes.length, "provider-neutral contracts"],
+    ["Prompts", prompts.length, "versioned prompt surfaces"],
+    ["Agent tasks", tasks.length, "bounded execution records"],
+    ["Approvals", approvals.length, "human-gated actions"],
+    ["Retrieval", resultCards.length, "metadata-only result cards"],
+    ["Evidence", evaluations.length + auditEvents.length, "validation and audit records"]
+  ].map(([label, value, detail]) => `
+    <article class="metric-card">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+      <small>${escapeHtml(detail)}</small>
+    </article>
+  `).join("");
+
+  $("#ai-core-boundary-grid").innerHTML = aiCoreBoundaryFacts.map(([title, detail]) => `
+    <article class="boundary-card">
+      <strong>${escapeHtml(title)}</strong>
+      <p>${escapeHtml(detail)}</p>
+    </article>
+  `).join("");
+
+  $("#ai-core-routes").innerHTML = routes.map((route) => renderAiCoreContractCard({
+    title: route.taskType,
+    label: route.id,
+    status: route.status,
+    detail: route.blockedReason,
+    evidence: route.evidence,
+    chips: [route.dataClass, route.privacyMode, route.providerProfile, route.maturity]
+  })).join("");
+
+  $("#ai-core-prompts").innerHTML = prompts.map((prompt) => renderAiCoreContractCard({
+    title: `${prompt.name} v${prompt.version}`,
+    label: prompt.id,
+    status: prompt.status,
+    detail: prompt.scope,
+    evidence: prompt.evidence,
+    chips: [prompt.maturity, prompt.regressionSuite]
+  })).join("");
+
+  $("#ai-core-agent-tasks").innerHTML = tasks.map((task) => renderAiCoreContractCard({
+    title: task.agentRole,
+    label: task.id,
+    status: task.status,
+    detail: task.intent,
+    evidence: task.evidence,
+    chips: [task.approvalState, task.maturity]
+  })).join("");
+
+  $("#ai-core-approvals").innerHTML = approvals.map((approval) => renderAiCoreContractCard({
+    title: approval.requestType,
+    label: approval.id,
+    status: approval.status,
+    detail: `Decision: ${approval.decisionState}; risk: ${approval.riskClass}.`,
+    evidence: approval.evidence,
+    chips: [approval.decisionState, approval.riskClass]
+  })).join("");
+
+  renderAiCoreRetrievalFilters();
+
+  const filters = state.retrievalFilters;
+  const filteredSources = knowledgeSources.filter((source) => (
+    matchesAiCoreQuery(source, filters.query) &&
+    (filters.sourceClass === "all" || source.sourceClass === filters.sourceClass)
+  ));
+  const filteredResults = resultCards.filter((card) => (
+    matchesAiCoreQuery(card, filters.query) &&
+    (filters.sourceClass === "all" || card.sourceClass === filters.sourceClass)
+  ));
+  const filteredTranscripts = transcripts.filter((transcript) => (
+    matchesAiCoreQuery(transcript, filters.query) &&
+    (filters.transcriptState === "all" || transcript.decisionState === filters.transcriptState || transcript.status === filters.transcriptState)
+  ));
+
+  $("#ai-core-retrieval-filter-status").textContent = describeRetrievalFilters(
+    filters,
+    filteredSources.length,
+    filteredResults.length,
+    filteredTranscripts.length
+  );
+
+  $("#ai-core-retrieval-adapters").innerHTML = [
+    ...adapters.map((adapter) => renderAiCoreContractCard({
+      title: adapter.adapterName,
+      label: adapter.id,
+      status: adapter.status,
+      detail: adapter.resultShape,
+      evidence: adapter.evidence,
+      chips: [adapter.mode, adapter.privacyMode, adapter.readOnly ? "read-only" : "write-capable"]
+    })),
+    ...filteredSources.map((source) => renderAiCoreContractCard({
+      title: source.sourceName,
+      label: source.id,
+      status: source.status,
+      detail: `${source.ingestionPolicy}; raw content stored: ${source.storesRawContent ? "yes" : "no"}.`,
+      evidence: source.evidence,
+      chips: [source.sourceClass, source.retrievalState, source.privacyMode]
+    }))
+  ].join("") || renderAiCoreEmptyState("No local metadata card matches the current filters.");
+
+  $("#ai-core-retrieval-results").innerHTML = filteredResults.map((card) => renderAiCoreContractCard({
+    title: card.sourceName,
+    label: card.id,
+    status: card.status,
+    detail: card.summary,
+    evidence: card.evidence,
+    chips: [card.sourceClass, card.retrievalState, card.privacyMode, card.rawContentReturned ? "raw-content" : "no-raw-content"]
+  })).join("") || renderAiCoreEmptyState("No local metadata card matches the current filters.");
+
+  $("#ai-core-no-content-transcripts").innerHTML = filteredTranscripts.map((transcript) => renderAiCoreContractCard({
+    title: transcript.query,
+    label: transcript.id,
+    status: transcript.status,
+    detail: transcript.emptyState,
+    evidence: transcript.evidence,
+    chips: [transcript.decisionState, `${transcript.resultCount} results`, transcript.providerCallPerformed ? "provider-call" : "no-provider-call"]
+  })).join("") || renderAiCoreEmptyState("No local no-content transcript matches the current filters.");
+
+  $("#ai-core-evidence").innerHTML = [
+    ...evaluations.map((result) => renderAiCoreContractCard({
+      title: result.targetId,
+      label: result.id,
+      status: result.status,
+      detail: `${result.targetType}: ${result.result}`,
+      evidence: result.evidence,
+      chips: [result.targetType, result.result]
+    })),
+    ...auditEvents.map((event) => renderAiCoreContractCard({
+      title: event.action,
+      label: event.id,
+      status: event.status,
+      detail: `Actor: ${event.actor}; redaction: ${event.redactionState}.`,
+      evidence: event.evidence,
+      chips: [event.actor, event.redactionState]
+    }))
+  ].join("");
+}
+
+function renderAiCoreRetrievalFilters() {
+  const sourceSelect = $("#ai-core-retrieval-source-class");
+  const transcriptSelect = $("#ai-core-retrieval-transcript-state");
+  const queryInput = $("#ai-core-retrieval-query");
+  const sourceOptions = new Set(["all"]);
+  const transcriptOptions = new Set(["all"]);
+
+  (aiCoreContract.retrievalFilterControls ?? []).forEach((control) => {
+    if (control.target === "sourceClass") control.options.forEach((option) => sourceOptions.add(option));
+    if (control.target === "transcriptState") control.options.forEach((option) => transcriptOptions.add(option));
+  });
+  (aiCoreContract.retrievalResultCards ?? []).forEach((card) => sourceOptions.add(card.sourceClass));
+  (aiCoreContract.noContentSearchTranscripts ?? []).forEach((transcript) => {
+    transcriptOptions.add(transcript.decisionState);
+    transcriptOptions.add(transcript.status);
+  });
+
+  sourceSelect.innerHTML = [...sourceOptions].map((option) => `<option value="${escapeHtml(option)}">${escapeHtml(formatOptionLabel(option))}</option>`).join("");
+  transcriptSelect.innerHTML = [...transcriptOptions].map((option) => `<option value="${escapeHtml(option)}">${escapeHtml(formatOptionLabel(option))}</option>`).join("");
+  queryInput.value = state.retrievalFilters.query;
+  sourceSelect.value = state.retrievalFilters.sourceClass;
+  transcriptSelect.value = state.retrievalFilters.transcriptState;
+}
+
+function renderAiCoreContractCard({ title, label, status, detail, evidence, chips = [] }) {
+  return `
+    <article class="contract-card">
+      <div class="card-topline">
+        <strong>${escapeHtml(title)}</strong>
+        <span class="status-pill ${statusClass(status)}">${escapeHtml(status)}</span>
+      </div>
+      <small>${escapeHtml(label)}</small>
+      <p>${escapeHtml(detail)}</p>
+      <div class="meta-row">
+        ${chips.filter(Boolean).map((chip) => `<span class="meta-chip">${escapeHtml(chip)}</span>`).join("")}
+      </div>
+      <small>Evidence: ${escapeHtml(evidence)}</small>
+    </article>
+  `;
+}
+
+function renderAiCoreEmptyState(message) {
+  return `<article class="retrieval-empty-state"><strong>Empty state</strong><p>${escapeHtml(message)}</p></article>`;
+}
+
+function matchesAiCoreQuery(item, query) {
+  const normalized = String(query ?? "").trim().toLowerCase();
+  if (!normalized) return true;
+  return JSON.stringify(item).toLowerCase().includes(normalized);
+}
+
+function describeRetrievalFilters(filters, sourceCount, resultCount, transcriptCount) {
+  const active = [
+    filters.query ? `query "${filters.query}"` : "",
+    filters.sourceClass !== "all" ? `source ${filters.sourceClass}` : "",
+    filters.transcriptState !== "all" ? `transcript ${filters.transcriptState}` : ""
+  ].filter(Boolean);
+  const prefix = active.length ? `Active filters: ${active.join(", ")}.` : "No filters applied.";
+  return `${prefix} ${sourceCount} source cards, ${resultCount} result cards, ${transcriptCount} transcripts shown.`;
+}
+
+function formatOptionLabel(value) {
+  return String(value ?? "all")
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function renderPlugins() {
   $("#plugin-grid").innerHTML = pluginFamilies.map((family) => `
     <article class="plugin-card">
@@ -2691,6 +2953,30 @@ function bindEvents() {
     render();
   });
 
+  $("#ai-core-retrieval-query")?.addEventListener("input", (event) => {
+    state.retrievalFilters.query = event.target.value;
+    renderAiCore();
+    saveState();
+  });
+
+  $("#ai-core-retrieval-source-class")?.addEventListener("change", (event) => {
+    state.retrievalFilters.sourceClass = event.target.value;
+    renderAiCore();
+    saveState();
+  });
+
+  $("#ai-core-retrieval-transcript-state")?.addEventListener("change", (event) => {
+    state.retrievalFilters.transcriptState = event.target.value;
+    renderAiCore();
+    saveState();
+  });
+
+  $("#ai-core-retrieval-reset")?.addEventListener("click", () => {
+    state.retrievalFilters = { ...seedState.retrievalFilters };
+    renderAiCore();
+    saveState();
+  });
+
   document.addEventListener("keydown", (event) => {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
       event.preventDefault();
@@ -2720,6 +3006,7 @@ function renderCommandResults(query) {
     ["Repositories", "Inspect repository health", "repositories"],
     ["Documentation", "Review docs and ADR coverage", "documentation"],
     ["Agents", "Switch AI operating mode", "agents"],
+    ["AI Core", "Inspect routes, prompts, retrieval boundaries, approvals and evidence", "ai-core"],
     ["Plugins", "Review plugins, permissions and updates", "plugins"],
     ["Automation", "Inspect workflows and triggers", "automation"],
     ["Security", "Review risk and access posture", "security"],

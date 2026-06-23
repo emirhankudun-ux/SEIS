@@ -6,7 +6,8 @@ SEIS Command Center is the central operating interface for the SEIS ecosystem. P
 
 - `index.html`: semantic app shell, sidebar navigation, command-center modules, dialogs, and accessible landmarks.
 - `styles.css`: design tokens, responsive layout, component variants, density mode, and reduced-motion support.
-- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
+- `script.js`: local state, goal creation, repository filtering, agent mode switching, generated 10-lane SEIS router artifact loading, fixture-backed AI Core contract projection, architecture evidence, automation evidence, security evidence, knowledge graph evidence, command palette, settings, and dashboard rendering.
+- `ai-core-contract-fixture.js`: browser-safe projection of the shared AI Core and Command Center contract fixture. It contains metadata and evidence links only; it does not perform live provider calls or expose credentials.
 - `data/seis-router-routes.json`: generated Command Center router artifact produced from `scripts/ai-routing-policy.cjs#chooseAutoRoute`.
 - `manifest.webmanifest` and `icon.svg`: installable app metadata and SEIS Core visual identity.
 
@@ -20,13 +21,14 @@ apps/seis-core/
   icon.svg
   manifest.webmanifest
   README.md
+  ai-core-contract-fixture.js
   test/
     seis-core-static.test.js
 ```
 
 ## UI Wireframe Plan
 
-1. Sidebar: persistent module navigation for Dashboard, God Mode, Goals, Repositories, Documentation, Agents, Plugins, Automation, Security, Architecture, and Knowledge.
+1. Sidebar: persistent module navigation for Dashboard, God Mode, Goals, Repositories, Documentation, Agents, AI Core, Plugins, Automation, Security, Architecture, and Knowledge.
 2. Top navigation: global search, command palette, settings.
 3. Main workspace: selected module content with clear page header and primary action.
 4. Right inspector: active agent mode, next actions, and MVP specification.
@@ -49,6 +51,7 @@ apps/seis-core/
 - Repositories: filter chips, health cards, documentation coverage, security posture, testing status, and dependency overview.
 - Documentation: index and coverage plan.
 - Agents: mode cards, capabilities, tasks, logs, outputs, AI system support, orchestration lanes, 10-lane routing matrix, handoff audit, and inspector sync.
+- AI Core: fixture-backed model routes, prompt versions, agent tasks, approval gates, local retrieval boundaries, no-content search transcripts, evaluation records, and audit evidence. This module is deliberately not a live provider integration.
 - Plugins & Extensions: plugin family health, permission posture, update gates, and activation policy.
 - Automation Center: workflows, triggers, run history, approval gates, rollback evidence, and execution gates.
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
@@ -78,6 +81,7 @@ apps/seis-core/
 - Switch active AI agent mode and inspect capabilities, tasks, logs, and outputs.
 - Inspect multi-model orchestration across OpenAI, Claude, Gemini, Qwen, local models, and future AI systems.
 - Review handoff audit records between Architect, Builder, Security, Research, and Design lanes.
+- Inspect fixture-backed AI Core routes, prompt versions, agent tasks, approval gates, local retrieval boundaries, and evidence without making live model-provider calls.
 - Inspect recent activity across builder, security, architecture, and automation lanes.
 - Inspect plugin, automation run history, approval gate, rollback evidence, security operations, and AI system surfaces.
 - Inspect permission reviews, dependency scans, and security audit evidence.

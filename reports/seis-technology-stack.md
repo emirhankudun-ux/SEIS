@@ -14,7 +14,7 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 
 | # | language | layer | GitHub bytes | entrypoints |
 | ---: | --- | --- | ---: | --- |
-| 1 | JavaScript | frontend-and-experience | 2310662 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
+| 1 | JavaScript | frontend-and-experience | 2501212 | apps/web/src/scripts/motion-system.js, apps/web/src/scripts/gallery-system.js, apps/web/src/scripts/i18n-system.js, polyglot/javascript/plugin-source-runtime.js |
 | 2 | TypeScript | frontend-and-experience | 424439 | polyglot/typescript/seis_config_validator.ts, polyglot/typescript/language-split-contract.ts, packages/seis-ai/types/seis-ai.d.ts |
 | 3 | Objective-C | mobile-and-native | 8447 | polyglot/objective-c/SEISReleasePolicy.h, polyglot/objective-c/SEISLanguageDistributionContract.h, polyglot/objective-c/SEISLanguageDistributionContract.m |
 | 4 | Python | backend-and-api | 513979 | polyglot/python/seis_manifest.py, polyglot/python/seis_image_audit.py, polyglot/python/seis_icon_gen.py, polyglot/python/seis_color_contrast.py, polyglot/python/seis_sw_cache_audit.py, server/python/verify_release.py |
@@ -64,8 +64,8 @@ Only real source languages belong in the GitHub language surface; frameworks, cl
 | 48 | Visual Basic | research-legacy-and-lab | 992 | polyglot/vb/SeisReleasePolicy.vb |
 | 49 | Batchfile | cloud-devops-and-config | 282 | polyglot/windows/scripting/seis_windows_platform.bat |
 | 50 | MATLAB | database-and-data | 365 | polyglot/matlab/readiness_policy.m |
-| 51 | HTML | frontend-and-experience | 161998 | apps/web/index.html, apps/web/seis-cockpit.html |
-| 52 | CSS | frontend-and-experience | 325296 | apps/web/style.css, apps/web/styles.css |
+| 51 | HTML | frontend-and-experience | 167732 | apps/web/index.html, apps/web/seis-cockpit.html |
+| 52 | CSS | frontend-and-experience | 327039 | apps/web/style.css, apps/web/styles.css |
 | 53 | Solidity | security-policy-and-governance | 869 | polyglot/solidity/SeisReleasePolicy.sol |
 | 54 | Move | security-policy-and-governance | 843 | polyglot/move/release_policy.move |
 | 55 | Cairo | security-policy-and-governance | 649 | polyglot/cairo/release_policy.cairo |
