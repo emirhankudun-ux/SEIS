@@ -20,6 +20,7 @@ const browserCiActivationApprovalPath = "docs/evals/ai-core-browser-ci-activatio
 const browserCiWorkflowDraftPath = "docs/evals/ai-core-browser-ci-workflow-draft.md";
 const browserCiActiveWorkflowPath = ".github/workflows/ai-core-browser-evidence.yml";
 const browserCiDispatchReviewPath = "docs/evals/ai-core-browser-workflow-dispatch-review.md";
+const aiCoreFoundationPrReviewPath = "docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -585,6 +586,7 @@ const report = {
     browserCiWorkflowDraftPath,
     browserCiActiveWorkflowPath,
     browserCiDispatchReviewPath,
+    aiCoreFoundationPrReviewPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
     panelNavigationQaEvidenceCheckPath
@@ -602,7 +604,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Open or review the feature branch through a pull request so the AI Core Browser Evidence workflow can reach the default branch; after human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
+    summary: "Review PR #44 conflict state before any merge attempt. GitHub reports the AI Core app foundation continuation PR as CONFLICTING against main; after conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -614,7 +616,8 @@ const report = {
       browserCiActivationApprovalPath,
       browserCiWorkflowDraftPath,
       browserCiActiveWorkflowPath,
-      browserCiDispatchReviewPath
+      browserCiDispatchReviewPath,
+      aiCoreFoundationPrReviewPath
     ]
   }
 };

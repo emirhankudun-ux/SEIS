@@ -421,15 +421,19 @@ Completed foundation slice:
 
 ## Next Safe Slice
 
-Open or review the feature branch through a pull request so
-`.github/workflows/ai-core-browser-evidence.yml` can reach the default branch.
-After human-approved merge, run it manually with `workflow_dispatch`, inspect
-the uploaded `reports/tmp/seis-core-ai-core-panel-navigation/` artifact package,
-and record GitHub run evidence before deciding whether browser evidence should
-become a required branch-protection check. The default `.github/workflows/ci.yml`
-path must remain metadata-only, and the browser workflow must remain
-provider-free, SSH-free, deployment-free, payment-free, and
-infrastructure-mutation-free.
+PR #44 now exists for this feature branch, but GitHub reports it as
+`CONFLICTING` against `main`. The next safe slice is a conflict-resolution
+review that classifies divergent AI Core, Command Center, workflow, generated
+report, and governance files before any merge attempt.
+
+After conflict resolution and human-approved merge place
+`.github/workflows/ai-core-browser-evidence.yml` on the default branch, run it
+manually with `workflow_dispatch`, inspect the uploaded
+`reports/tmp/seis-core-ai-core-panel-navigation/` artifact package, and record
+GitHub run evidence before deciding whether browser evidence should become a
+required branch-protection check. The default `.github/workflows/ci.yml` path
+must remain metadata-only, and the browser workflow must remain provider-free,
+SSH-free, deployment-free, payment-free, and infrastructure-mutation-free.
 
 ## Relationship to Existing Roadmaps
 

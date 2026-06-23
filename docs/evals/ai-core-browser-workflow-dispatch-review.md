@@ -23,6 +23,11 @@ The workflow file exists on the feature branch and is pushed to GitHub, but it
 is not visible to GitHub Actions as a dispatchable workflow until it exists on
 the repository default branch.
 
+PR #44 now exists for the feature branch, but GitHub reports the pull request as
+`CONFLICTING` against `main`. That means the default-branch workflow dispatch
+step remains blocked until conflict resolution is reviewed and a human-approved
+merge places the workflow file on the default branch.
+
 Attempted command:
 
 ```bash
@@ -40,8 +45,9 @@ HTTP 404: workflow ai-core-browser-evidence.yml not found on the default branch
 No GitHub Actions run was created. No browser artifacts were uploaded. This is a
 workflow visibility blocker, not a browser QA failure and not a product failure.
 
-The manual workflow still needs normal PR review and human-approved merge before
-`workflow_dispatch` can create first-run GitHub evidence.
+The manual workflow still needs conflict-resolution review, normal PR review,
+and human-approved merge before `workflow_dispatch` can create first-run GitHub
+evidence.
 
 ## Evidence Requirements For The Next Step
 
@@ -94,8 +100,8 @@ production availability.
 
 ## Next Safe Action
 
-Open or review the feature branch through a pull request. After human-approved
-merge places `.github/workflows/ai-core-browser-evidence.yml` on the default
-branch, run the manual workflow with `workflow_dispatch`, inspect the uploaded
-artifact package, and record first-run evidence before any branch-protection
-decision.
+Review PR #44 conflict state and classify the divergent files before any merge
+attempt. After conflict resolution and human-approved merge place
+`.github/workflows/ai-core-browser-evidence.yml` on the default branch, run the
+manual workflow with `workflow_dispatch`, inspect the uploaded artifact package,
+and record first-run evidence before any branch-protection decision.

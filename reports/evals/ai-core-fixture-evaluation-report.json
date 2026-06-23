@@ -19,6 +19,7 @@
     "docs/evals/ai-core-browser-ci-workflow-draft.md",
     ".github/workflows/ai-core-browser-evidence.yml",
     "docs/evals/ai-core-browser-workflow-dispatch-review.md",
+    "docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md",
     "reports/evals/local-retrieval-browser-visual-qa.md",
     "reports/evals/ai-core-panel-navigation-browser-qa.md",
     "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -563,7 +564,7 @@
     "No secret values, provider keys, private keys, or raw private configuration are included."
   ],
   "nextRecommendedSlice": {
-    "summary": "Open or review the feature branch through a pull request so the AI Core Browser Evidence workflow can reach the default branch; after human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
+    "summary": "Review PR #44 conflict state before any merge attempt. GitHub reports the AI Core app foundation continuation PR as CONFLICTING against main; after conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.",
     "sourceLinks": [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
@@ -575,7 +576,8 @@
       "docs/evals/ai-core-browser-ci-activation-approval.md",
       "docs/evals/ai-core-browser-ci-workflow-draft.md",
       ".github/workflows/ai-core-browser-evidence.yml",
-      "docs/evals/ai-core-browser-workflow-dispatch-review.md"
+      "docs/evals/ai-core-browser-workflow-dispatch-review.md",
+      "docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md"
     ]
   }
 }

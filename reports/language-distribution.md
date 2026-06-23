@@ -2,17 +2,17 @@
 
 - Mode: `github_linguist_aligned_source_budget`
 - Counted files: 904
-- Counted bytes: 5404627
-- JavaScript: 2037839 bytes (37.71%)
+- Counted bytes: 5404842
+- JavaScript: 2038054 bytes (37.71%)
 - Target JavaScript: 21.0%
 - Target status: `above_target`
-- Additional non-JavaScript bytes needed for strict target: 4299368
+- Additional non-JavaScript bytes needed for strict target: 4300177
 
 ## GitHub Language Panel Split
 
 | Panel | Bytes | Percent | Source languages |
 | --- | ---: | ---: | --- |
-| JavaScript | 2037839 | 37.71% | JavaScript |
+| JavaScript | 2038054 | 37.71% | JavaScript |
 | TypeScript | 411787 | 7.62% | TypeScript |
 | Objective-C | 8447 | 0.16% | Objective-C |
 | Other | 2946554 | 54.52% | ABAP, AWK, Ada, AppleScript, Avro, Batchfile, Bicep, C, C#, C++, CEL, CMake, +81 more |
@@ -27,7 +27,7 @@
 | --- | ---: | ---: | --- | --- |
 | Apple / Swift ecosystem | 10.79% | 25.0-30.0% | `below_target` | Swift, Objective-C, AppleScript |
 | AI, Data, Python, SQL | 28.59% | 18.0-22.0% | `above_target` | Python, SQL, R, Julia, Scala, JSON, JSON-LD, Turtle, SPARQL |
-| TypeScript / JavaScript tooling | 45.32% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
+| TypeScript / JavaScript tooling | 45.33% | 15.0-20.0% | `above_target` | TypeScript, JavaScript |
 | Android / JVM | 0.44% | 10.0-15.0% | `below_target` | Kotlin, Java, Groovy, Clojure |
 | Rust / C / C++ systems | 0.55% | 10.0-15.0% | `below_target` | Rust, C, C++, Zig |
 | Go / Infrastructure | 3.01% | 5.0-8.0% | `below_target` | Go, Shell, YAML, HCL, TOML, Bicep, Nix, CUE, Rego, Dockerfile |
@@ -40,7 +40,7 @@ Unassigned counted languages: 3.02% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 
 | Language | Bytes | Percent |
 | --- | ---: | ---: |
-| JavaScript | 2037839 | 37.71% |
+| JavaScript | 2038054 | 37.71% |
 | JSON | 1018868 | 18.85% |
 | Swift | 574078 | 10.62% |
 | Python | 507341 | 9.39% |
@@ -77,7 +77,7 @@ Unassigned counted languages: 3.02% (ABAP, AWK, Ada, Avro, Batchfile, CEL, CMake
 | `scripts/check-seis-master-prompt.mjs` | 42025 |
 | `apps/web/app.js` | 41632 |
 | `scripts/check-cloud-environment.cjs` | 31248 |
-| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28488 |
+| `scripts/create-ai-core-fixture-evaluation-report.mjs` | 28703 |
 | `scripts/sync-plugin-environment-sources.cjs` | 27637 |
 | `scripts/check-ai-core-browser-qa-evidence.mjs` | 26109 |
 | `scripts/check-ai-core-app-contracts.mjs` | 25592 |

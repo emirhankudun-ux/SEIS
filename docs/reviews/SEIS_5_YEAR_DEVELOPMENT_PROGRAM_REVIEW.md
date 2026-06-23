@@ -51,14 +51,17 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Open or review the feature branch through a pull request so the manual AI
-   Core Browser Evidence workflow can reach the default branch. After
-   human-approved merge, run it with `workflow_dispatch`, inspect the uploaded
-   artifact package, and record GitHub run evidence before considering it as a
-   required branch-protection check. The default `.github/workflows/ci.yml` path
-   must remain metadata-only, and the browser workflow must remain
-   provider-free, SSH-free, deployment-free, payment-free, and
-   infrastructure-mutation-free.
+1. Review PR #44 conflict state before any merge attempt. GitHub reports the
+   AI Core app foundation continuation PR as `CONFLICTING` against `main`, so
+   the next safe slice is a file-classification review for divergent AI Core,
+   Command Center, workflow, generated report, and governance files.
+2. After conflict resolution and human-approved merge place the manual AI Core
+   Browser Evidence workflow on the default branch, run it with
+   `workflow_dispatch`, inspect the uploaded artifact package, and record
+   GitHub run evidence before considering it as a required branch-protection
+   check. The default `.github/workflows/ci.yml` path must remain
+   metadata-only, and the browser workflow must remain provider-free, SSH-free,
+   deployment-free, payment-free, and infrastructure-mutation-free.
 
 ## Follow-Up Contract Slice
 
@@ -618,3 +621,21 @@ run was created and no browser artifacts were uploaded. This is a workflow
 visibility blocker, not a browser QA failure. The next safe step is PR review
 and human-approved merge before a real `workflow_dispatch` run can produce
 GitHub artifact evidence.
+
+## AI Core App Foundation Continuation PR Review Slice
+
+Status: Added after PR #44 state inspection.
+
+Evidence:
+
+- `docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md`
+- `docs/evals/ai-core-browser-workflow-dispatch-review.md`
+
+This slice records that PR #44 exists for
+`seis/ai-core-app-foundation-continuation`, but GitHub reports the pull request
+as `CONFLICTING` against `main`. It also records observed non-blocking status
+checks and local validation evidence from the latest branch-local browser
+scorecard slice. The review does not merge, deploy, force-push, rewrite
+history, run SSH, call providers, train models, or create branch-protection
+claims. The next safe step is conflict-resolution classification before any
+merge attempt or default-branch `workflow_dispatch` run.

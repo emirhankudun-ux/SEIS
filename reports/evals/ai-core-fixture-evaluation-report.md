@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Open or review the feature branch through a pull request so the AI Core Browser Evidence workflow can reach the default branch; after human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.
+Review PR #44 conflict state before any merge attempt. GitHub reports the AI Core app foundation continuation PR as CONFLICTING against main; after conflict resolution and human-approved merge, run workflow_dispatch, inspect the uploaded reports/tmp/seis-core-ai-core-panel-navigation/ artifact package, record GitHub run evidence, and only then decide whether the workflow should become a required branch-protection check.
 
 Source links:
 
@@ -56,3 +56,4 @@ Source links:
 - `docs/evals/ai-core-browser-ci-workflow-draft.md`
 - `.github/workflows/ai-core-browser-evidence.yml`
 - `docs/evals/ai-core-browser-workflow-dispatch-review.md`
+- `docs/reviews/SEIS_AI_CORE_APP_FOUNDATION_CONTINUATION_PR_REVIEW.md`
