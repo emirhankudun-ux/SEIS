@@ -38,7 +38,7 @@
 
 ## Next Recommended Slice
 
-Add browser-run visual QA for the Local Retrieval toolbar with screenshot or DOM evidence.
+Add browser-run interaction QA for Local Retrieval filters across desktop and mobile viewports.
 
 Source links:
 

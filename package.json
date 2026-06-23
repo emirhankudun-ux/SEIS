@@ -8,6 +8,8 @@
     "test": "node --test",
     "test:web": "node --test apps/web/test/*.test.js",
     "test:seis-command-center": "node --test apps/seis-core/test/*.test.js",
+    "qa:seis-core:local-retrieval:visual": "node scripts/capture-seis-core-local-retrieval-visual.mjs",
+    "qa:seis-core:local-retrieval": "node --test --test-name-pattern \"local retrieval\" apps/seis-core/test/*.test.js && npm run qa:seis-core:local-retrieval:visual",
     "test:all": "npm test && npm run test:web",
     "test:coverage": "node --test --experimental-test-coverage",
     "lint": "eslint .",

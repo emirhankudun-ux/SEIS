@@ -355,13 +355,19 @@ Completed foundation slice:
   nonblank shell content, ARIA wiring, populated local retrieval panels, safety
   boundary chips, and responsive CSS contracts without live retrieval or
   provider behavior.
+- Browser-run visual QA is now repeatable through
+  `npm run qa:seis-core:local-retrieval:visual`, with screenshots, DOM dumps,
+  and a manifest written to ignored `reports/tmp/` artifacts. The committed
+  evidence contract lives at
+  `reports/evals/local-retrieval-browser-visual-qa.md`.
 
 ## Next Safe Slice
 
-Add browser-run visual QA for the Local Retrieval toolbar across desktop and
-mobile viewports, with screenshot or DOM evidence, while keeping it
-fixture-backed without adding live retrieval, providers, embeddings, memory
-writes, or raw-content behavior.
+Add browser-run interaction QA for Local Retrieval filters across desktop and
+mobile viewports, verifying query, source-class, transcript-state, reset,
+focus, live-region/status text, and empty-state behavior in an actual browser
+without adding live retrieval, providers, embeddings, memory writes, or
+raw-content behavior.
 
 ## Relationship to Existing Roadmaps
 

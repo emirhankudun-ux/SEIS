@@ -493,7 +493,7 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add browser-run visual QA for the Local Retrieval toolbar with screenshot or DOM evidence.",
+    summary: "Add browser-run interaction QA for Local Retrieval filters across desktop and mobile viewports.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/ai/context-memory-boundary.md",

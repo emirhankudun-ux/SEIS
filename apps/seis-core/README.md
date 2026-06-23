@@ -130,3 +130,22 @@ node --test apps/seis-core/test/*.test.js
 The app-level test suite includes Local Retrieval viewport-contract smoke
 coverage for desktop and mobile rendering. Browser screenshot regression should
 remain a separate review slice.
+
+## Visual QA
+
+Run the browser-backed Local Retrieval visual QA path with:
+
+```bash
+npm run qa:seis-core:local-retrieval:visual
+```
+
+The command starts a temporary local server, seeds browser-safe AI Core state,
+captures desktop-width and mobile-width screenshots with a tall evidence
+viewport, dumps rendered DOM, and writes a local manifest under
+`reports/tmp/seis-core-local-retrieval-visual/`. Those artifacts are
+intentionally ignored by Git. The committed evidence contract lives in
+`reports/evals/local-retrieval-browser-visual-qa.md`.
+
+This visual QA path is fixture-backed only. It does not call providers, run live
+retrieval, create embeddings, write memory, inspect secrets, execute SSH,
+deploy, or mutate infrastructure.

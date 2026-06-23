@@ -299,3 +299,13 @@ renders nonblank shell content, stable ARIA wiring, populated fixture-backed
 retrieval panels, safety boundary chips, and responsive CSS contracts. This is
 not a browser screenshot regression suite and does not add live retrieval,
 provider calls, embeddings, memory writes, or raw-content behavior.
+
+The browser-run visual QA slice added a repeatable local Chrome/Chromium path:
+`npm run qa:seis-core:local-retrieval:visual`. It serves `apps/seis-core`,
+seeds the AI Core Local Retrieval state, captures desktop and mobile
+screenshots, dumps rendered DOM, and writes ignored artifacts under
+`reports/tmp/seis-core-local-retrieval-visual/`. The committed evidence
+contract is `reports/evals/local-retrieval-browser-visual-qa.md`. This remains
+fixture-backed visual evidence only, not live retrieval, provider routing,
+embedding search, memory write behavior, raw-content return, or pixel-baseline
+regression coverage.

@@ -13,6 +13,10 @@ const requiredFiles = [
   "README.md",
   "test/seis-core-static.test.js"
 ];
+const requiredRootFiles = [
+  "scripts/capture-seis-core-local-retrieval-visual.mjs",
+  "reports/evals/local-retrieval-browser-visual-qa.md"
+];
 
 const requiredModules = [
   "Dashboard",
@@ -82,11 +86,20 @@ for (const file of requiredFiles) {
   }
 }
 
+for (const file of requiredRootFiles) {
+  const filePath = path.join(root, file);
+  if (!existsSync(filePath)) {
+    fail(`missing ${file}`);
+  }
+}
+
 const html = await readFile(path.join(appRoot, "index.html"), "utf8");
 const script = await readFile(path.join(appRoot, "script.js"), "utf8");
 const css = await readFile(path.join(appRoot, "styles.css"), "utf8");
 const manifest = JSON.parse(await readFile(path.join(appRoot, "manifest.webmanifest"), "utf8"));
 const readme = await readFile(path.join(appRoot, "README.md"), "utf8");
+const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+const visualQaReport = await readFile(path.join(root, "reports", "evals", "local-retrieval-browser-visual-qa.md"), "utf8");
 const architectureDocPath = path.join(root, "docs", "architecture", "seis-command-center.md");
 
 if (!existsSync(architectureDocPath)) {
@@ -131,6 +144,18 @@ if (!manifest.name?.includes("SEIS Command Center")) {
 
 if (!readme.includes("SEIS Command Center") || !readme.includes("Plugins & Extensions") || !readme.includes("Operating Model")) {
   fail("README must describe SEIS Command Center, operating model, and plugin surface");
+}
+
+if (!packageJson.scripts?.["qa:seis-core:local-retrieval:visual"]) {
+  fail("package.json must expose qa:seis-core:local-retrieval:visual");
+}
+
+if (!readme.includes("npm run qa:seis-core:local-retrieval:visual")) {
+  fail("README must document Local Retrieval visual QA command");
+}
+
+if (!visualQaReport.includes("Browser-run visual QA evidence") || !visualQaReport.includes("Non-Claims")) {
+  fail("Local Retrieval visual QA report must document evidence status and non-claims");
 }
 
 console.log("SEIS Command Center check passed.");
