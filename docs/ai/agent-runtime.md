@@ -16,7 +16,7 @@ runtime orchestration.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Agent definitions | Planned | `AGENTS.md` names the multi-assistant model. | No typed runtime schema. | Define a small role schema. |
+| Agent definitions | Documented assignment layer, planned runtime schema | `AGENTS.md` names the multi-assistant model; `docs/development/agents/ai-workforce-assignments.md` defines specialist ownership. | No typed runtime schema. | Define a small role schema. |
 | Tool permissions | Planned | Security boundaries are documented. | No permission registry. | Add read/write/destructive action categories. |
 | Handoff protocol | Documented | `AGENTS.md` and this document. | No handoff artifact schema. | Add a reviewer handoff template later. |
 | Automation runtime | Planned | `scripts/ai-launcher.cjs` exists, but no bounded runtime contract is implemented. | No tests for recursion, cancellation, or tool limits. | Keep automation dry-run until contracts exist. |
@@ -71,6 +71,7 @@ Before the agent runtime is marked implemented, add:
 - [seis-ai-core.md](seis-ai-core.md)
 - [model-router.md](model-router.md)
 - [prompt-engine.md](prompt-engine.md)
+- [../development/agents/ai-workforce-assignments.md](../development/agents/ai-workforce-assignments.md)
 - [../development/agents/README.md](../development/agents/README.md)
 - [../../AGENTS.md](../../AGENTS.md)
 
