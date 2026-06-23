@@ -29,6 +29,9 @@ Date: 2026-06-22
 - Roadmap-link records connecting every tracked goal to roadmap, PR queue, and status references.
 - A dated performed daily review record (`SEIS-REVIEW-004`) backed by
   `SEIS-EVID-014`.
+- A scoped PR readiness note for opening the branch as a stacked GitHub pull
+  request without claiming merge, release, deployment, or primary checkout
+  recovery.
 
 ## Findings
 
@@ -45,6 +48,7 @@ Date: 2026-06-22
 | Cycle plan is file-backed, not a completed review ceremony. | low | active | Mark weekly or monthly reviews performed only with dated review evidence. |
 | Risk and validation records are scoped, not broad readiness proof. | medium | active | Record only the specific command or review evidence that was actually performed. |
 | Roadmap links expose planning relationships, not PR completion. | medium | active | Treat PR queue and backlog references as planning evidence until GitHub state is inspected. |
+| Goal Tracking PR is ready to open as a stacked review, not ready to merge. | medium | active | Open PR against `seis/product-experience-suite` and keep merge approval separate. |
 
 ## Decision
 
@@ -52,3 +56,5 @@ Ready for a scoped Goal Tracking foundation branch push after validation, but
 not ready for merge, public readiness, release readiness, or deployment. The
 primary checkout merge-conflict blocker remains separate from this isolated
 branch.
+
+Related PR readiness note: `docs/reviews/GOAL_TRACKING_PR_READINESS.md`.

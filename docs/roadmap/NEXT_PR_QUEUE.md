@@ -57,7 +57,7 @@ Date: 2026-06-22
 | Suggested branch | `seis/goal-tracking-os-foundation` |
 | Priority | P1 |
 | Goal | Add planned review cadence records, the current dated performed review, plus completed/deferred/follow-up ledger records to the generated Goal Tracking Center. |
-| Include | `content/development/seis-goal-review-cadence.json`, `content/development/seis-goal-progress-ledger.json`, `docs/goals/review-cadence.md`, `docs/goals/progress-ledger.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html`. |
+| Include | `content/development/seis-goal-review-cadence.json`, `content/development/seis-goal-progress-ledger.json`, `docs/goals/review-cadence.md`, `docs/goals/progress-ledger.md`, `docs/reviews/GOAL_TRACKING_PR_READINESS.md`, `scripts/check-goal-tracking.mjs`, `scripts/create-goal-command-center-view.mjs`, `content/development/seis-goal-command-center-view.json`, `apps/web/goal-tracking.html`. |
 | Exclude | Fake performed recurring reviews, live GitHub API calls, primary checkout merge-conflict state, deployment, release actions, SSH, model-provider calls, benchmarks, dataset downloads. |
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
