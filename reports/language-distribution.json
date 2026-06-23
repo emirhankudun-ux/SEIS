@@ -9,19 +9,19 @@
   },
   "summary": {
     "countedFileCount": 903,
-    "countedBytes": 5336524,
-    "javascriptBytes": 1990849,
-    "javascriptPercent": 37.31,
+    "countedBytes": 5337715,
+    "javascriptBytes": 1992040,
+    "javascriptPercent": 37.32,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 4143709,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 4148189,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
-      "bytes": 1990849,
-      "percent": 37.31
+      "bytes": 1992040,
+      "percent": 37.32
     },
     {
       "language": "JSON",
@@ -36,12 +36,12 @@
     {
       "language": "Python",
       "bytes": 507341,
-      "percent": 9.51
+      "percent": 9.5
     },
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 7.72
+      "percent": 7.71
     },
     {
       "language": "CSS",
@@ -502,8 +502,8 @@
   "githubLanguagePanelSplit": [
     {
       "language": "JavaScript",
-      "bytes": 1990849,
-      "percent": 37.31,
+      "bytes": 1992040,
+      "percent": 37.32,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 411787,
-      "percent": 7.72,
+      "percent": 7.71,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -527,7 +527,7 @@
     {
       "language": "Other",
       "bytes": 2925441,
-      "percent": 54.82,
+      "percent": 54.81,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -671,8 +671,8 @@
       {
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
-        "bytes": 2402636,
-        "percent": 45.02,
+        "bytes": 2403827,
+        "percent": 45.03,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -887,7 +887,7 @@
     {
       "path": "scripts/create-ai-core-fixture-evaluation-report.mjs",
       "language": "JavaScript",
-      "bytes": 27004
+      "bytes": 27178
     },
     {
       "path": "packages/seis-ai/test/checks.test.mjs",
@@ -902,8 +902,8 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1551475,
-    "linguist-generated": 3015754,
+    "documentation": 1558000,
+    "linguist-generated": 3015897,
     "linguist-vendored": 2888366
   },
   "requiredLinguistRules": [
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "a5efa634aacabf93d79a65ebec4929d7374d20251d35108dcbd54f4eb0a8c57e",
+    "hash": "3185ecbae0d04f89f4ac094445286fab6339a7b47fd9d44d17630d5c24f4adfe",
     "algorithm": "sha256"
   }
 }

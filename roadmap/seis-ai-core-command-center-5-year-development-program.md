@@ -381,15 +381,20 @@ Completed foundation slice:
 - Browser-run AI Core evidence gate availability is documented in
   `docs/evals/ai-core-browser-evidence-gates.md`, separating CI-safe
   metadata-only gates from local or browser-enabled artifact gates.
+- Browser-run AI Core CI proposal is documented in
+  `docs/evals/ai-core-browser-ci-proposal.md`, covering Chrome/Chromium setup,
+  `SEIS_BROWSER_BIN`, bounded timeout behavior, temporary artifact retention,
+  failure semantics, and the approval boundary without enabling the browser
+  gate in the active GitHub Actions workflow.
 
 ## Next Safe Slice
 
-Prepare a separate CI browser setup proposal for AI Core browser artifact gates.
-The proposal should document the exact Chrome/Chromium setup, timeout behavior,
-artifact retention policy, and failure semantics before enabling
-`npm run qa:seis-core:ai-core-evidence` in GitHub Actions. It must not add live
-providers, embeddings, memory writes, raw-content behavior, GitHub writes, SSH,
-deployment, payment, or infrastructure mutation.
+Prepare a separate browser-enabled CI workflow draft for AI Core browser
+artifact gates. The draft should keep `.github/workflows/ci.yml`
+metadata-only, use explicit Chrome/Chromium setup, preserve bounded timeout and
+artifact rules from `docs/evals/ai-core-browser-ci-proposal.md`, and remain
+provider-free, SSH-free, deployment-free, payment-free, and
+infrastructure-mutation-free until reviewed.
 
 ## Relationship to Existing Roadmaps
 

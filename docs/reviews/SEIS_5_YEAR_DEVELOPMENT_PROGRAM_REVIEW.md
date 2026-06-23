@@ -51,10 +51,11 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Prepare a separate CI browser setup proposal for AI Core browser artifact
-   gates, including exact Chrome/Chromium setup, timeout behavior, artifact
-   retention policy, and failure semantics before enabling
-   `npm run qa:seis-core:ai-core-evidence` in GitHub Actions.
+1. Prepare a separate browser-enabled CI workflow draft for AI Core browser
+   artifact gates. The draft must keep the active CI metadata-only, use explicit
+   Chrome/Chromium setup, preserve `SEIS_BROWSER_BIN`, timeout, artifact, and
+   failure semantics from `docs/evals/ai-core-browser-ci-proposal.md`, and avoid
+   providers, SSH, deployment, payment, and infrastructure mutation.
 
 ## Follow-Up Contract Slice
 
@@ -408,5 +409,30 @@ manifest and desktop/mobile JSON reports produced by the browser QA run to
 verify scenario IDs, viewports, step order, panel counts, safety flags, artifact
 paths, and non-claims. It does not call providers, run live retrieval, create
 embeddings, write memory, return raw content, execute GitHub writes, SSH,
+deployment, payment, infrastructure mutation, benchmark claims, or
+model-training evidence.
+
+## Browser-Run AI Core CI Proposal Slice
+
+Status: Added after the browser-run AI Core evidence gate availability slice.
+
+Evidence:
+
+- `docs/evals/ai-core-browser-ci-proposal.md`
+- `docs/evals/ai-core-browser-evidence-gates.md`
+- `docs/evals/evaluation-strategy.md`
+- `packages/evals/README.md`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `scripts/create-ai-core-fixture-evaluation-report.mjs`
+- `npm run check:ai-core-browser-qa-evidence`
+
+This slice documents the review-ready CI proposal for running browser-run AI
+Core QA evidence in GitHub Actions without enabling the browser-required gate in
+the active CI workflow. It covers Chrome/Chromium setup, `SEIS_BROWSER_BIN`,
+bounded timeout behavior, temporary `reports/tmp/` artifact handling, failure
+semantics, and the approval boundary. The proposal remains metadata-validated
+planning evidence: it is not browser QA pass evidence, does not change
+`.github/workflows/ci.yml`, and does not add live providers, embeddings,
+persistent memory writes, raw-content return, GitHub write actions, SSH,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.

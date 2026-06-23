@@ -41,7 +41,7 @@
 
 ## Next Recommended Slice
 
-Add CI/browser availability documentation for browser-run AI Core evidence gates.
+Prepare an optional browser-enabled CI workflow draft for AI Core evidence gates without enabling it in the active workflow.
 
 Source links:
 
@@ -51,3 +51,4 @@ Source links:
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `scripts/check-ai-core-browser-qa-evidence.mjs`
 - `docs/evals/ai-core-browser-evidence-gates.md`
+- `docs/evals/ai-core-browser-ci-proposal.md`

@@ -14,6 +14,7 @@
     "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
     "packages/data/fixtures/seis-10m-token-feed-budget.json",
     "docs/evals/ai-core-browser-evidence-gates.md",
+    "docs/evals/ai-core-browser-ci-proposal.md",
     "reports/evals/local-retrieval-browser-visual-qa.md",
     "reports/evals/ai-core-panel-navigation-browser-qa.md",
     "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -556,14 +557,15 @@
     "No secret values, provider keys, private keys, or raw private configuration are included."
   ],
   "nextRecommendedSlice": {
-    "summary": "Add CI/browser availability documentation for browser-run AI Core evidence gates.",
+    "summary": "Prepare an optional browser-enabled CI workflow draft for AI Core evidence gates without enabling it in the active workflow.",
     "sourceLinks": [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
       "docs/evals/evaluation-strategy.md",
       "apps/seis-core/README.md",
       "reports/evals/ai-core-panel-navigation-browser-qa.md",
       "scripts/check-ai-core-browser-qa-evidence.mjs",
-      "docs/evals/ai-core-browser-evidence-gates.md"
+      "docs/evals/ai-core-browser-evidence-gates.md",
+      "docs/evals/ai-core-browser-ci-proposal.md"
     ]
   }
 }

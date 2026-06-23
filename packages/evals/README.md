@@ -37,6 +37,10 @@ running `npm run qa:seis-core:ai-core-panels`, the stronger artifact gate is
 `npm run check:ai-core-browser-qa-evidence -- --require-artifacts` or the
 combined `npm run qa:seis-core:ai-core-evidence`.
 
+The browser-enabled CI proposal is documented in
+`docs/evals/ai-core-browser-ci-proposal.md`. It describes the future workflow
+shape without enabling browser-required QA in the current CI workflow.
+
 Canonical validator phrase: browser-run AI Core QA evidence.
 
 No benchmark result, live model score, provider performance result, safety

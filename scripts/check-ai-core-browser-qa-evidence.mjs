@@ -13,6 +13,7 @@ const files = {
   schema: "packages/evals/schemas/fixture-evaluation-report.schema.json",
   evalsReadme: "packages/evals/README.md",
   browserEvidenceGates: "docs/evals/ai-core-browser-evidence-gates.md",
+  browserCiProposal: "docs/evals/ai-core-browser-ci-proposal.md",
   readme: "apps/seis-core/README.md",
   evaluationStrategy: "docs/evals/evaluation-strategy.md",
   roadmap: "roadmap/seis-ai-core-command-center-5-year-development-program.md",
@@ -220,6 +221,7 @@ const ciWorkflow = readText(files.ciWorkflow, { scanSecrets: false });
 const schema = readText(files.schema);
 const evalsReadme = readText(files.evalsReadme);
 const browserEvidenceGates = readText(files.browserEvidenceGates);
+const browserCiProposal = readText(files.browserCiProposal);
 const readme = readText(files.readme);
 const evaluationStrategy = readText(files.evaluationStrategy);
 const roadmap = readText(files.roadmap);
@@ -312,18 +314,43 @@ lowerIncludesAll("AI Core browser evidence gates doc", browserEvidenceGates, [
   "infrastructure mutation"
 ]);
 
+lowerIncludesAll("AI Core browser CI proposal", browserCiProposal, [
+  "AI Core Browser CI Proposal",
+  "browser-run AI Core QA evidence",
+  "GitHub Actions",
+  "does not enable",
+  "Chrome/Chromium",
+  "SEIS_BROWSER_BIN",
+  "npm run check:ai-core-browser-qa-evidence",
+  "npm run check:ai-core-eval-evidence",
+  "npm run qa:seis-core:ai-core-evidence",
+  "reports/tmp/seis-core-ai-core-panel-navigation/",
+  "timeout",
+  "artifact",
+  "provider-free",
+  "SSH",
+  "deployment",
+  "payment",
+  "infrastructure mutation",
+  "metadata-only",
+  "future CI change"
+]);
+
 lowerIncludesAll("evals package README", evalsReadme, [
   "docs/evals/ai-core-browser-evidence-gates.md",
+  "docs/evals/ai-core-browser-ci-proposal.md",
   "reports/evals/ai-core-panel-navigation-browser-qa.md",
   "npm run check:ai-core-browser-qa-evidence",
   "npm run check:ai-core-eval-evidence",
   "npm run qa:seis-core:ai-core-evidence",
   "metadata-only",
-  "artifact gate"
+  "artifact gate",
+  "without enabling browser-required QA"
 ]);
 
 includesAll("fixture report generator", fixtureReportGenerator, [
   "panelNavigationQaReportPath",
+  "browserCiProposalPath",
   "browserUiEvaluations",
   "eval-browser-ui-ai-core-panel-navigation-qa",
   "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -354,6 +381,7 @@ for (const [label, text] of [
   ["apps/seis-core README", readme],
   ["evals package README", evalsReadme],
   ["browser evidence gates", browserEvidenceGates],
+  ["browser CI proposal", browserCiProposal],
   ["evaluation strategy", evaluationStrategy],
   ["five-year roadmap", roadmap],
   ["five-year review", programReview]
@@ -370,6 +398,10 @@ if (!fixtureReport.sourceDocuments?.includes(files.browserQaReport)) {
 
 if (!fixtureReport.sourceDocuments?.includes("scripts/check-ai-core-browser-qa-evidence.mjs")) {
   fail("fixture report sourceDocuments must include the browser QA evidence check script");
+}
+
+if (!fixtureReport.sourceDocuments?.includes(files.browserCiProposal)) {
+  fail("fixture report sourceDocuments must include the AI Core browser CI proposal");
 }
 
 if (fixtureReport.summary?.browserUiEvaluationCount !== 2) {
