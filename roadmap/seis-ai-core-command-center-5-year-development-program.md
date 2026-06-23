@@ -360,14 +360,18 @@ Completed foundation slice:
   and a manifest written to ignored `reports/tmp/` artifacts. The committed
   evidence contract lives at
   `reports/evals/local-retrieval-browser-visual-qa.md`.
+- Browser-run interaction QA now extends the Local Retrieval evidence path
+  through `npm run qa:seis-core:local-retrieval`, verifying query entry,
+  source-class selection, transcript-state selection, reset behavior, focus
+  preservation, status text, credential-boundary filtering, and empty-state
+  behavior across desktop and mobile browser scenarios.
 
 ## Next Safe Slice
 
-Add browser-run interaction QA for Local Retrieval filters across desktop and
-mobile viewports, verifying query, source-class, transcript-state, reset,
-focus, live-region/status text, and empty-state behavior in an actual browser
-without adding live retrieval, providers, embeddings, memory writes, or
-raw-content behavior.
+Add browser-run AI Core panel navigation QA for route, prompt, agent, approval,
+evaluation, evidence, and Local Retrieval sections across desktop and mobile
+viewports without adding live providers, embeddings, memory writes, raw-content
+behavior, GitHub writes, SSH, deployment, or infrastructure mutation.
 
 ## Relationship to Existing Roadmaps
 

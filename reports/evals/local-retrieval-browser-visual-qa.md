@@ -1,6 +1,6 @@
-# Local Retrieval Browser Visual QA Evidence
+# Local Retrieval Browser Visual And Interaction QA Evidence
 
-Status: Browser-run visual QA evidence
+Status: Browser-run visual and interaction QA evidence
 
 Surface: `apps/seis-core` Local Retrieval toolbar
 
@@ -21,8 +21,10 @@ reports/tmp/seis-core-local-retrieval-visual/
 This evidence record documents the repeatable local browser QA path for the
 Command Center Local Retrieval toolbar. The command serves `apps/seis-core`,
 seeds the browser-safe local state for the AI Core view, captures screenshots,
-dumps rendered DOM, and verifies required fixture-backed text for desktop and
-mobile scenarios.
+dumps rendered DOM, performs browser-run query/source-class/transcript-state
+and reset interactions, and verifies required fixture-backed text, focus
+behavior, status text, and empty-state behavior for desktop and mobile
+scenarios.
 
 ## Covered Scenarios
 
@@ -31,6 +33,8 @@ mobile scenarios.
 | Desktop default Local Retrieval | `1440x900` | `1440x8200` | Screenshot, DOM dump, manifest entry |
 | Desktop empty-state filter | `1440x900` | `1440x8200` | Screenshot, DOM dump, manifest entry |
 | Mobile credential boundary filter | `390x844` | `390x8200` | Screenshot, DOM dump, manifest entry |
+| Desktop Local Retrieval interaction flow | `1440x900` | n/a | DOM dump, JSON interaction report, manifest entry |
+| Mobile Local Retrieval interaction flow | `390x844` | n/a | DOM dump, JSON interaction report, manifest entry |
 
 The taller capture viewport is intentional. The Command Center AI Core surface
 is long, and the visual evidence must include the Local Retrieval toolbar and
@@ -46,6 +50,12 @@ Each browser run must verify:
 - Query, source-class, transcript-state, reset, and status controls render.
 - Fixture-backed retrieval panels render with expected metadata.
 - Empty-state behavior renders for narrowed filters.
+- Browser-run interactions type into the query field, change source-class and
+  transcript-state filters, click reset, and verify restored default state.
+- Focus remains on the active retrieval control during query, select, and reset
+  interactions.
+- The filter status live region updates for populated, narrowed, empty,
+  credential-boundary, and reset states.
 - Safety boundary chips such as `raw:false` and `provider:false` remain visible.
 - No provider key marker, private key marker, live retrieval, embedding,
   persistent memory write, raw-content return, SSH, deployment, payment, or
@@ -53,11 +63,11 @@ Each browser run must verify:
 
 ## Non-Claims
 
-This is browser-run visual QA evidence, not a pixel-baseline regression suite.
-It does not perform screenshot diffing, establish per-pixel tolerances, certify
-cross-browser coverage, create live retrieval, call model providers, create
-embeddings, write persistent memory, return raw content, or prove provider
-readiness.
+This is browser-run visual and interaction QA evidence, not a pixel-baseline
+regression suite. It does not perform screenshot diffing, establish per-pixel
+tolerances, certify cross-browser coverage, create live retrieval, call model
+providers, create embeddings, write persistent memory, return raw content, or
+prove provider readiness.
 
 ## Browser Requirement
 

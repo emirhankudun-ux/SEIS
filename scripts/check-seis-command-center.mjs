@@ -154,8 +154,13 @@ if (!readme.includes("npm run qa:seis-core:local-retrieval:visual")) {
   fail("README must document Local Retrieval visual QA command");
 }
 
-if (!visualQaReport.includes("Browser-run visual QA evidence") || !visualQaReport.includes("Non-Claims")) {
-  fail("Local Retrieval visual QA report must document evidence status and non-claims");
+if (
+  !visualQaReport.includes("Browser-run visual and interaction QA evidence") ||
+  !visualQaReport.includes("query/source-class/transcript-state") ||
+  !visualQaReport.includes("status text") ||
+  !visualQaReport.includes("Non-Claims")
+) {
+  fail("Local Retrieval browser QA report must document visual evidence, interaction evidence, and non-claims");
 }
 
 console.log("SEIS Command Center check passed.");

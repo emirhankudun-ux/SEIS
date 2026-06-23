@@ -11,6 +11,7 @@ const retrievalAdapterFixturePath = "packages/data/fixtures/local-readonly-retri
 const retrievalSearchTranscriptFixturePath = "packages/data/fixtures/local-readonly-retrieval-search-transcript.json";
 const tokenFeedFixturePath = "packages/data/fixtures/seis-10m-token-feed-budget.json";
 const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
+const browserQaReportPath = "reports/evals/local-retrieval-browser-visual-qa.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -460,6 +461,41 @@ const retrievalEvaluations = [
       "scripts/check-token-feed-budget.mjs",
       "docs/ai/context-memory-boundary.md"
     ]
+  },
+  {
+    id: "eval-retrieval-local-browser-interaction-qa",
+    layer: "retrieval",
+    targetType: "retrieval-ui",
+    targetId: "local-retrieval-browser-interaction-qa",
+    sourceFixture: browserQaReportPath,
+    privacyClass: "local-browser-fixture",
+    rubric: [
+      "browser-run Local Retrieval visual evidence documented",
+      "browser-run query interaction documented",
+      "source-class and transcript-state interactions documented",
+      "reset, focus, status text, and empty-state behavior documented",
+      "provider, raw content, memory, embedding, SSH, deployment, and infrastructure actions remain disabled"
+    ],
+    passCriteria: [
+      "QA command is npm run qa:seis-core:local-retrieval",
+      "desktop and mobile interaction scenarios are declared",
+      "query, source-class, transcript-state, credential-boundary, and reset steps are verified",
+      "generated browser artifacts stay under ignored reports/tmp",
+      "non-claims exclude live retrieval, provider calls, embeddings, memory writes, raw content, and privileged actions"
+    ],
+    observedOutputSummary: "Browser-run Local Retrieval QA now covers seeded visual evidence plus query, source-class, transcript-state, credential-boundary, reset, focus, status, and empty-state interactions across desktop and mobile scenarios.",
+    limitations: [
+      "Browser artifacts are local and ignored; the committed report documents the repeatable evidence contract.",
+      "Pass does not create live retrieval, provider routing, embedding search, persistent memory, raw-content return, SSH execution, deployment, payment, or infrastructure mutation."
+    ],
+    reviewer: "codex-browser-fixture-check",
+    result: "pass",
+    status: "validated",
+    evidenceLinks: [
+      browserQaReportPath,
+      "scripts/capture-seis-core-local-retrieval-visual.mjs",
+      "apps/seis-core/test/seis-core-static.test.js"
+    ]
   }
 ];
 
@@ -479,7 +515,8 @@ const report = {
     knowledgeFixturePath,
     retrievalAdapterFixturePath,
     retrievalSearchTranscriptFixturePath,
-    tokenFeedFixturePath
+    tokenFeedFixturePath,
+    browserQaReportPath
   ],
   summary: {
     promptEvaluationCount: promptEvaluations.length,
@@ -493,11 +530,11 @@ const report = {
   evaluations,
   nonClaims,
   nextRecommendedSlice: {
-    summary: "Add browser-run interaction QA for Local Retrieval filters across desktop and mobile viewports.",
+    summary: "Add browser-run AI Core panel navigation QA across desktop and mobile viewports.",
     sourceLinks: [
       "roadmap/seis-ai-core-command-center-5-year-development-program.md",
-      "docs/ai/context-memory-boundary.md",
-      "docs/product/ai-app-surfaces.md"
+      "docs/evals/evaluation-strategy.md",
+      "apps/seis-core/README.md"
     ]
   }
 };

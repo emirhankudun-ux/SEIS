@@ -4,8 +4,8 @@
 - Status: fixture-backed
 - Prompt evaluations: 7
 - App-state evaluations: 2
-- Retrieval evaluations: 4
-- Passed: 13
+- Retrieval evaluations: 5
+- Passed: 14
 - Failed: 0
 - Blocked: 0
 - Unknown: 0
@@ -27,6 +27,7 @@
 | eval-retrieval-local-readonly-query-adapter | retrieval | retrieval:local-readonly-retrieval-query-adapter | pass | packages/data/fixtures/local-readonly-retrieval-query-adapter.json, scripts/check-retrieval-query-adapter.mjs, apps/seis-core/index.html |
 | eval-retrieval-local-search-transcript | retrieval | retrieval:local-readonly-retrieval-search-transcript | pass | packages/data/fixtures/local-readonly-retrieval-search-transcript.json, scripts/check-retrieval-search-transcript.mjs, apps/seis-core/index.html |
 | eval-retrieval-seis-10m-token-feed-budget | retrieval | retrieval:seis-10m-token-feed-budget | pass | packages/data/fixtures/seis-10m-token-feed-budget.json, scripts/check-token-feed-budget.mjs, docs/ai/context-memory-boundary.md |
+| eval-retrieval-local-browser-interaction-qa | retrieval | retrieval-ui:local-retrieval-browser-interaction-qa | pass | reports/evals/local-retrieval-browser-visual-qa.md, scripts/capture-seis-core-local-retrieval-visual.mjs, apps/seis-core/test/seis-core-static.test.js |
 
 ## Non-Claims
 
@@ -38,10 +39,10 @@
 
 ## Next Recommended Slice
 
-Add browser-run interaction QA for Local Retrieval filters across desktop and mobile viewports.
+Add browser-run AI Core panel navigation QA across desktop and mobile viewports.
 
 Source links:
 
 - `roadmap/seis-ai-core-command-center-5-year-development-program.md`
-- `docs/ai/context-memory-boundary.md`
-- `docs/product/ai-app-surfaces.md`
+- `docs/evals/evaluation-strategy.md`
+- `apps/seis-core/README.md`

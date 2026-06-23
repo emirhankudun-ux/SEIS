@@ -309,3 +309,25 @@ contract is `reports/evals/local-retrieval-browser-visual-qa.md`. This remains
 fixture-backed visual evidence only, not live retrieval, provider routing,
 embedding search, memory write behavior, raw-content return, or pixel-baseline
 regression coverage.
+
+## Browser-Run Local Retrieval Interaction QA Slice
+
+Status: Added after the browser-run visual QA slice.
+
+Evidence:
+
+- `scripts/capture-seis-core-local-retrieval-visual.mjs`
+- `reports/evals/local-retrieval-browser-visual-qa.md`
+- `apps/seis-core/test/seis-core-static.test.js`
+- `npm run qa:seis-core:local-retrieval`
+- `npm run check:seis-command-center`
+
+This slice extends Local Retrieval evidence from seeded browser visual capture
+to browser-run interaction QA. It verifies query entry, source-class selection,
+transcript-state selection, reset behavior, focus preservation, status text,
+credential-boundary filtering, and two-panel empty-state output across desktop
+and mobile viewports. It remains fixture-backed and local-only: it does not
+create live retrieval, provider routing, embeddings, persistent memory writes,
+raw-content return, secret lookup, GitHub write actions, SSH execution,
+deployment, payment, infrastructure mutation, benchmark claims, or
+model-training evidence.

@@ -114,14 +114,16 @@ stronger than source-only CSS checks, but it is still not pixel-level browser
 visual regression evidence and does not claim screenshot, clipping, or real
 layout-engine coverage.
 
-The browser-run visual QA path is documented in
+The browser-run visual and interaction QA path is documented in
 `reports/evals/local-retrieval-browser-visual-qa.md` and executed with
-`npm run qa:seis-core:local-retrieval:visual`. It captures local screenshots
-and DOM dumps under ignored `reports/tmp/` artifacts for desktop default,
-desktop empty-filter, and mobile credential-boundary scenarios. This adds
-browser evidence for the rendered Local Retrieval toolbar without turning the
-fixture-backed UI into live retrieval, provider routing, embedding search,
-memory write behavior, raw-content return, or a pixel-baseline regression suite.
+`npm run qa:seis-core:local-retrieval`. It captures local screenshots and DOM
+dumps under ignored `reports/tmp/` artifacts, then verifies query entry,
+source-class selection, transcript-state selection, reset behavior, focus
+preservation, status text, and empty-state behavior across desktop and mobile
+browser scenarios. This adds rendered-browser interaction evidence for the
+fixture-backed Local Retrieval toolbar without turning the UI into live
+retrieval, provider routing, embedding search, memory write behavior,
+raw-content return, or a pixel-baseline regression suite.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

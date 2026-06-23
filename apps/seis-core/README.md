@@ -141,7 +141,9 @@ npm run qa:seis-core:local-retrieval:visual
 
 The command starts a temporary local server, seeds browser-safe AI Core state,
 captures desktop-width and mobile-width screenshots with a tall evidence
-viewport, dumps rendered DOM, and writes a local manifest under
+viewport, drives query/source-class/transcript-state/reset interactions in a
+real browser, dumps rendered DOM, writes sanitized interaction reports, and
+writes a local manifest under
 `reports/tmp/seis-core-local-retrieval-visual/`. Those artifacts are
 intentionally ignored by Git. The committed evidence contract lives in
 `reports/evals/local-retrieval-browser-visual-qa.md`.
