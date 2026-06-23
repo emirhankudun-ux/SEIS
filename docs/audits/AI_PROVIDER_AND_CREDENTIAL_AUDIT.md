@@ -17,7 +17,7 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 1589
+Inspected files: 1592
 
 ## Provider Matrix
 
@@ -29,8 +29,8 @@ Inspected files: 1589
 | DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 110 | no | no | Retain | Review manually before enabling. |
 | Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 91 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Groq | cloud model provider | Unknown | GROQ_API_KEY | 3 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 966 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 210 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 972 | no | no | Retain | Review manually before enabling. |
+| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 222 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 39 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 74 | no | no | Retain | Review manually before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |

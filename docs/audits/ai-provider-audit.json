@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 1589,
+  "inspectedFiles": 1592,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -53274,6 +53274,14 @@
           "surface": "documentation"
         },
         {
+          "path": "docs/development/agents/ai-workforce-assignments.md",
+          "line": 39,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "docs/development/long-term-development-program.md",
           "line": 22,
           "matchTypes": [
@@ -55586,6 +55594,46 @@
           "surface": "backend"
         },
         {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 100,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 101,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 102,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 182,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 183,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
           "path": "scripts/check-experience-budget.mjs",
           "line": 35,
           "matchTypes": [
@@ -56323,6 +56371,38 @@
           "surface": "repository"
         },
         {
+          "path": "content/development/ai-workforce-assignments.json",
+          "line": 75,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/ai-workforce-assignments.json",
+          "line": 225,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/ai-workforce-assignments.json",
+          "line": 226,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/ai-workforce-assignments.json",
+          "line": 227,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "repository"
+        },
+        {
           "path": "content/development/desktop-app-integration.json",
           "line": 11,
           "matchTypes": [
@@ -56829,6 +56909,38 @@
         {
           "path": "docs/deployment/seis-ssh-chatgpt-mobile-24x7.md",
           "line": 69,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/development/agents/ai-workforce-assignments.md",
+          "line": 14,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/development/agents/ai-workforce-assignments.md",
+          "line": 33,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/development/agents/ai-workforce-assignments.md",
+          "line": 58,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/development/agents/ai-workforce-assignments.md",
+          "line": 76,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57519,6 +57631,38 @@
           "surface": "backend"
         },
         {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 16,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 112,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 113,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-ai-workforce-assignments.mjs",
+          "line": 135,
+          "matchTypes": [
+            "model:ollama"
+          ],
+          "surface": "backend"
+        },
+        {
           "path": "scripts/check-cloud-environment.cjs",
           "line": 40,
           "matchTypes": [
@@ -57897,7 +58041,7 @@
         },
         {
           "path": "reports/seis-project-intake/latest.json",
-          "line": 723,
+          "line": 726,
           "matchTypes": [
             "model:gpt-"
           ],
@@ -61010,7 +61154,7 @@
         },
         {
           "path": "reports/seis-project-intake/latest.json",
-          "line": 543,
+          "line": 546,
           "matchTypes": [
             "model:runway"
           ],
@@ -61018,7 +61162,7 @@
         },
         {
           "path": "reports/seis-project-intake/latest.json",
-          "line": 1023,
+          "line": 1032,
           "matchTypes": [
             "model:runway"
           ],
@@ -61026,7 +61170,7 @@
         },
         {
           "path": "reports/seis-project-intake/latest.json",
-          "line": 1185,
+          "line": 1194,
           "matchTypes": [
             "model:runway"
           ],
@@ -61034,7 +61178,7 @@
         },
         {
           "path": "reports/seis-project-intake/latest.json",
-          "line": 1188,
+          "line": 1197,
           "matchTypes": [
             "model:runway"
           ],
