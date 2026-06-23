@@ -104,12 +104,170 @@ const fallbackPublishGate = {
   }
 };
 
+const pluginLaneIds = ["seis", "seis-cloud", "seis-code", "seis-design", "seis-data"];
+
+const fallbackPluginInterfaces = {
+  generatedAt: "2026-06-22",
+  status: "static-fallback",
+  summary: "Read-only fallback for SEIS plugin interface lanes.",
+  interfaces: [
+    {
+      id: "seis",
+      handle: "@seis",
+      title: "SEIS Command Layer",
+      status: "documented foundation",
+      stage: "foundation",
+      risk: "medium",
+      purpose: "Coordinate governance, goals, evidence, and Command Center navigation.",
+      currentSurface: "Command Center lane status and Goal Tracking OS records.",
+      nextAction: "Keep official docs, status, backlog, and generated static views aligned.",
+      evidence: ["docs/STATUS.md", "docs/SEIS_MASTER_INDEX.md"]
+    },
+    {
+      id: "seis-cloud",
+      handle: "@seis-cloud",
+      title: "Cloud Readiness",
+      status: "documented dry-run",
+      stage: "approval-gated",
+      risk: "high",
+      purpose: "Expose cloud readiness without executing deployment or SSH.",
+      currentSurface: "Dry-run cloud readiness and publish-gate evidence.",
+      nextAction: "Keep live actions blocked until target, rollback, and approval are explicit.",
+      evidence: ["docs/operations/seis-cloud-foundation.md", "deploy/cloud-environment.json"]
+    },
+    {
+      id: "seis-code",
+      handle: "@seis-code",
+      title: "SEIS Code Workspace",
+      status: "planned mvp",
+      stage: "contract",
+      risk: "medium",
+      purpose: "Define browser IDE, virtual file system, terminal, and no-key AI REPL boundaries.",
+      currentSurface: "Static MVP contract and code automation plan evidence.",
+      nextAction: "Build a browser-safe editor/file slice before broader dependencies.",
+      evidence: ["docs/product/seis-code-foundation.md"]
+    },
+    {
+      id: "seis-design",
+      handle: "@seis-design",
+      title: "Design System",
+      status: "scaffolded",
+      stage: "quality-gates",
+      risk: "low",
+      purpose: "Track tokens, components, accessibility, reduced motion, and visual QA.",
+      currentSurface: "Design foundation and token evidence.",
+      nextAction: "Add component inventory and visual QA evidence.",
+      evidence: ["docs/design-system/seis-design-foundation.md", "packages/design-tokens/seis.tokens.css"]
+    },
+    {
+      id: "seis-data",
+      handle: "@seis-data",
+      title: "Data And Evidence",
+      status: "validated records plus gaps",
+      stage: "schema-registry",
+      risk: "medium",
+      purpose: "Manage JSON records, evidence ledgers, generated reports, and data contracts.",
+      currentSurface: "Goal records, evidence records, and generated view models.",
+      nextAction: "Create a schema registry and freshness policy.",
+      evidence: ["docs/data/seis-data-foundation.md", "content/development/seis-goal-command-center-view.json"]
+    }
+  ],
+  fiveYearHorizon: [
+    {
+      year: "2026",
+      phase: "Foundation",
+      focus: "Static interfaces, evidence links, and no-live-action boundaries.",
+      validation: "Syntax checks, JSON validation, and manual accessibility review."
+    },
+    {
+      year: "2027",
+      phase: "Command Center Alpha",
+      focus: "Shared navigation, persistence, search, and operator review workflows.",
+      validation: "Component tests, keyboard QA, and data freshness checks."
+    },
+    {
+      year: "2028",
+      phase: "Integrated Workflows",
+      focus: "Read-only GitHub, cloud dry-run, SEIS Code MVP, design inventory, and schema coverage.",
+      validation: "Contract tests, no-key startup checks, and redacted provider audits."
+    },
+    {
+      year: "2029",
+      phase: "Governed Automation",
+      focus: "Approval-gated actions, audit trails, agent queues, and rollback-ready operations.",
+      validation: "Permission tests, audit event reviews, and degraded-mode checks."
+    },
+    {
+      year: "2030",
+      phase: "Ecosystem Maturity",
+      focus: "Federation, release governance, local model options, and maintenance cadence.",
+      validation: "Release dry-runs, public exposure review, and security refresh."
+    }
+  ],
+  developmentProgram: ["2026", "2027", "2028", "2029", "2030"].map((year) => ({
+    year,
+    theme: year === "2026" ? "Foundation interfaces" : "Staged interface maturity",
+    operatingPosture: "Read-only, validator-backed, and safe without cloud credentials.",
+    laneCommitments: pluginLaneIds.map((id) => ({
+      id,
+      focus: `Advance ${id} through a small, evidence-backed interface slice.`,
+      interfaceOutcome: `${id} exposes current status, evidence, blocked work, and next safe action.`,
+      validationGate: "No live deployment, SSH, provider secret, or write action is implied."
+    }))
+  })),
+  developmentCadence: {
+    periods: [
+      {
+        id: "H1",
+        label: "H1 build cycle",
+        purpose: "Define, prototype, and validate the next safe interface slice for the selected year.",
+        reviewGate: "Mid-year review confirms evidence paths, mobile behavior, and no-key fallback."
+      },
+      {
+        id: "H2",
+        label: "H2 hardening cycle",
+        purpose: "Stabilize, document, and prepare the selected year's interface work for PR sequencing.",
+        reviewGate: "Year-end review confirms validators, release boundaries, and deferred actions."
+      }
+    ],
+    laneRoutines: pluginLaneIds.map((id) => ({
+      id,
+      h1: `Review ${id} source records, interface copy, evidence paths, and safe action gates.`,
+      h2: `Harden ${id} validation, mobile behavior, release boundaries, and deferred-action notes.`
+    }))
+  },
+  maturitySignals: {
+    headline: "Five-year product memory without live-action overclaiming.",
+    posture: "The interface should feel like a maintained product system: dense evidence, clear cadence, predictable gates, and no fake operational buttons.",
+    markers: [
+      { label: "lane-year commitments", value: "25", detail: "Five plugin lanes across five years." },
+      { label: "cadence loops", value: "10", detail: "H1 build and H2 hardening routines for every lane." },
+      { label: "readiness gates", value: "5", detail: "Allowed and blocked actions are visible per lane." },
+      { label: "live actions", value: "0", detail: "The current interface remains local and read-only." }
+    ]
+  },
+  interfaceReadiness: pluginLaneIds.map((id) => ({
+    id,
+    currentMode: "static readiness review",
+    allowedActions: ["Review local evidence.", "Switch lane, year, and cadence views.", "Prepare scoped review notes."],
+    blockedActions: ["Execute privileged live actions.", "Expose secrets or private hosts.", "Claim validation without evidence."],
+    nextReview: "2026-H2",
+    reviewCadence: "H1/H2",
+    evidenceGate: "Source records, docs, and validators must stay aligned.",
+    promotionGate: "Browser QA must cover tabs, year controls, readiness gates, and mobile layout."
+  }))
+};
+
 const state = {
   mode: "cinematic",
   gaps: [],
   capabilities: fallbackCapabilities,
   marketplace: fallbackMarketplace,
   publishGate: fallbackPublishGate,
+  pluginInterfaces: fallbackPluginInterfaces,
+  activePluginInterface: "seis",
+  activePluginYear: "2026",
+  activePluginPeriod: "H1",
   pluginCommandCenter: null,
   mcpManifest: null,
   seisReposBridge: null,
@@ -529,6 +687,320 @@ function renderMarketplace() {
     );
     sourcesBoard.append(card);
   });
+}
+
+function getEvidenceHref(sourcePath) {
+  const normalized = String(sourcePath || "").replace(/^\/+/, "");
+  if (!normalized || normalized.startsWith("http")) return normalized || "#";
+  return `../../${normalized}`;
+}
+
+function getLaneSource(id) {
+  const sources = {
+    seis: "docs/SEIS_MASTER_INDEX.md",
+    "seis-cloud": "docs/operations/seis-cloud-foundation.md",
+    "seis-code": "docs/product/seis-code-foundation.md",
+    "seis-design": "docs/design-system/seis-design-foundation.md",
+    "seis-data": "docs/data/seis-data-foundation.md"
+  };
+  return getEvidenceHref(sources[id] || "docs/STATUS.md");
+}
+
+function setupPluginInterfaceTabs() {
+  document.querySelectorAll("[data-plugin-interface-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.activePluginInterface = button.dataset.pluginInterfaceTab || "seis";
+      renderPluginInterfaces();
+    });
+  });
+}
+
+function setupPluginYearControls() {
+  const section = el("[data-plugin-interfaces]");
+  if (!section) return;
+
+  section.addEventListener("click", (event) => {
+    const yearButton = event.target.closest("[data-plugin-year]");
+    if (yearButton) {
+      state.activePluginYear = yearButton.dataset.pluginYear || "2026";
+      renderPluginInterfaces();
+      return;
+    }
+
+    const periodButton = event.target.closest("[data-plugin-period]");
+    if (periodButton) {
+      state.activePluginPeriod = periodButton.dataset.pluginPeriod || "H1";
+      renderPluginInterfaces();
+      return;
+    }
+
+    const laneButton = event.target.closest("[data-program-lane]");
+    if (laneButton) {
+      state.activePluginInterface = laneButton.dataset.programLane || "seis";
+      renderPluginInterfaces();
+    }
+  });
+}
+
+function renderPluginInterfaces() {
+  const status = el("[data-plugin-interface-status]");
+  const detail = el("[data-plugin-interface-detail]");
+  const evidenceBoard = el("[data-plugin-interface-evidence]");
+  const horizonBoard = el("[data-five-year-grid]");
+  const payload = state.pluginInterfaces || fallbackPluginInterfaces;
+  const interfaces = payload.interfaces || fallbackPluginInterfaces.interfaces;
+  const active =
+    interfaces.find((item) => item.id === state.activePluginInterface) ||
+    interfaces[0] ||
+    fallbackPluginInterfaces.interfaces[0];
+
+  if (status) {
+    status.textContent = `${interfaces.length} plugin lanes - ${payload.status || "static"} - source: ${payload.generatedAt || "unknown"}`;
+  }
+
+  document.querySelectorAll("[data-plugin-interface-tab]").forEach((button) => {
+    const activeButton = button.dataset.pluginInterfaceTab === active.id;
+    button.classList.toggle("is-active", activeButton);
+    button.setAttribute("aria-selected", activeButton ? "true" : "false");
+  });
+
+  if (detail) {
+    const meta = create("div", "plugin-interface-meta");
+    meta.append(
+      create("span", "chip", active.status || "unknown"),
+      create("span", "chip", active.stage || "planned"),
+      create("span", "chip", `risk: ${active.risk || "unknown"}`)
+    );
+
+    const link = create("a", "plugin-interface-link", "Open lane source");
+    link.href = getLaneSource(active.id);
+
+    detail.replaceChildren(
+      create("span", "", active.handle || active.id),
+      create("h3", "", active.title || "Plugin lane"),
+      create("p", "", active.purpose || "No purpose documented."),
+      meta,
+      create("p", "", `Current surface: ${active.currentSurface || "unknown"}`),
+      create("p", "", `Next safe action: ${active.nextAction || "document before implementation"}`),
+      link
+    );
+  }
+
+  if (evidenceBoard) {
+    evidenceBoard.replaceChildren();
+    (active.evidence || []).forEach((sourcePath) => {
+      const evidenceLink = create("a", "", sourcePath);
+      evidenceLink.href = getEvidenceHref(sourcePath);
+      evidenceBoard.append(evidenceLink);
+    });
+  }
+
+  renderPluginMaturitySignals(payload);
+  renderPluginCoverage(payload);
+  renderPluginReadiness(payload, active);
+
+  if (horizonBoard) {
+    horizonBoard.replaceChildren();
+    (payload.fiveYearHorizon || fallbackPluginInterfaces.fiveYearHorizon).forEach((item) => {
+      const card = create("article", "five-year-card");
+      card.append(
+        create("span", "", item.year),
+        create("h4", "", item.phase),
+        create("p", "", item.focus),
+        create("p", "", `Validation: ${item.validation}`)
+      );
+      horizonBoard.append(card);
+    });
+  }
+
+  renderPluginDevelopmentProgram(payload, interfaces, active);
+}
+
+function renderPluginCoverage(payload) {
+  const coverageBoard = el("[data-plugin-interface-coverage]");
+  if (!coverageBoard) return;
+
+  const interfaces = payload.interfaces || fallbackPluginInterfaces.interfaces;
+  const program = payload.developmentProgram || fallbackPluginInterfaces.developmentProgram;
+  const cadence = payload.developmentCadence || fallbackPluginInterfaces.developmentCadence;
+  const laneYearCommitments = program.reduce((total, year) => total + (year.laneCommitments || []).length, 0);
+  const evidenceLinks = interfaces.reduce((total, item) => total + (item.evidence || []).length, 0);
+  const cadencePeriods = cadence.periods?.length || 0;
+  const routineCount = cadence.laneRoutines?.length || 0;
+  const readinessCount = (payload.interfaceReadiness || fallbackPluginInterfaces.interfaceReadiness || []).length;
+  const metrics = [
+    { label: "lane-year commitments", value: laneYearCommitments },
+    { label: "cadence periods", value: cadencePeriods },
+    { label: "lane routines", value: routineCount },
+    { label: "readiness gates", value: readinessCount },
+    { label: "evidence links", value: evidenceLinks },
+    { label: "live actions", value: 0 }
+  ];
+
+  coverageBoard.replaceChildren(
+    ...metrics.map((metric) => {
+      const card = create("article", "plugin-interface-coverage-card");
+      card.append(create("strong", "", String(metric.value)), create("span", "", metric.label));
+      return card;
+    })
+  );
+}
+
+function renderPluginMaturitySignals(payload) {
+  const board = el("[data-plugin-maturity-signals]");
+  if (!board) return;
+
+  const signals = payload.maturitySignals || fallbackPluginInterfaces.maturitySignals;
+  const markers = signals.markers || fallbackPluginInterfaces.maturitySignals.markers;
+  const summary = create("article", "plugin-maturity-card plugin-maturity-card--summary");
+  summary.append(
+    create("span", "", "maturity posture"),
+    create("h3", "", signals.headline || "Five-year interface posture"),
+    create("p", "", signals.posture || "Local evidence, cadence, and safety gates remain visible.")
+  );
+
+  board.replaceChildren(summary);
+  markers.forEach((marker) => {
+    const card = create("article", "plugin-maturity-card");
+    card.append(
+      create("strong", "", String(marker.value ?? "")),
+      create("span", "", marker.label || "signal"),
+      create("p", "", marker.detail || "No detail documented.")
+    );
+    board.append(card);
+  });
+}
+
+function createReadinessList(items) {
+  const list = create("ul", "plugin-readiness-list");
+  items.forEach((item) => {
+    list.append(create("li", "", item));
+  });
+  return list;
+}
+
+function renderPluginReadiness(payload, active) {
+  const panel = el("[data-plugin-interface-readiness]");
+  if (!panel) return;
+
+  const records = payload.interfaceReadiness || fallbackPluginInterfaces.interfaceReadiness;
+  const readiness =
+    records.find((record) => record.id === active.id) ||
+    records[0] ||
+    fallbackPluginInterfaces.interfaceReadiness[0];
+  const allowed = readiness.allowedActions || [];
+  const blocked = readiness.blockedActions || [];
+  const meta = create("div", "plugin-interface-meta");
+  const columns = create("div", "plugin-readiness-columns");
+  const allowedColumn = create("div", "plugin-readiness-column");
+  const blockedColumn = create("div", "plugin-readiness-column plugin-readiness-column--blocked");
+
+  meta.append(
+    create("span", "chip", readiness.currentMode || "static"),
+    create("span", "chip", `next review: ${readiness.nextReview || "unscheduled"}`),
+    create("span", "chip", `cadence: ${readiness.reviewCadence || "not documented"}`)
+  );
+
+  allowedColumn.append(create("h4", "", "Allowed local actions"), createReadinessList(allowed));
+  blockedColumn.append(create("h4", "", "Blocked privileged actions"), createReadinessList(blocked));
+  columns.append(allowedColumn, blockedColumn);
+
+  panel.replaceChildren(
+    create("span", "", active.handle || active.id),
+    create("h3", "", `${active.title || active.id} readiness gates`),
+    meta,
+    columns,
+    create("p", "", `Evidence gate: ${readiness.evidenceGate || "not documented"}`),
+    create("p", "", `Promotion gate: ${readiness.promotionGate || "not documented"}`)
+  );
+}
+
+function renderPluginDevelopmentProgram(payload, interfaces, active) {
+  const controls = el("[data-five-year-controls]");
+  const programDetail = el("[data-five-year-detail]");
+  const program = payload.developmentProgram || fallbackPluginInterfaces.developmentProgram;
+  const selected =
+    program.find((item) => item.year === state.activePluginYear) ||
+    program[0] ||
+    fallbackPluginInterfaces.developmentProgram[0];
+
+  if (!selected) return;
+  state.activePluginYear = selected.year;
+
+  if (controls) {
+    controls.replaceChildren();
+    program.forEach((item) => {
+      const button = create("button", "five-year-button", item.year);
+      const activeYear = item.year === selected.year;
+      button.type = "button";
+      button.dataset.pluginYear = item.year;
+      button.classList.toggle("is-active", activeYear);
+      button.setAttribute("aria-pressed", activeYear ? "true" : "false");
+      button.setAttribute("title", item.theme || item.phase || item.year);
+      controls.append(button);
+    });
+  }
+
+  if (!programDetail) return;
+
+  const selectedCommitments = selected.laneCommitments || [];
+  const activeCommitment =
+    selectedCommitments.find((commitment) => commitment.id === active.id) || selectedCommitments[0];
+  const cadence = payload.developmentCadence || fallbackPluginInterfaces.developmentCadence;
+  const periods = cadence.periods || fallbackPluginInterfaces.developmentCadence.periods;
+  const selectedPeriod =
+    periods.find((period) => period.id === state.activePluginPeriod) ||
+    periods[0] ||
+    fallbackPluginInterfaces.developmentCadence.periods[0];
+  const laneRoutine =
+    (cadence.laneRoutines || []).find((routine) => routine.id === active.id) ||
+    fallbackPluginInterfaces.developmentCadence.laneRoutines.find((routine) => routine.id === active.id);
+  const laneList = create("div", "five-year-lane-list");
+  const periodControls = create("div", "five-year-period-controls");
+  const cadencePanel = create("div", "five-year-cadence");
+
+  if (selectedPeriod) {
+    state.activePluginPeriod = selectedPeriod.id;
+  }
+
+  periods.forEach((period) => {
+    const button = create("button", "five-year-period-button", period.label || period.id);
+    const activePeriod = period.id === state.activePluginPeriod;
+    button.type = "button";
+    button.dataset.pluginPeriod = period.id;
+    button.classList.toggle("is-active", activePeriod);
+    button.setAttribute("aria-pressed", activePeriod ? "true" : "false");
+    periodControls.append(button);
+  });
+
+  cadencePanel.append(
+    create("span", "", selectedPeriod?.id || "H1"),
+    create("strong", "", selectedPeriod?.purpose || "Cadence purpose not documented."),
+    create("p", "", laneRoutine?.[String(state.activePluginPeriod || "H1").toLowerCase()] || "Lane routine not documented."),
+    create("p", "", `Review gate: ${selectedPeriod?.reviewGate || "not documented"}`)
+  );
+
+  selectedCommitments.forEach((commitment) => {
+    const laneButton = create("button", "five-year-lane-button");
+    const lane = interfaces.find((item) => item.id === commitment.id);
+    const activeLane = commitment.id === active.id;
+    laneButton.type = "button";
+    laneButton.dataset.programLane = commitment.id;
+    laneButton.classList.toggle("is-active", activeLane);
+    laneButton.setAttribute("aria-pressed", activeLane ? "true" : "false");
+    laneButton.append(create("span", "", lane?.handle || commitment.id), create("strong", "", commitment.interfaceOutcome));
+    laneList.append(laneButton);
+  });
+
+  programDetail.replaceChildren(
+    create("span", "", selected.year),
+    create("h4", "", selected.theme || "Development program"),
+    create("p", "", selected.operatingPosture || "Operating posture not documented."),
+    create("p", "", `Active lane: ${activeCommitment?.id || active.id}`),
+    periodControls,
+    cadencePanel,
+    laneList
+  );
 }
 
 function renderPublishGate() {
@@ -957,6 +1429,14 @@ async function loadMarketplace() {
   }
 }
 
+async function loadPluginInterfaces() {
+  try {
+    state.pluginInterfaces = await fetchJson("../../content/development/seis-plugin-interface-roadmap.json");
+  } catch {
+    state.pluginInterfaces = fallbackPluginInterfaces;
+  }
+}
+
 async function loadPublishGate() {
   try {
     state.publishGate = await fetchJson("../../content/development/publish-gate-contract.json");
@@ -975,7 +1455,7 @@ async function loadPluginCommandCenter() {
 
 async function loadMcpManifest() {
   try {
-    state.mcpManifest = await fetchJson("../../_mcp/seis-mcp-server-2026-06-07.json");
+    state.mcpManifest = await fetchJson("../../data/seis-mcp-server-2026-06-07.json");
   } catch {
     state.mcpManifest = null;
   }
@@ -1163,12 +1643,15 @@ async function init() {
   setupTouchFeedback();
   setupCapabilityFilters();
   setupPluginProofFilters();
+  setupPluginInterfaceTabs();
+  setupPluginYearControls();
   setupPluginCommandCenterRefresh();
   setupCinematicField();
   await Promise.allSettled([
     loadGaps(),
     loadCapabilities(),
     loadMarketplace(),
+    loadPluginInterfaces(),
     loadPublishGate(),
     loadPluginCommandCenter(),
     loadMcpManifest(),
@@ -1180,6 +1663,7 @@ async function init() {
   renderGapBoard();
   renderCapabilities();
   renderMarketplace();
+  renderPluginInterfaces();
   renderPublishGate();
   renderSeisReposLlmBridge();
   renderPluginCommandCenter();
@@ -1194,6 +1678,7 @@ init().catch((error) => {
   }
   renderCapabilities();
   renderMarketplace();
+  renderPluginInterfaces();
   renderPublishGate();
   renderSeisReposLlmBridge();
   renderPluginCommandCenter();

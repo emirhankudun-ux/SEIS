@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-06-22",
+  "purpose": "Canonical integration map for SEIS workstreams that must land through the GitHub repository with evidence, validation, and PR sequencing.",
+  "sourceOfTruth": {
+    "repository": "emirhankudun-ux/SEIS",
+    "protectedBranch": "main",
+    "activeIntegrationBranch": "seis/product-experience-suite",
+    "rule": "Do not push directly to main; reconcile every SEIS workstream through scoped branches and reviewable PRs."
+  },
+  "workstreams": [
+    {
+      "id": "product-experience-suite",
+      "branch": "seis/product-experience-suite",
+      "status": "active integration surface",
+      "evidence": [
+        "docs/STATUS.md",
+        "docs/SEIS_MASTER_INDEX.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md",
+        "apps/web/goal-tracking.html"
+      ],
+      "blockers": [
+        "pre-existing tracked deletions remain unresolved"
+      ],
+      "nextSafeAction": "Keep the branch scoped to foundation, product-experience, and integration records until repository hygiene is resolved."
+    },
+    {
+      "id": "goal-tracking-os",
+      "branch": "seis/product-experience-suite",
+      "status": "file-backed foundation",
+      "evidence": [
+        "content/development/seis-goal-tracking.json",
+        "content/development/seis-goal-command-center-view.json",
+        "docs/goals/goal-tracking-system.md",
+        "apps/web/goal-tracking.html"
+      ],
+      "blockers": [],
+      "nextSafeAction": "Keep validators and generated static view fresh from source records."
+    },
+    {
+      "id": "ai-core-app-foundation",
+      "branch": "seis/ai-core-app-foundation-continuation",
+      "status": "separate local workstream with uncommitted changes",
+      "evidence": [
+        "docs/ai/seis-ai-core.md",
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+      ],
+      "blockers": [
+        "local workstream not reconciled into active integration branch",
+        "provider registry and runtime verification are not present in active branch"
+      ],
+      "nextSafeAction": "Review the AI Core diff, extract provider-neutral contracts, and land through a dedicated PR after repository hygiene recovery."
+    },
+    {
+      "id": "download-assets-app-integration",
+      "branch": "seis/download-assets-app-integration",
+      "status": "separate local workstream with media integration changes",
+      "evidence": [
+        "apps/web/public/media/posters/seis-product-suite-concept.png",
+        "apps/web/public/media/mythic/shan-hai-creature-atlas.png"
+      ],
+      "blockers": [
+        "asset provenance and size review are required before merge"
+      ],
+      "nextSafeAction": "Review media provenance, optimize assets, and connect accepted assets to product manifests."
+    },
+    {
+      "id": "ssh-ai-stability",
+      "branch": "seis/ssh-ai-connection-stability-20260622",
+      "status": "separate checkout",
+      "evidence": [
+        "server/cloud/ssh-ai-shell/.env.example"
+      ],
+      "blockers": [
+        "SSH, cloud, and credential actions require explicit approval"
+      ],
+      "nextSafeAction": "Keep SSH work approval-gated and reconcile documentation only until safe review."
+    },
+    {
+      "id": "legacy-broken-worktrees",
+      "branch": "unknown",
+      "status": "blocked",
+      "evidence": [],
+      "blockers": [
+        "some local worktree metadata cannot be inspected by git"
+      ],
+      "nextSafeAction": "Repair, retire, or recreate broken worktrees only after review; do not treat them as source of truth."
+    }
+  ],
+  "deferredDangerousActions": [
+    "push to main",
+    "merge",
+    "force-push",
+    "branch deletion",
+    "file deletion",
+    "history rewrite",
+    "deployment",
+    "SSH execution",
+    "secret rotation",
+    "model training",
+    "dataset download"
+  ]
+}

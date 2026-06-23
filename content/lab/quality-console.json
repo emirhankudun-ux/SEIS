@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "id": "seis-quality-console",
+  "generatedAt": "2026-06-22",
+  "mode": "static_quality_signals",
+  "summary": "Static local quality signals for the SEIS plugin interface suite.",
+  "signals": [
+    {
+      "id": "plugin-interface-validator",
+      "label": "Plugin Interface Validator",
+      "status": "green",
+      "value": "passing",
+      "detail": "Five plugin lanes, evidence paths, and the 2026-2030 horizon are checked by npm run check:plugin-interface-roadmap."
+    },
+    {
+      "id": "browser-qa",
+      "label": "Browser QA",
+      "status": "green",
+      "value": "recorded",
+      "detail": "Desktop and mobile lane selection QA is documented in docs/reviews/PLUGIN_INTERFACE_SUITE_QA.md."
+    },
+    {
+      "id": "release-readiness",
+      "label": "Release Readiness",
+      "status": "watch",
+      "value": "not ready",
+      "detail": "Repository hygiene and unrelated tracked deletions still block release readiness."
+    }
+  ],
+  "thresholds": [
+    {
+      "label": "Plugin lanes visible",
+      "target": "5/5",
+      "current": "5/5"
+    },
+    {
+      "label": "Five-year horizon",
+      "target": "2026-2030",
+      "current": "2026-2030"
+    },
+    {
+      "label": "Live external actions",
+      "target": "0",
+      "current": "0"
+    }
+  ]
+}

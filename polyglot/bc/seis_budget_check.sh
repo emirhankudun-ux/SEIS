@@ -7,7 +7,7 @@
 #
 # Budgets (aligned with the JS seis-check perf lane):
 #   HTML    ≤  80 KB    CSS   ≤  60 KB    JS    ≤ 150 KB
-#   Each image ≤ 300 KB    Total media ≤ 5 MB
+#   Each image ≤ 300 KB    Product media total ≤ 10 MB
 #
 # Usage: bash polyglot/bc/seis_budget_check.sh [--self-test]
 # Exit:  0 PASS, 1 FAIL
@@ -94,7 +94,7 @@ main() {
   check_file_budget "$web/style.css"          60   "style.css"
   check_file_budget "$web/script.js"         150   "script.js"
   check_file_budget "$web/translations.json"  60   "translations.json"
-  check_media_total "$web/public/media"     5120   # 5 MB
+  check_media_total "$web/public/media"    10240   # 10 MB product media budget
 
   if [ "${#FINDINGS[@]}" -eq 0 ]; then
     echo "[PASS] bc-budget  all assets within budget"

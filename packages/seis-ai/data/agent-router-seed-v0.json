@@ -71,6 +71,19 @@
       }
     },
     {
+      "id": "train-data-ai-workforce-training",
+      "split": "train",
+      "task": {
+        "text": "Connect installed AI workforce candidate reviews to SEIS-owned synthetic training cases, provenance, benchmark expansion, and promotion policy evidence.",
+        "signals": ["training", "dataset", "provenance", "benchmark", "model-family"]
+      },
+      "expected": {
+        "laneId": "seis-data",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      }
+    },
+    {
       "id": "train-governance-release",
       "split": "train",
       "task": {
@@ -193,6 +206,19 @@
       "task": {
         "text": "Create a dataset card, provenance filter, schema review, and training quality report for the model lab.",
         "signals": ["dataset", "provenance", "schema", "training"]
+      },
+      "expected": {
+        "laneId": "seis-data",
+        "toolName": "seis_plugin_integration",
+        "defaultGate": "npm run check:plugin-capability-lanes"
+      }
+    },
+    {
+      "id": "eval-data-ai-workforce-training",
+      "split": "eval",
+      "task": {
+        "text": "Add an installed AI workforce training ledger with SEIS-owned synthetic cases, dataset provenance, local benchmark results, and promotion gate evidence.",
+        "signals": ["training", "dataset", "provenance", "benchmark"]
       },
       "expected": {
         "laneId": "seis-data",

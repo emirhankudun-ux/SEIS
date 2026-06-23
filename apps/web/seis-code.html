@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="SEIS Code is a browser IDE with Monaco, virtual files, terminal commands, and a local-demo Claude Code style REPL.">
+    <meta name="theme-color" content="#0f141a">
+    <meta name="robots" content="noindex, nofollow">
+    <title>SEIS Code</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+    <link rel="alternate icon" href="./favicon.ico">
+    <link rel="stylesheet" href="./seis-code.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">Skip to editor</a>
+    <div class="ide-shell" data-app-shell>
+      <header class="titlebar" role="banner">
+        <div class="window-controls" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <a class="product-mark" href="./index.html" aria-label="Back to UI-UX Digital Lab">
+          <span class="product-glyph">S</span>
+          <span>SEIS Code</span>
+        </a>
+        <nav class="menu-bar" aria-label="Application menus">
+          <div class="menu" data-menu="file">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">File</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="new-file">New File</button>
+              <button type="button" role="menuitem" data-action="save-file">Save</button>
+              <button type="button" role="menuitem" data-action="export-workspace">Export Workspace</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="edit">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Edit</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="undo">Undo</button>
+              <button type="button" role="menuitem" data-action="redo">Redo</button>
+              <button type="button" role="menuitem" data-action="find">Find</button>
+              <button type="button" role="menuitem" data-action="format">Format Document</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="selection">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Selection</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="select-all">Select All</button>
+              <button type="button" role="menuitem" data-action="copy-path">Copy Active Path</button>
+              <button type="button" role="menuitem" data-action="reveal-file">Reveal in Explorer</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="view">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">View</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="toggle-sidebar">Toggle Sidebar</button>
+              <button type="button" role="menuitem" data-action="toggle-minimap">Toggle Minimap</button>
+              <button type="button" role="menuitem" data-action="toggle-word-wrap">Toggle Word Wrap</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="go">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Go</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="quick-open">Quick Open</button>
+              <button type="button" role="menuitem" data-action="next-tab">Next Tab</button>
+              <button type="button" role="menuitem" data-action="previous-tab">Previous Tab</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="run">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Run</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="run-active">Run Active File</button>
+              <button type="button" role="menuitem" data-action="stop-run">Stop Run</button>
+              <button type="button" role="menuitem" data-action="open-debug">Open Run View</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="terminal">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Terminal</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="new-terminal">New Terminal</button>
+              <button type="button" role="menuitem" data-action="clear-terminal">Clear Terminal</button>
+              <button type="button" role="menuitem" data-action="start-claude">Start Claude REPL</button>
+            </div>
+          </div>
+          <div class="menu" data-menu="help">
+            <button class="menu-button" type="button" aria-expanded="false" aria-haspopup="true">Help</button>
+            <div class="menu-popover" role="menu">
+              <button type="button" role="menuitem" data-action="show-shortcuts">Keyboard Shortcuts</button>
+              <button type="button" role="menuitem" data-action="show-about">About SEIS Code</button>
+              <button type="button" role="menuitem" data-action="reset-demo">Reset Demo Data</button>
+            </div>
+          </div>
+        </nav>
+        <button class="command-button" type="button" data-action="command-palette" title="Open command palette">
+          Command Palette
+        </button>
+        <button class="command-button lens-toggle" type="button" data-action="toggle-command-lens" aria-pressed="true" title="Toggle Command Lens">
+          Command Lens
+        </button>
+        <div class="title-status" aria-live="polite">
+          <span data-persistence-status>IndexedDB loading</span>
+        </div>
+      </header>
+
+      <main id="workspace" class="workspace" data-view="explorer">
+        <aside class="activity-bar" aria-label="Activity views">
+          <button class="activity-button is-active" type="button" data-view-button="explorer" title="Explorer" aria-label="Explorer">
+            <span>EX</span>
+          </button>
+          <button class="activity-button" type="button" data-view-button="search" title="Search" aria-label="Search">
+            <span>SE</span>
+          </button>
+          <button class="activity-button" type="button" data-view-button="source" title="Source Control" aria-label="Source Control">
+            <span>SC</span>
+          </button>
+          <button class="activity-button" type="button" data-view-button="run" title="Run and Debug" aria-label="Run and Debug">
+            <span>RD</span>
+          </button>
+          <button class="activity-button" type="button" data-view-button="extensions" title="Extensions" aria-label="Extensions">
+            <span>XT</span>
+          </button>
+        </aside>
+
+        <section class="sidebar" aria-label="Primary sidebar">
+          <div class="side-panel is-active" data-panel="explorer">
+            <div class="panel-header">
+              <h2>Explorer</h2>
+              <div class="panel-actions">
+                <button type="button" data-action="new-file" title="New file">+</button>
+                <button type="button" data-action="new-folder" title="New folder">Folder</button>
+              </div>
+            </div>
+            <div class="workspace-name">/workspace</div>
+            <div class="file-tree" data-file-tree></div>
+          </div>
+
+          <div class="side-panel" data-panel="search">
+            <div class="panel-header">
+              <h2>Search</h2>
+              <button type="button" data-action="run-search">Find</button>
+            </div>
+            <label class="field">
+              <span>Search</span>
+              <input data-search-query type="search" placeholder="Text, regex, or symbol">
+            </label>
+            <label class="field">
+              <span>Replace</span>
+              <input data-replace-query type="text" placeholder="Optional replacement">
+            </label>
+            <div class="toggle-row">
+              <label><input data-search-case type="checkbox"> Match case</label>
+              <label><input data-search-word type="checkbox"> Whole word</label>
+              <label><input data-search-regex type="checkbox"> Regex</label>
+            </div>
+            <div class="button-row">
+              <button type="button" data-action="replace-one">Replace One</button>
+              <button type="button" data-action="replace-all">Replace All</button>
+            </div>
+            <div class="search-results" data-search-results></div>
+          </div>
+
+          <div class="side-panel" data-panel="source">
+            <div class="panel-header">
+              <h2>Source Control</h2>
+              <button type="button" data-action="refresh-source">Refresh</button>
+            </div>
+            <p class="panel-note">Browser-safe simulated repository. No host Git commands run.</p>
+            <div class="source-summary" data-source-summary></div>
+            <div class="source-list" data-source-list></div>
+            <label class="field">
+              <span>Commit message</span>
+              <input data-commit-message type="text" placeholder="docs: update workspace">
+            </label>
+            <button class="wide-button" type="button" data-action="commit-staged">Commit Staged</button>
+            <div class="commit-log" data-commit-log></div>
+          </div>
+
+          <div class="side-panel" data-panel="run">
+            <div class="panel-header">
+              <h2>Run and Debug</h2>
+              <button type="button" data-action="run-active">Run</button>
+            </div>
+            <p class="panel-note">Runs HTML and JavaScript in a browser sandbox only.</p>
+            <div class="debug-card">
+              <strong>Active configuration</strong>
+              <span>Browser Sandbox</span>
+            </div>
+            <div class="debug-actions">
+              <button type="button" data-action="run-active">Start</button>
+              <button type="button" data-action="stop-run">Stop</button>
+              <button type="button" data-action="restart-run">Restart</button>
+            </div>
+            <div class="run-output" data-run-output>No run active.</div>
+          </div>
+
+          <div class="side-panel" data-panel="extensions">
+            <div class="panel-header">
+              <h2>Extensions</h2>
+              <button type="button" data-action="refresh-extensions">Refresh</button>
+            </div>
+            <label class="field">
+              <span>Search catalog</span>
+              <input data-extension-search type="search" placeholder="theme, language, formatter">
+            </label>
+            <div class="extensions-list" data-extensions-list></div>
+          </div>
+        </section>
+
+        <section class="editor-region" aria-label="Editor">
+          <div class="editor-toolbar">
+            <div class="breadcrumbs" data-breadcrumbs>/workspace</div>
+            <div class="toolbar-actions">
+              <button type="button" data-action="save-file">Save</button>
+              <button type="button" data-action="format">Format</button>
+              <button type="button" data-action="run-active">Run</button>
+            </div>
+          </div>
+          <div class="tabs" data-tabs role="tablist" aria-label="Open files"></div>
+          <div class="editor-wrap">
+            <div id="monaco-editor" class="monaco-host" aria-label="Monaco editor"></div>
+            <div class="editor-fallback" data-editor-fallback hidden>
+              <label>
+                Monaco could not load. Fallback editor remains local.
+                <textarea data-fallback-textarea spellcheck="false"></textarea>
+              </label>
+            </div>
+          </div>
+          <section class="bottom-panel" aria-label="Bottom panel">
+            <div class="panel-tabs" role="tablist" aria-label="Output panels">
+              <button class="is-active" type="button" data-bottom-panel="terminal">Terminal</button>
+              <button type="button" data-bottom-panel="problems">Problems</button>
+              <button type="button" data-bottom-panel="output">Output</button>
+              <button type="button" data-bottom-panel="debug">Debug Console</button>
+            </div>
+            <div class="bottom-content is-active" data-bottom-content="terminal">
+              <div class="terminal-status">
+                <span data-terminal-mode>Shell</span>
+                <span data-provider-status>AI: Local Demo, no cloud key required</span>
+              </div>
+              <div class="terminal-output" data-terminal-output aria-live="polite"></div>
+              <form class="terminal-input-row" data-terminal-form>
+                <span data-terminal-prompt>/workspace $</span>
+                <input data-terminal-input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command">
+              </form>
+            </div>
+            <div class="bottom-content" data-bottom-content="problems">
+              <div class="problems-list" data-problems-list></div>
+            </div>
+            <div class="bottom-content" data-bottom-content="output">
+              <pre data-output-log></pre>
+            </div>
+            <div class="bottom-content" data-bottom-content="debug">
+              <pre data-debug-log></pre>
+            </div>
+          </section>
+        </section>
+
+        <aside class="command-lens" data-command-lens aria-label="SEIS Code command lens">
+          <div class="lens-heading">
+            <span class="lens-kicker">Apple-grade Command Lens</span>
+            <h2>SEIS Code Control</h2>
+            <p data-command-lens-summary>Local Demo workspace status is loading.</p>
+          </div>
+
+          <section class="lens-card" aria-labelledby="lens-active-file-title">
+            <h3 id="lens-active-file-title">Active Context</h3>
+            <dl class="lens-metric-grid">
+              <div>
+                <dt>File</dt>
+                <dd data-lens-active-file>/workspace</dd>
+              </div>
+              <div>
+                <dt>Provider</dt>
+                <dd data-lens-provider>Local Demo</dd>
+              </div>
+              <div>
+                <dt>Storage</dt>
+                <dd data-lens-storage>IndexedDB</dd>
+              </div>
+            </dl>
+          </section>
+
+          <section class="lens-card" aria-labelledby="lens-actions-title">
+            <h3 id="lens-actions-title">Operator Actions</h3>
+            <div class="lens-actions">
+              <button type="button" data-action="focus-terminal">Focus Terminal</button>
+              <button type="button" data-action="open-ai-repl">Open Local Demo REPL</button>
+              <button type="button" data-action="show-five-year-plan">Five-Year Plan</button>
+            </div>
+          </section>
+
+          <section class="lens-card" aria-labelledby="lens-evolution-title">
+            <div class="lens-card-header">
+              <h3 id="lens-evolution-title">5-Year Evolution Rail</h3>
+              <button type="button" data-action="show-five-year-plan">Open</button>
+            </div>
+            <article class="evolution-detail" data-evolution-detail aria-live="polite"></article>
+            <div class="evolution-rail" data-evolution-rail></div>
+          </section>
+        </aside>
+      </main>
+
+      <footer class="statusbar" aria-label="Status bar">
+        <button type="button" data-action="show-provider-status">Local Demo AI</button>
+        <button type="button" data-action="show-language-list">24 languages</button>
+        <button type="button" data-action="show-storage">IndexedDB</button>
+        <button type="button" data-action="toggle-word-wrap">Word Wrap</button>
+        <button type="button" data-action="show-line-column" data-cursor-status>Ln 1, Col 1</button>
+      </footer>
+    </div>
+
+    <div class="modal-backdrop" data-modal hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h2 id="modal-title" data-modal-title>SEIS Code</h2>
+          <button type="button" data-action="close-modal" aria-label="Close dialog">Close</button>
+        </div>
+        <div class="modal-body" data-modal-body></div>
+      </section>
+    </div>
+
+    <div class="palette" data-palette hidden>
+      <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command palette">
+        <input data-palette-input type="search" placeholder="Type a command, phase, or file path" role="combobox" aria-expanded="true" aria-controls="palette-results" aria-activedescendant="">
+        <div class="palette-meta" aria-live="polite">
+          <span data-palette-status>Ready</span>
+          <span data-palette-recent-status>No recent commands yet</span>
+        </div>
+        <div id="palette-results" data-palette-results role="listbox" aria-label="Command palette results"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./seis-code.js"></script>
+    <script async data-monaco-loader src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>
+  </body>
+</html>

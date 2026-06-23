@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-validation-steps",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_validation_steps",
+  "steps": [
+    {
+      "id": "SEIS-VAL-001",
+      "title": "Validate Goal Tracking source records",
+      "status": "active",
+      "priority": "P0 critical",
+      "command": "npm run check:goal-tracking",
+      "owner_role": "Program System",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-006"],
+      "evidence_ids": ["SEIS-EVID-005", "SEIS-EVID-012"],
+      "related_paths": ["scripts/check-goal-tracking.mjs", "content/development/seis-goal-tracking.json"],
+      "success_condition": "The command passes and reports synchronized goals, evidence, execution, cadence, hierarchy, archive, cycle, risk, validation, view model, and static page records.",
+      "next_action": "Run before every scoped Goal Tracking commit."
+    },
+    {
+      "id": "SEIS-VAL-002",
+      "title": "Validate generated Goal Tracking Center freshness",
+      "status": "active",
+      "priority": "P0 critical",
+      "command": "npm run check:goal-command-center-view",
+      "owner_role": "Command Center",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-006", "SEIS-EVID-012"],
+      "related_paths": ["scripts/create-goal-command-center-view.mjs", "content/development/seis-goal-command-center-view.json", "apps/web/goal-tracking.html"],
+      "success_condition": "The generated view model and static page match the current structured source records.",
+      "next_action": "Regenerate with `npm run automation:goal-command-center-view` when the freshness check fails."
+    },
+    {
+      "id": "SEIS-VAL-003",
+      "title": "Validate scoped secret and private-path exposure",
+      "status": "active",
+      "priority": "P1 high",
+      "command": "scoped sensitive-pattern scan over Goal Tracking files",
+      "owner_role": "Security and Governance",
+      "supports_goal_ids": ["SEIS-GOAL-006", "SEIS-GOAL-008"],
+      "evidence_ids": ["SEIS-EVID-012"],
+      "related_paths": ["docs/goals/goal-tracking-system.md", "docs/STATUS.md"],
+      "success_condition": "No secret assignment, key block, private path, file URI, or editor URI appears in scoped Goal Tracking files.",
+      "next_action": "Keep scan output value-free and report only path/category if a finding appears."
+    }
+  ]
+}

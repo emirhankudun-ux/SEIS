@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A full-screen still life video hero for ceramics, glassware, refraction, and quiet studio light.">
+    <meta name="theme-color" content="#140f0c">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Still Life Video Hero - SEIS Showcase</title>
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="alternate icon" href="../favicon.ico">
+    <link rel="preconnect" href="https://videos.pexels.com">
+    <link rel="dns-prefetch" href="https://videos.pexels.com">
+    <link rel="stylesheet" href="./video-hero.css">
+  </head>
+  <body class="theme-still-life">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="showcase-topbar">
+      <a class="showcase-brand" href="../index.html#showcase">SEIS Video Heroes</a>
+      <nav class="showcase-topbar__links" aria-label="Showcase themes">
+        <a href="./nature.html">Nature</a>
+        <a href="./still-life.html" aria-current="page">Still Life</a>
+        <a href="./materials.html">Materials</a>
+        <a href="./metal-parts.html">Metal Parts</a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="video-hero" data-video-hero>
+        <div class="video-hero__media" aria-hidden="true">
+          <div class="video-hero__fallback"></div>
+          <video data-hero-video muted loop playsinline preload="metadata">
+            <source src="https://videos.pexels.com/video-files/29569494/12727864_1920_1080_60fps.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="video-hero__shade" aria-hidden="true"></div>
+        <div class="video-hero__grain" aria-hidden="true"></div>
+        <div class="video-hero__content">
+          <div class="video-hero__copy">
+            <p class="video-hero__kicker">Still life / ceramics / glassware</p>
+            <h1 class="video-hero__title">Objects in Quiet Light</h1>
+            <p class="video-hero__summary">
+              A centered studio composition where ceramic surfaces, glass edges, and warm shadows
+              create a refined product-story opening.
+            </p>
+            <div class="video-hero__actions">
+              <a class="showcase-button showcase-button--primary" href="#story" data-smooth-scroll>View Collection</a>
+              <a class="showcase-button" href="./materials.html" data-next-video="https://videos.pexels.com/video-files/7677747/7677747-hd_1080_1920_25fps.mp4">Next Theme</a>
+            </div>
+          </div>
+        </div>
+        <div class="video-hero__controls" aria-label="Video controls">
+          <div class="video-hero__control-set">
+            <button class="showcase-button" type="button" data-video-action="toggle-play">Pause</button>
+            <button class="showcase-button" type="button" data-video-action="toggle-mute">Sound</button>
+            <button class="showcase-button" type="button" data-video-action="fullscreen">Fullscreen</button>
+          </div>
+          <p class="video-hero__status" data-video-status aria-live="polite">Loading video background.</p>
+        </div>
+      </section>
+      <section id="story" class="showcase-story" tabindex="-1">
+        <h2>Objects held in soft focus.</h2>
+        <div>
+          <p>
+            This page favors centered type, warm contrast, and gentle glass-reflection language for
+            editorial product collections.
+          </p>
+          <p>
+            It works for ceramics, tableware, fragrance, home goods, gallery openings, and still
+            life brand films.
+          </p>
+          <div class="showcase-facts">
+            <article><span>Motion</span><strong>Measured studio drift</strong></article>
+            <article><span>Type</span><strong>Centered high-contrast serif</strong></article>
+            <article><span>CTA</span><strong>Collection-first action</strong></article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./video-hero.js" type="module"></script>
+  </body>
+</html>

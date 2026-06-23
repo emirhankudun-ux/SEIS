@@ -47,4 +47,3 @@ Graduate to Three.js only when the content direction is locked:
 | Desktop particles | 72 or fewer |
 | Blur/glass | static or transition-only on mobile |
 | Scroll handler | one shared `requestAnimationFrame` loop |
-

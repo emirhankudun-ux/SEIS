@@ -1,0 +1,107 @@
+{
+  "id": "seis-ai-workforce-training-run",
+  "generatedAt": "2026-06-23T14:37:18.245Z",
+  "plan": {
+    "id": "seis-ai-workforce-training-plan",
+    "version": "2026.06.23",
+    "status": "active-local-seed-training-contract",
+    "source": "content/development/seis-ai-workforce-training-plan.json"
+  },
+  "boundary": {
+    "mode": "local-deterministic-seed-training",
+    "liveProviderCalls": false,
+    "credentialRead": false,
+    "cloudFineTuning": false,
+    "datasetDownload": false,
+    "runtimeAuthorityGranted": false
+  },
+  "installedAiWorkforce": {
+    "installed": [
+      "codex",
+      "seis-agent",
+      "qwen",
+      "ollama",
+      "opencode",
+      "hermes",
+      "goose",
+      "open-design"
+    ],
+    "disabled": [
+      "claude",
+      "gemini"
+    ],
+    "acceptedContributionMode": "candidate-only-until-codex-validation",
+    "liveProviderCalls": false,
+    "externalTrainingAllowed": false
+  },
+  "modelReports": [
+    {
+      "id": "permission-policy",
+      "datasetPath": "packages/seis-ai/data/permission-policy-seed.json",
+      "artifactPath": "packages/seis-ai/models/permission-policy-seed-v0.json",
+      "datasetId": "seis-permission-policy-seed-eval",
+      "trainingCaseCount": 13,
+      "evalOk": true,
+      "evalTotal": 9,
+      "evalPassed": 9
+    },
+    {
+      "id": "memory-ranker",
+      "datasetPath": "packages/seis-ai/data/memory-ranker-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/memory-ranker-seed-v0.json",
+      "datasetId": "seis-memory-ranker-seed-v0",
+      "trainingCaseCount": 5,
+      "evalOk": true,
+      "evalTotal": 3,
+      "evalPassed": 3
+    },
+    {
+      "id": "eval-critic",
+      "datasetPath": "packages/seis-ai/data/eval-critic-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/eval-critic-seed-v0.json",
+      "datasetId": "seis-eval-critic-seed-v0",
+      "trainingCaseCount": 9,
+      "evalOk": true,
+      "evalTotal": 6,
+      "evalPassed": 6
+    },
+    {
+      "id": "agent-router",
+      "datasetPath": "packages/seis-ai/data/agent-router-seed-v0.json",
+      "artifactPath": "packages/seis-ai/models/agent-router-seed-v0.json",
+      "datasetId": "seis-agent-router-seed-v0",
+      "trainingCaseCount": 13,
+      "evalOk": true,
+      "evalTotal": 11,
+      "evalPassed": 11
+    }
+  ],
+  "registry": {
+    "registryId": "seis-model-family-registry-v0",
+    "modelCount": 4,
+    "datasetCount": 4
+  },
+  "benchmark": {
+    "artifactId": "seis-model-benchmark-suite-v0",
+    "caseCount": 20,
+    "passed": 20,
+    "failed": 0,
+    "ok": true
+  },
+  "promotionPolicy": {
+    "policyId": "seis-model-promotion-policy-v0",
+    "modelCount": 4,
+    "labReadyCount": 4,
+    "benchmarkReadyCount": 4,
+    "runtimeAuthorityCount": 0,
+    "productionBlockedCount": 4
+  },
+  "nextHumanApprovalNeeded": [
+    "live provider prompt calls",
+    "cloud fine-tuning",
+    "external dataset download",
+    "paid benchmark run",
+    "SSH or deployment",
+    "model publication or runtime authority"
+  ]
+}

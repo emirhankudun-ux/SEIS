@@ -26,3 +26,10 @@ jobs:
           npm run seis:check
           npm run check:workspace
           npm run check:seis-platform-language-policy
+          npm run check:foundation
+          npm run check:goal-tracking
+          npm run check:plugin-interface-roadmap
+          npm run check:seis-code
+          npm run check:mythic-gacha
+          npm run check:video-hero-showcase
+          npm run audit:ai-providers

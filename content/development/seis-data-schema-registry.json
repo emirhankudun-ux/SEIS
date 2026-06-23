@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-data-schema-registry",
+  "updated": "2026-06-22",
+  "mode": "static_repository_data_contract",
+  "statusVocabulary": [
+    "documented",
+    "scaffolded",
+    "validated",
+    "blocked",
+    "planned"
+  ],
+  "records": [
+    {
+      "id": "seis-data-schema-registry",
+      "path": "content/development/seis-data-schema-registry.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "registry",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "records"
+      ],
+      "validationCommands": [
+        "npm run check:data-schema-registry"
+      ],
+      "freshness": "review on every schema-affecting change",
+      "secretPolicy": "must not contain secrets or personal data"
+    },
+    {
+      "id": "seis-goal-tracking",
+      "path": "content/development/seis-goal-tracking.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "goal-records",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "goals",
+        "categories"
+      ],
+      "validationCommands": [
+        "npm run check:goal-tracking"
+      ],
+      "freshness": "review after goal, category, status, or priority changes",
+      "secretPolicy": "must not contain secrets or personal data"
+    },
+    {
+      "id": "seis-goal-evidence",
+      "path": "content/development/seis-goal-evidence.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "evidence-ledger",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "records"
+      ],
+      "validationCommands": [
+        "npm run check:goal-tracking"
+      ],
+      "freshness": "review after new validation evidence is added",
+      "secretPolicy": "must cite evidence without embedding secret values"
+    },
+    {
+      "id": "seis-goal-execution",
+      "path": "content/development/seis-goal-execution.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "execution-ledger",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "tasks",
+        "blockers",
+        "decisions"
+      ],
+      "validationCommands": [
+        "npm run check:goal-tracking"
+      ],
+      "freshness": "review after task, blocker, or decision changes",
+      "secretPolicy": "must not contain credentials, private hosts, or sensitive personal data"
+    },
+    {
+      "id": "seis-goal-hierarchy",
+      "path": "content/development/seis-goal-hierarchy.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "planning-hierarchy",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "horizons",
+        "activeProjects",
+        "epics",
+        "subtasks"
+      ],
+      "validationCommands": [
+        "npm run check:goal-tracking"
+      ],
+      "freshness": "review after horizon, project, epic, or subtask changes",
+      "secretPolicy": "must not contain secrets or private operational data"
+    },
+    {
+      "id": "seis-goal-command-center-view",
+      "path": "content/development/seis-goal-command-center-view.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "generated-view-model",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "summary",
+        "progressCards",
+        "panels"
+      ],
+      "validationCommands": [
+        "npm run check:goal-command-center-view"
+      ],
+      "freshness": "regenerate after source goal records change",
+      "secretPolicy": "generated output must not include secrets"
+    },
+    {
+      "id": "seis-plugin-interface-roadmap",
+      "path": "content/development/seis-plugin-interface-roadmap.json",
+      "lane": "@seis",
+      "currentStatus": "scaffolded",
+      "sourceType": "static-interface-roadmap",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "generatedAt",
+        "status",
+        "summary",
+        "interfaces",
+        "fiveYearHorizon",
+        "developmentProgram",
+        "developmentCadence",
+        "maturitySignals",
+        "interfaceReadiness"
+      ],
+      "validationCommands": [
+        "npm run check:plugin-interface-roadmap"
+      ],
+      "freshness": "review after plugin interface changes",
+      "secretPolicy": "must remain static and credential-free"
+    },
+    {
+      "id": "plugin-skill-capability-map",
+      "path": "content/development/plugin-skill-capability-map.json",
+      "lane": "@seis",
+      "currentStatus": "validated",
+      "sourceType": "static-interface-capability-map",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "version",
+        "id",
+        "generatedAt",
+        "mode",
+        "capabilities"
+      ],
+      "validationCommands": [
+        "npm run check:data-schema-registry"
+      ],
+      "freshness": "review after plugin lane capability changes",
+      "secretPolicy": "must remain static and credential-free"
+    },
+    {
+      "id": "cinematic-engine",
+      "path": "content/lab/cinematic-engine.json",
+      "lane": "@seis-design",
+      "currentStatus": "validated",
+      "sourceType": "static-command-deck",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "version",
+        "id",
+        "generatedAt",
+        "mode",
+        "commandDeck"
+      ],
+      "validationCommands": [
+        "npm run check:data-schema-registry"
+      ],
+      "freshness": "review after static command deck changes",
+      "secretPolicy": "must remain static and credential-free"
+    },
+    {
+      "id": "quality-console",
+      "path": "content/lab/quality-console.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "static-quality-signals",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "version",
+        "id",
+        "generatedAt",
+        "mode",
+        "signals",
+        "thresholds"
+      ],
+      "validationCommands": [
+        "npm run check:data-schema-registry"
+      ],
+      "freshness": "review after static quality signal changes",
+      "secretPolicy": "must remain static and credential-free"
+    },
+    {
+      "id": "cloud-environment",
+      "path": "deploy/cloud-environment.json",
+      "lane": "@seis-cloud",
+      "currentStatus": "validated",
+      "sourceType": "cloud-preflight-contract",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "version",
+        "id",
+        "mode",
+        "environment",
+        "providers",
+        "guardrails"
+      ],
+      "validationCommands": [
+        "npm run check:cloud-environment"
+      ],
+      "freshness": "review after cloud provider or deployment policy changes",
+      "secretPolicy": "may name secret variables but must never include values"
+    },
+    {
+      "id": "code-automation-plan",
+      "path": "content/development/code-automation-plan.json",
+      "lane": "@seis-code",
+      "currentStatus": "validated",
+      "sourceType": "code-automation-contract",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "version",
+        "id",
+        "generatedAt",
+        "policy",
+        "validationCommands",
+        "guardrails"
+      ],
+      "validationCommands": [
+        "npm run check:code-automation-plan"
+      ],
+      "freshness": "review after SEIS Code workflow policy changes",
+      "secretPolicy": "must not contain credentials or machine-specific paths"
+    },
+    {
+      "id": "product-experience-browser-smoke",
+      "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
+      "lane": "@seis-code",
+      "currentStatus": "validated",
+      "sourceType": "browser-smoke-evidence",
+      "expectedShape": "text",
+      "requiredTopLevelKeys": [],
+      "validationCommands": [
+        "npm run check:product-experience-browser-smoke"
+      ],
+      "freshness": "review after SEIS Code, Mythic Gacha, or shared workspace export behavior changes",
+      "secretPolicy": "must not contain credentials, private paths, or committed screenshot binaries"
+    },
+    {
+      "id": "video-hero-performance-budget",
+      "path": "docs/reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md",
+      "lane": "@seis-design",
+      "currentStatus": "validated",
+      "sourceType": "performance-budget-evidence",
+      "expectedShape": "text",
+      "requiredTopLevelKeys": [],
+      "validationCommands": [
+        "npm run check:video-hero-performance-budget"
+      ],
+      "freshness": "review after Video Hero media, runtime loading, fallback, or provenance changes",
+      "secretPolicy": "must not contain credentials, private paths, committed video binaries, or unreviewed asset claims"
+    },
+    {
+      "id": "gap-closure-register",
+      "path": "data/gap-closure-register.json",
+      "lane": "@seis-data",
+      "currentStatus": "validated",
+      "sourceType": "gap-register",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "summary",
+        "gaps"
+      ],
+      "validationCommands": [
+        "npm run check:workspace"
+      ],
+      "freshness": "review after gap closure evidence changes",
+      "secretPolicy": "must not contain secrets or private operational data"
+    },
+    {
+      "id": "seis-design-component-inventory",
+      "path": "content/development/seis-design-component-inventory.json",
+      "lane": "@seis-design",
+      "currentStatus": "validated",
+      "sourceType": "design-component-inventory",
+      "expectedShape": "object",
+      "requiredTopLevelKeys": [
+        "schemaVersion",
+        "id",
+        "updated",
+        "components"
+      ],
+      "validationCommands": [
+        "npm run check:design-component-inventory"
+      ],
+      "freshness": "review after component, selector, accessibility, or motion-policy changes",
+      "secretPolicy": "must not contain secrets or private asset data"
+    },
+    {
+      "id": "design-token-policy",
+      "path": "packages/design-tokens/seis.tokens.css",
+      "lane": "@seis-design",
+      "currentStatus": "scaffolded",
+      "sourceType": "design-token-source",
+      "expectedShape": "text",
+      "requiredTopLevelKeys": [],
+      "validationCommands": [
+        "npm run check:workspace"
+      ],
+      "freshness": "review after visual system changes",
+      "secretPolicy": "must not contain secrets"
+    }
+  ]
+}

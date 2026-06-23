@@ -1,0 +1,102 @@
+# SEIS AI Workforce Training
+
+## Purpose
+
+Define how the installed AI workforce can improve SEIS AI without turning the
+project into an unsafe provider-key collector or an unsupported foundation-model
+claim.
+
+In this repository, installed AI workforce training means supervised feedback,
+synthetic training-case proposals, deterministic local seed-model rebuilds, and
+promotion-gate evidence. It is not cloud fine-tuning, external dataset scraping,
+or production model training.
+
+Machine-readable source:
+`content/development/seis-ai-workforce-training-plan.json`.
+
+Validation:
+
+```bash
+npm run check:seis-ai-workforce-training
+npm run automation:seis-ai-workforce-training
+```
+
+## Current Status
+
+| Area | Status | Evidence | Boundary | Next Safe Action |
+| --- | --- | --- | --- | --- |
+| Installed route inventory | Observed | `npm run ai -- list` on 2026-06-23 | Route readiness only; no provider prompt or credential verification. | Re-run before any secondary assistant handoff. |
+| Workforce assignments | Documented | `content/development/ai-workforce-assignments.json` | Codex remains the only writer by default. | Keep secondary assistants in reviewer/draft mode. |
+| Training control plane | Active local contract | `content/development/seis-ai-workforce-training-plan.json` | No live provider calls, SSH, deployment, dataset download, or cloud fine-tuning. | Run the local validator and seed training runner. |
+| Seed models | Local deterministic lab | `packages/seis-ai/data/*`, `packages/seis-ai/models/*` | Runtime authority remains false. | Rebuild artifacts and promotion policy after accepted case updates. |
+| Live providers | Disabled or missing key unless verified | `content/development/seis-ai-core-provider-registry.json` | Missing Key is not Error, and no browser secrets are allowed. | Add server-only adapters only after typed validation exists. |
+
+## Training Loop
+
+1. Codex sanitizes the objective, affected paths, excluded context, risk class,
+   and validation target.
+2. Installed assistants such as Qwen, Ollama, OpenCode, Hermes, Goose, and
+   OpenDesign may provide bounded review, contradiction, runbook, or design
+   candidate material from sanitized context.
+3. Codex treats every assistant output as untrusted until it is checked against
+   repo evidence.
+4. Accepted material becomes SEIS-owned synthetic cases only when it excludes
+   secrets and user-private data.
+5. Local deterministic builders rebuild the permission policy, memory ranker,
+   eval critic, and agent router seed artifacts.
+6. Benchmark and promotion gates decide whether the artifacts remain lab-ready,
+   need benchmark expansion, or stay blocked.
+7. Human approval is required before live provider calls, cloud fine-tuning,
+   paid benchmarks, dataset downloads, SSH, deployment, push, merge, or model
+   publication.
+
+## Model Targets
+
+| Model | What it learns | Training command | Runtime authority |
+| --- | --- | --- | --- |
+| Permission policy | Whether an action is allow, gate, approval_required, or deny. | `npm run automation:seis-permission-policy-model` | False |
+| Memory ranker | Which governance or evidence record best matches a query. | `npm run automation:seis-memory-ranker-model` | False |
+| Eval critic | Whether a review package should pass, revise, or block. | `npm run automation:seis-eval-critic-model` | False |
+| Agent router | Which SEIS lane and validation gate should handle an intent. | `npm run automation:seis-agent-router-model` | False |
+
+The combined runner is:
+
+```bash
+npm run automation:seis-ai-workforce-training
+```
+
+It rebuilds local seed artifacts and writes a redacted report under
+`reports/seis-ai-workforce-training/`. It does not call Qwen, Ollama, Claude,
+Gemini, OpenAI, or any cloud provider.
+
+## Safety Rules
+
+- No secrets, `.env` values, private keys, cookies, or tokens may enter prompts,
+  datasets, reports, logs, screenshots, localStorage, IndexedDB, or commits.
+- Core SEIS must remain usable with zero cloud-provider keys.
+- Missing provider keys disable only those providers; they do not block the
+  local demo or seed training lab.
+- Secondary AI output is candidate evidence, not source of truth.
+- Dataset cases must remain SEIS-owned synthetic examples with no user-private
+  data.
+- Runtime authority remains false until independent benchmarks, observability,
+  rollback, human approval, and security review pass.
+
+## Mock vs Real
+
+| Surface | Status |
+| --- | --- |
+| Route inventory | Real local command output from `npm run ai -- list`. |
+| Seed-model rebuild | Real deterministic local artifact generation. |
+| Secondary assistant review | Planned/supervised; disabled until a sanitized handoff is explicitly run. |
+| Live provider training | Not performed. |
+| Foundation-model ownership | Not claimed. |
+
+## Related Documents
+
+- [SEIS AI Core](seis-ai-core.md)
+- [Model Router](model-router.md)
+- [Agent Runtime](agent-runtime.md)
+- [Prompt Engine](prompt-engine.md)
+- [AI Workforce Assignments](../development/agents/ai-workforce-assignments.md)
+- [Security Policy](../../SECURITY.md)

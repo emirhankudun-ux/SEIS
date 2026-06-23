@@ -1,0 +1,239 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-design-component-inventory",
+  "updated": "2026-06-22",
+  "mode": "static_design_system_inventory",
+  "statusVocabulary": [
+    "documented",
+    "scaffolded",
+    "validated",
+    "needs-browser-qa",
+    "blocked"
+  ],
+  "components": [
+    {
+      "id": "global-skip-link",
+      "surface": "global-accessibility",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/styles.css",
+        "apps/web/seis-code.css",
+        "apps/web/showcase/video-hero.css"
+      ],
+      "selectors": [
+        ".skip-link",
+        ".skip-link:focus"
+      ],
+      "accessibility": "Keyboard users can jump to primary content.",
+      "motionPolicy": "No motion dependency.",
+      "validationCommands": [
+        "npm run check:design-component-inventory"
+      ]
+    },
+    {
+      "id": "main-site-navigation",
+      "surface": "home",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/index.html",
+        "apps/web/styles.css"
+      ],
+      "selectors": [
+        ".site-nav",
+        "nav a"
+      ],
+      "accessibility": "Links use visible focus states and semantic navigation.",
+      "motionPolicy": "Hover/focus only; no required animation.",
+      "validationCommands": [
+        "npm run check:workspace"
+      ]
+    },
+    {
+      "id": "plugin-interface-tabs",
+      "surface": "command-center",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/index.html",
+        "apps/web/app.js",
+        "apps/web/styles.css"
+      ],
+      "selectors": [
+        "[data-plugin-interface-tab]",
+        ".plugin-interface-layout"
+      ],
+      "accessibility": "Tabs are button controls and keep lane content visible.",
+      "motionPolicy": "Static content switch; reduced-motion safe.",
+      "validationCommands": [
+        "npm run check:plugin-interface-roadmap"
+      ]
+    },
+    {
+      "id": "five-year-horizon-grid",
+      "surface": "command-center",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/index.html",
+        "apps/web/app.js",
+        "apps/web/styles.css"
+      ],
+      "selectors": [
+        ".five-year-grid",
+        "[data-five-year-grid]"
+      ],
+      "accessibility": "Timeline content is rendered as text cards, not visual-only decoration.",
+      "motionPolicy": "No required animation.",
+      "validationCommands": [
+        "npm run check:plugin-interface-roadmap"
+      ]
+    },
+    {
+      "id": "seis-code-menu-bar",
+      "surface": "seis-code",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/seis-code.html",
+        "apps/web/seis-code.css",
+        "apps/web/seis-code.js"
+      ],
+      "selectors": [
+        ".menu-button",
+        "[data-menu]"
+      ],
+      "accessibility": "Eight top menus expose button-triggered popovers.",
+      "motionPolicy": "No required animation.",
+      "validationCommands": [
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "seis-code-activity-bar",
+      "surface": "seis-code",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/seis-code.html",
+        "apps/web/seis-code.css",
+        "apps/web/seis-code.js"
+      ],
+      "selectors": [
+        ".activity-button",
+        "[data-view-button]"
+      ],
+      "accessibility": "Five activity views have labels and panel switching.",
+      "motionPolicy": "State switch only.",
+      "validationCommands": [
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "seis-code-editor-tabs",
+      "surface": "seis-code",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/seis-code.html",
+        "apps/web/seis-code.css",
+        "apps/web/seis-code.js"
+      ],
+      "selectors": [
+        "[data-tabs]",
+        ".tabs"
+      ],
+      "accessibility": "Tabs use a tablist container and open-file buttons.",
+      "motionPolicy": "No required animation.",
+      "validationCommands": [
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "seis-code-terminal-panel",
+      "surface": "seis-code",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/seis-code.html",
+        "apps/web/seis-code.css",
+        "apps/web/seis-code.js"
+      ],
+      "selectors": [
+        ".terminal-output",
+        "[data-terminal-form]"
+      ],
+      "accessibility": "Terminal output uses polite live-region behavior and a labeled input.",
+      "motionPolicy": "No required animation.",
+      "validationCommands": [
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "modal-dialog",
+      "surface": "shared-web",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/seis-code.html",
+        "apps/web/seis-code.css",
+        "apps/web/seis-code.js"
+      ],
+      "selectors": [
+        ".modal-backdrop",
+        ".modal"
+      ],
+      "accessibility": "Dialog uses role=dialog and aria-modal.",
+      "motionPolicy": "No required animation.",
+      "validationCommands": [
+        "npm run check:seis-code"
+      ]
+    },
+    {
+      "id": "video-hero",
+      "surface": "showcase",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/showcase/video-hero.css",
+        "apps/web/showcase/video-hero.js"
+      ],
+      "selectors": [
+        ".video-hero",
+        "[data-video-hero]"
+      ],
+      "accessibility": "Video is decorative and controls expose state text through a live region.",
+      "motionPolicy": "Reduced-motion pauses video and shows fallback.",
+      "validationCommands": [
+        "npm run check:video-hero-showcase"
+      ]
+    },
+    {
+      "id": "showcase-button",
+      "surface": "showcase",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/showcase/video-hero.css",
+        "apps/web/showcase/video-hero.js"
+      ],
+      "selectors": [
+        ".showcase-button",
+        ".showcase-button--primary"
+      ],
+      "accessibility": "CTA and control buttons meet minimum touch sizing.",
+      "motionPolicy": "Hover transitions are disabled under reduced motion.",
+      "validationCommands": [
+        "npm run check:video-hero-showcase"
+      ]
+    },
+    {
+      "id": "video-control-set",
+      "surface": "showcase",
+      "status": "validated",
+      "sourceFiles": [
+        "apps/web/showcase/video-hero.css",
+        "apps/web/showcase/video-hero.js"
+      ],
+      "selectors": [
+        ".video-hero__control-set",
+        "[data-video-action]"
+      ],
+      "accessibility": "Play, mute, and fullscreen controls are real buttons with status feedback.",
+      "motionPolicy": "Controls remain usable when autoplay or motion is disabled.",
+      "validationCommands": [
+        "npm run check:video-hero-showcase"
+      ]
+    }
+  ]
+}

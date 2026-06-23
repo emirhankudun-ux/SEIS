@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "seis-plugin-skill-capability-map",
+  "generatedAt": "2026-06-22",
+  "mode": "static_interface_capability_map",
+  "summary": "Local capability map for the static SEIS plugin interface suite. It is not a live plugin activation record.",
+  "capabilities": [
+    {
+      "id": "seis-governance-command-center",
+      "label": "SEIS governance and Command Center",
+      "surfaceId": "seis-command-layer",
+      "ownerAgent": "repository-agent",
+      "activationMode": "active",
+      "risk": "medium",
+      "pluginExamples": ["@seis", "Goal Tracking OS", "Command Center", "GitHub governance"]
+    },
+    {
+      "id": "seis-cloud-readiness",
+      "label": "Cloud readiness and deployment safety",
+      "surfaceId": "seis-cloud",
+      "ownerAgent": "release-agent",
+      "activationMode": "blocked-until-target",
+      "risk": "high",
+      "pluginExamples": ["@seis-cloud", "Vercel", "Cloudflare", "Netlify", "Render"]
+    },
+    {
+      "id": "seis-code-workspace",
+      "label": "Browser code workspace",
+      "surfaceId": "seis-code",
+      "ownerAgent": "interface-agent",
+      "activationMode": "planned",
+      "risk": "medium",
+      "pluginExamples": ["@seis-code", "Monaco", "virtual file system", "safe terminal"]
+    },
+    {
+      "id": "seis-design-system",
+      "label": "Design system and visual QA",
+      "surfaceId": "seis-design",
+      "ownerAgent": "design-system-agent",
+      "activationMode": "guarded",
+      "risk": "low",
+      "pluginExamples": ["@seis-design", "design tokens", "component inventory", "accessibility QA"]
+    },
+    {
+      "id": "seis-data-evidence",
+      "label": "Data contracts and evidence records",
+      "surfaceId": "seis-data",
+      "ownerAgent": "data-agent",
+      "activationMode": "active",
+      "risk": "medium",
+      "pluginExamples": ["@seis-data", "schema registry", "evidence ledger", "freshness policy"]
+    }
+  ]
+}

@@ -54,6 +54,14 @@ Current routing intent:
 - `open-design`: Open Design desktop route for design artifacts and prototype previews.
 - `seis-agent`: remote policy layer; never executes local inference itself.
 
+Canonical specialist ownership lives in
+[`agents/ai-workforce-assignments.md`](agents/ai-workforce-assignments.md)
+with the machine-readable contract at
+`content/development/ai-workforce-assignments.json`. The contract keeps Codex
+as the only default writer while Claude, Qwen, Gemini, CodeRabbit, Ollama,
+OpenDesign, Kimi, OpenCode, and GitHub Actions operate as scoped reviewers,
+designers, private draft helpers, or validators.
+
 Yerelde doğrudan çağırmak için:
 
 ```bash

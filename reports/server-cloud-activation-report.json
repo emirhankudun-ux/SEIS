@@ -10,7 +10,7 @@
   "siteUrl": null,
   "releasePackage": {
     "path": "dist/seis-static.zip",
-    "exists": false
+    "exists": true
   },
   "manifest": {
     "path": "dist/server-upload-manifest.json",
@@ -205,7 +205,6 @@
     "server activeTarget is not configured",
     "SEIS_SITE_URL is missing",
     "SEIS_CLOUD_PROVIDER is missing",
-    "release package is missing: dist/seis-static.zip",
     "release manifest is missing: dist/server-upload-manifest.json"
   ],
   "nextActions": [

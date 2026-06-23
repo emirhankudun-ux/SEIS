@@ -1,6 +1,6 @@
 # SEIS Eval Critic Advisory Report
 
-Generated: 2026-06-19T07:24:00.558Z
+Generated: 2026-06-23T05:51:44.089Z
 Model: seis-eval-critic-seed-v0
 Decision: pass
 

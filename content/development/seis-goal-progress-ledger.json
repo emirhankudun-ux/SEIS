@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-goal-progress-ledger",
+  "updated": "2026-06-22",
+  "mode": "non_llm_goal_progress_ledger",
+  "completedItems": [
+    {
+      "id": "SEIS-COMPLETE-001",
+      "title": "Goal Tracking OS documentation spine",
+      "completed_at": "2026-06-22",
+      "status": "completed",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-005", "SEIS-GOAL-020"],
+      "evidence_ids": ["SEIS-EVID-001"],
+      "related_paths": ["docs/goals/goal-tracking-system.md", "docs/goals/goal-schema.md", "docs/INDEX.md"],
+      "summary": "Core Goal Tracking OS documentation exists and is linked from the docs index.",
+      "limitations": ["Does not prove a live application runtime."],
+      "next_action": "Keep docs synchronized with structured records."
+    },
+    {
+      "id": "SEIS-COMPLETE-002",
+      "title": "Structured goal, evidence, and execution records",
+      "completed_at": "2026-06-22",
+      "status": "completed",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-006"],
+      "evidence_ids": ["SEIS-EVID-005"],
+      "related_paths": ["content/development/seis-goal-tracking.json", "content/development/seis-goal-evidence.json", "content/development/seis-goal-execution.json", "scripts/check-goal-tracking.mjs"],
+      "summary": "File-backed non-LLM source records and validator exist for the Goal Tracking OS foundation.",
+      "limitations": ["Scoped validator is not a full public-readiness, release-readiness, or security-history scan."],
+      "next_action": "Run npm run check:goal-tracking after every structured record change."
+    },
+    {
+      "id": "SEIS-COMPLETE-003",
+      "title": "Static Command Center Goal Tracking view",
+      "completed_at": "2026-06-22",
+      "status": "completed",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "evidence_ids": ["SEIS-EVID-006"],
+      "related_paths": ["content/development/seis-goal-command-center-view.json", "apps/web/goal-tracking.html", "scripts/create-goal-command-center-view.mjs"],
+      "summary": "A generated static Goal Tracking Center page renders structured records without an LLM.",
+      "limitations": ["Does not prove routed app navigation, live GitHub state, deployment, public readiness, or release readiness."],
+      "next_action": "Keep generated outputs fresh with npm run check:goal-command-center-view."
+    }
+  ],
+  "deferredItems": [
+    {
+      "id": "SEIS-DEFER-001",
+      "title": "Repository hygiene recovery",
+      "status": "deferred",
+      "reason": "Pre-existing tracked deletions are outside this Goal Tracking OS slice and require dedicated review.",
+      "supports_goal_ids": ["SEIS-GOAL-007", "SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "related_paths": ["docs/STATUS.md"],
+      "approval_required": "File deletion decisions require explicit approval.",
+      "next_action": "Handle deletion recovery in a separate repository hygiene PR."
+    },
+    {
+      "id": "SEIS-DEFER-002",
+      "title": "Live GitHub PR state integration",
+      "status": "deferred",
+      "reason": "Live GitHub API/CLI inspection is external state and was not performed in this slice.",
+      "supports_goal_ids": ["SEIS-GOAL-007"],
+      "related_paths": ["docs/roadmap/NEXT_PR_QUEUE.md"],
+      "approval_required": "External GitHub API/CLI inspection requires explicit approval if policy requires it.",
+      "next_action": "Inspect open and closed PRs in a dedicated GitHub governance pass."
+    },
+    {
+      "id": "SEIS-DEFER-003",
+      "title": "Public and release readiness claims",
+      "status": "deferred",
+      "reason": "Foundation validation is blocked by pre-existing deleted files and readiness dry-runs were not performed.",
+      "supports_goal_ids": ["SEIS-GOAL-008", "SEIS-GOAL-009"],
+      "related_paths": ["docs/STATUS.md", "docs/roadmap/MASTER_BACKLOG.md"],
+      "approval_required": "Deployment, release/tag creation, and public visibility changes require explicit approval.",
+      "next_action": "Run readiness dry-runs only after repository hygiene is resolved."
+    }
+  ],
+  "followUpActions": [
+    {
+      "id": "SEIS-FOLLOWUP-001",
+      "title": "Keep generated Goal Tracking view fresh",
+      "status": "active",
+      "priority": "P1 high",
+      "supports_goal_ids": ["SEIS-GOAL-002", "SEIS-GOAL-003"],
+      "related_task_ids": ["SEIS-TASK-003"],
+      "evidence_ids": ["SEIS-EVID-006"],
+      "related_paths": ["scripts/create-goal-command-center-view.mjs", "apps/web/goal-tracking.html"],
+      "next_action": "Run npm run check:goal-command-center-view after source records change."
+    },
+    {
+      "id": "SEIS-FOLLOWUP-002",
+      "title": "Add repository intelligence scanner plan",
+      "status": "planned",
+      "priority": "P1 high",
+      "supports_goal_ids": ["SEIS-GOAL-004"],
+      "related_task_ids": ["SEIS-TASK-001"],
+      "evidence_ids": ["SEIS-EVID-002"],
+      "related_paths": ["docs/roadmap/MASTER_BACKLOG.md", "docs/roadmap/NEXT_PR_QUEUE.md"],
+      "next_action": "Define read-only scanner outputs in the next safe PR."
+    },
+    {
+      "id": "SEIS-FOLLOWUP-003",
+      "title": "Run real review cadence records",
+      "status": "planned",
+      "priority": "P1 high",
+      "supports_goal_ids": ["SEIS-GOAL-003", "SEIS-GOAL-020"],
+      "related_task_ids": ["SEIS-TASK-001"],
+      "evidence_ids": ["SEIS-EVID-007"],
+      "related_paths": ["docs/goals/daily-review-template.md", "docs/goals/weekly-priorities-template.md", "docs/goals/monthly-review-template.md"],
+      "next_action": "Record performed daily, weekly, or monthly reviews only when real current-period evidence exists."
+    }
+  ]
+}
