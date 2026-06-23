@@ -58,9 +58,9 @@ include prompts containing secrets or private data.
 PR #44 represented provider-routing boundaries in
 `packages/model-router/fixtures/model-router-route-contracts.json` and checked
 them with `npm run check:model-router-contracts`, but that package slice is not
-part of this docs-only recovery branch.
+part of this local contract fixture recovery branch.
 
-When re-ported in a later implementation PR, the fixture pack should keep
+This local fixture pack keeps
 local-only and metadata-only routes provider-free, and keep the
 external-provider-redacted route in `approval-needed` state. This recovery
 policy does not create live provider credentials, provider API calls, benchmark

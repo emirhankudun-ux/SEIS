@@ -2,7 +2,7 @@
 
 Date: 2026-06-23
 
-Status: docs-only foundation recovery review
+Status: foundation and local contract fixture recovery review
 
 ## Purpose
 
@@ -30,7 +30,7 @@ providers, or deployed an AI application.
 | `docs/ai/fine-tuning-strategy.md` | recovered |
 | `docs/ai/model-card-template.md` | recovered as template only |
 | `docs/ai/checkpoint-governance.md` | recovered |
-| `docs/evals/evaluation-strategy.md` | recovered and adapted to docs-only scope |
+| `docs/evals/evaluation-strategy.md` | recovered and adapted to local fixture-backed scope |
 | `docs/evals/benchmark-integrity.md` | recovered |
 | `docs/security/model-provider-data-policy.md` | recovered |
 | `docs/reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md` | added in this slice |
@@ -75,44 +75,39 @@ None of those artifacts are created by this recovery slice.
 ## What Was Excluded
 
 This slice intentionally excludes the higher-risk PR #44 assets that conflict
-with current `main`:
+with current `main` or require separate approval:
 
 - Command Center UI projection changes
-- package schemas and fixtures
 - browser QA scripts
-- generated evaluation reports
 - manual GitHub Actions browser evidence workflow
-- package script changes
 - CI workflow changes
 - deployment, SSH, provider, training, benchmark, or checkpoint behavior
 
-Those assets should be recovered in smaller follow-up PRs after this docs-only
-foundation is reviewed.
+Command Center UI and browser QA assets should be recovered in smaller
+follow-up PRs after this foundation and fixture layer is reviewed.
 
 ## Current Evidence Limits
 
 - Current `main` did not contain the full required AI foundation document set
   before this slice.
 - PR #44 remains `CONFLICTING` and is not safe to merge wholesale.
-- This branch starts from current `origin/main` and ports only the
-  documentation foundation.
-- Fixture and browser evidence from PR #44 is not claimed as current-branch
-  validation unless those files are re-ported and checks are run in this branch.
+- This branch starts from current `origin/main` and ports the documentation
+  foundation plus local fixture-backed AI Core contracts.
+- Fixture evidence is claimed only for files re-ported into this branch and
+  validator commands run in this branch.
+- Browser evidence from PR #44 is not claimed as current-branch validation.
 
 ## Recommended Next PRs
 
-1. Recover model-router, prompt-engine, agent-runtime, shared-types, and
-   tool-registry contract fixtures.
-2. Reconcile package scripts and validators with current `main`.
-3. Re-port Command Center AI Core UI surfaces after inspecting the current
+1. Re-port Command Center AI Core UI surfaces after inspecting the current
    `apps/seis-core` shape.
-4. Re-port browser QA and manual workflow only after the UI surface is
+2. Re-port browser QA and manual workflow only after the UI surface is
    stable and reviewed.
-5. Regenerate reports after final file selections.
+3. Regenerate reports after final file selections.
 
 ## Final Decision
 
-- Safe to treat this as AI foundation documentation recovery: yes.
+- Safe to treat this as AI foundation and local contract fixture recovery: yes.
 - Safe to claim live AI application implementation: no.
 - Safe to claim SEIS-owned model training: no.
 - Safe to merge PR #44 wholesale: no.

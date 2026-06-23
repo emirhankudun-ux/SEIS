@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "id": "agent-runtime-task-lifecycle",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/ai/agent-runtime.md",
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "docs/security/model-provider-data-policy.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+    "docs/ai/seis-ai-operating-model-5-year.md"
+  ],
+  "lifecycleStates": [
+    "planned",
+    "ready",
+    "running",
+    "approval-needed",
+    "blocked",
+    "failed",
+    "validated"
+  ],
+  "approvalStates": [
+    "not-required",
+    "approval-needed",
+    "approved",
+    "denied",
+    "blocked"
+  ],
+  "runs": [
+    {
+      "id": "run-docs-foundation-review-validated",
+      "agentId": "documentation-agent",
+      "agentRole": "Documentation Agent",
+      "taskType": "documentation-review",
+      "lifecycleState": "validated",
+      "approvalState": "not-required",
+      "inputContext": [
+        "official AI Core docs",
+        "five-year roadmap",
+        "foundation review"
+      ],
+      "allowedActions": [
+        "read official docs",
+        "summarize source-of-truth gaps",
+        "propose reviewable documentation slices"
+      ],
+      "forbiddenActions": [
+        "replace official governance without approval",
+        "claim live provider routing",
+        "claim model training",
+        "self-approve documentation authority",
+        "write secrets"
+      ],
+      "approvalGates": [],
+      "expectedOutputs": [
+        "source-linked finding summary",
+        "non-claim reminder",
+        "next safe slice"
+      ],
+      "validation": {
+        "result": "pass",
+        "evidence": "docs/ai/agent-runtime.md",
+        "notes": "Foundation documentation review task has no privileged operation and remains fixture-only."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolCallsPerformed": false,
+        "writesPerformed": false,
+        "externalProviderCalled": false,
+        "privilegedOperationPerformed": false,
+        "safeMetadata": [
+          "run id",
+          "agent role",
+          "task type",
+          "approval state",
+          "validation result"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/agent-runtime.md",
+        "docs/reviews/SEIS_5_YEAR_DEVELOPMENT_PROGRAM_REVIEW.md"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "delegationPolicy": {
+        "spawnPolicy": "none",
+        "parentRunId": null,
+        "delegationDepth": 0,
+        "maxDelegationDepth": 1,
+        "childAgentLimit": 0,
+        "requiresHandoff": false
+      },
+      "executionBudget": {
+        "stepBudget": 12,
+        "timeBudgetMinutes": 30,
+        "costBudgetMode": "none",
+        "contextBudgetMode": "bounded"
+      },
+      "escalationPath": [
+        "Human maintainer",
+        "Documentation Agent"
+      ]
+    },
+    {
+      "id": "run-provider-routing-approval-needed",
+      "agentId": "ai-systems-agent",
+      "agentRole": "AI Systems Agent",
+      "taskType": "external-provider-routing",
+      "lifecycleState": "approval-needed",
+      "approvalState": "approval-needed",
+      "inputContext": [
+        "model-router route fixture",
+        "provider routing policy",
+        "model provider data policy"
+      ],
+      "allowedActions": [
+        "classify provider-routing request",
+        "attach route fixture evidence",
+        "return approval-required state"
+      ],
+      "forbiddenActions": [
+        "call external providers",
+        "read provider credentials",
+        "send sensitive repository content",
+        "write secrets",
+        "self-approve provider use"
+      ],
+      "approvalGates": [
+        "human approval for external provider routing",
+        "server-side credential handling review",
+        "redaction policy verification"
+      ],
+      "expectedOutputs": [
+        "approval-needed state",
+        "blocked reason",
+        "safe metadata only"
+      ],
+      "validation": {
+        "result": "blocked",
+        "evidence": "packages/model-router/fixtures/model-router-route-contracts.json",
+        "notes": "External provider routing remains blocked until approval and credential handling are verified."
+      },
+      "auditMetadata": {
+        "redactionState": "redacted",
+        "toolCallsPerformed": false,
+        "writesPerformed": false,
+        "externalProviderCalled": false,
+        "privilegedOperationPerformed": false,
+        "safeMetadata": [
+          "run id",
+          "agent role",
+          "task type",
+          "approval state",
+          "blocked reason"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/provider-routing-policy.md",
+        "docs/security/model-provider-data-policy.md",
+        "packages/model-router/fixtures/model-router-route-contracts.json"
+      ],
+      "status": "approval-needed",
+      "maturity": "fixture-backed",
+      "delegationPolicy": {
+        "spawnPolicy": "blocked",
+        "parentRunId": null,
+        "delegationDepth": 0,
+        "maxDelegationDepth": 0,
+        "childAgentLimit": 0,
+        "requiresHandoff": true
+      },
+      "executionBudget": {
+        "stepBudget": 8,
+        "timeBudgetMinutes": 15,
+        "costBudgetMode": "approval-needed",
+        "contextBudgetMode": "approval-needed"
+      },
+      "escalationPath": [
+        "Human maintainer",
+        "Security Agent",
+        "AI Systems Agent"
+      ]
+    },
+    {
+      "id": "run-ssh-deployment-review-blocked",
+      "agentId": "devops-agent",
+      "agentRole": "DevOps Agent",
+      "taskType": "ssh-deployment-review",
+      "lifecycleState": "blocked",
+      "approvalState": "blocked",
+      "inputContext": [
+        "deployment approval boundary",
+        "security policy",
+        "missing live host approval"
+      ],
+      "allowedActions": [
+        "document required approval",
+        "summarize missing host evidence",
+        "propose rollback checklist"
+      ],
+      "forbiddenActions": [
+        "execute SSH commands",
+        "modify firewall or sudo configuration",
+        "deploy services",
+        "write secrets",
+        "self-approve infrastructure changes"
+      ],
+      "approvalGates": [
+        "human approval for SSH execution",
+        "target host verification",
+        "rollback plan review"
+      ],
+      "expectedOutputs": [
+        "blocked state",
+        "approval requirements",
+        "no execution claim"
+      ],
+      "validation": {
+        "result": "blocked",
+        "evidence": "SECURITY.md",
+        "notes": "SSH and deployment execution are intentionally blocked in the foundation fixture."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolCallsPerformed": false,
+        "writesPerformed": false,
+        "externalProviderCalled": false,
+        "privilegedOperationPerformed": false,
+        "safeMetadata": [
+          "run id",
+          "agent role",
+          "task type",
+          "approval state",
+          "blocked reason"
+        ]
+      },
+      "sourceLinks": [
+        "SECURITY.md",
+        "docs/deployment/seis-ssh-access-model.md",
+        "docs/deployment/publish-gate-contract.md"
+      ],
+      "status": "blocked",
+      "maturity": "blocked",
+      "delegationPolicy": {
+        "spawnPolicy": "blocked",
+        "parentRunId": null,
+        "delegationDepth": 0,
+        "maxDelegationDepth": 0,
+        "childAgentLimit": 0,
+        "requiresHandoff": true
+      },
+      "executionBudget": {
+        "stepBudget": 8,
+        "timeBudgetMinutes": 15,
+        "costBudgetMode": "approval-needed",
+        "contextBudgetMode": "bounded"
+      },
+      "escalationPath": [
+        "Human maintainer",
+        "Security Agent",
+        "DevOps Agent"
+      ]
+    },
+    {
+      "id": "run-ai-operating-model-validated",
+      "agentId": "agent-runtime-agent",
+      "agentRole": "Agent Runtime Agent",
+      "taskType": "ai-operating-model-review",
+      "lifecycleState": "validated",
+      "approvalState": "not-required",
+      "inputContext": [
+        "five-year AI operating model",
+        "bounded subagent rules",
+        "Command Center evidence contract"
+      ],
+      "allowedActions": [
+        "define bounded subagent topology",
+        "attach operating cadence and metric requirements",
+        "connect operating model to fixture evidence"
+      ],
+      "forbiddenActions": [
+        "self-approve agent permission expansion",
+        "write secrets",
+        "spawn live autonomous agents",
+        "call external providers",
+        "execute SSH or deployment commands",
+        "claim production orchestration readiness"
+      ],
+      "approvalGates": [],
+      "delegationPolicy": {
+        "spawnPolicy": "read-only-parallel",
+        "parentRunId": null,
+        "delegationDepth": 0,
+        "maxDelegationDepth": 1,
+        "childAgentLimit": 2,
+        "requiresHandoff": true
+      },
+      "executionBudget": {
+        "stepBudget": 40,
+        "timeBudgetMinutes": 120,
+        "costBudgetMode": "none",
+        "contextBudgetMode": "bounded"
+      },
+      "escalationPath": [
+        "Human maintainer",
+        "Security Agent",
+        "QA and Evaluation Agent"
+      ],
+      "expectedOutputs": [
+        "source-linked operating model",
+        "bounded subagent rules",
+        "operating cadence and metrics",
+        "next safe implementation slice"
+      ],
+      "validation": {
+        "result": "pass",
+        "evidence": "docs/ai/seis-ai-operating-model-5-year.md",
+        "notes": "Five-year operating model is documented and linked to fixture-backed agent-runtime evidence only."
+      },
+      "auditMetadata": {
+        "redactionState": "metadata-only",
+        "toolCallsPerformed": false,
+        "writesPerformed": false,
+        "externalProviderCalled": false,
+        "privilegedOperationPerformed": false,
+        "safeMetadata": [
+          "run id",
+          "agent role",
+          "task type",
+          "approval state",
+          "delegation policy",
+          "validation result"
+        ]
+      },
+      "sourceLinks": [
+        "docs/ai/seis-ai-operating-model-5-year.md",
+        "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+        "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed"
+    }
+  ],
+  "nonClaims": [
+    "No live autonomous orchestration is implemented.",
+    "No agent self-approval, permission expansion, or privileged operation is enabled.",
+    "No GitHub write action, branch deletion, merge, push, SSH command, deployment, or infrastructure mutation is performed.",
+    "No SSH command is executed.",
+    "No external provider call, provider credential access, model call, benchmark, training, checkpoint, or model-card claim is created.",
+    "Browser clients do not receive provider keys, SSH secrets, or privileged execution authority.",
+    "No unbounded subagent delegation, recursive autonomy, or live autonomous spawning is enabled."
+  ]
+}

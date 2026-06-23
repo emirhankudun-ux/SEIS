@@ -9,39 +9,39 @@
   },
   "summary": {
     "countedFileCount": 962,
-    "countedBytes": 5707698,
+    "countedBytes": 5709708,
     "javascriptBytes": 2310662,
-    "javascriptPercent": 40.48,
+    "javascriptPercent": 40.47,
     "targetJavaScriptPercent": 21.0,
     "targetStatus": "above_target",
-    "requiredAdditionalNonJavaScriptBytesForTarget": 5295454,
+    "requiredAdditionalNonJavaScriptBytesForTarget": 5293444,
     "phase": "phase_1_generated_vendor_control_then_real_polyglot_migration"
   },
   "languages": [
     {
       "language": "JavaScript",
       "bytes": 2310662,
-      "percent": 40.48
+      "percent": 40.47
     },
     {
       "language": "JSON",
-      "bytes": 972362,
-      "percent": 17.04
+      "bytes": 973262,
+      "percent": 17.05
     },
     {
       "language": "Swift",
       "bytes": 574078,
-      "percent": 10.06
+      "percent": 10.05
     },
     {
       "language": "Python",
       "bytes": 513979,
-      "percent": 9.01
+      "percent": 9.0
     },
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 7.44
+      "percent": 7.43
     },
     {
       "language": "CSS",
@@ -65,8 +65,8 @@
     },
     {
       "language": "Other",
-      "bytes": 43840,
-      "percent": 0.77
+      "bytes": 44950,
+      "percent": 0.79
     },
     {
       "language": "Go",
@@ -503,7 +503,7 @@
     {
       "language": "JavaScript",
       "bytes": 2310662,
-      "percent": 40.48,
+      "percent": 40.47,
       "sourceLanguages": [
         "JavaScript"
       ]
@@ -511,7 +511,7 @@
     {
       "language": "TypeScript",
       "bytes": 424439,
-      "percent": 7.44,
+      "percent": 7.43,
       "sourceLanguages": [
         "TypeScript"
       ]
@@ -526,8 +526,8 @@
     },
     {
       "language": "Other",
-      "bytes": 2964150,
-      "percent": 51.93,
+      "bytes": 2966160,
+      "percent": 51.95,
       "sourceLanguages": [
         "ABAP",
         "AWK",
@@ -649,8 +649,8 @@
       {
         "id": "ai-data-python-sql",
         "label": "AI, Data, Python, SQL",
-        "bytes": 1505300,
-        "percent": 26.37,
+        "bytes": 1506200,
+        "percent": 26.38,
         "minPercent": 18.0,
         "maxPercent": 22.0,
         "status": "above_target",
@@ -672,7 +672,7 @@
         "id": "typescript-javascript-tooling",
         "label": "TypeScript / JavaScript tooling",
         "bytes": 2735101,
-        "percent": 47.92,
+        "percent": 47.9,
         "minPercent": 15.0,
         "maxPercent": 20.0,
         "status": "above_target",
@@ -761,7 +761,7 @@
         "id": "html-css-preview",
         "label": "HTML / CSS previews",
         "bytes": 487294,
-        "percent": 8.54,
+        "percent": 8.53,
         "minPercent": 0.0,
         "maxPercent": 3.0,
         "status": "above_target",
@@ -774,8 +774,8 @@
       }
     ],
     "unassigned": {
-      "bytes": 165734,
-      "percent": 2.9,
+      "bytes": 166844,
+      "percent": 2.92,
       "languages": [
         "ABAP",
         "AWK",
@@ -902,7 +902,7 @@
   ],
   "excludedBytesByReason": {
     "binary": 241272125,
-    "documentation": 1662383,
+    "documentation": 1664321,
     "linguist-generated": 3055824,
     "linguist-vendored": 2888366
   },
@@ -1012,7 +1012,7 @@
     "Keep browser runtime JavaScript focused on interaction code; put contracts in typed or domain-specific languages."
   ],
   "sourceSnapshot": {
-    "hash": "b9be96fb3dd8afaed673591998b1b7c636d8e8d5f9fd58dab87f2ee998613be6",
+    "hash": "3e6bbfc1a042e0578342c3515d201e5c2745f616ca219f6049ca60255c7ed672",
     "algorithm": "sha256"
   }
 }

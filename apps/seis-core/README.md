@@ -54,6 +54,12 @@ apps/seis-core/
 - Security Center: risk reports, permission reviews, dependency scans, security audits, access model, and no-secret policy.
 - Architecture Center: system map, module relationships, dependency graph, technical debt register, and platform phases.
 - Knowledge: knowledge graph, relationship contracts, memory evidence, decision history, reusable patterns, and knowledge registry surfaces.
+- Local Retrieval: local-only metadata lookup for approved AI Core and
+  Command Center evidence sources, with no provider call, no embedding index,
+  no raw content return, and no persistent memory write.
+- Retrieval Result Cards: evidence-linked cards projected from local fixtures
+  so the Command Center can show source class, retrieval state, privacy mode,
+  freshness, and blocked-source messaging without pretending live retrieval.
 - Platform Phases: Phase 1 static app, Phase 2 TypeScript/React/Next.js, and Phase 3 SwiftUI macOS/iOS.
 
 ## MVP Specification

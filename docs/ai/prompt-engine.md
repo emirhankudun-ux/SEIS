@@ -53,15 +53,14 @@ Each prompt should define:
 
 ## Regression Fixture Boundary
 
-PR #44 included a prompt regression fixture pack under
-`packages/prompt-engine/`, but that package slice is not part of this
-docs-only recovery branch:
+This recovery branch includes the local prompt regression fixture pack under
+`packages/prompt-engine/`:
 
 - `schemas/prompt-regression-suite.schema.json`
 - `fixtures/assistant-surface-regression-suite.json`
 - `npm run check:prompt-regression-fixtures`
 
-When re-ported in a later implementation PR, the fixture pack should cover
+The fixture pack covers
 repository, documentation, architecture, security, PR, roadmap, and research
 assistant surfaces. It should verify expected output fields, approval triggers,
 forbidden context boundaries, evidence requirements, and non-claims for

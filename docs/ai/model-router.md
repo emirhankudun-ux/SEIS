@@ -66,15 +66,14 @@ adapters should be added only after privacy and evaluation contracts are tested.
 
 ## Fixture Evidence Boundary
 
-PR #44 included a model-router request/decision/response fixture pack under
-`packages/model-router/`, but that package slice is not part of this
-docs-only recovery branch:
+This recovery branch includes the local model-router request/decision/response
+fixture pack under `packages/model-router/`:
 
 - `schemas/model-router-route-contract.schema.json`
 - `fixtures/model-router-route-contracts.json`
 - `npm run check:model-router-contracts`
 
-When re-ported in a later implementation PR, it should cover:
+It covers:
 
 - `local-only` repository review with no provider call
 - `metadata-only` documentation summary with raw-content routing blocked
@@ -84,10 +83,10 @@ When re-ported in a later implementation PR, it should cover:
 - `approval-needed` external-provider-redacted route that fails closed until
   approval, server-side credential handling, and redaction policy are verified
 
-This recovery document does not imply live provider execution, provider
-readiness, provider quality, benchmark performance, model training, or
+This recovery document and fixture pack do not imply live provider execution,
+provider readiness, provider quality, benchmark performance, model training, or
 SEIS-owned model capability.
 
-The token feed budget remains a future contract-recovery candidate. It must not
-be treated as executed 10,000,000 token ingestion, embeddings, persistent
-memory, provider calls, model training, or checkpoints.
+The token feed budget is a metadata-only contract fixture. It must not be
+taken as executed 10,000,000 token ingestion, embeddings, persistent memory,
+provider calls, model training, or checkpoints.

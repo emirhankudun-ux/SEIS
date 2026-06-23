@@ -93,15 +93,14 @@ the foundation pass.
 
 ## Fixture Evidence Boundary
 
-PR #44 included an agent-runtime task lifecycle fixture pack under
-`packages/agent-runtime/`, but that package slice is not part of this
-docs-only recovery branch:
+This recovery branch includes the local agent-runtime task lifecycle fixture
+pack under `packages/agent-runtime/`:
 
 - `schemas/agent-runtime-task-lifecycle.schema.json`
 - `fixtures/agent-runtime-task-lifecycle.json`
 - `npm run check:agent-runtime-lifecycle`
 
-When re-ported in a later implementation PR, it should cover:
+It covers:
 
 - a validated documentation review task with no privileged operation
 - a validated five-year AI operating model review with bounded subagent rules

@@ -75,13 +75,15 @@ provider routing are not model ownership.
 
 ## Integration With The App
 
-SEIS AI Core and the Command Center should share contracts for model routes,
-prompt versions, agent tasks, approval requests, evaluation results, audit
-events, repository findings, documentation status, security findings, roadmap
-items, and module maturity. The app exposes the AI Core safely; the AI Core
-interprets app states and actions through typed contracts. The concrete
-shared-type fixture files from PR #44 are intentionally not part of this
-docs-only recovery slice and should be re-ported separately.
+SEIS AI Core and the Command Center share local fixture-backed contracts for
+model routes, prompt versions, agent tasks, approval requests, evaluation
+results, audit events, repository findings, documentation status, security
+findings, roadmap items, and module maturity. The app exposes the AI Core
+safely; the AI Core interprets app states and actions through typed contracts.
+This branch restores the local fixtures, schemas, validator scripts, and static
+app projection needed for that contract layer. Command Center UI changes,
+browser QA workflow activation, live provider routing, deployment, and model
+research execution remain separate follow-up slices.
 
 ## App Execution Requirements
 
@@ -95,6 +97,6 @@ See also:
 - `docs/security/model-provider-data-policy.md`
 - `docs/evals/evaluation-strategy.md`
 
-Future follow-up slices should re-port app/product surface documentation and
-shared AI Core / Command Center contract fixtures after this foundation review
-is accepted.
+Future follow-up slices should re-port the Command Center UI surface and
+browser QA workflow after this foundation and local contract fixture layer is
+reviewed.

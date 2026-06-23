@@ -150,6 +150,21 @@ ios/
 !content/development/seis-god-mode-runtime-evidence.json
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json
+!packages/agent-runtime/fixtures/*.json
+!packages/agent-runtime/schemas/*.json
+!packages/data/fixtures/*.json
+!packages/data/schemas/*.json
+!packages/model-router/fixtures/*.json
+!packages/model-router/schemas/*.json
+!packages/prompt-engine/fixtures/*.json
+!packages/prompt-engine/schemas/*.json
+!packages/repository-assistant/fixtures/*.json
+!packages/repository-assistant/schemas/*.json
+!packages/shared-types/fixtures/*.json
+!packages/shared-types/schemas/*.json
+!packages/tool-registry/fixtures/*.json
+!packages/tool-registry/schemas/*.json
+!reports/evals/*.json
 
 # Package lock files
 package-lock.json
@@ -169,11 +184,14 @@ docs/*
 !docs/governance/**/*.md
 !docs/adr/
 !docs/adr/*.md
+!docs/architecture/
+!docs/architecture/ai-core-app-shared-contracts.md
 !docs/decisions/
 !docs/decisions/*.md
 !docs/ai/
 !docs/ai/agent-runtime.md
 !docs/ai/checkpoint-governance.md
+!docs/ai/context-memory-boundary.md
 !docs/ai/fine-tuning-strategy.md
 !docs/ai/local-model-strategy.md
 !docs/ai/model-card-template.md
@@ -182,13 +200,25 @@ docs/*
 !docs/ai/prompt-engine.md
 !docs/ai/provider-routing-policy.md
 !docs/ai/seis-ai-core.md
+!docs/ai/seis-ai-operating-model-5-year.md
 !docs/ai/seis-universe-research.md
+!docs/ai/tool-use-policy.md
 !docs/evals/
 !docs/evals/benchmark-integrity.md
 !docs/evals/evaluation-strategy.md
+!docs/product/
+!docs/product/ai-app-surfaces.md
+!docs/product/ai-core-center.md
+!docs/product/repository-assistant.md
+!docs/product/security-review-assistant.md
+!docs/product/seis-ai-app.md
 !docs/security/
 !docs/security/model-provider-data-policy.md
+!docs/testing/
+!docs/testing/prompt-regression-suite.md
 !docs/reviews/
+!docs/reviews/SEIS_5_YEAR_DEVELOPMENT_PROGRAM_REVIEW.md
+!docs/reviews/SEIS_AI_CORE_CONTRACT_FIXTURE_RECOVERY_REVIEW.md
 !docs/reviews/SEIS_AI_MODEL_APPLICATION_REVIEW.md
 
 # Local accidental artifacts from monorepo preparation

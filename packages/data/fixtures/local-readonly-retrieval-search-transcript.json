@@ -1,0 +1,219 @@
+{
+  "version": 1,
+  "id": "local-readonly-retrieval-search-transcript",
+  "status": "fixture-backed",
+  "mode": "local-only",
+  "readOnly": true,
+  "providerCallPerformed": false,
+  "externalProviderRouting": false,
+  "browserReceivesProviderKey": false,
+  "storesRawContent": false,
+  "rawContentReturned": false,
+  "writesPersistentMemory": false,
+  "createsEmbeddingIndex": false,
+  "sourceDocuments": [
+    "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "docs/ai/context-memory-boundary.md",
+    "docs/evals/evaluation-strategy.md",
+    "docs/architecture/ai-core-app-shared-contracts.md"
+  ],
+  "retrievalResultCards": [
+    {
+      "id": "result-official-ai-core-docs",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-official-ai-core-docs",
+      "sourceName": "Official AI Core and Command Center docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "summary": "Official AI Core and Command Center docs are approved for local metadata lookup and evidence linking.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    },
+    {
+      "id": "result-generated-evaluation-reports",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-generated-evaluation-reports",
+      "sourceName": "Generated evaluation and language reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "summary": "Generated reports are available as validation metadata and do not imply benchmark, model training, or provider-readiness claims.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "result-local-fixture-contracts",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-local-fixture-contracts",
+      "sourceName": "Local fixture-backed AI Core contracts",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "summary": "Local fixture contracts can feed Command Center result cards while remaining clearly marked as fixture-backed evidence.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    }
+  ],
+  "noContentSearchTranscripts": [
+    {
+      "id": "transcript-blocked-discarded-archive",
+      "query": "Show discarded assistant archive implementation code",
+      "adapterId": "adapter-discarded-archive-block",
+      "resultCount": 0,
+      "emptyState": "Discarded assistant archive retrieval is blocked; only clean-room risk category review is allowed.",
+      "blockedSources": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "decisionState": "blocked",
+      "status": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "transcript-empty-provider-secrets",
+      "query": "Search provider keys or local private credentials",
+      "adapterId": "adapter-command-center-evidence",
+      "resultCount": 0,
+      "emptyState": "Secret and credential lookup is not a supported retrieval task.",
+      "blockedSources": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "decisionState": "empty",
+      "status": "validated",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    }
+  ],
+  "nonClaims": [
+    "No live search, retrieval index, embedding database, vector database, provider call, or model call is performed.",
+    "No raw assistant archive content, raw source file body, prompt dump, credential value, provider key, or private configuration is returned.",
+    "No persistent memory write, browser-side provider secret exposure, GitHub write, SSH command, deployment, payment, or infrastructure mutation is enabled.",
+    "No benchmark, model training, model-card, checkpoint, BCI, consciousness, or SEIS-owned model claim is created."
+  ],
+  "filterControls": [
+    {
+      "id": "filter-local-retrieval-query",
+      "label": "Filter local metadata",
+      "controlType": "text",
+      "target": "query",
+      "defaultValue": "",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-source-class",
+      "label": "Source class",
+      "controlType": "select",
+      "target": "sourceClass",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "official",
+        "scan-generated",
+        "mock"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-transcript-state",
+      "label": "Transcript state",
+      "controlType": "select",
+      "target": "transcriptState",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "empty",
+        "blocked"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-reset",
+      "label": "Reset local filters",
+      "controlType": "button",
+      "target": "reset",
+      "defaultValue": "reset",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    }
+  ],
+  "emptyStateTestCases": [
+    {
+      "id": "empty-state-no-matching-source-class",
+      "query": "official docs",
+      "sourceClass": "scan-generated",
+      "transcriptState": "empty",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    },
+    {
+      "id": "empty-state-secret-search-blocked",
+      "query": "provider keys",
+      "sourceClass": "all",
+      "transcriptState": "blocked",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    }
+  ]
+}

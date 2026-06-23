@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "id": "local-readonly-retrieval-query-adapter",
+  "status": "fixture-backed",
+  "mode": "local-only",
+  "readOnly": true,
+  "externalProviderRouting": false,
+  "providerCallPerformed": false,
+  "browserReceivesProviderKey": false,
+  "secretMaterialStored": false,
+  "storesRawContent": false,
+  "writesPersistentMemory": false,
+  "createsEmbeddingIndex": false,
+  "sourceDocuments": [
+    "docs/ai/context-memory-boundary.md",
+    "docs/evals/evaluation-strategy.md",
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+  ],
+  "queryIntents": [
+    "command-center-evidence-lookup",
+    "documentation-metadata-summary",
+    "validation-status-lookup",
+    "blocked-archive-guard"
+  ],
+  "allowedSourceClasses": [
+    "official",
+    "scan-generated",
+    "mock",
+    "planned"
+  ],
+  "forbiddenSourceClasses": [
+    "archive",
+    "live",
+    "unknown"
+  ],
+  "allowedRetrievalStates": [
+    "approved",
+    "local-only"
+  ],
+  "blockedRetrievalStates": [
+    "pending-review",
+    "redacted",
+    "restricted",
+    "expired",
+    "blocked"
+  ],
+  "queryAdapters": [
+    {
+      "id": "adapter-command-center-evidence",
+      "adapterName": "Command Center Evidence Lookup",
+      "queryIntent": "command-center-evidence-lookup",
+      "mode": "local-only",
+      "privacyMode": "metadata-only",
+      "readOnly": true,
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "browserReceivesProviderKey": false,
+      "secretMaterialStored": false,
+      "storesRawContent": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "allowedKnowledgeSourceIds": [
+        "knowledge-official-ai-core-docs",
+        "knowledge-generated-evaluation-reports",
+        "knowledge-local-fixture-contracts",
+        "knowledge-seis-10m-token-feed-plan"
+      ],
+      "forbiddenKnowledgeSourceIds": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "inputShape": [
+        "query text",
+        "desired source class",
+        "maximum result count"
+      ],
+      "outputShape": [
+        "knowledge source id",
+        "source name",
+        "source class",
+        "retrieval state",
+        "privacy mode",
+        "freshness",
+        "evidence link"
+      ],
+      "sourceSelectionPolicy": "Select only existing approved or local-only knowledge source ids from the SEIS-owned classification fixture.",
+      "rankingPolicy": "Prefer official docs, then generated evaluation reports, then local fixture contracts, then planned metadata-only capacity records.",
+      "redactionPolicy": "Return metadata and evidence links only; never return raw file content, secrets, provider keys, archive bodies, embeddings, or private configuration.",
+      "freshnessPolicy": "Prefer current sources and mark needs-review or stale sources as blocked for this adapter.",
+      "resultLimit": 8,
+      "emptyState": "No approved local metadata source matches this query.",
+      "failureStates": [
+        "missing knowledge source id",
+        "blocked source class requested",
+        "external provider routing requested",
+        "raw content requested",
+        "memory write requested"
+      ],
+      "allowedActions": [
+        "read knowledge source metadata",
+        "return repository-relative evidence links",
+        "summarize validation status from fixture records"
+      ],
+      "forbiddenActions": [
+        "call external providers",
+        "return raw archive content",
+        "create embeddings",
+        "write persistent memory",
+        "read or expose secrets",
+        "execute push, merge, SSH, deployment, payment, or infrastructure actions"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json"
+    },
+    {
+      "id": "adapter-discarded-archive-block",
+      "adapterName": "Discarded Archive Block Guard",
+      "queryIntent": "blocked-archive-guard",
+      "mode": "disabled",
+      "privacyMode": "disabled",
+      "readOnly": true,
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "browserReceivesProviderKey": false,
+      "secretMaterialStored": false,
+      "storesRawContent": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "allowedKnowledgeSourceIds": [],
+      "forbiddenKnowledgeSourceIds": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "inputShape": [
+        "blocked source id",
+        "requested action"
+      ],
+      "outputShape": [
+        "blocked source id",
+        "blocked reason",
+        "allowed clean-room alternative",
+        "evidence link"
+      ],
+      "sourceSelectionPolicy": "Reject discarded assistant archive retrieval and allow only high-level clean-room triage references.",
+      "rankingPolicy": "No ranking is performed because this adapter is disabled for retrieval.",
+      "redactionPolicy": "Never return raw archive content, generated scripts, copied code, prompt dumps, model claims, or restricted behavior.",
+      "freshnessPolicy": "Treat discarded archive material as needs-review and blocked until a clean-room summary is approved.",
+      "resultLimit": 0,
+      "emptyState": "Discarded assistant archive retrieval is blocked.",
+      "failureStates": [
+        "archive source requested",
+        "unsafe generated implementation requested",
+        "provider routing requested",
+        "memory ingestion requested"
+      ],
+      "allowedActions": [
+        "return blocked state",
+        "return clean-room review requirement",
+        "return risk category without copying implementation"
+      ],
+      "forbiddenActions": [
+        "copy source code or generated scripts",
+        "call external providers",
+        "return raw archive content",
+        "create embeddings",
+        "write persistent memory",
+        "read or expose secrets",
+        "execute push, merge, SSH, deployment, payment, or infrastructure actions",
+        "execute active countermeasures",
+        "inject poisoned data",
+        "perform memetic manipulation",
+        "provision infrastructure or payments",
+        "claim BCI, consciousness upload, trained model, benchmark, checkpoint, or model-card evidence"
+      ],
+      "approvalState": "blocked",
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    }
+  ],
+  "auditMetadata": {
+    "reviewer": "codex-local-fixture-check",
+    "reviewState": "fixture-backed",
+    "evidence": "scripts/check-retrieval-query-adapter.mjs"
+  },
+  "nonClaims": [
+    "No live provider adapter, provider call, model call, or provider quality claim is performed.",
+    "No provider key, SSH private key, token, cookie, environment-file value, or service credential is included.",
+    "No raw assistant archive, Qwen paste, generated script, or restricted implementation content is ingested.",
+    "No embedding index, vector database, or persistent memory write is created.",
+    "No GitHub push, merge, PR mutation, SSH command, deployment, payment, or infrastructure mutation is enabled.",
+    "No browser client receives provider secrets or privileged execution authority.",
+    "No benchmark, safety certification, trained model, checkpoint, model-card, BCI, or SEIS-owned model claim is created.",
+    "No absolute machine path or /Users evidence path is allowed."
+  ]
+}

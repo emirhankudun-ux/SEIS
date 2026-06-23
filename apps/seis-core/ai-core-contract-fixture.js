@@ -1,0 +1,1649 @@
+window.seisAiCoreContractFixture = {
+  "sourceFixture": "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+  "version": 1,
+  "id": "ai-core-command-center-foundation",
+  "status": "fixture-backed",
+  "sourceDocuments": [
+    "docs/architecture/ai-core-app-shared-contracts.md",
+    "roadmap/seis-ai-core-command-center-5-year-development-program.md",
+    "docs/product/seis-ai-app.md",
+    "docs/ai/seis-ai-core.md",
+    "docs/ai/model-router.md",
+    "docs/ai/provider-routing-policy.md",
+    "docs/ai/agent-runtime.md",
+    "docs/ai/tool-use-policy.md",
+    "docs/product/repository-assistant.md",
+    "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json",
+    "packages/model-router/fixtures/model-router-route-contracts.json",
+    "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json",
+    "packages/tool-registry/fixtures/tool-registry-permissions.json",
+    "packages/data/fixtures/knowledge-source-classification.json",
+    "packages/data/fixtures/seis-10m-token-feed-budget.json",
+    "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+    "packages/data/schemas/retrieval-query-adapter.schema.json",
+    "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
+    "packages/data/schemas/retrieval-search-transcript.schema.json",
+    "docs/ai/seis-ai-operating-model-5-year.md"
+  ],
+  "stateVocabulary": [
+    "ready",
+    "draft",
+    "planned",
+    "blocked",
+    "approval-needed",
+    "degraded",
+    "unknown",
+    "running",
+    "failed",
+    "validated"
+  ],
+  "llmExecutionModes": [
+    "local-only",
+    "local-preferred",
+    "external-provider-allowed",
+    "external-provider-redacted",
+    "metadata-only",
+    "offline",
+    "disabled",
+    "research-only"
+  ],
+  "moduleMaturities": [
+    "planned",
+    "draft",
+    "fixture-backed",
+    "local-alpha",
+    "provider-alpha",
+    "beta",
+    "stable",
+    "research-only",
+    "blocked"
+  ],
+  "modelRoutes": [
+    {
+      "id": "route-local-repo-review",
+      "taskType": "repository-review",
+      "dataClass": "repository",
+      "privacyMode": "local-only",
+      "providerProfile": "none-local-prototype",
+      "modelProfile": "no-model-local-summary",
+      "promptVersionId": "prompt-repository-assistant-v0-1",
+      "approvalState": "not-required",
+      "blockedReason": "External provider routing remains disabled; the prototype summarizes local source-linked evidence only.",
+      "evaluationProfile": "repository-assistant-local-readonly",
+      "status": "validated",
+      "maturity": "local-alpha",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "route-metadata-doc-summary",
+      "taskType": "documentation-assistance",
+      "dataClass": "public",
+      "privacyMode": "metadata-only",
+      "providerProfile": "metadata-only-no-provider",
+      "modelProfile": "no-model-metadata-summary",
+      "promptVersionId": "prompt-documentation-assistant-v0-1",
+      "approvalState": "not-required",
+      "blockedReason": "Raw content is not routed; only source-linked metadata may be summarized.",
+      "evaluationProfile": "metadata-only-routing-fixture",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "route-seis-10m-token-feed-metadata",
+      "taskType": "knowledge-feed-planning",
+      "dataClass": "public",
+      "privacyMode": "metadata-only",
+      "providerProfile": "metadata-only-no-provider",
+      "modelProfile": "no-model-token-feed-budget",
+      "promptVersionId": "prompt-documentation-assistant-v0-1",
+      "approvalState": "not-required",
+      "blockedReason": "Metadata-only 10,000,000 token feed budget plan; no raw content, provider call, embedding index, memory write, or model training is performed.",
+      "evaluationProfile": "token-feed-budget-fixture",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "route-external-redacted-docs",
+      "taskType": "documentation-assistance",
+      "dataClass": "sensitive",
+      "privacyMode": "external-provider-redacted",
+      "providerProfile": "provider-placeholder-server-side-only",
+      "modelProfile": "quality-balanced-placeholder",
+      "promptVersionId": "prompt-documentation-assistant-v0-1",
+      "approvalState": "approval-needed",
+      "blockedReason": "External provider routing is blocked until human approval, server-side credential handling, and redaction policy are verified.",
+      "evaluationProfile": "provider-redaction-fixture",
+      "status": "approval-needed",
+      "maturity": "draft",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    }
+  ],
+  "promptVersions": [
+    {
+      "id": "prompt-repository-assistant-v0-1",
+      "name": "Repository Assistant",
+      "version": "0.1",
+      "scope": "Read-only repository review with evidence links and no write actions.",
+      "status": "validated",
+      "maturity": "local-alpha",
+      "regressionSuite": "assistant-surface-regression-suite",
+      "evidence": "docs/product/repository-assistant.md"
+    },
+    {
+      "id": "prompt-documentation-assistant-v0-1",
+      "name": "Documentation Assistant",
+      "version": "0.1",
+      "scope": "Documentation planning and source-of-truth alignment.",
+      "status": "planned",
+      "maturity": "draft",
+      "regressionSuite": "documentation-assistant-fixture",
+      "evidence": "docs/ai/prompt-engine.md"
+    }
+  ],
+  "agentTasks": [
+    {
+      "id": "task-docs-foundation-review",
+      "agentRole": "Documentation Agent",
+      "intent": "Review AI Core and Command Center foundation docs for source alignment.",
+      "allowedActions": [
+        "read official docs",
+        "summarize gaps",
+        "propose reviewable PR slices"
+      ],
+      "forbiddenActions": [
+        "enable provider routing",
+        "write secrets",
+        "claim model training"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "task-local-repository-assistant",
+      "agentRole": "Repository Intelligence Agent",
+      "intent": "Summarize local repository condition, source-linked evidence, risks, validation state, and next safe action.",
+      "allowedActions": [
+        "read official docs",
+        "read git status metadata",
+        "read changed file paths",
+        "summarize validation outputs"
+      ],
+      "forbiddenActions": [
+        "stage files",
+        "commit files",
+        "push branches",
+        "call external providers",
+        "execute SSH or deployment commands"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "local-alpha",
+      "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "task-seis-10m-token-feed-plan",
+      "agentRole": "SEIS Data Agent",
+      "intent": "Validate and expose a 10,000,000 token metadata-only feed budget without ingesting raw content.",
+      "allowedActions": [
+        "read token feed budget fixture",
+        "summarize source allocations",
+        "attach model-router and knowledge-source evidence"
+      ],
+      "forbiddenActions": [
+        "call external providers",
+        "create embeddings",
+        "write persistent memory",
+        "claim token ingestion completion",
+        "claim model training"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "task-provider-routing-approval-needed",
+      "agentRole": "AI Systems Agent",
+      "intent": "Classify an external-provider routing request and stop at approval-needed state before any provider call.",
+      "allowedActions": [
+        "classify provider-routing request",
+        "attach route fixture evidence",
+        "return approval-required state"
+      ],
+      "forbiddenActions": [
+        "call external providers",
+        "read provider credentials",
+        "send sensitive repository content",
+        "self-approve provider use"
+      ],
+      "approvalState": "approval-needed",
+      "status": "approval-needed",
+      "maturity": "fixture-backed",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "task-ssh-deployment-review-blocked",
+      "agentRole": "DevOps Agent",
+      "intent": "Block SSH or deployment execution until host verification, human approval, and rollback evidence exist.",
+      "allowedActions": [
+        "document required approval",
+        "summarize missing host evidence",
+        "propose rollback checklist"
+      ],
+      "forbiddenActions": [
+        "execute SSH commands",
+        "modify firewall or sudo configuration",
+        "deploy services",
+        "self-approve infrastructure changes"
+      ],
+      "approvalState": "blocked",
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "task-ai-operating-model",
+      "agentRole": "Agent Runtime Agent",
+      "intent": "Define a five-year SEIS AI operating model with bounded subagent delegation, evidence gates, cadence, and non-claims.",
+      "allowedActions": [
+        "read official AI Core and agent-runtime docs",
+        "summarize bounded subagent operating rules",
+        "attach fixture-backed evidence to Command Center contracts"
+      ],
+      "forbiddenActions": [
+        "spawn live autonomous agents",
+        "self-approve permission expansion",
+        "call external providers",
+        "execute SSH or deployment commands",
+        "claim production orchestration readiness"
+      ],
+      "approvalState": "not-required",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
+    }
+  ],
+  "toolRegistryEntries": [
+    {
+      "id": "tool-local-repository-inspection",
+      "toolName": "Local Repository Inspection",
+      "surfaceType": "cli-script",
+      "riskClass": "read-only",
+      "permissionState": "allowed",
+      "approvalState": "not-required",
+      "allowedActions": [
+        "read repository status metadata",
+        "read official docs",
+        "read validation summaries"
+      ],
+      "forbiddenActions": [
+        "write files",
+        "stage files",
+        "commit files",
+        "print secrets",
+        "call external providers"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "tool-scoped-local-file-edit",
+      "toolName": "Scoped Local File Edit",
+      "surfaceType": "cli-script",
+      "riskClass": "local-write",
+      "permissionState": "scoped",
+      "approvalState": "not-required",
+      "allowedActions": [
+        "edit scoped repository files",
+        "update source-linked docs",
+        "update fixture-backed contracts"
+      ],
+      "forbiddenActions": [
+        "overwrite unrelated work",
+        "edit secrets",
+        "commit unrelated files",
+        "rewrite git history",
+        "self-approve privileged scope"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "tool-github-pr-publish",
+      "toolName": "GitHub PR Publish",
+      "surfaceType": "plugin",
+      "riskClass": "external-write",
+      "permissionState": "approval-needed",
+      "approvalState": "approval-needed",
+      "allowedActions": [
+        "prepare PR summary",
+        "collect validation evidence",
+        "identify publish blockers"
+      ],
+      "forbiddenActions": [
+        "push without approval",
+        "merge pull requests",
+        "close pull requests",
+        "expose secrets",
+        "bypass branch protections"
+      ],
+      "status": "approval-needed",
+      "maturity": "fixture-backed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "tool-ssh-deployment-command",
+      "toolName": "SSH Deployment Command",
+      "surfaceType": "ssh-operation",
+      "riskClass": "privileged",
+      "permissionState": "blocked",
+      "approvalState": "blocked",
+      "allowedActions": [
+        "document missing approval",
+        "prepare dry-run checklist",
+        "summarize rollback requirements"
+      ],
+      "forbiddenActions": [
+        "execute SSH commands",
+        "modify firewall",
+        "modify sudo configuration",
+        "deploy services",
+        "access private keys",
+        "self-approve infrastructure changes"
+      ],
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    }
+  ],
+  "knowledgeSources": [
+    {
+      "id": "knowledge-official-ai-core-docs",
+      "sourceName": "Official AI Core and Command Center docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "source-backed retrieval planning",
+        "Command Center evidence links",
+        "documentation assistant context"
+      ],
+      "forbiddenUses": [
+        "claiming provider model ownership",
+        "claiming trained SEIS model evidence",
+        "routing secrets to external providers"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-generated-evaluation-reports",
+      "sourceName": "Generated evaluation and language reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "validation status summaries",
+        "regression evidence lookup",
+        "roadmap progress evidence"
+      ],
+      "forbiddenUses": [
+        "benchmark performance claims",
+        "model safety certification",
+        "live provider quality comparison"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-local-fixture-contracts",
+      "sourceName": "Local fixture-backed AI Core contracts",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "contract validation",
+        "Command Center fixture rendering",
+        "local assistant regression checks"
+      ],
+      "forbiddenUses": [
+        "presenting mock fixture data as live integration",
+        "claiming external provider readiness",
+        "claiming deployment readiness"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "knowledge-seis-10m-token-feed-plan",
+      "sourceName": "SEIS 10,000,000 token feed budget plan",
+      "sourceClass": "planned",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "ingestionPolicy": "approved-metadata",
+      "approvedUses": [
+        "Command Center token feed budget display",
+        "metadata-only route validation",
+        "future approved source capacity planning"
+      ],
+      "forbiddenUses": [
+        "claiming 10,000,000 tokens were ingested",
+        "storing raw repository content",
+        "creating embeddings or persistent memory",
+        "routing raw content to external providers",
+        "claiming model training or checkpoint progress"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "knowledge-discarded-assistant-archive",
+      "sourceName": "Discarded assistant paste archive",
+      "sourceClass": "archive",
+      "retrievalState": "blocked",
+      "privacyMode": "disabled",
+      "freshness": "needs-review",
+      "ingestionPolicy": "blocked",
+      "approvedUses": [
+        "high-level requirement triage after clean-room review",
+        "risk category extraction without copying implementation"
+      ],
+      "forbiddenUses": [
+        "copying source code or generated scripts",
+        "automatic push or merge",
+        "active countermeasure execution",
+        "poisoned data injection",
+        "memetic manipulation",
+        "autonomous payment or infrastructure provisioning",
+        "autonomous infrastructure provisioning",
+        "fake BCI or consciousness claims",
+        "fake trained model ownership claims",
+        "fake model ownership, training, checkpoint, or benchmark claims"
+      ],
+      "externalRoutingAllowed": false,
+      "storesRawContent": false,
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    }
+  ],
+  "approvalRequests": [
+    {
+      "id": "approval-external-provider-route",
+      "requestType": "external-provider-routing",
+      "riskClass": "high",
+      "decisionState": "approval-needed",
+      "status": "approval-needed",
+      "evidence": "docs/ai/provider-routing-policy.md"
+    },
+    {
+      "id": "approval-agent-provider-routing",
+      "requestType": "agent-external-provider-routing",
+      "riskClass": "high",
+      "decisionState": "approval-needed",
+      "status": "approval-needed",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "approval-agent-ssh-deployment",
+      "requestType": "agent-ssh-deployment-execution",
+      "riskClass": "critical",
+      "decisionState": "blocked",
+      "status": "blocked",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "approval-tool-github-pr-publish",
+      "requestType": "tool-external-write-github-publish",
+      "riskClass": "high",
+      "decisionState": "approval-needed",
+      "status": "approval-needed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "approval-tool-ssh-deployment",
+      "requestType": "tool-privileged-ssh-deployment",
+      "riskClass": "critical",
+      "decisionState": "blocked",
+      "status": "blocked",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    }
+  ],
+  "evaluationResults": [
+    {
+      "id": "eval-shared-contract-fixture",
+      "targetType": "app-state",
+      "targetId": "ai-core-command-center-foundation",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-ai-core-app-contracts.mjs"
+    },
+    {
+      "id": "eval-repository-assistant-prototype",
+      "targetType": "agent",
+      "targetId": "local-readonly-repository-assistant",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-repository-assistant-prototype.mjs"
+    },
+    {
+      "id": "eval-prompt-fixture-report",
+      "targetType": "prompt",
+      "targetId": "assistant-surface-regression-suite",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "eval-app-state-fixture-report",
+      "targetType": "app-state",
+      "targetId": "ai-core-command-center-foundation",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "eval-model-router-contracts",
+      "targetType": "route",
+      "targetId": "model-router-route-contracts",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-model-router-contracts.mjs"
+    },
+    {
+      "id": "eval-agent-runtime-lifecycle",
+      "targetType": "agent",
+      "targetId": "agent-runtime-task-lifecycle",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-agent-runtime-lifecycle.mjs"
+    },
+    {
+      "id": "eval-tool-registry-permissions",
+      "targetType": "tool",
+      "targetId": "tool-registry-permissions",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-tool-registry-permissions.mjs"
+    },
+    {
+      "id": "eval-knowledge-source-classification",
+      "targetType": "retrieval",
+      "targetId": "knowledge-source-classification",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-knowledge-source-classification.mjs"
+    },
+    {
+      "id": "eval-seis-10m-token-feed-budget",
+      "targetType": "retrieval",
+      "targetId": "seis-10m-token-feed-budget",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-token-feed-budget.mjs"
+    },
+    {
+      "id": "eval-local-readonly-retrieval-query-adapter",
+      "targetType": "retrieval",
+      "targetId": "local-readonly-retrieval-query-adapter",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json"
+    },
+    {
+      "id": "eval-local-readonly-retrieval-search-transcript",
+      "targetType": "retrieval",
+      "targetId": "local-readonly-retrieval-search-transcript",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    },
+    {
+      "id": "eval-ai-operating-model",
+      "targetType": "agent",
+      "targetId": "task-ai-operating-model",
+      "result": "pass",
+      "status": "validated",
+      "evidence": "scripts/check-agent-runtime-lifecycle.mjs"
+    }
+  ],
+  "auditEvents": [
+    {
+      "id": "audit-fixture-created",
+      "actor": "codex",
+      "action": "created shared AI Core and Command Center contract fixture",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    },
+    {
+      "id": "audit-repository-assistant-local-alpha",
+      "actor": "codex",
+      "action": "added local read-only repository assistant prototype fixture",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "audit-ai-core-fixture-evaluation-report",
+      "actor": "codex",
+      "action": "generated prompt and app-state fixture evaluation report",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "audit-model-router-contracts",
+      "actor": "codex",
+      "action": "added model-router request and response contract fixtures",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "audit-agent-runtime-lifecycle",
+      "actor": "codex",
+      "action": "added agent-runtime task lifecycle and approval-state fixtures",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "audit-tool-registry-permissions",
+      "actor": "codex",
+      "action": "added tool and plugin registry permission fixtures",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "audit-knowledge-source-classification",
+      "actor": "codex",
+      "action": "added retrieval and knowledge source classification fixtures",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "audit-seis-10m-token-feed-budget",
+      "actor": "codex",
+      "action": "added metadata-only 10,000,000 token feed budget fixture and Command Center integration evidence",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "audit-local-readonly-retrieval-query-adapter",
+      "actor": "codex-local-fixture-check",
+      "action": "validated local-only retrieval adapter boundaries without provider, memory, embedding, SSH, deployment, or GitHub write execution",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "scripts/check-retrieval-query-adapter.mjs"
+    },
+    {
+      "id": "audit-local-readonly-retrieval-search-transcript",
+      "actor": "codex-local-fixture-check",
+      "action": "validated local-only retrieval result cards and no-content search transcripts without provider, raw content, embedding, memory, SSH, deployment, payment, infrastructure, or GitHub write execution",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "scripts/check-retrieval-search-transcript.mjs"
+    },
+    {
+      "id": "audit-ai-operating-model",
+      "actor": "Agent Runtime Agent",
+      "action": "documented fixture-backed five-year AI operating model with bounded subagent delegation and non-claims",
+      "redactionState": "metadata-only",
+      "status": "validated",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
+    }
+  ],
+  "repositoryFindings": [
+    {
+      "id": "finding-shared-types-placeholder",
+      "repository": "SEIS",
+      "findingType": "shared-types-placeholder-promoted-to-fixture",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/shared-types/README.md"
+    },
+    {
+      "id": "finding-repository-assistant-local-alpha",
+      "repository": "SEIS",
+      "findingType": "local-readonly-repository-assistant-prototype",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/repository-assistant/README.md"
+    },
+    {
+      "id": "finding-model-router-route-contracts",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-model-router-route-contracts",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "finding-agent-runtime-lifecycle",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-agent-runtime-lifecycle",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "finding-tool-registry-permissions",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-tool-registry-permissions",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "finding-knowledge-source-classification",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-knowledge-source-classification",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "finding-seis-10m-token-feed-budget",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-10m-token-feed-budget-plan",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "finding-local-retrieval-search-transcript",
+      "repository": "SEIS",
+      "findingType": "fixture-backed-local-retrieval-result-cards-and-no-content-search-transcripts",
+      "severity": "info",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    }
+  ],
+  "documentationStatuses": [
+    {
+      "id": "doc-shared-contracts",
+      "document": "docs/architecture/ai-core-app-shared-contracts.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "docs/architecture/ai-core-app-shared-contracts.md"
+    },
+    {
+      "id": "doc-ai-core-fixture-evaluation-report",
+      "document": "reports/evals/ai-core-fixture-evaluation-report.md",
+      "freshness": "current",
+      "sourceClass": "scan-generated",
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "doc-model-router-route-contracts",
+      "document": "docs/ai/model-router.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "doc-agent-runtime-lifecycle",
+      "document": "docs/ai/agent-runtime.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "doc-tool-registry-permissions",
+      "document": "docs/ai/tool-use-policy.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "doc-knowledge-source-classification",
+      "document": "docs/ai/context-memory-boundary.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "doc-token-feed-budget-plan",
+      "document": "docs/ai/context-memory-boundary.md",
+      "freshness": "current",
+      "sourceClass": "official",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "doc-local-readonly-retrieval-query-adapter",
+      "document": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
+      "freshness": "current",
+      "sourceClass": "mock",
+      "status": "validated",
+      "evidence": "scripts/check-retrieval-query-adapter.mjs"
+    },
+    {
+      "id": "doc-local-readonly-retrieval-search-transcript",
+      "document": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
+      "freshness": "current",
+      "sourceClass": "mock",
+      "status": "validated",
+      "evidence": "scripts/check-retrieval-search-transcript.mjs"
+    }
+  ],
+  "securityFindings": [
+    {
+      "id": "security-no-provider-secrets",
+      "category": "provider-secret-boundary",
+      "riskClass": "high",
+      "status": "validated",
+      "evidence": "docs/security/model-provider-data-policy.md"
+    },
+    {
+      "id": "security-tool-permission-boundary",
+      "category": "tool-permission-and-secret-boundary",
+      "riskClass": "high",
+      "status": "validated",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "security-knowledge-source-boundary",
+      "category": "retrieval-archive-and-provider-boundary",
+      "riskClass": "high",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "security-token-feed-nonclaim-boundary",
+      "category": "metadata-only-token-feed-nonclaim-boundary",
+      "riskClass": "high",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "security-local-retrieval-no-provider-boundary",
+      "category": "local retrieval adapter blocks provider calls, raw archive content, embeddings, persistent memory writes, and privileged actions",
+      "riskClass": "low",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json"
+    },
+    {
+      "id": "security-local-retrieval-result-card-boundary",
+      "category": "local retrieval result cards return metadata and evidence links only; no raw content, provider calls, embedding index, persistent memory write, or secret lookup is enabled",
+      "riskClass": "low",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    }
+  ],
+  "roadmapItems": [
+    {
+      "id": "roadmap-year-1-shared-contracts",
+      "horizon": "year-1",
+      "track": "AI Core and Command Center shared contracts",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      "id": "roadmap-year-1-repository-assistant",
+      "horizon": "year-1",
+      "track": "Local read-only repository assistant prototype",
+      "status": "validated",
+      "maturity": "local-alpha",
+      "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "roadmap-year-1-fixture-evaluation-report",
+      "horizon": "year-1",
+      "track": "Prompt and app-state fixture evaluation report generation",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "roadmap-year-1-model-router-contracts",
+      "horizon": "year-1",
+      "track": "Model-router request and response route contracts",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/model-router/fixtures/model-router-route-contracts.json"
+    },
+    {
+      "id": "roadmap-year-1-agent-runtime-lifecycle",
+      "horizon": "year-1",
+      "track": "Agent-runtime task lifecycle and approval states",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "roadmap-year-1-tool-registry-permissions",
+      "horizon": "year-1",
+      "track": "Tool and plugin registry permissions and risk classes",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "roadmap-year-1-knowledge-source-classification",
+      "horizon": "year-1",
+      "track": "Retrieval and knowledge source classification",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "roadmap-year-1-token-feed-budget",
+      "horizon": "year-1",
+      "track": "10,000,000 token metadata-only feed budget and Command Center integration",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "roadmap-local-readonly-retrieval-query-adapter",
+      "horizon": "now",
+      "track": "AI Core retrieval adapter fixture connected to Command Center website surface",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      "id": "roadmap-local-retrieval-result-cards",
+      "horizon": "now",
+      "track": "Command Center local retrieval result cards and no-content search transcript states",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      "id": "roadmap-year-1-ai-operating-model",
+      "horizon": "year-1",
+      "track": "AI operating model and bounded subagent governance",
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md"
+    }
+  ],
+  "aiSurfaces": [
+    {
+      "id": "surface-ai-core-center",
+      "surface": "AI Core Center",
+      "allowedContext": [
+        "official docs",
+        "fixture data",
+        "validation result metadata"
+      ],
+      "forbiddenContext": [
+        "provider API keys",
+        "SSH private keys",
+        "raw sensitive repository data without approval"
+      ],
+      "approvalRequired": false,
+      "status": "planned",
+      "maturity": "fixture-backed",
+      "evidence": "docs/product/ai-core-center.md"
+    },
+    {
+      "id": "surface-repository-assistant",
+      "surface": "Repository Assistant",
+      "allowedContext": [
+        "official docs",
+        "local git metadata",
+        "changed file paths",
+        "validation result summaries"
+      ],
+      "forbiddenContext": [
+        "provider API keys",
+        "SSH private keys",
+        "raw environment-file contents",
+        "external provider context without approval"
+      ],
+      "approvalRequired": false,
+      "status": "validated",
+      "maturity": "local-alpha",
+      "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "surface-agent-task-center",
+      "surface": "Agent Task Center",
+      "allowedContext": [
+        "official docs",
+        "agent-runtime lifecycle fixtures",
+        "approval-state metadata"
+      ],
+      "forbiddenContext": [
+        "provider API keys",
+        "SSH private keys",
+        "raw environment-file contents",
+        "privileged tool execution without approval"
+      ],
+      "approvalRequired": true,
+      "status": "planned",
+      "maturity": "fixture-backed",
+      "evidence": "packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json"
+    },
+    {
+      "id": "surface-tool-registry-center",
+      "surface": "Tool Registry Center",
+      "allowedContext": [
+        "official docs",
+        "tool registry fixtures",
+        "permission metadata",
+        "risk-class metadata"
+      ],
+      "forbiddenContext": [
+        "provider API keys",
+        "SSH private keys",
+        "GitHub tokens",
+        "privileged execution without approval"
+      ],
+      "approvalRequired": true,
+      "status": "planned",
+      "maturity": "fixture-backed",
+      "evidence": "packages/tool-registry/fixtures/tool-registry-permissions.json"
+    },
+    {
+      "id": "surface-knowledge-source-center",
+      "surface": "Knowledge Source Center",
+      "allowedContext": [
+        "official docs",
+        "generated report metadata",
+        "local fixture evidence",
+        "source classification metadata"
+      ],
+      "forbiddenContext": [
+        "raw assistant archive content",
+        "private secrets",
+        "provider-bound sensitive context without approval",
+        "unsafe archive implementation plans"
+      ],
+      "approvalRequired": true,
+      "status": "planned",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "surface-token-feed-budget",
+      "surface": "Token Feed Budget",
+      "allowedContext": [
+        "token budget metadata",
+        "source class allocations",
+        "route fixture evidence",
+        "knowledge-source classification metadata"
+      ],
+      "forbiddenContext": [
+        "raw repository content",
+        "provider API keys",
+        "SSH private keys",
+        "restricted archive content",
+        "model training claims"
+      ],
+      "approvalRequired": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "surface-local-retrieval-adapter",
+      "surface": "Command Center Local Retrieval panel",
+      "allowedContext": [
+        "knowledge source metadata",
+        "repository-relative evidence links",
+        "validation status records"
+      ],
+      "forbiddenContext": [
+        "raw assistant archive content",
+        "provider credentials",
+        "SSH private keys",
+        "embeddings or vector database payloads",
+        "GitHub push or merge authority"
+      ],
+      "approvalRequired": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "surface-local-retrieval-results",
+      "surface": "Local Retrieval Results",
+      "allowedContext": [
+        "knowledge source metadata",
+        "retrieval adapter metadata",
+        "evidence links",
+        "no-content transcript status"
+      ],
+      "forbiddenContext": [
+        "raw assistant archive content",
+        "provider API keys",
+        "SSH private keys",
+        "raw sensitive repository data without approval",
+        "embedding or persistent memory payloads"
+      ],
+      "approvalRequired": false,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    }
+  ],
+  "repositoryIntelligence": [
+    {
+      "id": "repo-intel-official-docs",
+      "sourceClass": "official",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    },
+    {
+      "id": "repo-intel-local-readonly-assistant",
+      "sourceClass": "scan-generated",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/repository-assistant/fixtures/local-readonly-repository-assistant.json"
+    },
+    {
+      "id": "repo-intel-knowledge-source-classification",
+      "sourceClass": "scan-generated",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "repo-intel-token-feed-budget",
+      "sourceClass": "planned",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    },
+    {
+      "id": "repo-intel-local-retrieval-query-adapter",
+      "sourceClass": "mock",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json"
+    },
+    {
+      "id": "repo-intel-local-retrieval-search-transcript",
+      "sourceClass": "mock",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "status": "validated",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-search-transcript.json"
+    }
+  ],
+  "goalEvidenceGates": [
+    {
+      "id": "gate-five-year-operating-model-doc",
+      "goalId": "goal-five-year-development",
+      "gateType": "documentation",
+      "requirement": "The five-year AI operating model must be documented as fixture-backed, bounded, and human-supervised.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md",
+      "blocker": "none",
+      "nonClaims": [
+        "No live autonomous orchestration is enabled.",
+        "No production subagent scheduler is claimed."
+      ],
+      "nextSafeAction": "Expose the documented operating model through Command Center evidence surfaces."
+    },
+    {
+      "id": "gate-five-year-agent-runtime-validation",
+      "goalId": "goal-five-year-development",
+      "gateType": "validation",
+      "requirement": "Agent runtime lifecycle checks must validate bounded delegation policy, execution budget, escalation path, and operating-model fixture coverage.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "scripts/check-agent-runtime-lifecycle.mjs",
+      "blocker": "none",
+      "nonClaims": [
+        "Validation does not run live agents.",
+        "Validation does not approve provider, SSH, GitHub, deploy, payment, training, or benchmark actions."
+      ],
+      "nextSafeAction": "Keep agent-runtime contract checks in the AI Core validation path."
+    },
+    {
+      "id": "gate-five-year-command-center-surface",
+      "goalId": "goal-five-year-development",
+      "gateType": "browser-evidence",
+      "requirement": "Command Center must render the AI operating model as read-only fixture evidence with no fake live controls.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js",
+      "blocker": "none",
+      "nonClaims": [
+        "The browser panel is not a live provider health check.",
+        "The browser panel does not execute autonomous subagent workflows."
+      ],
+      "nextSafeAction": "Keep the panel tied to fixture records and validator-enforced evidence gates."
+    },
+    {
+      "id": "gate-five-year-provider-boundary",
+      "goalId": "goal-five-year-development",
+      "gateType": "security-boundary",
+      "requirement": "Operating-model claims must preserve local-only, no-key, and provider-privacy boundaries until explicit approval changes the mode.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "docs/security/model-provider-data-policy.md",
+      "blocker": "none",
+      "nonClaims": [
+        "No sensitive repository data is routed to external providers.",
+        "No provider key is exposed to the browser."
+      ],
+      "nextSafeAction": "Add provider status only after backend-only gateway and credential validation exist."
+    },
+    {
+      "id": "gate-token-feed-fixture-contract",
+      "goalId": "goal-seis-10m-token-feed",
+      "gateType": "fixture",
+      "requirement": "The token-feed target must be represented by a metadata-only fixture rather than raw prompt dumps or unrestricted context ingestion.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json",
+      "blocker": "none",
+      "nonClaims": [
+        "The fixture is not a live long-context provider call.",
+        "The fixture is not persistent AI memory."
+      ],
+      "nextSafeAction": "Keep token-feed evidence metadata-only and linked from Command Center contracts."
+    },
+    {
+      "id": "gate-token-feed-validation",
+      "goalId": "goal-seis-10m-token-feed",
+      "gateType": "validation",
+      "requirement": "The token-feed budget fixture must pass its schema and shared-contract checks before informing AI Core status.",
+      "required": true,
+      "gateStatus": "pass",
+      "evidence": "scripts/check-token-feed-budget.mjs",
+      "blocker": "none",
+      "nonClaims": [
+        "Validation does not send repository content to a model.",
+        "Validation does not claim model training, benchmark performance, checkpoint creation, or model-card completion."
+      ],
+      "nextSafeAction": "Derive future scorecards from passed gates rather than subjective readiness labels."
+    }
+  ],
+  "goalOperatingScorecards": [
+    {
+      "id": "score-five-year-operating-model-current-slice",
+      "goalId": "goal-five-year-development",
+      "scoreScope": "current-fixture-slice",
+      "scoreBasis": "Required gate coverage for the current AI operating model foundation slice.",
+      "totalGateCount": 4,
+      "requiredGateCount": 4,
+      "passingTotalGateCount": 4,
+      "passingRequiredGateCount": 4,
+      "failingGateCount": 0,
+      "blockedGateCount": 0,
+      "unknownGateCount": 0,
+      "requiredGatesPassed": true,
+      "scorePercent": 100,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "docs/ai/seis-ai-operating-model-5-year.md",
+      "nonClaims": [
+        "A 100 score means current required fixture gates pass; it does not mean the five-year program is complete.",
+        "The scorecard does not prove live autonomous orchestration, provider routing, SSH execution, deployment, model training, benchmarks, checkpoints, or model cards."
+      ],
+      "nextSafeAction": "Add future scorecards only when new required evidence gates exist."
+    },
+    {
+      "id": "score-token-feed-current-slice",
+      "goalId": "goal-seis-10m-token-feed",
+      "scoreScope": "current-fixture-slice",
+      "scoreBasis": "Required gate coverage for the metadata-only 10,000,000 token feed budget foundation slice.",
+      "totalGateCount": 2,
+      "requiredGateCount": 2,
+      "passingTotalGateCount": 2,
+      "passingRequiredGateCount": 2,
+      "failingGateCount": 0,
+      "blockedGateCount": 0,
+      "unknownGateCount": 0,
+      "requiredGatesPassed": true,
+      "scorePercent": 100,
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json",
+      "nonClaims": [
+        "A 100 score means current required fixture gates pass; it does not mean long-context ingestion has run.",
+        "The scorecard does not prove provider context upload, persistent memory writes, embeddings, model training, benchmarks, checkpoints, or model cards."
+      ],
+      "nextSafeAction": "Keep token-feed status metadata-only until ingestion, memory, and provider-routing gates are explicitly approved."
+    }
+  ],
+  "goalTrackingStates": [
+    {
+      "id": "goal-five-year-development",
+      "goal": "Keep the five-year AI Core and Command Center program moving through fixture-backed contracts, bounded subagent governance, and evidence gates.",
+      "progressState": "in-progress",
+      "completionEvidence": "partial",
+      "status": "running",
+      "evidence": "roadmap/seis-ai-core-command-center-5-year-development-program.md"
+    },
+    {
+      "id": "goal-seis-10m-token-feed",
+      "goal": "10,000,000 token budget should feed SEIS through metadata-only AI Core and Command Center contracts",
+      "progressState": "in-progress",
+      "completionEvidence": "partial",
+      "status": "running",
+      "evidence": "packages/data/fixtures/seis-10m-token-feed-budget.json"
+    }
+  ],
+  "retrievalQueryAdapters": [
+    {
+      "id": "adapter-command-center-evidence",
+      "adapterName": "Command Center Evidence Lookup",
+      "queryIntent": "command-center-evidence-lookup",
+      "mode": "local-only",
+      "privacyMode": "metadata-only",
+      "readOnly": true,
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "browserReceivesProviderKey": false,
+      "secretMaterialStored": false,
+      "storesRawContent": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "allowedKnowledgeSourceIds": [
+        "knowledge-official-ai-core-docs",
+        "knowledge-generated-evaluation-reports",
+        "knowledge-local-fixture-contracts",
+        "knowledge-seis-10m-token-feed-plan"
+      ],
+      "forbiddenKnowledgeSourceIds": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "resultShape": "metadata cards with source id, source name, source class, retrieval state, privacy mode, freshness, and evidence link",
+      "resultLimit": 8,
+      "approvalState": "not-required",
+      "allowedActions": [
+        "read knowledge source metadata",
+        "return repository-relative evidence links",
+        "summarize validation status from fixture records"
+      ],
+      "forbiddenActions": [
+        "call external providers",
+        "return raw archive content",
+        "create embeddings",
+        "write persistent memory",
+        "read or expose secrets",
+        "execute push, merge, SSH, deployment, payment, or infrastructure actions"
+      ],
+      "status": "validated",
+      "maturity": "fixture-backed",
+      "evidence": "packages/data/fixtures/local-readonly-retrieval-query-adapter.json"
+    },
+    {
+      "id": "adapter-discarded-archive-block",
+      "adapterName": "Discarded Archive Block Guard",
+      "queryIntent": "blocked-archive-guard",
+      "mode": "disabled",
+      "privacyMode": "disabled",
+      "readOnly": true,
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "browserReceivesProviderKey": false,
+      "secretMaterialStored": false,
+      "storesRawContent": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "allowedKnowledgeSourceIds": [],
+      "forbiddenKnowledgeSourceIds": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "resultShape": "blocked-state card with clean-room review requirement and evidence link only",
+      "resultLimit": 0,
+      "approvalState": "blocked",
+      "allowedActions": [
+        "return blocked state",
+        "return clean-room review requirement",
+        "return risk category without copying implementation"
+      ],
+      "forbiddenActions": [
+        "copy source code or generated scripts",
+        "call external providers",
+        "return raw archive content",
+        "create embeddings",
+        "write persistent memory",
+        "read or expose secrets",
+        "execute push, merge, SSH, deployment, payment, or infrastructure actions",
+        "execute active countermeasures",
+        "inject poisoned data",
+        "perform memetic manipulation",
+        "provision infrastructure or payments",
+        "claim BCI, consciousness upload, trained model, benchmark, checkpoint, or model-card evidence"
+      ],
+      "status": "blocked",
+      "maturity": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    }
+  ],
+  "retrievalResultCards": [
+    {
+      "id": "result-official-ai-core-docs",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-official-ai-core-docs",
+      "sourceName": "Official AI Core and Command Center docs",
+      "sourceClass": "official",
+      "retrievalState": "approved",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "summary": "Official AI Core and Command Center docs are approved for local metadata lookup and evidence linking.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    },
+    {
+      "id": "result-generated-evaluation-reports",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-generated-evaluation-reports",
+      "sourceName": "Generated evaluation and language reports",
+      "sourceClass": "scan-generated",
+      "retrievalState": "local-only",
+      "privacyMode": "metadata-only",
+      "freshness": "current",
+      "summary": "Generated reports are available as validation metadata and do not imply benchmark, model training, or provider-readiness claims.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "reports/evals/ai-core-fixture-evaluation-report.json"
+    },
+    {
+      "id": "result-local-fixture-contracts",
+      "adapterId": "adapter-command-center-evidence",
+      "sourceId": "knowledge-local-fixture-contracts",
+      "sourceName": "Local fixture-backed AI Core contracts",
+      "sourceClass": "mock",
+      "retrievalState": "local-only",
+      "privacyMode": "local-only",
+      "freshness": "current",
+      "summary": "Local fixture contracts can feed Command Center result cards while remaining clearly marked as fixture-backed evidence.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "status": "validated",
+      "evidence": "packages/shared-types/fixtures/ai-core-command-center-foundation.json"
+    }
+  ],
+  "noContentSearchTranscripts": [
+    {
+      "id": "transcript-blocked-discarded-archive",
+      "query": "Show discarded assistant archive implementation code",
+      "adapterId": "adapter-discarded-archive-block",
+      "resultCount": 0,
+      "emptyState": "Discarded assistant archive retrieval is blocked; only clean-room risk category review is allowed.",
+      "blockedSources": [
+        "knowledge-discarded-assistant-archive"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "decisionState": "blocked",
+      "status": "blocked",
+      "evidence": "packages/data/fixtures/knowledge-source-classification.json"
+    },
+    {
+      "id": "transcript-empty-provider-secrets",
+      "query": "Search provider keys or local private credentials",
+      "adapterId": "adapter-command-center-evidence",
+      "resultCount": 0,
+      "emptyState": "Secret and credential lookup is not a supported retrieval task.",
+      "blockedSources": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "storesRawContent": false,
+      "rawContentReturned": false,
+      "writesPersistentMemory": false,
+      "createsEmbeddingIndex": false,
+      "decisionState": "empty",
+      "status": "validated",
+      "evidence": "docs/ai/context-memory-boundary.md"
+    }
+  ],
+  "retrievalFilterControls": [
+    {
+      "id": "filter-local-retrieval-query",
+      "label": "Filter local metadata",
+      "controlType": "text",
+      "target": "query",
+      "defaultValue": "",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-source-class",
+      "label": "Source class",
+      "controlType": "select",
+      "target": "sourceClass",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "official",
+        "scan-generated",
+        "mock"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-transcript-state",
+      "label": "Transcript state",
+      "controlType": "select",
+      "target": "transcriptState",
+      "defaultValue": "all",
+      "options": [
+        "all",
+        "empty",
+        "blocked"
+      ],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    },
+    {
+      "id": "filter-local-retrieval-reset",
+      "label": "Reset local filters",
+      "controlType": "button",
+      "target": "reset",
+      "defaultValue": "reset",
+      "options": [],
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/index.html"
+    }
+  ],
+  "retrievalEmptyStateTestCases": [
+    {
+      "id": "empty-state-no-matching-source-class",
+      "query": "official docs",
+      "sourceClass": "scan-generated",
+      "transcriptState": "empty",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    },
+    {
+      "id": "empty-state-secret-search-blocked",
+      "query": "provider keys",
+      "sourceClass": "all",
+      "transcriptState": "blocked",
+      "expectedResultCardCount": 0,
+      "expectedTranscriptCount": 0,
+      "expectedResultMessage": "No local metadata card matches the current filters.",
+      "expectedTranscriptMessage": "No local no-content transcript matches the current filters.",
+      "providerCallPerformed": false,
+      "externalProviderRouting": false,
+      "writesPersistentMemory": false,
+      "status": "validated",
+      "evidence": "apps/seis-core/test/seis-core-static.test.js"
+    }
+  ]
+};

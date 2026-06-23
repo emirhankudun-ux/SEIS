@@ -9,23 +9,28 @@ runtime behavior, app states, retrieval boundaries, and future SEIS Universe
 research without creating fake benchmark, safety, model-ownership, or
 production-readiness claims.
 
-This recovery branch restores the strategy document only. It does not restore
-the PR #44 package fixtures, browser QA scripts, generated evaluation reports,
-or GitHub Actions artifact workflow. Those implementation artifacts are future
-recovery slices.
+This recovery branch restores the strategy document and the local AI Core
+contract fixture layer. It does not perform live provider calls, benchmark
+runs, model training, GitHub writes, SSH execution, deployments, or browser
+artifact publication.
 
 ## Evaluation Layers
 
 | Layer | Purpose | Current recovery status |
 | --- | --- | --- |
-| Prompt regression | Detect behavior drift across prompt versions. | Documented; fixtures pending re-port. |
-| Router contracts | Verify privacy mode, task class, provider status, and fallback rules. | Documented; fixtures pending re-port. |
-| Agent safety | Verify approval gates, forbidden actions, validation claims, and bounded subagents. | Documented; lifecycle fixtures pending re-port. |
-| Tool and MCP safety | Verify schema, permission, timeout, redaction, and error handling. | Documented; implementation pending. |
-| App state evaluation | Verify ready, blocked, degraded, unknown, approval-needed, failed, and validated states. | Documented; Command Center fixture pending re-port. |
-| Retrieval and knowledge | Verify source class, freshness, privacy mode, no-content transcripts, and blocked archives. | Documented; local fixtures pending re-port. |
+| Prompt regression | Detect behavior drift across prompt versions. | Fixture-backed by `packages/prompt-engine/fixtures/assistant-surface-regression-suite.json`; checked by `check:prompt-regression-fixtures`. |
+| Router contracts | Verify privacy mode, task class, provider status, and fallback rules. | Fixture-backed by `packages/model-router/fixtures/model-router-route-contracts.json`; checked by `check:model-router-contracts`. |
+| Agent safety | Verify approval gates, forbidden actions, validation claims, and bounded subagents. | Fixture-backed by `packages/agent-runtime/fixtures/agent-runtime-task-lifecycle.json`; checked by `check:agent-runtime-lifecycle`. |
+| Tool and MCP safety | Verify schema, permission, timeout, redaction, and error handling. | Fixture-backed by `packages/tool-registry/fixtures/tool-registry-permissions.json`; checked by `check:tool-registry-permissions`. |
+| App state evaluation | Verify ready, blocked, degraded, unknown, approval-needed, failed, and validated states. | Fixture-backed by `packages/shared-types/fixtures/ai-core-command-center-foundation.json`; checked by `check:ai-core-app-contracts`. |
+| Retrieval and knowledge | Verify source class, freshness, privacy mode, no-content transcripts, and blocked archives. | Fixture-backed by local data fixtures; checked by `check:knowledge-source-classification`, `check:retrieval-query-adapter`, `check:retrieval-search-transcript`, and `check:token-feed-budget`. |
 | Browser evidence | Verify real UI navigation and artifact integrity for Command Center AI Core surfaces. | Documented; browser QA workflow pending re-port. |
 | Research evaluations | Measure future tokenizer, fine-tune, nano-model, and SEIS Universe experiments. | Research-only; no training evidence in this slice. |
+
+The retrieval fixtures are `local-readonly-retrieval-query-adapter` and
+`local-readonly-retrieval-search-transcript`. They are metadata-only local
+contracts for Command Center evidence browsing; they do not execute live
+retrieval, provider routing, embeddings, raw-content storage, or memory writes.
 
 ## Minimum Evaluation Record
 
@@ -72,27 +77,22 @@ SEIS evaluation documents must not claim:
 
 ## Recovery Scope
 
-This document recovers the evaluation strategy from PR #44 as a docs-only slice.
-The following PR #44 implementation assets remain intentionally out of scope
-for this branch:
+This branch recovers the evaluation strategy plus local fixture-backed AI Core
+contracts. The following PR #44 implementation assets remain intentionally out
+of scope for this branch:
 
-- prompt regression fixtures
-- model-router contract fixtures
-- agent-runtime lifecycle fixtures
-- shared AI Core / Command Center app-state fixtures
-- retrieval and knowledge-source fixtures
-- token feed budget fixtures
-- browser QA scripts
-- generated AI Core fixture evaluation reports
-- manual browser evidence workflow
-
-Those artifacts should be re-ported in smaller slices after this documentation
-foundation is reviewed against current `main`.
+- live provider adapters
+- backend provider gateway execution
+- browser QA artifact workflow activation
+- manual browser evidence workflow dispatch
+- external API calls
+- model benchmarks
+- model training, checkpoint publication, or model-card completion claims
 
 ## Next Safe Action
 
-Recover the prompt-engine, model-router, agent-runtime, and shared-type
-contract fixtures as a separate branch after this docs-only AI Core foundation
-slice is reviewed. Keep all provider calls disabled, keep browser keys absent,
-and preserve local-only or metadata-only behavior until explicit approval and
-validation evidence exist.
+Validate and review this local fixture recovery branch, then recover the
+Command Center UI projection and browser QA workflow as a separate slice. Keep
+all provider calls disabled, keep browser keys absent, and preserve local-only
+or metadata-only behavior until explicit approval and validation evidence
+exist.
