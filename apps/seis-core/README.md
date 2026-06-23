@@ -200,3 +200,7 @@ npm run check:ai-core-eval-evidence
 The aggregate runs the fixture evaluation freshness check, the browser QA
 evidence drift check, and the Command Center validator. It remains read-only and
 does not launch a browser.
+
+CI should use the metadata-only gates. The browser artifact gate requires a
+Chrome/Chromium-compatible binary and is documented in
+`docs/evals/ai-core-browser-evidence-gates.md`.

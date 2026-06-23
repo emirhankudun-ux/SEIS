@@ -20,5 +20,5 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Single governance/quality closure
+      - name: Metadata-only governance/quality closure
         run: npm run quality:governance

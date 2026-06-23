@@ -145,6 +145,10 @@ the ignored manifest and desktop/mobile JSON reports under
 viewports, step order, panel counts, safety flags, artifact paths, and
 non-claims. `npm run check:ai-core-eval-evidence` aggregates the fixture report,
 browser QA evidence, and Command Center checks as a read-only metadata gate.
+The CI/local browser split is documented in
+`docs/evals/ai-core-browser-evidence-gates.md`: CI should keep metadata gates,
+while `npm run qa:seis-core:ai-core-evidence` remains local or
+browser-enabled-runner evidence until Chrome/Chromium setup is reviewed.
 
 The first token feed budget evaluation is fixture-backed through
 `packages/data/fixtures/seis-10m-token-feed-budget.json` and

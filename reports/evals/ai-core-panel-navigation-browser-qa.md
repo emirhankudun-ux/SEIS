@@ -103,8 +103,12 @@ browser is found automatically, set:
 SEIS_BROWSER_BIN=/path/to/chrome npm run qa:seis-core:ai-core-panels
 ```
 
+For the CI/local split, browser availability rules, and failure handling, see
+`docs/evals/ai-core-browser-evidence-gates.md`.
+
 ## Related Documents
 
+- `docs/evals/ai-core-browser-evidence-gates.md`
 - `apps/seis-core/README.md`
 - `docs/evals/evaluation-strategy.md`
 - `docs/reviews/SEIS_5_YEAR_DEVELOPMENT_PROGRAM_REVIEW.md`

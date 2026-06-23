@@ -9,7 +9,10 @@ const files = {
   fixtureReportMarkdown: "reports/evals/ai-core-fixture-evaluation-report.md",
   fixtureReportGenerator: "scripts/create-ai-core-fixture-evaluation-report.mjs",
   commandCenterCheck: "scripts/check-seis-command-center.mjs",
+  ciWorkflow: ".github/workflows/ci.yml",
   schema: "packages/evals/schemas/fixture-evaluation-report.schema.json",
+  evalsReadme: "packages/evals/README.md",
+  browserEvidenceGates: "docs/evals/ai-core-browser-evidence-gates.md",
   readme: "apps/seis-core/README.md",
   evaluationStrategy: "docs/evals/evaluation-strategy.md",
   roadmap: "roadmap/seis-ai-core-command-center-5-year-development-program.md",
@@ -213,7 +216,10 @@ const fixtureReport = readJson(files.fixtureReportJson);
 const fixtureReportMarkdown = readText(files.fixtureReportMarkdown);
 const fixtureReportGenerator = readText(files.fixtureReportGenerator, { scanSecrets: false });
 const commandCenterCheck = readText(files.commandCenterCheck, { scanSecrets: false });
+const ciWorkflow = readText(files.ciWorkflow, { scanSecrets: false });
 const schema = readText(files.schema);
+const evalsReadme = readText(files.evalsReadme);
+const browserEvidenceGates = readText(files.browserEvidenceGates);
 const readme = readText(files.readme);
 const evaluationStrategy = readText(files.evaluationStrategy);
 const roadmap = readText(files.roadmap);
@@ -279,12 +285,58 @@ lowerIncludesAll("AI Core browser QA report", browserQaReport, [
   "npm run check:ai-core-browser-qa-evidence"
 ]);
 
+lowerIncludesAll("AI Core browser evidence gates doc", browserEvidenceGates, [
+  "Metadata drift gate",
+  "Aggregate metadata gate",
+  "Browser artifact gate",
+  "CI Policy",
+  "Local Browser Policy",
+  "npm run check:ai-core-browser-qa-evidence",
+  "npm run check:ai-core-eval-evidence",
+  "npm run qa:seis-core:ai-core-evidence",
+  "SEIS_BROWSER_BIN",
+  "reports/tmp/seis-core-ai-core-panel-navigation/",
+  "desktop-ai-core-panel-navigation",
+  "mobile-ai-core-panel-navigation",
+  "initial-dashboard",
+  "sidebar-ai-core",
+  "command-palette-ai-core",
+  "global-search-ai-core",
+  "provider calls",
+  "raw-content return",
+  "persistent memory writes",
+  "GitHub writes",
+  "SSH",
+  "deployment",
+  "payment",
+  "infrastructure mutation"
+]);
+
+lowerIncludesAll("evals package README", evalsReadme, [
+  "docs/evals/ai-core-browser-evidence-gates.md",
+  "reports/evals/ai-core-panel-navigation-browser-qa.md",
+  "npm run check:ai-core-browser-qa-evidence",
+  "npm run check:ai-core-eval-evidence",
+  "npm run qa:seis-core:ai-core-evidence",
+  "metadata-only",
+  "artifact gate"
+]);
+
 includesAll("fixture report generator", fixtureReportGenerator, [
   "panelNavigationQaReportPath",
   "browserUiEvaluations",
   "eval-browser-ui-ai-core-panel-navigation-qa",
   "scripts/check-ai-core-browser-qa-evidence.mjs"
 ]);
+
+includesAll("CI workflow", ciWorkflow, [
+  "Metadata-only governance/quality closure",
+  "npm run quality:governance"
+]);
+
+if (ciWorkflow.includes("qa:seis-core:ai-core-evidence") || ciWorkflow.includes("qa:seis-core:ai-core-panels")) {
+  fail("CI workflow must not run browser-required AI Core QA until browser setup is reviewed");
+}
 
 includesAll("fixture report schema", schema, [
   "\"browserUiEvaluationCount\"",
@@ -300,6 +352,8 @@ includesAll("Command Center check", commandCenterCheck, [
 
 for (const [label, text] of [
   ["apps/seis-core README", readme],
+  ["evals package README", evalsReadme],
+  ["browser evidence gates", browserEvidenceGates],
   ["evaluation strategy", evaluationStrategy],
   ["five-year roadmap", roadmap],
   ["five-year review", programReview]

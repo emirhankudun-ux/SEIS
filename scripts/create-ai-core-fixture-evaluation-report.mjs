@@ -14,6 +14,7 @@ const appFixturePath = "apps/seis-core/ai-core-contract-fixture.js";
 const browserQaReportPath = "reports/evals/local-retrieval-browser-visual-qa.md";
 const panelNavigationQaReportPath = "reports/evals/ai-core-panel-navigation-browser-qa.md";
 const panelNavigationQaEvidenceCheckPath = "scripts/check-ai-core-browser-qa-evidence.mjs";
+const browserEvidenceGatesPath = "docs/evals/ai-core-browser-evidence-gates.md";
 const reportJsonPath = "reports/evals/ai-core-fixture-evaluation-report.json";
 const reportMarkdownPath = "reports/evals/ai-core-fixture-evaluation-report.md";
 
@@ -538,6 +539,7 @@ const browserUiEvaluations = [
       panelNavigationQaReportPath,
       "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
       panelNavigationQaEvidenceCheckPath,
+      browserEvidenceGatesPath,
       "apps/seis-core/README.md"
     ]
   }
@@ -560,6 +562,7 @@ const report = {
     retrievalAdapterFixturePath,
     retrievalSearchTranscriptFixturePath,
     tokenFeedFixturePath,
+    browserEvidenceGatesPath,
     browserQaReportPath,
     panelNavigationQaReportPath,
     panelNavigationQaEvidenceCheckPath
@@ -583,7 +586,8 @@ const report = {
       "docs/evals/evaluation-strategy.md",
       "apps/seis-core/README.md",
       "reports/evals/ai-core-panel-navigation-browser-qa.md",
-      panelNavigationQaEvidenceCheckPath
+      panelNavigationQaEvidenceCheckPath,
+      browserEvidenceGatesPath
     ]
   }
 };

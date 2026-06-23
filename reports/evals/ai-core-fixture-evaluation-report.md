@@ -29,7 +29,7 @@
 | eval-retrieval-local-search-transcript | retrieval | retrieval:local-readonly-retrieval-search-transcript | pass | packages/data/fixtures/local-readonly-retrieval-search-transcript.json, scripts/check-retrieval-search-transcript.mjs, apps/seis-core/index.html |
 | eval-retrieval-seis-10m-token-feed-budget | retrieval | retrieval:seis-10m-token-feed-budget | pass | packages/data/fixtures/seis-10m-token-feed-budget.json, scripts/check-token-feed-budget.mjs, docs/ai/context-memory-boundary.md |
 | eval-browser-ui-local-retrieval-interaction-qa | browser-ui | retrieval-ui:local-retrieval-browser-interaction-qa | pass | reports/evals/local-retrieval-browser-visual-qa.md, scripts/capture-seis-core-local-retrieval-visual.mjs, apps/seis-core/test/seis-core-static.test.js |
-| eval-browser-ui-ai-core-panel-navigation-qa | browser-ui | browser-ui:ai-core-panel-navigation-browser-qa | pass | reports/evals/ai-core-panel-navigation-browser-qa.md, scripts/capture-seis-core-ai-core-panel-navigation.mjs, scripts/check-ai-core-browser-qa-evidence.mjs, apps/seis-core/README.md |
+| eval-browser-ui-ai-core-panel-navigation-qa | browser-ui | browser-ui:ai-core-panel-navigation-browser-qa | pass | reports/evals/ai-core-panel-navigation-browser-qa.md, scripts/capture-seis-core-ai-core-panel-navigation.mjs, scripts/check-ai-core-browser-qa-evidence.mjs, docs/evals/ai-core-browser-evidence-gates.md, apps/seis-core/README.md |
 
 ## Non-Claims
 
@@ -50,3 +50,4 @@ Source links:
 - `apps/seis-core/README.md`
 - `reports/evals/ai-core-panel-navigation-browser-qa.md`
 - `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `docs/evals/ai-core-browser-evidence-gates.md`

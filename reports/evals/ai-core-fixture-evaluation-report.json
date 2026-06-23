@@ -13,6 +13,7 @@
     "packages/data/fixtures/local-readonly-retrieval-query-adapter.json",
     "packages/data/fixtures/local-readonly-retrieval-search-transcript.json",
     "packages/data/fixtures/seis-10m-token-feed-budget.json",
+    "docs/evals/ai-core-browser-evidence-gates.md",
     "reports/evals/local-retrieval-browser-visual-qa.md",
     "reports/evals/ai-core-panel-navigation-browser-qa.md",
     "scripts/check-ai-core-browser-qa-evidence.mjs"
@@ -542,6 +543,7 @@
         "reports/evals/ai-core-panel-navigation-browser-qa.md",
         "scripts/capture-seis-core-ai-core-panel-navigation.mjs",
         "scripts/check-ai-core-browser-qa-evidence.mjs",
+        "docs/evals/ai-core-browser-evidence-gates.md",
         "apps/seis-core/README.md"
       ]
     }
@@ -560,7 +562,8 @@
       "docs/evals/evaluation-strategy.md",
       "apps/seis-core/README.md",
       "reports/evals/ai-core-panel-navigation-browser-qa.md",
-      "scripts/check-ai-core-browser-qa-evidence.mjs"
+      "scripts/check-ai-core-browser-qa-evidence.mjs",
+      "docs/evals/ai-core-browser-evidence-gates.md"
     ]
   }
 }

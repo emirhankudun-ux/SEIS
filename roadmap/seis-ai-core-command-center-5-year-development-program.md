@@ -378,15 +378,18 @@ Completed foundation slice:
   `npm run qa:seis-core:ai-core-evidence` for browser run plus artifact
   verification and `npm run check:ai-core-eval-evidence` for metadata-only
   fixture/report/Command Center consistency.
+- Browser-run AI Core evidence gate availability is documented in
+  `docs/evals/ai-core-browser-evidence-gates.md`, separating CI-safe
+  metadata-only gates from local or browser-enabled artifact gates.
 
 ## Next Safe Slice
 
-Add CI/browser availability documentation for browser-run AI Core evidence
-gates so local Chrome/Chromium requirements, metadata-only CI checks,
-artifact-required local checks, and skipped-browser fallback expectations are
-clear without introducing live providers, embeddings, memory writes,
-raw-content behavior, GitHub writes, SSH, deployment, payment, or
-infrastructure mutation.
+Prepare a separate CI browser setup proposal for AI Core browser artifact gates.
+The proposal should document the exact Chrome/Chromium setup, timeout behavior,
+artifact retention policy, and failure semantics before enabling
+`npm run qa:seis-core:ai-core-evidence` in GitHub Actions. It must not add live
+providers, embeddings, memory writes, raw-content behavior, GitHub writes, SSH,
+deployment, payment, or infrastructure mutation.
 
 ## Relationship to Existing Roadmaps
 

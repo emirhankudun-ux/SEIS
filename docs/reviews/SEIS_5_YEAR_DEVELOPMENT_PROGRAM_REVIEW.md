@@ -51,10 +51,10 @@ Safe to claim live provider routing: no.
 
 ## Next Safe Slices
 
-1. Add CI/browser availability documentation for browser-run AI Core evidence
-   gates so local Chrome/Chromium requirements, metadata-only CI checks,
-   artifact-required local checks, and skipped-browser fallback expectations are
-   explicit without enabling live providers or privileged actions.
+1. Prepare a separate CI browser setup proposal for AI Core browser artifact
+   gates, including exact Chrome/Chromium setup, timeout behavior, artifact
+   retention policy, and failure semantics before enabling
+   `npm run qa:seis-core:ai-core-evidence` in GitHub Actions.
 
 ## Follow-Up Contract Slice
 
@@ -334,6 +334,30 @@ create live retrieval, provider routing, embeddings, persistent memory writes,
 raw-content return, secret lookup, GitHub write actions, SSH execution,
 deployment, payment, infrastructure mutation, benchmark claims, or
 model-training evidence.
+
+## Browser-Run AI Core Evidence Gate Availability Slice
+
+Status: Added after the browser-run AI Core QA evidence drift-hardening slice.
+
+Evidence:
+
+- `docs/evals/ai-core-browser-evidence-gates.md`
+- `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `apps/seis-core/README.md`
+- `docs/evals/evaluation-strategy.md`
+- `packages/evals/README.md`
+- `roadmap/seis-ai-core-command-center-5-year-development-program.md`
+- `npm run check:ai-core-browser-qa-evidence`
+
+This slice documents the CI/local split for browser-run AI Core evidence gates.
+The default CI path remains metadata-only through
+`npm run check:ai-core-browser-qa-evidence` and
+`npm run check:ai-core-eval-evidence`. The artifact-required browser path stays
+local or browser-enabled-runner only through
+`npm run qa:seis-core:ai-core-evidence` until a separate CI browser setup
+proposal is reviewed. It does not add live providers, embeddings, memory
+writes, raw-content return, GitHub writes, SSH, deployment, payment,
+infrastructure mutation, benchmark claims, or model-training evidence.
 
 ## Browser-Run AI Core Panel Navigation QA Slice
 
