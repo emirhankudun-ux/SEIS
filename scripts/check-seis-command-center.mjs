@@ -8,6 +8,7 @@ const requiredFiles = [
   "index.html",
   "styles.css",
   "script.js",
+  "ai-core-contract-fixture.js",
   "manifest.webmanifest",
   "README.md",
   "test/seis-core-static.test.js"
@@ -20,6 +21,7 @@ const requiredModules = [
   "Repositories",
   "Documentation",
   "Agents",
+  "AI Core",
   "Plugins",
   "Automation",
   "Security",
@@ -65,7 +67,21 @@ const requiredScriptSignals = [
   "memoryEvidence",
   "decisionHistory",
   "reusablePatterns",
-  "renderCommandResults"
+  "renderCommandResults",
+  "seisAiCoreContractFixture",
+  "aiCoreContract",
+  "aiCoreBoundaryFacts",
+  "retrievalFilters",
+  "renderAiCore",
+  "renderAiCoreRetrievalFilters",
+  "renderAiCoreContractCard",
+  "renderAiCoreEmptyState",
+  "matchesAiCoreQuery",
+  "describeRetrievalFilters",
+  "ai-core-retrieval-query",
+  "ai-core-retrieval-source-class",
+  "ai-core-retrieval-transcript-state",
+  "ai-core-retrieval-reset"
 ];
 
 const requiredDocSections = [
@@ -226,7 +242,16 @@ for (const selector of [
   ".knowledge-edge-row",
   ".memory-evidence-row",
   ".decision-history-row",
-  ".pattern-card"
+  ".pattern-card",
+  ".ai-core-summary-grid",
+  ".ai-core-layout",
+  ".contract-card",
+  ".boundary-card",
+  ".retrieval-layout",
+  ".retrieval-controls",
+  ".retrieval-filter-field",
+  ".retrieval-filter-status",
+  ".retrieval-empty-state"
 ]) {
   if (!css.includes(selector)) {
     fail(`missing CSS selector: ${selector}`);

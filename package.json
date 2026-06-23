@@ -27,6 +27,8 @@
     "check:release-sync": "node scripts/check-release-sync.cjs",
     "check:ai-stack": "node scripts/check-ai-stack.cjs",
     "check:ai-core-app-contracts": "node scripts/check-ai-core-app-contracts.mjs",
+    "qa:seis-core:ai-core-panels": "node scripts/capture-seis-core-ai-core-panel-navigation.mjs",
+    "check:ai-core-browser-qa-evidence": "node scripts/check-ai-core-browser-qa-evidence.mjs",
     "check:prompt-regression-fixtures": "node scripts/check-prompt-regression-fixtures.mjs",
     "check:repository-assistant-prototype": "node scripts/check-repository-assistant-prototype.mjs",
     "check:model-router-contracts": "node scripts/check-model-router-contracts.mjs",

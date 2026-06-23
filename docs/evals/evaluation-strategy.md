@@ -24,7 +24,7 @@ artifact publication.
 | Tool and MCP safety | Verify schema, permission, timeout, redaction, and error handling. | Fixture-backed by `packages/tool-registry/fixtures/tool-registry-permissions.json`; checked by `check:tool-registry-permissions`. |
 | App state evaluation | Verify ready, blocked, degraded, unknown, approval-needed, failed, and validated states. | Fixture-backed by `packages/shared-types/fixtures/ai-core-command-center-foundation.json`; checked by `check:ai-core-app-contracts`. |
 | Retrieval and knowledge | Verify source class, freshness, privacy mode, no-content transcripts, and blocked archives. | Fixture-backed by local data fixtures; checked by `check:knowledge-source-classification`, `check:retrieval-query-adapter`, `check:retrieval-search-transcript`, and `check:token-feed-budget`. |
-| Browser evidence | Verify real UI navigation and artifact integrity for Command Center AI Core surfaces. | Documented; browser QA workflow pending re-port. |
+| Browser evidence | Verify UI navigation and artifact integrity for Command Center AI Core surfaces. | JSDOM local browser-like QA recovered by `qa:seis-core:ai-core-panels`; evidence at `reports/evals/ai-core-panel-navigation-browser-qa.md`; checked by `check:ai-core-browser-qa-evidence`. Chrome/hosted browser artifact workflow remains future work. |
 | Research evaluations | Measure future tokenizer, fine-tune, nano-model, and SEIS Universe experiments. | Research-only; no training evidence in this slice. |
 
 The retrieval fixtures are `local-readonly-retrieval-query-adapter` and
@@ -83,7 +83,7 @@ of scope for this branch:
 
 - live provider adapters
 - backend provider gateway execution
-- browser QA artifact workflow activation
+- hosted browser QA artifact workflow activation
 - manual browser evidence workflow dispatch
 - external API calls
 - model benchmarks
@@ -91,8 +91,10 @@ of scope for this branch:
 
 ## Next Safe Action
 
-Validate and review this local fixture recovery branch, then recover the
-Command Center UI projection and browser QA workflow as a separate slice. Keep
-all provider calls disabled, keep browser keys absent, and preserve local-only
-or metadata-only behavior until explicit approval and validation evidence
-exist.
+Validate and review this local fixture recovery branch, then review the
+Command Center UI projection and JSDOM AI Core panel QA slice together. The next
+safe browser step is a separate Chrome/hosted artifact workflow proposal after
+`npm run qa:seis-core:ai-core-panels` and
+`npm run check:ai-core-browser-qa-evidence` pass locally. Keep all provider
+calls disabled, keep browser keys absent, and preserve local-only or
+metadata-only behavior until explicit approval and validation evidence exist.

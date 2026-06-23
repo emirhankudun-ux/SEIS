@@ -125,4 +125,12 @@ Open `http://127.0.0.1:4174/`.
 ```bash
 node --test apps/seis-core/test/*.test.js
 npm run check:seis-command-center-router
+npm run qa:seis-core:ai-core-panels
+npm run check:ai-core-browser-qa-evidence
 ```
+
+`npm run qa:seis-core:ai-core-panels` writes the deterministic local QA report
+at `reports/evals/ai-core-panel-navigation-browser-qa.md`. The report verifies
+AI Core sidebar navigation, command palette routing, global search routing,
+Local Retrieval filtering, reset behavior, fixture-backed card counts, and
+safety non-claims without making live provider calls.

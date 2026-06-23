@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "app": "apps/seis-core",
+  "runner": "JSDOM local browser-like DOM",
+  "browserPath": "Browser plugin not used for this committed evidence artifact; JSDOM keeps CI/local validation deterministic.",
+  "viewports": [
+    "dom-default"
+  ],
+  "sourceFixture": "packages/shared-types/fixtures/ai-core-command-center-foundation.json",
+  "scenarios": [
+    {
+      "id": "dashboard-initial",
+      "status": "passed",
+      "observed": "Dashboard is the initial active panel."
+    },
+    {
+      "id": "sidebar-ai-core-navigation",
+      "status": "passed",
+      "observed": "Sidebar opens the AI Core panel."
+    },
+    {
+      "id": "ai-core-contract-card-counts",
+      "status": "passed",
+      "observed": "Rendered AI Core cards match fixture counts."
+    },
+    {
+      "id": "retrieval-query-provider-keys",
+      "status": "passed",
+      "observed": "Secret/provider-key lookup shows no local results and exposes the blocked no-content transcript."
+    },
+    {
+      "id": "retrieval-reset",
+      "status": "passed",
+      "observed": "Reset clears retrieval filters and restores fixture card counts."
+    },
+    {
+      "id": "command-palette-ai-core",
+      "status": "passed",
+      "observed": "Command palette opens AI Core."
+    },
+    {
+      "id": "global-search-ai-core",
+      "status": "passed",
+      "observed": "Global search keeps AI Core active for the AI Core query."
+    },
+    {
+      "id": "goals-navigation-sanity",
+      "status": "passed",
+      "observed": "Goals panel still opens and renders goal cards after AI Core interactions."
+    }
+  ],
+  "counts": {
+    "modelRoutesExpected": 4,
+    "modelRoutesRendered": 4,
+    "promptVersionsExpected": 2,
+    "promptVersionsRendered": 2,
+    "agentTasksExpected": 6,
+    "agentTasksRendered": 6,
+    "approvalsExpected": 5,
+    "approvalsRendered": 5,
+    "retrievalResultCardsExpected": 3,
+    "retrievalResultCardsRendered": 3,
+    "noContentTranscriptsExpected": 2,
+    "noContentTranscriptsRendered": 2,
+    "evidenceExpected": 23,
+    "evidenceRendered": 23
+  },
+  "safetyFlags": {
+    "providerCallsPerformed": false,
+    "externalProviderRouting": false,
+    "browserReceivesProviderKey": false,
+    "rawContentReturned": false,
+    "writesPersistentMemory": false,
+    "createsEmbeddingIndex": false,
+    "executesGitHubWrite": false,
+    "executesSsh": false,
+    "deploysInfrastructure": false,
+    "claimsModelTraining": false,
+    "claimsBenchmarkRun": false
+  }
+}

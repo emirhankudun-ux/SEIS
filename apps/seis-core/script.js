@@ -1,5 +1,9 @@
 const storageKey = "seis-core-state-v1";
 
+if (new URLSearchParams(window.location.search).has("reset-state")) {
+  localStorage.removeItem(storageKey);
+}
+
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
@@ -2498,6 +2502,12 @@ function describeRetrievalFilters(filters, sourceCount, resultCount, transcriptC
   return `${prefix} ${sourceCount} source cards, ${resultCount} result cards, ${transcriptCount} transcripts shown.`;
 }
 
+function resetAiCoreRetrievalFilters() {
+  state.retrievalFilters = { ...seedState.retrievalFilters };
+  renderAiCore();
+  saveState();
+}
+
 function formatOptionLabel(value) {
   return String(value ?? "all")
     .split("-")
@@ -2818,6 +2828,10 @@ function setView(view) {
 
 function bindEvents() {
   document.addEventListener("click", (event) => {
+    if (event.target.closest("#ai-core-retrieval-reset")) {
+      resetAiCoreRetrievalFilters();
+    }
+
     const viewButton = event.target.closest("[data-view]");
     if (viewButton) {
       setView(viewButton.dataset.view);
@@ -2972,9 +2986,7 @@ function bindEvents() {
   });
 
   $("#ai-core-retrieval-reset")?.addEventListener("click", () => {
-    state.retrievalFilters = { ...seedState.retrievalFilters };
-    renderAiCore();
-    saveState();
+    resetAiCoreRetrievalFilters();
   });
 
   document.addEventListener("keydown", (event) => {

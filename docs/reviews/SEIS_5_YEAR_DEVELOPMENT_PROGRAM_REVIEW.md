@@ -473,6 +473,37 @@ embeddings, persistent memory writes, raw-content return, secret lookup, GitHub
 write actions, SSH execution, deployment, payment, infrastructure mutation,
 benchmark claims, or model-training evidence.
 
+## JSDOM AI Core Panel Navigation QA Recovery Slice
+
+Status: Added after the PR44 AI Core UI projection recovery slice.
+
+Evidence:
+
+- `scripts/capture-seis-core-ai-core-panel-navigation.mjs`
+- `scripts/check-ai-core-browser-qa-evidence.mjs`
+- `reports/evals/ai-core-panel-navigation-browser-qa.md`
+- `reports/evals/ai-core-panel-navigation-browser-qa.json`
+- `apps/seis-core/README.md`
+- `docs/evals/evaluation-strategy.md`
+- `npm run qa:seis-core:ai-core-panels`
+- `npm run check:ai-core-browser-qa-evidence`
+
+This recovery slice restores a deterministic local browser-like QA path for the
+current branch without requiring a hosted browser runner. The JSDOM runner loads
+the real `apps/seis-core` HTML, fixture projection, and application script,
+starts from Dashboard, opens AI Core through sidebar navigation, verifies
+fixture-backed route, prompt, agent task, approval, retrieval result,
+no-content transcript, evaluation, and audit counts, exercises the provider-key
+Local Retrieval blocked query, resets the retrieval filters, opens AI Core from
+the command palette, routes to AI Core from global search, and runs a Goals
+navigation sanity check.
+
+This is not Chrome screenshot evidence and does not claim hosted browser QA,
+live provider routing, live retrieval, embeddings, persistent memory writes,
+raw-content return, GitHub write actions, SSH execution, deployment, payment,
+infrastructure mutation, benchmark claims, model training evidence, checkpoints,
+or model-card completion.
+
 ## Browser-Run Goals Evidence Scorecard QA Slice
 
 Status: Added after the Goals evidence scorecard projection slice.
