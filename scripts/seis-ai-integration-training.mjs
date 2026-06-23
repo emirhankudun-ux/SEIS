@@ -39,6 +39,26 @@ const countMatches = (rel, needle) => {
   if (!fs.existsSync(file)) return 0;
   return fs.readFileSync(file, "utf8").split(needle).length - 1;
 };
+const readScripts = () => {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")).scripts ?? {};
+  } catch {
+    return {};
+  }
+};
+
+// Pinned lane baselines. These are committed in code (not the generated JSON),
+// so a regression — deleting an MCP tool, polyglot lane, agent lane, etc. and
+// re-running `seis:integrate` — cannot quietly pass `--check`: the regenerated
+// ledger would fall below these floors and fail in both generate and check
+// modes. Raising a baseline is a deliberate, reviewable code change.
+const BASELINE = Object.freeze({
+  mcpToolCount: 17,
+  binaries: 3,
+  polyglotLanguageCount: 115,
+  agentLanes: 9,
+  agentSkills: 11,
+});
 
 /**
  * Scan the repo and assemble the unified SEIS AI capability ledger.
@@ -98,23 +118,35 @@ function verify(ledger) {
     return failures;
   }
 
-  // Lane 1 — unified tools
+  // Lane 1 — unified tools (counts pinned to BASELINE to catch regressions)
   const t = lanes.unifiedTools;
-  ensure(t?.mcpToolCount >= 16, `expected >=16 MCP tools, ledger has ${t?.mcpToolCount ?? "undefined"}`);
-  ensure(t?.binaries?.length >= 3, `expected >=3 seis-ai binaries, ledger has ${t?.binaries?.length ?? "undefined"}`);
+  ensure(t?.mcpToolCount >= BASELINE.mcpToolCount, `expected >=${BASELINE.mcpToolCount} MCP tools, ledger has ${t?.mcpToolCount ?? "undefined"}`);
+  ensure(t?.binaries?.length >= BASELINE.binaries, `expected >=${BASELINE.binaries} seis-ai binaries, ledger has ${t?.binaries?.length ?? "undefined"}`);
   for (const bin of t?.binaries ?? []) ensure(exists(`packages/seis-ai/bin/${bin}`), `missing binary ${bin}`);
-  ensure(t?.polyglotLanguageCount >= 33, `expected >=33 polyglot lanes, ledger has ${t?.polyglotLanguageCount ?? "undefined"}`);
+  ensure(t?.polyglotLanguageCount >= BASELINE.polyglotLanguageCount, `expected >=${BASELINE.polyglotLanguageCount} polyglot lanes, ledger has ${t?.polyglotLanguageCount ?? "undefined"}`);
 
   // Lane 2 — knowledge
   ensure(lanes.knowledge?.skillGuide && exists(lanes.knowledge.skillGuide), "missing skill guide");
   ensure(lanes.knowledge?.rootGuide && exists(lanes.knowledge.rootGuide), "missing CLAUDE.md");
 
-  // Lane 3 — audit
-  ensure(exists("packages/seis-ai/bin/seis-check.mjs"), "missing seis-check audit entry");
-  ensure(exists("scripts/polyglot-check.sh"), "missing polyglot-check.sh audit entry");
+  // Lane 3 — audit: every advertised entry point must resolve. `npm run X`
+  // entries are validated against package.json scripts (not just the underlying
+  // file) so a renamed/removed script is caught; path entries must exist on disk.
+  const scripts = readScripts();
+  ensure(lanes.audit?.entryPoints?.length > 0, "no audit entry points declared");
+  for (const entry of lanes.audit?.entryPoints ?? []) {
+    const npmRun = entry.match(/^npm run (\S+)/);
+    if (npmRun) {
+      ensure(npmRun[1] in scripts, `audit entry point not in package.json scripts: ${entry}`);
+    } else {
+      const file = entry.replace(/^\.\//, "").split(/\s+/)[0];
+      ensure(exists(file), `missing audit entry point file: ${entry}`);
+    }
+  }
 
   // Lane 4 — agent
-  ensure(lanes.agent?.lanes?.length > 0, "no agent lanes discovered");
+  ensure(lanes.agent?.lanes?.length >= BASELINE.agentLanes, `expected >=${BASELINE.agentLanes} agent lanes, ledger has ${lanes.agent?.lanes?.length ?? "undefined"}`);
+  ensure(lanes.agent?.skills?.length >= BASELINE.agentSkills, `expected >=${BASELINE.agentSkills} agent skills, ledger has ${lanes.agent?.skills?.length ?? "undefined"}`);
   for (const lane of lanes.agent?.lanes ?? [])
     ensure(exists(`plugins/seis-ai-agent/assets/lanes/${lane}.json`), `missing agent lane ${lane}`);
   for (const skill of lanes.agent?.skills ?? [])
