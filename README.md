@@ -61,10 +61,28 @@ experience. SEIS AI uses clearly labeled Local Demo mode unless a backend
 provider is configured and verified. SSH, deployment, provider keys, and live
 model routing remain disabled or planned where marked.
 
+For this demo, "full-stack" is treated as the complete product path rather than
+only a screen: frontend OS surfaces, browser-local data/state, route wiring,
+validator scripts, static packaging, security boundaries, and documented
+backend/API/data contracts. The first contract is
+`content/development/seis-fullstack-contract.json`, exposed read-only through
+the local `node:http` static server as `/_server/session`,
+`/_server/provider-status`, and related `/_server/*` Local Demo endpoints. The
+current runnable package stays zero-key and local-first; live AI, durable
+databases, deployment, auth, and SSH require separate approved backend-only
+work.
+
 Primary demo routes:
 
-- `desktop.html` - SEIS System OS, Search, Launchpad, Files, Terminal, Store,
-  Music, Design, Cloud, Agents, and local apps.
+- `desktop.html` - SEIS System OS, Second Brain, Demo Studio, Search,
+  Launchpad, Files, Terminal, Store, Music, Design, Cloud, Agents, and local
+  apps.
+- `seis-linux-replica.html` - supplied-code-inspired SEIS Linux Replica with
+  boot, login, taskbar, launcher, browser-local VFS, terminal, and 64 app
+  launch targets, TR/EN locale persistence through `seis.locale.v1`, plus
+  connected SEIS Search, Code, Design, Cloud, Store, Website, Music, and AI Core
+  bridge cards. The Code, Design, Cloud, Store, Music, and AI Core cards now
+  open mini workspaces with local state changes instead of static placeholders.
 - `seis-code.html` - SEIS Code browser IDE route.
 - `website/index.html` - SEIS Website hub, with product pages for SEIS AI, OS,
   Code, Design, Search, Cloud, Store, and Agents.
@@ -76,12 +94,22 @@ Key local validation commands:
 
 ```bash
 npm run check:desktop-os
+npm run check:seis-second-brain
 npm run check:desktop-os-browser-smoke
+npm run check:seis-linux-replica-browser-smoke
 npm run check:seis-code
 npm run check:seis-website-pages
 npm run check:seis-ultimate-demo
+npm run check:seis-fullstack-contract
+npm run check:seis-fullstack-server-smoke
+npm run check:seis-20b-benchmark-dry-run
+npm run check:seis-150b-frontier-model-program
+npm run check:seis-model-frontier-escalation-policy
 npm run check:seis-model-local-hardware-preflight
 npm run check:seis-model-scaling-hardware-profile
+npm run check:seis-512b-apex-model-program
+npm run check:seis-model-parameter-ladder
+npm run check:seis-model-scaling-subagent-council
 npm run check:mythic-gacha
 npm run check:video-hero-showcase
 npm run check:video-hero-browser-smoke
@@ -90,14 +118,16 @@ npm run build:static
 npm run check:static-build
 ```
 
-## Yeni Nesil AGI Özellikleri
+## Yeni Nesil AGI Araştırma Hedefi
 
-SEIS artık sadece bir platform değil, otonom bir AGI çekirdeğidir:
+SEIS AGI hedefi şu an kanıt-gated bir araştırma ve uygulama mimarisi olarak
+tutulur. Bu repo gerçek AGI, eğitilmiş 512B ağırlık, benchmark sonucu,
+checkpoint veya canlı inference iddiası yapmaz.
 
-- **Muhakeme Döngüsü (Reasoning Loop):** Karmaşık görevleri analiz eder, planlar ve adım adım uygular.
-- **Gelişmiş Dosya Manipülasyonu:** Kod yazabilir, dosyaları okuyabilir ve projeyi otonom olarak geliştirebilir.
-- **API Erişimi:** FastAPI tabanlı modern bir arayüz ile her türlü uygulamaya entegre edilebilir.
-- **Docker Desteği:** Tek komutla her yerde çalıştırılabilir.
+- **512B Apex Programı:** `content/development/seis-512b-apex-model-program.json` ile plan-only ve route-blocked tutulur.
+- **Alt Ajan Konseyi:** Tüm kurulu AI/sub-agent rolleri yalnızca planlama, inceleme ve doğrulama görevleri alır.
+- **Güvenli AI Core:** Local Demo varsayılandır; provider key, cloud/GPU, SSH, benchmark ve training insan onayı olmadan kapalıdır.
+- **AGI Kanıt Kuralı:** Gerçek AGI iddiası için bağımsız evaluation, safety review, training logs, checkpoint governance, model card ve explicit approval gerekir.
 
 ## Core Scope
 

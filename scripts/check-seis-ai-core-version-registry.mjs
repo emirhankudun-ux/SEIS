@@ -148,6 +148,9 @@ if (pluginIntegration) {
   ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, [
     "seis://ai/mcp-runtime-contract.json",
     "seis://ai/provider-registry.json",
+    "seis://ai/150b-frontier-model-program.json",
+    "seis://ai/20b-model-card-template.json",
+    "seis://ai/20b-dataset-card-template.json",
     "seis://ai/version-registry.json",
     "seis://ai/version-promotion-gates.json",
   ], "runtimeIntegration.mcpResources");
@@ -178,7 +181,7 @@ if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.id === "seis-ai-core-mcp-runtime-contract", "MCP runtime contract id mismatch");
   ensure(mcpRuntimeContract.resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP runtime contract resource URI mismatch");
   ensure(mcpRuntimeContract.toolCount === 34, "MCP runtime contract must record 34 tools");
-  ensure(mcpRuntimeContract.resourceCount === 20, "MCP runtime contract must record 20 resources");
+  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
   ensure(mcpRuntimeContract.promptCount === 3, "MCP runtime contract must record 3 prompts");
 }
 

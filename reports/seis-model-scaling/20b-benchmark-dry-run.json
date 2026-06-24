@@ -1,0 +1,95 @@
+{
+  "id": "seis-20b-benchmark-dry-run",
+  "version": "2026.06.24",
+  "status": "dry-run-not-measured",
+  "targetId": "seis-20b-local-compatibility-target",
+  "parameterClass": "20B",
+  "targetRamClass": "16GB+ RAM",
+  "outputPath": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+  "generatedBy": "scripts/create-seis-20b-benchmark-dry-run.mjs",
+  "purpose": "Verify that SEIS has a complete non-executing benchmark preparation contract before any future 20B local compatibility benchmark can be requested.",
+  "truthBoundary": "Dry-run report only. It does not download a model, download a dataset, run inference, train, fine-tune, benchmark memory, call providers, execute SSH, deploy infrastructure, publish weights, or make 20B/70B/150B route eligibility claims.",
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "benchmarkManifestTemplate": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
+    "hostHardwarePreflight": "scripts/inspect-seis-model-local-hardware.mjs"
+  },
+  "sourceStatuses": {
+    "profileStatus": "planned-compatibility-contract",
+    "targetCompatibilityStatus": "planned-not-validated",
+    "targetTrainingStatus": "not-started",
+    "benchmarkManifestStatus": "template-not-measured",
+    "benchmarkCompatibilityClaim": "not-verified",
+    "modelCardStatus": "template-not-filled",
+    "datasetCardStatus": "template-not-filled",
+    "memoryBudgetStatus": "planning-estimate-not-benchmark-evidence"
+  },
+  "dryRunResult": {
+    "canRequestRealBenchmarkToday": false,
+    "routeEligibleToday": false,
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "measuredBenchmark": false,
+    "modelCompatibilityVerified": false,
+    "modelDownloadAuthorized": false,
+    "datasetDownloadAuthorized": false,
+    "trainingAuthorized": false,
+    "fineTuningAuthorized": false,
+    "providerCallAuthorized": false,
+    "sshAuthorized": false,
+    "deploymentAuthorized": false
+  },
+  "readinessGates": [
+    {
+      "id": "model-artifact-review",
+      "status": "blocked",
+      "requiredEvidence": "Filled and reviewed model card with artifact id, license, clean-room provenance, quantization, safety notes, and benchmark reference."
+    },
+    {
+      "id": "dataset-provenance-review",
+      "status": "blocked",
+      "requiredEvidence": "Filled and reviewed dataset card with source inventory, license map, rights review, privacy review, PII/secret scan, and split plan."
+    },
+    {
+      "id": "runtime-adapter-approval",
+      "status": "blocked",
+      "requiredEvidence": "Human-approved local-only runtime adapter with no provider key, no SSH, no deployment, and safe fallback behavior."
+    },
+    {
+      "id": "host-preflight",
+      "status": "available-not-sufficient",
+      "requiredEvidence": "Optional host RAM preflight may observe RAM class but cannot prove 20B compatibility."
+    },
+    {
+      "id": "measured-memory-benchmark",
+      "status": "blocked",
+      "requiredEvidence": "Peak resident memory, KV-cache memory, OS pressure, context length, tokens per second, local fallback, redacted logs, and human reviewer."
+    }
+  ],
+  "requiredBeforeRealBenchmark": [
+    "explicit human approval for model artifact selection",
+    "explicit human approval for local runtime adapter setup",
+    "completed 20B model card",
+    "completed 20B dataset card or benchmark-data card",
+    "secret scan and redaction plan",
+    "local-only fallback plan",
+    "measurement command that cannot upload prompts, files, logs, or repo data to providers",
+    "rollback plan for failed or memory-exhausting benchmark run"
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has downloaded 20B weights.",
+    "SEIS has run 20B inference.",
+    "SEIS has benchmarked 20B memory usage.",
+    "SEIS has verified 16GB+ compatibility.",
+    "SEIS can route to 20B, 70B, or 150B models today."
+  ],
+  "nextSafeActions": [
+    "Keep this dry-run report synchronized with the model scaling profile.",
+    "Keep Command Center route eligibility blocked.",
+    "Only after human approval, fill model and dataset cards before any real benchmark runner is introduced.",
+    "Treat 70B and 150B as research lanes until 20B evidence exists."
+  ]
+}

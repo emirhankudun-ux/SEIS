@@ -16,8 +16,9 @@ Date: 2026-06-23
 | [reviews/PLUGIN_INTERFACE_SUITE_QA.md](reviews/PLUGIN_INTERFACE_SUITE_QA.md) | Browser QA evidence for the static five-lane plugin interface suite, year controls, H1/H2 cadence, maturity signals, readiness gates, and coverage metrics. |
 | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) | QA evidence and release boundary for the four-page cinematic Video Hero showcase. |
 | [reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md](reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md) | Loading, provenance, reduced-motion, and local-artifact budget for the Video Hero showcase. |
-| [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, and the browser-local export bridge. |
+| [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, and the browser-local export bridge. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Current-vs-planned boundary for the single-entry SEIS Desktop demo, launcher routes, AI App, SEIS Code, and shared VFS bridge. |
+| [product/seis-second-brain.md](product/seis-second-brain.md) | Local Demo Second Brain contract for installed AI profiles, sub-agent lanes, Obsidian-style Markdown vault notes, graph/backlinks, and GitHub readiness gates. |
 | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) | Master backlog for reviewable SEIS work. |
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Recommended next PR queue and approval gates. |
 
@@ -26,9 +27,10 @@ Date: 2026-06-23
 | Document | Purpose |
 | --- | --- |
 | [architecture/seis-platform-lanes.md](architecture/seis-platform-lanes.md) | Foundation boundaries for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
+| [architecture/seis-full-stack-transition.md](architecture/seis-full-stack-transition.md) | No-key full-stack transition contract for read-only `/_server/*` endpoints, backend-only provider secrets, and Local Demo fallback. |
 | [operations/seis-cloud-foundation.md](operations/seis-cloud-foundation.md) | Cloud, deployment, and SSH safety foundation. |
 | [product/seis-code-foundation.md](product/seis-code-foundation.md) | SEIS Code workspace foundation. |
-| [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Browser-smoke evidence for SEIS Code, Mythic Gacha, and shared workspace export behavior. |
+| [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, and shared workspace export behavior. |
 | [design-system/seis-design-foundation.md](design-system/seis-design-foundation.md) | Design-system foundation and evidence rules. |
 | [design-system/component-inventory.md](design-system/component-inventory.md) | Validator-backed component inventory for current web surfaces. |
 | [data/seis-data-foundation.md](data/seis-data-foundation.md) | Data foundation, records, and validation expectations. |
@@ -41,6 +43,7 @@ Date: 2026-06-23
 | [product/command-center-foundation.md](product/command-center-foundation.md) | Command Center module contract and evidence rules. |
 | [product/plugin-interface-suite.md](product/plugin-interface-suite.md) | Read-only interface foundation for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Working demo boundary for SEIS Desktop as the single entry point, SEIS Search routes, AI Plugin Center tabs, and shared browser-local VFS. |
+| [product/seis-second-brain.md](product/seis-second-brain.md) | Browser-local knowledge OS foundation for all current installed AI profiles, managed sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault notes, and GitHub readiness review. |
 | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) | Browser-local shared VFS contract for Desktop, SEIS Code, Terminal, and Mythic Gacha exports. |
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
@@ -101,8 +104,16 @@ Date: 2026-06-23
 | [../content/lab/cinematic-engine.json](../content/lab/cinematic-engine.json) | Static command deck for the web interface. |
 | [../content/lab/quality-console.json](../content/lab/quality-console.json) | Static quality signals for the plugin interface suite. |
 | [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) | Schema registry for current structured records. |
+| [../content/development/seis-fullstack-contract.json](../content/development/seis-fullstack-contract.json) | `validated-contract` full-stack session/API/data boundary for `/_server/*` Local Demo endpoints with backend-only provider secret rules. |
 | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) | Component inventory for current web and showcase surfaces. |
 | [../content/development/seis-ai-workforce-training-plan.json](../content/development/seis-ai-workforce-training-plan.json) | Installed AI workforce training plan for supervised local seed-model rebuilds and no-runtime-authority promotion gates. |
+| [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) | Second Brain contract for installed AI profiles, managed sub-agent lanes, Obsidian-style Markdown vault records, graph/backlinks, and GitHub readiness gates. |
 | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) | Planned 20B local-compatibility profile, 16GB+ RAM target class, and future 70B / 150B frontier scale ladder with no live runtime authority. |
+| [../content/development/seis-model-parameter-ladder.json](../content/development/seis-model-parameter-ladder.json) | `planning-contract-not-runtime` parameter ladder from 20B / 16GB+ through 70B, 150B, 300B+, and highest-future classes with every model route blocked. |
+| [../content/development/seis-model-frontier-escalation-policy.json](../content/development/seis-model-frontier-escalation-policy.json) | No-skip-20B frontier escalation policy for 70B, 150B, and highest-future model classes without routeable-weight or trained-model claims. |
+| [../content/development/seis-150b-frontier-model-program.json](../content/development/seis-150b-frontier-model-program.json) | `frontier-program-plan-only` 150B Frontier Model Program with stage, promotion, agent, and non-claim gates; exposed as `seis://ai/150b-frontier-model-program.json`. |
+| [../content/development/seis-model-scaling-subagent-council.json](../content/development/seis-model-scaling-subagent-council.json) | `active-plan-only` 12-agent model-scaling council for 20B evidence preparation and 70B/150B non-claim gates. |
+| [../content/development/seis-20b-model-card-template.json](../content/development/seis-20b-model-card-template.json) | `template-not-filled` clean-room model card required before any 20B model artifact, benchmark, route eligibility, or runtime claim. |
+| [../content/development/seis-20b-dataset-card-template.json](../content/development/seis-20b-dataset-card-template.json) | `template-not-filled` clean-room dataset card required before any dataset download, ingestion, training, fine-tuning, benchmark, provider upload, or publication. |
 | [../reports/seis-model-scaling/20b-16gb-memory-benchmark.json](../reports/seis-model-scaling/20b-16gb-memory-benchmark.json) | `template-not-measured` benchmark manifest for the future 20B / 16GB+ memory test; not benchmark evidence. |
 | [../apps/web/goal-tracking.html](../apps/web/goal-tracking.html) | Generated static Goal Tracking Center page. |

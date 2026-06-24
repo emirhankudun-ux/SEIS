@@ -34,6 +34,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Lane | Current foundation |
 | --- | --- |
 | `@seis` | [architecture/seis-platform-lanes.md](architecture/seis-platform-lanes.md) |
+| Full-stack foundation | [architecture/seis-full-stack-transition.md](architecture/seis-full-stack-transition.md) |
 | `@seis-cloud` | [operations/seis-cloud-foundation.md](operations/seis-cloud-foundation.md) |
 | `@seis-code` | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | `@seis-design` | [design-system/seis-design-foundation.md](design-system/seis-design-foundation.md), [design-system/component-inventory.md](design-system/component-inventory.md) |
@@ -46,6 +47,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Command Center foundation | [product/command-center-foundation.md](product/command-center-foundation.md) |
 | Goal Tracking Center | [product/goal-tracking-center.md](product/goal-tracking-center.md) |
 | SEIS Demo status | [product/seis-demo-status.md](product/seis-demo-status.md) |
+| SEIS Second Brain | [product/seis-second-brain.md](product/seis-second-brain.md) |
 | Shared VFS contract | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) |
 | SEIS Code browser foundation | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |
@@ -72,6 +74,10 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Static plugin interface surface | [../apps/web/index.html](../apps/web/index.html#plugin-interfaces) |
 | SEIS Code route | [../apps/web/seis-code.html](../apps/web/seis-code.html) |
 | SEIS Code runtime | [../apps/web/seis-code.js](../apps/web/seis-code.js) |
+| SEIS Second Brain contract | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) |
+| SEIS Second Brain validator | `npm run check:seis-second-brain` |
+| SEIS Linux Replica route | [../apps/web/seis-linux-replica.html](../apps/web/seis-linux-replica.html) |
+| SEIS Linux Replica browser smoke | `npm run check:seis-linux-replica-browser-smoke` |
 | Product experience browser smoke | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) |
 | Video hero manifest | [../apps/web/showcase/video-heroes.json](../apps/web/showcase/video-heroes.json) |
 | Video Hero performance budget | [reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md](reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md) |
@@ -80,7 +86,14 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Video Hero showcase QA | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) |
 | Design component inventory | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) |
 | Data schema registry | [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) |
+| SEIS full-stack contract | [../content/development/seis-fullstack-contract.json](../content/development/seis-fullstack-contract.json) |
 | SEIS model scaling hardware profile | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) |
+| SEIS model parameter ladder | [../content/development/seis-model-parameter-ladder.json](../content/development/seis-model-parameter-ladder.json) |
+| SEIS model frontier escalation policy | [../content/development/seis-model-frontier-escalation-policy.json](../content/development/seis-model-frontier-escalation-policy.json) |
+| SEIS 150B Frontier Model Program | [../content/development/seis-150b-frontier-model-program.json](../content/development/seis-150b-frontier-model-program.json) |
+| SEIS model scaling sub-agent council | [../content/development/seis-model-scaling-subagent-council.json](../content/development/seis-model-scaling-subagent-council.json) |
+| SEIS 20B model card template | [../content/development/seis-20b-model-card-template.json](../content/development/seis-20b-model-card-template.json) |
+| SEIS 20B dataset card template | [../content/development/seis-20b-dataset-card-template.json](../content/development/seis-20b-dataset-card-template.json) |
 | SEIS 20B / 16GB+ benchmark manifest template | [../reports/seis-model-scaling/20b-16gb-memory-benchmark.json](../reports/seis-model-scaling/20b-16gb-memory-benchmark.json) |
 | Cloud environment record | [../deploy/cloud-environment.json](../deploy/cloud-environment.json) |
 | Code automation plan | [../content/development/code-automation-plan.json](../content/development/code-automation-plan.json) |

@@ -3,24 +3,67 @@
 ## Purpose
 
 Define the safe path for SEIS model research from a 20B local-compatibility
-target for 16GB+ RAM machines toward future 70B, 150B, and larger parameter
-classes.
+target for 16GB+ RAM machines toward future 70B, 150B, 512B apex SEIS AGI
+readiness, and larger parameter classes.
 
 This is a planning and validation contract. It is not a claim that SEIS has
-trained, downloaded, benchmarked, published, or served a 20B, 70B, or 150B
-model.
+trained, downloaded, benchmarked, published, served a 20B, 70B, 150B, or 512B
+model, or demonstrated AGI.
 
 Machine-readable source:
 `content/development/seis-model-scaling-hardware-profile.json`.
 
+## Internet Research Baseline
+
+The public frontier-model landscape supports a conservative SEIS 512B plan-only
+boundary rather than a local-runtime claim:
+
+- [Meta Llama 3.1 405B](https://ai.meta.com/blog/meta-llama-3-1/) documents a
+  405B open foundation-model release, which keeps SEIS 512B in frontier-scale
+  territory rather than ordinary developer-laptop territory.
+- [Megatron-Turing NLG 530B](https://arxiv.org/abs/2201.11990) documents a
+  530B-scale training effort with large-scale distributed infrastructure, which
+  supports the requirement for explicit GPU/cloud budget, observability,
+  rollback, and human approval before any 512B training scope.
+- [DeepSeek-V3](https://arxiv.org/abs/2412.19437) documents a 671B-total MoE
+  model with far fewer activated parameters per token, which supports keeping
+  dense-vs-MoE architecture selection as a required gate rather than assuming a
+  routeable dense 512B model.
+- [Qwen3-235B-A22B-Instruct-2507](https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507)
+  documents a public MoE model card with total and activated parameter counts,
+  which reinforces that SEIS must track total parameters, activated parameters,
+  inference memory, context length, and safety separately.
+
 Validation:
 
 ```bash
+npm run check:seis-model-frontier-escalation-policy
+npm run check:seis-150b-frontier-model-program
+npm run check:seis-512b-apex-model-program
 npm run check:seis-model-scaling-hardware-profile
+npm run check:seis-model-scaling-subagent-council
 ```
 
 SEIS AI agent status tool:
 `seis_ai_core_model_scaling_status`.
+
+Frontier escalation policy:
+`content/development/seis-model-frontier-escalation-policy.json`.
+
+150B Frontier Model Program:
+`content/development/seis-150b-frontier-model-program.json`.
+
+MCP resource:
+`seis://ai/150b-frontier-model-program.json`.
+
+512B Apex Model Program:
+`content/development/seis-512b-apex-model-program.json`.
+
+MCP resource:
+`seis://ai/512b-apex-model-program.json`.
+
+Model scaling sub-agent council:
+`content/development/seis-model-scaling-subagent-council.json`.
 
 ## Current Target
 
@@ -28,6 +71,7 @@ SEIS AI agent status tool:
 | --- | --- | --- | --- | --- |
 | SEIS 20B Local Compatibility Target | 16GB+ RAM | Planned, not validated | False | No weights, no inference, no benchmark, no live provider call. |
 | SEIS 150B Frontier Research Target | Approved distributed/multi-accelerator/cloud research runtime | Not scoped | False | No weights, no inference, no benchmark, no live provider call, no cloud provisioning. |
+| SEIS 512B AGI Apex Research Target | Frontier-scale distributed research cluster | Apex program, plan only | False | No AGI proof, no weights, no inference, no benchmark, no provider call, no cloud/GPU provisioning. |
 
 16GB+ is a target compatibility class. It becomes a verified claim only after a
 quantized runtime adapter, memory ceiling benchmark, no-key startup test,
@@ -55,7 +99,7 @@ a reviewable compatibility package:
 - local-only fallback behavior
 - redacted logs and client-bundle secret scan
 - human approval before downloads, training, fine-tuning, benchmarks, SSH,
-  deployment, publication, or paid compute
+  deployment, publication, AGI claims, or paid compute
 
 ## 16GB+ Compatibility Profiles
 
@@ -157,6 +201,193 @@ Both templates are intentionally blocked today. They do not approve model
 downloads, dataset downloads, training, fine-tuning, benchmark execution,
 publication, provider upload, or route eligibility.
 
+## 20B Benchmark Dry-Run
+
+SEIS now has a deterministic benchmark-preparation dry-run report:
+
+```bash
+npm run automation:seis-20b-benchmark-dry-run
+npm run check:seis-20b-benchmark-dry-run
+```
+
+The generated report is:
+
+`reports/seis-model-scaling/20b-benchmark-dry-run.json`
+
+This report verifies that the 20B benchmark prerequisites are still blocked
+until model artifact review, dataset provenance review, runtime adapter
+approval, measured memory benchmark evidence, local-only fallback proof,
+redacted logs, and human review exist.
+
+It is not benchmark evidence. It does not download a model, run inference,
+train weights, fine-tune, call a provider, execute SSH, deploy infrastructure,
+measure RAM, or make 20B, 70B, 150B, or 512B route eligible.
+
+## Model Parameter Ladder
+
+SEIS now has a separate parameter ladder contract for the user-requested path
+from 16GB+ RAM / 20B toward 70B, 150B, 300B+, 512B, and the highest future
+parameter class:
+
+| Surface | Value |
+| --- | --- |
+| Source | `content/development/seis-model-parameter-ladder.json` |
+| MCP resource | `seis://ai/model-parameter-ladder.json` |
+| Quality gate | `npm run check:seis-model-parameter-ladder` |
+| Status | `planning-contract-not-runtime` |
+| Default route | `seis-local-demo` |
+
+The ladder is machine-readable planning evidence only. It creates no trained
+model, downloads no weights or datasets, runs no inference, benchmarks no
+memory, provisions no GPU or cloud runtime, executes no SSH, and does not make
+any model route eligible.
+
+| Parameter class | Hardware class | Status | Allowed today |
+| --- | --- | --- | --- |
+| 20B | 16GB+ RAM target after measurement | Planned, not validated | Local Demo, deterministic seed-model lab, documentation, and dry-run preflight only |
+| 70B | 64GB+ or approved accelerator/server runtime | Research roadmap | Planning only |
+| 150B | Approved distributed, multi-accelerator, or cloud research runtime | Frontier research roadmap | Disabled |
+| 300B+ | Not scoped | Exploration boundary | Disabled |
+| 512B | Frontier-scale distributed research cluster | Apex program, plan only | Disabled |
+| Highest available future | Defined only after lower-tier measured evidence | Not scoped | Disabled |
+
+## Frontier Escalation Policy
+
+SEIS now has a dedicated frontier escalation policy for moving from the planned
+20B target toward 70B, 150B, 512B, and larger future classes:
+
+`content/development/seis-model-frontier-escalation-policy.json`
+
+MCP resource:
+
+`seis://ai/model-frontier-escalation-policy.json`
+
+Validation:
+
+```bash
+npm run check:seis-model-frontier-escalation-policy
+```
+
+This policy is the formal no-skip ladder. It keeps the following rule explicit:
+
+- `no-skip-20b`: 70B, 150B, 512B, and larger parameter classes cannot become
+  runtime-scoped until the 20B local compatibility gates produce real evidence.
+
+The policy also records:
+
+- `stage-1-20b-local-compatibility` as planned, not validated
+- `stage-2-70b-research` as research roadmap
+- `stage-3-150b-frontier` as frontier research roadmap
+- `stage-4-512b-apex` as apex program, plan only
+- `stage-4-highest-available-future` as not scoped
+
+Every non-demo stage remains `routeEligibleToday: false`. The active allowed
+mode remains Local Demo and deterministic seed-model lab only.
+
+The policy does not download models, download datasets, run inference, train,
+fine-tune, benchmark memory, call providers, execute SSH, deploy infrastructure,
+publish weights, or claim SEIS owns a trained 20B, 70B, 150B, 512B, AGI, or
+larger foundation model.
+
+## 150B Frontier Model Program
+
+SEIS now tracks the 150B direction as a separate program record:
+
+`content/development/seis-150b-frontier-model-program.json`
+
+MCP resource:
+
+`seis://ai/150b-frontier-model-program.json`
+
+Validation:
+
+```bash
+npm run check:seis-150b-frontier-model-program
+```
+
+The status is `frontier-program-plan-only`. It is not a trained model, routeable
+runtime, benchmark, checkpoint, cloud deployment, SSH workflow, provider
+wrapper, or production claim. It exists so the 20B-to-70B-to-150B path has a
+machine-readable charter, stage plan, promotion gates, agent responsibilities,
+and forbidden-claim rules before any future frontier work is approved.
+
+Current stage boundary:
+
+| Stage | Status | Route state |
+| --- | --- | --- |
+| Charter | Planned | Not route eligible |
+| Clean-room data | Blocked until provenance plan | Not route eligible |
+| Architecture selection | Not selected | Not route eligible |
+| Distributed runtime | Budget and approval needed | Not route eligible |
+| Training readiness | Not authorized | Not route eligible |
+| Evaluation and safety | Not run | Not route eligible |
+
+The 150B Frontier Model Program remains blocked until 20B and 70B evidence,
+clean-room training plan, distributed runtime budget, observability,
+kill-switch, rollback, cost-stop, privacy, safety, and explicit human approval
+exist.
+
+## 512B Apex Model Program
+
+SEIS now tracks the 512B / SEIS AGI direction as a separate apex program record:
+
+`content/development/seis-512b-apex-model-program.json`
+
+MCP resource:
+
+`seis://ai/512b-apex-model-program.json`
+
+Validation:
+
+```bash
+npm run check:seis-512b-apex-model-program
+```
+
+The status is `apex-program-plan-only`. It is not AGI, a trained model,
+routeable runtime, benchmark, checkpoint, cloud deployment, SSH workflow,
+provider wrapper, or production claim. It exists so installed AI systems and
+all SEIS sub-agents can review a 512B readiness path without gaining download,
+training, benchmark, provider, cloud/GPU, SSH, deployment, or release authority.
+
+The 512B Apex Model Program remains blocked until 20B, 70B, 150B, and 300B+
+evidence exists, a clean-room training plan is accepted, an AGI capability
+evaluation protocol is written, all-agent council review is recorded, and
+explicit human approval exists.
+
+## Model Scaling Sub-Agent Council
+
+The 20B/70B/150B/512B path is now assigned to a dedicated plan-only council:
+
+`content/development/seis-model-scaling-subagent-council.json`
+
+Validation:
+
+```bash
+npm run check:seis-model-scaling-subagent-council
+```
+
+The council keeps all model-scaling work split across 12 bounded agents:
+Architect, Code, Design, UI/UX, Research, Search, Security, DevOps,
+Documentation, QA, Cloud, and Automation. Every agent is `plan-only`.
+
+This means the agents may inspect local evidence, report gaps, and produce
+plans. They may not download models, download datasets, run inference, execute
+benchmarks, train or fine-tune models, set provider credentials, execute SSH,
+provision cloud/GPU resources, deploy, publish checkpoints, or approve route
+eligibility by themselves.
+
+| Stage | Lead agents | Status | Route state |
+| --- | --- | --- | --- |
+| 20B | Architect, Code, Security, QA, Documentation | Planned, not validated | Not route eligible |
+| 70B | Research, DevOps, Cloud, Security | Research roadmap | Not route eligible |
+| 150B | Architect, Research, Cloud, Security, QA | Frontier research roadmap | Not route eligible |
+| 512B | Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, Automation | Apex program, plan only | Not route eligible |
+| Highest future | Architect, Research, Security, Documentation | Not scoped | Not route eligible |
+
+The council is coordination evidence only. A plan-only sub-agent assignment is
+not runtime evidence and cannot be used as proof that SEIS has trained,
+downloaded, benchmarked, served, or routed a 20B, 70B, or 150B model.
+
 ## 20B / 16GB+ Memory Budget Contract
 
 The first practical SEIS model target is a 20B local-compatibility profile for
@@ -201,13 +432,22 @@ runtime setup, benchmark execution, publication, or deployment.
 
 ## Future Scale Ladder
 
+The dedicated parameter ladder source is:
+
+`content/development/seis-model-parameter-ladder.json`
+
+MCP resource:
+
+`seis://ai/model-parameter-ladder.json`
+
 | Class | Horizon | Status | Required Gate |
 | --- | --- | --- | --- |
 | 20B | Now | Planned, not validated | Quantized local compatibility benchmark and no-key startup validation. |
 | 70B | Future | Research roadmap | Clean-room dataset, model card, safety eval, hardware budget, and explicit approval. |
 | 150B | Future frontier | Frontier research roadmap | Only after 20B and 70B evidence exists; requires clean-room training plan, distributed-runtime budget, privacy review, safety eval, observability, rollback, and explicit human approval. |
 | 120B+ | Future | Research roadmap | Independent evaluation, privacy review, observability, rollback plan, and cost approval. |
-| Highest available future | Long-term | Not scoped | Do not scope until 20B, 70B, and 150B gates have evidence. |
+| 512B | Apex frontier | Apex program, plan only | Only after 20B, 70B, 150B, and 300B+ evidence exists; requires clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit approval. |
+| Highest available future | Long-term | Not scoped | Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have evidence. |
 
 ## Creation Stages
 
@@ -217,7 +457,8 @@ runtime setup, benchmark execution, publication, or deployment.
 | Stage 1 | SEIS 20B local compatibility target | Planned, not validated |
 | Stage 2 | SEIS 70B research target | Research roadmap |
 | Stage 3 | SEIS 150B frontier research target | Frontier research roadmap |
-| Stage 4 | Highest available future parameter class | Not scoped |
+| Stage 4 | SEIS 512B apex research target | Apex program, plan only |
+| Stage 5 | Highest available future parameter class | Not scoped |
 
 The stage ladder exists so SEIS can move forward without fake checkpoints. A
 stage can be promoted only when its required evidence exists in files, logs,

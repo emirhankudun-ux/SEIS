@@ -11,6 +11,11 @@ const paths = {
   modelCardTemplate: "content/development/seis-20b-model-card-template.json",
   datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+  benchmarkDryRun: "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+  parameterLadder: "content/development/seis-model-parameter-ladder.json",
+  frontierEscalationPolicy: "content/development/seis-model-frontier-escalation-policy.json",
+  frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
+  apexModelProgram: "content/development/seis-512b-apex-model-program.json",
   scalingDoc: "docs/ai/seis-model-scaling.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelRouterDoc: "docs/ai/model-router.md",
@@ -23,8 +28,8 @@ const paths = {
   tools: "packages/seis-ai/src/agent/tools.mjs",
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
   mcpSmokeTest: "packages/seis-ai/test/mcp-smoke.test.mjs",
-  desktop: "apps/web/desktop.js",
   localHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs",
+  benchmarkDryRunScript: "scripts/create-seis-20b-benchmark-dry-run.mjs",
   packageJson: "package.json"
 };
 
@@ -36,6 +41,11 @@ const profile = readJson(paths.profile, "model scaling profile");
 const modelCardTemplate = readJson(paths.modelCardTemplate, "20B model card template");
 const datasetCardTemplate = readJson(paths.datasetCardTemplate, "20B dataset card template");
 const benchmarkManifestTemplate = readJson(paths.benchmarkManifest, "20B benchmark manifest template");
+const benchmarkDryRun = readJson(paths.benchmarkDryRun, "20B benchmark dry-run report");
+const parameterLadder = readJson(paths.parameterLadder, "model parameter ladder");
+const frontierEscalationPolicy = readJson(paths.frontierEscalationPolicy, "frontier escalation policy");
+const frontierModelProgram = readJson(paths.frontierModelProgram, "150B frontier model program");
+const apexModelProgram = readJson(paths.apexModelProgram, "512B apex model program");
 const scalingDoc = readText(paths.scalingDoc, "model scaling docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
 const modelRouterDoc = readText(paths.modelRouterDoc, "model router docs");
@@ -47,8 +57,8 @@ const helper = readText(paths.helper, "AI Core helper");
 const tools = readText(paths.tools, "agent tools");
 const mcpServer = readText(paths.mcpServer, "MCP server");
 const mcpSmokeTest = readText(paths.mcpSmokeTest, "MCP smoke test");
-const desktop = readText(paths.desktop, "SEIS Desktop");
 const localHardwarePreflight = readText(paths.localHardwarePreflight, "local hardware preflight");
+const benchmarkDryRunScript = readText(paths.benchmarkDryRunScript, "20B benchmark dry-run script");
 const packageJson = readJson(paths.packageJson, "package.json");
 
 if (profile) {
@@ -56,14 +66,19 @@ if (profile) {
   ensure(profile.status === "planned-compatibility-contract", "profile must stay planned-compatibility-contract");
   ensure(profile.qualityGate === "npm run check:seis-model-scaling-hardware-profile", "qualityGate must point to package script");
   ensure(profile.coreCredentialRequirement === "none", "coreCredentialRequirement must stay none");
-  ensure(String(profile.truthBoundary || "").includes("no trained 20B, 70B, or 150B weights"), "truth boundary must forbid trained 20B/70B/150B weight claims");
+  ensure(String(profile.truthBoundary || "").includes("no trained 20B, 70B, 150B, 512B, or AGI weights"), "truth boundary must forbid trained 20B/70B/150B/512B/AGI weight claims");
   ensure(String(profile.truthBoundary || "").includes("no inference"), "truth boundary must forbid inference claims");
   ensure(String(profile.truthBoundary || "").includes("no benchmark"), "truth boundary must forbid benchmark claims");
   ensure(String(profile.truthBoundary || "").includes("no live provider calls"), "truth boundary must forbid live provider calls");
-  ensure(String(profile.truthBoundary || "").includes("does not claim SEIS owns a trained foundation model"), "truth boundary must forbid foundation model ownership claims");
+  ensure(String(profile.truthBoundary || "").includes("does not claim SEIS owns a trained foundation model or a real AGI"), "truth boundary must forbid foundation model and AGI ownership claims");
 
   ensure(profile.sourceOfTruth?.scalingDoc === paths.scalingDoc, "sourceOfTruth.scalingDoc mismatch");
   ensure(profile.sourceOfTruth?.benchmarkManifest === paths.benchmarkManifest, "sourceOfTruth.benchmarkManifest mismatch");
+  ensure(profile.sourceOfTruth?.benchmarkDryRun === paths.benchmarkDryRun, "sourceOfTruth.benchmarkDryRun mismatch");
+  ensure(profile.sourceOfTruth?.parameterLadder === paths.parameterLadder, "sourceOfTruth.parameterLadder mismatch");
+  ensure(profile.sourceOfTruth?.frontierEscalationPolicy === paths.frontierEscalationPolicy, "sourceOfTruth.frontierEscalationPolicy mismatch");
+  ensure(profile.sourceOfTruth?.frontierModelProgram === paths.frontierModelProgram, "sourceOfTruth.frontierModelProgram mismatch");
+  ensure(profile.sourceOfTruth?.apexModelProgram === paths.apexModelProgram, "sourceOfTruth.apexModelProgram mismatch");
   ensure(profile.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "sourceOfTruth.modelCardTemplate mismatch");
   ensure(profile.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "sourceOfTruth.datasetCardTemplate mismatch");
   ensure(profile.sourceOfTruth?.aiCoreDoc === paths.aiCoreDoc, "sourceOfTruth.aiCoreDoc mismatch");
@@ -97,6 +112,20 @@ if (profile) {
   ensure(frontierTarget.runtimeAuthority === false, "150B runtime authority must remain false");
   ensure(frontierTarget.productionReady === false, "150B productionReady must remain false");
   ensure(String(frontierTarget.routerEligibility || "").includes("blocked"), "150B router eligibility must stay blocked");
+
+  const apexTarget = profile.apexTarget || {};
+  ensure(apexTarget.id === "seis-512b-apex-frontier-target", "apexTarget id mismatch");
+  ensure(apexTarget.parameterClass === "512B", "apexTarget must be 512B");
+  ensure(apexTarget.parameterCountBillion === 512, "apexTarget must record 512 billion parameters");
+  ensure(apexTarget.compatibilityStatus === "not-scoped", "512B compatibility must remain not-scoped");
+  ensure(apexTarget.trainingStatus === "not-started", "512B training must remain not-started");
+  ensure(apexTarget.weightsAvailable === false, "512B weights must not be marked available");
+  ensure(apexTarget.inferenceAvailable === false, "512B inference must not be marked available");
+  ensure(apexTarget.benchmarkStatus === "not-run", "512B benchmark must remain not-run");
+  ensure(apexTarget.agiCapabilityStatus === "not-demonstrated", "AGI capability must remain not-demonstrated");
+  ensure(apexTarget.runtimeAuthority === false, "512B runtime authority must remain false");
+  ensure(apexTarget.productionReady === false, "512B productionReady must remain false");
+  ensure(String(apexTarget.routerEligibility || "").includes("blocked"), "512B router eligibility must stay blocked");
 
   const memoryBudget = profile.memoryBudgetContract || {};
   ensure(memoryBudget.id === "seis-20b-16gb-memory-budget-contract", "memoryBudgetContract id mismatch");
@@ -160,11 +189,12 @@ if (profile) {
   ], "benchmarkManifestContract.forbiddenInManifest");
 
   const creationStages = Array.isArray(profile.creationStages) ? profile.creationStages : [];
-  ensure(creationStages.length >= 5, "creationStages must include current, 20B, 70B, 150B, and highest-future stages");
+  ensure(creationStages.length >= 6, "creationStages must include current, 20B, 70B, 150B, 512B, and highest-future stages");
   ensure(creationStages.some((item) => item.stage === "stage-1-20b-local-compatibility" && item.parameterClass === "20B" && item.status === "planned-not-validated"), "creationStages must include planned 20B local compatibility stage");
   ensure(creationStages.some((item) => item.stage === "stage-2-70b-research" && item.parameterClass === "70B" && item.status === "research-roadmap"), "creationStages must include 70B research stage");
   ensure(creationStages.some((item) => item.stage === "stage-3-150b-frontier" && item.parameterClass === "150B" && item.status === "frontier-research-roadmap"), "creationStages must include 150B frontier stage");
-  ensure(creationStages.some((item) => item.stage === "stage-4-highest-available-future" && item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "creationStages must include not-scoped highest future stage");
+  ensure(creationStages.some((item) => item.stage === "stage-4-512b-apex" && item.parameterClass === "512B" && item.status === "apex-program-plan-only"), "creationStages must include 512B apex plan-only stage");
+  ensure(creationStages.some((item) => item.stage === "stage-5-highest-available-future" && item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "creationStages must include not-scoped highest future stage");
 
   const quantizationProfiles = Array.isArray(profile.quantizationProfiles) ? profile.quantizationProfiles : [];
   ensure(quantizationProfiles.length >= 3, "quantizationProfiles must include at least three planned lanes");
@@ -180,6 +210,7 @@ if (profile) {
   ensure(ladder.some((item) => item.parameterClass === "20B" && item.status === "planned-not-validated"), "scale ladder must include planned 20B target");
   ensure(ladder.some((item) => item.parameterClass === "70B" && item.status === "research-roadmap"), "scale ladder must include future 70B roadmap");
   ensure(ladder.some((item) => item.parameterClass === "150B" && item.status === "frontier-research-roadmap"), "scale ladder must include future 150B frontier roadmap");
+  ensure(ladder.some((item) => item.parameterClass === "512B" && item.status === "apex-program-plan-only"), "scale ladder must include 512B apex plan-only target");
   ensure(ladder.some((item) => item.parameterClass === "highest-available-future" && item.status === "not-scoped"), "scale ladder must include unscoped highest future target");
 
   ensureArrayIncludesAll(
@@ -192,6 +223,7 @@ if (profile) {
     "clean-room dataset plan",
     "16GB+ memory ceiling benchmark for 20B target",
     "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
+    "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
     "no-key core startup remains passing",
     "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
   ], "promotionGates");
@@ -200,12 +232,14 @@ if (profile) {
   ensure(profile.routerPolicy?.silentCloudFallbackAllowed === false, "routerPolicy must block silent cloud fallback");
   ensure(profile.routerPolicy?.missingKeyIsError === false, "routerPolicy must not confuse Missing Key with Error");
   ensure(profile.routerPolicy?.actualProviderAndModelMustBeVisible === true, "routerPolicy must keep actual provider/model visible");
-  ensureArrayIncludesAll(profile.routerPolicy?.blockedToday, ["20B live inference", "70B live inference", "150B live inference"], "routerPolicy.blockedToday");
+  ensureArrayIncludesAll(profile.routerPolicy?.blockedToday, ["20B live inference", "70B live inference", "150B live inference", "512B live inference"], "routerPolicy.blockedToday");
 
   ensureArrayIncludesAll(profile.forbiddenClaims, [
     "SEIS has trained a 20B foundation model.",
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has achieved real AGI.",
     "SEIS has downloadable or routeable 150B weights.",
     "Do not mark 16GB+ compatibility as verified before benchmark evidence exists."
   ], "forbiddenClaims");
@@ -277,6 +311,91 @@ if (benchmarkManifestTemplate) {
     "SEIS has not benchmarked 20B memory usage.",
     "SEIS has not verified 16GB+ compatibility."
   ], "benchmarkManifest.nonClaims");
+}
+
+if (benchmarkDryRun) {
+  ensure(benchmarkDryRun.id === "seis-20b-benchmark-dry-run", "benchmark dry-run id mismatch");
+  ensure(benchmarkDryRun.status === "dry-run-not-measured", "benchmark dry-run must stay dry-run-not-measured");
+  ensure(benchmarkDryRun.targetId === "seis-20b-local-compatibility-target", "benchmark dry-run targetId mismatch");
+  ensure(benchmarkDryRun.parameterClass === "20B", "benchmark dry-run parameterClass must be 20B");
+  ensure(benchmarkDryRun.targetRamClass === "16GB+ RAM", "benchmark dry-run target RAM class mismatch");
+  ensure(benchmarkDryRun.outputPath === paths.benchmarkDryRun, "benchmark dry-run outputPath mismatch");
+  ensure(benchmarkDryRun.generatedBy === paths.benchmarkDryRunScript, "benchmark dry-run generatedBy mismatch");
+  ensure(String(benchmarkDryRun.truthBoundary || "").includes("does not download a model"), "benchmark dry-run must forbid model downloads");
+  ensure(String(benchmarkDryRun.truthBoundary || "").includes("benchmark memory"), "benchmark dry-run must not claim memory benchmark execution");
+  ensure(benchmarkDryRun.sourceOfTruth?.modelScalingProfile === paths.profile, "benchmark dry-run source profile mismatch");
+  ensure(benchmarkDryRun.sourceOfTruth?.benchmarkManifestTemplate === paths.benchmarkManifest, "benchmark dry-run source benchmark template mismatch");
+  ensure(benchmarkDryRun.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "benchmark dry-run source model card mismatch");
+  ensure(benchmarkDryRun.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "benchmark dry-run source dataset card mismatch");
+  ensure(benchmarkDryRun.sourceOfTruth?.hostHardwarePreflight === paths.localHardwarePreflight, "benchmark dry-run source host preflight mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.profileStatus === "planned-compatibility-contract", "benchmark dry-run profile status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.targetCompatibilityStatus === "planned-not-validated", "benchmark dry-run target compatibility status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.targetTrainingStatus === "not-started", "benchmark dry-run target training status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.benchmarkManifestStatus === "template-not-measured", "benchmark dry-run manifest status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.benchmarkCompatibilityClaim === "not-verified", "benchmark dry-run compatibility claim mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.modelCardStatus === "template-not-filled", "benchmark dry-run model card status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.datasetCardStatus === "template-not-filled", "benchmark dry-run dataset card status mismatch");
+  ensure(benchmarkDryRun.sourceStatuses?.memoryBudgetStatus === "planning-estimate-not-benchmark-evidence", "benchmark dry-run memory budget status mismatch");
+  for (const [key, value] of Object.entries(benchmarkDryRun.dryRunResult || {})) {
+    ensure(value === false, `benchmark dry-run ${key} must remain false`);
+  }
+  ensure(Array.isArray(benchmarkDryRun.readinessGates) && benchmarkDryRun.readinessGates.length >= 5, "benchmark dry-run must include readiness gates");
+  ensure(benchmarkDryRun.readinessGates.some((gate) => gate.id === "host-preflight" && gate.status === "available-not-sufficient"), "benchmark dry-run must keep host preflight insufficient");
+  ensure(benchmarkDryRun.readinessGates.some((gate) => gate.id === "measured-memory-benchmark" && gate.status === "blocked"), "benchmark dry-run must block measured benchmark");
+  ensureArrayIncludesAll(benchmarkDryRun.requiredBeforeRealBenchmark, [
+    "explicit human approval for model artifact selection",
+    "completed 20B model card",
+    "completed 20B dataset card or benchmark-data card",
+    "measurement command that cannot upload prompts, files, logs, or repo data to providers"
+  ], "benchmarkDryRun.requiredBeforeRealBenchmark");
+  ensureArrayIncludesAll(benchmarkDryRun.forbiddenClaims, [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has run 20B inference.",
+    "SEIS has benchmarked 20B memory usage.",
+    "SEIS has verified 16GB+ compatibility."
+  ], "benchmarkDryRun.forbiddenClaims");
+}
+
+if (parameterLadder) {
+  ensure(parameterLadder.id === "seis-model-parameter-ladder", "parameter ladder id mismatch");
+  ensure(parameterLadder.status === "planning-contract-not-runtime", "parameter ladder must stay planning-contract-not-runtime");
+  ensure(parameterLadder.resourceUri === "seis://ai/model-parameter-ladder.json", "parameter ladder resource URI mismatch");
+  ensure(parameterLadder.routeEligibleToday === false, "parameter ladder must not be route eligible today");
+  ensure(String(parameterLadder.truthBoundary || "").includes("creates no trained model"), "parameter ladder must forbid trained model claims");
+  ensureArrayIncludesAll(
+    (parameterLadder.targets || []).map((target) => target.parameterClass),
+    ["20B", "70B", "150B", "300B+", "512B", "highest-available-future"],
+    "parameterLadder.targets.parameterClass"
+  );
+  ensure((parameterLadder.targets || []).every((target) => target.routeEligibleToday === false), "parameter ladder targets must not be route eligible");
+  ensure((parameterLadder.targets || []).every((target) => target.runtimeAuthority === false), "parameter ladder targets must not grant runtime authority");
+  ensure((parameterLadder.targets || []).every((target) => target.trainingStatus === "not-started"), "parameter ladder targets must keep training not-started");
+  ensureArrayIncludesAll(parameterLadder.promotionOrder, ["20B", "70B", "150B", "300B+", "512B", "highest-available-future"], "parameterLadder.promotionOrder");
+}
+
+if (frontierEscalationPolicy) {
+  ensure(frontierEscalationPolicy.id === "seis-model-frontier-escalation-policy", "frontier escalation policy id mismatch");
+  ensure(frontierEscalationPolicy.status === "policy-active-research-gated", "frontier escalation policy status mismatch");
+  ensure(frontierEscalationPolicy.resourceUri === "seis://ai/model-frontier-escalation-policy.json", "frontier escalation policy resourceUri mismatch");
+  ensure(frontierEscalationPolicy.qualityGate === "npm run check:seis-model-frontier-escalation-policy", "frontier escalation policy qualityGate mismatch");
+  ensure(frontierEscalationPolicy.routeEligibleToday === false, "frontier escalation policy must not grant route eligibility today");
+  ensure((frontierEscalationPolicy.escalationStages || []).some((stage) => stage.id === "stage-3-150b-frontier" && stage.status === "frontier-research-roadmap"), "frontier escalation policy must include the 150B frontier stage");
+  ensure((frontierEscalationPolicy.decisionRules || []).some((rule) => rule.id === "no-skip-20b" && rule.enforcedStatus === "blocked"), "frontier escalation policy must enforce no-skip-20b");
+}
+
+if (frontierModelProgram) {
+  ensure(frontierModelProgram.id === "seis-150b-frontier-model-program", "150B frontier model program id mismatch");
+  ensure(frontierModelProgram.status === "frontier-program-plan-only", "150B frontier model program must remain plan-only");
+  ensure(frontierModelProgram.resourceUri === "seis://ai/150b-frontier-model-program.json", "150B frontier model program resourceUri mismatch");
+  ensure(frontierModelProgram.qualityGate === "npm run check:seis-150b-frontier-model-program", "150B frontier model program qualityGate mismatch");
+  ensure(frontierModelProgram.routeEligibleToday === false, "150B frontier model program must not be route eligible");
+  ensure(frontierModelProgram.runtimeAuthority === false, "150B frontier model program must not grant runtime authority");
+  ensure(frontierModelProgram.trainingStatus === "not-started", "150B frontier model program training must stay not-started");
+  ensure(frontierModelProgram.weightsAvailable === false, "150B frontier model program must not claim weights");
+  ensure(frontierModelProgram.inferenceAvailable === false, "150B frontier model program must not claim inference");
+  ensure(frontierModelProgram.benchmarkStatus === "not-run", "150B frontier model program benchmark must stay not-run");
+  ensure(frontierModelProgram.productionReady === false, "150B frontier model program must not be production ready");
+  ensure((frontierModelProgram.programStages || []).length === 6, "150B frontier model program must expose six stages");
 }
 
 if (modelCardTemplate) {
@@ -385,8 +504,20 @@ if (modelPromotionPolicy) {
 
 if (pluginIntegration) {
   ensure(pluginIntegration.runtimeIntegration?.modelScalingTool === "seis_ai_core_model_scaling_status", "plugin integration must expose model scaling tool");
-  ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, ["seis://ai/model-scaling-hardware-profile.json"], "pluginIntegration.runtimeIntegration.mcpResources");
-  ensureArrayIncludesAll(pluginIntegration.qualityCommands, ["npm run check:seis-model-scaling-hardware-profile"], "pluginIntegration.qualityCommands");
+  ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, [
+    "seis://ai/model-scaling-hardware-profile.json",
+    "seis://ai/model-parameter-ladder.json",
+    "seis://ai/model-frontier-escalation-policy.json",
+    "seis://ai/150b-frontier-model-program.json",
+    "seis://ai/20b-model-card-template.json",
+    "seis://ai/20b-dataset-card-template.json"
+  ], "pluginIntegration.runtimeIntegration.mcpResources");
+  ensureArrayIncludesAll(pluginIntegration.qualityCommands, [
+    "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-model-frontier-escalation-policy",
+    "npm run check:seis-150b-frontier-model-program",
+    "npm run check:seis-model-parameter-ladder"
+  ], "pluginIntegration.qualityCommands");
 }
 
 for (const [text, label] of [
@@ -410,6 +541,9 @@ for (const token of [
   "memory budget contract",
   "16GB+ Compatibility Profiles",
   "Benchmark Manifest Contract",
+  "20B Benchmark Dry-Run",
+  "Frontier Escalation Policy",
+  "150B Frontier Model Program",
   "Command Center 20B Local Preflight",
   "Host Hardware Preflight",
   "20B Model And Dataset Card Templates",
@@ -427,6 +561,18 @@ ensure(scalingDoc.includes("/home/seis/Documents/seis-20b-local-preflight.md"), 
 ensure(scalingDoc.includes("It is not benchmark evidence"), "model scaling docs must keep Command Center preflight separate from benchmark evidence");
 ensure(scalingDoc.includes("npm run inspect:seis-model-local-hardware"), "model scaling docs must describe the host hardware preflight command");
 ensure(scalingDoc.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "model scaling docs must describe the ignored host hardware preflight output");
+ensure(scalingDoc.includes("reports/seis-model-scaling/20b-benchmark-dry-run.json"), "model scaling docs must describe the 20B benchmark dry-run report path");
+ensure(scalingDoc.includes("content/development/seis-model-parameter-ladder.json"), "model scaling docs must describe the model parameter ladder path");
+ensure(scalingDoc.includes("seis://ai/model-parameter-ladder.json"), "model scaling docs must describe the model parameter ladder MCP resource");
+ensure(scalingDoc.includes("content/development/seis-model-frontier-escalation-policy.json"), "model scaling docs must describe the frontier escalation policy path");
+ensure(scalingDoc.includes("seis://ai/model-frontier-escalation-policy.json"), "model scaling docs must describe the frontier escalation policy MCP resource URI");
+ensure(scalingDoc.includes("npm run check:seis-model-frontier-escalation-policy"), "model scaling docs must describe the frontier escalation policy check command");
+ensure(scalingDoc.includes("content/development/seis-150b-frontier-model-program.json"), "model scaling docs must describe the 150B frontier model program path");
+ensure(scalingDoc.includes("seis://ai/150b-frontier-model-program.json"), "model scaling docs must describe the 150B frontier model program MCP resource URI");
+ensure(scalingDoc.includes("npm run check:seis-150b-frontier-model-program"), "model scaling docs must describe the 150B frontier model program check command");
+ensure(scalingDoc.includes("no-skip-20b"), "model scaling docs must describe the no-skip-20b escalation rule");
+ensure(scalingDoc.includes("npm run automation:seis-20b-benchmark-dry-run"), "model scaling docs must describe the 20B benchmark dry-run automation command");
+ensure(scalingDoc.includes("npm run check:seis-20b-benchmark-dry-run"), "model scaling docs must describe the 20B benchmark dry-run check command");
 ensure(scalingDoc.includes("content/development/seis-20b-model-card-template.json"), "model scaling docs must describe the 20B model card template path");
 ensure(scalingDoc.includes("content/development/seis-20b-dataset-card-template.json"), "model scaling docs must describe the 20B dataset card template path");
 ensure(scalingDoc.includes("template-not-filled"), "model scaling docs must describe template-not-filled evidence card status");
@@ -442,6 +588,8 @@ for (const [text, label] of [
 
 for (const token of [
   "memoryBudgetContract",
+  "frontierEscalationPolicy",
+  "frontierModelProgram",
   "compatibilityProfiles",
   "benchmarkManifestContract",
   "creationStages",
@@ -457,14 +605,10 @@ ensure(tools.includes("benchmark manifest contract"), "agent tools must describe
 ensure(tools.includes("quantization lanes"), "agent tools must describe quantization lanes");
 ensure(tools.includes("local runtime candidates"), "agent tools must describe local runtime candidates");
 ensure(tools.includes("150B frontier research lane"), "agent tools must describe the 150B frontier research lane");
-ensure(desktop.includes("export-model-preflight"), "desktop Command Center must expose the 20B local preflight action");
-ensure(desktop.includes("seis-20b-local-preflight.md"), "desktop Command Center must expose the 20B local preflight report path");
-ensure(desktop.includes("dry-run-only"), "desktop Command Center must keep the preflight dry-run only");
-ensure(desktop.includes("npm run inspect:seis-model-local-hardware"), "desktop Command Center must expose the host RAM preflight command");
-ensure(desktop.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "desktop Command Center must expose the ignored host RAM preflight output path");
 ensure(mcpServer.includes("AI_CORE_MODEL_SCALING_STATUS_TOOL"), "MCP server must expose AI_CORE_MODEL_SCALING_STATUS_TOOL");
 ensure(mcpServer.includes("aiCoreModelScalingStatus"), "MCP server must reference aiCoreModelScalingStatus");
 ensure(mcpServer.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose model scaling profile resource");
+ensure(mcpServer.includes("seis://ai/150b-frontier-model-program.json"), "MCP server must expose the 150B frontier model program resource");
 ensure(mcpServer.includes("compatibility profiles"), "MCP server must describe compatibility profiles");
 ensure(mcpServer.includes("benchmark manifest contract"), "MCP server must describe the benchmark manifest contract");
 ensure(mcpServer.includes("memory budget contract"), "MCP server must describe the memory budget contract");
@@ -472,6 +616,7 @@ ensure(mcpServer.includes("quantization lanes"), "MCP server must describe quant
 ensure(mcpServer.includes("local runtime candidates"), "MCP server must describe local runtime candidates");
 ensure(mcpServer.includes("150B frontier research lane"), "MCP server must describe the 150B frontier research lane");
 ensure(mcpSmokeTest.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP smoke test must read model scaling profile resource");
+ensure(mcpSmokeTest.includes("seis://ai/150b-frontier-model-program.json"), "MCP smoke test must read 150B frontier model program resource");
 ensure(mcpSmokeTest.includes("seis_ai_core_model_scaling_status"), "MCP smoke test must call model scaling status tool");
 
 for (const token of [
@@ -486,14 +631,40 @@ for (const token of [
   ensure(localHardwarePreflight.includes(token), `local hardware preflight missing ${token}`);
 }
 
+for (const token of [
+  "seis-20b-benchmark-dry-run",
+  "dry-run-not-measured",
+  "does not download a model",
+  "canRequestRealBenchmarkToday: false",
+  "routeEligibleToday: false",
+  "modelDownloadAuthorized: false",
+  "datasetDownloadAuthorized: false",
+  "trainingAuthorized: false",
+  "SEIS has verified 16GB+ compatibility."
+]) {
+  ensure(benchmarkDryRunScript.includes(token), `20B benchmark dry-run script missing ${token}`);
+}
+
 if (packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-model-scaling-hardware-profile"] === "node scripts/check-seis-model-scaling-hardware-profile.mjs",
     "package.json must expose check:seis-model-scaling-hardware-profile"
   );
   ensure(
+    packageJson.scripts?.["check:seis-model-parameter-ladder"] === "node scripts/check-seis-model-parameter-ladder.mjs",
+    "package.json must expose check:seis-model-parameter-ladder"
+  );
+  ensure(
     packageJson.scripts?.["check:seis-model-local-hardware-preflight"] === "node scripts/inspect-seis-model-local-hardware.mjs --check",
     "package.json must expose check:seis-model-local-hardware-preflight"
+  );
+  ensure(
+    packageJson.scripts?.["automation:seis-20b-benchmark-dry-run"] === "node scripts/create-seis-20b-benchmark-dry-run.mjs --write",
+    "package.json must expose automation:seis-20b-benchmark-dry-run"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-20b-benchmark-dry-run"] === "node scripts/create-seis-20b-benchmark-dry-run.mjs --check",
+    "package.json must expose check:seis-20b-benchmark-dry-run"
   );
   ensure(
     packageJson.scripts?.["inspect:seis-model-local-hardware"] === "node scripts/inspect-seis-model-local-hardware.mjs",
@@ -508,6 +679,7 @@ if (packageJson) {
 for (const [relativePath, label] of [
   [paths.profile, "model scaling profile"],
   [paths.scalingDoc, "model scaling docs"],
+  [paths.benchmarkDryRun, "20B benchmark dry-run report"],
   [paths.aiCoreDoc, "AI Core docs"],
   [paths.modelRouterDoc, "model router docs"]
 ]) {

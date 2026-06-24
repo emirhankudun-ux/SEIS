@@ -72,23 +72,84 @@ not yet public or release ready because committed visual-regression baselines,
 production-grade storage/cloud-sync policy, browser-restart persistence, and
 per-card artwork provenance review are still missing.
 
+### 2026-06-24 Combined Design Follow-up
+
+The Desktop OS design pass now uses the imported SEIS_WOW page packs and the
+user-supplied Kimi LinuxOS / VS Code Web references as visual direction for an
+original SEIS interface. The implemented slice updates System OS, V17 Command
+Center, and WOW Gallery with a shared dark shell, bright command cards, source
+reference previews, Local Demo/status panels, and explicit reference-only
+copy. Local screenshot evidence was generated under
+`dist/qa/combined-wow-design/`; those screenshots are review evidence, not
+committed visual-regression baselines.
+
+### 2026-06-24 Demo Studio Follow-up
+
+SEIS Desktop now includes a browser-local SEIS Demo Studio app with guided
+Executive, Builder, AI Core/Agent, and Cloud/Security journeys. The app opens
+real connected desktop surfaces, tracks journey steps, exposes a readiness
+checklist, and writes `/home/seis/Documents/seis-demo-studio-evidence.md`
+inside the browser-local VFS. Files also gained search, grid/list switching,
+preview, recents, and a manual SEIS Code workspace sync control. The latest
+Desktop Chrome smoke observed 81 app surfaces, 61 primary workflow surfaces,
+61 executed primary workflows, 9 generated local workflow artifacts, 100%
+clickable-response coverage, and zero cramped mobile targets. The standalone
+SEIS Linux Replica route is now repeatable through
+`npm run check:seis-linux-replica-browser-smoke`; it completes boot/login,
+terminal `neofetch`, 64 launcher tiles, Files/Terminal/Calculator/Settings
+window smoke, local-only boundary checks, and screenshot evidence. This remains
+Local Demo/browser-local evidence only; it is not live provider routing, SSH,
+deployment, push, merge, production storage, or host filesystem access.
+
+### 2026-06-24 Second Brain Follow-up
+
+SEIS Desktop now includes a browser-local SEIS Second Brain app and SEIS AI
+Second Brain tab. The foundation maps all 6 current installed AI profiles, all
+6 current managed sub-agent lanes, a 12-agent target roster, Obsidian-style
+Markdown vault notes, graph/backlinks, capture/link/review actions, and a
+human-review-required GitHub readiness export. The implementation is backed by
+`content/development/seis-second-brain-system.json`,
+`docs/product/seis-second-brain.md`, and `npm run check:seis-second-brain`.
+It does not import private Obsidian vaults, install Obsidian plugins, call live
+providers, execute SSH, deploy, push, merge, publish Pages, or claim public
+GitHub readiness.
+
 ## AI Core Review
 
-SEIS AI Core remains documented, not implemented. This pass documents
-provider-neutral boundaries, no-key startup, provider status states, and the
-rule that provider routing or prompt engineering is not model ownership. A
+SEIS AI Core remains Local Demo and evidence-gated rather than a live provider
+runtime or trained SEIS model. This pass documents provider-neutral boundaries,
+no-key startup, provider status states, and the rule that provider routing or
+prompt engineering is not model ownership. A
 redacted static provider and credential audit now exists at
 `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`. Dedicated foundation
 contracts now exist for `docs/ai/model-router.md`,
 `docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md`. The planned 20B /
-16GB+ RAM SEIS model target plus future 70B and 150B frontier ladder are now tracked as a
-validator-backed hardware compatibility profile at
+16GB+ RAM SEIS model target plus future 70B, 150B, 300B+, and highest-future
+parameter ladder are now tracked as validator-backed planning contracts at
 `content/development/seis-model-scaling-hardware-profile.json` and
+`content/development/seis-model-parameter-ladder.json`, plus
 `docs/ai/seis-model-scaling.md`; this is not trained-weight, inference,
 download, or benchmark evidence. The profile now also carries the 20B / 16GB+
-memory-budget contract, quantization planning lanes, and candidate-only no-key
-local runtimes so future compatibility work can be measured before it is
-claimed.
+memory-budget contract, `template-not-filled` model/dataset card templates at
+`content/development/seis-20b-model-card-template.json` and
+`content/development/seis-20b-dataset-card-template.json`,
+`dry-run-not-measured` benchmark-preparation evidence at
+`reports/seis-model-scaling/20b-benchmark-dry-run.json`, the no-skip-20B
+frontier escalation policy at
+`content/development/seis-model-frontier-escalation-policy.json`, the
+`frontier-program-plan-only` 150B Frontier Model Program at
+`content/development/seis-150b-frontier-model-program.json`, the read-only
+MCP resources `seis://ai/model-parameter-ladder.json` and
+`seis://ai/150b-frontier-model-program.json`, the
+`apex-program-plan-only` 512B Apex Model Program at
+`content/development/seis-512b-apex-model-program.json`, the read-only
+MCP resource `seis://ai/512b-apex-model-program.json`, quantization planning
+lanes, and candidate-only no-key local runtimes so future compatibility work can
+be measured before it is claimed. SEIS AI Core exposes those evidence templates
+through local MCP resources `seis://ai/20b-model-card-template.json` and
+`seis://ai/20b-dataset-card-template.json`; those resources do not authorize
+model downloads, dataset downloads, training, fine-tuning, benchmarks, route
+eligibility, SSH, deployment, or publication.
 
 ## Integration Review
 
@@ -177,6 +238,21 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Added repeatable redacted AI provider and credential audit command.
 - Generated audit Markdown and JSON reports.
 - Added AI Core model-router, prompt-engine, and agent-runtime foundation contracts.
+- Added 20B benchmark dry-run report and validator gate without model download,
+  inference, training, provider call, SSH, deployment, or benchmark claims.
+- Added no-skip-20B frontier escalation policy so 70B, 150B, and highest-future
+  lanes remain blocked until earlier evidence gates exist.
+- Added `content/development/seis-150b-frontier-model-program.json` and
+  `seis://ai/150b-frontier-model-program.json` as a
+  `frontier-program-plan-only` 150B program gate validated by
+  `npm run check:seis-150b-frontier-model-program`.
+- Added SEIS Second Brain foundation for installed AI profiles, managed
+  sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault
+  notes, graph/backlinks, and GitHub readiness gates.
+- Added `content/development/seis-model-scaling-subagent-council.json` so the
+  Architect, Code, Design, UI/UX, Research, Search, Security, DevOps,
+  Documentation, QA, Cloud, and Automation agents have plan-only duties for
+  20B evidence preparation and 70B/150B non-claim gates.
 - Added SEIS model scaling hardware profile for the planned 20B / 16GB+ target
   and future 70B / 150B frontier ladder, with memory-budget, quantization-lane,
   local runtime candidate, distributed-runtime evidence gates, and no
@@ -220,7 +296,9 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Legacy UIXAppTTR-era agent/archive material classification.
 - Live provider calls.
 - SSH and deployment.
-- Full SEIS Desktop implementation and the remaining 60+ app operating system target.
+- Deeper per-app workflows beyond the 81 browser-local Desktop surfaces,
+  especially restart persistence, keyboard navigation, and visual-regression
+  baselines.
 - Mythic Gacha full browser-restart persistence QA, production-grade VFS
   conflict/permission policy, and full artwork provenance review.
 - E2E hardening and committed visual-regression baselines for SEIS Code,
@@ -249,8 +327,8 @@ See `docs/STATUS.md` for the final validation table after this pass.
 5. SEIS integration spine PR.
 6. Typed server-only environment validation and AI provider registry contract.
 7. SEIS model scaling hardware profile hardening, measured memory benchmarks
-   against the memory-budget contract, and clean-room model/dataset card
-   preparation.
+   against the memory-budget contract, plan-only sub-agent council evidence,
+   and clean-room model/dataset card completion.
 8. GitHub templates/CODEOWNERS and public exposure checklist.
 9. Accessibility keyboard-navigation QA.
 10. Plugin interface validation and browser QA.
@@ -267,7 +345,8 @@ See `docs/STATUS.md` for the final validation table after this pass.
 - Deployment, release, tag, SSH, repository setting changes, secret rotation,
   public visibility change, model training, benchmark, or dataset download.
 - Model download, fine-tuning, GPU/cloud provisioning, checkpoint publication,
-  or any claim that a 20B/70B/150B SEIS foundation model is trained or routeable.
+  or any claim that a 20B/70B/150B/512B SEIS foundation model is trained,
+  routeable, benchmarked, or AGI.
 
 ## Final Decision
 

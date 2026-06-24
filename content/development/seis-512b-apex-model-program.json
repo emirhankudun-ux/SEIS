@@ -1,0 +1,166 @@
+{
+  "id": "seis-512b-apex-model-program",
+  "version": "2026.06.24",
+  "status": "apex-program-plan-only",
+  "resourceUri": "seis://ai/512b-apex-model-program.json",
+  "qualityGate": "npm run check:seis-512b-apex-model-program",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "benchmarkStatus": "not-run",
+  "productionReady": false,
+  "truthBoundary": "This source-of-truth record is a plan-only 512B apex AI program. It does not download models or datasets, train, fine-tune, run inference, benchmark memory, publish checkpoints, call providers, provision GPU/cloud capacity, execute SSH, deploy infrastructure, or claim SEIS owns a trained 512B foundation model.",
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "modelRouterDoc": "docs/ai/model-router.md"
+  },
+  "target": {
+    "id": "seis-512b-apex-frontier-target",
+    "displayName": "SEIS AI 512B Apex Program",
+    "parameterClass": "512B",
+    "parameterCountBillion": 512,
+    "horizon": "apex-frontier",
+    "hardwareClass": "approved frontier-scale distributed research cluster after review",
+    "allowedToday": "Local Demo status, planning, evidence mapping, and validator-backed documentation only",
+    "minimumPrerequisite": "20B, 70B, 150B, and 300B+ evidence accepted before any 512B runtime or training scope"
+  },
+  "programStages": [
+    {
+      "id": "stage-0-apex-charter",
+      "label": "512B apex charter",
+      "status": "planned",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-1-installed-ai-council",
+      "label": "Installed AI and sub-agent council alignment",
+      "status": "plan-only",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-2-clean-room-frontier-data",
+      "label": "Clean-room frontier data strategy",
+      "status": "blocked-until-provenance-plan",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-3-apex-architecture-selection",
+      "label": "Apex architecture selection",
+      "status": "not-selected",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-4-frontier-cluster-plan",
+      "label": "Frontier cluster, budget, and observability plan",
+      "status": "approval-needed",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-5-training-readiness",
+      "label": "512B training readiness",
+      "status": "not-authorized",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "stage-6-evaluation-safety-and-release",
+      "label": "Evaluation, safety, red-team, and release governance",
+      "status": "not-run",
+      "routeEligibleToday": false
+    }
+  ],
+  "architecturePlan": {
+    "status": "not-selected",
+    "candidateFamilies": [
+      "dense-transformer",
+      "mixture-of-experts",
+      "hybrid-retrieval-augmented",
+      "modular-agentic-router",
+      "future-approved-frontier-architecture"
+    ],
+    "selectionBlockedUntil": [
+      "150B evidence accepted",
+      "300B+ feasibility proof accepted",
+      "clean-room data and contamination-control plan accepted",
+      "frontier cluster and budget plan accepted",
+      "independent safety review accepted"
+    ]
+  },
+  "agentCouncil": {
+    "status": "all-installed-ai-plan-only",
+    "source": "content/development/seis-model-scaling-subagent-council.json",
+    "leadAgents": [
+      "architect-agent",
+      "code-agent",
+      "design-agent",
+      "ui-ux-agent",
+      "research-agent",
+      "search-agent",
+      "security-agent",
+      "devops-agent",
+      "documentation-agent",
+      "qa-agent",
+      "cloud-agent",
+      "automation-agent"
+    ],
+    "rule": "All installed AI and sub-agent roles may plan, review, document, validate, and gate the 512B program, but none may train, download, benchmark, deploy, provision cloud/GPU, execute SSH, access credentials, or approve its own runtime promotion."
+  },
+  "promotionGates": [
+    "20B evidence accepted",
+    "70B evidence accepted",
+    "150B evidence accepted",
+    "300B+ feasibility accepted",
+    "clean-room 512B training plan accepted",
+    "frontier-scale distributed runtime budget accepted",
+    "dataset provenance and contamination-control plan accepted",
+    "privacy and data rights review accepted",
+    "safety evaluation and red-team plan accepted",
+    "observability, kill-switch, rollback, and cost-stop plan accepted",
+    "all installed AI and sub-agent council review recorded",
+    "explicit human approval recorded"
+  ],
+  "fallbackPolicy": {
+    "fallbackRuntime": "seis-local-demo",
+    "silentCloudFallbackAllowed": false,
+    "missingKeyIsError": false,
+    "providerAndModelMustBeVisible": true,
+    "localOnlyModeMustBeRespected": true
+  },
+  "forbiddenClaimRules": [
+    "no-trained-512b-weights-claim",
+    "no-routeable-512b-inference-claim",
+    "no-512b-benchmark-claim",
+    "no-provider-wrapper-as-foundation-model-claim",
+    "no-subagent-approval-as-runtime-authority-claim",
+    "no-installed-ai-presence-as-training-evidence-claim"
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "runtime adapter execution",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "checkpoint publication",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "route eligibility change",
+    "public model or dataset release"
+  ],
+  "nextSafeActions": [
+    "Keep SEIS Local Demo as the default AI runtime.",
+    "Use 512B only as a plan-only apex program until lower-tier evidence exists.",
+    "Have every installed AI/sub-agent role review a bounded planning slice through the council.",
+    "Keep 512B blocked in the model router and MCP status payload."
+  ]
+}

@@ -5,6 +5,17 @@ export const PLUGIN_INTEGRATION_PATH = "content/development/seis-agent-plugin-in
 export const MCP_RUNTIME_CONTRACT_PATH = "content/development/seis-ai-core-mcp-runtime-contract.json";
 export const AI_CORE_PROVIDER_REGISTRY_PATH = "content/development/seis-ai-core-provider-registry.json";
 export const AI_CORE_MODEL_SCALING_PROFILE_PATH = "content/development/seis-model-scaling-hardware-profile.json";
+export const AI_CORE_MODEL_PARAMETER_LADDER_PATH = "content/development/seis-model-parameter-ladder.json";
+export const AI_CORE_MODEL_PARAMETER_LADDER_RESOURCE_URI = "seis://ai/model-parameter-ladder.json";
+export const AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH = "content/development/seis-model-frontier-escalation-policy.json";
+export const AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_RESOURCE_URI = "seis://ai/model-frontier-escalation-policy.json";
+export const AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH = "content/development/seis-model-scaling-subagent-council.json";
+export const AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH = "content/development/seis-150b-frontier-model-program.json";
+export const AI_CORE_150B_FRONTIER_MODEL_PROGRAM_RESOURCE_URI = "seis://ai/150b-frontier-model-program.json";
+export const AI_CORE_512B_APEX_MODEL_PROGRAM_PATH = "content/development/seis-512b-apex-model-program.json";
+export const AI_CORE_512B_APEX_MODEL_PROGRAM_RESOURCE_URI = "seis://ai/512b-apex-model-program.json";
+export const AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH = "content/development/seis-20b-model-card-template.json";
+export const AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH = "content/development/seis-20b-dataset-card-template.json";
 export const AI_CORE_VERSION_REGISTRY_PATH = "content/development/seis-ai-core-version-registry.json";
 export const AI_CORE_VERSION_PROMOTION_GATES_PATH = "content/development/seis-ai-core-version-promotion-gates.json";
 export const SUBAGENT_OPERATING_MODEL_PATH = "content/development/seis-ai-core-subagent-operating-model.json";
@@ -154,6 +165,30 @@ export function readAiCoreModelScalingProfile(repoRoot) {
   return JSON.parse(readFileSync(filePath, "utf8"));
 }
 
+export function readAiCoreModelParameterLadder(repoRoot) {
+  const filePath = path.join(repoRoot, ...AI_CORE_MODEL_PARAMETER_LADDER_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS model parameter ladder is missing: ${AI_CORE_MODEL_PARAMETER_LADDER_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readAiCore20BModelCardTemplate(repoRoot) {
+  const filePath = path.join(repoRoot, ...AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS 20B model card template is missing: ${AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
+export function readAiCore20BDatasetCardTemplate(repoRoot) {
+  const filePath = path.join(repoRoot, ...AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH.split("/"));
+  if (!existsSync(filePath)) {
+    throw new Error(`SEIS 20B dataset card template is missing: ${AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH}`);
+  }
+  return JSON.parse(readFileSync(filePath, "utf8"));
+}
+
 export function aiCoreProviderStatus(repoRoot, options = {}) {
   try {
     const registry = readAiCoreProviderRegistry(repoRoot);
@@ -237,6 +272,7 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const profile = readAiCoreModelScalingProfile(repoRoot);
     const target = profile.currentTarget || {};
     const frontierTarget = profile.frontierTarget || {};
+    const apexTarget = profile.apexTarget || {};
     const memoryBudget = profile.memoryBudgetContract || {};
     const scaleLadder = Array.isArray(profile.scaleLadder) ? profile.scaleLadder : [];
     const hardwareTiers = Array.isArray(profile.hardwareTiers) ? profile.hardwareTiers : [];
@@ -244,11 +280,45 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const runtimeCandidates = Array.isArray(profile.localRuntimeCandidates) ? profile.localRuntimeCandidates : [];
     const compatibilityProfiles = Array.isArray(profile.compatibilityProfiles) ? profile.compatibilityProfiles : [];
     const creationStages = Array.isArray(profile.creationStages) ? profile.creationStages : [];
+    const modelCardTemplatePath = profile.sourceOfTruth?.modelCardTemplate || AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH;
+    const datasetCardTemplatePath = profile.sourceOfTruth?.datasetCardTemplate || AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH;
+    const parameterLadderPath = profile.sourceOfTruth?.parameterLadder || AI_CORE_MODEL_PARAMETER_LADDER_PATH;
+    const frontierEscalationPolicyPath = profile.sourceOfTruth?.frontierEscalationPolicy || AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH;
+    const modelScalingSubagentCouncilPath = profile.sourceOfTruth?.modelScalingSubagentCouncil || AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH;
+    const frontierModelProgramPath = profile.sourceOfTruth?.frontierModelProgram || AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH;
+    const apexModelProgramPath = profile.sourceOfTruth?.apexModelProgram || AI_CORE_512B_APEX_MODEL_PROGRAM_PATH;
+    const modelCardTemplate = readJsonIfExists(repoRoot, modelCardTemplatePath) || {};
+    const datasetCardTemplate = readJsonIfExists(repoRoot, datasetCardTemplatePath) || {};
+    const parameterLadder = readJsonIfExists(repoRoot, parameterLadderPath) || {};
+    const frontierEscalationPolicy = readJsonIfExists(repoRoot, frontierEscalationPolicyPath) || {};
+    const modelScalingSubagentCouncil = readJsonIfExists(repoRoot, modelScalingSubagentCouncilPath) || {};
+    const frontierModelProgram = readJsonIfExists(repoRoot, frontierModelProgramPath) || {};
+    const apexModelProgram = readJsonIfExists(repoRoot, apexModelProgramPath) || {};
+    const parameterLadderTargets = Array.isArray(parameterLadder.targets) ? parameterLadder.targets : [];
+    const parameterLadderRamPolicy = Array.isArray(parameterLadder.ramCompatibilityPolicy) ? parameterLadder.ramCompatibilityPolicy : [];
+    const frontierEscalationStages = Array.isArray(frontierEscalationPolicy.escalationStages)
+      ? frontierEscalationPolicy.escalationStages
+      : [];
+    const modelScalingCouncilAgents = Array.isArray(modelScalingSubagentCouncil.agents) ? modelScalingSubagentCouncil.agents : [];
+    const modelScalingCouncilStages = Array.isArray(modelScalingSubagentCouncil.stageAssignments)
+      ? modelScalingSubagentCouncil.stageAssignments
+      : [];
+    const frontierProgramStages = Array.isArray(frontierModelProgram.programStages)
+      ? frontierModelProgram.programStages
+      : [];
+    const apexProgramStages = Array.isArray(apexModelProgram.programStages) ? apexModelProgram.programStages : [];
 
     const payload = {
       ok: true,
       tool: AI_CORE_MODEL_SCALING_STATUS_TOOL,
       profilePath: AI_CORE_MODEL_SCALING_PROFILE_PATH,
+      parameterLadderPath,
+      frontierEscalationPolicyPath,
+      modelScalingSubagentCouncilPath,
+      frontierModelProgramPath,
+      apexModelProgramPath,
+      modelCardTemplatePath,
+      datasetCardTemplatePath,
       id: profile.id,
       version: profile.version,
       status: profile.status,
@@ -291,6 +361,24 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         localDemoFallback: frontierTarget.localDemoFallback,
         notes: frontierTarget.notes || [],
       },
+      apexTarget: {
+        id: apexTarget.id,
+        displayName: apexTarget.displayName,
+        parameterClass: apexTarget.parameterClass,
+        parameterCountBillion: apexTarget.parameterCountBillion,
+        targetHardwareClass: apexTarget.targetHardwareClass,
+        compatibilityStatus: apexTarget.compatibilityStatus,
+        trainingStatus: apexTarget.trainingStatus,
+        weightsAvailable: apexTarget.weightsAvailable === true,
+        inferenceAvailable: apexTarget.inferenceAvailable === true,
+        benchmarkStatus: apexTarget.benchmarkStatus,
+        agiCapabilityStatus: apexTarget.agiCapabilityStatus,
+        runtimeAuthority: apexTarget.runtimeAuthority === true,
+        productionReady: apexTarget.productionReady === true,
+        routerEligibility: apexTarget.routerEligibility,
+        localDemoFallback: apexTarget.localDemoFallback,
+        notes: apexTarget.notes || [],
+      },
       memoryBudgetContract: {
         id: memoryBudget.id,
         status: memoryBudget.status,
@@ -299,6 +387,165 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         compatibilityClaim: memoryBudget.compatibilityClaim,
         requiredMeasurements: memoryBudget.requiredMeasurements || [],
         minimumBenchmarkFields: memoryBudget.minimumBenchmarkFields || [],
+      },
+      parameterLadder: {
+        path: parameterLadderPath,
+        id: parameterLadder.id,
+        status: parameterLadder.status,
+        resourceUri: parameterLadder.resourceUri || AI_CORE_MODEL_PARAMETER_LADDER_RESOURCE_URI,
+        defaultRoute: parameterLadder.defaultRoute,
+        routeEligibleToday: parameterLadder.routeEligibleToday === true,
+        targetCount: parameterLadderTargets.length,
+        promotionOrder: parameterLadder.promotionOrder || [],
+        targets: parameterLadderTargets.map((targetEntry) => ({
+          id: targetEntry.id,
+          displayName: targetEntry.displayName,
+          parameterClass: targetEntry.parameterClass,
+          parameterCountBillion: targetEntry.parameterCountBillion ?? null,
+          horizon: targetEntry.horizon,
+          minimumRamClass: targetEntry.minimumRamClass,
+          status: targetEntry.status,
+          allowedToday: targetEntry.allowedToday,
+          trainingStatus: targetEntry.trainingStatus,
+          weightsAvailable: targetEntry.weightsAvailable === true,
+          inferenceAvailable: targetEntry.inferenceAvailable === true,
+          benchmarkEvidenceAvailable: targetEntry.benchmarkEvidenceAvailable === true,
+          routeEligibleToday: targetEntry.routeEligibleToday === true,
+          runtimeAuthority: targetEntry.runtimeAuthority === true,
+          productionReady: targetEntry.productionReady === true,
+          evidenceRequiredBeforeRoute: targetEntry.evidenceRequiredBeforeRoute || [],
+        })),
+        ramCompatibilityPolicy: parameterLadderRamPolicy.map((policy) => ({
+          ramClass: policy.ramClass,
+          highestTargetToday: policy.highestTargetToday,
+          routeEligibleToday: policy.routeEligibleToday === true,
+          claimStatus: policy.claimStatus,
+          requiredProof: policy.requiredProof,
+        })),
+        forbiddenClaims: parameterLadder.forbiddenClaims || [],
+        humanApprovalRequiredFor: parameterLadder.humanApprovalRequiredFor || [],
+      },
+      frontierEscalationPolicy: {
+        path: frontierEscalationPolicyPath,
+        id: frontierEscalationPolicy.id,
+        status: frontierEscalationPolicy.status,
+        resourceUri: frontierEscalationPolicy.resourceUri || AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_RESOURCE_URI,
+        qualityGate: frontierEscalationPolicy.qualityGate,
+        routeEligibleToday: frontierEscalationPolicy.routeEligibleToday === true,
+        currentAllowedMode: frontierEscalationPolicy.currentAllowedMode,
+        decisionRuleIds: Array.isArray(frontierEscalationPolicy.decisionRules)
+          ? frontierEscalationPolicy.decisionRules.map((rule) => rule.id)
+          : [],
+        escalationStages: frontierEscalationStages.map((stage) => ({
+          id: stage.id,
+          parameterClass: stage.parameterClass,
+          status: stage.status,
+          allowedToday: stage.allowedToday === true,
+          routeEligibleToday: stage.routeEligibleToday === true,
+        })),
+        forbiddenClaims: frontierEscalationPolicy.forbiddenClaims || [],
+        humanApprovalRequiredFor: frontierEscalationPolicy.humanApprovalRequiredFor || [],
+      },
+      modelScalingSubagentCouncil: {
+        path: modelScalingSubagentCouncilPath,
+        id: modelScalingSubagentCouncil.id,
+        status: modelScalingSubagentCouncil.status,
+        qualityGate: modelScalingSubagentCouncil.qualityGate,
+        runtimeBoundary: modelScalingSubagentCouncil.runtimeBoundary,
+        routeEligibleToday: modelScalingSubagentCouncil.routeEligibleToday === true,
+        agentCount: modelScalingCouncilAgents.length,
+        planOnlyAgentCount: modelScalingCouncilAgents.filter((agent) => agent.authority === "plan-only").length,
+        agentIds: modelScalingCouncilAgents.map((agent) => agent.id),
+        stageAssignments: modelScalingCouncilStages.map((stage) => ({
+          stage: stage.stage,
+          status: stage.status,
+          leadAgents: stage.leadAgents || [],
+          routeEligibleToday: stage.routeEligibleToday === true,
+        })),
+        forbiddenClaims: modelScalingSubagentCouncil.forbiddenClaims || [],
+        humanApprovalRequiredFor: modelScalingSubagentCouncil.humanApprovalRequiredFor || [],
+      },
+      frontierModelProgram: {
+        path: frontierModelProgramPath,
+        id: frontierModelProgram.id,
+        status: frontierModelProgram.status,
+        resourceUri: frontierModelProgram.resourceUri || AI_CORE_150B_FRONTIER_MODEL_PROGRAM_RESOURCE_URI,
+        qualityGate: frontierModelProgram.qualityGate,
+        routeEligibleToday: frontierModelProgram.routeEligibleToday === true,
+        runtimeAuthority: frontierModelProgram.runtimeAuthority === true,
+        trainingStatus: frontierModelProgram.trainingStatus,
+        weightsAvailable: frontierModelProgram.weightsAvailable === true,
+        inferenceAvailable: frontierModelProgram.inferenceAvailable === true,
+        benchmarkStatus: frontierModelProgram.benchmarkStatus,
+        productionReady: frontierModelProgram.productionReady === true,
+        parameterClass: frontierModelProgram.target?.parameterClass,
+        parameterCountBillion: frontierModelProgram.target?.parameterCountBillion ?? null,
+        prerequisite: frontierModelProgram.target?.prerequisite || frontierModelProgram.target?.minimumPrerequisite,
+        stageCount: frontierProgramStages.length,
+        programStages: frontierProgramStages.map((stage) => ({
+          id: stage.id,
+          label: stage.label,
+          status: stage.status,
+          routeEligibleToday: stage.routeEligibleToday === true,
+        })),
+        promotionGates: frontierModelProgram.promotionGates || [],
+        humanApprovalRequiredFor: frontierModelProgram.humanApprovalRequiredFor || [],
+      },
+      apexModelProgram: {
+        path: apexModelProgramPath,
+        id: apexModelProgram.id,
+        status: apexModelProgram.status,
+        resourceUri: apexModelProgram.resourceUri || AI_CORE_512B_APEX_MODEL_PROGRAM_RESOURCE_URI,
+        qualityGate: apexModelProgram.qualityGate,
+        routeEligibleToday: apexModelProgram.routeEligibleToday === true,
+        runtimeAuthority: apexModelProgram.runtimeAuthority === true,
+        trainingStatus: apexModelProgram.trainingStatus,
+        weightsAvailable: apexModelProgram.weightsAvailable === true,
+        inferenceAvailable: apexModelProgram.inferenceAvailable === true,
+        benchmarkStatus: apexModelProgram.benchmarkStatus,
+        productionReady: apexModelProgram.productionReady === true,
+        parameterClass: apexModelProgram.target?.parameterClass,
+        parameterCountBillion: apexModelProgram.target?.parameterCountBillion ?? null,
+        prerequisite: apexModelProgram.target?.prerequisite || apexModelProgram.target?.minimumPrerequisite,
+        stageCount: apexProgramStages.length,
+        programStages: apexProgramStages.map((stage) => ({
+          id: stage.id,
+          label: stage.label,
+          status: stage.status,
+          routeEligibleToday: stage.routeEligibleToday === true,
+        })),
+        promotionGates: apexModelProgram.promotionGates || [],
+        forbiddenClaimRules: apexModelProgram.forbiddenClaimRules || [],
+        humanApprovalRequiredFor: apexModelProgram.humanApprovalRequiredFor || [],
+      },
+      evidenceTemplates: {
+        modelCard: {
+          path: modelCardTemplatePath,
+          id: modelCardTemplate.id,
+          status: modelCardTemplate.status,
+          targetId: modelCardTemplate.targetId,
+          parameterClass: modelCardTemplate.parameterClass,
+          routeEligibleToday: modelCardTemplate.routeEligibleToday === true,
+          runtimeAuthority: modelCardTemplate.runtimeAuthority === true,
+          productionReady: modelCardTemplate.productionReady === true,
+          weightsAvailable: modelCardTemplate.weightsAvailable === true,
+          trainingStatus: modelCardTemplate.trainingStatus,
+          benchmarkEvidenceAvailable: modelCardTemplate.benchmarkEvidenceAvailable === true,
+          requiredBeforeFilled: modelCardTemplate.requiredBeforeFilled || [],
+        },
+        datasetCard: {
+          path: datasetCardTemplatePath,
+          id: datasetCardTemplate.id,
+          status: datasetCardTemplate.status,
+          targetId: datasetCardTemplate.targetId,
+          parameterClass: datasetCardTemplate.parameterClass,
+          datasetDownloadAuthorized: datasetCardTemplate.datasetDownloadAuthorized === true,
+          trainingAuthorized: datasetCardTemplate.trainingAuthorized === true,
+          fineTuningAuthorized: datasetCardTemplate.fineTuningAuthorized === true,
+          benchmarkDatasetAuthorized: datasetCardTemplate.benchmarkDatasetAuthorized === true,
+          routeEligibleToday: datasetCardTemplate.routeEligibleToday === true,
+          requiredBeforeFilled: datasetCardTemplate.requiredBeforeFilled || [],
+        },
       },
       quantizationProfiles: quantizationProfiles.map((profileEntry) => ({
         id: profileEntry.id,
@@ -357,6 +604,13 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
 
     if (options.includeFullProfile === true) {
       payload.profile = profile;
+      payload.modelParameterLadder = parameterLadder;
+      payload.modelFrontierEscalationPolicy = frontierEscalationPolicy;
+      payload.modelScalingSubagentCouncil = modelScalingSubagentCouncil;
+      payload.model150bFrontierProgram = frontierModelProgram;
+      payload.model512bApexProgram = apexModelProgram;
+      payload.modelCardTemplate = modelCardTemplate;
+      payload.datasetCardTemplate = datasetCardTemplate;
     }
 
     return payload;

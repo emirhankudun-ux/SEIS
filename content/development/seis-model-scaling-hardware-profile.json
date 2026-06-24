@@ -3,13 +3,19 @@
   "version": "2026.06.24",
   "status": "planned-compatibility-contract",
   "updatedAt": "2026-06-24",
-  "purpose": "Define the safe SEIS model scaling path from a 20B local-compatibility target for 16GB+ RAM machines toward future 70B, 150B, and larger parameter classes without claiming trained weights or live runtime readiness.",
+  "purpose": "Define the safe SEIS model scaling path from a 20B local-compatibility target for 16GB+ RAM machines toward future 70B, 150B, 512B AGI research, and larger parameter classes without claiming trained weights, AGI capability, or live runtime readiness.",
   "qualityGate": "npm run check:seis-model-scaling-hardware-profile",
   "sourceOfTruth": {
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
     "modelRouterDoc": "docs/ai/model-router.md",
     "scalingDoc": "docs/ai/seis-model-scaling.md",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
     "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
     "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
     "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
@@ -17,7 +23,7 @@
     "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
     "modelPromotionPolicy": "packages/seis-ai/models/seis-model-promotion-policy.json"
   },
-  "truthBoundary": "Repository-local model scaling and hardware compatibility profile only. It creates no trained 20B, 70B, or 150B weights, performs no model download, performs no inference, performs no benchmark, performs no live provider calls, performs no cloud fine-tuning, and does not claim SEIS owns a trained foundation model.",
+  "truthBoundary": "Repository-local model scaling and hardware compatibility profile only. It creates no trained 20B, 70B, 150B, 512B, or AGI weights, performs no model download, performs no inference, performs no benchmark, performs no live provider calls, performs no cloud fine-tuning, and does not claim SEIS owns a trained foundation model or a real AGI.",
   "coreCredentialRequirement": "none",
   "defaultMode": "local-demo-until-validated",
   "currentTarget": {
@@ -63,6 +69,28 @@
       "150B is a long-horizon SEIS AI research objective, not a local 16GB+ compatibility promise.",
       "No 150B download, training, fine-tuning, inference, benchmark, publication, deployment, SSH, or cloud provisioning is authorized by this profile.",
       "The 150B lane can become scoped only after the 20B and 70B gates produce real evidence and a separate human-approved frontier research plan exists."
+    ]
+  },
+  "apexTarget": {
+    "id": "seis-512b-apex-frontier-target",
+    "displayName": "SEIS 512B AGI Apex Research Target",
+    "parameterClass": "512B",
+    "parameterCountBillion": 512,
+    "targetHardwareClass": "human-approved frontier-scale distributed research cluster",
+    "compatibilityStatus": "not-scoped",
+    "trainingStatus": "not-started",
+    "weightsAvailable": false,
+    "inferenceAvailable": false,
+    "benchmarkStatus": "not-run",
+    "agiCapabilityStatus": "not-demonstrated",
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "localDemoFallback": "seis-local-demo",
+    "routerEligibility": "blocked-until-20b-70b-150b-and-300b-plus-evidence-clean-room-training-plan-frontier-cluster-budget-safety-eval-and-human-approval",
+    "notes": [
+      "512B is an AGI research objective and apex program boundary, not a claim that SEIS currently has AGI.",
+      "No 512B download, training, fine-tuning, inference, benchmark, checkpoint publication, deployment, SSH, or cloud/GPU provisioning is authorized by this profile.",
+      "All installed AI and sub-agent roles may coordinate review duties only; they cannot create evidence by assertion or approve their own runtime promotion."
     ]
   },
   "memoryBudgetContract": {
@@ -248,11 +276,18 @@
       "evidenceRequiredToPromote": "20B and 70B evidence, distributed runtime budget, clean-room training plan, privacy review, safety eval, observability, rollback, and explicit human approval."
     },
     {
-      "stage": "stage-4-highest-available-future",
+      "stage": "stage-4-512b-apex",
+      "label": "SEIS 512B AGI apex research target",
+      "status": "apex-program-plan-only",
+      "parameterClass": "512B",
+      "evidenceRequiredToPromote": "20B, 70B, 150B, and 300B+ evidence, clean-room frontier training plan, frontier-scale cluster budget, safety red-team plan, AGI capability evaluation plan, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
+    },
+    {
+      "stage": "stage-5-highest-available-future",
       "label": "Highest future parameter class",
       "status": "not-scoped",
       "parameterClass": "highest-available-future",
-      "evidenceRequiredToPromote": "Do not scope until 20B, 70B, and 150B gates have real evidence."
+      "evidenceRequiredToPromote": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
     }
   ],
   "quantizationProfiles": [
@@ -320,6 +355,14 @@
       "promotionGate": "Do not scope runtime until 20B and 70B gates have real evidence, then require clean-room training plan, distributed-runtime budget, safety eval, observability, rollback, privacy, and explicit human approval."
     },
     {
+      "id": "seis-512b-agi-apex-target",
+      "parameterClass": "512B",
+      "horizon": "apex-frontier",
+      "targetHardwareClass": "frontier-scale distributed research cluster after approval",
+      "status": "apex-program-plan-only",
+      "promotionGate": "Do not scope runtime until 20B, 70B, 150B, and 300B+ evidence exists, then require clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
+    },
+    {
       "id": "seis-120b-plus-research-target",
       "parameterClass": "120B+",
       "horizon": "future",
@@ -333,7 +376,7 @@
       "horizon": "long-term",
       "targetHardwareClass": "to be defined from measured hardware and model availability",
       "status": "not-scoped",
-      "promotionGate": "Do not scope until 20B, 70B, and 150B gates have real evidence."
+      "promotionGate": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
     }
   ],
   "hardwareTiers": [
@@ -401,6 +444,7 @@
     "redacted logs and client-bundle secret scan",
     "independent benchmark suite",
     "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
+    "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
     "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
   ],
   "routerPolicy": {
@@ -416,6 +460,7 @@
       "20B live inference",
       "70B live inference",
       "150B live inference",
+      "512B live inference",
       "cloud fine-tuning",
       "public model publication"
     ]
@@ -424,6 +469,8 @@
     "SEIS has trained a 20B foundation model.",
     "SEIS has trained a 70B foundation model.",
     "SEIS has trained a 150B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has achieved real AGI.",
     "SEIS has downloadable or routeable 150B weights.",
     "SEIS owns ChatGPT-level or Claude-level frontier weights.",
     "A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.",

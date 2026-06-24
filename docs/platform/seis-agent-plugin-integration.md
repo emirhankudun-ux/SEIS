@@ -31,6 +31,7 @@ connector claims.
 The MCP resource set includes `seis://agent/plugin-integration.json`,
 `seis://ai/provider-registry.json`,
 `seis://ai/model-scaling-hardware-profile.json`,
+`seis://ai/150b-frontier-model-program.json`,
 `seis://ai/version-registry.json`,
 `seis://ai/version-promotion-gates.json`,
 `seis://ai/subagent-operating-model.json`,
@@ -68,8 +69,10 @@ panels:
   `plan-only` permission boundaries.
 - `MCP Runtime Contract` in Installed AI displays the local stdio JSON-RPC
   contract from `content/development/seis-ai-core-mcp-runtime-contract.json`,
-  34 tools, 20 resources, 3 prompts, the no-dependency fallback transport, and
-  the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling resources, read
+  34 tools, 26 resources, 3 prompts, the no-dependency fallback transport, and
+  the smoke-test gate that proves SEIS AI Core can read plugin/provider/model-scaling
+  resources, including `seis://ai/model-parameter-ladder.json` and
+  `seis://ai/model-frontier-escalation-policy.json`, read
   `seis://ai/mcp-runtime-contract.json`, and execute repo-backed tools without
   external servers.
 
@@ -103,6 +106,18 @@ The model-scaling source is
 compatibility, future 70B roadmap, and 150B frontier research evidence only. It does not create
 weights, run inference, download models, run benchmarks, call providers, train
 models, or grant runtime authority.
+
+The 150B Frontier Model Program source is
+`content/development/seis-150b-frontier-model-program.json`; it exposes
+`seis://ai/150b-frontier-model-program.json` as plan-only frontier governance
+evidence validated by `npm run check:seis-150b-frontier-model-program`. It does
+not authorize routeable 150B inference, model downloads, training, benchmarks,
+cloud/GPU provisioning, SSH, deployment, or provider credentials.
+
+The parameter ladder resource is `seis://ai/model-parameter-ladder.json`.
+It binds the planned 20B, 70B, 150B, 300B+, and highest-future parameter
+classes to source-controlled evidence gates while keeping every non-demo class
+route-ineligible until real evidence and human approval exist.
 
 The version-promotion-gates source is
 `content/development/seis-ai-core-version-promotion-gates.json`; it exposes

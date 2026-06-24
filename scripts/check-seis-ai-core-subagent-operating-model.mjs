@@ -265,6 +265,8 @@ if (pluginIntegration) {
   );
   ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, [
     "seis://ai/version-registry.json",
+    "seis://ai/20b-model-card-template.json",
+    "seis://ai/20b-dataset-card-template.json",
     "seis://ai/subagent-operating-model.json",
     "seis://ai/sub-agent-5-year-plan.json",
     "seis://ai/agent-role-schema.json",

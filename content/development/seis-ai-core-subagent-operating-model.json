@@ -21,7 +21,8 @@
     "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
     "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
     "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
-    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json"
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json"
   },
   "runtimeBoundary": {
     "currentLevel": "status-and-plan-only",
@@ -278,6 +279,7 @@
     "execution ledger fixture",
     "runtime fixture pack",
     "quarterly review ledger",
+    "20B/70B/150B/512B model-scaling sub-agent council",
     "redacted tool-output test",
     "persistent execution ledger",
     "quarterly review cadence",

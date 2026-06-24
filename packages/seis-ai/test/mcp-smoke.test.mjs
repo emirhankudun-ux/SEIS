@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 34 tools, 3 prompts, 20 resources", async () => {
+  it("initializes and lists 34 tools, 3 prompts, 26 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -128,6 +128,10 @@ describe("seis-mcp stdio smoke", () => {
     const resources = responses.get(3).result.resources.map((r) => r.uri).sort();
     assert.deepEqual(resources, [
       "seis://agent/plugin-integration.json",
+      "seis://ai/150b-frontier-model-program.json",
+      "seis://ai/20b-dataset-card-template.json",
+      "seis://ai/20b-model-card-template.json",
+      "seis://ai/512b-apex-model-program.json",
       "seis://ai/agent-permission-matrix.json",
       "seis://ai/agent-role-schema.json",
       "seis://ai/approval-fixture.json",
@@ -135,6 +139,8 @@ describe("seis-mcp stdio smoke", () => {
       "seis://ai/dry-run-task-queue.json",
       "seis://ai/execution-ledger-fixture.json",
       "seis://ai/mcp-runtime-contract.json",
+      "seis://ai/model-frontier-escalation-policy.json",
+      "seis://ai/model-parameter-ladder.json",
       "seis://ai/model-scaling-hardware-profile.json",
       "seis://ai/provider-registry.json",
       "seis://ai/redaction-fixture.json",
@@ -242,7 +248,7 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
     const payload = JSON.parse(resource.result.contents[0].text);
     assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
-    assert.equal(payload.resourceCount, 20);
+    assert.equal(payload.resourceCount, 26);
     assert.equal(payload.transport, "stdio JSON-RPC");
   });
 
@@ -311,6 +317,220 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.frontierTarget.parameterClass, "150B");
     assert.equal(payload.frontierTarget.inferenceAvailable, false);
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "150B"));
+    assert.equal(payload.apexTarget.parameterClass, "512B");
+    assert.equal(payload.apexTarget.inferenceAvailable, false);
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "512B"));
+  });
+
+  it("reads the SEIS AI Core model parameter ladder resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/model-parameter-ladder.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-model-parameter-ladder");
+    assert.equal(payload.status, "planning-contract-not-runtime");
+    assert.equal(payload.routeEligibleToday, false);
+    assert.deepEqual(payload.promotionOrder, ["local-demo", "20B", "70B", "150B", "300B+", "512B", "highest-available-future"]);
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "20B" && entry.minimumRamClass === "16GB+ RAM"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "150B" && entry.status === "frontier-research-roadmap"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "300B+" && entry.status === "not-scoped"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
+    assert.ok(payload.targets.some((entry) => entry.parameterClass === "highest-available-future" && entry.status === "not-scoped"));
+    assert.ok(payload.targets.every((entry) => entry.trainingStatus === "not-started"));
+    assert.ok(payload.targets.every((entry) => entry.routeEligibleToday === false));
+    assert.ok(payload.targets.every((entry) => entry.runtimeAuthority === false));
+  });
+
+  it("reads the SEIS AI Core frontier escalation policy resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/model-frontier-escalation-policy.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-model-frontier-escalation-policy");
+    assert.equal(payload.status, "policy-active-research-gated");
+    assert.equal(payload.resourceUri, "seis://ai/model-frontier-escalation-policy.json");
+    assert.equal(payload.routeEligibleToday, false);
+    assert.ok(payload.decisionRules.some((rule) => rule.id === "no-skip-20b" && rule.enforcedStatus === "blocked"));
+    assert.ok(payload.escalationStages.some((stage) => stage.id === "stage-3-150b-frontier" && stage.routeEligibleToday === false));
+    assert.ok(payload.escalationStages.some((stage) => stage.id === "stage-4-512b-apex" && stage.routeEligibleToday === false));
+    assert.ok(payload.escalationStages.filter((stage) => stage.parameterClass !== "demo-only").every((stage) => stage.allowedToday === false));
+  });
+
+  it("reads the SEIS AI Core 150B frontier model program resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/150b-frontier-model-program.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-150b-frontier-model-program");
+    assert.equal(payload.status, "frontier-program-plan-only");
+    assert.equal(payload.resourceUri, "seis://ai/150b-frontier-model-program.json");
+    assert.equal(payload.target.parameterClass, "150B");
+    assert.equal(payload.target.parameterCountBillion, 150);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.equal(payload.trainingStatus, "not-started");
+    assert.equal(payload.weightsAvailable, false);
+    assert.equal(payload.inferenceAvailable, false);
+    assert.equal(payload.benchmarkStatus, "not-run");
+    assert.equal(payload.productionReady, false);
+    assert.ok(payload.programStages.every((stage) => stage.routeEligibleToday === false));
+  });
+
+  it("reads the SEIS AI Core 512B apex model program resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/512b-apex-model-program.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-512b-apex-model-program");
+    assert.equal(payload.status, "apex-program-plan-only");
+    assert.equal(payload.resourceUri, "seis://ai/512b-apex-model-program.json");
+    assert.equal(payload.target.parameterClass, "512B");
+    assert.equal(payload.target.parameterCountBillion, 512);
+    assert.equal(payload.routeEligibleToday, false);
+    assert.equal(payload.runtimeAuthority, false);
+    assert.equal(payload.trainingStatus, "not-started");
+    assert.equal(payload.weightsAvailable, false);
+    assert.equal(payload.inferenceAvailable, false);
+    assert.equal(payload.benchmarkStatus, "not-run");
+    assert.equal(payload.productionReady, false);
+    assert.equal(payload.programStages.length, 7);
+    assert.equal(payload.agentCouncil.leadAgents.length, 12);
+    assert.ok(payload.forbiddenClaimRules.includes("no-trained-512b-weights-claim"));
+    assert.ok(payload.forbiddenClaimRules.includes("no-installed-ai-presence-as-training-evidence-claim"));
+    assert.ok(payload.programStages.every((stage) => stage.routeEligibleToday === false));
+  });
+
+  it("reads the SEIS AI Core 20B evidence card template resources through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/20b-model-card-template.json",
+        },
+      },
+      {
+        jsonrpc: "2.0",
+        id: 3,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/20b-dataset-card-template.json",
+        },
+      },
+    ]);
+
+    const modelResource = responses.get(2);
+    const datasetResource = responses.get(3);
+    assert.ok(!modelResource.error, `model card resource errored: ${JSON.stringify(modelResource.error)}`);
+    assert.ok(!datasetResource.error, `dataset card resource errored: ${JSON.stringify(datasetResource.error)}`);
+    const modelCard = JSON.parse(modelResource.result.contents[0].text);
+    const datasetCard = JSON.parse(datasetResource.result.contents[0].text);
+    assert.equal(modelCard.id, "seis-20b-model-card-template");
+    assert.equal(modelCard.status, "template-not-filled");
+    assert.equal(modelCard.routeEligibleToday, false);
+    assert.equal(modelCard.weightsAvailable, false);
+    assert.equal(datasetCard.id, "seis-20b-dataset-card-template");
+    assert.equal(datasetCard.status, "template-not-filled");
+    assert.equal(datasetCard.datasetDownloadAuthorized, false);
+    assert.equal(datasetCard.trainingAuthorized, false);
+    assert.equal(datasetCard.routeEligibleToday, false);
   });
 
   it("executes run_all_checks through the protocol", async () => {
@@ -443,12 +663,56 @@ describe("seis-mcp stdio smoke", () => {
     assert.equal(payload.currentTarget.weightsAvailable, false);
     assert.equal(payload.currentTarget.inferenceAvailable, false);
     assert.equal(payload.currentTarget.runtimeAuthority, false);
+    assert.equal(payload.parameterLadderPath, "content/development/seis-model-parameter-ladder.json");
+    assert.equal(payload.parameterLadder.id, "seis-model-parameter-ladder");
+    assert.equal(payload.parameterLadder.resourceUri, "seis://ai/model-parameter-ladder.json");
+    assert.equal(payload.parameterLadder.targetCount, 6);
+    assert.equal(payload.parameterLadder.routeEligibleToday, false);
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "20B" && entry.minimumRamClass === "16GB+ RAM"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "300B+" && entry.status === "not-scoped"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "highest-available-future" && entry.status === "not-scoped"));
+    assert.equal(payload.frontierEscalationPolicyPath, "content/development/seis-model-frontier-escalation-policy.json");
+    assert.equal(payload.frontierEscalationPolicy.id, "seis-model-frontier-escalation-policy");
+    assert.equal(payload.frontierEscalationPolicy.resourceUri, "seis://ai/model-frontier-escalation-policy.json");
+    assert.equal(payload.frontierEscalationPolicy.routeEligibleToday, false);
+    assert.ok(payload.frontierEscalationPolicy.decisionRuleIds.includes("no-skip-20b"));
+    assert.ok(payload.frontierEscalationPolicy.escalationStages.some((entry) => entry.parameterClass === "150B" && entry.routeEligibleToday === false));
+    assert.ok(payload.frontierEscalationPolicy.escalationStages.some((entry) => entry.parameterClass === "512B" && entry.routeEligibleToday === false));
+    assert.equal(payload.frontierModelProgramPath, "content/development/seis-150b-frontier-model-program.json");
+    assert.equal(payload.frontierModelProgram.id, "seis-150b-frontier-model-program");
+    assert.equal(payload.frontierModelProgram.resourceUri, "seis://ai/150b-frontier-model-program.json");
+    assert.equal(payload.frontierModelProgram.trainingStatus, "not-started");
+    assert.equal(payload.frontierModelProgram.weightsAvailable, false);
+    assert.equal(payload.frontierModelProgram.inferenceAvailable, false);
+    assert.equal(payload.frontierModelProgram.benchmarkStatus, "not-run");
+    assert.equal(payload.frontierModelProgram.stageCount, 6);
+    assert.equal(payload.apexModelProgramPath, "content/development/seis-512b-apex-model-program.json");
+    assert.equal(payload.apexModelProgram.id, "seis-512b-apex-model-program");
+    assert.equal(payload.apexModelProgram.resourceUri, "seis://ai/512b-apex-model-program.json");
+    assert.equal(payload.apexModelProgram.trainingStatus, "not-started");
+    assert.equal(payload.apexModelProgram.weightsAvailable, false);
+    assert.equal(payload.apexModelProgram.inferenceAvailable, false);
+    assert.equal(payload.apexModelProgram.benchmarkStatus, "not-run");
+    assert.equal(payload.apexModelProgram.stageCount, 7);
+    assert.equal(payload.modelCardTemplatePath, "content/development/seis-20b-model-card-template.json");
+    assert.equal(payload.datasetCardTemplatePath, "content/development/seis-20b-dataset-card-template.json");
+    assert.equal(payload.evidenceTemplates.modelCard.status, "template-not-filled");
+    assert.equal(payload.evidenceTemplates.modelCard.routeEligibleToday, false);
+    assert.equal(payload.evidenceTemplates.datasetCard.status, "template-not-filled");
+    assert.equal(payload.evidenceTemplates.datasetCard.datasetDownloadAuthorized, false);
+    assert.equal(payload.evidenceTemplates.datasetCard.trainingAuthorized, false);
     assert.equal(payload.frontierTarget.parameterClass, "150B");
     assert.equal(payload.frontierTarget.weightsAvailable, false);
     assert.equal(payload.frontierTarget.inferenceAvailable, false);
     assert.equal(payload.frontierTarget.runtimeAuthority, false);
+    assert.equal(payload.apexTarget.parameterClass, "512B");
+    assert.equal(payload.apexTarget.weightsAvailable, false);
+    assert.equal(payload.apexTarget.inferenceAvailable, false);
+    assert.equal(payload.apexTarget.runtimeAuthority, false);
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "150B" && entry.status === "frontier-research-roadmap"));
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
   });
 
   it("executes the SEIS AI Core sub-agent model tool through the protocol", async () => {

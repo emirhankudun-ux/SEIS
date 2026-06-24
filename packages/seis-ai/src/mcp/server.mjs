@@ -21,8 +21,14 @@ import {
 } from "../lib/checks.mjs";
 import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
 import {
+  AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
+  AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
+  AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
+  AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH,
   AI_CORE_PROVIDER_REGISTRY_PATH,
   AI_CORE_PROVIDER_STATUS_TOOL,
+  AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH,
+  AI_CORE_MODEL_PARAMETER_LADDER_PATH,
   AI_CORE_MODEL_SCALING_PROFILE_PATH,
   AI_CORE_MODEL_SCALING_STATUS_TOOL,
   AI_CORE_VERSION_PROMOTION_GATES_PATH,
@@ -519,7 +525,7 @@ export function buildServer() {
 
   server.tool(
     AI_CORE_MODEL_SCALING_STATUS_TOOL,
-    "Read the SEIS AI Core model scaling hardware profile for the planned 20B target on 16GB+ RAM, compatibility profiles, benchmark manifest contract, memory budget contract, quantization lanes, local runtime candidates, future 70B ladder, and 150B frontier research lane. Read-only; performs no training, inference, download, benchmark, provider call, SSH, deployment, or credential access.",
+    "Read the SEIS AI Core model scaling hardware profile, parameter ladder, and model-scaling sub-agent council for the planned 20B target on 16GB+ RAM, compatibility profiles, benchmark manifest contract, memory budget contract, quantization lanes, local runtime candidates, future 70B ladder, 150B frontier research lane, 300B+ exploration boundary, and highest-future parameter boundary. Read-only; performs no training, inference, download, benchmark, provider call, SSH, deployment, or credential access.",
     {
       includeFullProfile: z.boolean().optional().describe("Return the full machine-readable model scaling hardware profile"),
     },
@@ -852,6 +858,104 @@ Steps:
           uri: "seis://ai/model-scaling-hardware-profile.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...AI_CORE_MODEL_SCALING_PROFILE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-model-parameter-ladder",
+    "seis://ai/model-parameter-ladder.json",
+    { description: "SEIS AI Core read-only seis-model-parameter-ladder for 20B, 70B, 150B, 300B+, and highest-future planning boundaries", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/model-parameter-ladder.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_MODEL_PARAMETER_LADDER_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-model-frontier-escalation-policy",
+    "seis://ai/model-frontier-escalation-policy.json",
+    { description: "SEIS AI Core read-only no-skip-20B frontier escalation policy for 70B, 150B, and higher-parameter planning gates", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/model-frontier-escalation-policy.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_MODEL_FRONTIER_ESCALATION_POLICY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-150b-frontier-model-program",
+    "seis://ai/150b-frontier-model-program.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-150b-frontier-model-program from content/development/seis-150b-frontier-model-program.json; not training, inference, benchmark, or production authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/150b-frontier-model-program.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-512b-apex-model-program",
+    "seis://ai/512b-apex-model-program.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-512b-apex-model-program from content/development/seis-512b-apex-model-program.json; not AGI, training, inference, benchmark, or production authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/512b-apex-model-program.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_512B_APEX_MODEL_PROGRAM_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-20b-model-card-template",
+    "seis://ai/20b-model-card-template.json",
+    { description: "SEIS AI Core 20B clean-room model card template; unfilled and not route eligible", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/20b-model-card-template.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-20b-dataset-card-template",
+    "seis://ai/20b-dataset-card-template.json",
+    { description: "SEIS AI Core 20B clean-room dataset card template; unfilled and not authorized for download, training, or benchmarks", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/20b-dataset-card-template.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH.split("/")), "utf8"),
         },
       ],
     })

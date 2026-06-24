@@ -256,7 +256,15 @@ describe("executeTool", () => {
         id: "seis-model-scaling-hardware-profile",
         version: "2026.06.23",
         status: "planned-compatibility-contract",
-        truthBoundary: "Repository-local profile only; no trained 20B, 70B, or 150B weights, no inference, no benchmark, no live provider calls, and no foundation model ownership claim.",
+        truthBoundary: "Repository-local profile only; no trained 20B, 70B, 150B, or 512B weights, no AGI claim, no inference, no benchmark, no live provider calls, and no foundation model ownership claim.",
+        sourceOfTruth: {
+          parameterLadder: "content/development/seis-model-parameter-ladder.json",
+          frontierEscalationPolicy: "content/development/seis-model-frontier-escalation-policy.json",
+          frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
+          apexModelProgram: "content/development/seis-512b-apex-model-program.json",
+          modelCardTemplate: "content/development/seis-20b-model-card-template.json",
+          datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json"
+        },
         coreCredentialRequirement: "none",
         defaultMode: "local-demo-until-validated",
         currentTarget: {
@@ -294,10 +302,28 @@ describe("executeTool", () => {
           routerEligibility: "blocked-until-frontier-evidence",
           localDemoFallback: "seis-local-demo"
         },
+        apexTarget: {
+          id: "seis-512b-apex-frontier-target",
+          displayName: "SEIS 512B AGI Apex Research Target",
+          parameterClass: "512B",
+          parameterCountBillion: 512,
+          targetHardwareClass: "frontier-scale distributed research cluster",
+          compatibilityStatus: "not-scoped",
+          trainingStatus: "not-started",
+          weightsAvailable: false,
+          inferenceAvailable: false,
+          benchmarkStatus: "not-run",
+          agiCapabilityStatus: "not-demonstrated",
+          runtimeAuthority: false,
+          productionReady: false,
+          routerEligibility: "blocked-until-apex-evidence",
+          localDemoFallback: "seis-local-demo"
+        },
         scaleLadder: [
           { id: "seis-20b-local-target", parameterClass: "20B", horizon: "now", targetHardwareClass: "16GB+ RAM", status: "planned-not-validated", promotionGate: "memory benchmark" },
           { id: "seis-70b-research-target", parameterClass: "70B", horizon: "future", targetHardwareClass: "approved high-memory runtime", status: "research-roadmap", promotionGate: "explicit approval" },
-          { id: "seis-150b-frontier-research-target", parameterClass: "150B", horizon: "future-frontier", targetHardwareClass: "approved distributed research runtime", status: "frontier-research-roadmap", promotionGate: "explicit approval" }
+          { id: "seis-150b-frontier-research-target", parameterClass: "150B", horizon: "future-frontier", targetHardwareClass: "approved distributed research runtime", status: "frontier-research-roadmap", promotionGate: "explicit approval" },
+          { id: "seis-512b-agi-apex-target", parameterClass: "512B", horizon: "apex-frontier", targetHardwareClass: "frontier-scale distributed research cluster", status: "apex-program-plan-only", promotionGate: "explicit approval" }
         ],
         hardwareTiers: [
           { id: "developer-16gb-plus", label: "16GB+ RAM developer machine", allowedToday: "Local Demo only", modelTarget: "20B planned compatibility target", claimStatus: "target-not-validated" }
@@ -307,12 +333,137 @@ describe("executeTool", () => {
           silentCloudFallbackAllowed: false,
           missingKeyIsError: false,
           actualProviderAndModelMustBeVisible: true,
-          blockedToday: ["20B live inference", "70B live inference", "150B live inference"]
+          blockedToday: ["20B live inference", "70B live inference", "150B live inference", "512B live inference"]
         },
         promotionGates: ["16GB+ memory ceiling benchmark for 20B target"],
         forbiddenClaims: ["SEIS has trained a 20B foundation model.", "SEIS has trained a 150B foundation model."],
         humanApprovalRequiredFor: ["model download", "training run"],
         nextSafeActions: ["Keep Local Demo active."]
+      }),
+      "content/development/seis-model-parameter-ladder.json": JSON.stringify({
+        id: "seis-model-parameter-ladder",
+        status: "planning-contract-not-runtime",
+        resourceUri: "seis://ai/model-parameter-ladder.json",
+        defaultRoute: "seis-local-demo",
+        routeEligibleToday: false,
+        promotionOrder: ["local-demo", "20B", "70B", "150B", "300B+", "512B", "highest-available-future"],
+        targets: [
+          { id: "seis-20b-16gb-plus-local-compatibility", displayName: "SEIS 20B", parameterClass: "20B", parameterCountBillion: 20, horizon: "current-planning-target", minimumRamClass: "16GB+ RAM", status: "planned-not-validated", allowedToday: "Local Demo only", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["model card", "dataset card", "benchmark", "fallback", "redacted logs", "human approval"] },
+          { id: "seis-70b-research-lane", displayName: "SEIS 70B", parameterClass: "70B", parameterCountBillion: 70, horizon: "future-research", minimumRamClass: "64GB+ RAM", status: "research-roadmap", allowedToday: "Planning only", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["20B gates", "model card", "dataset card", "hardware budget", "safety", "human approval"] },
+          { id: "seis-150b-frontier-research-lane", displayName: "SEIS 150B", parameterClass: "150B", parameterCountBillion: 150, horizon: "frontier-research", minimumRamClass: "approved distributed", status: "frontier-research-roadmap", allowedToday: "Disabled", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["20B evidence", "70B evidence", "training plan", "budget", "safety", "human approval"] },
+          { id: "seis-300b-plus-exploration-boundary", displayName: "SEIS 300B+", parameterClass: "300B+", parameterCountBillion: 300, horizon: "long-term-frontier", minimumRamClass: "not scoped", status: "not-scoped", allowedToday: "Disabled", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["150B evidence", "governance", "hardware", "cost", "safety", "human approval"] },
+          { id: "seis-512b-agi-apex-research-lane", displayName: "SEIS 512B", parameterClass: "512B", parameterCountBillion: 512, horizon: "apex-frontier", minimumRamClass: "frontier-scale distributed", status: "apex-program-plan-only", allowedToday: "Disabled", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["20B evidence", "70B evidence", "150B evidence", "300B feasibility", "AGI eval protocol", "human approval"] },
+          { id: "seis-highest-available-future-boundary", displayName: "SEIS Highest Future", parameterClass: "highest-available-future", parameterCountBillion: null, horizon: "future-undefined", minimumRamClass: "defined only after measured lower-tier evidence", status: "not-scoped", allowedToday: "Disabled", trainingStatus: "not-started", weightsAvailable: false, inferenceAvailable: false, benchmarkEvidenceAvailable: false, routeEligibleToday: false, runtimeAuthority: false, productionReady: false, evidenceRequiredBeforeRoute: ["20B evidence", "70B evidence", "150B evidence", "frontier review", "safety", "human approval"] }
+        ],
+        ramCompatibilityPolicy: [
+          { ramClass: "16GB+", highestTargetToday: "20B planning target only", routeEligibleToday: false, claimStatus: "compatibility-not-verified", requiredProof: "Measured 20B benchmark." }
+        ],
+        forbiddenClaims: ["SEIS has trained a 20B foundation model."],
+        humanApprovalRequiredFor: ["model download", "runtime adapter setup", "training run", "benchmark execution", "route eligibility change"]
+      }),
+      "content/development/seis-model-frontier-escalation-policy.json": JSON.stringify({
+        id: "seis-model-frontier-escalation-policy",
+        status: "policy-active-research-gated",
+        resourceUri: "seis://ai/model-frontier-escalation-policy.json",
+        qualityGate: "npm run check:seis-model-frontier-escalation-policy",
+        routeEligibleToday: false,
+        currentAllowedMode: "Local Demo and deterministic seed-model lab only",
+        decisionRules: [
+          { id: "no-skip-20b", enforcedStatus: "blocked" },
+          { id: "no-silent-provider-fallback", enforcedStatus: "active" }
+        ],
+        escalationStages: [
+          { id: "stage-0-local-demo", parameterClass: "demo-only", status: "active", allowedToday: true, routeEligibleToday: true },
+          { id: "stage-1-20b-local-compatibility", parameterClass: "20B", status: "planned-not-validated", allowedToday: false, routeEligibleToday: false },
+          { id: "stage-2-70b-research", parameterClass: "70B", status: "research-roadmap", allowedToday: false, routeEligibleToday: false },
+          { id: "stage-3-150b-frontier", parameterClass: "150B", status: "frontier-research-roadmap", allowedToday: false, routeEligibleToday: false },
+          { id: "stage-4-512b-apex", parameterClass: "512B", status: "apex-program-plan-only", allowedToday: false, routeEligibleToday: false }
+        ],
+        forbiddenClaims: ["SEIS has trained a 150B foundation model."],
+        humanApprovalRequiredFor: ["model download", "benchmark execution", "training run", "GPU or cloud provisioning"]
+      }),
+      "content/development/seis-150b-frontier-model-program.json": JSON.stringify({
+        id: "seis-150b-frontier-model-program",
+        status: "frontier-program-plan-only",
+        resourceUri: "seis://ai/150b-frontier-model-program.json",
+        qualityGate: "npm run check:seis-150b-frontier-model-program",
+        routeEligibleToday: false,
+        runtimeAuthority: false,
+        trainingStatus: "not-started",
+        weightsAvailable: false,
+        inferenceAvailable: false,
+        benchmarkStatus: "not-run",
+        productionReady: false,
+        target: {
+          parameterClass: "150B",
+          parameterCountBillion: 150,
+          prerequisite: "20B and 70B evidence accepted before 150B scoping"
+        },
+        programStages: [
+          { id: "stage-0-charter", label: "Charter", status: "planned", routeEligibleToday: false },
+          { id: "stage-1-clean-room-data", label: "Clean-room data", status: "blocked", routeEligibleToday: false },
+          { id: "stage-2-architecture-selection", label: "Architecture selection", status: "not-selected", routeEligibleToday: false },
+          { id: "stage-3-distributed-runtime", label: "Distributed runtime", status: "approval-needed", routeEligibleToday: false },
+          { id: "stage-4-training-readiness", label: "Training readiness", status: "not-authorized", routeEligibleToday: false },
+          { id: "stage-5-evaluation-and-safety", label: "Evaluation and safety", status: "not-run", routeEligibleToday: false }
+        ],
+        promotionGates: ["20B evidence", "70B evidence", "clean-room training plan", "distributed runtime budget", "safety review", "human approval"],
+        humanApprovalRequiredFor: ["training run", "benchmark execution", "GPU or cloud provisioning"]
+      }),
+      "content/development/seis-512b-apex-model-program.json": JSON.stringify({
+        id: "seis-512b-apex-model-program",
+        status: "apex-program-plan-only",
+        resourceUri: "seis://ai/512b-apex-model-program.json",
+        qualityGate: "npm run check:seis-512b-apex-model-program",
+        routeEligibleToday: false,
+        runtimeAuthority: false,
+        trainingStatus: "not-started",
+        weightsAvailable: false,
+        inferenceAvailable: false,
+        benchmarkStatus: "not-run",
+        productionReady: false,
+        target: {
+          parameterClass: "512B",
+          parameterCountBillion: 512,
+          prerequisite: "20B, 70B, 150B, and 300B+ evidence accepted before 512B scoping"
+        },
+        programStages: [
+          { id: "stage-0-apex-charter", label: "512B charter", status: "planned", routeEligibleToday: false },
+          { id: "stage-1-installed-ai-council", label: "Installed AI council", status: "plan-only", routeEligibleToday: false },
+          { id: "stage-2-clean-room-frontier-data", label: "Clean-room frontier data", status: "blocked", routeEligibleToday: false },
+          { id: "stage-3-apex-architecture-selection", label: "Architecture selection", status: "not-selected", routeEligibleToday: false },
+          { id: "stage-4-frontier-cluster-plan", label: "Frontier cluster plan", status: "approval-needed", routeEligibleToday: false },
+          { id: "stage-5-training-readiness", label: "Training readiness", status: "not-authorized", routeEligibleToday: false },
+          { id: "stage-6-evaluation-safety-and-release", label: "Evaluation and safety", status: "not-run", routeEligibleToday: false }
+        ],
+        promotionGates: ["20B evidence", "70B evidence", "150B evidence", "300B+ feasibility", "all installed AI and sub-agent council review recorded", "explicit human approval recorded"],
+        forbiddenClaimRules: ["no-trained-512b-weights-claim", "no-routeable-512b-inference-claim", "no-512b-benchmark-claim", "no-installed-ai-presence-as-training-evidence-claim"],
+        humanApprovalRequiredFor: ["training run", "benchmark execution", "GPU or cloud provisioning", "route eligibility change"]
+      }),
+      "content/development/seis-20b-model-card-template.json": JSON.stringify({
+        id: "seis-20b-model-card-template",
+        status: "template-not-filled",
+        targetId: "seis-20b-local-compatibility-target",
+        parameterClass: "20B",
+        routeEligibleToday: false,
+        runtimeAuthority: false,
+        productionReady: false,
+        weightsAvailable: false,
+        trainingStatus: "not-started",
+        benchmarkEvidenceAvailable: false,
+        requiredBeforeFilled: ["model artifact id and version", "clean-room provenance statement"]
+      }),
+      "content/development/seis-20b-dataset-card-template.json": JSON.stringify({
+        id: "seis-20b-dataset-card-template",
+        status: "template-not-filled",
+        targetId: "seis-20b-local-compatibility-target",
+        parameterClass: "20B",
+        datasetDownloadAuthorized: false,
+        trainingAuthorized: false,
+        fineTuningAuthorized: false,
+        benchmarkDatasetAuthorized: false,
+        routeEligibleToday: false,
+        requiredBeforeFilled: ["source inventory", "license map"]
       }),
       "content/development/seis-ai-core-version-registry.json": JSON.stringify({
         id: "seis-ai-core-version-registry",
@@ -966,14 +1117,62 @@ describe("executeTool", () => {
     assert.equal(payload.currentTarget.weightsAvailable, false);
     assert.equal(payload.currentTarget.inferenceAvailable, false);
     assert.equal(payload.currentTarget.runtimeAuthority, false);
+    assert.equal(payload.parameterLadderPath, "content/development/seis-model-parameter-ladder.json");
+    assert.equal(payload.parameterLadder.id, "seis-model-parameter-ladder");
+    assert.equal(payload.parameterLadder.resourceUri, "seis://ai/model-parameter-ladder.json");
+    assert.equal(payload.parameterLadder.targetCount, 6);
+    assert.equal(payload.parameterLadder.routeEligibleToday, false);
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "20B" && entry.minimumRamClass === "16GB+ RAM"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "300B+" && entry.status === "not-scoped"));
+    assert.ok(payload.parameterLadder.targets.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
+    assert.ok(payload.parameterLadder.targets.every((entry) => entry.routeEligibleToday === false));
+    assert.equal(payload.frontierEscalationPolicyPath, "content/development/seis-model-frontier-escalation-policy.json");
+    assert.equal(payload.frontierEscalationPolicy.id, "seis-model-frontier-escalation-policy");
+    assert.equal(payload.frontierEscalationPolicy.resourceUri, "seis://ai/model-frontier-escalation-policy.json");
+    assert.equal(payload.frontierEscalationPolicy.routeEligibleToday, false);
+    assert.ok(payload.frontierEscalationPolicy.decisionRuleIds.includes("no-skip-20b"));
+    assert.ok(payload.frontierEscalationPolicy.escalationStages.some((entry) => entry.parameterClass === "150B" && entry.routeEligibleToday === false));
+    assert.equal(payload.frontierModelProgramPath, "content/development/seis-150b-frontier-model-program.json");
+    assert.equal(payload.frontierModelProgram.id, "seis-150b-frontier-model-program");
+    assert.equal(payload.frontierModelProgram.resourceUri, "seis://ai/150b-frontier-model-program.json");
+    assert.equal(payload.frontierModelProgram.trainingStatus, "not-started");
+    assert.equal(payload.frontierModelProgram.weightsAvailable, false);
+    assert.equal(payload.frontierModelProgram.inferenceAvailable, false);
+    assert.equal(payload.frontierModelProgram.benchmarkStatus, "not-run");
+    assert.equal(payload.frontierModelProgram.stageCount, 6);
+    assert.equal(payload.apexModelProgramPath, "content/development/seis-512b-apex-model-program.json");
+    assert.equal(payload.apexModelProgram.id, "seis-512b-apex-model-program");
+    assert.equal(payload.apexModelProgram.resourceUri, "seis://ai/512b-apex-model-program.json");
+    assert.equal(payload.apexModelProgram.trainingStatus, "not-started");
+    assert.equal(payload.apexModelProgram.weightsAvailable, false);
+    assert.equal(payload.apexModelProgram.inferenceAvailable, false);
+    assert.equal(payload.apexModelProgram.benchmarkStatus, "not-run");
+    assert.equal(payload.apexModelProgram.stageCount, 7);
+    assert.equal(payload.modelCardTemplatePath, "content/development/seis-20b-model-card-template.json");
+    assert.equal(payload.datasetCardTemplatePath, "content/development/seis-20b-dataset-card-template.json");
+    assert.equal(payload.evidenceTemplates.modelCard.status, "template-not-filled");
+    assert.equal(payload.evidenceTemplates.modelCard.routeEligibleToday, false);
+    assert.equal(payload.evidenceTemplates.modelCard.weightsAvailable, false);
+    assert.equal(payload.evidenceTemplates.datasetCard.status, "template-not-filled");
+    assert.equal(payload.evidenceTemplates.datasetCard.datasetDownloadAuthorized, false);
+    assert.equal(payload.evidenceTemplates.datasetCard.trainingAuthorized, false);
+    assert.equal(payload.evidenceTemplates.datasetCard.routeEligibleToday, false);
     assert.equal(payload.frontierTarget.parameterClass, "150B");
     assert.equal(payload.frontierTarget.parameterCountBillion, 150);
     assert.equal(payload.frontierTarget.compatibilityStatus, "not-scoped");
     assert.equal(payload.frontierTarget.weightsAvailable, false);
     assert.equal(payload.frontierTarget.inferenceAvailable, false);
+    assert.equal(payload.apexTarget.parameterClass, "512B");
+    assert.equal(payload.apexTarget.parameterCountBillion, 512);
+    assert.equal(payload.apexTarget.weightsAvailable, false);
+    assert.equal(payload.apexTarget.inferenceAvailable, false);
+    assert.equal(payload.apexTarget.runtimeAuthority, false);
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
     assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "150B" && entry.status === "frontier-research-roadmap"));
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "512B" && entry.status === "apex-program-plan-only"));
     assert.ok(payload.routerPolicy.blockedToday.includes("150B live inference"));
+    assert.ok(payload.routerPolicy.blockedToday.includes("512B live inference"));
     assert.equal(payload.routerPolicy.silentCloudFallbackAllowed, false);
   });
 

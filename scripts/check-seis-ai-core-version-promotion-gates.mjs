@@ -145,7 +145,14 @@ if (pluginIntegration) {
   ensure(pluginIntegration.runtimeIntegration?.providerRegistryTool === "seis_ai_core_provider_status", "plugin integration must expose provider registry tool");
   ensureArrayIncludesAll(
     pluginIntegration.runtimeIntegration?.mcpResources,
-    ["seis://ai/mcp-runtime-contract.json", "seis://ai/provider-registry.json", "seis://ai/version-promotion-gates.json"],
+    [
+      "seis://ai/mcp-runtime-contract.json",
+      "seis://ai/provider-registry.json",
+      "seis://ai/150b-frontier-model-program.json",
+      "seis://ai/20b-model-card-template.json",
+      "seis://ai/20b-dataset-card-template.json",
+      "seis://ai/version-promotion-gates.json"
+    ],
     "runtimeIntegration.mcpResources"
   );
   ensure(
@@ -174,7 +181,7 @@ ensure(Array.isArray(fiveYearPlan?.years) && fiveYearPlan.years.length === 5, "f
 
 if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP runtime contract resource URI mismatch");
-  ensure(mcpRuntimeContract.resourceCount === 20, "MCP runtime contract must record 20 resources");
+  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
 }
 ensure(providerRegistry?.id === "seis-ai-core-provider-registry", "provider registry id mismatch");
 ensure(providerRegistry?.coreCredentialRequirement === "none", "provider registry must keep zero-key core");

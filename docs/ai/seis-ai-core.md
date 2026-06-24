@@ -31,7 +31,10 @@ The foundation includes:
 | Agent runtime | Documented fixture, not implemented runtime orchestration | `docs/ai/agent-runtime.md`, `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json` | No write-gated or background runtime exists. | Keep automation dry-run until fixture validation, approval gates, redaction, and ledger evidence are proven. |
 | Version registry | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `seis_ai_core_version_status` | No live release channel, live provider adapter, or model ownership evidence exists. | Keep SEIS AI Core v0.1 as a zero-key application-layer profile until provider and runtime gates exist. |
 | Provider registry | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json` | This is repo-local status evidence only; it performs no provider calls or credential validation. | Use it for SEIS AI status surfaces before live provider adapters. |
-| Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B and 150B frontier lanes are not trained weights, live inference, downloads, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
+| Model scaling hardware profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | The 20B target for 16GB+ RAM plus future 70B, 150B, and 512B apex lanes are not trained weights, live inference, downloads, AGI proof, or benchmark evidence. | Keep the profile blocked until clean-room model cards, dataset cards, quantized/distributed runtime plans, safety evals, and memory benchmarks exist. |
+| 150B frontier model program | Plan-only frontier program record | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program` | The 150B lane is a charter, stage plan, and promotion-gate record only; it is not trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy/safety review, observability, rollback, cost-stop, and human approval exist. |
+| 512B apex model program | Plan-only SEIS AGI readiness record | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program` | The 512B lane is an apex charter and AGI-readiness governance record only; it is not AGI, trained weights, inference, benchmark evidence, provider access, cloud/GPU provisioning, SSH execution, or production readiness. | Keep it blocked until 20B, 70B, 150B, and 300B+ evidence, clean-room training plan, AGI eval protocol, all installed AI/sub-agent council review, and human approval exist. |
+| Model scaling sub-agent council | Active plan-only coordination contract | `content/development/seis-model-scaling-subagent-council.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status` | Twelve agents coordinate 20B evidence preparation and 70B/150B/512B review duties, but they do not run models, benchmarks, training, SSH, providers, or cloud/GPU provisioning. | Keep all council agents plan-only until human-reviewed runtime, benchmark, safety, and approval evidence exists. |
 | Version promotion gates | Documented fixture | `content/development/seis-ai-core-version-promotion-gates.json`, `seis_ai_core_version_promotion_dry_run` | Dry-run output is internal review evidence only; it is not release approval. | Use promotion dry-runs to classify readiness without enabling write, deploy, provider, credential, or release authority. |
 | MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json` | This proves only the local stdio MCP contract, not remote MCP server readiness or connector authentication. | Keep MCP runtime evidence tied to `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
 | SEIS plugin lanes | Integrated as read-only/status and plan-only tools | `content/development/seis-agent-plugin-integration.json`, `packages/seis-ai/src/lib/plugin-integration.mjs`, `packages/seis-ai/src/agent/tools.mjs`, `packages/seis-ai/src/mcp/server.mjs` | No external connector authentication is claimed. | Keep lane tools scoped to status and planning until explicit approval enables mutation. |
@@ -105,7 +108,7 @@ The standalone SEIS demo now includes an AI Core constellation inspector that
 joins the installed AI route mesh, personal plugin lane mesh, MCP runtime
 contract, selected five-year quarter, and 3D hero diagnostics into one local
 read-only surface. Product browser smoke verifies the inspector exposes six AI
-routes, five personal plugin lanes, 34 MCP tools, 20 MCP resources, three MCP
+routes, five personal plugin lanes, 34 MCP tools, 26 MCP resources, three MCP
 prompts, and a 32-node / 53-edge AI Core 3D graph without requiring provider
 keys, SSH, deployment, GitHub mutation, or external connector authentication.
 
@@ -117,26 +120,44 @@ Runtime inspection tools:
 `seis_ai_core_subagent_model`, and
 `seis_ai_core_subagent_review_ledger`.
 
+Model scaling resources:
+`content/development/seis-model-scaling-hardware-profile.json`,
+`content/development/seis-model-parameter-ladder.json`,
+`content/development/seis-150b-frontier-model-program.json`,
+`content/development/seis-512b-apex-model-program.json`,
+`content/development/seis-model-scaling-subagent-council.json`,
+`seis://ai/model-scaling-hardware-profile.json`, and
+`seis://ai/model-parameter-ladder.json`, and
+`seis://ai/150b-frontier-model-program.json`, and
+`seis://ai/512b-apex-model-program.json`. The parameter ladder keeps 20B, 70B,
+150B, 300B+, 512B, and highest-future classes route-blocked until measured evidence,
+model/dataset cards, safety review, and human approval exist.
+
 ## Model Scaling Hardware Profile
 
 SEIS now tracks a planned 20B local-compatibility target for 16GB+ RAM systems,
-a future 70B research ladder, and a 150B frontier research target through
+a future 70B research ladder, a 150B frontier research target, and a 512B apex
+SEIS AGI readiness target through
 `content/development/seis-model-scaling-hardware-profile.json`.
 
 This profile is an AI Core planning contract, not model runtime evidence. It
-does not create or download 20B, 70B, or 150B weights, run inference, run
-benchmarks, perform training, call providers, or grant runtime authority. SEIS remains in
+does not create or download 20B, 70B, 150B, or 512B weights, prove AGI, run
+inference, run benchmarks, perform training, call providers, or grant runtime authority. SEIS remains in
 Local Demo mode until the model-router, provider registry, clean-room dataset
 policy, model cards, quantized runtime adapter, redacted logs, and memory
 benchmarks pass validation. The profile also records a memory budget contract,
 Q4/Q5-Q6 planning lanes, candidate-only no-key local runtimes, and a 150B
-frontier lane that remains blocked until distributed-runtime, safety, cost,
-privacy, observability, rollback, and human-approval evidence exists.
+frontier lane plus 512B apex lane that remain blocked until distributed-runtime,
+safety, cost, privacy, observability, rollback, AGI eval protocol, and
+human-approval evidence exists.
 
 Validation:
 
 ```bash
 npm run check:seis-model-scaling-hardware-profile
+npm run check:seis-150b-frontier-model-program
+npm run check:seis-512b-apex-model-program
+npm run check:seis-model-scaling-subagent-council
 ```
 
 ## AI Workforce Training

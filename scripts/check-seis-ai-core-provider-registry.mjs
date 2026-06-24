@@ -120,7 +120,7 @@ ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-
 
 if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.toolCount === 34, "MCP runtime contract must record 34 tools");
-  ensure(mcpRuntimeContract.resourceCount === 20, "MCP runtime contract must record 20 resources");
+  ensure(mcpRuntimeContract.resourceCount === 26, "MCP runtime contract must record 26 resources");
 }
 
 for (const [text, label] of [

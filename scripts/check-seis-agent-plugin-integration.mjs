@@ -106,6 +106,11 @@ if (manifest) {
     "seis://ai/version-registry.json",
     "seis://ai/provider-registry.json",
     "seis://ai/model-scaling-hardware-profile.json",
+    "seis://ai/model-parameter-ladder.json",
+    "seis://ai/model-frontier-escalation-policy.json",
+    "seis://ai/150b-frontier-model-program.json",
+    "seis://ai/20b-model-card-template.json",
+    "seis://ai/20b-dataset-card-template.json",
     "seis://ai/version-promotion-gates.json",
     "seis://ai/subagent-operating-model.json",
     "seis://ai/sub-agent-5-year-plan.json",
@@ -165,6 +170,8 @@ if (manifest) {
     "npm run check:seis-agent-plugin-integration",
     "npm run check:seis-ai-core-provider-registry",
     "npm run check:seis-model-scaling-hardware-profile",
+    "npm run check:seis-model-parameter-ladder",
+    "npm run check:seis-150b-frontier-model-program",
     "npm run check:seis-ai-core-version-registry",
     "npm run check:seis-ai-core-version-promotion-gates",
     "npm run check:seis-ai-core-subagent-operating-model",
@@ -234,6 +241,11 @@ ensure(mcp.includes("LightweightMcpServer"), "MCP server must keep a no-dependen
 ensure(mcp.includes("resources/read"), "MCP server fallback must support resource reads");
 ensure(mcp.includes("seis://ai/mcp-runtime-contract.json"), "MCP server must expose the AI Core MCP runtime contract resource");
 ensure(mcp.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose the AI Core model scaling resource");
+ensure(mcp.includes("seis://ai/model-parameter-ladder.json"), "MCP server must expose the AI Core model parameter ladder resource");
+ensure(mcp.includes("seis://ai/model-frontier-escalation-policy.json"), "MCP server must expose the AI Core frontier escalation policy resource");
+ensure(mcp.includes("seis://ai/150b-frontier-model-program.json"), "MCP server must expose the AI Core 150B frontier model program resource");
+ensure(mcp.includes("seis://ai/20b-model-card-template.json"), "MCP server must expose the AI Core 20B model card template resource");
+ensure(mcp.includes("seis://ai/20b-dataset-card-template.json"), "MCP server must expose the AI Core 20B dataset card template resource");
 
 for (const token of [
   "seis-agent-plugin-integration.json",
@@ -249,6 +261,9 @@ for (const token of [
   "seis://ai/mcp-runtime-contract.json",
   "seis://ai/provider-registry.json",
   "seis://ai/model-scaling-hardware-profile.json",
+  "seis://ai/model-parameter-ladder.json",
+  "seis://ai/model-frontier-escalation-policy.json",
+  "seis://ai/150b-frontier-model-program.json",
   "no-dependency local fallback transport",
   "seis://ai/sub-agent-5-year-plan-view.json",
   "seis@personal",

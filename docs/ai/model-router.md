@@ -18,7 +18,10 @@ user selection.
 | Router implementation | Planned | No central router implementation exists in this branch. | Typed environment validation and live adapter tests are missing. | Keep routing disabled until server-only adapter tests exist. |
 | Routing policy | Documented | This document and `docs/ai/seis-ai-core.md`. | No runtime policy tests. | Add fixtures before live providers. |
 | Provider state model | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json`. | No live health checks or credential validation are performed. | Use the fixture for UI/MCP status before live adapters. |
-| Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B and 150B frontier lanes are not routeable models until weights, model cards, runtime adapters, safety evals, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, or 150B routing until profile gates pass. |
+| Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B, 150B, and 512B apex lanes are not routeable models until weights, model cards, runtime adapters, safety evals, AGI eval protocol, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, 150B, or 512B routing until profile gates pass. |
+| Model parameter ladder | Planning contract, not runtime | `content/development/seis-model-parameter-ladder.json`, `seis://ai/model-parameter-ladder.json`, `npm run check:seis-model-parameter-ladder`. | The 20B, 70B, 150B, 300B+, 512B, and highest-future parameter classes are explicit route-blocked targets, not trained, AGI, or routeable SEIS models. | Use the ladder only to explain promotion order and approval gates; never treat it as model availability. |
+| 150B frontier model program | Plan-only route gate | `content/development/seis-150b-frontier-model-program.json`, `seis://ai/150b-frontier-model-program.json`, `npm run check:seis-150b-frontier-model-program`. | The 150B program is a charter and promotion-gate record only, not weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 150B route eligibility blocked until 20B and 70B evidence plus clean-room, budget, privacy, safety, observability, rollback, and approval gates pass. |
+| 512B apex model program | Plan-only SEIS AGI readiness gate | `content/development/seis-512b-apex-model-program.json`, `seis://ai/512b-apex-model-program.json`, `npm run check:seis-512b-apex-model-program`. | The 512B program is an apex planning and review record only, not AGI, weights, inference, benchmark evidence, cloud/GPU capacity, SSH, or production readiness. | Keep 512B route eligibility blocked until 20B, 70B, 150B, and 300B+ evidence plus clean-room, AGI eval protocol, all installed AI/sub-agent council review, and approval gates pass. |
 | Fallback behavior | Documented | Local Demo and no-key startup are required. | No runtime gateway. | Keep fallback identity visible in future UI. |
 
 ## Rules / Policy
@@ -57,6 +60,9 @@ Before the router is marked implemented, add:
 - typed server-only environment validation
 - provider registry contract tests with `npm run check:seis-ai-core-provider-registry`
 - model scaling hardware profile tests with `npm run check:seis-model-scaling-hardware-profile`
+- model parameter ladder tests with `npm run check:seis-model-parameter-ladder`
+- 150B frontier program tests with `npm run check:seis-150b-frontier-model-program`
+- 512B apex program tests with `npm run check:seis-512b-apex-model-program`
 - no-key startup test
 - local-only fallback test
 - rate-limit fixture
@@ -81,9 +87,27 @@ only and does not perform live provider calls.
 
 The current model scaling profile is
 `content/development/seis-model-scaling-hardware-profile.json`; it records the
-planned 20B target for 16GB+ RAM, future 70B scale ladder, and 150B frontier
-research lane as routing requirements, not as live model
-availability. The router must keep all 20B, 70B, and 150B lanes blocked until
+planned 20B target for 16GB+ RAM, future 70B scale ladder, 150B frontier
+research lane, and 512B apex SEIS AGI readiness lane as routing requirements,
+not as live model availability. The router must keep all 20B, 70B, 150B, and 512B lanes blocked until
 the memory budget contract, quantization or distributed-runtime profile,
 runtime adapter, model card, dataset card, safety eval, redacted logs, and
 human approval gates have evidence.
+
+The parameter ladder is
+`content/development/seis-model-parameter-ladder.json` and is exposed as
+`seis://ai/model-parameter-ladder.json`. It extends the route-blocked promotion
+order through 20B, 70B, 150B, 300B+, 512B, and highest-available-future classes while
+keeping every class in Local Demo, research-roadmap, or not-scoped status until
+lower-tier evidence and human approval exist.
+
+The 150B frontier model program is
+`content/development/seis-150b-frontier-model-program.json` and is exposed as
+`seis://ai/150b-frontier-model-program.json`. The router must read it as a
+plan-only non-claim gate, never as an available model or provider fallback.
+
+The 512B apex model program is
+`content/development/seis-512b-apex-model-program.json` and is exposed as
+`seis://ai/512b-apex-model-program.json`. The router must read it as a
+plan-only SEIS AGI readiness gate, never as evidence of AGI, available weights,
+benchmarks, provider fallback, or routeable inference.
