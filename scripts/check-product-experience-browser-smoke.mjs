@@ -743,7 +743,9 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(commandCenter.diagnostics.modelScalingPreflight.status === "dry-run-only", "Desktop V17 Command Center diagnostics must expose dry-run 20B preflight");
   ensure(commandCenter.diagnostics.modelScalingPreflight.measuredBenchmark === false, "Desktop V17 Command Center 20B preflight must not claim measured benchmark evidence");
   ensure(commandCenter.diagnostics.modelScalingPreflight.routeEligibleToday === false, "Desktop V17 Command Center 20B preflight must keep routing blocked");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.hostPreflightCommand === "npm run inspect:seis-model-local-hardware", "Desktop V17 Command Center must expose the host RAM preflight command");
   ensure(commandCenter.text.includes("seis-20b-local-preflight.md"), "Desktop V17 Command Center must show the 20B local preflight report path");
+  ensure(commandCenter.text.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "Desktop V17 Command Center must show the ignored host RAM preflight output path");
   await clickSelector(client, "[data-seis-command-center] [data-action='export-model-preflight']");
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-20b-local-preflight.md')", 5000);
   await clickSelector(client, "[data-seis-command-center] [data-action='app-primary']");

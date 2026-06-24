@@ -80,6 +80,7 @@ npm run check:desktop-os-browser-smoke
 npm run check:seis-code
 npm run check:seis-website-pages
 npm run check:seis-ultimate-demo
+npm run check:seis-model-local-hardware-preflight
 npm run check:seis-model-scaling-hardware-profile
 npm run check:mythic-gacha
 npm run check:video-hero-showcase

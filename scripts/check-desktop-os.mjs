@@ -138,6 +138,8 @@ if (failures.length === 0) {
   ensure(js.includes("seis-20b-local-preflight.md"), "desktop.js must generate the 20B local preflight report.");
   ensure(js.includes("build20BLocalPreflightMarkdown"), "desktop.js must build the 20B local preflight report content.");
   ensure(js.includes("This is a browser-local dry-run checklist"), "desktop.js must keep the 20B local preflight as dry-run only.");
+  ensure(js.includes("npm run inspect:seis-model-local-hardware"), "desktop.js must surface the host RAM preflight command.");
+  ensure(js.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "desktop.js must surface the ignored host RAM preflight output path.");
   ensure(js.includes("compatibilityProfiles"), "desktop.js must surface RAM-class compatibility profiles.");
   ensure(js.includes("16GB+ developer floor"), "desktop.js must surface the 16GB+ model scaling floor.");
   ensure(js.includes("32GB+ validation lane"), "desktop.js must surface the 32GB+ 20B validation lane.");
@@ -325,6 +327,8 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingPreflight.reportPath === "/home/seis/Documents/seis-20b-local-preflight.md", "V17 Command Center must expose the 20B local preflight report path.");
     ensure(commandCenterCoverage.modelScalingPreflight.measuredBenchmark === false, "V17 Command Center must not treat local preflight as a measured benchmark.");
     ensure(commandCenterCoverage.modelScalingPreflight.routeEligibleToday === false, "V17 Command Center must keep model routing blocked after local preflight.");
+    ensure(commandCenterCoverage.modelScalingPreflight.hostPreflightCommand === "npm run inspect:seis-model-local-hardware", "V17 Command Center must expose the host RAM preflight command.");
+    ensure(commandCenterCoverage.modelScalingPreflight.hostPreflightOutput === "dist/qa/model-scaling/local-hardware-preflight.json", "V17 Command Center must expose the ignored host RAM preflight output.");
     ensure(commandCenterCoverage.modelScalingProfile.quantizationProfiles.length >= 3, "V17 Command Center must expose model quantization lanes.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierTarget.includes("150B"), "V17 Command Center must expose the 150B frontier target.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierStatus.includes("not scoped"), "V17 Command Center must keep the 150B frontier target unscoped.");

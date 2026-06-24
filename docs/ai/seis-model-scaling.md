@@ -124,6 +124,39 @@ The preflight remains route-blocked until the benchmark manifest is completed
 with human-reviewed, redacted measurements and the model artifact has clean-room
 provenance, model-card, dataset-card, local-only fallback, and safety evidence.
 
+## Host Hardware Preflight
+
+SEIS can also inspect the current host RAM class without downloading or running a
+model:
+
+```bash
+npm run inspect:seis-model-local-hardware
+npm run inspect:seis-model-local-hardware:write
+npm run check:seis-model-local-hardware-preflight
+```
+
+The write command stores ignored QA evidence at:
+
+`dist/qa/model-scaling/local-hardware-preflight.json`
+
+This host preflight can observe whether the machine has a 16GB+ RAM floor. It
+does not prove 20B compatibility, does not run inference, does not benchmark
+memory, and does not make any 20B, 70B, or 150B route eligible.
+
+## 20B Model And Dataset Card Templates
+
+The 20B lane now has explicit evidence templates that must be filled before any
+future route eligibility claim:
+
+| File | Status | Purpose |
+| --- | --- | --- |
+| `content/development/seis-20b-model-card-template.json` | `template-not-filled` | Requires model artifact id, license review, clean-room provenance, quantization, safety evaluation, memory benchmark reference, redacted runtime logs, and reviewer metadata before any 20B runtime claim. |
+| `content/development/seis-20b-dataset-card-template.json` | `template-not-filled` | Requires source inventory, license map, rights review, privacy review, PII/secret scan, deduplication plan, dataset split plan, and reviewer metadata before any dataset, training, fine-tuning, benchmark, or provider-upload work. |
+
+Both templates are intentionally blocked today. They do not approve model
+downloads, dataset downloads, training, fine-tuning, benchmark execution,
+publication, provider upload, or route eligibility.
+
 ## 20B / 16GB+ Memory Budget Contract
 
 The first practical SEIS model target is a 20B local-compatibility profile for

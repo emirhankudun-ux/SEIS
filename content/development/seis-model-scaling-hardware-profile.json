@@ -10,6 +10,8 @@
     "modelRouterDoc": "docs/ai/model-router.md",
     "scalingDoc": "docs/ai/seis-model-scaling.md",
     "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "workforceTrainingPlan": "content/development/seis-ai-workforce-training-plan.json",
     "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
@@ -441,7 +443,7 @@
   ],
   "nextSafeActions": [
     "Keep SEIS AI Core in Local Demo mode while the 20B profile is planned.",
-    "Create clean-room dataset and model card templates before any 20B training work.",
+    "Keep clean-room dataset and model card templates in template-not-filled status until reviewed evidence exists.",
     "Add a measured memory benchmark fixture before marking 16GB+ compatibility verified.",
     "Keep 70B and larger targets in research-roadmap status until 20B gates produce real evidence.",
     "Treat 150B as a frontier research objective that needs separate distributed-runtime, safety, cost, privacy, and human-approval evidence before it can be scoped."

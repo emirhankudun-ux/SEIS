@@ -582,8 +582,13 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   memoryBudgetStatus: "planning-estimate-not-benchmark-evidence",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   benchmarkStatus: "template-not-measured",
+  modelCardTemplate: "content/development/seis-20b-model-card-template.json",
+  datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
+  evidenceTemplateStatus: "template-not-filled / human-review-required",
   preflightReport: "/home/seis/Documents/seis-20b-local-preflight.md",
   preflightStatus: "dry-run-only",
+  hostPreflightCommand: "npm run inspect:seis-model-local-hardware",
+  hostPreflightOutput: "dist/qa/model-scaling/local-hardware-preflight.json",
   compatibilityProfiles: [
     ["16GB+ developer floor", "20B / Q4 candidate", "Local Demo only", "Not verified"],
     ["24GB+ candidate lane", "20B / Q4 candidate", "Local Demo only", "Not verified"],
@@ -4954,9 +4959,14 @@ function getV17CommandCenterCoverage() {
       status: SEIS_MODEL_SCALING_UI_PROFILE.preflightStatus,
       reportPath: SEIS_MODEL_SCALING_UI_PROFILE.preflightReport,
       benchmarkManifest: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkManifest,
+      modelCardTemplate: SEIS_MODEL_SCALING_UI_PROFILE.modelCardTemplate,
+      datasetCardTemplate: SEIS_MODEL_SCALING_UI_PROFILE.datasetCardTemplate,
+      evidenceTemplateStatus: SEIS_MODEL_SCALING_UI_PROFILE.evidenceTemplateStatus,
       measuredBenchmark: false,
       routeEligibleToday: false,
       compatibilityClaim: SEIS_MODEL_SCALING_UI_PROFILE.compatibilityClaim,
+      hostPreflightCommand: SEIS_MODEL_SCALING_UI_PROFILE.hostPreflightCommand,
+      hostPreflightOutput: SEIS_MODEL_SCALING_UI_PROFILE.hostPreflightOutput,
       requiredMeasurements: SEIS_MODEL_SCALING_UI_PROFILE.requiredMeasurements.slice(),
       benchmarkGates: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkGates.slice()
     },
@@ -5066,6 +5076,8 @@ function renderSeisCommandCenter() {
         <article><strong>Frontier</strong><p>${escapeHtml(coverage.modelScalingProfile.frontierTarget)} · ${escapeHtml(coverage.modelScalingProfile.frontierStatus)}</p></article>
         <article><strong>Compatibility</strong><p>${escapeHtml(coverage.modelScalingProfile.compatibilityClaim)} · ${escapeHtml(coverage.modelScalingProfile.memoryBudgetStatus)}</p></article>
         <article><strong>Preflight</strong><p>${escapeHtml(coverage.modelScalingPreflight.status)} · ${escapeHtml(coverage.modelScalingPreflight.reportPath)}</p></article>
+        <article><strong>Model Card</strong><p>${escapeHtml(coverage.modelScalingProfile.evidenceTemplateStatus)}</p></article>
+        <article><strong>Dataset Card</strong><p>${escapeHtml(coverage.modelScalingProfile.evidenceTemplateStatus)}</p></article>
         <article><strong>Runtime</strong><p>Candidate-only local runtimes. No model download, benchmark, provider call, SSH, or deployment without approval.</p></article>
         <article><strong>Route Gate</strong><p>Blocked until quantized runtime, memory benchmark, model card, dataset card, redacted logs, and human approval exist.</p></article>
       </div>
@@ -5087,7 +5099,9 @@ function renderSeisCommandCenter() {
       </table>
       <p class="status-note">Required 16GB+ measurements before any compatibility claim: ${coverage.modelScalingProfile.requiredMeasurements.map((item) => escapeHtml(item)).join(", ")}.</p>
       <p class="status-note">Benchmark manifest required before route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.benchmarkManifest)}</code> · ${escapeHtml(coverage.modelScalingProfile.benchmarkStatus)}. Gates: ${coverage.modelScalingProfile.benchmarkGates.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">Clean-room evidence templates required before any 20B route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.modelCardTemplate)}</code> and <code>${escapeHtml(coverage.modelScalingProfile.datasetCardTemplate)}</code>. Status: ${escapeHtml(coverage.modelScalingProfile.evidenceTemplateStatus)}.</p>
       <p class="status-note">Local preflight report: <code>${escapeHtml(coverage.modelScalingPreflight.reportPath)}</code> · ${escapeHtml(coverage.modelScalingPreflight.status)}. This is a dry-run checklist, not a benchmark.</p>
+      <p class="status-note">Host RAM preflight command: <code>${escapeHtml(coverage.modelScalingPreflight.hostPreflightCommand)}</code> writes optional ignored evidence to <code>${escapeHtml(coverage.modelScalingPreflight.hostPreflightOutput)}</code>.</p>
       <p class="status-note">Required 150B evidence before scope: ${coverage.modelScalingProfile.frontierRequiredEvidence.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
     <section class="subagent-panel">
@@ -6971,6 +6985,8 @@ Generated: ${timestamp}
 - 150B frontier target: ${coverage.modelScalingProfile.frontierTarget} / ${coverage.modelScalingProfile.frontierStatus}
 - Memory budget status: ${coverage.modelScalingProfile.memoryBudgetStatus}
 - Compatibility claim: ${coverage.modelScalingProfile.compatibilityClaim}
+- Model card template: ${coverage.modelScalingProfile.modelCardTemplate} / ${coverage.modelScalingProfile.evidenceTemplateStatus}
+- Dataset card template: ${coverage.modelScalingProfile.datasetCardTemplate} / ${coverage.modelScalingProfile.evidenceTemplateStatus}
 - Quantization lanes: ${coverage.modelScalingProfile.quantizationProfiles.map(([lane, status, route]) => `${lane} / ${status} / ${route}`).join("; ")}
 - Local runtime candidates: ${coverage.modelScalingProfile.localRuntimeCandidates.map(([runtime, status, boundary]) => `${runtime} / ${status} / ${boundary}`).join("; ")}
 - Required measurements: ${coverage.modelScalingProfile.requiredMeasurements.join(", ")}
@@ -6978,6 +6994,8 @@ Generated: ${timestamp}
 - Local preflight report: ${coverage.modelScalingPreflight.reportPath} / ${coverage.modelScalingPreflight.status}
 - Preflight measured benchmark: ${coverage.modelScalingPreflight.measuredBenchmark ? "yes" : "no"}
 - Preflight route eligible today: ${coverage.modelScalingPreflight.routeEligibleToday ? "yes" : "no"}
+- Host RAM preflight command: ${coverage.modelScalingPreflight.hostPreflightCommand}
+- Host RAM preflight output: ${coverage.modelScalingPreflight.hostPreflightOutput}
 - Training/inference ownership claim: none
 - Provider keys required for core demo: ${coverage.providerKeysRequiredForCoreDemo}
 
@@ -7025,9 +7043,16 @@ Generated: ${timestamp}
 - Route eligible today: ${preflight.routeEligibleToday ? "yes" : "no"}
 - Measured benchmark: ${preflight.measuredBenchmark ? "yes" : "no"}
 - Benchmark manifest: ${preflight.benchmarkManifest}
+- Model card template: ${preflight.modelCardTemplate}
+- Dataset card template: ${preflight.datasetCardTemplate}
+- Evidence template status: ${preflight.evidenceTemplateStatus}
+- Optional host RAM command: ${preflight.hostPreflightCommand}
+- Optional host RAM output: ${preflight.hostPreflightOutput}
 
 ## Truth Boundary
 This is a browser-local dry-run checklist. It does not download a model, run inference, train weights, call a provider, execute SSH, deploy infrastructure, measure RAM, or prove 16GB+ compatibility.
+
+The optional host RAM command only observes the local machine RAM class and writes ignored QA evidence. It is not a model benchmark and does not change route eligibility.
 
 ## Required 20B Evidence Before Route Eligibility
 ${preflight.benchmarkGates.map((gate) => `- ${gate}`).join("\n")}

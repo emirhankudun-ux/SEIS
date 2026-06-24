@@ -8,6 +8,8 @@ const failures = [];
 
 const paths = {
   profile: "content/development/seis-model-scaling-hardware-profile.json",
+  modelCardTemplate: "content/development/seis-20b-model-card-template.json",
+  datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   scalingDoc: "docs/ai/seis-model-scaling.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
@@ -22,6 +24,7 @@ const paths = {
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
   mcpSmokeTest: "packages/seis-ai/test/mcp-smoke.test.mjs",
   desktop: "apps/web/desktop.js",
+  localHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs",
   packageJson: "package.json"
 };
 
@@ -30,6 +33,8 @@ for (const [label, relativePath] of Object.entries(paths)) {
 }
 
 const profile = readJson(paths.profile, "model scaling profile");
+const modelCardTemplate = readJson(paths.modelCardTemplate, "20B model card template");
+const datasetCardTemplate = readJson(paths.datasetCardTemplate, "20B dataset card template");
 const benchmarkManifestTemplate = readJson(paths.benchmarkManifest, "20B benchmark manifest template");
 const scalingDoc = readText(paths.scalingDoc, "model scaling docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
@@ -43,6 +48,7 @@ const tools = readText(paths.tools, "agent tools");
 const mcpServer = readText(paths.mcpServer, "MCP server");
 const mcpSmokeTest = readText(paths.mcpSmokeTest, "MCP smoke test");
 const desktop = readText(paths.desktop, "SEIS Desktop");
+const localHardwarePreflight = readText(paths.localHardwarePreflight, "local hardware preflight");
 const packageJson = readJson(paths.packageJson, "package.json");
 
 if (profile) {
@@ -58,6 +64,8 @@ if (profile) {
 
   ensure(profile.sourceOfTruth?.scalingDoc === paths.scalingDoc, "sourceOfTruth.scalingDoc mismatch");
   ensure(profile.sourceOfTruth?.benchmarkManifest === paths.benchmarkManifest, "sourceOfTruth.benchmarkManifest mismatch");
+  ensure(profile.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "sourceOfTruth.modelCardTemplate mismatch");
+  ensure(profile.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "sourceOfTruth.datasetCardTemplate mismatch");
   ensure(profile.sourceOfTruth?.aiCoreDoc === paths.aiCoreDoc, "sourceOfTruth.aiCoreDoc mismatch");
   ensure(profile.sourceOfTruth?.modelRouterDoc === paths.modelRouterDoc, "sourceOfTruth.modelRouterDoc mismatch");
   ensure(profile.sourceOfTruth?.providerRegistry === paths.providerRegistry, "sourceOfTruth.providerRegistry mismatch");
@@ -271,6 +279,100 @@ if (benchmarkManifestTemplate) {
   ], "benchmarkManifest.nonClaims");
 }
 
+if (modelCardTemplate) {
+  ensure(modelCardTemplate.id === "seis-20b-model-card-template", "model card template id mismatch");
+  ensure(modelCardTemplate.status === "template-not-filled", "model card template must stay template-not-filled");
+  ensure(modelCardTemplate.targetId === "seis-20b-local-compatibility-target", "model card template targetId mismatch");
+  ensure(modelCardTemplate.profileId === "seis-model-scaling-hardware-profile", "model card template profileId mismatch");
+  ensure(modelCardTemplate.parameterClass === "20B", "model card template parameterClass must be 20B");
+  ensure(modelCardTemplate.routeEligibleToday === false, "model card template must not be route eligible");
+  ensure(modelCardTemplate.runtimeAuthority === false, "model card template must not grant runtime authority");
+  ensure(modelCardTemplate.productionReady === false, "model card template must not be production ready");
+  ensure(modelCardTemplate.weightsAvailable === false, "model card template must not claim weights");
+  ensure(modelCardTemplate.trainingStatus === "not-started", "model card template must keep training not-started");
+  ensure(modelCardTemplate.benchmarkEvidenceAvailable === false, "model card template must not claim benchmark evidence");
+  ensure(String(modelCardTemplate.truthBoundary || "").includes("Template only"), "model card template truthBoundary must say template only");
+  ensure(String(modelCardTemplate.truthBoundary || "").includes("does not claim SEIS owns trained foundation-model weights"), "model card template must forbid foundation-model ownership claims");
+  ensureArrayIncludesAll(modelCardTemplate.requiredBeforeFilled, [
+    "model artifact id and version",
+    "model artifact license and redistribution rights review",
+    "clean-room provenance statement",
+    "safety evaluation summary",
+    "memory benchmark reference",
+    "redacted runtime logs"
+  ], "modelCardTemplate.requiredBeforeFilled");
+  ensureArrayIncludesAll(modelCardTemplate.approvalRequiredFor, [
+    "model download",
+    "runtime adapter setup",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "publication",
+    "route eligibility change"
+  ], "modelCardTemplate.approvalRequiredFor");
+  ensureArrayIncludesAll(modelCardTemplate.forbiddenClaims, [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has downloaded 20B weights.",
+    "SEIS has run 20B inference.",
+    "SEIS has benchmarked 20B memory usage.",
+    "SEIS has verified 16GB+ compatibility.",
+    "SEIS has routeable 20B weights."
+  ], "modelCardTemplate.forbiddenClaims");
+}
+
+if (datasetCardTemplate) {
+  ensure(datasetCardTemplate.id === "seis-20b-dataset-card-template", "dataset card template id mismatch");
+  ensure(datasetCardTemplate.status === "template-not-filled", "dataset card template must stay template-not-filled");
+  ensure(datasetCardTemplate.targetId === "seis-20b-local-compatibility-target", "dataset card template targetId mismatch");
+  ensure(datasetCardTemplate.profileId === "seis-model-scaling-hardware-profile", "dataset card template profileId mismatch");
+  ensure(datasetCardTemplate.parameterClass === "20B", "dataset card template parameterClass must be 20B");
+  ensure(datasetCardTemplate.datasetDownloadAuthorized === false, "dataset card template must not authorize dataset download");
+  ensure(datasetCardTemplate.trainingAuthorized === false, "dataset card template must not authorize training");
+  ensure(datasetCardTemplate.fineTuningAuthorized === false, "dataset card template must not authorize fine-tuning");
+  ensure(datasetCardTemplate.benchmarkDatasetAuthorized === false, "dataset card template must not authorize benchmark datasets");
+  ensure(datasetCardTemplate.routeEligibleToday === false, "dataset card template must not be route eligible");
+  ensure(String(datasetCardTemplate.truthBoundary || "").includes("Template only"), "dataset card template truthBoundary must say template only");
+  ensureArrayIncludesAll(datasetCardTemplate.allowedSourceClasses, [
+    "SEIS-owned synthetic data after review",
+    "user-authored data with explicit permission",
+    "public-domain data with provenance review",
+    "permissively licensed data with license compatibility review"
+  ], "datasetCardTemplate.allowedSourceClasses");
+  ensureArrayIncludesAll(datasetCardTemplate.forbiddenSourceClasses, [
+    "private user data without explicit permission",
+    "secrets, tokens, credentials, or keys",
+    "unclear-license scraped data",
+    "leaked, proprietary, or access-controlled material",
+    "personal data without privacy review",
+    "copyrighted material copied without rights"
+  ], "datasetCardTemplate.forbiddenSourceClasses");
+  ensureArrayIncludesAll(datasetCardTemplate.requiredBeforeFilled, [
+    "source inventory",
+    "license map",
+    "rights and attribution review",
+    "PII and secret scan",
+    "safety and toxicity review",
+    "deduplication plan",
+    "dataset split plan"
+  ], "datasetCardTemplate.requiredBeforeFilled");
+  ensureArrayIncludesAll(datasetCardTemplate.approvalRequiredFor, [
+    "dataset download",
+    "dataset ingestion",
+    "training run",
+    "fine-tuning run",
+    "benchmark execution",
+    "provider upload",
+    "dataset publication"
+  ], "datasetCardTemplate.approvalRequiredFor");
+  ensureArrayIncludesAll(datasetCardTemplate.forbiddenClaims, [
+    "SEIS has approved a 20B training dataset.",
+    "SEIS has downloaded a 20B training dataset.",
+    "SEIS has completed dataset rights review.",
+    "SEIS has completed dataset privacy review.",
+    "SEIS has trained or fine-tuned a 20B foundation model."
+  ], "datasetCardTemplate.forbiddenClaims");
+}
+
 if (workforceTrainingPlan) {
   ensure(String(workforceTrainingPlan.truthBoundary || "").includes("no cloud fine-tuning"), "workforce plan must still forbid cloud fine-tuning");
   ensure(String(workforceTrainingPlan.truthBoundary || "").includes("no claim that SEIS owns a trained foundation model"), "workforce plan must still forbid foundation-model ownership claims");
@@ -309,6 +411,8 @@ for (const token of [
   "16GB+ Compatibility Profiles",
   "Benchmark Manifest Contract",
   "Command Center 20B Local Preflight",
+  "Host Hardware Preflight",
+  "20B Model And Dataset Card Templates",
   "What SEIS 20B Means Right Now",
   "Creation Stages",
   "Q4-class",
@@ -321,6 +425,11 @@ for (const token of [
 
 ensure(scalingDoc.includes("/home/seis/Documents/seis-20b-local-preflight.md"), "model scaling docs must describe the Command Center preflight export path");
 ensure(scalingDoc.includes("It is not benchmark evidence"), "model scaling docs must keep Command Center preflight separate from benchmark evidence");
+ensure(scalingDoc.includes("npm run inspect:seis-model-local-hardware"), "model scaling docs must describe the host hardware preflight command");
+ensure(scalingDoc.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "model scaling docs must describe the ignored host hardware preflight output");
+ensure(scalingDoc.includes("content/development/seis-20b-model-card-template.json"), "model scaling docs must describe the 20B model card template path");
+ensure(scalingDoc.includes("content/development/seis-20b-dataset-card-template.json"), "model scaling docs must describe the 20B dataset card template path");
+ensure(scalingDoc.includes("template-not-filled"), "model scaling docs must describe template-not-filled evidence card status");
 
 for (const [text, label] of [
   [helper, "AI Core helper"],
@@ -351,6 +460,8 @@ ensure(tools.includes("150B frontier research lane"), "agent tools must describe
 ensure(desktop.includes("export-model-preflight"), "desktop Command Center must expose the 20B local preflight action");
 ensure(desktop.includes("seis-20b-local-preflight.md"), "desktop Command Center must expose the 20B local preflight report path");
 ensure(desktop.includes("dry-run-only"), "desktop Command Center must keep the preflight dry-run only");
+ensure(desktop.includes("npm run inspect:seis-model-local-hardware"), "desktop Command Center must expose the host RAM preflight command");
+ensure(desktop.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "desktop Command Center must expose the ignored host RAM preflight output path");
 ensure(mcpServer.includes("AI_CORE_MODEL_SCALING_STATUS_TOOL"), "MCP server must expose AI_CORE_MODEL_SCALING_STATUS_TOOL");
 ensure(mcpServer.includes("aiCoreModelScalingStatus"), "MCP server must reference aiCoreModelScalingStatus");
 ensure(mcpServer.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose model scaling profile resource");
@@ -363,10 +474,34 @@ ensure(mcpServer.includes("150B frontier research lane"), "MCP server must descr
 ensure(mcpSmokeTest.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP smoke test must read model scaling profile resource");
 ensure(mcpSmokeTest.includes("seis_ai_core_model_scaling_status"), "MCP smoke test must call model scaling status tool");
 
+for (const token of [
+  "os.totalmem()",
+  "host-observed-not-benchmark",
+  "compatibilityClaim: \"not-verified\"",
+  "modelCompatibilityVerified: false",
+  "measuredBenchmark: false",
+  "routeEligibleToday: false",
+  "SEIS has verified 16GB+ compatibility."
+]) {
+  ensure(localHardwarePreflight.includes(token), `local hardware preflight missing ${token}`);
+}
+
 if (packageJson) {
   ensure(
     packageJson.scripts?.["check:seis-model-scaling-hardware-profile"] === "node scripts/check-seis-model-scaling-hardware-profile.mjs",
     "package.json must expose check:seis-model-scaling-hardware-profile"
+  );
+  ensure(
+    packageJson.scripts?.["check:seis-model-local-hardware-preflight"] === "node scripts/inspect-seis-model-local-hardware.mjs --check",
+    "package.json must expose check:seis-model-local-hardware-preflight"
+  );
+  ensure(
+    packageJson.scripts?.["inspect:seis-model-local-hardware"] === "node scripts/inspect-seis-model-local-hardware.mjs",
+    "package.json must expose inspect:seis-model-local-hardware"
+  );
+  ensure(
+    packageJson.scripts?.["inspect:seis-model-local-hardware:write"] === "node scripts/inspect-seis-model-local-hardware.mjs --write",
+    "package.json must expose inspect:seis-model-local-hardware:write"
   );
 }
 
