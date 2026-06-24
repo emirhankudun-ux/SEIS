@@ -41,9 +41,36 @@ training or implementation sources.
 | `seis-eval-critic`       | evaluate answers, diffs, claims, and release readiness            | rubric-driven evaluator                           | learned seed active |
 | `seis-agent-router`      | route tasks to SEIS agent/plugin lanes and integration gates      | agent/plugin lane router                          | learned seed active |
 | `seis-design-sense`      | reason about UI, accessibility, motion, and design-system quality | multimodal research track                         | not started         |
+| `seis-orchestrator`      | route each task to a hosted Claude backbone (Opus/Sonnet/Haiku) and SEIS lane | composition/router policy over hosted backbones   | backbone routing active (`seis-agent`) |
+| `seis-flagship-150b`     | SEIS-owned flagship reasoning model (long-horizon target)         | ~150B-parameter research target — **spec only**   | target spec, not trained |
 
 These names are SEIS-owned research names. They do not imply compatibility with
 any outside model, product, API, or private architecture.
+
+## Backbone composition (`seis-orchestrator`)
+
+Today SEIS's working "intelligence" is **not** a SEIS-trained foundation model — it
+is an orchestration layer over hosted Claude backbones. `seis-agent` already selects
+a backbone per task via the `fable | opus | sonnet | haiku` aliases:
+
+| Backbone | SEIS routing intent |
+| -------- | ------------------- |
+| `opus`   | hardest reasoning, architecture, multi-file changes, ambiguous governance calls |
+| `sonnet` | balanced day-to-day code, review, and translation work |
+| `haiku`  | fast, cheap, high-volume lookups and short edits |
+
+`seis-orchestrator` is the SEIS-owned policy that picks the backbone and lane; the
+backbone weights are hosted and closed, so SEIS treats them as a service, never as
+training material. This respects the Clean-Room Rule: SEIS owns the routing policy,
+prompts, and evaluation, not the backbone internals.
+
+## Flagship target (`seis-flagship-150b`)
+
+`seis-flagship-150b` is a **long-horizon research target**, captured in
+`SEIS_UNIVERSE_FLAGSHIP_150B_MODEL_CARD.md`. It is a specification — a ~150B-parameter
+SEIS-owned reasoning model — **not a trained or shipped artifact**. Hosted Claude
+backbones serve only as evaluation baselines for it, never as distillation teachers
+(distilling a closed model's outputs is out of scope under the Clean-Room Rule).
 
 ## God Mode Requirements
 
