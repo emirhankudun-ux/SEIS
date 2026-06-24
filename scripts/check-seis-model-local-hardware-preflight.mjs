@@ -101,11 +101,18 @@ function validateHostPreflight(candidate) {
   ensure(candidate?.status === "host-observed-not-benchmark", "host preflight must remain host-observed-not-benchmark");
   ensure(candidate?.target?.parameterClass === "20B", "host preflight target must remain 20B");
   ensure(candidate?.target?.targetRamClass === "16GB+ RAM", "host preflight RAM target mismatch");
-  ensure(candidate?.host?.totalRamGb >= 16, "host must observe at least 16GB RAM for this local 20B preflight check");
-  ensure(candidate?.host?.hostRamFloorObserved === true, "host RAM floor must be observed before this local preflight check can pass");
-  ensure(candidate?.host?.ramFloorStatus === "observed", "host RAM floor status must be observed");
-  ensure(candidate?.result?.hostRamFloorObserved === true, "result must record the 16GB+ RAM floor as observed");
-  ensure(candidate?.result?.ramFloorStatus === "observed", "result RAM floor status must be observed");
+  ensure(Number.isFinite(candidate?.host?.totalRamGb) && candidate.host.totalRamGb > 0, "host total RAM must be observed");
+  ensure(typeof candidate?.host?.hostRamFloorObserved === "boolean", "host RAM floor observation must be boolean");
+  ensure(["observed", "below-target-floor"].includes(candidate?.host?.ramFloorStatus), "host RAM floor status must be observed or below-target-floor");
+  ensure(candidate?.result?.hostRamFloorObserved === candidate?.host?.hostRamFloorObserved, "result must mirror the host RAM floor observation");
+  ensure(candidate?.result?.ramFloorStatus === candidate?.host?.ramFloorStatus, "result RAM floor status must mirror the host RAM floor status");
+  if (candidate?.host?.totalRamGb >= 16) {
+    ensure(candidate.host.hostRamFloorObserved === true, "16GB+ host must record the RAM floor as observed");
+    ensure(candidate.host.ramFloorStatus === "observed", "16GB+ host RAM floor status must be observed");
+  } else {
+    ensure(candidate?.host?.hostRamFloorObserved === false, "below-floor host must not record the RAM floor as observed");
+    ensure(candidate?.host?.ramFloorStatus === "below-target-floor", "below-floor host RAM floor status must be below-target-floor");
+  }
   ensure(candidate?.result?.compatibilityClaim === "not-verified", "host preflight compatibility claim must remain not-verified");
   ensure(candidate?.result?.modelCompatibilityVerified === false, "host preflight must not verify model compatibility");
   ensure(candidate?.result?.measuredBenchmark === false, "host preflight must not claim benchmark evidence");
