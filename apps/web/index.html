@@ -35,16 +35,41 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SEIS",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web, macOS, iOS",
-    "description": "AI-native creative engineering operating system for product, design, code, agents, repositories, governance, and research.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://emirhankudun.com/#person",
+        "name": "Emirhan Kudun",
+        "url": "https://emirhankudun.com/",
+        "jobTitle": "SEIS Founder and Product Architect",
+        "email": "emirhan@kudun.com",
+        "sameAs": [
+          "https://github.com/emirhankudun-ux"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://emirhankudun.com/#website",
+        "url": "https://emirhankudun.com/",
+        "name": "SEIS",
+        "publisher": {
+          "@id": "https://emirhankudun.com/#person"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://emirhankudun.com/#seis",
+        "name": "SEIS",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web, macOS, iOS",
+        "description": "AI-native creative engineering operating system for product, design, code, agents, repositories, governance, and research.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
   }
   </script>
   <link rel="stylesheet" href="style.css">
@@ -76,6 +101,7 @@
     <section class="hero-section" id="hero" aria-labelledby="hero-title">
       <canvas id="signal-canvas" class="signal-canvas" data-cinematic-field aria-hidden="true"></canvas>
       <div class="hero-content">
+        <img class="hero-product-mark" src="icons/icon-512.png" alt="SEIS product mark" width="96" height="96" decoding="async" fetchpriority="high">
         <p class="eyebrow" data-copy-key="heroEyebrow">AI-native creative engineering operating system</p>
         <h1 id="hero-title" data-copy-key="heroTitle">SEIS</h1>
         <p class="hero-subtitle" data-copy-key="heroSubtitle">
