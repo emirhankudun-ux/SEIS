@@ -581,6 +581,7 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   compatibilityClaim: "not-verified",
   memoryBudgetStatus: "planning-estimate-not-benchmark-evidence",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+  benchmarkStatus: "template-not-measured",
   compatibilityProfiles: [
     ["16GB+ developer floor", "20B / Q4 candidate", "Local Demo only", "Not verified"],
     ["24GB+ candidate lane", "20B / Q4 candidate", "Local Demo only", "Not verified"],
@@ -631,6 +632,117 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   ]
 };
 
+const SEIS_MASTER_OBJECTIVE_COVERAGE_UI = {
+  source: "data/seis-master-objective-coverage.json",
+  report: "reports/seis-master-objective-coverage.md",
+  activeCoverage: "seis-ai-150b-frontier-boundary",
+  activeCoverageStatus: "active / evidence-gated",
+  activeRequirement: "Track SEIS AI 150B as a frontier research lane without claiming trained weights, routeable inference, provider access, SSH execution, or production readiness.",
+  items: [
+    {
+      id: "user-work-protection",
+      status: "active",
+      requirement: "Protect user work, preserve dirty worktrees, and keep changes reversible.",
+      evidence: "docs/governance/seis-master-prompt.md; docs/governance/seis-master-prompt-change-checklist.md",
+      check: "npm run check:seis-master-prompt",
+      gap: "Requires current diff review before every commit."
+    },
+    {
+      id: "security-and-privacy",
+      status: "active",
+      requirement: "Prevent secrets exposure and govern SSH hardening risk.",
+      evidence: "data/ssh-hardening-operation-contract.json; docs/deployment/ssh-wireguard-vps-cloud-server.md",
+      check: "npm run check:ssh-hardening-contract",
+      gap: "Track mode-isolation, lockout-safety, and fail-fast validation until direct-cloud SSH is proven."
+    },
+    {
+      id: "architecture-and-maintainability",
+      status: "active",
+      requirement: "Keep governance and implementation surfaces mapped to a single operating contract.",
+      evidence: "data/seis-master-prompt-implementation-map.json; docs/governance/adr-0001-seis-master-prompt-operating-contract.md",
+      check: "npm run check:seis-master-prompt",
+      gap: "Continue reducing duplicated governance text."
+    },
+    {
+      id: "documentation-traceability",
+      status: "active",
+      requirement: "Make governance evidence reproducible through generated reports.",
+      evidence: "reports/seis-master-prompt-governance.md; reports/seis-master-objective-coverage.md",
+      check: "npm run check:seis-master-objective-coverage-report",
+      gap: "Reports must be regenerated after source JSON changes."
+    },
+    {
+      id: "apple-first-platform",
+      status: "mapped",
+      requirement: "Preserve Apple-first platform direction while keeping cross-platform checks realistic.",
+      evidence: "docs/governance/seis-supreme-vision.md; AGENTS.md",
+      check: "npm run check:seis-master-prompt",
+      gap: "Apple-native runtime checks remain platform-specific."
+    },
+    {
+      id: "design-accessibility-experience",
+      status: "mapped",
+      requirement: "Treat design, accessibility, and product experience as engineering systems.",
+      evidence: "docs/governance/seis-supreme-vision.md; data/seis-operational-goal-tracker.json",
+      check: "npm run check:seis-operational-goal-tracker",
+      gap: "Needs ongoing product-surface validation."
+    },
+    {
+      id: "ai-data-cloud-automation",
+      status: "active",
+      requirement: "Keep AI, data, cloud, SSH, and automation work governed and measurable.",
+      evidence: "data/ssh-hardening-operation-contract.json; docs/deployment/ssh-wireguard-vps-cloud-server.md",
+      check: "npm run check:ssh-vpn-cloud-server",
+      gap: "Direct cloud mobile SSH remains blocked until strict readiness passes."
+    },
+    {
+      id: "seis-ai-150b-frontier-boundary",
+      status: "active",
+      requirement: "Track the requested SEIS AI 150B direction as an evidence-gated frontier research lane without claiming trained weights, routeable inference, provider access, SSH execution, or production readiness.",
+      evidence: "content/development/seis-model-scaling-hardware-profile.json; docs/ai/seis-model-scaling.md; packages/seis-ai/src/lib/plugin-integration.mjs; apps/web/desktop.js",
+      check: "npm run check:seis-model-scaling-hardware-profile",
+      gap: "150B remains blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy and safety review, observability, rollback, and explicit human approval exist."
+    },
+    {
+      id: "open-source-github-readiness",
+      status: "active",
+      requirement: "Keep GitHub, community, governance, and CI readiness visible.",
+      evidence: "data/seis-master-prompt-github-controls.json; .github/workflows/seis-master-prompt-governance.yml",
+      check: "npm run check:open-source-governance",
+      gap: "External GitHub branch settings must be verified before claiming enforcement."
+    },
+    {
+      id: "god-mode-every-topic-feature-growth",
+      status: "active",
+      requirement: "Treat God Mode as incomplete unless Dashboard, Goals, Repos, Docs, Agents, security, AI policy, rollback, validation, and handoff all receive explicit feature or governance improvement evidence.",
+      evidence: "content/development/seis-god-mode-feature-growth-ledger.json; content/development/seis-god-mode-module-coverage.json; content/development/seis-god-mode-completion-audit.json",
+      check: "npm run check:seis-god-mode-feature-growth-ledger",
+      gap: "Commit, push, CI, and final staged-boundary evidence are still required before the broad God Mode objective can be marked complete."
+    }
+  ],
+  evidence: [
+    "content/development/seis-model-scaling-hardware-profile.json",
+    "docs/ai/seis-model-scaling.md",
+    "packages/seis-ai/src/lib/plugin-integration.mjs",
+    "apps/web/desktop.js"
+  ],
+  checks: [
+    "npm run check:seis-master-objective-coverage",
+    "npm run check:seis-master-objective-coverage-report",
+    "npm run check:seis-model-scaling-hardware-profile",
+    "npm test --prefix packages/seis-ai",
+    "npm run check:desktop-os"
+  ],
+  blockedUntil: [
+    "20B and 70B evidence",
+    "clean-room training plan",
+    "distributed runtime budget",
+    "privacy and safety review",
+    "observability and rollback",
+    "explicit human approval"
+  ]
+};
+
 const CODE_IDE_PANELS = [
   { id: "explorer", label: "Explorer", glyph: "EX", detail: "Browse browser-local VFS project files." },
   { id: "search", label: "Search", glyph: "SR", detail: "Search local files without external indexing." },
@@ -651,7 +763,7 @@ const CODE_IDE_COMMANDS = [
 const CODE_IDE_SOURCE_CONTROL_CHANGES = [
   ["apps/web/desktop.js", "Modified", "Desktop OS, Command Center, and IDE surface changes require browser smoke."],
   ["docs/STATUS.md", "Modified", "Status should describe mock, planned, and real states honestly."],
-  ["content/development/seis-model-scaling-hardware-profile.json", "Untracked", "Model scaling profile is evidence-only until reviewed."]
+  ["content/development/seis-model-scaling-hardware-profile.json", "Tracked", "Model scaling profile is evidence-only until reviewed."]
 ];
 
 const SEIS_V17_COMMAND_CENTER_MODULES = [
@@ -4828,6 +4940,7 @@ function getV17CommandCenterCoverage() {
     modelScalingFloor: "20B local-planned profile for 16GB+ RAM",
     modelScalingFuture: "70B research and 150B frontier tiers require future hardware, safety, cost, privacy, and validation evidence",
     modelScalingProfile: SEIS_MODEL_SCALING_UI_PROFILE,
+    masterObjectiveCoverage: SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
     modules
   };
 }
@@ -4894,6 +5007,21 @@ function renderSeisCommandCenter() {
         <tbody>${validationRows.map(([gate, command, scope]) => `<tr><td>${escapeHtml(gate)}</td><td><code>${escapeHtml(command)}</code></td><td>${escapeHtml(scope)}</td></tr>`).join("")}</tbody>
       </table>
     </section>
+    <section class="subagent-panel" data-master-objective-coverage>
+      <h3>Master Objective Coverage</h3>
+      <div class="evolution-safety-grid">
+        <article><strong>Coverage Source</strong><p>${escapeHtml(coverage.masterObjectiveCoverage.source)}</p></article>
+        <article><strong>Coverage Report</strong><p>${escapeHtml(coverage.masterObjectiveCoverage.report)}</p></article>
+        <article><strong>Coverage Items</strong><p>${coverage.masterObjectiveCoverage.itemCount}</p></article>
+        <article><strong>Active AI Boundary</strong><p>${escapeHtml(coverage.masterObjectiveCoverage.activeCoverage)} · ${escapeHtml(coverage.masterObjectiveCoverage.activeCoverageStatus)}</p></article>
+      </div>
+      <p class="status-note">${escapeHtml(coverage.masterObjectiveCoverage.activeRequirement)}</p>
+      <table class="data-table">
+        <thead><tr><th>Evidence</th><th>Required Check</th></tr></thead>
+        <tbody>${coverage.masterObjectiveCoverage.evidence.map((item, index) => `<tr><td>${escapeHtml(item)}</td><td><code>${escapeHtml(coverage.masterObjectiveCoverage.checks[index] || coverage.masterObjectiveCoverage.checks[0])}</code></td></tr>`).join("")}</tbody>
+      </table>
+      <p class="status-note">150B remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
+    </section>
     <section class="subagent-panel">
       <h3>20B to 150B Model Scaling Profile</h3>
       <div class="evolution-safety-grid">
@@ -4920,7 +5048,7 @@ function renderSeisCommandCenter() {
         <tbody>${coverage.modelScalingProfile.creationStages.map(([stage, scope, status]) => `<tr><td>${escapeHtml(stage)}</td><td>${escapeHtml(scope)}</td><td>${escapeHtml(status)}</td></tr>`).join("")}</tbody>
       </table>
       <p class="status-note">Required 16GB+ measurements before any compatibility claim: ${coverage.modelScalingProfile.requiredMeasurements.map((item) => escapeHtml(item)).join(", ")}.</p>
-      <p class="status-note">Benchmark manifest required before route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.benchmarkManifest)}</code>. Gates: ${coverage.modelScalingProfile.benchmarkGates.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">Benchmark manifest required before route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.benchmarkManifest)}</code> · ${escapeHtml(coverage.modelScalingProfile.benchmarkStatus)}. Gates: ${coverage.modelScalingProfile.benchmarkGates.map((item) => escapeHtml(item)).join(", ")}.</p>
       <p class="status-note">Required 150B evidence before scope: ${coverage.modelScalingProfile.frontierRequiredEvidence.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
     <section class="subagent-panel">
@@ -6783,6 +6911,16 @@ Generated: ${timestamp}
 - Required 150B evidence: ${coverage.modelScalingProfile.frontierRequiredEvidence.join(", ")}
 - Training/inference ownership claim: none
 - Provider keys required for core demo: ${coverage.providerKeysRequiredForCoreDemo}
+
+## Master Objective Coverage
+- Coverage source: ${coverage.masterObjectiveCoverage.source}
+- Coverage report: ${coverage.masterObjectiveCoverage.report}
+- Coverage items: ${coverage.masterObjectiveCoverage.itemCount}
+- Active AI boundary: ${coverage.masterObjectiveCoverage.activeCoverage} / ${coverage.masterObjectiveCoverage.activeCoverageStatus}
+- Active requirement: ${coverage.masterObjectiveCoverage.activeRequirement}
+- Evidence: ${coverage.masterObjectiveCoverage.evidence.join("; ")}
+- Checks: ${coverage.masterObjectiveCoverage.checks.join("; ")}
+- 150B blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.join(", ")}
 
 ## Module Map
 ${coverage.modules.map((module) => `- ${module.label}: ${module.status} / ${module.evidence} / ${module.detail}`).join("\n")}

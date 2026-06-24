@@ -81,6 +81,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Design component inventory | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) |
 | Data schema registry | [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) |
 | SEIS model scaling hardware profile | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) |
+| SEIS 20B / 16GB+ benchmark manifest template | [../reports/seis-model-scaling/20b-16gb-memory-benchmark.json](../reports/seis-model-scaling/20b-16gb-memory-benchmark.json) |
 | Cloud environment record | [../deploy/cloud-environment.json](../deploy/cloud-environment.json) |
 | Code automation plan | [../content/development/code-automation-plan.json](../content/development/code-automation-plan.json) |
 | Design tokens | [../packages/design-tokens/seis.tokens.css](../packages/design-tokens/seis.tokens.css) |

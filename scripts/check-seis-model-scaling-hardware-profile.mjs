@@ -8,6 +8,7 @@ const failures = [];
 
 const paths = {
   profile: "content/development/seis-model-scaling-hardware-profile.json",
+  benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   scalingDoc: "docs/ai/seis-model-scaling.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelRouterDoc: "docs/ai/model-router.md",
@@ -28,6 +29,7 @@ for (const [label, relativePath] of Object.entries(paths)) {
 }
 
 const profile = readJson(paths.profile, "model scaling profile");
+const benchmarkManifestTemplate = readJson(paths.benchmarkManifest, "20B benchmark manifest template");
 const scalingDoc = readText(paths.scalingDoc, "model scaling docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
 const modelRouterDoc = readText(paths.modelRouterDoc, "model router docs");
@@ -53,6 +55,7 @@ if (profile) {
   ensure(String(profile.truthBoundary || "").includes("does not claim SEIS owns a trained foundation model"), "truth boundary must forbid foundation model ownership claims");
 
   ensure(profile.sourceOfTruth?.scalingDoc === paths.scalingDoc, "sourceOfTruth.scalingDoc mismatch");
+  ensure(profile.sourceOfTruth?.benchmarkManifest === paths.benchmarkManifest, "sourceOfTruth.benchmarkManifest mismatch");
   ensure(profile.sourceOfTruth?.aiCoreDoc === paths.aiCoreDoc, "sourceOfTruth.aiCoreDoc mismatch");
   ensure(profile.sourceOfTruth?.modelRouterDoc === paths.modelRouterDoc, "sourceOfTruth.modelRouterDoc mismatch");
   ensure(profile.sourceOfTruth?.providerRegistry === paths.providerRegistry, "sourceOfTruth.providerRegistry mismatch");
@@ -213,6 +216,57 @@ if (providerRegistry) {
   ensure(providerRegistry.coreCredentialRequirement === "none", "provider registry coreCredentialRequirement must stay none");
   ensure(providerRegistry.defaultRoutingMode === "local-demo", "provider registry defaultRoutingMode must stay local-demo");
   ensure(providerRegistry.localOnlyRespected === true, "provider registry must respect local-only mode");
+}
+
+if (benchmarkManifestTemplate) {
+  ensure(benchmarkManifestTemplate.id === "seis-20b-16gb-memory-benchmark", "benchmark manifest template id mismatch");
+  ensure(benchmarkManifestTemplate.status === "template-not-measured", "benchmark manifest must stay template-not-measured until real measurements exist");
+  ensure(benchmarkManifestTemplate.profileId === "seis-model-scaling-hardware-profile", "benchmark manifest profileId mismatch");
+  ensure(benchmarkManifestTemplate.targetId === "seis-20b-local-compatibility-target", "benchmark manifest targetId mismatch");
+  ensure(benchmarkManifestTemplate.targetParameterClass === "20B", "benchmark manifest targetParameterClass must be 20B");
+  ensure(benchmarkManifestTemplate.targetRamClass === "16GB+ RAM", "benchmark manifest targetRamClass must be 16GB+ RAM");
+  ensure(benchmarkManifestTemplate.compatibilityClaim === "not-verified", "benchmark manifest must keep compatibilityClaim not-verified");
+  ensure(benchmarkManifestTemplate.benchmarkEvidenceAvailable === false, "benchmark manifest must not claim benchmark evidence");
+  ensure(benchmarkManifestTemplate.runtimeAuthority === false, "benchmark manifest must not grant runtime authority");
+  ensure(benchmarkManifestTemplate.routeEligibleToday === false, "benchmark manifest must not be route eligible");
+  ensure(benchmarkManifestTemplate.productionReady === false, "benchmark manifest must not be production ready");
+  ensure(String(benchmarkManifestTemplate.truthBoundary || "").includes("template only"), "benchmark manifest truthBoundary must say template only");
+  ensure(String(benchmarkManifestTemplate.truthBoundary || "").includes("no measured memory evidence"), "benchmark manifest truthBoundary must forbid measured evidence claims");
+  ensureArrayIncludesAll(benchmarkManifestTemplate.requiredBeforeUse, [
+    "human approval for any model artifact download or runtime setup",
+    "16GB+ memory ceiling benchmark measured on real hardware",
+    "local-only fallback verified when memory ceiling is exceeded",
+    "model card and dataset card reviewed"
+  ], "benchmarkManifest.requiredBeforeUse");
+  ensureArrayIncludesAll(Object.keys(benchmarkManifestTemplate.measurementTemplate || {}), [
+    "machineRamGb",
+    "runtimeName",
+    "runtimeVersion",
+    "modelArtifactId",
+    "modelArtifactLicense",
+    "quantization",
+    "contextTokens",
+    "peakResidentMemoryGb",
+    "kvCacheMemoryGb",
+    "osMemoryPressure",
+    "wallClockStartupSeconds",
+    "tokensPerSecond",
+    "fallbackVerified",
+    "secretsRedacted",
+    "localOnlyFallbackPassed",
+    "measuredAt",
+    "verifiedBy"
+  ], "benchmarkManifest.measurementTemplate");
+  ensure(benchmarkManifestTemplate.measurementTemplate?.machineRamGb === null, "benchmark manifest must not include measured RAM yet");
+  ensure(benchmarkManifestTemplate.measurementTemplate?.tokensPerSecond === null, "benchmark manifest must not include throughput yet");
+  ensure(benchmarkManifestTemplate.measurementTemplate?.fallbackVerified === false, "benchmark manifest fallbackVerified must remain false before measurement");
+  ensure(benchmarkManifestTemplate.measurementTemplate?.localOnlyFallbackPassed === false, "benchmark manifest localOnlyFallbackPassed must remain false before measurement");
+  ensureArrayIncludesAll(benchmarkManifestTemplate.nonClaims, [
+    "SEIS has not trained a 20B foundation model.",
+    "SEIS has not run 20B inference.",
+    "SEIS has not benchmarked 20B memory usage.",
+    "SEIS has not verified 16GB+ compatibility."
+  ], "benchmarkManifest.nonClaims");
 }
 
 if (workforceTrainingPlan) {

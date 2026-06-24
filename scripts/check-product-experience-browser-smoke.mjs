@@ -734,6 +734,9 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(commandCenter.text.includes("20B / 16GB+"), "Desktop V17 Command Center must show the 20B on 16GB+ model floor");
   ensure(commandCenter.text.includes("150B gated"), "Desktop V17 Command Center must show the 150B future boundary");
   ensure(commandCenter.text.includes("SEIS 150B Frontier Research Target"), "Desktop V17 Command Center must show the SEIS 150B frontier target");
+  ensure(commandCenter.text.includes("Master Objective Coverage"), "Desktop V17 Command Center must show the master objective coverage panel");
+  ensure(commandCenter.text.includes("seis-ai-150b-frontier-boundary"), "Desktop V17 Command Center must show the 150B objective coverage boundary");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "Desktop V17 Command Center diagnostics must expose the 150B objective coverage boundary");
   await clickSelector(client, "[data-seis-command-center] [data-action='app-primary']");
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-v17-command-center-snapshot.md')", 5000);
 

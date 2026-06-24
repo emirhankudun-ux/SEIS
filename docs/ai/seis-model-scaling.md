@@ -75,13 +75,14 @@ evidence, not intention.
 
 ## Benchmark Manifest Contract
 
-Before SEIS can say that a 20B profile works on 16GB+ RAM, the repository needs
-a benchmark artifact at:
+Before SEIS can say that a 20B profile works on 16GB+ RAM, the repository must
+complete the benchmark artifact at:
 
 `reports/seis-model-scaling/20b-16gb-memory-benchmark.json`
 
-That artifact is not created by this planning pass. When it exists, it must be
-human-reviewed and include at least:
+That file now exists only as `template-not-measured`. It is not benchmark
+evidence and does not verify 16GB+ compatibility. A future completed version
+must be human-reviewed and include at least:
 
 - machine RAM
 - runtime name and version
@@ -101,6 +102,12 @@ human-reviewed and include at least:
 
 The benchmark manifest must not contain provider keys, SSH private keys, access
 tokens, unredacted secret paths, or training claims without training logs.
+
+Current manifest status:
+
+| File | Status | Meaning |
+| --- | --- | --- |
+| `reports/seis-model-scaling/20b-16gb-memory-benchmark.json` | `template-not-measured` | Required fields exist, but no model artifact, runtime, memory, throughput, or fallback measurements have been recorded. |
 
 ## 20B / 16GB+ Memory Budget Contract
 

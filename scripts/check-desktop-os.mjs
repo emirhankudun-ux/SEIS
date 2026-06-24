@@ -111,9 +111,13 @@ if (failures.length === 0) {
   ensure(js.includes("20B / 16GB+"), "desktop.js must surface the 20B on 16GB+ RAM model-scaling floor.");
   ensure(js.includes("70B"), "desktop.js must surface the future 70B model-scaling boundary.");
   ensure(js.includes("150B gated"), "desktop.js must surface the future 150B model-scaling boundary.");
+  ensure(js.includes("SEIS_MASTER_OBJECTIVE_COVERAGE_UI"), "desktop.js must define the master objective coverage UI manifest.");
+  ensure(js.includes("data-master-objective-coverage"), "desktop.js must render the master objective coverage surface.");
+  ensure(js.includes("seis-ai-150b-frontier-boundary"), "desktop.js must expose the 150B master objective coverage boundary.");
   ensure(js.includes("SEIS_MODEL_SCALING_UI_PROFILE"), "desktop.js must define the model scaling UI profile.");
   ensure(js.includes("memoryBudgetStatus"), "desktop.js must surface the model scaling memory budget status.");
   ensure(js.includes("benchmarkManifest"), "desktop.js must surface the model scaling benchmark manifest boundary.");
+  ensure(js.includes("template-not-measured"), "desktop.js must mark the model scaling benchmark manifest as template-not-measured.");
   ensure(js.includes("compatibilityProfiles"), "desktop.js must surface RAM-class compatibility profiles.");
   ensure(js.includes("16GB+ developer floor"), "desktop.js must surface the 16GB+ model scaling floor.");
   ensure(js.includes("32GB+ validation lane"), "desktop.js must surface the 32GB+ 20B validation lane.");
@@ -301,7 +305,12 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingProfile.frontierTarget.includes("150B"), "V17 Command Center must expose the 150B frontier target.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierStatus.includes("not scoped"), "V17 Command Center must keep the 150B frontier target unscoped.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierRequiredEvidence.length >= 5, "V17 Command Center must expose 150B required evidence gates.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.itemCount >= 10, "V17 Command Center must expose the expanded master objective coverage item count.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "V17 Command Center must expose the 150B master objective coverage boundary.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.checks.includes("npm run check:seis-model-scaling-hardware-profile"), "V17 Command Center must expose the model scaling coverage check.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.blockedUntil.includes("explicit human approval"), "V17 Command Center must keep 150B blocked until explicit human approval.");
     ensure(commandCenterCoverage.modules.some((module) => module.id === "model-scaling" && module.state === "planned-gated"), "V17 Command Center must model scaling as planned/gated.");
+    ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage]"), "V17 Command Center must render the master objective coverage panel.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-module]").length === commandCenterCoverage.moduleCount, "V17 Command Center must render all module rows.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-open-app]").length >= 15, "V17 Command Center must render executable app actions.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-open-route]").length >= 7, "V17 Command Center must render executable route actions.");

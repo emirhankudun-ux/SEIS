@@ -9,6 +9,7 @@
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
     "modelRouterDoc": "docs/ai/model-router.md",
     "scalingDoc": "docs/ai/seis-model-scaling.md",
+    "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "workforceTrainingPlan": "content/development/seis-ai-workforce-training-plan.json",
     "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",

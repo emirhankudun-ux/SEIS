@@ -1,0 +1,64 @@
+{
+  "id": "seis-20b-16gb-memory-benchmark",
+  "version": "2026.06.24",
+  "status": "template-not-measured",
+  "profileId": "seis-model-scaling-hardware-profile",
+  "targetId": "seis-20b-local-compatibility-target",
+  "targetParameterClass": "20B",
+  "targetRamClass": "16GB+ RAM",
+  "compatibilityClaim": "not-verified",
+  "benchmarkEvidenceAvailable": false,
+  "runtimeAuthority": false,
+  "routeEligibleToday": false,
+  "productionReady": false,
+  "truthBoundary": "This is a benchmark manifest template only. It contains no measured memory evidence, no trained weights, no inference result, no throughput benchmark, no provider call, no model download, no SSH action, no deployment, and no compatibility claim.",
+  "requiredBeforeUse": [
+    "human approval for any model artifact download or runtime setup",
+    "clean-room model artifact and dataset provenance review",
+    "local-only runtime adapter selected and documented",
+    "16GB+ memory ceiling benchmark measured on real hardware",
+    "local-only fallback verified when memory ceiling is exceeded",
+    "redacted logs and client-bundle secret scan",
+    "model card and dataset card reviewed"
+  ],
+  "measurementTemplate": {
+    "machineRamGb": null,
+    "runtimeName": null,
+    "runtimeVersion": null,
+    "modelArtifactId": null,
+    "modelArtifactLicense": null,
+    "quantization": null,
+    "contextTokens": null,
+    "peakResidentMemoryGb": null,
+    "kvCacheMemoryGb": null,
+    "osMemoryPressure": null,
+    "wallClockStartupSeconds": null,
+    "tokensPerSecond": null,
+    "fallbackVerified": false,
+    "secretsRedacted": false,
+    "localOnlyFallbackPassed": false,
+    "measuredAt": null,
+    "verifiedBy": null
+  },
+  "forbiddenInCompletedManifest": [
+    "provider keys",
+    "SSH private keys",
+    "access tokens",
+    "unredacted local paths containing secrets",
+    "claims that training happened without training logs",
+    "claims that 16GB+ compatibility is verified without measured evidence"
+  ],
+  "nonClaims": [
+    "SEIS has not trained a 20B foundation model.",
+    "SEIS has not downloaded or published 20B weights.",
+    "SEIS has not run 20B inference.",
+    "SEIS has not benchmarked 20B memory usage.",
+    "SEIS has not verified 16GB+ compatibility.",
+    "SEIS has not authorized 70B, 150B, or larger runtime scope."
+  ],
+  "nextSafeActions": [
+    "keep this manifest as template-not-measured until an approved local runtime and model artifact exist",
+    "fill measurementTemplate only with redacted, human-reviewed benchmark output",
+    "keep model router eligibility blocked until this manifest is measured and reviewed"
+  ]
+}

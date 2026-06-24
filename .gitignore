@@ -150,6 +150,7 @@ ios/
 !apps/seis-core/data/seis-router-routes.json
 !reports/seis-sub-agent-five-year-demo-evidence.json
 !reports/seis-sub-agent-five-year-demo-run.json
+!reports/seis-model-scaling/20b-16gb-memory-benchmark.json
 !packages/seis-ai/models/seis-model-family-registry.json
 !packages/seis-ai/data/model-benchmark-suite-v0.json
 !packages/seis-ai/models/seis-model-benchmark-suite.json
