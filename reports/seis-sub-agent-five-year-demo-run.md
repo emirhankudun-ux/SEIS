@@ -100,3 +100,4 @@ result dry-run-complete external-mutations=0 credentials=0 deployments=0 github-
 ## Next Safe Action
 
 Keep this CLI run, the browser Local Demo, and the deterministic evidence report in sync before expanding sub-agent behavior beyond dry-run or review-only scopes.
+
