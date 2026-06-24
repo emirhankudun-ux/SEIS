@@ -4921,6 +4921,11 @@ function getV17CommandCenterCoverage() {
     counts[module.state] = (counts[module.state] || 0) + 1;
     return counts;
   }, {});
+  const masterObjectiveCoverageItems = SEIS_MASTER_OBJECTIVE_COVERAGE_UI.items.map((item) => ({ ...item }));
+  const masterObjectiveCoverageStatusCounts = masterObjectiveCoverageItems.reduce((counts, item) => {
+    counts[item.status] = (counts[item.status] || 0) + 1;
+    return counts;
+  }, {});
   const appLinks = modules.filter((module) => module.appId && getApp(module.appId)).length;
   const routeLinks = modules.filter((module) => module.routeId && DEMO_ROUTES.some((route) => route.id === module.routeId)).length;
   const executableActions = modules.reduce((total, module) => total + (module.appId ? 1 : 0) + (module.routeId ? 1 : 0), 0);
@@ -4940,7 +4945,13 @@ function getV17CommandCenterCoverage() {
     modelScalingFloor: "20B local-planned profile for 16GB+ RAM",
     modelScalingFuture: "70B research and 150B frontier tiers require future hardware, safety, cost, privacy, and validation evidence",
     modelScalingProfile: SEIS_MODEL_SCALING_UI_PROFILE,
-    masterObjectiveCoverage: SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
+    masterObjectiveCoverage: {
+      ...SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
+      itemCount: masterObjectiveCoverageItems.length,
+      itemIds: masterObjectiveCoverageItems.map((item) => item.id),
+      statusCounts: masterObjectiveCoverageStatusCounts,
+      items: masterObjectiveCoverageItems
+    },
     modules
   };
 }
@@ -5019,6 +5030,16 @@ function renderSeisCommandCenter() {
       <table class="data-table">
         <thead><tr><th>Evidence</th><th>Required Check</th></tr></thead>
         <tbody>${coverage.masterObjectiveCoverage.evidence.map((item, index) => `<tr><td>${escapeHtml(item)}</td><td><code>${escapeHtml(coverage.masterObjectiveCoverage.checks[index] || coverage.masterObjectiveCoverage.checks[0])}</code></td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table" data-master-objective-coverage-matrix>
+        <thead><tr><th>Coverage ID</th><th>Status</th><th>Requirement</th><th>Evidence / Check</th><th>Remaining Gap</th></tr></thead>
+        <tbody>${coverage.masterObjectiveCoverage.items.map((item) => `<tr data-master-objective-coverage-item="${escapeAttr(item.id)}">
+          <td><strong>${escapeHtml(item.id)}</strong></td>
+          <td>${escapeHtml(item.status)}</td>
+          <td>${escapeHtml(item.requirement)}</td>
+          <td><span class="muted">${escapeHtml(item.evidence)}</span><br><code>${escapeHtml(item.check)}</code></td>
+          <td>${escapeHtml(item.gap)}</td>
+        </tr>`).join("")}</tbody>
       </table>
       <p class="status-note">150B remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
@@ -6921,6 +6942,9 @@ Generated: ${timestamp}
 - Evidence: ${coverage.masterObjectiveCoverage.evidence.join("; ")}
 - Checks: ${coverage.masterObjectiveCoverage.checks.join("; ")}
 - 150B blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.join(", ")}
+
+## Master Objective Coverage Matrix
+${coverage.masterObjectiveCoverage.items.map((item) => `- ${item.id}: ${item.status} / ${item.check} / ${item.gap}`).join("\n")}
 
 ## Module Map
 ${coverage.modules.map((module) => `- ${module.label}: ${module.status} / ${module.evidence} / ${module.detail}`).join("\n")}
