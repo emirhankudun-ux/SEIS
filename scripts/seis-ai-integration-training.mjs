@@ -159,6 +159,12 @@ function verify(ledger) {
       ensure(exists(file), `missing audit entry point file: ${entry}`);
     }
   }
+  // The check must stay wired into the governance gate, or CI silently stops
+  // running it even though this script still passes locally.
+  ensure(
+    (scripts["quality:governance"] ?? "").includes("check:seis-ai-integration-training"),
+    "quality:governance no longer runs check:seis-ai-integration-training"
+  );
 
   // Lane 4 — agent
   ensure(lanes.agent?.lanes?.length >= BASELINE.agentLanes, `expected >=${BASELINE.agentLanes} agent lanes, ledger has ${lanes.agent?.lanes?.length ?? "undefined"}`);
