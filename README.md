@@ -45,6 +45,49 @@ Root system documents:
 - [`docs/governance/seis-god-mode-developer.md`](./docs/governance/seis-god-mode-developer.md)
   defines the SEIS God Mode Developer lane for high-leverage, cross-layer work.
 
+## Runnable SEIS Demo
+
+The current browser demo starts from the SEIS System OS route:
+
+```bash
+cd apps/web
+python3 -m http.server 50951 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:50951/desktop.html`.
+
+The demo is local-first and requires zero cloud AI provider keys for the core
+experience. SEIS AI uses clearly labeled Local Demo mode unless a backend
+provider is configured and verified. SSH, deployment, provider keys, and live
+model routing remain disabled or planned where marked.
+
+Primary demo routes:
+
+- `desktop.html` - SEIS System OS, Search, Launchpad, Files, Terminal, Store,
+  Music, Design, Cloud, Agents, and local apps.
+- `seis-code.html` - SEIS Code browser IDE route.
+- `website/index.html` - SEIS Website hub, with product pages for SEIS AI, OS,
+  Code, Design, Search, Cloud, Store, and Agents.
+- `wow-gallery.html` - imported SEIS_WOW visual reference catalog.
+- `mythic-gacha.html` - playable no-key Mythic Gacha and Bestiary route.
+- `showcase/*.html` - four cinematic Video Hero pages.
+
+Key local validation commands:
+
+```bash
+npm run check:desktop-os
+npm run check:desktop-os-browser-smoke
+npm run check:seis-code
+npm run check:seis-website-pages
+npm run check:seis-ultimate-demo
+npm run check:mythic-gacha
+npm run check:video-hero-showcase
+npm run check:video-hero-browser-smoke
+npm run check:product-experience-browser-smoke
+npm run build:static
+npm run check:static-build
+```
+
 ## Yeni Nesil AGI Özellikleri
 
 SEIS artık sadece bir platform değil, otonom bir AGI çekirdeğidir:

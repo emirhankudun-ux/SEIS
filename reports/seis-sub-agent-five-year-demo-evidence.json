@@ -1,0 +1,2105 @@
+{
+  "id": "seis-sub-agent-five-year-demo-evidence",
+  "version": 1,
+  "status": "repo-local-demo-evidence",
+  "mode": "deterministic-plan-simulation",
+  "generatedAt": "deterministic-plan-derived",
+  "generatedBy": "scripts/create-sub-agent-five-year-demo-evidence.mjs",
+  "sourcePlan": "content/development/seis-sub-agent-5-year-plan.json",
+  "seisAiCoreVersionRegistry": "content/development/seis-ai-core-version-registry.json",
+  "seisAiCoreVersionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+  "seisAgentPluginIntegration": "content/development/seis-agent-plugin-integration.json",
+  "seisAiCoreMcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+  "seisAiCoreProviderRegistry": "content/development/seis-ai-core-provider-registry.json",
+  "seisSubAgentPlanView": "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json",
+  "demoSurface": "apps/seis-demo-web",
+  "demoBoundary": "local-demo-only",
+  "truthBoundary": "This report proves deterministic demo coverage of the documented five-year plan. It does not prove real five-year autonomous execution.",
+  "writerPolicy": "single-writer",
+  "defaultWriter": "codex",
+  "forbiddenAutonomy": [
+    "merge",
+    "push-to-main",
+    "deploy",
+    "secret-access",
+    "ssh-execution",
+    "history-rewrite",
+    "provider-key-collection",
+    "model-training",
+    "public-visibility-change"
+  ],
+  "validation": [
+    "npm run check:seis-sub-agent-5-year-plan",
+    "npm run check:seis-sub-agent-five-year-demo-evidence",
+    "npm run check:seis-ai-core-version-registry",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-ai-core-version-promotion-gates",
+    "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+    "npm run check:product-experience-browser-smoke"
+  ],
+  "yearCount": 5,
+  "quarterCount": 20,
+  "recordedQuarterCount": 20,
+  "completionPercent": 100,
+  "laneCount": 6,
+  "laneCoverage": [
+    {
+      "id": "architecture-agent",
+      "role": "Architecture and platform coherence",
+      "defaultAuthority": "review-only",
+      "wipLimit": 2,
+      "recordedQuarterCount": 9
+    },
+    {
+      "id": "implementation-agent",
+      "role": "Bounded code and product implementation",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2,
+      "recordedQuarterCount": 11
+    },
+    {
+      "id": "security-agent",
+      "role": "Security, privacy, permission, and credential boundaries",
+      "defaultAuthority": "review-only",
+      "wipLimit": 1,
+      "recordedQuarterCount": 13
+    },
+    {
+      "id": "documentation-agent",
+      "role": "Source-of-truth docs, evidence, and handoffs",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2,
+      "recordedQuarterCount": 9
+    },
+    {
+      "id": "validation-agent",
+      "role": "Tests, smoke checks, audit scripts, and release evidence",
+      "defaultAuthority": "review-only-or-scoped-worker",
+      "wipLimit": 2,
+      "recordedQuarterCount": 14
+    },
+    {
+      "id": "design-agent",
+      "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+      "defaultAuthority": "proposal-or-scoped-worker",
+      "wipLimit": 1,
+      "recordedQuarterCount": 4
+    }
+  ],
+  "installedAiCoreRouteCount": 6,
+  "installedAiCoreRoutes": [
+    {
+      "systemId": "codex-operator",
+      "systemName": "Codex",
+      "versionTargetId": "v0.1-foundation",
+      "versionLabel": "v0.1 Foundation Kernel",
+      "providerState": "Available",
+      "routeMode": "supervised-operator",
+      "subAgentDuty": "Implementation, validation, and repository-safe edits",
+      "credentialBoundary": "No browser credential; current Codex session only"
+    },
+    {
+      "systemId": "seis-local-demo",
+      "systemName": "SEIS Local Demo Runtime",
+      "versionTargetId": "v0.1-foundation",
+      "versionLabel": "v0.1 Foundation Kernel",
+      "providerState": "Available",
+      "routeMode": "no-key-local-demo",
+      "subAgentDuty": "AI shell, Claude-style REPL demo, tool-call ledger, and VFS evidence",
+      "credentialBoundary": "No key required; browser-local state only"
+    },
+    {
+      "systemId": "claude-review-profile",
+      "systemName": "Claude Review Profile",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "versionLabel": "v0.2 Read-Only Intelligence",
+      "providerState": "Missing Key",
+      "routeMode": "backend-only-planned",
+      "subAgentDuty": "Architecture, safety, PR review, and large-context review lane",
+      "credentialBoundary": "Server-only Anthropic credential when explicitly configured"
+    },
+    {
+      "systemId": "qwen-review-profile",
+      "systemName": "Qwen Alternative Review",
+      "versionTargetId": "v0.3-write-gated-runtime",
+      "versionLabel": "v0.3 Write-Gated Runtime",
+      "providerState": "Disabled",
+      "routeMode": "alternative-review-planned",
+      "subAgentDuty": "Contradiction detection, archive review, and second-opinion risk checks",
+      "credentialBoundary": "Server-only or local endpoint later"
+    },
+    {
+      "systemId": "gemini-validation-profile",
+      "systemName": "Gemini Secondary Validation",
+      "versionTargetId": "v0.4-multi-workspace-readiness",
+      "versionLabel": "v0.4 Multi-Workspace Readiness",
+      "providerState": "Disabled",
+      "routeMode": "secondary-validation-planned",
+      "subAgentDuty": "Multimodal, product, and secondary validation after provider audit",
+      "credentialBoundary": "Server-only Gemini credential when explicitly configured"
+    },
+    {
+      "systemId": "ollama-local-profile",
+      "systemName": "Ollama Local Candidate",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "versionLabel": "v0.2 Read-Only Intelligence",
+      "providerState": "Disabled",
+      "routeMode": "zero-key-local-provider-planned",
+      "subAgentDuty": "Local/private inference candidate for local-only workspaces",
+      "credentialBoundary": "No key; user-controlled local service only"
+    }
+  ],
+  "personalPluginLaneCount": 5,
+  "personalPluginLaneMatrix": [
+    {
+      "pluginId": "seis@personal",
+      "laneId": "seis",
+      "displayName": "SEIS Hub",
+      "status": "installed-enabled-audited",
+      "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+      "versionTargetId": "v0.1-foundation",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep source-of-truth, branch policy, public readiness, and plugin coordination aligned with each AI Core version.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "gate": "npm run check:seis-ai-agent",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-cloud@personal",
+      "laneId": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "status": "installed-enabled-audited",
+      "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+      "versionTargetId": "v0.4-multi-workspace-readiness",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep cloud, SSH, VPN, rollback, and deployment boundaries explicit before any version promotion.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "sourceMirror": "plugins/seis-cloud",
+      "gate": "npm run check:cloud-access-policy",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-code@personal",
+      "laneId": "seis-code",
+      "displayName": "SEIS-Code",
+      "status": "installed-enabled-audited",
+      "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+      "versionTargetId": "v0.1-foundation",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep implementation, CI, MCP/plugin code, and test coverage tied to scoped version gates.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "sourceMirror": "plugins/seis-code",
+      "gate": "npm run check:seis-plugin-bundle",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-design@personal",
+      "laneId": "seis-design",
+      "displayName": "SEIS-Design",
+      "status": "installed-enabled-audited",
+      "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep UI/UX, accessibility, design-system, and motion quality standards attached to each version.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "sourceMirror": "plugins/seis-design",
+      "gate": "npm run check:motion-evidence",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-data@personal",
+      "laneId": "seis-data",
+      "displayName": "SEIS-DATA",
+      "status": "installed-enabled-audited",
+      "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep structured records, reports, memory/context, provenance, and generated evidence deterministic.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "sourceMirror": "plugins/seis-data",
+      "gate": "npm run check:plugin-capability-lanes",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    }
+  ],
+  "mcpRuntimeSurfaceCount": 4,
+  "mcpRuntimeToolCount": 34,
+  "mcpRuntimeResourceCount": 20,
+  "mcpRuntimePromptCount": 3,
+  "mcpRuntimeContract": {
+    "id": "seis-ai-core-mcp-runtime-contract",
+    "version": 1,
+    "status": "local-smoke-verified",
+    "sourcePath": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "resourceUri": "seis://ai/mcp-runtime-contract.json",
+    "transport": "stdio JSON-RPC",
+    "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
+    "fallback": "LightweightMcpServer no-dependency fallback",
+    "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
+    "toolCount": 34,
+    "resourceCount": 20,
+    "promptCount": 3,
+    "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+    "pluginGate": "npm run check:seis-agent-plugin-integration",
+    "resourceRead": "seis://ai/mcp-runtime-contract.json",
+    "pluginIntegrationResource": "seis://agent/plugin-integration.json",
+    "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
+    "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
+    "surfaces": [
+      {
+        "id": "tools",
+        "label": "Tool registry",
+        "count": 34,
+        "state": "verified",
+        "method": "tools/list + tools/call",
+        "evidence": "14 MCP smoke tests pass through stdio JSON-RPC",
+        "duty": "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+      },
+      {
+        "id": "resources",
+        "label": "Resource registry",
+        "count": 20,
+        "state": "verified",
+        "method": "resources/list + resources/read",
+        "evidence": "Plugin integration, provider registry, model scaling profile, and MCP runtime contract resources are read through the protocol",
+        "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, MCP runtime, version gates, fixtures, and generated plan views."
+      },
+      {
+        "id": "prompts",
+        "label": "Prompt registry",
+        "count": 3,
+        "state": "verified",
+        "method": "prompts/list + prompts/get",
+        "evidence": "Prompt rendering is verified with arguments",
+        "duty": "Provide bounded audit, i18n, and review prompts without embedding secrets."
+      },
+      {
+        "id": "transport",
+        "label": "Transport boundary",
+        "count": 1,
+        "state": "verified",
+        "method": "stdio local process",
+        "evidence": "No dependency install required for local smoke",
+        "duty": "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
+      }
+    ]
+  },
+  "providerRegistry": {
+    "id": "seis-ai-core-provider-registry",
+    "version": 1,
+    "status": "documented-fixture",
+    "updatedAt": "2026-06-23",
+    "purpose": "Define the zero-key SEIS AI Core provider state contract for Local Demo, personal plugin lanes, and future server-only live provider routing without calling providers or validating credentials.",
+    "qualityGate": "npm run check:seis-ai-core-provider-registry",
+    "sourceOfTruth": {
+      "aiCoreDoc": "docs/ai/seis-ai-core.md",
+      "modelRouterDoc": "docs/ai/model-router.md",
+      "providerAudit": "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+      "providerAuditJson": "docs/audits/ai-provider-audit.json",
+      "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+      "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+      "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
+    },
+    "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+    "publicStates": [
+      "Available",
+      "Missing Key",
+      "Disabled",
+      "Rate Limited",
+      "Error"
+    ],
+    "stateModel": [
+      {
+        "state": "Available",
+        "routingEligible": true,
+        "meaning": "The route can be used inside the declared local or supervised boundary without additional credentials."
+      },
+      {
+        "state": "Missing Key",
+        "routingEligible": false,
+        "meaning": "A server-only credential is absent or unverified; the provider must not be selected."
+      },
+      {
+        "state": "Disabled",
+        "routingEligible": false,
+        "meaning": "The provider or profile is intentionally unavailable for this demo slice."
+      },
+      {
+        "state": "Rate Limited",
+        "routingEligible": false,
+        "meaning": "Future live adapter state for quota exhaustion; no current provider is marked rate limited by this offline fixture."
+      },
+      {
+        "state": "Error",
+        "routingEligible": false,
+        "meaning": "Future live adapter state for redacted provider/runtime errors; no raw provider error body may be surfaced."
+      }
+    ],
+    "coreCredentialRequirement": "none",
+    "defaultRoutingMode": "local-demo",
+    "localOnlyRespected": true,
+    "requiredForCore": [],
+    "fallbackOrder": [
+      "selected-live-provider",
+      "compatible-live-provider",
+      "approved-local-provider",
+      "local-demo",
+      "feature-disabled"
+    ],
+    "providers": [
+      {
+        "id": "codex-operator",
+        "displayName": "Codex Operator Session",
+        "category": "supervised-operator",
+        "publicStatus": "Available",
+        "credentialRequirement": "current-session-only",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "repo-local-supervised",
+        "capabilities": [
+          "implementation",
+          "repository-review",
+          "validation",
+          "planning"
+        ],
+        "modelAliases": [
+          "codex-session"
+        ],
+        "actualModel": "current-codex-session",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "content/development/seis-agent-plugin-integration.json",
+          "packages/seis-ai/src/agent/tools.mjs"
+        ],
+        "notes": "Represents the supervised Codex work session only; it is not a browser provider and stores no provider key."
+      },
+      {
+        "id": "seis-local-demo",
+        "displayName": "SEIS Local Demo Runtime",
+        "category": "local-demo",
+        "publicStatus": "Available",
+        "credentialRequirement": "none",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "browser-local-demo",
+        "capabilities": [
+          "general-chat-demo",
+          "repository-planning-demo",
+          "tool-ledger-demo",
+          "personal-plugin-lane-status-demo"
+        ],
+        "modelAliases": [
+          "local-demo"
+        ],
+        "actualModel": "none-local-demo",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": true,
+        "evidence": [
+          "apps/web/desktop.js",
+          "apps/seis-demo-web/script.js",
+          "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
+        ],
+        "notes": "No cloud model, trained SEIS model, or credential is claimed."
+      },
+      {
+        "id": "anthropic-claude",
+        "displayName": "Anthropic Claude",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "architecture-review",
+          "long-context-review",
+          "code-review"
+        ],
+        "modelAliases": [
+          "claude-review-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side Anthropic credential and adapter tests exist."
+      },
+      {
+        "id": "openai-general",
+        "displayName": "OpenAI General Provider",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "general-chat",
+          "structured-output",
+          "tool-calling"
+        ],
+        "modelAliases": [
+          "openai-general-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side OpenAI credential and adapter tests exist."
+      },
+      {
+        "id": "google-gemini",
+        "displayName": "Google Gemini",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "GEMINI_API_KEY"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "secondary-validation",
+          "multimodal-review"
+        ],
+        "modelAliases": [
+          "gemini-validation-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side Gemini credential and adapter tests exist."
+      },
+      {
+        "id": "qwen-review",
+        "displayName": "Qwen Alternative Review",
+        "category": "local-or-cloud-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "optional-future-provider",
+        "expectedEnv": [],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-or-local-future",
+        "capabilities": [
+          "second-opinion-review",
+          "contradiction-detection"
+        ],
+        "modelAliases": [
+          "qwen-review-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "apps/web/desktop.js",
+          "apps/seis-demo-web/script.js"
+        ],
+        "notes": "Planned profile only; no endpoint, local runtime, or key is configured."
+      },
+      {
+        "id": "ollama-local",
+        "displayName": "Ollama Local Candidate",
+        "category": "local-model-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "none-local-service",
+        "expectedEnv": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "local-private-future",
+        "capabilities": [
+          "local-private-inference",
+          "no-key-local-model"
+        ],
+        "modelAliases": [
+          "ollama-local-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+          "docs/ai/model-router.md"
+        ],
+        "notes": "Zero-key local-provider candidate; disabled until local service health and no-key startup tests exist."
+      }
+    ],
+    "optionalForLiveFeatures": [
+      {
+        "providerId": "anthropic-claude",
+        "env": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "scope": "server-only architecture and code review"
+      },
+      {
+        "providerId": "openai-general",
+        "env": [
+          "OPENAI_API_KEY"
+        ],
+        "scope": "server-only general assistant features"
+      },
+      {
+        "providerId": "google-gemini",
+        "env": [
+          "GEMINI_API_KEY"
+        ],
+        "scope": "server-only secondary validation"
+      },
+      {
+        "providerId": "ollama-local",
+        "env": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ],
+        "scope": "user-controlled local inference"
+      }
+    ],
+    "noKeyProviders": [
+      "codex-operator",
+      "seis-local-demo",
+      "ollama-local"
+    ],
+    "securityInvariants": [
+      "Core SEIS AI must start with zero cloud provider keys.",
+      "Browser code must not receive model-provider secrets.",
+      "Provider keys must be backend-only and never stored in localStorage or IndexedDB.",
+      "Missing Key and Disabled states must not be routed silently.",
+      "Rate Limited and Error states must use redacted output and must not print raw provider responses.",
+      "Local-only mode must never fall back to a cloud provider.",
+      "Unavailable providers must remain visibly unavailable in SEIS AI surfaces."
+    ],
+    "nextSafeActions": [
+      "Use this fixture as the provider status source for SEIS AI and MCP evidence.",
+      "Add no-key startup tests before live provider adapters.",
+      "Add redacted routing decision logs before enabling live provider routing."
+    ]
+  },
+  "providerRegistryProviderCount": 7,
+  "providerRegistryRequiredForCoreCount": 0,
+  "providerRegistryNoKeyProviderCount": 3,
+  "versionTargetCount": 5,
+  "promotionGateCount": 5,
+  "dryRunOnly": true,
+  "releasePromotionAllowed": false,
+  "versionTargets": [
+    {
+      "year": 1,
+      "versionTarget": "v0.1-foundation",
+      "theme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "nextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence."
+    },
+    {
+      "year": 2,
+      "versionTarget": "v0.2-read-only-intelligence",
+      "theme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "nextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness."
+    },
+    {
+      "year": 3,
+      "versionTarget": "v0.3-write-gated-runtime",
+      "theme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "nextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes."
+    },
+    {
+      "year": 4,
+      "versionTarget": "v0.4-multi-workspace-readiness",
+      "theme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "nextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists."
+    },
+    {
+      "year": 5,
+      "versionTarget": "v1.0-public-enterprise-candidate",
+      "theme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "nextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy."
+    }
+  ],
+  "records": [
+    {
+      "sequence": 1,
+      "id": "sub-agent-demo-y1-q1",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y1-Q1",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+      "primaryLanes": [
+        "documentation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "sub-agent plan contract",
+        "check-only validator",
+        "permission gap review"
+      ],
+      "gates": [
+        "docs-updated",
+        "deterministic-check",
+        "single-writer-policy",
+        "no-secret-leakage"
+      ],
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "aiCoreVersionPromotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "version registry validation",
+        "plugin integration validation",
+        "sub-agent operating model validation",
+        "runtime fixture validation",
+        "quarterly review ledger validation",
+        "five-year plan validation",
+        "no external mutation evidence",
+        "zero-key core boundary evidence",
+        "provider registry fixture evidence"
+      ],
+      "promotionValidationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "promotionBlockers": [
+        "Provider registry is documented only; no live provider adapter exists.",
+        "No write-gated runtime exists.",
+        "No public release approval exists."
+      ],
+      "promotionNextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y1-Q1."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y1-Q1."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y1-Q1."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 2,
+      "id": "sub-agent-demo-y1-q2",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y1-Q2",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+      "primaryLanes": [
+        "architecture-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "agent role schema",
+        "tool permission matrix",
+        "dry-run queue fixture"
+      ],
+      "gates": [
+        "schema-validation",
+        "approval-boundary",
+        "cancellation-fixture",
+        "path-safety"
+      ],
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "aiCoreVersionPromotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "version registry validation",
+        "plugin integration validation",
+        "sub-agent operating model validation",
+        "runtime fixture validation",
+        "quarterly review ledger validation",
+        "five-year plan validation",
+        "no external mutation evidence",
+        "zero-key core boundary evidence",
+        "provider registry fixture evidence"
+      ],
+      "promotionValidationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "promotionBlockers": [
+        "Provider registry is documented only; no live provider adapter exists.",
+        "No write-gated runtime exists.",
+        "No public release approval exists."
+      ],
+      "promotionNextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y1-Q2."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y1-Q2."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y1-Q2."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 3,
+      "id": "sub-agent-demo-y1-q3",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y1-Q3",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "brief registry",
+        "Command Center evidence view",
+        "operator review queue"
+      ],
+      "gates": [
+        "mock-vs-live-labels",
+        "accessibility",
+        "browser-smoke",
+        "rollback-plan"
+      ],
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "aiCoreVersionPromotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "version registry validation",
+        "plugin integration validation",
+        "sub-agent operating model validation",
+        "runtime fixture validation",
+        "quarterly review ledger validation",
+        "five-year plan validation",
+        "no external mutation evidence",
+        "zero-key core boundary evidence",
+        "provider registry fixture evidence"
+      ],
+      "promotionValidationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "promotionBlockers": [
+        "Provider registry is documented only; no live provider adapter exists.",
+        "No write-gated runtime exists.",
+        "No public release approval exists."
+      ],
+      "promotionNextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y1-Q3."
+        },
+        {
+          "laneId": "design-agent",
+          "action": "Review calm UX, accessibility, responsive behavior, and demo clarity. Quarter: Y1-Q3."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y1-Q3."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 4,
+      "id": "sub-agent-demo-y1-q4",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y1-Q4",
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "focus": "Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "local demo agent lane",
+        "provider status model",
+        "fallback policy evidence"
+      ],
+      "gates": [
+        "no-key-startup",
+        "provider-honesty",
+        "redaction",
+        "human-approval"
+      ],
+      "aiCoreVersionTarget": "v0.1-foundation",
+      "aiCoreVersionTheme": "Version identity and bounded sub-agent evidence",
+      "aiCoreVersionPromotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "version registry validation",
+        "plugin integration validation",
+        "sub-agent operating model validation",
+        "runtime fixture validation",
+        "quarterly review ledger validation",
+        "five-year plan validation",
+        "no external mutation evidence",
+        "zero-key core boundary evidence",
+        "provider registry fixture evidence"
+      ],
+      "promotionValidationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "promotionBlockers": [
+        "Provider registry is documented only; no live provider adapter exists.",
+        "No write-gated runtime exists.",
+        "No public release approval exists."
+      ],
+      "promotionNextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y1-Q4."
+        },
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y1-Q4."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y1-Q4."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 5,
+      "id": "sub-agent-demo-y2-q1",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y2-Q1",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "desktop interaction baseline",
+        "SEIS Code persistence suite",
+        "shared VFS plan"
+      ],
+      "gates": [
+        "interactivity-rate",
+        "mobile-fit",
+        "indexeddb-persistence",
+        "no-host-os-claim"
+      ],
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "aiCoreVersionPromotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "read-only Command Center status surface",
+        "stale-data UX evidence",
+        "evidence locker records",
+        "provider registry fixtures",
+        "no-key startup test"
+      ],
+      "promotionValidationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "promotionBlockers": [
+        "No read-only evidence dashboard exists.",
+        "No provider registry fixture exists."
+      ],
+      "promotionNextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y2-Q1."
+        },
+        {
+          "laneId": "design-agent",
+          "action": "Review calm UX, accessibility, responsive behavior, and demo clarity. Quarter: Y2-Q1."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y2-Q1."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 6,
+      "id": "sub-agent-demo-y2-q2",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y2-Q2",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Build scheduler dry-run, task queue states, and operator cancellation paths.",
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "scheduler dry-run",
+        "queue state machine",
+        "cancellation UI"
+      ],
+      "gates": [
+        "dry-run-only",
+        "bounded-recursion",
+        "timeout",
+        "audit-event"
+      ],
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "aiCoreVersionPromotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "read-only Command Center status surface",
+        "stale-data UX evidence",
+        "evidence locker records",
+        "provider registry fixtures",
+        "no-key startup test"
+      ],
+      "promotionValidationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "promotionBlockers": [
+        "No read-only evidence dashboard exists.",
+        "No provider registry fixture exists."
+      ],
+      "promotionNextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y2-Q2."
+        },
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y2-Q2."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y2-Q2."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 7,
+      "id": "sub-agent-demo-y2-q3",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y2-Q3",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Introduce read-only repository intelligence and evidence locker views.",
+      "primaryLanes": [
+        "implementation-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "repository scanner contract",
+        "evidence locker",
+        "staleness labels"
+      ],
+      "gates": [
+        "read-only-live",
+        "evidence-linked",
+        "stale-data-label",
+        "no-fake-health"
+      ],
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "aiCoreVersionPromotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "read-only Command Center status surface",
+        "stale-data UX evidence",
+        "evidence locker records",
+        "provider registry fixtures",
+        "no-key startup test"
+      ],
+      "promotionValidationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "promotionBlockers": [
+        "No read-only evidence dashboard exists.",
+        "No provider registry fixture exists."
+      ],
+      "promotionNextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y2-Q3."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y2-Q3."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y2-Q3."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 8,
+      "id": "sub-agent-demo-y2-q4",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y2-Q4",
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "focus": "Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+      "primaryLanes": [
+        "security-agent",
+        "architecture-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "MCP trust registry",
+        "tool permission tests",
+        "destructive approval fixtures"
+      ],
+      "gates": [
+        "least-privilege",
+        "tool-allowlist",
+        "destructive-approval",
+        "prompt-injection-resistance"
+      ],
+      "aiCoreVersionTarget": "v0.2-read-only-intelligence",
+      "aiCoreVersionTheme": "Read-only evidence dashboards and stale-data UX",
+      "aiCoreVersionPromotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "read-only Command Center status surface",
+        "stale-data UX evidence",
+        "evidence locker records",
+        "provider registry fixtures",
+        "no-key startup test"
+      ],
+      "promotionValidationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "promotionBlockers": [
+        "No read-only evidence dashboard exists.",
+        "No provider registry fixture exists."
+      ],
+      "promotionNextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y2-Q4."
+        },
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y2-Q4."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y2-Q4."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 9,
+      "id": "sub-agent-demo-y3-q1",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y3-Q1",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+      "primaryLanes": [
+        "implementation-agent",
+        "design-agent",
+        "documentation-agent"
+      ],
+      "outcomes": [
+        "agent center alpha",
+        "AI control center alpha",
+        "evidence-first dashboard"
+      ],
+      "gates": [
+        "real-actions-only",
+        "keyboard-navigation",
+        "provider-identity",
+        "fallback-transparency"
+      ],
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "aiCoreVersionPromotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "executable permission enforcement tests",
+        "approval fixture execution tests",
+        "redacted tool-output tests",
+        "rollback evidence",
+        "single-writer enforcement"
+      ],
+      "promotionValidationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "promotionBlockers": [
+        "Write runtime is disabled.",
+        "Human approval model is not executable.",
+        "Persistent execution ledger storage does not exist."
+      ],
+      "promotionNextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y3-Q1."
+        },
+        {
+          "laneId": "design-agent",
+          "action": "Review calm UX, accessibility, responsive behavior, and demo clarity. Quarter: Y3-Q1."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y3-Q1."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 10,
+      "id": "sub-agent-demo-y3-q2",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y3-Q2",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Add provider-neutral model routing behind backend-only boundaries.",
+      "primaryLanes": [
+        "architecture-agent",
+        "security-agent",
+        "implementation-agent"
+      ],
+      "outcomes": [
+        "provider registry",
+        "capability router",
+        "server env validation"
+      ],
+      "gates": [
+        "server-only-secrets",
+        "missing-key-state",
+        "capability-fallback",
+        "redacted-errors"
+      ],
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "aiCoreVersionPromotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "executable permission enforcement tests",
+        "approval fixture execution tests",
+        "redacted tool-output tests",
+        "rollback evidence",
+        "single-writer enforcement"
+      ],
+      "promotionValidationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "promotionBlockers": [
+        "Write runtime is disabled.",
+        "Human approval model is not executable.",
+        "Persistent execution ledger storage does not exist."
+      ],
+      "promotionNextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y3-Q2."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y3-Q2."
+        },
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y3-Q2."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 11,
+      "id": "sub-agent-demo-y3-q3",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y3-Q3",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+      "primaryLanes": [
+        "implementation-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "write-gated file tools",
+        "approval ledger",
+        "tool audit events"
+      ],
+      "gates": [
+        "path-traversal-denied",
+        "approval-required",
+        "audit-log",
+        "rollback-notes"
+      ],
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "aiCoreVersionPromotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "executable permission enforcement tests",
+        "approval fixture execution tests",
+        "redacted tool-output tests",
+        "rollback evidence",
+        "single-writer enforcement"
+      ],
+      "promotionValidationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "promotionBlockers": [
+        "Write runtime is disabled.",
+        "Human approval model is not executable.",
+        "Persistent execution ledger storage does not exist."
+      ],
+      "promotionNextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y3-Q3."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y3-Q3."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y3-Q3."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 12,
+      "id": "sub-agent-demo-y3-q4",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y3-Q4",
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "focus": "Create release-candidate quality gates for agent-assisted product surfaces.",
+      "primaryLanes": [
+        "validation-agent",
+        "documentation-agent",
+        "design-agent"
+      ],
+      "outcomes": [
+        "RC evidence checklist",
+        "visual QA protocol",
+        "accessibility regression plan"
+      ],
+      "gates": [
+        "build-pass",
+        "smoke-pass",
+        "a11y-review",
+        "release-evidence"
+      ],
+      "aiCoreVersionTarget": "v0.3-write-gated-runtime",
+      "aiCoreVersionTheme": "Human-approved write lanes",
+      "aiCoreVersionPromotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "executable permission enforcement tests",
+        "approval fixture execution tests",
+        "redacted tool-output tests",
+        "rollback evidence",
+        "single-writer enforcement"
+      ],
+      "promotionValidationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "promotionBlockers": [
+        "Write runtime is disabled.",
+        "Human approval model is not executable.",
+        "Persistent execution ledger storage does not exist."
+      ],
+      "promotionNextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y3-Q4."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y3-Q4."
+        },
+        {
+          "laneId": "design-agent",
+          "action": "Review calm UX, accessibility, responsive behavior, and demo clarity. Quarter: Y3-Q4."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 13,
+      "id": "sub-agent-demo-y4-q1",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y4-Q1",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "federation policy",
+        "workspace sync safety",
+        "repo boundary registry"
+      ],
+      "gates": [
+        "source-of-truth",
+        "read-only-default",
+        "scope-control",
+        "human-approval"
+      ],
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "aiCoreVersionPromotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "workspace sync safety review",
+        "SSH and cloud approval records",
+        "provider-neutral deployment dry-run",
+        "rollback plan",
+        "credential boundary evidence"
+      ],
+      "promotionValidationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "promotionBlockers": [
+        "No approved external target exists.",
+        "No SSH, VPN, or deployment mutation is authorized."
+      ],
+      "promotionNextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y4-Q1."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y4-Q1."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y4-Q1."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 14,
+      "id": "sub-agent-demo-y4-q2",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y4-Q2",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Mature observability, budget controls, and incident response for agent runs.",
+      "primaryLanes": [
+        "security-agent",
+        "validation-agent",
+        "implementation-agent"
+      ],
+      "outcomes": [
+        "agent observability schema",
+        "budget controls",
+        "incident playbook"
+      ],
+      "gates": [
+        "redacted-logs",
+        "cost-budget",
+        "cancellation",
+        "postmortem-template"
+      ],
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "aiCoreVersionPromotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "workspace sync safety review",
+        "SSH and cloud approval records",
+        "provider-neutral deployment dry-run",
+        "rollback plan",
+        "credential boundary evidence"
+      ],
+      "promotionValidationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "promotionBlockers": [
+        "No approved external target exists.",
+        "No SSH, VPN, or deployment mutation is authorized."
+      ],
+      "promotionNextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y4-Q2."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y4-Q2."
+        },
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y4-Q2."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 15,
+      "id": "sub-agent-demo-y4-q3",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y4-Q3",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Expand local-first and offline agent modes for privacy-sensitive workflows.",
+      "primaryLanes": [
+        "architecture-agent",
+        "implementation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "local-only mode",
+        "offline drafts",
+        "context preview"
+      ],
+      "gates": [
+        "no-cloud-fallback",
+        "context-minimization",
+        "memory-boundary",
+        "no-secret-storage"
+      ],
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "aiCoreVersionPromotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "workspace sync safety review",
+        "SSH and cloud approval records",
+        "provider-neutral deployment dry-run",
+        "rollback plan",
+        "credential boundary evidence"
+      ],
+      "promotionValidationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "promotionBlockers": [
+        "No approved external target exists.",
+        "No SSH, VPN, or deployment mutation is authorized."
+      ],
+      "promotionNextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y4-Q3."
+        },
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y4-Q3."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y4-Q3."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 16,
+      "id": "sub-agent-demo-y4-q4",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y4-Q4",
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "focus": "Prepare public and release readiness for controlled agent-assisted workflows.",
+      "primaryLanes": [
+        "documentation-agent",
+        "security-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "public readiness dry run",
+        "release governance review",
+        "supply-chain plan"
+      ],
+      "gates": [
+        "secret-scan",
+        "license-review",
+        "SBOM-plan",
+        "branch-protection-docs"
+      ],
+      "aiCoreVersionTarget": "v0.4-multi-workspace-readiness",
+      "aiCoreVersionTheme": "Cloud, SSH, workspace, and provider readiness",
+      "aiCoreVersionPromotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "workspace sync safety review",
+        "SSH and cloud approval records",
+        "provider-neutral deployment dry-run",
+        "rollback plan",
+        "credential boundary evidence"
+      ],
+      "promotionValidationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "promotionBlockers": [
+        "No approved external target exists.",
+        "No SSH, VPN, or deployment mutation is authorized."
+      ],
+      "promotionNextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y4-Q4."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y4-Q4."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y4-Q4."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 17,
+      "id": "sub-agent-demo-y5-q1",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y5-Q1",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Stabilize agent runtime beta with bounded delegation and observable recovery.",
+      "primaryLanes": [
+        "implementation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "runtime beta",
+        "delegation depth limits",
+        "recovery playbook"
+      ],
+      "gates": [
+        "bounded-delegation",
+        "failure-mode-tests",
+        "operator-cancel",
+        "auditability"
+      ],
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "aiCoreVersionPromotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "public readiness review",
+        "release evidence checklist",
+        "model-claims audit",
+        "security baseline review",
+        "license and asset attribution review",
+        "enterprise governance review"
+      ],
+      "promotionValidationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "promotionBlockers": [
+        "No release approval exists.",
+        "No public-enterprise evidence pack exists.",
+        "SEIS Universe remains research, not a released trained model."
+      ],
+      "promotionNextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "implementation-agent",
+          "action": "Prepare scoped implementation work while preserving unrelated repository changes. Quarter: Y5-Q1."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y5-Q1."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y5-Q1."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 18,
+      "id": "sub-agent-demo-y5-q2",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y5-Q2",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Advance SEIS Universe research governance without overstating trained-model ownership.",
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "model research gates",
+        "dataset governance",
+        "eval provenance"
+      ],
+      "gates": [
+        "no-fake-model-claims",
+        "dataset-provenance",
+        "benchmark-integrity",
+        "model-card-template"
+      ],
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "aiCoreVersionPromotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "public readiness review",
+        "release evidence checklist",
+        "model-claims audit",
+        "security baseline review",
+        "license and asset attribution review",
+        "enterprise governance review"
+      ],
+      "promotionValidationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "promotionBlockers": [
+        "No release approval exists.",
+        "No public-enterprise evidence pack exists.",
+        "SEIS Universe remains research, not a released trained model."
+      ],
+      "promotionNextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y5-Q2."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y5-Q2."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y5-Q2."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 19,
+      "id": "sub-agent-demo-y5-q3",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y5-Q3",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+      "primaryLanes": [
+        "documentation-agent",
+        "validation-agent",
+        "security-agent"
+      ],
+      "outcomes": [
+        "maintenance cadence",
+        "contributor trust levels",
+        "reviewer routing"
+      ],
+      "gates": [
+        "community-health",
+        "security-triage",
+        "CODEOWNERS-policy",
+        "release-cadence"
+      ],
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "aiCoreVersionPromotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "public readiness review",
+        "release evidence checklist",
+        "model-claims audit",
+        "security baseline review",
+        "license and asset attribution review",
+        "enterprise governance review"
+      ],
+      "promotionValidationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "promotionBlockers": [
+        "No release approval exists.",
+        "No public-enterprise evidence pack exists.",
+        "SEIS Universe remains research, not a released trained model."
+      ],
+      "promotionNextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y5-Q3."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y5-Q3."
+        },
+        {
+          "laneId": "security-agent",
+          "action": "Check approval boundaries, secret safety, provider honesty, and unsafe autonomy. Quarter: Y5-Q3."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    },
+    {
+      "sequence": 20,
+      "id": "sub-agent-demo-y5-q4",
+      "status": "repo-local-demo-recorded",
+      "sourcePlanQuarter": "Y5-Q4",
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "focus": "Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+      "primaryLanes": [
+        "architecture-agent",
+        "documentation-agent",
+        "validation-agent"
+      ],
+      "outcomes": [
+        "phase closure report",
+        "next-phase handoff",
+        "capability maturity review"
+      ],
+      "gates": [
+        "evidence-complete",
+        "known-limits",
+        "human-review",
+        "next-safe-action"
+      ],
+      "aiCoreVersionTarget": "v1.0-public-enterprise-candidate",
+      "aiCoreVersionTheme": "Public, enterprise, and SEIS Universe governance",
+      "aiCoreVersionPromotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "promotionReleaseAllowed": false,
+      "promotionEvidenceRequired": [
+        "public readiness review",
+        "release evidence checklist",
+        "model-claims audit",
+        "security baseline review",
+        "license and asset attribution review",
+        "enterprise governance review"
+      ],
+      "promotionValidationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "promotionBlockers": [
+        "No release approval exists.",
+        "No public-enterprise evidence pack exists.",
+        "SEIS Universe remains research, not a released trained model."
+      ],
+      "promotionNextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy.",
+      "realExecutionBlocked": true,
+      "externalMutationPerformed": false,
+      "credentialAccessPerformed": false,
+      "agentActions": [
+        {
+          "laneId": "architecture-agent",
+          "action": "Review architecture boundaries, promotion gates, and source-of-truth alignment. Quarter: Y5-Q4."
+        },
+        {
+          "laneId": "documentation-agent",
+          "action": "Record evidence, source links, handoff notes, and current-versus-planned status. Quarter: Y5-Q4."
+        },
+        {
+          "laneId": "validation-agent",
+          "action": "Run or schedule deterministic checks, browser smoke, and evidence verification. Quarter: Y5-Q4."
+        }
+      ],
+      "evidenceKind": "deterministic-plan-simulation",
+      "boundary": "local-demo-only"
+    }
+  ]
+}

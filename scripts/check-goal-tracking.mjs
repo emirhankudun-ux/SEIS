@@ -4,6 +4,8 @@ const requiredDocs = [
   "docs/goals/seis-vision.md",
   "docs/goals/long-term-goals.md",
   "docs/goals/goal-tracking-system.md",
+  "docs/goals/seis-universe-omega-goal-system.md",
+  "docs/goals/seis-universe-omega-phase-evidence.md",
   "docs/goals/goal-schema.md",
   "docs/goals/milestone-map.md",
   "docs/goals/horizon-map.md",
@@ -65,6 +67,8 @@ const cyclePlanPath = "content/development/seis-goal-cycle-plan.json";
 const riskRegisterPath = "content/development/seis-goal-risk-register.json";
 const validationStepsPath = "content/development/seis-goal-validation-steps.json";
 const roadmapLinksPath = "content/development/seis-goal-roadmap-links.json";
+const omegaGoalSystemPath = "content/development/seis-universe-omega-goal-system.json";
+const omegaPhaseEvidencePath = "content/development/seis-universe-omega-phase-evidence.json";
 const viewPath = "content/development/seis-goal-command-center-view.json";
 const staticPagePath = "apps/web/goal-tracking.html";
 const failures = [];
@@ -75,7 +79,7 @@ for (const file of requiredDocs) {
   }
 }
 
-for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, roadmapLinksPath, viewPath, staticPagePath]) {
+for (const file of [registryPath, evidencePath, executionPath, reviewCadencePath, progressLedgerPath, hierarchyPath, archiveLedgerPath, cyclePlanPath, riskRegisterPath, validationStepsPath, roadmapLinksPath, omegaGoalSystemPath, omegaPhaseEvidencePath, viewPath, staticPagePath]) {
   if (!existsSync(file)) {
     failures.push(`missing required goal source: ${file}`);
   }

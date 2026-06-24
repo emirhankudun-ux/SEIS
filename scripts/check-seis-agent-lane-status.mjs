@@ -8,7 +8,18 @@ const failures = [];
 const contractPath = path.join(root, "content", "development", "seis-agent-lane-status.json");
 const docsPath = path.join(root, "docs", "governance", "seis-agent-lane-status.md");
 const packagePath = path.join(root, "package.json");
-const requiredLanes = ["seis-god-mode-developer", "seis-focus-mode", "seis-master-prompt", "seis-security-review", "seis-github-workflow"];
+const requiredLanes = [
+  "seis-god-mode-developer",
+  "seis-focus-mode",
+  "seis-master-prompt",
+  "seis-security-review",
+  "seis-github-workflow",
+  "seis-hub",
+  "seis-cloud",
+  "seis-code",
+  "seis-design",
+  "seis-data",
+];
 
 ensureFile(contractPath, "agent lane status contract");
 ensureFile(docsPath, "agent lane status docs");

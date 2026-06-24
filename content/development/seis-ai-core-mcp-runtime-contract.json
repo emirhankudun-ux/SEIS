@@ -1,0 +1,58 @@
+{
+  "id": "seis-ai-core-mcp-runtime-contract",
+  "version": 1,
+  "status": "local-smoke-verified",
+  "sourcePath": "content/development/seis-ai-core-mcp-runtime-contract.json",
+  "resourceUri": "seis://ai/mcp-runtime-contract.json",
+  "transport": "stdio JSON-RPC",
+  "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
+  "fallback": "LightweightMcpServer no-dependency fallback",
+  "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
+  "toolCount": 34,
+  "resourceCount": 20,
+  "promptCount": 3,
+  "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+  "pluginGate": "npm run check:seis-agent-plugin-integration",
+  "resourceRead": "seis://ai/mcp-runtime-contract.json",
+  "pluginIntegrationResource": "seis://agent/plugin-integration.json",
+  "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
+  "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
+  "surfaces": [
+    {
+      "id": "tools",
+      "label": "Tool registry",
+      "count": 34,
+      "state": "verified",
+      "method": "tools/list + tools/call",
+      "evidence": "14 MCP smoke tests pass through stdio JSON-RPC",
+      "duty": "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+    },
+    {
+      "id": "resources",
+      "label": "Resource registry",
+      "count": 20,
+      "state": "verified",
+      "method": "resources/list + resources/read",
+      "evidence": "Plugin integration, provider registry, model scaling profile, and MCP runtime contract resources are read through the protocol",
+      "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, MCP runtime, version gates, fixtures, and generated plan views."
+    },
+    {
+      "id": "prompts",
+      "label": "Prompt registry",
+      "count": 3,
+      "state": "verified",
+      "method": "prompts/list + prompts/get",
+      "evidence": "Prompt rendering is verified with arguments",
+      "duty": "Provide bounded audit, i18n, and review prompts without embedding secrets."
+    },
+    {
+      "id": "transport",
+      "label": "Transport boundary",
+      "count": 1,
+      "state": "verified",
+      "method": "stdio local process",
+      "evidence": "No dependency install required for local smoke",
+      "duty": "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
+    }
+  ]
+}

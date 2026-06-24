@@ -1,6 +1,6 @@
 # SEIS Ultimate Foundation Review
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 ## Executive Summary
 
@@ -16,10 +16,10 @@ secret-history/runtime-provider validation has not been performed.
 
 | Item | Finding |
 | --- | --- |
-| Active branch | `seis/product-experience-suite` |
+| Active branch | `codex/plugin-interface-handoff-20260623` |
 | Main rule | `main` remains sacred; no direct main push or merge performed. |
 | Worktree hygiene | Dirty worktree with modified and untracked foundation/product files; no tracked deletions currently visible in `git status --short`. |
-| Integration posture | Documented in `docs/governance/seis-integration-and-github-development.md` and `content/development/seis-integration-map.json`. |
+| Integration posture | Documented in `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, and `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`. |
 | External PR inspection | Read-only `gh pr list` was performed. 25 open PRs were returned; 13 recently closed PRs were returned and all were merged in that result set. |
 | Dangerous actions | Not performed. |
 
@@ -67,8 +67,9 @@ requests from producing application-data HTTP 404s in browser QA.
 Mythic Gacha is now a playable static product foundation. It provides 60 local
 creature records, draw and bestiary controls, IndexedDB persistence, pity logic,
 local export, browser-smoked SEIS Code terminal visibility for exported cards,
-and a no-key runtime boundary. It is not yet public or release ready because
-committed visual-regression baselines, full shared desktop VFS integration, and
+Desktop VFS visibility for exported cards, and a no-key runtime boundary. It is
+not yet public or release ready because committed visual-regression baselines,
+production-grade storage/cloud-sync policy, browser-restart persistence, and
 per-card artwork provenance review are still missing.
 
 ## AI Core Review
@@ -79,13 +80,23 @@ rule that provider routing or prompt engineering is not model ownership. A
 redacted static provider and credential audit now exists at
 `docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md`. Dedicated foundation
 contracts now exist for `docs/ai/model-router.md`,
-`docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md`.
+`docs/ai/prompt-engine.md`, and `docs/ai/agent-runtime.md`. The planned 20B /
+16GB+ RAM SEIS model target plus future 70B and 150B frontier ladder are now tracked as a
+validator-backed hardware compatibility profile at
+`content/development/seis-model-scaling-hardware-profile.json` and
+`docs/ai/seis-model-scaling.md`; this is not trained-weight, inference,
+download, or benchmark evidence. The profile now also carries the 20B / 16GB+
+memory-budget contract, quantization planning lanes, and candidate-only no-key
+local runtimes so future compatibility work can be measured before it is
+claimed.
 
 ## Integration Review
 
-SEIS work now has a documented integration spine. The active branch remains the
-current product-experience surface; AI Core continuation, download/assets
-integration, and SSH-AI stability remain separate workstreams until their diffs,
+SEIS work now has a documented integration spine and a canonical local
+workspace rule. General SEIS work continues from `SEIS/`; nearby SEIS-like
+folders are review-only inputs until a scoped PR extracts useful work. AI Core
+continuation, download/assets integration, workforce assignment, env-default,
+Goal Tracking, and SSH-AI lanes remain separate workstreams until their diffs,
 asset provenance, credential boundaries, and validation evidence are reviewed.
 Broken local worktree metadata is not treated as implementation evidence.
 
@@ -138,6 +149,8 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
   visual-regression baselines are still absent.
 - Schema registry coverage is partial and top-level only; it does not yet cover all JSON records semantically.
 - No cross-worktree integration validation.
+- No physical workspace consolidation was performed; folder cleanup and branch
+  cleanup remain approval-gated.
 
 ## High-Risk Blockers
 
@@ -153,6 +166,7 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 
 - Added master index.
 - Added SEIS integration and GitHub development policy.
+- Added SEIS workspace unification review and canonical `SEIS/` working-root rule.
 - Added machine-readable SEIS integration map.
 - Added platform lane architecture.
 - Added Command Center foundation.
@@ -163,6 +177,10 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Added repeatable redacted AI provider and credential audit command.
 - Generated audit Markdown and JSON reports.
 - Added AI Core model-router, prompt-engine, and agent-runtime foundation contracts.
+- Added SEIS model scaling hardware profile for the planned 20B / 16GB+ target
+  and future 70B / 150B frontier ladder, with memory-budget, quantization-lane,
+  local runtime candidate, distributed-runtime evidence gates, and no
+  trained-weight or live-inference claims.
 - Added validator-backed data schema registry.
 - Expanded status, backlog, and next PR queue.
 - Hardened `.gitignore`.
@@ -203,8 +221,8 @@ Not ready. No release dry-run, deployment, tag, or rollback drill was performed.
 - Live provider calls.
 - SSH and deployment.
 - Full SEIS Desktop implementation and the remaining 60+ app operating system target.
-- Mythic Gacha full browser-restart persistence QA, full shared desktop VFS
-  integration, and full artwork provenance review.
+- Mythic Gacha full browser-restart persistence QA, production-grade VFS
+  conflict/permission policy, and full artwork provenance review.
 - E2E hardening and committed visual-regression baselines for SEIS Code,
   Mythic Gacha, and Video Hero showcase.
 
@@ -224,17 +242,22 @@ See `docs/STATUS.md` for the final validation table after this pass.
 
 ## Recommended Next PRs
 
-1. Repository hygiene recovery.
-2. Open PR stack triage.
-3. CI foundation workflow alignment.
-4. SEIS integration spine PR.
-5. Typed server-only environment validation and AI provider registry contract.
-6. GitHub templates/CODEOWNERS and public exposure checklist.
-7. Accessibility keyboard-navigation QA.
-8. Plugin interface validation and browser QA.
-9. SEIS Code interaction, source-control, extension, and full restart-persistence QA.
-10. Video Hero and Mythic Gacha asset provenance and visual-regression QA.
-11. Data schema registry semantic expansion.
+1. SEIS workspace unification spine.
+2. Repository hygiene recovery.
+3. Open PR stack triage.
+4. CI foundation workflow alignment.
+5. SEIS integration spine PR.
+6. Typed server-only environment validation and AI provider registry contract.
+7. SEIS model scaling hardware profile hardening, measured memory benchmarks
+   against the memory-budget contract, and clean-room model/dataset card
+   preparation.
+8. GitHub templates/CODEOWNERS and public exposure checklist.
+9. Accessibility keyboard-navigation QA.
+10. Plugin interface validation and browser QA.
+11. SEIS Code and Desktop Code IDE restart-persistence, Monaco/fallback editor,
+   source-control safe/mock, extension, and visual-regression QA.
+12. Video Hero and Mythic Gacha asset provenance and visual-regression QA.
+13. Data schema registry semantic expansion.
 
 ## Human Approval Needed
 
@@ -243,6 +266,8 @@ See `docs/STATUS.md` for the final validation table after this pass.
 - Cross-worktree merge, cherry-pick, or bulk copy.
 - Deployment, release, tag, SSH, repository setting changes, secret rotation,
   public visibility change, model training, benchmark, or dataset download.
+- Model download, fine-tuning, GPU/cloud provisioning, checkpoint publication,
+  or any claim that a 20B/70B/150B SEIS foundation model is trained or routeable.
 
 ## Final Decision
 

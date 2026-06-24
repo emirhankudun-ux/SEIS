@@ -1,0 +1,108 @@
+{
+  "id": "seis-ai-core-version-promotion-map",
+  "version": 1,
+  "status": "generated-from-source",
+  "generatedAt": "deterministic-plan-derived",
+  "generatedBy": "scripts/create-sub-agent-five-year-demo-evidence.mjs",
+  "sourcePlan": "content/development/seis-sub-agent-5-year-plan.json",
+  "seisAiCoreVersionRegistry": "content/development/seis-ai-core-version-registry.json",
+  "seisAiCoreVersionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+  "demoSurface": "apps/seis-demo-web",
+  "demoBoundary": "local-demo-only",
+  "truthBoundary": "Generated from SEIS AI Core registry and promotion gates for read-only Local Demo display; it does not authorize release, live providers, external mutation, SSH, deployment, or write-gated runtime.",
+  "yearCount": 5,
+  "quarterCount": 20,
+  "versionTargetCount": 5,
+  "promotionGateCount": 5,
+  "dryRunOnly": true,
+  "releasePromotionAllowed": false,
+  "validation": [
+    "npm run check:seis-ai-core-version-registry",
+    "npm run check:seis-ai-core-provider-registry",
+    "npm run check:seis-ai-core-version-promotion-gates",
+    "npm run check:seis-sub-agent-5-year-plan",
+    "npm run check:product-experience-browser-smoke"
+  ],
+  "versionTargets": [
+    {
+      "year": 1,
+      "versionTarget": "v0.1-foundation",
+      "theme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "nextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence."
+    },
+    {
+      "year": 2,
+      "versionTarget": "v0.2-read-only-intelligence",
+      "theme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "nextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness."
+    },
+    {
+      "year": 3,
+      "versionTarget": "v0.3-write-gated-runtime",
+      "theme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "nextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes."
+    },
+    {
+      "year": 4,
+      "versionTarget": "v0.4-multi-workspace-readiness",
+      "theme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "nextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists."
+    },
+    {
+      "year": 5,
+      "versionTarget": "v1.0-public-enterprise-candidate",
+      "theme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "nextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy."
+    }
+  ]
+}

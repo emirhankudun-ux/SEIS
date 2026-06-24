@@ -1,6 +1,6 @@
 # SEIS Master Index
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 ## Purpose
 
@@ -20,12 +20,14 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Current status | [STATUS.md](STATUS.md) |
 | Documentation index | [INDEX.md](INDEX.md) |
 | Integration and GitHub development policy | [governance/seis-integration-and-github-development.md](governance/seis-integration-and-github-development.md) |
+| Workspace unification review | [reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md](reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md) |
 | Master backlog | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) |
 | Next PR queue | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) |
 | Ultimate foundation review | [reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md](reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md) |
 | Video Hero showcase QA | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) |
 | Video Hero performance budget | [reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md](reviews/VIDEO_HERO_PERFORMANCE_BUDGET.md) |
 | Product experience browser smoke | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) |
+| Current demo status | [product/seis-demo-status.md](product/seis-demo-status.md) |
 
 ## Platform Lanes
 
@@ -43,10 +45,13 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | --- | --- |
 | Command Center foundation | [product/command-center-foundation.md](product/command-center-foundation.md) |
 | Goal Tracking Center | [product/goal-tracking-center.md](product/goal-tracking-center.md) |
+| SEIS Demo status | [product/seis-demo-status.md](product/seis-demo-status.md) |
+| Shared VFS contract | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) |
 | SEIS Code browser foundation | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |
 | Mythic Gacha | [product/mythic-gacha.md](product/mythic-gacha.md) |
 | SEIS AI Core | [ai/seis-ai-core.md](ai/seis-ai-core.md) |
+| SEIS model scaling profile | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) |
 | Model Router contract | [ai/model-router.md](ai/model-router.md) |
 | Prompt Engine contract | [ai/prompt-engine.md](ai/prompt-engine.md) |
 | Agent Runtime contract | [ai/agent-runtime.md](ai/agent-runtime.md) |
@@ -75,6 +80,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Video Hero showcase QA | [reviews/VIDEO_HERO_SHOWCASE_QA.md](reviews/VIDEO_HERO_SHOWCASE_QA.md) |
 | Design component inventory | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) |
 | Data schema registry | [../content/development/seis-data-schema-registry.json](../content/development/seis-data-schema-registry.json) |
+| SEIS model scaling hardware profile | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) |
 | Cloud environment record | [../deploy/cloud-environment.json](../deploy/cloud-environment.json) |
 | Code automation plan | [../content/development/code-automation-plan.json](../content/development/code-automation-plan.json) |
 | Design tokens | [../packages/design-tokens/seis.tokens.css](../packages/design-tokens/seis.tokens.css) |

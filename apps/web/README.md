@@ -10,8 +10,15 @@ product-experience suite:
 - `desktop.html`, `desktop.css`, and `desktop.js` power the SEIS Desktop OS
   foundation checked by `npm run check:desktop-os` and
   `npm run check:desktop-os-browser-smoke`. Desktop-created `/home/seis`
-  files are mirrored into the SEIS Code IndexedDB workspace under
-  `/workspace` for the current browser-local handoff.
+  files and folders are mirrored into the SEIS Code IndexedDB workspace under
+  `/workspace` for the current browser-local create/move/delete handoff.
+- `website/` contains the premium SEIS Website hub and product pages for SEIS
+  AI, OS, Code, Design, Search, Cloud, Store, and Agents. It is checked by
+  `npm run check:seis-website-pages` and copied into the static package.
+- `scripts/check-seis-ultimate-demo.mjs` verifies V17 demo coverage across the
+  required OS, AI, Search, Code, Design, Cloud, Store, Music, Launchpad, Files,
+  Terminal, Website, Agents, Plugins, Command Center, website pages, and
+  mock/real/planned labels.
 - `seis-code.html`, `seis-code.css`, and `seis-code.js` power the browser IDE
   foundation checked by `npm run check:seis-code` and
   `npm run check:product-experience-browser-smoke`.

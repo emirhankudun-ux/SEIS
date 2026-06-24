@@ -34,7 +34,16 @@ Working rules:
   after adding external links or resources also run scope "security".
   Report the result.
 - For SEIS plugin, MCP, SEIS-Agent, or cloud/code/design/data lane tasks, call
-  seis_plugin_integration before making routing or readiness claims. Treat
+  seis_plugin_integration before making routing or readiness claims. For
+  provider routing, no-key readiness, five-year sub-agent development,
+  permission boundaries, promotion gates, 20B/70B/150B model scaling profiles, or
+  long-horizon lane planning, also call seis_ai_core_provider_status,
+  seis_ai_core_model_scaling_status, seis_ai_core_version_status,
+  seis_ai_core_version_promotion_dry_run, seis_ai_core_subagent_model, and
+  seis_ai_core_subagent_review_ledger. Use seis_ai_core_subagent_dry_run for
+  fixture task decisions only, and use seis_ai_core_version_promotion_dry_run
+  only for evidence-bound version readiness; neither proves live autonomous
+  execution or release approval. Treat
   seis@personal, seis-cloud@personal, seis-code@personal, seis-design@personal,
   and seis-data@personal as embedded lanes under seis-ai-agent@seis-repo unless
   the manifest says otherwise.

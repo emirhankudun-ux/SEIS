@@ -52,6 +52,12 @@ The SEIS AI runtime and app shell consume the same lane fabric through
 `seis_plugin_integration` tool, and the
 `seis://agent/plugin-integration.json` MCP resource.
 
+The `packages/seis-ai` agent loop and MCP server also expose the personal
+embedded lanes directly as read-only status and plan-only tools:
+`seis_hub_status`, `seis_hub_plan`, `seis_cloud_status`, `seis_cloud_plan`,
+`seis_code_status`, `seis_code_plan`, `seis_design_status`,
+`seis_design_plan`, `seis_data_status`, and `seis_data_plan`.
+
 SEIS Cloud additionally carries the cloud access policy: public cloud is for
 everyone-facing surfaces, while VPN cloud is only for workplaces and teams with
 approved peer access.

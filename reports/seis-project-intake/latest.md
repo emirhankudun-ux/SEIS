@@ -1,16 +1,16 @@
 # SEIS Project Intake Report
 
-Generated at: 2026-06-23T05:51:41.434Z
+Generated at: 2026-06-23T14:34:22.999Z
 
 ## Repository
-- Root: repository root
+- Root: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
 - Is Git repo: true
-- Branch: codex/product-experience-desktop-os
+- Branch: codex/seis-one-page-website-20260623
 - Remote: https://github.com/emirhankudun-ux/SEIS
 - Worktree clean: false
 
 ## Intake Evidence
-- Workspace root: repository root
+- Workspace root: /Users/emirhankudun/Library/Mobile Documents/com~apple~CloudDocs/Github 2/SEIS
 - AGENTS present: true
 - Command policy: read-only
 - Required instruction files:
@@ -23,7 +23,7 @@ Generated at: 2026-06-23T05:51:41.434Z
 
 ## Technology
 - Package managers: npm
-- Language signals: md, json, mjs, cjs, py, js, sh, jpg
+- Language signals: md, json, mjs, cjs, py, js, sh, html
 - Native signals:
 - detected: ios
 - hasPackageSwift: false
@@ -34,8 +34,8 @@ Generated at: 2026-06-23T05:51:41.434Z
 ## Capability Model
 - Policy ID: seis-project-intake-policy-v0
 - Default decision: read-only
-- Secret-hit count: 493
+- Secret-hit count: 543
 
 ## Warnings
 - Working tree has uncommitted changes.
-- Potentially sensitive token-like patterns in 493 file(s). Redacted for output.
+- Potentially sensitive token-like patterns in 543 file(s). Redacted for output.

@@ -96,6 +96,38 @@
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
     },
     {
+      "name": "seis_demo_sub_agent_plan_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_version_map_viewed",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_quarter_selected",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_pulse_recorded",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_ledger_reset",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_full_run_recorded",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_sub_agent_evidence_exported",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
+      "name": "seis_demo_ai_core_3d_interacted",
+      "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
+    },
+    {
       "name": "seis_demo_handoff_viewed",
       "required_fields": ["event_id", "occurred_at", "session_id", "route", "details"]
     },

@@ -66,7 +66,7 @@ function rpcSession(requests, { timeoutMs = 15000 } = {}) {
 }
 
 describe("seis-mcp stdio smoke", () => {
-  it("initializes and lists 17 tools, 3 prompts, 3 resources", async () => {
+  it("initializes and lists 34 tools, 3 prompts, 20 resources", async () => {
     const responses = await rpcSession([
       {
         jsonrpc: "2.0",
@@ -99,6 +99,23 @@ describe("seis-mcp stdio smoke", () => {
       "i18n_unreferenced",
       "run_all_checks",
       "security_audit",
+      "seis_ai_core_model_scaling_status",
+      "seis_ai_core_provider_status",
+      "seis_ai_core_subagent_dry_run",
+      "seis_ai_core_subagent_model",
+      "seis_ai_core_subagent_review_ledger",
+      "seis_ai_core_version_promotion_dry_run",
+      "seis_ai_core_version_status",
+      "seis_cloud_plan",
+      "seis_cloud_status",
+      "seis_code_plan",
+      "seis_code_status",
+      "seis_data_plan",
+      "seis_data_status",
+      "seis_design_plan",
+      "seis_design_status",
+      "seis_hub_plan",
+      "seis_hub_status",
       "seis_plugin_integration",
       "seo_audit",
       "site_config_get",
@@ -111,6 +128,23 @@ describe("seis-mcp stdio smoke", () => {
     const resources = responses.get(3).result.resources.map((r) => r.uri).sort();
     assert.deepEqual(resources, [
       "seis://agent/plugin-integration.json",
+      "seis://ai/agent-permission-matrix.json",
+      "seis://ai/agent-role-schema.json",
+      "seis://ai/approval-fixture.json",
+      "seis://ai/cancellation-fixture.json",
+      "seis://ai/dry-run-task-queue.json",
+      "seis://ai/execution-ledger-fixture.json",
+      "seis://ai/mcp-runtime-contract.json",
+      "seis://ai/model-scaling-hardware-profile.json",
+      "seis://ai/provider-registry.json",
+      "seis://ai/redaction-fixture.json",
+      "seis://ai/sub-agent-5-year-plan-view.json",
+      "seis://ai/sub-agent-5-year-plan.json",
+      "seis://ai/subagent-operating-model.json",
+      "seis://ai/subagent-review-ledger.json",
+      "seis://ai/subagent-runtime-fixtures.json",
+      "seis://ai/version-promotion-gates.json",
+      "seis://ai/version-registry.json",
       "seis://web/site-config.json",
       "seis://web/translations.json",
     ]);
@@ -151,6 +185,134 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(text.includes("i18n_add_key"));
   });
 
+  it("reads the SEIS plugin integration resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://agent/plugin-integration.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-agent-plugin-integration");
+    assert.equal(payload.primaryInstallId, "seis-ai-agent@seis-repo");
+  });
+
+  it("reads the SEIS AI Core MCP runtime contract resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/mcp-runtime-contract.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-ai-core-mcp-runtime-contract");
+    assert.equal(payload.resourceCount, 20);
+    assert.equal(payload.transport, "stdio JSON-RPC");
+  });
+
+  it("reads the SEIS AI Core provider registry resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/provider-registry.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-ai-core-provider-registry");
+    assert.equal(payload.coreCredentialRequirement, "none");
+    assert.ok(payload.publicStates.includes("Missing Key"));
+  });
+
+  it("reads the SEIS AI Core model scaling profile resource through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "resources/read",
+        params: {
+          uri: "seis://ai/model-scaling-hardware-profile.json",
+        },
+      },
+    ]);
+
+    const resource = responses.get(2);
+    assert.ok(!resource.error, `resources/read errored: ${JSON.stringify(resource.error)}`);
+    const payload = JSON.parse(resource.result.contents[0].text);
+    assert.equal(payload.id, "seis-model-scaling-hardware-profile");
+    assert.equal(payload.currentTarget.parameterClass, "20B");
+    assert.equal(payload.currentTarget.minimumSystemRamGb, 16);
+    assert.equal(payload.currentTarget.inferenceAvailable, false);
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "70B"));
+    assert.equal(payload.frontierTarget.parameterClass, "150B");
+    assert.equal(payload.frontierTarget.inferenceAvailable, false);
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "150B"));
+  });
+
   it("executes run_all_checks through the protocol", async () => {
     const responses = await rpcSession([
       {
@@ -178,5 +340,293 @@ describe("seis-mcp stdio smoke", () => {
     assert.ok(payload.perf);
     assert.ok(payload.a11y);
     assert.ok(payload.security);
+  });
+
+  it("executes a personal SEIS lane plan tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_cloud_plan",
+          arguments: { request: "prepare cloud readiness without deployment" },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.laneId, "seis-cloud");
+    assert.ok(payload.approvalBoundary.includes("explicit human approval"));
+  });
+
+  it("executes the SEIS AI Core provider status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_provider_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-ai-core-provider-registry");
+    assert.equal(payload.coreCredentialRequirement, "none");
+    assert.equal(payload.providerCount, 7);
+    assert.ok(payload.providers.some((provider) => provider.id === "seis-local-demo" && provider.routingEligible === true));
+  });
+
+  it("executes the SEIS AI Core model scaling status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_model_scaling_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-model-scaling-hardware-profile");
+    assert.equal(payload.coreCredentialRequirement, "none");
+    assert.equal(payload.currentTarget.parameterClass, "20B");
+    assert.equal(payload.currentTarget.minimumSystemRamGb, 16);
+    assert.equal(payload.currentTarget.weightsAvailable, false);
+    assert.equal(payload.currentTarget.inferenceAvailable, false);
+    assert.equal(payload.currentTarget.runtimeAuthority, false);
+    assert.equal(payload.frontierTarget.parameterClass, "150B");
+    assert.equal(payload.frontierTarget.weightsAvailable, false);
+    assert.equal(payload.frontierTarget.inferenceAvailable, false);
+    assert.equal(payload.frontierTarget.runtimeAuthority, false);
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "70B" && entry.status === "research-roadmap"));
+    assert.ok(payload.scaleLadder.some((entry) => entry.parameterClass === "150B" && entry.status === "frontier-research-roadmap"));
+  });
+
+  it("executes the SEIS AI Core sub-agent model tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_subagent_model",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.runtimeBoundary.currentLevel, "status-and-plan-only");
+    assert.equal(payload.runtimeFixtures.versionRegistry.id, "seis-ai-core-version-registry");
+    assert.equal(payload.runtimeFixtures.reviewLedger.id, "seis-ai-core-subagent-review-ledger");
+    assert.equal(payload.runtimeFixtures.runtimeFixturePack.id, "seis-ai-core-subagent-runtime-fixtures");
+    assert.equal(payload.runtimeFixtures.dryRunTaskQueue.dryRunOnly, true);
+    assert.equal(payload.runtimeFixtures.approvalFixture.blanketApprovalAllowed, false);
+    assert.equal(payload.longHorizonPlan.id, "sub-agent-5-year-plan");
+  });
+
+  it("executes the SEIS AI Core version status tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_version_status",
+          arguments: {},
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-ai-core-version-registry");
+    assert.equal(payload.currentVersion.id, "seis-ai-core-v0.1");
+    assert.equal(payload.runtimeBoundary.currentLevel, "status-and-plan-only");
+    assert.equal(payload.truthBoundaries.isTrainedModel, false);
+  });
+
+  it("executes the SEIS AI Core version promotion dry-run tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_version_promotion_dry_run",
+          arguments: { versionTarget: "v0.1-foundation" },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.versionTarget, "v0.1-foundation");
+    assert.equal(payload.dryRunDecision, "eligible-for-internal-review");
+    assert.equal(payload.releasePromotionAllowed, false);
+    assert.equal(payload.realExecutionBlocked, true);
+    assert.equal(payload.externalMutationPerformed, false);
+  });
+
+  it("executes the SEIS AI Core dry-run evaluator through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_subagent_dry_run",
+          arguments: {
+            taskId: "dry-run-seis-code-patch-plan",
+            signal: "operator-cancel",
+          },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.decision, "cancelled");
+    assert.equal(payload.dryRunOnly, true);
+    assert.equal(payload.realExecutionBlocked, true);
+    assert.equal(payload.externalMutationPerformed, false);
+  });
+
+  it("executes the SEIS AI Core review ledger tool through the protocol", async () => {
+    const responses = await rpcSession([
+      {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "2024-11-05",
+          capabilities: {},
+          clientInfo: { name: "seis-smoke", version: "0.0.0" },
+        },
+      },
+      { jsonrpc: "2.0", method: "notifications/initialized" },
+      {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/call",
+        params: {
+          name: "seis_ai_core_subagent_review_ledger",
+          arguments: {
+            quarterId: "Y1-Q2",
+          },
+        },
+      },
+    ]);
+
+    const call = responses.get(2);
+    assert.ok(!call.error, `tools/call errored: ${JSON.stringify(call.error)}`);
+    const payload = JSON.parse(call.result.content[0].text);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.id, "seis-ai-core-subagent-review-ledger");
+    assert.equal(payload.summary.quarterCount, 20);
+    assert.equal(payload.selectedQuarter.id, "Y1-Q2");
+    assert.equal(payload.runtimeBoundary.writeExecution, "disabled");
   });
 });

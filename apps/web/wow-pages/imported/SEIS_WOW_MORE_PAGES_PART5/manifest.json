@@ -1,0 +1,248 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART5",
+  "version": "1.0",
+  "page_count": 30,
+  "total_visual_set_after_this_pack": 130,
+  "pages": [
+    {
+      "number": 101,
+      "id": "101_maps",
+      "title": "Maps",
+      "description": "Location-style interface for future workspace and server maps.",
+      "png": "png/101_maps.png",
+      "html": "html/101_maps.html"
+    },
+    {
+      "number": 102,
+      "id": "102_weather",
+      "title": "Weather",
+      "description": "Premium weather panel for desktop widgets and travel context.",
+      "png": "png/102_weather.png",
+      "html": "html/102_weather.html"
+    },
+    {
+      "number": 103,
+      "id": "103_calculator",
+      "title": "Calculator",
+      "description": "Scientific calculator, history and unit conversion.",
+      "png": "png/103_calculator.png",
+      "html": "html/103_calculator.html"
+    },
+    {
+      "number": 104,
+      "id": "104_clock",
+      "title": "Clock",
+      "description": "World clock, timers, stopwatch and focus alarm.",
+      "png": "png/104_clock.png",
+      "html": "html/104_clock.html"
+    },
+    {
+      "number": 105,
+      "id": "105_pomodoro",
+      "title": "Pomodoro",
+      "description": "Focus sessions for design and coding flow.",
+      "png": "png/105_pomodoro.png",
+      "html": "html/105_pomodoro.html"
+    },
+    {
+      "number": 106,
+      "id": "106_contacts",
+      "title": "Contacts",
+      "description": "Workspace contacts, agent identities and safe profiles.",
+      "png": "png/106_contacts.png",
+      "html": "html/106_contacts.html"
+    },
+    {
+      "number": 107,
+      "id": "107_downloads",
+      "title": "Downloads",
+      "description": "Download manager with status, previews and file routing.",
+      "png": "png/107_downloads.png",
+      "html": "html/107_downloads.html"
+    },
+    {
+      "number": 108,
+      "id": "108_clipboard_manager",
+      "title": "Clipboard Manager",
+      "description": "Copy history, pinned snippets and safe redaction.",
+      "png": "png/108_clipboard_manager.png",
+      "html": "html/108_clipboard_manager.html"
+    },
+    {
+      "number": 109,
+      "id": "109_password_vault",
+      "title": "Password Vault",
+      "description": "A disabled-by-default vault concept with strict safety labels.",
+      "png": "png/109_password_vault.png",
+      "html": "html/109_password_vault.html"
+    },
+    {
+      "number": 110,
+      "id": "110_screenshot_tool",
+      "title": "Screenshot Tool",
+      "description": "Capture windows, annotate and save to virtual files.",
+      "png": "png/110_screenshot_tool.png",
+      "html": "html/110_screenshot_tool.html"
+    },
+    {
+      "number": 111,
+      "id": "111_pdf_viewer",
+      "title": "PDF Viewer",
+      "description": "Preview, annotate and organize PDF documents.",
+      "png": "png/111_pdf_viewer.png",
+      "html": "html/111_pdf_viewer.html"
+    },
+    {
+      "number": 112,
+      "id": "112_qr_studio",
+      "title": "QR Studio",
+      "description": "Create QR codes for links, files and demo routes.",
+      "png": "png/112_qr_studio.png",
+      "html": "html/112_qr_studio.html"
+    },
+    {
+      "number": 113,
+      "id": "113_regex_tester",
+      "title": "Regex Tester",
+      "description": "Developer utility for pattern testing.",
+      "png": "png/113_regex_tester.png",
+      "html": "html/113_regex_tester.html"
+    },
+    {
+      "number": 114,
+      "id": "114_hash_encoder",
+      "title": "Hash & Encoder",
+      "description": "Hashes, base64 and URL-safe transformations.",
+      "png": "png/114_hash_encoder.png",
+      "html": "html/114_hash_encoder.html"
+    },
+    {
+      "number": 115,
+      "id": "115_package_explorer",
+      "title": "Package Explorer",
+      "description": "Package files, dependencies and scripts overview.",
+      "png": "png/115_package_explorer.png",
+      "html": "html/115_package_explorer.html"
+    },
+    {
+      "number": 116,
+      "id": "116_network_inspector",
+      "title": "Network Inspector",
+      "description": "Request timeline, headers and sanitized logs.",
+      "png": "png/116_network_inspector.png",
+      "html": "html/116_network_inspector.html"
+    },
+    {
+      "number": 117,
+      "id": "117_console_logs",
+      "title": "Console Logs",
+      "description": "Frontend and system logs with severity filters.",
+      "png": "png/117_console_logs.png",
+      "html": "html/117_console_logs.html"
+    },
+    {
+      "number": 118,
+      "id": "118_automation_queue",
+      "title": "Automation Queue",
+      "description": "Scheduled and manual jobs with approval boundaries.",
+      "png": "png/118_automation_queue.png",
+      "html": "html/118_automation_queue.html"
+    },
+    {
+      "number": 119,
+      "id": "119_approval_center",
+      "title": "Approval Center",
+      "description": "Human approval queue for risky actions.",
+      "png": "png/119_approval_center.png",
+      "html": "html/119_approval_center.html"
+    },
+    {
+      "number": 120,
+      "id": "120_privacy_center",
+      "title": "Privacy Center",
+      "description": "Local-only mode, retention and context controls.",
+      "png": "png/120_privacy_center.png",
+      "html": "html/120_privacy_center.html"
+    },
+    {
+      "number": 121,
+      "id": "121_local_model_center",
+      "title": "Local Model Center",
+      "description": "Zero-key local AI models and availability states.",
+      "png": "png/121_local_model_center.png",
+      "html": "html/121_local_model_center.html"
+    },
+    {
+      "number": 122,
+      "id": "122_ollama_manager",
+      "title": "Ollama Manager",
+      "description": "Local model profiles suitable for a 16 GB machine.",
+      "png": "png/122_ollama_manager.png",
+      "html": "html/122_ollama_manager.html"
+    },
+    {
+      "number": 123,
+      "id": "123_visual_regression",
+      "title": "Visual Regression",
+      "description": "Screenshot comparison and UI drift detection.",
+      "png": "png/123_visual_regression.png",
+      "html": "html/123_visual_regression.html"
+    },
+    {
+      "number": 124,
+      "id": "124_accessibility_audit",
+      "title": "Accessibility Audit",
+      "description": "Keyboard, contrast, reduced motion and labels.",
+      "png": "png/124_accessibility_audit.png",
+      "html": "html/124_accessibility_audit.html"
+    },
+    {
+      "number": 125,
+      "id": "125_performance_budget",
+      "title": "Performance Budget",
+      "description": "Load time, JS size and animation limits.",
+      "png": "png/125_performance_budget.png",
+      "html": "html/125_performance_budget.html"
+    },
+    {
+      "number": 126,
+      "id": "126_mobile_app_preview",
+      "title": "Mobile App Preview",
+      "description": "iPhone-style SEIS companion app preview.",
+      "png": "png/126_mobile_app_preview.png",
+      "html": "html/126_mobile_app_preview.html"
+    },
+    {
+      "number": 127,
+      "id": "127_tablet_split_view",
+      "title": "Tablet Split View",
+      "description": "Touch-friendly split workspace for iPad-like screens.",
+      "png": "png/127_tablet_split_view.png",
+      "html": "html/127_tablet_split_view.html"
+    },
+    {
+      "number": 128,
+      "id": "128_desktop_widgets",
+      "title": "Desktop Widgets",
+      "description": "At-a-glance cards for AI, weather, tasks and music.",
+      "png": "png/128_desktop_widgets.png",
+      "html": "html/128_desktop_widgets.html"
+    },
+    {
+      "number": 129,
+      "id": "129_empty_error_states",
+      "title": "Empty & Error States",
+      "description": "Professional empty, loading, offline and error screens.",
+      "png": "png/129_empty_error_states.png",
+      "html": "html/129_empty_error_states.html"
+    },
+    {
+      "number": 130,
+      "id": "130_final_visual_index",
+      "title": "Final Visual Index",
+      "description": "Part 5 closes the 130-screen Codex visual reference set.",
+      "png": "png/130_final_visual_index.png",
+      "html": "html/130_final_visual_index.html"
+    }
+  ]
+}

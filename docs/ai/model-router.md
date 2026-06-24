@@ -15,9 +15,10 @@ user selection.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Router implementation | Planned | No central router implementation exists in this branch. | Provider registry and typed environment validation are missing. | Implement a small server-only registry first. |
+| Router implementation | Planned | No central router implementation exists in this branch. | Typed environment validation and live adapter tests are missing. | Keep routing disabled until server-only adapter tests exist. |
 | Routing policy | Documented | This document and `docs/ai/seis-ai-core.md`. | No runtime policy tests. | Add fixtures before live providers. |
-| Provider state model | Documented | `Available`, `Missing Key`, `Disabled`, `Rate Limited`, `Error`. | No status persistence or health checks. | Add non-secret status fixtures. |
+| Provider state model | Documented fixture | `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_provider_status`, `seis://ai/provider-registry.json`. | No live health checks or credential validation are performed. | Use the fixture for UI/MCP status before live adapters. |
+| Model scaling profile | Planned compatibility contract | `content/development/seis-model-scaling-hardware-profile.json`, `docs/ai/seis-model-scaling.md`, `seis_ai_core_model_scaling_status`. | The 20B / 16GB+ RAM target plus 70B and 150B frontier lanes are not routeable models until weights, model cards, runtime adapters, safety evals, and benchmarks exist. | Keep Local Demo as fallback and block 20B, 70B, or 150B routing until profile gates pass. |
 | Fallback behavior | Documented | Local Demo and no-key startup are required. | No runtime gateway. | Keep fallback identity visible in future UI. |
 
 ## Rules / Policy
@@ -54,7 +55,8 @@ Initial capability labels should include:
 Before the router is marked implemented, add:
 
 - typed server-only environment validation
-- provider registry contract tests
+- provider registry contract tests with `npm run check:seis-ai-core-provider-registry`
+- model scaling hardware profile tests with `npm run check:seis-model-scaling-hardware-profile`
 - no-key startup test
 - local-only fallback test
 - rate-limit fixture
@@ -73,4 +75,15 @@ Before the router is marked implemented, add:
 ## Next Safe Action
 
 Add a server-only provider registry fixture and no-key startup test before any
-live provider adapter work.
+live provider adapter work. The current provider registry fixture is
+`content/development/seis-ai-core-provider-registry.json`; it is status evidence
+only and does not perform live provider calls.
+
+The current model scaling profile is
+`content/development/seis-model-scaling-hardware-profile.json`; it records the
+planned 20B target for 16GB+ RAM, future 70B scale ladder, and 150B frontier
+research lane as routing requirements, not as live model
+availability. The router must keep all 20B, 70B, and 150B lanes blocked until
+the memory budget contract, quantization or distributed-runtime profile,
+runtime adapter, model card, dataset card, safety eval, redacted logs, and
+human approval gates have evidence.

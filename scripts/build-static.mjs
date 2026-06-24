@@ -11,6 +11,7 @@ rmSync(staticDir, { recursive: true, force: true });
 mkdirSync(staticDir, { recursive: true });
 
 copyDir("apps/web", staticDir);
+copyDir("apps/seis-demo-web", join(staticDir, "ai-core-demo"));
 copyFile("packages/design-tokens/seis.tokens.css", join(staticDir, "assets/styles/seis.tokens.css"));
 copyDir("docs/reports", join(staticDir, "docs/reports"));
 copyDir("docs/deployment", join(staticDir, "docs/deployment"));

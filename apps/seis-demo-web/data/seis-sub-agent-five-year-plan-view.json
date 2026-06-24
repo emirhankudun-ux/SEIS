@@ -1,0 +1,1162 @@
+{
+  "id": "seis-sub-agent-five-year-plan-view",
+  "version": 1,
+  "status": "generated-from-source",
+  "generatedAt": "deterministic-plan-derived",
+  "generatedBy": "scripts/create-sub-agent-five-year-demo-evidence.mjs",
+  "sourcePlan": "content/development/seis-sub-agent-5-year-plan.json",
+  "seisAiCoreVersionRegistry": "content/development/seis-ai-core-version-registry.json",
+  "seisAiCoreProviderRegistry": "content/development/seis-ai-core-provider-registry.json",
+  "seisAiCoreVersionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+  "seisAgentPluginIntegration": "content/development/seis-agent-plugin-integration.json",
+  "seisAiCoreMcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+  "demoSurface": "apps/seis-demo-web",
+  "demoBoundary": "local-demo-only",
+  "truthBoundary": "Generated from the source-of-truth five-year sub-agent plan for read-only Local Demo display; it does not authorize background agents, external mutation, SSH, deployment, credential access, GitHub writes, model training, or release promotion.",
+  "planStatus": "documented",
+  "releasePromotionAllowed": false,
+  "writerPolicy": "single-writer",
+  "defaultWriter": "codex",
+  "subAgentsAre": "bounded reviewers, explorers, workers, and validators under human governance",
+  "forbiddenAutonomy": [
+    "merge",
+    "push-to-main",
+    "deploy",
+    "secret-access",
+    "ssh-execution",
+    "history-rewrite",
+    "provider-key-collection",
+    "model-training",
+    "public-visibility-change"
+  ],
+  "requiredControls": [
+    "bounded objective",
+    "disjoint file ownership",
+    "least context",
+    "approval boundary",
+    "validation command",
+    "handoff summary",
+    "human review for privileged actions"
+  ],
+  "yearCount": 5,
+  "quarterCount": 20,
+  "laneCount": 6,
+  "installedAiCoreRouteCount": 6,
+  "installedAiCoreRoutes": [
+    {
+      "systemId": "codex-operator",
+      "systemName": "Codex",
+      "versionTargetId": "v0.1-foundation",
+      "versionLabel": "v0.1 Foundation Kernel",
+      "providerState": "Available",
+      "routeMode": "supervised-operator",
+      "subAgentDuty": "Implementation, validation, and repository-safe edits",
+      "credentialBoundary": "No browser credential; current Codex session only"
+    },
+    {
+      "systemId": "seis-local-demo",
+      "systemName": "SEIS Local Demo Runtime",
+      "versionTargetId": "v0.1-foundation",
+      "versionLabel": "v0.1 Foundation Kernel",
+      "providerState": "Available",
+      "routeMode": "no-key-local-demo",
+      "subAgentDuty": "AI shell, Claude-style REPL demo, tool-call ledger, and VFS evidence",
+      "credentialBoundary": "No key required; browser-local state only"
+    },
+    {
+      "systemId": "claude-review-profile",
+      "systemName": "Claude Review Profile",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "versionLabel": "v0.2 Read-Only Intelligence",
+      "providerState": "Missing Key",
+      "routeMode": "backend-only-planned",
+      "subAgentDuty": "Architecture, safety, PR review, and large-context review lane",
+      "credentialBoundary": "Server-only Anthropic credential when explicitly configured"
+    },
+    {
+      "systemId": "qwen-review-profile",
+      "systemName": "Qwen Alternative Review",
+      "versionTargetId": "v0.3-write-gated-runtime",
+      "versionLabel": "v0.3 Write-Gated Runtime",
+      "providerState": "Disabled",
+      "routeMode": "alternative-review-planned",
+      "subAgentDuty": "Contradiction detection, archive review, and second-opinion risk checks",
+      "credentialBoundary": "Server-only or local endpoint later"
+    },
+    {
+      "systemId": "gemini-validation-profile",
+      "systemName": "Gemini Secondary Validation",
+      "versionTargetId": "v0.4-multi-workspace-readiness",
+      "versionLabel": "v0.4 Multi-Workspace Readiness",
+      "providerState": "Disabled",
+      "routeMode": "secondary-validation-planned",
+      "subAgentDuty": "Multimodal, product, and secondary validation after provider audit",
+      "credentialBoundary": "Server-only Gemini credential when explicitly configured"
+    },
+    {
+      "systemId": "ollama-local-profile",
+      "systemName": "Ollama Local Candidate",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "versionLabel": "v0.2 Read-Only Intelligence",
+      "providerState": "Disabled",
+      "routeMode": "zero-key-local-provider-planned",
+      "subAgentDuty": "Local/private inference candidate for local-only workspaces",
+      "credentialBoundary": "No key; user-controlled local service only"
+    }
+  ],
+  "personalPluginLaneCount": 5,
+  "personalPluginLaneMatrix": [
+    {
+      "pluginId": "seis@personal",
+      "laneId": "seis",
+      "displayName": "SEIS Hub",
+      "status": "installed-enabled-audited",
+      "role": "repository governance, architecture, migration safety, and ecosystem coordination",
+      "versionTargetId": "v0.1-foundation",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep source-of-truth, branch policy, public readiness, and plugin coordination aligned with each AI Core version.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "sourceMirror": "plugins/seis",
+      "gate": "npm run check:seis-ai-agent",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-cloud@personal",
+      "laneId": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "status": "installed-enabled-audited",
+      "role": "cloud readiness, public cloud, team VPN cloud, provider preflight, rollback, and secret-safe infrastructure",
+      "versionTargetId": "v0.4-multi-workspace-readiness",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep cloud, SSH, VPN, rollback, and deployment boundaries explicit before any version promotion.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "sourceMirror": "plugins/seis-cloud",
+      "gate": "npm run check:cloud-access-policy",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-code@personal",
+      "laneId": "seis-code",
+      "displayName": "SEIS-Code",
+      "status": "installed-enabled-audited",
+      "role": "architecture-aware implementation, tests, CI gates, MCP/plugin code, and automation",
+      "versionTargetId": "v0.1-foundation",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep implementation, CI, MCP/plugin code, and test coverage tied to scoped version gates.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "sourceMirror": "plugins/seis-code",
+      "gate": "npm run check:seis-plugin-bundle",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-design@personal",
+      "laneId": "seis-design",
+      "displayName": "SEIS-Design",
+      "status": "installed-enabled-audited",
+      "role": "product design, UI/UX, design systems, accessibility, motion, and visual QA",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep UI/UX, accessibility, design-system, and motion quality standards attached to each version.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "sourceMirror": "plugins/seis-design",
+      "gate": "npm run check:motion-evidence",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    },
+    {
+      "pluginId": "seis-data@personal",
+      "laneId": "seis-data",
+      "displayName": "SEIS-DATA",
+      "status": "installed-enabled-audited",
+      "role": "data architecture, reports, schemas, memory, context, RAG planning, and provenance",
+      "versionTargetId": "v0.2-read-only-intelligence",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep structured records, reports, memory/context, provenance, and generated evidence deterministic.",
+      "embeddedSkill": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "sourceMirror": "plugins/seis-data",
+      "gate": "npm run check:plugin-capability-lanes",
+      "aiCoreBoundary": "Embedded personal plugin lane; no standalone install, external mutation, credential access, deploy, SSH, or GitHub write without human approval."
+    }
+  ],
+  "mcpRuntimeSurfaceCount": 4,
+  "mcpRuntimeToolCount": 34,
+  "mcpRuntimeResourceCount": 20,
+  "mcpRuntimePromptCount": 3,
+  "mcpRuntimeContract": {
+    "id": "seis-ai-core-mcp-runtime-contract",
+    "version": 1,
+    "status": "local-smoke-verified",
+    "sourcePath": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "resourceUri": "seis://ai/mcp-runtime-contract.json",
+    "transport": "stdio JSON-RPC",
+    "fallbackRuntime": "LightweightMcpServer no-dependency fallback",
+    "fallback": "LightweightMcpServer no-dependency fallback",
+    "officialSdk": "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
+    "toolCount": 34,
+    "resourceCount": 20,
+    "promptCount": 3,
+    "smokeTest": "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
+    "pluginGate": "npm run check:seis-agent-plugin-integration",
+    "resourceRead": "seis://ai/mcp-runtime-contract.json",
+    "pluginIntegrationResource": "seis://agent/plugin-integration.json",
+    "boundary": "Browser demo and MCP smoke do not call remote MCP servers, store credentials, execute SSH, deploy, mutate GitHub, or run unrestricted shell tools.",
+    "credentialBoundary": "No provider keys, SSH credentials, browser secrets, live deploys, GitHub mutation, or external mutation; local MCP smoke contract only.",
+    "surfaces": [
+      {
+        "id": "tools",
+        "label": "Tool registry",
+        "count": 34,
+        "state": "verified",
+        "method": "tools/list + tools/call",
+        "evidence": "14 MCP smoke tests pass through stdio JSON-RPC",
+        "duty": "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
+      },
+      {
+        "id": "resources",
+        "label": "Resource registry",
+        "count": 20,
+        "state": "verified",
+        "method": "resources/list + resources/read",
+        "evidence": "Plugin integration, provider registry, model scaling profile, and MCP runtime contract resources are read through the protocol",
+        "duty": "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, MCP runtime, version gates, fixtures, and generated plan views."
+      },
+      {
+        "id": "prompts",
+        "label": "Prompt registry",
+        "count": 3,
+        "state": "verified",
+        "method": "prompts/list + prompts/get",
+        "evidence": "Prompt rendering is verified with arguments",
+        "duty": "Provide bounded audit, i18n, and review prompts without embedding secrets."
+      },
+      {
+        "id": "transport",
+        "label": "Transport boundary",
+        "count": 1,
+        "state": "verified",
+        "method": "stdio local process",
+        "evidence": "No dependency install required for local smoke",
+        "duty": "Keep MCP available for local verification while official SDK compatibility remains a separate hardening path."
+      }
+    ]
+  },
+  "providerRegistry": {
+    "id": "seis-ai-core-provider-registry",
+    "version": 1,
+    "status": "documented-fixture",
+    "updatedAt": "2026-06-23",
+    "purpose": "Define the zero-key SEIS AI Core provider state contract for Local Demo, personal plugin lanes, and future server-only live provider routing without calling providers or validating credentials.",
+    "qualityGate": "npm run check:seis-ai-core-provider-registry",
+    "sourceOfTruth": {
+      "aiCoreDoc": "docs/ai/seis-ai-core.md",
+      "modelRouterDoc": "docs/ai/model-router.md",
+      "providerAudit": "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+      "providerAuditJson": "docs/audits/ai-provider-audit.json",
+      "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+      "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+      "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
+    },
+    "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+    "publicStates": [
+      "Available",
+      "Missing Key",
+      "Disabled",
+      "Rate Limited",
+      "Error"
+    ],
+    "stateModel": [
+      {
+        "state": "Available",
+        "routingEligible": true,
+        "meaning": "The route can be used inside the declared local or supervised boundary without additional credentials."
+      },
+      {
+        "state": "Missing Key",
+        "routingEligible": false,
+        "meaning": "A server-only credential is absent or unverified; the provider must not be selected."
+      },
+      {
+        "state": "Disabled",
+        "routingEligible": false,
+        "meaning": "The provider or profile is intentionally unavailable for this demo slice."
+      },
+      {
+        "state": "Rate Limited",
+        "routingEligible": false,
+        "meaning": "Future live adapter state for quota exhaustion; no current provider is marked rate limited by this offline fixture."
+      },
+      {
+        "state": "Error",
+        "routingEligible": false,
+        "meaning": "Future live adapter state for redacted provider/runtime errors; no raw provider error body may be surfaced."
+      }
+    ],
+    "coreCredentialRequirement": "none",
+    "defaultRoutingMode": "local-demo",
+    "localOnlyRespected": true,
+    "requiredForCore": [],
+    "fallbackOrder": [
+      "selected-live-provider",
+      "compatible-live-provider",
+      "approved-local-provider",
+      "local-demo",
+      "feature-disabled"
+    ],
+    "providers": [
+      {
+        "id": "codex-operator",
+        "displayName": "Codex Operator Session",
+        "category": "supervised-operator",
+        "publicStatus": "Available",
+        "credentialRequirement": "current-session-only",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "repo-local-supervised",
+        "capabilities": [
+          "implementation",
+          "repository-review",
+          "validation",
+          "planning"
+        ],
+        "modelAliases": [
+          "codex-session"
+        ],
+        "actualModel": "current-codex-session",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "content/development/seis-agent-plugin-integration.json",
+          "packages/seis-ai/src/agent/tools.mjs"
+        ],
+        "notes": "Represents the supervised Codex work session only; it is not a browser provider and stores no provider key."
+      },
+      {
+        "id": "seis-local-demo",
+        "displayName": "SEIS Local Demo Runtime",
+        "category": "local-demo",
+        "publicStatus": "Available",
+        "credentialRequirement": "none",
+        "configured": true,
+        "enabled": true,
+        "routingEligible": true,
+        "privacyClass": "browser-local-demo",
+        "capabilities": [
+          "general-chat-demo",
+          "repository-planning-demo",
+          "tool-ledger-demo",
+          "personal-plugin-lane-status-demo"
+        ],
+        "modelAliases": [
+          "local-demo"
+        ],
+        "actualModel": "none-local-demo",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": true,
+        "evidence": [
+          "apps/web/desktop.js",
+          "apps/seis-demo-web/script.js",
+          "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
+        ],
+        "notes": "No cloud model, trained SEIS model, or credential is claimed."
+      },
+      {
+        "id": "anthropic-claude",
+        "displayName": "Anthropic Claude",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "architecture-review",
+          "long-context-review",
+          "code-review"
+        ],
+        "modelAliases": [
+          "claude-review-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side Anthropic credential and adapter tests exist."
+      },
+      {
+        "id": "openai-general",
+        "displayName": "OpenAI General Provider",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "general-chat",
+          "structured-output",
+          "tool-calling"
+        ],
+        "modelAliases": [
+          "openai-general-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side OpenAI credential and adapter tests exist."
+      },
+      {
+        "id": "google-gemini",
+        "displayName": "Google Gemini",
+        "category": "cloud-model-provider",
+        "publicStatus": "Missing Key",
+        "credentialRequirement": "optional-live-feature",
+        "expectedEnv": [
+          "GEMINI_API_KEY"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-cloud",
+        "capabilities": [
+          "secondary-validation",
+          "multimodal-review"
+        ],
+        "modelAliases": [
+          "gemini-validation-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+        ],
+        "notes": "Unavailable until a server-side Gemini credential and adapter tests exist."
+      },
+      {
+        "id": "qwen-review",
+        "displayName": "Qwen Alternative Review",
+        "category": "local-or-cloud-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "optional-future-provider",
+        "expectedEnv": [],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "server-only-or-local-future",
+        "capabilities": [
+          "second-opinion-review",
+          "contradiction-detection"
+        ],
+        "modelAliases": [
+          "qwen-review-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "apps/web/desktop.js",
+          "apps/seis-demo-web/script.js"
+        ],
+        "notes": "Planned profile only; no endpoint, local runtime, or key is configured."
+      },
+      {
+        "id": "ollama-local",
+        "displayName": "Ollama Local Candidate",
+        "category": "local-model-provider",
+        "publicStatus": "Disabled",
+        "credentialRequirement": "none-local-service",
+        "expectedEnv": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ],
+        "configured": false,
+        "enabled": false,
+        "routingEligible": false,
+        "privacyClass": "local-private-future",
+        "capabilities": [
+          "local-private-inference",
+          "no-key-local-model"
+        ],
+        "modelAliases": [
+          "ollama-local-profile"
+        ],
+        "actualModel": "not-configured",
+        "backendOnly": true,
+        "frontendSecretAllowed": false,
+        "fallbackEligible": false,
+        "evidence": [
+          "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+          "docs/ai/model-router.md"
+        ],
+        "notes": "Zero-key local-provider candidate; disabled until local service health and no-key startup tests exist."
+      }
+    ],
+    "optionalForLiveFeatures": [
+      {
+        "providerId": "anthropic-claude",
+        "env": [
+          "ANTHROPIC_API_KEY"
+        ],
+        "scope": "server-only architecture and code review"
+      },
+      {
+        "providerId": "openai-general",
+        "env": [
+          "OPENAI_API_KEY"
+        ],
+        "scope": "server-only general assistant features"
+      },
+      {
+        "providerId": "google-gemini",
+        "env": [
+          "GEMINI_API_KEY"
+        ],
+        "scope": "server-only secondary validation"
+      },
+      {
+        "providerId": "ollama-local",
+        "env": [
+          "OLLAMA_BASE_URL",
+          "OLLAMA_HOST"
+        ],
+        "scope": "user-controlled local inference"
+      }
+    ],
+    "noKeyProviders": [
+      "codex-operator",
+      "seis-local-demo",
+      "ollama-local"
+    ],
+    "securityInvariants": [
+      "Core SEIS AI must start with zero cloud provider keys.",
+      "Browser code must not receive model-provider secrets.",
+      "Provider keys must be backend-only and never stored in localStorage or IndexedDB.",
+      "Missing Key and Disabled states must not be routed silently.",
+      "Rate Limited and Error states must use redacted output and must not print raw provider responses.",
+      "Local-only mode must never fall back to a cloud provider.",
+      "Unavailable providers must remain visibly unavailable in SEIS AI surfaces."
+    ],
+    "nextSafeActions": [
+      "Use this fixture as the provider status source for SEIS AI and MCP evidence.",
+      "Add no-key startup tests before live provider adapters.",
+      "Add redacted routing decision logs before enabling live provider routing."
+    ]
+  },
+  "providerRegistryProviderCount": 7,
+  "providerRegistryRequiredForCoreCount": 0,
+  "providerRegistryNoKeyProviderCount": 3,
+  "lanes": [
+    {
+      "id": "architecture-agent",
+      "label": "Architecture",
+      "role": "Architecture and platform coherence",
+      "authority": "review-only",
+      "defaultAuthority": "review-only",
+      "wipLimit": 2
+    },
+    {
+      "id": "implementation-agent",
+      "label": "Implementation",
+      "role": "Bounded code and product implementation",
+      "authority": "scoped-worker",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "security-agent",
+      "label": "Security",
+      "role": "Security, privacy, permission, and credential boundaries",
+      "authority": "review-only",
+      "defaultAuthority": "review-only",
+      "wipLimit": 1
+    },
+    {
+      "id": "documentation-agent",
+      "label": "Documentation",
+      "role": "Source-of-truth docs, evidence, and handoffs",
+      "authority": "scoped-worker",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "validation-agent",
+      "label": "Validation",
+      "role": "Tests, smoke checks, audit scripts, and release evidence",
+      "authority": "review-only-or-scoped-worker",
+      "defaultAuthority": "review-only-or-scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "design-agent",
+      "label": "Design",
+      "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+      "authority": "proposal-or-scoped-worker",
+      "defaultAuthority": "proposal-or-scoped-worker",
+      "wipLimit": 1
+    }
+  ],
+  "years": [
+    {
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "quarters": [
+        {
+          "id": "Y1-Q1",
+          "focus": "Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+          "lanes": [
+            "documentation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "documentation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "sub-agent plan contract",
+            "check-only validator",
+            "permission gap review"
+          ],
+          "gates": [
+            "docs-updated",
+            "deterministic-check",
+            "single-writer-policy",
+            "no-secret-leakage"
+          ]
+        },
+        {
+          "id": "Y1-Q2",
+          "focus": "Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+          "lanes": [
+            "architecture-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "agent role schema",
+            "tool permission matrix",
+            "dry-run queue fixture"
+          ],
+          "gates": [
+            "schema-validation",
+            "approval-boundary",
+            "cancellation-fixture",
+            "path-safety"
+          ]
+        },
+        {
+          "id": "Y1-Q3",
+          "focus": "Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+          "lanes": [
+            "implementation-agent",
+            "design-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "design-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "brief registry",
+            "Command Center evidence view",
+            "operator review queue"
+          ],
+          "gates": [
+            "mock-vs-live-labels",
+            "accessibility",
+            "browser-smoke",
+            "rollback-plan"
+          ]
+        },
+        {
+          "id": "Y1-Q4",
+          "focus": "Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+          "lanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "local demo agent lane",
+            "provider status model",
+            "fallback policy evidence"
+          ],
+          "gates": [
+            "no-key-startup",
+            "provider-honesty",
+            "redaction",
+            "human-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "quarters": [
+        {
+          "id": "Y2-Q1",
+          "focus": "Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+          "lanes": [
+            "implementation-agent",
+            "design-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "design-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "desktop interaction baseline",
+            "SEIS Code persistence suite",
+            "shared VFS plan"
+          ],
+          "gates": [
+            "interactivity-rate",
+            "mobile-fit",
+            "indexeddb-persistence",
+            "no-host-os-claim"
+          ]
+        },
+        {
+          "id": "Y2-Q2",
+          "focus": "Build scheduler dry-run, task queue states, and operator cancellation paths.",
+          "lanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "scheduler dry-run",
+            "queue state machine",
+            "cancellation UI"
+          ],
+          "gates": [
+            "dry-run-only",
+            "bounded-recursion",
+            "timeout",
+            "audit-event"
+          ]
+        },
+        {
+          "id": "Y2-Q3",
+          "focus": "Introduce read-only repository intelligence and evidence locker views.",
+          "lanes": [
+            "implementation-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "repository scanner contract",
+            "evidence locker",
+            "staleness labels"
+          ],
+          "gates": [
+            "read-only-live",
+            "evidence-linked",
+            "stale-data-label",
+            "no-fake-health"
+          ]
+        },
+        {
+          "id": "Y2-Q4",
+          "focus": "Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+          "lanes": [
+            "security-agent",
+            "architecture-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "security-agent",
+            "architecture-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "MCP trust registry",
+            "tool permission tests",
+            "destructive approval fixtures"
+          ],
+          "gates": [
+            "least-privilege",
+            "tool-allowlist",
+            "destructive-approval",
+            "prompt-injection-resistance"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "quarters": [
+        {
+          "id": "Y3-Q1",
+          "focus": "Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+          "lanes": [
+            "implementation-agent",
+            "design-agent",
+            "documentation-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "design-agent",
+            "documentation-agent"
+          ],
+          "outcomes": [
+            "agent center alpha",
+            "AI control center alpha",
+            "evidence-first dashboard"
+          ],
+          "gates": [
+            "real-actions-only",
+            "keyboard-navigation",
+            "provider-identity",
+            "fallback-transparency"
+          ]
+        },
+        {
+          "id": "Y3-Q2",
+          "focus": "Add provider-neutral model routing behind backend-only boundaries.",
+          "lanes": [
+            "architecture-agent",
+            "security-agent",
+            "implementation-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "security-agent",
+            "implementation-agent"
+          ],
+          "outcomes": [
+            "provider registry",
+            "capability router",
+            "server env validation"
+          ],
+          "gates": [
+            "server-only-secrets",
+            "missing-key-state",
+            "capability-fallback",
+            "redacted-errors"
+          ]
+        },
+        {
+          "id": "Y3-Q3",
+          "focus": "Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+          "lanes": [
+            "implementation-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "write-gated file tools",
+            "approval ledger",
+            "tool audit events"
+          ],
+          "gates": [
+            "path-traversal-denied",
+            "approval-required",
+            "audit-log",
+            "rollback-notes"
+          ]
+        },
+        {
+          "id": "Y3-Q4",
+          "focus": "Create release-candidate quality gates for agent-assisted product surfaces.",
+          "lanes": [
+            "validation-agent",
+            "documentation-agent",
+            "design-agent"
+          ],
+          "primaryLanes": [
+            "validation-agent",
+            "documentation-agent",
+            "design-agent"
+          ],
+          "outcomes": [
+            "RC evidence checklist",
+            "visual QA protocol",
+            "accessibility regression plan"
+          ],
+          "gates": [
+            "build-pass",
+            "smoke-pass",
+            "a11y-review",
+            "release-evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "quarters": [
+        {
+          "id": "Y4-Q1",
+          "focus": "Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+          "lanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "federation policy",
+            "workspace sync safety",
+            "repo boundary registry"
+          ],
+          "gates": [
+            "source-of-truth",
+            "read-only-default",
+            "scope-control",
+            "human-approval"
+          ]
+        },
+        {
+          "id": "Y4-Q2",
+          "focus": "Mature observability, budget controls, and incident response for agent runs.",
+          "lanes": [
+            "security-agent",
+            "validation-agent",
+            "implementation-agent"
+          ],
+          "primaryLanes": [
+            "security-agent",
+            "validation-agent",
+            "implementation-agent"
+          ],
+          "outcomes": [
+            "agent observability schema",
+            "budget controls",
+            "incident playbook"
+          ],
+          "gates": [
+            "redacted-logs",
+            "cost-budget",
+            "cancellation",
+            "postmortem-template"
+          ]
+        },
+        {
+          "id": "Y4-Q3",
+          "focus": "Expand local-first and offline agent modes for privacy-sensitive workflows.",
+          "lanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "implementation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "local-only mode",
+            "offline drafts",
+            "context preview"
+          ],
+          "gates": [
+            "no-cloud-fallback",
+            "context-minimization",
+            "memory-boundary",
+            "no-secret-storage"
+          ]
+        },
+        {
+          "id": "Y4-Q4",
+          "focus": "Prepare public and release readiness for controlled agent-assisted workflows.",
+          "lanes": [
+            "documentation-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "documentation-agent",
+            "security-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "public readiness dry run",
+            "release governance review",
+            "supply-chain plan"
+          ],
+          "gates": [
+            "secret-scan",
+            "license-review",
+            "SBOM-plan",
+            "branch-protection-docs"
+          ]
+        }
+      ]
+    },
+    {
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "quarters": [
+        {
+          "id": "Y5-Q1",
+          "focus": "Stabilize agent runtime beta with bounded delegation and observable recovery.",
+          "lanes": [
+            "implementation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "implementation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "runtime beta",
+            "delegation depth limits",
+            "recovery playbook"
+          ],
+          "gates": [
+            "bounded-delegation",
+            "failure-mode-tests",
+            "operator-cancel",
+            "auditability"
+          ]
+        },
+        {
+          "id": "Y5-Q2",
+          "focus": "Advance SEIS Universe research governance without overstating trained-model ownership.",
+          "lanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "model research gates",
+            "dataset governance",
+            "eval provenance"
+          ],
+          "gates": [
+            "no-fake-model-claims",
+            "dataset-provenance",
+            "benchmark-integrity",
+            "model-card-template"
+          ]
+        },
+        {
+          "id": "Y5-Q3",
+          "focus": "Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+          "lanes": [
+            "documentation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "primaryLanes": [
+            "documentation-agent",
+            "validation-agent",
+            "security-agent"
+          ],
+          "outcomes": [
+            "maintenance cadence",
+            "contributor trust levels",
+            "reviewer routing"
+          ],
+          "gates": [
+            "community-health",
+            "security-triage",
+            "CODEOWNERS-policy",
+            "release-cadence"
+          ]
+        },
+        {
+          "id": "Y5-Q4",
+          "focus": "Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+          "lanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "primaryLanes": [
+            "architecture-agent",
+            "documentation-agent",
+            "validation-agent"
+          ],
+          "outcomes": [
+            "phase closure report",
+            "next-phase handoff",
+            "capability maturity review"
+          ],
+          "gates": [
+            "evidence-complete",
+            "known-limits",
+            "human-review",
+            "next-safe-action"
+          ]
+        }
+      ]
+    }
+  ]
+}

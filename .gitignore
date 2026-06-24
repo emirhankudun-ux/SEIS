@@ -12,6 +12,7 @@ coverage/
 .next/
 **/.build/
 **/.swiftpm/
+apps/web/wow-pages/imported/**/png/*.png
 
 # Environment files and local secrets
 .env
@@ -134,6 +135,10 @@ ios/
 *.json
 *.config.json
 !content/development/seis-*.json
+!apps/seis-demo-web/data/seis-ai-core-version-promotion-map.json
+!apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json
+!apps/web/wow-pages/*.json
+!apps/web/wow-pages/imported/*/manifest.json
 !packages/seis-ai/data/permission-policy-seed.json
 !packages/seis-ai/models/permission-policy-seed-v0.json
 !packages/seis-ai/data/memory-ranker-seed-v0.json
@@ -143,6 +148,8 @@ ios/
 !packages/seis-ai/data/agent-router-seed-v0.json
 !packages/seis-ai/models/agent-router-seed-v0.json
 !apps/seis-core/data/seis-router-routes.json
+!reports/seis-sub-agent-five-year-demo-evidence.json
+!reports/seis-sub-agent-five-year-demo-run.json
 !packages/seis-ai/models/seis-model-family-registry.json
 !packages/seis-ai/data/model-benchmark-suite-v0.json
 !packages/seis-ai/models/seis-model-benchmark-suite.json
@@ -169,6 +176,10 @@ docs/*
 !docs/reviews/*.md
 !docs/roadmap/
 !docs/roadmap/*.md
+!docs/ai/
+!docs/ai/*.md
+!docs/goals/
+!docs/goals/*.md
 !docs/development/
 !docs/development/local-ai-workbench.md
 !docs/governance/

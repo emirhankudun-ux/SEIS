@@ -16,10 +16,14 @@ runtime orchestration.
 
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
-| Agent definitions | Documented assignment layer, planned runtime schema | `AGENTS.md` names the multi-assistant model; `docs/development/agents/ai-workforce-assignments.md` defines specialist ownership. | No typed runtime schema. | Define a small role schema. |
-| Tool permissions | Planned | Security boundaries are documented. | No permission registry. | Add read/write/destructive action categories. |
+| Agent definitions | Documented fixture, not implemented runtime orchestration | `AGENTS.md` names the multi-assistant model; `docs/development/agents/ai-workforce-assignments.md`; `content/development/seis-ai-core-agent-role-schema.json`. | No live scheduler or write-capable runtime exists. | Keep role schema plan-only until runtime tests exist. |
+| Tool permissions | Documented fixture | `content/development/seis-ai-core-agent-permission-matrix.json`. | No live permission registry enforcement exists. | Keep write-gated and external-gated levels planned until approval fixtures are wired to execution. |
 | Handoff protocol | Documented | `AGENTS.md` and this document. | No handoff artifact schema. | Add a reviewer handoff template later. |
-| Automation runtime | Planned | `scripts/ai-launcher.cjs` exists, but no bounded runtime contract is implemented. | No tests for recursion, cancellation, or tool limits. | Keep automation dry-run until contracts exist. |
+| Automation runtime | Dry-run fixture only | `scripts/ai-launcher.cjs`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, `content/development/seis-ai-core-redaction-fixture.json`, `content/development/seis-ai-core-execution-ledger-fixture.json`. | No background runner, write runner, or external mutation runner exists. | Keep automation dry-run until cancellation, approval, redaction, ledger, and validation behavior is executable and tested. |
+| Version binding | Documented fixture | `content/development/seis-ai-core-version-registry.json`, `content/development/seis-ai-core-provider-registry.json`, `seis_ai_core_version_status`, `seis_ai_core_provider_status`. | No live release channel, live provider adapter, or health-check runtime exists. | Keep SEIS AI Core v0.1 as a zero-key, status/plan-only application-layer profile. |
+| Version promotion dry-run | Documented fixture | `content/development/seis-ai-core-version-promotion-gates.json`, `seis_ai_core_version_promotion_dry_run`. | Dry-run output does not approve releases or enable write lanes. | Use promotion gate output as internal review evidence only. |
+| MCP runtime contract | Local smoke verified | `content/development/seis-ai-core-mcp-runtime-contract.json`, `seis://ai/mcp-runtime-contract.json`. | This does not authenticate remote MCP servers, connectors, credentials, SSH, deploys, or GitHub mutation. | Keep runtime resources verified by `node --test packages/seis-ai/test/mcp-smoke.test.mjs`. |
+| Personal sub-agent lanes | Integrated as status/plan-only | `content/development/seis-ai-core-subagent-operating-model.json`, `content/development/seis-ai-core-subagent-review-ledger.json`, `content/development/seis-ai-core-subagent-runtime-fixtures.json`, `content/development/seis-sub-agent-5-year-plan.json`, `content/development/seis-agent-lane-status.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `docs/ai/seis-ai-core.md`, `packages/seis-ai/src/agent/tools.mjs` | No write-gated or background runtime exists. | Promote the permission matrix fixture into executable enforcement tests before enabling autonomous write actions. |
 
 ## Rules / Policy
 
@@ -57,14 +61,30 @@ Each future agent definition should include:
 
 Before the agent runtime is marked implemented, add:
 
-- role schema
-- tool permission matrix
-- dry-run task queue fixture
-- cancellation fixture
-- destructive-action approval fixture
+- `content/development/seis-ai-core-agent-role-schema.json`
+- `content/development/seis-ai-core-agent-permission-matrix.json`
+- `content/development/seis-ai-core-provider-registry.json`
+- `content/development/seis-ai-core-version-registry.json`
+- `content/development/seis-ai-core-version-promotion-gates.json`
+- `content/development/seis-ai-core-mcp-runtime-contract.json`
+- `content/development/seis-ai-core-subagent-review-ledger.json`
+- `content/development/seis-ai-core-subagent-runtime-fixtures.json`
+- `content/development/seis-ai-core-dry-run-task-queue.json`
+- `content/development/seis-ai-core-cancellation-fixture.json`
+- `content/development/seis-ai-core-approval-fixture.json`
+- `content/development/seis-ai-core-redaction-fixture.json`
+- `content/development/seis-ai-core-execution-ledger-fixture.json`
 - path traversal denial fixture
 - redacted tool-output test
 - handoff report template
+
+Runtime inspection tools currently include `seis_ai_core_provider_status`,
+`seis_ai_core_version_status`,
+`seis_ai_core_version_promotion_dry_run`, `seis_ai_core_subagent_model`,
+`seis_ai_core_subagent_dry_run`, and `seis_ai_core_subagent_review_ledger`.
+These are read-only or dry-run-only and do not prove background automation,
+release approval, provider readiness, or write permission. The quarterly review ledger remains
+evidence for staged reviews, not autonomous execution.
 
 ## Related Documents
 
@@ -77,5 +97,5 @@ Before the agent runtime is marked implemented, add:
 
 ## Next Safe Action
 
-Define a minimal agent role schema and permission matrix before enabling any
+Connect the documented fixtures to executable dry-run tests before enabling any
 background or write-capable automation.

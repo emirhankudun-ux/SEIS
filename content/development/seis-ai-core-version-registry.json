@@ -1,0 +1,205 @@
+{
+  "id": "seis-ai-core-version-registry",
+  "version": "0.1.0",
+  "status": "documented-fixture",
+  "updatedAt": "2026-06-23",
+  "purpose": "Bind SEIS AI Core version identity, language profile, sub-agent lanes, and five-year promotion gates without claiming trained model ownership or autonomous execution.",
+  "qualityGate": "npm run check:seis-ai-core-version-registry",
+  "sourceOfTruth": {
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md",
+    "modelRouterDoc": "docs/ai/model-router.md",
+    "promptEngineDoc": "docs/ai/prompt-engine.md",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "promotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json"
+  },
+  "currentVersion": {
+    "id": "seis-ai-core-v0.1",
+    "displayName": "SEIS AI Core v0.1",
+    "maturity": "documented-validated",
+    "scope": "application-layer-intelligence-profile",
+    "releaseClass": "foundation-planning",
+    "runtimeBoundary": "status-and-plan-only",
+    "providerMode": "zero-key-core",
+    "languageVersion": "SEIS Language v0.1",
+    "agentRuntimeVersion": "SEIS Agent Runtime v0.1",
+    "modelRouterVersion": "SEIS Model Router v0.1",
+    "promptEngineVersion": "SEIS Prompt Engine v0.1",
+    "commandIntelligenceVersion": "SEIS Command Intelligence v0.1"
+  },
+  "truthBoundaries": {
+    "isFoundationModel": false,
+    "isTrainedModel": false,
+    "providerRoutingIsModelOwnership": false,
+    "promptEngineeringIsTraining": false,
+    "ragIsTraining": false,
+    "autonomousWriteRuntimeEnabled": false,
+    "externalMutationPerformed": false,
+    "credentialAccessPerformed": false
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "writeExecution": "disabled",
+    "backgroundAutomation": "disabled",
+    "externalMutation": "requires-explicit-human-approval",
+    "credentialAccess": "forbidden",
+    "liveProviderCalls": "disabled",
+    "localDemoAllowed": true,
+    "coreRequiresCloudApiKey": false
+  },
+  "versionComponents": [
+    {
+      "id": "language-profile",
+      "name": "SEIS Language v0.1",
+      "kind": "application-layer-profile",
+      "status": "documented",
+      "source": "docs/ai/seis-ai-core.md",
+      "validation": "npm run check:seis-ai-core-version-registry"
+    },
+    {
+      "id": "agent-runtime",
+      "name": "SEIS Agent Runtime v0.1",
+      "kind": "human-supervised-agent-contract",
+      "status": "documented-fixture",
+      "source": "docs/ai/agent-runtime.md",
+      "validation": "npm run check:seis-ai-core-subagent-runtime-fixtures"
+    },
+    {
+      "id": "model-router",
+      "name": "SEIS Model Router v0.1",
+      "kind": "provider-neutral-routing-contract",
+      "status": "documented",
+      "source": "docs/ai/model-router.md",
+      "validation": "future-provider-registry-tests"
+    },
+    {
+      "id": "provider-registry",
+      "name": "SEIS AI Core Provider Registry v0.1",
+      "kind": "zero-key-provider-state-contract",
+      "status": "documented-fixture",
+      "source": "content/development/seis-ai-core-provider-registry.json",
+      "validation": "npm run check:seis-ai-core-provider-registry"
+    },
+    {
+      "id": "prompt-engine",
+      "name": "SEIS Prompt Engine v0.1",
+      "kind": "versioned-prompt-contract",
+      "status": "documented",
+      "source": "docs/ai/prompt-engine.md",
+      "validation": "future-prompt-regression-suite"
+    },
+    {
+      "id": "sub-agent-lanes",
+      "name": "SEIS Sub-Agent Lane Set v0.1",
+      "kind": "status-and-plan-only-lane-binding",
+      "status": "documented-validated",
+      "source": "content/development/seis-ai-core-subagent-operating-model.json",
+      "validation": "npm run check:seis-ai-core-subagent-operating-model"
+    },
+    {
+      "id": "mcp-runtime-contract",
+      "name": "SEIS AI Core MCP Runtime Contract v0.1",
+      "kind": "local-stdio-mcp-contract",
+      "status": "local-smoke-verified",
+      "source": "content/development/seis-ai-core-mcp-runtime-contract.json",
+      "validation": "node --test packages/seis-ai/test/mcp-smoke.test.mjs"
+    }
+  ],
+  "linkedSubAgentLanes": [
+    {
+      "laneId": "seis",
+      "displayName": "SEIS Hub",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep source-of-truth, branch policy, public readiness, and plugin coordination aligned with each AI Core version."
+    },
+    {
+      "laneId": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep cloud, SSH, VPN, rollback, and deployment boundaries explicit before any version promotion."
+    },
+    {
+      "laneId": "seis-code",
+      "displayName": "SEIS-Code",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep implementation, CI, MCP/plugin code, and test coverage tied to scoped version gates."
+    },
+    {
+      "laneId": "seis-design",
+      "displayName": "SEIS-Design",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep UI/UX, accessibility, design-system, and motion quality standards attached to each version."
+    },
+    {
+      "laneId": "seis-data",
+      "displayName": "SEIS-DATA",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "permissionLevel": "plan-only",
+      "versionDuty": "Keep structured records, reports, memory/context, provenance, and generated evidence deterministic."
+    }
+  ],
+  "fiveYearVersionRoadmap": [
+    {
+      "year": 1,
+      "versionTarget": "v0.1-foundation",
+      "theme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation."
+    },
+    {
+      "year": 2,
+      "versionTarget": "v0.2-read-only-intelligence",
+      "theme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states."
+    },
+    {
+      "year": 3,
+      "versionTarget": "v0.3-write-gated-runtime",
+      "theme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests."
+    },
+    {
+      "year": 4,
+      "versionTarget": "v0.4-multi-workspace-readiness",
+      "theme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit."
+    },
+    {
+      "year": 5,
+      "versionTarget": "v1.0-public-enterprise-candidate",
+      "theme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim."
+    }
+  ],
+  "promotionEvidenceRequired": [
+    "version registry validation",
+    "sub-agent operating model validation",
+    "runtime fixture validation",
+    "quarterly review ledger validation",
+    "no-key startup evidence",
+    "provider-secret boundary evidence",
+    "provider registry fixture evidence",
+    "human approval boundary evidence",
+    "MCP runtime contract smoke evidence",
+    "model-claims audit evidence"
+  ],
+  "nextSafeActions": [
+    "Expose this registry in SEIS AI Core and Command Center as read-only version evidence.",
+    "Use the provider registry fixture before enabling live provider routing.",
+    "Add executable permission enforcement tests before enabling write-gated sub-agent runtime."
+  ]
+}

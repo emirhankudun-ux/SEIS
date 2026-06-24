@@ -1,0 +1,248 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART6",
+  "version": "1.0",
+  "page_count": 30,
+  "total_visual_set_after_this_pack": 160,
+  "pages": [
+    {
+      "number": 131,
+      "id": "131_spatial_canvas",
+      "title": "Spatial Canvas",
+      "description": "Infinite canvas for SEIS architecture, AI maps and design planning.",
+      "png": "png/131_spatial_canvas.png",
+      "html": "html/131_spatial_canvas.html"
+    },
+    {
+      "number": 132,
+      "id": "132_3d_object_viewer",
+      "title": "3D Object Viewer",
+      "description": "Product-style object preview for cinematic SEIS visuals.",
+      "png": "png/132_3d_object_viewer.png",
+      "html": "html/132_3d_object_viewer.html"
+    },
+    {
+      "number": 133,
+      "id": "133_motion_timeline",
+      "title": "Motion Timeline",
+      "description": "Animation timeline for boot, login and app transitions.",
+      "png": "png/133_motion_timeline.png",
+      "html": "html/133_motion_timeline.html"
+    },
+    {
+      "number": 134,
+      "id": "134_micro_interactions",
+      "title": "Micro Interactions",
+      "description": "Interaction states for buttons, cards, windows and dock icons.",
+      "png": "png/134_micro_interactions.png",
+      "html": "html/134_micro_interactions.html"
+    },
+    {
+      "number": 135,
+      "id": "135_app_launcher_search",
+      "title": "App Launcher Search",
+      "description": "Launchpad with search-first application discovery.",
+      "png": "png/135_app_launcher_search.png",
+      "html": "html/135_app_launcher_search.html"
+    },
+    {
+      "number": 136,
+      "id": "136_context_menu_system",
+      "title": "Context Menu System",
+      "description": "Right-click menus for desktop, files, apps and editor.",
+      "png": "png/136_context_menu_system.png",
+      "html": "html/136_context_menu_system.html"
+    },
+    {
+      "number": 137,
+      "id": "137_drag_drop_lab",
+      "title": "Drag & Drop Lab",
+      "description": "Move files, reorder tabs, drop assets into design and code.",
+      "png": "png/137_drag_drop_lab.png",
+      "html": "html/137_drag_drop_lab.html"
+    },
+    {
+      "number": 138,
+      "id": "138_recent_activity",
+      "title": "Recent Activity",
+      "description": "Unified timeline across apps, files, agents and cloud states.",
+      "png": "png/138_recent_activity.png",
+      "html": "html/138_recent_activity.html"
+    },
+    {
+      "number": 139,
+      "id": "139_universal_recents",
+      "title": "Universal Recents",
+      "description": "Recent apps, files, creatures, searches and commands.",
+      "png": "png/139_universal_recents.png",
+      "html": "html/139_universal_recents.html"
+    },
+    {
+      "number": 140,
+      "id": "140_file_preview_panel",
+      "title": "File Preview Panel",
+      "description": "Preview markdown, images, JSON and code from Files app.",
+      "png": "png/140_file_preview_panel.png",
+      "html": "html/140_file_preview_panel.html"
+    },
+    {
+      "number": 141,
+      "id": "141_markdown_studio",
+      "title": "Markdown Studio Pro",
+      "description": "Advanced docs workspace for SEIS architecture and prompts.",
+      "png": "png/141_markdown_studio.png",
+      "html": "html/141_markdown_studio.html"
+    },
+    {
+      "number": 142,
+      "id": "142_prompt_composer",
+      "title": "Prompt Composer",
+      "description": "Build structured prompts for Codex, Claude, Qwen and SEIS agents.",
+      "png": "png/142_prompt_composer.png",
+      "html": "html/142_prompt_composer.html"
+    },
+    {
+      "number": 143,
+      "id": "143_agent_handoff",
+      "title": "Agent Handoff",
+      "description": "Transfer context between AI agents without losing safety boundaries.",
+      "png": "png/143_agent_handoff.png",
+      "html": "html/143_agent_handoff.html"
+    },
+    {
+      "number": 144,
+      "id": "144_agent_compare",
+      "title": "Agent Compare",
+      "description": "Compare outputs from multiple agents side by side.",
+      "png": "png/144_agent_compare.png",
+      "html": "html/144_agent_compare.html"
+    },
+    {
+      "number": 145,
+      "id": "145_safe_command_runner",
+      "title": "Safe Command Runner",
+      "description": "Run only approved local commands with output and redaction.",
+      "png": "png/145_safe_command_runner.png",
+      "html": "html/145_safe_command_runner.html"
+    },
+    {
+      "number": 146,
+      "id": "146_virtual_fs_inspector",
+      "title": "Virtual FS Inspector",
+      "description": "IndexedDB-backed file tree, storage and metadata view.",
+      "png": "png/146_virtual_fs_inspector.png",
+      "html": "html/146_virtual_fs_inspector.html"
+    },
+    {
+      "number": 147,
+      "id": "147_import_export_center",
+      "title": "Import / Export Center",
+      "description": "Bring files in, export demo packs and generate handoff zips.",
+      "png": "png/147_import_export_center.png",
+      "html": "html/147_import_export_center.html"
+    },
+    {
+      "number": 148,
+      "id": "148_language_localization",
+      "title": "Language & Localization",
+      "description": "Turkish/English UI language and future localization system.",
+      "png": "png/148_language_localization.png",
+      "html": "html/148_language_localization.html"
+    },
+    {
+      "number": 149,
+      "id": "149_appearance_accessibility",
+      "title": "Appearance Accessibility",
+      "description": "Reduce motion, contrast and transparency controls.",
+      "png": "png/149_appearance_accessibility.png",
+      "html": "html/149_appearance_accessibility.html"
+    },
+    {
+      "number": 150,
+      "id": "150_keyboard_shortcuts",
+      "title": "Keyboard Shortcuts",
+      "description": "Power-user command map across SEIS OS.",
+      "png": "png/150_keyboard_shortcuts.png",
+      "html": "html/150_keyboard_shortcuts.html"
+    },
+    {
+      "number": 151,
+      "id": "151_voice_commands",
+      "title": "Voice Commands",
+      "description": "Future voice input with privacy-first local/off mode.",
+      "png": "png/151_voice_commands.png",
+      "html": "html/151_voice_commands.html"
+    },
+    {
+      "number": 152,
+      "id": "152_camera_capture",
+      "title": "Camera Capture",
+      "description": "Future camera import, scanning and visual asset capture.",
+      "png": "png/152_camera_capture.png",
+      "html": "html/152_camera_capture.html"
+    },
+    {
+      "number": 153,
+      "id": "153_audio_recorder",
+      "title": "Audio Recorder",
+      "description": "Record voice notes and export local audio files.",
+      "png": "png/153_audio_recorder.png",
+      "html": "html/153_audio_recorder.html"
+    },
+    {
+      "number": 154,
+      "id": "154_calendar_event_detail",
+      "title": "Calendar Event Detail",
+      "description": "Focused event view with notes, tasks and AI prep.",
+      "png": "png/154_calendar_event_detail.png",
+      "html": "html/154_calendar_event_detail.html"
+    },
+    {
+      "number": 155,
+      "id": "155_task_detail",
+      "title": "Task Detail",
+      "description": "One task with subtasks, evidence, blockers and next action.",
+      "png": "png/155_task_detail.png",
+      "html": "html/155_task_detail.html"
+    },
+    {
+      "number": 156,
+      "id": "156_focus_mode",
+      "title": "Focus Mode",
+      "description": "Distraction-free mode for design, coding and deep work.",
+      "png": "png/156_focus_mode.png",
+      "html": "html/156_focus_mode.html"
+    },
+    {
+      "number": 157,
+      "id": "157_demo_presenter_mode",
+      "title": "Demo Presenter Mode",
+      "description": "Fullscreen walkthrough controls for showing SEIS live.",
+      "png": "png/157_demo_presenter_mode.png",
+      "html": "html/157_demo_presenter_mode.html"
+    },
+    {
+      "number": 158,
+      "id": "158_investor_story_page",
+      "title": "Investor Story Page",
+      "description": "Premium narrative page explaining why SEIS matters.",
+      "png": "png/158_investor_story_page.png",
+      "html": "html/158_investor_story_page.html"
+    },
+    {
+      "number": 159,
+      "id": "159_product_comparison",
+      "title": "Product Comparison",
+      "description": "Compare SEIS against traditional desktop, IDE and AI chat apps.",
+      "png": "png/159_product_comparison.png",
+      "html": "html/159_product_comparison.html"
+    },
+    {
+      "number": 160,
+      "id": "160_master_visual_system",
+      "title": "Master Visual System",
+      "description": "Part 6 extends the full SEIS visual reference set to 160 screens.",
+      "png": "png/160_master_visual_system.png",
+      "html": "html/160_master_visual_system.html"
+    }
+  ]
+}

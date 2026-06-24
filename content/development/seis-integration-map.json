@@ -1,18 +1,42 @@
 {
   "schemaVersion": 1,
-  "date": "2026-06-22",
+  "date": "2026-06-23",
   "purpose": "Canonical integration map for SEIS workstreams that must land through the GitHub repository with evidence, validation, and PR sequencing.",
   "sourceOfTruth": {
     "repository": "emirhankudun-ux/SEIS",
     "protectedBranch": "main",
-    "activeIntegrationBranch": "seis/product-experience-suite",
+    "activeIntegrationBranch": "codex/plugin-interface-handoff-20260623",
     "rule": "Do not push directly to main; reconcile every SEIS workstream through scoped branches and reviewable PRs."
+  },
+  "canonicalWorkspace": {
+    "relativeRoot": "SEIS/",
+    "status": "canonical writable local root",
+    "rule": "Start general SEIS work in SEIS/ and treat nearby SEIS-like folders as review-only inputs until a dedicated PR extracts a scoped, validated slice.",
+    "evidence": [
+      "docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md",
+      "docs/governance/seis-integration-and-github-development.md"
+    ]
   },
   "workstreams": [
     {
+      "id": "workspace-unification",
+      "branch": "codex/plugin-interface-handoff-20260623",
+      "status": "active documentation spine",
+      "evidence": [
+        "docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md",
+        "docs/governance/seis-integration-and-github-development.md",
+        "docs/STATUS.md",
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ],
+      "blockers": [
+        "physical folder merge, branch deletion, and folder deletion require explicit approval"
+      ],
+      "nextSafeAction": "Keep SEIS/ as the only active writable root and reconcile other SEIS-like folders one workstream at a time."
+    },
+    {
       "id": "product-experience-suite",
       "branch": "seis/product-experience-suite",
-      "status": "active integration surface",
+      "status": "existing product integration surface",
       "evidence": [
         "docs/STATUS.md",
         "docs/SEIS_MASTER_INDEX.md",
@@ -22,7 +46,7 @@
       "blockers": [
         "pre-existing tracked deletions remain unresolved"
       ],
-      "nextSafeAction": "Keep the branch scoped to foundation, product-experience, and integration records until repository hygiene is resolved."
+      "nextSafeAction": "Compare against the current review branch before merging or staging any product-experience slice."
     },
     {
       "id": "goal-tracking-os",

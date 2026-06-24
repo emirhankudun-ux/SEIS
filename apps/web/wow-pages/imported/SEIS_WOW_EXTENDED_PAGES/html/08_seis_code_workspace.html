@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SEIS Code Workspace — SEIS OS</title>
+  <link rel="stylesheet" href="../assets/css/seis.css" />
+</head>
+<body>
+  <div class="wave"></div>
+  <div class="topbar"><div class="logo"><span>◇</span> SEIS OS</div><div>Tue 27 May · 21:36</div><div class="system-icons">⌁ ◇ ◉ Wi‑Fi 100% ⏻</div></div>
+  <aside class="sidebar">
+    <div class="side-title">Activities</div>
+    <div class="nav-item active"><span class="ic">⌂</span>Home</div>
+    <div class="nav-item"><span class="ic">▦</span>Apps</div>
+    <div class="nav-item"><span class="ic">□</span>Files</div>
+    <div class="nav-item"><span class="ic">▸</span>Terminal</div>
+    <div class="nav-item"><span class="ic">⋈</span>Code</div>
+    <div class="nav-item"><span class="ic">⚙</span>Settings</div>
+  </aside>
+  <main class="desktop">
+
+        <section class="window" style="left:180px;top:80px;width:880px;height:650px">
+          <header><strong>SEIS Code — main.ts</strong><span class="win-actions">− □ ×</span></header>
+          <div class="content" style="display:grid;grid-template-columns:190px 1fr;gap:18px">
+            <div class="card"><b>EXPLORER</b><p>▾ seis-api<br>▸ src<br>▾ api<br>main.ts<br>routes.ts<br>package.json</p></div>
+            <pre class="code">import express from 'express'
+import cors from 'cors'
+
+const app = express()
+app.use(cors())
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok', version: '1.0.0' })
+})</pre>
+          </div>
+        </section>
+        <section class="window" style="left:1100px;top:120px;width:620px;height:330px"><header><strong>Git Client</strong><span class="win-actions">− □ ×</span></header><div class="content"><p>● Refactor health check<br>● Add request logging<br>● Fix CORS configuration</p></div></section>
+        <section class="window" style="left:1100px;top:500px;width:620px;height:330px"><header><strong>API Tester</strong><span class="win-actions">− □ ×</span></header><div class="content"><div class="searchbox">GET http://localhost:3000/api/users</div><p class="status">200 OK · Local Demo</p></div></section>
+
+  </main>
+  <nav class="dock">
+    <button data-open="Launchpad">▦</button><button data-open="Files">□</button><button data-open="Terminal">▸</button><button data-open="Code">⋈</button><button class="active" data-open="AI">◉</button><button>✉</button><button>▣</button><button>♪</button><button>⚙</button><button>⌫</button>
+  </nav>
+  <script src="../assets/js/seis.js"></script>
+</body>
+</html>

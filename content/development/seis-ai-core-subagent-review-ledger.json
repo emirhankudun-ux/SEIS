@@ -1,0 +1,292 @@
+{
+  "id": "seis-ai-core-subagent-review-ledger",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Track the five-year SEIS AI Core sub-agent development horizon as quarterly, evidence-bound review records without claiming live autonomous execution.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-review-ledger",
+  "sourceOfTruth": {
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md"
+  },
+  "cadence": {
+    "reviewCadence": "quarterly",
+    "horizonYears": 5,
+    "totalQuarterRecords": 20,
+    "currentHorizonQuarter": "Y1-Q2",
+    "nextReviewQuarter": "Y1-Q3"
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "backgroundAutomation": "disabled",
+    "writeExecution": "disabled",
+    "externalMutation": "requires-explicit-human-approval",
+    "credentialAccess": "forbidden"
+  },
+  "summary": {
+    "documentedValidatedQuarterCount": 2,
+    "plannedQuarterCount": 18,
+    "writeGatedQuarterCountEnabled": 0,
+    "externalMutationPerformed": false,
+    "credentialAccessPerformed": false,
+    "autonomousMergeOrDeployPerformed": false
+  },
+  "reviewStates": [
+    "documented-validated",
+    "planned",
+    "blocked-human-approval",
+    "deferred",
+    "archived"
+  ],
+  "requiredEvidencePerReview": [
+    "quarter id",
+    "source five-year plan quarter",
+    "responsible lanes",
+    "outcomes",
+    "gates",
+    "validator",
+    "approval boundary",
+    "next safe action"
+  ],
+  "quarters": [
+    {
+      "id": "Y1-Q1",
+      "status": "documented-validated",
+      "sourcePlanQuarter": "Y1-Q1",
+      "primaryLanes": ["documentation-agent", "validation-agent", "security-agent"],
+      "evidence": [
+        "content/development/seis-sub-agent-5-year-plan.json",
+        "scripts/check-sub-agent-5-year-plan.mjs",
+        "docs/reviews/SUB_AGENT_LONG_HORIZON_AUDIT.md"
+      ],
+      "validator": "npm run check:seis-sub-agent-5-year-plan",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Keep five-year source plan synchronized with AI Core operating model evidence."
+    },
+    {
+      "id": "Y1-Q2",
+      "status": "documented-validated",
+      "sourcePlanQuarter": "Y1-Q2",
+      "primaryLanes": ["architecture-agent", "security-agent", "validation-agent"],
+      "evidence": [
+        "content/development/seis-ai-core-agent-role-schema.json",
+        "content/development/seis-ai-core-agent-permission-matrix.json",
+        "content/development/seis-ai-core-dry-run-task-queue.json",
+        "content/development/seis-ai-core-subagent-runtime-fixtures.json"
+      ],
+      "validator": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Connect review ledger evidence to Command Center and keep write-gated actions disabled."
+    },
+    {
+      "id": "Y1-Q3",
+      "status": "planned",
+      "sourcePlanQuarter": "Y1-Q3",
+      "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "browser smoke and accessibility checks when UI changes exist",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Create read-only Command Center evidence view for sub-agent status and review queue."
+    },
+    {
+      "id": "Y1-Q4",
+      "status": "planned",
+      "sourcePlanQuarter": "Y1-Q4",
+      "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+      "evidence": [],
+      "validator": "no-key startup, provider honesty, redaction, and human-approval checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Add local demo agent lane and provider-neutral fallback evidence."
+    },
+    {
+      "id": "Y2-Q1",
+      "status": "planned",
+      "sourcePlanQuarter": "Y2-Q1",
+      "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "desktop interaction, mobile fit, and VFS persistence checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Validate SEIS Desktop, SEIS Code, and shared VFS flows under sub-agent review."
+    },
+    {
+      "id": "Y2-Q2",
+      "status": "planned",
+      "sourcePlanQuarter": "Y2-Q2",
+      "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+      "evidence": [],
+      "validator": "dry-run scheduler, bounded recursion, timeout, and audit-event checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Promote the dry-run queue into an executable scheduler simulation only."
+    },
+    {
+      "id": "Y2-Q3",
+      "status": "planned",
+      "sourcePlanQuarter": "Y2-Q3",
+      "primaryLanes": ["implementation-agent", "documentation-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "read-only live, evidence-linked, stale-data, and no-fake-health checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Add repository intelligence and evidence locker views as read-only surfaces."
+    },
+    {
+      "id": "Y2-Q4",
+      "status": "planned",
+      "sourcePlanQuarter": "Y2-Q4",
+      "primaryLanes": ["security-agent", "architecture-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "least-privilege, tool allowlist, destructive approval, and prompt-injection checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": true,
+      "nextSafeAction": "Define MCP trust registry and destructive approval fixtures before write-gated tools."
+    },
+    {
+      "id": "Y3-Q1",
+      "status": "planned",
+      "sourcePlanQuarter": "Y3-Q1",
+      "primaryLanes": ["implementation-agent", "design-agent", "documentation-agent"],
+      "evidence": [],
+      "validator": "real-actions-only, keyboard navigation, provider identity, fallback transparency",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Integrate agent status, provider status, and task evidence into Command Center Alpha."
+    },
+    {
+      "id": "Y3-Q2",
+      "status": "planned",
+      "sourcePlanQuarter": "Y3-Q2",
+      "primaryLanes": ["architecture-agent", "security-agent", "implementation-agent"],
+      "evidence": [],
+      "validator": "server-only secrets, missing-key state, capability fallback, redacted errors",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Create provider-neutral model router behind backend-only boundaries."
+    },
+    {
+      "id": "Y3-Q3",
+      "status": "planned",
+      "sourcePlanQuarter": "Y3-Q3",
+      "primaryLanes": ["implementation-agent", "security-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "path traversal denial, approval required, audit log, rollback notes",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": true,
+      "nextSafeAction": "Prepare write-gated local workflows with explicit approval and rollback evidence."
+    },
+    {
+      "id": "Y3-Q4",
+      "status": "planned",
+      "sourcePlanQuarter": "Y3-Q4",
+      "primaryLanes": ["validation-agent", "documentation-agent", "design-agent"],
+      "evidence": [],
+      "validator": "build, smoke, accessibility, and release-evidence checks",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Create release-candidate evidence checklist for agent-assisted product surfaces."
+    },
+    {
+      "id": "Y4-Q1",
+      "status": "planned",
+      "sourcePlanQuarter": "Y4-Q1",
+      "primaryLanes": ["architecture-agent", "documentation-agent", "security-agent"],
+      "evidence": [],
+      "validator": "source-of-truth, read-only default, scope control, human approval",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Plan multi-repository and workspace federation without cross-repo write autonomy."
+    },
+    {
+      "id": "Y4-Q2",
+      "status": "planned",
+      "sourcePlanQuarter": "Y4-Q2",
+      "primaryLanes": ["security-agent", "validation-agent", "implementation-agent"],
+      "evidence": [],
+      "validator": "redacted logs, cost budget, cancellation, postmortem template",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Add observability and budget controls for future agent runs."
+    },
+    {
+      "id": "Y4-Q3",
+      "status": "planned",
+      "sourcePlanQuarter": "Y4-Q3",
+      "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+      "evidence": [],
+      "validator": "no cloud fallback, context minimization, memory boundary, no secret storage",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Expand local-first and offline agent modes for privacy-sensitive workflows."
+    },
+    {
+      "id": "Y4-Q4",
+      "status": "planned",
+      "sourcePlanQuarter": "Y4-Q4",
+      "primaryLanes": ["documentation-agent", "security-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "secret scan, license review, SBOM plan, branch protection docs",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Prepare public and release readiness for controlled agent-assisted workflows."
+    },
+    {
+      "id": "Y5-Q1",
+      "status": "planned",
+      "sourcePlanQuarter": "Y5-Q1",
+      "primaryLanes": ["architecture-agent", "security-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "model-claims audit, benchmark integrity, checkpoint governance, no overclaim",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Keep SEIS Universe model research governance evidence-bound."
+    },
+    {
+      "id": "Y5-Q2",
+      "status": "planned",
+      "sourcePlanQuarter": "Y5-Q2",
+      "primaryLanes": ["implementation-agent", "documentation-agent", "validation-agent"],
+      "evidence": [],
+      "validator": "public docs, contributor path, release notes, issue/PR templates",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": false,
+      "nextSafeAction": "Harden public contributor and release workflows for agent-assisted development."
+    },
+    {
+      "id": "Y5-Q3",
+      "status": "planned",
+      "sourcePlanQuarter": "Y5-Q3",
+      "primaryLanes": ["security-agent", "architecture-agent", "documentation-agent"],
+      "evidence": [],
+      "validator": "incident response, exception register, risk acceptance, approval evidence",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": true,
+      "nextSafeAction": "Define enterprise approval and incident governance for privileged agent workflows."
+    },
+    {
+      "id": "Y5-Q4",
+      "status": "planned",
+      "sourcePlanQuarter": "Y5-Q4",
+      "primaryLanes": ["validation-agent", "documentation-agent", "design-agent"],
+      "evidence": [],
+      "validator": "public readiness, release readiness, accessibility, security baseline",
+      "externalMutationPerformed": false,
+      "humanApprovalNeeded": true,
+      "nextSafeAction": "Prepare final five-year readiness review without auto-release or auto-deploy."
+    }
+  ],
+  "nextSafeActions": [
+    "Expose this ledger in SEIS AI Core and Command Center as read-only evidence.",
+    "Keep future quarters planned until their evidence paths and validators exist.",
+    "Require explicit human approval before write-gated, cloud, SSH, credential, merge, deploy, dataset, benchmark, or model-training work."
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "id": "seis-ai-core-subagent-operating-model",
+  "version": "2026.06.23",
+  "status": "active",
+  "purpose": "Define the bounded SEIS AI Core sub-agent operating model for the personal SEIS plugin lanes and the five-year development cadence.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-operating-model",
+  "sourceOfTruth": {
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md",
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "versionPromotionGates": "content/development/seis-ai-core-version-promotion-gates.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "laneStatus": "content/development/seis-agent-lane-status.json",
+    "longHorizonPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "longHorizonReview": "docs/reviews/SUB_AGENT_LONG_HORIZON_AUDIT.md",
+    "roleSchema": "content/development/seis-ai-core-agent-role-schema.json",
+    "permissionMatrix": "content/development/seis-ai-core-agent-permission-matrix.json",
+    "dryRunTaskQueue": "content/development/seis-ai-core-dry-run-task-queue.json",
+    "cancellationFixture": "content/development/seis-ai-core-cancellation-fixture.json",
+    "approvalFixture": "content/development/seis-ai-core-approval-fixture.json",
+    "redactionFixture": "content/development/seis-ai-core-redaction-fixture.json",
+    "executionLedgerFixture": "content/development/seis-ai-core-execution-ledger-fixture.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json"
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "writeMode": "disabled-until-permission-matrix-and-approval-fixtures-exist",
+    "backgroundAutomation": "disabled",
+    "externalMutation": "requires-explicit-human-approval",
+    "connectorAuthenticationClaim": "not-claimed",
+    "allowedNow": [
+      "read repo-local manifests",
+      "read repo-local lane profiles",
+      "read repo-local skill files",
+      "return lane status",
+      "return plan-only execution guidance",
+      "report validation duties",
+      "report approval boundaries"
+    ],
+    "forbiddenWithoutApproval": [
+      "write outside an explicitly approved scope",
+      "push or merge GitHub changes",
+      "deploy or mutate cloud infrastructure",
+      "execute SSH, VPN, firewall, or sudo actions",
+      "access, rotate, or transmit credentials",
+      "install dependencies",
+      "download datasets",
+      "run paid benchmarks",
+      "train or publish models",
+      "delete files, branches, worktrees, or remote resources"
+    ]
+  },
+  "permissionMatrix": [
+    {
+      "level": "read-only",
+      "status": "enabled",
+      "allowedActions": [
+        "inspect manifests",
+        "inspect docs",
+        "inspect lane profiles",
+        "inspect validation commands"
+      ],
+      "approvalRequired": false,
+      "evidenceRequired": [
+        "file path",
+        "observed status",
+        "validation command when applicable"
+      ]
+    },
+    {
+      "level": "plan-only",
+      "status": "enabled",
+      "allowedActions": [
+        "produce scoped implementation plans",
+        "produce validation plans",
+        "produce approval boundary summaries",
+        "produce handoff notes"
+      ],
+      "approvalRequired": false,
+      "evidenceRequired": [
+        "linked lane",
+        "requested task",
+        "quality gate",
+        "human approval boundary"
+      ]
+    },
+    {
+      "level": "write-gated",
+      "status": "planned",
+      "allowedActions": [
+        "edit explicitly scoped files",
+        "update matching docs",
+        "update matching tests",
+        "run local validators"
+      ],
+      "approvalRequired": "task-scoped",
+      "evidenceRequired": [
+        "approved file scope",
+        "git diff",
+        "validator output",
+        "rollback note"
+      ]
+    },
+    {
+      "level": "external-gated",
+      "status": "planned",
+      "allowedActions": [
+        "GitHub write operations",
+        "cloud provider changes",
+        "SSH and VPN operations",
+        "external connector mutation"
+      ],
+      "approvalRequired": true,
+      "evidenceRequired": [
+        "target",
+        "actor",
+        "rollback owner",
+        "dry-run or preflight result",
+        "redaction confirmation"
+      ]
+    },
+    {
+      "level": "forbidden",
+      "status": "active",
+      "allowedActions": [],
+      "approvalRequired": "not sufficient without a separate security/recovery plan",
+      "evidenceRequired": [
+        "security review",
+        "recovery plan",
+        "explicit human authorization"
+      ],
+      "examples": [
+        "silent credential access",
+        "history rewrite",
+        "unbounded training",
+        "unreviewed dataset ingestion",
+        "private key handling",
+        "unrestricted shell execution"
+      ]
+    }
+  ],
+  "lanes": [
+    {
+      "id": "seis",
+      "displayName": "SEIS Hub",
+      "subAgentRole": "repository-governance-subagent",
+      "statusTool": "seis_hub_status",
+      "planTool": "seis_hub_plan",
+      "currentPermissionLevel": "plan-only",
+      "sourceMirror": "plugins/seis",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-hub/SKILL.md",
+      "qualityGate": "npm run check:seis-ai-agent",
+      "fiveYearDuty": "Keep repository source of truth, branch policy, plugin coordination, migration safety, and public readiness aligned."
+    },
+    {
+      "id": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "subAgentRole": "cloud-readiness-subagent",
+      "statusTool": "seis_cloud_status",
+      "planTool": "seis_cloud_plan",
+      "currentPermissionLevel": "plan-only",
+      "sourceMirror": "plugins/seis-cloud",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-cloud/SKILL.md",
+      "qualityGate": "npm run check:cloud-access-policy",
+      "fiveYearDuty": "Keep provider-neutral cloud readiness, SSH/VPN boundaries, rollback planning, and deployment approval gates explicit."
+    },
+    {
+      "id": "seis-code",
+      "displayName": "SEIS-Code",
+      "subAgentRole": "engineering-subagent",
+      "statusTool": "seis_code_status",
+      "planTool": "seis_code_plan",
+      "currentPermissionLevel": "plan-only",
+      "sourceMirror": "plugins/seis-code",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-code/SKILL.md",
+      "qualityGate": "node scripts/check-seis-plugin-bundle.mjs --no-local",
+      "fiveYearDuty": "Keep architecture-aware implementation, tests, CI, MCP/plugin code, and automation grounded in scoped validation."
+    },
+    {
+      "id": "seis-design",
+      "displayName": "SEIS-Design",
+      "subAgentRole": "product-design-subagent",
+      "statusTool": "seis_design_status",
+      "planTool": "seis_design_plan",
+      "currentPermissionLevel": "plan-only",
+      "sourceMirror": "plugins/seis-design",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-design/SKILL.md",
+      "qualityGate": "npm run check:motion-evidence",
+      "fiveYearDuty": "Keep product UX, accessibility, responsive ergonomics, design systems, and motion quality reviewable."
+    },
+    {
+      "id": "seis-data",
+      "displayName": "SEIS-DATA",
+      "subAgentRole": "data-provenance-subagent",
+      "statusTool": "seis_data_status",
+      "planTool": "seis_data_plan",
+      "currentPermissionLevel": "plan-only",
+      "sourceMirror": "plugins/seis-data",
+      "skillPath": "plugins/seis-ai-agent/skills/seis-data/SKILL.md",
+      "qualityGate": "npm run check:plugin-capability-lanes",
+      "fiveYearDuty": "Keep structured records, generated reports, schema governance, memory/context, and provenance deterministic."
+    }
+  ],
+  "fiveYearRoadmap": [
+    {
+      "year": 1,
+      "theme": "Foundation integrity and visible AI Core routing",
+      "requiredEvidence": [
+        "direct status and plan tools",
+        "lane governance checks",
+        "no-key startup policy",
+        "documentation parity"
+      ],
+      "promotionGate": "Every lane reports status, plan, quality gate, and approval boundary from repo evidence."
+    },
+    {
+      "year": 2,
+      "theme": "Read-only intelligence and evidence dashboards",
+      "requiredEvidence": [
+        "repository scan fixtures",
+        "evidence locker records",
+        "Command Center lane views",
+        "stale-data and accessibility states"
+      ],
+      "promotionGate": "Read-only dashboards distinguish current, stale, mock, blocked, and validated evidence."
+    },
+    {
+      "year": 3,
+      "theme": "Write-gated implementation lanes",
+      "requiredEvidence": [
+        "typed permission matrix",
+        "task queue fixture",
+        "approval fixture",
+        "rollback notes",
+        "package-local tests"
+      ],
+      "promotionGate": "Write-capable work is scoped, approval-aware, reversible, and validated."
+    },
+    {
+      "year": 4,
+      "theme": "Multi-workspace and cloud readiness",
+      "requiredEvidence": [
+        "provider-neutral cloud preflight",
+        "SSH/VPN approval workflow",
+        "audit ledger",
+        "deployment dry-run evidence"
+      ],
+      "promotionGate": "External surfaces remain disabled unless target, auth, rollback, and approval are explicit."
+    },
+    {
+      "year": 5,
+      "theme": "Public, enterprise, and SEIS Universe governance",
+      "requiredEvidence": [
+        "release evidence pack",
+        "security baseline",
+        "model-claims audit",
+        "public readiness review",
+        "contributor governance"
+      ],
+      "promotionGate": "Public and enterprise claims are backed by validation, security, provenance, and human review."
+    }
+  ],
+  "cadence": {
+    "daily": "one small reversible lane task when explicitly invoked",
+    "weekly": "lane status review and validation summary",
+    "monthly": "security, governance, and evidence review",
+    "quarterly": "five-year roadmap promotion-gate review",
+    "annual": "public readiness, release readiness, and SEIS Universe model-claims audit"
+  },
+  "evidenceRequirements": [
+    "agent role schema",
+    "permission matrix",
+    "task queue fixture",
+    "cancellation fixture",
+    "approval fixture",
+    "redaction fixture",
+    "execution ledger fixture",
+    "runtime fixture pack",
+    "quarterly review ledger",
+    "redacted tool-output test",
+    "persistent execution ledger",
+    "quarterly review cadence",
+    "rollback and recovery notes"
+  ]
+}

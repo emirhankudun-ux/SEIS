@@ -16,6 +16,7 @@ const paths = {
   riskRegister: "content/development/seis-goal-risk-register.json",
   validationSteps: "content/development/seis-goal-validation-steps.json",
   roadmapLinks: "content/development/seis-goal-roadmap-links.json",
+  omegaPhaseEvidence: "content/development/seis-universe-omega-phase-evidence.json",
   view: "content/development/seis-goal-command-center-view.json",
   page: "apps/web/goal-tracking.html"
 };
@@ -31,7 +32,8 @@ const cyclePlan = readJson(paths.cyclePlan);
 const riskRegister = readJson(paths.riskRegister);
 const validationSteps = readJson(paths.validationSteps);
 const roadmapLinks = readJson(paths.roadmapLinks);
-const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan, riskRegister, validationSteps, roadmapLinks);
+const omegaPhaseEvidence = readJson(paths.omegaPhaseEvidence);
+const view = buildView(goals, evidence, execution, reviewCadence, progressLedger, hierarchy, archiveLedger, cyclePlan, riskRegister, validationSteps, roadmapLinks, omegaPhaseEvidence);
 const html = buildHtml(view);
 const failures = validate(view, html);
 
@@ -57,7 +59,7 @@ writeGenerated(paths.page, html);
 console.log(`SEIS Goal Command Center view written: ${paths.view}`);
 console.log(`SEIS Goal Tracking Center page written: ${paths.page}`);
 
-function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords, riskRegisterRecords, validationStepRecords, roadmapLinkRecords) {
+function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRecords, progressLedgerRecords, hierarchyRecords, archiveLedgerRecords, cyclePlanRecords, riskRegisterRecords, validationStepRecords, roadmapLinkRecords, omegaPhaseEvidenceRecords) {
   const goalRecords = goalRegistry.goals || [];
   const evidenceRecords = evidenceLedger.records || [];
   const tasks = executionBoard.tasks || [];
@@ -79,6 +81,10 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
   const risks = riskRegisterRecords.risks || [];
   const validationSteps = validationStepRecords.steps || [];
   const roadmapLinks = roadmapLinkRecords.links || [];
+  const omegaPhaseEvidence = omegaPhaseEvidenceRecords.phaseEvidence || [];
+  const omegaDependencies = omegaPhaseEvidence.flatMap((phase) => phase.dependencies || []);
+  const omegaKpis = omegaPhaseEvidence.flatMap((phase) => phase.kpis || []);
+  const omegaSuccessMetrics = omegaPhaseEvidence.flatMap((phase) => phase.successMetrics || []);
   const activeBlockers = blockers.filter((blocker) => blocker.status === "active");
   const finalState = activeBlockers.length > 0 ? "blocked_by_repository_hygiene" : "ready_for_review";
 
@@ -87,7 +93,7 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
     id: "seis-goal-command-center-view",
     updated: "2026-06-22",
     mode: "non_llm_command_center_goal_view",
-    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan, paths.riskRegister, paths.validationSteps, paths.roadmapLinks],
+    sourceRecords: [paths.goals, paths.evidence, paths.execution, paths.reviewCadence, paths.progressLedger, paths.hierarchy, paths.archiveLedger, paths.cyclePlan, paths.riskRegister, paths.validationSteps, paths.roadmapLinks, paths.omegaPhaseEvidence],
     summary: {
       finalState,
       totalGoals: goalRecords.length,
@@ -132,6 +138,12 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       validationStepsByStatus: countBy(validationSteps, "status"),
       totalRoadmapLinks: roadmapLinks.length,
       roadmapLinksByStatus: countBy(roadmapLinks, "status"),
+      totalOmegaPhaseEvidenceRecords: omegaPhaseEvidence.length,
+      totalOmegaDependencies: omegaDependencies.length,
+      totalOmegaKpis: omegaKpis.length,
+      totalOmegaSuccessMetrics: omegaSuccessMetrics.length,
+      omegaDependenciesByStatus: countBy(omegaDependencies, "status"),
+      omegaKpisByStatus: countBy(omegaKpis, "status"),
       nextSafeAction: activeBlockers.length > 0
         ? "Keep unrelated tracked deletions out of Goal Tracking commits and handle repository hygiene in a dedicated PR."
         : "Open a scoped review PR for the Goal Tracking OS foundation."
@@ -155,7 +167,8 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
       card("cycle", "Cycle Plan", yearlyGoals.length + quarterlyGoals.length + monthlyGoals.length + weeklyPriorities.length, "Yearly, quarterly, monthly, and weekly execution records."),
       card("risks", "Risks", risks.length, "Risk records with severity and mitigation."),
       card("validation", "Validation Steps", validationSteps.length, "Scoped checks with success conditions."),
-      card("roadmap", "Roadmap Links", roadmapLinks.length, "Goal-to-roadmap and PR queue mappings.")
+      card("roadmap", "Roadmap Links", roadmapLinks.length, "Goal-to-roadmap and PR queue mappings."),
+      card("omega", "Omega Evidence", omegaPhaseEvidence.length, "Phase 01/10 dependency, KPI, and success metric records.")
     ],
     panels: {
       goalList: goalRecords.map((goal) => ({
@@ -358,6 +371,34 @@ function buildView(goalRegistry, evidenceLedger, executionBoard, reviewCadenceRe
         prQueueRefs: link.pr_queue_refs,
         statusRefs: link.status_refs,
         nextAction: link.next_action
+      })),
+      omegaPhaseEvidence: omegaPhaseEvidence.map((phase) => ({
+        phaseNumber: phase.phaseNumber,
+        phaseId: phase.phaseId,
+        title: phase.title,
+        status: phase.status,
+        goalCategory: phase.goalCategory,
+        dependencies: (phase.dependencies || []).map((dependency) => ({
+          id: dependency.id,
+          title: dependency.title,
+          status: dependency.status,
+          evidencePaths: dependency.evidencePaths,
+          nextAction: dependency.nextAction
+        })),
+        kpis: (phase.kpis || []).map((kpi) => ({
+          id: kpi.id,
+          metric: kpi.metric,
+          target: kpi.target,
+          currentEvidence: kpi.currentEvidence,
+          status: kpi.status
+        })),
+        successMetrics: (phase.successMetrics || []).map((metric) => ({
+          id: metric.id,
+          statement: metric.statement,
+          requiredEvidence: metric.requiredEvidence,
+          promotionAllowed: metric.promotionAllowed
+        })),
+        nextSafeAction: phase.nextSafeAction
       }))
     },
     uxGuards: [
@@ -568,6 +609,12 @@ function buildHtml(model) {
       </div>
     </section>
 
+    <section class="panel section">
+      <h2>Omega Phase Evidence</h2>
+      <p class="muted">Phase 01 and Phase 10 dependency, KPI, and success metric records. These records do not claim runtime implementation.</p>
+      <div class="stack" style="margin-top: 12px;">${panels.omegaPhaseEvidence.map(renderOmegaPhaseEvidence).join("")}</div>
+    </section>
+
     <section class="grid section" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
       <div class="panel">
         <h2>Evidence Links</h2>
@@ -675,9 +722,16 @@ function renderRoadmapLink(item) {
   return `<tr><td><strong>${escapeHtml(item.id)}</strong><br>${escapeHtml(item.goalId)} · ${escapeHtml(item.title)}</td><td><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></td><td>${escapeHtml((item.roadmapRefs || []).join(", "))}</td><td>${escapeHtml((item.prQueueRefs || []).join(", "))}</td><td>${escapeHtml(item.nextAction)}</td></tr>`;
 }
 
+function renderOmegaPhaseEvidence(item) {
+  const dependencies = (item.dependencies || []).map((dependency) => `${dependency.id}: ${dependency.status}`).join(" · ");
+  const kpis = (item.kpis || []).map((kpi) => `${kpi.id}: ${kpi.status}`).join(" · ");
+  const successMetrics = (item.successMetrics || []).map((metric) => `${metric.id}: promotion ${metric.promotionAllowed ? "allowed" : "blocked"}`).join(" · ");
+  return `<article class="row"><div class="row-head"><div><h3>${escapeHtml(item.phaseId)} · ${escapeHtml(item.title)}</h3><p class="muted">Phase ${escapeHtml(String(item.phaseNumber))} · ${escapeHtml(item.goalCategory)}</p></div><span class="badge ${statusClass(item.status)}">${escapeHtml(item.status)}</span></div><p><strong>Dependencies:</strong> ${escapeHtml(dependencies)}</p><p><strong>KPIs:</strong> ${escapeHtml(kpis)}</p><p><strong>Success metrics:</strong> ${escapeHtml(successMetrics)}</p><p>${escapeHtml(item.nextSafeAction)}</p></article>`;
+}
+
 function validate(view, html) {
   const failures = [];
-  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Roadmap Links", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001", "SEIS-ROADMAP-LINK-001"]) {
+  for (const text of ["Goal Tracking Center", "Milestone Timeline", "Next Safe Actions", "Blocked Items", "Goal List", "Review Cadence", "Completed Work", "Deferred Work", "Follow-Up Actions", "Planning Horizons", "Active Projects", "Epics", "Subtasks", "Archive Ledger", "Yearly Goals", "Quarterly Goals", "Monthly Goals", "Weekly Priorities", "Risk Register", "Validation Steps", "Roadmap Links", "Omega Phase Evidence", "Evidence Links", "Readiness Connections", "SEIS-GOAL-003", "SEIS-BLOCKER-001", "SEIS-MS-001", "SEIS-REVIEW-001", "SEIS-COMPLETE-001", "SEIS-DEFER-001", "SEIS-FOLLOWUP-001", "SEIS-HORIZON-001", "SEIS-PROJECT-001", "SEIS-EPIC-001", "SEIS-SUBTASK-001", "SEIS-ARCHIVE-001", "SEIS-YEAR-001", "SEIS-QUARTER-001", "SEIS-MONTH-001", "SEIS-WEEK-001", "SEIS-RISK-001", "SEIS-VAL-001", "SEIS-ROADMAP-LINK-001", "OMEGA-P01-KPI-001", "OMEGA-P02-KPI-001", "OMEGA-P03-SUCCESS-001", "OMEGA-P10-SUCCESS-001"]) {
     if (!html.includes(text)) {
       failures.push(`static page missing required text: ${text}`);
     }
@@ -687,6 +741,12 @@ function validate(view, html) {
   }
   if (view.summary.totalGoals !== (readJson(paths.goals).goals || []).length) {
     failures.push("view summary totalGoals does not match registry");
+  }
+  if (view.summary.totalOmegaPhaseEvidenceRecords !== 4) {
+    failures.push("view summary must include four Omega phase evidence records");
+  }
+  if (!view.sourceRecords.includes(paths.omegaPhaseEvidence)) {
+    failures.push("view source records must include Omega phase evidence");
   }
   return failures;
 }

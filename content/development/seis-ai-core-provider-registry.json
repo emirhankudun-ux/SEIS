@@ -1,0 +1,325 @@
+{
+  "id": "seis-ai-core-provider-registry",
+  "version": 1,
+  "status": "documented-fixture",
+  "updatedAt": "2026-06-23",
+  "purpose": "Define the zero-key SEIS AI Core provider state contract for Local Demo, personal plugin lanes, and future server-only live provider routing without calling providers or validating credentials.",
+  "qualityGate": "npm run check:seis-ai-core-provider-registry",
+  "sourceOfTruth": {
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelRouterDoc": "docs/ai/model-router.md",
+    "providerAudit": "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+    "providerAuditJson": "docs/audits/ai-provider-audit.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json"
+  },
+  "truthBoundary": "Repository-local provider status fixture only. It performs no live provider calls, no credential validation, no network health checks, no SSH checks, no deployment, and no GitHub mutation.",
+  "publicStates": [
+    "Available",
+    "Missing Key",
+    "Disabled",
+    "Rate Limited",
+    "Error"
+  ],
+  "stateModel": [
+    {
+      "state": "Available",
+      "routingEligible": true,
+      "meaning": "The route can be used inside the declared local or supervised boundary without additional credentials."
+    },
+    {
+      "state": "Missing Key",
+      "routingEligible": false,
+      "meaning": "A server-only credential is absent or unverified; the provider must not be selected."
+    },
+    {
+      "state": "Disabled",
+      "routingEligible": false,
+      "meaning": "The provider or profile is intentionally unavailable for this demo slice."
+    },
+    {
+      "state": "Rate Limited",
+      "routingEligible": false,
+      "meaning": "Future live adapter state for quota exhaustion; no current provider is marked rate limited by this offline fixture."
+    },
+    {
+      "state": "Error",
+      "routingEligible": false,
+      "meaning": "Future live adapter state for redacted provider/runtime errors; no raw provider error body may be surfaced."
+    }
+  ],
+  "coreCredentialRequirement": "none",
+  "defaultRoutingMode": "local-demo",
+  "localOnlyRespected": true,
+  "requiredForCore": [],
+  "fallbackOrder": [
+    "selected-live-provider",
+    "compatible-live-provider",
+    "approved-local-provider",
+    "local-demo",
+    "feature-disabled"
+  ],
+  "providers": [
+    {
+      "id": "codex-operator",
+      "displayName": "Codex Operator Session",
+      "category": "supervised-operator",
+      "publicStatus": "Available",
+      "credentialRequirement": "current-session-only",
+      "configured": true,
+      "enabled": true,
+      "routingEligible": true,
+      "privacyClass": "repo-local-supervised",
+      "capabilities": [
+        "implementation",
+        "repository-review",
+        "validation",
+        "planning"
+      ],
+      "modelAliases": [
+        "codex-session"
+      ],
+      "actualModel": "current-codex-session",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "content/development/seis-agent-plugin-integration.json",
+        "packages/seis-ai/src/agent/tools.mjs"
+      ],
+      "notes": "Represents the supervised Codex work session only; it is not a browser provider and stores no provider key."
+    },
+    {
+      "id": "seis-local-demo",
+      "displayName": "SEIS Local Demo Runtime",
+      "category": "local-demo",
+      "publicStatus": "Available",
+      "credentialRequirement": "none",
+      "configured": true,
+      "enabled": true,
+      "routingEligible": true,
+      "privacyClass": "browser-local-demo",
+      "capabilities": [
+        "general-chat-demo",
+        "repository-planning-demo",
+        "tool-ledger-demo",
+        "personal-plugin-lane-status-demo"
+      ],
+      "modelAliases": [
+        "local-demo"
+      ],
+      "actualModel": "none-local-demo",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": true,
+      "evidence": [
+        "apps/web/desktop.js",
+        "apps/seis-demo-web/script.js",
+        "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json"
+      ],
+      "notes": "No cloud model, trained SEIS model, or credential is claimed."
+    },
+    {
+      "id": "anthropic-claude",
+      "displayName": "Anthropic Claude",
+      "category": "cloud-model-provider",
+      "publicStatus": "Missing Key",
+      "credentialRequirement": "optional-live-feature",
+      "expectedEnv": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "configured": false,
+      "enabled": false,
+      "routingEligible": false,
+      "privacyClass": "server-only-cloud",
+      "capabilities": [
+        "architecture-review",
+        "long-context-review",
+        "code-review"
+      ],
+      "modelAliases": [
+        "claude-review-profile"
+      ],
+      "actualModel": "not-configured",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+      ],
+      "notes": "Unavailable until a server-side Anthropic credential and adapter tests exist."
+    },
+    {
+      "id": "openai-general",
+      "displayName": "OpenAI General Provider",
+      "category": "cloud-model-provider",
+      "publicStatus": "Missing Key",
+      "credentialRequirement": "optional-live-feature",
+      "expectedEnv": [
+        "OPENAI_API_KEY",
+        "OPENAI_BASE_URL",
+        "OPENAI_ORG_ID",
+        "OPENAI_PROJECT_ID"
+      ],
+      "configured": false,
+      "enabled": false,
+      "routingEligible": false,
+      "privacyClass": "server-only-cloud",
+      "capabilities": [
+        "general-chat",
+        "structured-output",
+        "tool-calling"
+      ],
+      "modelAliases": [
+        "openai-general-profile"
+      ],
+      "actualModel": "not-configured",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+      ],
+      "notes": "Unavailable until a server-side OpenAI credential and adapter tests exist."
+    },
+    {
+      "id": "google-gemini",
+      "displayName": "Google Gemini",
+      "category": "cloud-model-provider",
+      "publicStatus": "Missing Key",
+      "credentialRequirement": "optional-live-feature",
+      "expectedEnv": [
+        "GEMINI_API_KEY"
+      ],
+      "configured": false,
+      "enabled": false,
+      "routingEligible": false,
+      "privacyClass": "server-only-cloud",
+      "capabilities": [
+        "secondary-validation",
+        "multimodal-review"
+      ],
+      "modelAliases": [
+        "gemini-validation-profile"
+      ],
+      "actualModel": "not-configured",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md"
+      ],
+      "notes": "Unavailable until a server-side Gemini credential and adapter tests exist."
+    },
+    {
+      "id": "qwen-review",
+      "displayName": "Qwen Alternative Review",
+      "category": "local-or-cloud-provider",
+      "publicStatus": "Disabled",
+      "credentialRequirement": "optional-future-provider",
+      "expectedEnv": [],
+      "configured": false,
+      "enabled": false,
+      "routingEligible": false,
+      "privacyClass": "server-only-or-local-future",
+      "capabilities": [
+        "second-opinion-review",
+        "contradiction-detection"
+      ],
+      "modelAliases": [
+        "qwen-review-profile"
+      ],
+      "actualModel": "not-configured",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "apps/web/desktop.js",
+        "apps/seis-demo-web/script.js"
+      ],
+      "notes": "Planned profile only; no endpoint, local runtime, or key is configured."
+    },
+    {
+      "id": "ollama-local",
+      "displayName": "Ollama Local Candidate",
+      "category": "local-model-provider",
+      "publicStatus": "Disabled",
+      "credentialRequirement": "none-local-service",
+      "expectedEnv": [
+        "OLLAMA_BASE_URL",
+        "OLLAMA_HOST"
+      ],
+      "configured": false,
+      "enabled": false,
+      "routingEligible": false,
+      "privacyClass": "local-private-future",
+      "capabilities": [
+        "local-private-inference",
+        "no-key-local-model"
+      ],
+      "modelAliases": [
+        "ollama-local-profile"
+      ],
+      "actualModel": "not-configured",
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "fallbackEligible": false,
+      "evidence": [
+        "docs/audits/AI_PROVIDER_AND_CREDENTIAL_AUDIT.md",
+        "docs/ai/model-router.md"
+      ],
+      "notes": "Zero-key local-provider candidate; disabled until local service health and no-key startup tests exist."
+    }
+  ],
+  "optionalForLiveFeatures": [
+    {
+      "providerId": "anthropic-claude",
+      "env": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "scope": "server-only architecture and code review"
+    },
+    {
+      "providerId": "openai-general",
+      "env": [
+        "OPENAI_API_KEY"
+      ],
+      "scope": "server-only general assistant features"
+    },
+    {
+      "providerId": "google-gemini",
+      "env": [
+        "GEMINI_API_KEY"
+      ],
+      "scope": "server-only secondary validation"
+    },
+    {
+      "providerId": "ollama-local",
+      "env": [
+        "OLLAMA_BASE_URL",
+        "OLLAMA_HOST"
+      ],
+      "scope": "user-controlled local inference"
+    }
+  ],
+  "noKeyProviders": [
+    "codex-operator",
+    "seis-local-demo",
+    "ollama-local"
+  ],
+  "securityInvariants": [
+    "Core SEIS AI must start with zero cloud provider keys.",
+    "Browser code must not receive model-provider secrets.",
+    "Provider keys must be backend-only and never stored in localStorage or IndexedDB.",
+    "Missing Key and Disabled states must not be routed silently.",
+    "Rate Limited and Error states must use redacted output and must not print raw provider responses.",
+    "Local-only mode must never fall back to a cloud provider.",
+    "Unavailable providers must remain visibly unavailable in SEIS AI surfaces."
+  ],
+  "nextSafeActions": [
+    "Use this fixture as the provider status source for SEIS AI and MCP evidence.",
+    "Add no-key startup tests before live provider adapters.",
+    "Add redacted routing decision logs before enabling live provider routing."
+  ]
+}

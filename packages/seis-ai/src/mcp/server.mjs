@@ -1,8 +1,6 @@
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import path from "node:path";
-import { z } from "zod";
+import readline from "node:readline";
 
 import { resolveRepoRoot, resolveWebRoot } from "../lib/repo.mjs";
 import {
@@ -22,10 +20,250 @@ import {
   styleAudit,
 } from "../lib/checks.mjs";
 import { i18nAddKey, i18nRenameKey } from "../lib/i18n-write.mjs";
-import { PLUGIN_INTEGRATION_PATH, pluginIntegrationStatus } from "../lib/plugin-integration.mjs";
+import {
+  AI_CORE_PROVIDER_REGISTRY_PATH,
+  AI_CORE_PROVIDER_STATUS_TOOL,
+  AI_CORE_MODEL_SCALING_PROFILE_PATH,
+  AI_CORE_MODEL_SCALING_STATUS_TOOL,
+  AI_CORE_VERSION_PROMOTION_GATES_PATH,
+  AI_CORE_VERSION_PROMOTION_TOOL,
+  AI_CORE_VERSION_REGISTRY_PATH,
+  AI_CORE_VERSION_STATUS_TOOL,
+  MCP_RUNTIME_CONTRACT_PATH,
+  PERSONAL_PLUGIN_LANE_TOOLS,
+  PLUGIN_INTEGRATION_PATH,
+  SUBAGENT_APPROVAL_FIXTURE_PATH,
+  SUBAGENT_CANCELLATION_FIXTURE_PATH,
+  SUBAGENT_DRY_RUN_QUEUE_PATH,
+  SUBAGENT_DRY_RUN_TASK_TOOL,
+  SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH,
+  SUBAGENT_LONG_HORIZON_PLAN_PATH,
+  SUBAGENT_LONG_HORIZON_PLAN_VIEW_PATH,
+  SUBAGENT_OPERATING_MODEL_PATH,
+  SUBAGENT_OPERATING_MODEL_TOOL,
+  SUBAGENT_PERMISSION_MATRIX_PATH,
+  SUBAGENT_REDACTION_FIXTURE_PATH,
+  SUBAGENT_REVIEW_LEDGER_PATH,
+  SUBAGENT_REVIEW_LEDGER_TOOL,
+  SUBAGENT_ROLE_SCHEMA_PATH,
+  SUBAGENT_RUNTIME_FIXTURES_PATH,
+  aiCoreProviderStatus,
+  aiCoreModelScalingStatus,
+  aiCoreVersionPromotionDryRun,
+  aiCoreVersionStatus,
+  personalPluginLanePlan,
+  personalPluginLaneStatus,
+  pluginIntegrationStatus,
+  subagentDryRunTaskDecision,
+  subagentOperatingModelStatus,
+  subagentReviewLedgerStatus,
+} from "../lib/plugin-integration.mjs";
 
 const repoRoot = resolveRepoRoot();
 const webRoot = resolveWebRoot(repoRoot);
+
+const z = createSchemaHelpers();
+
+function createSchemaHelpers() {
+  function schema(type, extra = {}) {
+    const spec = { type, ...extra };
+    const api = {
+      __schema: spec,
+      optional() {
+        spec.optional = true;
+        return api;
+      },
+      describe(description) {
+        spec.description = description;
+        return api;
+      },
+      int() {
+        spec.integer = true;
+        return api;
+      },
+      min(value) {
+        spec.minimum = value;
+        return api;
+      },
+      max(value) {
+        spec.maximum = value;
+        return api;
+      },
+    };
+    return api;
+  }
+
+  return {
+    string: () => schema("string"),
+    boolean: () => schema("boolean"),
+    number: () => schema("number"),
+    enum: (values) => schema("string", { enum: values }),
+    object: (shape) => schema("object", { properties: shape }),
+  };
+}
+
+function toJsonSchema(shape = {}) {
+  const properties = {};
+  const required = [];
+
+  for (const [name, descriptor] of Object.entries(shape)) {
+    const source = descriptor?.__schema ?? descriptor ?? {};
+    const property = {};
+    if (source.type === "number" && source.integer) {
+      property.type = "integer";
+    } else {
+      property.type = source.type || "string";
+    }
+    if (source.description) property.description = source.description;
+    if (source.enum) property.enum = source.enum;
+    if (source.minimum !== undefined) property.minimum = source.minimum;
+    if (source.maximum !== undefined) property.maximum = source.maximum;
+    if (source.type === "object") {
+      const nested = toJsonSchema(source.properties || {});
+      property.type = "object";
+      property.properties = nested.properties;
+      if (nested.required?.length) property.required = nested.required;
+      property.additionalProperties = false;
+    }
+    properties[name] = property;
+    if (source.optional !== true) required.push(name);
+  }
+
+  return {
+    type: "object",
+    properties,
+    required,
+    additionalProperties: false,
+  };
+}
+
+function createJsonRpcError(id, code, message) {
+  return { jsonrpc: "2.0", id, error: { code, message } };
+}
+
+class LightweightMcpServer {
+  constructor({ name, version }) {
+    this.name = name;
+    this.version = version;
+    this.tools = new Map();
+    this.prompts = new Map();
+    this.resources = new Map();
+  }
+
+  tool(name, description, inputShape, handler) {
+    this.tools.set(name, { name, description, inputShape, handler });
+  }
+
+  prompt(name, description, inputShape, handler) {
+    this.prompts.set(name, { name, description, inputShape, handler });
+  }
+
+  resource(name, uri, metadata, handler) {
+    this.resources.set(uri, { name, uri, metadata, handler });
+  }
+
+  async connect() {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      crlfDelay: Infinity,
+    });
+
+    for await (const line of rl) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      let request;
+      try {
+        request = JSON.parse(trimmed);
+      } catch {
+        this.send(createJsonRpcError(null, -32700, "Parse error"));
+        continue;
+      }
+
+      if (request.id === undefined) continue;
+
+      try {
+        const result = await this.handle(request);
+        this.send({ jsonrpc: "2.0", id: request.id, result });
+      } catch (error) {
+        this.send(createJsonRpcError(request.id, -32603, error.message));
+      }
+    }
+  }
+
+  send(message) {
+    process.stdout.write(`${JSON.stringify(message)}\n`);
+  }
+
+  async handle(request) {
+    switch (request.method) {
+      case "initialize":
+        return {
+          protocolVersion: request.params?.protocolVersion || "2024-11-05",
+          capabilities: {
+            tools: {},
+            prompts: {},
+            resources: {},
+          },
+          serverInfo: { name: this.name, version: this.version },
+        };
+      case "tools/list":
+        return {
+          tools: [...this.tools.values()].map((tool) => ({
+            name: tool.name,
+            description: tool.description,
+            inputSchema: toJsonSchema(tool.inputShape),
+          })),
+        };
+      case "tools/call":
+        return this.callTool(request.params);
+      case "prompts/list":
+        return {
+          prompts: [...this.prompts.values()].map((prompt) => ({
+            name: prompt.name,
+            description: prompt.description,
+            arguments: Object.entries(prompt.inputShape || {}).map(([name, descriptor]) => ({
+              name,
+              description: descriptor?.__schema?.description || "",
+              required: descriptor?.__schema?.optional !== true,
+            })),
+          })),
+        };
+      case "prompts/get":
+        return this.getPrompt(request.params);
+      case "resources/list":
+        return {
+          resources: [...this.resources.values()].map((resource) => ({
+            name: resource.name,
+            uri: resource.uri,
+            description: resource.metadata?.description,
+            mimeType: resource.metadata?.mimeType,
+          })),
+        };
+      case "resources/read":
+        return this.readResource(request.params);
+      default:
+        throw new Error(`Unsupported MCP method: ${request.method}`);
+    }
+  }
+
+  async callTool(params = {}) {
+    const tool = this.tools.get(params.name);
+    if (!tool) throw new Error(`Unknown tool: ${params.name}`);
+    return tool.handler(params.arguments || {});
+  }
+
+  async getPrompt(params = {}) {
+    const prompt = this.prompts.get(params.name);
+    if (!prompt) throw new Error(`Unknown prompt: ${params.name}`);
+    return prompt.handler(params.arguments || {});
+  }
+
+  async readResource(params = {}) {
+    const resource = this.resources.get(params.uri);
+    if (!resource) throw new Error(`Unknown resource: ${params.uri}`);
+    return resource.handler();
+  }
+}
 
 function jsonResult(payload) {
   return { content: [{ type: "text", text: JSON.stringify(payload, null, 2) }] };
@@ -39,7 +277,7 @@ function errorResult(error) {
 }
 
 export function buildServer() {
-  const server = new McpServer({ name: "seis", version: "0.1.0" });
+  const server = new LightweightMcpServer({ name: "seis", version: "0.1.0" });
 
   server.tool(
     "i18n_status",
@@ -265,6 +503,157 @@ export function buildServer() {
   );
 
   server.tool(
+    AI_CORE_PROVIDER_STATUS_TOOL,
+    "Read the SEIS AI Core provider registry for zero-key Local Demo, supervised Codex, optional server-only cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; performs no live provider calls, credential validation, network checks, SSH, deployment, or GitHub mutation.",
+    {
+      includeFullRegistry: z.boolean().optional().describe("Return the full machine-readable provider registry"),
+    },
+    async ({ includeFullRegistry }) => {
+      try {
+        return jsonResult(aiCoreProviderStatus(repoRoot, { includeFullRegistry: includeFullRegistry === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    AI_CORE_MODEL_SCALING_STATUS_TOOL,
+    "Read the SEIS AI Core model scaling hardware profile for the planned 20B target on 16GB+ RAM, compatibility profiles, benchmark manifest contract, memory budget contract, quantization lanes, local runtime candidates, future 70B ladder, and 150B frontier research lane. Read-only; performs no training, inference, download, benchmark, provider call, SSH, deployment, or credential access.",
+    {
+      includeFullProfile: z.boolean().optional().describe("Return the full machine-readable model scaling hardware profile"),
+    },
+    async ({ includeFullProfile }) => {
+      try {
+        return jsonResult(aiCoreModelScalingStatus(repoRoot, { includeFullProfile: includeFullProfile === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    AI_CORE_VERSION_STATUS_TOOL,
+    "Read the SEIS AI Core version registry for SEIS AI Core v0.1, SEIS Language v0.1, model-router, prompt-engine, agent-runtime, sub-agent lane bindings, truth boundaries, and five-year promotion gates. Read-only; never claims trained model ownership or live autonomous execution.",
+    {
+      includeFullRegistry: z.boolean().optional().describe("Return the full machine-readable version registry"),
+    },
+    async ({ includeFullRegistry }) => {
+      try {
+        return jsonResult(aiCoreVersionStatus(repoRoot, { includeFullRegistry: includeFullRegistry === true }));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    AI_CORE_VERSION_PROMOTION_TOOL,
+    "Dry-run a SEIS AI Core version promotion gate against repository-local evidence for the embedded SEIS plugin lanes. Read-only; never approves a release, mutates files, calls providers, accesses credentials, deploys, or runs autonomous execution.",
+    {
+      versionTarget: z.string().optional().describe("Optional target such as v0.1-foundation or v0.3-write-gated-runtime"),
+      year: z.number().int().min(1).max(5).optional().describe("Optional roadmap year from 1 to 5"),
+    },
+    async (input) => {
+      try {
+        return jsonResult(aiCoreVersionPromotionDryRun(repoRoot, input));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    SUBAGENT_OPERATING_MODEL_TOOL,
+    "Read the SEIS AI Core bounded sub-agent operating model, five-year plan linkage, permission levels, lane quality gates, cadence, and current approval boundaries. Read-only; does not execute sub-agents or claim autonomous runtime.",
+    {
+      includeFullModel: z.boolean().optional().describe("Return the full machine-readable operating model"),
+      includeLongHorizonPlan: z.boolean().optional().describe("Return the full five-year long-horizon plan record"),
+    },
+    async ({ includeFullModel, includeLongHorizonPlan }) => {
+      try {
+        return jsonResult(
+          subagentOperatingModelStatus(repoRoot, {
+            includeFullModel: includeFullModel === true,
+            includeLongHorizonPlan: includeLongHorizonPlan === true,
+          })
+        );
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    SUBAGENT_DRY_RUN_TASK_TOOL,
+    "Evaluate one SEIS AI Core sub-agent dry-run fixture task against role, permission, approval, cancellation, tool, and path-scope rules. Read-only; returns a decision and never mutates files, queues, GitHub, cloud, SSH, providers, or credentials.",
+    {
+      taskId: z.string().describe("Dry-run task id from content/development/seis-ai-core-dry-run-task-queue.json"),
+      requestedTool: z.string().optional().describe("Optional tool name to evaluate against the assigned role allow/deny list"),
+      requestedPath: z.string().optional().describe("Optional repo-relative path to evaluate against the task target scope"),
+      signal: z.string().optional().describe("Optional cancellation signal such as operator-cancel, timeout, policy-deny, or validation-failure"),
+    },
+    async (input) => {
+      try {
+        return jsonResult(subagentDryRunTaskDecision(repoRoot, input));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
+    SUBAGENT_REVIEW_LEDGER_TOOL,
+    "Read the SEIS AI Core five-year sub-agent quarterly review ledger. Read-only; shows current/planned quarters, evidence, approval boundaries, and next safe actions without mutating queues, files, GitHub, cloud, SSH, providers, or credentials.",
+    {
+      quarterId: z.string().optional().describe("Optional quarter id such as Y1-Q2 or Y3-Q4"),
+      includeQuarters: z.boolean().optional().describe("Return all 20 quarterly ledger records"),
+    },
+    async ({ quarterId, includeQuarters }) => {
+      try {
+        return jsonResult(
+          subagentReviewLedgerStatus(repoRoot, {
+            quarterId,
+            includeQuarters: includeQuarters === true,
+          })
+        );
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  for (const lane of PERSONAL_PLUGIN_LANE_TOOLS) {
+    server.tool(
+      lane.statusTool,
+      `Read the ${lane.displayName} embedded lane status from the canonical SEIS-Agent plugin manifest, skill mirror, and lane profile. Read-only; never claims external authentication.`,
+      {},
+      async () => {
+        try {
+          return jsonResult(personalPluginLaneStatus(repoRoot, lane.laneId));
+        } catch (error) {
+          return errorResult(error);
+        }
+      }
+    );
+
+    server.tool(
+      lane.planTool,
+      `Create a scoped ${lane.displayName} execution plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, providers, or credentials.`,
+      {
+        request: z.string().describe(`Task request to route through ${lane.displayName}.`),
+      },
+      async ({ request }) => {
+        try {
+          return jsonResult(personalPluginLanePlan(repoRoot, lane.laneId, request));
+        } catch (error) {
+          return errorResult(error);
+        }
+      }
+    );
+  }
+
+  server.tool(
     "a11y_check",
     "Static accessibility audit of index.html: FAILS when an <img> is missing alt=, an interactive input/select/textarea has no associated label, or a <button> has no accessible name (text, aria-label, data-i18n, etc.). Advisory: positive tabindex values.",
     {},
@@ -423,10 +812,265 @@ Steps:
     })
   );
 
+  server.resource(
+    "ai-core-mcp-runtime-contract",
+    "seis://ai/mcp-runtime-contract.json",
+    { description: "SEIS AI Core local MCP runtime contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/mcp-runtime-contract.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...MCP_RUNTIME_CONTRACT_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-provider-registry",
+    "seis://ai/provider-registry.json",
+    { description: "SEIS AI Core zero-key provider registry and public provider-state contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/provider-registry.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_PROVIDER_REGISTRY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-model-scaling-hardware-profile",
+    "seis://ai/model-scaling-hardware-profile.json",
+    { description: "SEIS AI Core planned 20B/70B/150B model scaling hardware profile", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/model-scaling-hardware-profile.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_MODEL_SCALING_PROFILE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-version-registry",
+    "seis://ai/version-registry.json",
+    { description: "SEIS AI Core v0.1 version registry and truth-boundary contract", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/version-registry.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_VERSION_REGISTRY_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-version-promotion-gates",
+    "seis://ai/version-promotion-gates.json",
+    { description: "SEIS AI Core version promotion dry-run gates", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/version-promotion-gates.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_VERSION_PROMOTION_GATES_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-operating-model",
+    "seis://ai/subagent-operating-model.json",
+    { description: "SEIS AI Core bounded sub-agent operating model", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/subagent-operating-model.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_OPERATING_MODEL_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-five-year-plan",
+    "seis://ai/sub-agent-5-year-plan.json",
+    { description: "SEIS five-year bounded sub-agent plan", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/sub-agent-5-year-plan.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_LONG_HORIZON_PLAN_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-five-year-plan-view",
+    "seis://ai/sub-agent-5-year-plan-view.json",
+    { description: "Generated SEIS five-year sub-agent plan view for browser/runtime evidence", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/sub-agent-5-year-plan-view.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_LONG_HORIZON_PLAN_VIEW_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-runtime-fixtures",
+    "seis://ai/subagent-runtime-fixtures.json",
+    { description: "SEIS AI Core consolidated sub-agent runtime fixture pack", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/subagent-runtime-fixtures.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_RUNTIME_FIXTURES_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-review-ledger",
+    "seis://ai/subagent-review-ledger.json",
+    { description: "SEIS AI Core five-year sub-agent quarterly review ledger", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/subagent-review-ledger.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_REVIEW_LEDGER_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-redaction-fixture",
+    "seis://ai/redaction-fixture.json",
+    { description: "SEIS AI Core sub-agent redaction and safe-output fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/redaction-fixture.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_REDACTION_FIXTURE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-execution-ledger-fixture",
+    "seis://ai/execution-ledger-fixture.json",
+    { description: "SEIS AI Core sub-agent append-only execution ledger fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/execution-ledger-fixture.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_EXECUTION_LEDGER_FIXTURE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-agent-role-schema",
+    "seis://ai/agent-role-schema.json",
+    { description: "SEIS AI Core sub-agent role schema fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/agent-role-schema.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_ROLE_SCHEMA_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-agent-permission-matrix",
+    "seis://ai/agent-permission-matrix.json",
+    { description: "SEIS AI Core sub-agent permission matrix fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/agent-permission-matrix.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_PERMISSION_MATRIX_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-dry-run-task-queue",
+    "seis://ai/dry-run-task-queue.json",
+    { description: "SEIS AI Core dry-run-only sub-agent queue fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/dry-run-task-queue.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_DRY_RUN_QUEUE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-cancellation-fixture",
+    "seis://ai/cancellation-fixture.json",
+    { description: "SEIS AI Core sub-agent cancellation fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/cancellation-fixture.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_CANCELLATION_FIXTURE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "subagent-approval-fixture",
+    "seis://ai/approval-fixture.json",
+    { description: "SEIS AI Core sub-agent approval fixture", mimeType: "application/json" },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/approval-fixture.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...SUBAGENT_APPROVAL_FIXTURE_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
   return server;
 }
 
 export async function startServer() {
   const server = buildServer();
-  await server.connect(new StdioServerTransport());
+  await server.connect();
 }

@@ -1,0 +1,259 @@
+{
+  "id": "sub-agent-5-year-plan",
+  "status": "documented",
+  "purpose": "Map a five-year SEIS development horizon to bounded sub-agent lanes, quarterly outcomes, and validation gates without granting autonomous write, deployment, credential, or merge authority.",
+  "sourceBasis": [
+    "AGENTS.md",
+    "docs/ai/agent-runtime.md",
+    "docs/development/agents/ai-workforce-assignments.md",
+    "content/development/ai-workforce-assignments.json",
+    "content/development/seis-long-horizon-missions.json",
+    "reports/seis-long-horizon-missions.md",
+    "reports/seis-active-mission-board.md",
+    "roadmap/seis-18-60-month-long-horizon-ops-blueprint.md"
+  ],
+  "governance": {
+    "writerPolicy": "single-writer",
+    "defaultWriter": "codex",
+    "subAgentsAre": "bounded reviewers, explorers, workers, and validators under human governance",
+    "forbiddenAutonomy": [
+      "merge",
+      "push-to-main",
+      "deploy",
+      "secret-access",
+      "ssh-execution",
+      "history-rewrite",
+      "provider-key-collection",
+      "model-training",
+      "public-visibility-change"
+    ],
+    "requiredControls": [
+      "bounded objective",
+      "disjoint file ownership",
+      "least context",
+      "approval boundary",
+      "validation command",
+      "handoff summary",
+      "human review for privileged actions"
+    ]
+  },
+  "subAgentLifecycleStates": [
+    "proposed",
+    "assigned",
+    "active",
+    "blocked",
+    "reviewed",
+    "integrated",
+    "archived"
+  ],
+  "lanes": [
+    {
+      "id": "architecture-agent",
+      "role": "Architecture and platform coherence",
+      "defaultAuthority": "review-only",
+      "wipLimit": 2
+    },
+    {
+      "id": "implementation-agent",
+      "role": "Bounded code and product implementation",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "security-agent",
+      "role": "Security, privacy, permission, and credential boundaries",
+      "defaultAuthority": "review-only",
+      "wipLimit": 1
+    },
+    {
+      "id": "documentation-agent",
+      "role": "Source-of-truth docs, evidence, and handoffs",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "validation-agent",
+      "role": "Tests, smoke checks, audit scripts, and release evidence",
+      "defaultAuthority": "review-only-or-scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "design-agent",
+      "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+      "defaultAuthority": "proposal-or-scoped-worker",
+      "wipLimit": 1
+    }
+  ],
+  "years": [
+    {
+      "year": 1,
+      "theme": "Foundation, evidence, and safe agent lanes",
+      "quarters": [
+        {
+          "id": "Y1-Q1",
+          "focus": "Turn existing long-horizon missions and workforce assignments into checkable sub-agent operating contracts.",
+          "primaryLanes": ["documentation-agent", "validation-agent", "security-agent"],
+          "outcomes": ["sub-agent plan contract", "check-only validator", "permission gap review"],
+          "gates": ["docs-updated", "deterministic-check", "single-writer-policy", "no-secret-leakage"]
+        },
+        {
+          "id": "Y1-Q2",
+          "focus": "Define role schema, permission matrix, handoff package, and dry-run queue fixtures.",
+          "primaryLanes": ["architecture-agent", "security-agent", "validation-agent"],
+          "outcomes": ["agent role schema", "tool permission matrix", "dry-run queue fixture"],
+          "gates": ["schema-validation", "approval-boundary", "cancellation-fixture", "path-safety"]
+        },
+        {
+          "id": "Y1-Q3",
+          "focus": "Connect sub-agent briefs to Command Center evidence without enabling uncontrolled background work.",
+          "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
+          "outcomes": ["brief registry", "Command Center evidence view", "operator review queue"],
+          "gates": ["mock-vs-live-labels", "accessibility", "browser-smoke", "rollback-plan"]
+        },
+        {
+          "id": "Y1-Q4",
+          "focus": "Promote safe no-key local agent workflows and provider-neutral AI Core planning.",
+          "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+          "outcomes": ["local demo agent lane", "provider status model", "fallback policy evidence"],
+          "gates": ["no-key-startup", "provider-honesty", "redaction", "human-approval"]
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "theme": "Product runtime and controlled automation",
+      "quarters": [
+        {
+          "id": "Y2-Q1",
+          "focus": "Harden SEIS Desktop, SEIS Code, and virtual file workflows under sub-agent validation.",
+          "primaryLanes": ["implementation-agent", "design-agent", "validation-agent"],
+          "outcomes": ["desktop interaction baseline", "SEIS Code persistence suite", "shared VFS plan"],
+          "gates": ["interactivity-rate", "mobile-fit", "indexeddb-persistence", "no-host-os-claim"]
+        },
+        {
+          "id": "Y2-Q2",
+          "focus": "Build scheduler dry-run, task queue states, and operator cancellation paths.",
+          "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+          "outcomes": ["scheduler dry-run", "queue state machine", "cancellation UI"],
+          "gates": ["dry-run-only", "bounded-recursion", "timeout", "audit-event"]
+        },
+        {
+          "id": "Y2-Q3",
+          "focus": "Introduce read-only repository intelligence and evidence locker views.",
+          "primaryLanes": ["implementation-agent", "documentation-agent", "validation-agent"],
+          "outcomes": ["repository scanner contract", "evidence locker", "staleness labels"],
+          "gates": ["read-only-live", "evidence-linked", "stale-data-label", "no-fake-health"]
+        },
+        {
+          "id": "Y2-Q4",
+          "focus": "Prepare plugin and MCP trust levels for limited write-gated agent tools.",
+          "primaryLanes": ["security-agent", "architecture-agent", "validation-agent"],
+          "outcomes": ["MCP trust registry", "tool permission tests", "destructive approval fixtures"],
+          "gates": ["least-privilege", "tool-allowlist", "destructive-approval", "prompt-injection-resistance"]
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "theme": "Integrated Command Center and AI Core alpha",
+      "quarters": [
+        {
+          "id": "Y3-Q1",
+          "focus": "Integrate agent status, provider status, and task evidence into Command Center Alpha.",
+          "primaryLanes": ["implementation-agent", "design-agent", "documentation-agent"],
+          "outcomes": ["agent center alpha", "AI control center alpha", "evidence-first dashboard"],
+          "gates": ["real-actions-only", "keyboard-navigation", "provider-identity", "fallback-transparency"]
+        },
+        {
+          "id": "Y3-Q2",
+          "focus": "Add provider-neutral model routing behind backend-only boundaries.",
+          "primaryLanes": ["architecture-agent", "security-agent", "implementation-agent"],
+          "outcomes": ["provider registry", "capability router", "server env validation"],
+          "gates": ["server-only-secrets", "missing-key-state", "capability-fallback", "redacted-errors"]
+        },
+        {
+          "id": "Y3-Q3",
+          "focus": "Promote selected sub-agent tools from dry-run to write-gated local workflows.",
+          "primaryLanes": ["implementation-agent", "security-agent", "validation-agent"],
+          "outcomes": ["write-gated file tools", "approval ledger", "tool audit events"],
+          "gates": ["path-traversal-denied", "approval-required", "audit-log", "rollback-notes"]
+        },
+        {
+          "id": "Y3-Q4",
+          "focus": "Create release-candidate quality gates for agent-assisted product surfaces.",
+          "primaryLanes": ["validation-agent", "documentation-agent", "design-agent"],
+          "outcomes": ["RC evidence checklist", "visual QA protocol", "accessibility regression plan"],
+          "gates": ["build-pass", "smoke-pass", "a11y-review", "release-evidence"]
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "theme": "Scale, reliability, and controlled federation",
+      "quarters": [
+        {
+          "id": "Y4-Q1",
+          "focus": "Add multi-repository and multi-workspace planning without cross-repo write autonomy.",
+          "primaryLanes": ["architecture-agent", "documentation-agent", "security-agent"],
+          "outcomes": ["federation policy", "workspace sync safety", "repo boundary registry"],
+          "gates": ["source-of-truth", "read-only-default", "scope-control", "human-approval"]
+        },
+        {
+          "id": "Y4-Q2",
+          "focus": "Mature observability, budget controls, and incident response for agent runs.",
+          "primaryLanes": ["security-agent", "validation-agent", "implementation-agent"],
+          "outcomes": ["agent observability schema", "budget controls", "incident playbook"],
+          "gates": ["redacted-logs", "cost-budget", "cancellation", "postmortem-template"]
+        },
+        {
+          "id": "Y4-Q3",
+          "focus": "Expand local-first and offline agent modes for privacy-sensitive workflows.",
+          "primaryLanes": ["architecture-agent", "implementation-agent", "security-agent"],
+          "outcomes": ["local-only mode", "offline drafts", "context preview"],
+          "gates": ["no-cloud-fallback", "context-minimization", "memory-boundary", "no-secret-storage"]
+        },
+        {
+          "id": "Y4-Q4",
+          "focus": "Prepare public and release readiness for controlled agent-assisted workflows.",
+          "primaryLanes": ["documentation-agent", "security-agent", "validation-agent"],
+          "outcomes": ["public readiness dry run", "release governance review", "supply-chain plan"],
+          "gates": ["secret-scan", "license-review", "SBOM-plan", "branch-protection-docs"]
+        }
+      ]
+    },
+    {
+      "year": 5,
+      "theme": "Sustainable autonomous assistance and research readiness",
+      "quarters": [
+        {
+          "id": "Y5-Q1",
+          "focus": "Stabilize agent runtime beta with bounded delegation and observable recovery.",
+          "primaryLanes": ["implementation-agent", "validation-agent", "security-agent"],
+          "outcomes": ["runtime beta", "delegation depth limits", "recovery playbook"],
+          "gates": ["bounded-delegation", "failure-mode-tests", "operator-cancel", "auditability"]
+        },
+        {
+          "id": "Y5-Q2",
+          "focus": "Advance SEIS Universe research governance without overstating trained-model ownership.",
+          "primaryLanes": ["architecture-agent", "documentation-agent", "validation-agent"],
+          "outcomes": ["model research gates", "dataset governance", "eval provenance"],
+          "gates": ["no-fake-model-claims", "dataset-provenance", "benchmark-integrity", "model-card-template"]
+        },
+        {
+          "id": "Y5-Q3",
+          "focus": "Create long-term maintenance cadence for sub-agent assisted open-source operations.",
+          "primaryLanes": ["documentation-agent", "validation-agent", "security-agent"],
+          "outcomes": ["maintenance cadence", "contributor trust levels", "reviewer routing"],
+          "gates": ["community-health", "security-triage", "CODEOWNERS-policy", "release-cadence"]
+        },
+        {
+          "id": "Y5-Q4",
+          "focus": "Close the five-year phase with evidence-backed readiness, lessons, and next-phase gates.",
+          "primaryLanes": ["architecture-agent", "documentation-agent", "validation-agent"],
+          "outcomes": ["phase closure report", "next-phase handoff", "capability maturity review"],
+          "gates": ["evidence-complete", "known-limits", "human-review", "next-safe-action"]
+        }
+      ]
+    }
+  ]
+}
