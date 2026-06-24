@@ -10,6 +10,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -17,6 +18,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
 
 // ContentSecurityPolicy mirrors what the site actually loads: self for
@@ -69,10 +71,50 @@ func withMIME(h http.Handler) http.Handler {
 	})
 }
 
-// NewHandler assembles the full middleware chain over a root directory.
+// healthHandler reports liveness/readiness as JSON for uptime checks and
+// load-balancer health probes — the observability lane of the SEIS full-stack map.
+func healthHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-store")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"status":  "ok",
+		"service": "seis-serve",
+	})
+}
+
+// statusRecorder captures the response status code for structured access logs.
+type statusRecorder struct {
+	http.ResponseWriter
+	status int
+}
+
+func (s *statusRecorder) WriteHeader(code int) {
+	s.status = code
+	s.ResponseWriter.WriteHeader(code)
+}
+
+// accessLog emits one structured line per request: method, path, status, duration.
+// Structured logs are the first observability signal; an error sink/alerting and
+// SLOs remain tracked as targets in SEIS_FULLSTACK_STACK.md.
+func accessLog(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		start := time.Now()
+		rec := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
+		h.ServeHTTP(rec, r)
+		log.Printf("method=%s path=%q status=%d dur_ms=%d",
+			r.Method, r.URL.Path, rec.status, time.Since(start).Milliseconds())
+	})
+}
+
+// NewHandler assembles the full middleware chain over a root directory, routing
+// /healthz to the health endpoint and everything else to the static file server.
 func NewHandler(root string) http.Handler {
 	fs := http.FileServer(http.Dir(root))
-	return securityHeaders(cachePolicy(withMIME(fs)))
+	mux := http.NewServeMux()
+	mux.HandleFunc("/healthz", healthHandler)
+	mux.Handle("/", securityHeaders(cachePolicy(withMIME(fs))))
+	return accessLog(mux)
 }
 
 func main() {

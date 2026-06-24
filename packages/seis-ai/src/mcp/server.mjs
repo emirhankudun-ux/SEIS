@@ -265,6 +265,23 @@ export function buildServer() {
   );
 
   server.tool(
+    "seis_ai_integration_status",
+    "Read the unified SEIS AI integration & training ledger (data/seis-ai-integration-training.json): the self-verifying capability map of all four SEIS AI surfaces — MCP tools + bin CLIs, polyglot lanes, audit entry points, and composed agent lanes/skills. Use this to learn what SEIS AI can do before planning multi-tool work. Regenerate with `npm run seis:integrate`; verify with `npm run check:seis-ai-integration-training`.",
+    {},
+    async () => {
+      try {
+        const ledgerPath = path.join(repoRoot, "data/seis-ai-integration-training.json");
+        if (!existsSync(ledgerPath)) {
+          throw new Error("integration ledger missing — run: npm run seis:integrate");
+        }
+        return jsonResult(JSON.parse(readFileSync(ledgerPath, "utf8")));
+      } catch (error) {
+        return errorResult(error);
+      }
+    }
+  );
+
+  server.tool(
     "a11y_check",
     "Static accessibility audit of index.html: FAILS when an <img> is missing alt=, an interactive input/select/textarea has no associated label, or a <button> has no accessible name (text, aria-label, data-i18n, etc.). Advisory: positive tabindex values.",
     {},

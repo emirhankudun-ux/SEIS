@@ -53,6 +53,7 @@ In any Claude Code session it exposes **16 tools**, **3 prompts**, and **2 resou
 | `security_audit` | `target="_blank"` safety, `javascript:` hrefs, mixed content (8th quality gate) |
 | `site_config_get` | site-config.json reader |
 | `workspace_status` | Monorepo package inventory |
+| `seis_ai_integration_status` | Unified SEIS AI integration & training ledger (the 4-surface capability map) |
 
 Prompts: `audit_and_fix`, `add_i18n_key(key, meaning)`, `review_locale(locale)`
 Resources: `seis://web/translations.json`, `seis://web/site-config.json`
@@ -187,6 +188,42 @@ the JS suite cannot. One command runs them all:
 Each tool ships its own tests (`test_*.py`, `cargo test`, `go test`,
 `--self-test` modes). CI: `.github/workflows/polyglot.yml`.
 TypeScript typings for the audit reports: `packages/seis-ai/types/seis-ai.d.ts`.
+
+---
+
+## SEIS AI integration & training ledger
+
+`scripts/seis-ai-integration-training.mjs` unifies the four SEIS AI surfaces into a
+single, self-verifying capability map so the agent operates from one coherent view
+of its own tooling. It records the ledger at `data/seis-ai-integration-training.json`.
+
+| Lane | What is integrated |
+|------|--------------------|
+| Unified tools | MCP tools (`server.tool`), `packages/seis-ai/bin/*` binaries, polyglot lanes |
+| Knowledge | `.claude/skills/seis-ai/SKILL.md` + `CLAUDE.md` reference docs |
+| Audit | One-command entry points: `npm run seis:check`, `./scripts/polyglot-check.sh` |
+| Agent | Composed `plugins/seis-ai-agent/` lanes + skills |
+
+```bash
+npm run seis:integrate                       # regenerate the ledger (alias: automation:seis-ai-integration-training)
+npm run check:seis-ai-integration-training   # fail if any lane drifts or the ledger is stale
+```
+
+The `--check` mode fails when a referenced file is missing, a lane count regresses,
+or the committed ledger no longer matches reality — keeping all surfaces in lock-step.
+
+---
+
+## Full-stack production stack
+
+`SEIS_FULLSTACK_STACK.md` maps the real production-stack layers behind SEIS
+(frontend → backups/recovery) to the governed evidence in the repo, and marks
+the two honest gaps — load balancing/scaling and observability — as enforceable
+target contracts. Verified by:
+
+```bash
+npm run check:seis-fullstack-stack   # fails if a layer loses its evidence or a target loses its contract
+```
 
 ---
 
