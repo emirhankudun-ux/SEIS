@@ -49,7 +49,7 @@ is a frontier research boundary, not trained-weight or inference evidence.
 | Weights available | false | False required before any trained-weight claim |
 | Inference available | false | False required before any routeability claim |
 | Runtime authority | false | False required before cloud, SSH, or distributed runtime use |
-| Forbidden claims | SEIS has trained a 20B foundation model.; SEIS has trained a 70B foundation model.; SEIS has trained a 150B foundation model.; SEIS has downloadable or routeable 150B weights.; SEIS owns ChatGPT-level or Claude-level frontier weights.; A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.; Do not mark 16GB+ compatibility as verified before benchmark evidence exists. | Non-claim boundary |
+| Forbidden claims | SEIS has trained a 20B foundation model.; SEIS has trained a 70B foundation model.; SEIS has trained a 150B foundation model.; SEIS has trained a 512B foundation model.; SEIS has achieved real AGI.; SEIS has downloadable or routeable 150B weights.; SEIS owns ChatGPT-level or Claude-level frontier weights.; A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.; Do not mark 16GB+ compatibility as verified before benchmark evidence exists. | Non-claim boundary |
 
 ## SSH Hardening Operation Coverage
 
