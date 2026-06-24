@@ -24,6 +24,7 @@
     "check:seis-second-brain": "node scripts/check-seis-second-brain.mjs",
     "check:seis-fullstack-contract": "node scripts/check-seis-fullstack-contract.mjs",
     "check:seis-fullstack-server-smoke": "node scripts/check-seis-fullstack-server-smoke.mjs",
+    "check:seis-fullstack-no-server-fallback-smoke": "node scripts/check-seis-fullstack-no-server-fallback-smoke.mjs",
     "check:seis-master-prompt-report": "node scripts/create-seis-master-prompt-governance-report.mjs --check",
     "check:foundation": "node scripts/check-foundation.mjs",
     "check:goal-command-center-view": "node scripts/create-goal-command-center-view.mjs --check",

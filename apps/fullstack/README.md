@@ -1,10 +1,31 @@
 # Full-stack Lane
 
-The full-stack lane coordinates backend, auth, deployment, and live product state.
+The full-stack lane coordinates frontend product surfaces, backend/API
+contracts, auth, durable storage, deployment, and live product state. The
+current runnable SEIS demo remains Local Demo first and requires zero provider
+keys.
 
 ## Initial Direction
 
-Convex is the preferred first backend for reactive state. Supabase can be added for Postgres-heavy data, SQL reporting, storage, or auth requirements.
+The first backend step is not a framework migration. SEIS now starts with a
+no-new-dependencies `node:http` contract:
+
+- `content/development/seis-fullstack-contract.json`
+- `server/node/static-server.mjs`
+- `docs/architecture/seis-full-stack-transition.md`
+- `npm run check:seis-fullstack-contract`
+- `npm run check:seis-fullstack-server-smoke`
+- `npm run check:seis-fullstack-no-server-fallback-smoke`
+
+This contract exposes read-only Local Demo data for session, capabilities,
+projects, app installs, provider status, audit logs, and dry-run agent tasks.
+Provider credentials remain backend-only and are not read, serialized, or stored
+in browser storage.
+
+Convex can still be the preferred later backend for reactive state. Supabase can
+be added later for Postgres-heavy data, SQL reporting, storage, or auth
+requirements. Both require explicit approval, dependency review, and validation
+that the static Local Demo still works without keys.
 
 ## Convex Setup Notes
 
@@ -29,7 +50,24 @@ Add a client provider in the app shell and ensure `NEXT_PUBLIC_CONVEX_URL` is av
 
 ## First Build Tasks
 
-1. Decide backend ownership: Convex-first or Supabase-first.
-2. Define auth provider and JWT strategy.
-3. Add repo visibility and migration status models.
-4. Add Drive/Calendar integration metadata.
+1. Keep `npm run check:seis-fullstack-contract` passing.
+2. Keep the server smoke for the read-only `/_server/*` endpoints passing.
+3. Keep the no-server fallback smoke passing so Desktop and Website still run
+   when `/_server/*` is unavailable.
+4. Define auth provider and JWT strategy after approval.
+5. Decide Convex-first or Supabase-first only after the contract validator,
+   provider secret boundary, and Local Demo fallback are stable.
+6. Add repo visibility and migration status models.
+7. Add Drive/Calendar integration metadata only after connector approval.
+
+## Approval Gates
+
+Approval is required for:
+
+- New backend dependencies.
+- Live AI provider calls.
+- External databases.
+- Auth providers.
+- Deployment.
+- SSH execution.
+- Real credential handling.
