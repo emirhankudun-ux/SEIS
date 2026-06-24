@@ -4,7 +4,7 @@
   "generatedBy": "scripts/seis-ai-integration-training.mjs",
   "lanes": {
     "unifiedTools": {
-      "mcpToolCount": 17,
+      "mcpToolCount": 18,
       "binaries": [
         "seis-agent.mjs",
         "seis-check.mjs",

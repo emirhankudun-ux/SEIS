@@ -64,7 +64,7 @@ const KNOWLEDGE_MARKERS = Object.freeze(["seis:integrate", "check:seis-ai-integr
 // ledger would fall below these floors and fail in both generate and check
 // modes. Raising a baseline is a deliberate, reviewable code change.
 const BASELINE = Object.freeze({
-  mcpToolCount: 17,
+  mcpToolCount: 18,
   binaries: 3,
   polyglotLanguageCount: 115,
   agentLanes: 9,

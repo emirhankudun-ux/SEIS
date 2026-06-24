@@ -53,6 +53,7 @@ In any Claude Code session it exposes **16 tools**, **3 prompts**, and **2 resou
 | `security_audit` | `target="_blank"` safety, `javascript:` hrefs, mixed content (8th quality gate) |
 | `site_config_get` | site-config.json reader |
 | `workspace_status` | Monorepo package inventory |
+| `seis_ai_integration_status` | Unified SEIS AI integration & training ledger (the 4-surface capability map) |
 
 Prompts: `audit_and_fix`, `add_i18n_key(key, meaning)`, `review_locale(locale)`
 Resources: `seis://web/translations.json`, `seis://web/site-config.json`

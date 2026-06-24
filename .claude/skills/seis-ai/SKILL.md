@@ -35,6 +35,7 @@ The MCP server (`seis-mcp`) exposes these tools — use them when answering ques
 | `site_config_get` | Read `site-config.json` (name, email, social links, etc.) |
 | `i18n_unreferenced` | Translation keys never referenced from HTML/JS |
 | `workspace_status` | Monorepo package inventory |
+| `seis_ai_integration_status` | Read the unified SEIS AI integration & training ledger — the self-verifying map of all four SEIS AI surfaces |
 | `run_all_checks` | Run all checks at once and return a combined pass/fail report (8 sections: i18n, seo, contract, drawings, style, perf, a11y, security) |
 
 MCP prompts (pre-built workflows — `prompts/get`):
