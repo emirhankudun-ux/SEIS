@@ -214,6 +214,19 @@ or the committed ledger no longer matches reality — keeping all surfaces in lo
 
 ---
 
+## Full-stack production stack
+
+`SEIS_FULLSTACK_STACK.md` maps the real production-stack layers behind SEIS
+(frontend → backups/recovery) to the governed evidence in the repo, and marks
+the two honest gaps — load balancing/scaling and observability — as enforceable
+target contracts. Verified by:
+
+```bash
+npm run check:seis-fullstack-stack   # fails if a layer loses its evidence or a target loses its contract
+```
+
+---
+
 ## Development conventions
 
 - All source is ESM (`.mjs`). No transpilation.
