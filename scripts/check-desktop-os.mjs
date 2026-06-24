@@ -113,11 +113,31 @@ if (failures.length === 0) {
   ensure(js.includes("150B gated"), "desktop.js must surface the future 150B model-scaling boundary.");
   ensure(js.includes("SEIS_MASTER_OBJECTIVE_COVERAGE_UI"), "desktop.js must define the master objective coverage UI manifest.");
   ensure(js.includes("data-master-objective-coverage"), "desktop.js must render the master objective coverage surface.");
+  ensure(js.includes("data-master-objective-coverage-matrix"), "desktop.js must render the master objective coverage matrix.");
+  ensure(js.includes("data-master-objective-coverage-item"), "desktop.js must render individual master objective coverage rows.");
   ensure(js.includes("seis-ai-150b-frontier-boundary"), "desktop.js must expose the 150B master objective coverage boundary.");
+  for (const coverageId of [
+    "user-work-protection",
+    "security-and-privacy",
+    "architecture-and-maintainability",
+    "documentation-traceability",
+    "apple-first-platform",
+    "design-accessibility-experience",
+    "ai-data-cloud-automation",
+    "seis-ai-150b-frontier-boundary",
+    "open-source-github-readiness",
+    "god-mode-every-topic-feature-growth",
+  ]) {
+    ensure(js.includes(coverageId), `desktop.js must expose master objective coverage item ${coverageId}.`);
+  }
   ensure(js.includes("SEIS_MODEL_SCALING_UI_PROFILE"), "desktop.js must define the model scaling UI profile.");
   ensure(js.includes("memoryBudgetStatus"), "desktop.js must surface the model scaling memory budget status.");
   ensure(js.includes("benchmarkManifest"), "desktop.js must surface the model scaling benchmark manifest boundary.");
   ensure(js.includes("template-not-measured"), "desktop.js must mark the model scaling benchmark manifest as template-not-measured.");
+  ensure(js.includes("export-model-preflight"), "desktop.js must expose the 20B local preflight export action.");
+  ensure(js.includes("seis-20b-local-preflight.md"), "desktop.js must generate the 20B local preflight report.");
+  ensure(js.includes("build20BLocalPreflightMarkdown"), "desktop.js must build the 20B local preflight report content.");
+  ensure(js.includes("This is a browser-local dry-run checklist"), "desktop.js must keep the 20B local preflight as dry-run only.");
   ensure(js.includes("compatibilityProfiles"), "desktop.js must surface RAM-class compatibility profiles.");
   ensure(js.includes("16GB+ developer floor"), "desktop.js must surface the 16GB+ model scaling floor.");
   ensure(js.includes("32GB+ validation lane"), "desktop.js must surface the 32GB+ 20B validation lane.");
@@ -301,16 +321,31 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingFuture.includes("150B"), "V17 Command Center must expose the 150B future model-scaling boundary.");
     ensure(commandCenterCoverage.modelScalingProfile.memoryBudgetStatus === "planning-estimate-not-benchmark-evidence", "V17 Command Center must keep model scaling as planning estimate only.");
     ensure(commandCenterCoverage.modelScalingProfile.compatibilityClaim === "not-verified", "V17 Command Center must not verify 16GB+ compatibility without benchmarks.");
+    ensure(commandCenterCoverage.modelScalingPreflight.status === "dry-run-only", "V17 Command Center must expose a dry-run-only 20B local preflight.");
+    ensure(commandCenterCoverage.modelScalingPreflight.reportPath === "/home/seis/Documents/seis-20b-local-preflight.md", "V17 Command Center must expose the 20B local preflight report path.");
+    ensure(commandCenterCoverage.modelScalingPreflight.measuredBenchmark === false, "V17 Command Center must not treat local preflight as a measured benchmark.");
+    ensure(commandCenterCoverage.modelScalingPreflight.routeEligibleToday === false, "V17 Command Center must keep model routing blocked after local preflight.");
     ensure(commandCenterCoverage.modelScalingProfile.quantizationProfiles.length >= 3, "V17 Command Center must expose model quantization lanes.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierTarget.includes("150B"), "V17 Command Center must expose the 150B frontier target.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierStatus.includes("not scoped"), "V17 Command Center must keep the 150B frontier target unscoped.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierRequiredEvidence.length >= 5, "V17 Command Center must expose 150B required evidence gates.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemCount >= 10, "V17 Command Center must expose the expanded master objective coverage item count.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.items.length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center master objective coverage diagnostics must expose every item.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.itemIds.includes("user-work-protection"), "V17 Command Center diagnostics must expose user-work-protection coverage.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.itemIds.includes("god-mode-every-topic-feature-growth"), "V17 Command Center diagnostics must expose God Mode growth coverage.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "V17 Command Center must expose the 150B master objective coverage boundary.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.checks.includes("npm run check:seis-model-scaling-hardware-profile"), "V17 Command Center must expose the model scaling coverage check.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.blockedUntil.includes("explicit human approval"), "V17 Command Center must keep 150B blocked until explicit human approval.");
+    ensure(commandCenterCoverage.masterObjectiveCoverage.statusCounts.active >= 7, "V17 Command Center diagnostics must expose active master objective coverage counts.");
     ensure(commandCenterCoverage.modules.some((module) => module.id === "model-scaling" && module.state === "planned-gated"), "V17 Command Center must model scaling as planned/gated.");
     ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage]"), "V17 Command Center must render the master objective coverage panel.");
+    ensure(window.document.querySelectorAll("[data-seis-command-center] [data-master-objective-coverage-item]").length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center must render every master objective coverage row.");
+    ensure(window.document.querySelector("[data-seis-command-center] [data-master-objective-coverage-item='seis-ai-150b-frontier-boundary']"), "V17 Command Center must render the 150B master objective coverage row.");
+    const modelPreflightButton = window.document.querySelector("[data-seis-command-center] [data-action='export-model-preflight']");
+    ensure(modelPreflightButton, "SEIS Command Center must expose a 20B local preflight export action.");
+    modelPreflightButton?.click();
+    await delay(60);
+    ensure(diagnostics.filePaths().includes("/home/seis/Documents/seis-20b-local-preflight.md"), "SEIS Command Center preflight action must create a virtual filesystem artifact.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-module]").length === commandCenterCoverage.moduleCount, "V17 Command Center must render all module rows.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-open-app]").length >= 15, "V17 Command Center must render executable app actions.");
     ensure(window.document.querySelectorAll("[data-seis-command-center] [data-v17-open-route]").length >= 7, "V17 Command Center must render executable route actions.");

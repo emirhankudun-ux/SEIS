@@ -41,7 +41,7 @@ environment.
 | Managed sub-agent processes | Browser-smoked foundation | Sub-Agent Control, System Monitor, and Task Manager expose six bounded local sub-agent processes with pulse, suspend, resume, next-cycle execution, `/home/seis/Documents/sub-agent-process-ledger.md`, and `/home/seis/Documents/sub-agent-cycle-report.md` evidence. |
 | Terminal | Browser-smoked foundation | 38 browser-safe commands are available; the smoke writes and reads a virtual file. |
 | Single demo entry | Browser-smoked foundation | SEIS Desktop is the current single browser demo shell, with launcher and command-palette routes to SEIS AI App, Sub-Agent OS Demo, SEIS Code Workspace, SEIS Code Web, Mythic Gacha, and Video Hero Showcase. |
-| SEIS Command Center | Browser-local V17 operating center | The Command Center route opens a first-class desktop app that maps Desktop OS, AI Core, model scaling, Search, Code, Design, Cloud, Store, Music, Launchpad, Files, Terminal, Website, Agents, Plugins, and Command Center status. It labels working, Local Demo, mock-safe, and planned/gated states, creates `/home/seis/Documents/seis-v17-command-center-snapshot.md`, and keeps the 20B / 16GB+ plus future 70B and 150B frontier model-scaling lanes explicitly evidence-gated. |
+| SEIS Command Center | Browser-local V17 operating center | The Command Center route opens a first-class desktop app that maps Desktop OS, AI Core, model scaling, Search, Code, Design, Cloud, Store, Music, Launchpad, Files, Terminal, Website, Agents, Plugins, and Command Center status. It labels working, Local Demo, mock-safe, and planned/gated states, renders the 10-row Master Objective Coverage matrix, creates `/home/seis/Documents/seis-v17-command-center-snapshot.md`, exports `/home/seis/Documents/seis-20b-local-preflight.md` as a dry-run 20B / 16GB+ checklist, and keeps the 20B / 16GB+ plus future 70B and 150B frontier model-scaling lanes explicitly evidence-gated. |
 | SEIS Search routes | Browser-smoked foundation | The launcher exposes route cards for the primary demo surfaces, the command palette resolves the SEIS Code Web route, and the SEIS Search app now exposes actionable AI, Web, Code, Design, Cloud, Apps, Plugins, and Files result tabs. |
 | Code IDE cockpit | Validator-backed foundation | The dedicated Code IDE app now exposes Explorer, Search, Source Control Safe Mock, Preview, AI Code Assistant Local Demo, Extensions, command chips, command history, and a status bar. `npm run check:desktop-os` opens the IDE, clicks source-control, assistant, search, and preview panels, and verifies diagnostics without executing Git writes, SSH, provider calls, push, merge, or deployment. |
 | AI Plugin Center | Browser-local foundation | The SEIS AI App includes tabs for Overview, Installed AI, Plugin Center, Sub-Agent Plan, Tool Calls, and History, with persisted plugin lane enable/disable state. |
@@ -111,9 +111,10 @@ writes ignored screenshots under `dist/qa/desktop-os-smoke/`.
   agents, connect external providers, or mutate infrastructure. The AI Core
   spatial command surface is CSS transform-based because this route has no
   committed Three.js/WebGL dependency.
-- SEIS Command Center is a browser-local review cockpit. It does not prove live
+- SEIS Command Center is a browser-local review cockpit. Its 20B local preflight
+  export is a dry-run checklist, not a memory benchmark. It does not prove live
   provider routing, live SSH, deployment, trained SEIS model weights, 20B/70B/150B
-  inference, or production Command Center readiness.
+  inference, 16GB+ compatibility, or production Command Center readiness.
 - Code IDE Source Control is safe/mock and AI Code Assistant is Local Demo. The
   IDE does not execute Git writes, SSH, provider calls, push, merge, deployment,
   or live AI routing from the browser.

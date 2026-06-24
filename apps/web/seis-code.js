@@ -782,6 +782,10 @@ function setupMonaco() {
     const startMonaco = () => {
       if (settled || !window.require) return;
       window.require.config({ paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" } });
+      window.require.onError = () => {
+        window.clearTimeout(fallbackTimer);
+        useFallback();
+      };
       window.require(["vs/editor/editor.main"], () => {
         if (settled) return;
         window.clearTimeout(fallbackTimer);

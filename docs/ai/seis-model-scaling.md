@@ -109,6 +109,21 @@ Current manifest status:
 | --- | --- | --- |
 | `reports/seis-model-scaling/20b-16gb-memory-benchmark.json` | `template-not-measured` | Required fields exist, but no model artifact, runtime, memory, throughput, or fallback measurements have been recorded. |
 
+## Command Center 20B Local Preflight
+
+The SEIS Desktop Command Center can export a browser-local dry-run checklist to:
+
+`/home/seis/Documents/seis-20b-local-preflight.md`
+
+This preflight is useful product evidence because it gives the demo a concrete
+20B preparation workflow. It is not benchmark evidence. It does not download a
+model, run inference, train weights, call a provider, execute SSH, deploy
+infrastructure, measure RAM, or prove 16GB+ compatibility.
+
+The preflight remains route-blocked until the benchmark manifest is completed
+with human-reviewed, redacted measurements and the model artifact has clean-room
+provenance, model-card, dataset-card, local-only fallback, and safety evidence.
+
 ## 20B / 16GB+ Memory Budget Contract
 
 The first practical SEIS model target is a 20B local-compatibility profile for

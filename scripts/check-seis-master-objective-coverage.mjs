@@ -16,6 +16,7 @@ const acceptanceCriteriaPath = "data/seis-master-prompt-acceptance-criteria.json
 const masterPromptPath = "docs/governance/seis-master-prompt.md";
 const readmePath = "README.md";
 const packagePath = "package.json";
+const desktopPath = "apps/web/desktop.js";
 
 const coverage = readJson(coveragePath);
 const packageJson = readJson(packagePath);
@@ -44,6 +45,12 @@ requireIncludes(coverageReportPath, "## SSH Hardening Operation Coverage", "obje
 requireIncludes(coverageReportPath, "Mode isolation", "objective coverage report must include mode isolation evidence");
 requireIncludes(coverageReportPath, "Firewall and lockout safety", "objective coverage report must include firewall lockout evidence");
 requireIncludes(coverageReportPath, "Idempotency and failure handling", "objective coverage report must include idempotency and failure-handling evidence");
+requireIncludes(desktopPath, "SEIS_MASTER_OBJECTIVE_COVERAGE_UI", "Desktop Command Center must expose master objective coverage UI data");
+requireIncludes(desktopPath, "data-master-objective-coverage-matrix", "Desktop Command Center must render the master objective coverage matrix");
+requireIncludes(desktopPath, "data-master-objective-coverage-item", "Desktop Command Center must render per-item coverage rows");
+requireIncludes(desktopPath, "seis-20b-local-preflight.md", "Desktop Command Center must expose the 20B local preflight report");
+requireIncludes(desktopPath, "export-model-preflight", "Desktop Command Center must expose the 20B local preflight action");
+requireIncludes(desktopPath, "dry-run-only", "Desktop Command Center must keep model preflight as dry-run only");
 
 if (coverage) {
   ensure(coverage.contract === "SEIS Master Objective Coverage", `${coveragePath} must define the coverage contract`);
@@ -132,6 +139,10 @@ if (coverage) {
         String(ai150bCoverage.gap || "").includes("no trained or routeable 150B"),
       `${coveragePath} seis-ai-150b-frontier-boundary must keep 150B evidence-gated and non-claim boundaries explicit`
     );
+  }
+
+  for (const item of coverage.coverage || []) {
+    requireIncludes(desktopPath, item.id, `Desktop Command Center must expose objective coverage item ${item.id}`);
   }
 
   const godModeGrowthCoverage = findCoverage(coverage, "god-mode-every-topic-feature-growth");
@@ -235,7 +246,7 @@ if (acceptanceCriteria) {
   );
 }
 
-for (const file of [coveragePath, coverageReportPath, coverageReportGeneratorPath, trackerPath, implementationMapPath, acceptanceCriteriaPath, masterPromptPath, readmePath]) {
+for (const file of [coveragePath, coverageReportPath, coverageReportGeneratorPath, trackerPath, implementationMapPath, acceptanceCriteriaPath, masterPromptPath, readmePath, desktopPath]) {
   requireNotMatches(file, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(file, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(file, /\b(?:password|token|secret)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");

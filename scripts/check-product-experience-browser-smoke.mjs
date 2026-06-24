@@ -737,6 +737,15 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(commandCenter.text.includes("Master Objective Coverage"), "Desktop V17 Command Center must show the master objective coverage panel");
   ensure(commandCenter.text.includes("seis-ai-150b-frontier-boundary"), "Desktop V17 Command Center must show the 150B objective coverage boundary");
   ensure(commandCenter.diagnostics.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "Desktop V17 Command Center diagnostics must expose the 150B objective coverage boundary");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.itemCount >= 10, "Desktop V17 Command Center diagnostics must expose all master objective coverage items");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.itemIds.includes("god-mode-every-topic-feature-growth"), "Desktop V17 Command Center diagnostics must expose God Mode coverage");
+  ensure(commandCenter.text.includes("user-work-protection"), "Desktop V17 Command Center must show the coverage matrix rows");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.status === "dry-run-only", "Desktop V17 Command Center diagnostics must expose dry-run 20B preflight");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.measuredBenchmark === false, "Desktop V17 Command Center 20B preflight must not claim measured benchmark evidence");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.routeEligibleToday === false, "Desktop V17 Command Center 20B preflight must keep routing blocked");
+  ensure(commandCenter.text.includes("seis-20b-local-preflight.md"), "Desktop V17 Command Center must show the 20B local preflight report path");
+  await clickSelector(client, "[data-seis-command-center] [data-action='export-model-preflight']");
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-20b-local-preflight.md')", 5000);
   await clickSelector(client, "[data-seis-command-center] [data-action='app-primary']");
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-v17-command-center-snapshot.md')", 5000);
 

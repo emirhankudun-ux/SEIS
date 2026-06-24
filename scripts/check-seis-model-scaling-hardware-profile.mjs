@@ -21,6 +21,7 @@ const paths = {
   tools: "packages/seis-ai/src/agent/tools.mjs",
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
   mcpSmokeTest: "packages/seis-ai/test/mcp-smoke.test.mjs",
+  desktop: "apps/web/desktop.js",
   packageJson: "package.json"
 };
 
@@ -41,6 +42,7 @@ const helper = readText(paths.helper, "AI Core helper");
 const tools = readText(paths.tools, "agent tools");
 const mcpServer = readText(paths.mcpServer, "MCP server");
 const mcpSmokeTest = readText(paths.mcpSmokeTest, "MCP smoke test");
+const desktop = readText(paths.desktop, "SEIS Desktop");
 const packageJson = readJson(paths.packageJson, "package.json");
 
 if (profile) {
@@ -306,6 +308,7 @@ for (const token of [
   "memory budget contract",
   "16GB+ Compatibility Profiles",
   "Benchmark Manifest Contract",
+  "Command Center 20B Local Preflight",
   "What SEIS 20B Means Right Now",
   "Creation Stages",
   "Q4-class",
@@ -315,6 +318,9 @@ for (const token of [
 ]) {
   ensure(scalingDoc.includes(token), `model scaling docs missing ${token}`);
 }
+
+ensure(scalingDoc.includes("/home/seis/Documents/seis-20b-local-preflight.md"), "model scaling docs must describe the Command Center preflight export path");
+ensure(scalingDoc.includes("It is not benchmark evidence"), "model scaling docs must keep Command Center preflight separate from benchmark evidence");
 
 for (const [text, label] of [
   [helper, "AI Core helper"],
@@ -342,6 +348,9 @@ ensure(tools.includes("benchmark manifest contract"), "agent tools must describe
 ensure(tools.includes("quantization lanes"), "agent tools must describe quantization lanes");
 ensure(tools.includes("local runtime candidates"), "agent tools must describe local runtime candidates");
 ensure(tools.includes("150B frontier research lane"), "agent tools must describe the 150B frontier research lane");
+ensure(desktop.includes("export-model-preflight"), "desktop Command Center must expose the 20B local preflight action");
+ensure(desktop.includes("seis-20b-local-preflight.md"), "desktop Command Center must expose the 20B local preflight report path");
+ensure(desktop.includes("dry-run-only"), "desktop Command Center must keep the preflight dry-run only");
 ensure(mcpServer.includes("AI_CORE_MODEL_SCALING_STATUS_TOOL"), "MCP server must expose AI_CORE_MODEL_SCALING_STATUS_TOOL");
 ensure(mcpServer.includes("aiCoreModelScalingStatus"), "MCP server must reference aiCoreModelScalingStatus");
 ensure(mcpServer.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP server must expose model scaling profile resource");

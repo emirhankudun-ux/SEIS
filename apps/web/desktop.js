@@ -582,6 +582,8 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   memoryBudgetStatus: "planning-estimate-not-benchmark-evidence",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   benchmarkStatus: "template-not-measured",
+  preflightReport: "/home/seis/Documents/seis-20b-local-preflight.md",
+  preflightStatus: "dry-run-only",
   compatibilityProfiles: [
     ["16GB+ developer floor", "20B / Q4 candidate", "Local Demo only", "Not verified"],
     ["24GB+ candidate lane", "20B / Q4 candidate", "Local Demo only", "Not verified"],
@@ -2247,6 +2249,9 @@ function handleClick(event) {
       break;
     case "generic-export":
       exportAppData(appId);
+      break;
+    case "export-model-preflight":
+      exportModelScalingPreflight();
       break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
@@ -4945,6 +4950,16 @@ function getV17CommandCenterCoverage() {
     modelScalingFloor: "20B local-planned profile for 16GB+ RAM",
     modelScalingFuture: "70B research and 150B frontier tiers require future hardware, safety, cost, privacy, and validation evidence",
     modelScalingProfile: SEIS_MODEL_SCALING_UI_PROFILE,
+    modelScalingPreflight: {
+      status: SEIS_MODEL_SCALING_UI_PROFILE.preflightStatus,
+      reportPath: SEIS_MODEL_SCALING_UI_PROFILE.preflightReport,
+      benchmarkManifest: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkManifest,
+      measuredBenchmark: false,
+      routeEligibleToday: false,
+      compatibilityClaim: SEIS_MODEL_SCALING_UI_PROFILE.compatibilityClaim,
+      requiredMeasurements: SEIS_MODEL_SCALING_UI_PROFILE.requiredMeasurements.slice(),
+      benchmarkGates: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkGates.slice()
+    },
     masterObjectiveCoverage: {
       ...SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
       itemCount: masterObjectiveCoverageItems.length,
@@ -4969,6 +4984,7 @@ function renderSeisCommandCenter() {
   return `<section class="app-main seis-command-center-app" data-seis-command-center>
     <div class="toolbar">
       <button type="button" data-action="app-primary" data-app-id="seis-command-center">Save V17 Snapshot</button>
+      <button type="button" data-action="export-model-preflight" data-app-id="seis-command-center">Export 20B Preflight</button>
       <button type="button" data-action="open-app" data-app-id="launchpad">Open Launchpad</button>
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
       <button type="button" data-action="open-app" data-app-id="code-ide">Open Code IDE</button>
@@ -5049,6 +5065,7 @@ function renderSeisCommandCenter() {
         <article><strong>Target</strong><p>${escapeHtml(coverage.modelScalingProfile.currentTarget)} · ${escapeHtml(coverage.modelScalingProfile.ramClass)}</p></article>
         <article><strong>Frontier</strong><p>${escapeHtml(coverage.modelScalingProfile.frontierTarget)} · ${escapeHtml(coverage.modelScalingProfile.frontierStatus)}</p></article>
         <article><strong>Compatibility</strong><p>${escapeHtml(coverage.modelScalingProfile.compatibilityClaim)} · ${escapeHtml(coverage.modelScalingProfile.memoryBudgetStatus)}</p></article>
+        <article><strong>Preflight</strong><p>${escapeHtml(coverage.modelScalingPreflight.status)} · ${escapeHtml(coverage.modelScalingPreflight.reportPath)}</p></article>
         <article><strong>Runtime</strong><p>Candidate-only local runtimes. No model download, benchmark, provider call, SSH, or deployment without approval.</p></article>
         <article><strong>Route Gate</strong><p>Blocked until quantized runtime, memory benchmark, model card, dataset card, redacted logs, and human approval exist.</p></article>
       </div>
@@ -5070,6 +5087,7 @@ function renderSeisCommandCenter() {
       </table>
       <p class="status-note">Required 16GB+ measurements before any compatibility claim: ${coverage.modelScalingProfile.requiredMeasurements.map((item) => escapeHtml(item)).join(", ")}.</p>
       <p class="status-note">Benchmark manifest required before route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.benchmarkManifest)}</code> · ${escapeHtml(coverage.modelScalingProfile.benchmarkStatus)}. Gates: ${coverage.modelScalingProfile.benchmarkGates.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">Local preflight report: <code>${escapeHtml(coverage.modelScalingPreflight.reportPath)}</code> · ${escapeHtml(coverage.modelScalingPreflight.status)}. This is a dry-run checklist, not a benchmark.</p>
       <p class="status-note">Required 150B evidence before scope: ${coverage.modelScalingProfile.frontierRequiredEvidence.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
     <section class="subagent-panel">
@@ -6904,6 +6922,33 @@ function exportAppData(appId) {
   toast("Exported", path);
 }
 
+function exportModelScalingPreflight() {
+  const timestamp = new Date().toISOString();
+  const path = SEIS_MODEL_SCALING_UI_PROFILE.preflightReport;
+  const data = getAppData("seis-command-center");
+  data.lastModelScalingPreflight = {
+    time: timestamp,
+    path,
+    status: SEIS_MODEL_SCALING_UI_PROFILE.preflightStatus,
+    compatibilityClaim: SEIS_MODEL_SCALING_UI_PROFILE.compatibilityClaim,
+    routeEligibleToday: false,
+    measuredBenchmark: false
+  };
+  upsertFile(path, build20BLocalPreflightMarkdown(timestamp));
+  getListData("seis-command-center").unshift({
+    id: `model-preflight-${Date.now()}`,
+    title: "20B local preflight exported",
+    body: path,
+    done: true
+  });
+  log("seis-command-center", `20B local preflight exported to ${path}.`);
+  saveState();
+  toast("20B Preflight Exported", path);
+  renderOpenWindows("seis-command-center");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+}
+
 function buildV17CommandCenterSnapshotMarkdown(timestamp) {
   const coverage = getV17CommandCenterCoverage();
   return `# SEIS V17 Command Center Snapshot
@@ -6930,6 +6975,9 @@ Generated: ${timestamp}
 - Local runtime candidates: ${coverage.modelScalingProfile.localRuntimeCandidates.map(([runtime, status, boundary]) => `${runtime} / ${status} / ${boundary}`).join("; ")}
 - Required measurements: ${coverage.modelScalingProfile.requiredMeasurements.join(", ")}
 - Required 150B evidence: ${coverage.modelScalingProfile.frontierRequiredEvidence.join(", ")}
+- Local preflight report: ${coverage.modelScalingPreflight.reportPath} / ${coverage.modelScalingPreflight.status}
+- Preflight measured benchmark: ${coverage.modelScalingPreflight.measuredBenchmark ? "yes" : "no"}
+- Preflight route eligible today: ${coverage.modelScalingPreflight.routeEligibleToday ? "yes" : "no"}
 - Training/inference ownership claim: none
 - Provider keys required for core demo: ${coverage.providerKeysRequiredForCoreDemo}
 
@@ -6958,6 +7006,46 @@ ${SEIS_V17_COMMAND_CENTER_VALIDATION_QUEUE.map(([gate, command, scope]) => `- ${
 - Browser secret storage: disabled
 - External mutation: disabled unless explicitly approved
 - Dirty worktree status must be reported separately from validator status.
+`;
+}
+
+function build20BLocalPreflightMarkdown(timestamp) {
+  const coverage = getV17CommandCenterCoverage();
+  const profile = coverage.modelScalingProfile;
+  const preflight = coverage.modelScalingPreflight;
+  return `# SEIS 20B Local Preflight
+
+Generated: ${timestamp}
+
+## Result
+- Status: ${preflight.status}
+- Target: ${profile.currentTarget}
+- RAM class: ${profile.ramClass}
+- Compatibility claim: ${preflight.compatibilityClaim}
+- Route eligible today: ${preflight.routeEligibleToday ? "yes" : "no"}
+- Measured benchmark: ${preflight.measuredBenchmark ? "yes" : "no"}
+- Benchmark manifest: ${preflight.benchmarkManifest}
+
+## Truth Boundary
+This is a browser-local dry-run checklist. It does not download a model, run inference, train weights, call a provider, execute SSH, deploy infrastructure, measure RAM, or prove 16GB+ compatibility.
+
+## Required 20B Evidence Before Route Eligibility
+${preflight.benchmarkGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Required Measurements Before Compatibility Claim
+${preflight.requiredMeasurements.map((item) => `- ${item}`).join("\n")}
+
+## Future Frontier Boundary
+- 70B remains a research roadmap lane.
+- 150B remains a frontier research lane.
+- 150B cannot be scoped until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy review, safety evaluation, observability, rollback, and explicit human approval exist.
+
+## Non-Claims
+- SEIS has not trained a 20B foundation model.
+- SEIS has not run 20B inference.
+- SEIS has not benchmarked 20B memory usage.
+- SEIS has not verified 16GB+ compatibility.
+- SEIS has not authorized 70B or 150B runtime scope.
 `;
 }
 
