@@ -1163,6 +1163,10 @@ describe("executeTool", () => {
     assert.equal(payload.benchmarkManifestPath, "reports/seis-model-scaling/20b-16gb-memory-benchmark.json");
     assert.equal(payload.benchmarkDryRunPath, "reports/seis-model-scaling/20b-benchmark-dry-run.json");
     assert.equal(payload.localHardwarePreflightCheckPath, "scripts/check-seis-model-local-hardware-preflight.mjs");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.ok, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.status, "ready");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.ok, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.status, "ready");
     assert.equal(payload.benchmarkEvidence.manifestStatus, "template-not-measured");
     assert.equal(payload.benchmarkEvidence.compatibilityClaim, "not-verified");
     assert.equal(payload.benchmarkEvidence.benchmarkEvidenceAvailable, false);
@@ -1172,6 +1176,12 @@ describe("executeTool", () => {
     assert.equal(payload.benchmarkEvidence.canRequestRealBenchmarkToday, false);
     assert.equal(payload.benchmarkEvidence.measuredBenchmark, false);
     assert.equal(payload.benchmarkEvidence.modelCompatibilityVerified, false);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.ok, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.status, "ready");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.path, "reports/seis-model-scaling/20b-16gb-memory-benchmark.json");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.ok, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.status, "ready");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.path, "reports/seis-model-scaling/20b-benchmark-dry-run.json");
     assert.equal(payload.parameterLadderPath, "content/development/seis-model-parameter-ladder.json");
     assert.equal(payload.parameterLadder.id, "seis-model-parameter-ladder");
     assert.equal(payload.parameterLadder.resourceUri, "seis://ai/model-parameter-ladder.json");
@@ -1229,6 +1239,26 @@ describe("executeTool", () => {
     assert.ok(payload.routerPolicy.blockedToday.includes("150B live inference"));
     assert.ok(payload.routerPolicy.blockedToday.includes("512B live inference"));
     assert.equal(payload.routerPolicy.silentCloudFallbackAllowed, false);
+  });
+
+  it("seis_ai_core_model_scaling_status surfaces missing or invalid benchmark evidence sources", () => {
+    rmSync(path.join(repoRoot, "reports/seis-model-scaling/20b-16gb-memory-benchmark.json"), { force: true });
+    writeFileSync(path.join(repoRoot, "reports/seis-model-scaling/20b-benchmark-dry-run.json"), "{bad-json", "utf8");
+
+    const out = executeTool("seis_ai_core_model_scaling_status", {}, ctx());
+    const payload = JSON.parse(out);
+    assert.equal(payload.ok, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.ok, false);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.exists, false);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkManifest.status, "missing");
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.ok, false);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.exists, true);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.parseOk, false);
+    assert.equal(payload.benchmarkEvidence.sourceHealth.benchmarkDryRun.status, "invalid-json");
+    assert.equal(payload.benchmarkEvidence.benchmarkEvidenceAvailable, false);
+    assert.equal(payload.benchmarkEvidence.routeEligibleToday, false);
+    assert.equal(payload.benchmarkEvidence.measuredBenchmark, false);
+    assert.equal(payload.benchmarkEvidence.modelCompatibilityVerified, false);
   });
 
   it("seis_ai_core_version_status returns the bounded AI Core version identity", () => {

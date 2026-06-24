@@ -240,7 +240,24 @@ button{cursor:pointer}
 </section>
 <main class="shell" id="shell" data-seis-linux-replica>
   <div class="wallpaper" id="wallpaper"></div>
+  <header class="topbar" aria-label="SEIS system bar">
+    <div class="topbar-brand"><strong>SEIS System OS</strong><span class="muted">Linux-like local demo</span></div>
+    <div class="topbar-status">Focus. Create. Ship.</div>
+    <div class="topbar-actions">
+      <button type="button" data-quick-app="task-manager">App Switcher</button>
+      <button type="button" data-quick-app="search">Search</button>
+      <span>Wi-Fi</span><span>100%</span>
+    </div>
+  </header>
   <section class="desktop" id="desktop">
+    <aside class="side-rail" id="sideRail" aria-label="Pinned SEIS apps"></aside>
+    <section class="activity-strip" aria-label="SEIS live activity">
+      <button class="activity-card" type="button" data-quick-app="demo"><small>AI Core</small><strong>Local Demo router</strong><span>Agents and provider status stay clearly labeled.</span></button>
+      <button class="activity-card" type="button" data-quick-app="code"><small>Code</small><strong>SEIS Code IDE</strong><span>Explorer, tabs, terminal, assistant.</span></button>
+      <button class="activity-card" type="button" data-quick-app="paint"><small>Design</small><strong>Design Studio</strong><span>Tokens, canvas, prototype handoff.</span></button>
+      <button class="activity-card" type="button" data-quick-app="cloud"><small>Cloud</small><strong>Mock-safe control</strong><span>SSH disabled, deploy planned.</span></button>
+      <button class="activity-card" type="button" data-quick-app="search"><small>Search</small><strong>Connected results</strong><span>AI, web, code, design, cloud, apps.</span></button>
+    </section>
     <div class="desktop-icons" id="desktopIcons"></div>
     <div class="window-layer" id="windowLayer"></div>
   </section>
@@ -277,14 +294,15 @@ button{cursor:pointer}
 "use strict";
 const VERSION="1.0.0-seis";
 const LOCALE_KEY="seis.locale.v1";
+const SESSION_KEY="seis-linux-replica-session.v1";
 const DEFAULT_LOCALE="tr";
 const LOCALES=["tr","en"];
 const COPY={
   tr:{
     title:"SEIS Linux Replica",
     bootSub:"SEIS Linux Replica baslatiliyor<br>Tarayici yerel kabuk, VFS, pencereler, terminal ve 64 uygulama hedefi.",
-    loginTitle:"SEIS Linux Replica",
-    loginBody:"Gonderilen Web Linux kabuk kodundan uyarlandi. Yalnizca Local Demo: SSH, host OS komutu ve provider key yok.",
+    loginTitle:"SEIS System OS",
+    loginBody:"Gonderilen referanslardan bagimsiz SEIS kimligiyle uyarlandi. Yalnizca Local Demo: SSH, host OS komutu ve provider key yok.",
     enterDesktop:"Masaustune Gir",
     loginTip:"Ipucu: Terminal'i ac ve help, ls veya neofetch calistir.",
     theme:"Tema",
@@ -296,8 +314,8 @@ const COPY={
   en:{
     title:"SEIS Linux Replica",
     bootSub:"Starting SEIS Linux Replica<br>Browser-local shell, VFS, windows, terminal, and 64 app launch targets.",
-    loginTitle:"SEIS Linux Replica",
-    loginBody:"Adapted from the supplied Web Linux shell code. Local demo only: no SSH, no host OS commands, no provider keys.",
+    loginTitle:"SEIS System OS",
+    loginBody:"Adapted from the supplied OS references under SEIS identity. Local demo only: no SSH, no host OS commands, no provider keys.",
     enterDesktop:"Enter Desktop",
     loginTip:"Tip: open Terminal and run help, ls, or neofetch.",
     theme:"Theme",

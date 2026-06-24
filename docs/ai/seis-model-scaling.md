@@ -183,9 +183,11 @@ The write command stores ignored QA evidence at:
 
 `dist/qa/model-scaling/local-hardware-preflight.json`
 
-This host preflight can observe whether the machine has a 16GB+ RAM floor. It
-does not prove 20B compatibility, does not run inference, does not benchmark
-memory, and does not make any 20B, 70B, or 150B route eligible.
+This host preflight can observe whether the machine has a 16GB+ RAM floor. The
+check command must fail on a host below that floor instead of printing a
+successful preflight. Passing the RAM-floor check still does not prove 20B
+compatibility, does not run inference, does not benchmark memory, and does not
+make any 20B, 70B, or 150B route eligible.
 
 The check command is stronger than the inspector command: it validates the host
 preflight output together with the model-scaling profile, 20B benchmark

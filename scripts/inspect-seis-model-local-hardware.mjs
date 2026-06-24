@@ -35,6 +35,7 @@ function buildReport() {
   const totalRamGb = roundGb(os.totalmem());
   const freeRamGb = roundGb(os.freemem());
   const hostRamFloorObserved = totalRamGb >= targetRamGb;
+  const ramFloorStatus = hostRamFloorObserved ? "observed" : "below-target-floor";
   return {
     id: "seis-model-local-hardware-preflight",
     status: "host-observed-not-benchmark",
@@ -54,10 +55,12 @@ function buildReport() {
       totalRamGb,
       freeRamGb,
       ramClass: classifyRam(totalRamGb),
-      hostRamFloorObserved
+      hostRamFloorObserved,
+      ramFloorStatus
     },
     result: {
       hostRamFloorObserved,
+      ramFloorStatus,
       compatibilityClaim: "not-verified",
       modelCompatibilityVerified: false,
       measuredBenchmark: false,
@@ -98,6 +101,8 @@ function validateReport(candidate) {
   ensure(candidate.target?.targetRamClass === "16GB+ RAM", "target RAM class must stay 16GB+ RAM");
   ensure(candidate.host?.totalRamGb > 0, "host total RAM must be positive");
   ensure(typeof candidate.host?.hostRamFloorObserved === "boolean", "host RAM floor observation must be boolean");
+  ensure(["observed", "below-target-floor"].includes(candidate.host?.ramFloorStatus), "host RAM floor status mismatch");
+  ensure(candidate.result?.ramFloorStatus === candidate.host?.ramFloorStatus, "result RAM floor status must mirror host observation");
   ensure(candidate.result?.compatibilityClaim === "not-verified", "compatibility claim must remain not-verified");
   ensure(candidate.result?.modelCompatibilityVerified === false, "preflight must not verify model compatibility");
   ensure(candidate.result?.measuredBenchmark === false, "preflight must not claim measured benchmark evidence");

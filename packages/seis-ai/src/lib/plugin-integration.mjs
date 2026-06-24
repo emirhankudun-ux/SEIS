@@ -301,8 +301,10 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const modelScalingSubagentCouncil = readJsonIfExists(repoRoot, modelScalingSubagentCouncilPath) || {};
     const frontierModelProgram = readJsonIfExists(repoRoot, frontierModelProgramPath) || {};
     const apexModelProgram = readJsonIfExists(repoRoot, apexModelProgramPath) || {};
-    const benchmarkManifest = readJsonIfExists(repoRoot, benchmarkManifestPath) || {};
-    const benchmarkDryRun = readJsonIfExists(repoRoot, benchmarkDryRunPath) || {};
+    const benchmarkManifestSource = readJsonSource(repoRoot, benchmarkManifestPath);
+    const benchmarkDryRunSource = readJsonSource(repoRoot, benchmarkDryRunPath);
+    const benchmarkManifest = benchmarkManifestSource.data || {};
+    const benchmarkDryRun = benchmarkDryRunSource.data || {};
     const parameterLadderTargets = Array.isArray(parameterLadder.targets) ? parameterLadder.targets : [];
     const parameterLadderRamPolicy = Array.isArray(parameterLadder.ramCompatibilityPolicy) ? parameterLadder.ramCompatibilityPolicy : [];
     const frontierEscalationStages = Array.isArray(frontierEscalationPolicy.escalationStages)
@@ -412,6 +414,10 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         dryRunId: benchmarkDryRun.id,
         dryRunStatus: benchmarkDryRun.status,
         localHardwarePreflightCheckPath,
+        sourceHealth: {
+          benchmarkManifest: benchmarkManifestSource.health,
+          benchmarkDryRun: benchmarkDryRunSource.health,
+        },
         canRequestRealBenchmarkToday: benchmarkDryRun.dryRunResult?.canRequestRealBenchmarkToday === true,
         measuredBenchmark: benchmarkDryRun.dryRunResult?.measuredBenchmark === true,
         modelCompatibilityVerified: benchmarkDryRun.dryRunResult?.modelCompatibilityVerified === true,
@@ -1463,6 +1469,53 @@ function readJsonIfExists(repoRoot, relativePath) {
     return JSON.parse(readFileSync(filePath, "utf8"));
   } catch {
     return null;
+  }
+}
+
+function readJsonSource(repoRoot, relativePath) {
+  const baseHealth = {
+    path: relativePath,
+    exists: false,
+    parseOk: false,
+    ok: false,
+    status: "missing",
+    error: null,
+  };
+
+  if (!relativePath) {
+    return {
+      data: null,
+      health: { ...baseHealth, status: "missing-path" },
+    };
+  }
+
+  const filePath = path.join(repoRoot, ...relativePath.split("/"));
+  if (!existsSync(filePath)) {
+    return { data: null, health: baseHealth };
+  }
+
+  try {
+    const data = JSON.parse(readFileSync(filePath, "utf8"));
+    return {
+      data,
+      health: {
+        ...baseHealth,
+        exists: true,
+        parseOk: true,
+        ok: true,
+        status: "ready",
+      },
+    };
+  } catch (error) {
+    return {
+      data: null,
+      health: {
+        ...baseHealth,
+        exists: true,
+        status: "invalid-json",
+        error: error.message,
+      },
+    };
   }
 }
 

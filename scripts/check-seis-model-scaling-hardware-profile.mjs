@@ -333,6 +333,7 @@ if (benchmarkDryRun) {
   ensure(benchmarkDryRun.sourceOfTruth?.modelCardTemplate === paths.modelCardTemplate, "benchmark dry-run source model card mismatch");
   ensure(benchmarkDryRun.sourceOfTruth?.datasetCardTemplate === paths.datasetCardTemplate, "benchmark dry-run source dataset card mismatch");
   ensure(benchmarkDryRun.sourceOfTruth?.hostHardwarePreflight === paths.localHardwarePreflight, "benchmark dry-run source host preflight mismatch");
+  ensure(benchmarkDryRun.sourceOfTruth?.localHardwarePreflightCheck === paths.localHardwarePreflightCheck, "benchmark dry-run source local hardware preflight check mismatch");
   ensure(benchmarkDryRun.sourceStatuses?.profileStatus === "planned-compatibility-contract", "benchmark dry-run profile status mismatch");
   ensure(benchmarkDryRun.sourceStatuses?.targetCompatibilityStatus === "planned-not-validated", "benchmark dry-run target compatibility status mismatch");
   ensure(benchmarkDryRun.sourceStatuses?.targetTrainingStatus === "not-started", "benchmark dry-run target training status mismatch");
@@ -600,6 +601,7 @@ for (const token of [
   "benchmarkManifestPath",
   "benchmarkDryRunPath",
   "localHardwarePreflightCheckPath",
+  "sourceHealth",
   "benchmarkEvidence",
   "model20bBenchmarkManifest",
   "model20bBenchmarkDryRun",
@@ -630,14 +632,17 @@ ensure(mcpSmokeTest.includes("seis://ai/model-scaling-hardware-profile.json"), "
 ensure(mcpSmokeTest.includes("seis://ai/150b-frontier-model-program.json"), "MCP smoke test must read 150B frontier model program resource");
 ensure(mcpSmokeTest.includes("seis_ai_core_model_scaling_status"), "MCP smoke test must call model scaling status tool");
 ensure(mcpSmokeTest.includes("benchmarkEvidence"), "MCP smoke test must assert model scaling benchmark evidence");
+ensure(mcpSmokeTest.includes("sourceHealth"), "MCP smoke test must assert model scaling source health");
 ensure(mcpSmokeTest.includes("localHardwarePreflightCheckPath"), "MCP smoke test must assert local hardware preflight check path");
 ensure(agentTest.includes("benchmarkEvidence"), "agent test must assert model scaling benchmark evidence");
+ensure(agentTest.includes("sourceHealth"), "agent test must assert model scaling source health");
 ensure(agentTest.includes("localHardwarePreflightCheckPath"), "agent test must assert local hardware preflight check path");
 
 for (const token of [
   "os.totalmem()",
   "host-observed-not-benchmark",
   "compatibilityClaim: \"not-verified\"",
+  "ramFloorStatus",
   "modelCompatibilityVerified: false",
   "measuredBenchmark: false",
   "routeEligibleToday: false",
@@ -650,6 +655,9 @@ for (const token of [
   "seis-model-local-hardware-preflight",
   "host-observed-not-benchmark",
   "benchmarkDryRun",
+  "localHardwarePreflightCheck",
+  "hostRamFloorObserved === true",
+  "ramFloorStatus === \"observed\"",
   "template-not-measured",
   "modelCardTemplate",
   "datasetCardTemplate",

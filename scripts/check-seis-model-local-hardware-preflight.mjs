@@ -11,7 +11,8 @@ const paths = {
   benchmarkDryRun: "reports/seis-model-scaling/20b-benchmark-dry-run.json",
   modelCardTemplate: "content/development/seis-20b-model-card-template.json",
   datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
-  inspector: "scripts/inspect-seis-model-local-hardware.mjs"
+  inspector: "scripts/inspect-seis-model-local-hardware.mjs",
+  localHardwarePreflightCheck: "scripts/check-seis-model-local-hardware-preflight.mjs"
 };
 
 const failures = [];
@@ -70,6 +71,7 @@ function validateDryRun(candidate) {
   ensure(candidate?.id === "seis-20b-benchmark-dry-run", "dry-run id mismatch");
   ensure(candidate?.status === "dry-run-not-measured", "dry-run must remain dry-run-not-measured");
   ensure(candidate?.sourceOfTruth?.hostHardwarePreflight === paths.inspector, "dry-run must reference the host hardware preflight inspector");
+  ensure(candidate?.sourceOfTruth?.localHardwarePreflightCheck === paths.localHardwarePreflightCheck, "dry-run must reference the local hardware preflight check");
   ensure(candidate?.dryRunResult?.canRequestRealBenchmarkToday === false, "dry-run must block real benchmark request");
   ensure(candidate?.dryRunResult?.modelCompatibilityVerified === false, "dry-run must not verify model compatibility");
   ensure(candidate?.dryRunResult?.measuredBenchmark === false, "dry-run must not claim measured benchmark");
@@ -99,6 +101,11 @@ function validateHostPreflight(candidate) {
   ensure(candidate?.status === "host-observed-not-benchmark", "host preflight must remain host-observed-not-benchmark");
   ensure(candidate?.target?.parameterClass === "20B", "host preflight target must remain 20B");
   ensure(candidate?.target?.targetRamClass === "16GB+ RAM", "host preflight RAM target mismatch");
+  ensure(candidate?.host?.totalRamGb >= 16, "host must observe at least 16GB RAM for this local 20B preflight check");
+  ensure(candidate?.host?.hostRamFloorObserved === true, "host RAM floor must be observed before this local preflight check can pass");
+  ensure(candidate?.host?.ramFloorStatus === "observed", "host RAM floor status must be observed");
+  ensure(candidate?.result?.hostRamFloorObserved === true, "result must record the 16GB+ RAM floor as observed");
+  ensure(candidate?.result?.ramFloorStatus === "observed", "result RAM floor status must be observed");
   ensure(candidate?.result?.compatibilityClaim === "not-verified", "host preflight compatibility claim must remain not-verified");
   ensure(candidate?.result?.modelCompatibilityVerified === false, "host preflight must not verify model compatibility");
   ensure(candidate?.result?.measuredBenchmark === false, "host preflight must not claim benchmark evidence");
