@@ -29,7 +29,7 @@ const LAYERS = [
   { layer: "backups-recovery", status: "present", evidence: "scripts/restore-latest-release.mjs" },
   { layer: "testing", status: "present", evidence: "scripts/polyglot-check.sh" },
   { layer: "load-balancing-scaling", status: "target", contractHeading: "## Target: Load balancing & scaling" },
-  { layer: "observability", status: "target", contractHeading: "## Target: Observability" },
+  { layer: "observability", status: "partial", evidence: "polyglot/go/cmd/seis-serve/main.go" },
 ];
 
 if (!exists(docPath)) {

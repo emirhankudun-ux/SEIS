@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -79,6 +80,24 @@ func TestManifestAndModuleMIME(t *testing.T) {
 	}
 	if ct := get(t, h, "/script.mjs").Header().Get("Content-Type"); !strings.Contains(ct, "javascript") {
 		t.Errorf(".mjs MIME wrong: %q", ct)
+	}
+}
+
+func TestHealthzReturnsOKJSON(t *testing.T) {
+	h := NewHandler(testRoot(t))
+	rec := get(t, h, "/healthz")
+	if rec.Code != http.StatusOK {
+		t.Fatalf("/healthz code = %d, want 200", rec.Code)
+	}
+	if ct := rec.Header().Get("Content-Type"); !strings.Contains(ct, "application/json") {
+		t.Errorf("/healthz Content-Type = %q, want JSON", ct)
+	}
+	var body map[string]any
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("/healthz body is not JSON: %v", err)
+	}
+	if body["status"] != "ok" {
+		t.Errorf("/healthz status = %v, want ok", body["status"])
 	}
 }
 

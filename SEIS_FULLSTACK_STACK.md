@@ -27,7 +27,7 @@ layer loses its contract section below.
 | Backups & recovery | present | `scripts/restore-latest-release.mjs` |
 | Testing | present | `scripts/polyglot-check.sh` + `node --test` |
 | Load balancing & scaling | target | this doc — see contract below |
-| Observability (errors & traces) | target | this doc — see contract below |
+| Observability (errors & traces) | partial | `polyglot/go/cmd/seis-serve/main.go` — `/healthz` JSON + structured access logs |
 
 `present` = a real, governed artifact exists. `partial` = a reference/seed exists,
 not full production runtime. `target` = a documented contract, not built here
@@ -47,19 +47,20 @@ Contract for when SEIS runs a real backend fleet (not buildable in this repo):
 Acceptance: a scaling policy file + a check that asserts the policy's thresholds
 exist before a fleet deploy. Not yet implemented — tracked as a target.
 
-## Target: Observability (errors & traces)
+## Observability (errors & traces) — partial
 
-Contract for production error tracking, logs, and traces:
+Implemented (real code, tested):
 
-- Structured logs with request/trace ids across backend lanes.
+- `/healthz` JSON endpoint on the preview server (`polyglot/go/cmd/seis-serve/main.go`)
+  for uptime checks and load-balancer health probes.
+- Structured access logs — one line per request (method, path, status, duration).
+
+Remaining (still target):
+
 - Error tracking with alerting (a Sentry MCP server is available to wire in).
+- Trace/request-id propagation across backend lanes.
 - Uptime/availability SLOs with a recovery runbook
   (extends `scripts/restore-latest-release.mjs`).
-- A health endpoint surfaced through the preview server (`cmd/seis-serve`).
-
-Acceptance: an observability contract file + a check that the required signals
-(error sink, log format, SLO doc) are declared. Not yet implemented — tracked as
-a target.
 
 ## Honest position
 
