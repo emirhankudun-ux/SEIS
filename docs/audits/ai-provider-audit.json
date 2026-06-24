@@ -1,7 +1,7 @@
 {
   "generatedAt": "2026-06-22",
   "mode": "redacted_static_repository_audit",
-  "inspectedFiles": 1883,
+  "inspectedFiles": 1899,
   "providers": [
     {
       "provider": "Anthropic Claude",
@@ -22610,7 +22610,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1012,
+          "line": 1207,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22618,7 +22618,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1017,
+          "line": 1212,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22626,7 +22626,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1077,
+          "line": 1272,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22634,7 +22634,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1083,
+          "line": 1278,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22642,7 +22642,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5910,
+          "line": 7176,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22650,7 +22650,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5919,
+          "line": 7185,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22658,7 +22658,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1853,
+          "line": 1857,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22666,7 +22666,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1858,
+          "line": 1862,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22674,7 +22674,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1886,
+          "line": 1890,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22682,7 +22682,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1887,
+          "line": 1891,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22690,7 +22690,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1895,
+          "line": 1899,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22698,7 +22698,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1896,
+          "line": 1900,
           "matchTypes": [
             "model:claude-"
           ],
@@ -22706,7 +22706,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1904,
+          "line": 1908,
           "matchTypes": [
             "model:claude-"
           ],
@@ -29922,7 +29922,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 425,
+          "line": 433,
           "matchTypes": [
             "model:claude-"
           ],
@@ -34722,7 +34722,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 53,
+          "line": 55,
           "matchTypes": [
             "model:claude-"
           ],
@@ -34802,7 +34802,7 @@
         },
         {
           "path": "docs/product/seis-desktop-os.md",
-          "line": 53,
+          "line": 58,
           "matchTypes": [
             "model:claude-"
           ],
@@ -34826,7 +34826,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 161,
+          "line": 227,
           "matchTypes": [
             "model:claude-"
           ],
@@ -46329,6 +46329,14 @@
           "surface": "documentation"
         },
         {
+          "path": "reports/seis-master-objective-coverage.md",
+          "line": 52,
+          "matchTypes": [
+            "model:claude-"
+          ],
+          "surface": "documentation"
+        },
+        {
           "path": "reports/seis-sub-agent-five-year-demo-evidence.json",
           "line": 108,
           "matchTypes": [
@@ -46506,7 +46514,7 @@
         },
         {
           "path": "scripts/check-desktop-os.mjs",
-          "line": 198,
+          "line": 258,
           "matchTypes": [
             "model:claude-"
           ],
@@ -46839,7 +46847,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 2609,
+          "line": 3297,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46847,7 +46855,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 2723,
+          "line": 3411,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46855,7 +46863,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 2731,
+          "line": 3419,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46863,7 +46871,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 2795,
+          "line": 3483,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46871,7 +46879,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 2796,
+          "line": 3484,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46887,7 +46895,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1436,
+          "line": 1816,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46895,7 +46903,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5982,
+          "line": 7248,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46903,7 +46911,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5983,
+          "line": 7249,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46911,7 +46919,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5984,
+          "line": 7250,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46935,7 +46943,7 @@
         },
         {
           "path": "scripts/check-desktop-os-browser-smoke.mjs",
-          "line": 753,
+          "line": 767,
           "matchTypes": [
             "model:command-r"
           ],
@@ -46943,7 +46951,7 @@
         },
         {
           "path": "scripts/check-desktop-os.mjs",
-          "line": 513,
+          "line": 656,
           "matchTypes": [
             "model:command-r"
           ],
@@ -48237,7 +48245,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1037,
+          "line": 1232,
           "matchTypes": [
             "model:gemini-"
           ],
@@ -48245,7 +48253,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1107,
+          "line": 1302,
           "matchTypes": [
             "model:gemini-"
           ],
@@ -52222,7 +52230,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 1812,
+          "line": 2500,
           "matchTypes": [
             "model:nim"
           ],
@@ -52230,7 +52238,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 1852,
+          "line": 2540,
           "matchTypes": [
             "model:nim"
           ],
@@ -52238,7 +52246,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 1853,
+          "line": 2541,
           "matchTypes": [
             "model:nim"
           ],
@@ -52246,7 +52254,7 @@
         },
         {
           "path": "apps/web/desktop.css",
-          "line": 4135,
+          "line": 4854,
           "matchTypes": [
             "model:nim"
           ],
@@ -52270,7 +52278,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 489,
+          "line": 520,
           "matchTypes": [
             "model:nim"
           ],
@@ -52278,7 +52286,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1728,
+          "line": 2108,
           "matchTypes": [
             "model:nim"
           ],
@@ -52286,7 +52294,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2579,
+          "line": 3004,
           "matchTypes": [
             "model:nim"
           ],
@@ -52294,7 +52302,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2799,
+          "line": 3224,
           "matchTypes": [
             "model:nim"
           ],
@@ -52302,7 +52310,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2800,
+          "line": 3225,
           "matchTypes": [
             "model:nim"
           ],
@@ -52310,7 +52318,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2910,
+          "line": 3335,
           "matchTypes": [
             "model:nim"
           ],
@@ -52318,7 +52326,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2911,
+          "line": 3336,
           "matchTypes": [
             "model:nim"
           ],
@@ -52326,7 +52334,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 2920,
+          "line": 3345,
           "matchTypes": [
             "model:nim"
           ],
@@ -52334,7 +52342,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3033,
+          "line": 3458,
           "matchTypes": [
             "model:nim"
           ],
@@ -52342,7 +52350,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3060,
+          "line": 3485,
           "matchTypes": [
             "model:nim"
           ],
@@ -52350,7 +52358,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3064,
+          "line": 3489,
           "matchTypes": [
             "model:nim"
           ],
@@ -52358,7 +52366,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3091,
+          "line": 3516,
           "matchTypes": [
             "model:nim"
           ],
@@ -52366,7 +52374,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3109,
+          "line": 3534,
           "matchTypes": [
             "model:nim"
           ],
@@ -52374,7 +52382,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3125,
+          "line": 3550,
           "matchTypes": [
             "model:nim"
           ],
@@ -52382,7 +52390,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3169,
+          "line": 3597,
           "matchTypes": [
             "model:nim"
           ],
@@ -52390,7 +52398,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3200,
+          "line": 3628,
           "matchTypes": [
             "model:nim"
           ],
@@ -52398,7 +52406,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3222,
+          "line": 3650,
           "matchTypes": [
             "model:nim"
           ],
@@ -52406,7 +52414,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3223,
+          "line": 3651,
           "matchTypes": [
             "model:nim"
           ],
@@ -52414,7 +52422,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3231,
+          "line": 3659,
           "matchTypes": [
             "model:nim"
           ],
@@ -52422,7 +52430,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3255,
+          "line": 3683,
           "matchTypes": [
             "model:nim"
           ],
@@ -52430,7 +52438,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 3559,
+          "line": 4398,
           "matchTypes": [
             "model:nim"
           ],
@@ -52438,7 +52446,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5597,
+          "line": 6169,
           "matchTypes": [
             "model:nim"
           ],
@@ -52446,7 +52454,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5598,
+          "line": 6861,
           "matchTypes": [
             "model:nim"
           ],
@@ -52454,7 +52462,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5599,
+          "line": 6862,
           "matchTypes": [
             "model:nim"
           ],
@@ -52462,7 +52470,23 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 5617,
+          "line": 6863,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 6881,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 7798,
           "matchTypes": [
             "model:nim"
           ],
@@ -52526,7 +52550,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 825,
+          "line": 829,
           "matchTypes": [
             "model:nim"
           ],
@@ -52534,7 +52558,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 906,
+          "line": 910,
           "matchTypes": [
             "model:nim"
           ],
@@ -52542,31 +52566,7 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 1153,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/seis-code.js",
-          "line": 1250,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/seis-code.js",
-          "line": 1251,
-          "matchTypes": [
-            "model:nim"
-          ],
-          "surface": "frontend"
-        },
-        {
-          "path": "apps/web/seis-code.js",
-          "line": 1253,
+          "line": 1157,
           "matchTypes": [
             "model:nim"
           ],
@@ -52582,7 +52582,39 @@
         },
         {
           "path": "apps/web/seis-code.js",
-          "line": 2136,
+          "line": 1255,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/seis-code.js",
+          "line": 1257,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/seis-code.js",
+          "line": 1258,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/seis-code.js",
+          "line": 2140,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "frontend"
+        },
+        {
+          "path": "apps/web/seis-linux-replica.html",
+          "line": 35,
           "matchTypes": [
             "model:nim"
           ],
@@ -53397,6 +53429,30 @@
           "surface": "repository"
         },
         {
+          "path": "content/development/seis-150b-frontier-model-program.json",
+          "line": 36,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-20b-dataset-card-template.json",
+          "line": 36,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-20b-dataset-card-template.json",
+          "line": 52,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
           "path": "content/development/seis-agi-system.json",
           "line": 153,
           "matchTypes": [
@@ -53557,8 +53613,40 @@
           "surface": "repository"
         },
         {
-          "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 25,
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 29,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 58,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 86,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 116,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-parameter-ladder.json",
+          "line": 143,
           "matchTypes": [
             "model:nim"
           ],
@@ -53566,7 +53654,15 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 86,
+          "line": 33,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "content/development/seis-model-scaling-hardware-profile.json",
+          "line": 94,
           "matchTypes": [
             "model:nim"
           ],
@@ -53886,7 +53982,7 @@
         },
         {
           "path": "docs/STATUS.md",
-          "line": 74,
+          "line": 76,
           "matchTypes": [
             "model:nim"
           ],
@@ -53910,7 +54006,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 121,
+          "line": 348,
           "matchTypes": [
             "model:nim"
           ],
@@ -54238,7 +54334,7 @@
         },
         {
           "path": "docs/product/seis-desktop-os.md",
-          "line": 31,
+          "line": 33,
           "matchTypes": [
             "model:nim"
           ],
@@ -54294,7 +54390,7 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 49,
+          "line": 51,
           "matchTypes": [
             "model:nim"
           ],
@@ -54302,7 +54398,15 @@
         },
         {
           "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
-          "line": 114,
+          "line": 102,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
+          "line": 180,
           "matchTypes": [
             "model:nim"
           ],
@@ -55670,7 +55774,7 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 263,
+          "line": 326,
           "matchTypes": [
             "model:nim"
           ],
@@ -55678,7 +55782,15 @@
         },
         {
           "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
-          "line": 301,
+          "line": 364,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/src/lib/plugin-integration.mjs",
+          "line": 381,
           "matchTypes": [
             "model:nim"
           ],
@@ -55686,7 +55798,7 @@
         },
         {
           "path": "packages/seis-ai/src/mcp/server.mjs",
-          "line": 85,
+          "line": 90,
           "matchTypes": [
             "model:nim"
           ],
@@ -55694,7 +55806,7 @@
         },
         {
           "path": "packages/seis-ai/src/mcp/server.mjs",
-          "line": 119,
+          "line": 124,
           "matchTypes": [
             "model:nim"
           ],
@@ -55798,7 +55910,7 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 267,
+          "line": 274,
           "matchTypes": [
             "model:nim"
           ],
@@ -55806,7 +55918,55 @@
         },
         {
           "path": "packages/seis-ai/test/agent.test.mjs",
-          "line": 964,
+          "line": 332,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 333,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 334,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 335,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 336,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 1064,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/agent.test.mjs",
+          "line": 1074,
           "matchTypes": [
             "model:nim"
           ],
@@ -55814,7 +55974,7 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 308,
+          "line": 313,
           "matchTypes": [
             "model:nim"
           ],
@@ -55822,7 +55982,23 @@
         },
         {
           "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
-          "line": 442,
+          "line": 351,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
+          "line": 611,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "packages/seis-ai/test/mcp-smoke.test.mjs",
+          "line": 620,
           "matchTypes": [
             "model:nim"
           ],
@@ -56558,7 +56734,15 @@
         },
         {
           "path": "scripts/check-product-experience-browser-smoke.mjs",
-          "line": 897,
+          "line": 950,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-150b-frontier-model-program.mjs",
+          "line": 82,
           "matchTypes": [
             "model:nim"
           ],
@@ -56837,8 +57021,48 @@
           "surface": "backend"
         },
         {
-          "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 65,
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 73,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 81,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 88,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 95,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 102,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-parameter-ladder.mjs",
+          "line": 220,
           "matchTypes": [
             "model:nim"
           ],
@@ -56846,7 +57070,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 101,
+          "line": 92,
           "matchTypes": [
             "model:nim"
           ],
@@ -56854,7 +57078,15 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 113,
+          "line": 128,
+          "matchTypes": [
+            "model:nim"
+          ],
+          "surface": "backend"
+        },
+        {
+          "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
+          "line": 140,
           "matchTypes": [
             "model:nim"
           ],
@@ -57117,7 +57349,7 @@
         },
         {
           "path": "README.md",
-          "line": 295,
+          "line": 308,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57379,7 +57611,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 373,
+          "line": 388,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57387,7 +57619,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 376,
+          "line": 391,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57395,7 +57627,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 614,
+          "line": 698,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57403,7 +57635,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1047,
+          "line": 1242,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57411,7 +57643,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1048,
+          "line": 1243,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57419,7 +57651,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1119,
+          "line": 1314,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57427,7 +57659,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1120,
+          "line": 1315,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57435,7 +57667,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1128,
+          "line": 1323,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57443,7 +57675,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1264,
+          "line": 1553,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57451,7 +57683,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 1407,
+          "line": 1787,
           "matchTypes": [
             "model:ollama"
           ],
@@ -57459,7 +57691,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 4620,
+          "line": 5624,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58119,7 +58351,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 287,
+          "line": 295,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58127,7 +58359,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 288,
+          "line": 296,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58327,7 +58559,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 41,
+          "line": 43,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58335,7 +58567,7 @@
         },
         {
           "path": "docs/ai/seis-ai-core.md",
-          "line": 165,
+          "line": 180,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58343,7 +58575,7 @@
         },
         {
           "path": "docs/ai/seis-model-scaling.md",
-          "line": 142,
+          "line": 369,
           "matchTypes": [
             "model:ollama"
           ],
@@ -58577,7 +58809,7 @@
         },
         {
           "path": "docs/platform/seis-agent-plugin-integration.md",
-          "line": 62,
+          "line": 63,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59327,7 +59559,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 163,
+          "line": 190,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59335,7 +59567,7 @@
         },
         {
           "path": "scripts/check-seis-model-scaling-hardware-profile.mjs",
-          "line": 259,
+          "line": 534,
           "matchTypes": [
             "model:ollama"
           ],
@@ -59712,7 +59944,7 @@
         },
         {
           "path": "content/development/seis-model-scaling-hardware-profile.json",
-          "line": 425,
+          "line": 433,
           "matchTypes": [
             "model:gpt-"
           ],
@@ -59771,6 +60003,14 @@
           "line": 90,
           "matchTypes": [
             "env:OPENAI_API_KEY"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "reports/seis-master-objective-coverage.md",
+          "line": 52,
+          "matchTypes": [
+            "model:gpt-"
           ],
           "surface": "documentation"
         },
@@ -60966,6 +61206,30 @@
             "model:runway"
           ],
           "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 2330,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.css",
+          "line": 4642,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "repository"
+        },
+        {
+          "path": "apps/web/desktop.js",
+          "line": 4211,
+          "matchTypes": [
+            "model:runway"
+          ],
+          "surface": "frontend"
         },
         {
           "path": "content/development/plugin-capability-catalog.json",
@@ -62193,7 +62457,7 @@
         },
         {
           "path": "package.json",
-          "line": 68,
+          "line": 69,
           "matchTypes": [
             "model:runway"
           ],
@@ -62201,7 +62465,7 @@
         },
         {
           "path": "package.json",
-          "line": 161,
+          "line": 162,
           "matchTypes": [
             "model:runway"
           ],
@@ -63700,7 +63964,7 @@
         },
         {
           "path": "apps/web/desktop.js",
-          "line": 365,
+          "line": 380,
           "matchTypes": [
             "model:together"
           ],
@@ -64013,6 +64277,14 @@
         {
           "path": "docs/governance/seis-supreme-vision.md",
           "line": 23,
+          "matchTypes": [
+            "model:together"
+          ],
+          "surface": "documentation"
+        },
+        {
+          "path": "docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md",
+          "line": 127,
           "matchTypes": [
             "model:together"
           ],

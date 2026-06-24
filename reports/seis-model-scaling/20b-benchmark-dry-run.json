@@ -14,7 +14,8 @@
     "benchmarkManifestTemplate": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
     "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
     "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
-    "hostHardwarePreflight": "scripts/inspect-seis-model-local-hardware.mjs"
+    "hostHardwarePreflight": "scripts/inspect-seis-model-local-hardware.mjs",
+    "localHardwarePreflightCheck": "scripts/check-seis-model-local-hardware-preflight.mjs"
   },
   "sourceStatuses": {
     "profileStatus": "planned-compatibility-contract",

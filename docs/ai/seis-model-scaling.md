@@ -187,6 +187,12 @@ This host preflight can observe whether the machine has a 16GB+ RAM floor. It
 does not prove 20B compatibility, does not run inference, does not benchmark
 memory, and does not make any 20B, 70B, or 150B route eligible.
 
+The check command is stronger than the inspector command: it validates the host
+preflight output together with the model-scaling profile, 20B benchmark
+manifest, benchmark dry-run report, model-card template, and dataset-card
+template. It still performs no model download, inference, provider call, SSH,
+deployment, or benchmark measurement.
+
 ## 20B Model And Dataset Card Templates
 
 The 20B lane now has explicit evidence templates that must be filled before any

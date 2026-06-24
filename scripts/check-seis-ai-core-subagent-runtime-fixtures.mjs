@@ -352,6 +352,8 @@ if (pluginIntegration) {
   ensure(pluginIntegration.fiveYearSubagentDevelopment?.versionPromotionGates === paths.versionPromotionGates, "plugin integration must point to version promotion gates");
   ensureArrayIncludesAll(pluginIntegration.runtimeIntegration?.mcpResources, [
     "seis://ai/version-registry.json",
+    "seis://ai/20b-model-card-template.json",
+    "seis://ai/20b-dataset-card-template.json",
     "seis://ai/version-promotion-gates.json",
     "seis://ai/agent-role-schema.json",
     "seis://ai/agent-permission-matrix.json",

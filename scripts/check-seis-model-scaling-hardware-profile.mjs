@@ -27,8 +27,10 @@ const paths = {
   helper: "packages/seis-ai/src/lib/plugin-integration.mjs",
   tools: "packages/seis-ai/src/agent/tools.mjs",
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
+  agentTest: "packages/seis-ai/test/agent.test.mjs",
   mcpSmokeTest: "packages/seis-ai/test/mcp-smoke.test.mjs",
   localHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs",
+  localHardwarePreflightCheck: "scripts/check-seis-model-local-hardware-preflight.mjs",
   benchmarkDryRunScript: "scripts/create-seis-20b-benchmark-dry-run.mjs",
   packageJson: "package.json"
 };
@@ -56,8 +58,10 @@ const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration 
 const helper = readText(paths.helper, "AI Core helper");
 const tools = readText(paths.tools, "agent tools");
 const mcpServer = readText(paths.mcpServer, "MCP server");
+const agentTest = readText(paths.agentTest, "agent test");
 const mcpSmokeTest = readText(paths.mcpSmokeTest, "MCP smoke test");
 const localHardwarePreflight = readText(paths.localHardwarePreflight, "local hardware preflight");
+const localHardwarePreflightCheck = readText(paths.localHardwarePreflightCheck, "local hardware preflight check");
 const benchmarkDryRunScript = readText(paths.benchmarkDryRunScript, "20B benchmark dry-run script");
 const packageJson = readJson(paths.packageJson, "package.json");
 
@@ -75,6 +79,7 @@ if (profile) {
   ensure(profile.sourceOfTruth?.scalingDoc === paths.scalingDoc, "sourceOfTruth.scalingDoc mismatch");
   ensure(profile.sourceOfTruth?.benchmarkManifest === paths.benchmarkManifest, "sourceOfTruth.benchmarkManifest mismatch");
   ensure(profile.sourceOfTruth?.benchmarkDryRun === paths.benchmarkDryRun, "sourceOfTruth.benchmarkDryRun mismatch");
+  ensure(profile.sourceOfTruth?.localHardwarePreflightCheck === paths.localHardwarePreflightCheck, "sourceOfTruth.localHardwarePreflightCheck mismatch");
   ensure(profile.sourceOfTruth?.parameterLadder === paths.parameterLadder, "sourceOfTruth.parameterLadder mismatch");
   ensure(profile.sourceOfTruth?.frontierEscalationPolicy === paths.frontierEscalationPolicy, "sourceOfTruth.frontierEscalationPolicy mismatch");
   ensure(profile.sourceOfTruth?.frontierModelProgram === paths.frontierModelProgram, "sourceOfTruth.frontierModelProgram mismatch");
@@ -592,6 +597,12 @@ for (const token of [
   "frontierModelProgram",
   "compatibilityProfiles",
   "benchmarkManifestContract",
+  "benchmarkManifestPath",
+  "benchmarkDryRunPath",
+  "localHardwarePreflightCheckPath",
+  "benchmarkEvidence",
+  "model20bBenchmarkManifest",
+  "model20bBenchmarkDryRun",
   "creationStages",
   "quantizationProfiles",
   "localRuntimeCandidates"
@@ -618,6 +629,10 @@ ensure(mcpServer.includes("150B frontier research lane"), "MCP server must descr
 ensure(mcpSmokeTest.includes("seis://ai/model-scaling-hardware-profile.json"), "MCP smoke test must read model scaling profile resource");
 ensure(mcpSmokeTest.includes("seis://ai/150b-frontier-model-program.json"), "MCP smoke test must read 150B frontier model program resource");
 ensure(mcpSmokeTest.includes("seis_ai_core_model_scaling_status"), "MCP smoke test must call model scaling status tool");
+ensure(mcpSmokeTest.includes("benchmarkEvidence"), "MCP smoke test must assert model scaling benchmark evidence");
+ensure(mcpSmokeTest.includes("localHardwarePreflightCheckPath"), "MCP smoke test must assert local hardware preflight check path");
+ensure(agentTest.includes("benchmarkEvidence"), "agent test must assert model scaling benchmark evidence");
+ensure(agentTest.includes("localHardwarePreflightCheckPath"), "agent test must assert local hardware preflight check path");
 
 for (const token of [
   "os.totalmem()",
@@ -629,6 +644,21 @@ for (const token of [
   "SEIS has verified 16GB+ compatibility."
 ]) {
   ensure(localHardwarePreflight.includes(token), `local hardware preflight missing ${token}`);
+}
+
+for (const token of [
+  "seis-model-local-hardware-preflight",
+  "host-observed-not-benchmark",
+  "benchmarkDryRun",
+  "template-not-measured",
+  "modelCardTemplate",
+  "datasetCardTemplate",
+  "modelCompatibilityVerified === false",
+  "measuredBenchmark === false",
+  "routeEligibleToday === false",
+  "SEIS has verified 16GB+ compatibility."
+]) {
+  ensure(localHardwarePreflightCheck.includes(token), `local hardware preflight check missing ${token}`);
 }
 
 for (const token of [
@@ -655,7 +685,7 @@ if (packageJson) {
     "package.json must expose check:seis-model-parameter-ladder"
   );
   ensure(
-    packageJson.scripts?.["check:seis-model-local-hardware-preflight"] === "node scripts/inspect-seis-model-local-hardware.mjs --check",
+    packageJson.scripts?.["check:seis-model-local-hardware-preflight"] === "node scripts/check-seis-model-local-hardware-preflight.mjs",
     "package.json must expose check:seis-model-local-hardware-preflight"
   );
   ensure(

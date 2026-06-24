@@ -48,6 +48,8 @@ const APPS = [
   ["launchpad", "Launchpad", "System", "GRID", "Open a full-window SEIS app launcher with search, categories, and quick launch.", "launchpad"],
   ["seis-system-os", "SEIS System OS", "System", "OS", "Control the Linux, macOS, and Windows-inspired SEIS shell, widgets, recents, workspaces, and system evidence.", "system-os"],
   ["seis-command-center", "SEIS Command Center", "System", "CMD", "Unify V17 demo modules, validation evidence, mock/real/planned states, and review actions.", "seis-command-center"],
+  ["demo-studio", "SEIS Demo Studio", "System", "RUN", "Run guided product journeys across OS, AI, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, Plugins, and Website.", "demo-studio"],
+  ["linux-replica", "SEIS Linux Replica", "System", "LNX", "Open the supplied-code Web Linux shell adaptation with boot, login, taskbar, launcher, VFS, terminal, and 64 apps.", "linux-replica"],
   ["seis-store", "SEIS Store", "System", "STORE", "Browse installable SEIS apps, extensions, website demos, and local capability packs.", "store"],
   ["app-center", "App Center", "System", "APP", "Inspect, pin, launch, and organize installed applications.", "app-center"],
   ["extensions", "Extensions Manager", "System", "EXT", "Install, enable, disable, and configure local extensions.", "extensions"],
@@ -58,6 +60,7 @@ const APPS = [
   ["system-logs", "System Logs", "System", "LOG", "Inspect local audit events, app launches, and command history.", "logs"],
   ["startup-apps", "Startup Applications", "System", "RUN", "Choose apps to restore automatically when the desktop opens.", "startup"],
   ["notes", "Notes", "Productivity", "NTE", "Capture durable notes and save them as Markdown files.", "notes"],
+  ["second-brain", "SEIS Second Brain", "Productivity", "BRAIN", "Link Obsidian-style Markdown vault notes, installed AI profiles, sub-agent lanes, and GitHub readiness gates.", "second-brain"],
   ["text-editor", "Text Editor", "Productivity", "TXT", "Edit plain text files with autosave and export controls.", "text"],
   ["markdown-studio", "Markdown Studio", "Productivity", "MD", "Write Markdown and preview the rendered outline.", "markdown"],
   ["writer", "Writer", "Productivity", "DOC", "Draft structured documents and save them to Documents.", "writer"],
@@ -132,6 +135,8 @@ const FAVORITES = [
   "terminal",
   "launchpad",
   "seis-system-os",
+  "demo-studio",
+  "linux-replica",
   "seis-code",
   "code-ide",
   "search",
@@ -140,6 +145,7 @@ const FAVORITES = [
   "seis-design",
   "seis-website",
   "seis-cloud",
+  "second-brain",
   "music",
   "wow-gallery",
   "seis-evolution",
@@ -150,7 +156,7 @@ const FAVORITES = [
   "mythic-gacha"
 ];
 
-const DESKTOP_SHORTCUTS = ["files", "terminal", "settings", "search", "seis-code", "seis-design", "seis-store", "music"];
+const DESKTOP_SHORTCUTS = ["files", "terminal", "settings", "search", "demo-studio", "linux-replica", "seis-code", "seis-design", "second-brain", "seis-store", "music"];
 const KEYBOARD_SHORTCUT_GROUPS = [
   {
     name: "System",
@@ -253,6 +259,7 @@ const DEMO_DEFAULT_ROUTE_IDS = [
   "seis-code-app",
   "seis-design-app",
   "seis-cloud-app",
+  "seis-second-brain-app",
   "seis-evolution-app",
   "seis-ai-core-3d-demo",
   "sub-agent-os-demo",
@@ -352,6 +359,14 @@ const SEARCH_SPOTLIGHT_ITEMS = [
     keywords: "ai core 3d sub agent five year version"
   },
   {
+    title: "SEIS Second Brain",
+    meta: "Obsidian-style knowledge OS",
+    description: "Open the browser-local Markdown vault, graph, installed AI matrix, sub-agent council, and GitHub review gates.",
+    action: "open-app",
+    appId: "second-brain",
+    keywords: "second brain obsidian markdown vault knowledge graph backlinks ai agents github readiness"
+  },
+  {
     title: "SEIS Command Center",
     meta: "V17 operating center",
     description: "Open the V17 review cockpit for Desktop OS, AI Core, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Website, Agents, and Plugins.",
@@ -442,6 +457,14 @@ const DEMO_ROUTES = [
     keywords: "seis command center v17 operating center validation demo modules"
   },
   {
+    id: "seis-linux-replica-web",
+    label: "SEIS Linux Replica",
+    kind: "Web Linux route",
+    appId: "linux-replica",
+    path: "./seis-linux-replica.html",
+    keywords: "supplied code nebulaos web linux replica boot login taskbar start menu windows vfs terminal apps"
+  },
+  {
     id: "sub-agent-os-demo",
     label: "Sub-Agent OS Demo",
     kind: "Desktop control app",
@@ -472,6 +495,14 @@ const DEMO_ROUTES = [
     appId: "seis-cloud",
     path: "./desktop.html#seis-cloud",
     keywords: "seis cloud ssh vpn deployment local cloud boundary windows linux macos"
+  },
+  {
+    id: "seis-second-brain-app",
+    label: "SEIS Second Brain",
+    kind: "Desktop app",
+    appId: "second-brain",
+    path: "./desktop.html#second-brain",
+    keywords: "second brain obsidian markdown vault knowledge graph backlinks installed ai sub agents github readiness"
   },
   {
     id: "seis-evolution-app",
@@ -567,7 +598,12 @@ const SEIS_V17_COMMAND_CENTER_VALIDATION_QUEUE = [
   ["Desktop OS contract", "npm run check:desktop-os", "Runnable shell, windows, launcher, VFS, persistence, and diagnostics."],
   ["Browser product smoke", "npm run check:product-experience-browser-smoke", "Desktop, SEIS Code, AI Plugin Center, product routes, and mobile overflow proof."],
   ["AI Core package", "npm test --prefix packages/seis-ai", "Provider registry, MCP tools/resources, local agent loop, and non-claim boundaries."],
-  ["Model scaling profile", "npm run check:seis-model-scaling-hardware-profile", "20B on 16GB+ RAM planning profile, memory budget contract, future 70B ladder, and 150B frontier research lane."],
+  ["Model scaling profile", "npm run check:seis-model-scaling-hardware-profile", "20B on 16GB+ RAM planning profile, memory budget contract, future 70B ladder, 150B frontier lane, and 512B AGI apex boundary."],
+  ["Frontier escalation policy", "npm run check:seis-model-frontier-escalation-policy", "No-skip-20B policy, 70B research gate, 150B frontier gate, 512B AGI apex gate, and highest-parameter non-claim boundary."],
+  ["Second Brain contract", "npm run check:seis-second-brain", "Obsidian-style vault, installed AI, sub-agent, GitHub readiness, and no-secret knowledge boundary."],
+  ["150B frontier model program", "npm run check:seis-150b-frontier-model-program", "150B program charter, plan-only stages, non-claim flags, and promotion gates for future 70B/150B+ escalation."],
+  ["512B apex AGI program", "npm run check:seis-512b-apex-model-program", "512B AGI research charter, all-agent plan-only review, non-claim flags, and blocked promotion gates."],
+  ["Model scaling sub-agent council", "npm run check:seis-model-scaling-subagent-council", "12 plan-only agents bound to 20B evidence preparation and 70B/150B/512B non-claim gates."],
   ["Website pages", "npm run check:seis-website-pages", "Premium product pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents."]
 ];
 
@@ -577,11 +613,55 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
   currentTarget: "SEIS 20B Local Compatibility Target",
   ramClass: "16GB+ RAM",
   frontierTarget: "SEIS 150B Frontier Research Target",
-  frontierStatus: "frontier-research-roadmap / not scoped",
+  frontierStatus: "150B gated / frontier-research-roadmap / not scoped",
+  apexTarget: "SEIS 512B AGI Apex Research Target",
+  apexStatus: "apex-program-plan-only / not scoped / AGI not demonstrated",
+  frontierEscalationPolicy: "content/development/seis-model-frontier-escalation-policy.json",
+  frontierEscalationResource: "seis://ai/model-frontier-escalation-policy.json",
+  frontierEscalationStatus: "policy-active-research-gated",
+  frontierEscalationQualityGate: "npm run check:seis-model-frontier-escalation-policy",
+  frontierEscalationRule: "No-skip-20B: 70B, 150B, and 512B cannot become runtime-scoped until lower-tier evidence exists.",
+  frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
+  frontierModelProgramResource: "seis://ai/150b-frontier-model-program.json",
+  frontierModelProgramStatus: "frontier-program-plan-only",
+  frontierModelProgramQualityGate: "npm run check:seis-150b-frontier-model-program",
+  frontierModelProgramSummary: "150B is a frontier program plan; training, weights, inference, benchmark, cloud/GPU, SSH, and deployment remain blocked.",
+  frontierModelProgramStages: [
+    ["Charter", "Planned", "Not route eligible"],
+    ["Clean-room data", "Blocked until provenance plan", "Not route eligible"],
+    ["Architecture selection", "Not selected", "Not route eligible"],
+    ["Distributed runtime", "Budget and approval needed", "Not route eligible"],
+    ["Training readiness", "Not authorized", "Not route eligible"],
+    ["Evaluation and safety", "Not run", "Not route eligible"]
+  ],
+  apexModelProgram: "content/development/seis-512b-apex-model-program.json",
+  apexModelProgramResource: "seis://ai/512b-apex-model-program.json",
+  apexModelProgramStatus: "apex-program-plan-only",
+  apexModelProgramQualityGate: "npm run check:seis-512b-apex-model-program",
+  apexModelProgramSummary: "512B is an AGI research target only; AGI capability, training, weights, inference, benchmark, cloud/GPU, SSH, and deployment remain blocked.",
+  apexModelProgramStages: [
+    ["512B charter", "Planned", "Not route eligible"],
+    ["Installed AI council", "Plan-only", "Not route eligible"],
+    ["Clean-room frontier data", "Blocked until provenance plan", "Not route eligible"],
+    ["Architecture selection", "Not selected", "Not route eligible"],
+    ["Frontier cluster plan", "Approval needed", "Not route eligible"],
+    ["Training readiness", "Not authorized", "Not route eligible"],
+    ["Evaluation and safety", "Not run", "Not route eligible"]
+  ],
+  modelScalingSubagentCouncil: "content/development/seis-model-scaling-subagent-council.json",
+  modelScalingSubagentCouncilStatus: "active-plan-only",
+  modelScalingSubagentCouncilQualityGate: "npm run check:seis-model-scaling-subagent-council",
+  modelScalingSubagentCouncilSummary: "12 plan-only agents coordinate 20B evidence preparation while 70B, 150B, and 512B remain blocked.",
+  parameterLadderPath: "content/development/seis-model-parameter-ladder.json",
+  parameterLadderResource: "seis://ai/model-parameter-ladder.json",
+  parameterLadderStatus: "planning-contract-not-runtime",
+  parameterLadderQualityGate: "npm run check:seis-model-parameter-ladder",
   compatibilityClaim: "not-verified",
   memoryBudgetStatus: "planning-estimate-not-benchmark-evidence",
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   benchmarkStatus: "template-not-measured",
+  benchmarkDryRunReport: "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+  benchmarkDryRunStatus: "dry-run-not-measured",
   modelCardTemplate: "content/development/seis-20b-model-card-template.json",
   datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
   evidenceTemplateStatus: "template-not-filled / human-review-required",
@@ -594,7 +674,8 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["24GB+ candidate lane", "20B / Q4 candidate", "Local Demo only", "Not verified"],
     ["32GB+ validation lane", "20B / Q5-Q6 candidate", "Approved adapter tests later", "Not verified"],
     ["64GB+ research lane", "70B research", "Planning only", "Research roadmap"],
-    ["Distributed frontier lane", "150B+ future", "Disabled", "Not scoped"]
+    ["Distributed frontier lane", "150B+ future", "Disabled", "Not scoped"],
+    ["Apex AGI lane", "512B future", "Disabled", "AGI not demonstrated"]
   ],
   benchmarkGates: [
     "Model artifact license and clean-room provenance",
@@ -609,13 +690,30 @@ const SEIS_MODEL_SCALING_UI_PROFILE = {
     ["Stage 1", "20B local compatibility", "Planned / not validated"],
     ["Stage 2", "70B research", "Research roadmap"],
     ["Stage 3", "150B frontier", "Frontier roadmap"],
-    ["Stage 4", "Highest future class", "Not scoped"]
+    ["Stage 4", "512B AGI apex", "Plan-only / blocked"],
+    ["Stage 5", "Highest future class", "Not scoped"]
+  ],
+  subagentCouncilAssignments: [
+    ["20B", "Architect, Code, Security, QA, Documentation", "Planned / not validated", "Not route eligible"],
+    ["70B", "Research, DevOps, Cloud, Security", "Research roadmap", "Not route eligible"],
+    ["150B", "Architect, Research, Cloud, Security, QA", "Frontier roadmap", "Not route eligible"],
+    ["512B", "All 12 installed AI / sub-agent roles", "Apex plan-only", "Not route eligible"],
+    ["Highest future", "Architect, Research, Security, Documentation", "Not scoped", "Not route eligible"]
+  ],
+  parameterLadderTargets: [
+    ["20B", "16GB+ RAM", "Planned / not validated", "Local Demo and dry-run only"],
+    ["70B", "64GB+ or approved accelerator", "Research roadmap", "Planning only"],
+    ["150B", "Distributed or cloud research runtime", "Frontier roadmap", "Disabled"],
+    ["300B+", "Not scoped", "Exploration boundary", "Disabled"],
+    ["512B", "Frontier-scale distributed cluster", "Apex AGI plan-only", "Disabled / AGI not demonstrated"],
+    ["Highest available future", "Defined after lower-tier evidence", "Not scoped", "Disabled"]
   ],
   quantizationProfiles: [
     ["Q4-class 20B local candidate", "Planned / not benchmarked", "Not route eligible"],
     ["Q5/Q6-class 20B workstation candidate", "Planned / not benchmarked", "Not route eligible"],
     ["Higher precision research lane", "Future research", "Not route eligible"],
-    ["150B distributed frontier lane", "Future frontier / not scoped", "Not route eligible"]
+    ["150B distributed frontier lane", "Future frontier / not scoped", "Not route eligible"],
+    ["512B AGI apex lane", "Future apex / AGI not demonstrated", "Not route eligible"]
   ],
   localRuntimeCandidates: [
     ["llama.cpp-compatible local runtime", "Candidate only", "No key, approval required"],
@@ -795,6 +893,16 @@ const SEIS_V17_COMMAND_CENTER_MODULES = [
     detail: "Provider-neutral AI layer, Local Demo mode, plugin awareness, model router concept, and safe agent plan."
   },
   {
+    id: "second-brain",
+    label: "SEIS Second Brain",
+    status: "Local Demo",
+    state: "local-demo",
+    appId: "second-brain",
+    routeId: "seis-second-brain-app",
+    evidence: "npm run check:seis-second-brain",
+    detail: "Obsidian-style Markdown vault, installed AI profiles, sub-agent lanes, Search/Files bridge, and GitHub readiness gates."
+  },
+  {
     id: "model-scaling",
     label: "SEIS Model Scaling",
     status: "Planned/Gated",
@@ -930,7 +1038,7 @@ const SEIS_V17_COMMAND_CENTER_MODULES = [
   }
 ];
 
-const AI_PLUGIN_TABS = ["Overview", "Installed AI", "Plugin Center", "Sub-Agent Plan", "Tool Calls", "History"];
+const AI_PLUGIN_TABS = ["Overview", "Installed AI", "Plugin Center", "Sub-Agent Plan", "Second Brain", "Tool Calls", "History"];
 const SEIS_AI_PLUGIN_LANES = [
   { id: "seis-hub", name: "SEIS Hub", lane: "Governance", status: "Enabled", capability: "Source-of-truth routing, roadmap status, and demo orchestration." },
   { id: "seis-code", name: "SEIS Code", lane: "Engineering", status: "Enabled", capability: "Code workspace, terminal, Monaco, and implementation planning." },
@@ -1070,7 +1178,7 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
   officialSdk: "@modelcontextprotocol/sdk remains optional unless dependencies are installed",
   toolCount: 34,
   promptCount: 3,
-  resourceCount: 20,
+  resourceCount: 26,
   smokeTest: "node --test packages/seis-ai/test/mcp-smoke.test.mjs",
   pluginGate: "npm run check:seis-agent-plugin-integration",
   resourceRead: "seis://ai/mcp-runtime-contract.json",
@@ -1082,16 +1190,16 @@ const SEIS_MCP_RUNTIME_CONTRACT = {
       label: "Tool registry",
       count: 34,
       method: "tools/list + tools/call",
-      evidence: "14 MCP smoke tests pass through stdio JSON-RPC",
+      evidence: "16 MCP smoke tests pass through stdio JSON-RPC",
       duty: "Expose repo-backed SEIS AI checks, personal plugin lane tools, provider registry status, model scaling status, and AI Core version/sub-agent tools."
     },
     {
       id: "resources",
       label: "Resource registry",
-      count: 20,
+      count: 26,
       method: "resources/list + resources/read",
-      evidence: "Plugin integration, provider registry, model scaling profile, and MCP runtime contract resources are read through the protocol",
-      duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, MCP runtime, version gates, fixtures, and generated plan views."
+      evidence: "Plugin integration, provider registry, model scaling profile, model parameter ladder, frontier escalation policy, 150B frontier model program, 512B apex AGI program, 20B model/dataset card templates, and MCP runtime contract resources are read through the protocol",
+      duty: "Expose source-of-truth JSON resources for plugin integration, provider states, planned model scaling, parameter ladder boundaries, no-skip-20B frontier policy, 150B frontier program, 512B apex AGI program, 20B clean-room evidence templates, MCP runtime, version gates, fixtures, and generated plan views."
     },
     {
       id: "prompts",
@@ -1297,6 +1405,114 @@ const SEIS_AI_CORE_RESOURCE_BRIDGE = {
   releasePromotionAllowed: false,
   boundary: "No provider call, no SSH, no deployment, no GitHub mutation, no credential access."
 };
+const SEIS_SECOND_BRAIN_SYSTEM = {
+  status: "Local Demo",
+  sourcePath: "content/development/seis-second-brain-system.json",
+  productDoc: "docs/product/seis-second-brain.md",
+  qualityGate: "npm run check:seis-second-brain",
+  vaultRoot: "/home/seis/SecondBrain",
+  snapshotPath: "/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md",
+  githubReadinessPath: "/home/seis/SecondBrain/github-readiness-review.md",
+  obsidianState: "Obsidian bridge planned",
+  runtimeBoundary: "Browser-local Markdown vault and graph. No Obsidian plugin install, provider call, SSH, deployment, GitHub mutation, credential access, or autonomous write runtime.",
+  labels: ["Local Demo", "Obsidian bridge planned", "No secrets", "Human review before GitHub"],
+  vaultNotes: [
+    {
+      id: "seis-os-map",
+      title: "SEIS OS Map",
+      folder: "01-system",
+      path: "/home/seis/SecondBrain/01-system/seis-os-map.md",
+      status: "Real Local Demo",
+      summary: "Desktop OS, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, and Website are linked as first-class surfaces.",
+      tags: ["#os", "#command-center", "#demo"],
+      links: ["ai-core-router", "sub-agent-council", "github-readiness"]
+    },
+    {
+      id: "ai-core-router",
+      title: "AI Core Router",
+      folder: "02-ai",
+      path: "/home/seis/SecondBrain/02-ai/ai-core-router.md",
+      status: "Local Demo",
+      summary: "Installed AI profiles stay provider-neutral: Codex current operator, Local Demo fallback, and disabled/missing-key external profiles.",
+      tags: ["#ai-core", "#model-router", "#local-demo"],
+      links: ["seis-os-map", "sub-agent-council", "security-review"]
+    },
+    {
+      id: "sub-agent-council",
+      title: "Sub-Agent Council",
+      folder: "03-agents",
+      path: "/home/seis/SecondBrain/03-agents/sub-agent-council.md",
+      status: "Status/plan-only",
+      summary: "Bounded Architect, Code, Design, Cloud, Security, Documentation, and Data lanes can plan and review, not run unapproved background work.",
+      tags: ["#agents", "#dry-run", "#approval-gated"],
+      links: ["ai-core-router", "github-readiness", "security-review"]
+    },
+    {
+      id: "obsidian-bridge",
+      title: "Obsidian Bridge",
+      folder: "04-vault",
+      path: "/home/seis/SecondBrain/04-vault/obsidian-bridge.md",
+      status: "Planned",
+      summary: "Future Obsidian compatibility should export Markdown, backlinks, tags, and frontmatter without copying private vault contents into the repo.",
+      tags: ["#obsidian", "#markdown", "#planned"],
+      links: ["seis-os-map", "security-review"]
+    },
+    {
+      id: "github-readiness",
+      title: "GitHub Readiness",
+      folder: "05-publish",
+      path: "/home/seis/SecondBrain/05-publish/github-readiness.md",
+      status: "Human review required",
+      summary: "Public-ready notes need provenance, no-secret scan, docs index links, validator evidence, and review before push, merge, release, or Pages publication.",
+      tags: ["#github", "#public-readiness", "#review"],
+      links: ["seis-os-map", "sub-agent-council", "security-review"]
+    },
+    {
+      id: "security-review",
+      title: "Security Review",
+      folder: "06-security",
+      path: "/home/seis/SecondBrain/06-security/security-review.md",
+      status: "Active guardrail",
+      summary: "No secrets, private keys, cookies, .env values, private vault exports, or raw provider errors are stored in Second Brain artifacts.",
+      tags: ["#security", "#no-secrets", "#redaction"],
+      links: ["ai-core-router", "obsidian-bridge", "github-readiness"]
+    }
+  ],
+  agentLanes: [
+    ["Architect Agent", "read-only / plan-only", "Turn vault notes into architecture decisions and rollback-aware implementation slices."],
+    ["Code Agent", "write-gated later", "Map notes to scoped code changes only after human-approved file scope exists."],
+    ["Design Agent", "read-only / plan-only", "Extract product/design principles, screenshots, tokens, and UI review notes."],
+    ["Search Agent", "read-only", "Index local notes, docs, routes, and files without external search calls."],
+    ["Security Agent", "review-only", "Block secrets, private data, unsafe Obsidian exports, and unapproved GitHub/cloud actions."],
+    ["Documentation Agent", "plan-only", "Convert reviewed notes into README, docs, changelog, and PR-ready summaries."]
+  ],
+  autonomousAgentRoster: [
+    ["Architect Agent", "Status/plan-only", "architecture, module boundaries, rollback-aware implementation plans"],
+    ["Code Agent", "Status/plan-only", "scoped implementation notes, validators, and code review evidence"],
+    ["Design Agent", "Status/plan-only", "visual system, product feel, design tokens, and interaction evidence"],
+    ["UI/UX Agent", "Status/plan-only", "usability, mobile ergonomics, focus order, and accessibility notes"],
+    ["Research Agent", "Status/plan-only", "source provenance, prior-art notes, and clean-room research summaries"],
+    ["Search Agent", "Status/plan-only", "local vault, docs, route, file, and plugin indexing strategy"],
+    ["Security Agent", "Blocking review gate", "secret hygiene, private vault boundaries, and approval requirements"],
+    ["DevOps Agent", "Status/plan-only", "CI, release, deployment, rollback, and no-live-action runbooks"],
+    ["Documentation Agent", "Status/plan-only", "README, status, index, backlog, and PR queue alignment"],
+    ["QA Agent", "Status/plan-only", "validator, browser-smoke, regression, and acceptance evidence"],
+    ["Cloud Agent", "Status/plan-only", "cloud, SSH, storage, sync, and provider readiness boundaries"],
+    ["Automation Agent", "Status/plan-only", "safe recurring workflows, ledgers, and human-approved automation gates"]
+  ],
+  pipeline: [
+    ["Capture", "Local Demo", "Save browser-local Markdown notes under /home/seis/SecondBrain."],
+    ["Link", "Local Demo", "Compute visible backlinks and graph edges from the repo-owned note map."],
+    ["Review", "Human review required", "Run no-secret, provenance, and claim-boundary checks before public docs."],
+    ["Publish", "Planned/Gated", "GitHub push, release, Pages, or Obsidian plugin sync require explicit approval."]
+  ],
+  githubGates: [
+    "No secrets, private keys, .env values, cookies, or private vault exports",
+    "Mock, Local Demo, planned, disabled, and real states are labeled",
+    "Source JSON, product docs, Desktop app, and validator stay synchronized",
+    "Human review before GitHub push, merge, release, or public Pages update"
+  ]
+};
 const AI_CORE_VERSION_TARGETS = [
   {
     id: "v0.1-foundation",
@@ -1423,6 +1639,14 @@ const SEIS_WOW_REFERENCES = [
   { id: "kimi-linuxos-reference", title: "Kimi LinuxOS", role: "Linux-like OS reference", url: "https://dwfcctyh2o6me.ok.kimi.link/?id=2045932438926155776&share_id=19d9fdbd-d7d2-8a19-8000-00001d7799f6" },
   { id: "kimi-vscode-web-reference", title: "Kimi VS Code Web", role: "VS Code Web reference", url: "https://gmzousbtqpx5w.kimi.page/?id=2057731079068581888&share_id=19e4e6a6-9342-8f07-8000-0000296a37dd" }
 ];
+const SEIS_WOW_DESIGN_FUSION = [
+  { title: "Desktop Overview", source: "Part 1 / 03", tag: "OS shell", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/03_desktop_overview.png", motif: "dark wallpaper, top system bar, left activity rail, bottom dock" },
+  { title: "Launchpad All Apps", source: "Part 1 / 04", tag: "Launcher", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/04_launchpad_all_apps.png", motif: "centered search, tabbed categories, dense app grid" },
+  { title: "Command Center", source: "Part 1 / 17", tag: "Home", image: "./wow-pages/imported/SEIS_WOW_EXTENDED_PAGES/png/17_command_center.png", motif: "large greeting, white product tiles, right-side status panels" },
+  { title: "Command Palette", source: "Part 3 / 47", tag: "Actions", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART3/png/47_command_palette.png", motif: "six clear action cards with colored icon blocks" },
+  { title: "Window Manager", source: "Part 3 / 57", tag: "Windows", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART3/png/57_window_manager.png", motif: "window controls, workspace layout, app switching" },
+  { title: "Store App Detail", source: "Part 4 / 79", tag: "Store", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART4/png/79_store_app_detail.png", motif: "dark app frame with bright feature cards and clear actions" }
+];
 const SEIS_SYSTEM_OS_MODULES = [
   { id: "home-widgets", title: "Home Widget Gallery", source: "Part 7 / 161", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART7/png/161_home_widget_gallery.png", status: "Connected target", action: "Open widgets from the desktop guide and System OS center." },
   { id: "dynamic-island", title: "Dynamic Island Bar", source: "Part 7 / 162", image: "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART7/png/162_dynamic_island_bar.png", status: "Shell pattern", action: "Use quick status, media, AI, and save events as the live activity strip." },
@@ -1448,8 +1672,90 @@ const SEIS_SYSTEM_OS_EVIDENCE = {
   dryRunOnly: true,
   releasePromotionAllowed: false
 };
+const SEIS_DEMO_STUDIO_STATUS = [
+  ["Working", "Runs in this browser demo and can be opened from the journey."],
+  ["Local Demo", "Interactive local state or VFS artifact only; no provider, SSH, deployment, or GitHub write."],
+  ["Mock Safe", "Shown as a realistic product concept with explicit mock/safe labels."],
+  ["Planned/Gated", "Requires future evidence, credentials, infrastructure, approval, or validation before becoming live."]
+];
+const SEIS_DEMO_JOURNEYS = [
+  {
+    id: "executive-demo",
+    title: "Executive Product Demo",
+    mode: "Local Demo",
+    status: "Working",
+    summary: "A tight walkthrough for showing SEIS as one premium creative operating system instead of disconnected pages.",
+    primaryApp: "seis-command-center",
+    routeId: "seis-website-hub",
+    proof: "Desktop OS, Command Center, Website, Search, Store, Music, and Local Demo AI stay connected through one shell.",
+    steps: [
+      { id: "boot-os", label: "Open System OS", appId: "seis-system-os", state: "Working", output: "Shows shell, workspaces, windows, launcher, widgets, and no-key boundary." },
+      { id: "command-center", label: "Open Command Center", appId: "seis-command-center", state: "Working", output: "Shows V17 module map, validation queue, model-scaling boundary, and review status." },
+      { id: "search", label: "Search Across SEIS", appId: "search", state: "Working", output: "Shows AI/Web/Code/Design/Cloud/Apps/Plugins/Files result tabs." },
+      { id: "website", label: "Open Website Hub", appId: "seis-website", routeId: "seis-website-hub", state: "Working", output: "Shows product pages for AI, OS, Code, Design, Search, Cloud, Store, and Agents." },
+      { id: "store-music", label: "Open Store and Music", appId: "seis-store", companionAppId: "music", state: "Local Demo", output: "Shows install state, app catalog, playlist, player controls, and local soundtrack." }
+    ],
+    gates: ["No provider key required", "No SSH execution", "No deployment", "No trained-model claim", "Browser-local VFS evidence only"]
+  },
+  {
+    id: "builder-flow",
+    title: "Builder Workflow",
+    mode: "Local Demo",
+    status: "Working",
+    summary: "A developer/designer path that proves SEIS can move from files to Code IDE, Design Studio, and local handoff artifacts.",
+    primaryApp: "code-ide",
+    routeId: "seis-code-web",
+    proof: "Files, Terminal, SEIS Code, Code IDE, Design Studio, and shared VFS bridge respond as a working local workflow.",
+    steps: [
+      { id: "files", label: "Inspect Files", appId: "files", state: "Working", output: "Uses searchable grid/list VFS, selected preview, recents, and safe file actions." },
+      { id: "terminal", label: "Run Terminal", appId: "terminal", state: "Local Demo", output: "Runs browser-safe commands, command history, file IO, and Local Demo REPL boundary." },
+      { id: "code", label: "Open Code IDE", appId: "code-ide", routeId: "seis-code-web", state: "Working", output: "Shows explorer, search, source-control safe mock, preview, extensions, status bar, and Local Demo assistant." },
+      { id: "design", label: "Open Design Studio", appId: "seis-design", state: "Local Demo", output: "Shows website route handoff, creative tools, local design references, and no runtime generation key." },
+      { id: "handoff", label: "Export Builder Handoff", appId: "demo-studio", state: "Local Demo", output: "Writes a browser-local journey evidence file into Documents." }
+    ],
+    gates: ["Source control is safe/mock", "AI assistant is Local Demo", "No Git push or merge", "No dependency install", "VFS remains browser-local"]
+  },
+  {
+    id: "ai-agent-flow",
+    title: "AI Core and Agent Flow",
+    mode: "Status/plan only",
+    status: "Local Demo",
+    summary: "A truthful AI operating-center walkthrough that shows installed AI profiles, plugin lanes, MCP resources, sub-agent planning, and model-scaling boundaries.",
+    primaryApp: "ai-assistant",
+    routeId: "seis-ai-core-3d-demo",
+    proof: "AI Core is provider-neutral and local by default; unavailable providers stay Missing Key or Disabled instead of being faked.",
+    steps: [
+      { id: "ai-core", label: "Open SEIS AI", appId: "ai-assistant", state: "Local Demo", output: "Shows Local Demo chat, plugin tabs, installed AI profiles, and tool-call history." },
+      { id: "installed-ai", label: "Audit Installed AI", appId: "ai-assistant", actionId: "audit-installed-ai-systems", state: "Local Demo", output: "Exports installed AI audit evidence without printing or storing credentials." },
+      { id: "agents", label: "Open Sub-Agent Control", appId: "sub-agent-control", routeId: "sub-agent-os-demo", state: "Local Demo", output: "Shows bounded 20-quarter plan, process rows, AI Core orbit, and local dry-run evidence." },
+      { id: "plugins", label: "Open Plugin Bridge", appId: "ai-assistant", state: "Local Demo", output: "Shows personal plugin bridge, MCP runtime contract, and plan-only lane matrix." },
+      { id: "model-boundary", label: "Export 20B Preflight", appId: "seis-command-center", actionId: "export-model-preflight", state: "Planned/Gated", output: "Writes a dry-run checklist, not benchmark or trained-weight evidence." }
+    ],
+    gates: ["No browser secrets", "Missing Key is not Error", "No live provider call", "No autonomous write runtime", "20B/70B/150B remain evidence-gated"]
+  },
+  {
+    id: "cloud-security-flow",
+    title: "Cloud, SSH, and Security Flow",
+    mode: "Mock Safe",
+    status: "Planned/Gated",
+    summary: "A safety-first cloud walkthrough that shows sync, deployment, SSH, logs, backup, and health states without faking live access.",
+    primaryApp: "seis-cloud",
+    routeId: "seis-website-cloud",
+    proof: "Cloud and SSH are visible as product concepts, but real mutation remains approval-gated and disabled.",
+    steps: [
+      { id: "cloud", label: "Open SEIS Cloud", appId: "seis-cloud", state: "Mock Safe", output: "Shows sync, storage, repositories, SSH boundary, deployment gate, logs, backups, agents, and health concepts." },
+      { id: "security", label: "Open Vault Boundary", appId: "password-vault", state: "Local Demo", output: "Shows placeholder-only secret records and redacted export behavior." },
+      { id: "logs", label: "Open System Logs", appId: "system-logs", state: "Working", output: "Shows app launch and local workflow logs without private credential values." },
+      { id: "cloud-preflight", label: "Run Cloud Preflight", appId: "seis-cloud", state: "Local Demo", output: "Writes browser-local preflight handoff; no SSH, deploy, cloud, or firewall mutation." },
+      { id: "review-queue", label: "Return to Command Center", appId: "seis-command-center", state: "Working", output: "Shows human approval and validation gates before cloud promotion." }
+    ],
+    gates: ["No SSH execution", "No deploy", "No private key exposure", "No GitHub mutation", "Human approval required for live cloud actions"]
+  }
+];
 const SEIS_STORE_ITEMS = [
   { id: "seis-system-os", name: "SEIS System OS", category: "System", status: "Installed", target: "app", targetId: "seis-system-os", detail: "Linux, macOS, and Windows-inspired browser OS shell with widgets, recents, app switcher, and validated local evidence." },
+  { id: "demo-studio", name: "SEIS Demo Studio", category: "System", status: "Installed", target: "app", targetId: "demo-studio", detail: "Guided product journeys for OS, AI Core, Search, Code, Design, Cloud, Store, Music, Files, Terminal, Agents, Plugins, and Website." },
+  { id: "linux-replica", name: "SEIS Linux Replica", category: "System", status: "Installed", target: "app", targetId: "linux-replica", detail: "Supplied-code Web Linux adaptation with boot, login, taskbar, launcher, windows, VFS, terminal, and 64 local app launch targets." },
   { id: "seis-code", name: "SEIS Code", category: "IDE", status: "Installed", target: "app", targetId: "seis-code", detail: "VS Code-like Monaco workspace, terminal, and VFS bridge." },
   { id: "code-ide", name: "Code IDE", category: "Developer", status: "Installed", target: "app", targetId: "code-ide", detail: "Dedicated IDE cockpit linking SEIS Code, terminal, extensions, and projects." },
   { id: "seis-design", name: "SEIS Design", category: "Creative", status: "Installed", target: "app", targetId: "seis-design", detail: "Website, product polish, motion, and design handoff cockpit." },
@@ -1465,6 +1771,7 @@ const SEIS_STORE_ITEMS = [
     targetId: route.id,
     detail: `Static product page at ${route.path}.`
   })),
+  { id: "seis-linux-replica-web", name: "SEIS Linux Replica Web", category: "Website", status: "Available", target: "route", targetId: "seis-linux-replica-web", detail: "Standalone browser-local Linux replica route adapted from the supplied code." },
   { id: "wow-gallery-web", name: "SEIS WOW Gallery", category: "Website", status: "Available", target: "route", targetId: "wow-gallery-web", detail: "190 imported PNG page previews, 197 HTML references, and two Kimi external reference links." },
   { id: "mythic-gacha-web", name: "Mythic Gacha Web", category: "Website", status: "Available", target: "route", targetId: "mythic-gacha-web", detail: "Playable Shan Hai Jing-inspired gacha and bestiary route." },
   { id: "video-hero-gallery", name: "Video Hero Gallery", category: "Website", status: "Available", target: "route", targetId: "video-hero-gallery", detail: "Four immersive video hero showcase pages." },
@@ -1521,11 +1828,11 @@ const defaultFiles = [
   dir("/home/seis/MythicArchive"),
   file("/home/seis/Documents/welcome.md", "# SEIS Desktop\n\nThis is a browser-contained operating surface. Files, terminal history, notes, tasks, and app preferences persist locally.\n"),
   file("/home/seis/Projects/example.html", "<h1>SEIS Web Playground</h1>\n<p>Edit this file in SEIS Code or run `cat Projects/example.html` in Terminal.</p>\n"),
-  file("/home/seis/Documents/seis-demo-websites.md", "# SEIS Demo Websites\n\n- SEIS Website Hub: ./website/index.html\n- SEIS AI Website: ./website/seis-ai.html\n- SEIS OS Website: ./website/seis-os.html\n- SEIS Code Website: ./website/seis-code.html\n- SEIS Design Website: ./website/seis-design.html\n- SEIS Search Website: ./website/seis-search.html\n- SEIS Cloud Website: ./website/seis-cloud.html\n- SEIS Store Website: ./website/seis-store.html\n- SEIS Agents Website: ./website/seis-agents.html\n- SEIS System OS: ./desktop.html#seis-system-os\n- SEIS AI Core 3D Demo: ./ai-core-demo/index.html\n- SEIS Code Web: ./seis-code.html\n- SEIS WOW Gallery: ./wow-gallery.html\n- Mythic Gacha: ./mythic-gacha.html\n- Nature Video Hero: ./showcase/nature.html\n- Still Life Video Hero: ./showcase/still-life.html\n- Materials Video Hero: ./showcase/materials.html\n- Metal Parts Video Hero: ./showcase/metal-parts.html\n\nExternal references are opened only as clearly labeled reference links. The SEIS_WOW reference board now indexes 190 PNG screens and 197 HTML references.\n"),
+  file("/home/seis/Documents/seis-demo-websites.md", "# SEIS Demo Websites\n\n- SEIS Website Hub: ./website/index.html\n- SEIS AI Website: ./website/seis-ai.html\n- SEIS OS Website: ./website/seis-os.html\n- SEIS Code Website: ./website/seis-code.html\n- SEIS Design Website: ./website/seis-design.html\n- SEIS Search Website: ./website/seis-search.html\n- SEIS Cloud Website: ./website/seis-cloud.html\n- SEIS Store Website: ./website/seis-store.html\n- SEIS Agents Website: ./website/seis-agents.html\n- SEIS System OS: ./desktop.html#seis-system-os\n- SEIS AI Core 3D Demo: ./ai-core-demo/index.html\n- SEIS Code Web: ./seis-code.html\n- SEIS Linux Replica: ./seis-linux-replica.html\n- SEIS WOW Gallery: ./wow-gallery.html\n- Mythic Gacha: ./mythic-gacha.html\n- Nature Video Hero: ./showcase/nature.html\n- Still Life Video Hero: ./showcase/still-life.html\n- Materials Video Hero: ./showcase/materials.html\n- Metal Parts Video Hero: ./showcase/metal-parts.html\n\nExternal references are opened only as clearly labeled reference links. The SEIS_WOW reference board now indexes 190 PNG screens and 197 HTML references. The SEIS Linux Replica route adapts the supplied Web Linux code into a SEIS-branded browser-local shell.\n"),
   file("/home/seis/Documents/seis-evolution-reference.md", "# SEIS Evolution Reference\n\nPinned scope: SEIS AI Core, Linux/macOS/Windows desktop demo, SEIS Code Web, SEIS AI integration, websites, and SEIS-SSH boundary.\n\nThis file is a local demo reference. It does not execute SSH or connect to cloud services.\n"),
   file("/home/seis/Documents/seis-local-ecosystem-inventory.md", "# SEIS Local Ecosystem Inventory\n\nThis demo maps the local application and folder names into SEIS roles without copying application bundles, private files, unclear archives, provider keys, or machine-specific paths.\n\n## SEIS Routes\n- SEIS Search: gateway for apps, folders, websites, Code, Design, Cloud, and AI Core.\n- SEIS Code: repository and editor workspace.\n- SEIS Design: Adobe/Figma-style creative workflow mapped to SEIS surfaces.\n- SEIS Cloud: Chrome/Safari/Ollama/Qwen/cloud/SSH readiness boundary.\n- SEIS Evolution: pinned work, local inventory, and long-horizon map.\n\n## Safety\nUnclear, leaked, private, generated, or licensed material remains review-only and is not merged into official SEIS behavior.\n"),
   file("/home/seis/Music/seis-demo-playlist.md", "# SEIS Demo Playlist\n\n- Core Orbit\n- Launch Sequence\n- Cloud Gate\n- Mythic Draw\n- Code Night\n\nThese are local demo track records, not external audio files.\n"),
-  file("/home/seis/Applications/seis-store-catalog.md", "# SEIS Store Catalog\n\nInstalled: SEIS System OS, SEIS Code, Code IDE, SEIS Design, SEIS Website, SEIS Cloud, Music, SEIS WOW Gallery.\nAvailable routes: SEIS Website pages, SEIS WOW Gallery, Mythic Gacha Web, Video Hero Gallery, SEIS AI Core 3D.\n"),
+  file("/home/seis/Applications/seis-store-catalog.md", "# SEIS Store Catalog\n\nInstalled: SEIS System OS, SEIS Linux Replica, SEIS Code, Code IDE, SEIS Design, SEIS Website, SEIS Cloud, Music, SEIS WOW Gallery.\nAvailable routes: SEIS Website pages, SEIS Linux Replica Web, SEIS WOW Gallery, Mythic Gacha Web, Video Hero Gallery, SEIS AI Core 3D.\n"),
   file("/home/seis/Documents/seis-system-os-blueprint.md", "# SEIS System OS Blueprint\n\nSEIS System OS combines Linux-like activities, macOS-like dock/status ergonomics, and Windows-like app switching/task layout into an original browser-contained SEIS shell.\n\n## Connected OS modules\n- Home widgets\n- Dynamic/live status strip\n- App switcher\n- Multi-screen workspaces\n- Launcher search\n- Universal recents\n- File previews\n- Appearance and accessibility\n- Terminal multiplexer target\n\n## Boundary\nLocal demo only. No SSH execution, provider keys, deployment, or release promotion happens from the browser shell.\n"),
   file("/home/seis/Desktop/todo.txt", "Open Files\nRun Terminal\nTry Apps launcher\n")
 ];
@@ -2126,6 +2433,21 @@ function handleClick(event) {
     case "open-demo-route":
       openDemoRoute(value);
       break;
+    case "select-demo-journey":
+      selectDemoJourney(value);
+      break;
+    case "run-demo-journey-step":
+      runDemoJourneyStep(value);
+      break;
+    case "run-demo-journey":
+      runDemoJourney(value);
+      break;
+    case "export-demo-journey":
+      exportDemoJourneyEvidence(value);
+      break;
+    case "toggle-demo-check":
+      toggleDemoChecklist(value);
+      break;
     case "dismiss-demo-guide":
       dismissDemoGuide();
       break;
@@ -2192,6 +2514,15 @@ function handleClick(event) {
       if (getNode(path)?.type === "dir") state.currentDir = path;
       renderOpenWindows("files");
       break;
+    case "set-file-view":
+      setFileView(value);
+      break;
+    case "refresh-files-filter":
+      refreshFilesFilter();
+      break;
+    case "sync-code-workspace":
+      syncFilesFromCodeWorkspace();
+      break;
     case "open-file":
       state.selectedPath = path || state.selectedPath;
       openFileInEditor(state.selectedPath);
@@ -2257,6 +2588,21 @@ function handleClick(event) {
       break;
     case "export-model-preflight":
       exportModelScalingPreflight();
+      break;
+    case "second-brain-select-note":
+      selectSecondBrainNote(value);
+      break;
+    case "second-brain-capture":
+      captureSecondBrainNote();
+      break;
+    case "second-brain-link":
+      linkSecondBrainGraph();
+      break;
+    case "second-brain-review":
+      reviewSecondBrainVault();
+      break;
+    case "second-brain-export-github":
+      exportSecondBrainGithubReadiness();
       break;
     case "app-primary":
       runAppPrimaryAction(appId, button.closest(".window-body"));
@@ -2394,6 +2740,9 @@ function handleInput(event) {
   }
   if (input.matches("[data-code-ide-search-query]")) {
     getCodeIdeData().searchQuery = input.value;
+  }
+  if (input.matches("[data-file-search]")) {
+    getFileManagerState().query = input.value;
   }
 }
 
@@ -3268,6 +3617,9 @@ function defaultWindowSize(app) {
   if (app.type === "search") return { w: 1000, h: 650 };
   if (app.type === "system-os") return { w: 1120, h: 700 };
   if (app.type === "seis-command-center") return { w: 1120, h: 700 };
+  if (app.type === "demo-studio") return { w: 1120, h: 700 };
+  if (app.type === "second-brain") return { w: 1120, h: 700 };
+  if (app.type === "linux-replica") return { w: 1060, h: 680 };
   if (app.type === "seis-website") return { w: 1040, h: 660 };
   if (app.type === "seis-evolution") return { w: 1040, h: 660 };
   if (app.type === "subagent-control") return { w: 920, h: 610 };
@@ -3455,6 +3807,10 @@ function renderApp(app) {
       return renderSeisSystemOSApp();
     case "seis-command-center":
       return renderSeisCommandCenter();
+    case "demo-studio":
+      return renderDemoStudio();
+    case "second-brain":
+      return renderSecondBrain();
     case "store":
       return renderSeisStore();
     case "app-center":
@@ -3499,6 +3855,8 @@ function renderApp(app) {
       return renderSeisSearchGateway();
     case "seis-website":
       return renderSeisWebsiteApp();
+    case "linux-replica":
+      return renderLinuxReplicaApp();
     case "wow-gallery":
       return renderWowGalleryApp();
     case "seis-design":
@@ -3516,15 +3874,139 @@ function renderApp(app) {
   }
 }
 
+const DEMO_STUDIO_CHECKLIST = [
+  ["mockLabels", "Mock, Local Demo, planned, and working states are visibly labeled."],
+  ["localDemo", "Core demo opens without API keys or provider credentials."],
+  ["providerSecrets", "Provider keys, SSH keys, cookies, and private configs are not stored in browser UI."],
+  ["approvalGates", "SSH, deploy, push, merge, and production cloud actions remain human-approval gated."],
+  ["mobileReady", "Responsive shell remains usable before demo promotion."]
+];
+
+function getFileManagerState() {
+  const data = getAppData("files");
+  if (!["grid", "list"].includes(data.viewMode)) data.viewMode = "grid";
+  if (typeof data.query !== "string") data.query = "";
+  if (!Array.isArray(data.history)) data.history = [];
+  return data;
+}
+
+function getFilteredFileItems(items, fileState) {
+  const query = String(fileState.query || "").trim().toLowerCase();
+  if (!query) return items;
+  return items.filter((item) => {
+    const content = item.type === "file" ? String(item.content || "").slice(0, 2000) : "";
+    return `${item.path} ${baseName(item.path)} ${item.type} ${content}`.toLowerCase().includes(query);
+  });
+}
+
+function renderFilePreview(selected) {
+  if (!selected) {
+    return `<article class="file-preview-panel" data-file-preview><strong>No file selected</strong><p>Choose an item to preview metadata, content, and safe actions.</p></article>`;
+  }
+  if (selected.type === "dir") {
+    const children = listDir(selected.path);
+    return `<article class="file-preview-panel" data-file-preview>
+      <span class="file-preview-kind">Folder</span>
+      <strong>${escapeHtml(baseName(selected.path))}</strong>
+      <p>${escapeHtml(selected.path)}</p>
+      <div class="file-preview-stats">
+        <span>${children.length} items</span>
+        <span>${escapeHtml(selected.updatedAt || "local")}</span>
+      </div>
+      <div class="file-preview-list">
+        ${children.slice(0, 8).map((item) => `<button type="button" data-action="select-file" data-path="${escapeAttr(item.path)}">${escapeHtml(baseName(item.path))}<span>${escapeHtml(item.type)}</span></button>`).join("") || "<p class=\"muted\">Folder is empty.</p>"}
+      </div>
+    </article>`;
+  }
+  const content = selected.content || "";
+  return `<article class="file-preview-panel" data-file-preview>
+    <span class="file-preview-kind">File</span>
+    <strong>${escapeHtml(baseName(selected.path))}</strong>
+    <p>${escapeHtml(selected.path)}</p>
+    <div class="file-preview-stats">
+      <span>${byteLength(content)} bytes</span>
+      <span>${escapeHtml(selected.updatedAt || "local")}</span>
+    </div>
+    <pre>${escapeHtml(content.slice(0, 1400) || "Empty file.")}</pre>
+  </article>`;
+}
+
+function setFileView(viewMode) {
+  const data = getFileManagerState();
+  data.viewMode = viewMode === "list" ? "list" : "grid";
+  log("files", `Files view changed to ${data.viewMode}.`);
+  saveState();
+  renderOpenWindows("files");
+}
+
+function refreshFilesFilter() {
+  const data = getFileManagerState();
+  data.lastSearch = data.query || "";
+  data.history.unshift({ id: `files-search-${Date.now()}`, query: data.lastSearch, time: new Date().toISOString() });
+  data.history = data.history.slice(0, 8);
+  log("files", `Files search refreshed for ${data.lastSearch || "all files"}.`);
+  saveState();
+  renderOpenWindows("files");
+}
+
+function syncFilesFromCodeWorkspace() {
+  const data = getFileManagerState();
+  data.lastSync = "Sync requested";
+  toast("Files Sync", "Checking the browser-local SEIS Code workspace bridge.");
+  void syncDesktopFromCodeWorkspace("files-manual-sync").then((result) => {
+    data.lastSync = `${result.imported || 0} workspace item(s) imported`;
+    getListData("files").unshift({
+      id: `files-sync-${Date.now()}`,
+      title: "SEIS Code workspace sync",
+      body: data.lastSync,
+      done: true
+    });
+    log("files", data.lastSync);
+    saveState();
+    renderOpenWindows("files");
+    renderOpenWindows("seis-code");
+  });
+}
+
+function getFileManagerSnapshot() {
+  const data = getFileManagerState();
+  const visible = getFilteredFileItems(listDir(state.currentDir), data);
+  const selected = getNode(state.selectedPath);
+  return {
+    currentDir: state.currentDir,
+    selectedPath: selected?.path || "",
+    viewMode: data.viewMode,
+    query: data.query,
+    visibleItems: visible.length,
+    totalItems: state.fs.filter((item) => !item.trashed).length,
+    hasPreview: Boolean(selected),
+    lastSync: data.lastSync || ""
+  };
+}
+
 function renderFiles() {
   const dirs = state.fs.filter((item) => item.type === "dir" && item.path.startsWith("/home/seis/") && item.path.split("/").length <= 4);
-  const items = listDir(state.currentDir);
+  const fileState = getFileManagerState();
+  const items = getFilteredFileItems(listDir(state.currentDir), fileState);
   const selected = getNode(state.selectedPath);
-  return `<div class="app-layout">
-    <aside class="app-sidebar">
+  const recentFiles = getSystemState().recent.filter((item) => item.type === "file").slice(0, 6);
+  const itemCards = items.map((item) => `<button type="button" class="file-card${item.path === state.selectedPath ? " is-active" : ""}" data-file-card data-action="select-file" data-path="${escapeAttr(item.path)}" data-drag-path="${escapeAttr(item.path)}"${item.type === "dir" ? ` data-drop-path="${escapeAttr(item.path)}"` : ""} draggable="true">
+    <span class="file-icon" aria-hidden="true">${item.type === "dir" ? "DIR" : "DOC"}</span>
+    <strong>${escapeHtml(baseName(item.path))}</strong>
+    <span>${item.type} · ${item.type === "file" ? `${byteLength(item.content)} bytes` : `${listDir(item.path).length} items`}</span>
+    <small>${escapeHtml(item.path)}</small>
+  </button>`).join("");
+  const itemRows = items.map((item) => `<button type="button" class="file-row${item.path === state.selectedPath ? " is-active" : ""}" data-file-card data-action="select-file" data-path="${escapeAttr(item.path)}" data-drag-path="${escapeAttr(item.path)}"${item.type === "dir" ? ` data-drop-path="${escapeAttr(item.path)}"` : ""} draggable="true">
+    <span>${item.type === "dir" ? "DIR" : "DOC"}</span>
+    <strong>${escapeHtml(baseName(item.path))}</strong>
+    <em>${escapeHtml(item.path)}</em>
+    <small>${item.type === "file" ? `${byteLength(item.content)} bytes` : `${listDir(item.path).length} items`}</small>
+  </button>`).join("");
+  return `<div class="app-layout file-manager-app" data-file-manager>
+    <aside class="app-sidebar file-sidebar">
       ${dirs.map((item) => `<button type="button" class="${item.path === state.currentDir ? "is-active" : ""}" data-action="select-file" data-path="${escapeAttr(item.path)}">${escapeHtml(baseName(item.path))}</button>`).join("")}
     </aside>
-    <section class="app-main">
+    <section class="app-main file-manager-main">
       <div class="toolbar">
         <button type="button" data-action="app-primary" data-app-id="files">Create File Index</button>
         <button type="button" data-action="new-file">New File</button>
@@ -3532,17 +4014,298 @@ function renderFiles() {
         <button type="button" data-action="open-file">Open</button>
         <button type="button" data-action="export-file">Export</button>
         <button type="button" data-action="delete-file">Move to Trash</button>
+        <button type="button" data-action="sync-code-workspace">Sync Code Workspace</button>
       </div>
-      <p class="status-note">Path: ${escapeHtml(state.currentDir)} · Selected: ${escapeHtml(selected?.path || "none")}</p>
-      <div class="file-grid" data-file-grid>
-        ${items.map((item) => `<button type="button" class="file-card${item.path === state.selectedPath ? " is-active" : ""}" data-file-card data-action="select-file" data-path="${escapeAttr(item.path)}" data-drag-path="${escapeAttr(item.path)}"${item.type === "dir" ? ` data-drop-path="${escapeAttr(item.path)}"` : ""} draggable="true">
-          <span class="file-icon" aria-hidden="true">${item.type === "dir" ? "DIR" : "DOC"}</span>
-          <strong>${escapeHtml(baseName(item.path))}</strong>
-          <span>${item.type} · ${item.type === "file" ? `${byteLength(item.content)} bytes` : `${listDir(item.path).length} items`}</span>
-        </button>`).join("")}
+      <div class="file-manager-controls">
+        <label>Search files<input class="input" data-file-search value="${escapeAttr(fileState.query)}" placeholder="Search current folder"></label>
+        <button type="button" data-action="refresh-files-filter">Apply Search</button>
+        <div class="file-view-toggle" role="group" aria-label="File view">
+          <button type="button" class="${fileState.viewMode === "grid" ? "is-active" : ""}" data-action="set-file-view" data-value="grid">Grid</button>
+          <button type="button" class="${fileState.viewMode === "list" ? "is-active" : ""}" data-action="set-file-view" data-value="list">List</button>
+        </div>
       </div>
+      <div class="metric-grid file-metric-grid">
+        <article class="metric-card"><strong>Directory</strong><p>${escapeHtml(shortPath(state.currentDir))}</p></article>
+        <article class="metric-card"><strong>Visible Items</strong><p>${items.length}</p></article>
+        <article class="metric-card"><strong>Total VFS Items</strong><p>${state.fs.filter((item) => !item.trashed).length}</p></article>
+        <article class="metric-card"><strong>Bridge</strong><p>${escapeHtml(fileState.lastSync || "Desktop + SEIS Code")}</p></article>
+      </div>
+      <p class="status-note">Path: ${escapeHtml(state.currentDir)} · Selected: ${escapeHtml(selected?.path || "none")} · View: ${escapeHtml(fileState.viewMode)}</p>
+      <div class="file-workbench">
+        <div class="${fileState.viewMode === "list" ? "file-list-view" : "file-grid"}" data-file-grid data-file-view="${escapeAttr(fileState.viewMode)}">
+          ${items.length ? (fileState.viewMode === "list" ? itemRows : itemCards) : "<p class=\"muted\">No files match this search.</p>"}
+        </div>
+        ${renderFilePreview(selected)}
+      </div>
+      <section class="file-recents-panel">
+        <strong>Recent Files</strong>
+        <div class="file-recents-list">
+          ${recentFiles.map((item) => `<button type="button" data-action="open-file" data-path="${escapeAttr(item.path || "")}">${escapeHtml(item.title || baseName(item.path || ""))}<span>${escapeHtml(shortPath(item.path || ""))}</span></button>`).join("") || "<p class=\"muted\">Open or save a file to populate recents.</p>"}
+        </div>
+      </section>
     </section>
   </div>`;
+}
+
+function getDemoStudioData() {
+  const data = getAppData("demo-studio");
+  if (!SEIS_DEMO_JOURNEYS.some((journey) => journey.id === data.activeJourneyId)) data.activeJourneyId = SEIS_DEMO_JOURNEYS[0].id;
+  if (!Array.isArray(data.completedSteps)) data.completedSteps = [];
+  if (!Array.isArray(data.runs)) data.runs = [];
+  if (!data.checklist || typeof data.checklist !== "object") {
+    data.checklist = {
+      mockLabels: true,
+      localDemo: true,
+      providerSecrets: true,
+      approvalGates: true,
+      mobileReady: false
+    };
+  }
+  return data;
+}
+
+function getDemoJourney(journeyId) {
+  return SEIS_DEMO_JOURNEYS.find((journey) => journey.id === journeyId) || SEIS_DEMO_JOURNEYS[0];
+}
+
+function demoStepKey(journeyId, stepId) {
+  return `${journeyId}:${stepId}`;
+}
+
+function selectDemoJourney(journeyId) {
+  const journey = getDemoJourney(journeyId);
+  const data = getDemoStudioData();
+  data.activeJourneyId = journey.id;
+  data.lastAction = `Selected ${journey.title}.`;
+  log("demo-studio", data.lastAction);
+  saveState();
+  renderOpenWindows("demo-studio");
+}
+
+function completeDemoStep(data, journey, step) {
+  const key = demoStepKey(journey.id, step.id);
+  if (!data.completedSteps.includes(key)) data.completedSteps.push(key);
+  data.lastStep = {
+    journeyId: journey.id,
+    stepId: step.id,
+    label: step.label,
+    time: new Date().toISOString()
+  };
+}
+
+function runDemoJourneyStep(stepId) {
+  const data = getDemoStudioData();
+  const journey = getDemoJourney(data.activeJourneyId);
+  const step = journey.steps.find((item) => item.id === stepId);
+  if (!step) return;
+  completeDemoStep(data, journey, step);
+  if (step.appId && step.appId !== "demo-studio") openApp(step.appId);
+  if (step.companionAppId) openApp(step.companionAppId);
+  if (step.actionId === "audit-installed-ai-systems") auditInstalledAiSystems();
+  if (step.actionId === "export-model-preflight") exportModelScalingPreflight();
+  if (step.appId === "demo-studio") exportDemoJourneyEvidence(journey.id, { quiet: true });
+  getAppStatus("demo-studio").lastAction = `Ran ${step.label}.`;
+  log("demo-studio", `Ran ${journey.title} step: ${step.label}.`);
+  toast("Demo Step", `${step.label} completed in ${step.state} mode.`);
+  saveState();
+  renderOpenWindows("demo-studio");
+}
+
+function runDemoJourney(journeyId) {
+  const data = getDemoStudioData();
+  const journey = getDemoJourney(journeyId || data.activeJourneyId);
+  data.activeJourneyId = journey.id;
+  const appIds = new Set();
+  for (const step of journey.steps) {
+    completeDemoStep(data, journey, step);
+    if (step.appId && step.appId !== "demo-studio") appIds.add(step.appId);
+    if (step.companionAppId) appIds.add(step.companionAppId);
+  }
+  for (const appId of appIds) openApp(appId);
+  data.runs.unshift({
+    id: `demo-run-${Date.now()}`,
+    journeyId: journey.id,
+    title: journey.title,
+    time: new Date().toISOString(),
+    steps: journey.steps.length
+  });
+  data.runs = data.runs.slice(0, 10);
+  const path = exportDemoJourneyEvidence(journey.id, { quiet: true });
+  getAppStatus("demo-studio").lastAction = `${journey.title} run saved to ${path}.`;
+  log("demo-studio", `${journey.title} run completed locally.`);
+  toast("Demo Journey", `${journey.title} opened ${appIds.size} surface(s).`);
+  saveState();
+  renderOpenWindows("demo-studio");
+}
+
+function toggleDemoChecklist(key) {
+  const data = getDemoStudioData();
+  data.checklist[key] = !data.checklist[key];
+  log("demo-studio", `Checklist ${key} set to ${data.checklist[key] ? "ready" : "not ready"}.`);
+  saveState();
+  renderOpenWindows("demo-studio");
+}
+
+function exportDemoJourneyEvidence(journeyId, options = {}) {
+  const data = getDemoStudioData();
+  const journey = getDemoJourney(journeyId || data.activeJourneyId);
+  const timestamp = new Date().toISOString();
+  const path = "/home/seis/Documents/seis-demo-studio-evidence.md";
+  data.lastEvidencePath = path;
+  data.lastEvidenceAt = timestamp;
+  upsertFile(path, buildDemoStudioEvidenceMarkdown(timestamp, journey));
+  getListData("demo-studio").unshift({
+    id: `demo-studio-${Date.now()}`,
+    title: `${journey.title} evidence saved`,
+    body: path,
+    done: true
+  });
+  if (!options.quiet) toast("Demo Evidence", path);
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  return path;
+}
+
+function buildDemoStudioEvidenceMarkdown(timestamp, journey) {
+  const data = getDemoStudioData();
+  const checklistLines = DEMO_STUDIO_CHECKLIST.map(([key, label]) => `- ${data.checklist[key] ? "[x]" : "[ ]"} ${label}`);
+  return `# SEIS Demo Studio Evidence
+
+Generated: ${timestamp}
+Journey: ${journey.title}
+Mode: ${journey.mode}
+Status: ${journey.status}
+Primary app: ${getApp(journey.primaryApp)?.name || journey.primaryApp}
+Route: ${journey.routeId || "none"}
+
+## Summary
+${journey.summary}
+
+## Proof
+${journey.proof}
+
+## Steps
+${journey.steps.map((step) => {
+    const complete = data.completedSteps.includes(demoStepKey(journey.id, step.id)) ? "complete" : "queued";
+    return `- ${step.label}: ${complete} / ${step.state} / ${step.output}`;
+  }).join("\n")}
+
+## Gates
+${journey.gates.map((gate) => `- ${gate}`).join("\n")}
+
+## Readiness Checklist
+${checklistLines.join("\n")}
+
+## Non-Claims
+- This evidence is browser-local.
+- No provider call was made by Demo Studio.
+- No SSH command was executed.
+- No deployment, Git push, Git merge, or production cloud mutation occurred.
+- Planned model-scaling lanes remain evidence-gated and approval-gated.
+`;
+}
+
+function getDemoStudioSnapshot() {
+  const data = getDemoStudioData();
+  const activeJourney = getDemoJourney(data.activeJourneyId);
+  return {
+    journeyCount: SEIS_DEMO_JOURNEYS.length,
+    activeJourneyId: activeJourney.id,
+    activeJourneyTitle: activeJourney.title,
+    stepCount: activeJourney.steps.length,
+    completedSteps: data.completedSteps.length,
+    runCount: data.runs.length,
+    readyChecklistCount: DEMO_STUDIO_CHECKLIST.filter(([key]) => data.checklist[key]).length,
+    statusLegendCount: SEIS_DEMO_STUDIO_STATUS.length,
+    lastEvidencePath: data.lastEvidencePath || "",
+    hasEvidence: Boolean(getNode(data.lastEvidencePath || ""))
+  };
+}
+
+function renderDemoStudio() {
+  const data = getDemoStudioData();
+  const journey = getDemoJourney(data.activeJourneyId);
+  const completed = new Set(data.completedSteps);
+  const completedInJourney = journey.steps.filter((step) => completed.has(demoStepKey(journey.id, step.id))).length;
+  return `<section class="app-main demo-studio-app" data-demo-studio-app>
+    <div class="demo-studio-hero">
+      <div>
+        <span>SEIS Demo Studio</span>
+        <h2>Guided proof that SEIS is one connected creative OS.</h2>
+        <p>${escapeHtml(journey.summary)}</p>
+      </div>
+      <div class="demo-proof-strip">
+        <article><strong>${SEIS_DEMO_JOURNEYS.length}</strong><span>journeys</span></article>
+        <article><strong>${completedInJourney}/${journey.steps.length}</strong><span>steps complete</span></article>
+        <article><strong>${DEMO_STUDIO_CHECKLIST.filter(([key]) => data.checklist[key]).length}/${DEMO_STUDIO_CHECKLIST.length}</strong><span>checks ready</span></article>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="demo-studio">Save Demo Evidence</button>
+      <button type="button" data-action="run-demo-journey" data-value="${escapeAttr(journey.id)}">Run Selected Journey</button>
+      <button type="button" data-action="export-demo-journey" data-value="${escapeAttr(journey.id)}">Export Evidence</button>
+      <button type="button" data-action="open-app" data-app-id="${escapeAttr(journey.primaryApp)}">Open Primary App</button>
+      ${journey.routeId ? `<button type="button" data-action="open-demo-route" data-value="${escapeAttr(journey.routeId)}">Open Route</button>` : ""}
+    </div>
+    <div class="demo-journey-board" data-demo-journey-board>
+      ${SEIS_DEMO_JOURNEYS.map((item) => `<button type="button" class="demo-journey-card${item.id === journey.id ? " is-active" : ""}" data-demo-studio-journey="${escapeAttr(item.id)}" data-action="select-demo-journey" data-value="${escapeAttr(item.id)}">
+        <small>${escapeHtml(item.mode)} · ${escapeHtml(item.status)}</small>
+        <strong>${escapeHtml(item.title)}</strong>
+        <span>${escapeHtml(item.summary)}</span>
+      </button>`).join("")}
+    </div>
+    <div class="demo-runway">
+      <section>
+        <div class="section-heading">
+          <span>${escapeHtml(journey.status)}</span>
+          <h3>${escapeHtml(journey.title)}</h3>
+          <p>${escapeHtml(journey.proof)}</p>
+        </div>
+        <div class="demo-step-grid">
+          ${journey.steps.map((step, index) => {
+            const isComplete = completed.has(demoStepKey(journey.id, step.id));
+            return `<article class="demo-step-card${isComplete ? " is-complete" : ""}" data-demo-studio-step="${escapeAttr(step.id)}">
+              <div class="demo-step-index">${index + 1}</div>
+              <div>
+                <span class="demo-status-pill">${escapeHtml(step.state)}</span>
+                <h4>${escapeHtml(step.label)}</h4>
+                <p>${escapeHtml(step.output)}</p>
+                <div class="demo-step-actions">
+                  <button type="button" data-action="run-demo-journey-step" data-value="${escapeAttr(step.id)}">${isComplete ? "Run Again" : "Run Step"}</button>
+                  ${step.appId && step.appId !== "demo-studio" ? `<button type="button" data-action="open-app" data-app-id="${escapeAttr(step.appId)}">Open ${escapeHtml(getApp(step.appId)?.name || step.appId)}</button>` : ""}
+                  ${step.companionAppId ? `<button type="button" data-action="open-app" data-app-id="${escapeAttr(step.companionAppId)}">Open ${escapeHtml(getApp(step.companionAppId)?.name || step.companionAppId)}</button>` : ""}
+                </div>
+              </div>
+            </article>`;
+          }).join("")}
+        </div>
+      </section>
+      <aside class="demo-readiness-panel">
+        <section>
+          <h3>Truth Status</h3>
+          <div class="demo-status-list">
+            ${SEIS_DEMO_STUDIO_STATUS.map(([label, detail]) => `<article><strong>${escapeHtml(label)}</strong><p>${escapeHtml(detail)}</p></article>`).join("")}
+          </div>
+        </section>
+        <section>
+          <h3>Readiness Checklist</h3>
+          <div class="demo-checklist-grid">
+            ${DEMO_STUDIO_CHECKLIST.map(([key, label]) => `<button type="button" class="${data.checklist[key] ? "is-ready" : ""}" data-demo-studio-check="${escapeAttr(key)}" data-action="toggle-demo-check" data-value="${escapeAttr(key)}">
+              <span>${data.checklist[key] ? "Ready" : "Open"}</span>
+              <strong>${escapeHtml(label)}</strong>
+            </button>`).join("")}
+          </div>
+        </section>
+        <section>
+          <h3>Evidence</h3>
+          <p class="status-note">${escapeHtml(data.lastEvidencePath || "No Demo Studio evidence exported yet.")}</p>
+          <div class="demo-run-history">
+            ${(data.runs || []).slice(0, 4).map((run) => `<article><strong>${escapeHtml(run.title)}</strong><span>${escapeHtml(new Date(run.time).toLocaleString())}</span></article>`).join("") || "<p class=\"muted\">Run a journey to create local history.</p>"}
+          </div>
+        </section>
+      </aside>
+    </div>
+  </section>`;
 }
 
 function renderCode() {
@@ -3879,6 +4642,8 @@ function primaryActionLabel(app) {
     launchpad: "Save Layout",
     "system-os": "Save OS Blueprint",
     "seis-command-center": "Save V17 Snapshot",
+    "demo-studio": "Save Demo Evidence",
+    "second-brain": "Save Vault Snapshot",
     "seis-website": "Save Website Map",
     store: "Audit Store",
     music: "Save Playlist",
@@ -4044,7 +4809,7 @@ function renderGenericApp(app) {
 
 function renderLaunchpadApp() {
   const categories = [...new Set(APPS.map((app) => app.category))];
-  const featuredIds = ["seis-code", "code-ide", "search", "seis-design", "seis-cloud", "seis-store", "music", "ai-assistant", "video-hero-gallery", "mythic-gacha"];
+  const featuredIds = ["seis-code", "code-ide", "search", "seis-design", "seis-cloud", "second-brain", "seis-store", "music", "ai-assistant", "video-hero-gallery", "mythic-gacha"];
   const featured = featuredIds.map(getApp).filter(Boolean);
   return `<section class="app-main launchpad-app" data-launchpad-app>
     <div class="toolbar">
@@ -4085,6 +4850,187 @@ function renderLaunchpadApp() {
           <strong>${escapeHtml(app.name)}</strong>
           <small>${escapeHtml(app.category)}</small>
         </button>`).join("")}
+      </div>
+    </section>
+  </section>`;
+}
+
+function getSecondBrainData() {
+  const data = getAppData("second-brain");
+  if (!data.activeNoteId || !SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.some((note) => note.id === data.activeNoteId)) {
+    data.activeNoteId = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes[0].id;
+  }
+  if (!Array.isArray(data.activity)) {
+    data.activity = [
+      { id: "seed-capture", step: "Capture", status: "Ready", detail: "Browser-local Markdown vault is ready." },
+      { id: "seed-review", step: "Review", status: "Human review required", detail: "Public GitHub publishing remains gated." }
+    ];
+  }
+  return data;
+}
+
+function getSecondBrainLinks() {
+  return SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.flatMap((note) =>
+    note.links
+      .filter((targetId) => SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.some((target) => target.id === targetId))
+      .map((targetId) => [note.id, targetId])
+  );
+}
+
+function getSecondBrainBacklinks(noteId) {
+  return SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.filter((note) => note.links.includes(noteId));
+}
+
+function renderSecondBrain() {
+  const data = getSecondBrainData();
+  const notes = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes;
+  const links = getSecondBrainLinks();
+  const activeNote = notes.find((note) => note.id === data.activeNoteId) || notes[0];
+  const backlinks = getSecondBrainBacklinks(activeNote.id);
+  const nodePositions = [
+    ["seis-os-map", "50%", "12%"],
+    ["ai-core-router", "22%", "34%"],
+    ["sub-agent-council", "50%", "42%"],
+    ["obsidian-bridge", "78%", "33%"],
+    ["github-readiness", "35%", "72%"],
+    ["security-review", "68%", "72%"]
+  ];
+  const positionFor = (id) => nodePositions.find(([nodeId]) => nodeId === id) || [id, "50%", "50%"];
+
+  return `<section class="app-main second-brain-app" data-second-brain-app>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="second-brain">Save Vault Snapshot</button>
+      <button type="button" data-action="second-brain-capture">Capture Note</button>
+      <button type="button" data-action="second-brain-link">Link Graph</button>
+      <button type="button" data-action="second-brain-review">Run Review Gate</button>
+      <button type="button" data-action="second-brain-export-github">Export GitHub Readiness</button>
+      <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
+      <button type="button" data-action="open-app" data-app-id="sub-agent-control">Open Sub-Agent Control</button>
+      <button type="button" data-action="open-app" data-app-id="files">Open Files</button>
+    </div>
+    <p class="status-note" data-second-brain-status>${SEIS_SECOND_BRAIN_SYSTEM.labels.map(escapeHtml).join(" · ")}. ${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary)}</p>
+    <section class="second-brain-hero">
+      <div>
+        <h2>SEIS Second Brain</h2>
+        <p>Obsidian-style Markdown vault, installed AI profiles, bounded sub-agent lanes, Search, Files, and GitHub governance are connected as one local knowledge cockpit.</p>
+      </div>
+      <aside>
+        <strong>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.status)}</strong>
+        <span>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.obsidianState)}</span>
+      </aside>
+    </section>
+    <div class="metric-grid">
+      <article class="metric-card"><strong>Vault Notes</strong><p>${notes.length}</p></article>
+      <article class="metric-card"><strong>Graph Links</strong><p>${links.length}</p></article>
+      <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+      <article class="metric-card"><strong>Managed Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
+      <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
+      <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
+      <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
+      <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
+    </div>
+    <section class="second-brain-layout">
+      <aside class="second-brain-vault" data-second-brain-vault>
+        <h3>Markdown Vault</h3>
+        <p class="status-note">Browser-local Markdown files only. Private Obsidian vault imports stay disabled until reviewed.</p>
+        <div class="second-brain-note-list">
+          ${notes.map((note) => `<button type="button" class="${note.id === activeNote.id ? "is-active" : ""}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
+            <strong>${escapeHtml(note.title)}</strong>
+            <span>${escapeHtml(note.folder)} · ${escapeHtml(note.status)}</span>
+            <small>${escapeHtml(note.tags.join(" "))}</small>
+          </button>`).join("")}
+        </div>
+      </aside>
+      <section class="second-brain-graph-panel" data-second-brain-graph>
+        <div class="second-brain-graph-header">
+          <div>
+            <h3>Knowledge Graph</h3>
+            <p class="status-note">Nodes and backlinks are generated from repo-owned local demo records.</p>
+          </div>
+          <button type="button" class="secondary-action" data-action="open-app" data-app-id="search">Search Vault</button>
+        </div>
+        <div class="second-brain-graph">
+          ${links.map((_link, index) => `<span class="second-brain-edge edge-${index % 6}" aria-hidden="true"></span>`).join("")}
+          ${notes.map((note) => {
+            const [, x, y] = positionFor(note.id);
+            return `<button type="button" class="second-brain-node ${note.id === activeNote.id ? "is-active" : ""}" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
+              <span>${escapeHtml(note.title.split(" ").map((part) => part[0]).join("").slice(0, 3))}</span>
+              <strong>${escapeHtml(note.title)}</strong>
+              <small>${escapeHtml(note.status)}</small>
+            </button>`;
+          }).join("")}
+        </div>
+      </section>
+      <aside class="second-brain-inspector" data-second-brain-inspector>
+        <h3>${escapeHtml(activeNote.title)}</h3>
+        <p>${escapeHtml(activeNote.summary)}</p>
+        <dl>
+          <div><dt>Status</dt><dd>${escapeHtml(activeNote.status)}</dd></div>
+          <div><dt>Path</dt><dd>${escapeHtml(activeNote.path)}</dd></div>
+          <div><dt>Tags</dt><dd>${escapeHtml(activeNote.tags.join(" "))}</dd></div>
+          <div><dt>Backlinks</dt><dd>${backlinks.length ? backlinks.map((note) => escapeHtml(note.title)).join(", ") : "None yet"}</dd></div>
+        </dl>
+        <h4>Installed AI + Sub-Agent Duties</h4>
+        <div class="second-brain-agent-list">
+          ${SEIS_SECOND_BRAIN_SYSTEM.agentLanes.map(([agent, permission, duty]) => `<article>
+            <strong>${escapeHtml(agent)}</strong>
+            <span>${escapeHtml(permission)}</span>
+            <p>${escapeHtml(duty)}</p>
+          </article>`).join("")}
+        </div>
+      </aside>
+    </section>
+    <section class="subagent-panel second-brain-ai-index" data-second-brain-ai-index>
+      <h3>Installed AI + Agent Memory Index</h3>
+      <p class="status-note">All currently registered installed AI profiles and managed sub-agent lanes are mapped as Second Brain context. They stay Local Demo, Missing Key, Disabled, or status/plan-only until a backend provider and human approval exist.</p>
+      <div class="split-pane">
+        <div>
+          <h4>Installed AI Profiles</h4>
+          <table class="data-table" data-second-brain-installed-ai>
+            <thead><tr><th>System</th><th>Status</th><th>Boundary</th></tr></thead>
+            <tbody>${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `<tr>
+              <td><strong>${escapeHtml(system.name)}</strong><br><span class="muted">${escapeHtml(system.role)}</span></td>
+              <td>${escapeHtml(system.status)}</td>
+              <td>${escapeHtml(system.boundary)}</td>
+            </tr>`).join("")}</tbody>
+          </table>
+        </div>
+        <div>
+          <h4>Managed Sub-Agent Lanes</h4>
+          <table class="data-table" data-second-brain-subagents>
+            <thead><tr><th>Lane</th><th>Tool</th><th>Scope</th></tr></thead>
+            <tbody>${SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `<tr>
+              <td><strong>${escapeHtml(name)}</strong><br><span class="muted">${escapeHtml(lane)}</span></td>
+              <td>${escapeHtml(tool)}</td>
+              <td>${escapeHtml(scope)}</td>
+            </tr>`).join("")}</tbody>
+          </table>
+        </div>
+      </div>
+      <h4>Autonomous Agent Roster</h4>
+      <table class="data-table" data-second-brain-agent-roster>
+        <thead><tr><th>Agent</th><th>Status</th><th>Second Brain duty</th></tr></thead>
+        <tbody>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `<tr><td>${escapeHtml(agent)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(duty)}</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel" data-second-brain-github-gate>
+      <h3>Capture -> Link -> Review -> GitHub Gate</h3>
+      <div class="second-brain-pipeline">
+        ${SEIS_SECOND_BRAIN_SYSTEM.pipeline.map(([step, status, detail]) => `<article>
+          <strong>${escapeHtml(step)}</strong>
+          <span>${escapeHtml(status)}</span>
+          <p>${escapeHtml(detail)}</p>
+        </article>`).join("")}
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Gate</th><th>Status</th></tr></thead>
+        <tbody>${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `<tr><td>${escapeHtml(gate)}</td><td>Required before public use</td></tr>`).join("")}</tbody>
+      </table>
+    </section>
+    <section class="subagent-panel">
+      <h3>Recent Second Brain Activity</h3>
+      <div class="list">
+        ${data.activity.slice(0, 8).map((item) => `<article class="mini-card"><strong>${escapeHtml(item.step)}</strong><p class="muted">${escapeHtml(item.status)}</p><p>${escapeHtml(item.detail)}</p></article>`).join("")}
       </div>
     </section>
   </section>`;
@@ -4645,13 +5591,15 @@ function renderSeisSystemOSApp() {
   const openWindows = state.windows.length;
   const liveActivities = [
     ["Profile", activeProfile, "Linux, macOS, and Windows-like modes switch the shell style without copying protected branding."],
-    ["Workspace", state.activeWorkspace || "1", "Three browser-safe workspaces preserve window placement and app state."],
+    ["Workspace", currentWorkspace(), "Three browser-safe workspaces preserve window placement and app state."],
     ["Apps", `${installedApps}`, "System apps, SEIS Code, Design, Cloud, Store, Music, Gacha, and WOW references are all searchable."],
     ["Evidence", SEIS_SYSTEM_OS_EVIDENCE.mcpStatus, "Sub-agent evidence remains local-demo-only, dry-run, and release-gated."]
   ];
+  const fusionPreview = SEIS_WOW_DESIGN_FUSION.slice(0, 4);
   const nextApps = [
     ["seis-code", "SEIS Code", "VS Code-like editor"],
     ["seis-design", "SEIS Design", "Creative studio"],
+    ["second-brain", "Second Brain", "Vault and agent graph"],
     ["seis-website", "SEIS Website", "Product pages"],
     ["seis-cloud", "SEIS Cloud", "SSH/cloud boundary"],
     ["seis-store", "SEIS Store", "App catalog"],
@@ -4669,6 +5617,7 @@ function renderSeisSystemOSApp() {
       </span>
       <button type="button" data-action="app-primary" data-app-id="seis-system-os">Save OS Blueprint</button>
       <button type="button" data-action="open-search">Search Everything</button>
+      <button type="button" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
       <button type="button" data-action="open-demo-route" data-value="wow-gallery-web">Open 190-Screen Reference</button>
       <button type="button" data-action="toggle-status">Quick Status</button>
     </div>
@@ -4676,13 +5625,27 @@ function renderSeisSystemOSApp() {
       <div>
         <p class="status-note">SEIS System OS is the connected browser operating layer. It borrows the idea of Linux, macOS, and Windows-style workflows without copying their product identities.</p>
         <h2>SEIS OS first. Apps after.</h2>
-        <p>The shell now treats widgets, live activities, app switching, workspaces, recents, Files, Terminal, Code, Design, Cloud, Store, AI, and WOW references as one system instead of separate pages.</p>
+        <p>The shell now combines the supplied WOW packs, Kimi LinuxOS direction, and VS Code Web direction into one SEIS identity: left activity rail, bottom dock, searchable launcher, command center tiles, Files, Terminal, Code, Design, Cloud, Store, AI, and WOW references in the same system.</p>
       </div>
       <aside class="system-os-evidence-card">
         <strong>${SEIS_SYSTEM_OS_EVIDENCE.completionPercent}%</strong>
         <span>local demo evidence</span>
         <small>${SEIS_SYSTEM_OS_EVIDENCE.quarters} quarters · ${SEIS_SYSTEM_OS_EVIDENCE.lanes} lanes · ${SEIS_SYSTEM_OS_EVIDENCE.mcpTools} MCP tools · dry-run only</small>
       </aside>
+    </section>
+    <section class="system-reference-layout" aria-label="Combined SEIS WOW design language">
+      <div class="system-reference-copy">
+        <span class="wow-section-kicker">Combined design source</span>
+        <h3>Same dark OS shell, brighter app cards, clearer launch paths.</h3>
+        <p>The active direction uses the reference files as visual evidence, not as copied branding: the SEIS shell keeps the dark desktop frame, adds the command-center style app tiles, and keeps every tile connected to a runnable app or route.</p>
+      </div>
+      <div class="wow-fusion-grid compact">
+        ${fusionPreview.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
+          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          <span>${escapeHtml(item.title)}</span>
+          <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
+        </button>`).join("")}
+      </div>
     </section>
     <div class="metric-grid">
       <article class="metric-card"><strong>OS Profile</strong><p>${escapeHtml(activeProfile)}</p></article>
@@ -4730,14 +5693,17 @@ function renderSeisSearchGateway() {
   const activeTab = SEIS_SEARCH_TABS.includes(data.activeTab) ? data.activeTab : "AI";
   const websiteRoutes = DEMO_ROUTES.filter((route) => (
     route.kind === "Website" ||
+    route.kind === "Web Linux route" ||
     route.kind === "External reference" ||
     ["seis-code-web", "mythic-gacha-web", "video-hero-gallery", "video-hero-nature", "video-hero-still-life", "video-hero-materials", "video-hero-metal-parts"].includes(route.id)
   ));
   const gatewayApps = [
     ["seis-system-os", "SEIS System OS", "Operating shell", "Linux, macOS, and Windows-inspired widgets, app switcher, workspaces, recents, and evidence"],
+    ["linux-replica", "SEIS Linux Replica", "Supplied-code route", "Boot, login, taskbar, launcher, windows, VFS, terminal, 64 app targets"],
     ["seis-code", "SEIS Code", "VS Code-like app", "Monaco workspace, VFS bridge, terminal, extensions"],
     ["code-ide", "Code IDE", "Dedicated IDE cockpit", "Standalone cockpit for SEIS Code, terminal, extensions, and project files"],
     ["seis-design", "SEIS Design", "Creative OS", "Adobe/Figma-style workflow map, websites, motion, handoff"],
+    ["second-brain", "SEIS Second Brain", "Obsidian-style knowledge OS", "Markdown vault, graph, installed AI context, sub-agent lanes, and GitHub readiness gates"],
     ["seis-website", "SEIS Website", "Product pages", "Premium pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents"],
     ["seis-cloud", "SEIS Cloud", "Runtime boundary", "Ollama/Qwen/local runtime references, SSH/cloud safety gates"],
     ["seis-store", "SEIS Store", "App catalog", "App Store/Microsoft Store-style local catalog for apps and demo websites"],
@@ -4760,6 +5726,7 @@ function renderSeisSearchGateway() {
       <button type="button" data-action="open-app" data-app-id="seis-code">Open SEIS Code</button>
       <button type="button" data-action="open-app" data-app-id="code-ide">Open Code IDE</button>
       <button type="button" data-action="open-app" data-app-id="seis-design">Open SEIS Design</button>
+      <button type="button" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
       <button type="button" data-action="open-app" data-app-id="seis-website">Open SEIS Website</button>
       <button type="button" data-action="open-app" data-app-id="seis-cloud">Open SEIS Cloud</button>
       <button type="button" data-action="open-app" data-app-id="seis-store">Open Store</button>
@@ -4867,6 +5834,7 @@ function getSeisSearchTabResults(tab, context) {
   const byTab = {
     AI: [
       appResult(["ai-assistant", "SEIS AI", "AI Core", "Local Demo assistant, installed AI profiles, tool calls, and plugin awareness"]),
+      appResult(["second-brain", "SEIS Second Brain", "AI knowledge cockpit", "Obsidian-style Local Demo context, bounded sub-agents, and GitHub review gates"]),
       routeResult(DEMO_ROUTES.find((route) => route.id === "seis-ai-core-3d-demo")),
       ...SEIS_INSTALLED_AI_SYSTEMS.slice(0, 3).map((system) => ({
         title: system.name,
@@ -4953,12 +5921,14 @@ function getV17CommandCenterCoverage() {
     liveSshExecution: false,
     liveDeployment: false,
     modelScalingFloor: "20B local-planned profile for 16GB+ RAM",
-    modelScalingFuture: "70B research and 150B frontier tiers require future hardware, safety, cost, privacy, and validation evidence",
+    modelScalingFuture: "70B research, 150B frontier, and 512B AGI apex tiers require future hardware, safety, cost, privacy, AGI capability evaluation, and validation evidence",
     modelScalingProfile: SEIS_MODEL_SCALING_UI_PROFILE,
     modelScalingPreflight: {
       status: SEIS_MODEL_SCALING_UI_PROFILE.preflightStatus,
       reportPath: SEIS_MODEL_SCALING_UI_PROFILE.preflightReport,
       benchmarkManifest: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkManifest,
+      benchmarkDryRunReport: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkDryRunReport,
+      benchmarkDryRunStatus: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkDryRunStatus,
       modelCardTemplate: SEIS_MODEL_SCALING_UI_PROFILE.modelCardTemplate,
       datasetCardTemplate: SEIS_MODEL_SCALING_UI_PROFILE.datasetCardTemplate,
       evidenceTemplateStatus: SEIS_MODEL_SCALING_UI_PROFILE.evidenceTemplateStatus,
@@ -4969,6 +5939,57 @@ function getV17CommandCenterCoverage() {
       hostPreflightOutput: SEIS_MODEL_SCALING_UI_PROFILE.hostPreflightOutput,
       requiredMeasurements: SEIS_MODEL_SCALING_UI_PROFILE.requiredMeasurements.slice(),
       benchmarkGates: SEIS_MODEL_SCALING_UI_PROFILE.benchmarkGates.slice()
+    },
+    modelFrontierEscalationPolicy: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.frontierEscalationPolicy,
+      resource: SEIS_MODEL_SCALING_UI_PROFILE.frontierEscalationResource,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.frontierEscalationStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.frontierEscalationQualityGate,
+      rule: SEIS_MODEL_SCALING_UI_PROFILE.frontierEscalationRule,
+      routeEligibleToday: false,
+      currentAllowedMode: "Local Demo and deterministic seed-model lab only"
+    },
+    frontierModelProgram: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgram,
+      resource: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgramResource,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgramStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgramQualityGate,
+      summary: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgramSummary,
+      routeEligibleToday: false,
+      runtimeAuthority: false,
+      trainingStatus: "not-started",
+      weightsAvailable: false,
+      inferenceAvailable: false,
+      benchmarkStatus: "not-run",
+      productionReady: false,
+      stages: SEIS_MODEL_SCALING_UI_PROFILE.frontierModelProgramStages.slice()
+    },
+    apexModelProgram: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgram,
+      resource: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramResource,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramQualityGate,
+      summary: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramSummary,
+      routeEligibleToday: false,
+      runtimeAuthority: false,
+      trainingStatus: "not-started",
+      weightsAvailable: false,
+      inferenceAvailable: false,
+      benchmarkStatus: "not-run",
+      agiCapabilityStatus: "not-demonstrated",
+      productionReady: false,
+      stages: SEIS_MODEL_SCALING_UI_PROFILE.apexModelProgramStages.slice()
+    },
+    modelScalingSubagentCouncil: {
+      path: SEIS_MODEL_SCALING_UI_PROFILE.modelScalingSubagentCouncil,
+      status: SEIS_MODEL_SCALING_UI_PROFILE.modelScalingSubagentCouncilStatus,
+      qualityGate: SEIS_MODEL_SCALING_UI_PROFILE.modelScalingSubagentCouncilQualityGate,
+      summary: SEIS_MODEL_SCALING_UI_PROFILE.modelScalingSubagentCouncilSummary,
+      agentCount: 12,
+      planOnlyAgentCount: 12,
+      routeEligibleToday: false,
+      runtimeBoundary: "status-and-plan-only",
+      assignments: SEIS_MODEL_SCALING_UI_PROFILE.subagentCouncilAssignments.slice()
     },
     masterObjectiveCoverage: {
       ...SEIS_MASTER_OBJECTIVE_COVERAGE_UI,
@@ -4991,6 +6012,21 @@ function renderSeisCommandCenter() {
     ["Mock Safe", "Concept is represented with explicit mock/disabled state labels."],
     ["Planned/Gated", "Roadmapped until hardware, API keys, approvals, or validation evidence exists."]
   ];
+  const commandTiles = [
+    ["seis-system-os", "OS", "System OS", "Desktop, launcher, windows", "violet"],
+    ["linux-replica", "LNX", "Linux Replica", "Supplied Web Linux shell", "cyan"],
+    ["ai-assistant", "AI", "AI Core", "Local Demo provider router", "cyan"],
+    ["search", "⌕", "Search", "Apps, files, routes, plugins", "amber"],
+    ["seis-code", "{}", "Code", "VS Code-style workspace", "violet"],
+    ["seis-design", "◆", "Design", "Canvas, tokens, previews", "rose"],
+    ["second-brain", "BR", "Second Brain", "Vault, graph, review gates", "amber"],
+    ["seis-cloud", "☁", "Cloud", "SSH-safe runtime boundary", "cyan"],
+    ["seis-store", "+", "Store", "Apps, agents, plugins", "amber"],
+    ["terminal", ">_", "Terminal", "Local demo commands", "rose"],
+    ["files", "▣", "Files", "VFS, recents, previews", "cyan"],
+    ["sub-agent-control", "AG", "Agents", "Dry-run evidence", "violet"]
+  ];
+  const commandReferences = SEIS_WOW_DESIGN_FUSION.slice(0, 5);
   return `<section class="app-main seis-command-center-app" data-seis-command-center>
     <div class="toolbar">
       <button type="button" data-action="app-primary" data-app-id="seis-command-center">Save V17 Snapshot</button>
@@ -4999,11 +6035,51 @@ function renderSeisCommandCenter() {
       <button type="button" data-action="open-app" data-app-id="ai-assistant">Open SEIS AI</button>
       <button type="button" data-action="open-app" data-app-id="code-ide">Open Code IDE</button>
       <button type="button" data-action="open-app" data-app-id="seis-design">Open Design</button>
+      <button type="button" data-action="open-app" data-app-id="second-brain">Open Second Brain</button>
       <button type="button" data-action="open-app" data-app-id="seis-cloud">Open Cloud</button>
       <button type="button" data-action="open-demo-route" data-value="seis-website-hub">Open Website</button>
       <button type="button" data-action="generic-export" data-app-id="seis-command-center">Export State</button>
     </div>
     <p class="status-note">SEIS Command Center is the V17 operating center. It unifies the runnable creative OS demo, AI Core, plugin bridge, website pages, model-scaling plan, and review gates without claiming live SSH, deployment, provider keys, or trained SEIS model ownership.</p>
+    <section class="wow-command-hero" aria-label="SEIS combined command center design">
+      <div class="wow-command-main">
+        <span class="wow-section-kicker">SEIS V17 Combined Surface</span>
+        <h2>Good Evening, Emirhan.</h2>
+        <p>This home screen blends the supplied WOW packs, the LinuxOS-style shell reference, and the VS Code Web reference into one SEIS Command Center. Every tile below opens a real local demo app surface.</p>
+        <div class="wow-command-grid">
+          ${commandTiles.map(([appId, glyph, title, detail, tone]) => `<button type="button" class="wow-command-tile is-${escapeAttr(tone)}" data-action="open-app" data-app-id="${escapeAttr(appId)}">
+            <span aria-hidden="true">${escapeHtml(glyph)}</span>
+            <strong>${escapeHtml(title)}</strong>
+            <small>${escapeHtml(detail)}</small>
+          </button>`).join("")}
+        </div>
+      </div>
+      <aside class="wow-command-side">
+        <article>
+          <span>Mode</span>
+          <strong>Local Demo</strong>
+          <p>Zero provider keys required for the core demo. AI, SSH, cloud, and model scaling stay clearly gated.</p>
+        </article>
+        <article>
+          <span>Reference Blend</span>
+          <strong>${SEIS_WOW_IMPORTS.reduce((sum, item) => sum + item.pages, 0)} screens</strong>
+          <p>Imported SEIS_WOW pages plus Kimi-style LinuxOS and VS Code Web references guide the visual system.</p>
+        </article>
+        <article>
+          <span>Interaction Target</span>
+          <strong>${escapeHtml(coverage.interactionTarget)}</strong>
+          <p>Clickable-looking controls route to apps, local exports, route previews, or explicitly labeled safe states.</p>
+        </article>
+        <button type="button" class="secondary-action" data-action="open-demo-route" data-value="wow-gallery-web">Review Combined Sources</button>
+      </aside>
+    </section>
+    <section class="wow-reference-ribbon" aria-label="WOW source previews">
+      ${commandReferences.map((item) => `<button type="button" class="wow-reference-chip" data-action="open-demo-route" data-value="wow-gallery-web">
+        <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} preview" loading="lazy">
+        <span>${escapeHtml(item.title)}</span>
+        <small>${escapeHtml(item.tag)}</small>
+      </button>`).join("")}
+    </section>
     <div class="metric-grid">
       <article class="metric-card"><strong>V17 Modules</strong><p>${coverage.moduleCount}</p></article>
       <article class="metric-card"><strong>Working</strong><p>${coverage.workingCount}</p></article>
@@ -5012,7 +6088,7 @@ function renderSeisCommandCenter() {
       <article class="metric-card"><strong>Core Keys</strong><p>${coverage.providerKeysRequiredForCoreDemo}</p></article>
       <article class="metric-card"><strong>Target Interactivity</strong><p>${coverage.interactionTarget}</p></article>
       <article class="metric-card"><strong>Model Floor</strong><p>20B / 16GB+</p></article>
-      <article class="metric-card"><strong>Frontier Tier</strong><p>150B gated</p></article>
+      <article class="metric-card"><strong>Frontier Tier</strong><p>512B gated</p></article>
       <article class="metric-card"><strong>Last Snapshot</strong><p>${data.lastSnapshot?.time || "Not saved yet"}</p></article>
     </div>
     <section class="subagent-panel">
@@ -5070,10 +6146,16 @@ function renderSeisCommandCenter() {
       <p class="status-note">150B remains blocked until: ${coverage.masterObjectiveCoverage.blockedUntil.map((item) => escapeHtml(item)).join(", ")}.</p>
     </section>
     <section class="subagent-panel">
-      <h3>20B to 150B Model Scaling Profile</h3>
+      <h3>20B to 512B AI / AGI Model Scaling Profile</h3>
       <div class="evolution-safety-grid">
         <article><strong>Target</strong><p>${escapeHtml(coverage.modelScalingProfile.currentTarget)} · ${escapeHtml(coverage.modelScalingProfile.ramClass)}</p></article>
         <article><strong>Frontier</strong><p>${escapeHtml(coverage.modelScalingProfile.frontierTarget)} · ${escapeHtml(coverage.modelScalingProfile.frontierStatus)}</p></article>
+        <article><strong>AGI Apex</strong><p>${escapeHtml(coverage.modelScalingProfile.apexTarget)} · ${escapeHtml(coverage.modelScalingProfile.apexStatus)}</p></article>
+        <article><strong>Escalation Policy</strong><p>${escapeHtml(coverage.modelFrontierEscalationPolicy.status)} · ${escapeHtml(coverage.modelFrontierEscalationPolicy.path)}</p></article>
+        <article><strong>150B Frontier Model Program</strong><p>${escapeHtml(coverage.frontierModelProgram.status)} · ${escapeHtml(coverage.frontierModelProgram.path)}</p></article>
+        <article><strong>512B Apex AGI Program</strong><p>${escapeHtml(coverage.apexModelProgram.status)} · ${escapeHtml(coverage.apexModelProgram.path)}</p></article>
+        <article><strong>Sub-Agent Council</strong><p>${escapeHtml(coverage.modelScalingSubagentCouncil.status)} · 12 plan-only agents</p></article>
+        <article><strong>Parameter Ladder</strong><p>${escapeHtml(coverage.modelScalingProfile.parameterLadderStatus)} · ${escapeHtml(coverage.modelScalingProfile.parameterLadderPath)}</p></article>
         <article><strong>Compatibility</strong><p>${escapeHtml(coverage.modelScalingProfile.compatibilityClaim)} · ${escapeHtml(coverage.modelScalingProfile.memoryBudgetStatus)}</p></article>
         <article><strong>Preflight</strong><p>${escapeHtml(coverage.modelScalingPreflight.status)} · ${escapeHtml(coverage.modelScalingPreflight.reportPath)}</p></article>
         <article><strong>Model Card</strong><p>${escapeHtml(coverage.modelScalingProfile.evidenceTemplateStatus)}</p></article>
@@ -5097,18 +6179,41 @@ function renderSeisCommandCenter() {
         <thead><tr><th>Creation Stage</th><th>Scope</th><th>Status</th></tr></thead>
         <tbody>${coverage.modelScalingProfile.creationStages.map(([stage, scope, status]) => `<tr><td>${escapeHtml(stage)}</td><td>${escapeHtml(scope)}</td><td>${escapeHtml(status)}</td></tr>`).join("")}</tbody>
       </table>
+      <table class="data-table">
+        <thead><tr><th>150B Program Stage</th><th>Status</th><th>Route State</th></tr></thead>
+        <tbody>${coverage.frontierModelProgram.stages.map(([stage, status, route]) => `<tr><td>${escapeHtml(stage)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(route)}</td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table">
+        <thead><tr><th>512B Apex Program Stage</th><th>Status</th><th>Route State</th></tr></thead>
+        <tbody>${coverage.apexModelProgram.stages.map(([stage, status, route]) => `<tr><td>${escapeHtml(stage)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(route)}</td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table">
+        <thead><tr><th>Model Scaling Sub-Agent Council</th><th>Lead Agents</th><th>Status</th><th>Route State</th></tr></thead>
+        <tbody>${coverage.modelScalingSubagentCouncil.assignments.map(([stage, agents, status, routeState]) => `<tr><td>${escapeHtml(stage)}</td><td>${escapeHtml(agents)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(routeState)}</td></tr>`).join("")}</tbody>
+      </table>
+      <table class="data-table">
+        <thead><tr><th>Parameter Ladder</th><th>Hardware Class</th><th>Status</th><th>Allowed Today</th></tr></thead>
+        <tbody>${coverage.modelScalingProfile.parameterLadderTargets.map(([target, hardware, status, allowed]) => `<tr><td>${escapeHtml(target)}</td><td>${escapeHtml(hardware)}</td><td>${escapeHtml(status)}</td><td>${escapeHtml(allowed)}</td></tr>`).join("")}</tbody>
+      </table>
       <p class="status-note">Required 16GB+ measurements before any compatibility claim: ${coverage.modelScalingProfile.requiredMeasurements.map((item) => escapeHtml(item)).join(", ")}.</p>
       <p class="status-note">Benchmark manifest required before route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.benchmarkManifest)}</code> · ${escapeHtml(coverage.modelScalingProfile.benchmarkStatus)}. Gates: ${coverage.modelScalingProfile.benchmarkGates.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">Parameter ladder resource: <code>${escapeHtml(coverage.modelScalingProfile.parameterLadderPath)}</code> · <code>${escapeHtml(coverage.modelScalingProfile.parameterLadderResource)}</code> · ${escapeHtml(coverage.modelScalingProfile.parameterLadderQualityGate)}.</p>
+      <p class="status-note">Benchmark dry-run report: <code>${escapeHtml(coverage.modelScalingPreflight.benchmarkDryRunReport)}</code> · ${escapeHtml(coverage.modelScalingPreflight.benchmarkDryRunStatus)}. This is preparation evidence only, not measured benchmark evidence.</p>
       <p class="status-note">Clean-room evidence templates required before any 20B route eligibility: <code>${escapeHtml(coverage.modelScalingProfile.modelCardTemplate)}</code> and <code>${escapeHtml(coverage.modelScalingProfile.datasetCardTemplate)}</code>. Status: ${escapeHtml(coverage.modelScalingProfile.evidenceTemplateStatus)}.</p>
       <p class="status-note">Local preflight report: <code>${escapeHtml(coverage.modelScalingPreflight.reportPath)}</code> · ${escapeHtml(coverage.modelScalingPreflight.status)}. This is a dry-run checklist, not a benchmark.</p>
       <p class="status-note">Host RAM preflight command: <code>${escapeHtml(coverage.modelScalingPreflight.hostPreflightCommand)}</code> writes optional ignored evidence to <code>${escapeHtml(coverage.modelScalingPreflight.hostPreflightOutput)}</code>.</p>
+      <p class="status-note">Frontier escalation policy: <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.path)}</code> · <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.resource)}</code> · ${escapeHtml(coverage.modelFrontierEscalationPolicy.status)} · <code>${escapeHtml(coverage.modelFrontierEscalationPolicy.qualityGate)}</code>. ${escapeHtml(coverage.modelFrontierEscalationPolicy.rule)}</p>
+      <p class="status-note">150B frontier model program: <code>${escapeHtml(coverage.frontierModelProgram.path)}</code> · <code>${escapeHtml(coverage.frontierModelProgram.resource)}</code> · ${escapeHtml(coverage.frontierModelProgram.status)} · <code>${escapeHtml(coverage.frontierModelProgram.qualityGate)}</code>. ${escapeHtml(coverage.frontierModelProgram.summary)}</p>
+      <p class="status-note">512B apex AGI program: <code>${escapeHtml(coverage.apexModelProgram.path)}</code> · <code>${escapeHtml(coverage.apexModelProgram.resource)}</code> · ${escapeHtml(coverage.apexModelProgram.status)} · <code>${escapeHtml(coverage.apexModelProgram.qualityGate)}</code>. ${escapeHtml(coverage.apexModelProgram.summary)}</p>
+      <p class="status-note">Model Scaling Sub-Agent Council: <code>${escapeHtml(coverage.modelScalingSubagentCouncil.path)}</code> · ${escapeHtml(coverage.modelScalingSubagentCouncil.status)} · <code>${escapeHtml(coverage.modelScalingSubagentCouncil.qualityGate)}</code>. ${escapeHtml(coverage.modelScalingSubagentCouncil.summary)}</p>
       <p class="status-note">Required 150B evidence before scope: ${coverage.modelScalingProfile.frontierRequiredEvidence.map((item) => escapeHtml(item)).join(", ")}.</p>
+      <p class="status-note">512B / AGI status: ${escapeHtml(coverage.apexModelProgram.agiCapabilityStatus)}. No 512B training, weights, inference, benchmark, checkpoint, cloud/GPU provisioning, SSH, deployment, or real AGI claim exists.</p>
     </section>
     <section class="subagent-panel">
       <h3>Safety Boundary</h3>
       <div class="evolution-safety-grid">
         <article><strong>AI</strong><p>Provider-neutral Local Demo by default. No browser secrets and no trained SEIS model claim.</p></article>
-        <article><strong>Model Scaling</strong><p>20B is a planned 16GB+ profile. 70B and 150B tiers need future hardware, inference, training, safety, cost, privacy, and benchmark evidence.</p></article>
+        <article><strong>Model Scaling</strong><p>20B is a planned 16GB+ profile. 70B, 150B, and 512B AGI tiers need future hardware, inference, training, safety, cost, privacy, benchmark, and AGI evaluation evidence.</p></article>
         <article><strong>SSH/Cloud</strong><p>Real SSH, deployment, firewall, VPN, and cloud mutations remain disabled until explicitly approved.</p></article>
         <article><strong>Review</strong><p>Use validators and snapshots as review evidence; dirty worktree state is reported separately from validator results.</p></article>
       </div>
@@ -5168,6 +6273,56 @@ function renderSeisWebsiteApp() {
   </section>`;
 }
 
+function renderLinuxReplicaApp() {
+  const data = getAppData("linux-replica");
+  const features = [
+    ["Boot + Login", "Adapted", "Boot progress, local login, and no-host/SSH boundary copy are implemented in the standalone route."],
+    ["Taskbar + Launcher", "Working", "Start button, category filters, search, taskbar app buttons, and tray clock are browser-local."],
+    ["Window Manager", "Working", "Apps open as draggable/minimize/maximize/close windows with focused z-order."],
+    ["VFS + Terminal", "Working", "Browser-local files and Linux-like commands such as ls, cd, cat, mkdir, rm, grep, tree, ps, and neofetch."],
+    ["64 App Targets", "Working", "Supplied-code app catalog idea is completed with SEIS templates for system, productivity, dev, creative, media, games, internet, and utilities."],
+    ["Safety Boundary", "Local Demo", "SSH, sudo, host shell, deployment, provider keys, and external network mutation are disabled or simulated clearly."]
+  ];
+  return `<section class="app-main linux-replica-app" data-linux-replica-app>
+    <div class="toolbar">
+      <button type="button" data-action="app-primary" data-app-id="linux-replica">Save Replica Handoff</button>
+      <button type="button" data-action="open-demo-route" data-value="seis-linux-replica-web">Open Full Linux Replica</button>
+      <button type="button" data-action="open-app" data-app-id="terminal">Open SEIS Terminal</button>
+      <button type="button" data-action="open-app" data-app-id="files">Open SEIS Files</button>
+    </div>
+    <section class="system-os-hero">
+      <div>
+        <p class="status-note">The supplied NebulaOS-style HTML was incomplete, so SEIS uses it as a shell implementation source: boot, login, taskbar, start menu, windows, VFS, and Linux-like terminal behavior are preserved under SEIS identity.</p>
+        <h2>Supplied code, SEIS shell.</h2>
+        <p>The standalone route runs locally at <code>./seis-linux-replica.html</code> with 64 app launch targets and no SSH, host OS, provider key, or cloud mutation.</p>
+      </div>
+      <aside class="system-os-evidence-card">
+        <strong>64</strong>
+        <span>local app targets</span>
+        <small>boot · login · taskbar · launcher · windows · VFS · terminal</small>
+      </aside>
+    </section>
+    <div class="system-module-grid">
+      ${features.map(([title, status, detail]) => `<button type="button" class="system-module-card" data-action="open-demo-route" data-value="seis-linux-replica-web">
+        <strong aria-hidden="true">${escapeHtml(title.split(" ").map((word) => word[0] || "").join("").slice(0, 3).toUpperCase())}</strong>
+        <span>${escapeHtml(title)}</span>
+        <small>${escapeHtml(status)}</small>
+        <em>${escapeHtml(detail)}</em>
+      </button>`).join("")}
+    </div>
+    <section class="subagent-panel">
+      <h3>Source Boundary</h3>
+      <p class="status-note">Source attachment: <code>pasted-text.txt</code>. The original pasted app list referenced many missing app functions and ended with placeholder comments; this SEIS route completes the runnable browser-local version without copying external branding claims.</p>
+      <div class="evolution-safety-grid">
+        <article><strong>Real</strong><p>Route, boot/login, launcher, windows, VFS, terminal commands, app templates, local persistence for accent.</p></article>
+        <article><strong>Local Demo</strong><p>Network, SSH, sudo, cloud, and provider behavior remain disabled or simulated.</p></article>
+        <article><strong>Review Evidence</strong><p>Use <code>npm run check:desktop-os</code>, <code>npm run check:seis-ultimate-demo</code>, and browser route smoke before promotion.</p></article>
+        <article><strong>Last Saved</strong><p>${data.lastSaved || "Not saved yet"}</p></article>
+      </div>
+    </section>
+  </section>`;
+}
+
 function renderWowGalleryApp() {
   const data = getAppData("wow-gallery");
   const totalPages = SEIS_WOW_IMPORTS.reduce((sum, item) => sum + item.pages, 0);
@@ -5180,6 +6335,7 @@ function renderWowGalleryApp() {
     ["AI Control Center", "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART2/png/19_ai_control_center.png", "ai"],
     ["Final Codex Pack", "./wow-pages/imported/SEIS_WOW_MORE_PAGES_PART4/png/100_final_codex_pack.png", "handoff"]
   ];
+  const fusionDesign = SEIS_WOW_DESIGN_FUSION;
   return `<section class="app-main wow-gallery-app" data-wow-gallery-app>
     <div class="toolbar">
       <button type="button" data-action="app-primary" data-app-id="wow-gallery">Save WOW Index</button>
@@ -5195,6 +6351,21 @@ function renderWowGalleryApp() {
       <article class="metric-card"><strong>Kimi Links</strong><p>${SEIS_WOW_REFERENCES.length}</p></article>
       <article class="metric-card"><strong>Last Saved</strong><p>${data.lastSaved ? escapeHtml(data.lastSaved) : "Not saved yet"}</p></article>
     </div>
+    <section class="wow-design-language">
+      <div class="wow-design-copy">
+        <span class="wow-section-kicker">Combined design language</span>
+        <h3>Dark OS frame, bright command cards, real app routes.</h3>
+        <p>The active SEIS direction combines the desktop overview, launchpad, command center, command palette, window manager, and store-detail references into one original SEIS shell. The external Kimi links remain inspiration only; the runnable implementation stays local and SEIS-branded.</p>
+      </div>
+      <div class="wow-fusion-grid">
+        ${fusionDesign.map((item) => `<button type="button" class="wow-fusion-card" data-action="open-demo-route" data-value="wow-gallery-web">
+          <img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)} reference preview" loading="lazy">
+          <span>${escapeHtml(item.title)}</span>
+          <small>${escapeHtml(item.source)} · ${escapeHtml(item.tag)}</small>
+          <em>${escapeHtml(item.motif)}</em>
+        </button>`).join("")}
+      </div>
+    </section>
     <section class="subagent-panel">
       <h3>Imported SEIS_WOW Collections</h3>
       <div class="search-gateway-grid">
@@ -5612,6 +6783,32 @@ function renderAiAssistantTab(activeTab, data) {
       </div>
     </div>`;
   }
+  if (activeTab === "Second Brain") {
+    return `<div class="subagent-ai-plan" data-ai-second-brain-bridge>
+      <div class="toolbar">
+        <button type="button" data-action="open-app" data-app-id="second-brain">Open SEIS Second Brain</button>
+        <button type="button" data-action="second-brain-link">Link Graph</button>
+        <button type="button" data-action="second-brain-review">Run Review Gate</button>
+      </div>
+      <p class="status-note">SEIS AI can use the Second Brain as Local Demo context only. Obsidian bridge planned; no private vault import, provider call, GitHub mutation, SSH, deployment, or credential access is performed from this tab.</p>
+      <div class="metric-grid">
+        <article class="metric-card"><strong>Vault Notes</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length}</p></article>
+        <article class="metric-card"><strong>Graph Links</strong><p>${getSecondBrainLinks().length}</p></article>
+        <article class="metric-card"><strong>Installed AI</strong><p>${SEIS_INSTALLED_AI_SYSTEMS.length}</p></article>
+        <article class="metric-card"><strong>Sub-Agent Lanes</strong><p>${SUB_AGENT_DEMO.lanes.length}</p></article>
+        <article class="metric-card"><strong>Agent Roster</strong><p>${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length}</p></article>
+        <article class="metric-card"><strong>Quality Gate</strong><p>${escapeHtml(SEIS_SECOND_BRAIN_SYSTEM.qualityGate)}</p></article>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Second Brain Source</th><th>Status</th><th>AI/Sub-agent duty</th></tr></thead>
+        <tbody>${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `<tr>
+          <td><strong>${escapeHtml(note.title)}</strong><br><span class="muted">${escapeHtml(note.path)}</span></td>
+          <td>${escapeHtml(note.status)}</td>
+          <td>${escapeHtml(note.summary)}</td>
+        </tr>`).join("")}</tbody>
+      </table>
+    </div>`;
+  }
   if (activeTab === "Tool Calls") {
     const calls = data.toolCalls || [];
     return `<div class="list" data-ai-tool-calls>
@@ -5811,6 +7008,8 @@ function exposeDiagnostics() {
     personalPluginBridge: () => SEIS_PERSONAL_PLUGIN_BRIDGE.map((plugin) => ({ ...plugin })),
     aiCoreResourceBridge: () => ({ ...SEIS_AI_CORE_RESOURCE_BRIDGE }),
     v17CommandCenter: () => getV17CommandCenterCoverage(),
+    demoStudioState: () => getDemoStudioSnapshot(),
+    fileManagerState: () => getFileManagerSnapshot(),
     codeIdeState: () => {
       const data = getCodeIdeData();
       const files = getCodeIdeFiles();
@@ -6696,6 +7895,23 @@ function runAppPrimaryAction(appId, body) {
     upsertFile(path, buildV17CommandCenterSnapshotMarkdown(timestamp));
     getListData(appId).unshift({ id: `v17-command-${Date.now()}`, title: "V17 Command Center snapshot saved", body: path, done: true });
     message = `SEIS V17 Command Center snapshot saved to ${path}.`;
+  } else if (app.type === "demo-studio") {
+    const data = getDemoStudioData();
+    const journey = getDemoJourney(data.activeJourneyId);
+    const path = exportDemoJourneyEvidence(journey.id, { quiet: true });
+    data.lastPrimaryAction = new Date().toISOString();
+    message = `SEIS Demo Studio evidence saved to ${path}.`;
+  } else if (app.type === "second-brain") {
+    const path = saveSecondBrainSnapshot("primary-snapshot", { quiet: true });
+    message = `SEIS Second Brain vault snapshot saved to ${path}.`;
+  } else if (app.type === "linux-replica") {
+    const data = getAppData(appId);
+    const timestamp = new Date().toISOString();
+    const path = "/home/seis/Documents/seis-linux-replica-handoff.md";
+    data.lastSaved = new Date(timestamp).toLocaleTimeString();
+    upsertFile(path, `# SEIS Linux Replica Handoff\n\nGenerated: ${timestamp}\nRoute: ./seis-linux-replica.html\nSource: user-supplied Web Linux / NebulaOS-style pasted code\n\n## Implemented\n- Boot screen\n- Local login\n- Taskbar\n- Start menu with search and categories\n- Draggable/minimize/maximize/close windows\n- Browser-local VFS\n- Linux-like terminal commands\n- 64 local app launch targets\n\n## Boundary\nThe pasted code ended with placeholder app comments, so SEIS completes the runnable route with local templates. This route does not execute SSH, host shell commands, deployment, provider calls, or external network mutation.\n`);
+    getListData(appId).unshift({ id: `linux-replica-${Date.now()}`, title: "Linux Replica handoff saved", body: path, done: true });
+    message = `SEIS Linux Replica handoff saved to ${path}.`;
   } else if (app.type === "seis-website") {
     const data = getAppData(appId);
     const timestamp = new Date().toISOString();
@@ -6910,6 +8126,274 @@ function runAppPrimaryAction(appId, body) {
   toast(app.name, message);
 }
 
+function addSecondBrainActivity(step, status, detail) {
+  const data = getSecondBrainData();
+  data.activity.unshift({
+    id: `second-brain-${Date.now()}`,
+    step,
+    status,
+    detail
+  });
+  data.activity = data.activity.slice(0, 12);
+  return data;
+}
+
+function buildSecondBrainNoteMarkdown(note, timestamp) {
+  const backlinks = getSecondBrainBacklinks(note.id);
+  return `# ${note.title}
+
+Generated: ${timestamp}
+Status: ${note.status}
+Folder: ${note.folder}
+Path: ${note.path}
+Tags: ${note.tags.join(" ")}
+
+## Summary
+
+${note.summary}
+
+## Outgoing Links
+
+${note.links.map((targetId) => {
+  const target = SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.find((candidate) => candidate.id === targetId);
+  return `- [[${target?.title || targetId}]]`;
+}).join("\n")}
+
+## Backlinks
+
+${backlinks.length ? backlinks.map((source) => `- [[${source.title}]]`).join("\n") : "- None yet"}
+
+## Safety Boundary
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
+function buildSecondBrainSnapshotMarkdown(timestamp, mode) {
+  return `# SEIS Second Brain Snapshot
+
+Generated: ${timestamp}
+Mode: ${mode}
+Status: ${SEIS_SECOND_BRAIN_SYSTEM.status}
+Obsidian: ${SEIS_SECOND_BRAIN_SYSTEM.obsidianState}
+Vault root: ${SEIS_SECOND_BRAIN_SYSTEM.vaultRoot}
+Source contract: ${SEIS_SECOND_BRAIN_SYSTEM.sourcePath}
+Product doc: ${SEIS_SECOND_BRAIN_SYSTEM.productDoc}
+Quality gate: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
+
+## Labels
+
+${SEIS_SECOND_BRAIN_SYSTEM.labels.map((label) => `- ${label}`).join("\n")}
+
+## Vault Notes
+
+${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => `- ${note.title}: ${note.status} / ${note.path}`).join("\n")}
+
+## Agent Lanes
+
+${SEIS_SECOND_BRAIN_SYSTEM.agentLanes.map(([agent, permission, duty]) => `- ${agent}: ${permission} / ${duty}`).join("\n")}
+
+## Installed AI Profiles
+
+${SEIS_INSTALLED_AI_SYSTEMS.map((system) => `- ${system.name}: ${system.status} / ${system.role} / ${system.boundary}`).join("\n")}
+
+## Managed Sub-Agent Lanes
+
+${SUB_AGENT_DEMO.lanes.map(([name, lane, tool, scope]) => `- ${name}: ${lane} / ${tool} / ${scope}`).join("\n")}
+
+## Autonomous Agent Roster
+
+${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.map(([agent, status, duty]) => `- ${agent}: ${status} / ${duty}`).join("\n")}
+
+## GitHub Gates
+
+${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Boundary
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`;
+}
+
+function saveSecondBrainSnapshot(mode = "snapshot", { quiet = false } = {}) {
+  const data = getSecondBrainData();
+  const timestamp = new Date().toISOString();
+  for (const note of SEIS_SECOND_BRAIN_SYSTEM.vaultNotes) {
+    upsertFile(note.path, buildSecondBrainNoteMarkdown(note, timestamp));
+  }
+  upsertFile(SEIS_SECOND_BRAIN_SYSTEM.snapshotPath, buildSecondBrainSnapshotMarkdown(timestamp, mode));
+  data.lastSnapshot = {
+    time: timestamp,
+    mode,
+    path: SEIS_SECOND_BRAIN_SYSTEM.snapshotPath,
+    noteCount: SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length,
+    graphLinks: getSecondBrainLinks().length,
+    externalMutation: false
+  };
+  getListData("second-brain").unshift({
+    id: `second-brain-snapshot-${Date.now()}`,
+    title: "Second Brain snapshot saved",
+    body: SEIS_SECOND_BRAIN_SYSTEM.snapshotPath,
+    done: true
+  });
+  addSecondBrainActivity("Snapshot", "Local Demo", `Saved ${SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.length} Markdown notes and snapshot artifact.`);
+  if (!quiet) {
+    const message = `SEIS Second Brain snapshot saved to ${SEIS_SECOND_BRAIN_SYSTEM.snapshotPath}.`;
+    getAppStatus("second-brain").lastAction = message;
+    log("second-brain", message);
+    saveState();
+    renderOpenWindows("second-brain");
+    renderOpenWindows("files");
+    renderOpenWindows("system-logs");
+    toast("SEIS Second Brain", message);
+  }
+  return SEIS_SECOND_BRAIN_SYSTEM.snapshotPath;
+}
+
+function selectSecondBrainNote(noteId) {
+  if (!SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.some((note) => note.id === noteId)) return;
+  const data = getSecondBrainData();
+  data.activeNoteId = noteId;
+  saveState();
+  renderOpenWindows("second-brain");
+}
+
+function captureSecondBrainNote() {
+  const timestamp = new Date().toISOString();
+  const path = `/home/seis/SecondBrain/00-inbox/capture-${Date.now()}.md`;
+  upsertFile(path, `# SEIS Second Brain Capture
+
+Generated: ${timestamp}
+Mode: Local Demo
+
+This capture is a browser-local note seed. It does not import a private Obsidian vault, call AI providers, push GitHub changes, execute SSH, or expose secrets.
+
+## Next Review
+
+- Link to an approved source note.
+- Check provenance.
+- Confirm no secrets.
+- Decide whether this belongs in public docs.
+`);
+  const data = addSecondBrainActivity("Capture", "Local Demo", `Captured browser-local note at ${path}.`);
+  data.lastCapture = { time: timestamp, path };
+  const message = `Second Brain capture saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function linkSecondBrainGraph() {
+  const timestamp = new Date().toISOString();
+  const path = "/home/seis/SecondBrain/graph-links.json";
+  const payload = {
+    generatedAt: timestamp,
+    mode: "browser-local-link-map",
+    nodes: SEIS_SECOND_BRAIN_SYSTEM.vaultNotes.map((note) => ({
+      id: note.id,
+      title: note.title,
+      status: note.status,
+      path: note.path,
+      tags: note.tags
+    })),
+    links: getSecondBrainLinks().map(([source, target]) => ({ source, target })),
+    boundary: SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary
+  };
+  upsertFile(path, JSON.stringify(payload, null, 2));
+  const data = addSecondBrainActivity("Link", "Local Demo", `Graph link map saved to ${path}.`);
+  data.lastGraph = { time: timestamp, path, links: payload.links.length };
+  const message = `Second Brain graph links saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function reviewSecondBrainVault() {
+  const timestamp = new Date().toISOString();
+  const path = "/home/seis/SecondBrain/second-brain-review-gate.md";
+  upsertFile(path, `# SEIS Second Brain Review Gate
+
+Generated: ${timestamp}
+Status: human-review-required
+
+## Required Checks
+
+${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
+
+## Current Result
+
+- Local Markdown vault: ready for browser demo review.
+- Obsidian bridge: planned, not connected.
+- GitHub publication: blocked until human review.
+- Secrets: no credential values should be stored in this vault.
+
+## Boundary
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`);
+  const data = addSecondBrainActivity("Review", "Human review required", `Review gate saved to ${path}.`);
+  data.lastReview = { time: timestamp, path, githubReady: false };
+  const message = `Second Brain review gate saved to ${path}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
+function exportSecondBrainGithubReadiness() {
+  const timestamp = new Date().toISOString();
+  upsertFile(SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath, `# SEIS Second Brain GitHub Readiness
+
+Generated: ${timestamp}
+Decision: Not ready for automatic publication
+
+## Public Use Gates
+
+${SEIS_SECOND_BRAIN_SYSTEM.githubGates.map((gate) => `- ${gate}`).join("\n")}
+
+## What Is Real Now
+
+- Browser-local Markdown vault export.
+- Knowledge graph and backlink display from repo-owned seed notes.
+- Installed AI profile index for ${SEIS_INSTALLED_AI_SYSTEMS.length} current systems as Local Demo/Missing Key/Disabled evidence.
+- Managed sub-agent lane index for ${SUB_AGENT_DEMO.lanes.length} current lanes as status/plan-only evidence.
+- Autonomous agent roster for ${SEIS_SECOND_BRAIN_SYSTEM.autonomousAgentRoster.length} Second Brain duties as review-gated planning evidence.
+- Validator-backed product contract: ${SEIS_SECOND_BRAIN_SYSTEM.qualityGate}
+
+## What Is Planned Or Disabled
+
+- Obsidian plugin sync.
+- Private vault import.
+- GitHub push, merge, release, Pages publication, or public community launch.
+- Live provider routing or autonomous write runtime.
+
+## Boundary
+
+${SEIS_SECOND_BRAIN_SYSTEM.runtimeBoundary}
+`);
+  const data = addSecondBrainActivity("GitHub Gate", "Human review before GitHub", `GitHub readiness export saved to ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}.`);
+  data.lastGithubReadiness = { time: timestamp, path: SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath, ready: false };
+  const message = `Second Brain GitHub readiness export saved to ${SEIS_SECOND_BRAIN_SYSTEM.githubReadinessPath}.`;
+  getAppStatus("second-brain").lastAction = message;
+  log("second-brain", message);
+  saveState();
+  renderOpenWindows("second-brain");
+  renderOpenWindows("files");
+  renderOpenWindows("system-logs");
+  toast("SEIS Second Brain", message);
+}
+
 function toggleGenericItem(appId, id) {
   const item = getListData(appId).find((entry) => entry.id === id);
   if (item) item.done = !item.done;
@@ -6983,8 +8467,30 @@ Generated: ${timestamp}
 - 16GB+ RAM floor: ${coverage.modelScalingFloor}
 - Future scale: ${coverage.modelScalingFuture}
 - 150B frontier target: ${coverage.modelScalingProfile.frontierTarget} / ${coverage.modelScalingProfile.frontierStatus}
+- 512B apex AGI target: ${coverage.modelScalingProfile.apexTarget} / ${coverage.modelScalingProfile.apexStatus}
 - Memory budget status: ${coverage.modelScalingProfile.memoryBudgetStatus}
 - Compatibility claim: ${coverage.modelScalingProfile.compatibilityClaim}
+- Benchmark dry-run report: ${coverage.modelScalingPreflight.benchmarkDryRunReport} / ${coverage.modelScalingPreflight.benchmarkDryRunStatus}
+- Frontier escalation policy: ${coverage.modelFrontierEscalationPolicy.path} / ${coverage.modelFrontierEscalationPolicy.status}
+- Frontier escalation resource: ${coverage.modelFrontierEscalationPolicy.resource}
+- Frontier escalation quality gate: ${coverage.modelFrontierEscalationPolicy.qualityGate}
+- Frontier escalation rule: ${coverage.modelFrontierEscalationPolicy.rule}
+- 150B frontier model program: ${coverage.frontierModelProgram.path} / ${coverage.frontierModelProgram.status}
+- 150B frontier model program resource: ${coverage.frontierModelProgram.resource}
+- 150B frontier model program quality gate: ${coverage.frontierModelProgram.qualityGate}
+- 150B frontier model program stages: ${coverage.frontierModelProgram.stages.map(([stage, status, route]) => `${stage} / ${status} / ${route}`).join("; ")}
+- 512B apex AGI program: ${coverage.apexModelProgram.path} / ${coverage.apexModelProgram.status}
+- 512B apex AGI program resource: ${coverage.apexModelProgram.resource}
+- 512B apex AGI program quality gate: ${coverage.apexModelProgram.qualityGate}
+- 512B apex AGI capability status: ${coverage.apexModelProgram.agiCapabilityStatus}
+- 512B apex AGI program stages: ${coverage.apexModelProgram.stages.map(([stage, status, route]) => `${stage} / ${status} / ${route}`).join("; ")}
+- Model scaling sub-agent council: ${coverage.modelScalingSubagentCouncil.path} / ${coverage.modelScalingSubagentCouncil.status}
+- Model scaling sub-agent council quality gate: ${coverage.modelScalingSubagentCouncil.qualityGate}
+- Model scaling sub-agent council agents: ${coverage.modelScalingSubagentCouncil.agentCount} total / ${coverage.modelScalingSubagentCouncil.planOnlyAgentCount} plan-only
+- Model scaling sub-agent council assignments: ${coverage.modelScalingSubagentCouncil.assignments.map(([stage, agents, status, routeState]) => `${stage} / ${agents} / ${status} / ${routeState}`).join("; ")}
+- Parameter ladder: ${coverage.modelScalingProfile.parameterLadderPath} / ${coverage.modelScalingProfile.parameterLadderStatus}
+- Parameter ladder resource: ${coverage.modelScalingProfile.parameterLadderResource}
+- Parameter ladder targets: ${coverage.modelScalingProfile.parameterLadderTargets.map(([target, hardware, status, allowed]) => `${target} / ${hardware} / ${status} / ${allowed}`).join("; ")}
 - Model card template: ${coverage.modelScalingProfile.modelCardTemplate} / ${coverage.modelScalingProfile.evidenceTemplateStatus}
 - Dataset card template: ${coverage.modelScalingProfile.datasetCardTemplate} / ${coverage.modelScalingProfile.evidenceTemplateStatus}
 - Quantization lanes: ${coverage.modelScalingProfile.quantizationProfiles.map(([lane, status, route]) => `${lane} / ${status} / ${route}`).join("; ")}
@@ -6997,6 +8503,7 @@ Generated: ${timestamp}
 - Host RAM preflight command: ${coverage.modelScalingPreflight.hostPreflightCommand}
 - Host RAM preflight output: ${coverage.modelScalingPreflight.hostPreflightOutput}
 - Training/inference ownership claim: none
+- AGI claim: none; 512B AGI capability is not demonstrated
 - Provider keys required for core demo: ${coverage.providerKeysRequiredForCoreDemo}
 
 ## Master Objective Coverage
@@ -7043,11 +8550,32 @@ Generated: ${timestamp}
 - Route eligible today: ${preflight.routeEligibleToday ? "yes" : "no"}
 - Measured benchmark: ${preflight.measuredBenchmark ? "yes" : "no"}
 - Benchmark manifest: ${preflight.benchmarkManifest}
+- Benchmark dry-run report: ${preflight.benchmarkDryRunReport}
+- Benchmark dry-run status: ${preflight.benchmarkDryRunStatus}
 - Model card template: ${preflight.modelCardTemplate}
 - Dataset card template: ${preflight.datasetCardTemplate}
 - Evidence template status: ${preflight.evidenceTemplateStatus}
 - Optional host RAM command: ${preflight.hostPreflightCommand}
 - Optional host RAM output: ${preflight.hostPreflightOutput}
+- Frontier escalation policy: ${coverage.modelFrontierEscalationPolicy.path}
+- Frontier escalation resource: ${coverage.modelFrontierEscalationPolicy.resource}
+- Frontier escalation status: ${coverage.modelFrontierEscalationPolicy.status}
+- Frontier escalation quality gate: ${coverage.modelFrontierEscalationPolicy.qualityGate}
+- Frontier escalation rule: ${coverage.modelFrontierEscalationPolicy.rule}
+- 150B frontier model program: ${coverage.frontierModelProgram.path}
+- 150B frontier model program resource: ${coverage.frontierModelProgram.resource}
+- 150B frontier model program status: ${coverage.frontierModelProgram.status}
+- 150B frontier model program quality gate: ${coverage.frontierModelProgram.qualityGate}
+- 150B frontier model program stages: ${coverage.frontierModelProgram.stages.map(([stage, status, route]) => `${stage} / ${status} / ${route}`).join("; ")}
+- Model scaling sub-agent council: ${coverage.modelScalingSubagentCouncil.path}
+- Model scaling sub-agent council status: ${coverage.modelScalingSubagentCouncil.status}
+- Model scaling sub-agent council quality gate: ${coverage.modelScalingSubagentCouncil.qualityGate}
+- Model scaling sub-agent council agents: ${coverage.modelScalingSubagentCouncil.agentCount} total / ${coverage.modelScalingSubagentCouncil.planOnlyAgentCount} plan-only
+- Parameter ladder: ${profile.parameterLadderPath}
+- Parameter ladder resource: ${profile.parameterLadderResource}
+- Parameter ladder status: ${profile.parameterLadderStatus}
+- Parameter ladder quality gate: ${profile.parameterLadderQualityGate}
+- Parameter ladder targets: ${profile.parameterLadderTargets.map(([target, hardware, status, allowed]) => `${target} / ${hardware} / ${status} / ${allowed}`).join("; ")}
 
 ## Truth Boundary
 This is a browser-local dry-run checklist. It does not download a model, run inference, train weights, call a provider, execute SSH, deploy infrastructure, measure RAM, or prove 16GB+ compatibility.
@@ -7063,6 +8591,9 @@ ${preflight.requiredMeasurements.map((item) => `- ${item}`).join("\n")}
 ## Future Frontier Boundary
 - 70B remains a research roadmap lane.
 - 150B remains a frontier research lane.
+- 300B+ remains an exploration boundary, not a scoped runtime.
+- Highest available future remains undefined until 20B, 70B, and 150B evidence exists.
+- No-skip-20B policy remains active.
 - 150B cannot be scoped until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy review, safety evaluation, observability, rollback, and explicit human approval exist.
 
 ## Non-Claims
@@ -7080,6 +8611,8 @@ function defaultGenericText(app) {
   if (app.type === "weather") return `Local weather: ${getAppData("weather").temperature} C, ${getAppData("weather").condition}`;
   if (app.type === "launchpad") return `SEIS Launchpad\n\nApps: ${APPS.length}\nFeatured: SEIS Code, Code IDE, SEIS Design, SEIS Cloud, Music, Store.\n`;
   if (app.type === "seis-command-center") return buildV17CommandCenterSnapshotMarkdown(new Date().toISOString());
+  if (app.type === "demo-studio") return buildDemoStudioEvidenceMarkdown(new Date().toISOString(), getDemoJourney(getDemoStudioData().activeJourneyId));
+  if (app.type === "second-brain") return buildSecondBrainSnapshotMarkdown(new Date().toISOString(), "default-export");
   if (app.type === "store") return `SEIS Store\n\nLocal catalog only. No dependency installation, payment flow, external store access, or provider key is required.\n`;
   if (app.type === "music") return `SEIS Music\n\n${SEIS_MUSIC_TRACKS.map((track) => `- ${track.title} / ${track.artist} / ${track.mood}`).join("\n")}\n`;
   if (app.type === "code-ide") return `SEIS Code IDE\n\nDedicated cockpit for SEIS Code, terminal commands, extensions, VFS files, and the standalone SEIS Code Web route.\n`;

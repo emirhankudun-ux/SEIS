@@ -240,6 +240,13 @@ async function smokeDesktop(client, baseUrl) {
   const initial = await evaluate(client, `(() => {
     const diagnostics = window.__SEIS_DESKTOP__;
     const summary = diagnostics.interactivitySummary();
+    const searchInput = document.querySelector('[data-launcher-search]');
+    const launcherAppsBeforeSearch = document.querySelectorAll('.launcher-app[data-action="open-app"]').length;
+    const routeButtonsBeforeSearch = document.querySelectorAll('[data-demo-route-group] [data-action="open-demo-route"]').length;
+    if (searchInput) {
+      searchInput.value = 'linux';
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
     return {
       title: document.title,
       appCount: diagnostics.appCount,
@@ -248,8 +255,11 @@ async function smokeDesktop(client, baseUrl) {
       boot: diagnostics.bootState(),
       launcherState: diagnostics.launcherState(),
       wallpaperState: diagnostics.wallpaperState(),
-      launcherApps: document.querySelectorAll('.launcher-app[data-action="open-app"]').length,
-      routeButtons: document.querySelectorAll('[data-demo-route-group] [data-action="open-demo-route"]').length,
+      launcherApps: launcherAppsBeforeSearch,
+      routeButtons: routeButtonsBeforeSearch,
+      linuxReplicaAppVisible: Boolean(document.querySelector('.launcher-app[data-app-id="linux-replica"]')),
+      linuxReplicaRouteVisible: Boolean(document.querySelector('[data-demo-route-group] [data-value="seis-linux-replica-web"]')),
+      launcherSearchQuery: searchInput?.value || '',
       dockApps: document.querySelectorAll('[data-dock] button').length,
       desktopShortcuts: document.querySelectorAll('.desktop-shortcut').length,
       terminalReady: Boolean(document.querySelector('[data-terminal-input]')),
@@ -275,6 +285,9 @@ async function smokeDesktop(client, baseUrl) {
   ensure(initial.wallpaperState.available.some((wallpaper) => wallpaper.id === "prism"), `Desktop wallpaper catalog must include SEIS Prism Wave: ${JSON.stringify(initial.wallpaperState)}`);
   ensure(initial.launcherApps >= 50, `Desktop launcher expected at least 50 app buttons, got ${initial.launcherApps}`);
   ensure(initial.routeButtons >= 3, `Desktop launcher expected demo route buttons, got ${initial.routeButtons}`);
+  ensure(initial.linuxReplicaAppVisible, "Desktop launcher must expose SEIS Linux Replica app.");
+  ensure(initial.launcherSearchQuery === "linux", "Desktop launcher smoke must query Linux Replica route visibility.");
+  ensure(initial.linuxReplicaRouteVisible, "Desktop launcher must expose SEIS Linux Replica route when searching linux.");
   ensure(initial.dockApps >= 8, `Desktop dock expected useful launch targets, got ${initial.dockApps}`);
   ensure(initial.desktopShortcuts >= 4, `Desktop expected desktop shortcuts, got ${initial.desktopShortcuts}`);
   ensure(initial.terminalReady, "Desktop terminal input missing.");
@@ -530,6 +543,7 @@ async function smokeDesktop(client, baseUrl) {
   ensure(shellPersistence.terminalFullscreen, `Fullscreen window state must persist after reload: ${JSON.stringify(shellPersistence)}`);
   ensure(shellPersistence.moved && shellPersistence.sourceGone, `Drag/drop moved path must persist after reload: ${JSON.stringify(shellPersistence)}`);
 
+  await waitFor(client, "Boolean(window.__SEIS_DESKTOP__?.systemState)", 10000);
   const controlCenter = await evaluate(client, `(() => {
     const diagnostics = window.__SEIS_DESKTOP__;
     const statusButton = document.querySelector('[data-action="toggle-status"]');
@@ -840,6 +854,7 @@ async function smokeDesktop(client, baseUrl) {
         "/home/seis/Documents/app-center-catalog.json",
         "/home/seis/Documents/extensions-audit.json",
         "/home/seis/Documents/sub-agent-control-dry-run.md",
+        "/home/seis/Documents/seis-demo-studio-evidence.md",
         "/home/seis/Documents/seis-design-demo-handoff.md",
         "/home/seis/Documents/seis-cloud-local-preflight.md",
         "/home/seis/Documents/seis-evolution-snapshot.md"

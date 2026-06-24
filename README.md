@@ -95,6 +95,7 @@ Key local validation commands:
 ```bash
 npm run check:desktop-os
 npm run check:seis-second-brain
+npm run check:seis-second-brain-browser-smoke
 npm run check:desktop-os-browser-smoke
 npm run check:seis-linux-replica-browser-smoke
 npm run check:seis-code
@@ -102,6 +103,7 @@ npm run check:seis-website-pages
 npm run check:seis-ultimate-demo
 npm run check:seis-fullstack-contract
 npm run check:seis-fullstack-server-smoke
+npm run check:seis-fullstack-no-server-fallback-smoke
 npm run check:seis-20b-benchmark-dry-run
 npm run check:seis-150b-frontier-model-program
 npm run check:seis-model-frontier-escalation-policy

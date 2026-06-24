@@ -465,8 +465,7 @@ function buildMarkdown(report) {
     "",
     "## Next Safe Action",
     "",
-    "Keep the browser Local Demo and this repository evidence report in sync before promoting any sub-agent workflow beyond dry-run or status-only behavior.",
-    ""
+    "Keep the browser Local Demo and this repository evidence report in sync before promoting any sub-agent workflow beyond dry-run or status-only behavior."
   ];
 
   return `${lines.join("\n")}\n`;

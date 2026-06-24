@@ -262,6 +262,9 @@ describe("executeTool", () => {
           frontierEscalationPolicy: "content/development/seis-model-frontier-escalation-policy.json",
           frontierModelProgram: "content/development/seis-150b-frontier-model-program.json",
           apexModelProgram: "content/development/seis-512b-apex-model-program.json",
+          benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+          benchmarkDryRun: "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+          localHardwarePreflightCheck: "scripts/check-seis-model-local-hardware-preflight.mjs",
           modelCardTemplate: "content/development/seis-20b-model-card-template.json",
           datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json"
         },
@@ -339,6 +342,46 @@ describe("executeTool", () => {
         forbiddenClaims: ["SEIS has trained a 20B foundation model.", "SEIS has trained a 150B foundation model."],
         humanApprovalRequiredFor: ["model download", "training run"],
         nextSafeActions: ["Keep Local Demo active."]
+      }),
+      "reports/seis-model-scaling/20b-16gb-memory-benchmark.json": JSON.stringify({
+        id: "seis-20b-16gb-memory-benchmark",
+        status: "template-not-measured",
+        targetParameterClass: "20B",
+        targetRamClass: "16GB+ RAM",
+        compatibilityClaim: "not-verified",
+        benchmarkEvidenceAvailable: false,
+        runtimeAuthority: false,
+        routeEligibleToday: false,
+        productionReady: false,
+        measurementTemplate: {
+          machineRamGb: null,
+          peakResidentMemoryGb: null,
+          tokensPerSecond: null
+        }
+      }),
+      "reports/seis-model-scaling/20b-benchmark-dry-run.json": JSON.stringify({
+        id: "seis-20b-benchmark-dry-run",
+        status: "dry-run-not-measured",
+        targetId: "seis-20b-local-compatibility-target",
+        parameterClass: "20B",
+        targetRamClass: "16GB+ RAM",
+        sourceOfTruth: {
+          hostHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs",
+          localHardwarePreflightCheck: "scripts/check-seis-model-local-hardware-preflight.mjs"
+        },
+        dryRunResult: {
+          canRequestRealBenchmarkToday: false,
+          routeEligibleToday: false,
+          runtimeAuthority: false,
+          productionReady: false,
+          measuredBenchmark: false,
+          modelCompatibilityVerified: false
+        },
+        readinessGates: [
+          { id: "host-preflight", status: "available-not-sufficient" },
+          { id: "measured-memory-benchmark", status: "blocked" }
+        ],
+        forbiddenClaims: ["SEIS has verified 16GB+ compatibility."]
       }),
       "content/development/seis-model-parameter-ladder.json": JSON.stringify({
         id: "seis-model-parameter-ladder",
@@ -1117,6 +1160,18 @@ describe("executeTool", () => {
     assert.equal(payload.currentTarget.weightsAvailable, false);
     assert.equal(payload.currentTarget.inferenceAvailable, false);
     assert.equal(payload.currentTarget.runtimeAuthority, false);
+    assert.equal(payload.benchmarkManifestPath, "reports/seis-model-scaling/20b-16gb-memory-benchmark.json");
+    assert.equal(payload.benchmarkDryRunPath, "reports/seis-model-scaling/20b-benchmark-dry-run.json");
+    assert.equal(payload.localHardwarePreflightCheckPath, "scripts/check-seis-model-local-hardware-preflight.mjs");
+    assert.equal(payload.benchmarkEvidence.manifestStatus, "template-not-measured");
+    assert.equal(payload.benchmarkEvidence.compatibilityClaim, "not-verified");
+    assert.equal(payload.benchmarkEvidence.benchmarkEvidenceAvailable, false);
+    assert.equal(payload.benchmarkEvidence.routeEligibleToday, false);
+    assert.equal(payload.benchmarkEvidence.runtimeAuthority, false);
+    assert.equal(payload.benchmarkEvidence.dryRunStatus, "dry-run-not-measured");
+    assert.equal(payload.benchmarkEvidence.canRequestRealBenchmarkToday, false);
+    assert.equal(payload.benchmarkEvidence.measuredBenchmark, false);
+    assert.equal(payload.benchmarkEvidence.modelCompatibilityVerified, false);
     assert.equal(payload.parameterLadderPath, "content/development/seis-model-parameter-ladder.json");
     assert.equal(payload.parameterLadder.id, "seis-model-parameter-ladder");
     assert.equal(payload.parameterLadder.resourceUri, "seis://ai/model-parameter-ladder.json");

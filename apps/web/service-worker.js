@@ -23,6 +23,7 @@
     "./seis-code.html",
     "./seis-code.css",
     "./seis-code.js",
+    "./seis-linux-replica.html",
     "./wow-gallery.html",
     "./wow-gallery.css",
     "./wow-gallery.js",

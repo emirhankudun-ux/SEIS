@@ -11,7 +11,8 @@ const paths = {
   benchmarkManifest: "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
   modelCardTemplate: "content/development/seis-20b-model-card-template.json",
   datasetCardTemplate: "content/development/seis-20b-dataset-card-template.json",
-  hostHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs"
+  hostHardwarePreflight: "scripts/inspect-seis-model-local-hardware.mjs",
+  localHardwarePreflightCheck: "scripts/check-seis-model-local-hardware-preflight.mjs"
 };
 const failures = [];
 
@@ -67,7 +68,8 @@ function buildReport() {
       benchmarkManifestTemplate: paths.benchmarkManifest,
       modelCardTemplate: paths.modelCardTemplate,
       datasetCardTemplate: paths.datasetCardTemplate,
-      hostHardwarePreflight: paths.hostHardwarePreflight
+      hostHardwarePreflight: paths.hostHardwarePreflight,
+      localHardwarePreflightCheck: paths.localHardwarePreflightCheck
     },
     sourceStatuses: {
       profileStatus: profile?.status || "missing",
@@ -165,6 +167,7 @@ function validateReport(candidate) {
   ensure(candidate.sourceStatuses.modelCardStatus === "template-not-filled", "model card must stay template-not-filled");
   ensure(candidate.sourceStatuses.datasetCardStatus === "template-not-filled", "dataset card must stay template-not-filled");
   ensure(candidate.sourceStatuses.memoryBudgetStatus === "planning-estimate-not-benchmark-evidence", "memory budget status mismatch");
+  ensure(candidate.sourceOfTruth.localHardwarePreflightCheck === paths.localHardwarePreflightCheck, "local hardware preflight check source mismatch");
 
   for (const [key, value] of Object.entries(candidate.dryRunResult || {})) {
     ensure(value === false, `dryRunResult.${key} must remain false`);

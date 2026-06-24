@@ -1,6 +1,7 @@
 import { localeDirection, localeLabels, supportedLocales, translations } from "../i18n/locales.js";
 
-const STORAGE_KEY = "seis-locale";
+const STORAGE_KEY = "seis.locale.v1";
+const LEGACY_STORAGE_KEY = "seis-locale";
 const DEFAULT_LOCALE = "tr";
 let currentLocale = DEFAULT_LOCALE;
 
@@ -30,6 +31,9 @@ function resolveInitialLocale() {
   try {
     const stored = window.localStorage.getItem(STORAGE_KEY);
     if (supportedLocales.includes(stored)) return stored;
+
+    const legacyStored = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (supportedLocales.includes(legacyStored)) return legacyStored;
   } catch {
     /* ignored */
   }
@@ -71,6 +75,7 @@ function applyLocale(locale, persist) {
   if (persist) {
     try {
       window.localStorage.setItem(STORAGE_KEY, activeLocale);
+      window.localStorage.setItem(LEGACY_STORAGE_KEY, activeLocale);
     } catch {
       /* ignored */
     }

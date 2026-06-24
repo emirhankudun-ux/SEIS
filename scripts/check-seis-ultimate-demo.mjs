@@ -27,10 +27,12 @@ const requiredFiles = [
   "apps/web/service-worker.js",
   "apps/web/website/product-page.js",
   "apps/web/website/product-page.css",
+  "content/development/seis-second-brain-system.json",
   "README.md",
   "docs/STATUS.md",
   "docs/product/seis-desktop-os.md",
   "docs/product/seis-demo-status.md",
+  "docs/product/seis-second-brain.md",
   "docs/roadmap/MASTER_BACKLOG.md",
   "docs/roadmap/NEXT_PR_QUEUE.md",
   "docs/reviews/SEIS_ULTIMATE_FOUNDATION_REVIEW.md"
@@ -69,6 +71,7 @@ if (failures.length === 0) {
   const requiredApps = [
     ["SEIS Desktop OS", "seis-system-os"],
     ["SEIS AI Core", "ai-assistant"],
+    ["SEIS Second Brain", "second-brain"],
     ["SEIS Search", "search"],
     ["SEIS Code IDE", "code-ide"],
     ["SEIS Design Studio", "seis-design"],
@@ -163,6 +166,8 @@ if (failures.length === 0) {
   const commandMarkers = [
     "check:seis-ultimate-demo",
     "check:desktop-os",
+    "check:seis-second-brain",
+    "check:seis-second-brain-browser-smoke",
     "check:desktop-os-browser-smoke",
     "check:product-experience-browser-smoke",
     "check:seis-website-pages",
@@ -199,4 +204,4 @@ if (failures.length > 0) {
   process.exit(1);
 }
 
-console.log(`SEIS ultimate demo coverage check passed: ${websitePages.length} website pages, 15 required modules, and 8 search tabs are covered.`);
+console.log(`SEIS ultimate demo coverage check passed: ${websitePages.length} website pages, 16 required modules, and 8 search tabs are covered.`);

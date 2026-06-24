@@ -15,6 +15,7 @@
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
     "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
     "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+    "localHardwarePreflightCheck": "scripts/check-seis-model-local-hardware-preflight.mjs",
     "parameterLadder": "content/development/seis-model-parameter-ladder.json",
     "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
     "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",

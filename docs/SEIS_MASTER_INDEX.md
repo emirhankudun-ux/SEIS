@@ -76,6 +76,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS Code runtime | [../apps/web/seis-code.js](../apps/web/seis-code.js) |
 | SEIS Second Brain contract | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) |
 | SEIS Second Brain validator | `npm run check:seis-second-brain` |
+| SEIS Second Brain browser smoke | `npm run check:seis-second-brain-browser-smoke` |
 | SEIS Linux Replica route | [../apps/web/seis-linux-replica.html](../apps/web/seis-linux-replica.html) |
 | SEIS Linux Replica browser smoke | `npm run check:seis-linux-replica-browser-smoke` |
 | Product experience browser smoke | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) |

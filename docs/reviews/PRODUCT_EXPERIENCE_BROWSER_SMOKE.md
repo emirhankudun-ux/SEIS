@@ -1,12 +1,12 @@
 # Product Experience Browser Smoke
 
-Date: 2026-06-23
+Date: 2026-06-24
 
 ## Purpose
 
 Capture repeatable browser QA evidence for the current SEIS product-experience
-slice covering SEIS Desktop OS, SEIS Code, Mythic Gacha, and the shared
-browser-local workspace export path.
+slice covering SEIS Desktop OS, SEIS Code, SEIS Second Brain, Mythic Gacha, and
+the shared browser-local workspace export path.
 
 ## Scope
 
@@ -20,6 +20,7 @@ This review covers:
 - `apps/web/mythic-gacha.html`
 - `apps/web/mythic-gacha.js`
 - `scripts/check-desktop-os-browser-smoke.mjs`
+- `scripts/check-seis-second-brain-browser-smoke.mjs`
 - `scripts/check-product-experience-browser-smoke.mjs`
 
 It does not claim deployment, public readiness, a production desktop operating
@@ -29,24 +30,27 @@ system, live AI provider readiness, or full visual-regression coverage.
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| SEIS Desktop app catalog | Passed | Dedicated Chrome smoke found 78 apps, 78 launcher app buttons, 20 dock targets, and 8 desktop shortcuts. |
+| SEIS Desktop app catalog | Passed | Dedicated Chrome smoke found 80 apps, 80 launcher app buttons, 22 dock targets, and 10 desktop shortcuts including SEIS Demo Studio and SEIS Linux Replica. |
 | SEIS Desktop boot and launcher | Passed | Dedicated Chrome smoke waited for the browser-local SEIS boot sequence to complete, verified the no-host/SSH boundary text, verified the launcher frequent-app strip, category set, and SEIS Prism Wave wallpaper catalog entry. |
-| SEIS Desktop windows | Passed | Dedicated Chrome smoke opened all 78 app windows, found no unopened or weak app surfaces, verified a pointer-driven Terminal resize from 760 x 420 to 880 x 486, verified left/right snap positions with matching 628px widths, and confirmed sanitized route-reload restoration of Terminal snap, geometry, workspace, full-screen state, and session diagnostics. |
+| SEIS Desktop windows | Passed | Dedicated Chrome smoke opened all 80 app windows, found no unopened or weak app surfaces, verified a pointer-driven Terminal resize from 760 x 420 to 880 x 486, verified left/right snap positions with matching 628px widths, and confirmed sanitized route-reload restoration of Terminal snap, geometry, workspace, full-screen state, and session diagnostics. |
 | SEIS Desktop shell context | Passed | Dedicated Chrome smoke opened the desktop canvas context menu, switched the wallpaper to SEIS Prism Wave, opened a Files context menu with rename/copy/delete actions, copied a browser-local path, dragged a file into a folder, opened the Terminal window context menu, toggled full-screen, and verified wallpaper, moved path, and full-screen state persisted after route reload. |
 | SEIS Desktop OS profiles | Passed | Dedicated Chrome smoke switched through macOS, Windows, and Linux-style profiles and verified diagnostics, shell `data-os-profile`, and active pressed button state. |
 | SEIS Desktop virtual workspaces | Passed | Dedicated Chrome smoke opened Notes in workspace 1, switched to workspace 2, verified Notes was hidden, opened Calculator in workspace 2, verified workspace-specific visibility in both directions, and confirmed active workspace 2 plus visible Terminal session state restored after route reload. |
 | SEIS Desktop Control Center | Passed | Dedicated Chrome smoke opened the top-bar Control Center, verified the notification list, cleared notifications, toggled network to Offline and audio to Muted, recorded Notes in recents, and confirmed network/audio/notification/recent state persisted after route reload. |
 | SEIS Desktop keyboard shortcuts | Passed | Dedicated Chrome smoke opened the shortcut overlay with `Ctrl/Cmd + /`, verified 12 executable shortcut rows across 3 groups, clicked a workspace shortcut row, dispatched `Ctrl/Cmd + Alt + 3` and `Ctrl/Cmd + Alt + T`, and verified shortcut state plus workspace 3 persisted after reload. |
-| SEIS Desktop interactivity | Passed | Dedicated Chrome smoke measured 100% responsive clickable controls in the latest run, found 59 primary workflow app surfaces, executed all 59 primary workflows, observed 8 generated local workflow artifacts, reloaded `desktop.html`, and verified all 8 artifacts plus all 59 workflow statuses persisted. |
+| SEIS Desktop interactivity | Passed | Dedicated Chrome smoke measured 100% responsive clickable controls in the latest run, found 61 primary workflow app surfaces, executed all 61 primary workflows, observed 9 generated local workflow artifacts, reloaded `desktop.html`, and verified all 9 artifacts plus all 61 workflow statuses persisted. |
+| SEIS Demo Studio | Passed | Dedicated Chrome smoke opened SEIS Demo Studio, selected the Builder Workflow, executed a Files step, ran the selected journey, and verified `/home/seis/Documents/seis-demo-studio-evidence.md` plus Demo Studio diagnostics. |
+| SEIS Files workbench | Passed | Dedicated Chrome smoke verified Files diagnostics, search input, explicit grid/list view state, list-view switching, and query persistence through `fileManagerState()`. |
 | SEIS Desktop terminal | Passed | Dedicated Chrome smoke wrote, read, moved, and removed browser-local files; it also entered the Local Demo `claude` command and verified Local Demo output. |
 | SEIS Desktop demo routes | Passed | Dedicated Chrome smoke found launcher route cards, opened SEIS AI App through SEIS Search, and resolved the SEIS Code Web route from the command palette. |
 | Sub-Agent OS demo | Passed | Dedicated Chrome smoke found the Sub-Agent OS Demo route, opened Sub-Agent Control, rendered Linux/macOS/Windows profile controls, verified six managed local sub-agent processes, wrote the process ledger, verified suspend/resume behavior, verified the 20-quarter compressed simulation, and verified local dry-run plus simulation artifact workflows. |
 | SEIS AI Core spatial command surface | Passed | Dedicated Chrome smoke verified five AI Core version targets, six lane nodes, interactive orbit rotation, local snapshot evidence at `/home/seis/Documents/seis-ai-core-orbit-snapshot.md`, promotion preview to `v0.2-read-only-intelligence`, and five-year completion to `v1.0-public-enterprise-candidate`. |
 | SEIS AI Plugin Center | Passed | Dedicated Chrome smoke opened the SEIS AI App, verified Plugin Center and Sub-Agent Plan tabs and controls, toggled a local plugin lane, and observed the generated tool-call history. |
 | SEIS Installed AI Systems | Passed | Dedicated Chrome smoke verified six supervised AI/operator profiles, the Local Demo runtime profile, no-key provider language, the read-only AI Core Resource Bridge, the diagnostics API, `/home/seis/Documents/installed-ai-systems-audit.md`, and `/home/seis/Documents/seis-ai-core-resource-bridge.md` evidence. |
+| SEIS Second Brain | Passed | Dedicated Chrome smoke opened the SEIS Second Brain desktop window, verified 6 vault notes, 6 graph nodes, 6 installed AI rows, 6 managed sub-agent rows, 12 autonomous-agent rows, and 5 real actions; saved snapshot, capture, graph, review, and GitHub-readiness artifacts under `/home/seis/SecondBrain`; verified reload persistence, SEIS AI Second Brain bridge rendering, mobile no-overflow, 21 mobile controls, and zero cramped mobile targets. |
 | SEIS Desktop to SEIS Code handoff | Passed | Dedicated Chrome smoke opened SEIS Code after Desktop terminal operations, found created folders/files, verified moved paths, confirmed removed paths were absent, and read `browser-smoke` plus `moved-smoke` through the SEIS Code terminal. |
-| SEIS Desktop mobile | Passed | Dedicated Chrome smoke loaded 390 x 844 mobile layout with 78 launcher apps, no horizontal overflow, and zero cramped targets. |
-| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 34 MCP tools, 20 MCP resources, and three MCP prompts without provider keys. |
+| SEIS Desktop mobile | Passed | Dedicated Chrome smoke loaded 390 x 844 mobile layout with 80 launcher apps, no horizontal overflow, and zero cramped targets. |
+| SEIS demo 3D hero and AI Core constellation | Passed | Product smoke verified the standalone SEIS demo hero canvas is ready, animated, nonblank, exposes 32 graph nodes / 53 edges, records Rotate, Sync, Pause, and constellation Sync interactions, and surfaces six AI routes, five personal plugin lanes, 34 MCP tools, 26 MCP resources, and three MCP prompts without provider keys. |
 | SEIS Code shell | Passed | Headless Chrome loaded the route, found 8 top menus, 5 activity views, 4 bottom panels, and no horizontal overflow. |
 | SEIS Code interactivity | Passed | Browser smoke now measures the SEIS Code clickable-response rate against the 80% acceptance floor before and after core interactions. |
 | SEIS Code editor | Passed with Monaco | Headless Chrome loaded Monaco, kept the fallback editor visually hidden, and accepted the SEIS Code editor surface as ready. |
@@ -63,22 +67,89 @@ system, live AI provider readiness, or full visual-regression coverage.
 
 ```bash
 npm run check:desktop-os-browser-smoke
+npm run check:seis-second-brain-browser-smoke
+npm run check:product-experience-browser-smoke
 ```
+
+## Combined WOW Design Check
+
+The 2026-06-24 design pass uses the imported SEIS_WOW page packs and the
+user-supplied Kimi LinuxOS / VS Code Web references as visual direction for an
+original SEIS surface. Command Center now renders a dark command-home shell
+with bright app tiles, right-side Local Demo/status panels, and a source
+reference ribbon. System OS and WOW Gallery now expose the same combined design
+language as reference-backed cards.
+
+Visual QA screenshots were generated locally under
+`dist/qa/combined-wow-design/`:
+
+- `command-center.png`
+- `system-os.png`
+- `wow-gallery.png`
+
+These screenshot artifacts are local review evidence and are not committed
+visual-regression baselines.
 
 The broader product smoke remains a required cross-app regression gate; this
 latest update reran the dedicated Desktop OS Chrome smoke for the boot sequence,
 launcher frequent strip, SEIS Prism Wave wallpaper, context-menu, drag/drop, and
 full-screen work.
 
+## Supplied Web Linux Code Integration
+
+The SEIS Linux Replica route at `apps/web/seis-linux-replica.html` adapts the
+user-supplied Web Linux / NebulaOS-style pasted code into an original SEIS
+browser-local shell. The pasted source was incomplete and included placeholder
+app comments, so it was not copied directly as a broken route. The implemented
+route preserves the working product pattern: boot screen, local login, taskbar,
+start menu with categories/search, draggable/minimize/maximize/close windows,
+browser-local VFS, Linux-like terminal commands, TR/EN locale switching through
+the shared `seis.locale.v1` key, and 64 app launch targets. It also exposes a
+connected SEIS bridge for Search, Code, Design, Cloud, Store, Website, Music,
+and AI Core without running live providers, SSH, deployment, or host shell
+actions. The Code, Design, Cloud, Store, Music, and AI Core bridge entries now
+render mini workspaces that execute browser-local state changes, including local
+code-check output, design-token save, cloud health refresh, store install state,
+music playback state, and bounded AI agent activity labels.
+
+The full-stack interpretation for SEIS is now explicit: the current route is
+the tested frontend/client shell, while the next implementation slice must add
+a server/API/data boundary for durable sessions, user projects, app install
+state, AI provider routing status, audit logs, and safe agent task records. It
+must not replace the zero-key Local Demo mode or store secrets in browser
+storage.
+
+Standalone Chrome smoke evidence is now repeatable through
+`npm run check:seis-linux-replica-browser-smoke` and verifies:
+
+- boot/login completion
+- TR default language, EN toggle, `document.documentElement.lang`, and
+  `localStorage["seis.locale.v1"]` persistence
+- `window.__SEIS_LINUX_REPLICA__.appCount === 64`
+- terminal `neofetch` output with `Apps: 64`
+- terminal `seis` bridge output for connected SEIS surfaces
+- mini SEIS Code, Design, Cloud, Store, Music, and AI Core workspaces
+- 64 launcher tiles
+- Files, Terminal, Calculator, Settings, Search, and SEIS Code windows open
+  together
+- 9 SEIS Search scopes and connected Search/Code/Design/Cloud/Website result
+  cards
+- no desktop horizontal overflow
+- screenshot evidence at `dist/qa/seis-linux-replica-smoke/desktop.png`
+
+This route does not execute SSH, host shell commands, deployments, Git
+operations, provider calls, or external network mutations.
+
 Latest observed summary:
 
 - Browser: Google Chrome through Chrome DevTools Protocol.
-- SEIS Desktop OS: 78 apps, 38 terminal commands, 78 openable app windows,
-  59 primary workflow surfaces, 59 executed primary workflows,
-  8 generated local workflow artifacts, 8 persisted artifacts,
-  59 persisted workflow statuses, 100% measured clickable-response coverage,
+- SEIS Desktop OS: 80 apps, 38 terminal commands, 80 openable app windows,
+  61 primary workflow surfaces, 61 executed primary workflows,
+  9 generated local workflow artifacts, 9 persisted artifacts,
+  61 persisted workflow statuses, 100% measured clickable-response coverage,
   validated browser-local boot sequence completion and no-host/SSH boundary copy,
-  validated launcher frequent apps, category strip, route cards, and 78 app buttons,
+  validated launcher frequent apps, category strip, route cards, SEIS Linux
+  Replica, and 80 app buttons,
   validated Linux/macOS/Windows-style profile switching,
   validated virtual workspace isolation and selected-workspace reload persistence,
   validated a real window resize handle, left/right snap controls, and
@@ -91,6 +162,8 @@ Latest observed summary:
   recent app rows, and reload-persistent offline/muted state,
   validated keyboard shortcut overlay opening, executable shortcut rows,
   workspace switching, Terminal launch, and reload-persistent shortcut state,
+  SEIS Demo Studio guided Builder Workflow execution with local evidence export,
+  Files search/grid-list view diagnostics and preview workbench,
   six managed local sub-agent processes with a process-ledger artifact,
   Installed AI Systems profile bridge, read-only AI Core Resource Bridge, and audit artifacts,
   desktop-to-SEIS-Code workspace handoff for create/move/delete operations,
@@ -109,12 +182,12 @@ Latest observed summary:
   policy-cancelled destructive operations.
 - Mythic Gacha: 60 cards, draw result recorded, export path created.
 - Cross-app: Desktop terminal output and `MythicArchive` export visible through
-  SEIS Code terminal. Product smoke also observed 8 Desktop route buttons and 5
+  SEIS Code terminal. Product smoke also observed 10 Desktop route buttons and 6
   SEIS AI tabs in the shared-VFS desktop pass.
 - Standalone SEIS demo: AI Core 3D hero canvas ready, animated, nonblank, 32
   graph nodes, 53 edges, three hero controls, AI Core constellation Sync,
   6 installed AI routes, 5 personal plugin lanes, 34 MCP tools,
-  20 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
+  26 MCP resources, 3 MCP prompts, 20-quarter sub-agent run, and v0.1-to-v1.0
   local evidence export.
 - Screenshots were written under ignored `dist/qa/product-experience-smoke/`.
 

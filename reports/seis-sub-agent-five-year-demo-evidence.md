@@ -116,4 +116,3 @@ Runtime boundary: No provider keys, SSH credentials, browser secrets, live deplo
 ## Next Safe Action
 
 Keep the browser Local Demo and this repository evidence report in sync before promoting any sub-agent workflow beyond dry-run or status-only behavior.
-

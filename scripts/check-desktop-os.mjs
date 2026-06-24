@@ -89,6 +89,16 @@ if (failures.length === 0) {
   }
   ensure(js.includes("AI_PLUGIN_TABS"), "desktop.js must define AI Plugin Center tabs inside SEIS AI.");
   ensure(js.includes("data-ai-plugin-tab"), "desktop.js must render AI Plugin Center tab controls.");
+  ensure(js.includes("SEIS_SECOND_BRAIN_SYSTEM"), "desktop.js must define the SEIS Second Brain system contract.");
+  ensure(js.includes("seis-second-brain-app"), "desktop.js must expose the SEIS Second Brain route.");
+  ensure(js.includes("data-second-brain-app"), "desktop.js must render the SEIS Second Brain app surface.");
+  ensure(js.includes("data-ai-second-brain-bridge"), "desktop.js must render the SEIS AI Second Brain bridge tab.");
+  ensure(js.includes("data-second-brain-installed-ai"), "desktop.js must render installed AI profiles inside Second Brain.");
+  ensure(js.includes("data-second-brain-subagents"), "desktop.js must render managed sub-agent lanes inside Second Brain.");
+  ensure(js.includes("data-second-brain-agent-roster"), "desktop.js must render the 12-agent Second Brain roster.");
+  ensure(js.includes("seis-second-brain-vault-snapshot.md"), "desktop.js must save a Second Brain vault snapshot artifact.");
+  ensure(css.includes(".second-brain-app"), "desktop.css must style SEIS Second Brain.");
+  ensure(css.includes(".second-brain-graph"), "desktop.css must style the Second Brain knowledge graph.");
   ensure(js.includes("SEIS_PERSONAL_PLUGIN_BRIDGE"), "desktop.js must define the personal SEIS plugin bridge.");
   ensure(js.includes("SEIS_PERSONAL_PLUGIN_AI_CORE_LANE_MATRIX"), "desktop.js must define the personal plugin AI Core lane matrix.");
   ensure(js.includes("SEIS_MCP_RUNTIME_CONTRACT"), "desktop.js must define the MCP runtime contract.");
@@ -97,6 +107,18 @@ if (failures.length === 0) {
   ensure(js.includes("data-v17-module"), "desktop.js must render V17 module rows.");
   ensure(js.includes("v17CommandCenter"), "desktop diagnostics must expose V17 Command Center coverage.");
   ensure(js.includes("seis-v17-command-center-snapshot.md"), "desktop.js must save a V17 Command Center snapshot artifact.");
+  ensure(js.includes("SEIS_DEMO_JOURNEYS"), "desktop.js must define guided SEIS Demo Studio journeys.");
+  ensure(js.includes("data-demo-studio-app"), "desktop.js must render the SEIS Demo Studio app surface.");
+  ensure(js.includes("data-demo-journey-board"), "desktop.js must render selectable Demo Studio journeys.");
+  ensure(js.includes("run-demo-journey"), "desktop.js must expose a Demo Studio full-journey action.");
+  ensure(js.includes("run-demo-journey-step"), "desktop.js must expose per-step Demo Studio actions.");
+  ensure(js.includes("seis-demo-studio-evidence.md"), "desktop.js must save a Demo Studio evidence artifact.");
+  ensure(js.includes("demoStudioState"), "desktop diagnostics must expose Demo Studio state.");
+  ensure(js.includes("data-file-search"), "desktop.js must render Files search controls.");
+  ensure(js.includes("data-file-view"), "desktop.js must render Files grid/list view state.");
+  ensure(js.includes("set-file-view"), "desktop.js must expose Files grid/list view switching.");
+  ensure(js.includes("sync-code-workspace"), "desktop.js must expose the manual SEIS Code workspace sync action.");
+  ensure(js.includes("fileManagerState"), "desktop diagnostics must expose Files state.");
   ensure(js.includes("CODE_IDE_PANELS"), "desktop.js must define the Code IDE panel manifest.");
   ensure(js.includes("data-action=\"code-ide-panel\""), "desktop.js must render Code IDE panel buttons.");
   ensure(js.includes("data-code-ide-search-query"), "desktop.js must render the Code IDE local search field.");
@@ -108,9 +130,22 @@ if (failures.length === 0) {
   ensure(css.includes(".code-ide-command-bar"), "desktop.css must style the Code IDE command bar.");
   ensure(css.includes(".code-ide-inspector"), "desktop.css must style the Code IDE inspector.");
   ensure(css.includes(".code-ide-statusbar"), "desktop.css must style the Code IDE status bar.");
+  ensure(css.includes(".demo-studio-app"), "desktop.css must style SEIS Demo Studio.");
+  ensure(css.includes(".demo-journey-board"), "desktop.css must style Demo Studio journey cards.");
+  ensure(css.includes(".demo-step-card"), "desktop.css must style Demo Studio executable steps.");
+  ensure(css.includes(".file-manager-controls"), "desktop.css must style Files search and view controls.");
+  ensure(css.includes(".file-list-view"), "desktop.css must style Files list view.");
+  ensure(css.includes(".file-preview-panel"), "desktop.css must style Files preview panels.");
   ensure(js.includes("20B / 16GB+"), "desktop.js must surface the 20B on 16GB+ RAM model-scaling floor.");
   ensure(js.includes("70B"), "desktop.js must surface the future 70B model-scaling boundary.");
   ensure(js.includes("150B gated"), "desktop.js must surface the future 150B model-scaling boundary.");
+  ensure(js.includes("content/development/seis-model-frontier-escalation-policy.json"), "desktop.js must surface the frontier escalation policy path.");
+  ensure(js.includes("seis://ai/model-frontier-escalation-policy.json"), "desktop.js must surface the frontier escalation policy MCP resource URI.");
+  ensure(js.includes("check:seis-model-frontier-escalation-policy"), "desktop.js must surface the frontier escalation policy quality gate.");
+  ensure(js.includes("content/development/seis-150b-frontier-model-program.json"), "desktop.js must surface the 150B frontier model program path.");
+  ensure(js.includes("seis://ai/150b-frontier-model-program.json"), "desktop.js must surface the 150B frontier model program MCP resource URI.");
+  ensure(js.includes("check:seis-150b-frontier-model-program"), "desktop.js must surface the 150B frontier model program quality gate.");
+  ensure(js.includes("No-skip-20B"), "desktop.js must surface the no-skip-20B frontier escalation rule.");
   ensure(js.includes("SEIS_MASTER_OBJECTIVE_COVERAGE_UI"), "desktop.js must define the master objective coverage UI manifest.");
   ensure(js.includes("data-master-objective-coverage"), "desktop.js must render the master objective coverage surface.");
   ensure(js.includes("data-master-objective-coverage-matrix"), "desktop.js must render the master objective coverage matrix.");
@@ -138,6 +173,12 @@ if (failures.length === 0) {
   ensure(js.includes("seis-20b-local-preflight.md"), "desktop.js must generate the 20B local preflight report.");
   ensure(js.includes("build20BLocalPreflightMarkdown"), "desktop.js must build the 20B local preflight report content.");
   ensure(js.includes("This is a browser-local dry-run checklist"), "desktop.js must keep the 20B local preflight as dry-run only.");
+  ensure(js.includes("reports/seis-model-scaling/20b-benchmark-dry-run.json"), "desktop.js must surface the 20B benchmark dry-run report path.");
+  ensure(js.includes("dry-run-not-measured"), "desktop.js must keep the benchmark dry-run not-measured.");
+  ensure(js.includes("content/development/seis-model-parameter-ladder.json"), "desktop.js must surface the model parameter ladder source path.");
+  ensure(js.includes("seis://ai/model-parameter-ladder.json"), "desktop.js must surface the model parameter ladder MCP resource URI.");
+  ensure(js.includes("Parameter Ladder"), "desktop.js must render the model parameter ladder section.");
+  ensure(js.includes("300B+"), "desktop.js must surface the 300B+ exploration boundary.");
   ensure(js.includes("npm run inspect:seis-model-local-hardware"), "desktop.js must surface the host RAM preflight command.");
   ensure(js.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "desktop.js must surface the ignored host RAM preflight output path.");
   ensure(js.includes("content/development/seis-20b-model-card-template.json"), "desktop.js must surface the 20B model card template path.");
@@ -230,8 +271,12 @@ if (failures.length === 0) {
   ensure(js.includes("data-action=\"generic-new\""), "desktop.js must render functional app actions.");
   ensure(index.includes("desktop.html"), "index.html must link to desktop route.");
   ensure(routes.includes("\"/desktop.html\""), "routes.json must include desktop route.");
+  ensure(routes.includes("\"/seis-linux-replica.html\""), "routes.json must include SEIS Linux Replica route.");
   ensure(serviceWorker.includes("./desktop.html"), "service worker must cache desktop route.");
+  ensure(serviceWorker.includes("./seis-linux-replica.html"), "service worker must cache SEIS Linux Replica route.");
   ensure(packageJson.includes("check:desktop-os"), "package.json must expose desktop validation script.");
+  ensure(packageJson.includes("check:seis-linux-replica-browser-smoke"), "package.json must expose SEIS Linux Replica browser smoke script.");
+  ensure(existsSync("scripts/check-seis-linux-replica-browser-smoke.mjs"), "SEIS Linux Replica browser smoke script must exist.");
   ensure(browserSmoke.includes("workflowExecution"), "desktop browser smoke must execute primary app workflows.");
   ensure(browserSmoke.includes("executedApps >= 50"), "desktop browser smoke must verify at least 50 executed primary workflows.");
   ensure(browserSmoke.includes("workflowPersistence"), "desktop browser smoke must verify workflow persistence after reload.");
@@ -243,6 +288,7 @@ if (failures.length === 0) {
   ensure(browserSmoke.includes("sessionRestore"), "desktop browser smoke must verify window session restoration.");
   ensure(browserSmoke.includes("shellContext"), "desktop browser smoke must verify context menus, wallpaper, drag/drop, and full-screen behavior.");
   ensure(browserSmoke.includes("bootAndLauncher"), "desktop browser smoke must verify boot and launcher reference adaptation.");
+  ensure(browserSmoke.includes("SEIS Linux Replica"), "desktop browser smoke must verify SEIS Linux Replica route visibility.");
   ensure(browserSmoke.includes("controlCenter"), "desktop browser smoke must verify Control Center interactivity.");
   ensure(browserSmoke.includes("shortcutOverlay"), "desktop browser smoke must verify keyboard shortcut overlay interactivity.");
 
@@ -328,6 +374,8 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingProfile.compatibilityClaim === "not-verified", "V17 Command Center must not verify 16GB+ compatibility without benchmarks.");
     ensure(commandCenterCoverage.modelScalingPreflight.status === "dry-run-only", "V17 Command Center must expose a dry-run-only 20B local preflight.");
     ensure(commandCenterCoverage.modelScalingPreflight.reportPath === "/home/seis/Documents/seis-20b-local-preflight.md", "V17 Command Center must expose the 20B local preflight report path.");
+    ensure(commandCenterCoverage.modelScalingPreflight.benchmarkDryRunReport === "reports/seis-model-scaling/20b-benchmark-dry-run.json", "V17 Command Center must expose the 20B benchmark dry-run report path.");
+    ensure(commandCenterCoverage.modelScalingPreflight.benchmarkDryRunStatus === "dry-run-not-measured", "V17 Command Center must keep the benchmark dry-run not-measured.");
     ensure(commandCenterCoverage.modelScalingPreflight.measuredBenchmark === false, "V17 Command Center must not treat local preflight as a measured benchmark.");
     ensure(commandCenterCoverage.modelScalingPreflight.routeEligibleToday === false, "V17 Command Center must keep model routing blocked after local preflight.");
     ensure(commandCenterCoverage.modelScalingPreflight.hostPreflightCommand === "npm run inspect:seis-model-local-hardware", "V17 Command Center must expose the host RAM preflight command.");
@@ -339,6 +387,18 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingProfile.frontierTarget.includes("150B"), "V17 Command Center must expose the 150B frontier target.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierStatus.includes("not scoped"), "V17 Command Center must keep the 150B frontier target unscoped.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierRequiredEvidence.length >= 5, "V17 Command Center must expose 150B required evidence gates.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.path === "content/development/seis-model-frontier-escalation-policy.json", "V17 Command Center must expose the frontier escalation policy path.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.resource === "seis://ai/model-frontier-escalation-policy.json", "V17 Command Center must expose the frontier escalation policy MCP resource URI.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.status === "policy-active-research-gated", "V17 Command Center must expose the active frontier escalation policy status.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.qualityGate === "npm run check:seis-model-frontier-escalation-policy", "V17 Command Center must expose the frontier escalation policy quality gate.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.routeEligibleToday === false, "V17 Command Center must keep frontier escalation route eligibility blocked.");
+    ensure(commandCenterCoverage.modelFrontierEscalationPolicy.rule.includes("No-skip-20B"), "V17 Command Center must expose the no-skip-20B escalation rule.");
+    ensure(commandCenterCoverage.frontierModelProgram.path === "content/development/seis-150b-frontier-model-program.json", "V17 Command Center must expose the 150B frontier model program path.");
+    ensure(commandCenterCoverage.frontierModelProgram.resource === "seis://ai/150b-frontier-model-program.json", "V17 Command Center must expose the 150B frontier model program MCP resource URI.");
+    ensure(commandCenterCoverage.frontierModelProgram.status === "frontier-program-plan-only", "V17 Command Center must keep the 150B frontier model program plan-only.");
+    ensure(commandCenterCoverage.frontierModelProgram.qualityGate === "npm run check:seis-150b-frontier-model-program", "V17 Command Center must expose the 150B frontier model program quality gate.");
+    ensure(commandCenterCoverage.frontierModelProgram.routeEligibleToday === false, "V17 Command Center must keep the 150B frontier model program route-ineligible.");
+    ensure(commandCenterCoverage.frontierModelProgram.stages.length === 6, "V17 Command Center must expose six 150B frontier model program stages.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemCount >= 10, "V17 Command Center must expose the expanded master objective coverage item count.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.items.length === commandCenterCoverage.masterObjectiveCoverage.itemCount, "V17 Command Center master objective coverage diagnostics must expose every item.");
     ensure(commandCenterCoverage.masterObjectiveCoverage.itemIds.includes("user-work-protection"), "V17 Command Center diagnostics must expose user-work-protection coverage.");
@@ -364,6 +424,45 @@ async function runRuntimeSmoke(html, js) {
     commandCenterSnapshot?.click();
     await delay(60);
     ensure(diagnostics.filePaths().includes("/home/seis/Documents/seis-v17-command-center-snapshot.md"), "SEIS Command Center snapshot action must create a virtual filesystem artifact.");
+
+    diagnostics.openApp("demo-studio");
+    await delay(60);
+    ensure(diagnostics.openWindows().includes("SEIS Demo Studio"), "SEIS Demo Studio must open as a dedicated desktop app.");
+    ensure(window.document.querySelector("[data-demo-studio-app]"), "SEIS Demo Studio must render its guided demo surface.");
+    let demoStudioState = diagnostics.demoStudioState();
+    ensure(demoStudioState.journeyCount >= 4, `SEIS Demo Studio expected at least four journeys, got ${demoStudioState.journeyCount}.`);
+    ensure(demoStudioState.statusLegendCount >= 4, "SEIS Demo Studio diagnostics must expose truth-status legends.");
+    const builderJourney = window.document.querySelector("[data-demo-studio-journey='builder-flow']");
+    ensure(builderJourney, "SEIS Demo Studio must expose the Builder Workflow journey.");
+    builderJourney?.click();
+    await delay(40);
+    demoStudioState = diagnostics.demoStudioState();
+    ensure(demoStudioState.activeJourneyId === "builder-flow", "SEIS Demo Studio journey selection must update diagnostics.");
+    const firstDemoStep = window.document.querySelector("[data-demo-studio-app] [data-action=\"run-demo-journey-step\"][data-value=\"files\"]");
+    ensure(firstDemoStep, "SEIS Demo Studio must expose executable journey steps.");
+    firstDemoStep?.click();
+    await delay(80);
+    ensure(diagnostics.openWindows().includes("Files"), "SEIS Demo Studio step execution must open the Files app.");
+    ensure(diagnostics.demoStudioState().completedSteps >= 1, "SEIS Demo Studio step execution must update completed-step diagnostics.");
+    const runDemoJourneyButton = window.document.querySelector("[data-demo-studio-app] [data-action=\"run-demo-journey\"]");
+    ensure(runDemoJourneyButton, "SEIS Demo Studio must expose a full journey run action.");
+    runDemoJourneyButton?.click();
+    await delay(100);
+    ensure(diagnostics.filePaths().includes("/home/seis/Documents/seis-demo-studio-evidence.md"), "SEIS Demo Studio journey run must create a local evidence artifact.");
+    ensure(diagnostics.demoStudioState().hasEvidence === true, "SEIS Demo Studio diagnostics must confirm evidence creation.");
+    const filesState = diagnostics.fileManagerState();
+    ensure(filesState.visibleItems >= 1, "Files diagnostics must expose visible VFS item count.");
+    ensure(window.document.querySelector("[data-file-search]"), "Files app must render a search input.");
+    ensure(window.document.querySelector("[data-file-view]"), "Files app must render an explicit view mode container.");
+    window.document.querySelector("[data-action=\"set-file-view\"][data-value=\"list\"]")?.click();
+    await delay(40);
+    ensure(diagnostics.fileManagerState().viewMode === "list", "Files list-view action must update diagnostics.");
+    const fileSearchInput = window.document.querySelector("[data-file-search]");
+    fileSearchInput.value = "seis";
+    fileSearchInput.dispatchEvent(new window.Event("input", { bubbles: true }));
+    window.document.querySelector("[data-action=\"refresh-files-filter\"]")?.click();
+    await delay(40);
+    ensure(diagnostics.fileManagerState().query === "seis", "Files search input must update diagnostics.");
 
     const codeIdeLauncherButton = window.document.querySelector("[data-launcher-grid] [data-app-id=\"code-ide\"]") || window.document.querySelector("[data-dock] [data-app-id=\"code-ide\"]");
     ensure(codeIdeLauncherButton, "launcher or dock must expose Code IDE.");
@@ -484,7 +583,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(diagnostics.installedAiSystems().length === 6, `Installed AI diagnostics expected six systems, got ${diagnostics.installedAiSystems().length}.`);
     ensure(diagnostics.installedAiCoreRouteMatrix().length === 6, `Installed AI Core route diagnostics expected six routes, got ${diagnostics.installedAiCoreRouteMatrix().length}.`);
     ensure(diagnostics.mcpRuntimeContract().toolCount === 34, `MCP Runtime Contract diagnostics expected 34 tools, got ${diagnostics.mcpRuntimeContract().toolCount}.`);
-    ensure(diagnostics.mcpRuntimeContract().resourceCount === 20, `MCP Runtime Contract diagnostics expected 20 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
+    ensure(diagnostics.mcpRuntimeContract().resourceCount === 26, `MCP Runtime Contract diagnostics expected 26 resources, got ${diagnostics.mcpRuntimeContract().resourceCount}.`);
     ensure(diagnostics.mcpRuntimeContract().sourcePath === "content/development/seis-ai-core-mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical source path.");
     ensure(diagnostics.mcpRuntimeContract().resourceUri === "seis://ai/mcp-runtime-contract.json", "MCP Runtime Contract diagnostics must expose the canonical MCP resource URI.");
     ensure(window.document.querySelector("[data-installed-ai-core-route-matrix]"), "Installed AI Systems must render the installed AI Core route matrix.");
@@ -501,7 +600,7 @@ async function runRuntimeSmoke(html, js) {
     ensure(window.document.querySelector("[data-mcp-runtime-contract]"), "Installed AI Systems must render the MCP runtime contract.");
     ensure(window.document.querySelectorAll("[data-mcp-runtime-surface]").length === 4, "MCP Runtime Contract must render four runtime surfaces.");
     ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("stdio JSON-RPC"), "MCP Runtime Contract must show the stdio JSON-RPC transport.");
-    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("20"), "MCP Runtime Contract must show the 20-resource registry count.");
+    ensure(window.document.querySelector("[data-mcp-runtime-contract]")?.textContent.includes("26"), "MCP Runtime Contract must show the 26-resource registry count.");
     const mcpRuntimeContractExportButton = window.document.querySelector("[data-action=\"export-mcp-runtime-contract\"]");
     ensure(mcpRuntimeContractExportButton, "MCP Runtime Contract must expose a local export action.");
     mcpRuntimeContractExportButton?.click();
@@ -586,6 +685,7 @@ async function runRuntimeSmoke(html, js) {
       "sheets",
       "slides",
       "tasks",
+      "demo-studio",
       "paint",
       "git-client",
       "sub-agent-control",
@@ -636,7 +736,9 @@ async function runPrimaryWorkflow(window, diagnostics, appId) {
   await delay(80);
   const status = diagnostics.appStatus(appId);
   ensure(status.lastAction && status.lastAction !== "Ready", `${appId} primary workflow must update app status.`);
-  if (["notes", "sheets", "paint", "downloads", "sub-agent-control"].includes(appId)) {
+  if (appId === "demo-studio") {
+    ensure(diagnostics.filePaths().includes("/home/seis/Documents/seis-demo-studio-evidence.md"), `${appId} primary workflow must create the Demo Studio evidence artifact.`);
+  } else if (["notes", "sheets", "paint", "downloads", "sub-agent-control"].includes(appId)) {
     ensure(diagnostics.filePaths().length > beforeFiles.length, `${appId} primary workflow must create a virtual file artifact.`);
   }
 }

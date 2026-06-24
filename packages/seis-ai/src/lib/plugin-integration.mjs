@@ -16,6 +16,9 @@ export const AI_CORE_512B_APEX_MODEL_PROGRAM_PATH = "content/development/seis-51
 export const AI_CORE_512B_APEX_MODEL_PROGRAM_RESOURCE_URI = "seis://ai/512b-apex-model-program.json";
 export const AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH = "content/development/seis-20b-model-card-template.json";
 export const AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH = "content/development/seis-20b-dataset-card-template.json";
+export const AI_CORE_20B_BENCHMARK_MANIFEST_PATH = "reports/seis-model-scaling/20b-16gb-memory-benchmark.json";
+export const AI_CORE_20B_BENCHMARK_DRY_RUN_PATH = "reports/seis-model-scaling/20b-benchmark-dry-run.json";
+export const AI_CORE_LOCAL_HARDWARE_PREFLIGHT_CHECK_PATH = "scripts/check-seis-model-local-hardware-preflight.mjs";
 export const AI_CORE_VERSION_REGISTRY_PATH = "content/development/seis-ai-core-version-registry.json";
 export const AI_CORE_VERSION_PROMOTION_GATES_PATH = "content/development/seis-ai-core-version-promotion-gates.json";
 export const SUBAGENT_OPERATING_MODEL_PATH = "content/development/seis-ai-core-subagent-operating-model.json";
@@ -287,6 +290,10 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const modelScalingSubagentCouncilPath = profile.sourceOfTruth?.modelScalingSubagentCouncil || AI_CORE_MODEL_SCALING_SUBAGENT_COUNCIL_PATH;
     const frontierModelProgramPath = profile.sourceOfTruth?.frontierModelProgram || AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH;
     const apexModelProgramPath = profile.sourceOfTruth?.apexModelProgram || AI_CORE_512B_APEX_MODEL_PROGRAM_PATH;
+    const benchmarkManifestPath = profile.sourceOfTruth?.benchmarkManifest || AI_CORE_20B_BENCHMARK_MANIFEST_PATH;
+    const benchmarkDryRunPath = profile.sourceOfTruth?.benchmarkDryRun || AI_CORE_20B_BENCHMARK_DRY_RUN_PATH;
+    const localHardwarePreflightCheckPath =
+      profile.sourceOfTruth?.localHardwarePreflightCheck || AI_CORE_LOCAL_HARDWARE_PREFLIGHT_CHECK_PATH;
     const modelCardTemplate = readJsonIfExists(repoRoot, modelCardTemplatePath) || {};
     const datasetCardTemplate = readJsonIfExists(repoRoot, datasetCardTemplatePath) || {};
     const parameterLadder = readJsonIfExists(repoRoot, parameterLadderPath) || {};
@@ -294,6 +301,8 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
     const modelScalingSubagentCouncil = readJsonIfExists(repoRoot, modelScalingSubagentCouncilPath) || {};
     const frontierModelProgram = readJsonIfExists(repoRoot, frontierModelProgramPath) || {};
     const apexModelProgram = readJsonIfExists(repoRoot, apexModelProgramPath) || {};
+    const benchmarkManifest = readJsonIfExists(repoRoot, benchmarkManifestPath) || {};
+    const benchmarkDryRun = readJsonIfExists(repoRoot, benchmarkDryRunPath) || {};
     const parameterLadderTargets = Array.isArray(parameterLadder.targets) ? parameterLadder.targets : [];
     const parameterLadderRamPolicy = Array.isArray(parameterLadder.ramCompatibilityPolicy) ? parameterLadder.ramCompatibilityPolicy : [];
     const frontierEscalationStages = Array.isArray(frontierEscalationPolicy.escalationStages)
@@ -317,6 +326,9 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       modelScalingSubagentCouncilPath,
       frontierModelProgramPath,
       apexModelProgramPath,
+      benchmarkManifestPath,
+      benchmarkDryRunPath,
+      localHardwarePreflightCheckPath,
       modelCardTemplatePath,
       datasetCardTemplatePath,
       id: profile.id,
@@ -387,6 +399,22 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
         compatibilityClaim: memoryBudget.compatibilityClaim,
         requiredMeasurements: memoryBudget.requiredMeasurements || [],
         minimumBenchmarkFields: memoryBudget.minimumBenchmarkFields || [],
+      },
+      benchmarkEvidence: {
+        manifestPath: benchmarkManifestPath,
+        manifestId: benchmarkManifest.id,
+        manifestStatus: benchmarkManifest.status,
+        compatibilityClaim: benchmarkManifest.compatibilityClaim,
+        benchmarkEvidenceAvailable: benchmarkManifest.benchmarkEvidenceAvailable === true,
+        routeEligibleToday: benchmarkManifest.routeEligibleToday === true,
+        runtimeAuthority: benchmarkManifest.runtimeAuthority === true,
+        dryRunPath: benchmarkDryRunPath,
+        dryRunId: benchmarkDryRun.id,
+        dryRunStatus: benchmarkDryRun.status,
+        localHardwarePreflightCheckPath,
+        canRequestRealBenchmarkToday: benchmarkDryRun.dryRunResult?.canRequestRealBenchmarkToday === true,
+        measuredBenchmark: benchmarkDryRun.dryRunResult?.measuredBenchmark === true,
+        modelCompatibilityVerified: benchmarkDryRun.dryRunResult?.modelCompatibilityVerified === true,
       },
       parameterLadder: {
         path: parameterLadderPath,
@@ -609,6 +637,8 @@ export function aiCoreModelScalingStatus(repoRoot, options = {}) {
       payload.modelScalingSubagentCouncil = modelScalingSubagentCouncil;
       payload.model150bFrontierProgram = frontierModelProgram;
       payload.model512bApexProgram = apexModelProgram;
+      payload.model20bBenchmarkManifest = benchmarkManifest;
+      payload.model20bBenchmarkDryRun = benchmarkDryRun;
       payload.modelCardTemplate = modelCardTemplate;
       payload.datasetCardTemplate = datasetCardTemplate;
     }
