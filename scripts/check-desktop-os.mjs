@@ -140,6 +140,9 @@ if (failures.length === 0) {
   ensure(js.includes("This is a browser-local dry-run checklist"), "desktop.js must keep the 20B local preflight as dry-run only.");
   ensure(js.includes("npm run inspect:seis-model-local-hardware"), "desktop.js must surface the host RAM preflight command.");
   ensure(js.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "desktop.js must surface the ignored host RAM preflight output path.");
+  ensure(js.includes("content/development/seis-20b-model-card-template.json"), "desktop.js must surface the 20B model card template path.");
+  ensure(js.includes("content/development/seis-20b-dataset-card-template.json"), "desktop.js must surface the 20B dataset card template path.");
+  ensure(js.includes("template-not-filled / human-review-required"), "desktop.js must keep 20B model and dataset cards human-review-gated.");
   ensure(js.includes("compatibilityProfiles"), "desktop.js must surface RAM-class compatibility profiles.");
   ensure(js.includes("16GB+ developer floor"), "desktop.js must surface the 16GB+ model scaling floor.");
   ensure(js.includes("32GB+ validation lane"), "desktop.js must surface the 32GB+ 20B validation lane.");
@@ -329,6 +332,9 @@ async function runRuntimeSmoke(html, js) {
     ensure(commandCenterCoverage.modelScalingPreflight.routeEligibleToday === false, "V17 Command Center must keep model routing blocked after local preflight.");
     ensure(commandCenterCoverage.modelScalingPreflight.hostPreflightCommand === "npm run inspect:seis-model-local-hardware", "V17 Command Center must expose the host RAM preflight command.");
     ensure(commandCenterCoverage.modelScalingPreflight.hostPreflightOutput === "dist/qa/model-scaling/local-hardware-preflight.json", "V17 Command Center must expose the ignored host RAM preflight output.");
+    ensure(commandCenterCoverage.modelScalingPreflight.modelCardTemplate === "content/development/seis-20b-model-card-template.json", "V17 Command Center must expose the 20B model card template path.");
+    ensure(commandCenterCoverage.modelScalingPreflight.datasetCardTemplate === "content/development/seis-20b-dataset-card-template.json", "V17 Command Center must expose the 20B dataset card template path.");
+    ensure(commandCenterCoverage.modelScalingPreflight.evidenceTemplateStatus === "template-not-filled / human-review-required", "V17 Command Center must keep 20B evidence templates review-gated.");
     ensure(commandCenterCoverage.modelScalingProfile.quantizationProfiles.length >= 3, "V17 Command Center must expose model quantization lanes.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierTarget.includes("150B"), "V17 Command Center must expose the 150B frontier target.");
     ensure(commandCenterCoverage.modelScalingProfile.frontierStatus.includes("not scoped"), "V17 Command Center must keep the 150B frontier target unscoped.");
