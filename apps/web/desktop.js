@@ -4930,30 +4930,30 @@ function renderSecondBrain() {
       <article class="metric-card"><strong>Publish State</strong><p>Human review before GitHub</p></article>
     </div>
     <section class="second-brain-layout">
-      <aside class="second-brain-vault" data-second-brain-vault>
-        <h3>Markdown Vault</h3>
+      <aside class="second-brain-vault" data-second-brain-vault aria-labelledby="second-brain-vault-heading">
+        <h3 id="second-brain-vault-heading">Markdown Vault</h3>
         <p class="status-note">Browser-local Markdown files only. Private Obsidian vault imports stay disabled until reviewed.</p>
-        <div class="second-brain-note-list">
-          ${notes.map((note) => `<button type="button" class="${note.id === activeNote.id ? "is-active" : ""}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
+        <div class="second-brain-note-list" role="listbox" aria-label="Second Brain Markdown notes" aria-activedescendant="second-brain-note-${escapeAttr(activeNote.id)}">
+          ${notes.map((note) => `<button type="button" id="second-brain-note-${escapeAttr(note.id)}" role="option" aria-selected="${note.id === activeNote.id}" aria-controls="second-brain-inspector-panel" class="${note.id === activeNote.id ? "is-active" : ""}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
             <strong>${escapeHtml(note.title)}</strong>
             <span>${escapeHtml(note.folder)} · ${escapeHtml(note.status)}</span>
             <small>${escapeHtml(note.tags.join(" "))}</small>
           </button>`).join("")}
         </div>
       </aside>
-      <section class="second-brain-graph-panel" data-second-brain-graph>
+      <section class="second-brain-graph-panel" data-second-brain-graph aria-labelledby="second-brain-graph-heading">
         <div class="second-brain-graph-header">
           <div>
-            <h3>Knowledge Graph</h3>
+            <h3 id="second-brain-graph-heading">Knowledge Graph</h3>
             <p class="status-note">Nodes and backlinks are generated from repo-owned local demo records.</p>
           </div>
           <button type="button" class="secondary-action" data-action="open-app" data-app-id="search">Search Vault</button>
         </div>
-        <div class="second-brain-graph">
+        <div class="second-brain-graph" role="listbox" aria-label="Second Brain knowledge graph" aria-activedescendant="second-brain-node-${escapeAttr(activeNote.id)}">
           ${links.map((_link, index) => `<span class="second-brain-edge edge-${index % 6}" aria-hidden="true"></span>`).join("")}
           ${notes.map((note) => {
             const [, x, y] = positionFor(note.id);
-            return `<button type="button" class="second-brain-node ${note.id === activeNote.id ? "is-active" : ""}" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
+            return `<button type="button" id="second-brain-node-${escapeAttr(note.id)}" role="option" aria-selected="${note.id === activeNote.id}" aria-controls="second-brain-inspector-panel" aria-label="${escapeAttr(`Open ${note.title} note in Second Brain inspector`)}" class="second-brain-node ${note.id === activeNote.id ? "is-active" : ""}" style="--node-x:${escapeAttr(x)};--node-y:${escapeAttr(y)}" data-action="second-brain-select-note" data-value="${escapeAttr(note.id)}">
               <span>${escapeHtml(note.title.split(" ").map((part) => part[0]).join("").slice(0, 3))}</span>
               <strong>${escapeHtml(note.title)}</strong>
               <small>${escapeHtml(note.status)}</small>
@@ -4961,8 +4961,8 @@ function renderSecondBrain() {
           }).join("")}
         </div>
       </section>
-      <aside class="second-brain-inspector" data-second-brain-inspector>
-        <h3>${escapeHtml(activeNote.title)}</h3>
+      <aside class="second-brain-inspector" id="second-brain-inspector-panel" data-second-brain-inspector tabindex="0" aria-live="polite" aria-labelledby="second-brain-inspector-heading">
+        <h3 id="second-brain-inspector-heading">${escapeHtml(activeNote.title)}</h3>
         <p>${escapeHtml(activeNote.summary)}</p>
         <dl>
           <div><dt>Status</dt><dd>${escapeHtml(activeNote.status)}</dd></div>
@@ -8256,6 +8256,14 @@ function selectSecondBrainNote(noteId) {
   data.activeNoteId = noteId;
   saveState();
   renderOpenWindows("second-brain");
+  focusSecondBrainInspector();
+}
+
+function focusSecondBrainInspector() {
+  setTimeout(() => {
+    const inspector = document.querySelector('.app-window[data-app-id="second-brain"]:not([hidden]) [data-second-brain-inspector]');
+    inspector?.focus?.({ preventScroll: true });
+  }, 0);
 }
 
 function captureSecondBrainNote() {

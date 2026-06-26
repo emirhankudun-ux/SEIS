@@ -48,6 +48,8 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | Goal Tracking Center | [product/goal-tracking-center.md](product/goal-tracking-center.md) |
 | SEIS Demo status | [product/seis-demo-status.md](product/seis-demo-status.md) |
 | SEIS Second Brain | [product/seis-second-brain.md](product/seis-second-brain.md) |
+| SEIS Obsidian Bridge Safe Import | [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) |
+| Second Brain Accessibility Focus QA | [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) |
 | Shared VFS contract | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) |
 | SEIS Code browser foundation | [product/seis-code-foundation.md](product/seis-code-foundation.md) |
 | Video Hero showcase | [product/video-hero-showcase.md](product/video-hero-showcase.md) |
@@ -55,6 +57,7 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS AI Core | [ai/seis-ai-core.md](ai/seis-ai-core.md) |
 | SEIS model scaling profile | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) |
 | Model Router contract | [ai/model-router.md](ai/model-router.md) |
+| Read-Only Model Router Contract | [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) |
 | Prompt Engine contract | [ai/prompt-engine.md](ai/prompt-engine.md) |
 | Agent Runtime contract | [ai/agent-runtime.md](ai/agent-runtime.md) |
 | Security baseline | [security/security-baseline.md](security/security-baseline.md) |
@@ -75,7 +78,12 @@ planned foundations, blockers, and next safe actions for `@seis`,
 | SEIS Code route | [../apps/web/seis-code.html](../apps/web/seis-code.html) |
 | SEIS Code runtime | [../apps/web/seis-code.js](../apps/web/seis-code.js) |
 | SEIS Second Brain contract | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) |
+| SEIS Obsidian Bridge Safe Import contract | [../content/development/seis-obsidian-bridge-safe-import-contract.json](../content/development/seis-obsidian-bridge-safe-import-contract.json) |
+| Second Brain Accessibility Focus QA contract | [../content/development/seis-second-brain-accessibility-focus-qa.json](../content/development/seis-second-brain-accessibility-focus-qa.json) |
+| Read-Only Model Router Contract | [../content/development/seis-read-only-model-router-contract.json](../content/development/seis-read-only-model-router-contract.json) |
+| Public Demo Release Checklist PR54 | [../content/development/seis-public-demo-release-checklist-pr54.json](../content/development/seis-public-demo-release-checklist-pr54.json) |
 | SEIS Second Brain validator | `npm run check:seis-second-brain` |
+| SEIS Second Brain readiness contracts validator | `npm run check:seis-second-brain-readiness-contracts` |
 | SEIS Second Brain browser smoke | `npm run check:seis-second-brain-browser-smoke` |
 | SEIS Linux Replica route | [../apps/web/seis-linux-replica.html](../apps/web/seis-linux-replica.html) |
 | SEIS Linux Replica browser smoke | `npm run check:seis-linux-replica-browser-smoke` |

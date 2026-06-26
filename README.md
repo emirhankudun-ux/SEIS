@@ -77,12 +77,14 @@ Primary demo routes:
 - `desktop.html` - SEIS System OS, Second Brain, Demo Studio, Search,
   Launchpad, Files, Terminal, Store, Music, Design, Cloud, Agents, and local
   apps.
-- `seis-linux-replica.html` - supplied-code-inspired SEIS Linux Replica with
-  boot, login, taskbar, launcher, browser-local VFS, terminal, and 64 app
-  launch targets, TR/EN locale persistence through `seis.locale.v1`, plus
-  connected SEIS Search, Code, Design, Cloud, Store, Website, Music, and AI Core
-  bridge cards. The Code, Design, Cloud, Store, Music, and AI Core cards now
-  open mini workspaces with local state changes instead of static placeholders.
+- `seis-linux-replica.html` - supplied-reference-inspired SEIS System OS /
+  Linux-like route with boot, login, top system bar, pinned side rail, live
+  activity strip, dock/taskbar, launcher, resizable/draggable windows,
+  browser-local VFS, terminal, session persistence, and 64 app launch targets,
+  TR/EN locale persistence through `seis.locale.v1`, plus connected SEIS
+  Search, Code, Design, Cloud, Store, Website, Music, and AI Core bridge cards.
+  The Code, Design, Cloud, Store, Music, and AI Core cards open mini workspaces
+  with local state changes instead of static placeholders.
 - `seis-code.html` - SEIS Code browser IDE route.
 - `website/index.html` - SEIS Website hub, with product pages for SEIS AI, OS,
   Code, Design, Search, Cloud, Store, and Agents.
@@ -95,6 +97,7 @@ Key local validation commands:
 ```bash
 npm run check:desktop-os
 npm run check:seis-second-brain
+npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 npm run check:desktop-os-browser-smoke
 npm run check:seis-linux-replica-browser-smoke
@@ -119,6 +122,14 @@ npm run check:product-experience-browser-smoke
 npm run build:static
 npm run check:static-build
 ```
+
+`npm run check:seis-second-brain-readiness-contracts` validates the Second
+Brain readiness contracts for the Obsidian bridge safe import plan,
+accessibility/focus QA, provider-neutral read-only model-router boundary, and
+PR #54 public demo release checklist without enabling private vault import,
+live provider routing, SSH, deployment, merge, or publication.
+
+Second Brain readiness contracts stay review-gated until human approval.
 
 ## Yeni Nesil AGI Araştırma Hedefi
 

@@ -21,8 +21,15 @@ Current implementation lives in:
 - `apps/web/desktop.js`
 - `apps/web/desktop.css`
 - `content/development/seis-second-brain-system.json`
+- `content/development/seis-obsidian-bridge-safe-import-contract.json`
+- `content/development/seis-second-brain-accessibility-focus-qa.json`
+- `content/development/seis-public-demo-release-checklist-pr54.json`
 - `scripts/check-seis-second-brain.mjs`
+- `scripts/check-seis-second-brain-readiness-contracts.mjs`
 - `scripts/check-seis-second-brain-browser-smoke.mjs`
+- `docs/product/seis-obsidian-bridge-safe-import.md`
+- `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`
+- `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`
 
 The desktop app opens as `second-brain` and is linked from System OS, SEIS
 Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
@@ -38,6 +45,9 @@ Search, SEIS AI, Command Center, Launchpad, Favorites, and desktop shortcuts.
 | Autonomous agent roster | Status/plan-only | The Second Brain maps the 12-agent target roster: Architect, Code, Design, UI/UX, Research, Search, Security, DevOps, Documentation, QA, Cloud, and Automation. |
 | GitHub readiness | Human review required | `Export GitHub Readiness` writes a blocked-by-review readiness note; the dedicated browser-smoke checks the export and reload persistence. Push, merge, release, Pages, and public launch still require approval. |
 | Obsidian bridge | Planned | Future bridge must use explicit user-selected import, provenance review, no-secret filtering, and approval before sync. |
+| Obsidian bridge safe import contract | Planned-gated | `content/development/seis-obsidian-bridge-safe-import-contract.json` and `docs/product/seis-obsidian-bridge-safe-import.md` require explicit user-selected source path, dry-run manifest, no private note body commits, provenance, accessibility review, and human approval before GitHub publication. |
+| Second Brain accessibility/focus QA | Contract-active | `content/development/seis-second-brain-accessibility-focus-qa.json` and `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md` bind listbox/option roles, `aria-selected`, `aria-controls`, `aria-live polite`, focus-visible styling, inspector focus, and zero cramped mobile controls. |
+| Public demo release checklist | Review-gated | `content/development/seis-public-demo-release-checklist-pr54.json` and `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md` keep PR #54 review separate from merge, Pages publication, private vault import, live provider routing, SSH, deployment, or production-readiness claims. |
 
 ## Safety Boundary
 
@@ -75,11 +85,13 @@ review, and explicit approval for any GitHub publication step.
 
 ```bash
 npm run check:seis-second-brain
+npm run check:seis-second-brain-readiness-contracts
 npm run check:seis-second-brain-browser-smoke
 ```
 
-The validator checks the JSON contract, Desktop app wiring, UI action hooks,
-CSS surface, documentation, package script, and basic sensitive-pattern rules.
+The validators check the JSON contract, readiness contracts, Desktop app
+wiring, UI action hooks, CSS surface, documentation, package scripts, and
+basic sensitive-pattern rules.
 The browser-smoke starts the local Desktop route in Chrome, opens Second Brain,
 runs all five vault/review/GitHub-readiness actions, verifies browser-VFS
 artifacts after reload, opens the SEIS AI Second Brain bridge, and checks the
@@ -87,11 +99,12 @@ mobile viewport for usable controls and no horizontal overflow.
 
 ## Next Safe Work
 
-1. Keep the dedicated browser-smoke path passing while expanding keyboard and
-   screen-reader QA for vault notes, graph nodes, and inspector focus order.
-2. Add a user-selected Obsidian import plan that keeps private vault content
-   out of committed records by default.
+1. Keep `npm run check:seis-second-brain-readiness-contracts` and the
+   dedicated browser-smoke path passing while expanding screen-reader QA for
+   vault notes, graph nodes, and inspector focus order.
+2. Keep the Obsidian bridge safe import contract review-only until a user
+   explicitly selects a vault path and approves a dry-run manifest.
 3. Add search scoring and filters for notes, backlinks, tags, apps, routes,
    files, and sub-agent responsibilities.
-4. Add accessibility QA for keyboard graph navigation and inspector focus
-   order before public demo review.
+4. Use the PR #54 public demo checklist before merge, Pages publication, live
+   providers, SSH, deployment, or public demo release.

@@ -178,6 +178,8 @@ docs/*
 !docs/reviews/*.md
 !docs/roadmap/
 !docs/roadmap/*.md
+!docs/releases/
+!docs/releases/*.md
 !docs/ai/
 !docs/ai/*.md
 !docs/goals/

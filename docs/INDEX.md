@@ -19,6 +19,10 @@ Date: 2026-06-23
 | [reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md](reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md) | Repeatable browser-smoke evidence for SEIS Code, Mythic Gacha, SEIS Linux Replica, Second Brain, and the browser-local export bridge. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Current-vs-planned boundary for the single-entry SEIS Desktop demo, launcher routes, AI App, SEIS Code, and shared VFS bridge. |
 | [product/seis-second-brain.md](product/seis-second-brain.md) | Local Demo Second Brain contract and browser-smoke gate for installed AI profiles, sub-agent lanes, Obsidian-style Markdown vault notes, graph/backlinks, AI bridge, mobile surface, and GitHub readiness gates. |
+| [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | SEIS Obsidian Bridge Safe Import plan and no-private-note-body publication contract. |
+| [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for listbox/option roles, inspector focus, mobile targets, and release review. |
+| [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-Only Model Router Contract for provider-neutral, no-secret, no-live-routing decisions. |
+| [releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md](releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md) | Public Demo Release Checklist PR54 after PR review and before merge or publication. |
 | [roadmap/MASTER_BACKLOG.md](roadmap/MASTER_BACKLOG.md) | Master backlog for reviewable SEIS work. |
 | [roadmap/NEXT_PR_QUEUE.md](roadmap/NEXT_PR_QUEUE.md) | Recommended next PR queue and approval gates. |
 
@@ -44,6 +48,8 @@ Date: 2026-06-23
 | [product/plugin-interface-suite.md](product/plugin-interface-suite.md) | Read-only interface foundation for `@seis`, `@seis-cloud`, `@seis-code`, `@seis-design`, and `@seis-data`. |
 | [product/seis-demo-status.md](product/seis-demo-status.md) | Working demo boundary for SEIS Desktop as the single entry point, SEIS Search routes, AI Plugin Center tabs, and shared browser-local VFS. |
 | [product/seis-second-brain.md](product/seis-second-brain.md) | Browser-local knowledge OS foundation for all current installed AI profiles, managed sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault notes, and GitHub readiness review. |
+| [product/seis-obsidian-bridge-safe-import.md](product/seis-obsidian-bridge-safe-import.md) | Obsidian bridge safe import gates for explicit user-selected source path, dry-run manifest, no secrets, provenance, accessibility, and approval before GitHub publication. |
+| [reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md](reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md) | Second Brain Accessibility Focus QA for keyboard focus, ARIA roles, inspector focus, and mobile target safety. |
 | [product/shared-vfs-contract.md](product/shared-vfs-contract.md) | Browser-local shared VFS contract for Desktop, SEIS Code, Terminal, and Mythic Gacha exports. |
 | [product/video-hero-showcase.md](product/video-hero-showcase.md) | Four-page cinematic Video Hero showcase contract and validation notes. |
 | [product/mythic-gacha.md](product/mythic-gacha.md) | Playable no-key Shan Hai Jing inspired gacha and bestiary foundation. |
@@ -51,6 +57,7 @@ Date: 2026-06-23
 | [ai/ai-workforce-training.md](ai/ai-workforce-training.md) | Installed AI workforce training contract for supervised seed-model improvement without cloud fine-tuning claims. |
 | [ai/seis-model-scaling.md](ai/seis-model-scaling.md) | Planned 20B / 16GB+ RAM compatibility target plus future 70B and 150B frontier scale ladder without trained-weight claims. |
 | [ai/model-router.md](ai/model-router.md) | Provider-neutral model routing contract and evidence requirements. |
+| [ai/read-only-model-router-contract.md](ai/read-only-model-router-contract.md) | Read-only provider-neutral router contract: Missing Key is not Error, local-only never routes to cloud, and live execution waits for backend-only mediation. |
 | [ai/prompt-engine.md](ai/prompt-engine.md) | Versioned prompt-pack contract and prompt safety rules. |
 | [ai/agent-runtime.md](ai/agent-runtime.md) | Human-supervised agent runtime contract and permission boundaries. |
 | [security/security-baseline.md](security/security-baseline.md) | Current security baseline and blockers. |
@@ -108,6 +115,10 @@ Date: 2026-06-23
 | [../content/development/seis-design-component-inventory.json](../content/development/seis-design-component-inventory.json) | Component inventory for current web and showcase surfaces. |
 | [../content/development/seis-ai-workforce-training-plan.json](../content/development/seis-ai-workforce-training-plan.json) | Installed AI workforce training plan for supervised local seed-model rebuilds and no-runtime-authority promotion gates. |
 | [../content/development/seis-second-brain-system.json](../content/development/seis-second-brain-system.json) | Second Brain contract for installed AI profiles, managed sub-agent lanes, Obsidian-style Markdown vault records, graph/backlinks, AI bridge, browser-smoke validation, and GitHub readiness gates. |
+| [../content/development/seis-obsidian-bridge-safe-import-contract.json](../content/development/seis-obsidian-bridge-safe-import-contract.json) | Obsidian bridge safe import contract for explicit user selection, dry-run manifest, no private note body, provenance, accessibility, and publication approval gates. |
+| [../content/development/seis-second-brain-accessibility-focus-qa.json](../content/development/seis-second-brain-accessibility-focus-qa.json) | Second Brain Accessibility Focus QA contract for listbox/option roles, inspector focus, focus-visible markers, and mobile control safety. |
+| [../content/development/seis-read-only-model-router-contract.json](../content/development/seis-read-only-model-router-contract.json) | Read-only model-router contract with no runtime authority, no provider calls, no browser secrets, and no silent fallback. |
+| [../content/development/seis-public-demo-release-checklist-pr54.json](../content/development/seis-public-demo-release-checklist-pr54.json) | Public Demo Release Checklist PR54 review gate before merge, Pages publication, deployment, or public release. |
 | [../content/development/seis-model-scaling-hardware-profile.json](../content/development/seis-model-scaling-hardware-profile.json) | Planned 20B local-compatibility profile, 16GB+ RAM target class, and future 70B / 150B frontier scale ladder with no live runtime authority. |
 | [../content/development/seis-model-parameter-ladder.json](../content/development/seis-model-parameter-ladder.json) | `planning-contract-not-runtime` parameter ladder from 20B / 16GB+ through 70B, 150B, 300B+, and highest-future classes with every model route blocked. |
 | [../content/development/seis-model-frontier-escalation-policy.json](../content/development/seis-model-frontier-escalation-policy.json) | No-skip-20B frontier escalation policy for 70B, 150B, and highest-future model classes without routeable-weight or trained-model claims. |
