@@ -237,8 +237,14 @@ function validateStaticContract() {
   ensure(html.includes("seis.locale.v1"), "Linux Replica route must persist locale through the shared SEIS locale key.");
   ensure(html.includes("document.documentElement.lang"), "Linux Replica route must update the document language.");
   ensure(html.includes("DEFAULT_LOCALE=\"tr\""), "Linux Replica route must keep Turkish as the default locale.");
+  ensure(html.includes("SESSION_KEY=\"seis-linux-replica-session.v1\""), "Linux Replica route must define a safe session persistence key.");
+  ensure(html.includes("saveSession("), "Linux Replica route must persist safe session state.");
+  ensure(html.includes("session:readSession"), "Linux Replica diagnostics must expose session state.");
   ensure(html.includes("id=\"startButton\""), "Linux Replica route must expose a launcher action.");
   ensure(html.includes("id=\"startSearch\""), "Linux Replica route must expose launcher search.");
+  ensure(html.includes("id=\"sideRail\""), "Linux Replica route must expose a pinned side rail.");
+  ensure(html.includes("renderSideRail"), "Linux Replica route must render pinned side rail apps.");
+  ensure(html.includes("data-quick-app"), "Linux Replica route must wire quick app launch controls.");
   ensure(html.includes("window.__SEIS_LINUX_REPLICA__"), "Linux Replica route must expose smoke diagnostics.");
   ensure(appCount === 64, `expected 64 Linux Replica app targets, found ${appCount}.`);
   ensure(html.includes("SEIS_BRIDGE_TARGETS"), "Linux Replica route must define connected SEIS bridge targets.");
@@ -333,6 +339,8 @@ async function smokeLinuxReplica(client, baseUrl) {
   await waitFor(client, "document.querySelector('#startMenu')?.classList.contains('is-active')", 3000);
   const summary = await evaluate(client, `(() => {
     const horizontalOverflow = document.documentElement.scrollWidth > window.innerWidth + 2;
+    document.querySelector('[data-quick-app="demo"]')?.click();
+    document.querySelector('#sideRail [data-side-app="search"]')?.click();
     window.__SEIS_LINUX_REPLICA__.openApp('calculator');
     window.__SEIS_LINUX_REPLICA__.openApp('settings');
     window.__SEIS_LINUX_REPLICA__.openApp('search');
@@ -353,6 +361,11 @@ async function smokeLinuxReplica(client, baseUrl) {
     const launcherTiles = document.querySelectorAll('.app-tile').length;
     const openWindows = document.querySelectorAll('.window').length;
     const taskbarApps = document.querySelectorAll('.taskbar-app').length;
+    const topbarVisible = Boolean(document.querySelector('.topbar'));
+    const quickAppButtons = document.querySelectorAll('[data-quick-app]').length;
+    const activityCards = document.querySelectorAll('.activity-card[data-quick-app]').length;
+    const sideRailButtons = document.querySelectorAll('#sideRail [data-side-app]').length;
+    const sideRailActive = Boolean(document.querySelector('#sideRail [data-side-app].is-active'));
     const searchScopes = document.querySelectorAll('[data-seis-search-scope]').length;
     const connectedResults = document.querySelectorAll('[data-seis-connected-result]').length;
     const bridgeApps = document.querySelectorAll('[data-seis-bridge-app]').length;
@@ -364,6 +377,7 @@ async function smokeLinuxReplica(client, baseUrl) {
     const aiCorePanel = document.querySelectorAll('[data-ai-core-panel]').length;
     const bodyText = document.body.innerText;
     const blockedCopy = bodyText.includes('No SSH') || bodyText.includes('SSH disabled') || bodyText.includes('no host shell');
+    const sessionSnapshot = window.__SEIS_LINUX_REPLICA__.session();
     return {
       appCount: window.__SEIS_LINUX_REPLICA__.appCount,
       bridgeTargetCount: window.__SEIS_LINUX_REPLICA__.bridgeTargetCount,
@@ -372,6 +386,11 @@ async function smokeLinuxReplica(client, baseUrl) {
       launcherTiles,
       openWindows,
       taskbarApps,
+      topbarVisible,
+      quickAppButtons,
+      activityCards,
+      sideRailButtons,
+      sideRailActive,
       searchScopes,
       connectedResults,
       bridgeApps,
@@ -383,6 +402,9 @@ async function smokeLinuxReplica(client, baseUrl) {
       aiCorePanel,
       horizontalOverflow,
       blockedCopy,
+      sessionStored: Boolean(localStorage.getItem('seis-linux-replica-session.v1')),
+      sessionOpenApps: Array.isArray(sessionSnapshot.openApps) ? sessionSnapshot.openApps.length : 0,
+      sessionFocusedApp: sessionSnapshot.focusedApp || null,
       neofetchVisible: bodyText.includes('Apps: 64'),
       codeCheckVisible: bodyText.includes('PASS local UI contract'),
       designSnapshotVisible: bodyText.includes('Snapshot saved to VFS') || bodyText.includes('design-token-'),
@@ -404,6 +426,11 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.launcherTiles === 64, `expected 64 launcher tiles, found ${summary.launcherTiles}`);
   ensure(summary.openWindows >= 9, `expected at least nine open windows after smoke, found ${summary.openWindows}`);
   ensure(summary.taskbarApps >= 9, `expected at least nine taskbar app buttons, found ${summary.taskbarApps}`);
+  ensure(summary.topbarVisible === true, "SEIS system topbar did not render.");
+  ensure(summary.quickAppButtons >= 7, `expected quick app controls, found ${summary.quickAppButtons}`);
+  ensure(summary.activityCards === 5, `expected five SEIS activity cards, found ${summary.activityCards}`);
+  ensure(summary.sideRailButtons >= 8, `expected pinned side rail app buttons, found ${summary.sideRailButtons}`);
+  ensure(summary.sideRailActive === true, "pinned side rail did not track the focused app.");
   ensure(summary.searchScopes === 9, `expected nine SEIS Search scopes, found ${summary.searchScopes}`);
   ensure(summary.connectedResults >= 8, `expected connected SEIS Search result cards, found ${summary.connectedResults}`);
   ensure(summary.bridgeApps >= 6, `expected at least six SEIS bridge app windows, found ${summary.bridgeApps}`);
@@ -418,6 +445,9 @@ async function smokeLinuxReplica(client, baseUrl) {
   ensure(summary.musicPlayingVisible === true, "mini SEIS Music play action did not update output.");
   ensure(summary.aiAgentVisible === true, "mini SEIS AI agent action did not update output.");
   ensure(summary.fileCount >= 8, `expected VFS files to be mounted, found ${summary.fileCount}`);
+  ensure(summary.sessionStored === true, "safe Linux Replica session snapshot was not stored.");
+  ensure(summary.sessionOpenApps >= 8, `expected session to persist open apps, found ${summary.sessionOpenApps}`);
+  ensure(typeof summary.sessionFocusedApp === "string" && summary.sessionFocusedApp.length > 0, "session did not persist focused app.");
   ensure(summary.neofetchVisible === true, "terminal neofetch output did not show Apps: 64.");
   ensure(summary.searchGatewayVisible && summary.codeVisible && summary.designVisible && summary.cloudVisible && summary.websiteVisible, "connected SEIS bridge surfaces are not all visible.");
   ensure(summary.blockedCopy === true, "local-only SSH/host-shell boundary copy is missing.");

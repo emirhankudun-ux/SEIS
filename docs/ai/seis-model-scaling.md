@@ -13,6 +13,9 @@ model, or demonstrated AGI.
 Machine-readable source:
 `content/development/seis-model-scaling-hardware-profile.json`.
 
+Language Model Intake Registry:
+`content/development/seis-language-model-intake-registry.json`.
+
 ## Internet Research Baseline
 
 The public frontier-model landscape supports a conservative SEIS 512B plan-only
@@ -42,6 +45,7 @@ npm run check:seis-150b-frontier-model-program
 npm run check:seis-512b-apex-model-program
 npm run check:seis-model-scaling-hardware-profile
 npm run check:seis-model-scaling-subagent-council
+npm run check:seis-language-model-intake
 ```
 
 SEIS AI agent status tool:
@@ -361,6 +365,22 @@ The 512B Apex Model Program remains blocked until 20B, 70B, 150B, and 300B+
 evidence exists, a clean-room training plan is accepted, an AGI capability
 evaluation protocol is written, all-agent council review is recorded, and
 explicit human approval exists.
+
+## Language Model Intake Registry
+
+SEIS tracks broad model-family intake separately from model scaling:
+
+`content/development/seis-language-model-intake-registry.json`
+
+The registry is metadata-only. It can list candidate families such as Llama,
+Qwen, Gemma, Mistral, DeepSeek, OpenAI open-weight candidates,
+embedding/reranker families, and code-specialist families, but it cannot
+install them, download checkpoints, approve fine-tuning, approve full training,
+or prove AGI.
+
+The safe order is retrieval first, then a single reviewed local model
+experiment, then adapter/fine-tune work only after model cards, dataset cards,
+license review, benchmark plans, safety review, and explicit approval.
 
 ## Model Scaling Sub-Agent Council
 

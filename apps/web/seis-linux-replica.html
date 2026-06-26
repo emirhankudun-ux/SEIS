@@ -197,6 +197,10 @@ button{cursor:pointer}
 .toast{width:min(340px,calc(100vw - 36px));border:1px solid rgba(255,255,255,.14);border-left:4px solid var(--accent);border-radius:10px;background:rgba(18,22,34,.95);box-shadow:var(--shadow);padding:12px}
 .toast strong{display:block;margin-bottom:3px}
 .toast p{margin:0;color:var(--muted);font-size:13px}
+.reference-shell{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:100%}
+.reference-cover{height:130px;background-position:center;background-size:cover;border-radius:10px;border:1px solid rgba(255,255,255,.12)}
+.reference-frame{width:100%;height:100%;min-height:320px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#02050b}
+.reference-toolbar{display:flex;flex-wrap:wrap;gap:8px}
 @media(max-width:760px){
   .desktop-icons{grid-template-columns:repeat(3,78px);grid-auto-rows:78px}
   .shell{grid-template-rows:38px 1fr 62px}
@@ -284,11 +288,12 @@ button{cursor:pointer}
     </div>
     <div class="start-search"><input id="startSearch" type="search" placeholder="Search apps and files"></div>
     <div class="cats" id="categories"></div>
-    <div class="app-grid" id="startApps"></div>
+<div class="app-grid" id="startApps"></div>
     <div class="start-foot"><span>SEIS Linux Replica route</span><button class="danger" id="lockButton">Lock</button></div>
   </aside>
 </main>
 <div class="toast-wrap" id="toasts"></div>
+<script src="./reference-banks/reference-apps.js"></script>
 <script>
 (function(){
 "use strict";
@@ -325,8 +330,106 @@ const COPY={
     readySuffix:" apps."
   }
 };
-const CATEGORIES=["all","system","productivity","developer","creative","media","games","internet","utilities"];
-const VFS={
+  const BASE_CATEGORIES=["all","system","productivity","developer","creative","media","games","internet","utilities"];
+  const BASE_APP_ENTRIES=[
+    ["terminal","Terminal","TRM","system","Linux-style terminal with browser-safe commands.","terminal",true],
+    ["files","Files","FIL","system","Browse, create, open, rename, and remove VFS files.","files",true],
+    ["settings","Settings","SET","system","Change accent, wallpaper, density, and local preferences.","settings",true],
+    ["search","Search","SRH","system","Search apps and VFS files.","search",true],
+    ["task-manager","App Switcher","SWI","system","Inspect, focus, and close open SEIS app windows.","task-manager",false],
+    ["system-monitor","System Monitor","CPU","system","Review browser-local system metrics.","monitor",false],
+    ["about","About","INF","system","Source, safety, and implementation boundary.","about",true],
+    ["text-editor","Text Editor","TXT","productivity","Edit text and save to /home/seis.","editor",true],
+    ["notes","Notes","NTE","productivity","Capture notes and save markdown files.","notes",false],
+    ["todo","To-Do","TODO","productivity","Create local tasks and toggle completion.","todo",false],
+    ["calendar","Calendar","CAL","productivity","Plan local events and daily notes.","generic",false],
+    ["kanban","Kanban","KAN","productivity","Move work across local planning states.","generic",false],
+    ["spreadsheet","Spreadsheet","SHT","productivity","Edit a small local table.","generic",false],
+    ["writer","Writer","DOC","productivity","Draft a local document.","generic",false],
+    ["flashcards","Cards","CRD","productivity","Practice local flashcards.","generic",false],
+    ["code","Code Editor","IDE","developer","Open a code-like local editor.","seis-bridge",true],
+    ["json","JSON Viewer","JSON","developer","Format and validate local JSON text.","generic",false],
+    ["regex","Regex Tester","REG","developer","Run local regex matching.","generic",false],
+    ["base64","Base64","B64","developer","Encode and decode local text.","generic",false],
+    ["api","API Lab","API","developer","Compose mock-safe API requests.","generic",false],
+    ["diff","Diff Viewer","DIF","developer","Compare two local snippets.","generic",false],
+    ["package","Package Info","PKG","developer","Inspect package metadata notes.","generic",false],
+    ["paint","Paint","PNT","creative","Draw simple local strokes on a canvas.","seis-bridge",true],
+    ["pixel","Pixel Art","PIX","creative","Create a small pixel board.","generic",false],
+    ["palette","Palette","CLR","creative","Save color swatches.","generic",false],
+    ["svg","SVG Studio","SVG","creative","Draft small SVG snippets.","generic",false],
+    ["whiteboard","Whiteboard","WHT","creative","Create sticky-note boards.","generic",false],
+    ["music","Music","MUS","media","Play local demo track state.","seis-bridge",true],
+    ["video","Video","VID","media","Use browser-local video controls.","generic",false],
+    ["image","Image Viewer","IMG","media","Inspect local image placeholders.","generic",false],
+    ["radio","Radio","RAD","media","Tune local stations.","generic",false],
+    ["recorder","Recorder","REC","media","Mock-safe audio recorder state.","generic",false],
+    ["snake","Snake","SNK","games","Local score game shell.","game",false],
+    ["tetris","Tetris","TET","games","Local score game shell.","game",false],
+    ["mines","Mines","MIN","games","Local score game shell.","game",false],
+    ["memory","Memory","MEM","games","Local score game shell.","game",false],
+    ["2048","2048","2048","games","Local score game shell.","game",false],
+    ["sudoku","Sudoku","SDK","games","Local score game shell.","game",false],
+    ["chess","Chess","CHS","games","Local score game shell.","game",false],
+    ["pong","Pong","PNG","games","Local score game shell.","game",false],
+    ["browser","Browser","WEB","internet","Open internal mock-safe web cards.","seis-bridge",true],
+    ["mail","Mail","EML","internet","Draft local email; no sending.","generic",false],
+    ["maps","Maps","MAP","internet","Explore local coordinates.","generic",false],
+    ["news","News","NWS","internet","Read local news cards.","generic",false],
+    ["chat","Chat","CHT","internet","Local message simulation.","generic",false],
+    ["calculator","Calculator","CALC","utilities","Run calculator operations.","calculator",true],
+    ["weather","Weather","WX","utilities","Local demo weather card.","generic",false],
+    ["clock","Clock","CLK","utilities","Show time and timers.","generic",false],
+    ["stopwatch","Stopwatch","SW","utilities","Start and reset elapsed time.","generic",false],
+    ["timer","Timer","TMR","utilities","Local countdown control.","generic",false],
+    ["unit","Unit Converter","UNI","utilities","Convert common values.","generic",false],
+    ["currency","Currency","CUR","utilities","Mock-safe conversion.","generic",false],
+    ["qr","QR Studio","QR","utilities","Generate a local QR-style tile.","generic",false],
+    ["morse","Morse","MRS","utilities","Translate letters to Morse.","generic",false],
+    ["password","Password Gen","KEY","utilities","Generate placeholder passwords only.","generic",false],
+    ["vault","Vault","VLT","utilities","Placeholder-only secret boundary.","generic",false],
+    ["store","SEIS Store","STR","system","Browse installed local app catalog.","seis-bridge",false],
+    ["launcher","Launchpad","GRID","system","Open all app tiles.","launchpad",false],
+    ["logs","Logs","LOG","system","Inspect local event log.","logs",false],
+    ["downloads","Downloads","DL","system","Review exported VFS records.","generic",false],
+    ["backup","Backup Center","BKP","system","Create browser-local backup status snapshots.","generic",false],
+    ["help","Help","HLP","system","Read local help and shortcuts.","about",false],
+    ["demo","Demo Studio","RUN","system","Run a guided local product journey.","seis-bridge",false],
+    ["cloud","Cloud Boundary","CLD","internet","Shows disabled SSH/cloud states honestly.","seis-bridge",false]
+  ];
+  function normalizeReferenceCategory(value){
+    const raw=String(value||"reference").toLowerCase().trim();
+    if(!raw) return "reference";
+    return raw.replace(/[^a-z0-9]+/g,"-");
+  }
+  function normalizeReferenceEntry(entry){
+    if(!entry || typeof entry!=="object") return null;
+    const id=String(entry.id||`reference-${Math.random().toString(36).slice(2)}`);
+    const icon=String(entry.icon||"REF").slice(0,12);
+    const category=normalizeReferenceCategory(entry.category||"reference");
+    const description=String(entry.description||"Reference module");
+    const route=String(entry.route||"").trim() || null;
+    const thumbnail=String(entry.thumbnail||"").trim() || "";
+    const source=String(entry.source||"").trim() || "reference";
+    return{
+      id,
+      name:String(entry.name||entry.title||"Reference App"),
+      icon,
+      category,
+      description,
+      type:"reference",
+      desktop:Boolean(entry.desktop),
+      bridge:null,
+      route,
+      thumbnail,
+      source
+    };
+  }
+  const REFERENCE_APP_ENTRIES=Array.isArray(window.SEIS_REFERENCE_APPS)
+    ? window.SEIS_REFERENCE_APPS.map(normalizeReferenceEntry).filter(Boolean)
+    : [];
+  const CATEGORIES=[...new Set([...BASE_CATEGORIES,...REFERENCE_APP_ENTRIES.map(app=>app.category)])];
+  const VFS={
   "/":{type:"dir",children:{
     home:{type:"dir",children:{seis:{type:"dir",children:{
       "welcome.txt":{type:"file",content:"Welcome to SEIS Linux Replica. This browser-local environment is adapted from the supplied Web Linux code: boot, login, taskbar, start menu, windows, VFS, terminal commands, and a connected SEIS bridge for Search, Code, Design, Cloud, Store, Website, and AI Core routes."},
@@ -348,75 +451,17 @@ const SEIS_BRIDGE_TARGETS=[
   {appId:"music",title:"SEIS Music",glyph:"MUS",scope:"Music",state:"Working",route:"./desktop.html#music",summary:"Local player state, playlists, album cards, waveform-style controls, and AI recommendation labels in mock-safe mode.",primary:"Open Music",local:"Open player"},
   {appId:"browser",title:"SEIS Website Hub",glyph:"WEB",scope:"Web",state:"Working",route:"./website/index.html",summary:"Written premium product pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents.",primary:"Open Website",local:"Open browser card"},
   {appId:"demo",title:"SEIS AI Core",glyph:"AI",scope:"AI",state:"Local Demo",route:"./desktop.html#ai-assistant",summary:"AI command center, provider status, Local Demo mode, model-router concept, plugin awareness, and sub-agent operating lanes.",primary:"Open AI Core",local:"Open demo studio"}
-];
-const SEIS_BRIDGE_BY_APP=Object.fromEntries(SEIS_BRIDGE_TARGETS.map(target=>[target.appId,target]));
-const APP_CATALOG=[
-  ["terminal","Terminal","TRM","system","Linux-style terminal with browser-safe commands.","terminal",true],
-  ["files","Files","FIL","system","Browse, create, open, rename, and remove VFS files.","files",true],
-  ["settings","Settings","SET","system","Change accent, wallpaper, density, and local preferences.","settings",true],
-  ["search","Search","SRH","system","Search apps and VFS files.","search",true],
-  ["task-manager","Task Manager","TSK","system","Inspect and close open browser windows.","task-manager",false],
-  ["system-monitor","System Monitor","CPU","system","Review browser-local system metrics.","monitor",false],
-  ["about","About","INF","system","Source, safety, and implementation boundary.","about",true],
-  ["text-editor","Text Editor","TXT","productivity","Edit text and save to /home/seis.","editor",true],
-  ["notes","Notes","NTE","productivity","Capture notes and save markdown files.","notes",false],
-  ["todo","To-Do","TODO","productivity","Create local tasks and toggle completion.","todo",false],
-  ["calendar","Calendar","CAL","productivity","Plan local events and daily notes.","generic",false],
-  ["kanban","Kanban","KAN","productivity","Move work across local planning states.","generic",false],
-  ["spreadsheet","Spreadsheet","SHT","productivity","Edit a small local table.","generic",false],
-  ["writer","Writer","DOC","productivity","Draft a local document.","generic",false],
-  ["flashcards","Cards","CRD","productivity","Practice local flashcards.","generic",false],
-  ["code","Code Editor","IDE","developer","Open a code-like local editor.","seis-bridge",true],
-  ["json","JSON Viewer","JSON","developer","Format and validate local JSON text.","generic",false],
-  ["regex","Regex Tester","REG","developer","Run local regex matching.","generic",false],
-  ["base64","Base64","B64","developer","Encode and decode local text.","generic",false],
-  ["api","API Lab","API","developer","Compose mock-safe API requests.","generic",false],
-  ["diff","Diff Viewer","DIF","developer","Compare two local snippets.","generic",false],
-  ["package","Package Info","PKG","developer","Inspect package metadata notes.","generic",false],
-  ["paint","Paint","PNT","creative","Draw simple local strokes on a canvas.","seis-bridge",true],
-  ["pixel","Pixel Art","PIX","creative","Create a small pixel board.","generic",false],
-  ["palette","Palette","CLR","creative","Save color swatches.","generic",false],
-  ["svg","SVG Studio","SVG","creative","Draft small SVG snippets.","generic",false],
-  ["whiteboard","Whiteboard","WHT","creative","Create sticky-note boards.","generic",false],
-  ["music","Music","MUS","media","Play local demo track state.","seis-bridge",true],
-  ["video","Video","VID","media","Use browser-local video controls.","generic",false],
-  ["image","Image Viewer","IMG","media","Inspect local image placeholders.","generic",false],
-  ["radio","Radio","RAD","media","Tune local stations.","generic",false],
-  ["recorder","Recorder","REC","media","Mock-safe audio recorder state.","generic",false],
-  ["snake","Snake","SNK","games","Local score game shell.","game",false],
-  ["tetris","Tetris","TET","games","Local score game shell.","game",false],
-  ["mines","Mines","MIN","games","Local score game shell.","game",false],
-  ["memory","Memory","MEM","games","Local score game shell.","game",false],
-  ["2048","2048","2048","games","Local score game shell.","game",false],
-  ["sudoku","Sudoku","SDK","games","Local score game shell.","game",false],
-  ["chess","Chess","CHS","games","Local score game shell.","game",false],
-  ["pong","Pong","PNG","games","Local score game shell.","game",false],
-  ["browser","Browser","WEB","internet","Open internal mock-safe web cards.","seis-bridge",true],
-  ["mail","Mail","EML","internet","Draft local email; no sending.","generic",false],
-  ["maps","Maps","MAP","internet","Explore local coordinates.","generic",false],
-  ["news","News","NWS","internet","Read local news cards.","generic",false],
-  ["chat","Chat","CHT","internet","Local message simulation.","generic",false],
-  ["calculator","Calculator","CALC","utilities","Run calculator operations.","calculator",true],
-  ["weather","Weather","WX","utilities","Local demo weather card.","generic",false],
-  ["clock","Clock","CLK","utilities","Show time and timers.","generic",false],
-  ["stopwatch","Stopwatch","SW","utilities","Start and reset elapsed time.","generic",false],
-  ["timer","Timer","TMR","utilities","Local countdown control.","generic",false],
-  ["unit","Unit Converter","UNI","utilities","Convert common values.","generic",false],
-  ["currency","Currency","CUR","utilities","Mock-safe conversion.","generic",false],
-  ["qr","QR Studio","QR","utilities","Generate a local QR-style tile.","generic",false],
-  ["morse","Morse","MRS","utilities","Translate letters to Morse.","generic",false],
-  ["password","Password Gen","KEY","utilities","Generate placeholder passwords only.","generic",false],
-  ["vault","Vault","VLT","utilities","Placeholder-only secret boundary.","generic",false],
-  ["store","SEIS Store","STR","system","Browse installed local app catalog.","seis-bridge",false],
-  ["launcher","Launchpad","GRID","system","Open all app tiles.","launchpad",false],
-  ["logs","Logs","LOG","system","Inspect local event log.","logs",false],
-  ["downloads","Downloads","DL","system","Review exported VFS records.","generic",false],
-  ["backup","Backup Center","BKP","system","Create browser-local backup status snapshots.","generic",false],
-  ["help","Help","HLP","system","Read local help and shortcuts.","about",false],
-  ["demo","Demo Studio","RUN","system","Run a guided local product journey.","seis-bridge",false],
-  ["cloud","Cloud Boundary","CLD","internet","Shows disabled SSH/cloud states honestly.","seis-bridge",false]
-].map(([id,name,icon,category,description,type,desktop])=>{const bridge=SEIS_BRIDGE_BY_APP[id]||null;return{id,name:bridge?.title||name,icon:bridge?.glyph||icon,category,description:bridge?.summary||description,type,desktop,bridge};});
-const state={windows:[],counter:0,z:5,category:"all",query:"",locale:resolveLocale(),accent:localStorage.getItem("seis-replica-accent")||"#7c5cff",dark:localStorage.getItem("seis-replica-dark")!=="false",logs:[]};
+  ];
+  const SEIS_BRIDGE_BY_APP=Object.fromEntries(SEIS_BRIDGE_TARGETS.map(target=>[target.appId,target]));
+  const PINNED_APPS=["demo","search","code","paint","cloud","files","terminal","store","music"];
+  const APP_CATALOG=[
+    ...BASE_APP_ENTRIES.map(([id,name,icon,category,description,type,desktop])=>{
+      const bridge=SEIS_BRIDGE_BY_APP[id]||null;
+      return{id,name:bridge?.title||name,icon:bridge?.glyph||icon,category,description:bridge?.summary||description,type,desktop,bridge};
+    }),
+    ...REFERENCE_APP_ENTRIES
+  ];
+const state={windows:[],counter:0,z:5,category:"all",query:"",locale:resolveLocale(),accent:localStorage.getItem("seis-replica-accent")||"#7c5cff",dark:localStorage.getItem("seis-replica-dark")!=="false",logs:[],sessionRestored:false};
 const $=(sel,root=document)=>root.querySelector(sel);
 const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
@@ -427,27 +472,36 @@ function parentOf(path){const normalized=normalize(path);const parts=normalized.
 function listFiles(path="/"){const found=[];function walk(node,current){if(!node||!node.children)return;Object.entries(node.children).forEach(([name,child])=>{const next=(current==="/"?"/":current+"/")+name;found.push({path:next,name,type:child.type,content:child.content||""});if(child.type==="dir")walk(child,next)})}walk(nodeAt(path),path);return found;}
 function toast(title,body){const wrap=$("#toasts");const el=document.createElement("div");el.className="toast";el.innerHTML="<strong>"+escapeHtml(title)+"</strong><p>"+escapeHtml(body)+"</p>";wrap.appendChild(el);setTimeout(()=>el.remove(),4200)}
 function log(event){state.logs.unshift({time:new Date().toLocaleTimeString(),event});state.logs=state.logs.slice(0,60)}
-function applyAccent(){document.documentElement.style.setProperty("--accent",state.accent);localStorage.setItem("seis-replica-accent",state.accent)}
+function applyAccent(){document.documentElement.style.setProperty("--accent",state.accent);localStorage.setItem("seis-replica-accent",state.accent);saveSession("accent")}
+function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||"null")||{}}catch{return{}}}
+function saveSession(reason="state"){try{localStorage.setItem(SESSION_KEY,JSON.stringify({version:VERSION,locale:state.locale,accent:state.accent,openApps:state.windows.filter(w=>!w.closed).map(w=>w.appId).slice(-12),focusedApp:state.windows.find(w=>w.id===focusedId())?.appId||null,reason,updatedAt:new Date().toISOString()}))}catch{/* ignored */}}
 function resolveLocale(){try{const stored=localStorage.getItem(LOCALE_KEY);if(LOCALES.includes(stored))return stored}catch{/* ignored */}return DEFAULT_LOCALE}
 function t(key){return COPY[state.locale]?.[key]||COPY[DEFAULT_LOCALE][key]||key}
-function applyLocale(locale=state.locale,persist=true){state.locale=LOCALES.includes(locale)?locale:DEFAULT_LOCALE;document.documentElement.lang=state.locale;document.title=t("title");$$("[data-locale-text]").forEach(node=>{const value=t(node.dataset.localeText);if(node.dataset.localeText==="bootSub")node.innerHTML=value;else node.textContent=value});$("[data-locale-value]").textContent=state.locale.toUpperCase();if(persist){try{localStorage.setItem(LOCALE_KEY,state.locale)}catch{/* ignored */}}}
+function applyLocale(locale=state.locale,persist=true){state.locale=LOCALES.includes(locale)?locale:DEFAULT_LOCALE;document.documentElement.lang=state.locale;document.title=t("title");$$("[data-locale-text]").forEach(node=>{const value=t(node.dataset.localeText);if(node.dataset.localeText==="bootSub")node.innerHTML=value;else node.textContent=value});$("[data-locale-value]").textContent=state.locale.toUpperCase();if(persist){try{localStorage.setItem(LOCALE_KEY,state.locale)}catch{/* ignored */}saveSession("locale")}}
 function toggleLocale(){applyLocale(state.locale==="tr"?"en":"tr",true);toast("Locale",state.locale.toUpperCase())}
 function boot(){let progress=0;const fill=$("#bootFill");const timer=setInterval(()=>{progress+=Math.ceil(Math.random()*18);fill.style.width=Math.min(progress,100)+"%";if(progress>=100){clearInterval(timer);setTimeout(()=>{$("#boot").classList.add("is-hidden");$("#login").classList.add("is-active")},250)}},180)}
-function enterDesktop(){const user=$("#loginUser").value||"seis";$("#login").classList.remove("is-active");$("#shell").classList.add("is-active");toast(t("welcome")+user,t("ready")+APP_CATALOG.length+t("readySuffix"));log("login:"+user);openApp("files");openApp("terminal")}
+function enterDesktop(){const user=$("#loginUser").value||"seis";$("#login").classList.remove("is-active");$("#shell").classList.add("is-active");toast(t("welcome")+user,t("ready")+APP_CATALOG.length+t("readySuffix"));log("login:"+user);restoreSessionApps()}
 function updateClock(){const now=new Date();$("#clockTime").textContent=now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});$("#clockDate").textContent=now.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"})}
+function restoreSessionApps(){const session=readSession();const restored=(Array.isArray(session.openApps)?session.openApps:[]).filter(id=>APP_CATALOG.some(app=>app.id===id)).slice(0,4);(restored.length?restored:["files","terminal"]).forEach(openApp)}
+function updateSideRailState(){const focused=state.windows.find(w=>w.id===focusedId())?.appId||"";$$("[data-side-app]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.sideApp===focused))}
+function renderSideRail(){const host=$("#sideRail");host.innerHTML="<strong>Core Apps</strong>"+PINNED_APPS.map(id=>APP_CATALOG.find(app=>app.id===id)).filter(Boolean).map(app=>"<button type=\"button\" data-side-app=\""+escapeHtml(app.id)+"\"><span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span></button>").join("");$$("[data-side-app]",host).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.sideApp));updateSideRailState()}
 function renderDesktopIcons(){const host=$("#desktopIcons");host.innerHTML="";APP_CATALOG.filter(a=>a.desktop).slice(0,10).forEach(app=>{const b=document.createElement("button");b.className="desktop-icon";b.dataset.app=app.id;b.innerHTML="<strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>openApp(app.id);host.appendChild(b)})}
-function renderCategories(){const host=$("#categories");host.innerHTML="";CATEGORIES.forEach(cat=>{const b=document.createElement("button");b.className="cat"+(state.category===cat?" is-active":"");b.textContent=cat==="all"?"All":cat[0].toUpperCase()+cat.slice(1);b.onclick=()=>{state.category=cat;renderStartMenu()};host.appendChild(b)})}
+function renderCategoryLabel(category){
+  if(category==="all") return "All";
+  return String(category).toLowerCase().replace(/[-_]+/g," ").split(" ").map(part=>part[0] ? part[0].toUpperCase()+part.slice(1) : "").join(" ");
+}
+function renderCategories(){const host=$("#categories");host.innerHTML="";CATEGORIES.forEach(cat=>{const b=document.createElement("button");b.className="cat"+(state.category===cat?" is-active":"");b.textContent=renderCategoryLabel(cat);b.onclick=()=>{state.category=cat;renderStartMenu()};host.appendChild(b)})}
 function renderStartMenu(){const host=$("#startApps");const query=state.query.toLowerCase();const apps=APP_CATALOG.filter(app=>(state.category==="all"||app.category===state.category)&&(!query||app.name.toLowerCase().includes(query)||app.description.toLowerCase().includes(query)||app.category.includes(query)));host.innerHTML=apps.map(app=>"<button class=\"app-tile\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span></button>").join("")||"<div class=\"muted\">No apps found.</div>";$$(".app-tile",host).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.app));$("#appCount").textContent=APP_CATALOG.length+" apps / "+apps.length+" shown";renderCategories()}
 function toggleStart(force){$("#startMenu").classList.toggle("is-active",force)}
-function renderTaskbar(){const host=$("#taskbarApps");host.innerHTML="";state.windows.filter(w=>!w.closed).forEach(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId);const b=document.createElement("button");b.className="taskbar-app"+(w.id===focusedId()?" is-active":"");b.innerHTML="<span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>{const node=$("#"+w.id);if(w.min){w.min=false;node.classList.remove("is-min")}focusWindow(w.id)};host.appendChild(b)})}
+function renderTaskbar(){const host=$("#taskbarApps");host.innerHTML="";state.windows.filter(w=>!w.closed).forEach(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId)||{id:w.appId,name:w.appId,icon:"APP"};const b=document.createElement("button");b.className="taskbar-app"+(w.id===focusedId()?" is-active":"");b.innerHTML="<span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>{const node=$("#"+w.id);if(w.min){w.min=false;node?.classList.remove("is-min")}focusWindow(w.id)};host.appendChild(b)});updateSideRailState()}
 function focusedId(){return state.windows.filter(w=>!w.closed&&!w.min).sort((a,b)=>b.z-a.z)[0]?.id||""}
-function openApp(appId){const app=APP_CATALOG.find(a=>a.id===appId);if(!app)return;toggleStart(false);const existing=state.windows.find(w=>w.appId===appId&&!w.closed);if(existing){existing.min=false;$("#"+existing.id)?.classList.remove("is-min");focusWindow(existing.id);return}const id="win"+(++state.counter);const win={id,appId,z:++state.z,min:false,max:false,closed:false};state.windows.push(win);const node=document.createElement("section");node.className="window";node.id=id;node.dataset.appId=appId;const offset=(state.windows.length%7)*26;node.style.left=Math.min(130+offset,innerWidth-360)+"px";node.style.top=Math.min(82+offset,innerHeight-320)+"px";node.style.width=defaultSize(app).w+"px";node.style.height=defaultSize(app).h+"px";node.style.zIndex=win.z;node.innerHTML="<header class=\"window-head\"><span class=\"window-mark\">"+escapeHtml(app.icon)+"</span><strong>"+escapeHtml(app.name)+"</strong><div class=\"window-controls\"><button data-win=\"min\">-</button><button data-win=\"max\">[]</button><button class=\"close\" data-win=\"close\">x</button></div></header><div class=\"window-body\"></div>";$("#windowLayer").appendChild(node);wireWindow(node,win);renderApp($(".window-body",node),app);focusWindow(id);renderTaskbar();log("open:"+app.name)}
+function openApp(appId){const app=APP_CATALOG.find(a=>a.id===appId);if(!app)return;toggleStart(false);const existing=state.windows.find(w=>w.appId===appId&&!w.closed);if(existing){existing.min=false;$("#"+existing.id)?.classList.remove("is-min");focusWindow(existing.id);saveSession("focus");return}const id="win"+(++state.counter);const win={id,appId,z:++state.z,min:false,max:false,closed:false};state.windows.push(win);const node=document.createElement("section");node.className="window";node.id=id;node.dataset.appId=appId;const offset=(state.windows.length%7)*26;node.style.left=Math.min(190+offset,innerWidth-360)+"px";node.style.top=Math.min(82+offset,innerHeight-320)+"px";node.style.width=defaultSize(app).w+"px";node.style.height=defaultSize(app).h+"px";node.style.zIndex=win.z;node.innerHTML="<header class=\"window-head\"><span class=\"window-mark\">"+escapeHtml(app.icon)+"</span><strong>"+escapeHtml(app.name)+"</strong><div class=\"window-controls\"><button data-win=\"min\">-</button><button data-win=\"max\">[]</button><button class=\"close\" data-win=\"close\">x</button></div></header><div class=\"window-body\"></div><span class=\"resize-handle\" data-resize=\""+escapeHtml(id)+"\" aria-hidden=\"true\"></span>";$("#windowLayer").appendChild(node);wireWindow(node,win);renderApp($(".window-body",node),app);focusWindow(id);renderTaskbar();log("open:"+app.name);saveSession("open")}
 function defaultSize(app){if(app.type==="terminal")return{w:760,h:460};if(app.type==="files")return{w:860,h:560};if(app.type==="editor")return{w:760,h:540};if(app.type==="search"||app.type==="seis-bridge")return{w:780,h:540};return{w:620,h:430}}
-function wireWindow(node,win){node.addEventListener("pointerdown",()=>focusWindow(win.id));$(".window-head",node).addEventListener("pointerdown",e=>{if(e.target.closest(".window-controls")||win.max)return;const rect=node.getBoundingClientRect();const dx=e.clientX-rect.left,dy=e.clientY-rect.top;node.setPointerCapture(e.pointerId);function move(ev){node.style.left=Math.max(-rect.width+110,Math.min(innerWidth-120,ev.clientX-dx))+"px";node.style.top=Math.max(0,Math.min(innerHeight-110,ev.clientY-dy))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up)}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$$("[data-win]",node).forEach(btn=>btn.onclick=()=>handleWin(win.id,btn.dataset.win))}
-function handleWin(id,action){const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;if(action==="close"){w.closed=true;node.remove()}if(action==="min"){w.min=true;node.classList.add("is-min")}if(action==="max"){w.max=!w.max;node.classList.toggle("is-max",w.max)}renderTaskbar()}
-function focusWindow(id){state.windows.forEach(w=>{$("#"+w.id)?.classList.remove("is-focused")});const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;w.z=++state.z;node.style.zIndex=w.z;node.classList.add("is-focused");renderTaskbar()}
-function renderApp(body,app){const map={terminal:renderTerminal,files:renderFiles,settings:renderSettings,calculator:renderCalculator,editor:renderEditor,notes:renderNotes,todo:renderTodo,paint:renderPaint,media:renderMedia,"task-manager":renderTaskManager,monitor:renderMonitor,about:renderAbout,store:renderStore,search:renderSearch,launchpad:renderLaunchpad,logs:renderLogs,browser:renderBrowser,game:renderGame,"seis-bridge":renderSeisBridge,generic:renderGeneric};(map[app.type]||renderGeneric)(body,app)}
-function renderTerminal(body){body.innerHTML="<div class=\"terminal\" data-terminal></div>";const term=$("[data-terminal]",body);let cwd="/home/seis";const history=[];let hist=0;const commands={help:()=>Object.keys(commands).join("  "),pwd:()=>cwd,whoami:()=>"seis",date:()=>new Date().toString(),uname:()=>"SEIS Linux Replica "+VERSION+" web-local",neofetch:()=>"<span class=\"info\">seis@browser</span>\nOS: SEIS Linux Replica\nKernel: browser-local\nWM: SEIS WM\nApps: "+APP_CATALOG.length+"\nBoundary: no SSH, no host shell",seis:()=>SEIS_BRIDGE_TARGETS.map(target=>"<span class=\"info\">"+escapeHtml(target.scope)+"</span>  "+escapeHtml(target.title)+"  "+escapeHtml(target.state)).join("\n"),routes:()=>SEIS_BRIDGE_TARGETS.map(target=>escapeHtml(target.title+" -> "+target.route)).join("\n"),ls:(args)=>{const node=nodeAt(cwd);if(!node||!node.children)return"";return Object.entries(node.children).map(([name,item])=>item.type==="dir"?"<span class=\"info\">"+escapeHtml(name)+"/</span>":escapeHtml(name)).join("  ")},cd:(args)=>{const next=pathJoin(cwd,args[0]||"/home/seis");const node=nodeAt(next);if(!node||node.type!=="dir")return"cd: not a directory";cwd=next;return""},cat:(args)=>{const node=nodeAt(pathJoin(cwd,args[0]||""));return node&&node.type==="file"?escapeHtml(node.content):"cat: missing file"},echo:(args)=>escapeHtml(args.join(" ")),mkdir:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"mkdir: invalid path";p.parent.children[p.name]={type:"dir",children:{}};return""},touch:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"touch: invalid path";p.parent.children[p.name]=p.parent.children[p.name]||{type:"file",content:""};return""},rm:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.parent.children[p.name])return"rm: no such file";delete p.parent.children[p.name];return""},cp:(args)=>{if(args.length<2)return"cp: missing operand";const src=nodeAt(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src||!dst.parent)return"cp: cannot stat";dst.parent.children[dst.name]=JSON.parse(JSON.stringify(src));return""},mv:(args)=>{if(args.length<2)return"mv: missing operand";const src=parentOf(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src.parent||!src.parent.children[src.name]||!dst.parent)return"mv: cannot stat";dst.parent.children[dst.name]=src.parent.children[src.name];delete src.parent.children[src.name];return""},find:()=>listFiles("/").map(f=>f.path).join("\n"),grep:(args)=>{if(args.length<2)return"Usage: grep PATTERN FILE";const node=nodeAt(pathJoin(cwd,args[1]));if(!node||node.type!=="file")return"grep: no such file";return node.content.split("\n").filter(line=>line.toLowerCase().includes(args[0].toLowerCase())).map(escapeHtml).join("\n")||"(no matches)"},tree:()=>listFiles(cwd).map(f=>f.path.replace(cwd,".")+(f.type==="dir"?"/":"")).join("\n"),ps:()=>state.windows.filter(w=>!w.closed).map((w,i)=>String(100+i)+" "+APP_CATALOG.find(a=>a.id===w.appId).name).join("\n"),clear:()=>{term.innerHTML="";return null},open:(args)=>{openApp(args[0]||"files");return"opened "+(args[0]||"files")},sudo:()=>"<span class=\"error\">sudo disabled in Local Demo mode.</span>",ssh:()=>"<span class=\"error\">SSH disabled. Human approval required.</span>"};function add(html){const line=document.createElement("div");line.className="line";line.innerHTML=html;term.appendChild(line);term.scrollTop=term.scrollHeight}function prompt(){const row=document.createElement("div");row.className="line";row.innerHTML="<span class=\"prompt-user\">seis</span>:<span class=\"prompt-path\">"+escapeHtml(cwd.replace("/home/seis","~"))+"</span>$ <input autocomplete=\"off\" spellcheck=\"false\">";term.appendChild(row);const input=$("input",row);input.focus();input.onkeydown=e=>{if(e.key==="Enter"){const raw=input.value;history.push(raw);hist=history.length;input.replaceWith(document.createTextNode(escapeHtml(raw)));run(raw)}else if(e.key==="ArrowUp"){e.preventDefault();if(hist>0)input.value=history[--hist]||""}else if(e.key==="ArrowDown"){e.preventDefault();if(hist<history.length-1)input.value=history[++hist]||"";else{hist=history.length;input.value=""}}}}function run(raw){const [cmd,...args]=raw.trim().split(/\s+/).filter(Boolean);if(!cmd){prompt();return}try{const result=commands[cmd]?commands[cmd](args):"<span class=\"error\">"+escapeHtml(cmd)+": command not found</span>";if(result)add(result)}catch(err){add("<span class=\"error\">"+escapeHtml(err.message)+"</span>")}prompt()}add("<span class=\"ok\">SEIS Linux Replica Terminal</span>");add("Type <span class=\"info\">help</span>. Try <span class=\"info\">neofetch</span>, <span class=\"info\">seis</span>, <span class=\"info\">routes</span>, <span class=\"info\">open search</span>, or <span class=\"info\">open code</span>.");prompt();term.onclick=()=>{$("input",term)?.focus()}}
+function wireWindow(node,win){node.addEventListener("pointerdown",()=>focusWindow(win.id));$(".window-head",node).addEventListener("pointerdown",e=>{if(e.target.closest(".window-controls")||win.max)return;const rect=node.getBoundingClientRect();const dx=e.clientX-rect.left,dy=e.clientY-rect.top;node.setPointerCapture(e.pointerId);function move(ev){node.style.left=Math.max(-rect.width+110,Math.min(innerWidth-120,ev.clientX-dx))+"px";node.style.top=Math.max(0,Math.min(innerHeight-110,ev.clientY-dy))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("drag")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$("[data-resize]",node)?.addEventListener("pointerdown",e=>{if(win.max)return;e.preventDefault();e.stopPropagation();const rect=node.getBoundingClientRect();const startX=e.clientX,startY=e.clientY;node.setPointerCapture(e.pointerId);function move(ev){node.style.width=Math.max(320,Math.min(innerWidth-24,rect.width+ev.clientX-startX))+"px";node.style.height=Math.max(220,Math.min(innerHeight-120,rect.height+ev.clientY-startY))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("resize")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$$("[data-win]",node).forEach(btn=>btn.onclick=()=>handleWin(win.id,btn.dataset.win))}
+function handleWin(id,action){const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;if(action==="close"){w.closed=true;node.remove()}if(action==="min"){w.min=true;node.classList.add("is-min")}if(action==="max"){w.max=!w.max;node.classList.toggle("is-max",w.max)}renderTaskbar();saveSession("window-"+action)}
+function focusWindow(id){state.windows.forEach(w=>{$("#"+w.id)?.classList.remove("is-focused")});const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;w.z=++state.z;node.style.zIndex=w.z;node.classList.add("is-focused");renderTaskbar();saveSession("focus")}
+function renderApp(body,app){const map={terminal:renderTerminal,files:renderFiles,settings:renderSettings,calculator:renderCalculator,editor:renderEditor,notes:renderNotes,todo:renderTodo,paint:renderPaint,media:renderMedia,"task-manager":renderTaskManager,monitor:renderMonitor,about:renderAbout,store:renderStore,search:renderSearch,launchpad:renderLaunchpad,logs:renderLogs,browser:renderBrowser,game:renderGame,"seis-bridge":renderSeisBridge,reference:renderReferenceApp,generic:renderGeneric};(map[app.type]||renderGeneric)(body,app)}
+function renderTerminal(body){body.innerHTML="<div class=\"terminal\" data-terminal></div>";const term=$("[data-terminal]",body);let cwd="/home/seis";const history=[];let hist=0;const commands={help:()=>Object.keys(commands).join("  "),pwd:()=>cwd,whoami:()=>"seis",date:()=>new Date().toString(),uname:()=>"SEIS Linux Replica "+VERSION+" web-local",neofetch:()=>"<span class=\"info\">seis@browser</span>\nOS: SEIS Linux Replica\nKernel: browser-local\nWM: SEIS WM\nApps: "+APP_CATALOG.length+"\nBoundary: no SSH, no host shell",seis:()=>SEIS_BRIDGE_TARGETS.map(target=>"<span class=\"info\">"+escapeHtml(target.scope)+"</span>  "+escapeHtml(target.title)+"  "+escapeHtml(target.state)).join("\n"),routes:()=>SEIS_BRIDGE_TARGETS.map(target=>escapeHtml(target.title+" -> "+target.route)).join("\n"),ls:(args)=>{const node=nodeAt(cwd);if(!node||!node.children)return"";return Object.entries(node.children).map(([name,item])=>item.type==="dir"?"<span class=\"info\">"+escapeHtml(name)+"/</span>":escapeHtml(name)).join("  ")},cd:(args)=>{const next=pathJoin(cwd,args[0]||"/home/seis");const node=nodeAt(next);if(!node||node.type!=="dir")return"cd: not a directory";cwd=next;return""},cat:(args)=>{const node=nodeAt(pathJoin(cwd,args[0]||""));return node&&node.type==="file"?escapeHtml(node.content):"cat: missing file"},echo:(args)=>escapeHtml(args.join(" ")),mkdir:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"mkdir: invalid path";p.parent.children[p.name]={type:"dir",children:{}};return""},touch:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"touch: invalid path";p.parent.children[p.name]=p.parent.children[p.name]||{type:"file",content:""};return""},rm:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.parent.children[p.name])return"rm: no such file";delete p.parent.children[p.name];return""},cp:(args)=>{if(args.length<2)return"cp: missing operand";const src=nodeAt(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src||!dst.parent)return"cp: cannot stat";dst.parent.children[dst.name]=JSON.parse(JSON.stringify(src));return""},mv:(args)=>{if(args.length<2)return"mv: missing operand";const src=parentOf(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src.parent||!src.parent.children[src.name]||!dst.parent)return"mv: cannot stat";dst.parent.children[dst.name]=src.parent.children[src.name];delete src.parent.children[src.name];return""},find:()=>listFiles("/").map(f=>f.path).join("\n"),grep:(args)=>{if(args.length<2)return"Usage: grep PATTERN FILE";const node=nodeAt(pathJoin(cwd,args[1]));if(!node||node.type!=="file")return"grep: no such file";return node.content.split("\n").filter(line=>line.toLowerCase().includes(args[0].toLowerCase())).map(escapeHtml).join("\n")||"(no matches)"},tree:()=>listFiles(cwd).map(f=>f.path.replace(cwd,".")+(f.type==="dir"?"/":"")).join("\n"),ps:()=>state.windows.filter(w=>!w.closed).map((w,i)=>String(100+i)+" "+(APP_CATALOG.find(a=>a.id===w.appId)?.name||w.appId)).join("\n"),clear:()=>{term.innerHTML="";return null},open:(args)=>{openApp(args[0]||"files");return"opened "+(args[0]||"files")},sudo:()=>"<span class=\"error\">sudo disabled in Local Demo mode.</span>",ssh:()=>"<span class=\"error\">SSH disabled. Human approval required.</span>"};function add(html){const line=document.createElement("div");line.className="line";line.innerHTML=html;term.appendChild(line);term.scrollTop=term.scrollHeight}function prompt(){const row=document.createElement("div");row.className="line";row.innerHTML="<span class=\"prompt-user\">seis</span>:<span class=\"prompt-path\">"+escapeHtml(cwd.replace("/home/seis","~"))+"</span>$ <input autocomplete=\"off\" spellcheck=\"false\">";term.appendChild(row);const input=$("input",row);input.focus();input.onkeydown=e=>{if(e.key==="Enter"){const raw=input.value;history.push(raw);hist=history.length;input.replaceWith(document.createTextNode(escapeHtml(raw)));run(raw)}else if(e.key==="ArrowUp"){e.preventDefault();if(hist>0)input.value=history[--hist]||""}else if(e.key==="ArrowDown"){e.preventDefault();if(hist<history.length-1)input.value=history[++hist]||"";else{hist=history.length;input.value=""}}}}function run(raw){const [cmd,...args]=raw.trim().split(/\s+/).filter(Boolean);if(!cmd){prompt();return}try{const result=commands[cmd]?commands[cmd](args):"<span class=\"error\">"+escapeHtml(cmd)+": command not found</span>";if(result)add(result)}catch(err){add("<span class=\"error\">"+escapeHtml(err.message)+"</span>")}prompt()}add("<span class=\"ok\">SEIS Linux Replica Terminal</span>");add("Type <span class=\"info\">help</span>. Try <span class=\"info\">neofetch</span>, <span class=\"info\">seis</span>, <span class=\"info\">routes</span>, <span class=\"info\">open search</span>, or <span class=\"info\">open code</span>.");prompt();term.onclick=()=>{$("input",term)?.focus()}}
 function renderFiles(body){let cwd="/home/seis";function draw(){const node=nodeAt(cwd);body.innerHTML="<div class=\"file-shell\"><aside class=\"file-side\"><button data-path=\"/home/seis\">Home</button><button data-path=\"/home/seis/Projects\">Projects</button><button data-path=\"/etc\">etc</button><button data-path=\"/var/log\">logs</button></aside><main class=\"file-main\"><div class=\"toolbar\"><button class=\"secondary\" data-up>Up</button><button class=\"secondary\" data-new-file>New File</button><button class=\"secondary\" data-new-folder>New Folder</button><span class=\"muted\">"+escapeHtml(cwd)+"</span></div><div class=\"file-list\">"+Object.entries(node.children||{}).map(([name,item])=>"<button class=\"file-item\" data-name=\""+escapeHtml(name)+"\"><strong>"+(item.type==="dir"?"DIR":"FILE")+"</strong><span>"+escapeHtml(name)+"</span></button>").join("")+"</div><div class=\"card muted\">Double-click folders to open. File actions are browser-local.</div></main></div>";$$("[data-path]",body).forEach(b=>b.onclick=()=>{cwd=b.dataset.path;draw()});$("[data-up]",body).onclick=()=>{cwd=normalize(cwd+"/..");draw()};$("[data-new-file]",body).onclick=()=>{const node=nodeAt(cwd);node.children["new-file-"+Date.now()+".txt"]={type:"file",content:"Created from SEIS Files"};draw();toast("Files","File created")};$("[data-new-folder]",body).onclick=()=>{const node=nodeAt(cwd);node.children["New Folder "+Math.floor(Math.random()*99)]={type:"dir",children:{}};draw();toast("Files","Folder created")};$$("[data-name]",body).forEach(b=>{b.ondblclick=()=>{const target=node.children[b.dataset.name];if(target.type==="dir"){cwd=pathJoin(cwd,b.dataset.name);draw()}else openEditorFile(pathJoin(cwd,b.dataset.name))}})}draw()}
 function openEditorFile(path){openApp("text-editor");setTimeout(()=>{const node=nodeAt(path);const editor=$(".window.is-focused textarea");if(editor&&node)editor.value=node.content||""},100)}
 function renderEditor(body,app){body.innerHTML="<div class=\"editor\"><div class=\"toolbar\"><button class=\"primary\" data-save>Save to /home/seis</button><button class=\"secondary\" data-sample>Load Sample</button></div><textarea spellcheck=\"false\"># "+escapeHtml(app.name)+"\n\nEdit local text here.</textarea><div class=\"muted\">Browser-local editor. No host filesystem access.</div></div>";$("[data-save]",body).onclick=()=>{nodeAt("/home/seis").children["editor-"+Date.now()+".md"]={type:"file",content:$("textarea",body).value};toast(app.name,"Saved to VFS")};$("[data-sample]",body).onclick=()=>{$("textarea",body).value="# SEIS Linux Replica\n\nThis editor is adapted from the supplied OS code pattern."}}
@@ -457,7 +511,7 @@ function renderNotes(body){renderEditor(body,{name:"Notes"})}
 function renderTodo(body){const tasks=["Wire Linux shell","Verify browser smoke","Keep Local Demo labels"];body.innerHTML="<div class=\"app grid\"><h2>To-Do</h2><div class=\"grid\">"+tasks.map(t=>"<label class=\"card\"><input type=\"checkbox\"> "+escapeHtml(t)+"</label>").join("")+"</div><button class=\"primary\">Save Task Snapshot</button></div>";$("button",body).onclick=()=>toast("Tasks","Snapshot saved locally")}
 function renderPaint(body){body.innerHTML="<div class=\"app grid\"><div class=\"toolbar\"><button class=\"secondary\" data-clear>Clear</button><button class=\"primary\" data-save>Save Artwork</button></div><canvas width=\"720\" height=\"360\" style=\"width:100%;background:#fff;border-radius:10px\"></canvas></div>";const canvas=$("canvas",body),ctx=canvas.getContext("2d");let drawing=false;ctx.strokeStyle=state.accent;ctx.lineWidth=4;canvas.onpointerdown=e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY)};canvas.onpointermove=e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}};canvas.onpointerup=()=>drawing=false;$("[data-clear]",body).onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);$("[data-save]",body).onclick=()=>toast("Paint","Artwork metadata saved")}
 function renderMedia(body,app){body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><div class=\"card\"><strong data-state>Paused</strong><p class=\"muted\">Local media state only.</p></div><div class=\"toolbar\"><button class=\"primary\" data-play>Play/Pause</button><button class=\"secondary\" data-next>Next</button></div></div>";let playing=false;$("[data-play]",body).onclick=()=>{playing=!playing;$("[data-state]",body).textContent=playing?"Playing":"Paused"};$("[data-next]",body).onclick=()=>toast(app.name,"Next local track selected")}
-function renderTaskManager(body){function draw(){body.innerHTML="<div class=\"app grid\"><h2>Task Manager</h2>"+state.windows.filter(w=>!w.closed).map(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId);return"<div class=\"card\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(w.id)+"</p><button class=\"danger\" data-close=\""+escapeHtml(w.id)+"\">Close</button></div>"}).join("")+"</div>";$$("[data-close]",body).forEach(b=>b.onclick=()=>{handleWin(b.dataset.close,"close");draw()})}draw()}
+function renderTaskManager(body){function draw(){const rows=state.windows.filter(w=>!w.closed).map(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId)||{id:w.appId,name:w.appId,icon:"APP"};return"<div class=\"card\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(w.id)+" / "+(w.min?"minimized":"open")+"</p><div class=\"toolbar\"><button class=\"secondary\" data-focus=\""+escapeHtml(w.id)+"\">Focus</button><button class=\"danger\" data-close=\""+escapeHtml(w.id)+"\">Close</button></div></div>"}).join("")||"<div class=\"card muted\">No open windows.</div>";body.innerHTML="<div class=\"app grid\"><h2>App Switcher</h2><p class=\"muted\">Visual task switcher for the open SEIS windows. Actions are browser-local.</p>"+rows+"</div>";$$("[data-focus]",body).forEach(b=>b.onclick=()=>{const item=state.windows.find(w=>w.id===b.dataset.focus);const node=$("#"+b.dataset.focus);if(item&&node){item.min=false;node.classList.remove("is-min");focusWindow(item.id);draw()}});$$("[data-close]",body).forEach(b=>b.onclick=()=>{handleWin(b.dataset.close,"close");draw()})}draw()}
 function renderMonitor(body){body.innerHTML="<div class=\"app grid cols\"><div class=\"card\"><h3>Apps</h3><strong>"+APP_CATALOG.length+"</strong></div><div class=\"card\"><h3>Windows</h3><strong>"+state.windows.filter(w=>!w.closed).length+"</strong></div><div class=\"card\"><h3>VFS Files</h3><strong>"+listFiles("/").length+"</strong></div><div class=\"card\"><h3>Mode</h3><strong>Local Demo</strong></div></div>"}
 function renderAbout(body){body.innerHTML="<div class=\"app grid\"><h2>SEIS Linux Replica</h2><p class=\"muted\">This route uses the supplied Web Linux code as a shell reference: boot, login, taskbar, start menu, draggable windows, VFS, and Linux-like terminal commands. It is rewritten under SEIS identity because the pasted source is incomplete and contains placeholder app comments.</p><div class=\"grid cols\"><div class=\"card\"><strong>Apps</strong><p>"+APP_CATALOG.length+"</p></div><div class=\"card\"><strong>Boundary</strong><p>No SSH, no host commands, no provider keys.</p></div></div></div>"}
 function renderStore(body){body.innerHTML="<div class=\"app grid\"><h2>Installed Apps</h2><div class=\"grid cols\">"+APP_CATALOG.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.category)+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
@@ -480,9 +534,9 @@ function renderLogs(body){body.innerHTML="<div class=\"app grid\"><h2>Logs</h2>"
 function renderBrowser(body){body.innerHTML="<div class=\"app grid\"><label class=\"field\">URL<input value=\"seis://local-demo\"></label><button class=\"primary\">Load Local Page</button><div class=\"card\"><h3>Simulated Response</h3><p class=\"muted\">No external network request was made.</p></div></div>";$("button",body).onclick=()=>toast("Browser","Loaded local simulated response")}
 function renderGame(body,app){let score=0;body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><div class=\"card\"><strong data-score>Score 0</strong><p class=\"muted\">Local playable shell. Controls update real state.</p></div><div class=\"toolbar\"><button class=\"primary\" data-play>Play Turn</button><button class=\"secondary\" data-reset>Reset</button></div></div>";$("[data-play]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score+=Math.ceil(Math.random()*12))};$("[data-reset]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score=0)}}
 function renderGeneric(body,app){body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><p class=\"muted\">"+escapeHtml(app.description)+"</p><label class=\"field\">Local input<input data-input value=\"SEIS local demo\"></label><div class=\"toolbar\"><button class=\"primary\" data-run>Run Local Action</button><button class=\"secondary\" data-save>Save Snapshot</button></div><div class=\"card\"><strong data-output>Ready</strong><p class=\"muted\">Controls update browser-local state. Mock or planned integrations stay labeled.</p></div></div>";$("[data-run]",body).onclick=()=>{$("[data-output]",body).textContent="Ran: "+$("[data-input]",body).value;log(app.name+":run")};$("[data-save]",body).onclick=()=>{nodeAt("/home/seis").children[app.id+"-"+Date.now()+".txt"]={type:"file",content:app.name+" snapshot"};toast(app.name,"Snapshot saved to VFS")}}
-$("#loginButton").onclick=enterDesktop;$("#startButton").onclick=()=>toggleStart();$("#closeStart").onclick=()=>toggleStart(false);$("#lockButton").onclick=()=>{$("#shell").classList.remove("is-active");$("#login").classList.add("is-active");toggleStart(false)};$("#themeButton").onclick=()=>{state.accent=state.accent==="#7c5cff"?"#19c6d4":"#7c5cff";applyAccent()};$("#localeButton").onclick=toggleLocale;$("#startSearch").oninput=e=>{state.query=e.target.value;renderStartMenu()};document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();toggleStart(true);$("#startSearch").focus()}if(e.key==="Escape")toggleStart(false)});
-window.__SEIS_LINUX_REPLICA__={appCount:APP_CATALOG.length,bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),locale:()=>state.locale,route:"seis-linux-replica.html"};
-applyAccent();applyLocale(state.locale,false);renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);boot();
+$("#loginButton").onclick=enterDesktop;$("#startButton").onclick=()=>toggleStart();$("#closeStart").onclick=()=>toggleStart(false);$("#lockButton").onclick=()=>{$("#shell").classList.remove("is-active");$("#login").classList.add("is-active");toggleStart(false);saveSession("lock")};$("#themeButton").onclick=()=>{state.accent=state.accent==="#7c5cff"?"#19c6d4":"#7c5cff";applyAccent()};$("#localeButton").onclick=toggleLocale;$("#startSearch").oninput=e=>{state.query=e.target.value;renderStartMenu()};$$("[data-quick-app]").forEach(btn=>btn.onclick=()=>openApp(btn.dataset.quickApp));document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();toggleStart(true);$("#startSearch").focus()}if(e.key==="Escape")toggleStart(false)});
+window.__SEIS_LINUX_REPLICA__={appCount:APP_CATALOG.length,bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),locale:()=>state.locale,session:readSession,route:"seis-linux-replica.html"};
+applyAccent();applyLocale(state.locale,false);renderSideRail();renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);boot();
 })();
 </script>
 </body>

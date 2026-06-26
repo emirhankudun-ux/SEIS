@@ -17,26 +17,27 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 1899
+Inspected files: 1921
 
 ## Provider Matrix
 
 | Provider | Category | Status | Expected env vars | Locations | Frontend direct | Backend side | Decision | Recommended action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5835 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5837 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 6 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Cohere | cloud model provider | Unknown | COHERE_API_KEY | 20 | no | no | Retain | Review manually before enabling. |
-| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 112 | no | no | Retain | Review manually before enabling. |
-| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 106 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 120 | no | no | Retain | Review manually before enabling. |
+| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 108 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Groq | cloud model provider | Unknown | GROQ_API_KEY | 4 | no | no | Retain | Review manually before enabling. |
-| Mistral | cloud model provider | Unknown | MISTRAL_API_KEY | 1 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 1050 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 306 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 56 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Hugging Face | model hosting provider | Unknown | HF_TOKEN | 2 | no | no | Retain | Review manually before enabling. |
+| Mistral | cloud model provider | Unknown | MISTRAL_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 1063 | no | no | Retain | Review manually before enabling. |
+| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 322 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 58 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 76 | no | no | Retain | Review manually before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
 | Runway | media provider | Unknown | RUNWAY_API_KEY | 336 | no | no | Retain | Review manually before enabling. |
-| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 101 | no | no | Retain | Review manually before enabling. |
+| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 102 | no | no | Retain | Review manually before enabling. |
 | Vercel AI SDK | abstraction layer | Unknown | none detected | 15 | no | no | Retain | Review manually before enabling. |
 
 ## Secret-Exposure Findings
@@ -136,6 +137,7 @@ These references do not prove enabled live features or required API keys.
 - DeepSeek: DEEPSEEK_API_KEY (Unknown)
 - Google Gemini: GEMINI_API_KEY (Live but Unverified)
 - Groq: GROQ_API_KEY (Unknown)
+- Hugging Face: HF_TOKEN (Unknown)
 - Mistral: MISTRAL_API_KEY (Unknown)
 - NVIDIA NIM: NVIDIA_API_KEY (Unknown)
 - Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Live but Unverified)

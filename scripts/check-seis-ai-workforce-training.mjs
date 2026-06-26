@@ -12,6 +12,7 @@ const files = {
   aiCore: "docs/ai/seis-ai-core.md",
   workforce: "content/development/ai-workforce-assignments.json",
   providerRegistry: "content/development/seis-ai-core-provider-registry.json",
+  languageModelIntakeRegistry: "content/development/seis-language-model-intake-registry.json",
   modelFamilyRegistry: "packages/seis-ai/models/seis-model-family-registry.json",
   modelPromotionPolicy: "packages/seis-ai/models/seis-model-promotion-policy.json",
   modelBenchmarkSuite: "packages/seis-ai/models/seis-model-benchmark-suite.json"
@@ -26,6 +27,7 @@ const docs = readText(files.docs, "training docs");
 const aiCore = readText(files.aiCore, "AI Core docs");
 const workforce = readJson(files.workforce, "workforce assignments");
 const providerRegistry = readJson(files.providerRegistry, "provider registry");
+const languageModelIntakeRegistry = readJson(files.languageModelIntakeRegistry, "language model intake registry");
 const promotionPolicy = readJson(files.modelPromotionPolicy, "model promotion policy");
 
 if (plan) {
@@ -36,6 +38,7 @@ if (plan) {
   ensure(String(plan.truthBoundary || "").includes("no live provider calls"), "truth boundary must forbid live provider calls");
   ensure(String(plan.truthBoundary || "").includes("no cloud fine-tuning"), "truth boundary must forbid cloud fine-tuning");
   ensure(String(plan.trainingMeaning?.currentMeaning || "").includes("deterministic seed-model"), "training meaning must use deterministic seed-model language");
+  ensure(plan.sourceOfTruth?.languageModelIntakeRegistry === files.languageModelIntakeRegistry, "plan sourceOfTruth must link language model intake registry");
   ensureArrayWithMinimum(plan.trainingMeaning?.notMeaning, 6, "trainingMeaning.notMeaning");
 
   for (const phrase of ["cloud provider fine-tuning", "foundation model ownership", "dataset scraping or download", "secret-bearing prompt sharing"]) {
@@ -64,6 +67,7 @@ if (plan) {
   for (const id of [
     "intake_sanitization",
     "installed_ai_review",
+    "language_model_intake_review",
     "dataset_candidate_review",
     "deterministic_seed_rebuild",
     "promotion_gate_review",
@@ -112,6 +116,18 @@ if (plan) {
   }
 }
 
+if (languageModelIntakeRegistry) {
+  ensure(languageModelIntakeRegistry.id === "seis-language-model-intake-registry", "language model intake registry id mismatch");
+  ensure(languageModelIntakeRegistry.status === "active-intake-contract", "language model intake registry status mismatch");
+  ensure(languageModelIntakeRegistry.installPolicy?.bulkInstallAllowed === false, "language model intake must forbid bulk installs");
+  ensure(languageModelIntakeRegistry.installPolicy?.downloadAuthorized === false, "language model intake must forbid downloads by default");
+  ensure(languageModelIntakeRegistry.installPolicy?.trainingAuthorized === false, "language model intake must forbid training by default");
+  ensure(languageModelIntakeRegistry.installPolicy?.datasetDownloadAuthorized === false, "language model intake must forbid dataset downloads by default");
+  ensure((languageModelIntakeRegistry.candidateModelFamilies || []).length >= 8, "language model intake must list candidate model families");
+  ensure((languageModelIntakeRegistry.trainingLanes || []).some((lane) => lane.id === "repo-local-seed-models" && lane.allowedToday === true), "language model intake must keep repo-local seed training as the active lane");
+  ensure((languageModelIntakeRegistry.trainingLanes || []).some((lane) => lane.id === "foundation-pretraining" && lane.status === "disabled"), "language model intake must keep foundation pretraining disabled");
+}
+
 if (workforce) {
   ensure(workforce.id === "seis-ai-workforce-assignments", "workforce assignment id mismatch");
   ensure(workforce.writerPolicy?.primaryWriter === "codex", "Codex must remain workforce primary writer");
@@ -136,6 +152,7 @@ if (docs) {
     "not cloud fine-tuning",
     "npm run check:seis-ai-workforce-training",
     "npm run automation:seis-ai-workforce-training",
+    "Language Model Intake Registry",
     "Runtime authority remains false",
     "Secondary AI output is candidate evidence"
   ]) {
