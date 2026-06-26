@@ -45,7 +45,7 @@ environment.
 | Managed sub-agent processes | Browser-smoked foundation | Sub-Agent Control, System Monitor, and Task Manager expose six bounded local sub-agent processes with pulse, suspend, resume, next-cycle execution, `/home/seis/Documents/sub-agent-process-ledger.md`, and `/home/seis/Documents/sub-agent-cycle-report.md` evidence. |
 | Terminal | Browser-smoked foundation | 38 browser-safe commands are available; the smoke writes and reads a virtual file. |
 | Single demo entry | Browser-smoked foundation | SEIS Desktop is the current single browser demo shell, with launcher and command-palette routes to SEIS AI App, Sub-Agent OS Demo, SEIS Code Workspace, SEIS Code Web, Mythic Gacha, and Video Hero Showcase. |
-| SEIS Linux Replica | Standalone browser-smoked route | `apps/web/seis-linux-replica.html` adapts the supplied Web Linux shell idea into a SEIS-branded local-only route with boot, login, taskbar, launcher, VFS, terminal, 64 app launch targets, connected Search/Code/Design/Cloud/Store/Website/Music/AI Core bridge cards, and mini Code/Design/Cloud/Store/Music/AI workspaces with browser-local actions. `npm run check:seis-linux-replica-browser-smoke` verifies the route through Chrome/CDP and writes ignored screenshot evidence under `dist/qa/seis-linux-replica-smoke/`. |
+| SEIS Linux Replica | Standalone browser-smoked route | `apps/web/seis-linux-replica.html` adapts the supplied OS/Linux shell references into a SEIS-branded local-only route with boot, login, SEIS System OS top bar, quick app controls, pinned side rail, five live activity cards, dock/taskbar, launcher, resizable/draggable windows, VFS, terminal, safe session persistence, 64 app launch targets, connected Search/Code/Design/Cloud/Store/Website/Music/AI Core bridge cards, and mini Code/Design/Cloud/Store/Music/AI workspaces with browser-local actions. `npm run check:seis-linux-replica-browser-smoke` verifies the route through Chrome/CDP and writes ignored screenshot evidence under `dist/qa/seis-linux-replica-smoke/`. |
 | SEIS Command Center | Browser-local V17 operating center | The Command Center route opens a first-class desktop app that maps Desktop OS, AI Core, model scaling, Search, Code, Design, Cloud, Store, Music, Launchpad, Files, Terminal, Website, Agents, Plugins, and Command Center status. It labels working, Local Demo, mock-safe, and planned/gated states, renders the 10-row Master Objective Coverage matrix, creates `/home/seis/Documents/seis-v17-command-center-snapshot.md`, exports `/home/seis/Documents/seis-20b-local-preflight.md` as a dry-run 20B / 16GB+ checklist, and keeps the 20B / 16GB+ plus future 70B and 150B frontier model-scaling lanes explicitly evidence-gated. |
 | SEIS Second Brain | Local Demo knowledge OS | The Second Brain app opens from Desktop shortcuts, System OS, SEIS Search, SEIS AI, Command Center, Favorites, and Launchpad. It renders an Obsidian-style browser-local Markdown vault, graph nodes/backlinks, installed AI and sub-agent lane duties, capture/link/review actions, `/home/seis/SecondBrain/seis-second-brain-vault-snapshot.md`, `graph-links.json`, `second-brain-review-gate.md`, and a human-review-required GitHub readiness export without private vault import, provider calls, SSH, deployment, push, or merge. |
 | SEIS Search routes | Browser-smoked foundation | The launcher exposes route cards for the primary demo surfaces, the command palette resolves the SEIS Code Web route, and the SEIS Search app now exposes actionable AI, Web, Code, Design, Cloud, Apps, Plugins, and Files result tabs. |
@@ -62,7 +62,16 @@ environment.
 
 ## Supplied Visual References
 
-The user supplied `/Users/emirhankudun/Downloads/Öğelerle Yeni Klasör/` as Linux clone visual reference material. The implementation used these images as design direction for boot rhythm, clean first desktop composition, abstract wave wallpaper, bottom dock, and launcher density. Raw screenshots, browser chrome, Kimi UI, Ubuntu/LinuxOS names, watermarks, and photographed screen glare were not copied into product UI.
+The user supplied `/Users/emirhankudun/Downloads/Öğelerle Yeni Klasör/`,
+`/Users/emirhankudun/Downloads/Öğelerle Yeni Klasör 3/`,
+`/Users/emirhankudun/Downloads/Öğelerle Yeni Klasör 4/`, and
+`/Users/emirhankudun/Downloads/SEIS Wow/SEIS_WOW_MORE_PAGES_PART7/` as OS and
+SEIS WOW reference material. The implementation used these files as design
+direction for boot rhythm, clean first desktop composition, side navigation,
+activity cards, app switching, bottom dock, launcher density, and connected
+Code/Design/Cloud/Store/Search surfaces. Raw screenshots, browser chrome, Kimi
+UI, Ubuntu/LinuxOS names, watermarks, and photographed screen glare were not
+copied into product UI.
 
 ## Validation Commands
 
