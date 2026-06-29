@@ -11,6 +11,7 @@ const paths = {
   publicReadiness: "content/development/seis-agi-public-readiness-evidence.json",
   protocol: "content/development/seis-agi-evaluation-protocol.json",
   apexProgram: "content/development/seis-512b-apex-model-program.json",
+  independentEvidenceLedger: "content/development/seis-agi-independent-evidence-ledger.json",
   mcpRuntime: "content/development/seis-ai-core-mcp-runtime-contract.json",
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
   doc: "docs/ai/seis-agi-github-user-readiness-gates.md",
@@ -28,6 +29,7 @@ const publicReadiness = readJson(paths.publicReadiness, "AGI public readiness ev
 const protocol = readJson(paths.protocol, "AGI evaluation protocol");
 const apexProgram = readJson(paths.apexProgram, "512B apex program");
 const mcpRuntime = readJson(paths.mcpRuntime, "MCP runtime contract");
+const independentEvidenceLedger = readJson(paths.independentEvidenceLedger, "AGI independent evidence ledger");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration");
 const doc = readText(paths.doc, "AGI GitHub user readiness docs");
 const publicReadinessDoc = readText(paths.publicReadinessDoc, "AGI public readiness docs");
@@ -59,6 +61,7 @@ if (gates) {
   ensure(gates.sourceOfTruth?.apexModelProgram === paths.apexProgram, "sourceOfTruth.apexModelProgram mismatch");
   ensure(gates.sourceOfTruth?.mcpRuntimeContract === paths.mcpRuntime, "sourceOfTruth.mcpRuntimeContract mismatch");
   ensure(gates.sourceOfTruth?.pluginIntegration === paths.pluginIntegration, "sourceOfTruth.pluginIntegration mismatch");
+  ensure(gates.sourceOfTruth?.agiIndependentEvidenceLedger === paths.independentEvidenceLedger, "sourceOfTruth.agiIndependentEvidenceLedger mismatch");
   ensure(gates.sourceOfTruth?.doc === paths.doc, "sourceOfTruth.doc mismatch");
 
   ensureArrayIncludesAll(
@@ -110,6 +113,7 @@ if (gates) {
     "one-command AI readiness validator documented and passing",
     "all required CI checks green on the target commit",
     "human release approval recorded",
+    "independent AGI evidence ledger not completed",
     "no secrets or private keys exposed",
     "AGI and 512B claim boundaries preserved"
   ], "requiredBeforeEveryoneReady");
@@ -128,6 +132,8 @@ ensure(publicReadiness?.status === "blocked-missing-real-agi-evidence", "public 
 ensure(publicReadiness?.sourceOfTruth?.githubUserReadinessGates === paths.gates, "public readiness evidence must point to GitHub user readiness gates");
 ensure(protocol?.agiClaimAllowed === false, "AGI evaluation protocol must keep AGI claims blocked");
 ensure(apexProgram?.sourceOfTruth?.githubUserReadinessGates === paths.gates, "512B apex program must point to GitHub user readiness gates");
+ensure(independentEvidenceLedger?.status === "planned-without-independent-evidence", "independent evidence ledger must remain planned-without-independent-evidence while blocks are in force");
+ensure(independentEvidenceLedger?.agiClaimAllowed === false, "independent evidence ledger must keep AGI claims blocked");
 ensure(apexProgram?.routeEligibleToday === false, "512B apex program must stay route blocked");
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [

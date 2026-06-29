@@ -18,6 +18,7 @@
     "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
     "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
     "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "agiIndependentEvidenceLedger": "content/development/seis-agi-independent-evidence-ledger.json",
     "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
     "doc": "docs/ai/seis-agi-github-user-readiness-gates.md"
   },
@@ -174,6 +175,7 @@
     "all required CI checks green on the target commit",
     "human release approval recorded",
     "public README claim boundary reviewed",
+    "independent AGI evidence ledger not completed",
     "no secrets or private keys exposed",
     "AGI and 512B claim boundaries preserved"
   ],

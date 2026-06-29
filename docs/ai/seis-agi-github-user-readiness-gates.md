@@ -48,6 +48,8 @@ The gate pack keeps SEIS aligned with public risk and evaluation references:
 - One-command AI readiness validator needs to be documented and run as a release
   gate.
 - Human release approval must be recorded.
+- Independent AGI evidence ledger must remain incomplete until external review and
+  explicit human approval are recorded.
 - Real AGI and 512B claims remain blocked until independent evaluation,
   training/inference, benchmark, safety, and external review evidence exists.
 
