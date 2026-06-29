@@ -161,7 +161,8 @@ function buildOnboardingPack(report) {
           "npm run cloud:ssh-config:install -- --dry-run",
           "npm run check:seis-ssh-picker-compatibility",
           "ssh -G SEIS-SSH",
-          "ssh SEIS-SSH -o BatchMode=yes"
+          "npm run report:seis-ssh-public-onboarding",
+          "npm run report:seis-ssh-public-contributor-doctor"
         ],
         forbiddenActions: [
           "request shared private keys",
