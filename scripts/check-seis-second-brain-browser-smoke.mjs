@@ -7,8 +7,16 @@ import { tmpdir } from "node:os";
 const ROOT = process.cwd();
 const WEB_ROOT = join(ROOT, "apps", "web");
 const SCREENSHOT_DIR = join(ROOT, "dist", "qa", "second-brain-smoke");
-const HOST = "127.0.0.1";
-const DEBUG_HOST = "127.0.0.1";
+const HOST_CANDIDATES = Array.from(new Set(
+  [
+    process.env.SEIS_SMOKE_HOST,
+    "0.0.0.0",
+    "127.0.0.1",
+    "localhost",
+    "::1"
+  ].filter(Boolean)
+));
+let activeSmokeHost = HOST_CANDIDATES[0];
 const failures = [];
 
 const REQUIRED_ARTIFACTS = [
@@ -35,9 +43,9 @@ function contentType(file) {
   return "application/octet-stream";
 }
 
-function createStaticServer() {
+function createStaticServer(host = activeSmokeHost) {
   return createServer((request, response) => {
-    const requestUrl = new URL(request.url || "/", `http://${HOST}`);
+    const requestUrl = new URL(request.url || "/", `http://${host}`);
     const decodedPath = decodeURIComponent(requestUrl.pathname);
     const relativePath = decodedPath === "/" ? "/desktop.html" : decodedPath;
     const filePath = normalize(join(WEB_ROOT, relativePath));
@@ -60,18 +68,41 @@ function createStaticServer() {
 }
 
 async function listenStaticServer(server) {
-  await new Promise((resolveListen, rejectListen) => {
-    server.once("error", rejectListen);
-    server.listen(0, HOST, () => {
-      server.off("error", rejectListen);
-      resolveListen();
-    });
-  }).catch((error) => {
-    if (error?.code === "EPERM" && error?.address === HOST) {
-      throw new Error(`Cannot run Second Brain browser smoke because this environment cannot bind ${HOST}. Original error: ${error.message}`);
+  let lastError;
+  for (const host of HOST_CANDIDATES) {
+    try {
+      await new Promise((resolveListen, rejectListen) => {
+        server.once("error", rejectListen);
+        server.listen(0, host, () => {
+          server.off("error", rejectListen);
+          activeSmokeHost = host;
+          resolveListen();
+        });
+      });
+      return host;
+    } catch (error) {
+      lastError = error;
+      if (error?.code === "EPERM" && typeof error?.address === "string") {
+        continue;
+      }
+      throw error;
     }
-    throw error;
-  });
+  }
+  if (lastError?.code === "EPERM") {
+    throw new Error(`Cannot run Second Brain browser smoke because this environment cannot bind any fallback host (${HOST_CANDIDATES.join(", ")}). Original error: ${lastError.message}`);
+  }
+  if (lastError) {
+    throw lastError;
+  }
+  throw new Error("Cannot run Second Brain browser smoke: no host candidates available.");
+}
+
+function getSmokeHost() {
+  return activeSmokeHost;
+}
+
+function getDebugHost() {
+  return activeSmokeHost;
 }
 
 function findChrome() {
@@ -157,8 +188,9 @@ class CdpClient {
 }
 
 async function newTab(debugPort) {
-  await fetchJsonWithRetry(`http://${DEBUG_HOST}:${debugPort}/json/version`, {}, 30000);
-  const target = await fetchJsonWithRetry(`http://${DEBUG_HOST}:${debugPort}/json/new?about:blank`, { method: "PUT" }, 30000);
+  const host = getDebugHost();
+  await fetchJsonWithRetry(`http://${host}:${debugPort}/json/version`, {}, 30000);
+  const target = await fetchJsonWithRetry(`http://${host}:${debugPort}/json/new?about:blank`, { method: "PUT" }, 30000);
   const client = new CdpClient(target.webSocketDebuggerUrl);
   await client.open();
   await client.send("Page.enable");
@@ -554,7 +586,7 @@ async function main() {
 
   try {
     client = await newTab(debugPort);
-    const baseUrl = `http://${HOST}:${appPort}`;
+    const baseUrl = `http://${getSmokeHost()}:${appPort}`;
     const secondBrain = await smokeSecondBrain(client, baseUrl);
     const mobile = await smokeMobile(client, baseUrl);
     const relevantIssues = collectRelevantIssues(client.events);
