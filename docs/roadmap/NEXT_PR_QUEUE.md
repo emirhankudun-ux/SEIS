@@ -2,6 +2,11 @@
 
 Date: 2026-06-23
 
+## Current Env-Locked Blockers
+
+- `npm run check:seis-second-brain-browser-smoke` cannot bind any fallback host in this sandbox (EPERM on `0.0.0.0`, `127.0.0.1`, `localhost`, `::1`), so `check:seis-second-brain-readiness-contracts` and `check:seis-public-demo-go-no-go` cannot yet consume live browser-smoke evidence in this environment.
+- Keep `human-review-required` status for public demo go/no-go until escalated/restricted-shell validation run succeeds in a permitted host environment.
+
 ## Current Recommended Product Demo Stack
 
 | Order | Suggested PR title | Scope | Validation | Approval needed |
