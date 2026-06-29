@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "id": "seis-ssh-live-readiness-evidence",
+  "status": "blocked-provider-billing",
+  "targetAlias": "SEIS-SSH",
+  "observedDate": "2026-06-29",
+  "evidenceMode": "approval-gated-read-only-live-probe",
+  "serverAndPortPolicy": {
+    "invariant": "Keep the same server and port.",
+    "turkishInvariant": "Ayni sunucu ve baglanti noktasi korunur.",
+    "preservationMode": "preserve-existing-server-and-port",
+    "serverOrPortChanged": false
+  },
+  "liveProbe": {
+    "command": "npm run cloud:ssh:online -- --connect-timeout 12",
+    "liveSshAttempted": true,
+    "configOnlyChecksPassed": true,
+    "strictReady": false,
+    "provider": "github-codespaces",
+    "transport": "codespace",
+    "hostnameKind": "github.codespaces",
+    "port": "22",
+    "cloudOnly": true,
+    "pickerLikelyCompatible": false,
+    "remoteOnline": false,
+    "repoPresent": false,
+    "codexAvailable": false,
+    "sanitizedProviderError": "GitHub Codespaces start was blocked by an HTTP 402 billing issue.",
+    "rawSecretOutputStored": false
+  },
+  "blockers": [
+    {
+      "id": "github-codespaces-billing-issue",
+      "severity": "P0",
+      "owner": "human-owner",
+      "approvalRequired": true,
+      "summary": "GitHub disallowed starting the current Codespace because of a billing issue.",
+      "safeNextAction": "Resolve GitHub Codespaces billing or approve an equivalent direct-cloud/broker target while preserving the SEIS-SSH alias, server, and port policy."
+    },
+    {
+      "id": "ssh-remote-offline",
+      "severity": "P0",
+      "owner": "human-owner",
+      "approvalRequired": true,
+      "summary": "The current SEIS-SSH target did not reach an online remote session.",
+      "safeNextAction": "After billing or endpoint approval is handled, rerun npm run cloud:ssh:online:strict with explicit live SSH approval."
+    },
+    {
+      "id": "picker-proxycommand-warning",
+      "severity": "P1",
+      "owner": "maintainer",
+      "approvalRequired": true,
+      "summary": "Codespaces ProxyCommand transport is terminal-compatible but not generic-picker proven.",
+      "safeNextAction": "Use direct-cloud only after approved endpoint proof; do not add a second visible SSH alias."
+    }
+  ],
+  "claimsAllowed": [
+    "SEIS-SSH has a documented public access contract.",
+    "SEIS-SSH currently preserves the same server and port policy.",
+    "Static public access, onboarding, and contributor doctor checks can be reviewed on GitHub.",
+    "The latest live probe is blocked and must not be described as online."
+  ],
+  "claimsForbidden": [
+    "Do not claim SEIS-SSH is live-ready.",
+    "Do not claim ChatGPT mobile 24x7 readiness.",
+    "Do not claim GUI picker compatibility.",
+    "Do not change HostName or Port to bypass the billing issue.",
+    "Do not create duplicate visible SEIS SSH aliases."
+  ],
+  "requiredFollowUpCommands": [
+    "npm run check:seis-ssh-live-readiness-evidence",
+    "npm run check:seis-ssh-public-access",
+    "npm run check:seis-ssh-public-contributor-doctor",
+    "npm run check:seis-ssh-picker-compatibility",
+    "npm run cloud:ssh:online:strict"
+  ],
+  "approvalGates": [
+    "resolve-github-codespaces-billing",
+    "execute-live-ssh",
+    "change-server-or-port",
+    "switch-to-direct-cloud",
+    "push-merge-or-release"
+  ]
+}

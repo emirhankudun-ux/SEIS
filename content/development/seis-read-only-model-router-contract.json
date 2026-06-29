@@ -72,6 +72,33 @@
     "safety eval evidence",
     "human approval"
   ],
+  "decisionIntegrity": {
+    "readOnlyOnly": true,
+    "executionPerformedAlwaysFalse": true,
+    "noPromptBodyInDecision": true,
+    "noCredentialMaterialInDecision": true,
+    "decisionLogsRedacted": true,
+    "providerStateMustBeNamed": true,
+    "selectedProviderMustBeExplicit": true,
+    "fallbackMustBeExplicit": true,
+    "blockedReasonsRequiredWhenIneligible": true,
+    "privateObsidianContentRoutable": false
+  },
+  "reviewOnlyOutputs": [
+    "eligible provider fixture",
+    "blocked reason list",
+    "privacy mode explanation",
+    "provider state explanation",
+    "fallback policy explanation",
+    "required approval list",
+    "read-only decision artifact JSON and Markdown path"
+  ],
+  "reviewArtifact": {
+    "status": "required-before-public-demo-review",
+    "json": "reports/seis-public-demo/read-only-model-router-decision-latest.json",
+    "markdown": "reports/seis-public-demo/read-only-model-router-decision-latest.md",
+    "qualityGate": "npm run check:seis-read-only-model-router-decision"
+  },
   "readOnlyDecisionShape": {
     "taskType": "string",
     "privacyMode": "local-only | standard | review-gated",

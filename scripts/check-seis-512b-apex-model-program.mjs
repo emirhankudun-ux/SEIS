@@ -10,6 +10,7 @@ const paths = {
   program: "content/development/seis-512b-apex-model-program.json",
   agiEvaluationProtocol: "content/development/seis-agi-evaluation-protocol.json",
   agiPublicReadinessEvidence: "content/development/seis-agi-public-readiness-evidence.json",
+  agiGithubUserReadinessGates: "content/development/seis-agi-github-user-readiness-gates.json",
   profile: "content/development/seis-model-scaling-hardware-profile.json",
   ladder: "content/development/seis-model-parameter-ladder.json",
   policy: "content/development/seis-model-frontier-escalation-policy.json",
@@ -32,6 +33,7 @@ for (const [label, relativePath] of Object.entries(paths)) ensureFile(relativePa
 const program = readJson(paths.program, "512B apex model program");
 const agiEvaluationProtocol = readJson(paths.agiEvaluationProtocol, "AGI evaluation protocol");
 const agiPublicReadinessEvidence = readJson(paths.agiPublicReadinessEvidence, "AGI public readiness evidence");
+const agiGithubUserReadinessGates = readJson(paths.agiGithubUserReadinessGates, "AGI GitHub user readiness gates");
 const profile = readJson(paths.profile, "model scaling profile");
 const ladder = readJson(paths.ladder, "parameter ladder");
 const policy = readJson(paths.policy, "frontier escalation policy");
@@ -74,7 +76,8 @@ if (program) {
     "content/development/seis-150b-frontier-model-program.json",
     paths.council,
     paths.agiEvaluationProtocol,
-    paths.agiPublicReadinessEvidence
+    paths.agiPublicReadinessEvidence,
+    paths.agiGithubUserReadinessGates
   ], "program.sourceOfTruth values");
   ensure((program.programStages || []).length === 7, "program must expose seven 512B stages");
   ensure((program.programStages || []).every((stage) => stage.routeEligibleToday === false), "all 512B stages must be route-ineligible");
@@ -225,6 +228,7 @@ if (agiPublicReadinessEvidence) {
   ensure(agiPublicReadinessEvidence.agiClaimAllowed === false, "AGI public readiness evidence must block AGI claims");
   ensure(agiPublicReadinessEvidence.publicReadyAsAgi === false, "AGI public readiness evidence must not be public-ready as AGI");
   ensure(agiPublicReadinessEvidence.publicReadyAsLocalDemo === true, "AGI public readiness evidence must allow Local Demo public use");
+  ensure(agiPublicReadinessEvidence.sourceOfTruth?.githubUserReadinessGates === paths.agiGithubUserReadinessGates, "AGI public readiness evidence must point to GitHub user readiness gates");
   ensure(agiPublicReadinessEvidence.readinessSummary?.minimumClaimEvidenceCount === (agiEvaluationProtocol?.minimumEvidenceBeforeAnyAgiClaim || []).length, "AGI public readiness evidence minimum count must match protocol");
   ensure(agiPublicReadinessEvidence.readinessSummary?.acceptedClaimEvidenceCount === 0, "AGI public readiness evidence accepted count must be zero");
   ensureArrayIncludesAll(
@@ -237,6 +241,16 @@ if (agiPublicReadinessEvidence) {
     agiEvaluationProtocol?.minimumEvidenceBeforeAnyAgiClaim || [],
     "AGI public readiness evidence minimumClaimEvidenceMatrix"
   );
+}
+
+if (agiGithubUserReadinessGates) {
+  ensure(agiGithubUserReadinessGates.id === "seis-agi-github-user-readiness-gates", "AGI GitHub user readiness gates id mismatch");
+  ensure(agiGithubUserReadinessGates.resourceUri === "seis://ai/agi-github-user-readiness-gates.json", "AGI GitHub user readiness gates resource URI mismatch");
+  ensure(agiGithubUserReadinessGates.status === "review-gated-local-demo-ready", "AGI GitHub user readiness gates must stay review-gated");
+  ensure(agiGithubUserReadinessGates.publicReadyForLocalDemo === true, "AGI GitHub user readiness gates must allow Local Demo review");
+  ensure(agiGithubUserReadinessGates.githubReadyForEveryone === false, "AGI GitHub user readiness gates must not mark everyone-ready");
+  ensure(agiGithubUserReadinessGates.publicReadyAsAgi === false, "AGI GitHub user readiness gates must not be AGI public-ready");
+  ensure(agiGithubUserReadinessGates.agiClaimAllowed === false, "AGI GitHub user readiness gates must block AGI claims");
 }
 
 ensure(profile?.sourceOfTruth?.apexModelProgram === paths.program, "profile must point to 512B apex model program");
@@ -264,9 +278,10 @@ for (const duty of council?.apex512bCouncilDuties || []) {
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/512b-apex-model-program.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-evaluation-protocol.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-public-readiness-evidence.json"], "pluginIntegration.runtimeIntegration.mcpResources");
+ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-github-user-readiness-gates.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-512b-apex-model-program"], "pluginIntegration.qualityCommands");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 28, "MCP runtime contract must record 28 resources");
+ensure(mcpRuntime?.resourceCount === 29, "MCP runtime contract must record 29 resources");
 
 if (packageJson) {
   ensure(packageJson.scripts?.["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose check:seis-512b-apex-model-program");
@@ -302,10 +317,13 @@ for (const [text, label] of [
 for (const [text, label] of [
   [helper, "AI Core helper"],
   [mcpServer, "MCP server"],
-  [mcpSmoke, "MCP smoke tests"]
+  [mcpSmoke, "MCP smoke tests"],
+  [aiCoreDoc, "AI Core docs"]
 ]) {
   ensure(text.includes("seis-agi-public-readiness-evidence"), `${label} must reference AGI public readiness evidence`);
   ensure(text.includes("seis://ai/agi-public-readiness-evidence.json"), `${label} must reference AGI public readiness evidence MCP URI`);
+  ensure(text.includes("seis-agi-github-user-readiness-gates"), `${label} must reference AGI GitHub user readiness gates`);
+  ensure(text.includes("seis://ai/agi-github-user-readiness-gates.json"), `${label} must reference AGI GitHub user readiness gates MCP URI`);
 }
 
 finish("SEIS 512B apex model program check passed.");

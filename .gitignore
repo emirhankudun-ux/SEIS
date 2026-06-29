@@ -159,6 +159,11 @@ ios/
 !content/development/seis-god-mode-runtime-evidence.json
 !plugins/seis-ai-agent/assets/lanes/*.json
 !reports/seis-commit-packages.json
+!deploy/seis-ssh-public-access-contract.json
+!.mcp.json
+!.kimi-code/
+!.kimi-code/mcp.json
+.kimi-code/local.toml
 
 # Package lock files
 package-lock.json
@@ -172,6 +177,12 @@ apps/web/content/
 # Documentation
 docs/*
 !docs/STATUS.md
+!docs/GETTING_STARTED.md
+!docs/TROUBLESHOOTING.md
+!docs/OBSIDIAN_SECOND_BRAIN.md
+!docs/LOCAL_AI_SETUP.md
+!docs/SEIS_SSH_SETUP.md
+!docs/PUBLIC_READINESS.md
 !docs/product/
 !docs/product/*.md
 !docs/reviews/
@@ -186,6 +197,10 @@ docs/*
 !docs/goals/*.md
 !docs/development/
 !docs/development/local-ai-workbench.md
+!docs/deployment/
+!docs/deployment/seis-ssh-public-github-access.md
+!docs/platform/
+!docs/platform/*.md
 !docs/governance/
 !docs/governance/*.md
 !docs/governance/**/*.md
@@ -207,3 +222,9 @@ reports/seis-ssh-mobile-24x7-readiness.json
 reports/seis-ssh-mobile-24x7-readiness.md
 reports/seis-ssh-mobile-direct-cloud-profile.json
 reports/seis-ssh-mobile-direct-cloud-profile.md
+reports/seis-ssh-public-access/latest.json
+reports/seis-ssh-public-access/latest.md
+reports/seis-ssh-public-access/onboarding-pack-latest.json
+reports/seis-ssh-public-access/onboarding-pack-latest.md
+reports/seis-ssh-public-access/contributor-doctor-latest.json
+reports/seis-ssh-public-access/contributor-doctor-latest.md

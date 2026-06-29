@@ -11,13 +11,17 @@ const docsPath = "docs/product/seis-second-brain.md";
 const desktopJsPath = "apps/web/desktop.js";
 const desktopCssPath = "apps/web/desktop.css";
 const packagePath = "package.json";
+const trainingCurriculumPath = "content/development/seis-language-model-training-curriculum.json";
+const trainingCurriculumReportPath = "reports/seis-model-scaling/seis-language-model-training-curriculum.md";
 
 for (const [filePath, label] of [
   [contractPath, "Second Brain contract"],
   [docsPath, "Second Brain product docs"],
   [desktopJsPath, "Desktop runtime"],
   [desktopCssPath, "Desktop styles"],
-  [packagePath, "package.json"]
+  [packagePath, "package.json"],
+  [trainingCurriculumPath, "language model training curriculum"],
+  [trainingCurriculumReportPath, "language model training curriculum report"]
 ]) {
   ensureFile(filePath, label);
 }
@@ -35,6 +39,12 @@ if (contract) {
   ensure(contract.desktopAppId === "second-brain", "contract must bind desktop app id second-brain");
   ensure(contract.routeId === "seis-second-brain-app", "contract must bind route id seis-second-brain-app");
   ensure(contract.vaultRoot === "/home/seis/SecondBrain", "contract must declare browser-local vault root");
+  ensure(contract.trainingPackPath === "/home/seis/SecondBrain/07-learning/seis-agent-training-pack.md", "contract must declare browser-local training pack path");
+  ensure(contract.releaseReviewPacketPath === "reports/seis-public-demo/pr54-review-packet-latest.md", "contract must declare PR #54 release review packet path");
+  ensure(contract.languageModelTrainingCurriculum?.status === "planned-training-contract", "contract must bind planned language model training curriculum");
+  ensure(contract.languageModelTrainingCurriculum?.contractPath === trainingCurriculumPath, "contract language model training curriculum path mismatch");
+  ensure(contract.languageModelTrainingCurriculum?.reportPath === trainingCurriculumReportPath, "contract language model training curriculum report path mismatch");
+  ensure(String(contract.languageModelTrainingCurriculum?.boundary || "").includes("No model install"), "contract language model training curriculum boundary must block model installs");
   ensure(contract.obsidianBridge?.status === "planned", "Obsidian bridge must remain planned until implemented and reviewed");
   ensure(contract.securityBoundary?.storesSecrets === false, "Second Brain must not store secrets");
   ensure(contract.securityBoundary?.providerCalls === false, "Second Brain must not call providers in Local Demo mode");
@@ -84,6 +94,9 @@ for (const phrase of [
   "All 6 current managed SEIS sub-agent lanes",
   "12-agent target roster",
   "GitHub readiness",
+  "Agent training pack",
+  "Language model training curriculum",
+  "without installing models",
   "Human review required",
   "npm run check:seis-second-brain",
   "does not import a private Obsidian vault",
@@ -105,6 +118,7 @@ for (const phrase of [
   "data-second-brain-agent-roster",
   "second-brain-capture",
   "second-brain-link",
+  "second-brain-training-pack",
   "second-brain-review",
   "second-brain-export-github",
   "Save Vault Snapshot",
@@ -114,6 +128,15 @@ for (const phrase of [
   "exportSecondBrainGithubReadiness",
   "seis-second-brain-vault-snapshot.md",
   "github-readiness-review.md",
+  "seis-agent-training-pack.md",
+  "releaseReviewPacketPath",
+  "pr54-review-packet-latest.md",
+  "seis-language-model-training-curriculum.json",
+  "seis-language-model-training-curriculum.md",
+  "Language Model Training Curriculum",
+  "No model install",
+  "exportSecondBrainTrainingPack",
+  "buildSecondBrainTrainingPackMarkdown",
   "SEIS_INSTALLED_AI_SYSTEMS.length",
   "SUB_AGENT_DEMO.lanes.length",
   "autonomousAgentRoster",
@@ -147,7 +170,7 @@ for (const selector of [
   ensure(desktopCss.includes(selector), `desktop.css missing selector ${selector}`);
 }
 
-for (const filePath of [contractPath, docsPath, desktopJsPath]) {
+for (const filePath of [contractPath, docsPath, desktopJsPath, trainingCurriculumPath, trainingCurriculumReportPath]) {
   requireNotMatches(filePath, /sk-[A-Za-z0-9_-]{20,}/, "OpenAI-style API keys");
   requireNotMatches(filePath, /-----BEGIN (?:OPENSSH|RSA|EC|DSA) PRIVATE KEY-----/, "private keys");
   requireNotMatches(filePath, /\b(?:password|token|secret|api[_-]?key)\s*=\s*['"][^'"]+['"]/i, "inline credential assignments");

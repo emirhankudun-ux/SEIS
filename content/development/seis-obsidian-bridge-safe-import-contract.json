@@ -17,6 +17,7 @@
     "document safe import requirements",
     "render repo-owned browser-local seed notes",
     "export browser-local Markdown snapshots under /home/seis/SecondBrain",
+    "generate repo-owned dry-run manifest artifacts under reports/seis-public-demo",
     "validate no-secret and no-private-vault boundaries"
   ],
   "futureImportPhases": [
@@ -113,5 +114,47 @@
     "redactionRequired": true,
     "hashPrivatePaths": true,
     "storeSecrets": false
-  }
+  },
+  "dryRunManifestSchema": {
+    "requiredFields": [
+      "sourcePathFingerprint",
+      "selectedByUser",
+      "candidateNoteCount",
+      "blockedFileCount",
+      "blockedPathMatches",
+      "secretScanSummary",
+      "provenanceLabels",
+      "publishabilityLabels",
+      "redactionSummary",
+      "attachmentReviewSummary",
+      "bodyImportPolicy",
+      "humanApprovalState"
+    ],
+    "bodyImportPolicy": "metadata-only-by-default",
+    "privatePathPolicy": "hash-or-redact",
+    "approvalStateValues": [
+      "not-requested",
+      "dry-run-ready",
+      "approved-for-local-preview",
+      "approved-for-public-fixture",
+      "blocked"
+    ]
+  },
+  "importDecisionLabels": [
+    "public-safe-metadata-only",
+    "needs-redaction",
+    "needs-provenance-review",
+    "blocked-private",
+    "blocked-secret-risk",
+    "blocked-attachment-risk"
+  ],
+  "reviewPacketRequirements": [
+    "dry-run manifest path",
+    "repo-owned dry-run artifact JSON and Markdown path",
+    "no-secret scan result",
+    "provenance label summary",
+    "redaction summary",
+    "accessibility navigation review",
+    "explicit human approval state"
+  ]
 }
