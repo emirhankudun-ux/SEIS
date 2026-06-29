@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPR_OS_01 // ARCH_NODE_01</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            opacity: 0.75;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 6s linear infinite;
+            z-index: 100;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: 0%; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #00f0ff;
+        }
+        .terminal-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: auto 1fr;
+            gap: 16px;
+            height: calc(100vh - 32px);
+            padding: 16px;
+            margin-top: 32px;
+            margin-left: 80px;
+        }
+        @media (max-width: 768px) {
+            .terminal-grid {
+                margin-left: 0;
+                margin-bottom: 64px;
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#f9f5f5",
+                    "on-secondary-container": "#480064",
+                    "surface-container-low": "#1a1c1c",
+                    "surface-container": "#1e2020",
+                    "on-tertiary": "#313030",
+                    "background": "#121414",
+                    "on-primary": "#00363a",
+                    "surface-container-highest": "#333535",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "on-secondary-fixed": "#320047",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#520071",
+                    "on-error": "#690005",
+                    "outline": "#849495",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#006970",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#ce5dff",
+                    "secondary": "#ebb2ff",
+                    "inverse-on-surface": "#2f3131",
+                    "surface-tint": "#00dbe9",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "tertiary-container": "#dcd9d8",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "primary": "#dbfcff",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-container-lowest": "#0c0f0f",
+                    "secondary-fixed": "#f8d8ff",
+                    "surface-dim": "#121414",
+                    "on-surface": "#e2e2e2",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-variant": "#333535",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-high": "#282a2b",
+                    "surface": "#121414",
+                    "primary-fixed": "#7df4ff",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-bright": "#37393a",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#002022"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-xs": "4px",
+                    "margin-page": "32px",
+                    "gap-md": "16px",
+                    "gap-sm": "8px",
+                    "stroke-thick": "2px",
+                    "stroke-thin": "1px",
+                    "gap-lg": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md text-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<div class="scanline"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="flex items-center gap-gap-sm">
+<span class="font-headline-md text-headline-md text-primary-container tracking-tighter">HYPR_OS_01</span>
+<div class="h-4 w-[1px] bg-outline-variant mx-gap-xs"></div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">NODE: ARCH_NODE_01</span>
+</div>
+<div class="flex items-center gap-gap-md h-full">
+<div class="flex items-center gap-gap-sm px-gap-sm h-full hover:bg-surface-container-highest transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+<span class="font-code-sm text-code-sm">4.2GHz</span>
+</div>
+<div class="flex items-center gap-gap-sm px-gap-sm h-full hover:bg-surface-container-highest transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-code-sm text-code-sm">TTY1</span>
+</div>
+<div class="flex items-center gap-gap-sm px-gap-sm h-full hover:bg-surface-container-highest transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</div>
+<div class="flex items-center gap-gap-sm px-gap-sm h-full hover:bg-surface-container-highest transition-colors text-error cursor-pointer">
+<span class="material-symbols-outlined text-[18px]">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg hidden md:flex">
+<div class="flex flex-col items-center mb-gap-lg">
+<div class="w-10 h-10 rounded-none border border-primary-container p-0.5 mb-2">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">shield_with_heart</span>
+</div>
+</div>
+<span class="text-[10px] font-bold text-primary-container">ROOT</span>
+</div>
+<div class="flex flex-col gap-gap-md w-full">
+<a class="bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container flex flex-col items-center py-gap-sm group transition-all duration-75" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-code-sm text-code-sm mt-1">DASH</span>
+</a>
+<a class="text-on-surface-variant opacity-60 flex flex-col items-center py-gap-sm hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-code-sm text-code-sm mt-1">SYS</span>
+</a>
+<a class="text-on-surface-variant opacity-60 flex flex-col items-center py-gap-sm hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75" href="#">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-code-sm text-code-sm mt-1">NET</span>
+</a>
+<a class="text-on-surface-variant opacity-60 flex flex-col items-center py-gap-sm hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75" href="#">
+<span class="material-symbols-outlined">code</span>
+<span class="font-code-sm text-code-sm mt-1">DEV</span>
+</a>
+<a class="text-on-surface-variant opacity-60 flex flex-col items-center py-gap-sm hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-code-sm text-code-sm mt-1">LOG</span>
+</a>
+</div>
+<button class="mt-auto w-12 h-12 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-fixed transition-colors active:scale-95 duration-75">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+</nav>
+<!-- Main Canvas -->
+<main class="terminal-grid">
+<!-- System Stats / Gauges (htop style) -->
+<section class="col-span-12 md:col-span-6 grid grid-cols-1 gap-gap-sm">
+<div class="bg-background/40 backdrop-blur-md border border-outline-variant p-gap-md relative overflow-hidden group hover:border-primary-container transition-colors">
+<div class="flex justify-between items-center mb-gap-sm">
+<span class="font-label-sm text-label-sm text-primary-container">CPU_CORE_UTILIZATION</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">AVG: 42%</span>
+</div>
+<!-- Segmented Bars -->
+<div class="grid grid-cols-8 gap-gap-sm mb-gap-md">
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C0</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 65%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C1</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 30%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C2</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 85%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C3</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 12%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C4</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 44%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C5</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 92%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C6</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 25%"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="text-[10px] text-on-surface-variant">C7</div>
+<div class="h-16 bg-surface-container-highest relative">
+<div class="absolute bottom-0 w-full bg-primary-container shadow-[0_0_8px_rgba(0,240,255,0.5)]" style="height: 58%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="col-span-12 md:col-span-6 grid grid-cols-1 gap-gap-sm">
+<div class="bg-background/40 backdrop-blur-md border border-outline-variant p-gap-md hover:border-secondary-container transition-colors">
+<div class="flex justify-between items-center mb-gap-sm">
+<span class="font-label-sm text-label-sm text-secondary">MEM_RESOURCE_USAGE</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">12.4GB / 32GB</span>
+</div>
+<!-- Memory Bar -->
+<div class="h-6 w-full bg-surface-container-highest flex gap-[2px] p-[2px]">
+<div class="h-full bg-secondary-container flex-grow" style="flex: 0 0 38.7%"></div>
+<div class="h-full bg-secondary opacity-30 flex-grow" style="flex: 0 0 10%"></div>
+</div>
+<div class="mt-gap-sm flex justify-between text-[10px] font-mono text-on-surface-variant">
+<span>[|||||||||||||||||||||||||||||----------------------------------------] 38.7%</span>
+</div>
+</div>
+<div class="bg-background/40 backdrop-blur-md border border-outline-variant p-gap-md hover:border-primary-container transition-colors">
+<div class="flex justify-between items-center mb-gap-sm">
+<span class="font-label-sm text-label-sm text-primary-container">NET_TRAFFIC</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">wlan0</span>
+</div>
+<div class="flex gap-gap-lg">
+<div class="flex-1">
+<div class="text-[10px] text-on-surface-variant mb-1">UP: 1.2 MB/s</div>
+<div class="h-1 bg-surface-container-highest">
+<div class="h-full bg-primary-container w-[15%]"></div>
+</div>
+</div>
+<div class="flex-1">
+<div class="text-[10px] text-on-surface-variant mb-1">DOWN: 14.8 MB/s</div>
+<div class="h-1 bg-surface-container-highest">
+<div class="h-full bg-primary-container w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Terminal Panel (top/htop style) -->
+<section class="col-span-12 row-start-2 bg-surface-container-lowest border border-outline-variant flex flex-col relative">
+<div class="h-6 bg-primary-container flex items-center px-gap-sm justify-between">
+<div class="flex items-center gap-gap-sm">
+<span class="text-on-primary-fixed text-[12px] font-bold">TOP_PROCESS_MONITOR</span>
+<span class="text-on-primary-fixed opacity-60 text-[10px]">UPTIME: 12:43:02</span>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 border border-on-primary-fixed"></div>
+<div class="w-3 h-3 border border-on-primary-fixed"></div>
+</div>
+</div>
+<div class="flex-1 p-gap-sm overflow-auto font-mono text-[12px] leading-tight">
+<!-- Header row -->
+<div class="flex bg-surface-container-highest py-1 px-2 text-on-surface-variant font-bold mb-1">
+<div class="w-16">PID</div>
+<div class="w-20">USER</div>
+<div class="w-12">PR</div>
+<div class="w-12">NI</div>
+<div class="w-20 text-right">VIRT</div>
+<div class="w-20 text-right">RES</div>
+<div class="w-20 text-right">SHR</div>
+<div class="w-12 text-center">S</div>
+<div class="w-12 text-right">%CPU</div>
+<div class="w-12 text-right">%MEM</div>
+<div class="flex-1 pl-4">COMMAND</div>
+</div>
+<!-- Process Rows -->
+<div class="space-y-0.5">
+<div class="flex py-1 px-2 hover:bg-secondary-container/20 group cursor-default transition-colors">
+<div class="w-16 text-primary-container">1042</div>
+<div class="w-20">root</div>
+<div class="w-12">20</div>
+<div class="w-12">0</div>
+<div class="w-20 text-right">245M</div>
+<div class="w-20 text-right">82M</div>
+<div class="w-20 text-right">12M</div>
+<div class="w-12 text-center">R</div>
+<div class="w-12 text-right text-primary-container">12.4</div>
+<div class="w-12 text-right">0.8</div>
+<div class="flex-1 pl-4 group-hover:text-primary">/usr/bin/hyprland</div>
+</div>
+<div class="flex py-1 px-2 hover:bg-secondary-container/20 group cursor-default transition-colors">
+<div class="w-16 text-primary-container">3122</div>
+<div class="w-20">user</div>
+<div class="w-12">20</div>
+<div class="w-12">0</div>
+<div class="w-20 text-right">4.2G</div>
+<div class="w-20 text-right">1.2G</div>
+<div class="w-20 text-right">450M</div>
+<div class="w-12 text-center">S</div>
+<div class="w-12 text-right text-primary-container">8.2</div>
+<div class="w-12 text-right">14.2</div>
+<div class="flex-1 pl-4 group-hover:text-primary">/opt/brave-bin/brave --type=renderer</div>
+</div>
+<div class="flex py-1 px-2 bg-secondary-container text-on-secondary-container font-bold">
+<div class="w-16">5910</div>
+<div class="w-20">root</div>
+<div class="w-12">20</div>
+<div class="w-12">0</div>
+<div class="w-20 text-right">32M</div>
+<div class="w-20 text-right">14M</div>
+<div class="w-20 text-right">8M</div>
+<div class="w-12 text-center">R</div>
+<div class="w-12 text-right">4.5</div>
+<div class="w-12 text-right">0.1</div>
+<div class="flex-1 pl-4">htop</div>
+</div>
+<div class="flex py-1 px-2 hover:bg-secondary-container/20 group cursor-default transition-colors">
+<div class="w-16 text-primary-container">201</div>
+<div class="w-20">root</div>
+<div class="w-12">20</div>
+<div class="w-12">0</div>
+<div class="w-20 text-right">0</div>
+<div class="w-20 text-right">0</div>
+<div class="w-20 text-right">0</div>
+<div class="w-12 text-center">I</div>
+<div class="w-12 text-right text-primary-container">0.3</div>
+<div class="w-12 text-right">0.0</div>
+<div class="flex-1 pl-4 group-hover:text-primary">[kworker/u16:1-events_unbound]</div>
+</div>
+<!-- Filler data -->
+<script>
+                        const commands = [
+                            "/usr/lib/systemd/systemd --user",
+                            "waybar",
+                            "swww-daemon",
+                            "foot --server",
+                            "python3 neural_net.py",
+                            "/usr/bin/dbus-daemon --system",
+                            "dunst",
+                            "nm-applet --indicator",
+                            "thunar --daemon",
+                            "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+                            "[ksoftirqd/0]",
+                            "[rcu_preempt]",
+                            "[migration/0]"
+                        ];
+                        for(let i=0; i<15; i++) {
+                            const pid = Math.floor(Math.random() * 9000) + 1000;
+                            const cpu = (Math.random() * 2).toFixed(1);
+                            const mem = (Math.random() * 1).toFixed(1);
+                            const cmd = commands[i % commands.length];
+                            document.write(`
+                                <div class="flex py-1 px-2 hover:bg-secondary-container/20 group cursor-default transition-colors">
+                                    <div class="w-16 text-primary-container">${pid}</div>
+                                    <div class="w-20">user</div>
+                                    <div class="w-12">20</div>
+                                    <div class="w-12">0</div>
+                                    <div class="w-20 text-right">120M</div>
+                                    <div class="w-20 text-right">45M</div>
+                                    <div class="w-20 text-right">10M</div>
+                                    <div class="w-12 text-center">S</div>
+                                    <div class="w-12 text-right text-primary-container">${cpu}</div>
+                                    <div class="w-12 text-right">${mem}</div>
+                                    <div class="flex-1 pl-4 group-hover:text-primary">${cmd}</div>
+                                </div>
+                            `);
+                        }
+                    </script>
+</div>
+<!-- Active Shell Prompt -->
+<div class="mt-gap-md border-t border-outline-variant pt-gap-md">
+<div class="flex items-center gap-2">
+<span class="text-primary-container font-bold">root@arch-node</span>
+<span class="text-on-surface-variant">~ #</span>
+<span class="text-on-surface">tail -f /var/log/syslog</span>
+<span class="w-2 h-5 bg-primary-container cursor-blink"></span>
+</div>
+</div>
+</div>
+<!-- Footer Taskbar style within panel -->
+<div class="h-8 border-t border-outline-variant bg-surface-container-lowest flex items-center px-gap-sm gap-gap-lg">
+<div class="flex gap-gap-md">
+<span class="text-[10px] text-primary-container">F1 <span class="text-on-surface-variant">Help</span></span>
+<span class="text-[10px] text-primary-container">F2 <span class="text-on-surface-variant">Setup</span></span>
+<span class="text-[10px] text-primary-container">F3 <span class="text-on-surface-variant">Search</span></span>
+<span class="text-[10px] text-primary-container">F4 <span class="text-on-surface-variant">Filter</span></span>
+<span class="text-[10px] text-primary-container">F5 <span class="text-on-surface-variant">Tree</span></span>
+<span class="text-[10px] text-primary-container">F6 <span class="text-on-surface-variant">SortBy</span></span>
+</div>
+<div class="ml-auto text-[10px] text-on-surface-variant font-bold">
+                    [ MOD: NORMAL ]
+                </div>
+</div>
+</section>
+</main>
+<!-- FAB for quick action (as defined in shared logic context) -->
+<button class="fixed bottom-gap-lg right-gap-lg w-14 h-14 bg-primary-container text-on-primary shadow-[0_0_15px_rgba(0,240,255,0.4)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</button>
+<script>
+        // Micro-interactions for live feeling
+        setInterval(() => {
+            // Randomize some CPU bars slightly
+            const bars = document.querySelectorAll('.h-16 .bg-primary-container');
+            bars.forEach(bar => {
+                const currentHeight = parseInt(bar.style.height);
+                const jitter = (Math.random() - 0.5) * 10;
+                let newHeight = Math.max(5, Math.min(95, currentHeight + jitter));
+                bar.style.height = newHeight + '%';
+            });
+
+            // Randomize some process numbers
+            const cpuCols = document.querySelectorAll('.text-primary-container.text-right');
+            cpuCols.forEach(col => {
+                if (Math.random() > 0.8) {
+                    const val = (Math.random() * 5).toFixed(1);
+                    col.innerText = val;
+                }
+            });
+        }, 1500);
+
+        // Terminal text typing effect for active command could go here if needed
+    </script>
+</body></html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Logic Flow Orchestrator (Sector 2)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-primary-fixed-variant": "#004f54",
+                      "tertiary-fixed": "#e5e2e1",
+                      "on-error": "#690005",
+                      "tertiary-container": "#dcd9d8",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-container": "#605e5e",
+                      "inverse-surface": "#e2e2e2",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "secondary-fixed": "#f8d8ff",
+                      "on-surface-variant": "#b9cacb",
+                      "surface-container": "#1e2020",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "outline": "#849495",
+                      "on-surface": "#e2e2e2",
+                      "surface-bright": "#37393a",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "secondary-container": "#ce5dff",
+                      "surface-variant": "#333535",
+                      "surface-container-low": "#1a1c1c",
+                      "background": "#121414",
+                      "on-primary": "#00363a",
+                      "on-background": "#e2e2e2",
+                      "surface": "#121414",
+                      "on-tertiary": "#313030",
+                      "on-primary-container": "#006970",
+                      "error-container": "#93000a",
+                      "tertiary": "#f9f5f5",
+                      "surface-container-highest": "#333535",
+                      "surface-tint": "#00dbe9",
+                      "on-secondary-fixed": "#320047",
+                      "error": "#ffb4ab",
+                      "primary-container": "#00f0ff",
+                      "primary": "#dbfcff",
+                      "outline-variant": "#3b494b",
+                      "secondary": "#ebb2ff",
+                      "on-primary-fixed": "#002022",
+                      "inverse-on-surface": "#2f3131",
+                      "primary-fixed-dim": "#00dbe9",
+                      "inverse-primary": "#006970",
+                      "on-secondary-container": "#480064",
+                      "on-secondary": "#520071",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#121414"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stroke-thin": "1px",
+                      "gap-xs": "4px",
+                      "stroke-thick": "2px",
+                      "gap-sm": "8px",
+                      "gap-lg": "24px",
+                      "margin-page": "32px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Space Mono"
+                      ],
+                      "headline-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow: hidden;
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(59, 73, 75, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(59, 73, 75, 0.1) 1px, transparent 1px);
+        }
+        .node-path {
+            stroke: #00f0ff;
+            stroke-width: 2;
+            fill: none;
+            filter: drop-shadow(0 0 4px rgba(0, 240, 255, 0.5));
+            animation: pulse-path 2s infinite;
+        }
+        @keyframes pulse-path {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        .blinking-cursor::after {
+            content: '_';
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        /* Custom scrollbar for properties panel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen antialiased selection:bg-secondary selection:text-on-secondary">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 z-50">
+<div class="flex items-center gap-gap-lg">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex gap-gap-md">
+<a class="text-on-surface-variant font-label-caps font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-body-lg">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-body-lg">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-body-lg">settings</span>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col group overflow-hidden">
+<div class="p-gap-md border-b border-outline-variant/20 flex items-center gap-gap-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="w-8 h-8 rounded bg-surface-variant border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed text-body-lg">person</span>
+</div>
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 py-gap-sm overflow-y-auto">
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 py-gap-sm">
+<button class="w-[calc(100%-32px)] mx-4 mb-2 bg-surface-variant border border-outline-variant text-on-surface font-label-sm text-label-sm py-2 opacity-0 group-hover:opacity-100 transition-opacity hover:border-secondary-fixed">NEW_SESSION</button>
+<div class="flex flex-col">
+<a class="text-on-surface-variant hover:text-error hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">POWER</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 group flex items-center px-4 py-3 cursor-pointer gap-gap-md" href="#">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">LOCK</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-20 flex bg-[#0a0a0a] relative h-full">
+<!-- Node Library Panel -->
+<div class="w-64 border-r border-outline-variant/30 bg-surface/85 backdrop-blur-xl flex flex-col z-10 h-full">
+<div class="h-6 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm flex items-center px-gap-sm shrink-0">
+                    NODE_LIBRARY.BIN
+                </div>
+<div class="p-gap-md flex-1 overflow-y-auto flex flex-col gap-gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-body-lg">search</span>
+<input class="w-full bg-background border border-[#333333] text-on-surface font-code-sm text-code-sm pl-8 pr-2 py-1 focus:border-primary-fixed focus:ring-0 focus:shadow-[inset_0_0_2px_rgba(0,240,255,0.5)] placeholder:text-[#666666] outline-none" placeholder="FILTER_NODES..." type="text"/>
+</div>
+<!-- Category: Triggers -->
+<div>
+<div class="font-label-sm text-label-sm text-primary-fixed mb-gap-xs flex items-center gap-gap-xs">
+<span class="material-symbols-outlined text-[14px]">bolt</span> TRIGGERS
+                        </div>
+<div class="flex flex-col gap-stroke-thin">
+<div class="bg-surface-variant/50 border border-[#333333] p-2 cursor-grab hover:border-primary-fixed transition-colors">
+<div class="font-code-sm text-code-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">webhook</span> Webhook_Recv
+                                </div>
+</div>
+<div class="bg-surface-variant/50 border border-[#333333] p-2 cursor-grab hover:border-primary-fixed transition-colors">
+<div class="font-code-sm text-code-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">schedule</span> Cron_Tick
+                                </div>
+</div>
+</div>
+</div>
+<!-- Category: Conditions -->
+<div>
+<div class="font-label-sm text-label-sm text-secondary-fixed-dim mb-gap-xs flex items-center gap-gap-xs mt-gap-sm">
+<span class="material-symbols-outlined text-[14px]">alt_route</span> CONDITIONS
+                        </div>
+<div class="flex flex-col gap-stroke-thin">
+<div class="bg-surface-variant/50 border border-[#333333] p-2 cursor-grab hover:border-secondary-fixed transition-colors">
+<div class="font-code-sm text-code-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">code_blocks</span> JSON_Match
+                                </div>
+</div>
+</div>
+</div>
+<!-- Category: AI Agents -->
+<div>
+<div class="font-label-sm text-label-sm text-surface-tint mb-gap-xs flex items-center gap-gap-xs mt-gap-sm">
+<span class="material-symbols-outlined text-[14px]">smart_toy</span> AI_AGENTS
+                        </div>
+<div class="flex flex-col gap-stroke-thin">
+<div class="bg-surface-variant/50 border border-[#333333] p-2 cursor-grab hover:border-surface-tint transition-colors">
+<div class="font-code-sm text-code-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">psychology</span> LLM_Process
+                                </div>
+</div>
+<div class="bg-surface-variant/50 border border-[#333333] p-2 cursor-grab hover:border-surface-tint transition-colors">
+<div class="font-code-sm text-code-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed-dim">analytics</span> Sentiment_Analysis
+                                </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Canvas -->
+<div class="flex-1 relative overflow-hidden grid-bg cursor-move h-full" id="canvas-area">
+<!-- SVG Canvas for connections -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
+<path class="node-path" d="M 250 150 C 350 150, 350 300, 450 300"></path>
+<path class="node-path" d="M 650 300 C 750 300, 750 200, 850 200"></path>
+</svg>
+<!-- Node 1: Webhook Trigger -->
+<div class="absolute top-[100px] left-[50px] w-48 bg-surface/85 backdrop-blur-md border border-[#333333] flex flex-col" style="z-index: 2;">
+<div class="h-6 bg-[#333333] border-b border-[#333333] flex items-center justify-between px-2 cursor-grab">
+<span class="font-label-sm text-[10px] text-on-surface flex items-center gap-1"><span class="material-symbols-outlined text-[12px] text-primary-fixed">bolt</span> Webhook_Recv</span>
+<div class="w-2 h-2 rounded-full bg-primary-fixed"></div>
+</div>
+<div class="p-2 font-code-sm text-code-sm">
+<div class="text-outline text-[11px] mb-1">PORT: 8080</div>
+<div class="text-outline text-[11px]">ENDPOINT: /api/v1/in</div>
+<div class="flex justify-end mt-2">
+<div class="w-3 h-3 rounded-full border border-primary-fixed bg-background relative right-[-14px] flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Node 2: LLM Process (Active) -->
+<div class="absolute top-[220px] left-[450px] w-56 bg-surface/95 backdrop-blur-xl border border-primary-fixed shadow-[0_0_8px_rgba(0,240,255,0.3)] flex flex-col" style="z-index: 3;">
+<div class="h-6 bg-primary-fixed flex items-center justify-between px-2 cursor-grab">
+<span class="font-label-sm text-[10px] text-on-primary-fixed font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">smart_toy</span> LLM_Process</span>
+<div class="w-2 h-2 rounded-full bg-background border border-on-primary-fixed"></div>
+</div>
+<div class="p-2 font-code-sm text-code-sm">
+<div class="flex justify-between items-center relative mb-2">
+<div class="w-3 h-3 rounded-full border border-primary-fixed bg-background absolute left-[-14px]"></div>
+<span class="text-[11px] ml-2 text-on-surface">payload_in</span>
+</div>
+<div class="h-px w-full bg-[#333333] my-2"></div>
+<div class="text-outline text-[11px] mb-1">MODEL: gpt-4-turbo</div>
+<div class="text-outline text-[11px] mb-2 truncate">SYS_PROMPT: "Analyze..."</div>
+<div class="flex justify-between items-center relative mt-2">
+<span class="text-[11px] text-on-surface">result_out</span>
+<div class="w-3 h-3 rounded-full border border-primary-fixed bg-background absolute right-[-14px] flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+</div>
+</div>
+</div>
+<!-- Node Progress -->
+<div class="h-1 w-full bg-background flex">
+<div class="h-full bg-primary-fixed w-[40%] border-r border-background"></div>
+<div class="h-full bg-primary-fixed w-[5%] border-r border-background opacity-50"></div>
+<div class="h-full bg-primary-fixed w-[5%] border-r border-background opacity-20"></div>
+</div>
+</div>
+<!-- Node 3: JSON Match -->
+<div class="absolute top-[140px] left-[850px] w-48 bg-surface/85 backdrop-blur-md border border-[#333333] flex flex-col" style="z-index: 2;">
+<div class="h-6 bg-[#333333] border-b border-[#333333] flex items-center justify-between px-2 cursor-grab">
+<span class="font-label-sm text-[10px] text-on-surface flex items-center gap-1"><span class="material-symbols-outlined text-[12px] text-secondary-fixed-dim">alt_route</span> JSON_Match</span>
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim"></div>
+</div>
+<div class="p-2 font-code-sm text-code-sm">
+<div class="flex justify-between items-center relative mb-2">
+<div class="w-3 h-3 rounded-full border border-secondary-fixed-dim bg-background absolute left-[-14px]"></div>
+<span class="text-[11px] ml-2 text-on-surface">data_in</span>
+</div>
+<div class="h-px w-full bg-[#333333] my-2"></div>
+<div class="flex justify-between items-center relative mt-1">
+<span class="text-[11px] text-[#4ade80]">True</span>
+<div class="w-3 h-3 rounded-full border border-[#4ade80] bg-background absolute right-[-14px]"></div>
+</div>
+<div class="flex justify-between items-center relative mt-2">
+<span class="text-[11px] text-error">False</span>
+<div class="w-3 h-3 rounded-full border border-error bg-background absolute right-[-14px]"></div>
+</div>
+</div>
+</div>
+<!-- Canvas Controls -->
+<div class="absolute bottom-gap-md left-gap-md flex gap-stroke-thick bg-surface-variant/80 backdrop-blur-md border border-outline-variant p-1">
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary-fixed hover:bg-[#333333] transition-colors"><span class="material-symbols-outlined text-[18px]">add</span></button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary-fixed hover:bg-[#333333] transition-colors font-code-sm text-[10px]">100%</button>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary-fixed hover:bg-[#333333] transition-colors"><span class="material-symbols-outlined text-[18px]">remove</span></button>
+<div class="w-px bg-outline-variant mx-1"></div>
+<button class="w-8 h-8 flex items-center justify-center text-on-surface hover:text-primary-fixed hover:bg-[#333333] transition-colors"><span class="material-symbols-outlined text-[18px]">center_focus_strong</span></button>
+</div>
+</div>
+<!-- Properties Panel -->
+<div class="w-80 border-l border-outline-variant/30 bg-surface/85 backdrop-blur-xl flex flex-col z-10 h-full">
+<div class="h-6 bg-surface-bright border-b border-outline-variant/30 flex items-center px-gap-sm shrink-0 justify-between">
+<span class="font-label-sm text-label-sm text-on-surface">PROPERTIES</span>
+<span class="font-code-sm text-[10px] text-outline">NODE_ID: 0x4F2A</span>
+</div>
+<div class="p-gap-md flex-1 overflow-y-auto flex flex-col gap-gap-md">
+<!-- Config Section -->
+<div class="border border-[#333333] bg-background">
+<div class="px-2 py-1 bg-surface-variant/50 border-b border-[#333333] font-label-sm text-[10px] text-primary-fixed">CONFIGURATION</div>
+<div class="p-2 flex flex-col gap-2">
+<div class="flex flex-col gap-1">
+<label class="font-code-sm text-[10px] text-outline">NODE_NAME</label>
+<input class="w-full bg-surface border border-[#333333] text-on-surface font-code-sm text-[12px] px-2 py-1 focus:border-primary-fixed focus:ring-0 outline-none" type="text" value="LLM_Process"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-code-sm text-[10px] text-outline">MODEL_SELECT</label>
+<select class="w-full bg-surface border border-[#333333] text-on-surface font-code-sm text-[12px] px-2 py-1 focus:border-primary-fixed focus:ring-0 outline-none appearance-none">
+<option>gpt-4-turbo</option>
+<option>claude-3-opus</option>
+<option>local-llama-3</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-code-sm text-[10px] text-outline">TEMPERATURE [0.0 - 1.0]</label>
+<div class="flex items-center gap-2">
+<input class="w-full h-1 bg-[#333333] rounded-none appearance-none cursor-pointer accent-primary-fixed" max="100" min="0" type="range" value="70"/>
+<span class="font-code-sm text-[12px] text-on-surface w-6 text-right">0.7</span>
+</div>
+</div>
+</div>
+</div>
+<!-- JSON Parameters -->
+<div class="border border-[#333333] bg-background flex flex-col flex-1">
+<div class="px-2 py-1 bg-surface-variant/50 border-b border-[#333333] font-label-sm text-[10px] text-secondary-fixed flex justify-between items-center">
+<span>JSON_PARAMETERS</span>
+<span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-primary-fixed">code</span>
+</div>
+<div class="p-2 bg-[#0c0f0f] flex-1 font-code-sm text-[11px] text-on-surface overflow-x-auto relative">
+<pre class="m-0"><span class="text-secondary-fixed">{</span>
+  <span class="text-primary-fixed">"system_prompt"</span><span class="text-secondary-fixed">:</span> <span class="text-[#a5d6ff]">"Analyze the incoming webhook payload for security threats. Return a strict JSON response with 'threat_level' and 'reasoning'."</span>,
+  <span class="text-primary-fixed">"max_tokens"</span><span class="text-secondary-fixed">:</span> <span class="text-[#79c0ff]">1024</span>,
+  <span class="text-primary-fixed">"response_format"</span><span class="text-secondary-fixed">:</span> <span class="text-secondary-fixed">{</span>
+    <span class="text-primary-fixed">"type"</span><span class="text-secondary-fixed">:</span> <span class="text-[#a5d6ff]">"json_object"</span>
+  <span class="text-secondary-fixed">}</span>
+<span class="text-secondary-fixed">}</span><span class="blinking-cursor text-primary-fixed"></span></pre>
+</div>
+</div>
+<!-- Terminal Output Mini -->
+<div class="h-32 border border-[#333333] bg-[#0c0f0f] flex flex-col">
+<div class="px-2 py-1 bg-[#1a1c1c] border-b border-[#333333] font-label-sm text-[10px] text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">terminal</span> EXECUTION_LOG
+                        </div>
+<div class="p-2 font-code-sm text-[10px] overflow-y-auto flex flex-col gap-1">
+<div class="text-outline">[14:32:01] Node initialized.</div>
+<div class="text-outline">[14:32:05] Awaiting payload...</div>
+<div class="text-primary-fixed-dim">[14:33:12] Payload received (2.4kb).</div>
+<div class="text-secondary-fixed-dim">[14:33:12] Executing inference...</div>
+</div>
+</div>
+<button class="w-full bg-primary-fixed text-[#0a0a0a] font-label-sm text-label-sm py-2 hover:bg-secondary-fixed transition-colors mt-auto shrink-0">
+                        FORCE_EXECUTE
+                    </button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

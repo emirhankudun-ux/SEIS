@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | NEURAL MONITOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .cyan-glow {
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+        }
+        .purple-glow {
+            box-shadow: 0 0 15px rgba(206, 93, 255, 0.15);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00f0ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.03);
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0; }
+            to { top: 100%; }
+        }
+
+        .matrix-grid {
+            background-image: linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Tiling logic scrollbars */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-container": "#00f0ff",
+                      "surface-container-highest": "#333535",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-secondary": "#520071",
+                      "on-secondary-fixed": "#320047",
+                      "surface-container-low": "#1a1c1c",
+                      "on-secondary-container": "#480064",
+                      "tertiary": "#f9f5f5",
+                      "on-primary": "#00363a",
+                      "background": "#121414",
+                      "on-tertiary": "#313030",
+                      "surface-container": "#1e2020",
+                      "inverse-primary": "#006970",
+                      "secondary-container": "#ce5dff",
+                      "outline-variant": "#3b494b",
+                      "outline": "#849495",
+                      "on-error": "#690005",
+                      "on-background": "#e2e2e2",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-error-container": "#ffdad6",
+                      "secondary-fixed": "#f8d8ff",
+                      "surface-container-lowest": "#0c0f0f",
+                      "surface-tint": "#00dbe9",
+                      "inverse-on-surface": "#2f3131",
+                      "secondary": "#ebb2ff",
+                      "primary": "#dbfcff",
+                      "tertiary-container": "#dcd9d8",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-primary-container": "#006970",
+                      "on-tertiary-container": "#605e5e",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "surface": "#121414",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-primary-fixed": "#002022",
+                      "surface-bright": "#37393a",
+                      "error-container": "#93000a",
+                      "surface-variant": "#333535",
+                      "on-surface-variant": "#b9cacb",
+                      "surface-dim": "#121414",
+                      "on-surface": "#e2e2e2",
+                      "tertiary-fixed": "#e5e2e1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stroke-thin": "1px",
+                      "stroke-thick": "2px",
+                      "gap-sm": "8px",
+                      "gap-md": "16px",
+                      "margin-page": "32px",
+                      "gap-xs": "4px",
+                      "gap-lg": "24px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Space Mono"],
+                      "label-caps": ["Space Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="matrix-grid min-h-screen">
+<div class="scanline"></div>
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl text-primary-fixed border-b border-outline-variant/30 fixed top-0 left-0 flex justify-between items-center w-full px-gutter h-10 z-50">
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<span class="font-code-sm text-code-sm bg-primary-container/10 px-2 py-0.5 rounded border border-primary-container/20">v.4.0.2-STABLE</span>
+</div>
+<div class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-white transition-colors">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-white transition-colors">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-white transition-colors">settings</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="flex flex-col flex-1 py-md">
+<div class="px-4 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed/30 rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">account_circle</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<p class="font-label-caps text-secondary-fixed text-label-caps">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps text-label-caps">LOGS</span>
+</div>
+</nav>
+<div class="mt-auto px-4 flex flex-col gap-2">
+<button class="bg-secondary-container text-on-secondary-container py-2 rounded font-label-caps text-label-caps hidden group-hover:block transition-all active:scale-95">NEW_SESSION</button>
+<div class="flex items-center justify-around py-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors cursor-pointer">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors cursor-pointer">lock</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 pt-10 h-screen overflow-hidden p-gap-md transition-all">
+<div class="h-full grid grid-cols-12 grid-rows-6 gap-gap-sm p-gap-sm">
+<!-- Header Tiling Window -->
+<div class="col-span-12 row-span-1 glass-panel flex items-center justify-between px-6 border-l-4 border-l-primary-container cyan-glow">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary-container uppercase tracking-tighter">NEURAL_TRAINING_MONITOR // SECTOR_04</h1>
+<div class="flex gap-4 mt-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span> STATUS: ACTIVE_CALIBRATION
+                        </span>
+<span class="text-label-caps font-label-caps text-secondary-container flex items-center gap-1">
+                            MODEL: CHRONOS-V4-EXPLICIT
+                        </span>
+</div>
+</div>
+<div class="flex items-center gap-8 text-right">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">ELAPSED TIME</p>
+<p class="font-headline-md text-headline-md text-primary-container tabular-nums" id="timer">00:42:19:04</p>
+</div>
+<div class="h-10 w-px bg-outline-variant/30"></div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">AVG LOSS</p>
+<p class="font-headline-md text-headline-md text-secondary-container tabular-nums">0.00241</p>
+</div>
+</div>
+</div>
+<!-- Neural Loop Visualization (Bento Left) -->
+<div class="col-span-8 row-span-3 glass-panel relative overflow-hidden">
+<div class="h-8 bg-primary-container flex items-center px-4 justify-between">
+<span class="text-surface-container-lowest font-label-caps text-label-caps">LIVE_TELEMETRY_STREAM</span>
+<div class="flex gap-2">
+<div class="w-3 h-3 border border-surface-container-lowest"></div>
+<div class="w-3 h-3 border border-surface-container-lowest"></div>
+</div>
+</div>
+<div class="absolute inset-0 top-8 pointer-events-none">
+
+</div>
+<div class="relative z-10 p-6 h-full flex flex-col justify-between">
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest/60 p-4 border border-outline-variant/30 backdrop-blur-md">
+<p class="text-label-caps text-on-surface-variant">GRADIENT_NORM</p>
+<p class="text-headline-md font-headline-md text-primary-fixed-dim">1.42e-3</p>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/60 p-4 border border-outline-variant/30 backdrop-blur-md">
+<p class="text-label-caps text-on-surface-variant">LR_ADAPTER</p>
+<p class="text-headline-md font-headline-md text-secondary-fixed">5.0e-5</p>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="h-full bg-secondary-container w-1/2"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/60 p-4 border border-outline-variant/30 backdrop-blur-md">
+<p class="text-label-caps text-on-surface-variant">BATCH_SIZE</p>
+<p class="text-headline-md font-headline-md text-primary-fixed-dim">1024</p>
+</div>
+<div class="bg-surface-container-lowest/60 p-4 border border-outline-variant/30 backdrop-blur-md">
+<p class="text-label-caps text-on-surface-variant">THROUGHPUT</p>
+<p class="text-headline-md font-headline-md text-secondary-fixed">42k t/s</p>
+</div>
+</div>
+<!-- Real-time Plotting Placeholder -->
+<div class="flex-1 mt-8 mb-4 border-l border-b border-outline-variant/50 relative">
+<div class="absolute top-0 right-0 flex flex-col gap-1 items-end p-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant font-label-caps">ACCURACY</span>
+<div class="w-8 h-px bg-primary-container"></div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant font-label-caps">LOSS_CURVE</span>
+<div class="w-8 h-px bg-secondary-container"></div>
+</div>
+</div>
+<svg class="w-full h-full" viewbox="0 0 800 200">
+<!-- Accuracy Curve -->
+<path d="M0,180 Q100,160 200,120 T400,80 T600,40 T800,20" fill="none" stroke="#00f0ff" stroke-dasharray="4" stroke-width="2"></path>
+<!-- Loss Curve -->
+<path d="M0,20 Q100,40 200,80 T400,120 T600,160 T800,185" fill="none" stroke="#ce5dff" stroke-width="2"></path>
+<!-- Grid lines -->
+<line stroke="#333" stroke-width="0.5" x1="0" x2="800" y1="50" y2="50"></line>
+<line stroke="#333" stroke-width="0.5" x1="0" x2="800" y1="100" y2="100"></line>
+<line stroke="#333" stroke-width="0.5" x1="0" x2="800" y1="150" y2="150"></line>
+</svg>
+</div>
+</div>
+</div>
+<!-- Weights Map (Bento Right) -->
+<div class="col-span-4 row-span-3 glass-panel relative overflow-hidden border-l border-secondary-container/30 purple-glow">
+<div class="h-8 bg-secondary-container flex items-center px-4 justify-between">
+<span class="text-on-secondary font-label-caps text-label-caps">WEIGHT_DISTRIBUTION_MAP</span>
+<span class="material-symbols-outlined text-on-secondary text-sm">grid_view</span>
+</div>
+<div class="p-6 h-full">
+<div class="grid grid-cols-10 grid-rows-10 gap-1 h-3/4">
+<!-- Heatmap blocks -->
+<script>
+                            for(let i=0; i<100; i++) {
+                                const opacity = Math.random();
+                                const color = opacity > 0.7 ? 'bg-secondary-container' : (opacity > 0.4 ? 'bg-secondary-container/40' : 'bg-surface-container-highest');
+                                document.write(`<div class="w-full h-full ${color} rounded-sm transition-all duration-1000 hover:scale-125 hover:z-20 cursor-crosshair"></div>`);
+                            }
+                        </script>
+</div>
+<div class="mt-6 flex flex-col gap-3">
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="text-label-caps text-on-surface-variant">DENSE_LAYER_01_ACTIVATION</span>
+<span class="font-code-sm text-secondary-fixed">88.4%</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="text-label-caps text-on-surface-variant">SPARSITY_THRESHOLD</span>
+<span class="font-code-sm text-secondary-fixed">0.0012</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant pb-2">
+<span class="text-label-caps text-on-surface-variant">ATTENTION_HEADS</span>
+<span class="font-code-sm text-secondary-fixed">16/16 ACTIVE</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Training Terminal (Bento Bottom Left) -->
+<div class="col-span-7 row-span-2 glass-panel flex flex-col overflow-hidden">
+<div class="h-8 bg-surface-container-highest flex items-center px-4 justify-between border-b border-outline-variant/30">
+<span class="text-on-surface font-label-caps text-label-caps flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span> KERNEL_LOGS::EPOCH_EVENT_STREAM
+                    </span>
+<span class="text-on-surface-variant font-code-sm text-[10px]">TTY1</span>
+</div>
+<div class="flex-1 p-4 overflow-y-auto bg-surface-container-lowest font-code-sm text-code-sm leading-relaxed text-on-surface-variant">
+<div class="flex gap-4">
+<span class="text-primary-container shrink-0">[00:42:18]</span>
+<span>EPOCH_24: Validation phase initiated. Cross-entropy check starting...</span>
+</div>
+<div class="flex gap-4 mt-1">
+<span class="text-primary-container shrink-0">[00:42:18]</span>
+<span class="text-secondary-container">SUCCESS: Weights checkpointed to Sector_4_Buffer_Alpha.</span>
+</div>
+<div class="flex gap-4 mt-1">
+<span class="text-primary-container shrink-0">[00:42:19]</span>
+<span>EPOCH_25: Learning rate decay adjusted (new_val: 4.8e-5).</span>
+</div>
+<div class="flex gap-4 mt-1">
+<span class="text-primary-container shrink-0">[00:42:19]</span>
+<span>MEM_SYNC: Pushing gradients to global orchestrator...</span>
+</div>
+<div class="flex gap-4 mt-1">
+<span class="text-primary-container shrink-0">[00:42:20]</span>
+<span class="text-primary-fixed-dim">WARN: High variance detected in Head_14. Rerouting feedback.</span>
+</div>
+<div class="mt-1 flex items-center gap-2">
+<span class="text-primary-container shrink-0">&gt;</span>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+</div>
+<!-- System Resources / Gauges (Bento Bottom Right) -->
+<div class="col-span-5 row-span-2 glass-panel p-6 overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-primary-fixed mb-6 border-b border-outline-variant/30 pb-2">H_TOP :: INFRA_TELEMETRY</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-label-caps text-on-surface-variant">NVIDIA_H100_CLUSTER_01</span>
+<span class="text-primary-container font-code-sm">92% LOAD</span>
+</div>
+<div class="flex gap-1 h-3">
+<script>
+                                for(let i=0; i<32; i++) {
+                                    const active = i < 29;
+                                    document.write(`<div class="flex-1 ${active ? 'bg-primary-container' : 'bg-surface-container-highest'}"></div>`);
+                                }
+                            </script>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-label-caps text-on-surface-variant">VRAM_UTILITY</span>
+<span class="text-secondary-container font-code-sm">76.4 GB / 80 GB</span>
+</div>
+<div class="flex gap-1 h-3">
+<script>
+                                for(let i=0; i<32; i++) {
+                                    const active = i < 24;
+                                    document.write(`<div class="flex-1 ${active ? 'bg-secondary-container' : 'bg-surface-container-highest'}"></div>`);
+                                }
+                            </script>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-8">
+<div class="border border-outline-variant/30 p-3 flex flex-col justify-center bg-surface-container-low">
+<span class="text-[10px] text-on-surface-variant font-label-caps mb-1">NETWORK_IO</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-primary-fixed">842</span>
+<span class="text-label-caps text-[10px]">GBPS</span>
+</div>
+</div>
+<div class="border border-outline-variant/30 p-3 flex flex-col justify-center bg-surface-container-low">
+<span class="text-[10px] text-on-surface-variant font-label-caps mb-1">LATENCY_MS</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-secondary-fixed">1.4</span>
+<span class="text-label-caps text-[10px]">MS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for Main Dashboard) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all z-50 group">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<div class="absolute right-20 bg-primary-container text-on-primary-container px-4 py-2 rounded font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">RESUME_TRAINING</div>
+</button>
+<script>
+        // Micro-interaction: Timer update
+        let seconds = 2539;
+        const timerEl = document.getElementById('timer');
+        setInterval(() => {
+            seconds++;
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            const ms = Math.floor(Math.random() * 99).toString().padStart(2, '0');
+            timerEl.innerText = `${h}:${m}:${s}:${ms}`;
+        }, 100);
+
+        // Simulated log stream
+        const terminal = document.querySelector('.overflow-y-auto');
+        const logs = [
+            "GRADIENT_CHECK: Pass.",
+            "OPTIMIZER: Step 492,101 completed.",
+            "SYNC: Sharding weights to GPU cluster 7...",
+            "ALERT: Temperature spike in Node_09 (42°C). Cooling engaged.",
+            "METRIC: Accuracy @ top_k: 0.992"
+        ];
+        
+        setInterval(() => {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'flex gap-4 mt-1 opacity-0 transition-opacity duration-500';
+            logEntry.innerHTML = `
+                <span class="text-primary-container shrink-0">[${new Date().toLocaleTimeString('en-GB', {hour12:false})}]</span>
+                <span>${logs[Math.floor(Math.random() * logs.length)]}</span>
+            `;
+            terminal.insertBefore(logEntry, terminal.lastElementChild);
+            setTimeout(() => logEntry.classList.remove('opacity-0'), 10);
+            if (terminal.children.length > 15) terminal.removeChild(terminal.children[0]);
+        }, 3000);
+    </script>
+</body></html>

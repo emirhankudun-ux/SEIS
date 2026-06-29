@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - AI Neural Training Monitor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-variant": "#333535",
+                        "outline-variant": "#3b494b",
+                        "on-background": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1a1c1c",
+                        "primary": "#dbfcff",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary": "#313030",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-lowest": "#0c0f0f",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "secondary": "#ebb2ff",
+                        "surface-dim": "#121414",
+                        "background": "#121414",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-container": "#480064",
+                        "on-secondary": "#520071",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#006970",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "surface-container-high": "#282a2b",
+                        "primary-fixed": "#7df4ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container": "#1e2020",
+                        "outline": "#849495",
+                        "on-primary-fixed": "#002022",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container-highest": "#333535",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-container": "#006970",
+                        "on-error": "#690005",
+                        "surface": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-xs": "4px",
+                        "gap-md": "16px",
+                        "stroke-thick": "2px",
+                        "margin-page": "32px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-panel-header { background: #00f0ff; color: #0a0a0a; height: 24px; padding: 0 8px; display: flex; align-items: center; }
+        .cyber-border:focus-within { border-color: #00f0ff; box-shadow: inset 0 0 4px #00f0ff; }
+        
+        .pulse-glow { animation: pulse 2s infinite; }
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px #ce5dff; }
+            50% { text-shadow: 0 0 20px #ce5dff, 0 0 30px #ce5dff; }
+            100% { text-shadow: 0 0 5px #ce5dff; }
+        }
+
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+        
+        .chart-bar { background: #00f0ff; }
+        .chart-bar.secondary { background: #ce5dff; }
+        
+        /* Grid Layout */
+        .cyber-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+        @media (max-width: 1024px) {
+            .cyber-grid { grid-template-columns: repeat(6, 1fr); gap: 12px; }
+        }
+        @media (max-width: 768px) {
+            .cyber-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-4 h-10 sticky z-50">
+<div class="flex items-center gap-6 h-full">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim font-bold">SEIS KERNEL OS</span>
+<nav class="hidden md:flex h-full gap-4 items-center">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm uppercase flex items-center h-full" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm uppercase flex items-center h-full" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm uppercase flex items-center h-full mt-[1px]" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm uppercase flex items-center h-full" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-[18px]">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors text-[18px]">settings</span>
+</div>
+<!-- Search on right placeholder -->
+<div class="hidden md:flex cyber-border border border-outline-variant/50 h-6 px-2 flex items-center gap-2 w-48">
+<span class="material-symbols-outlined text-[14px] text-outline">search</span>
+<input class="bg-transparent border-none outline-none text-code-sm text-on-background w-full p-0 h-full placeholder:text-outline-variant focus:ring-0" placeholder="QUERY..." type="text"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-10">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 flat no shadows docked h-full w-20 hover:w-64 transition-all duration-300 hidden md:flex overflow-hidden">
+<div class="p-4 border-b border-outline-variant/20 flex items-center gap-4 whitespace-nowrap overflow-hidden">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]">person</span>
+</div>
+<div class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+<span class="font-label-sm text-on-background">ROOT_USER</span>
+<span class="font-code-sm text-outline">SEIS-01</span>
+</div>
+</div>
+<div class="flex-1 py-4 flex flex-col gap-1">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0">folder_open</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0">terminal</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0">cloud_queue</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0">list_alt</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="p-4 border-t border-outline-variant/20">
+<button class="w-full bg-primary-container text-on-primary-container font-label-sm py-2 px-4 hover:bg-secondary transition-colors whitespace-nowrap overflow-hidden flex items-center justify-center">
+<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">NEW_SESSION</span>
+<span class="material-symbols-outlined group-hover:hidden block">add</span>
+</button>
+</div>
+<div class="flex items-center justify-around py-4 border-t border-outline-variant/20">
+<span class="material-symbols-outlined text-outline hover:text-error cursor-pointer transition-colors">power_settings_new</span>
+<span class="material-symbols-outlined text-outline hover:text-primary-fixed cursor-pointer transition-colors">lock</span>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-20 transition-all duration-300 cyber-grid">
+<!-- Header Title -->
+<div class="col-span-12 md:col-span-12 lg:col-span-12 mb-2 flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tighter">NEURAL_TRAIN_MONITOR</h1>
+<p class="font-code-sm text-outline-variant mt-1">SECTOR 4 // MODEL: OMEGA-7 // STATUS: <span class="text-secondary pulse-glow">TRAINING</span></p>
+</div>
+<div class="hidden md:flex gap-4">
+<div class="text-right">
+<span class="block font-label-sm text-outline uppercase">Uptime</span>
+<span class="font-code-sm text-on-surface">144:22:09</span>
+</div>
+<div class="text-right">
+<span class="block font-label-sm text-outline uppercase">Epoch</span>
+<span class="font-code-sm text-primary-fixed">450/1000</span>
+</div>
+</div>
+</div>
+<!-- Neural Map Visualization (Center Focus) -->
+<div class="glass-panel col-span-12 lg:col-span-8 flex flex-col h-[500px]">
+<div class="glass-panel-header">
+<span class="font-label-sm font-bold uppercase tracking-wider">VISUALIZER::NEURAL_MAP</span>
+<div class="ml-auto flex gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-lowest"></div>
+</div>
+</div>
+<div class="flex-1 relative bg-surface-container-lowest/50 p-4 overflow-hidden flex items-center justify-center">
+<!-- Placeholder for ThreeJS or WebGL Neural Map -->
+<div class="absolute inset-0 z-0 opacity-40 mix-blend-screen" data-alt="A dark, high-contrast digital visualization of a complex neural network. Glowing cyan and vibrant lime green nodes are connected by intricate, thin lines over a deep black background. The style is highly technical, cybernetic, and minimalist, resembling a sophisticated data terminal interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqMCigLrrNt9KeOndfNNxaTaeDULmUFYAyNuBZlHJsQfXkh79XCR37acmCUpZ-AyXGIQ8X8EjniWYwQl2tRYdXx9qqACTgY8FhtPiwfVd_N5HLyir0KLvkUd47DloIi20xMFF5mtg7mV2DYdaJYcz73DOS5lXrWMY4JMI712EFyly_uCc5nGGOSwlLdYtYyPpX6VA8MaG62gBKn5iRGqnJ7TiRYxSAUE9b2x-nMk9iiuadova9Ys5C1zcKBiR7EXT1Wi9vxZSPVHw5')"></div>
+<!-- Simulated Nodes Overaly -->
+<div class="relative z-10 w-full h-full flex items-center justify-between px-12">
+<div class="flex flex-col gap-12">
+<div class="w-4 h-4 rounded-full border border-primary-fixed bg-surface-container-lowest relative"><div class="absolute inset-0 bg-primary-fixed/20 animate-ping rounded-full"></div></div>
+<div class="w-4 h-4 rounded-full border border-primary-fixed bg-surface-container-lowest"></div>
+<div class="w-4 h-4 rounded-full border border-primary-fixed bg-surface-container-lowest"></div>
+</div>
+<div class="flex flex-col gap-8">
+<div class="w-6 h-6 rounded-full border border-secondary bg-surface-container-lowest flex items-center justify-center"><div class="w-2 h-2 bg-secondary rounded-full"></div></div>
+<div class="w-6 h-6 rounded-full border border-secondary bg-surface-container-lowest flex items-center justify-center"><div class="w-2 h-2 bg-secondary rounded-full"></div></div>
+<div class="w-6 h-6 rounded-full border border-secondary bg-surface-container-lowest flex items-center justify-center"><div class="w-2 h-2 bg-secondary rounded-full pulse-glow"></div></div>
+<div class="w-6 h-6 rounded-full border border-secondary bg-surface-container-lowest flex items-center justify-center"><div class="w-2 h-2 bg-secondary rounded-full"></div></div>
+</div>
+<div class="flex flex-col gap-16">
+<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-surface-container-lowest flex items-center justify-center relative"><div class="absolute inset-0 bg-primary-container/10 blur-sm rounded-full"></div></div>
+<div class="w-8 h-8 rounded-full border-2 border-primary-container bg-surface-container-lowest flex items-center justify-center"></div>
+</div>
+</div>
+<!-- Overlay Data -->
+<div class="absolute bottom-4 right-4 bg-surface-container-lowest/80 border border-outline-variant/50 p-2 text-right">
+<span class="block font-label-sm text-outline">ACTIVE PARAMS</span>
+<span class="font-code-sm text-primary-fixed text-lg">1.4B</span>
+</div>
+</div>
+</div>
+<!-- Resource Allocator Panel -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4 h-[500px]">
+<!-- NPU / VRAM -->
+<div class="glass-panel flex-1 flex flex-col">
+<div class="glass-panel-header !bg-secondary-container !text-on-secondary-container">
+<span class="font-label-sm font-bold uppercase tracking-wider">HARDWARE::ALLOCATOR</span>
+</div>
+<div class="p-4 flex-1 flex flex-col gap-6">
+<!-- NPU Usage -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-sm text-on-surface">NPU_CLUSTER_USAGE</span>
+<span class="font-code-sm text-secondary-fixed">88%</span>
+</div>
+<div class="w-full h-4 border border-outline-variant/50 flex">
+<!-- Segmented blocks -->
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary"></div>
+<div class="h-full w-[10%] border-r border-background bg-secondary/50"></div>
+<div class="h-full w-[10%] border-r border-background bg-transparent"></div>
+</div>
+</div>
+<!-- VRAM Usage -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-sm text-on-surface">VRAM_ALLOCATION</span>
+<span class="font-code-sm text-primary-fixed">64GB / 80GB</span>
+</div>
+<div class="w-full h-4 border border-outline-variant/50 flex">
+<div class="h-full w-4/5 bg-primary-fixed border-r border-background"></div>
+<div class="h-full w-1/5 bg-transparent"></div>
+</div>
+<div class="mt-1 flex gap-1 h-1">
+<div class="bg-primary-fixed w-1/4 h-full"></div>
+<div class="bg-primary-fixed w-1/4 h-full"></div>
+<div class="bg-primary-fixed w-1/4 h-full"></div>
+<div class="bg-surface-variant w-1/4 h-full"></div>
+</div>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-2 gap-2 mt-auto">
+<div class="border border-outline-variant/30 p-2 bg-surface-container-lowest/50">
+<span class="block font-label-sm text-outline mb-1 text-[10px]">TEMP</span>
+<span class="font-code-sm text-error">82°C</span>
+</div>
+<div class="border border-outline-variant/30 p-2 bg-surface-container-lowest/50">
+<span class="block font-label-sm text-outline mb-1 text-[10px]">POWER</span>
+<span class="font-code-sm text-primary-fixed">450W</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Loss Graph & Terminal Log -->
+<!-- Loss / Accuracy Graph -->
+<div class="glass-panel col-span-12 lg:col-span-6 flex flex-col h-[300px]">
+<div class="glass-panel-header">
+<span class="font-label-sm font-bold uppercase tracking-wider">METRICS::LOSS_CURVE</span>
+</div>
+<div class="p-4 flex-1 relative bg-surface-container-lowest flex flex-col">
+<div class="flex justify-between text-[10px] font-label-sm text-outline mb-2">
+<span>1.0</span>
+<span>EPOCH</span>
+</div>
+<!-- Simulated Graph -->
+<div class="flex-1 border-l border-b border-outline-variant/50 relative flex items-end">
+<!-- Path representation using borders/divs for terminal feel -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<!-- Loss Line (Cyan) -->
+<path class="opacity-80" d="M0,10 L10,30 L20,25 L30,50 L40,45 L50,70 L60,65 L70,85 L80,80 L90,95 L100,90" fill="none" stroke="#00f0ff" stroke-width="2"></path>
+<!-- Accuracy Line (Violet) -->
+<path class="opacity-80" d="M0,90 L10,85 L20,80 L30,60 L40,55 L50,40 L60,35 L70,20 L80,15 L90,10 L100,5" fill="none" stroke="#ce5dff" stroke-dasharray="4" stroke-width="2"></path>
+</svg>
+</div>
+<div class="flex gap-4 mt-2 font-label-sm text-[10px]">
+<div class="flex items-center gap-1"><div class="w-2 h-2 bg-primary-fixed"></div><span>LOSS</span></div>
+<div class="flex items-center gap-1"><div class="w-2 h-2 bg-secondary border border-secondary border-dashed bg-transparent"></div><span>ACCURACY</span></div>
+</div>
+</div>
+</div>
+<!-- Terminal Log -->
+<div class="glass-panel col-span-12 lg:col-span-6 flex flex-col h-[300px] bg-surface-container-lowest">
+<div class="glass-panel-header">
+<span class="font-label-sm font-bold uppercase tracking-wider">STDOUT::INFERENCE_LOG</span>
+</div>
+<div class="p-4 flex-1 overflow-y-auto font-code-sm text-[12px] leading-relaxed flex flex-col justify-end">
+<div class="opacity-50">[14:02:01] INFO: Checkpoint saved to /models/omega-7/ckpt-448.pt</div>
+<div class="opacity-60">[14:02:15] STEP 449: Loss=0.231, Acc=0.912, LR=1e-4</div>
+<div class="opacity-70">[14:02:30] STEP 450: Loss=0.228, Acc=0.914, LR=1e-4</div>
+<div class="text-secondary">[14:02:31] EVAL: Running validation set...</div>
+<div class="opacity-80">[14:02:45] EVAL: Val_Loss=0.245, Val_Acc=0.898</div>
+<div class="text-primary-fixed">[14:02:46] INFO: Validation metric improved.</div>
+<div class="opacity-90">[14:03:00] STEP 451: Forward pass initiated...</div>
+<div class="text-on-surface flex items-center">
+<span>&gt; _</span><span class="w-2 h-4 bg-primary-fixed ml-1 blink"></span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

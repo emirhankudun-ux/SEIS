@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - System Recovery &amp; Security Audit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#313030",
+                      "background": "#121414",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "inverse-surface": "#e2e2e2",
+                      "secondary-container": "#ce5dff",
+                      "inverse-on-surface": "#2f3131",
+                      "outline-variant": "#3b494b",
+                      "error-container": "#93000a",
+                      "tertiary": "#f9f5f5",
+                      "surface-bright": "#37393a",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary-container": "#00f0ff",
+                      "tertiary-fixed": "#e5e2e1",
+                      "secondary-fixed": "#f8d8ff",
+                      "on-background": "#e2e2e2",
+                      "surface-container-low": "#1a1c1c",
+                      "on-primary-container": "#006970",
+                      "inverse-primary": "#006970",
+                      "on-secondary": "#520071",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-tertiary-container": "#605e5e",
+                      "surface-container-highest": "#333535",
+                      "outline": "#849495",
+                      "tertiary-container": "#dcd9d8",
+                      "primary": "#dbfcff",
+                      "on-secondary-fixed": "#320047",
+                      "secondary": "#ebb2ff",
+                      "on-surface": "#e2e2e2",
+                      "on-secondary-container": "#480064",
+                      "on-primary": "#00363a",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-variant": "#333535",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "surface-tint": "#00dbe9",
+                      "primary-fixed": "#7df4ff",
+                      "on-error-container": "#ffdad6",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#00dbe9",
+                      "surface-container-high": "#282a2b",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "surface-dim": "#121414",
+                      "surface": "#121414",
+                      "on-primary-fixed-variant": "#004f54",
+                      "surface-container": "#1e2020",
+                      "on-primary-fixed": "#002022"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stroke-thin": "1px",
+                      "stroke-thick": "2px",
+                      "gap-sm": "8px",
+                      "gap-lg": "24px",
+                      "gap-xs": "4px",
+                      "margin-page": "32px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Space Mono"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        /* Cyberpunk Minimalism / Modern Brutalism Overrides */
+        body {
+            background-color: #0a0a0a; /* Base level 0 background */
+            color: theme('colors.on-surface');
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphic Window Panels */
+        .cyber-panel {
+            background-color: rgba(12, 15, 15, 0.85); /* surface-container-lowest at 85% */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.outline-variant');
+        }
+
+        .cyber-panel:focus-within, .cyber-panel.focused {
+            border-color: theme('colors.primary-fixed-dim');
+        }
+
+        /* Modal/Popover level 2 */
+        .cyber-modal {
+            background-color: rgba(12, 15, 15, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.primary-fixed-dim');
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.3); /* Primary color glow */
+        }
+
+        /* Specific Purple Glow for this prompt requirement */
+        .obsidian-glow {
+            box-shadow: 0 0 15px rgba(206, 93, 255, 0.15); /* secondary-container tint */
+            border-color: rgba(206, 93, 255, 0.3);
+        }
+
+        /* Blinking Cursor for Terminal */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Scrollbar styling for density */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.outline-variant');
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.primary-fixed-dim');
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 sticky z-50">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex items-center h-full gap-gap-lg ml-gap-lg">
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex h-full items-center" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex h-full items-center" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex h-full items-center" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex h-full items-center" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-sm">
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 p-1">
+<span class="material-symbols-outlined text-[18px]">memory</span>
+</button>
+<button class="text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 p-1">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 p-1">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col group overflow-hidden">
+<div class="p-gap-md flex items-center gap-gap-md border-b border-outline-variant/20 mb-gap-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex-shrink-0 flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">person</span>
+</div>
+<div>
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto overflow-x-hidden w-full">
+<!-- Nav Items -->
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center">dashboard</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center">folder_open</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center">smart_toy</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center">cloud_queue</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap w-64" href="#">
+<span class="material-symbols-outlined w-6 text-center">list_alt</span>
+<span class="font-label-sm text-label-sm ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOGS</span>
+</a>
+</nav>
+<div class="border-t border-outline-variant/20 p-2 w-full flex flex-col gap-1">
+<button class="bg-primary-fixed text-surface-container-lowest font-label-sm text-label-sm py-2 px-4 hover:bg-secondary-fixed transition-colors whitespace-nowrap w-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    NEW_SESSION
+                </button>
+<div class="flex justify-between w-64 px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<a class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">power_settings_new</span>
+<span class="font-label-sm text-[10px]">POWER</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span class="font-label-sm text-[10px]">LOCK</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-20 flex-1 p-gap-md md:p-gap-lg grid grid-cols-1 md:grid-cols-12 gap-gap-md md:gap-gap-lg h-[calc(100vh-40px)] overflow-hidden bg-background">
+<!-- Left Side: Security Log -->
+<section class="md:col-span-6 h-full flex flex-col cyber-panel obsidian-glow">
+<!-- Header -->
+<header class="h-6 bg-primary-container flex items-center px-2 flex-shrink-0">
+<span class="font-label-sm text-label-sm text-surface-container-lowest uppercase tracking-wider">Security_Audit.log :: Intrusion Detection</span>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-3 overflow-y-auto font-code-sm text-code-sm bg-surface-container-lowest">
+<div class="flex gap-2 mb-2 items-start opacity-70">
+<span class="text-outline-variant whitespace-nowrap">[14:02:11]</span>
+<span class="text-on-surface-variant">SYS_SCAN</span>
+<span class="text-on-surface">Sector 1 perimeter sweep nominal.</span>
+</div>
+<div class="flex gap-2 mb-2 items-start">
+<span class="text-outline-variant whitespace-nowrap">[14:02:15]</span>
+<span class="text-[#00f0ff]">NET_WATCH</span>
+<span class="text-on-surface">Inbound connection attempt mapped to external node [192.168.4.55].</span>
+</div>
+<!-- Cyber Lime Alert Equivalent (using primary/secondary accents for contrast) -->
+<div class="flex gap-2 mb-2 items-start border-l-2 border-[#a3ff00] pl-2 bg-[#a3ff00]/5 py-1">
+<span class="text-outline-variant whitespace-nowrap">[14:02:18]</span>
+<span class="text-[#a3ff00] font-bold">ALERT_CRIT</span>
+<span class="text-on-surface">Unauthorized access vector detected. Signature: MEM_CORRUPT_0x8F.</span>
+</div>
+<div class="flex gap-2 mb-2 items-start border-l-2 border-[#a3ff00] pl-2 bg-[#a3ff00]/5 py-1">
+<span class="text-outline-variant whitespace-nowrap">[14:02:19]</span>
+<span class="text-[#a3ff00] font-bold">ALERT_CRIT</span>
+<span class="text-[#a3ff00]">Isolating compromised sector. Engaging defensive subroutines.</span>
+</div>
+<div class="flex gap-2 mb-2 items-start">
+<span class="text-outline-variant whitespace-nowrap">[14:02:22]</span>
+<span class="text-secondary-fixed">KERNEL</span>
+<span class="text-on-surface">Spawning recovery agent PID 4921...</span>
+</div>
+</div>
+</section>
+<!-- Right Side: Kernel Recovery Console -->
+<section class="md:col-span-6 h-full flex flex-col cyber-panel">
+<!-- Header -->
+<header class="h-6 bg-primary-container flex items-center px-2 flex-shrink-0">
+<span class="font-label-sm text-label-sm text-surface-container-lowest uppercase tracking-wider">tty1 :: Kernel Recovery Console</span>
+</header>
+<div class="flex-1 p-4 overflow-y-auto font-code-sm text-code-sm bg-[#080909]">
+<!-- Man Page Mockup -->
+<div class="text-on-surface-variant mb-6 opacity-60">
+<div class="font-bold mb-1">RECOVER(8) System Manager's Manual</div>
+<div class="mb-4">
+<span class="font-bold text-primary-fixed">NAME</span><br/>
+                            recover - emergency kernel restoration utility
+                        </div>
+<div class="mb-4">
+<span class="font-bold text-primary-fixed">SYNOPSIS</span><br/>
+                            recover [OPTIONS] --target &lt;sector&gt;
+                        </div>
+<div>
+<span class="font-bold text-primary-fixed">DESCRIPTION</span><br/>
+                            Forces a clean rebuild of the memory tables in the designated sector following a critical fault or intrusion alert.
+                        </div>
+</div>
+<!-- Active Terminal Prompt -->
+<div class="text-primary-fixed mb-1">
+                        root@seis-01:/var/log/audit# <span class="text-on-surface">recover --target SEC_1 --force</span>
+</div>
+<div class="text-on-surface mb-1">Initiating cold boot sequence for SEC_1...</div>
+<div class="text-on-surface mb-1">Validating checksums... [OK]</div>
+<div class="text-on-surface mb-1">Overwriting corrupted memory pages...</div>
+<!-- Progress Bar (Terminal Style) -->
+<div class="flex items-center gap-2 mb-4 font-code-sm text-code-sm text-secondary-fixed">
+<span>[</span>
+<span class="tracking-widest">████████████████····</span>
+<span>] 80%</span>
+</div>
+<!-- Input Line -->
+<div class="text-primary-fixed flex items-center">
+                        root@seis-01:/var/log/audit# <span class="inline-block w-2 h-4 bg-primary-fixed cursor-blink"></span>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS Code | AI-Native Development Environment</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#849495",
+                        "on-error": "#690005",
+                        "on-background": "#e1e2e7",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#006970",
+                        "outline-variant": "#3b494b",
+                        "secondary-container": "#b600f8",
+                        "tertiary": "#f5f5f5",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-container-low": "#191c1f",
+                        "surface-container": "#1d2023",
+                        "on-tertiary": "#2f3131",
+                        "on-primary": "#00363a",
+                        "background": "#111417",
+                        "surface-container-highest": "#323539",
+                        "inverse-surface": "#e1e2e7",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-fixed": "#320047",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary": "#520072",
+                        "surface-dim": "#111417",
+                        "on-surface": "#e1e2e7",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-variant": "#323539",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container-high": "#282a2e",
+                        "surface": "#111417",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#37393d",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#002022",
+                        "secondary": "#ebb2ff",
+                        "surface-tint": "#00dbe9",
+                        "inverse-on-surface": "#2e3134",
+                        "on-tertiary-container": "#5d5f5f",
+                        "tertiary-container": "#d9d9d9",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-container": "#006970",
+                        "primary": "#dbfcff",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed": "#f8d8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "margin-mobile": "20px",
+                        "section-gap": "120px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.3), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .syntax-cyan { color: #00f0ff; }
+        .syntax-purple { color: #ebb2ff; }
+        .syntax-gray { color: #849495; }
+        
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: #00dbe9;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+        .hover-glow:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container/30">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary-fixed-dim">SEIS CODE</span>
+<div class="hidden md:flex gap-6">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1 transition-all" href="#">Platform</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Solutions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Developers</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block font-mono-label text-mono-label text-on-surface-variant hover:text-primary transition-colors px-4 py-2">Documentation</button>
+<button class="bg-primary-container text-on-primary-container font-mono-label text-mono-label px-6 py-2 rounded-lg font-semibold hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all">Launch Console</button>
+</div>
+</div>
+</nav>
+<main class="relative pt-32 overflow-hidden">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap relative">
+<div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary-container/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="grid lg:grid-cols-2 gap-16 items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-container/10 border border-primary-container/20 rounded-lg">
+<span class="pulse-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest">v2.4.0 Now Stable</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg leading-[1.1] text-on-surface">
+                        The AI <span class="text-primary-fixed-dim">Engine</span> for your codebase.
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                        SEIS Code is a reimagined IDE where AI isn't an addon—it's the core. Build, debug, and ship with a companion that understands your architecture.
+                    </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="px-8 py-4 bg-primary-container text-on-primary-container font-bold rounded-lg hover:shadow-[0_0_30px_rgba(0,240,255,0.3)] transition-all">Start Developing Free</button>
+<button class="px-8 py-4 border border-outline-variant hover:bg-surface-container-high transition-all rounded-lg font-bold">Request Enterprise Demo</button>
+</div>
+</div>
+<!-- IDE Preview -->
+<div class="glass-panel rounded-xl overflow-hidden shadow-2xl scale-105 transform origin-center border border-white/5">
+<div class="bg-surface-container-highest/50 px-4 py-2 border-b border-outline-variant/30 flex items-center justify-between">
+<div class="flex gap-1.5">
+<div class="w-3 h-3 rounded-full bg-error/40"></div>
+<div class="w-3 h-3 rounded-full bg-secondary/40"></div>
+<div class="w-3 h-3 rounded-full bg-primary-container/40"></div>
+</div>
+<div class="font-mono-label text-[12px] text-on-surface-variant">src/auth/service.ts</div>
+<div class="w-12"></div>
+</div>
+<div class="p-6 font-mono-code text-mono-code leading-relaxed h-[400px] overflow-hidden">
+<div class="flex gap-4">
+<span class="text-outline-variant text-right w-6">14</span>
+<code class="syntax-purple">async <span class="text-on-surface">function</span> <span class="syntax-cyan">validateSession</span>(token: <span class="syntax-cyan">string</span>) {</code>
+</div>
+<div class="flex gap-4">
+<span class="text-outline-variant text-right w-6">15</span>
+<code class="pl-4"><span class="syntax-purple">const</span> <span class="text-on-surface">user</span> = <span class="syntax-purple">await</span> <span class="text-on-surface">db.findUserByToken(token);</span></code>
+</div>
+<div class="flex gap-4 bg-primary-container/5 -mx-6 px-6 border-l-2 border-primary-container">
+<span class="text-primary-container text-right w-6">16</span>
+<code class="pl-4 text-primary-container/80 italic">// SEIS Suggest: Check if session is expired</code>
+</div>
+<div class="flex gap-4 bg-primary-container/5 -mx-6 px-6 border-l-2 border-primary-container">
+<span class="text-primary-container text-right w-6">17</span>
+<code class="pl-4"><span class="syntax-purple">if</span> (<span class="text-on-surface">user.sessionExpired</span>) <span class="syntax-purple">throw new</span> <span class="syntax-cyan">UnauthorizedError</span>();</code>
+</div>
+<div class="flex gap-4">
+<span class="text-outline-variant text-right w-6">18</span>
+<code class="pl-4 text-on-surface"><span class="syntax-purple">return</span> user;</code>
+</div>
+<div class="flex gap-4">
+<span class="text-outline-variant text-right w-6">19</span>
+<code class="text-on-surface">}</code>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/20">
+<div class="flex items-center gap-3 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+<span class="font-mono-label text-[12px]">AUTOPILOT ACTIVE: Optimizing query performance...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-gap">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Engineered for Velocity</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto font-body-lg text-body-lg">Beyond a text editor. A sovereign development ecosystem that acts as your second brain.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
+<!-- Main Feature -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 flex flex-col justify-between group hover-glow transition-all duration-500 overflow-hidden relative">
+
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[40px] mb-6">auto_awesome</span>
+<h3 class="font-headline-md text-headline-md mb-4">Autonomous Debugging</h3>
+<p class="text-on-surface-variant max-w-md font-body-md text-body-md">Our AI doesn't just find bugs; it creates reproduction environments, tests hypotheses, and proposes verified fixes in real-time.</p>
+</div>
+<div class="relative z-10 flex gap-4 mt-8">
+<div class="bg-surface-container-highest px-4 py-2 rounded font-mono-code text-[12px] border border-outline-variant/30">
+<span class="text-primary-fixed-dim">✔</span> Race condition detected in websocket.ts
+                        </div>
+<div class="bg-surface-container-highest px-4 py-2 rounded font-mono-code text-[12px] border border-outline-variant/30">
+<span class="text-secondary">⚡</span> Memory leak optimized in buffer.cpp
+                        </div>
+</div>
+</div>
+<!-- Secondary 1 -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col justify-center group hover-glow transition-all duration-500">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[32px] mb-4">cloud_done</span>
+<h3 class="font-headline-md text-headline-md mb-2 text-[24px]">Cloud Native</h3>
+<p class="text-on-surface-variant font-body-md text-body-md">Spin up dev environments in milliseconds. Ship to AWS, Vercel, or GCP with one click from the sidebar.</p>
+<div class="mt-6 h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[75%] shadow-[0_0_10px_#00f0ff]"></div>
+</div>
+</div>
+<!-- Secondary 2 -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col group hover-glow transition-all duration-500">
+<span class="material-symbols-outlined text-secondary text-[32px] mb-4" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<h4 class="font-headline-md text-headline-md mb-2 text-[20px]">Contextual Terminal</h4>
+<p class="text-on-surface-variant font-body-md text-body-md">AI-powered CLI that translates natural language into complex shell commands instantly.</p>
+</div>
+<!-- Secondary 3 -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 flex items-center gap-8 group hover-glow transition-all duration-500 overflow-hidden">
+<div class="flex-1">
+<h4 class="font-headline-md text-headline-md mb-2 text-[24px]">Predictive Autocomplete</h4>
+<p class="text-on-surface-variant font-body-md text-body-md">Low-latency LLM integration that learns your local patterns and suggests entire modules based on context.</p>
+</div>
+<div class="hidden sm:block w-48 h-32 bg-surface-container-low rounded border border-outline-variant/20 relative">
+<div class="absolute top-4 left-4 right-4 h-2 bg-primary-container/20 rounded"></div>
+<div class="absolute top-8 left-4 right-8 h-2 bg-primary-container/20 rounded"></div>
+<div class="absolute top-12 left-4 right-12 h-2 bg-primary-container/40 rounded shadow-[0_0_8px_#00f0ff]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats / Proof Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-gap border-t border-outline-variant/10">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+<div>
+<div class="font-display-lg text-[48px] text-primary-fixed-dim">4.2x</div>
+<div class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant">Dev Velocity</div>
+</div>
+<div>
+<div class="font-display-lg text-[48px] text-on-surface">99.9%</div>
+<div class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant">Uptime SLA</div>
+</div>
+<div>
+<div class="font-display-lg text-[48px] text-on-surface">15ms</div>
+<div class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant">AI Latency</div>
+</div>
+<div>
+<div class="font-display-lg text-[48px] text-secondary">Zero</div>
+<div class="font-mono-label text-mono-label uppercase tracking-widest text-on-surface-variant">Cold Starts</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-gap">
+<div class="glass-panel rounded-3xl p-12 md:p-24 text-center overflow-hidden relative">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-secondary/5 pointer-events-none"></div>
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md mb-6 relative z-10">Stop coding. Start <span class="italic text-primary-fixed-dim">building</span>.</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg max-w-2xl mx-auto mb-10 relative z-10">
+                    Join over 50,000 developers who have switched to a smarter workflow. SEIS Code is free for individuals and starts at $12/mo for teams.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
+<button class="px-10 py-5 bg-primary-container text-on-primary-container font-extrabold rounded-xl hover:scale-105 transition-all text-lg shadow-[0_0_40px_rgba(0,240,255,0.2)]">Download SEIS Code</button>
+<button class="px-10 py-5 border border-outline-variant hover:border-primary-container transition-all rounded-xl font-bold text-lg">View Open Source Core</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/20 rounded-t-full mt-24">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="mb-8 md:mb-0 text-center md:text-left">
+<span class="font-display-lg text-headline-md text-primary-fixed-dim block mb-2">SEIS CODE</span>
+<p class="font-mono-label text-mono-label text-on-surface-variant/60">© 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+<script>
+        // Subtle mouse tracking glow for glass cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

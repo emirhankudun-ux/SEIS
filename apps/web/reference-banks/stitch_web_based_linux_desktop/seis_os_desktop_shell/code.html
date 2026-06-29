@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Main Desktop Shell</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-container": "#ff516a",
+                        "primary-fixed": "#f0dbff",
+                        "on-secondary-fixed-variant": "#842500",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "surface-container-high": "#282a2a",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e1e3e2",
+                        "on-tertiary-container": "#5b0017",
+                        "surface-container": "#1d2020",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-surface-variant": "#cfc2d6",
+                        "outline": "#988d9f",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-surface": "#e1e3e2",
+                        "surface-bright": "#373a3a",
+                        "on-tertiary-fixed": "#40000d",
+                        "secondary-container": "#fc5b1f",
+                        "on-background": "#e1e3e2",
+                        "surface-variant": "#323535",
+                        "background": "#111414",
+                        "surface-container-low": "#191c1c",
+                        "on-primary": "#490080",
+                        "on-primary-container": "#400071",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#323535",
+                        "tertiary": "#ffb2b7",
+                        "surface": "#111414",
+                        "on-tertiary": "#67001b",
+                        "surface-tint": "#ddb7ff",
+                        "on-secondary-fixed": "#390b00",
+                        "secondary": "#ffb59e",
+                        "inverse-on-surface": "#2e3131",
+                        "on-primary-fixed": "#2c0051",
+                        "error": "#ffb4ab",
+                        "primary-container": "#b76dff",
+                        "primary": "#ddb7ff",
+                        "outline-variant": "#4d4354",
+                        "inverse-primary": "#842bd2",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "on-secondary": "#5d1800",
+                        "on-secondary-container": "#521400",
+                        "surface-dim": "#111414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-padding": "32px",
+                        "gutter": "24px",
+                        "safe-area": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "display": ["Geist"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-window {
+            background-color: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(32px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+        }
+        .ai-pulse {
+            background: linear-gradient(45deg, #fc5b1f, #b76dff);
+            background-size: 200% 200%;
+            animation: aiPulse 3s ease infinite;
+        }
+        @keyframes aiPulse {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .window-shadow-glow {
+            box-shadow: 0 0 100px -20px rgba(168, 85, 247, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface h-screen w-screen overflow-hidden relative selection:bg-primary-container selection:text-on-primary-container">
+<!-- Background Shader -->
+<!-- STITCH_SHADER_START:ANIMATION_21 class="absolute inset-0 w-full h-full -z-10" -->
+<div class="absolute inset-0 w-full h-full -z-10" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_21" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_21');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    float time = u_time * 0.2;
+    
+    // Abstract fluid motion with purple and orange tones
+    vec3 color1 = vec3(0.66, 0.33, 0.97); // Electric Purple
+    vec3 color2 = vec3(0.97, 0.45, 0.25); // Cinematic Orange
+    vec3 color3 = vec3(0.05, 0.06, 0.06); // Deep Obsidian
+    
+    float noise = sin(uv.x * 3.0 + time) * cos(uv.y * 2.0 - time);
+    noise += sin(uv.y * 5.0 + time * 1.5) * 0.5;
+    
+    vec3 finalColor = mix(color3, color1, clamp(noise + uv.y * 0.5, 0.0, 1.0));
+    finalColor = mix(finalColor, color2, clamp(sin(time + uv.x * 2.0) * 0.3, 0.0, 1.0));
+    
+    gl_FragColor = vec4(finalColor * 0.8, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_21 -->
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50 bg-[#1A1C1C]/70 font-body-md text-body-md backdrop-blur-3xl border-b border-white/10 shadow-none">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</span>
+<nav class="hidden md:flex gap-4">
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors px-2 py-1 rounded scale-95 duration-200" href="#">Activities</a>
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors px-2 py-1 rounded scale-95 duration-200" href="#">Files</a>
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors px-2 py-1 rounded scale-95 duration-200" href="#">Network</a>
+</nav>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined hover:bg-white/5 transition-colors p-1 rounded cursor-pointer scale-95 duration-200" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined hover:bg-white/5 transition-colors p-1 rounded cursor-pointer scale-95 duration-200" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="material-symbols-outlined hover:bg-white/5 transition-colors p-1 rounded cursor-pointer scale-95 duration-200" data-icon="schedule">schedule</span>
+</div>
+</header>
+<!-- Desktop Workspace -->
+<main class="absolute inset-0 pt-safe-area pb-safe-area px-safe-area flex items-center justify-center gap-gutter z-10 pointer-events-none">
+<!-- File Manager Window -->
+<div class="glass-window window-shadow-glow w-[500px] h-[600px] flex flex-col pointer-events-auto transform transition-transform hover:scale-[1.01] duration-300">
+<!-- Window Header -->
+<div class="h-12 border-b border-white/5 flex items-center px-4 justify-between">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">folder_open</span>
+<span class="font-label-sm text-label-sm">Finder / Documents</span>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-error transition-colors cursor-pointer"></div>
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-secondary transition-colors cursor-pointer"></div>
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-primary transition-colors cursor-pointer"></div>
+</div>
+</div>
+<!-- Window Content -->
+<div class="flex-1 p-6 overflow-y-auto">
+<div class="grid grid-cols-3 gap-4">
+<div class="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-primary opacity-80 group-hover:opacity-100 transition-opacity">description</span>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant group-hover:text-on-surface">Project_Alpha.md</span>
+</div>
+<div class="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-secondary opacity-80 group-hover:opacity-100 transition-opacity">image</span>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant group-hover:text-on-surface">Assets_v2.png</span>
+</div>
+<div class="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-tertiary-container opacity-80 group-hover:opacity-100 transition-opacity">video_file</span>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant group-hover:text-on-surface">Render_Final.mp4</span>
+</div>
+<div class="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-primary opacity-80 group-hover:opacity-100 transition-opacity">folder</span>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant group-hover:text-on-surface">Archives</span>
+</div>
+<div class="flex flex-col items-center gap-2 p-4 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant opacity-80 group-hover:opacity-100 transition-opacity">article</span>
+<span class="font-label-sm text-label-sm text-center text-on-surface-variant group-hover:text-on-surface">Notes.txt</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SEIS AI Assistant Window -->
+<div class="glass-window window-shadow-glow w-[400px] h-[600px] flex flex-col pointer-events-auto transform transition-transform hover:scale-[1.01] duration-300">
+<!-- Window Header -->
+<div class="h-12 border-b border-white/5 flex items-center px-4 justify-between">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<div class="w-2 h-2 rounded-full ai-pulse"></div>
+<span class="font-label-sm text-label-sm">SEIS AI Assistant</span>
+</div>
+<div class="flex gap-2">
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-error transition-colors cursor-pointer"></div>
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-secondary transition-colors cursor-pointer"></div>
+<div class="w-3 h-3 rounded-full bg-surface-variant hover:bg-primary transition-colors cursor-pointer"></div>
+</div>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 p-6 overflow-y-auto flex flex-col gap-4 font-body-md text-body-md">
+<div class="self-start max-w-[80%] bg-surface-container-high rounded-2xl rounded-tl-sm p-4 text-on-surface">
+                    System initialized. Workspace loaded. How can I assist you with Project Alpha today?
+                </div>
+<div class="self-end max-w-[80%] bg-primary-container text-on-primary-container rounded-2xl rounded-tr-sm p-4">
+                    Analyze the latest assets in the Finder.
+                </div>
+<div class="self-start max-w-[80%] bg-surface-container-high rounded-2xl rounded-tl-sm p-4 text-on-surface">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[16px] text-primary">auto_awesome</span>
+<span class="font-label-sm text-label-sm text-primary">Processing</span>
+</div>
+                    Found 3 new high-res textures. Would you like me to run them through the upscaler node?
+                </div>
+</div>
+<!-- Input Area -->
+<div class="p-4 border-t border-white/5">
+<div class="relative">
+<input class="w-full bg-black border border-outline-variant rounded-xl py-3 pl-4 pr-10 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all font-code-md text-code-md placeholder-on-surface-variant/50" placeholder="Command SEIS..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant cursor-pointer hover:text-primary transition-colors">send</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Context Menu (Simulated Right Click) -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 glass-window w-48 py-2 z-40 hidden md:block border border-white/20 shadow-2xl shadow-primary/10 backdrop-blur-[64px]">
+<div class="px-4 py-2 hover:bg-white/5 cursor-pointer flex items-center gap-3 group transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary">note_add</span>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface">New File</span>
+</div>
+<div class="px-4 py-2 hover:bg-white/5 cursor-pointer flex items-center gap-3 group transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary">create_new_folder</span>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface">New Folder</span>
+</div>
+<div class="h-px bg-white/5 my-1 w-full"></div>
+<div class="px-4 py-2 hover:bg-white/5 cursor-pointer flex items-center gap-3 group transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary">display_settings</span>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface">Display Settings</span>
+</div>
+<div class="px-4 py-2 hover:bg-white/5 cursor-pointer flex items-center gap-3 group transition-colors">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant group-hover:text-primary">wallpaper</span>
+<span class="font-body-md text-body-md text-on-surface-variant group-hover:text-on-surface">Change Wallpaper</span>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-4 left-1/2 -translate-x-1/2 flex gap-4 px-6 py-3 z-50 bg-[#1A1C1C]/60 font-label-sm text-label-sm rounded-xl mx-auto mb-4 backdrop-blur-[64px] border border-white/20 shadow-2xl shadow-primary/10">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-lg p-2 scale-110 hover:scale-125 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-weight="fill">folder</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">terminal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">language</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">play_circle</span>
+</a>
+</nav>
+</body></html>

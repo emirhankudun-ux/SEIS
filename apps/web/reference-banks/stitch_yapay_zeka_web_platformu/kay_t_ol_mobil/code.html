@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI - Kayıt Ol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary": "#2f3131",
+                        "error-container": "#93000a",
+                        "outline-variant": "#3b494b",
+                        "tertiary": "#f5f5f5",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#b600f8",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#111417",
+                        "surface-container-low": "#191c1f",
+                        "on-primary-container": "#006970",
+                        "surface-dim": "#111417",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "inverse-primary": "#006970",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2e3134",
+                        "surface-container-highest": "#323539",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-container": "#d9d9d9",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#1a1c1c",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#849495",
+                        "background": "#111417",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#282a2e",
+                        "surface-container": "#1d2023",
+                        "on-secondary": "#520072",
+                        "on-primary": "#00363a",
+                        "on-background": "#e1e2e7",
+                        "inverse-surface": "#e1e2e7",
+                        "on-primary-fixed": "#002022",
+                        "on-secondary-fixed-variant": "#74009f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.2);
+            box-shadow: inset 0 0 20px rgba(0, 219, 233, 0.05);
+        }
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.4);
+        }
+        .input-gradient-border:focus-within {
+            border-image: linear-gradient(to bottom right, #00dbe9, #b600f8) 1;
+        }
+        .floating-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 219, 233, 0.15) 0%, transparent 70%);
+            filter: blur(40px);
+            z-index: -1;
+            animation: drift 20s infinite alternate ease-in-out;
+        }
+        @keyframes drift {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 30%); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="text-on-surface font-body-md selection:bg-primary-fixed-dim/30">
+<!-- Atmospheric Background Assets -->
+<div class="fixed inset-0 pointer-events-none">
+<div class="floating-orb top-[-10%] left-[-10%]"></div>
+<div class="floating-orb bottom-[-5%] right-[-5%]" style="animation-delay: -5s; background: radial-gradient(circle, rgba(182, 0, 248, 0.1) 0%, transparent 70%);"></div>
+
+</div>
+<!-- Top Bar (Simplified for Auth) -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-center py-6 px-margin-mobile">
+<div class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-primary">
+            AETHER AI
+        </div>
+</header>
+<main class="min-h-screen flex items-center justify-center px-margin-mobile pt-24 pb-12">
+<div class="w-full max-w-[440px] space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+<!-- Header Section -->
+<div class="text-center space-y-2">
+<h1 class="font-headline-md text-headline-md text-primary">Yeni Hesap</h1>
+<p class="text-on-surface-variant font-body-md opacity-80">Sentetik zeka çağına ilk adımı atın.</p>
+</div>
+<!-- Simplified Sign Up Form -->
+<div class="glass-panel p-8 rounded-xl space-y-6 relative overflow-hidden">
+<!-- Inner glow effect -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary-fixed-dim/40 to-transparent"></div>
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Name -->
+<div class="space-y-2">
+<label class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest block">İsim Soyisim</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary-fixed-dim focus:border-primary-fixed-dim outline-none transition-all font-body-md text-on-surface placeholder:text-on-surface-variant/30" placeholder="Ad Soyad" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-2">
+<label class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest block">E-posta</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary-fixed-dim focus:border-primary-fixed-dim outline-none transition-all font-body-md text-on-surface placeholder:text-on-surface-variant/30" placeholder="ornek@aether.ai" type="email"/>
+</div>
+</div>
+<!-- Password -->
+<div class="space-y-2">
+<label class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest block">Şifre</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-1 focus:ring-primary-fixed-dim focus:border-primary-fixed-dim outline-none transition-all font-body-md text-on-surface placeholder:text-on-surface-variant/30" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary-container text-on-primary-fixed font-headline-md text-body-lg py-4 rounded-lg neon-glow active:scale-[0.98] transition-transform duration-200 mt-2">
+                        Kayıt Ol
+                    </button>
+</form>
+<!-- Social Divider -->
+<div class="flex items-center gap-4 py-2">
+<div class="h-[1px] flex-1 bg-outline-variant/30"></div>
+<span class="font-mono-label text-[10px] text-on-surface-variant/40 uppercase">Veya</span>
+<div class="h-[1px] flex-1 bg-outline-variant/30"></div>
+</div>
+<!-- Social Auth -->
+<button class="w-full border border-outline-variant/50 bg-transparent text-on-surface font-body-md py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-surface-variant/20 transition-colors">
+<svg class="w-5 h-5" viewbox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="currentColor"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="currentColor"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="currentColor"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="currentColor"></path>
+</svg>
+                    Google ile Devam Et
+                </button>
+</div>
+<!-- Footer Links -->
+<div class="text-center space-y-6">
+<p class="text-on-surface-variant text-mono-label">
+                    Zaten hesabınız var mı? 
+                    <a class="text-primary-container hover:underline ml-1" href="#">Giriş Yap</a>
+</p>
+<div class="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[11px] font-mono-label text-on-surface-variant/50 uppercase tracking-tighter">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Security</a>
+</div>
+</div>
+</div>
+</main>
+<!-- Subtle Footer Brand -->
+<footer class="w-full py-8 border-t border-outline-variant/10">
+<div class="px-margin-mobile flex flex-col items-center gap-4 text-center">
+<div class="text-primary font-display-lg-mobile text-headline-md tracking-tighter opacity-30">
+                AETHER
+            </div>
+<p class="text-[10px] font-mono-label text-on-surface-variant/40 max-w-[280px] leading-relaxed uppercase">
+                © 2024 Aether Intelligence Systems. Built for the synthetic era.
+            </p>
+</div>
+</footer>
+<script>
+        // Micro-interaction for inputs
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.classList.add('scale-[1.01]');
+                input.parentElement.parentElement.classList.add('transition-transform');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+
+        // Pulsing status dot logic (Atmospheric)
+        const createPulse = () => {
+            const dot = document.createElement('div');
+            dot.className = 'fixed w-1 h-1 bg-primary-fixed-dim rounded-full pointer-events-none opacity-0';
+            dot.style.left = Math.random() * 100 + 'vw';
+            dot.style.top = Math.random() * 100 + 'vh';
+            document.body.appendChild(dot);
+
+            const animation = dot.animate([
+                { opacity: 0, transform: 'scale(0)' },
+                { opacity: 0.4, transform: 'scale(2)' },
+                { opacity: 0, transform: 'scale(0)' }
+            ], {
+                duration: 4000 + Math.random() * 4000,
+                easing: 'ease-in-out'
+            });
+
+            animation.onfinish = () => dot.remove();
+        };
+
+        setInterval(createPulse, 2000);
+    </script>
+</body></html>

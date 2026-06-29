@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS | Procedural Texture Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#282a2b",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "on-tertiary": "#313030",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-dim": "#121414",
+                    "on-primary-fixed": "#002022",
+                    "outline-variant": "#3b494b",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-container-low": "#1a1c1c",
+                    "primary-fixed": "#7df4ff",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "surface-container": "#1e2020",
+                    "on-surface": "#e2e2e2",
+                    "on-primary-container": "#006970",
+                    "surface": "#121414",
+                    "tertiary": "#f9f5f5",
+                    "on-secondary-container": "#480064",
+                    "primary": "#dbfcff",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "on-error": "#690005",
+                    "secondary-container": "#ce5dff",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-background": "#e2e2e2",
+                    "surface-container-highest": "#333535",
+                    "secondary": "#ebb2ff",
+                    "on-secondary-fixed": "#320047",
+                    "surface-variant": "#333535",
+                    "surface-bright": "#37393a",
+                    "background": "#121414",
+                    "tertiary-fixed": "#e5e2e1",
+                    "inverse-primary": "#006970",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-secondary": "#520071",
+                    "on-tertiary-container": "#605e5e",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "outline": "#849495",
+                    "on-surface-variant": "#b9cacb",
+                    "secondary-fixed": "#f8d8ff",
+                    "inverse-on-surface": "#2f3131",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#1c1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-page": "32px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px",
+                    "stroke-thick": "2px",
+                    "gap-lg": "24px",
+                    "gap-sm": "8px",
+                    "gap-md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333333;
+        }
+        .glass-panel:hover {
+            border-color: #00f0ff;
+        }
+        .noise-slider::-webkit-slider-runnable-track {
+            background: #1a1c1c;
+            height: 2px;
+            border: 1px solid #333333;
+        }
+        .noise-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            background: #00f0ff;
+            margin-top: -6px;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="h-screen w-screen selection:bg-secondary-container selection:text-white">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50 bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10 shadow-none">
+<div class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">SEIS OS</div>
+<nav class="flex gap-8 h-full items-center">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary h-full flex items-center px-2 hover:bg-white/5 transition-colors scale-95 duration-200" href="#">Activities</a>
+<a class="font-body-md text-body-md text-on-surface-variant h-full flex items-center px-2 hover:bg-white/5 transition-colors scale-95 duration-200" href="#">Files</a>
+<a class="font-body-md text-body-md text-on-surface-variant h-full flex items-center px-2 hover:bg-white/5 transition-colors scale-95 duration-200" href="#">Network</a>
+</nav>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-sm">battery_charging_full</span>
+<span class="material-symbols-outlined text-sm">schedule</span>
+</div>
+</header>
+<!-- Sidebar -->
+<aside class="fixed left-0 top-12 bottom-0 flex flex-col items-center py-8 z-40 bg-[#1A1C1C]/70 backdrop-blur-3xl border-r border-white/10 w-20 transition-all duration-300">
+<div class="flex flex-col gap-8 w-full items-center">
+<div class="group flex flex-col items-center gap-1 cursor-pointer">
+<div class="p-2 text-primary bg-white/5 border-l-4 border-primary transition-all duration-300">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary">Workspace</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="p-2 text-on-surface-variant hover:bg-white/10">
+<span class="material-symbols-outlined">insights</span>
+</div>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="p-2 text-on-surface-variant hover:bg-white/10">
+<span class="material-symbols-outlined">hub</span>
+</div>
+<span class="font-label-sm text-label-sm">Nodes</span>
+</div>
+<div class="group flex flex-col items-center gap-1 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+<div class="p-2 text-on-surface-variant hover:bg-white/10">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<span class="font-label-sm text-label-sm">Settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Grid -->
+<main class="pl-20 pt-12 h-full w-full grid grid-cols-12 gap-2 p-2 overflow-hidden">
+<!-- Left Panel: Parameter Matrix -->
+<section class="col-span-3 flex flex-col gap-2 h-full overflow-y-auto pr-1">
+<div class="glass-panel flex flex-col">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center">
+<h2 class="text-black font-bold font-label-sm">PARAMETER MATRIX</h2>
+<span class="material-symbols-outlined text-black text-xs">tune</span>
+</div>
+<div class="p-3 space-y-4">
+<!-- Noise Algorithm Selector -->
+<div>
+<label class="font-label-sm text-on-surface-variant mb-2 block">ALGORITHM_SEED</label>
+<select class="w-full bg-surface-container-lowest border border-outline text-primary font-body-md p-2 focus:ring-1 focus:ring-primary outline-none">
+<option>PERLIN_0XFF12</option>
+<option>SIMPLEX_V4_ALT</option>
+<option>WORLEY_CELLULAR</option>
+<option>FRACTAL_BROWNIAN</option>
+</select>
+</div>
+<!-- Sliders -->
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm text-[10px]">
+<span>FREQUENCY</span>
+<span class="text-primary">0.428</span>
+</div>
+<input class="noise-slider w-full appearance-none bg-transparent" max="1" min="0" step="0.001" type="range" value="0.428"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm text-[10px]">
+<span>AMPLITUDE</span>
+<span class="text-primary">0.812</span>
+</div>
+<input class="noise-slider w-full appearance-none bg-transparent" max="1" min="0" step="0.001" type="range" value="0.812"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm text-[10px]">
+<span>LACUNARITY</span>
+<span class="text-primary">2.140</span>
+</div>
+<input class="noise-slider w-full appearance-none bg-transparent" max="4" min="0" step="0.1" type="range" value="2.14"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm text-[10px]">
+<span>PERSISTENCE</span>
+<span class="text-primary">0.500</span>
+</div>
+<input class="noise-slider w-full appearance-none bg-transparent" max="1" min="0" step="0.01" type="range" value="0.5"/>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel flex-grow flex flex-col">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center">
+<h2 class="text-black font-bold font-label-sm">TERMINAL_LOG</h2>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-on-secondary-container"></div>
+<div class="w-2 h-2 rounded-full bg-on-error-container"></div>
+</div>
+</div>
+<div class="p-3 font-code-sm text-green-400 bg-black/40 flex-grow overflow-hidden">
+<p class="mb-1 text-on-surface-variant">&gt;&gt; INITIALIZING_PBR_LAB...</p>
+<p class="mb-1">&gt;&gt; LOADING SECTOR_2 CORE</p>
+<p class="mb-1">&gt;&gt; COMPILING SHADER_G72.GLSL</p>
+<p class="mb-1 text-primary">&gt;&gt; STATUS: STABLE</p>
+<p class="mb-1">&gt;&gt; NOISE_MATRIX_LOADED [OK]</p>
+<p class="mb-1">&gt;&gt; ANALYZING MESH TOPOLOGY...</p>
+<p class="mb-1 text-secondary">&gt;&gt; RENDER_BUFFER_ACTIVE</p>
+<p class="mb-1">&gt;&gt; _<span class="cursor-blink">|</span></p>
+</div>
+</div>
+</section>
+<!-- Center Panel: 3D Viewport -->
+<section class="col-span-6 flex flex-col gap-2 h-full">
+<div class="glass-panel flex-grow relative overflow-hidden group">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center absolute top-0 left-0 right-0 z-10">
+<h2 class="text-black font-bold font-label-sm">VIEWPORT_MAIN // SECTOR_02</h2>
+<div class="flex gap-4">
+<span class="text-black font-label-sm">60 FPS</span>
+<span class="material-symbols-outlined text-black text-xs">fullscreen</span>
+</div>
+</div>
+<!-- Placeholder for 3D Shader Animation -->
+<div class="absolute inset-0 flex items-center justify-center">
+
+<div class="relative z-1 w-full h-full p-12">
+<div class="w-full h-full border border-primary/20 flex items-center justify-center relative">
+<div class="scanline"></div>
+<!-- Imaginary 3D Mesh Object UI Decoration -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-64 h-64 border-2 border-primary/50 rounded-full animate-pulse flex items-center justify-center">
+<div class="w-48 h-48 border border-secondary/30 rounded-full animate-ping"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[120px] text-primary/80">deployed_code</span>
+</div>
+</div>
+</div>
+<!-- Floating Viewport Controls -->
+<div class="absolute bottom-4 left-4 flex flex-col gap-2">
+<button class="w-10 h-10 glass-panel flex items-center justify-center text-primary hover:bg-primary-container hover:text-black transition-all">
+<span class="material-symbols-outlined">rotate_right</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center text-primary hover:bg-primary-container hover:text-black transition-all">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center text-primary hover:bg-primary-container hover:text-black transition-all">
+<span class="material-symbols-outlined">grid_4x4</span>
+</button>
+</div>
+<div class="absolute bottom-4 right-4 font-label-sm text-primary/40 text-[10px] text-right">
+                                VERT_COUNT: 124,042<br/>TRI_COUNT: 248,084<br/>MEM_USAGE: 4.2GB
+                            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Stack Bottom Strip -->
+<div class="h-48 grid grid-cols-4 gap-2">
+<div class="glass-panel relative flex flex-col overflow-hidden">
+<div class="bg-black/80 px-2 py-0.5 text-[10px] font-bold text-primary flex justify-between items-center border-b border-white/5">
+                        ALBEDO_MAP
+                        <span class="material-symbols-outlined text-[10px]">download</span>
+</div>
+<div class="flex-grow bg-cover bg-center" data-alt="A macro high-detail procedural texture of industrial metal surface with subtle scratches and weathering, deep teal and carbon black tones, 8k resolution, flat view." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC3ydvqIxLsTeU1fxeVlsozXtnzO53F1E3NV3VR5MzyhrIl8HaCHZ44Qofi3Dku0ynpM0j8XRbqswfGwQoFy-YzUNobxyfiGNHZ3e3JZFUHiiOz_o-gVJQlUslKb2zAGZQNa4CwXjR-5wRtlWWIThLygz4eP1B0IJZ5Vx3eHU2wlAWkAHBQwO30MOeQZKPwNeIJAp98xMbddCyVAIGzWK-l2wp29yf-ioPpivg2z0LEsr9JjqTRpvBBJIaDDsed05gtdtKrb-2xSihl')"></div>
+</div>
+<div class="glass-panel relative flex flex-col overflow-hidden border-primary/40">
+<div class="bg-primary/20 px-2 py-0.5 text-[10px] font-bold text-primary flex justify-between items-center border-b border-primary/20">
+                        NORMAL_MAP
+                        <span class="material-symbols-outlined text-[10px]">download</span>
+</div>
+<div class="flex-grow bg-cover bg-center" data-alt="A vibrant normal map visualization of a complex circuit board geometry, featuring high-contrast purples, cyans, and greens reflecting surface orientations, sharp technological detail." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDKk8GlOqvmuo_XcnTCCiUlgrvuWNkg0VsrsA1doajAdS_mmkvEz9oY7I-L4bauMg7YsNpx5VNm1aBqBQIOwnLdKIsI2_dbJp7oc5t3PywMvCSM-ojcoPiLaZT8t8XHRSIzVQoKtRfpTyb06y4vxp2VdNPrgEbHaMzf_BuN96KxhSl93tIhvDAx3eCHkKcs_dRxahPBR2CP9PjzpXSnMkRUZ9FUNWclOsKYto8-kIFDRfRWvYd65_jlihunWxSjzdpKgYIgKNuqZ0iH')"></div>
+</div>
+<div class="glass-panel relative flex flex-col overflow-hidden">
+<div class="bg-black/80 px-2 py-0.5 text-[10px] font-bold text-primary flex justify-between items-center border-b border-white/5">
+                        ROUGHNESS_MAP
+                        <span class="material-symbols-outlined text-[10px]">download</span>
+</div>
+<div class="flex-grow bg-cover bg-center" data-alt="A grayscale noise map representing surface roughness, with varying shades of dark grey and white patches, metallic sheen distribution, high information density." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwJ6oR9XzTLbgVz6uyNF3uYjwLF4UQemAoCza-G_KQ57H11zluwGA1ow30yj8kQFtOhuTKoo2vTncQNRQRE5Zzz6xtvLIRJei6PnXPslF1HS62FK0-aj18BLA1UPK4QTXRF8Rt5ZlSbdGNmdhxZFUgD53DvazbtlB5HftGcbXuTv0rLHciVoQnIRL4WdivihgoLj_cSUtIa6pMxRp5s-HvZ4xdvqtTwgqpLcVj0cWQXsS38NOX2JuYfMAJkaDMBy6D-_CL79zoHCOw')"></div>
+</div>
+<div class="glass-panel relative flex flex-col overflow-hidden">
+<div class="bg-black/80 px-2 py-0.5 text-[10px] font-bold text-primary flex justify-between items-center border-b border-white/5">
+                        HEIGHT_MAP
+                        <span class="material-symbols-outlined text-[10px]">download</span>
+</div>
+<div class="flex-grow bg-cover bg-center" data-alt="A smooth grayscale topographical height map with organic, flowing lines resembling futuristic landscape elevations or microscopic structural details, ultra-smooth transitions." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCTV3vDqw1fMUe77x7fBu5YLl_NsDLnFo5VMOkuq5YvyVDEUX4HhXNx_L32rCbGgUuwmo_DEe0RCxCBw1ZqBRCB0pUbE55-Mv3utrTOsrnJLu_QcwmJna9VfrkUfRbzqGGgsw1TXM8rWnnANUw8tuTP2YMXfuXrdVMDvYphfwGDlao_CZ7Ue2pYkUf92nolPAmMw8Dc2P-uJ1We1YUlr-pUlHpcsAJRR6Sr_zlPgRK8pxzVmapxOK8Vb0vhlI4pNShCJ5nvxyaiEtlU')"></div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Export & Presets -->
+<section class="col-span-3 flex flex-col gap-2 h-full">
+<div class="glass-panel">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center">
+<h2 class="text-black font-bold font-label-sm">MATERIAL_PRESETS</h2>
+<span class="material-symbols-outlined text-black text-xs">bookmark</span>
+</div>
+<div class="p-2 flex flex-col gap-1">
+<div class="flex items-center justify-between p-2 hover:bg-white/5 border border-transparent hover:border-primary/20 cursor-pointer group">
+<span class="font-body-md text-on-surface">CARBON_FIBER_V1</span>
+<span class="text-[10px] text-primary opacity-0 group-hover:opacity-100">LOAD</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-secondary/10 border border-secondary/40 cursor-pointer">
+<span class="font-body-md text-secondary">CYBER_WEAVE_G2</span>
+<span class="text-[10px] text-secondary">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-white/5 border border-transparent hover:border-primary/20 cursor-pointer group">
+<span class="font-body-md text-on-surface">REACTOR_SHIELD_0</span>
+<span class="text-[10px] text-primary opacity-0 group-hover:opacity-100">LOAD</span>
+</div>
+<div class="flex items-center justify-between p-2 hover:bg-white/5 border border-transparent hover:border-primary/20 cursor-pointer group">
+<span class="font-body-md text-on-surface">LIQUID_MERCURY_H</span>
+<span class="text-[10px] text-primary opacity-0 group-hover:opacity-100">LOAD</span>
+</div>
+</div>
+</div>
+<div class="glass-panel flex-grow flex flex-col">
+<div class="bg-primary-container px-3 py-1 flex justify-between items-center">
+<h2 class="text-black font-bold font-label-sm">EXPORT_WORKSPACE</h2>
+<span class="material-symbols-outlined text-black text-xs">unarchive</span>
+</div>
+<div class="p-4 flex flex-col gap-6">
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant block">EXPORT_FORMAT</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="bg-surface-container border border-primary text-primary py-2 font-label-sm text-[10px]">.EXR</button>
+<button class="bg-surface-container border border-outline text-on-surface-variant py-2 font-label-sm text-[10px] hover:border-primary">.PNG</button>
+<button class="bg-surface-container border border-outline text-on-surface-variant py-2 font-label-sm text-[10px] hover:border-primary">.TIFF</button>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant block">RESOLUTION</label>
+<select class="w-full bg-surface-container-lowest border border-outline text-primary font-body-md p-2 focus:ring-1 focus:ring-primary outline-none">
+<option>1024 X 1024</option>
+<option>2048 X 2048</option>
+<option selected="">4096 X 4096 (4K)</option>
+<option>8192 X 8192 (8K)</option>
+</select>
+</div>
+<div class="mt-auto pt-8">
+<button class="w-full bg-primary text-black font-bold font-headline-md py-4 hover:bg-secondary transition-colors flex items-center justify-center gap-2 group">
+                            GENERATE_MAPS
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">bolt</span>
+</button>
+<p class="text-center font-label-sm text-[10px] text-on-surface-variant mt-4 uppercase tracking-widest opacity-50">
+                            Est. Processing Time: 12.4s
+                        </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- OS Dock / BottomNavBar -->
+<nav class="fixed bottom-4 left-1/2 -translate-x-1/2 flex gap-4 px-6 py-3 z-50 bg-[#1A1C1C]/60 backdrop-blur-[64px] border border-white/20 rounded-xl mx-auto shadow-2xl shadow-primary/10">
+<div class="group relative flex flex-col items-center">
+<div class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined">folder</span>
+</div>
+<span class="absolute -top-8 bg-black/90 px-2 py-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Finder</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<div class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<span class="absolute -top-8 bg-black/90 px-2 py-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Terminal</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<div class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined">language</span>
+</div>
+<span class="absolute -top-8 bg-black/90 px-2 py-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Browser</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<div class="bg-primary-container text-on-primary-container rounded-lg p-2 scale-110 transition-transform duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined">code</span>
+</div>
+<span class="absolute -top-8 bg-primary-container text-black font-bold px-2 py-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Code (ACTIVE)</span>
+</div>
+<div class="group relative flex flex-col items-center">
+<div class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out cursor-pointer">
+<span class="material-symbols-outlined">play_circle</span>
+</div>
+<span class="absolute -top-8 bg-black/90 px-2 py-1 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Media</span>
+</div>
+</nav>
+<!-- Atmospheric Overlay Particles -->
+<div class="fixed inset-0 pointer-events-none z-[100] overflow-hidden">
+<div class="w-full h-full" id="particle-container"></div>
+</div>
+<script>
+        // Simple micro-interaction for sliders
+        document.querySelectorAll('.noise-slider').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const valueSpan = e.target.previousElementSibling.lastElementChild;
+                valueSpan.textContent = parseFloat(e.target.value).toFixed(3);
+                
+                // Audio visual feedback could be added here
+            });
+        });
+
+        // Generate floating particles for atmospheric effect
+        const container = document.getElementById('particle-container');
+        for (let i = 0; i < 20; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'absolute bg-primary/20 rounded-full';
+            const size = Math.random() * 2 + 1;
+            dot.style.width = `${size}px`;
+            dot.style.height = `${size}px`;
+            dot.style.left = `${Math.random() * 100}%`;
+            dot.style.top = `${Math.random() * 100}%`;
+            dot.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.2)';
+            
+            // Basic float animation
+            const duration = Math.random() * 10 + 10;
+            dot.animate([
+                { transform: 'translate(0, 0)', opacity: 0 },
+                { opacity: 0.5, offset: 0.5 },
+                { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`, opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                iterations: Infinity,
+                easing: 'ease-in-out'
+            });
+            
+            container.appendChild(dot);
+        }
+
+        // Terminal text typing effect simulator
+        const terminalLog = document.querySelector('.font-code-sm');
+        const messages = [
+            "OPTIMIZING RENDER KERNEL...",
+            "EXPORT BUFFER RESERVED [0x8A12]",
+            "UV_UNWRAP_COMPLETE",
+            "SYNCING SECTOR_2 LOCAL STATE..."
+        ];
+        let msgIndex = 0;
+
+        setInterval(() => {
+            if (msgIndex < messages.length) {
+                const p = document.createElement('p');
+                p.className = 'mb-1 text-on-surface-variant';
+                p.textContent = `>> ${messages[msgIndex]}`;
+                terminalLog.insertBefore(p, terminalLog.lastElementChild);
+                msgIndex++;
+                
+                // Keep terminal scrolled to bottom
+                terminalLog.scrollTop = terminalLog.scrollHeight;
+            }
+        }, 5000);
+    </script>
+</body></html>

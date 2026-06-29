@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fiyatlandırma | AETHER AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "background": "#111417",
+                "primary": "#dbfcff",
+                "surface": "#111417",
+                "on-primary-fixed": "#002022",
+                "on-secondary-fixed": "#320047",
+                "secondary-fixed-dim": "#ebb2ff",
+                "on-secondary-fixed-variant": "#74009f",
+                "on-tertiary-container": "#5d5f5f",
+                "tertiary-container": "#d9d9d9",
+                "secondary-fixed": "#f8d8ff",
+                "on-secondary": "#520072",
+                "on-tertiary": "#2f3131",
+                "surface-container": "#1d2023",
+                "secondary": "#ebb2ff",
+                "on-primary": "#00363a",
+                "surface-variant": "#323539",
+                "error": "#ffb4ab",
+                "outline": "#849495",
+                "on-surface": "#e1e2e7",
+                "on-background": "#e1e2e7",
+                "on-secondary-container": "#fff6fc",
+                "on-tertiary-fixed-variant": "#454747",
+                "on-error-container": "#ffdad6",
+                "outline-variant": "#3b494b",
+                "inverse-surface": "#e1e2e7",
+                "tertiary-fixed": "#e2e2e2",
+                "on-surface-variant": "#b9cacb",
+                "primary-fixed-dim": "#00dbe9",
+                "surface-container-highest": "#323539",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "on-error": "#690005",
+                "inverse-primary": "#006970",
+                "inverse-on-surface": "#2e3134",
+                "primary-container": "#00f0ff",
+                "surface-container-lowest": "#0c0e12",
+                "on-tertiary-fixed": "#1a1c1c",
+                "surface-dim": "#111417",
+                "surface-container-low": "#191c1f",
+                "primary-fixed": "#7df4ff",
+                "tertiary": "#f5f5f5",
+                "on-primary-fixed-variant": "#004f54",
+                "surface-bright": "#37393d",
+                "on-primary-container": "#006970",
+                "secondary-container": "#b600f8",
+                "surface-container-high": "#282a2e",
+                "surface-tint": "#00dbe9",
+                "error-container": "#93000a"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "container-max": "1280px",
+                "margin-desktop": "64px",
+                "margin-mobile": "20px",
+                "unit": "8px",
+                "section-gap": "120px",
+                "gutter": "24px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "mono-label": ["JetBrains Mono"],
+                "mono-code": ["JetBrains Mono"],
+                "display-lg-mobile": ["Inter"],
+                "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-card:hover {
+            border: 1px solid rgba(0, 219, 233, 0.5);
+            box-shadow: 0 0 40px rgba(0, 219, 233, 0.15);
+            transform: translateY(-8px);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.3) 0%, transparent 50%, rgba(182, 0, 248, 0.3) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .glow-cyan {
+            filter: drop-shadow(0 0 10px rgba(0, 219, 233, 0.4));
+        }
+
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 15px rgba(0, 219, 233, 0.6); }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Shell -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-2">
+<span class="font-display-lg text-display-lg-mobile md:text-headline-md tracking-tighter text-primary">AETHER AI</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Platform</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Developers</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block text-on-surface-variant font-mono-label hover:text-primary transition-colors">Documentation</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded font-semibold hover:bg-primary-fixed-dim transition-all shadow-[0_0_15px_rgba(0,240,255,0.3)]">Launch Console</button>
+</div>
+</div>
+</nav>
+<main class="relative pt-32 pb-section-gap overflow-hidden">
+<!-- Atmospheric Background Shader -->
+
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-section-gap">
+<span class="inline-block px-3 py-1 rounded-sm bg-primary/10 border border-primary/20 text-primary font-mono-label text-xs mb-6 uppercase tracking-widest">Geleceği Ölçeklendirin</span>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-6">Sentetik Çağ İçin <br class="hidden md:block"/> Esnek Fiyatlandırma</h1>
+<p class="text-on-surface-variant max-w-2xl mx-auto text-body-lg">Aether'in yüksek performanslı yapay zeka altyapısıyla sınırları zorlayın. Projenize en uygun planı seçin.</p>
+</div>
+<!-- Pricing Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter items-stretch">
+<!-- Tier: Başlangıç -->
+<div class="glass-card p-unit*4 md:p-10 rounded-xl flex flex-col">
+<div class="mb-8">
+<h3 class="font-headline-md text-on-surface mb-2">Başlangıç</h3>
+<p class="text-on-surface-variant text-sm mb-6">Bireysel geliştiriciler ve hobi projeleri için.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-primary">$0</span>
+<span class="text-on-surface-variant font-mono-label">/ay</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="text-on-surface">10,000 API İsteği</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="text-on-surface">Paylaşımlı İşlem Gücü</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+<span class="text-on-surface">Temel Model Erişimi</span>
+</li>
+<li class="flex items-center gap-3 opacity-50">
+<span class="material-symbols-outlined text-xl">cancel</span>
+<span class="text-on-surface-variant">Öncelikli Destek</span>
+</li>
+</ul>
+<button class="w-full border border-primary/30 text-primary py-3 rounded-lg font-semibold hover:bg-primary/10 transition-colors uppercase tracking-wider text-sm">Ücretsiz Başla</button>
+</div>
+<!-- Tier: Profesyonel (Featured) -->
+<div class="glass-card p-unit*4 md:p-10 rounded-xl flex flex-col border-primary/40 relative scale-105 z-10 shadow-[0_0_50px_rgba(0,219,233,0.1)]">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-on-primary-fixed px-4 py-1 rounded-full text-xs font-bold uppercase tracking-tighter">En Popüler</div>
+<div class="mb-8">
+<h3 class="font-headline-md text-primary mb-2">Profesyonel</h3>
+<p class="text-on-surface-variant text-sm mb-6">Büyüyen girişimler ve profesyonel ekipler için.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-primary">$49</span>
+<span class="text-on-surface-variant font-mono-label">/ay</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+<span class="text-on-surface font-semibold">1 Milyon API İsteği</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+<span class="text-on-surface">Adanmış GPU Belleği</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+<span class="text-on-surface">Tüm Model Kitaplığı</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+<span class="text-on-surface">7/24 Teknik Destek</span>
+</li>
+</ul>
+<button class="w-full bg-primary text-on-primary-fixed py-3 rounded-lg font-extrabold hover:brightness-110 transition-all uppercase tracking-wider text-sm shadow-[0_0_20px_rgba(0,219,233,0.4)]">Hemen Yükselt</button>
+</div>
+<!-- Tier: Kurumsal -->
+<div class="glass-card p-unit*4 md:p-10 rounded-xl flex flex-col">
+<div class="mb-8">
+<h3 class="font-headline-md text-on-surface mb-2">Kurumsal</h3>
+<p class="text-on-surface-variant text-sm mb-6">Yüksek hacimli ve özel güvenlik gereksinimleri.</p>
+<div class="flex items-baseline gap-1">
+<span class="text-4xl font-extrabold text-primary">Özel</span>
+</div>
+</div>
+<ul class="space-y-4 mb-10 flex-grow">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-xl">verified</span>
+<span class="text-on-surface">Sınırsız Ölçeklendirme</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-xl">verified</span>
+<span class="text-on-surface">Özel Model Eğitimi</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-xl">verified</span>
+<span class="text-on-surface">On-Premise Kurulum Opsiyonu</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-xl">verified</span>
+<span class="text-on-surface">Hesap Yöneticisi</span>
+</li>
+</ul>
+<button class="w-full border border-secondary/30 text-secondary py-3 rounded-lg font-semibold hover:bg-secondary/10 transition-colors uppercase tracking-wider text-sm">İletişime Geç</button>
+</div>
+</div>
+</section>
+<!-- Detailed Comparison Table -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-section-gap">
+<div class="text-center mb-16">
+<h2 class="font-headline-md text-on-surface">Detaylı Karşılaştırma</h2>
+<div class="w-24 h-1 bg-gradient-to-r from-primary to-secondary mx-auto mt-4"></div>
+</div>
+<div class="glass-card rounded-xl overflow-hidden overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container/50 font-mono-label text-primary">
+<tr>
+<th class="p-6 border-b border-outline-variant/30">Özellikler</th>
+<th class="p-6 border-b border-outline-variant/30">Başlangıç</th>
+<th class="p-6 border-b border-outline-variant/30">Profesyonel</th>
+<th class="p-6 border-b border-outline-variant/30">Kurumsal</th>
+</tr>
+</thead>
+<tbody class="text-on-surface-variant">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-6 border-b border-outline-variant/10 font-medium text-on-surface">İşlem Gücü (Compute)</td>
+<td class="p-6 border-b border-outline-variant/10">Paylaşımlı</td>
+<td class="p-6 border-b border-outline-variant/10 text-primary">Yüksek (Adanmış)</td>
+<td class="p-6 border-b border-outline-variant/10 text-secondary">Ultra (Cluster)</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-6 border-b border-outline-variant/10 font-medium text-on-surface">API Erişimi</td>
+<td class="p-6 border-b border-outline-variant/10">REST API</td>
+<td class="p-6 border-b border-outline-variant/10">REST &amp; WebSocket</td>
+<td class="p-6 border-b border-outline-variant/10">Özel Gateway</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-6 border-b border-outline-variant/10 font-medium text-on-surface">Veri Güvenliği</td>
+<td class="p-6 border-b border-outline-variant/10">Standart</td>
+<td class="p-6 border-b border-outline-variant/10">SOC2 Uyumluluğu</td>
+<td class="p-6 border-b border-outline-variant/10 text-secondary">Uçtan Uca Şifreleme</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="p-6 border-b border-outline-variant/10 font-medium text-on-surface">Gecikme Süresi (Latency)</td>
+<td class="p-6 border-b border-outline-variant/10">&lt; 500ms</td>
+<td class="p-6 border-b border-outline-variant/10 text-primary">&lt; 100ms</td>
+<td class="p-6 border-b border-outline-variant/10 text-secondary">&lt; 20ms</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Status Bar -->
+<div class="fixed bottom-8 left-8 z-40 hidden lg:flex items-center gap-3 glass-card px-4 py-2 rounded-full border-primary/20">
+<div class="w-2 h-2 rounded-full bg-primary pulse-dot"></div>
+<span class="font-mono-code text-xs text-on-surface">Sistem Durumu: Çevrimiçi - Latency: 12ms</span>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20 transition-all">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap max-w-container-max mx-auto opacity-80 hover:opacity-100 transition-opacity">
+<div class="mb-8 md:mb-0">
+<span class="font-display-lg text-headline-md text-primary block mb-2">AETHER AI</span>
+<p class="font-mono-label text-mono-label text-on-tertiary-container max-w-xs">© 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-gutter">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:text-secondary-fixed transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface hover:text-secondary-fixed transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for smooth scrolling or hover effects
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

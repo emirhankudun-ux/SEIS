@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Quantum Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-stroke: rgba(0, 219, 233, 0.2);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-stroke);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel:hover {
+            border-color: rgba(0, 219, 233, 0.5);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.1);
+        }
+        .glow-cyan {
+            text-shadow: 0 0 12px rgba(0, 219, 233, 0.6);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(0, 219, 233, 0.1), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .pulse-node {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.3; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "surface-container": "#1d2023",
+                        "on-tertiary-container": "#5d5f5f",
+                        "surface-container-low": "#191c1f",
+                        "secondary-container": "#b600f8",
+                        "primary-fixed": "#7df4ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "inverse-surface": "#e1e2e7",
+                        "on-background": "#e1e2e7",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface": "#111417",
+                        "outline-variant": "#3b494b",
+                        "outline": "#849495",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#282a2e",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary": "#dbfcff",
+                        "tertiary": "#f5f5f5",
+                        "surface-dim": "#111417",
+                        "tertiary-container": "#d9d9d9",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520072",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#323539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-surface-variant": "#b9cacb",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-tint": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2e3134",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#006970",
+                        "background": "#111417",
+                        "secondary": "#ebb2ff",
+                        "on-primary-fixed": "#002022",
+                        "surface-variant": "#323539",
+                        "on-secondary-container": "#fff6fc",
+                        "on-surface": "#e1e2e7",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-gap": "120px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-12">
+<a class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim" href="#">AETHER AI</a>
+<nav class="hidden md:flex gap-8">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Enterprise</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md active:scale-95">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-5 py-2 font-semibold transition-transform active:scale-95">Get Started</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex flex-col items-center justify-center pt-32 overflow-hidden px-margin-mobile md:px-0">
+<div class="absolute inset-0 z-0">
+
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface-container-lowest"></div>
+</div>
+<div class="relative z-10 max-w-4xl text-center space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 glass-panel rounded-full border-primary-fixed-dim/30">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-node"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest">Quantum Entanglement Active</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-none">
+                    Uncompute the <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-fixed-dim to-secondary-fixed">Impossible.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    Quantum Lab bridges the gap between probabilistic quantum mechanics and deterministic neural networks. Achieve 0.4ms inference at scale.
+                </p>
+<div class="flex flex-col md:flex-row gap-4 justify-center pt-8">
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-8 py-4 font-semibold text-lg flex items-center justify-center gap-2 hover:brightness-110 transition-all">
+                        Request SDK Access <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="glass-panel px-8 py-4 font-semibold text-lg hover:bg-surface-container-high">
+                        Read Whitepaper
+                    </button>
+</div>
+</div>
+</section>
+<!-- Quantum Kernels Section -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid lg:grid-cols-2 gap-gutter items-center">
+<div class="space-y-8">
+<h2 class="font-headline-md text-headline-md text-primary">Quantum Kernels</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        By mapping high-dimensional data into quantum feature spaces, Aether AI reduces computational complexity from exponential to polynomial. Sub-millisecond inference is no longer a goal—it's our standard.
+                    </p>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-6">
+<div class="font-display-lg text-[32px] text-primary-fixed-dim mb-1">0.42ms</div>
+<div class="font-mono-label text-mono-label text-on-surface-variant">AVG LATENCY</div>
+</div>
+<div class="glass-panel p-6">
+<div class="font-display-lg text-[32px] text-secondary-fixed mb-1">2048</div>
+<div class="font-mono-label text-mono-label text-on-surface-variant">QUBITS/SEC</div>
+</div>
+</div>
+</div>
+<div class="relative glass-panel rounded-xl overflow-hidden aspect-video group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A cinematic, microscopic view of a quantum processor core with glowing neon cyan filaments connecting obsidian-textured nodes. Light rays refract through translucent glass components, creating a futuristic, high-tech laboratory atmosphere with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCEZ2JgiN_tY_wbixT8VizE6BWzuXnJ6Wl8hZIeG5APdjguy2kxGCKtFoiq-RcY_qk9p5vfChjzZqFB4FyU1MnyjEgwD9d0D6dYLUFekd6NmjPwywBo6UlJ5eJ0-nR5zDZh8xpnaZeqPAJBGLI-604XCAaX1REv1qlahsxfIxlzK0QJqI-GlCV3ptrBragfj8yeGt639eFADoGBd2hPByvYTWckUeFiho5ALFN0P9gVUrU-MMBbt7pRoR6yenhgUkOvJWXLosZXg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-8">
+<div class="space-y-2">
+<div class="font-mono-label text-mono-label text-primary-fixed-dim uppercase">Core Visualization</div>
+<div class="text-sm text-on-surface-variant">Kernel mapping in progress: Q-Vector Cluster 721</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Q-Bit Topology Section -->
+<section class="py-section-gap bg-surface-container-lowest/50">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center mb-16">
+<h2 class="font-headline-md text-headline-md text-primary mb-4">Q-Bit Topology</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">
+                    Monitor live node states across our distributed quantum fabric. Green indicates coherent entanglement; violet indicates active processing.
+                </p>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-2">
+<!-- Generative Grid of Nodes -->
+<script>
+                    const container = document.currentScript.parentElement;
+                    for(let i=0; i<48; i++) {
+                        const state = Math.random() > 0.5 ? 'primary-fixed-dim' : 'secondary-container';
+                        const opacity = Math.random() * 0.5 + 0.1;
+                        const div = document.createElement('div');
+                        div.className = `glass-panel aspect-square flex items-center justify-center relative group cursor-crosshair`;
+                        div.innerHTML = `
+                            <div class="w-2 h-2 rounded-full bg-${state} pulse-node" style="animation-delay: ${Math.random()*2}s"></div>
+                            <div class="absolute inset-0 opacity-0 group-hover:opacity-100 bg-${state}/10 transition-opacity flex items-center justify-center">
+                                <span class="font-mono-code text-[8px] text-${state}">Q#${i}</span>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    }
+                </script>
+</div>
+</section>
+<!-- Integration Section -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="glass-panel rounded-2xl overflow-hidden grid lg:grid-cols-5 h-full min-h-[500px]">
+<div class="lg:col-span-2 p-12 flex flex-col justify-center space-y-6">
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl">terminal</span>
+<h2 class="font-headline-md text-headline-md text-primary">Integration</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        Our Python SDK handles the orchestration of quantum state preparation and classical readout. One line to initialize, millions of dimensions to explore.
+                    </p>
+<ul class="space-y-4 font-mono-label text-mono-label text-on-surface-variant">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">check_circle</span>
+                            Native PyTorch support
+                        </li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">check_circle</span>
+                            Auto-tuning Q-Kernels
+                        </li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">check_circle</span>
+                            Zero-latency serialization
+                        </li>
+</ul>
+</div>
+<div class="lg:col-span-3 bg-black/40 p-8 border-l border-outline-variant/20 font-mono-code text-mono-code overflow-x-auto">
+<div class="flex gap-2 mb-6">
+<div class="w-3 h-3 rounded-full bg-red-500/30"></div>
+<div class="w-3 h-3 rounded-full bg-yellow-500/30"></div>
+<div class="w-3 h-3 rounded-full bg-green-500/30"></div>
+</div>
+<pre class="text-primary-fixed/80"><span class="text-secondary-fixed">import</span> aether_ai.quantum <span class="text-secondary-fixed">as</span> qlab
+
+<span class="text-on-surface-variant"># Initialize the Quantum Neural Fabric</span>
+fabric = qlab.Fabric(
+    nodes=<span class="text-secondary-fixed">"distributed"</span>, 
+    precision=<span class="text-secondary-fixed">"qbit-64"</span>
+)
+
+<span class="text-on-surface-variant"># Load weights into quantum superposition</span>
+model = fabric.load_model(<span class="text-secondary-fixed">"aether-q-nexus-v1"</span>)
+
+<span class="text-on-surface-variant"># High-dimensional inference</span>
+result = model.infer(
+    input_tensor=data,
+    superposition_depth=<span class="text-secondary-fixed">0.85</span>
+)
+
+<span class="text-primary-fixed-dim">print</span>(f<span class="text-secondary-fixed">"Inference completed in: {result.latency}ms"</span>)
+                    </pre>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-section-gap relative overflow-hidden">
+
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center">
+<div class="glass-panel p-16 rounded-3xl space-y-8">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md text-primary">Join the Quantum Frontier</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto">
+                        We are onboarding the first 500 enterprise partners for the Q-Fabric Alpha. Reserve your compute cycle today.
+                    </p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-12 py-4 font-bold active:scale-95 transition-transform">Apply for Alpha Access</button>
+<button class="text-on-surface font-semibold border-b border-primary-fixed-dim hover:text-primary-fixed-dim transition-colors">Speak with a Quantum Engineer</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2 space-y-6">
+<div class="font-display-lg text-display-lg-mobile text-primary-fixed-dim font-extrabold tracking-tighter">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant pr-8">
+                    Architecting the infrastructure for the post-classical era.
+                </p>
+</div>
+<div class="space-y-4">
+<h4 class="font-mono-label text-mono-label text-on-surface font-bold">Platform</h4>
+<nav class="flex flex-col gap-2">
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</nav>
+</div>
+<div class="space-y-4">
+<h4 class="font-mono-label text-mono-label text-on-surface font-bold">Company</h4>
+<nav class="flex flex-col gap-2">
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</nav>
+</div>
+<div class="col-span-2 md:col-span-4 lg:col-span-6 pt-12 flex flex-col md:flex-row justify-between items-center border-t border-outline-variant/5 mt-12 gap-4">
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant opacity-80">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed cursor-pointer">language</span>
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed cursor-pointer">hub</span>
+<span class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed cursor-pointer">terminal</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Mouse tracking glow
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.createElement('div');
+            // This is a placeholder for a more complex canvas-based background effect 
+            // if we wanted to follow the mouse with a faint cyan glow
+        });
+
+        // Simple Intersection Observer for glass-panel reveals
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.classList.add('transition-all', 'duration-1000', 'opacity-0', 'translate-y-8');
+            observer.observe(panel);
+        });
+    </script>
+</body></html>

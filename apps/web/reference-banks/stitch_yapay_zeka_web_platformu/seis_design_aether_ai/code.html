@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | SEIS Design - The Future of Generative UI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#849495",
+                    "on-error": "#690005",
+                    "on-background": "#e1e2e7",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#006970",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#b600f8",
+                    "tertiary": "#f5f5f5",
+                    "on-secondary-container": "#fff6fc",
+                    "surface-container-low": "#191c1f",
+                    "surface-container": "#1d2023",
+                    "on-tertiary": "#2f3131",
+                    "on-primary": "#00363a",
+                    "background": "#111417",
+                    "surface-container-highest": "#323539",
+                    "inverse-surface": "#e1e2e7",
+                    "primary-container": "#00f0ff",
+                    "on-secondary-fixed": "#320047",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#520072",
+                    "surface-dim": "#111417",
+                    "on-surface": "#e1e2e7",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-variant": "#323539",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-high": "#282a2e",
+                    "surface": "#111417",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "primary-fixed": "#7df4ff",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "surface-bright": "#37393d",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#002022",
+                    "secondary": "#ebb2ff",
+                    "surface-tint": "#00dbe9",
+                    "inverse-on-surface": "#2e3134",
+                    "on-tertiary-container": "#5d5f5f",
+                    "tertiary-container": "#d9d9d9",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-primary-container": "#006970",
+                    "primary": "#dbfcff",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-container-lowest": "#0c0e12",
+                    "secondary-fixed": "#f8d8ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "gutter": "24px",
+                    "margin-mobile": "20px",
+                    "section-gap": "120px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "mono-label": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            box-shadow: inset 0 0 20px rgba(0, 219, 233, 0.05);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.25);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .cyan-gradient-text {
+            background: linear-gradient(135deg, #00f0ff 0%, #ebb2ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pulsing-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+        .hero-mesh {
+            background: radial-gradient(circle at 50% 50%, rgba(0, 219, 233, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(182, 0, 248, 0.1) 0%, transparent 40%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-display-lg-mobile md:text-[32px] tracking-tighter text-primary-fixed-dim font-extrabold">AETHER AI</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Platform</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Solutions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Developers</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block text-on-surface hover:text-primary transition-colors font-body-md text-body-md">Documentation</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold hover:scale-105 transition-transform shadow-[0_0_15px_rgba(0,240,255,0.3)]">Launch Console</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<main class="relative pt-32 min-h-screen hero-mesh overflow-hidden">
+
+<div class="max-w-container-max mx-auto px-margin-desktop relative z-10">
+<div class="flex flex-col items-center text-center mb-20">
+<div class="inline-flex items-center gap-2 px-3 py-1 glass-panel rounded-full mb-6 border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulsing-dot"></span>
+<span class="font-mono-label text-mono-label uppercase tracking-widest text-primary-fixed-dim">Engine v4.2 Live</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-background mb-6 leading-tight">
+                    UI Design at the <span class="cyan-gradient-text">Speed of Thought.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mb-10">
+                    SEIS Design leverages neural layout engines to generate production-ready interfaces. Sync your entire design system in real-time across teams and platforms.
+                </p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="px-8 py-4 bg-primary-container text-on-primary-container rounded-xl font-bold text-lg flex items-center gap-2 hover:shadow-[0_0_40px_rgba(0,240,255,0.4)] transition-all">
+                        Start Designing Free <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="px-8 py-4 glass-panel text-on-surface rounded-xl font-bold text-lg hover:bg-surface-variant/50 transition-all border border-outline-variant">
+                        Watch Technical Demo
+                    </button>
+</div>
+</div>
+<!-- Main Product Canvas Interface (Bento Grid Style) -->
+<div class="grid grid-cols-12 gap-6 pb-section-gap">
+<!-- Left Sidebar Tools -->
+<div class="col-span-12 lg:col-span-2 glass-panel p-4 rounded-2xl flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<span class="font-mono-label text-[10px] text-outline-variant uppercase">Core Components</span>
+<div class="grid grid-cols-2 gap-2">
+<div class="h-10 glass-panel rounded flex items-center justify-center hover:bg-primary-container/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">check_box_outline_blank</span>
+</div>
+<div class="h-10 glass-panel rounded flex items-center justify-center hover:bg-primary-container/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">text_fields</span>
+</div>
+<div class="h-10 glass-panel rounded flex items-center justify-center hover:bg-primary-container/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">image</span>
+</div>
+<div class="h-10 glass-panel rounded flex items-center justify-center hover:bg-primary-container/10 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-sm">smart_button</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 mt-4">
+<span class="font-mono-label text-[10px] text-outline-variant uppercase">Neural Suggestions</span>
+<div class="p-3 bg-primary/5 rounded-lg border border-primary/20">
+<p class="text-[12px] text-primary mb-2 italic">"Try a 3-column bento layout for this section..."</p>
+<button class="w-full py-1.5 bg-primary-container text-on-primary-container text-[11px] font-bold rounded">Apply Suggestion</button>
+</div>
+</div>
+</div>
+<!-- Main Canvas Area -->
+<div class="col-span-12 lg:col-span-7 relative h-[600px] glass-panel rounded-3xl overflow-hidden border-2 border-primary/10 shadow-2xl">
+<div class="absolute inset-0 bg-[#05070a] opacity-50"></div>
+<div class="absolute top-0 left-0 w-full h-12 bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30 flex items-center px-6 justify-between z-20">
+<div class="flex gap-4">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+</div>
+<span class="font-mono-code text-mono-code text-on-surface-variant opacity-60">project_alpha_v2.seis</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-sm opacity-50">zoom_out</span>
+<span class="font-mono-code text-xs">85%</span>
+<span class="material-symbols-outlined text-sm opacity-50">zoom_in</span>
+</div>
+</div>
+<!-- Generative UI Canvas Content -->
+<div class="p-12 mt-12 relative h-full flex items-center justify-center">
+<div class="w-full max-w-lg aspect-video glass-panel rounded-xl p-8 relative glow-hover group transition-all">
+<div class="absolute -top-4 -left-4 w-8 h-8 bg-primary-container text-on-primary-container rounded flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="space-y-6">
+<div class="h-8 w-2/3 bg-surface-container-highest rounded-lg animate-pulse"></div>
+<div class="grid grid-cols-3 gap-4">
+<div class="h-24 bg-surface-container-low rounded-lg border border-outline-variant/20"></div>
+<div class="h-24 bg-surface-container-low rounded-lg border border-outline-variant/20"></div>
+<div class="h-24 bg-surface-container-low rounded-lg border border-outline-variant/20"></div>
+</div>
+<div class="h-12 w-full bg-primary-container/20 rounded-lg flex items-center px-4">
+<span class="font-mono-code text-xs text-primary">generating dynamic assets...</span>
+</div>
+</div>
+</div>
+<!-- Floaties -->
+<div class="absolute top-24 right-12 glass-panel p-3 rounded-lg border border-secondary/30 animate-bounce">
+<span class="material-symbols-outlined text-secondary">palette</span>
+</div>
+<div class="absolute bottom-32 left-16 glass-panel p-3 rounded-lg border border-primary/30 delay-700 animate-bounce">
+<span class="material-symbols-outlined text-primary">data_object</span>
+</div>
+</div>
+</div>
+<!-- Right Inspector / System Sync -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-2xl flex-grow border-l-4 border-l-secondary-container">
+<h3 class="font-mono-label text-mono-label text-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">sync</span> SYSTEM SYNC
+                        </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded border border-outline-variant/10">
+<span class="text-xs font-mono-code">Primary-Color</span>
+<div class="flex items-center gap-2">
+<span class="w-4 h-4 bg-primary-container rounded-sm"></span>
+<span class="text-xs opacity-60">#00F0FF</span>
+</div>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded border border-outline-variant/10">
+<span class="text-xs font-mono-code">Border-Radius</span>
+<span class="text-xs opacity-60">12px (XL)</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded border border-outline-variant/10">
+<span class="text-xs font-mono-code">Global-Blur</span>
+<span class="text-xs opacity-60">20px</span>
+</div>
+</div>
+<div class="mt-8 p-4 bg-surface-container-highest rounded-xl">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="text-[11px] opacity-70">Jane D. is editing...</span>
+</div>
+<div class="w-full h-1 bg-outline-variant rounded overflow-hidden">
+<div class="w-2/3 h-full bg-secondary animate-pulse"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-2xl border-t-4 border-t-primary-container">
+<h3 class="font-mono-label text-mono-label text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span> CODE GEN
+                        </h3>
+<div class="bg-black/40 rounded p-3 font-mono-code text-[11px] text-on-surface-variant overflow-hidden">
+<code>
+<span class="text-secondary">const</span> <span class="text-primary-container">GlassCard</span> = () =&gt; {<br/>
+                                  return (<br/>
+                                    &lt;<span class="text-primary-container">div</span> className="backdrop-blur-xl bg-surface/60"&gt;<br/>
+                                    ...<br/>
+</code>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Features Section -->
+<section class="py-section-gap bg-surface-container-lowest relative">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="group">
+<div class="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center mb-6 border-primary/20 group-hover:border-primary transition-all">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">auto_fix_high</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-4">Generative Layouts</h4>
+<p class="text-on-surface-variant">Describe your intent, and SEIS will output multiple high-fidelity bento or fluid layouts in seconds.</p>
+</div>
+<div class="group">
+<div class="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center mb-6 border-secondary/20 group-hover:border-secondary transition-all">
+<span class="material-symbols-outlined text-secondary text-3xl">hub</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-4">Atomic Sync</h4>
+<p class="text-on-surface-variant">Changes made to your design tokens propagate instantly to React, Tailwind, or SwiftUI codebases.</p>
+</div>
+<div class="group">
+<div class="w-16 h-16 glass-panel rounded-2xl flex items-center justify-center mb-6 border-on-surface-variant/20 group-hover:border-on-surface transition-all">
+<span class="material-symbols-outlined text-tertiary text-3xl">security</span>
+</div>
+<h4 class="font-headline-md text-headline-md mb-4">Enterprise Guardrails</h4>
+<p class="text-on-surface-variant">AI-enforced accessibility and brand consistency audits ensure your designs never break standards.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Showcase Section with Large Image -->
+<section class="py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="glass-panel rounded-[2rem] overflow-hidden border border-outline-variant/30 flex flex-col lg:flex-row">
+<div class="lg:w-1/2 p-12 lg:p-20 flex flex-col justify-center">
+<h2 class="font-headline-md text-headline-md mb-6">Designed for the <span class="text-primary-fixed-dim">Next-Gen Interface.</span></h2>
+<p class="text-body-lg text-on-surface-variant mb-8">
+                        The web is shifting from static grids to dynamic, data-driven surfaces. SEIS provides the tools to build glassmorphic, spatial, and adaptive UIs that react to user context in real-time.
+                    </p>
+<ul class="space-y-4 font-mono-label text-mono-label">
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Real-time Multi-user Canvas</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Direct Export to Tailwind Config</li>
+<li class="flex items-center gap-3"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Neural Asset Generation</li>
+</ul>
+</div>
+<div class="lg:w-1/2 min-h-[400px] relative">
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="A futuristic, high-tech digital design workspace featuring floating translucent glass cards and glowing cyan neon elements against a dark obsidian background. The UI displays complex data visualizations and abstract node-based connections, reflecting a sophisticated AI-driven software environment. The lighting is dramatic, with sharp primary cyan highlights and deep midnight blue shadows, creating a premium professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfIP-ItRgeQvG1V6TQFUkLpl_Hf2hVsAQXiKjGLlXxQfZt8P37NzSnNdmkxOFrsw5HnLxTvYgDGO-ox_IiUfuDo2iO9H_7vS5FTi7SIuf-UJg8iTNZNiQv0PDD0eb3cslwdwFvqKPrF8PSkNbsYmLyyVLJuydSYiPOcpCaESgb4svKCV783RTMgnwyJoLGWG0cjxcIgufQlKsXcBGP_eIeAG2sotp1MkeQjELYbKgjuJzNYxsxvDbE53-I9NSVrDfPV2fJO9vDrw"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface to-transparent lg:hidden"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full bg-surface-container-lowest border-t border-outline-variant/20 mt-20">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="font-display-lg text-headline-md text-primary-fixed-dim font-extrabold mb-2">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container opacity-60">© 2024 Aether Intelligence Systems. All rights reserved.<br/>Built for the synthetic era.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 md:gap-12">
+<div class="flex flex-col gap-4">
+<span class="font-mono-label text-primary uppercase text-xs">Resources</span>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">Documentation</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">API Reference</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">System Status</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-mono-label text-primary uppercase text-xs">Company</span>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">Terms of Service</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label" href="#">Security</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactive Layer for cursor effects -->
+<div class="fixed w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none z-0 transform -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 opacity-0" id="cursor-glow"></div>
+<script>
+        // Micro-interactions: Cursor Glow Follow
+        const glow = document.getElementById('cursor-glow');
+        window.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+            glow.style.opacity = '1';
+        });
+
+        // Sticky Nav logic
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('py-2', 'bg-surface/90');
+                nav.classList.remove('py-4', 'bg-surface/60');
+            } else {
+                nav.classList.add('py-4', 'bg-surface/60');
+                nav.classList.remove('py-2', 'bg-surface/90');
+            }
+        });
+    </script>
+</body></html>

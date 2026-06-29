@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model Forge IDE | Advanced AI Development</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Style & Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-primary-container": "#006970",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary": "#520072",
+                    "inverse-on-surface": "#2e3134",
+                    "on-surface": "#e1e2e7",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#1d2023",
+                    "background": "#020408",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "tertiary-container": "#d9d9d9",
+                    "secondary-container": "#b600f8",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-error": "#690005",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-container": "#5d5f5f",
+                    "outline-variant": "#3b494b",
+                    "surface-container-high": "#282a2e",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-tertiary": "#2f3131",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-primary-fixed": "#002022",
+                    "inverse-primary": "#006970",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#323539",
+                    "primary": "#dbfcff",
+                    "surface-variant": "#323539",
+                    "on-primary": "#00363a",
+                    "surface-container-low": "#191c1f",
+                    "error": "#ffb4ab",
+                    "surface-dim": "#111417",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary-container": "#00f0ff",
+                    "surface": "#020408",
+                    "secondary": "#ebb2ff",
+                    "outline": "#849495",
+                    "on-secondary-fixed": "#320047",
+                    "tertiary": "#f5f5f5",
+                    "primary-fixed": "#7df4ff",
+                    "on-background": "#e1e2e7",
+                    "on-secondary-container": "#fff6fc",
+                    "surface-tint": "#00dbe9",
+                    "surface-bright": "#37393d",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-fixed-dim": "#00dbe9",
+                    "inverse-surface": "#e1e2e7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #020408; overflow: hidden; }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, rgba(0, 240, 255, 0.2), transparent) 1;
+            pointer-events: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+        }
+        .terminal-text {
+            text-shadow: 0 0 5px rgba(0, 240, 255, 0.4);
+        }
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .animate-pulse-cyan { animation: pulse-cyan 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        
+        /* Custom Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: #1d2023;
+            border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 2px;
+            background: #00f0ff;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold">MODEL FORGE IDE</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Workspace</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Datasets</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse-cyan"></span>
+<span class="font-mono-label text-[12px] uppercase text-primary-fixed-dim">Cluster: Aether-01 Online</span>
+</div>
+<button class="bg-primary-container text-on-primary px-4 py-2 rounded-lg font-semibold hover:scale-105 active:scale-95 transition-all text-body-md">Deploy Model</button>
+</div>
+</div>
+</header>
+<!-- Main IDE Workspace -->
+<main class="flex-1 pt-16 flex overflow-hidden">
+<!-- Left Pane: Model Architecture -->
+<aside class="w-72 glass-panel border-r border-outline-variant/20 flex flex-col h-full">
+<div class="p-4 border-b border-outline-variant/20 flex items-center justify-between">
+<span class="font-mono-label text-on-surface-variant uppercase text-xs">Model Architecture</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-lg">account_tree</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-2 scrollbar-hide">
+<!-- Architecture Tree -->
+<div class="space-y-1">
+<div class="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer text-primary-fixed-dim">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="material-symbols-outlined text-sm">folder</span>
+<span class="font-mono-code text-[13px]">transformer_block_0</span>
+</div>
+<div class="pl-8 space-y-1">
+<div class="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">layers</span>
+<span class="font-mono-code text-[13px] text-on-surface">multihead_attention</span>
+</div>
+<div class="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">layers</span>
+<span class="font-mono-code text-[13px] text-on-surface">layer_normalization</span>
+</div>
+<div class="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-sm text-on-surface-variant">layers</span>
+<span class="font-mono-code text-[13px] text-on-surface">feed_forward_net</span>
+</div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex items-center gap-2 p-2 rounded hover:bg-white/5 cursor-pointer text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="material-symbols-outlined text-sm">folder</span>
+<span class="font-mono-code text-[13px]">transformer_block_1</span>
+</div>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant/10">
+<p class="font-mono-label text-[10px] text-outline uppercase mb-4">Weight Distribution</p>
+<div class="h-32 w-full relative overflow-hidden bg-surface-container-low rounded border border-outline-variant/20">
+
+<div class="absolute inset-0 flex flex-col justify-end p-2 pointer-events-none">
+<span class="font-mono-code text-[10px] text-primary-container">Mean: 0.002</span>
+<span class="font-mono-code text-[10px] text-primary-container">StdDev: 0.045</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Central Pane: Hyperparameter Tuner -->
+<section class="flex-1 bg-surface flex flex-col h-full overflow-y-auto scrollbar-hide border-r border-outline-variant/20">
+<div class="p-6 border-b border-outline-variant/10 flex items-center justify-between bg-surface-container-lowest/40 sticky top-0 z-10 backdrop-blur-md">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">Hyperparameter Tuner</h1>
+<p class="text-on-surface-variant text-body-md">Fine-tuning configuration for 'Aether-XL-7B'</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline-variant rounded-lg text-on-surface hover:bg-white/5 transition-colors font-mono-label text-sm">Reset Defaults</button>
+<button class="px-4 py-2 bg-primary-container text-on-primary rounded-lg font-bold shadow-[0_0_20px_rgba(0,240,255,0.3)] hover:scale-105 transition-transform font-mono-label text-sm">Execute Run</button>
+</div>
+</div>
+<div class="p-8 space-y-12 max-w-4xl mx-auto w-full">
+<!-- Control Groups -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Group 1 -->
+<div class="glass-panel p-6 rounded-xl space-y-6 glow-hover transition-all">
+<h3 class="font-mono-label text-primary-fixed-dim flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">bolt</span> Optimizer Settings
+                        </h3>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between font-mono-code text-xs">
+<label class="text-on-surface">Learning Rate</label>
+<span class="text-primary-container">5e-5</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="45"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-mono-code text-xs">
+<label class="text-on-surface">Weight Decay</label>
+<span class="text-primary-container">0.012</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="12"/>
+</div>
+</div>
+</div>
+<!-- Group 2 -->
+<div class="glass-panel p-6 rounded-xl space-y-6 glow-hover transition-all">
+<h3 class="font-mono-label text-primary-fixed-dim flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">tune</span> Sampling Logic
+                        </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="font-mono-code text-xs text-on-surface">FP16 Precision</label>
+<div class="w-10 h-5 bg-primary-container rounded-full relative cursor-pointer shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+<div class="absolute right-1 top-1 w-3 h-3 bg-on-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<label class="font-mono-code text-xs text-on-surface">KV-Caching</label>
+<div class="w-10 h-5 bg-surface-container-highest rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-3 h-3 bg-outline rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<label class="font-mono-code text-xs text-on-surface">Gradient Checkpointing</label>
+<div class="w-10 h-5 bg-primary-container rounded-full relative cursor-pointer shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+<div class="absolute right-1 top-1 w-3 h-3 bg-on-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Training Visualization Bento -->
+<div class="grid grid-cols-12 gap-6 h-96">
+<div class="col-span-8 glass-panel rounded-xl overflow-hidden relative">
+<div class="absolute top-4 left-4 z-10">
+<p class="font-mono-label text-[10px] text-primary-fixed-dim bg-primary-container/10 px-2 py-1 border border-primary-container/20 rounded">Loss Convergence Map</p>
+</div>
+
+</div>
+<div class="col-span-4 flex flex-col gap-6">
+<div class="flex-1 glass-panel rounded-xl p-4 flex flex-col justify-center items-center text-center">
+<span class="font-mono-label text-[10px] text-outline uppercase mb-2">Current Batch</span>
+<span class="font-display-lg text-[42px] font-bold text-primary-fixed-dim leading-none">1,024</span>
+<div class="mt-4 w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[65%] shadow-[0_0_10px_rgba(0,240,255,0.6)]"></div>
+</div>
+</div>
+<div class="flex-1 glass-panel rounded-xl p-4 flex flex-col justify-center items-center text-center">
+<span class="font-mono-label text-[10px] text-outline uppercase mb-2">ETA (to 1.0 Loss)</span>
+<span class="font-display-lg text-[42px] font-bold text-on-surface leading-none">02:44:12</span>
+<span class="font-mono-code text-[12px] text-error mt-2">-4.2% Delta</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: Live Training Output -->
+<aside class="w-80 glass-panel flex flex-col h-full">
+<div class="p-4 border-b border-outline-variant/20 flex items-center justify-between">
+<span class="font-mono-label text-on-surface-variant uppercase text-xs">Live Output</span>
+<div class="flex gap-1">
+<span class="w-2 h-2 rounded-full bg-error/50"></span>
+<span class="w-2 h-2 rounded-full bg-secondary/50"></span>
+<span class="w-2 h-2 rounded-full bg-primary-container/50"></span>
+</div>
+</div>
+<div class="flex-1 bg-black/40 p-4 font-mono-code text-[12px] overflow-y-auto scrollbar-hide space-y-2 text-on-surface-variant selection:bg-primary-container selection:text-on-primary">
+<div class="terminal-text text-primary-fixed-dim">[INFO] Initializing distributed backend...</div>
+<div class="terminal-text">[INFO] CUDA visible devices: [0, 1, 2, 3]</div>
+<div class="terminal-text">[DEBUG] Loading checkpoint 'aether_v1.2.bin'</div>
+<div class="terminal-text text-on-surface">[EPOCH 0/10] Step 150/5000</div>
+<div class="terminal-text flex justify-between">
+<span>Loss: 2.1441</span>
+<span class="text-primary-container">|||||||||| 15%</span>
+</div>
+<div class="terminal-text text-on-surface">[EPOCH 0/10] Step 200/5000</div>
+<div class="terminal-text flex justify-between">
+<span>Loss: 2.0832</span>
+<span class="text-primary-container">||||||||||||| 20%</span>
+</div>
+<div class="terminal-text text-primary-fixed-dim">[LOG] Validating at step 200...</div>
+<div class="terminal-text">[LOG] Val Acc: 0.884 | Val Loss: 1.954</div>
+<div class="terminal-text text-on-surface">[EPOCH 0/10] Step 250/5000</div>
+<div class="terminal-text flex justify-between">
+<span>Loss: 1.9921</span>
+<span class="text-primary-container">|||||||||||||||| 25%</span>
+</div>
+<div class="terminal-text text-on-surface-variant opacity-40">... awaiting subsequent stream ...</div>
+<div class="w-2 h-4 bg-primary-container animate-pulse inline-block" id="live-cursor"></div>
+</div>
+<!-- Performance Stats Footer -->
+<div class="p-4 bg-surface-container-highest/20 border-t border-outline-variant/10 space-y-3">
+<div class="flex justify-between items-center">
+<span class="text-[10px] uppercase font-mono-label text-outline">VRAM Usage</span>
+<span class="text-[10px] font-mono-code text-on-surface">32.4 / 40 GB</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full">
+<div class="h-full bg-secondary-container w-[81%] shadow-[0_0_10px_rgba(182,0,248,0.4)]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-[10px] uppercase font-mono-label text-outline">Throughput</span>
+<span class="text-[10px] font-mono-code text-on-surface">2.4k tok/s</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Global Layout Shell Interaction Scripts -->
+<script>
+        // Simulate terminal output updates
+        const terminal = document.querySelector('.terminal-text').parentElement;
+        const cursor = document.getElementById('live-cursor');
+        
+        function appendTerminalLine() {
+            const step = Math.floor(Math.random() * 5000);
+            const loss = (Math.random() * 2 + 0.5).toFixed(4);
+            const progress = Math.floor((step / 5000) * 100);
+            
+            const line = document.createElement('div');
+            line.className = 'terminal-text text-on-surface';
+            line.innerHTML = `[EPOCH 0/10] Step ${step}/5000 <span class="float-right text-primary-container">${loss} Loss</span>`;
+            
+            terminal.insertBefore(line, cursor);
+            terminal.scrollTop = terminal.scrollHeight;
+            
+            if (terminal.children.length > 30) {
+                terminal.removeChild(terminal.firstChild);
+            }
+        }
+
+        setInterval(appendTerminalLine, 3000);
+
+        // Slider interaction feedback
+        const sliders = document.querySelectorAll('input[type=range]');
+        sliders.forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const valueDisplay = e.target.previousElementSibling.querySelector('span');
+                if(valueDisplay) {
+                    // Normalize display value logic
+                    valueDisplay.textContent = (e.target.value / 100).toFixed(3);
+                }
+            });
+        });
+    </script>
+</body></html>

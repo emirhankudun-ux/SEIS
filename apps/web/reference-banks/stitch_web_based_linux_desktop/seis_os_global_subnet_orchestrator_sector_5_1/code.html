@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-cyan: #00f0ff;
+            --secondary-violet: #ce5dff;
+            --surface-dark: #0c0f0f;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .glass-panel:hover {
+            border-color: #00f0ff;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--primary-cyan);
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0; }
+            to { top: 100%; }
+        }
+        .tiling-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .node-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#00dbe9",
+                        "on-tertiary": "#313030",
+                        "inverse-primary": "#006970",
+                        "surface-container-high": "#282a2b",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "on-background": "#e2e2e2",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "surface": "#121414",
+                        "surface-container": "#1e2020",
+                        "on-secondary-container": "#480064",
+                        "primary": "#dbfcff",
+                        "secondary-container": "#ce5dff",
+                        "on-surface-variant": "#b9cacb",
+                        "background": "#121414",
+                        "secondary": "#ebb2ff"
+                    },
+                    spacing: {
+                        "gap-xs": "4px",
+                        "gap-md": "16px",
+                        "margin-page": "32px",
+                        "stroke-thin": "1px",
+                        "gap-lg": "24px",
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="font-headline-md text-headline-md text-primary-container tracking-tighter flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">dns</span>
+            HYPR_OS_01 // SECTOR_5
+        </div>
+<div class="flex items-center gap-gap-md font-code-sm text-code-sm">
+<div class="flex gap-4">
+<span class="text-on-surface-variant opacity-60">SYS_TEMP: 42°C</span>
+<span class="text-on-surface-variant opacity-60">LOAD: 14.2%</span>
+<span class="text-primary-container font-bold border-b-stroke-thick border-primary-container h-8 flex items-center">NET_ORCHESTRATOR</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined hover:bg-surface-container-highest p-1 transition-all cursor-pointer">memory</span>
+<span class="material-symbols-outlined hover:bg-surface-container-highest p-1 transition-all cursor-pointer">terminal</span>
+<span class="material-symbols-outlined hover:bg-surface-container-highest p-1 transition-all cursor-pointer">settings</span>
+<span class="material-symbols-outlined hover:bg-surface-container-highest p-1 transition-all cursor-pointer text-error">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center gap-1 opacity-80 mb-4">
+<div class="w-10 h-10 bg-outline-variant/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container">shield</span>
+</div>
+<span class="text-[8px] font-bold">NODE_01</span>
+</div>
+<nav class="flex flex-col gap-gap-md w-full">
+<button class="w-full flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px] mt-1">DASH</span>
+</button>
+<button class="w-full flex flex-col items-center py-2 bg-secondary-container text-on-secondary-container border-l-stroke-thick border-primary-container transition-all">
+<span class="material-symbols-outlined">lan</span>
+<span class="text-[10px] mt-1 font-bold">NET</span>
+</button>
+<button class="w-full flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="text-[10px] mt-1">SYS</span>
+</button>
+<button class="w-full flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">code</span>
+<span class="text-[10px] mt-1">DEV</span>
+</button>
+<button class="w-full flex flex-col items-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-[10px] mt-1">LOG</span>
+</button>
+</nav>
+<div class="mt-auto pb-4">
+<button class="p-2 border border-primary-container text-primary-container hover:bg-primary-container hover:text-surface-dark transition-all duration-150">
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-20 mt-8 p-gap-md min-h-screen">
+<!-- Header & Breadcrumbs -->
+<div class="mb-gap-md flex justify-between items-end border-b border-outline-variant pb-2">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant/60 flex gap-2">
+<span>ROOT</span>
+<span>/</span>
+<span>SUBNET_MANAGER</span>
+<span>/</span>
+<span class="text-primary-container">SECTOR_5</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary-container uppercase tracking-tight">Global Subnet Orchestrator</h1>
+</div>
+<div class="text-right">
+<div class="text-label-sm font-label-sm text-secondary-container">STATUS: SYNCHRONIZED</div>
+<div class="text-headline-md font-headline-md">10.0.0.0<span class="opacity-30">/8</span></div>
+</div>
+</div>
+<div class="tiling-grid">
+<!-- Network Topology Map (Large Tile) -->
+<section class="col-span-12 lg:col-span-8 flex flex-col h-[500px]">
+<div class="h-6 bg-primary-container flex items-center px-2 justify-between text-surface-dark font-bold text-[11px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">map</span>
+                        TOPOLOGY_MAP.SYS
+                    </div>
+<div>SECURE_LAYER_05</div>
+</div>
+<div class="flex-1 glass-panel relative overflow-hidden group">
+
+<div class="scanline"></div>
+<!-- SVG Overlay for Nodes -->
+<svg class="absolute inset-0 w-full h-full p-10" viewbox="0 0 800 400">
+<!-- Connector Lines -->
+<path d="M400 200 L150 100 M400 200 L150 300 M400 200 L650 100 M400 200 L650 300" opacity="0.4" stroke="#00f0ff" stroke-dasharray="4 4" stroke-width="1"></path>
+<!-- Center Node -->
+<g transform="translate(400, 200)">
+<circle class="node-pulse" fill="#00f0ff" r="8"></circle>
+<circle fill="none" r="12" stroke="#00f0ff" stroke-width="1"></circle>
+<text class="font-label-sm text-[10px]" fill="#00f0ff" text-anchor="middle" y="25">GW_CENTRAL</text>
+</g>
+<!-- Region 1 -->
+<g transform="translate(150, 100)">
+<rect fill="#ce5dff" height="12" width="12" x="-6" y="-6"></rect>
+<text class="font-label-sm text-[10px]" fill="#ce5dff" text-anchor="middle" y="25">US_EAST_01</text>
+<text class="font-label-sm text-[8px] opacity-60" fill="#ce5dff" text-anchor="middle" y="35">10.128.0.1</text>
+</g>
+<!-- Region 2 -->
+<g transform="translate(150, 300)">
+<rect fill="#ce5dff" height="12" width="12" x="-6" y="-6"></rect>
+<text class="font-label-sm text-[10px]" fill="#ce5dff" text-anchor="middle" y="25">EU_WEST_02</text>
+<text class="font-label-sm text-[8px] opacity-60" fill="#ce5dff" text-anchor="middle" y="35">10.142.0.5</text>
+</g>
+<!-- Region 3 -->
+<g transform="translate(650, 100)">
+<rect fill="#ce5dff" height="12" width="12" x="-6" y="-6"></rect>
+<text class="font-label-sm text-[10px]" fill="#ce5dff" text-anchor="middle" y="25">AP_SOUTH_01</text>
+<text class="font-label-sm text-[8px] opacity-60" fill="#ce5dff" text-anchor="middle" y="35">10.150.2.1</text>
+</g>
+<!-- Region 4 -->
+<g transform="translate(650, 300)">
+<rect fill="#ce5dff" height="12" width="12" x="-6" y="-6"></rect>
+<text class="font-label-sm text-[10px]" fill="#ce5dff" text-anchor="middle" y="25">SA_EAST_01</text>
+<text class="font-label-sm text-[8px] opacity-60" fill="#ce5dff" text-anchor="middle" y="35">10.160.0.12</text>
+</g>
+</svg>
+<!-- Legend -->
+<div class="absolute bottom-4 left-4 flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-[9px] opacity-70">CORE GATEWAY</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary-container"></div>
+<span class="text-[9px] opacity-70">REGIONAL HUB</span>
+</div>
+</div>
+<!-- Telemetry Overlay -->
+<div class="absolute top-4 right-4 text-right">
+<div class="text-[10px] text-primary-container font-bold">REAL_TIME_PACKETS</div>
+<div class="flex gap-1 justify-end h-8 items-end">
+<div class="w-1 bg-primary-container/40 h-2"></div>
+<div class="w-1 bg-primary-container/40 h-5"></div>
+<div class="w-1 bg-primary-container/40 h-3"></div>
+<div class="w-1 bg-primary-container h-8"></div>
+<div class="w-1 bg-primary-container/40 h-6"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bridge Config Panel -->
+<section class="col-span-12 lg:col-span-4 flex flex-col h-[500px]">
+<div class="h-6 bg-primary-container flex items-center px-2 justify-between text-surface-dark font-bold text-[11px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">cable</span>
+                        BRIDGE_CONFIG.SYS
+                    </div>
+<div class="material-symbols-outlined text-[14px]">more_vert</div>
+</div>
+<div class="flex-1 glass-panel p-gap-md flex flex-col gap-gap-md">
+<div class="space-y-gap-sm">
+<label class="text-[10px] text-on-surface-variant block uppercase font-bold tracking-widest">Select Origin Region</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant text-code-sm text-on-surface focus:border-primary-container focus:ring-0 focus:outline-none h-10 px-2 font-mono">
+<option>US_EAST_01 (10.128.0.0/16)</option>
+<option>EU_WEST_02 (10.142.0.0/16)</option>
+<option>AP_SOUTH_01 (10.150.0.0/16)</option>
+</select>
+</div>
+<div class="space-y-gap-sm">
+<label class="text-[10px] text-on-surface-variant block uppercase font-bold tracking-widest">Select Destination</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant text-code-sm text-on-surface focus:border-primary-container focus:ring-0 focus:outline-none h-10 px-2 font-mono">
+<option>GW_CENTRAL (10.0.0.1)</option>
+<option>SA_EAST_01 (10.160.0.0/16)</option>
+</select>
+</div>
+<div class="flex-1 flex flex-col gap-2 py-2">
+<div class="flex justify-between text-[10px] font-bold">
+<span>ENCRYPTION_STRENGTH</span>
+<span class="text-primary-container">AES-256-GCM</span>
+</div>
+<div class="h-4 w-full bg-surface-container flex gap-[2px]">
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-outline-variant/30"></div>
+<div class="flex-1 bg-outline-variant/30"></div>
+</div>
+<div class="mt-4 p-3 bg-surface-container-lowest border border-outline-variant text-[11px] leading-relaxed opacity-80">
+<span class="text-primary-container">$</span> sudo bridgectl init --src "US_EAST_01" --dst "GW_CENTRAL" --key-rot "24h"
+                            <br/>
+<span class="text-secondary-container">&gt;&gt; Initializing handshake...</span>
+<br/>
+<span class="text-secondary-container">&gt;&gt; Generating public node keys...</span>
+<br/>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary-container text-surface-dark font-bold flex items-center justify-center gap-2 hover:bg-secondary-container transition-all active:scale-95">
+<span class="material-symbols-outlined">sync_alt</span>
+                        EXECUTE_CROSS_REGION_BRIDGE
+                    </button>
+</div>
+</section>
+<!-- Subnet Mask Table (Wide) -->
+<section class="col-span-12 flex flex-col">
+<div class="h-6 bg-primary-container flex items-center px-2 justify-between text-surface-dark font-bold text-[11px]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">table_rows</span>
+                        SUBNET_INVENTORY.LOG
+                    </div>
+</div>
+<div class="glass-panel overflow-x-auto">
+<table class="w-full border-collapse text-[12px]">
+<thead>
+<tr class="bg-surface-container-high border-b border-outline-variant text-left">
+<th class="p-3 font-bold text-primary-container">SUBNET_ID</th>
+<th class="p-3 font-bold text-primary-container">RANGE_CIDR</th>
+<th class="p-3 font-bold text-primary-container">USAGE</th>
+<th class="p-3 font-bold text-primary-container">AVAILABLE_IPS</th>
+<th class="p-3 font-bold text-primary-container">MTU</th>
+<th class="p-3 font-bold text-primary-container">GATEWAY_IP</th>
+<th class="p-3 font-bold text-primary-container text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold">sn-0af392</td>
+<td class="p-3 opacity-80">10.128.1.0/24</td>
+<td class="p-3">
+<div class="w-24 h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-primary-container" style="width: 75%"></div>
+</div>
+</td>
+<td class="p-3">64 / 254</td>
+<td class="p-3 opacity-60">1500</td>
+<td class="p-3 font-mono opacity-80">10.128.1.1</td>
+<td class="p-3 text-right">
+<button class="px-2 py-1 border border-primary-container text-[10px] text-primary-container hover:bg-primary-container hover:text-surface-dark transition-all">EDIT</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold">sn-92b110</td>
+<td class="p-3 opacity-80">10.128.2.0/24</td>
+<td class="p-3">
+<div class="w-24 h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-secondary-container" style="width: 15%"></div>
+</div>
+</td>
+<td class="p-3">212 / 254</td>
+<td class="p-3 opacity-60">9000 (Jumbo)</td>
+<td class="p-3 font-mono opacity-80">10.128.2.1</td>
+<td class="p-3 text-right">
+<button class="px-2 py-1 border border-primary-container text-[10px] text-primary-container hover:bg-primary-container hover:text-surface-dark transition-all">EDIT</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors bg-secondary-container/5">
+<td class="p-3 font-bold text-secondary-container">sn-6f2991</td>
+<td class="p-3 opacity-80">10.142.10.0/24</td>
+<td class="p-3">
+<div class="w-24 h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-error" style="width: 95%"></div>
+</div>
+</td>
+<td class="p-3 text-error">4 / 254</td>
+<td class="p-3 opacity-60">1500</td>
+<td class="p-3 font-mono opacity-80">10.142.10.1</td>
+<td class="p-3 text-right">
+<button class="px-2 py-1 border border-secondary-container text-[10px] text-secondary-container hover:bg-secondary-container hover:text-surface-dark transition-all">EXPAND</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold">sn-33a002</td>
+<td class="p-3 opacity-80">10.150.0.0/24</td>
+<td class="p-3">
+<div class="w-24 h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-primary-container" style="width: 40%"></div>
+</div>
+</td>
+<td class="p-3">152 / 254</td>
+<td class="p-3 opacity-60">1500</td>
+<td class="p-3 font-mono opacity-80">10.150.0.1</td>
+<td class="p-3 text-right">
+<button class="px-2 py-1 border border-primary-container text-[10px] text-primary-container hover:bg-primary-container hover:text-surface-dark transition-all">EDIT</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- Global Floating Action Button -->
+<button class="fixed bottom-gap-md right-gap-md w-14 h-14 bg-primary-container text-surface-dark flex items-center justify-center shadow-[0_0_15px_rgba(0,240,255,0.4)] hover:shadow-[0_0_25px_rgba(0,240,255,0.6)] hover:bg-secondary-container transition-all active:scale-90 group z-50">
+<span class="material-symbols-outlined text-[32px] group-hover:rotate-90 transition-transform">add</span>
+</button>
+<!-- Terminal Footer Status -->
+<footer class="fixed bottom-0 w-full h-6 bg-surface-container-lowest border-t border-outline-variant flex items-center px-4 justify-between text-[10px] font-bold z-50">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span> ORCHESTRATOR ACTIVE</span>
+<span class="text-on-surface-variant opacity-60">NODE: 0xFF92A1</span>
+</div>
+<div class="flex gap-4 items-center">
+<span class="text-primary-container">SESSION: root@hypr_os_v1.2</span>
+<span class="material-symbols-outlined text-[14px]">notifications_active</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Randomize telemetry bar heights
+        setInterval(() => {
+            const bars = document.querySelectorAll('.tiling-grid section:first-child .text-primary-container + div div');
+            bars.forEach(bar => {
+                const height = Math.floor(Math.random() * 24) + 4;
+                bar.style.height = `${height}px`;
+            });
+        }, 800);
+
+        // Micro-interaction: Update uptime counter in UI
+        let startTime = Date.now();
+        function updateUptime() {
+            const elapsed = Date.now() - startTime;
+            const h = Math.floor(elapsed / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((elapsed % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((elapsed % 60000) / 1000).toString().padStart(2, '0');
+            // Normally we'd update a specific element, but as the component is generated from JSON...
+            // Let's just log or hook into a dynamic element if we had one.
+        }
+        setInterval(updateUptime, 1000);
+    </script>
+</body></html>

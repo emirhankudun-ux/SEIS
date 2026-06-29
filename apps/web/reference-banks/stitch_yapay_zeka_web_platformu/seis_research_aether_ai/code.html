@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS Research - Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-container": "#006970",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520072",
+                        "inverse-on-surface": "#2e3134",
+                        "on-surface": "#e1e2e7",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1d2023",
+                        "background": "#020408",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "tertiary-container": "#d9d9d9",
+                        "secondary-container": "#b600f8",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-container": "#5d5f5f",
+                        "outline-variant": "#3b494b",
+                        "surface-container-high": "#282a2e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-tertiary": "#2f3131",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-fixed": "#002022",
+                        "inverse-primary": "#006970",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#323539",
+                        "primary": "#dbfcff",
+                        "surface-variant": "#323539",
+                        "on-primary": "#00363a",
+                        "surface-container-low": "#191c1f",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#111417",
+                        "surface-container-lowest": "#0c0e12",
+                        "primary-container": "#00f0ff",
+                        "surface": "#111417",
+                        "secondary": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-secondary-fixed": "#320047",
+                        "tertiary": "#f5f5f5",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e1e2e7",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-tint": "#00dbe9",
+                        "surface-bright": "#37393d",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "inverse-surface": "#e1e2e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-gap": "120px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(to bottom right, rgba(0, 240, 255, 0.2), transparent) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 240, 255, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+        .pulse-dot {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        .neural-manifold-container {
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Header Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim">AETHER AI</div>
+<nav class="hidden md:flex items-center gap-unit-8 space-x-8">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Pricing</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium font-mono-label text-mono-label hover:text-primary-fixed transition-all active:scale-95">Sign In</button>
+<button class="bg-primary-container text-on-primary text-mono-label font-bold px-6 py-2 rounded-lg transition-all hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] active:scale-95">Get Started</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-24 overflow-hidden">
+
+<div class="relative z-10 max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-gutter items-center">
+<div class="space-y-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 glass-panel rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest">Research Frontier v4.0</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-white leading-tight">Decoding the <br/><span class="text-primary-fixed-dim">Neural Manifold</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                        Aether AI Research is pioneering the transition from narrow intelligence to generalized structural reasoning through quantum-enhanced neural architectures.
+                    </p>
+<div class="flex gap-6">
+<button class="px-8 py-4 bg-primary-container text-on-primary font-bold rounded-lg flex items-center gap-2 glow-hover transition-all group">
+                            Explore Labs
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="px-8 py-4 glass-panel border-primary-fixed-dim/20 text-primary-fixed-dim font-bold rounded-lg hover:bg-primary-fixed-dim/5 transition-all">
+                            View Publications
+                        </button>
+</div>
+</div>
+<div class="hidden lg:flex justify-end">
+<div class="glass-panel p-8 rounded-xl w-full max-w-sm space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-mono-label text-xs text-outline mb-1 uppercase tracking-tighter">Current Epoch</div>
+<div class="font-headline-md text-white">8,492,021</div>
+</div>
+<div class="text-primary-fixed-dim">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-3/4 shadow-[0_0_10px_#00f0ff]"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded border border-outline-variant/10">
+<div class="font-mono-label text-[10px] text-outline uppercase">Stability</div>
+<div class="text-primary-fixed font-bold">99.98%</div>
+</div>
+<div class="p-4 bg-surface-container-low rounded border border-outline-variant/10">
+<div class="font-mono-label text-[10px] text-outline uppercase">Latency</div>
+<div class="text-primary-fixed font-bold">4.2ms</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Experiments Bento Grid -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-desktop">
+<div class="mb-16">
+<h2 class="font-headline-md text-headline-md text-white mb-4">Active Experiments</h2>
+<p class="text-on-surface-variant font-body-md max-w-2xl">Ongoing cross-disciplinary inquiries into the nature of emergent intelligence and the bridging of silicon-to-quantum compute layers.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter h-[800px]">
+<!-- Main Feature -->
+<div class="md:col-span-2 glass-panel rounded-xl p-10 flex flex-col justify-end group overflow-hidden relative glow-hover transition-all">
+<div class="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity">
+<div class="w-full h-full" data-alt="A macro cinematic visualization of quantum neural pathways glowing in electric cyan against a deep obsidian background. Intricate fiber-optic like structures intertwine with crystalline geometry, creating a sense of immense complexity and microscopic precision. The lighting is focused and dramatic, highlighting sharp edges and translucent surfaces." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuABtcJU1MrAMgP5iIkELenmP29CfAoN278ELTznc3PmlwtokksrOcHwVaGkymebEn7C7ptQQvcwq3IdGppWQqwu5nHetBFyQdn0G85vOTr_c1HPzo_98ul76wbN0-n1viBAWhdzL7DeAxzpaV1wkF8XeNW9VJ-og1GU6xRhf0WYtNfzBgYD6Fr1cI7TAVWsEHYPfj_Kgk-nF0BECOt7-Ks5cIzeHwXybpDj90g6PhIfdu0qnmaRd84FHDbHiP-JGmrnczw45zV1Ag')"></div>
+</div>
+<div class="relative z-10">
+<div class="font-mono-label text-primary-fixed-dim text-xs uppercase mb-4 tracking-widest flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary-fixed-dim rounded-full"></span>
+                            Flagship Program
+                        </div>
+<h3 class="text-4xl font-bold text-white mb-6">Quantum-Neural Bridging</h3>
+<p class="text-on-surface-variant text-body-lg max-w-lg mb-8">Implementing non-linear feedback loops between classical neural nets and superconducting qubit arrays to accelerate recursive self-improvement.</p>
+<button class="flex items-center gap-2 text-primary-fixed font-bold hover:gap-4 transition-all">
+                            Review Technical Specs <span class="material-symbols-outlined">trending_flat</span>
+</button>
+</div>
+</div>
+<!-- Secondary 1 -->
+<div class="glass-panel rounded-xl p-8 flex flex-col justify-between glow-hover transition-all">
+<div class="w-12 h-12 rounded bg-primary-fixed-dim/10 flex items-center justify-center text-primary-fixed-dim mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">sync_alt</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-white mb-3">Multi-Modal Sync</h3>
+<p class="text-on-surface-variant font-body-md">Aligning latent spaces across sensory domains to create truly cohesive perceptual models.</p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="font-mono-label text-xs text-outline">v2.1 Beta</span>
+<span class="material-symbols-outlined text-outline">arrow_outward</span>
+</div>
+</div>
+<!-- Secondary 2 -->
+<div class="glass-panel rounded-xl p-8 flex flex-col justify-between glow-hover transition-all">
+<div class="w-12 h-12 rounded bg-primary-fixed-dim/10 flex items-center justify-center text-primary-fixed-dim mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychology</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold text-white mb-3">Synaptic Pruning</h3>
+<p class="text-on-surface-variant font-body-md">Dynamic architectural reduction during inference to minimize energy footprint for edge-compute nodes.</p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10 flex items-center justify-between">
+<span class="font-mono-label text-xs text-outline">Optimization Lab</span>
+<span class="material-symbols-outlined text-outline">arrow_outward</span>
+</div>
+</div>
+<!-- Secondary 3 (Long) -->
+<div class="md:col-span-2 glass-panel rounded-xl p-8 flex items-center justify-between glow-hover transition-all overflow-hidden relative">
+<div class="flex-1 pr-12 relative z-10">
+<h3 class="text-2xl font-bold text-white mb-3">Temporal Recursive Loops</h3>
+<p class="text-on-surface-variant font-body-md max-w-md">Our research into long-context memory architecture, utilizing sliding window attention with recursive state persistence.</p>
+<div class="flex gap-4 mt-6">
+<span class="px-2 py-1 bg-surface-container-highest rounded font-mono-label text-[10px] text-on-surface">MEMORY</span>
+<span class="px-2 py-1 bg-surface-container-highest rounded font-mono-label text-[10px] text-on-surface">SCALING</span>
+</div>
+</div>
+<div class="w-1/3 h-full absolute right-0 top-0 opacity-40">
+<div class="w-full h-full" data-alt="A futuristic laboratory environment with sleek, obsidian-black workstations and transparent glass interfaces glowing with cyan data streams. The lighting is dim, emphasizing the sharp, neon-like accents of the technology. Soft blue ambient light reflects off metallic surfaces, creating a high-tech, focused atmosphere for AI research." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6mh6UmQz-O3V36Ya0uT3Ftv0xjpL_yS3qeZCbKgV3e8GHSVTdMw0Of_X0McoxF80GNNvlkmG89BzbuPxYVpuBpnaLoLFf8F0yC7-PumJzxIVEXZIrOoRjpBHuWLkbZVE1Zut0V5xZsweWo8ic7SXL2-WvLU86vRU2q-9nepe0DqOaJGxGw7hG6XsAKL_xadslHVrvGH1rzteixSP4vTxZ8xQyc2BsAKTCuBjjSnEQAcbRduzjToVAR_6FlD4o-gsgO64IkED3Vw')"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Publications Section -->
+<section class="py-section-gap bg-surface-container-lowest/30">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div class="max-w-xl">
+<h2 class="font-headline-md text-headline-md text-white mb-4">Publications</h2>
+<p class="text-on-surface-variant font-body-md">Peer-reviewed literature documenting our breakthroughs in neural topology, ethical safety frameworks, and hardware-software co-design.</p>
+</div>
+<button class="font-mono-label text-primary-fixed-dim hover:underline flex items-center gap-2 mb-2">
+                        Browse Full Archive <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+<div class="space-y-0">
+<!-- Publication Item 1 -->
+<div class="group py-8 border-b border-outline-variant/20 hover:bg-surface-container-high/20 transition-all px-4 -mx-4 cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="font-mono-label text-xs text-primary-fixed-dim mb-2 uppercase tracking-tighter">November 2024 • Nature Machine Intelligence</div>
+<h3 class="text-xl font-bold text-white group-hover:text-primary-fixed transition-colors">Non-Euclidean Latent Space Geometry in Large Language Models</h3>
+<p class="text-on-surface-variant font-body-md mt-2">Dr. Elena Vos, et al.</p>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">description</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">download</span>
+</div>
+</div>
+</div>
+<!-- Publication Item 2 -->
+<div class="group py-8 border-b border-outline-variant/20 hover:bg-surface-container-high/20 transition-all px-4 -mx-4 cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="font-mono-label text-xs text-primary-fixed-dim mb-2 uppercase tracking-tighter">September 2024 • NeurIPS</div>
+<h3 class="text-xl font-bold text-white group-hover:text-primary-fixed transition-colors">Zero-Shot Generalization in Quantum-Augmented Perceptrons</h3>
+<p class="text-on-surface-variant font-body-md mt-2">Prof. Julian Thorne, et al.</p>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">description</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">download</span>
+</div>
+</div>
+</div>
+<!-- Publication Item 3 -->
+<div class="group py-8 border-b border-outline-variant/20 hover:bg-surface-container-high/20 transition-all px-4 -mx-4 cursor-pointer">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex-1">
+<div class="font-mono-label text-xs text-primary-fixed-dim mb-2 uppercase tracking-tighter">August 2024 • IEEE Xplore</div>
+<h3 class="text-xl font-bold text-white group-hover:text-primary-fixed transition-colors">Dynamic Weight Precision for Sub-Nanosecond Inference</h3>
+<p class="text-on-surface-variant font-body-md mt-2">The Hardware Synthesis Team</p>
+</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">description</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary-container transition-colors">download</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-section-gap relative overflow-hidden">
+
+<div class="relative z-10 max-w-4xl mx-auto px-margin-mobile text-center">
+<div class="glass-panel p-16 rounded-2xl border border-primary-fixed-dim/30 shadow-[0_0_80px_rgba(0,240,255,0.1)]">
+<h2 class="font-display-lg text-4xl md:text-5xl text-white mb-8">Build the Future of Intelligence</h2>
+<p class="text-on-surface-variant text-body-lg mb-12 max-w-2xl mx-auto">
+                        We are looking for exceptional minds in theoretical physics, computational neuroscience, and distributed systems. Join the lab and define the next epoch.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary-container text-on-primary font-bold px-12 py-4 rounded-lg glow-hover transition-all">View Open Roles</button>
+<button class="glass-panel text-white font-bold px-12 py-4 rounded-lg hover:bg-white/5 transition-all">Contact the Lab</button>
+</div>
+<div class="mt-12 flex justify-center items-center gap-12 grayscale opacity-40">
+<span class="font-mono-label text-lg">MIT</span>
+<span class="font-mono-label text-lg">Stanford</span>
+<span class="font-mono-label text-lg">CERN</span>
+<span class="font-mono-label text-lg">DeepMind</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest py-section-gap border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<div class="font-display-lg text-2xl font-extrabold tracking-tighter text-primary-fixed-dim mb-6">AETHER AI</div>
+<p class="text-on-tertiary-fixed-variant font-mono-label text-sm mb-8">Advancing the horizon of computational research for global benefit.</p>
+<p class="text-on-tertiary-fixed-variant font-mono-label text-xs">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 font-mono-label">Research</h4>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">System Status</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">API Reference</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white font-bold mb-6 font-mono-label">Trust</h4>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">Security</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors font-mono-label" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="col-span-2 flex flex-col items-end">
+<div class="flex gap-4 mb-6">
+<a class="w-10 h-10 glass-panel flex items-center justify-center rounded hover:border-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-on-surface">public</span>
+</a>
+<a class="w-10 h-10 glass-panel flex items-center justify-center rounded hover:border-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-on-surface">terminal</span>
+</a>
+</div>
+<div class="glass-panel p-4 rounded border-primary-fixed-dim/10">
+<div class="font-mono-label text-[10px] text-outline mb-1 uppercase">Node Connection</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-full pulse-dot"></span>
+<span class="text-xs font-mono-label text-primary-fixed">Active: research-cluster-01</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Subtle interaction: Parallax effect for hero background
+        document.addEventListener('mousemove', (e) => {
+            const manifold = document.querySelector('threejs-scene');
+            if (manifold) {
+                const moveX = (e.clientX - window.innerWidth / 2) / 50;
+                const moveY = (e.clientY - window.innerHeight / 2) / 50;
+                manifold.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body></html>

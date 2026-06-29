@@ -22,6 +22,11 @@
       "status": "browser-linux-replica-foundation"
     },
     {
+      "path": "/seis-linux-replica-public-demo.html",
+      "sections": ["public-demo-entry", "walkthrough", "evidence", "safety-boundaries"],
+      "status": "public-demo-review-entry"
+    },
+    {
       "path": "/mythic-gacha.html",
       "sections": ["ritual", "draw-system", "bestiary", "indexeddb"],
       "status": "playable-static-gacha"

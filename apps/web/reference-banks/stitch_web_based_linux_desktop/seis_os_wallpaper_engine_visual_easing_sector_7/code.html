@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SYSTEM_STYLE :: WALLPAPER_ENGINE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#dbfcff",
+                        "on-tertiary": "#313030",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary": "#00363a",
+                        "secondary-container": "#ce5dff",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#333535",
+                        "surface": "#121414",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-secondary": "#520071",
+                        "on-secondary-fixed": "#320047",
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-surface": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "secondary-fixed": "#f8d8ff",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-dim": "#121414",
+                        "on-secondary-container": "#480064",
+                        "on-tertiary-container": "#605e5e",
+                        "on-primary-container": "#006970",
+                        "primary-container": "#00f0ff",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "outline": "#849495",
+                        "on-background": "#e2e2e2",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1e2020",
+                        "inverse-surface": "#e2e2e2",
+                        "background": "#121414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-primary-fixed": "#002022",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-container-low": "#1a1c1c",
+                        "on-error": "#690005",
+                        "inverse-primary": "#006970",
+                        "secondary": "#ebb2ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px",
+                        "stroke-thick": "2px",
+                        "gap-xs": "4px",
+                        "stroke-thin": "1px",
+                        "gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; overflow-x: hidden; }
+        .glass-panel { background: rgba(12, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-panel-focus { border-color: #00f0ff; }
+        .glass-panel-header { background: #00f0ff; color: #0a0a0a; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 16px; width: 8px; background: #00f0ff; cursor: pointer; margin-top: -6px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 4px; cursor: pointer; background: #333535; border: 1px solid #1a1c1c;
+        }
+        input[type=range]:focus { outline: none; }
+        
+        /* Bezier Grid */
+        .bezier-grid {
+            background-image: 
+                linear-gradient(to right, #333333 1px, transparent 1px),
+                linear-gradient(to bottom, #333333 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="font-body-md antialiased h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gutter h-10 sticky z-50">
+<div class="flex items-center gap-gap-md px-margin-page">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="flex gap-gap-md ml-gap-lg">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-sm px-margin-page text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="memory">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200" data-icon="settings">settings</span>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col pt-gap-md pb-gap-md overflow-hidden group">
+<div class="px-4 py-3 mb-gap-lg flex items-center gap-gap-md w-64">
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A minimalist tech avatar, cyberpunk aesthetic, glowing cyan accents on a dark background, representing a root user in a highly advanced operating system environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALIN91R152S8YdQ_GtVm8LUlUALsi0JVHVmIcfal_rdXs49TcEDtE7_5aBLeGZYc9HoUwKmFYovHyQ1zdsyukcO5VTOeHr3t5zy8ia-xs86dxFMUksouXwi_Y4WoY5gNWKesgTBlQnyOczuUbtfJrUrxH6_yTPmFM2gO2tAwFCfHJpcGlWTp2gtwr__1qQgPBEz1itc2O3MtsABkzuesdp34TgXJqcCcsao_D5SRgyrvKug9TYnPmaN952g0ZdkiaZYtIfYSOiTdku"/>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-col">
+<div class="font-label-caps text-secondary-fixed font-label-sm whitespace-nowrap">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant whitespace-nowrap">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-gap-xs">
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8" data-icon="folder_open">folder_open</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8 fill" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8" data-icon="cloud_queue">cloud_queue</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer w-64" href="#">
+<span class="material-symbols-outlined w-8" data-icon="list_alt">list_alt</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-gap-xs pb-gap-md">
+<button class="bg-primary text-[#0a0a0a] hover:bg-secondary border-none px-4 py-2 mx-4 font-label-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-[calc(100%-32px)] whitespace-nowrap">NEW_SESSION</button>
+<div class="flex items-center px-4 py-3 cursor-pointer w-64 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-8" data-icon="power_settings_new">power_settings_new</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">POWER</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer w-64 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-8" data-icon="lock">lock</span>
+<span class="font-label-caps text-label-caps font-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 ml-gap-sm whitespace-nowrap">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-20 p-margin-page overflow-y-auto bg-background">
+<header class="mb-gap-lg">
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase tracking-tight">SYSTEM_STYLE :: WALLPAPER_ENGINE</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-2">SECTOR 7 // VISUAL EASING &amp; PROCEDURAL ENVIRONMENT CONTROL</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gap-md">
+<!-- Active Preview Panel (Takes up bulk of space) -->
+<div class="md:col-span-8 glass-panel flex flex-col h-[600px]">
+<div class="glass-panel-header h-6 px-3 flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold">PREVIEW_RENDERER.GLSL</span>
+<div class="flex gap-2">
+<div class="w-3 h-3 bg-[#0a0a0a] rounded-full opacity-50"></div>
+<div class="w-3 h-3 bg-[#0a0a0a] rounded-full opacity-50"></div>
+<div class="w-3 h-3 bg-[#0a0a0a] rounded-full"></div>
+</div>
+</div>
+<div class="flex-1 relative bg-surface-container-lowest overflow-hidden">
+<!-- Simulated Shader Render Area -->
+<div class="absolute inset-0 bg-cover bg-center opacity-80 mix-blend-screen" data-alt="A procedurally generated abstract wallpaper showcasing a cybernetic fusion of deep obsidian, vibrant purple, and intense cyan gradients. Smooth, flowing waveforms intersect with harsh, geometric noise patterns, creating a dynamic, high-tech aesthetic suitable for a modern tiling window manager." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxpByvdLmOAAcLKd6EWwSPhkev7l2v7RfXRww3LKbH5TYW7q5iyccf0kzcbarEynpqzHXziaWXuoH4HJJssj-qTTRTJM7h7PiGk1mTAdwi4IzqrL4Q_3r8ipuQyF41iza9eIyDsaDjNbfihxh0_LfO_Bnxh1cSehHJP48XWl9hDhyIeUE5QmnqTOW7ilHLhDF6V7zM9d-jEMv1IjGopI8ZFtW4xY79RCmwFVPQxmpdMJhanaj01C7Co0LdtUowtLWZ9v0Bqa5RdWGb')"></div>
+<!-- Overlay Stats -->
+<div class="absolute top-4 left-4 font-code-sm text-code-sm text-primary-fixed bg-surface/50 p-2 border border-outline-variant/30 backdrop-blur-md">
+<div>FPS: 144</div>
+<div>RES: 3840x2160</div>
+<div>SHADER: VOLUMETRIC_PLASMA</div>
+</div>
+</div>
+</div>
+<!-- Control Panels -->
+<div class="md:col-span-4 flex flex-col gap-gap-md">
+<!-- Engine Parameters -->
+<div class="glass-panel glass-panel-focus flex flex-col">
+<div class="glass-panel-header h-6 px-3 flex items-center">
+<span class="font-label-sm text-label-sm font-bold">PROCEDURAL_PARAMS</span>
+</div>
+<div class="p-4 flex flex-col gap-gap-lg">
+<!-- Slider 1 -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-2">
+<span class="text-on-surface">FLOW_VELOCITY</span>
+<span class="text-primary-fixed">0.84</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="84"/>
+</div>
+<!-- Slider 2 -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-2">
+<span class="text-on-surface">NOISE_GRAIN</span>
+<span class="text-primary-fixed">0.32</span>
+</div>
+<input class="w-full" max="100" min="0" type="range" value="32"/>
+</div>
+<!-- Slider 3 -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-2">
+<span class="text-on-surface">COLOR_SHIFT (HUE)</span>
+<span class="text-secondary-fixed">240°</span>
+</div>
+<input class="w-full" max="360" min="0" type="range" value="240"/>
+</div>
+<div class="flex gap-2 mt-2">
+<button class="flex-1 bg-transparent border border-primary-fixed text-primary-fixed font-label-sm py-2 hover:bg-primary/10 transition-colors">RESET</button>
+<button class="flex-1 bg-primary text-[#0a0a0a] font-label-sm py-2 hover:bg-secondary transition-colors">APPLY_SYS</button>
+</div>
+</div>
+</div>
+<!-- Easing Curve Editor -->
+<div class="glass-panel flex flex-col flex-1">
+<div class="glass-panel-header h-6 px-3 flex items-center">
+<span class="font-label-sm text-label-sm font-bold">ANIMATION_EASING (CUBIC_BEZIER)</span>
+</div>
+<div class="p-4 flex flex-col h-full">
+<div class="font-code-sm text-code-sm text-on-surface-variant mb-4">TARGET: SYSTEM_WIDE_TRANSITIONS</div>
+<!-- Simple visual rep of a curve editor -->
+<div class="flex-1 bezier-grid border border-outline-variant relative mb-4 flex items-center justify-center p-4">
+<svg class="overflow-visible" height="100%" preserveaspectratio="none" viewbox="0 0 100 100" width="100%">
+<!-- Axes -->
+<line stroke="#333333" stroke-width="1" x1="0" x2="100" y1="100" y2="100"></line>
+<line stroke="#333333" stroke-width="1" x1="0" x2="0" y1="0" y2="100"></line>
+<!-- The Curve -->
+<path d="M 0 100 C 25 100, 25 0, 100 0" fill="none" stroke="#00f0ff" stroke-width="2"></path>
+<!-- Control Points -->
+<line stroke="#ce5dff" stroke-dasharray="2,2" stroke-width="1" x1="0" x2="25" y1="100" y2="100"></line>
+<line stroke="#ce5dff" stroke-dasharray="2,2" stroke-width="1" x1="100" x2="25" y1="0" y2="0"></line>
+<circle cx="25" cy="100" fill="#ce5dff" r="3"></circle>
+<circle cx="25" cy="0" fill="#ce5dff" r="3"></circle>
+<circle cx="0" cy="100" fill="#00f0ff" r="3"></circle>
+<circle cx="100" cy="0" fill="#00f0ff" r="3"></circle>
+</svg>
+</div>
+<div class="font-code-sm text-code-sm flex justify-between bg-surface-variant/30 p-2 border border-outline-variant/50">
+<span>VAL: cubic-bezier(0.25, 1, 0.25, 1)</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer hover:text-primary-fixed" data-icon="content_copy">content_copy</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Preset Gallery -->
+<div class="mt-gap-md glass-panel flex flex-col">
+<div class="glass-panel-header h-6 px-3 flex items-center">
+<span class="font-label-sm text-label-sm font-bold">SHADER_GALLERY</span>
+</div>
+<div class="p-4 grid grid-cols-2 md:grid-cols-4 gap-gap-md">
+<div class="border border-primary-fixed p-1 cursor-pointer relative group">
+<div class="h-24 w-full bg-cover bg-center" data-alt="A dark, abstract minimalist procedurally generated texture. Subtle waves of deep violet intersecting with sharp black lines, giving a sense of depth and structured chaos." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA1YSzpCv6q8Cw8gXF0m9pSHe_7CgngK5Na8j0x4kVpb8H3XvYUQQe33Ypxcgf6gp07IdO0LwNjDo9OKxihppiGG0MMjc3B_E3rG6kYdcifRiazgWkWNIn64-j3wPYFc58JfL8XSacOa8C3eOo2ymHWwDwrT44w03T2qBBBmIXmUygMBmDUzz1EuvCaTesj5TdUQGoGF-y0h1j8D3te0qddm1lmWfFsiLDh0U0ZHeaYVWY9Uxa2bme_dXruOBa3jUXKyMhOP2AlcA8M')"></div>
+<div class="absolute bottom-1 left-1 bg-[#0a0a0a]/80 px-2 py-1 font-code-sm text-[10px] text-primary-fixed border border-primary-fixed/50">VOID_WAVE</div>
+<div class="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="border border-outline-variant p-1 cursor-pointer relative group hover:border-primary-fixed/50 transition-colors">
+<div class="h-24 w-full bg-cover bg-center" data-alt="A brutalist cybernetic grid pattern, glowing faintly in cyan against an absolute black background. The perspective is slightly angled, suggesting a digital landscape." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuACrn1J5qOOx8LcIdQ9lzketwZFcd493cpYwefiRCMn-ysdqnU8GV7itUd6SB1FNAg93kEjuSjtnoCQOEOUrhAe8aWQtqaKspAwMElp0L3WtDhsgzz_SZ223Gc3kIj16BxVcXkIq-2iQPggOCPIg2jUt1CbrZL8kkuU4iwMT7GitO6A2gm7v4iwG_Lc5IB_LVw7KltsErDmL4J7gGM23PegSNNnjQz4y4lykkNiHsCK7ONj_dbkaI5g44jZnamXAry-my9XrDzwoMCa')"></div>
+<div class="absolute bottom-1 left-1 bg-[#0a0a0a]/80 px-2 py-1 font-code-sm text-[10px] text-on-surface-variant border border-outline-variant/50">NEON_GRID</div>
+</div>
+<div class="border border-outline-variant p-1 cursor-pointer relative group hover:border-primary-fixed/50 transition-colors">
+<div class="h-24 w-full bg-cover bg-center" data-alt="A chaotic, static-like shader effect. High frequency noise mixing stark whites, deep blacks, and glitchy purple artifacts, resembling a corrupted data stream." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA-lZBmH_uQ0KUpf57gSeKSzNSEYnMHl_LvWZtuAotxcK5tHqX9mp6wmvnIKaTN2AMzalzfYNoZDg0yGOH2_dqLpSLAjnmSpVC3FSqIr1G0hai0jte1hUWukWld8Amjg1-QUCyV35IB_t7u4lFMFXJ0sRmkuMd3CZ8XXVJp4EKDTqTCv19o4cc5ewcBM2Hvg3xh7lvaF3bgJVmcp_ZKkNDJ6fiVFHnGwmJ-_YQbyTRC52BRftPNZUOCJBEORzf_mpCy_dPziVaAID2Y')"></div>
+<div class="absolute bottom-1 left-1 bg-[#0a0a0a]/80 px-2 py-1 font-code-sm text-[10px] text-on-surface-variant border border-outline-variant/50">DATA_CORRUPTION</div>
+</div>
+<div class="border border-outline-variant p-1 cursor-pointer relative group hover:border-primary-fixed/50 transition-colors flex items-center justify-center bg-surface-variant/20">
+<span class="material-symbols-outlined text-[32px] text-outline" data-icon="add">add</span>
+<div class="absolute bottom-1 left-1 px-2 py-1 font-code-sm text-[10px] text-outline">IMPORT_GLSL</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

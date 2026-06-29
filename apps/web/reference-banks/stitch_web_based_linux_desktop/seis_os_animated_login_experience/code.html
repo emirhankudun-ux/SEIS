@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-container": "#ff516a",
+                        "primary-fixed": "#f0dbff",
+                        "on-secondary-fixed-variant": "#842500",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "surface-container-high": "#282a2a",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e1e3e2",
+                        "on-tertiary-container": "#5b0017",
+                        "surface-container": "#1d2020",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-surface-variant": "#cfc2d6",
+                        "outline": "#988d9f",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-surface": "#e1e3e2",
+                        "surface-bright": "#373a3a",
+                        "on-tertiary-fixed": "#40000d",
+                        "secondary-container": "#fc5b1f",
+                        "on-background": "#e1e3e2",
+                        "surface-variant": "#323535",
+                        "background": "#111414",
+                        "surface-container-low": "#191c1c",
+                        "on-primary": "#490080",
+                        "on-primary-container": "#400071",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#323535",
+                        "tertiary": "#ffb2b7",
+                        "surface": "#111414",
+                        "on-tertiary": "#67001b",
+                        "surface-tint": "#ddb7ff",
+                        "on-secondary-fixed": "#390b00",
+                        "secondary": "#ffb59e",
+                        "inverse-on-surface": "#2e3131",
+                        "on-primary-fixed": "#2c0051",
+                        "error": "#ffb4ab",
+                        "primary-container": "#b76dff",
+                        "primary": "#ddb7ff",
+                        "outline-variant": "#4d4354",
+                        "inverse-primary": "#842bd2",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "on-secondary": "#5d1800",
+                        "on-secondary-container": "#521400",
+                        "surface-dim": "#111414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-padding": "32px",
+                        "gutter": "24px",
+                        "safe-area": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "display": ["Geist"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(48px);
+            -webkit-backdrop-filter: blur(48px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 100px 10px rgba(168, 85, 247, 0.1);
+            transition: transform 0.1s ease-out, opacity 0.5s ease-out;
+            transform-style: preserve-3d;
+        }
+        
+        .glass-panel.unlocking {
+            opacity: 0;
+            transform: scale(0.95) translateZ(-50px) !important;
+            pointer-events: none;
+        }
+
+        .input-glow:focus {
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.8);
+            border-color: #d8b4fe;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.3); }
+            50% { box-shadow: 0 0 50px rgba(168, 85, 247, 0.6); }
+        }
+
+        .avatar-glow {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: #490080;
+            border-right-color: #490080;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .is-loading .arrow-icon {
+            opacity: 0;
+        }
+
+        .is-loading .loading-spinner {
+            display: block;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .glass-panel { transition: none; transform: none !important; }
+            .avatar-glow { animation: none; }
+            .loading-spinner { animation-duration: 1.5s; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen w-screen overflow-hidden relative font-body-md">
+<!-- Background Shader (Blurred) -->
+<div class="absolute inset-0 w-full h-full filter blur-[10px] scale-110 -z-10 transition-opacity duration-1000" id="bg-shader">
+
+</div>
+<!-- Top System Bar -->
+<header class="flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50 bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10 transition-opacity duration-500" id="sys-header">
+<div class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="schedule">schedule</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="h-full w-full flex items-center justify-center relative z-10 pt-12 perspective-[1000px]" id="main-container">
+<!-- Login Card -->
+<div class="glass-panel rounded-[24px] p-container-padding w-full max-w-md flex flex-col items-center" id="login-card">
+<!-- Avatar -->
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-primary/50 mb-unit relative avatar-glow transform translate-z-[20px]">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-fidelity portrait of a futuristic tech user, glowing ambient purple lighting, sharp focus, set against a dark tech lab background. The styling is sleek, modern, and aligned with a dark-mode cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA9JCa4YLHZ-hjkDaRb2azZ2qrSl7KnnWxAZHXzfJ9e4wZ2TUYR2PedxuOXpisTdNEKzprFJQlR07ES0CTdlyjOi__8uYW4VMdFX-EQNotgnZ6L5ZVY3_ipJ3OXsm3H08s3C0M9EJmYGMN6-QnNumIHtA2D4-Hp15eGgLJJPeGtX2IShkJ9X7AHau97IG0fX9gxATu1zVyEzv5T6SvgXY_Ttcw8iZ0FI0N3ejIaAtAekLRzplelz-nBf5w7wd3x0Mhim2OAZ_LAuct"/>
+</div>
+<!-- Username -->
+<h1 class="font-display text-display text-on-surface mb-gutter transform translate-z-[10px]">Emirhan</h1>
+<!-- Login Form -->
+<form class="w-full flex flex-col gap-unit transform translate-z-[30px]" id="login-form">
+<div class="relative w-full">
+<input class="w-full bg-[#000000]/80 backdrop-blur-sm border border-outline-variant rounded-lg px-4 py-3 font-code-md text-code-md text-on-surface placeholder-on-surface-variant focus:outline-none input-glow transition-all duration-300" id="password-input" placeholder="Password" type="password"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-on-primary hover:scale-110 transition-all duration-200 shadow-[0_0_15px_rgba(168,85,247,0.5)] overflow-hidden" id="submit-btn" type="submit">
+<span class="material-symbols-outlined text-[16px] arrow-icon transition-opacity duration-200" data-icon="arrow_forward">arrow_forward</span>
+<div class="loading-spinner"></div>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-center mt-2 opacity-70">Enter credentials to unlock SEIS OS</p>
+</form>
+</div>
+</main>
+<!-- Bottom Action Icons -->
+<div class="fixed bottom-safe-area left-safe-area z-50 flex gap-gutter transition-opacity duration-500" id="sys-actions-left">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="power_settings_new">power_settings_new</span>
+</button>
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="nightlight">nightlight</span>
+</button>
+</div>
+<div class="fixed bottom-safe-area right-safe-area z-50 flex gap-gutter transition-opacity duration-500" id="sys-actions-right">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="accessibility_new">accessibility_new</span>
+</button>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const card = document.getElementById('login-card');
+        const container = document.getElementById('main-container');
+        const form = document.getElementById('login-form');
+        const btn = document.getElementById('submit-btn');
+        const input = document.getElementById('password-input');
+        
+        // Parallax Effect
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (!prefersReducedMotion) {
+            container.addEventListener('mousemove', (e) => {
+                if(card.classList.contains('unlocking')) return;
+                
+                const rect = container.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                if(!card.classList.contains('unlocking')){
+                    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                }
+            });
+        }
+
+        // Unlock Sequence
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if(!input.value) return; // Simple validation
+            
+            // Add loading state
+            btn.classList.add('is-loading');
+            input.disabled = true;
+            
+            // Simulate auth delay
+            setTimeout(() => {
+                card.classList.add('unlocking');
+                document.getElementById('sys-header').style.opacity = '0';
+                document.getElementById('sys-actions-left').style.opacity = '0';
+                document.getElementById('sys-actions-right').style.opacity = '0';
+                document.getElementById('bg-shader').style.opacity = '0.5';
+                
+                // Reset (for demo purposes)
+                setTimeout(() => {
+                    btn.classList.remove('is-loading');
+                    input.disabled = false;
+                    input.value = '';
+                    card.classList.remove('unlocking');
+                    document.getElementById('sys-header').style.opacity = '1';
+                    document.getElementById('sys-actions-left').style.opacity = '1';
+                    document.getElementById('sys-actions-right').style.opacity = '1';
+                    document.getElementById('bg-shader').style.opacity = '1';
+                }, 2000);
+            }, 1000);
+        });
+    });
+</script>
+</body></html>

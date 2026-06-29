@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPR_OS_01 // KERNEL_LOG_ROTATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .blinking-cursor::after {
+            content: '_';
+            animation: cursor-blink 1s step-end infinite;
+            color: #00dbe9;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(12, 15, 15, 0.85);
+        }
+        .cyber-grid {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, rgba(59, 73, 75, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(59, 73, 75, 0.1) 1px, transparent 1px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-container-high": "#282a2b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-variant": "#333535",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "on-surface": "#e2e2e2",
+                        "on-secondary-container": "#480064",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "outline": "#849495",
+                        "tertiary-container": "#dcd9d8",
+                        "primary": "#dbfcff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary": "#ebb2ff",
+                        "on-background": "#e2e2e2",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520071",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#605e5e",
+                        "primary-container": "#00f0ff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#f8d8ff",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary": "#313030",
+                        "background": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-container": "#ce5dff",
+                        "inverse-on-surface": "#2f3131",
+                        "outline-variant": "#3b494b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-lg": "24px",
+                        "stroke-thick": "2px",
+                        "gap-sm": "8px",
+                        "stroke-thin": "1px",
+                        "gap-md": "16px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px"
+                    },
+                    "fontFamily": {
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md cyber-grid min-h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="flex items-center space-x-gap-md">
+<span class="font-headline-md text-headline-md text-primary-container tracking-tighter">HYPR_OS_01</span>
+<div class="h-4 w-px bg-outline-variant"></div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">LOG_ROTATOR / SECTOR_08</span>
+</div>
+<div class="flex items-center space-x-gap-md">
+<span class="material-symbols-outlined text-primary-container text-[16px]">memory</span>
+<span class="material-symbols-outlined text-primary-container text-[16px]">terminal</span>
+<span class="material-symbols-outlined text-primary-container text-[16px]">settings</span>
+<span class="material-symbols-outlined text-error text-[16px]">power_settings_new</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center space-y-gap-xs">
+<div class="w-10 h-10 rounded-none bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A pixel-art style cybernetic skull icon representing a root system administrator, colored in monochrome grey with glowing cyan optics, centered on a dark textured background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrxsmB_HV3CmYgoCHHklqN1Yc4daLifzy5n5CxaN7MYJPBdxAHhL9iS2XVnYRuZVZLbLHHirCRfQBoIofTf0aJNw2cx1NhRx79lwL0vvGy58XkGNqCkNc9pcqMlzOBZsgzc2l9_46r_V2q5JxwXjZnEZ-FwvKltU3DrsGGTdhUwehYA8YhafmopcceP3CUG5s0rHVmzo1KC3MC32qYZq0iwxVaYzZ_-t1DjqdLvSxwjn1RGe84Xo_F2knuG7mqhQLXBjliwbkNmTr7"/>
+</div>
+<span class="text-[8px] font-bold text-on-surface-variant uppercase">Root</span>
+</div>
+<div class="flex flex-col w-full">
+<!-- LOG is Active -->
+<button class="w-full h-12 flex flex-col items-center justify-center space-y-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="font-code-sm text-[9px]">DASH</span>
+</button>
+<button class="w-full h-12 flex flex-col items-center justify-center space-y-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">monitoring</span>
+<span class="font-code-sm text-[9px]">SYS</span>
+</button>
+<button class="w-full h-12 flex flex-col items-center justify-center space-y-1 bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container transition-all">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-code-sm text-[9px]">LOG</span>
+</button>
+<button class="w-full h-12 flex flex-col items-center justify-center space-y-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">lan</span>
+<span class="font-code-sm text-[9px]">NET</span>
+</button>
+<button class="w-full h-12 flex flex-col items-center justify-center space-y-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-code-sm text-[9px]">DEV</span>
+</button>
+</div>
+<div class="mt-auto pb-4">
+<button class="px-2 py-1 bg-primary-container text-background font-bold text-[9px] hover:bg-secondary transition-colors duration-150">EXECUTE_SUDO</button>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="ml-20 mt-8 h-[calc(100vh-32px)] p-gap-sm grid grid-cols-12 gap-gap-sm overflow-hidden">
+<!-- Left: Telemetry & Status (3 columns) -->
+<section class="col-span-12 lg:col-span-3 flex flex-col gap-gap-sm overflow-y-auto">
+<!-- Storage Window -->
+<div class="border border-outline-variant bg-surface-container-lowest/80 overflow-hidden">
+<div class="h-6 bg-primary-container text-background flex items-center px-gap-sm justify-between">
+<span class="font-bold text-[11px] tracking-widest uppercase">Storage_Telemetry</span>
+<span class="material-symbols-outlined text-[14px]">analytics</span>
+</div>
+<div class="p-gap-sm space-y-gap-md">
+<div>
+<div class="flex justify-between text-[10px] mb-1">
+<span class="text-on-surface-variant">LOG_BUFFER_01</span>
+<span class="text-primary-container">82%</span>
+</div>
+<div class="h-2 bg-surface-variant w-full flex gap-px">
+<div class="h-full bg-primary-container flex-grow-[0.82]"></div>
+<div class="h-full bg-surface-variant flex-grow-[0.18]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] mb-1">
+<span class="text-on-surface-variant">ARCHIVE_POOL_A</span>
+<span class="text-secondary">41%</span>
+</div>
+<div class="h-2 bg-surface-variant w-full flex gap-px">
+<div class="h-full bg-secondary flex-grow-[0.41]"></div>
+<div class="h-full bg-surface-variant flex-grow-[0.59]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-gap-sm pt-2">
+<div class="border border-outline-variant p-2 flex flex-col">
+<span class="text-[9px] text-on-surface-variant">TOTAL_ROTATED</span>
+<span class="text-headline-md font-code-sm text-primary-container">4.2<span class="text-sm">GB</span></span>
+</div>
+<div class="border border-outline-variant p-2 flex flex-col">
+<span class="text-[9px] text-on-surface-variant">CRON_Uptime</span>
+<span class="text-headline-md font-code-sm text-on-surface">12d</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Visualization Panel -->
+<div class="flex-grow border border-outline-variant bg-surface-container-lowest/80 overflow-hidden relative">
+<div class="h-6 bg-surface-variant text-on-surface flex items-center px-gap-sm">
+<span class="font-bold text-[11px] tracking-widest uppercase">Archive_Map</span>
+</div>
+<div class="absolute inset-0 top-6 pointer-events-none opacity-40">
+
+</div>
+<div class="relative z-10 p-gap-sm h-full flex flex-col justify-end">
+<div class="bg-background/90 p-2 border-t border-primary-container/30">
+<p class="text-[10px] text-primary-container leading-tight">ACTIVE_SECTOR_LOAD: NOMINAL</p>
+<p class="text-[10px] text-on-surface-variant">Fragmentation: 0.04%</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Center: Log Table (6 columns) -->
+<section class="col-span-12 lg:col-span-6 flex flex-col border border-outline-variant bg-surface-container-lowest/80">
+<!-- Toolbar -->
+<div class="h-10 border-b border-outline-variant flex items-center px-gap-sm justify-between bg-surface-container">
+<div class="flex items-center space-x-gap-md">
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant px-2 py-0.5">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-[11px] w-32 placeholder:text-outline p-0" placeholder="FILTER_LOGS..." type="text"/>
+</div>
+<div class="flex space-x-1">
+<button class="px-2 py-0.5 text-[10px] bg-error-container text-error border border-error/20">ERRORS</button>
+<button class="px-2 py-0.5 text-[10px] bg-surface-variant text-on-surface-variant border border-outline-variant">SYSTEM</button>
+<button class="px-2 py-0.5 text-[10px] bg-surface-variant text-on-surface-variant border border-outline-variant">DAEMON</button>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[10px] text-on-surface-variant">STREAMING:</span>
+<div class="w-2 h-2 bg-primary-fixed-dim rounded-full animate-pulse shadow-[0_0_8px_rgba(0,219,233,0.6)]"></div>
+</div>
+</div>
+<!-- Log Table -->
+<div class="flex-grow overflow-y-auto font-code-sm text-[11px]">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high z-10 text-on-surface-variant border-b border-outline-variant">
+<tr>
+<th class="p-2 border-r border-outline-variant w-12 text-center">HEX</th>
+<th class="p-2 border-r border-outline-variant w-24">TIMESTAMP</th>
+<th class="p-2 border-r border-outline-variant w-20">LEVEL</th>
+<th class="p-2">MESSAGE_PAYLOAD</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer group">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xAF</td>
+<td class="p-2 border-r border-outline-variant">14:22:01.03</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Kernel-3.14 initialized sector 0x2039...</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer bg-error/5">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xB1</td>
+<td class="p-2 border-r border-outline-variant">14:22:04.92</td>
+<td class="p-2 border-r border-outline-variant text-error">CRIT</td>
+<td class="p-2 text-error">LOG_ROTATOR: write_fail on /var/syslog.0 (Permission Denied)</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xC4</td>
+<td class="p-2 border-r border-outline-variant">14:22:15.11</td>
+<td class="p-2 border-r border-outline-variant text-secondary">WARN</td>
+<td class="p-2 text-on-surface">Archive_A reached 80% capacity threshold.</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xD2</td>
+<td class="p-2 border-r border-outline-variant">14:23:00.00</td>
+<td class="p-2 border-r border-outline-variant text-on-surface-variant opacity-50">PROC</td>
+<td class="p-2 text-on-surface">Executing scheduled CRON: ROTATE_DAEMON --FORCE</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xD3</td>
+<td class="p-2 border-r border-outline-variant">14:23:01.12</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Snapshot generated: SNAP_20231024_A</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xD4</td>
+<td class="p-2 border-r border-outline-variant">14:23:02.45</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Compiling /var/log/messages.1.gz... [SUCCESS]</td>
+</tr>
+<!-- Dummy Rows for density -->
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xE1</td>
+<td class="p-2 border-r border-outline-variant">14:24:10.03</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Network socket opened for log tunneling.</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xE2</td>
+<td class="p-2 border-r border-outline-variant">14:24:12.88</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Tunneling to master_node: 192.168.1.104</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xF0</td>
+<td class="p-2 border-r border-outline-variant">14:25:01.00</td>
+<td class="p-2 border-r border-outline-variant text-on-surface-variant opacity-50">PROC</td>
+<td class="p-2 text-on-surface">Cleanup process started for /tmp/log_residue/</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/50 cursor-pointer">
+<td class="p-2 text-outline-variant border-r border-outline-variant text-center">0xF1</td>
+<td class="p-2 border-r border-outline-variant">14:25:05.44</td>
+<td class="p-2 border-r border-outline-variant text-primary-fixed-dim">INFO</td>
+<td class="p-2 text-on-surface">Memory management unit re-aligned for Sector 8.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Terminal Output Footer -->
+<div class="h-24 bg-surface-container-lowest border-t border-outline-variant p-2 font-code-sm overflow-hidden">
+<div class="text-primary-container text-[10px] mb-1">SYSTEM_CONSOLE [T0]</div>
+<div class="text-on-surface-variant opacity-80 leading-tight">
+<div>&gt; root@hypr_os: tail -f /var/log/rotator.err</div>
+<div>&gt; Checking checksum integrity... DONE</div>
+<div class="blinking-cursor">&gt; Initializing daemon control handshake</div>
+</div>
+</div>
+</section>
+<!-- Right: Controls & Scheduling (3 columns) -->
+<section class="col-span-12 lg:col-span-3 flex flex-col gap-gap-sm">
+<!-- Daemon Control Panel -->
+<div class="border border-outline-variant bg-surface-container-lowest/80 overflow-hidden">
+<div class="h-6 bg-secondary-container text-on-secondary-container flex items-center px-gap-sm">
+<span class="font-bold text-[11px] tracking-widest uppercase">DAEMON_MANAGEMENT</span>
+</div>
+<div class="p-gap-sm space-y-gap-sm">
+<div class="flex items-center justify-between p-2 bg-surface-container border border-outline-variant/30">
+<div class="flex flex-col">
+<span class="text-[11px] font-bold">ROTATOR_SVR</span>
+<span class="text-[9px] text-primary-container">RUNNING (PID: 284)</span>
+</div>
+<div class="flex space-x-1">
+<button class="w-6 h-6 flex items-center justify-center bg-surface-variant text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined text-[16px]">pause</span></button>
+<button class="w-6 h-6 flex items-center justify-center bg-error-container text-error hover:bg-error hover:text-on-error transition-colors"><span class="material-symbols-outlined text-[16px]">refresh</span></button>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container border border-outline-variant/30">
+<div class="flex flex-col">
+<span class="text-[11px] font-bold">TUNNEL_PROXY</span>
+<span class="text-[9px] text-on-surface-variant">IDLE</span>
+</div>
+<button class="px-2 py-0.5 bg-primary-container text-background font-bold text-[10px]">START</button>
+</div>
+</div>
+</div>
+<!-- Cron Scheduling -->
+<div class="border border-outline-variant bg-surface-container-lowest/80 flex-grow">
+<div class="h-6 bg-surface-variant text-on-surface flex items-center px-gap-sm">
+<span class="font-bold text-[11px] tracking-widest uppercase">CRON_CONFIGURATION</span>
+</div>
+<div class="p-gap-sm space-y-gap-md">
+<div class="space-y-gap-xs">
+<label class="text-[9px] text-on-surface-variant uppercase tracking-tighter">Rotation Interval</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface text-[11px] p-1 focus:border-primary-container ring-0 outline-none">
+<option>@daily (24:00)</option>
+<option>@weekly (SUN)</option>
+<option>@hourly (00m)</option>
+<option>CUSTOM_SHELL</option>
+</select>
+</div>
+<div class="space-y-gap-xs">
+<label class="text-[9px] text-on-surface-variant uppercase tracking-tighter">Compression Level</label>
+<input class="w-full accent-primary-container h-1 bg-surface-variant rounded-none appearance-none cursor-pointer" type="range"/>
+<div class="flex justify-between text-[9px] text-outline">
+<span>RAW</span>
+<span>LZ4</span>
+<span>GZIP</span>
+<span>XZ</span>
+</div>
+</div>
+<div class="space-y-gap-xs pt-4 border-t border-outline-variant/30">
+<div class="flex items-center space-x-2">
+<input checked="" class="rounded-none bg-background border-outline-variant text-primary-container focus:ring-primary-container w-3 h-3" type="checkbox"/>
+<span class="text-[10px] text-on-surface">Auto-purge older than 30d</span>
+</div>
+<div class="flex items-center space-x-2">
+<input class="rounded-none bg-background border-outline-variant text-primary-container focus:ring-primary-container w-3 h-3" type="checkbox"/>
+<span class="text-[10px] text-on-surface">Enforce SHA-256 Checksum</span>
+</div>
+</div>
+<button class="w-full py-2 bg-primary-container text-background font-bold text-[11px] hover:bg-secondary-container transition-all active:scale-[0.98]">COMMIT_CHANGES</button>
+</div>
+</div>
+<!-- Visual Asset -->
+<div class="h-32 border border-outline-variant bg-surface-container-lowest/80 relative group overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-80 transition-all duration-700" data-alt="A macro close-up of a high-tech server rack component with glowing cyan data lines and heat sinks, shot in a dark room with dramatic moody lighting and shallow depth of field. The aesthetic is professional, cyberpunk minimalism with heavy emphasis on the hardware's metallic textures and glowing interface points." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYFIzJJJLFA-dh0obyHMPJrap5UV7zg2rPr3Y660k4ydFys5vFKzoCaxcbmWdxNO7YSYIsghVFxBADHv9NuG4_B17Iocfvm4g_Oi3T1n2Ym93jx_bW2nA0WPmrVxgzK9oBx--ne3Jtyi6Vq5JZupRmiEZ9eFakNbvbCTpgRAW1_cIv3V3GbgB6QU14hzprT2DTOuF919VQsO7F7L9Lhy_XwS1KMV7JLg0a0tnqdVxOe-u91Ty1qPhJJtMMXI_kkeMXbCt6PzIGAWrS"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+<div class="absolute bottom-2 left-2">
+<span class="text-[10px] text-primary-container font-bold bg-background/80 px-1 border border-primary-container">NODE_PHYSICAL_ID: B-77</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Interactive Script for micro-effects -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simulated real-time log scrolling (purely visual)
+            const logTable = document.querySelector('tbody');
+            const entries = [
+                { hex: '0xF2', time: '14:26:01.00', lvl: 'INFO', msg: 'Heartbeat signal acknowledged by master.' },
+                { hex: '0xF3', time: '14:26:05.12', lvl: 'PROC', msg: 'Flushing buffer_01 cache...' },
+                { hex: '0xF4', time: '14:26:10.88', lvl: 'INFO', msg: 'Cache cleared. 512MB freed.' }
+            ];
+            let idx = 0;
+
+            setInterval(() => {
+                const entry = entries[idx % entries.length];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-surface-container-highest/50 cursor-pointer animate-pulse';
+                row.innerHTML = `
+                    <td class="p-2 text-outline-variant border-r border-outline-variant text-center">${entry.hex}</td>
+                    <td class="p-2 border-r border-outline-variant">${entry.time}</td>
+                    <td class="p-2 border-r border-outline-variant ${entry.lvl === 'INFO' ? 'text-primary-fixed-dim' : 'text-on-surface-variant opacity-50'}">${entry.lvl}</td>
+                    <td class="p-2 text-on-surface">${entry.msg}</td>
+                `;
+                
+                // Add new row at bottom
+                logTable.appendChild(row);
+                
+                // Keep max 20 rows
+                if (logTable.rows.length > 20) {
+                    logTable.deleteRow(0);
+                }
+                
+                idx++;
+                
+                // Scroll to bottom
+                const container = logTable.parentElement.parentElement;
+                container.scrollTop = container.scrollHeight;
+                
+                // Remove pulse after 1s
+                setTimeout(() => row.classList.remove('animate-pulse'), 1000);
+            }, 5000);
+        });
+    </script>
+</body></html>

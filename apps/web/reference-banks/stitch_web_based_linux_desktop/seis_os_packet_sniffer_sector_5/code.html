@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - NETWORK</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#849495",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-secondary": "#520071",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed": "#320047",
+                        "surface-tint": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "on-primary-fixed": "#002022",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "tertiary-container": "#dcd9d8",
+                        "secondary-fixed": "#f8d8ff",
+                        "surface-container-low": "#1a1c1c",
+                        "secondary-container": "#ce5dff",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "surface-variant": "#333535",
+                        "on-surface": "#e2e2e2",
+                        "surface": "#121414",
+                        "on-secondary-container": "#480064",
+                        "surface-container-highest": "#333535",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary": "#ebb2ff",
+                        "surface-container": "#1e2020",
+                        "on-primary": "#00363a",
+                        "inverse-primary": "#006970",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-primary-container": "#006970",
+                        "tertiary-fixed": "#e5e2e1",
+                        "background": "#121414",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#282a2b",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-background": "#e2e2e2",
+                        "surface-dim": "#121414",
+                        "primary-fixed-dim": "#00dbe9",
+                        "outline-variant": "#3b494b",
+                        "primary": "#dbfcff",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "inverse-on-surface": "#2f3131",
+                        "cyber-lime": "#ccff00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stroke-thin": "1px",
+                        "stroke-thick": "2px",
+                        "gap-lg": "24px",
+                        "gap-md": "16px",
+                        "margin-page": "32px",
+                        "gap-xs": "4px",
+                        "gap-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background: rgba(12, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-panel.focused { border-color: #7df4ff; }
+        .hex-scroll::-webkit-scrollbar { width: 4px; }
+        .hex-scroll::-webkit-scrollbar-thumb { background: #3b494b; }
+        .blink { animation: blink-animation 1s steps(2, start) infinite; }
+        @keyframes blink-animation { to { visibility: hidden; } }
+        
+        /* Pulse Animation for Network Nodes */
+        @keyframes ping-slow {
+            75%, 100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        .animate-ping-slow {
+            animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col font-body-md overflow-hidden bg-background">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 shrink-0 z-50">
+<div class="flex items-center gap-gap-md">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-gap-sm ml-gap-lg h-full">
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full px-2" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full px-2" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full px-2" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full px-2 mt-1" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-gap-sm">
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">memory</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">terminal</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200"><span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span></button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 group shrink-0 overflow-hidden">
+<div class="p-gap-md border-b border-outline-variant/20 mb-gap-sm flex flex-col items-center group-hover:items-start transition-all">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-primary-fixed">person</span>
+</div>
+<div class="mt-2 opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+<button class="mt-4 opacity-0 group-hover:opacity-100 bg-primary-fixed text-background font-label-sm px-4 py-2 w-full text-center hover:bg-secondary-fixed transition-colors whitespace-nowrap">NEW_SESSION</button>
+</div>
+<nav class="flex-1 overflow-y-auto w-full">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">dashboard</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">folder_open</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">terminal</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">smart_toy</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">cloud_queue</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">list_alt</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">LOGS</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/20 pt-2 w-full">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">power_settings_new</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">POWER</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 w-full overflow-hidden" href="#">
+<span class="material-symbols-outlined mr-4 shrink-0">lock</span>
+<span class="font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap transition-opacity">LOCK</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-20 p-gap-md h-[calc(100vh-40px)] overflow-y-auto grid grid-cols-1 md:grid-cols-12 gap-gap-md auto-rows-min relative">
+<!-- Global Network Stats -->
+<div class="md:col-span-12 glass-panel flex flex-wrap gap-gap-md p-gap-sm items-center justify-between z-10">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-primary-fixed">radar</span>
+<span class="font-label-sm text-primary-fixed">SECTOR 5 // LIVE CAPTURE</span>
+</div>
+<div class="flex gap-gap-lg">
+<div class="flex flex-col">
+<span class="font-code-sm text-on-surface-variant text-[10px]">RX RATE</span>
+<span class="font-body-md text-primary-fixed">14.2 Gbps</span>
+</div>
+<div class="flex flex-col">
+<span class="font-code-sm text-on-surface-variant text-[10px]">TX RATE</span>
+<span class="font-body-md text-[var(--cyber-lime)]">8.7 Gbps</span>
+</div>
+<div class="flex flex-col">
+<span class="font-code-sm text-on-surface-variant text-[10px]">DROPPED</span>
+<span class="font-body-md text-error">0.01%</span>
+</div>
+</div>
+</div>
+<!-- Hex Dump Stream -->
+<div class="md:col-span-8 glass-panel focused flex flex-col h-[600px] z-10">
+<div class="h-6 bg-primary-fixed flex items-center px-gap-sm shrink-0">
+<span class="font-label-sm text-background">RAW_PACKET_STREAM.BIN</span>
+</div>
+<div class="p-gap-md flex-1 overflow-hidden flex flex-col bg-surface-container-lowest/50">
+<div class="flex gap-4 font-code-sm text-[11px] text-outline mb-2 border-b border-outline-variant/30 pb-1">
+<div class="w-16">OFFSET</div>
+<div class="flex-1">00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F</div>
+<div class="w-32 text-right">ASCII</div>
+</div>
+<div class="flex-1 overflow-y-auto hex-scroll font-code-sm text-[12px] leading-relaxed" id="hex-container">
+<!-- JS populated -->
+</div>
+<div class="mt-2 border-t border-outline-variant/30 pt-2 flex items-center justify-between text-[11px] text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-[var(--cyber-lime)]"></span> CAPTURING (eth0)</span>
+<span>FILTER: TCP port 443 or port 80</span>
+</div>
+</div>
+</div>
+<!-- Sidebar Analytics -->
+<div class="md:col-span-4 flex flex-col gap-gap-md z-10">
+<!-- Protocol Breakdown -->
+<div class="glass-panel flex flex-col h-[292px]">
+<div class="h-6 bg-surface-variant flex items-center px-gap-sm border-b border-outline-variant/30 shrink-0">
+<span class="font-label-sm text-on-surface">PROTOCOL_DISTR</span>
+</div>
+<div class="p-gap-sm flex-1 flex flex-col justify-center gap-gap-sm">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-primary-fixed">TCP</span>
+<span>64%</span>
+</div>
+<div class="h-2 w-full bg-surface-container border border-outline-variant/30">
+<div class="h-full bg-primary-fixed" style="width: 64%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-[var(--cyber-lime)]">UDP</span>
+<span>22%</span>
+</div>
+<div class="h-2 w-full bg-surface-container border border-outline-variant/30">
+<div class="h-full bg-[var(--cyber-lime)]" style="width: 22%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-secondary-fixed">ICMP</span>
+<span>8%</span>
+</div>
+<div class="h-2 w-full bg-surface-container border border-outline-variant/30">
+<div class="h-full bg-secondary-fixed" style="width: 8%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[11px] font-code-sm">
+<span class="text-outline">OTHER</span>
+<span>6%</span>
+</div>
+<div class="h-2 w-full bg-surface-container border border-outline-variant/30">
+<div class="h-full bg-outline" style="width: 6%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Connections List -->
+<div class="glass-panel flex flex-col h-[292px]">
+<div class="h-6 bg-surface-variant flex items-center px-gap-sm border-b border-outline-variant/30 shrink-0">
+<span class="font-label-sm text-on-surface">ACTIVE_NODES</span>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="border-b border-outline-variant/20 p-2 flex justify-between items-center hover:bg-surface-variant/20 cursor-pointer">
+<div class="flex flex-col">
+<span class="font-code-sm text-[12px] text-primary-fixed">192.168.1.104</span>
+<span class="font-code-sm text-[10px] text-outline">-&gt; 10.0.0.5:443</span>
+</div>
+<span class="material-symbols-outlined text-error text-[16px]">warning</span>
+</div>
+<div class="border-b border-outline-variant/20 p-2 flex justify-between items-center bg-secondary-container/20 border-l-2 border-secondary-fixed cursor-pointer">
+<div class="flex flex-col">
+<span class="font-code-sm text-[12px] text-[var(--cyber-lime)]">10.0.0.22</span>
+<span class="font-code-sm text-[10px] text-outline">-&gt; 8.8.8.8:53</span>
+</div>
+<span class="font-code-sm text-[10px] text-secondary-fixed">ESTAB</span>
+</div>
+<div class="border-b border-outline-variant/20 p-2 flex justify-between items-center hover:bg-surface-variant/20 cursor-pointer">
+<div class="flex flex-col">
+<span class="font-code-sm text-[12px] text-primary-fixed">192.168.1.50</span>
+<span class="font-code-sm text-[10px] text-outline">-&gt; 172.16.0.1:80</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline">TIME_WAIT</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Background Aesthetic Elements (Behind panels) -->
+<div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(circle at center, #00f0ff 1px, transparent 1px); background-size: 32px 32px;"></div>
+</main>
+</div>
+<script>
+        // Generate random hex data for the terminal simulation
+        const hexContainer = document.getElementById('hex-container');
+        const generateHexLine = (offset) => {
+            const hexOffset = offset.toString(16).padStart(8, '0').toUpperCase();
+            let hexValues = '';
+            let ascii = '';
+            for(let i=0; i<16; i++) {
+                const val = Math.floor(Math.random() * 256);
+                hexValues += val.toString(16).padStart(2, '0').toUpperCase() + ' ';
+                // printable ascii approx
+                if(val > 31 && val < 127) {
+                    ascii += String.fromCharCode(val);
+                } else {
+                    ascii += '.';
+                }
+            }
+            
+            // Randomly highlight some bytes for effect
+            const highlightedHex = hexValues.replace(/([A-F0-9]{2} [A-F0-9]{2} [A-F0-9]{2})/g, '<span class="text-primary-fixed">$1</span>');
+
+            return `
+                <div class="flex gap-4 hover:bg-surface-variant/30 px-1">
+                    <div class="w-16 text-outline">${hexOffset}</div>
+                    <div class="flex-1 text-on-surface tracking-widest">${highlightedHex}</div>
+                    <div class="w-32 text-right text-[var(--cyber-lime)] overflow-hidden whitespace-nowrap">${ascii.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+                </div>
+            `;
+        };
+
+        let currentOffset = 0x00000000;
+        const initialLines = 40;
+        
+        for(let i=0; i<initialLines; i++) {
+            hexContainer.innerHTML += generateHexLine(currentOffset);
+            currentOffset += 16;
+        }
+
+        // Simulate continuous streaming
+        setInterval(() => {
+            hexContainer.innerHTML += generateHexLine(currentOffset);
+            currentOffset += 16;
+            
+            // Keep DOM light
+            if(hexContainer.children.length > 100) {
+                hexContainer.removeChild(hexContainer.firstChild);
+            }
+            
+            // Auto scroll to bottom
+            hexContainer.scrollTop = hexContainer.scrollHeight;
+        }, 150);
+
+    </script>
+</body></html>

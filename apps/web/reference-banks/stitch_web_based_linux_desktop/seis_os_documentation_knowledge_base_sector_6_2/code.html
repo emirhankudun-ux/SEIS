@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Documentation &amp; Knowledge Base (Sector 6)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#282a2b",
+                      "surface-container": "#1e2020",
+                      "on-secondary": "#520071",
+                      "on-primary-fixed-variant": "#004f54",
+                      "background": "#121414",
+                      "outline": "#849495",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-primary-fixed": "#002022",
+                      "on-background": "#e2e2e2",
+                      "inverse-surface": "#e2e2e2",
+                      "on-primary": "#00363a",
+                      "tertiary-container": "#dcd9d8",
+                      "surface-variant": "#333535",
+                      "error": "#ffb4ab",
+                      "surface-container-highest": "#333535",
+                      "primary-fixed-dim": "#00dbe9",
+                      "secondary-fixed": "#f8d8ff",
+                      "inverse-on-surface": "#2f3131",
+                      "on-error-container": "#ffdad6",
+                      "secondary": "#ebb2ff",
+                      "on-error": "#690005",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-tertiary-container": "#605e5e",
+                      "surface-dim": "#121414",
+                      "on-primary-container": "#006970",
+                      "surface-container-low": "#1a1c1c",
+                      "surface": "#121414",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "surface-tint": "#00dbe9",
+                      "secondary-container": "#ce5dff",
+                      "on-secondary-fixed": "#320047",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary-container": "#00f0ff",
+                      "on-secondary-container": "#480064",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary": "#dbfcff",
+                      "inverse-primary": "#006970",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "surface-bright": "#37393a",
+                      "primary-fixed": "#7df4ff",
+                      "on-surface": "#e2e2e2",
+                      "on-surface-variant": "#b9cacb",
+                      "tertiary": "#f9f5f5",
+                      "outline-variant": "#3b494b",
+                      "on-tertiary": "#313030",
+                      "error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-sm": "8px",
+                      "stroke-thick": "2px",
+                      "gap-md": "16px",
+                      "gap-lg": "24px",
+                      "stroke-thin": "1px",
+                      "gap-xs": "4px",
+                      "margin-page": "32px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Space Mono"
+                      ],
+                      "headline-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-md": [
+                              "JetBrains Mono"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        /* Custom Scrollbar for terminal feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121414; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9; 
+        }
+        
+        .glass-panel {
+            background-color: rgba(18, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333333;
+        }
+        
+        .glass-panel:focus-within {
+            border-color: #00f0ff;
+        }
+
+        .terminal-glow {
+            box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.1);
+        }
+        
+        .blinking-cursor::after {
+            content: "█";
+            animation: blink 1s step-start infinite;
+            color: #00dbe9;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-4 h-10 fixed top-0 left-0 z-50">
+<div class="flex items-center gap-gap-md">
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-gap-md">
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-gap-md text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 0;">settings</span>
+</div>
+</header>
+<!-- Main Workspace -->
+<div class="flex flex-1 pt-10 h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 h-full w-20 hover:w-64 transition-all duration-300 fixed left-0 top-10 z-40 flex flex-col group">
+<div class="p-4 border-b border-outline-variant/20 flex items-center gap-gap-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 overflow-hidden whitespace-nowrap">
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden shrink-0 border border-primary-fixed/30">
+<img class="w-full h-full object-cover" data-alt="A futuristic cybernetic avatar profile picture. Dark minimalist aesthetic with subtle cyan glowing circuitry patterns on a synthetic face. High contrast, sharp edges, digital art style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4vGBCHg61hgDLape_Y4aeKVx7xVaKosxeAWTUzhSONRVzLR6N8PoZH8aGQI5FrscoZ-0BuIMsKdp3v8kslUBSf0N4y7_Nq2KDLSWY0tLzxfJMuQnWBFfhy_r3nd76xM3D1l4hoPhsbbR-6Ci3fS4VX9ltnAq8sAVgv6get9XuzFSDClt6hMsj0aXDuJmJqyyzZTlb7fbVgOPFDGcgJQelceUud4VKyLMuTq74na-MZDalOcV7b5cTEk4DQdwFakYBC63i2z2aygo4"/>
+</div>
+<div>
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 py-4 flex flex-col gap-gap-xs overflow-y-auto overflow-x-hidden">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 1;">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">INFRASTRUCTURE</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/20">
+<button class="w-full bg-primary text-on-primary py-2 font-label-sm text-label-sm hover:bg-secondary transition-colors duration-200 opacity-0 group-hover:opacity-100 whitespace-nowrap overflow-hidden">
+                    NEW_SESSION
+                </button>
+<div class="flex flex-col gap-2 mt-4">
+<div class="flex items-center px-2 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">power_settings_new</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">POWER</span>
+</div>
+<div class="flex items-center px-2 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim whitespace-nowrap">
+<span class="material-symbols-outlined shrink-0" style="font-variation-settings: 'FILL' 0;">lock</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-20 flex-1 flex flex-col md:flex-row gap-gap-md p-gap-md overflow-hidden bg-background">
+<!-- Neural Index Sidebar -->
+<section class="w-full md:w-64 glass-panel flex flex-col shrink-0">
+<header class="bg-primary-fixed text-on-primary-fixed px-3 py-2 font-label-sm text-label-sm flex items-center justify-between">
+<span>NEURAL_INDEX</span>
+<span class="material-symbols-outlined text-[16px]">account_tree</span>
+</header>
+<div class="p-3 border-b border-outline-variant/30">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-outline text-[16px]">search</span>
+<input class="w-full bg-surface-container border border-outline-variant text-on-background font-code-sm text-code-sm py-1 pl-8 pr-2 focus:border-primary-fixed focus:outline-none focus:ring-1 focus:ring-primary-fixed placeholder-outline transition-colors" placeholder="QUERY_SECTOR..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-2 font-code-sm text-code-sm">
+<ul class="space-y-1">
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant">/root</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-4 border-l border-outline-variant/30 ml-2">├── sys_config.md</li>
+<li class="px-2 py-1 bg-secondary-fixed/20 text-on-background cursor-pointer pl-4 border-l border-primary-fixed ml-2">├── network_protocols.md</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-4 border-l border-outline-variant/30 ml-2">└── security_policies</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-6 border-l border-outline-variant/30 ml-2">├── auth_v2.md</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-6 border-l border-outline-variant/30 ml-2">└── firewall_rules.md</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant mt-2">/agents</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-4 border-l border-outline-variant/30 ml-2">├── drone_ops.md</li>
+<li class="px-2 py-1 hover:bg-surface-variant/50 cursor-pointer text-on-surface-variant pl-4 border-l border-outline-variant/30 ml-2">└── maintenance_log.md</li>
+</ul>
+</div>
+</section>
+<!-- Editor & Preview Panel -->
+<section class="flex-1 flex flex-col lg:flex-row gap-gap-md overflow-hidden">
+<!-- Markdown Editor -->
+<div class="flex-1 glass-panel flex flex-col min-w-0">
+<header class="bg-surface-container-high px-3 py-2 font-label-sm text-label-sm flex items-center justify-between border-b border-outline-variant/30">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+<span>network_protocols.md</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px] cursor-pointer hover:text-primary-fixed">save</span>
+</div>
+</header>
+<div class="flex-1 p-4 overflow-y-auto relative terminal-glow">
+<textarea class="w-full h-full bg-transparent border-none text-on-background font-code-sm text-code-sm resize-none focus:outline-none focus:ring-0 whitespace-pre font-mono leading-relaxed selection:bg-primary-fixed selection:text-on-primary-fixed" spellcheck="false"># Sector 6 Network Protocols
+
+## 1. Overview
+The internal routing for Sector 6 utilizes a modified BGP instance to handle high-frequency agent telemetry. 
+
+## 2. Handshake Sequence
+All automated nodes must authenticate via the `AUTH_V2` handshake before establishing a persistent socket.</textarea></div></div></section></main></div></body></html>

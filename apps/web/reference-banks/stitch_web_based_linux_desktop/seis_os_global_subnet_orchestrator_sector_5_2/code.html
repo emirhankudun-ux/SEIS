@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Global Subnet Orchestrator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+        }
+        .tiling-grid {
+            display: grid;
+            gap: 8px;
+            padding: 8px;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+            height: calc(100vh - 40px);
+        }
+        .cyber-panel {
+            background: rgba(12, 15, 15, 0.85);
+            border: 1px solid #3b494b;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+        .cyber-panel:focus-within {
+            border-color: #00dbe9;
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.2);
+        }
+        .panel-header {
+            height: 24px;
+            background: #00dbe9;
+            color: #0c0f0f;
+            display: flex;
+            items: center;
+            padding: 0 8px;
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+        .segment {
+            height: 8px;
+            width: 4px;
+            background: #333535;
+        }
+        .segment.active-teal { background: #00dbe9; }
+        .segment.active-amber { background: #f8d8ff; } /* Using secondary as amber-adjacent */
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#333535",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-bright": "#37393a",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-container": "#605e5e",
+                        "on-error": "#690005",
+                        "primary": "#dbfcff",
+                        "secondary": "#ebb2ff",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-secondary-fixed": "#320047",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary": "#520071",
+                        "secondary-fixed": "#f8d8ff",
+                        "tertiary": "#f9f5f5",
+                        "on-background": "#e2e2e2",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022",
+                        "primary-fixed-dim": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "on-primary": "#00363a",
+                        "on-tertiary": "#313030",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-surface": "#e2e2e2",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-container": "#480064",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-dim": "#121414",
+                        "on-primary-container": "#006970",
+                        "inverse-on-surface": "#2f3131",
+                        "background": "#121414",
+                        "surface-variant": "#333535",
+                        "outline-variant": "#3b494b",
+                        "error-container": "#93000a",
+                        "surface": "#121414",
+                        "secondary-container": "#ce5dff",
+                        "outline": "#849495"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 left-0 flex justify-between items-center w-full px-8 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm" href="#">NETWORK</a>
+</nav>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-[18px]">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-[18px]">settings</span>
+</div>
+</header>
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-primary-container/20 rounded flex items-center justify-center border border-primary-fixed/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A stylized technical avatar of a cyborg root user, monochrome blueprint style with neon cyan highlights, viewed from profile, intricate mechanical details on a dark tech background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHmPU7Z053fwEZTGvT9coyrljZP_zQMTHavyhzOdpqylU4iLlF-YiCy05QFFTmaGy9RO4-2GEImCy4GSobKJebESEhNnHwadKaOX7lXNF0XXozHqiU3tPdP7o2QDvHWvMHnF4bNh1hPGMB--aPNlLoEMPTJRO2IISJpHmBg922yMgSJjzX58yyftvj-HJAbI-vVk2gefeKYgWqE3ySytM9KjiFRn7wjHmKJi7aGpZJ09fTf4Bn8txTW4Oj9DewYi4UKsgKhcBGxl7C"/>
+</div>
+<div class="hidden group-hover:block transition-all">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">INFRASTRUCTURE</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-6 hidden group-hover:block font-label-sm">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-4 text-on-surface-variant hover:text-error transition-colors cursor-pointer mb-4 px-4">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="hidden group-hover:block font-label-sm">POWER</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant hover:text-primary transition-colors cursor-pointer px-4">
+<span class="material-symbols-outlined">lock</span>
+<span class="hidden group-hover:block font-label-sm">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 h-[calc(100vh-40px)] p-2">
+<div class="tiling-grid h-full">
+<!-- Global Topology Map (Bento Cell) -->
+<div class="col-span-8 row-span-7 cyber-panel group">
+<div class="panel-header">GLOBAL_TOPOLOGY_MAP // SECTOR_05</div>
+<div class="relative w-full h-full bg-[#0c0f0f]">
+
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- Interactive Nodes Overlay -->
+<div class="relative w-[80%] h-[70%]">
+<!-- SVG Vectors for flow -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path class="animate-[dash_20s_linear_infinite]" d="M 100,100 Q 300,50 500,200" fill="none" stroke="#00dbe9" stroke-dasharray="4 4" stroke-width="1">
+<animate attributename="stroke-dashoffset" dur="2s" from="0" repeatcount="indefinite" to="100"></animate>
+</path>
+<path d="M 500,200 Q 400,350 150,300" fill="none" stroke="#f8d8ff" stroke-dasharray="4 4" stroke-width="1">
+<animate attributename="stroke-dashoffset" dur="3s" from="100" repeatcount="indefinite" to="0"></animate>
+</path>
+</svg>
+<!-- Node Markers -->
+<div class="absolute top-[20%] left-[15%] group/node cursor-crosshair">
+<div class="w-3 h-3 bg-primary-fixed border border-primary animate-pulse"></div>
+<div class="absolute top-4 left-0 bg-surface-container-lowest border border-outline p-2 opacity-0 group-hover/node:opacity-100 transition-opacity whitespace-nowrap z-10">
+<p class="font-code-sm text-primary">ID: US-EAST-01</p>
+<p class="font-code-sm text-on-surface-variant">LOAD: 42.1%</p>
+</div>
+</div>
+<div class="absolute top-[45%] left-[55%] group/node cursor-crosshair">
+<div class="w-3 h-3 bg-secondary-fixed border border-secondary"></div>
+<div class="absolute top-4 left-0 bg-surface-container-lowest border border-outline p-2 opacity-0 group-hover/node:opacity-100 transition-opacity whitespace-nowrap z-10">
+<p class="font-code-sm text-secondary">ID: EU-WEST-04</p>
+<p class="font-code-sm text-on-surface-variant">LOAD: 78.9%</p>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 flex gap-4">
+<div class="bg-surface-container-lowest/60 border border-outline-variant p-2 backdrop-blur-md">
+<div class="font-label-sm text-[9px] text-on-surface-variant">ACTIVE_SUBNETS</div>
+<div class="font-headline-md text-primary">1,248</div>
+</div>
+<div class="bg-surface-container-lowest/60 border border-outline-variant p-2 backdrop-blur-md">
+<div class="font-label-sm text-[9px] text-on-surface-variant">TOTAL_EGRESS</div>
+<div class="font-headline-md text-secondary">4.2 TB/S</div>
+</div>
+</div>
+</div>
+<div class="scanline"></div>
+</div>
+<!-- VPC Peering Side-Pane (Bento Cell) -->
+<div class="col-span-4 row-span-5 cyber-panel">
+<div class="panel-header">VPC_PEERING_MANAGER</div>
+<div class="p-4 space-y-4 overflow-y-auto h-[calc(100%-24px)]">
+<div class="border border-outline-variant p-3 bg-surface-container-low">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-primary">VPC-ALPHA-7</span>
+<span class="bg-primary/10 text-primary px-2 text-[10px] border border-primary/20">ESTABLISHED</span>
+</div>
+<div class="text-[11px] text-on-surface-variant font-code-sm space-y-1">
+<div>SOURCE: 10.0.0.0/16</div>
+<div>TARGET: 192.168.0.0/24</div>
+</div>
+<button class="w-full mt-3 py-1 bg-primary text-background font-label-sm hover:bg-secondary transition-colors">TERMINATE_PEER</button>
+</div>
+<div class="border border-outline-variant p-3 border-dashed opacity-70">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-sm text-on-surface-variant">VPC-SIGMA-9</span>
+<span class="bg-surface-variant text-on-surface-variant px-2 text-[10px] border border-outline-variant">PENDING</span>
+</div>
+<button class="w-full mt-3 py-1 border border-primary text-primary font-label-sm hover:bg-primary/10 transition-colors">AUTHORIZE_PEER</button>
+</div>
+<div class="border border-outline-variant p-3">
+<div class="font-label-sm text-on-surface mb-2">CONFIGURE_NEW_LINK</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface font-code-sm text-xs p-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="REMOTE_VPC_ID" type="text"/>
+<input class="w-full mt-2 bg-surface-container-lowest border border-outline-variant text-on-surface font-code-sm text-xs p-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none" placeholder="CIDR_OVERRIDE" type="text"/>
+<button class="w-full mt-3 py-2 bg-secondary text-on-secondary-fixed font-label-sm font-bold">INITIATE_HANDSHAKE</button>
+</div>
+</div>
+</div>
+<!-- Latency Telemetry (Bento Cell) -->
+<div class="col-span-4 row-span-2 cyber-panel">
+<div class="panel-header">REALTIME_LATENCY_MONITOR</div>
+<div class="p-3 grid grid-cols-2 gap-3 h-[calc(100%-24px)] content-center">
+<div class="flex flex-col">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">US-EAST</span>
+<span class="font-code-sm text-primary">12ms</span>
+</div>
+<div class="segmented-progress mt-1">
+<div class="segment active-teal"></div>
+<div class="segment active-teal"></div>
+<div class="segment active-teal"></div>
+<div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">EU-CENTRAL</span>
+<span class="font-code-sm text-secondary">48ms</span>
+</div>
+<div class="segmented-progress mt-1">
+<div class="segment active-amber"></div>
+<div class="segment active-amber"></div>
+<div class="segment active-amber"></div>
+<div class="segment active-amber"></div>
+<div class="segment active-amber"></div>
+<div class="segment"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">AP-SOUTH</span>
+<span class="font-code-sm text-primary">112ms</span>
+</div>
+<div class="segmented-progress mt-1">
+<div class="segment active-teal"></div>
+<div class="segment active-teal"></div>
+<div class="segment active-teal"></div>
+<div class="segment active-teal"></div>
+<div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">SA-EAST</span>
+<span class="font-code-sm text-error">240ms</span>
+</div>
+<div class="segmented-progress mt-1">
+<div class="segment bg-error"></div>
+<div class="segment bg-error"></div>
+<div class="segment bg-error"></div>
+<div class="segment bg-error"></div>
+<div class="segment bg-error"></div>
+<div class="segment bg-error"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- IP Allocation Table (Bento Cell) -->
+<div class="col-span-12 row-span-5 cyber-panel">
+<div class="panel-header">SUBNET_ALLOCATION_PROTOCOL // IPV4_CIDR_BLOCKS</div>
+<div class="overflow-x-auto p-2 h-[calc(100%-24px)]">
+<table class="w-full text-left font-code-sm border-collapse">
+<thead>
+<tr class="text-on-surface-variant border-b border-outline-variant/30 font-label-sm text-[10px]">
+<th class="pb-2 px-3">CIDR_RANGE</th>
+<th class="pb-2 px-3">RESOURCE_ID</th>
+<th class="pb-2 px-3">ZONE</th>
+<th class="pb-2 px-3">GATEWAY_STAT</th>
+<th class="pb-2 px-3">DHCP_CFG</th>
+<th class="pb-2 px-3 text-right">UTILIZATION</th>
+</tr>
+</thead>
+<tbody class="text-[12px]">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/10 group/row">
+<td class="py-3 px-3 text-primary">10.0.1.0/24</td>
+<td class="py-3 px-3">subnet-0f4a2d</td>
+<td class="py-3 px-3">US-EAST-1A</td>
+<td class="py-3 px-3">
+<span class="status-dot bg-primary-fixed-dim shadow-[0_0_5px_#00dbe9]"></span>
+<span class="ml-2">ACTIVE</span>
+</td>
+<td class="py-3 px-3 font-label-sm text-[10px]">ENABLED</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-3">
+<span>78%</span>
+<div class="w-20 h-2 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary" style="width: 78%"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/10 group/row">
+<td class="py-3 px-3 text-primary">10.0.2.0/24</td>
+<td class="py-3 px-3">subnet-9a1c3e</td>
+<td class="py-3 px-3">US-EAST-1B</td>
+<td class="py-3 px-3">
+<span class="status-dot bg-primary-fixed-dim"></span>
+<span class="ml-2">ACTIVE</span>
+</td>
+<td class="py-3 px-3 font-label-sm text-[10px]">ENABLED</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-3">
+<span>12%</span>
+<div class="w-20 h-2 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary" style="width: 12%"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/10 group/row">
+<td class="py-3 px-3 text-secondary">192.168.10.0/24</td>
+<td class="py-3 px-3">subnet-7b2f90</td>
+<td class="py-3 px-3">EU-WEST-4A</td>
+<td class="py-3 px-3">
+<span class="status-dot bg-secondary-fixed"></span>
+<span class="ml-2">RESERVED</span>
+</td>
+<td class="py-3 px-3 font-label-sm text-[10px]">DISABLED</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-3">
+<span>0%</span>
+<div class="w-20 h-2 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary" style="width: 0%"></div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/10 group/row">
+<td class="py-3 px-3 text-primary">10.10.0.0/20</td>
+<td class="py-3 px-3">subnet-22d4e1</td>
+<td class="py-3 px-3">AP-SOUTH-1C</td>
+<td class="py-3 px-3">
+<span class="status-dot bg-error"></span>
+<span class="ml-2">DEGRADED</span>
+</td>
+<td class="py-3 px-3 font-label-sm text-[10px]">ENABLED</td>
+<td class="py-3 px-3 text-right">
+<div class="flex items-center justify-end gap-3">
+<span>94%</span>
+<div class="w-20 h-2 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-error" style="width: 94%"></div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Interactive Terminal Panel -->
+<div class="fixed bottom-0 right-0 w-80 h-10 bg-surface-container-highest border-l border-t border-outline-variant/40 flex items-center px-4 cursor-pointer hover:bg-surface-container-high transition-all" id="terminal-toggle">
+<span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
+<span class="ml-3 font-code-sm text-[11px] text-on-surface-variant">SESSION_LOGS :: 14 NEW EVENTS</span>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Pulse Effect for topology nodes
+        const nodes = document.querySelectorAll('.animate-pulse');
+        setInterval(() => {
+            nodes.forEach(node => {
+                node.style.boxShadow = `0 0 ${Math.random() * 15}px #00dbe9`;
+            });
+        }, 1000);
+
+        // Terminal Toggle Interaction
+        const terminal = document.getElementById('terminal-toggle');
+        terminal.addEventListener('click', () => {
+            terminal.classList.toggle('h-64');
+            if(terminal.classList.contains('h-64')) {
+                terminal.innerHTML = `
+                    <div class="flex flex-col w-full h-full p-3 font-code-sm text-[10px] overflow-hidden">
+                        <div class="flex justify-between items-center mb-2 border-b border-outline-variant pb-1">
+                            <span class="text-primary">CORE_SYSTEM_LOGS</span>
+                            <span class="material-symbols-outlined text-[14px]">close</span>
+                        </div>
+                        <div class="flex-1 overflow-y-auto space-y-1">
+                            <div class="text-on-surface-variant">[14:22:01] <span class="text-primary">INFO</span> :: Subnet mask validation complete.</div>
+                            <div class="text-on-surface-variant">[14:22:05] <span class="text-secondary">WARN</span> :: Latency spike detected in SA-EAST-01.</div>
+                            <div class="text-on-surface-variant">[14:22:12] <span class="text-primary">INFO</span> :: Peering handshake initiated with VPC-SIGMA-9.</div>
+                            <div class="text-on-surface-variant">[14:23:45] <span class="text-error">FAIL</span> :: DHCP release failed for node 10.0.1.44.</div>
+                            <div class="text-on-surface-variant">[14:24:00] <span class="text-primary">INFO</span> :: Routing table broadcast successful.</div>
+                            <div class="animate-pulse text-primary">>_</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                terminal.innerHTML = `
+                    <span class="material-symbols-outlined text-[16px] text-primary">terminal</span>
+                    <span class="ml-3 font-code-sm text-[11px] text-on-surface-variant">SESSION_LOGS :: 14 NEW EVENTS</span>
+                `;
+            }
+        });
+    </script>
+</body></html>

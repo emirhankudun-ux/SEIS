@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Audio Workstation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#333535",
+                      "on-error": "#690005",
+                      "inverse-surface": "#e2e2e2",
+                      "secondary": "#ebb2ff",
+                      "surface-container": "#1e2020",
+                      "on-primary": "#00363a",
+                      "inverse-primary": "#006970",
+                      "surface": "#121414",
+                      "on-secondary-container": "#480064",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-background": "#e2e2e2",
+                      "surface-dim": "#121414",
+                      "primary-fixed-dim": "#00dbe9",
+                      "outline-variant": "#3b494b",
+                      "primary": "#dbfcff",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "inverse-on-surface": "#2f3131",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-primary-container": "#006970",
+                      "tertiary-fixed": "#e5e2e1",
+                      "background": "#121414",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "on-secondary": "#520071",
+                      "primary-container": "#00f0ff",
+                      "on-tertiary": "#313030",
+                      "on-secondary-fixed": "#320047",
+                      "outline": "#849495",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-tertiary-container": "#605e5e",
+                      "error-container": "#93000a",
+                      "surface-variant": "#333535",
+                      "on-surface": "#e2e2e2",
+                      "surface-tint": "#00dbe9",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-fixed": "#002022",
+                      "tertiary": "#f9f5f5",
+                      "surface-bright": "#37393a",
+                      "tertiary-container": "#dcd9d8",
+                      "secondary-fixed": "#f8d8ff",
+                      "surface-container-low": "#1a1c1c",
+                      "secondary-container": "#ce5dff",
+                      "on-error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-md": "16px",
+                      "stroke-thin": "1px",
+                      "stroke-thick": "2px",
+                      "gap-lg": "24px",
+                      "gap-sm": "8px",
+                      "gap-xs": "4px",
+                      "margin-page": "32px"
+              },
+              "fontFamily": {
+                      "headline-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-md": [
+                              "JetBrains Mono"
+                      ],
+                      "code-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "JetBrains Mono"
+                      ],
+                      "label-sm": [
+                              "Space Mono"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-sm": [
+                              "13px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface h-screen overflow-hidden flex font-body-md">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col docked h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 bg-surface-container-lowest/90 backdrop-blur-2xl text-secondary-fixed">
+<div class="p-4 border-b border-outline-variant/20 mb-4 flex items-center gap-4 overflow-hidden">
+<img alt="Root User Avatar" class="w-10 h-10 rounded-full border border-secondary-fixed shrink-0" data-alt="A futuristic, glowing avatar image depicting a stylized root user profile in a high-tech cyberpunk environment. The avatar features sharp geometric shapes and intense neon cyan accents against a deep black background, conveying a sense of advanced system authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC-KD5m70RRPOsKzyD6x0LENsK9OTkw1YAtbwvLqiXGJIu0cqTocS-jIf2C64ZZ1pmm0diEbC2ZSmyZnqNnYFo9onBB3pLH9dUn4x129QD2V66TAu9qv0Odq_YajBCumhXz7qgKUn1wTzO89cwVCtL2aCyapXsh3yJWdaZLhHE1HSxOOeQKj8wXr-E791EHQFQ9QaBnTvzvEcSH0BG4zhnOpVdpYmGgg6vkLcmridpZhYJaOND1G2vJCkpXgA1-Xz7DngzRCd47euV"/>
+<div class="flex-col whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-full">
+<span class="font-label-caps text-label-caps block">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-secondary-fixed-dim block">SEIS-01</span>
+</div>
+</div>
+<ul class="flex flex-col gap-1 px-2 flex-grow overflow-y-auto overflow-x-hidden w-full">
+<li class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">DASHBOARD</span>
+</li>
+<li class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">folder_open</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">FILESYSTEM</span>
+</li>
+<li class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed rounded-r w-full">
+<span class="material-symbols-outlined shrink-0">terminal</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">TERMINAL</span>
+</li>
+<li class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">smart_toy</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">AI_AGENTS</span>
+</li>
+<li class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">cloud_queue</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">INFRASTRUCTURE</span>
+</li>
+<li class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">list_alt</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">LOGS</span>
+</li>
+</ul>
+<div class="mt-auto px-4 py-4 w-full">
+<button class="bg-secondary-fixed text-on-secondary-fixed font-label-caps text-label-caps w-full py-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none group-hover:pointer-events-auto flex items-center justify-center gap-2 hover:bg-secondary-fixed-dim">
+<span class="material-symbols-outlined text-sm">add</span> NEW_SESSION
+            </button>
+</div>
+<div class="flex flex-col gap-1 px-2 pb-4 border-t border-outline-variant/20 pt-4 w-full">
+<div class="group flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">power_settings_new</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">POWER</span>
+</div>
+<div class="group flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 rounded w-full">
+<span class="material-symbols-outlined shrink-0">lock</span>
+<span class="font-label-caps text-label-caps ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">LOCK</span>
+</div>
+</div>
+</nav>
+<div class="flex-1 flex flex-col ml-20 h-full overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-4 h-10 border-b border-outline-variant/30 bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 z-30">
+<div class="flex items-center gap-6 h-full">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex h-full gap-4 items-end pb-1">
+<span class="cursor-pointer active:opacity-70 text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200">WORKSPACES</span>
+<span class="cursor-pointer active:opacity-70 text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200">TELEMETRY</span>
+<span class="cursor-pointer active:opacity-70 text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps">AGENTS</span>
+<span class="cursor-pointer active:opacity-70 text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200">NETWORK</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group hidden sm:block">
+<input class="bg-surface-container border border-outline-variant rounded-full pl-8 pr-4 py-1 text-sm text-on-surface font-code-sm focus:border-primary-fixed focus:outline-none focus:ring-1 focus:ring-primary-fixed w-48 transition-all" placeholder="Search..." type="text"/>
+<span class="material-symbols-outlined absolute left-2 top-1.5 text-on-surface-variant text-[18px]">search</span>
+</div>
+<div class="flex gap-3 text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim active:opacity-70">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim active:opacity-70">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim active:opacity-70">settings</span>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-gap-md grid grid-cols-12 gap-gap-md overflow-hidden bg-background">
+<!-- Left Column: Mixer & Faders -->
+<section class="col-span-12 lg:col-span-3 flex flex-col gap-gap-md overflow-y-auto">
+<div class="bg-surface-container-highest/85 border border-outline-variant rounded-DEFAULT overflow-hidden flex flex-col">
+<div class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-3 py-1.5 uppercase tracking-widest font-bold">Mixer Telemetry</div>
+<div class="p-gap-sm flex flex-col gap-gap-sm">
+<!-- Fader 1 -->
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm flex items-center gap-3">
+<div class="w-8 flex flex-col items-center">
+<span class="font-code-sm text-[10px] text-on-surface-variant mb-1">CH 1</span>
+<div class="h-32 w-1.5 bg-outline-variant/30 rounded-full relative">
+<div class="absolute bottom-0 w-full h-2/3 bg-primary-fixed rounded-full shadow-[0_0_8px_rgba(125,244,255,0.4)]"></div>
+<div class="absolute bottom-2/3 w-4 h-2 bg-on-surface -ml-[5px] rounded-sm border border-background cursor-pointer"></div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-[11px] text-on-surface truncate w-16">SYS_VCO</span>
+<span class="font-code-sm text-[10px] text-primary-fixed">-4.2dB</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-surface-bright rounded-sm overflow-hidden"><div class="h-full bg-secondary-fixed w-3/4"></div></div>
+</div>
+<div class="flex gap-1 mt-1 justify-center">
+<button class="bg-surface-bright text-on-surface w-6 h-6 rounded-sm text-[10px] hover:bg-outline-variant">M</button>
+<button class="bg-surface-bright text-on-surface w-6 h-6 rounded-sm text-[10px] hover:bg-outline-variant">S</button>
+</div>
+<div class="mt-2 flex justify-center">
+<div class="w-8 h-8 rounded-full border border-outline-variant relative">
+<div class="absolute inset-[3px] rounded-full border border-primary-fixed/50"></div>
+<div class="absolute top-1/2 left-1/2 w-0.5 h-3 bg-primary-fixed origin-bottom -translate-x-1/2 -translate-y-full rotate-45"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Fader 2 -->
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm flex items-center gap-3">
+<div class="w-8 flex flex-col items-center">
+<span class="font-code-sm text-[10px] text-on-surface-variant mb-1">CH 2</span>
+<div class="h-32 w-1.5 bg-outline-variant/30 rounded-full relative">
+<div class="absolute bottom-0 w-full h-1/3 bg-secondary-fixed rounded-full shadow-[0_0_8px_rgba(248,216,255,0.4)]"></div>
+<div class="absolute bottom-1/3 w-4 h-2 bg-on-surface -ml-[5px] rounded-sm border border-background cursor-pointer"></div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-[11px] text-on-surface truncate w-16">LFO_MOD</span>
+<span class="font-code-sm text-[10px] text-secondary-fixed">-12.1dB</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-surface-bright rounded-sm overflow-hidden"><div class="h-full bg-primary-fixed w-1/3"></div></div>
+</div>
+<div class="flex gap-1 mt-1 justify-center">
+<button class="bg-error/20 text-error w-6 h-6 rounded-sm text-[10px] border border-error/50">M</button>
+<button class="bg-surface-bright text-on-surface w-6 h-6 rounded-sm text-[10px] hover:bg-outline-variant">S</button>
+</div>
+<div class="mt-2 flex justify-center">
+<div class="w-8 h-8 rounded-full border border-outline-variant relative">
+<div class="absolute inset-[3px] rounded-full border border-secondary-fixed/50"></div>
+<div class="absolute top-1/2 left-1/2 w-0.5 h-3 bg-secondary-fixed origin-bottom -translate-x-1/2 -translate-y-full -rotate-12"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle/Right Column: Waveform, FFT, Patch Bay -->
+<section class="col-span-12 lg:col-span-9 flex flex-col gap-gap-md h-full">
+<!-- Multi-track Waveform Editor -->
+<div class="bg-surface-container-highest/85 border border-outline-variant rounded-DEFAULT flex flex-col flex-[2] overflow-hidden">
+<div class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-3 py-1.5 uppercase tracking-widest font-bold flex justify-between items-center">
+<span>Waveform Sequencer</span>
+<div class="flex gap-2 text-background">
+<span class="material-symbols-outlined text-[16px] cursor-pointer">play_arrow</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer">stop</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer">fiber_manual_record</span>
+</div>
+</div>
+<div class="p-gap-sm flex-1 flex flex-col gap-px bg-surface-dim relative overflow-hidden">
+<!-- Playhead -->
+<div class="absolute top-0 bottom-0 left-[25%] w-px bg-error z-10 shadow-[0_0_4px_rgba(255,180,171,0.8)]"></div>
+<!-- Timeline Header -->
+<div class="h-6 flex items-center border-b border-outline-variant/30 font-code-sm text-[10px] text-outline-variant pl-[100px] gap-8">
+<span>0:00</span><span>0:01</span><span>0:02</span><span>0:03</span><span>0:04</span><span>0:05</span>
+</div>
+<!-- Track 1 -->
+<div class="flex h-16 bg-surface-container-low border-b border-outline-variant/30 group">
+<div class="w-[100px] border-r border-outline-variant/50 p-2 flex flex-col justify-center bg-surface-container-highest">
+<span class="font-code-sm text-[11px] text-primary-fixed truncate">SYS_VCO</span>
+<div class="flex gap-1 mt-1">
+<span class="w-3 h-3 bg-outline-variant rounded-sm text-[8px] flex items-center justify-center text-background">M</span>
+<span class="w-3 h-3 bg-outline-variant rounded-sm text-[8px] flex items-center justify-center text-background">S</span>
+</div>
+</div>
+<div class="flex-1 relative overflow-hidden flex items-center px-2">
+<div class="absolute inset-y-2 left-4 right-12 bg-primary-fixed/20 border border-primary-fixed/50 rounded-sm overflow-hidden flex items-center justify-center">
+<!-- Decorative waveform lines -->
+<svg height="100%" preserveaspectratio="none" width="100%">
+<path d="M0,20 Q10,5 20,20 T40,20 T60,20 T80,20 T100,20 T120,20 T140,20 T160,20 T180,20 T200,20 T220,20 T240,20 T260,20 T280,20 T300,20" fill="transparent" stroke="var(--tw-colors-primary-fixed)" stroke-width="1.5" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Track 2 -->
+<div class="flex h-16 bg-surface-container-low border-b border-outline-variant/30 group">
+<div class="w-[100px] border-r border-outline-variant/50 p-2 flex flex-col justify-center bg-surface-container-highest">
+<span class="font-code-sm text-[11px] text-secondary-fixed truncate">LFO_MOD</span>
+<div class="flex gap-1 mt-1">
+<span class="w-3 h-3 bg-error rounded-sm text-[8px] flex items-center justify-center text-on-error">M</span>
+<span class="w-3 h-3 bg-outline-variant rounded-sm text-[8px] flex items-center justify-center text-background">S</span>
+</div>
+</div>
+<div class="flex-1 relative overflow-hidden flex items-center px-2">
+<div class="absolute inset-y-2 left-10 right-4 bg-secondary-fixed/20 border border-secondary-fixed/50 rounded-sm overflow-hidden flex items-center justify-center">
+<svg height="100%" preserveaspectratio="none" width="100%">
+<path d="M0,20 Q5,30 10,20 T20,20 T30,20 T40,20 T50,20 T60,20 T70,20 T80,20 T90,20 T100,20 T110,20 T120,20" fill="transparent" stroke="var(--tw-colors-secondary-fixed)" stroke-width="1" vector-effect="non-scaling-stroke"></path>
+</svg>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Lower split: FFT & Patch Bay -->
+<div class="flex gap-gap-md flex-[1] min-h-[200px]">
+<!-- FFT Analyzer -->
+<div class="bg-surface-container-highest/85 border border-outline-variant rounded-DEFAULT flex-1 flex flex-col overflow-hidden relative">
+<div class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-3 py-1.5 uppercase tracking-widest font-bold z-10">Spectrum (FFT)</div>
+<div class="flex-1 bg-[#050505] relative p-2">
+<!-- Grid lines -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(59,73,75,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(59,73,75,0.2)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+<!-- Fake FFT Data Bars -->
+<div class="absolute bottom-0 left-2 right-2 h-full flex items-end gap-[1px] opacity-80">
+<div class="w-full h-[10%] bg-secondary-fixed"></div>
+<div class="w-full h-[15%] bg-secondary-fixed"></div>
+<div class="w-full h-[30%] bg-primary-fixed"></div>
+<div class="w-full h-[60%] bg-primary-fixed"></div>
+<div class="w-full h-[85%] bg-primary-fixed"></div>
+<div class="w-full h-[70%] bg-primary-fixed"></div>
+<div class="w-full h-[40%] bg-primary-fixed"></div>
+<div class="w-full h-[25%] bg-secondary-fixed"></div>
+<div class="w-full h-[10%] bg-secondary-fixed"></div>
+<div class="w-full h-[5%] bg-secondary-fixed"></div>
+<div class="w-full h-[2%] bg-outline-variant"></div>
+<div class="w-full h-[2%] bg-outline-variant"></div>
+<div class="w-full h-[1%] bg-outline-variant"></div>
+</div>
+<!-- Peak Hold Line -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<polyline fill="none" points="0,180 20,170 40,140 60,80 80,30 100,60 120,120 140,150 160,180 180,190 200,195" stroke="var(--tw-colors-error)" stroke-width="1.5"></polyline>
+</svg>
+<div class="absolute top-2 right-2 bg-surface-container/80 px-2 py-1 border border-outline-variant/50 font-code-sm text-[10px] text-primary-fixed">PEAK: 12.4kHz</div>
+</div>
+</div>
+<!-- Patch Bay -->
+<div class="bg-surface-container-highest/85 border border-outline-variant rounded-DEFAULT flex-1 flex flex-col overflow-hidden">
+<div class="bg-secondary-fixed text-on-secondary-fixed font-label-sm text-label-sm px-3 py-1.5 uppercase tracking-widest font-bold">Node Routing</div>
+<div class="flex-1 p-gap-sm bg-surface-dim relative">
+<!-- Virtual Cables SVG -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+<path d="M 40 40 C 80 40, 80 120, 150 120" fill="none" opacity="0.6" stroke="var(--tw-colors-primary-fixed)" stroke-width="2"></path>
+<path d="M 40 100 C 100 100, 100 60, 200 60" fill="none" opacity="0.6" stroke="var(--tw-colors-secondary-fixed)" stroke-width="2"></path>
+</svg>
+<div class="flex justify-between h-full relative z-10">
+<!-- Inputs -->
+<div class="flex flex-col gap-4">
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm text-center">
+<div class="w-4 h-4 bg-background rounded-full border-2 border-outline-variant mx-auto mb-1 relative"><div class="absolute inset-1 bg-primary-fixed rounded-full"></div></div>
+<span class="font-code-sm text-[10px] text-on-surface">SYS_IN</span>
+</div>
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm text-center">
+<div class="w-4 h-4 bg-background rounded-full border-2 border-outline-variant mx-auto mb-1 relative"><div class="absolute inset-1 bg-secondary-fixed rounded-full"></div></div>
+<span class="font-code-sm text-[10px] text-on-surface">AI_GEN</span>
+</div>
+</div>
+<!-- Outputs -->
+<div class="flex flex-col gap-4 justify-center">
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm text-center border-primary-fixed/50 shadow-[0_0_8px_rgba(125,244,255,0.1)]">
+<div class="w-4 h-4 bg-background rounded-full border-2 border-primary-fixed mx-auto mb-1 relative"></div>
+<span class="font-code-sm text-[10px] text-primary-fixed">MASTER</span>
+</div>
+<div class="bg-surface-container border border-outline-variant p-2 rounded-sm text-center">
+<div class="w-4 h-4 bg-background rounded-full border-2 border-outline-variant mx-auto mb-1 relative"></div>
+<span class="font-code-sm text-[10px] text-on-surface-variant">AUX_1</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

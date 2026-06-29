@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - Infrastructure Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-error": "#690005",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#f9f5f5",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-background": "#e2e2e2",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline": "#849495",
+                        "surface-container-high": "#282a2b",
+                        "surface-tint": "#00dbe9",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary-container": "#ce5dff",
+                        "primary-fixed": "#7df4ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "error-container": "#93000a",
+                        "background": "#121414",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "primary-container": "#00f0ff",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary": "#dbfcff",
+                        "on-secondary-container": "#480064",
+                        "tertiary-container": "#dcd9d8",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-highest": "#333535",
+                        "surface-bright": "#37393a",
+                        "on-primary-container": "#006970",
+                        "secondary": "#ebb2ff",
+                        "on-surface": "#e2e2e2",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-container": "#1e2020",
+                        "on-primary": "#00363a",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520071",
+                        "surface-variant": "#333535",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary": "#313030"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "stroke-thick": "2px",
+                        "gap-xs": "4px",
+                        "gap-sm": "8px",
+                        "stroke-thin": "1px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background-color: rgba(18, 20, 20, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-header { background-color: #dbfcff; color: #0a0a0a; border-bottom: 1px solid #333333; height: 24px; display: flex; align-items: center; padding: 0 12px; }
+        .neon-border { border-color: #00dbe9; box-shadow: 0 0 8px rgba(0, 219, 233, 0.3); }
+        .grid-bg { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); }
+        .node-pulse { animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
+        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 80%, 100% { transform: scale(1.5); opacity: 0; } }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #121414; }
+        ::-webkit-scrollbar-thumb { background: #333535; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #849495; }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen w-full overflow-hidden flex font-body-md bg-surface-container-lowest">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20">
+<div class="flex-1 overflow-y-auto mt-4 space-y-2">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined text-secondary-fixed">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">LOGS</span>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant/20 space-y-2">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">power_settings_new</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">POWER</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-secondary-fixed">lock</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap font-label-caps text-label-caps">LOCK</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col ml-20 h-full">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center w-full px-gap-md h-10 bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim font-bold">SEIS KERNEL OS</div>
+<div class="flex space-x-6">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</div>
+<div class="flex space-x-4 text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors">settings</span>
+</div>
+</nav>
+<!-- Dashboard Canvas -->
+<main class="flex-1 p-gap-md grid grid-cols-12 grid-rows-6 gap-gap-md overflow-hidden bg-background">
+<!-- Telemetry Sidebar (Left) -->
+<div class="col-span-3 row-span-6 flex flex-col gap-gap-md">
+<!-- Node Health -->
+<div class="glass-panel flex-1 flex flex-col">
+<div class="glass-header font-label-sm text-label-sm uppercase">Node Health Status</div>
+<div class="p-gap-md flex-1 overflow-y-auto space-y-4">
+<!-- Node 1 -->
+<div class="border-b border-surface-variant pb-2">
+<div class="flex justify-between items-center mb-1">
+<span class="font-code-sm text-code-sm text-primary-fixed">k8s-master-01</span>
+<span class="text-xs text-secondary-fixed">98%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-sm overflow-hidden flex gap-[1px]">
+<div class="h-full bg-primary-fixed w-[20%]"></div>
+<div class="h-full bg-primary-fixed w-[20%]"></div>
+<div class="h-full bg-primary-fixed w-[20%]"></div>
+<div class="h-full bg-primary-fixed w-[20%]"></div>
+<div class="h-full bg-surface-variant w-[20%]"></div>
+</div>
+</div>
+<!-- Node 2 -->
+<div class="border-b border-surface-variant pb-2">
+<div class="flex justify-between items-center mb-1">
+<span class="font-code-sm text-code-sm text-primary-fixed">k8s-worker-01</span>
+<span class="text-xs text-error">92%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-sm overflow-hidden flex gap-[1px]">
+<div class="h-full bg-error w-[20%]"></div>
+<div class="h-full bg-error w-[20%]"></div>
+<div class="h-full bg-error w-[20%]"></div>
+<div class="h-full bg-error w-[20%]"></div>
+<div class="h-full bg-surface-variant w-[20%]"></div>
+</div>
+</div>
+<!-- Node 3 -->
+<div class="border-b border-surface-variant pb-2">
+<div class="flex justify-between items-center mb-1">
+<span class="font-code-sm text-code-sm text-primary-fixed">docker-swarm-mgr</span>
+<span class="text-xs text-secondary-fixed">45%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-sm overflow-hidden flex gap-[1px]">
+<div class="h-full bg-secondary-fixed w-[20%]"></div>
+<div class="h-full bg-secondary-fixed w-[20%]"></div>
+<div class="h-full bg-surface-variant w-[20%]"></div>
+<div class="h-full bg-surface-variant w-[20%]"></div>
+<div class="h-full bg-surface-variant w-[20%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Resource Allocation -->
+<div class="glass-panel flex-1 flex flex-col">
+<div class="glass-header font-label-sm text-label-sm uppercase">Cluster Allocation</div>
+<div class="p-gap-md flex-1 flex flex-col justify-around">
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1 text-on-surface-variant">
+<span>CPU</span>
+<span>124/256 Cores</span>
+</div>
+<div class="w-full h-4 border border-outline-variant flex">
+<div class="bg-primary-fixed/50 h-full w-[48%] border-r border-primary-fixed"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1 text-on-surface-variant">
+<span>MEM</span>
+<span>840/1024 GB</span>
+</div>
+<div class="w-full h-4 border border-outline-variant flex">
+<div class="bg-secondary-fixed/50 h-full w-[82%] border-r border-secondary-fixed"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-code-sm text-code-sm mb-1 text-on-surface-variant">
+<span>NET</span>
+<span>4.2 Gbps</span>
+</div>
+<div class="w-full h-4 border border-outline-variant flex">
+<div class="bg-surface-tint/50 h-full w-[60%] border-r border-surface-tint"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Central Topology Map -->
+<div class="col-span-9 row-span-4 glass-panel neon-border relative overflow-hidden flex flex-col">
+<div class="glass-header font-label-sm text-label-sm uppercase justify-between">
+<span>Active Network Topology</span>
+<span class="text-secondary-fixed animate-pulse">LIVE</span>
+</div>
+<div class="flex-1 grid-bg relative p-8">
+<!-- Topology Map Visuals -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<svg class="w-full h-full opacity-50" viewbox="0 0 800 400">
+<!-- Connection Lines -->
+<path class="animate-[dash_2s_linear_infinite]" d="M 200 200 L 400 200" stroke="#00dbe9" stroke-dasharray="4 4" stroke-width="2"></path>
+<path d="M 400 200 L 600 100" stroke="#00dbe9" stroke-width="2"></path>
+<path d="M 400 200 L 600 300" stroke="#ce5dff" stroke-width="2"></path>
+<path d="M 200 100 L 400 200" stroke="#00dbe9" stroke-width="1"></path>
+<path d="M 200 300 L 400 200" stroke="#00dbe9" stroke-width="1"></path>
+</svg>
+</div>
+<!-- Nodes -->
+<!-- Central Node -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 cursor-pointer">
+<div class="w-16 h-16 bg-surface-container border-2 border-primary-fixed rounded-full flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border-2 border-primary-fixed node-pulse"></div>
+<span class="material-symbols-outlined text-primary-fixed text-3xl">dns</span>
+</div>
+<div class="mt-2 bg-black/80 px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-primary-fixed whitespace-nowrap">SEIS-CORE</div>
+</div>
+<!-- Left Nodes -->
+<div class="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 cursor-pointer">
+<div class="w-12 h-12 bg-surface-container border border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+<div class="mt-2 bg-black/80 px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-on-surface-variant whitespace-nowrap">EXT-DB-01</div>
+</div>
+<div class="absolute top-3/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 text-center z-10 cursor-pointer">
+<div class="w-12 h-12 bg-surface-container border border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">inventory_2</span>
+</div>
+<div class="mt-2 bg-black/80 px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-on-surface-variant whitespace-nowrap">EXT-DB-02</div>
+</div>
+<!-- Right Nodes -->
+<div class="absolute top-1/4 right-1/4 transform translate-x-1/2 -translate-y-1/2 text-center z-10 cursor-pointer">
+<div class="w-14 h-14 bg-surface-container border border-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed">webhook</span>
+</div>
+<div class="mt-2 bg-black/80 px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-primary-fixed whitespace-nowrap">API-GATEWAY</div>
+</div>
+<div class="absolute top-3/4 right-1/4 transform translate-x-1/2 -translate-y-1/2 text-center z-10 cursor-pointer group">
+<div class="w-14 h-14 bg-secondary-fixed/20 border border-secondary-fixed flex items-center justify-center shadow-[0_0_15px_rgba(206,93,255,0.4)] group-hover:bg-secondary-fixed/40 transition-colors">
+<span class="material-symbols-outlined text-secondary-fixed">warning</span>
+</div>
+<div class="mt-2 bg-black/80 px-2 py-1 border border-secondary-fixed font-code-sm text-code-sm text-secondary-fixed whitespace-nowrap">ML-PIPELINE</div>
+</div>
+</div>
+</div>
+<!-- Events Terminal (Bottom Right) -->
+<div class="col-span-9 row-span-2 glass-panel flex flex-col">
+<div class="glass-header font-label-sm text-label-sm uppercase flex justify-between">
+<span>System Events Log</span>
+<div class="flex gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-fixed"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-fixed"></span>
+<span class="w-3 h-3 rounded-full bg-error"></span>
+</div>
+</div>
+<div class="flex-1 p-gap-sm bg-[#0c0f0f] font-code-sm text-code-sm overflow-y-auto font-mono">
+<div class="flex gap-4 border-b border-surface-variant/50 py-1">
+<span class="text-outline-variant">[14:32:01]</span>
+<span class="text-primary-fixed w-16">[INFO]</span>
+<span class="text-on-surface">Connection established to SEIS-CORE from 192.168.1.45</span>
+</div>
+<div class="flex gap-4 border-b border-surface-variant/50 py-1">
+<span class="text-outline-variant">[14:32:05]</span>
+<span class="text-secondary-fixed w-16">[WARN]</span>
+<span class="text-on-surface">ML-PIPELINE latency spike detected (&gt;500ms)</span>
+</div>
+<div class="flex gap-4 border-b border-surface-variant/50 py-1">
+<span class="text-outline-variant">[14:32:12]</span>
+<span class="text-primary-fixed w-16">[INFO]</span>
+<span class="text-on-surface">Auto-scaling group k8s-worker initiated</span>
+</div>
+<div class="flex gap-4 border-b border-surface-variant/50 py-1">
+<span class="text-outline-variant">[14:32:15]</span>
+<span class="text-error w-16">[ERR]</span>
+<span class="text-on-surface">Failed to pull image registry.seis.os/dev/core:latest</span>
+</div>
+<div class="flex gap-4 py-1">
+<span class="text-outline-variant">[14:32:18]</span>
+<span class="text-primary-fixed w-16">[INFO]</span>
+<span class="text-on-surface flex items-center">Awaiting incoming connections <span class="ml-1 w-2 h-4 bg-primary-fixed animate-pulse inline-block"></span></span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

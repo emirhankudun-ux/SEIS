@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS | VPC Peering Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-glow: rgba(0, 219, 233, 0.3);
+            --lime-pulse: #32ff7e;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+        .obsidian-glass {
+            background: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333335;
+        }
+        .active-glow {
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--lime-pulse);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--lime-pulse);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #333535;
+        }
+        .grid-bg {
+            background-image: linear-gradient(rgba(51, 53, 53, 0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(51, 53, 53, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-high": "#282a2b",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#00f0ff",
+                      "on-tertiary": "#313030",
+                      "surface-container-lowest": "#0c0f0f",
+                      "surface-dim": "#121414",
+                      "on-primary-fixed": "#002022",
+                      "outline-variant": "#3b494b",
+                      "tertiary-container": "#dcd9d8",
+                      "surface-container-low": "#1a1c1c",
+                      "primary-fixed": "#7df4ff",
+                      "error-container": "#93000a",
+                      "surface-tint": "#00dbe9",
+                      "surface-container": "#1e2020",
+                      "on-surface": "#e2e2e2",
+                      "on-primary-container": "#006970",
+                      "surface": "#121414",
+                      "tertiary": "#f9f5f5",
+                      "on-secondary-container": "#480064",
+                      "primary": "#dbfcff",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-primary": "#00363a",
+                      "on-error": "#690005",
+                      "secondary-container": "#ce5dff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-background": "#e2e2e2",
+                      "surface-container-highest": "#333535",
+                      "secondary": "#ebb2ff",
+                      "on-secondary-fixed": "#320047",
+                      "surface-variant": "#333535",
+                      "surface-bright": "#37393a",
+                      "background": "#121414",
+                      "tertiary-fixed": "#e5e2e1",
+                      "inverse-primary": "#006970",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-secondary": "#520071",
+                      "on-tertiary-container": "#605e5e",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "outline": "#849495",
+                      "on-surface-variant": "#b9cacb",
+                      "secondary-fixed": "#f8d8ff",
+                      "inverse-on-surface": "#2f3131",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-tertiary-fixed": "#1c1b1b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-page": "32px",
+                      "gap-xs": "4px",
+                      "stroke-thin": "1px",
+                      "stroke-thick": "2px",
+                      "gap-lg": "24px",
+                      "gap-sm": "8px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "body-md": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="font-body-md text-body-md grid-bg min-h-screen selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<nav class="flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50 bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10 shadow-none">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</span>
+<div class="h-4 w-px bg-white/20 mx-2"></div>
+<div class="flex gap-6">
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors font-body-md text-body-md" href="#">Activities</a>
+<a class="text-primary border-b-2 border-primary hover:bg-white/5 transition-colors font-body-md text-body-md" href="#">Network</a>
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors font-body-md text-body-md" href="#">Files</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 rounded bg-white/5 border border-white/10">
+<span class="pulse-dot"></span>
+<span class="font-label-sm text-label-sm text-on-surface">SECTOR 5 ACTIVE</span>
+</div>
+<div class="flex gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
+<span class="font-body-md text-body-md">14:42 UTC</span>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 bottom-0 flex flex-col items-center py-8 z-40 bg-[#1A1C1C]/70 backdrop-blur-3xl border-r border-white/10 shadow-none w-20">
+<div class="flex flex-col gap-8 w-full items-center">
+<div class="flex flex-col items-center gap-2 mb-4">
+<div class="w-10 h-10 rounded bg-primary/20 border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<button class="w-full py-4 text-primary bg-white/5 border-l-4 border-primary transition-all duration-300 flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-sm text-[10px]">WORK</span>
+</button>
+<button class="w-full py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300 flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-sm text-[10px]">ANLYT</span>
+</button>
+<button class="w-full py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300 flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-sm text-[10px]">NODES</span>
+</button>
+<button class="w-full py-4 text-on-surface-variant hover:bg-white/10 transition-all duration-300 flex flex-col items-center gap-1">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-[10px]">CONF</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-20 pt-12 pb-24 min-h-screen w-full">
+<div class="p-8 grid grid-cols-12 gap-4 h-full">
+<!-- HEADER INFO -->
+<div class="col-span-12 mb-2">
+<div class="flex items-end justify-between border-b border-white/10 pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tighter">VPC Peering Manager</h1>
+<p class="text-on-surface-variant font-label-sm mt-1">CROSS-CLOUD TUNNELING // SYSTEM_REV_9.5</p>
+</div>
+<div class="flex gap-4">
+<button class="px-4 py-2 bg-primary text-on-primary font-bold hover:bg-secondary-container transition-colors uppercase text-label-sm">
+                            Initialize Tunnel
+                        </button>
+<button class="px-4 py-2 border border-primary text-primary font-bold hover:bg-white/5 transition-colors uppercase text-label-sm">
+                            Export Config
+                        </button>
+</div>
+</div>
+</div>
+<!-- PEERING TOPOLOGY MAP (BENTO) -->
+<section class="col-span-12 lg:col-span-8 row-span-2 obsidian-glass min-h-[500px] relative overflow-hidden flex flex-col">
+<div class="h-6 bg-primary-container px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-on-primary-container">PEERING_TOPOLOGY_VIZ_BETA</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-on-primary-container/30"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary-container/30"></div>
+</div>
+</div>
+<div class="flex-grow relative bg-[#0c0f0f] p-4">
+<!-- Placeholder for the interactive map visualization -->
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<div class="w-full h-full" style="background-image: radial-gradient(#333 1px, transparent 1px); background-size: 30px 30px;"></div>
+</div>
+<!-- Simulating Map elements -->
+<div class="relative w-full h-full flex items-center justify-center">
+<div class="absolute top-1/4 left-1/4 p-4 obsidian-glass border-primary/50 border-2">
+<span class="font-label-sm text-[10px] text-primary">AWS_VPC_US_EAST_1</span>
+<div class="mt-2 text-[10px] opacity-70">10.0.0.0/16</div>
+<div class="mt-1 flex items-center gap-1">
+<span class="pulse-dot"></span>
+<span class="text-[9px] text-primary">ACTIVE</span>
+</div>
+</div>
+<div class="absolute bottom-1/4 right-1/4 p-4 obsidian-glass border-secondary/50 border-2">
+<span class="font-label-sm text-[10px] text-secondary">GCP_VPC_EU_WEST_2</span>
+<div class="mt-2 text-[10px] opacity-70">192.168.0.0/20</div>
+<div class="mt-1 flex items-center gap-1">
+<span class="pulse-dot"></span>
+<span class="text-[9px] text-secondary">ENCRYPTED</span>
+</div>
+</div>
+<!-- Connection Line Simulation -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<lineargradient id="lineGrad" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#00dbe9;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#ebb2ff;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<path d="M 300 150 Q 500 250 700 350" fill="none" stroke="url(#lineGrad)" stroke-dasharray="8 4" stroke-width="2">
+<animate attributename="stroke-dashoffset" dur="1s" from="12" repeatcount="indefinite" to="0"></animate>
+</path>
+</svg>
+<!-- High Tech Data Overlay -->
+<div class="absolute bottom-4 left-4 font-code-sm text-[11px] text-white/40 space-y-1">
+<div>LATENCY: 12ms</div>
+<div>MTU: 1500</div>
+<div>ENCRYPTION: AES-256-GCM</div>
+</div>
+</div>
+</div>
+</section>
+<!-- HANDSHAKE LOG (TERMINAL) -->
+<section class="col-span-12 lg:col-span-4 obsidian-glass flex flex-col h-[300px]">
+<div class="h-6 bg-primary/20 px-3 flex items-center justify-between border-b border-white/10">
+<span class="text-[10px] font-bold text-primary">HANDSHAKE_LOG_V2</span>
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+</div>
+<div class="flex-grow p-3 bg-black/80 font-code-sm text-[12px] terminal-scroll overflow-y-auto leading-relaxed text-[#a3defe]">
+<div class="opacity-50">[14:41:02] INITIALIZING_REKEY_PROTOCOL...</div>
+<div>[14:41:03] <span class="text-lime-400">SUCCESS</span> PEER_GCP_VPC_EU_WEST_2 CONNECTED</div>
+<div>[14:41:05] PKI_EXCHANGE: <span class="text-secondary">0x8F2A...E921</span></div>
+<div>[14:41:10] TRAFFIC_FLOW_STABILIZED: US_EAST -&gt; EU_WEST</div>
+<div class="opacity-50">[14:41:45] HEARTBEAT_PULSE_ACK</div>
+<div>[14:42:01] <span class="text-primary">INFO</span> NEW_PEER_DISCOVERED: AZURE_VNET_ASIA</div>
+<div class="animate-pulse">_</div>
+</div>
+</section>
+<!-- TUNNEL CONFIG PANEL -->
+<section class="col-span-12 lg:col-span-4 obsidian-glass flex flex-col">
+<div class="h-6 bg-secondary/20 px-3 flex items-center justify-between border-b border-white/10">
+<span class="text-[10px] font-bold text-secondary uppercase">Tunnel Configuration</span>
+<span class="material-symbols-outlined text-[14px]">tune</span>
+</div>
+<div class="p-4 space-y-4">
+<div>
+<label class="block font-label-sm text-[10px] text-on-surface-variant mb-1">LOCAL_VPC_ID</label>
+<input class="w-full bg-black/40 border-[#333333] text-white font-code-sm text-sm p-2 focus:border-primary focus:ring-0" type="text" value="vpc-0a887f2e12"/>
+</div>
+<div>
+<label class="block font-label-sm text-[10px] text-on-surface-variant mb-1">ENCRYPTION_KEY_ROTATE</label>
+<select class="w-full bg-black/40 border-[#333333] text-white font-code-sm text-sm p-2 focus:border-primary focus:ring-0">
+<option>EVERY 24 HOURS</option>
+<option>EVERY 7 DAYS</option>
+<option>MANUAL ONLY</option>
+</select>
+</div>
+<div class="pt-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded-none bg-black/40 border-[#333333] text-primary focus:ring-0" type="checkbox"/>
+<span class="font-label-sm text-[10px] text-on-surface">ENABLE_SAML_HANDSHAKE</span>
+</label>
+</div>
+<button class="w-full py-2 bg-secondary/10 border border-secondary/50 text-secondary font-bold hover:bg-secondary/20 transition-all uppercase text-[10px]">
+                        Sync Remote State
+                    </button>
+</div>
+</section>
+<!-- TRAFFIC ROUTING TABLE -->
+<section class="col-span-12 obsidian-glass mt-4">
+<div class="h-6 bg-white/5 px-3 flex items-center justify-between border-b border-white/10">
+<span class="text-[10px] font-bold text-on-surface uppercase">Surgical Routing Metrics</span>
+<div class="flex gap-4">
+<span class="text-[9px] text-white/40">TOTAL_EGRESS: 4.2TB</span>
+<span class="text-[9px] text-white/40">AVG_DROPS: 0.002%</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full font-code-sm text-[12px] text-left">
+<thead class="bg-white/5 border-b border-white/10">
+<tr>
+<th class="p-3 font-label-sm text-[10px] text-on-surface-variant">DESTINATION</th>
+<th class="p-3 font-label-sm text-[10px] text-on-surface-variant">GATEWAY_TUNNEL</th>
+<th class="p-3 font-label-sm text-[10px] text-on-surface-variant">COST_METRIC</th>
+<th class="p-3 font-label-sm text-[10px] text-on-surface-variant">HEALTH_STATUS</th>
+<th class="p-3 font-label-sm text-[10px] text-on-surface-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-white">10.200.0.0/16</td>
+<td class="p-3 text-primary">tun-01-primary</td>
+<td class="p-3">10</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="pulse-dot"></span>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+<td class="p-3">
+<button class="text-white/40 hover:text-white transition-colors">REBOOT</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-white">192.168.4.0/24</td>
+<td class="p-3 text-secondary">tun-42-backup</td>
+<td class="p-3">50</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+<span class="text-yellow-500">LATENCY_HIGH</span>
+</div>
+</td>
+<td class="p-3">
+<button class="text-white/40 hover:text-white transition-colors">REBOOT</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-white">172.16.0.0/12</td>
+<td class="p-3 text-primary">tun-03-mesh</td>
+<td class="p-3">5</td>
+<td class="p-3">
+<div class="flex items-center gap-2">
+<span class="pulse-dot"></span>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+<td class="p-3">
+<button class="text-white/40 hover:text-white transition-colors">REBOOT</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (The Dock) -->
+<nav class="fixed bottom-4 left-1/2 -translate-x-1/2 flex gap-4 px-6 py-3 z-50 bg-[#1A1C1C]/60 backdrop-blur-[64px] border border-white/20 rounded-xl mx-auto mb-4 shadow-2xl shadow-primary/10">
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">folder</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="bg-primary-container text-on-primary-container rounded-lg p-2 scale-110 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">code</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300 ease-out">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+</nav>
+<!-- Global Background Animation -->
+<div class="fixed inset-0 pointer-events-none -z-10 opacity-30">
+
+</div>
+<script>
+        // Micro-interactions for terminal
+        const terminalBody = document.querySelector('.terminal-scroll');
+        const logs = [
+            "[14:42:15] ENCRYPT_HANDSHAKE: INITIATED BY 10.0.4.1",
+            "[14:42:16] AUTH_TOKEN_VALID: SECTOR_5_ADMIN",
+            "[14:42:20] MTU_NEGOTIATION: COMPLETE (1500 BYTES)",
+            "[14:42:35] ROUTING_UPDATE: NEW PATH VIA tun-03-mesh",
+            "[14:42:50] HEARTBEAT_PULSE_ACK: RESPONSE_TIME 11ms"
+        ];
+        let logIndex = 0;
+
+        function addLog() {
+            const div = document.createElement('div');
+            div.innerHTML = logs[logIndex % logs.length];
+            terminalBody.insertBefore(div, terminalBody.lastElementChild);
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+            logIndex++;
+            setTimeout(addLog, Math.random() * 5000 + 2000);
+        }
+        
+        setTimeout(addLog, 2000);
+
+        // Grid interactions
+        document.addEventListener('mousemove', (e) => {
+            const tiles = document.querySelectorAll('.obsidian-glass');
+            tiles.forEach(tile => {
+                const rect = tile.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    tile.style.borderColor = 'rgba(0, 219, 233, 0.4)';
+                } else {
+                    tile.style.borderColor = '#333335';
+                }
+            });
+        });
+    </script>
+</body></html>

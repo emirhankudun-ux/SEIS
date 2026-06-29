@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - MEDIA & RECORDING LAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-cyan: #7df4ff;
+            --secondary-violet: #ebb2ff;
+            --obsidian: #0a0a0a;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .technical-grid {
+            background-image: 
+                linear-gradient(to right, rgba(125, 244, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(125, 244, 255, 0.05) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .glass-panel:hover {
+            border-color: rgba(125, 244, 255, 0.4);
+        }
+        .active-border {
+            border: 1px solid #7df4ff;
+            box-shadow: 0 0 8px rgba(125, 244, 255, 0.3);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .waveform-bar {
+            width: 3px;
+            background: var(--primary-cyan);
+            border-radius: 1px;
+            animation: pulse-height 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-height {
+            0%, 100% { height: 4px; }
+            50% { height: 24px; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#74009f",
+                    "tertiary-fixed": "#e5e2e1",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-secondary": "#520071",
+                    "surface-dim": "#121414",
+                    "surface-container-highest": "#333535",
+                    "secondary": "#ebb2ff",
+                    "background": "#121414",
+                    "primary-fixed": "#7df4ff",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-container-low": "#1a1c1c",
+                    "on-primary-fixed": "#002022",
+                    "error-container": "#93000a",
+                    "secondary-container": "#ce5dff",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-fixed-variant": "#004f54",
+                    "primary": "#dbfcff",
+                    "tertiary-container": "#dcd9d8",
+                    "inverse-surface": "#e2e2e2",
+                    "surface": "#121414",
+                    "surface-container": "#1e2020",
+                    "on-secondary-container": "#480064",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0c0f0f",
+                    "outline-variant": "#3b494b",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#333535",
+                    "primary-container": "#00f0ff",
+                    "outline": "#849495",
+                    "on-background": "#e2e2e2",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-secondary-fixed": "#320047",
+                    "on-surface": "#e2e2e2",
+                    "on-primary": "#00363a",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "inverse-on-surface": "#2f3131",
+                    "on-primary-container": "#006970",
+                    "on-tertiary": "#313030",
+                    "inverse-primary": "#006970",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-container-high": "#282a2b",
+                    "error": "#ffb4ab",
+                    "surface-tint": "#00dbe9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-page": "32px",
+                    "gap-xs": "4px",
+                    "gap-md": "16px",
+                    "stroke-thin": "1px",
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "stroke-thick": "2px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "label-caps": ["Space Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="technical-grid min-h-screen">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full h-10 flex justify-between items-center px-4 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70" data-icon="settings">settings</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 flex flex-col group overflow-hidden">
+<div class="p-4 flex items-center gap-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 bg-primary-fixed/20 rounded flex items-center justify-center border border-primary-fixed/30">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="account_circle">account_circle</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<p class="font-label-caps text-secondary-fixed text-xs">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-4 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">INFRASTRUCTURE</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-error">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">POWER</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 p-4 h-[calc(100vh-40px)] grid grid-cols-12 gap-4">
+<!-- Left Toolbelt (Photo Editor Controls) -->
+<div class="col-span-2 flex flex-col gap-4">
+<div class="glass-panel flex flex-col">
+<div class="h-6 bg-primary-fixed flex items-center px-2">
+<span class="font-label-caps text-[10px] text-on-primary-fixed font-bold">SURGICAL_TOOLS</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] text-on-surface-variant">EXPOSURE</label>
+<input class="w-full accent-primary-fixed bg-surface-container-high h-1 appearance-none rounded-none cursor-pointer" type="range"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-[10px] text-on-surface-variant">LEVELS</label>
+<div class="h-12 bg-surface-container-lowest border border-outline-variant/30 relative flex items-end overflow-hidden">
+<div class="absolute bottom-0 w-full h-full bg-gradient-to-t from-primary-fixed/20 to-transparent"></div>
+<svg class="w-full h-full text-primary-fixed/40" viewbox="0 0 100 50">
+<path d="M0 50 Q 25 10, 50 40 T 100 0 L 100 50 L 0 50" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-2">
+<button class="bg-primary-fixed text-black font-label-caps text-[9px] py-2 hover:bg-secondary-violet transition-colors">FLATTEN</button>
+<button class="border border-primary-fixed text-primary-fixed font-label-caps text-[9px] py-2 hover:bg-primary-fixed/10 transition-colors">INVERT</button>
+</div>
+</div>
+</div>
+<div class="glass-panel flex-1 flex flex-col">
+<div class="h-6 bg-surface-container-highest flex items-center px-2 border-b border-outline-variant/30">
+<span class="font-label-caps text-[10px] text-on-surface-variant">NEURAL_FILTERS</span>
+</div>
+<div class="p-2 space-y-1 overflow-y-auto">
+<div class="flex items-center justify-between p-2 bg-surface-variant/20 hover:bg-primary-fixed/5 cursor-pointer group">
+<span class="font-code-sm text-xs text-on-surface">NOISE_RED_X</span>
+<span class="material-symbols-outlined text-xs text-primary-fixed opacity-0 group-hover:opacity-100" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-secondary-container/10 border-l-2 border-secondary-fixed cursor-pointer">
+<span class="font-code-sm text-xs text-secondary-fixed">EDGE_ENHANCE</span>
+<span class="material-symbols-outlined text-xs text-secondary-fixed" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-variant/20 hover:bg-primary-fixed/5 cursor-pointer">
+<span class="font-code-sm text-xs text-on-surface">ABERRATION_FIX</span>
+<span class="material-symbols-outlined text-xs text-primary-fixed opacity-0" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Central Creative Canvas -->
+<div class="col-span-7 flex flex-col gap-4">
+<div class="glass-panel flex-1 relative flex items-center justify-center active-border overflow-hidden group">
+<!-- Tiling logic overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #7df4ff 1px, transparent 1px); background-size: 16px 16px;"></div>
+<div class="w-[85%] h-[85%] relative">
+<div class="absolute -top-6 left-0 font-label-caps text-[10px] text-primary-fixed flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed animate-pulse"></span>
+                        CANVAS_SEC_02 // RAW_BUFFER_X99
+                    </div>
+<div class="w-full h-full border border-outline-variant/40 bg-surface-container-lowest relative">
+<img class="w-full h-full object-cover grayscale brightness-50 contrast-125" data-alt="A hyper-detailed digital cinematic photograph of a high-tech server room with glowing blue and violet fiber optic cables. The image is crisp, with a focus on metallic textures and sharp reflections, embodying a cyberpunk minimalism aesthetic with technical clarity and deep black shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxyH0aX-34Aamx0ybnqGudiv-_l0oWg4hsmv2HEcAw_Fv769OYnek3ytWHacA5D9c_6TNpnCONay1J1oj1rxmcjIK9i1hFxGfmez-s0w2LTx2yfIXqT_nljy_CmzJfh_N1rr3YWnTbWBo43GAqlaYxHvvHCHICiInLlfmSi__82UKm60an7GoYvqWXA2kKQer-Ji3gRjz0MCs9zWNgNgD4jFVB632kSb8G-dsG8Zi0pKTf1jAu2XLRH0YzcwUEkmp63FKKyMOVYDif"/>
+<!-- UI Elements Over Image -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<div class="bg-black/80 backdrop-blur border border-primary-fixed/50 p-2 font-code-sm text-[10px] text-primary-fixed">
+                                X: 1442.2px<br/>Y: 882.1px<br/>RGB: #0F1212
+                            </div>
+</div>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<div class="bg-primary-fixed text-black px-2 py-1 font-label-caps text-[9px] font-bold">ZOOM: 142%</div>
+<div class="bg-black/80 border border-outline-variant/50 px-2 py-1 font-label-caps text-[9px] text-white">ISO: 200</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Timeline/Status -->
+<div class="glass-panel h-16 flex items-center px-4 justify-between">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="videocam">videocam</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px]">SCREEN_REC</span>
+<span class="font-code-sm text-[11px] text-on-surface-variant">00:12:45.02</span>
+</div>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-[9px] text-on-surface-variant">BITRATE</span>
+<span class="font-code-sm text-[11px] text-primary-fixed">45.2 MBPS</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-error text-error hover:bg-error/20"><span class="material-symbols-outlined text-sm" data-icon="stop">stop</span></button>
+<button class="w-8 h-8 flex items-center justify-center border border-primary-fixed text-primary-fixed hover:bg-primary-fixed/20"><span class="material-symbols-outlined text-sm" data-icon="pause">pause</span></button>
+</div>
+</div>
+</div>
+<!-- Right Control Widget (Recording Controls) -->
+<div class="col-span-3 flex flex-col gap-4">
+<div class="glass-panel flex flex-col">
+<div class="h-6 bg-secondary-container flex items-center px-2">
+<span class="font-label-caps text-[10px] text-on-secondary-container font-bold">RECORDING_CONTROL</span>
+</div>
+<div class="p-4 space-y-6">
+<!-- Voice Recorder Section -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-secondary-fixed">VOICE_INPUT_01</span>
+<span class="font-code-sm text-[10px] text-secondary-fixed/60">-12dB</span>
+</div>
+<div class="h-16 flex items-end gap-[2px] bg-surface-container-lowest/50 border border-outline-variant/20 p-2 overflow-hidden">
+<div class="waveform-bar h-1" style="animation-delay: 0.1s"></div>
+<div class="waveform-bar h-4" style="animation-delay: 0.3s"></div>
+<div class="waveform-bar h-2" style="animation-delay: 0.2s"></div>
+<div class="waveform-bar h-8" style="animation-delay: 0.4s"></div>
+<div class="waveform-bar h-5" style="animation-delay: 0.1s"></div>
+<div class="waveform-bar h-10" style="animation-delay: 0.5s"></div>
+<div class="waveform-bar h-3" style="animation-delay: 0.2s"></div>
+<div class="waveform-bar h-6" style="animation-delay: 0.4s"></div>
+<div class="waveform-bar h-12" style="animation-delay: 0.6s"></div>
+<div class="waveform-bar h-2" style="animation-delay: 0.1s"></div>
+<div class="waveform-bar h-4" style="animation-delay: 0.3s"></div>
+<div class="waveform-bar h-9" style="animation-delay: 0.5s"></div>
+<div class="waveform-bar h-1" style="animation-delay: 0.2s"></div>
+</div>
+</div>
+<!-- Bitrate/Frame Monitor -->
+<div class="space-y-4">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">FRAME_RATE</span>
+<span class="font-code-sm text-xs text-primary-fixed">60 FPS</span>
+</div>
+<div class="flex gap-1 h-2">
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed"></div>
+<div class="flex-1 bg-primary-fixed/20"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">BUFFER_LOAD</span>
+<span class="font-code-sm text-xs text-secondary-fixed">22%</span>
+</div>
+<div class="flex gap-1 h-2">
+<div class="flex-1 bg-secondary-fixed"></div>
+<div class="flex-1 bg-secondary-fixed/20"></div>
+<div class="flex-1 bg-secondary-fixed/20"></div>
+<div class="flex-1 bg-secondary-fixed/20"></div>
+<div class="flex-1 bg-secondary-fixed/20"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Terminal/Logs Panel -->
+<div class="glass-panel flex-1 flex flex-col bg-black/90">
+<div class="h-6 bg-surface-container-highest flex items-center px-2 border-b border-outline-variant/30">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SYSTEM_LOGS</span>
+</div>
+<div class="p-4 font-code-sm text-[11px] leading-relaxed flex-1 overflow-y-auto">
+<p class="text-green-400">>> INITIALIZING_CODER_V2</p>
+<p class="text-on-surface-variant">>> SCANNING_BUFFER... [OK]</p>
+<p class="text-on-surface-variant">>> ATTACHING_PIPE_METERING...</p>
+<p class="text-secondary-fixed">>> NEURAL_REDUX_APPLIED (0.12ms)</p>
+<p class="text-on-surface-variant">>> STREAMING_TO_SECTOR_4</p>
+<div class="flex gap-2">
+<span class="text-primary-fixed">>></span>
+<span class="w-2 h-4 bg-primary-fixed cursor-blink"></span>
+</div>
+</div>
+</div>
+<!-- Global Action -->
+<button class="w-full bg-primary-fixed text-black font-headline-md text-headline-md py-4 hover:bg-secondary-violet transition-all active:scale-[0.98]">
+                EXPORT_OUTPUT
+            </button>
+</div>
+</main>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Waveform randomizing simulation
+        setInterval(() => {
+            document.querySelectorAll('.waveform-bar').forEach(bar => {
+                const h = Math.floor(Math.random() * 20) + 4;
+                bar.style.height = h + 'px';
+            });
+        }, 150);
+
+        // Hover effect for the creative canvas
+        const canvas = document.querySelector('.active-border');
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            // Add custom tracking logic if needed
+        });
+    </script>
+</body></html>

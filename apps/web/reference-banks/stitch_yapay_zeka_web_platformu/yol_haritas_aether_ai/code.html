@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Strategic Roadmap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-midnight: rgba(10, 14, 26, 0.6);
+            --cyan-glow: rgba(125, 244, 255, 0.25);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: var(--glass-midnight);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(125, 244, 255, 0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, 
+                #7df4ff 0%, 
+                #7df4ff 40%, 
+                rgba(125, 244, 255, 0.1) 60%, 
+                rgba(125, 244, 255, 0.05) 100%
+            );
+            box-shadow: 0 0 20px rgba(125, 244, 255, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 40px rgba(125, 244, 255, 0.15);
+            border-color: rgba(125, 244, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .pulse-cyan {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.4; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#7df4ff",
+                        "surface": "#111417",
+                        "secondary": "#ebb2ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed": "#e2e2e2",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary": "#2f3131",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#282a2e",
+                        "surface-dim": "#111417",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "secondary-container": "#b600f8",
+                        "outline": "#849495",
+                        "surface-tint": "#00dbe9",
+                        "surface-container-highest": "#323539",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-low": "#191c1f",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-secondary": "#520072",
+                        "on-surface": "#e1e2e7",
+                        "surface-container-lowest": "#0c0e12",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-container": "#fff6fc",
+                        "error-container": "#93000a",
+                        "primary": "#dbfcff",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-background": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "on-primary-container": "#006970",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#d9d9d9",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container": "#1d2023",
+                        "on-secondary-fixed": "#320047",
+                        "background": "#111417",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-surface": "#e1e2e7",
+                        "tertiary": "#f5f5f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest">
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">Aether AI</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-primary-fixed font-semibold border-b-2 border-primary-fixed pb-1 font-body-md text-body-md" href="#">Roadmap</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-full font-semibold bg-primary-fixed text-on-primary-fixed hover:bg-primary transition-all active:scale-95 duration-200">Get Started</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-48 pb-24 px-margin-desktop overflow-hidden">
+
+<div class="relative z-10 max-w-4xl mx-auto text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-primary-fixed/10 border border-primary-fixed/20 mb-8">
+<span class="w-2 h-2 rounded-full bg-primary-fixed pulse-cyan"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed uppercase tracking-widest">Q4 2024 - FY 2025</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-white mb-6 leading-none">Engineering the Future of Intelligence.</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                Explore our strategic milestones as we scale Aether AI from advanced models to autonomous infrastructure and global compute networks.
+            </p>
+</div>
+</section>
+<!-- Roadmap Timeline -->
+<section class="py-section-gap px-margin-desktop max-w-container-max mx-auto relative">
+<!-- Vertical Timeline Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-px timeline-line -translate-x-1/2 hidden md:block"></div>
+<div class="space-y-32 relative">
+<!-- Category Header: In Progress -->
+<div class="flex flex-col items-center sticky top-24 z-20 mb-16">
+<div class="glass-card px-8 py-3 rounded-full border border-primary-fixed/30 shadow-lg shadow-primary-fixed/5">
+<span class="font-mono-label text-mono-label text-primary-fixed tracking-[0.2em] uppercase">Phase 01: In Progress</span>
+</div>
+</div>
+<!-- Milestone 01 (Left) -->
+<div class="grid md:grid-cols-2 gap-gutter items-center relative">
+<div class="md:text-right md:pr-16 order-2 md:order-1">
+<div class="glass-card p-8 rounded-xl glow-hover group">
+<div class="flex items-center gap-3 justify-end mb-4">
+<span class="px-3 py-1 rounded-[2px] bg-primary-fixed/10 text-primary-fixed font-mono-label text-mono-label">BETA</span>
+<h3 class="font-headline-md text-headline-md text-white">Quantum Inference v2</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Implementing revolutionary 2-bit quantization kernels that reduce memory footprint by 70% while maintaining 99% accuracy across 405B parameter models.
+                        </p>
+<div class="flex items-center gap-4 justify-end">
+<div class="flex items-center gap-1 text-primary-fixed">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+<span class="font-mono-label text-mono-label">CUDA 12.4 Optimized</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector Dot -->
+<div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface border-4 border-primary-fixed z-10 hidden md:block"></div>
+<div class="order-1 md:order-2 pl-16">
+<div class="w-full aspect-video glass-card rounded-xl" data-alt="A cinematic high-tech 3D visualization of glowing particles forming a neural network structure. The aesthetic is deep obsidian and electric cyan with subtle purple highlights. Laboratory setting with glass screens displaying complex mathematical data visualizations and code streams. Ultra-realistic cinematic lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVe3xi9lOz_ZW5xH8bQKfBFj_qyIWXiCjjHDCmjWyvGdOtXiipzfV6iahXxRXPcS37XxARc-B2gLCyqSYzZZakwMrd9PIcrz8MOc-Y1zUCdFdtYnfIuSXh1AHHz85FJl0Pf1UHnfORKrmi-eE2CaGOEejKhe6EM2TlcAnzPLyYfoFOGs15PPilCnl5_o37sdhTINe9PPE8ga0ZbpkgwMMLv7BhuYG0-wM8IVeJPlXGr2vo1UN-vLb2Hedu6cg74It_vZ_Vqg5u7Q')"></div>
+</div>
+</div>
+<!-- Milestone 02 (Right) -->
+<div class="grid md:grid-cols-2 gap-gutter items-center relative">
+<div class="pr-16 hidden md:block">
+<div class="w-full aspect-video glass-card rounded-xl" data-alt="A futuristic data center corridor at night. Massive server racks glowing with cyan and violet LED lights. Translucent glass floors reflecting the high-speed data transfers. The atmosphere is quiet, powerful, and sterile. Shot with a wide-angle lens to emphasize architectural precision and engineering scale." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDZkVMt5o9ECJsQRFkzYQtAT9vglyEctfOrTPM2qjfJq6U0TQWX5AnU8Hidao-U0qOiiH6UwJd3wdsBGovu1xK5T89Lwl3_u659kews9KpLG-O775JTtlfn9RjUeNXPj41dxvASlqsUuKV8ScP1CMr53bU8d5Gn_a6gTR0iKsZbIwV5dKV4gQClAgH5QlYV4WIoQU20ZiKXc-ixXchabTkIHwsTQtaN3myk_PoVpS1i306vELUapMVX1AHWzX34xWqwyFig7cYeow')"></div>
+</div>
+<!-- Connector Dot -->
+<div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface border-4 border-primary-fixed z-10 hidden md:block"></div>
+<div class="pl-16">
+<div class="glass-card p-8 rounded-xl glow-hover group">
+<div class="flex items-center gap-3 mb-4">
+<h3 class="font-headline-md text-headline-md text-white">Mesh-Grid Cluster</h3>
+<span class="px-3 py-1 rounded-[2px] bg-secondary-container/20 text-secondary font-mono-label text-mono-label">STABLE</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Rollout of our proprietary inter-node communication protocol. Achieving sub-1ms latency across global data centers using photonics-linked clusters.
+                        </p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-sm">hub</span>
+<span class="font-mono-label text-mono-label">1.2Pbps Throughput</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category Header: Scheduled -->
+<div class="flex flex-col items-center sticky top-24 z-20 py-16">
+<div class="glass-card px-8 py-3 rounded-full border border-outline-variant/30">
+<span class="font-mono-label text-mono-label text-on-surface-variant tracking-[0.2em] uppercase">Phase 02: Scheduled</span>
+</div>
+</div>
+<!-- Milestone 03 (Left) -->
+<div class="grid md:grid-cols-2 gap-gutter items-center relative opacity-70">
+<div class="md:text-right md:pr-16 order-2 md:order-1">
+<div class="glass-card p-8 rounded-xl glow-hover">
+<div class="flex items-center gap-3 justify-end mb-4">
+<span class="px-3 py-1 rounded-[2px] border border-outline text-outline font-mono-label text-mono-label uppercase">Planning</span>
+<h3 class="font-headline-md text-headline-md text-white">Aether Autonomous SDK</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            A unified software development kit for building agentic workflows. Native support for recursive self-correction and multi-modal tool use in sandboxed environments.
+                        </p>
+<div class="flex items-center gap-4 justify-end">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-mono-label text-mono-label">TypeScript &amp; Python native</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector Dot -->
+<div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface border-4 border-outline-variant z-10 hidden md:block"></div>
+<div class="order-1 md:order-2 pl-16">
+<div class="w-full aspect-video glass-card rounded-xl" data-alt="Close-up of a high-resolution holographic interface showing lines of futuristic code floating in 3D space. The interface is semi-transparent with cyan and indigo glows. Background is a blurred developer workspace with ergonomic mechanical keyboards and multiple ultra-wide monitors. Minimalist and professional tech aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCN6kEii9qEum1e2a8ZwLQCrVdTEmE79B23T044bVP2LFTuXQK_NXx6CwXR2uWQro-O8kel5Tgi7lb-v954i2QgCHuWjXywu_EWpxqaLIM4T2sf9iRv7pvY0SN2Z-SZ12sDArYT4fZ5r5JrZeBoRGniTo7QAqEVsRtHGp-PVgQprlfaPvjKPdiUCIiKOX9ii_L-ROIP9QUFaGmcZxEcmAEC7F6JkGHPQB8VpaAcTMAl2ZOxkFy_Qp3AZ60nXgFVfC32vDc_s71jtQ')"></div>
+</div>
+</div>
+<!-- Milestone 04 (Right) -->
+<div class="grid md:grid-cols-2 gap-gutter items-center relative opacity-70">
+<div class="pr-16 hidden md:block">
+<div class="w-full aspect-video glass-card rounded-xl" data-alt="An abstract visualization of global connectivity. A dark globe with shimmering threads of light connecting major technology hubs. The lighting is moody with deep purples and bright electric cyan highlights. It represents a decentralized compute network with a focus on high-speed data flow and global scale." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC86zYElgDaIqmCS11fpLIWwrBotP4cEr_iYWmIvmlZUlP5_DHy3ZCqqjmRC5KtXICQHxs0Jk5p2ga-ixwS78Ko1cGqkKEmRZ_QOerO5mH1aK8K7G98myT9XW88YwGx-JnvsGWWBmay_hstKvYQ-klcSrf5e8U0iBuZYF0HWOLGHBUtqFfCaGU-PUnJxtFKQjEEkMrji6TNU7Tm4HDPnYBynS8RnltgvVF8JXjXhUQt07QBpBgVsLn4nkBeyaMWCZv0Xu6jFBj6yw')"></div>
+</div>
+<!-- Connector Dot -->
+<div class="absolute left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-surface border-4 border-outline-variant z-10 hidden md:block"></div>
+<div class="pl-16">
+<div class="glass-card p-8 rounded-xl glow-hover">
+<div class="flex items-center gap-3 mb-4">
+<h3 class="font-headline-md text-headline-md text-white">Edge Synthesis</h3>
+<span class="px-3 py-1 rounded-[2px] border border-outline text-outline font-mono-label text-mono-label uppercase">Planning</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Deploying Aether models to localized edge hardware. Enabling 100% offline inference for critical infrastructure and privacy-first enterprise applications.
+                        </p>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-mono-label text-mono-label">FP8 Hardware Accelerated</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Category Header: Future -->
+<div class="flex flex-col items-center sticky top-24 z-20 py-16">
+<div class="glass-card px-8 py-3 rounded-full border border-outline-variant/10">
+<span class="font-mono-label text-mono-label text-on-tertiary-container tracking-[0.2em] uppercase">Phase 03: Future</span>
+</div>
+</div>
+<!-- Future Vision Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 pb-24">
+<div class="glass-card p-8 rounded-xl border border-outline-variant/10 opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary-fixed mb-4 text-4xl">model_training</span>
+<h4 class="text-white font-bold mb-2">Omni-Model 1.0</h4>
+<p class="text-on-surface-variant text-sm font-body-md">Unified reasoning across text, vision, audio, and spatial dimensions with zero-shot adaptation.</p>
+</div>
+<div class="glass-card p-8 rounded-xl border border-outline-variant/10 opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-secondary mb-4 text-4xl">cloud_done</span>
+<h4 class="text-white font-bold mb-2">Self-Healing Infrastructure</h4>
+<p class="text-on-surface-variant text-sm font-body-md">AI-driven data center management that predicts and resolves hardware failure before it occurs.</p>
+</div>
+<div class="glass-card p-8 rounded-xl border border-outline-variant/10 opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary mb-4 text-4xl">security</span>
+<h4 class="text-white font-bold mb-2">Quantum Encryption Layer</h4>
+<p class="text-on-surface-variant text-sm font-body-md">Protecting model weights and inference streams against post-quantum cryptographic threats.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Call to Action -->
+<section class="py-section-gap px-margin-desktop text-center bg-surface-container-low/50 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+
+</div>
+<div class="relative z-10 max-w-2xl mx-auto">
+<h2 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-white mb-8">Build with Aether today.</h2>
+<p class="text-on-surface-variant font-body-lg mb-12">Join the waitlist for our next-generation infrastructure pilot program.</p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+<button class="w-full sm:w-auto px-8 py-4 rounded-full bg-primary-fixed text-on-primary-fixed font-bold text-lg hover:bg-primary transition-all shadow-xl shadow-primary-fixed/20">Apply for Access</button>
+<button class="w-full sm:w-auto px-8 py-4 rounded-full border border-primary-fixed/30 text-primary-fixed font-bold text-lg hover:bg-primary-fixed/5 transition-all">View Documentation</button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter max-w-container-max mx-auto border-t border-outline-variant/20">
+<div class="col-span-2">
+<span class="font-headline-md text-headline-md text-on-surface font-bold block mb-4">Aether AI</span>
+<p class="text-on-tertiary-container font-mono-label text-mono-label leading-relaxed">
+                © 2024 Aether AI. Engineering the future of intelligence. All systems operational.
+            </p>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6">Product</h5>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Models</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Enterprise</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Pricing</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6">Resources</h5>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">API Reference</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Status</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-bold mb-6">Company</h5>
+<ul class="space-y-4">
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Terms of Service</a></li>
+<li><a class="text-on-tertiary-container hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all font-mono-label text-mono-label" href="#">Security</a></li>
+</ul>
+</div>
+</footer>
+<script>
+        // Subtle micro-interaction for roadmap cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+        
+        // Scroll reveal logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.classList.add('transition-all', 'duration-700', 'translate-y-10');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

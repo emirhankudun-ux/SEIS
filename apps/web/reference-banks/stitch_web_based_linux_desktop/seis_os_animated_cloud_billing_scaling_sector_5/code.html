@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - BILLING &amp; SCALING</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-cyan: #00f0ff;
+            --secondary-violet: #ce5dff;
+            --cyber-lime: #ccff00;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+            position: relative;
+        }
+        .glass-panel:hover {
+            border-color: #00f0ff;
+        }
+        .header-accent {
+            background: #00f0ff;
+            color: #0c0f0f;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            animation: scan 8s linear infinite;
+            z-index: 50;
+            pointer-events: none;
+        }
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .cyber-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #3b494b;
+            outline: none;
+        }
+        .cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 20px;
+            background: #ccff00;
+            cursor: pointer;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+        }
+        .terminal-text {
+            border-right: 2px solid #00f0ff;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { border-color: transparent; } }
+        
+        /* New Animations */
+        @keyframes drawLine {
+            0% { stroke-dashoffset: 2000; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .draw-path {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawLine 3s ease-out forwards;
+        }
+        
+        @keyframes glitch-skew {
+            0%, 90% { transform: skew(0deg); left: 0; }
+            92% { transform: skew(-10deg); left: -2px; }
+            94% { transform: skew(10deg); left: 2px; }
+            96% { transform: skew(0deg); left: 0; }
+        }
+        .glitch-box {
+            animation: glitch-skew 3s infinite;
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out forwards;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-container": "#605e5e",
+                      "surface-container-lowest": "#0c0f0f",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "outline-variant": "#3b494b",
+                      "on-surface": "#e2e2e2",
+                      "error-container": "#93000a",
+                      "on-primary-fixed": "#002022",
+                      "surface-dim": "#121414",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary": "#dbfcff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "outline": "#849495",
+                      "on-secondary": "#520071",
+                      "on-background": "#e2e2e2",
+                      "inverse-primary": "#006970",
+                      "surface-bright": "#37393a",
+                      "secondary-fixed": "#f8d8ff",
+                      "primary-container": "#00f0ff",
+                      "inverse-on-surface": "#2f3131",
+                      "surface-container-low": "#1a1c1c",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-primary": "#00363a",
+                      "surface-container-highest": "#333535",
+                      "tertiary-container": "#dcd9d8",
+                      "on-secondary-container": "#480064",
+                      "on-primary-container": "#006970",
+                      "tertiary": "#f9f5f5",
+                      "surface": "#121414",
+                      "background": "#121414",
+                      "surface-tint": "#00dbe9",
+                      "surface-container-high": "#282a2b",
+                      "secondary": "#ebb2ff",
+                      "surface-variant": "#333535",
+                      "on-error": "#690005",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#7df4ff",
+                      "surface-container": "#1e2020",
+                      "secondary-container": "#ce5dff",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-surface-variant": "#b9cacb",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-fixed-dim": "#00dbe9",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary": "#313030",
+                      "on-secondary-fixed": "#320047"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stroke-thick": "2px",
+                      "stroke-thin": "1px",
+                      "margin-page": "32px",
+                      "gap-xs": "4px",
+                      "gap-sm": "8px",
+                      "gap-lg": "24px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "label-caps": ["Space Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="flex min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-md">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer" href="#">NETWORK</a>
+</nav>
+<div class="flex gap-md items-center">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed transition-colors" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="account_circle">account_circle</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="font-label-caps text-secondary-fixed text-label-caps">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">DASHBOARD</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">FILESYSTEM</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">TERMINAL</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">AI_AGENTS</span>
+</div>
+<div class="flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">LOGS</span>
+</div>
+</nav>
+<div class="p-4 bg-surface-container/30 border-t border-outline-variant/10">
+<button class="w-full h-10 bg-secondary-fixed text-surface-container-lowest font-label-caps text-[10px] hidden group-hover:block">NEW_SESSION</button>
+<div class="mt-4 flex flex-col gap-2">
+<div class="flex items-center gap-4 text-error px-2 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">POWER</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-2 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="opacity-0 group-hover:opacity-100 transition-opacity font-label-caps">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 ml-20 mt-10 p-8 grid grid-cols-12 gap-md relative">
+<div class="scanline"></div>
+<!-- Header Section -->
+<div class="col-span-12 flex justify-between items-end mb-4 border-b border-outline-variant pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tighter">Sector 5: Cloud Billing &amp; Scaling</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">Status: <span class="text-primary-container">OPTIMAL_FLOW</span> | Region: <span class="text-secondary">GLB-01-A</span></p>
+</div>
+<div class="flex gap-md">
+<div class="text-right">
+<p class="font-label-caps text-on-surface-variant">MONTHLY_FORECAST</p>
+<p class="font-headline-md text-headline-md text-primary-container">$42,891.02 <span class="text-label-sm text-secondary">+2.4%</span></p>
+</div>
+<div class="w-[1px] bg-outline-variant h-full mx-2"></div>
+<div class="text-right">
+<p class="font-label-caps text-on-surface-variant">CREDITS_REMAINING</p>
+<p class="font-headline-md text-headline-md text-secondary-fixed">8,204 SC</p>
+</div>
+</div>
+</div>
+<!-- Billing Forecast Bento Grid -->
+<div class="col-span-12 lg:col-span-8 glass-panel h-80 overflow-hidden flex flex-col">
+<div class="header-accent">RESOURCE_CONSUMPTION_FORECAST</div>
+<div class="flex-1 relative p-4 bg-[radial-gradient(#1a1c1c_1px,transparent_1px)] [background-size:16px_16px]">
+<!-- Technical Visualization Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center p-8">
+<div class="w-full h-full border-l border-b border-outline-variant relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 grid grid-cols-6 grid-rows-4 pointer-events-none">
+<div class="border-r border-t border-outline-variant/10"></div>
+<div class="border-r border-t border-outline-variant/10"></div>
+<div class="border-r border-t border-outline-variant/10"></div>
+<div class="border-r border-t border-outline-variant/10"></div>
+<div class="border-r border-t border-outline-variant/10"></div>
+<div class="border-r border-t border-outline-variant/10"></div>
+</div>
+<!-- Line Graph Path (SVG) -->
+<svg class="w-full h-full absolute inset-0" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="lineGrad" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#00f0ff"></stop>
+<stop offset="100%" stop-color="#ce5dff"></stop>
+</lineargradient>
+</defs>
+<path class="draw-path" d="M0,250 L100,220 L200,240 L300,180 L400,190 L500,120 L600,140 L700,80 L800,100 L900,40 L1000,60" fill="none" stroke="url(#lineGrad)" stroke-width="2"></path>
+<circle cx="900" cy="40" fill="#00f0ff" r="4">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="4;8;4"></animate>
+<animate attributename="opacity" dur="2s" repeatcount="indefinite" values="0.5;1;0.5"></animate>
+</circle>
+</svg>
+<div class="absolute top-4 left-4 font-code-sm text-primary-container bg-surface-container-lowest/80 px-2">REALTIME_BURN: $5.2/hr</div>
+</div>
+</div>
+</div>
+<div class="h-8 border-t border-outline-variant/30 flex divide-x divide-outline-variant/30 font-label-caps text-[9px] text-on-surface-variant">
+<div class="flex-1 flex items-center justify-center">T - 48H</div>
+<div class="flex-1 flex items-center justify-center">T - 24H</div>
+<div class="flex-1 flex items-center justify-center">CURRENT</div>
+<div class="flex-1 flex items-center justify-center text-primary-fixed">EST_PROJECTED</div>
+</div>
+</div>
+<!-- Scaling Triggers -->
+<div class="col-span-12 lg:col-span-4 glass-panel p-4 flex flex-col gap-md">
+<div class="header-accent bg-secondary-container text-on-secondary-container">AUTO_SCALING_TRIGGERS</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-on-surface-variant">CPU_THRESHOLD</span>
+<span class="font-code-sm text-primary-container">82%</span>
+</div>
+<input class="cyber-slider" max="100" min="0" type="range" value="82"/>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-on-surface-variant">MEMORY_FLOOR</span>
+<span class="font-code-sm text-secondary">64GB</span>
+</div>
+<input class="cyber-slider" max="128" min="0" type="range" value="64"/>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-on-surface-variant">LATENCY_CEILING</span>
+<span class="font-code-sm text-primary-fixed">120ms</span>
+</div>
+<input class="cyber-slider" max="500" min="0" type="range" value="120"/>
+</div>
+</div>
+<div class="mt-auto border border-outline-variant/30 p-2 bg-surface-container-low glitch-box relative">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+<span class="font-label-caps text-error text-[10px]">SCALING_ANOMALY_DETECTED</span>
+</div>
+<p class="font-code-sm text-[11px] text-on-surface-variant italic">Node cluster GLB-X2 attempted scaling beyond hard-limit. Manual override recommended.</p>
+<button class="mt-2 w-full bg-error-container text-on-error-container py-1 font-label-caps text-[10px] hover:bg-error transition-colors">INITIATE_LOCKDOWN</button>
+</div>
+</div>
+<!-- Resource Saturation Heatmap -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 glass-panel h-96 flex flex-col">
+<div class="header-accent">RESOURCE_SATURATION_HEATMAP</div>
+<div class="flex-1 p-4 grid grid-cols-10 grid-rows-10 gap-1 bg-surface-container-lowest">
+<!-- Randomized Heatmap Blocks -->
+<script>
+                    const heatmapContainer = document.currentScript.parentElement;
+                    const colors = ['bg-surface-container-highest', 'bg-primary-container/20', 'bg-primary-container/40', 'bg-primary-container/60', 'bg-secondary-container/40', 'bg-secondary-container/80', 'bg-error-container/60'];
+                    for(let i=0; i<100; i++) {
+                        const div = document.createElement('div');
+                        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                        div.className = `${randomColor} w-full h-full cursor-crosshair hover:border hover:border-white transition-all`;
+                        div.style.animation = `flicker ${Math.random() * 2 + 1}s infinite alternate`;
+                        heatmapContainer.appendChild(div);
+                    }
+                </script>
+</div>
+<div class="p-2 flex justify-between items-center text-[9px] font-label-caps border-t border-outline-variant/20">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-surface-container-highest"></div> IDLE
+                </div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-primary-container/60"></div> NOMINAL
+                </div>
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 bg-error-container/60"></div> SATURATED
+                </div>
+</div>
+</div>
+<!-- CDN Status & Map -->
+<div class="col-span-12 md:col-span-6 lg:col-span-8 glass-panel h-96 flex flex-col overflow-hidden">
+<div class="header-accent bg-primary-container text-on-primary-container">GLOBAL_CDN_TRAFFIC_MAP</div>
+<div class="flex-1 relative">
+<div class="absolute inset-0 opacity-40">
+</div>
+<!-- Interactive Markers Overlay -->
+<div class="absolute inset-0 p-8 flex flex-col justify-between">
+<div class="flex justify-between">
+<div class="bg-surface-container-lowest/90 border border-outline-variant p-3">
+<p class="font-label-caps text-on-surface-variant text-[10px] mb-1">NODE_DENSITY</p>
+<div class="flex items-end gap-1 h-8">
+<div class="w-1 bg-primary-container h-[40%]"></div>
+<div class="w-1 bg-primary-container h-[60%]"></div>
+<div class="w-1 bg-primary-container h-[90%]"></div>
+<div class="w-1 bg-secondary h-[75%]"></div>
+<div class="w-1 bg-primary-container h-[50%]"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-on-surface-variant text-[10px]">PEAK_LATENCY</p>
+<p class="font-headline-md text-headline-md text-primary">14ms</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-md">
+<div class="bg-surface-container-lowest/90 border-l-2 border-primary-container p-2">
+<p class="font-label-caps text-[9px] text-on-surface-variant">EUROPE_WEST</p>
+<p class="font-code-sm text-primary">STABLE</p>
+</div>
+<div class="bg-surface-container-lowest/90 border-l-2 border-secondary p-2">
+<p class="font-label-caps text-[9px] text-on-surface-variant">ASIA_NORTH</p>
+<p class="font-code-sm text-secondary">LOAD_HEAVY</p>
+</div>
+<div class="bg-surface-container-lowest/90 border-l-2 border-error p-2">
+<p class="font-label-caps text-[9px] text-on-surface-variant">US_EAST</p>
+<p class="font-code-sm text-error">CONGESTED</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Logs / Activity Terminal -->
+<div class="col-span-12 glass-panel h-64 flex flex-col">
+<div class="header-accent flex justify-between">
+<span>SYSTEM_LOG_OUTPUT</span>
+<span class="text-[9px]">v1.0.4-BETA</span>
+</div>
+<div class="flex-1 bg-surface-container-lowest p-4 font-code-sm overflow-hidden flex flex-col justify-end">
+<div class="flex flex-col justify-end w-full" id="log-container">
+<div class="text-on-surface-variant mb-1">[ 10:42:01 ] <span class="text-primary-container">INFO:</span> Initializing scaling sequence for Cluster-7G.</div>
+<div class="text-on-surface-variant mb-1">[ 10:42:04 ] <span class="text-primary-container">INFO:</span> Load balancer LB-01 traffic rerouted to HK-Edge.</div>
+<div class="text-on-surface-variant mb-1">[ 10:43:15 ] <span class="text-secondary">WARN:</span> Resource usage in Zone-C exceeds 85%. Triggering elastic buffer.</div>
+<div class="text-on-surface-variant mb-1">[ 10:45:00 ] <span class="text-primary-container">INFO:</span> Billing update synchronized. Monthly burn rate increased by 0.04%.</div>
+<div class="text-on-surface-variant mb-1">[ 10:45:12 ] <span class="text-error">FAIL:</span> Handshake failed with Tokyo-Main-Frame. Retrying in 500ms...</div>
+<div class="text-on-surface-variant mb-1">[ 10:45:13 ] <span class="text-primary-container">INFO:</span> Tokyo-Main-Frame re-established. Syncing...</div>
+</div>
+<div class="text-on-surface-variant mt-1 terminal-text inline-block w-2">_</div>
+<script>
+                    const incomingLogs = [
+                        '[ 10:45:15 ] <span class="text-primary-container">INFO:</span> Scaling operation verified. Buffers stabilized.',
+                        '[ 10:45:18 ] <span class="text-secondary">WARN:</span> Latency spike detected in US-East node pool.',
+                        '[ 10:45:21 ] <span class="text-primary-container">INFO:</span> Adjusting load balancer weights dynamically.',
+                        '[ 10:45:25 ] <span class="text-primary-container">INFO:</span> Traffic normalized across all active clusters.',
+                        '[ 10:45:30 ] <span class="text-secondary">WARN:</span> Minor packet loss on GLB-X2 stream. Monitoring.'
+                    ];
+                    let logIdx = 0;
+                    const logContainer = document.getElementById('log-container');
+                    setInterval(() => {
+                        const log = document.createElement('div');
+                        log.className = 'text-on-surface-variant mb-1 animate-fade-in';
+                        log.innerHTML = incomingLogs[logIdx % incomingLogs.length];
+                        logContainer.appendChild(log);
+                        if(logContainer.children.length > 6) {
+                            logContainer.removeChild(logContainer.firstChild);
+                        }
+                        logIdx++;
+                    }, 2500);
+                </script>
+</div>
+</div>
+<!-- Load Balancer Efficiency (Gauges) -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-md">
+<div class="glass-panel p-4 flex items-center gap-md">
+<div class="relative w-12 h-12 flex items-center justify-center">
+<div class="absolute inset-0 border-4 border-outline-variant rounded-full border-t-primary-container animate-spin" style="animation-duration: 3s"></div>
+<div class="absolute inset-0 border-4 border-primary-container/30 rounded-full animate-ping" style="animation-duration: 2s"></div>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">LB_EFFICIENCY</p>
+<p class="font-headline-md text-headline-md">98.2%</p>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-md">
+<div class="flex flex-col gap-1 w-12">
+<div class="h-2 bg-secondary w-full"></div>
+<div class="h-2 bg-secondary w-4/5"></div>
+<div class="h-2 bg-secondary w-1/2"></div>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">TRAFFIC_DENSITY</p>
+<p class="font-headline-md text-headline-md">HIGH</p>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-md">
+<div class="w-12 h-12 flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="cloud_done">cloud_done</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">HEALTH_STATUS</p>
+<p class="font-headline-md text-headline-md text-primary-container">STABLE</p>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-md">
+<div class="w-12 flex flex-col justify-end h-10 border border-outline-variant p-1">
+<div class="bg-primary h-full w-full"></div>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">UPTIME_INDEX</p>
+<p class="font-headline-md text-headline-md">99.999</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button Contextual -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="bg-primary-container text-on-primary-container w-14 h-14 rounded-none border-2 border-primary-container hover:bg-transparent hover:text-primary-container transition-all flex items-center justify-center shadow-[0_0_20px_rgba(0,240,255,0.3)] group">
+<span class="material-symbols-outlined text-3xl transition-transform group-hover:rotate-90" data-icon="add">add</span>
+</button>
+</div>
+<!-- Background Pattern/Logo -->
+<div class="fixed inset-0 -z-10 pointer-events-none flex items-center justify-center opacity-[0.03] select-none">
+<h1 class="text-[30vw] font-bold tracking-tighter">SEIS</h1>
+</div>
+</body></html>

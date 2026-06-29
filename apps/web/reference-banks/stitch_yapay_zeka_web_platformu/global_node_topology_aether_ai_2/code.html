@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Global Infrastructure</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#f5f5f5",
+                        "on-background": "#e1e2e7",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary": "#520072",
+                        "secondary-fixed": "#f8d8ff",
+                        "surface-container": "#1d2023",
+                        "on-primary-fixed": "#002022",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-bright": "#37393d",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#d9d9d9",
+                        "surface-container-high": "#282a2e",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-error": "#690005",
+                        "primary": "#dbfcff",
+                        "surface-container-highest": "#323539",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-container-low": "#191c1f",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-secondary-fixed": "#320047",
+                        "secondary": "#ebb2ff",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e1e2e7",
+                        "surface-dim": "#111417",
+                        "on-primary-container": "#006970",
+                        "inverse-on-surface": "#2e3134",
+                        "background": "#111417",
+                        "surface-variant": "#323539",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "surface": "#111417",
+                        "secondary-container": "#b600f8",
+                        "outline": "#849495",
+                        "outline-variant": "#3b494b",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-surface": "#e1e2e7",
+                        "primary-container": "#00f0ff",
+                        "on-primary": "#00363a",
+                        "on-tertiary": "#2f3131",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-container": "#fff6fc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #020408; color: #e1e2e7; overflow-x: hidden; }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.2), transparent, rgba(182, 0, 248, 0.1)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .pulse-cyan {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.1); }
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00dbe9, transparent);
+            position: absolute;
+            top: -2px;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex gap-4 items-center">
+<button class="text-on-tertiary-fixed-variant font-mono-label px-4 py-2 hover:text-primary-fixed transition-all">Sign In</button>
+<button class="bg-primary-container text-on-primary font-mono-label px-6 py-2 rounded-lg active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<!-- Page Header -->
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-cyan"></span>
+<span class="font-mono-label text-primary-fixed-dim uppercase tracking-widest text-[10px]">Operational Status: Optimal</span>
+</div>
+<h1 class="font-display-lg text-headline-md text-on-background">Infrastructure Global Mesh</h1>
+<p class="font-body-lg text-on-surface-variant max-w-xl">Real-time visualization of Aether AI's decentralized compute backbone. Managing 4.2 ExaFLOPS across 12 primary continental hubs.</p>
+</div>
+<div class="flex gap-3">
+<div class="glass-card px-4 py-2 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">query_stats</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-mono-label text-on-surface-variant uppercase">Global Latency</span>
+<span class="font-mono-label text-on-background">14.2ms</span>
+</div>
+</div>
+<div class="glass-card px-4 py-2 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">hub</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-mono-label text-on-surface-variant uppercase">Active Nodes</span>
+<span class="font-mono-label text-on-background">12,482</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Main Visualizer (World Map) -->
+<div class="col-span-12 lg:col-span-8 h-[600px] glass-card group">
+<div class="scan-line"></div>
+<div class="absolute inset-0 z-0">
+<!-- High detail World Map visual with neon connections -->
+<div class="w-full h-full opacity-60 bg-cover bg-center" data-alt="A cinematic, high-angle view of a 3D dark world map where continents are matte black and embossed. Vibrant glowing cyan lines arch between major global cities, representing active data data pathways. Crystalline clusters glow at connection points like neon nodes. The aesthetic is futuristic mission control with high contrast and deep obsidian shadows." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBS_we4jboZc0Q0qS0tc46uVw36JirykK8ksw7TZEUdq4TGK-41OV55mSYgOvdiF5KyOlJXT-cmCnBvQdECWEuBqkBxDbmeSzXuUVIJsOndHhvHGo8npENq5XEOJHz2KjvDOTF9Ou9X40vwVEg2ZfbhYXssOupadaE6sQ_1eyhS9XaH469ktmUIeGtsqwYxWg4sSAZij7lQKf6RzqiQnsmAS797t5jYqRzOOU11JVefE5auUAHWnSztHNBN8bepCK0GRcC_6FeBsg')"></div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent pointer-events-none"></div>
+<!-- Interactive Overlays on Map -->
+<div class="absolute top-6 left-6 flex flex-col gap-2">
+<div class="glass-card bg-surface-container-lowest/40 backdrop-blur-md p-3 border-l-2 border-primary-fixed-dim">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Traffic Density</p>
+<p class="font-headline-md text-primary-fixed-dim">94.2%</p>
+</div>
+</div>
+<div class="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+<div class="flex gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container/50 border border-outline-variant/30 rounded-lg">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">circle</span>
+<span class="font-mono-label text-[11px] text-on-surface">Compute Node</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container/50 border border-outline-variant/30 rounded-lg">
+<span class="w-4 h-[1px] bg-primary-fixed-dim"></span>
+<span class="font-mono-label text-[11px] text-on-surface">Interlink</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 glass-card hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined text-on-surface">add</span>
+</button>
+<button class="p-2 glass-card hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined text-on-surface">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Sidebar Stats -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Quantum Bridge Status -->
+<div class="glass-card p-6 flex flex-col gap-4 glow-hover transition-all">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-md text-body-lg text-on-background">Quantum Bridge</h3>
+<p class="font-mono-label text-[11px] text-primary-fixed-dim">Inter-continental Sync</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">sync</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between font-mono-label text-[10px] uppercase text-on-surface-variant">
+<span>Sync Integrity</span>
+<span>99.98%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[99%] shadow-[0_0_10px_#00dbe9]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low/50 p-3 rounded border border-outline-variant/10">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Tunneling</p>
+<p class="font-body-lg text-on-background">Active</p>
+</div>
+<div class="bg-surface-container-low/50 p-3 rounded border border-outline-variant/10">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Encryption</p>
+<p class="font-body-lg text-on-background">AES-Q</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Regional Health Cards -->
+<div class="flex-grow glass-card p-6 flex flex-col gap-6">
+<h3 class="font-headline-md text-body-lg text-on-background">Regional Health</h3>
+<div class="space-y-6">
+<!-- AMER -->
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card flex items-center justify-center">
+<span class="font-mono-label text-primary-fixed-dim">AM</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-on-surface">Americas</span>
+<span class="text-[10px] font-mono-label text-primary-fixed-dim">8ms Latency</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-4/5"></div>
+</div>
+</div>
+</div>
+<!-- EMEA -->
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card flex items-center justify-center">
+<span class="font-mono-label text-primary-fixed-dim">EM</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-on-surface">EMEA</span>
+<span class="text-[10px] font-mono-label text-primary-fixed-dim">12ms Latency</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-3/4"></div>
+</div>
+</div>
+</div>
+<!-- APAC -->
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 glass-card flex items-center justify-center">
+<span class="font-mono-label text-primary-fixed-dim">AP</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="font-body-md text-on-surface">APAC</span>
+<span class="text-[10px] font-mono-label text-primary-fixed-dim">22ms Latency</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-3 glass-card text-on-surface-variant font-mono-label hover:bg-primary-fixed-dim hover:text-on-primary transition-all duration-300 uppercase tracking-widest text-[11px]">Download Detailed Report</button>
+</div>
+</div>
+<!-- Footer Metrics Grid -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card p-6 flex items-center gap-6 group hover:border-primary-fixed-dim/40 transition-colors">
+<div class="p-4 bg-surface-container rounded group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl">memory</span>
+</div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase">Total Compute</p>
+<p class="font-headline-md text-on-background">4.21 <span class="text-primary-fixed-dim">EFLOPS</span></p>
+</div>
+</div>
+<div class="glass-card p-6 flex items-center gap-6 group hover:border-primary-fixed-dim/40 transition-colors">
+<div class="p-4 bg-surface-container rounded group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl">database</span>
+</div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase">Data Throughput</p>
+<p class="font-headline-md text-on-background">842 <span class="text-primary-fixed-dim">TB/s</span></p>
+</div>
+</div>
+<div class="glass-card p-6 flex items-center gap-6 group hover:border-primary-fixed-dim/40 transition-colors">
+<div class="p-4 bg-surface-container rounded group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl">bolt</span>
+</div>
+<div>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase">Power Efficiency</p>
+<p class="font-headline-md text-on-background">98.2 <span class="text-primary-fixed-dim">PUE</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Navigation Shell (Suppressed on Mobile) -->
+<aside class="hidden md:flex flex-col h-screen w-16 fixed left-0 top-0 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/10 items-center py-6 gap-8 z-40">
+<div class="w-10 h-10 glass-card rounded flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<nav class="flex flex-col gap-6">
+<a class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">public</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">code</span>
+</a>
+<a class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">storage</span>
+</a>
+</nav>
+<div class="mt-auto flex flex-col gap-6">
+<a class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+</a>
+</div>
+</aside>
+<!-- Footer Section -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/10 py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary-fixed-dim mb-4 block">AETHER AI</span>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant leading-relaxed max-w-xs">
+                    Architecting the future of distributed intelligence with secure, quantum-ready infrastructure.
+                </p>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-[12px] mb-4 uppercase tracking-widest">Platform</h4>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-mono-label text-on-surface text-[12px] mb-4 uppercase tracking-widest">Company</h4>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="col-span-2 flex flex-col items-end justify-between">
+<div class="flex gap-4">
+<a class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="w-10 h-10 glass-card flex items-center justify-center text-on-surface-variant hover:text-primary-fixed" href="#">
+<span class="material-symbols-outlined">terminal</span>
+</a>
+</div>
+<p class="font-mono-label text-[10px] text-on-tertiary-fixed-variant mt-8">
+                    © 2024 Aether AI Infrastructure. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for live feeling
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simulate random status updates
+        setInterval(() => {
+            const metrics = ['14.2ms', '14.1ms', '14.3ms', '13.9ms'];
+            const randomMetric = metrics[Math.floor(Math.random() * metrics.length)];
+            const latencyElement = document.querySelector('.font-mono-label.text-on-background');
+            if (latencyElement) {
+                latencyElement.textContent = randomMetric;
+            }
+        }, 5000);
+    </script>
+</body></html>

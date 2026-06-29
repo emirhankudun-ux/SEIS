@@ -24,6 +24,7 @@
     "./seis-code.css",
     "./seis-code.js",
     "./seis-linux-replica.html",
+    "./seis-linux-replica-public-demo.html",
     "./wow-gallery.html",
     "./wow-gallery.css",
     "./wow-gallery.js",

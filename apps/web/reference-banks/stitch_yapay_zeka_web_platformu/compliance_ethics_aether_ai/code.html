@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Compliance &amp; Ethics | Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(10, 14, 26, 0.6);
+            --glass-border: rgba(0, 219, 233, 0.15);
+            --cyan-glow: rgba(0, 219, 233, 0.25);
+        }
+
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.4);
+            box-shadow: 0 0 30px var(--cyan-glow);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .compliance-meter {
+            background: conic-gradient(from 180deg at 50% 50%, #00dbe9 0deg, #b600f8 180deg, #00dbe9 360deg);
+            mask: radial-gradient(transparent 62%, black 63%);
+            -webkit-mask: radial-gradient(transparent 62%, black 63%);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .status-badge {
+            background: rgba(0, 219, 233, 0.1);
+            border: 1px solid rgba(0, 219, 233, 0.2);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00dbe9, transparent);
+            animation: scan 4s linear infinite;
+            top: -2px;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e1e2e7",
+                        "on-secondary-container": "#fff6fc",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#d9d9d9",
+                        "primary": "#dbfcff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary": "#ebb2ff",
+                        "surface-container-highest": "#323539",
+                        "outline": "#849495",
+                        "surface-container-high": "#282a2e",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-container": "#1d2023",
+                        "on-primary-fixed": "#002022",
+                        "surface-dim": "#111417",
+                        "surface": "#111417",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-variant": "#323539",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0c0e12",
+                        "tertiary": "#f5f5f5",
+                        "surface-bright": "#37393d",
+                        "background": "#111417",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-surface": "#e1e2e7",
+                        "on-tertiary": "#2f3131",
+                        "outline-variant": "#3b494b",
+                        "secondary-container": "#b600f8",
+                        "inverse-on-surface": "#2e3134",
+                        "on-secondary": "#520072",
+                        "error": "#ffb4ab",
+                        "on-background": "#e1e2e7",
+                        "surface-container-low": "#191c1f",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "primary-container": "#00f0ff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed": "#f8d8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-label": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- TopNavBar Navigation Shell -->
+<nav class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium font-body-md text-body-md active:scale-95 transition-transform">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold font-body-md text-body-md hover:shadow-[0_0_20px_rgba(0,219,233,0.4)] transition-all active:scale-95">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap max-w-container-max mx-auto px-margin-desktop">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="inline-flex items-center gap-2 px-3 py-1 mb-6 status-badge rounded-sm">
+<div class="pulse-dot"></div>
+<span class="font-mono-label text-mono-label uppercase tracking-widest text-primary-fixed-dim">Real-time Compliance Monitoring Active</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-4 bg-clip-text text-transparent bg-gradient-to-r from-on-surface to-outline">Global Compliance &amp; Ethics</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">
+                Advanced AI governance for the enterprise. Aether AI provides verifiable transparency and automated regulatory alignment across global jurisdictions.
+            </p>
+</header>
+<!-- Top Row: Score & Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-gutter">
+<!-- Compliance Score Meter -->
+<div class="lg:col-span-4 glass-card rounded-xl p-10 flex flex-col items-center justify-center text-center">
+<h3 class="font-mono-label text-mono-label text-on-surface-variant mb-8">COMPLIANCE SCORE (v.2.4)</h3>
+<div class="relative w-64 h-64 flex items-center justify-center">
+<div class="absolute inset-0 compliance-meter rounded-full opacity-20"></div>
+<div class="absolute inset-4 bg-surface rounded-full flex flex-col items-center justify-center border border-outline-variant/30">
+<span class="font-display-lg text-display-lg text-primary-fixed-dim mb-0">98.4</span>
+<span class="font-mono-label text-mono-label text-on-surface-variant">OPTIMIZED</span>
+</div>
+<!-- Score Needle Decor -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 font-mono-code text-[10px] text-outline">AGGREGATED RISK METRIC</div>
+</div>
+<div class="mt-8 grid grid-cols-3 gap-8 w-full border-t border-outline-variant/10 pt-8">
+<div>
+<div class="font-mono-label text-[12px] text-outline mb-1">DATA</div>
+<div class="font-headline-md text-[20px] text-primary">A+</div>
+</div>
+<div>
+<div class="font-mono-label text-[12px] text-outline mb-1">BIAS</div>
+<div class="font-headline-md text-[20px] text-primary">0.02%</div>
+</div>
+<div>
+<div class="font-mono-label text-[12px] text-outline mb-1">DRIFT</div>
+<div class="font-headline-md text-[20px] text-primary">0.00%</div>
+</div>
+</div>
+</div>
+<!-- Regional Map Status -->
+<div class="lg:col-span-8 glass-card rounded-xl p-0 relative overflow-hidden group">
+<div class="absolute inset-0 opacity-40 z-0 pointer-events-none">
+
+</div>
+<div class="relative z-10 p-10 flex flex-col h-full">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Global Regulatory Matrix</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Cross-border alignment status across 142 jurisdictions.</p>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-mono-code">EU ACT: ALIGNED</span>
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-mono-code">NIST: VERIFIED</span>
+</div>
+</div>
+<div class="flex-grow flex items-center justify-center relative min-h-[300px]">
+<!-- Simulated Map Elements -->
+<div class="w-full h-full rounded bg-outline-variant/5 border border-outline-variant/20 flex items-center justify-center">
+<img class="w-full h-full object-cover mix-blend-screen opacity-60" data-alt="A stylized, technical data-map of the world showing glowing data nodes in Electric Cyan and Deep Purple. The map has a high-tech grid overlay and is displayed in a dark room with cinematic lighting. The aesthetic is futuristic, architectural, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCQEjbONnefvBJ8coVNCEjxDs-T4yk-b7XR2PGZf8rWputBJSq0pEfwlBIL_XyYdFh8_T1nnw4tw9resFlJL2p5R3FrjCj1eJTIXOEcRMW-lAswpq2meWdppBjAefzok9lyUEq0NmhoiSHqkj0ayVMMe0m7khQm6Fkx9viIHftC6opnKyDasrAlXlte-kBmvlLw-w_JowujJrEgheKfcxRsbzRX3KD4HBY-9JWKn4aoWtNwtgCrzp_t5wk0oOW6xYCO6UnXeTtZg"/>
+</div>
+</div>
+<div class="mt-6 flex flex-wrap gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<span class="font-mono-label text-[12px] text-on-surface-variant">EU AI Act (Category: High-Risk) - Compliant</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<span class="font-mono-label text-[12px] text-on-surface-variant">NIST Risk Framework 2.0 - Verified</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<span class="font-mono-label text-[12px] text-on-surface-variant">GDPR/CCPA Data Integrity - Validated</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Row: Reports & Ledger -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Automated Bias Detection -->
+<div class="glass-card rounded-xl p-8 flex flex-col h-full min-h-[500px]">
+<div class="scan-line"></div>
+<div class="flex items-center justify-between mb-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">psychology</span>
+<h3 class="font-headline-md text-[24px]">Bias Detection System</h3>
+</div>
+<button class="text-primary-fixed-dim font-mono-label text-[12px] hover:underline transition-all">VIEW LIVE STREAM</button>
+</div>
+<div class="space-y-6 flex-grow">
+<!-- Bias Report Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/10 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-mono-label text-[12px] text-outline">GENDER PARITY TEST</span>
+<span class="text-primary-fixed-dim font-mono-code text-[12px]">0.004 VAR</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-fixed-dim h-full" style="width: 2%"></div>
+</div>
+</div>
+<!-- Bias Report Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/10 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-mono-label text-[12px] text-outline">RACIAL BIAS RESISTANCE</span>
+<span class="text-primary-fixed-dim font-mono-code text-[12px]">0.001 VAR</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-fixed-dim h-full" style="width: 1%"></div>
+</div>
+</div>
+<!-- Bias Report Item -->
+<div class="p-4 bg-surface-container-high/40 border border-outline-variant/10 rounded-lg">
+<div class="flex justify-between items-center mb-2">
+<span class="font-mono-label text-[12px] text-outline">SEMANTIC HALLUCINATION PROB.</span>
+<span class="text-primary-fixed-dim font-mono-code text-[12px]">0.012 VAR</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-fixed-dim h-full" style="width: 5%"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10">
+<p class="font-mono-code text-[11px] text-outline mb-4">Continuous Adversarial Training (CAT) results refreshed 2m ago.</p>
+<button class="w-full py-4 bg-outline-variant/10 border border-outline-variant/30 font-bold hover:bg-outline-variant/20 transition-all rounded-lg uppercase tracking-widest text-[14px]">Generate Full Audit PDF</button>
+</div>
+</div>
+<!-- Transparency Ledger -->
+<div class="glass-card rounded-xl p-8 flex flex-col h-full min-h-[500px]">
+<div class="flex items-center justify-between mb-10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">history_edu</span>
+<h3 class="font-headline-md text-[24px]">Transparency Ledger</h3>
+</div>
+<div class="status-badge px-2 py-0.5 rounded text-[10px]">IMMUTABLE</div>
+</div>
+<div class="flex-grow overflow-y-auto pr-2 space-y-4 font-mono-code text-[12px] scrollbar-hide">
+<div class="flex items-start gap-4 p-3 border-l-2 border-primary-fixed-dim/30 bg-surface-container/30">
+<span class="text-outline shrink-0">14:22:01</span>
+<div>
+<p class="text-on-surface mb-1 font-bold">SHA-256 HASH VERIFIED</p>
+<p class="text-outline">Model Aether-v4 output #9822a registered to audit trail.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 border-l-2 border-outline-variant/30">
+<span class="text-outline shrink-0">14:21:45</span>
+<div>
+<p class="text-on-surface mb-1">PROMPT INJECTION SHIELD</p>
+<p class="text-outline">Blocked adversarial attempt on Instance-77-Global.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 border-l-2 border-outline-variant/30">
+<span class="text-outline shrink-0">14:18:32</span>
+<div>
+<p class="text-on-surface mb-1">WEIGHT RE-ALIGNMENT</p>
+<p class="text-outline">Ethics module updated from Federated Repository v.1.1.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 border-l-2 border-outline-variant/30">
+<span class="text-outline shrink-0">14:15:10</span>
+<div>
+<p class="text-on-surface mb-1">ACCESS LOG: US-EAST-1</p>
+<p class="text-outline">Model metadata requested by Authorized Auditor #92.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 border-l-2 border-outline-variant/30">
+<span class="text-outline shrink-0">14:12:59</span>
+<div>
+<p class="text-on-surface mb-1">DATA DELETION RECEIPT</p>
+<p class="text-outline">Request ID: 88291 confirmed and purged from training sets.</p>
+</div>
+</div>
+</div>
+<div class="mt-8 space-y-4">
+<div class="flex items-center gap-3 p-4 bg-secondary-container/5 rounded-lg border border-secondary-container/20">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+<div class="text-[12px] font-mono-code text-secondary-fixed">Blockchain-based provenance active. All outputs are cryptographically signed.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom CTA -->
+<section class="mt-section-gap text-center glass-card rounded-2xl p-16 border-primary-fixed-dim/20">
+<h2 class="font-headline-md text-headline-md mb-6">Ready for Enterprise Grade Compliance?</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-2xl mx-auto">
+                Join 500+ enterprises who trust Aether AI for their mission-critical, ethically-aligned infrastructure.
+            </p>
+<div class="flex flex-col sm:flex-row justify-center gap-6">
+<button class="bg-primary-fixed-dim text-on-primary font-bold py-4 px-10 rounded-lg hover:shadow-[0_0_30px_rgba(0,219,233,0.5)] transition-all active:scale-95">Speak to an Ethicist</button>
+<button class="border border-outline text-on-surface font-bold py-4 px-10 rounded-lg hover:bg-on-surface/5 transition-all">Download Ethics whitepaper</button>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/10 w-full py-section-gap mt-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="lg:col-span-2">
+<div class="font-display-lg text-[24px] text-primary-fixed-dim mb-6">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant leading-relaxed mb-6">
+                    Forging the future of infrastructure with ethical precision and industrial scale.
+                </p>
+</div>
+<div class="flex flex-col gap-4">
+<span class="text-on-surface font-bold text-[14px] mb-2">Platform</span>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="text-on-surface font-bold text-[14px] mb-2">Legal</span>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="lg:col-span-2 flex flex-col justify-between items-end">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-outline hover:text-primary transition-all cursor-pointer">public</span>
+<span class="material-symbols-outlined text-outline hover:text-primary transition-all cursor-pointer">hub</span>
+<span class="material-symbols-outlined text-outline hover:text-primary transition-all cursor-pointer">terminal</span>
+</div>
+<div class="font-mono-label text-[12px] text-outline text-right">
+                    © 2024 Aether AI Infrastructure. All rights reserved.
+                </div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for the Compliance Score
+        document.addEventListener('DOMContentLoaded', () => {
+            const scoreElement = document.querySelector('.font-display-lg.text-display-lg');
+            let currentScore = 0;
+            const targetScore = 98.4;
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function updateScore(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                
+                currentScore = (easedProgress * targetScore).toFixed(1);
+                scoreElement.textContent = currentScore;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateScore);
+                }
+            }
+            requestAnimationFrame(updateScore);
+        });
+
+        // Hover effect for cards to track mouse
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

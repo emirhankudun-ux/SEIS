@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Code Studio &amp; Debugger (Sector 3)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .code-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background: #00dbe9;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        @keyframes breakpoint-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 180, 171, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+        }
+        .active-breakpoint {
+            animation: breakpoint-pulse 2s infinite ease-in-out;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(18, 20, 20, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(0, 219, 233, 0.3);
+        }
+        #shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#605e5e",
+                        "primary": "#dbfcff",
+                        "inverse-on-surface": "#2f3131",
+                        "inverse-primary": "#006970",
+                        "surface-bright": "#37393a",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-container": "#480064",
+                        "background": "#121414",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "on-primary-container": "#006970",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "surface-variant": "#333535",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface": "#121414",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-high": "#282a2b",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-secondary-fixed": "#320047",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "on-surface-variant": "#b9cacb",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed": "#002022",
+                        "tertiary-container": "#dcd9d8",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-tint": "#00dbe9",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1a1c1c",
+                        "primary-fixed": "#7df4ff",
+                        "outline": "#849495"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-xs": "4px",
+                        "margin-page": "32px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "stroke-thin": "1px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed-dim/30 overflow-hidden">
+<canvas id="shader-canvas"></canvas>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-12 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 text-primary-fixed-dim font-code-sm text-code-sm">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim font-bold">SEIS_KERNEL_OS_v1.0</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-primary-fixed-dim font-bold transition-all duration-150 ease-in-out hover:text-primary-fixed hover:bg-surface-variant/50 px-2 py-1" href="#">KERNEL</a>
+<a class="text-on-surface-variant transition-all duration-150 ease-in-out hover:text-primary-fixed hover:bg-surface-variant/50 px-2 py-1" href="#">LOGIC</a>
+<a class="text-on-surface-variant transition-all duration-150 ease-in-out hover:text-primary-fixed hover:bg-surface-variant/50 px-2 py-1" href="#">VISUAL</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-error" data-icon="power_settings_new">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col pt-16 pb-8 bg-surface-container-lowest/70 backdrop-blur-3xl border-r border-outline-variant/20 font-code-lg text-code-lg">
+<div class="px-6 mb-8 flex flex-col">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 bg-primary-fixed-dim/20 rounded-sm border border-primary-fixed-dim/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-secondary-fixed text-xs tracking-wider">ROOT_USER</div>
+<div class="text-[10px] text-primary-fixed-dim/60">STATUS: OPTIMAL</div>
+</div>
+</div>
+<button class="mt-4 w-full py-2 bg-primary-fixed-dim text-on-primary font-bold text-xs tracking-widest active:scale-95 transition-transform">INITIALIZE_THREAD</button>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="text-secondary-fixed border-l-2 border-secondary-fixed bg-secondary-fixed/5 pl-4 py-3 flex items-center gap-3 transition-all">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+<span>KERNEL</span>
+</div>
+<div class="text-on-surface-variant pl-4 py-3 flex items-center gap-3 hover:text-primary-fixed-dim hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>LOGIC</span>
+</div>
+<div class="text-on-surface-variant pl-4 py-3 flex items-center gap-3 hover:text-primary-fixed-dim hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="brush">brush</span>
+<span>VISUAL</span>
+</div>
+<div class="text-on-surface-variant pl-4 py-3 flex items-center gap-3 hover:text-primary-fixed-dim hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span>ASSETS</span>
+</div>
+<div class="text-on-surface-variant pl-4 py-3 flex items-center gap-3 hover:text-primary-fixed-dim hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>SYSTEM</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-4 flex flex-col gap-1">
+<div class="text-on-surface-variant pl-4 py-2 flex items-center gap-3 text-xs hover:text-primary-fixed-dim cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="description">description</span>
+<span>DOCS</span>
+</div>
+<div class="text-on-surface-variant pl-4 py-2 flex items-center gap-3 text-xs hover:text-primary-fixed-dim cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+<span>HELP</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-64 pt-12 h-screen grid grid-cols-12 gap-px bg-outline-variant/20">
+<!-- File Explorer -->
+<div class="col-span-2 glass-panel border-r border-outline-variant/20 flex flex-col">
+<div class="h-8 bg-primary-fixed-dim flex items-center px-3 justify-between">
+<span class="text-on-primary font-bold text-[10px] tracking-tighter uppercase">Project Explorer</span>
+<span class="material-symbols-outlined text-on-primary text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="p-3 font-code-sm text-xs space-y-1">
+<div class="flex items-center gap-2 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-sm" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+<span class="material-symbols-outlined text-sm" data-icon="folder_open">folder_open</span>
+<span>seis_kernel_v1</span>
+</div>
+<div class="pl-4 space-y-1">
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer py-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+<span class="material-symbols-outlined text-sm" data-icon="folder">folder</span>
+<span>drivers</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer py-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+<span class="material-symbols-outlined text-sm" data-icon="folder_open">folder_open</span>
+<span>modules</span>
+</div>
+<div class="pl-6 space-y-1">
+<div class="flex items-center gap-2 text-secondary-fixed bg-secondary-fixed/10 py-1 px-2 border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined text-sm" data-icon="code">code</span>
+<span>memory_alloc.rs</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-primary-fixed-dim py-1 px-2 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="code">code</span>
+<span>scheduler.rs</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer py-0.5">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+<span>Makefile</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Editor & Git Diff -->
+<div class="col-span-10 flex flex-col overflow-hidden">
+<!-- Tabs -->
+<div class="h-10 flex items-center bg-surface-container-low border-b border-outline-variant/30 flex-shrink-0">
+<div class="h-full px-4 flex items-center gap-2 bg-surface/80 backdrop-blur-md text-primary-fixed-dim border-r border-outline-variant/30 border-t-2 border-t-primary-fixed-dim">
+<span class="material-symbols-outlined text-sm" data-icon="code">code</span>
+<span class="text-xs">memory_alloc.rs</span>
+<span class="material-symbols-outlined text-xs hover:text-error cursor-pointer" data-icon="close">close</span>
+</div>
+<div class="h-full px-4 flex items-center gap-2 text-on-surface-variant hover:bg-surface/50 border-r border-outline-variant/30 cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="data_object">data_object</span>
+<span class="text-xs">config.json</span>
+<span class="material-symbols-outlined text-xs" data-icon="close">close</span>
+</div>
+<div class="ml-auto px-4 flex items-center gap-4">
+<div class="flex items-center gap-2 bg-error/10 text-error px-2 py-0.5 rounded-sm border border-error/20 text-[10px]">
+<span class="material-symbols-outlined text-xs" data-icon="error">error</span>
+<span>2 ERRORS</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed-dim cursor-pointer" data-icon="split_screen">splitscreen</span>
+</div>
+</div>
+<!-- Side-by-Side Diff Content -->
+<div class="flex-grow grid grid-cols-2 gap-px bg-outline-variant/20 overflow-hidden">
+<!-- Original -->
+<div class="bg-surface/60 backdrop-blur-sm p-4 font-body-md text-sm overflow-y-auto relative">
+<div class="absolute left-0 top-0 w-12 h-full bg-surface-container-low/80 border-r border-outline-variant/20 flex flex-col items-center pt-4 text-[10px] text-on-surface-variant/40 space-y-1">
+<span>14</span><span>15</span><span class="text-error bg-error/10 w-full text-center">16</span><span>17</span><span>18</span><span>19</span>
+</div>
+<div class="pl-10 space-y-1 text-on-surface-variant">
+<div><span class="text-secondary-fixed">pub fn</span> <span class="text-primary-fixed-dim">allocate_block</span>(size: <span class="text-secondary-fixed-dim">usize</span>) -&gt; <span class="text-secondary-fixed-dim">Result</span>&lt;*mut <span class="text-secondary-fixed-dim">u8</span>, <span class="text-error">Error</span>&gt; {</div>
+<div class="pl-4"><span class="text-on-surface-variant/60">// Legacy allocation logic</span></div>
+<div class="pl-4 bg-error/10 border-l-4 border-error"><span class="text-error">- let ptr = unsafe { libc::malloc(size) };</span></div>
+<div class="pl-4"><span class="text-secondary-fixed">if</span> ptr.is_null() {</div>
+<div class="pl-8"><span class="text-secondary-fixed">return</span> <span class="text-secondary-fixed-dim">Err</span>(<span class="text-error">Error::OutOfMemory</span>);</div>
+<div class="pl-4">}</div>
+</div>
+</div>
+<!-- Changes -->
+<div class="bg-surface/60 backdrop-blur-sm p-4 font-body-md text-sm overflow-y-auto relative">
+<div class="absolute left-0 top-0 w-12 h-full bg-surface-container-low/80 border-r border-outline-variant/20 flex flex-col items-center pt-4 text-[10px] text-on-surface-variant/40 space-y-1">
+<span>14</span><span>15</span><span class="text-primary-container bg-primary-container/10 w-full text-center">16</span><span class="text-primary-container bg-primary-container/10 w-full text-center">17</span><span>18</span><span>19</span>
+</div>
+<div class="pl-10 space-y-1">
+<div class="text-on-surface-variant"><span class="text-secondary-fixed">pub fn</span> <span class="text-primary-fixed-dim">allocate_block</span>(size: <span class="text-secondary-fixed-dim">usize</span>) -&gt; <span class="text-secondary-fixed-dim">Result</span>&lt;*mut <span class="text-secondary-fixed-dim">u8</span>, <span class="text-error">Error</span>&gt; {</div>
+<div class="pl-4 text-on-surface-variant/60">// Replaced with Sector-3 optimized allocator</div>
+<div class="pl-4 bg-primary-container/10 border-l-4 border-primary-container"><span class="text-primary-container">+ let ptr = SEIS_MMU::get_instance().alloc(size)?;</span></div>
+<div class="pl-4 bg-primary-container/10 border-l-4 border-primary-container"><span class="text-primary-container">+ SEIS_LOG::info("Block allocated");</span></div>
+<div class="text-on-surface-variant pl-4"><span class="text-secondary-fixed">if</span> ptr.is_null() {</div>
+<div class="text-on-surface-variant pl-8"><span class="text-secondary-fixed">return</span> <span class="text-secondary-fixed-dim">Err</span>(<span class="text-error">Error::OutOfMemory</span>);</div>
+<div class="text-on-surface-variant pl-4">}</div>
+</div>
+<!-- Debugger Breakpoint indicator -->
+<div class="absolute left-1 top-48 w-3 h-3 bg-error rounded-full active-breakpoint ring-4 ring-error/20"></div>
+</div>
+</div>
+<!-- Debugger Console -->
+<div class="h-48 border-t border-outline-variant/30 bg-surface-container-lowest/80 backdrop-blur-xl relative flex flex-col flex-shrink-0">
+<div class="h-8 bg-surface-container-highest/80 flex items-center px-4 gap-6 border-b border-outline-variant/20">
+<div class="flex items-center gap-2 text-primary-fixed-dim border-b-2 border-primary-fixed-dim h-full px-2">
+<span class="text-[10px] font-bold tracking-widest uppercase">Console</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant/50 hover:text-on-surface cursor-pointer h-full px-2">
+<span class="text-[10px] font-bold tracking-widest uppercase">Threads</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant/50 hover:text-on-surface cursor-pointer h-full px-2">
+<span class="text-[10px] font-bold tracking-widest uppercase">Watch</span>
+</div>
+<div class="ml-auto flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-error" data-icon="delete_sweep">delete_sweep</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed-dim" data-icon="pause">pause</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed-dim" data-icon="play_arrow">play_arrow</span>
+</div>
+</div>
+<div class="flex-grow p-4 font-code-sm text-[12px] space-y-1 overflow-y-auto">
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[14:22:01]</span>
+<span class="text-primary-fixed-dim">SYSTEM:</span>
+<span class="text-on-surface">Initializing debugger interface for PID 4402...</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[14:22:02]</span>
+<span class="text-secondary-fixed">MODULE:</span>
+<span class="text-on-surface">Symbol lookup successful for `memory_alloc.rs`</span>
+</div>
+<div class="flex gap-4 bg-error/5">
+<span class="text-on-surface-variant/40">[14:22:05]</span>
+<span class="text-error font-bold">BREAKPOINT:</span>
+<span class="text-on-surface">Hit at 0x7ffd56c1f line 17 in memory_alloc.rs</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant/40">[14:22:05]</span>
+<span class="text-primary-container">STACK:</span>
+<span class="text-on-surface-variant">&gt;&gt; main() -&gt; init_kernel() -&gt; allocate_block()</span>
+</div>
+<div class="mt-2 flex items-center gap-2 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="terminal-glow">awaiting command...</span>
+<span class="code-cursor"></span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Action FAB -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group overflow-hidden border-2 border-primary-fixed z-50">
+<span class="material-symbols-outlined text-2xl relative z-10" data-icon="rocket_launch">rocket_launch</span>
+</button>
+<script>
+    // WebGL Shader Setup
+    const canvas = document.getElementById('shader-canvas');
+    const gl = canvas.getContext('webgl');
+
+    const vertexShaderSource = `
+        attribute vec2 a_position;
+        attribute vec2 a_texCoord;
+        varying vec2 v_texCoord;
+        void main() {
+            gl_Position = vec4(a_position, 0, 1);
+            v_texCoord = a_texCoord;
+        }
+    `;
+
+    const fragmentShaderSource = `
+        precision highp float;
+        uniform float u_time;
+        uniform vec2 u_resolution;
+        varying vec2 v_texCoord;
+
+        float hash(vec2 p) {
+            p = fract(p * vec2(123.34, 456.21));
+            p += dot(p, p + 45.32);
+            return fract(p.x * p.y);
+        }
+
+        void main() {
+            vec2 uv = v_texCoord;
+            vec3 color = vec3(0.05, 0.06, 0.07); // Obsidian base
+            
+            // Technical grid
+            vec2 grid = fract(uv * vec2(40.0 * (u_resolution.x / u_resolution.y), 40.0));
+            float line = step(0.98, max(grid.x, grid.y));
+            color += line * vec3(0.0, 1.0, 1.0) * 0.05;
+            
+            // Flowing data nodes
+            float t = u_time * 0.5;
+            for(float i=0.0; i<3.0; i++) {
+                vec2 p = uv * (2.0 + i);
+                p.y += t * (0.1 + i * 0.05);
+                vec2 id = floor(p);
+                vec2 guv = fract(p) - 0.5;
+                
+                float h = hash(id);
+                if(h > 0.8) {
+                    float pulse = sin(u_time * 2.0 + h * 10.0) * 0.5 + 0.5;
+                    float dist = length(guv);
+                    float glow = smoothstep(0.1, 0.0, dist) * pulse;
+                    color += glow * vec3(0.0, 1.0, 1.0) * 0.3;
+                }
+            }
+            
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `;
+
+    function createShader(gl, type, source) {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        return shader;
+    }
+
+    const program = gl.createProgram();
+    gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource));
+    gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource));
+    gl.linkProgram(program);
+    gl.useProgram(program);
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const texCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0,0, 1,0, 0,1, 0,1, 1,0, 1,1]), gl.STATIC_DRAW);
+
+    const texCoordLocation = gl.getAttribLocation(program, "a_texCoord");
+    gl.enableVertexAttribArray(texCoordLocation);
+    gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const uTime = gl.getUniformLocation(program, "u_time");
+    const uRes = gl.getUniformLocation(program, "u_resolution");
+
+    function render(time) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform1f(uTime, time * 0.001);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    // Terminal Interaction Logic
+    const cursor = document.querySelector('.code-cursor');
+    document.querySelectorAll('nav a, nav div').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            // Subtle feedback if needed
+        });
+    });
+</script>
+</body></html>

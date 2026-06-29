@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Multi-Pane Terminal &amp; Node Orchestrator (Sector 3)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f; /* surface-container-lowest */
+            color: #e2e2e2; /* on-surface */
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3); /* outline-variant */
+        }
+        .terminal-header {
+            background: #7df4ff; /* primary-fixed */
+            color: #002022; /* on-primary-fixed */
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(125, 244, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background-color: #7df4ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .segment {
+            height: 8px;
+            width: 4px;
+            margin-right: 1px;
+            background: #333535;
+        }
+        .segment.active-cyan { background: #7df4ff; box-shadow: 0 0 4px #7df4ff; }
+        .segment.active-lime { background: #ce5dff; box-shadow: 0 0 4px #ce5dff; } /* Using Secondary for the "Lime" vibe as per config palette */
+        
+        /* Custom scrollbar for terminal feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #7df4ff; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#605e5e",
+                        "primary": "#dbfcff",
+                        "inverse-on-surface": "#2f3131",
+                        "inverse-primary": "#006970",
+                        "surface-bright": "#37393a",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-container": "#480064",
+                        "background": "#121414",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "on-primary-container": "#006970",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "surface-variant": "#333535",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface": "#121414",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-high": "#282a2b",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-secondary-fixed": "#320047",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "on-surface-variant": "#b9cacb",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed": "#002022",
+                        "tertiary-container": "#dcd9d8",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-tint": "#00dbe9",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1a1c1c",
+                        "primary-fixed": "#7df4ff",
+                        "outline": "#849495"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-xs": "4px",
+                        "margin-page": "32px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "stroke-thin": "1px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="flex flex-col h-screen select-none">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl text-primary-fixed flex justify-between items-center w-full px-4 h-10 border-b border-outline-variant/30 fixed top-0 z-50">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors">memory</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors">terminal</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors">settings</span>
+</div>
+</header>
+<div class="flex flex-1 pt-10 pb-10">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl text-secondary-fixed border-r border-outline-variant/20 fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4">
+<div class="w-10 h-10 rounded-sm bg-secondary-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-10 text-center">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-10 text-center">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined w-10 text-center">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-10 text-center">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-10 text-center">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all duration-150 text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined w-10 text-center">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<button class="w-full bg-secondary-container text-on-secondary-container font-label-caps text-[10px] py-2 flex items-center justify-center gap-2 rounded-sm overflow-hidden whitespace-nowrap active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="opacity-0 group-hover:opacity-100">NEW_SESSION</span>
+</button>
+</div>
+<div class="flex flex-col mb-4">
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-error/10 text-on-surface-variant hover:text-error transition-all duration-150">
+<span class="material-symbols-outlined w-10 text-center">power_settings_new</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">POWER</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 text-on-surface-variant hover:text-primary-fixed transition-all duration-150">
+<span class="material-symbols-outlined w-10 text-center">lock</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 font-label-caps text-label-caps">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace: Tiling Grid -->
+<main class="flex-1 ml-20 transition-all duration-300 p-2 grid grid-cols-12 grid-rows-6 gap-2">
+<!-- Pane 1: Neofetch Output -->
+<section class="col-span-12 lg:col-span-5 row-span-3 glass-panel relative flex flex-col overflow-hidden">
+<div class="terminal-header h-6 px-3 flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase font-bold tracking-wider">tty1 :: zsh - neofetch</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-[#002022]/20"></div>
+<div class="w-2 h-2 rounded-full bg-[#002022]/20"></div>
+</div>
+</div>
+<div class="flex-1 p-4 font-mono text-sm overflow-auto text-primary-fixed-dim leading-relaxed relative">
+<div class="scanline"></div>
+<div class="flex gap-6 items-start">
+<pre class="text-secondary-fixed">   _   
+  / \  
+ / _ \ 
+/ ___ \
+/_/   \_\
+SEIS OS v3
+                        </pre>
+<div class="space-y-1">
+<p><span class="text-secondary-fixed">root</span>@<span class="text-secondary-fixed">SEIS-01</span></p>
+<p>----------</p>
+<p><span class="text-secondary-fixed">OS</span>: SEIS KERNEL v3.4.1-LTS</p>
+<p><span class="text-secondary-fixed">Host</span>: Sector 3 Orchestrator</p>
+<p><span class="text-secondary-fixed">Kernel</span>: 6.5.2-seis-core</p>
+<p><span class="text-secondary-fixed">Uptime</span>: 12 days, 4 hours</p>
+<p><span class="text-secondary-fixed">Packages</span>: 1242 (pacman)</p>
+<p><span class="text-secondary-fixed">Shell</span>: zsh 5.9</p>
+<p><span class="text-secondary-fixed">Resolution</span>: 3840x2160</p>
+<p><span class="text-secondary-fixed">WM</span>: HyprSEIS-Tiled</p>
+<p><span class="text-secondary-fixed">CPU</span>: Neural-X (128) @ 5.2GHz</p>
+<div class="flex gap-1 pt-2">
+<div class="w-4 h-4 bg-background border border-outline-variant"></div>
+<div class="w-4 h-4 bg-primary-fixed"></div>
+<div class="w-4 h-4 bg-secondary-fixed"></div>
+<div class="w-4 h-4 bg-primary-container"></div>
+<div class="w-4 h-4 bg-secondary-container"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 text-on-surface">
+<span class="text-primary-fixed">root@SEIS-01:~$</span> <span class="cursor-blink"></span>
+</div>
+</div>
+</section>
+<!-- Pane 2: htop Style Monitor -->
+<section class="col-span-12 lg:col-span-7 row-span-4 glass-panel flex flex-col overflow-hidden">
+<div class="terminal-header h-6 px-3 flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase font-bold tracking-wider">tty2 :: htop - processes</span>
+</div>
+<div class="flex-1 p-3 font-mono text-[11px] overflow-auto">
+<!-- CPU Bars -->
+<div class="grid grid-cols-2 gap-x-8 gap-y-1 mb-4">
+<div class="flex items-center gap-2">
+<span class="w-4">1</span>
+<div class="flex flex-1 h-2">
+<div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+<span class="text-primary-fixed">42.1%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4">2</span>
+<div class="flex flex-1 h-2">
+<div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+<span class="text-primary-fixed">28.5%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4">3</span>
+<div class="flex flex-1 h-2">
+<div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment active-lime"></div><div class="segment"></div><div class="segment"></div>
+</div>
+<span class="text-secondary-fixed">81.0%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-4">4</span>
+<div class="flex flex-1 h-2">
+<div class="segment active-cyan"></div><div class="segment active-cyan"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+<span class="text-primary-fixed">15.2%</span>
+</div>
+</div>
+<!-- Stats -->
+<div class="flex gap-8 mb-4 border-b border-outline-variant/30 pb-2">
+<div><span class="text-on-surface-variant">Mem:</span> <span class="text-primary-fixed">32.4G / 128G</span></div>
+<div><span class="text-on-surface-variant">Swp:</span> <span class="text-primary-fixed">0K / 16G</span></div>
+<div><span class="text-on-surface-variant">Tasks:</span> <span class="text-secondary-fixed">242 total, 4 running</span></div>
+</div>
+<!-- Process Table -->
+<table class="w-full text-left">
+<thead class="text-on-surface-variant uppercase text-[10px] border-b border-outline-variant/20">
+<tr>
+<th class="pb-1">PID</th>
+<th class="pb-1">USER</th>
+<th class="pb-1">CPU%</th>
+<th class="pb-1">MEM%</th>
+<th class="pb-1">TIME+</th>
+<th class="pb-1">COMMAND</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="hover:bg-primary-fixed/10">
+<td>1024</td><td>root</td><td class="text-secondary-fixed">24.2</td><td>2.1</td><td>0:42.11</td><td>/usr/bin/seis-node-agent --sector-3</td>
+</tr>
+<tr class="bg-secondary-container/10 text-secondary-fixed">
+<td>4491</td><td>root</td><td>12.5</td><td>8.4</td><td>1:12.05</td><td>/bin/seis-orchestrator --active</td>
+</tr>
+<tr>
+<td>882</td><td>root</td><td>4.1</td><td>0.5</td><td>12:04.12</td><td>/usr/lib/seis-kernel-monitor</td>
+</tr>
+<tr>
+<td>9931</td><td>root</td><td>1.2</td><td>0.1</td><td>0:00.04</td><td>tail -f /var/log/syslog</td>
+</tr>
+<tr>
+<td>12</td><td>root</td><td>0.0</td><td>0.0</td><td>5:12:00</td><td>[kworker/0:1-events]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Pane 3: Log Stream -->
+<section class="col-span-12 lg:col-span-5 row-span-3 glass-panel flex flex-col overflow-hidden">
+<div class="terminal-header h-6 px-3 flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase font-bold tracking-wider">tty3 :: tail -f /var/log/syslog</span>
+</div>
+<div class="flex-1 p-3 font-mono text-[11px] overflow-auto text-on-surface-variant space-y-1" id="log-container">
+<p><span class="text-primary-fixed">[2024-05-12 09:44:01]</span> <span class="text-secondary-fixed">INF</span>: Handshake established with Node Alpha-3</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:05]</span> <span class="text-secondary-fixed">INF</span>: Data sync initiated (sector_size: 4096KB)</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:12]</span> <span class="text-error">WRN</span>: Latency spike detected on eth0 interface</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:15]</span> <span class="text-secondary-fixed">INF</span>: Recalibrating packet routing...</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:20]</span> <span class="text-secondary-fixed">INF</span>: Optimization complete. Signal noise reduced by 14%.</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:22]</span> <span class="text-secondary-fixed">INF</span>: Heartbeat pulse: 124ms</p>
+<p><span class="text-primary-fixed">[2024-05-12 09:44:30]</span> <span class="text-primary-container">SYS</span>: Kernel-level garbage collection started.</p>
+</div>
+</section>
+<!-- Pane 4: Visual Orchestrator Node -->
+<section class="col-span-12 lg:col-span-7 row-span-2 glass-panel flex flex-col overflow-hidden relative">
+
+<div class="relative z-10 terminal-header h-6 px-3 flex items-center justify-between">
+<span class="font-label-caps text-[10px] uppercase font-bold tracking-wider">tty4 :: visualizer - sector_mesh</span>
+</div>
+<div class="relative z-10 flex-1 flex items-center justify-center p-4">
+<div class="text-center">
+<div class="text-primary-fixed-dim font-headline-md text-headline-md">SECTOR 3 ACTIVE</div>
+<div class="text-secondary-fixed font-code-sm text-code-sm mt-1">COORDINATING 424 ACTIVE NODES</div>
+<div class="mt-4 flex gap-4 justify-center">
+<div class="px-3 py-1 bg-primary-fixed/10 border border-primary-fixed text-primary-fixed text-[10px] font-bold">STABLE</div>
+<div class="px-3 py-1 bg-secondary-fixed/10 border border-secondary-fixed text-secondary-fixed text-[10px] font-bold">SYNCING</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Bottom Terminal Status Bar -->
+<footer class="fixed bottom-0 left-0 w-full h-10 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center px-4 justify-between z-50 text-[11px] font-mono">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary-fixed">timer</span>
+<span class="text-on-surface-variant">UPTIME:</span>
+<span class="text-primary-fixed" id="uptime-clock">12:04:42:11</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary-fixed">speed</span>
+<span class="text-on-surface-variant">FREQ:</span>
+<span class="text-secondary-fixed">5.20 GHz</span>
+</div>
+<div class="hidden sm:flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary-container">lan</span>
+<span class="text-on-surface-variant">NET:</span>
+<span class="text-primary-container">1.2 GBPS</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></div>
+<span class="text-primary-fixed font-bold">LINK_OK</span>
+</div>
+<div class="bg-surface-container px-3 py-1 border border-outline-variant text-on-surface-variant">
+                SEIS-OS :: SESSION_ID: <span class="text-secondary-fixed">9x94f_kernel</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and live logs simulation
+        const logContainer = document.getElementById('log-container');
+        const logs = [
+            "INF: Handshaking with cluster node 12...",
+            "WRN: Storage pressure increasing on partition /dev/sda2",
+            "SYS: Buffer flush completed in 12ms",
+            "INF: Routing table updated for subnet 192.168.1.0/24",
+            "SEC: Firewall dropped 12 invalid packets from 45.1.2.9",
+            "INF: Process 1024 migrated to Core 4",
+            "SYS: Thermal threshold 45°C - within limits"
+        ];
+
+        setInterval(() => {
+            const p = document.createElement('p');
+            const now = new Date();
+            const timestamp = now.toISOString().replace('T', ' ').substring(0, 19);
+            const randomLog = logs[Math.floor(Math.random() * logs.length)];
+            
+            let typeColor = "text-secondary-fixed";
+            if(randomLog.includes("WRN")) typeColor = "text-error";
+            if(randomLog.includes("SYS")) typeColor = "text-primary-container";
+
+            p.innerHTML = `<span class="text-primary-fixed">[${timestamp}]</span> <span class="${typeColor}">${randomLog.split(': ')[0]}</span>: ${randomLog.split(': ')[1]}`;
+            logContainer.appendChild(p);
+            
+            if (logContainer.children.length > 20) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }, 3000);
+
+        // Simple Uptime Ticker
+        let seconds = 11;
+        let minutes = 42;
+        let hours = 4;
+        let days = 12;
+
+        setInterval(() => {
+            seconds++;
+            if(seconds >= 60) { seconds = 0; minutes++; }
+            if(minutes >= 60) { minutes = 0; hours++; }
+            if(hours >= 24) { hours = 0; days++; }
+            
+            const format = (n) => n.toString().padStart(2, '0');
+            document.getElementById('uptime-clock').textContent = `${format(days)}:${format(hours)}:${format(minutes)}:${format(seconds)}`;
+        }, 1000);
+    </script>
+</body></html>

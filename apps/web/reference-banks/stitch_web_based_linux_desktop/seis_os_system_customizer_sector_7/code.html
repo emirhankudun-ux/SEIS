@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS — SECTOR 7</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .tiling-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 8px;
+            padding: 8px;
+            height: calc(100vh - 40px);
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            border: 1px solid #3b494b;
+            backdrop-filter: blur(12px);
+            position: relative;
+        }
+        .glass-panel:focus-within {
+            border-color: #00f0ff;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+        }
+        .window-header {
+            height: 24px;
+            background-color: #7df4ff;
+            color: #002022;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .oscilloscope-path {
+            stroke: #00f0ff;
+            stroke-width: 1.5;
+            fill: none;
+        }
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+        .segment {
+            height: 8px;
+            flex: 1;
+            background: #1a1c1c;
+        }
+        .segment.active {
+            background: #ce5dff;
+        }
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0%; }
+            to { top: 100%; }
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#121414",
+                        "on-primary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-container": "#dcd9d8",
+                        "on-secondary-container": "#480064",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#333535",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-bright": "#37393a",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-background": "#e2e2e2",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520071",
+                        "surface-container": "#1e2020",
+                        "secondary-container": "#ce5dff",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#7df4ff",
+                        "secondary": "#ebb2ff",
+                        "surface-container-high": "#282a2b",
+                        "surface-variant": "#333535",
+                        "on-error": "#690005",
+                        "surface": "#121414",
+                        "tertiary": "#f9f5f5",
+                        "surface-tint": "#00dbe9",
+                        "background": "#121414",
+                        "on-secondary-fixed": "#320047",
+                        "on-tertiary": "#313030",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe9"
+                    },
+                    fontFamily: {
+                        "headline-md": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="dark bg-surface-container-lowest">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-6 z-50">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps cursor-pointer" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer" href="#">NETWORK</a>
+</nav>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-[18px]">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 group overflow-hidden flex flex-col">
+<div class="p-4 flex items-center gap-4 mb-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-container/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="font-label-caps text-secondary-fixed whitespace-nowrap">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined min-w-[24px]">dashboard</span>
+<span class="ml-4 font-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined min-w-[24px]">folder_open</span>
+<span class="ml-4 font-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined min-w-[24px]">terminal</span>
+<span class="ml-4 font-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined min-w-[24px]">smart_toy</span>
+<span class="ml-4 font-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">AI_AGENTS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/20">
+<div class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim">
+<span class="material-symbols-outlined min-w-[24px]">power_settings_new</span>
+<span class="ml-4 font-label-caps opacity-0 group-hover:opacity-100">POWER</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-20 mt-10 tiling-grid">
+<!-- Sector 7 Title & Status -->
+<div class="col-span-12 glass-panel p-4 flex justify-between items-center h-16 border-b-0">
+<div class="flex items-center gap-6">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary-fixed">SECTOR 07 // AUD_WND_DECORATOR</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SYSTEM-WIDE KERNEL MODULE FOR AUDIO-VISUAL HARMONIZATION</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<div class="font-label-caps text-secondary-fixed">CPU_LOAD</div>
+<div class="segmented-progress w-32 mt-1">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-caps text-primary-fixed">MEM_UTIL</div>
+<div class="segmented-progress w-32 mt-1">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Left Column: Audio Design Oscilloscope -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-2">
+<!-- Oscilloscope View -->
+<div class="flex-1 glass-panel flex flex-col">
+<div class="window-header">
+<span class="material-symbols-outlined mr-2 text-[14px]">waves</span>
+                    OSCILLOSCOPE_STREAM_01
+                </div>
+<div class="flex-1 relative overflow-hidden p-4">
+<div class="scanline"></div>
+<svg class="w-full h-full" viewbox="0 0 400 200">
+<path class="oscilloscope-path" d="M0,100 Q50,50 100,100 T200,100 T300,100 T400,100" id="oscilloscope-wave"></path>
+<line stroke="#3b494b" stroke-dasharray="4" stroke-width="0.5" x1="0" x2="400" y1="100" y2="100"></line>
+<line stroke="#3b494b" stroke-dasharray="4" stroke-width="0.5" x1="200" x2="200" y1="0" y2="200"></line>
+</svg>
+<div class="absolute bottom-4 left-4 font-code-sm text-primary-fixed-dim bg-surface-container-lowest/80 px-2 py-1 border border-outline-variant">
+                        FREQ: 440.00 Hz | AMP: 0.85
+                    </div>
+</div>
+</div>
+<!-- Audio Triggers List -->
+<div class="h-64 glass-panel flex flex-col">
+<div class="window-header bg-secondary-container text-on-secondary-container">
+                    SYSTEM_AUDIO_TRIGGERS
+                </div>
+<div class="flex-1 overflow-y-auto p-2">
+<table class="w-full text-left font-code-sm">
+<thead class="text-on-surface-variant font-label-caps border-b border-outline-variant">
+<tr>
+<th class="p-2">EVENT_ID</th>
+<th class="p-2">SAMPLE_NODE</th>
+<th class="p-2 text-right">VOL</th>
+</tr>
+</thead>
+<tbody class="text-on-surface">
+<tr class="hover:bg-primary-container/10 border-b border-outline-variant/10 cursor-pointer">
+<td class="p-2">WND_OPEN</td>
+<td class="p-2">sine_blip_04.wav</td>
+<td class="p-2 text-right text-primary-fixed">-3.2dB</td>
+</tr>
+<tr class="bg-secondary-container/5 hover:bg-primary-container/10 border-b border-outline-variant/10 cursor-pointer">
+<td class="p-2">WND_CLOSE</td>
+<td class="p-2">click_low_01.wav</td>
+<td class="p-2 text-right text-primary-fixed">-4.0dB</td>
+</tr>
+<tr class="hover:bg-primary-container/10 border-b border-outline-variant/10 cursor-pointer">
+<td class="p-2">WS_SWITCH</td>
+<td class="p-2">sweep_high_08.wav</td>
+<td class="p-2 text-right text-primary-fixed">-1.5dB</td>
+</tr>
+<tr class="hover:bg-primary-container/10 border-b border-outline-variant/10 cursor-pointer">
+<td class="p-2">KRNL_ERR</td>
+<td class="p-2">dist_pulse_02.wav</td>
+<td class="p-2 text-right text-error">-0.5dB</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-2 border-t border-outline-variant/30 flex justify-end">
+<button class="px-4 py-1 bg-primary-container text-on-primary-fixed font-label-caps text-label-caps transition-colors hover:bg-secondary-container">
+                        ADD_TRIGGER
+                    </button>
+</div>
+</div>
+</div>
+<!-- Middle Column: Window Decorator Schematic -->
+<div class="col-span-12 lg:col-span-4 glass-panel flex flex-col">
+<div class="window-header">
+                WINDOW_DECORATOR_SCHEMATIC
+            </div>
+<div class="flex-1 flex flex-col items-center justify-center p-8 bg-[#080a0a]">
+<!-- Schematic Visualization -->
+<div class="w-full aspect-square border border-dashed border-outline-variant relative flex items-center justify-center">
+<div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]">grid_view</span>
+</div>
+<!-- Window Mockup -->
+<div class="w-4/5 h-3/5 border-2 border-primary-fixed shadow-[0_0_15px_rgba(0,240,255,0.2)] relative">
+<!-- Margin Lines -->
+<div class="absolute -top-6 left-0 right-0 border-t border-secondary-container/40 flex justify-center">
+<span class="bg-[#080a0a] px-2 font-code-sm text-secondary-fixed text-[10px]">MARGIN_T: 24px</span>
+</div>
+<div class="absolute -bottom-6 left-0 right-0 border-b border-secondary-container/40 flex justify-center">
+<span class="bg-[#080a0a] px-2 font-code-sm text-secondary-fixed text-[10px]">MARGIN_B: 24px</span>
+</div>
+<div class="absolute -left-12 top-0 bottom-0 border-l border-secondary-container/40 flex items-center">
+<span class="bg-[#080a0a] px-2 font-code-sm text-secondary-fixed text-[10px] -rotate-90 whitespace-nowrap">GUTTER_L: 48px</span>
+</div>
+<!-- Padding Mockup -->
+<div class="absolute inset-4 border border-outline-variant/40 flex items-center justify-center">
+<span class="font-code-sm text-on-surface-variant text-[10px]">CONTENT_AREA</span>
+</div>
+</div>
+</div>
+<div class="w-full mt-6 grid grid-cols-2 gap-4">
+<div class="p-3 border border-outline-variant bg-surface-container-low">
+<div class="font-label-caps text-on-surface-variant mb-2">RADIUS</div>
+<div class="flex justify-between items-center">
+<input class="w-2/3 accent-primary-fixed" type="range"/>
+<span class="font-code-sm text-primary-fixed">4.0px</span>
+</div>
+</div>
+<div class="p-3 border border-outline-variant bg-surface-container-low">
+<div class="font-label-caps text-on-surface-variant mb-2">OPACITY</div>
+<div class="flex justify-between items-center">
+<input class="w-2/3 accent-primary-fixed" type="range"/>
+<span class="font-code-sm text-primary-fixed">85%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Dock Configurator & Terminal -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-2">
+<!-- Dock Configurator -->
+<div class="flex-1 glass-panel flex flex-col">
+<div class="window-header">
+                    DOCK_CONFIGURATOR_V3
+                </div>
+<div class="p-4 space-y-4">
+<div class="space-y-2">
+<label class="font-label-caps text-on-surface-variant">POSITION</label>
+<div class="flex gap-1">
+<div class="flex-1 p-2 border border-primary-fixed bg-primary-container/20 text-center font-code-sm text-primary-fixed cursor-pointer">BOTTOM</div>
+<div class="flex-1 p-2 border border-outline-variant text-center font-code-sm text-on-surface-variant hover:border-primary-fixed transition-colors cursor-pointer">LEFT</div>
+<div class="flex-1 p-2 border border-outline-variant text-center font-code-sm text-on-surface-variant hover:border-primary-fixed transition-colors cursor-pointer">TOP</div>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-on-surface-variant">ACTIVE_GLOW_INTENSITY</label>
+<div class="flex items-center gap-4">
+<div class="flex-1 h-1 bg-outline-variant relative">
+<div class="absolute left-0 top-0 h-full w-2/3 bg-secondary-container"></div>
+<div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-secondary-container"></div>
+</div>
+<span class="font-code-sm text-secondary-fixed">0.68</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-caps text-on-surface-variant">DOCK_ITEMS</label>
+<div class="space-y-1">
+<div class="flex items-center justify-between p-2 border border-outline-variant/30 text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">folder</span>
+<span class="font-code-sm">FILES</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] cursor-pointer">drag_indicator</span>
+</div>
+<div class="flex items-center justify-between p-2 border border-outline-variant/30 text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">language</span>
+<span class="font-code-sm">BROWSER</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] cursor-pointer">drag_indicator</span>
+</div>
+<div class="flex items-center justify-between p-2 border border-primary-fixed/30 bg-primary-container/5 text-on-surface">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">code</span>
+<span class="font-code-sm">IDE</span>
+</div>
+<span class="material-symbols-outlined text-primary-fixed text-[16px] cursor-pointer">drag_indicator</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Terminal Panel -->
+<div class="h-48 glass-panel bg-black flex flex-col font-code-sm">
+<div class="window-header bg-surface-container-highest text-on-surface border-b border-outline-variant/30">
+                    SYSTEM_LOGS_TERM
+                </div>
+<div class="flex-1 p-3 overflow-y-auto text-[12px] leading-relaxed">
+<div class="text-secondary-fixed">[INFO] Initializing Sector 7 audio driver...</div>
+<div class="text-primary-fixed">[OK] Oscilloscope handshake successful.</div>
+<div class="text-on-surface-variant">[WARN] Buffer underrun detected at node 0x88.</div>
+<div class="text-on-surface-variant">[INFO] Window decorator sync started.</div>
+<div class="text-on-surface-variant">[INFO] Applying custom padding: { T: 12, R: 12, B: 12, L: 12 }</div>
+<div class="text-on-surface">root@seis-os:~# <span class="inline-block w-2 h-4 bg-primary-fixed animate-pulse align-middle ml-1"></span></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Modal Simulation / Overlay -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-md z-[100] hidden items-center justify-center" id="save-overlay">
+<div class="w-[400px] bg-surface-container-low border border-primary-fixed p-6 shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+<h2 class="font-headline-md text-primary-fixed mb-4">SAVE_CONFIGURATION?</h2>
+<p class="font-body-md text-on-surface-variant mb-6">Confirm writing decorations and audio triggers to the kernel config file `/etc/seis/sector7.conf`.</p>
+<div class="flex gap-2">
+<button class="flex-1 py-2 border border-primary-fixed text-primary-fixed font-label-caps hover:bg-primary-container/10" onclick="toggleOverlay()">CANCEL</button>
+<button class="flex-1 py-2 bg-primary-container text-on-primary-fixed font-label-caps" onclick="toggleOverlay()">WRITE_SYNC</button>
+</div>
+</div>
+</div>
+<!-- Actions FAB (Contextual) -->
+<div class="fixed bottom-6 right-6 flex flex-col gap-3">
+<button class="w-14 h-14 bg-secondary-container text-on-secondary-container rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all" onclick="toggleOverlay()">
+<span class="material-symbols-outlined text-[32px]" style="font-variation-settings: 'FILL' 1;">save</span>
+</button>
+</div>
+<script>
+        // Simple Oscilloscope Animation
+        const path = document.getElementById('oscilloscope-wave');
+        let counter = 0;
+        
+        function updateOscilloscope() {
+            counter += 0.1;
+            let d = "M0,100 ";
+            for (let x = 0; x <= 400; x += 10) {
+                const y = 100 + Math.sin(x * 0.05 + counter) * 40 * Math.sin(counter * 0.5);
+                d += `L${x},${y} `;
+            }
+            path.setAttribute('d', d);
+            requestAnimationFrame(updateOscilloscope);
+        }
+        
+        updateOscilloscope();
+
+        function toggleOverlay() {
+            const overlay = document.getElementById('save-overlay');
+            overlay.classList.toggle('hidden');
+            overlay.classList.toggle('flex');
+        }
+
+        // Random log generator
+        const terminal = document.querySelector('.overflow-y-auto.text-\\[12px\\]');
+        const logs = [
+            "[INFO] Render cycle: 60fps",
+            "[SYSTEM] Syncing with WM core...",
+            "[SOUND] Trigger: WND_MINIMIZE played",
+            "[DOCK] Icon cache refreshed",
+            "[SECTOR 7] Monitoring active"
+        ];
+
+        setInterval(() => {
+            const lastLine = terminal.lastElementChild;
+            const log = logs[Math.floor(Math.random() * logs.length)];
+            const div = document.createElement('div');
+            div.className = 'text-on-surface-variant';
+            div.innerText = log;
+            terminal.insertBefore(div, lastLine);
+            if (terminal.children.length > 15) terminal.removeChild(terminal.firstChild);
+            terminal.scrollTop = terminal.scrollHeight;
+        }, 3000);
+    </script>
+</body></html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPR_OS_01 // SEIS AI TOKENIZER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .cyan-glow {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.15);
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00dbe9;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0c0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#00dbe9",
+                      "surface-container-high": "#282a2b",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "surface-dim": "#121414",
+                      "surface": "#121414",
+                      "on-primary-fixed-variant": "#004f54",
+                      "surface-container": "#1e2020",
+                      "on-primary-fixed": "#002022",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-variant": "#333535",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "surface-tint": "#00dbe9",
+                      "primary-fixed": "#7df4ff",
+                      "on-error-container": "#ffdad6",
+                      "on-error": "#690005",
+                      "on-surface": "#e2e2e2",
+                      "on-secondary-container": "#480064",
+                      "on-primary": "#00363a",
+                      "surface-container-highest": "#333535",
+                      "outline": "#849495",
+                      "tertiary-container": "#dcd9d8",
+                      "primary": "#dbfcff",
+                      "on-secondary-fixed": "#320047",
+                      "secondary": "#ebb2ff",
+                      "on-background": "#e2e2e2",
+                      "surface-container-low": "#1a1c1c",
+                      "on-primary-container": "#006970",
+                      "inverse-primary": "#006970",
+                      "on-secondary": "#520071",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-tertiary-container": "#605e5e",
+                      "primary-container": "#00f0ff",
+                      "tertiary-fixed": "#e5e2e1",
+                      "secondary-fixed": "#f8d8ff",
+                      "error-container": "#93000a",
+                      "tertiary": "#f9f5f5",
+                      "surface-bright": "#37393a",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-tertiary": "#313030",
+                      "background": "#121414",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "inverse-surface": "#e2e2e2",
+                      "secondary-container": "#ce5dff",
+                      "inverse-on-surface": "#2f3131",
+                      "outline-variant": "#3b494b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-lg": "24px",
+                      "stroke-thick": "2px",
+                      "gap-sm": "8px",
+                      "stroke-thin": "1px",
+                      "gap-md": "16px",
+                      "margin-page": "32px",
+                      "gap-xs": "4px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="flex flex-col h-screen w-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar (Shared Component) -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="flex items-center gap-gap-md">
+<span class="font-headline-md text-headline-md text-primary-container tracking-tighter">HYPR_OS_01</span>
+<div class="h-4 w-px bg-outline-variant"></div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS_AI_TOKENIZER // S_04</span>
+</div>
+<div class="flex items-center gap-gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-[18px]">memory</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-[18px]">terminal</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-[18px]">settings</button>
+<button class="material-symbols-outlined text-error hover:scale-110 transition-all text-[18px]">power_settings_new</button>
+</div>
+</header>
+<!-- Side Navigation (Shared Component) -->
+<aside class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center gap-gap-xs mb-gap-lg">
+<div class="w-10 h-10 bg-primary-container/20 flex items-center justify-center border border-primary-container">
+<span class="material-symbols-outlined text-primary-container">monitoring</span>
+</div>
+<span class="font-code-sm text-[10px] text-primary-container/60">ROOT_NODE</span>
+</div>
+<nav class="flex flex-col gap-gap-md w-full px-2">
+<!-- DASH: Active -->
+<button class="flex flex-col items-center justify-center py-2 bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container transition-all">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-code-sm text-[10px] mt-1">DASH</span>
+</button>
+<!-- Others: Inactive -->
+<button class="flex flex-col items-center justify-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-code-sm text-[10px] mt-1">SYS</span>
+</button>
+<button class="flex flex-col items-center justify-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-code-sm text-[10px] mt-1">NET</span>
+</button>
+<button class="flex flex-col items-center justify-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">code</span>
+<span class="font-code-sm text-[10px] mt-1">DEV</span>
+</button>
+<button class="flex flex-col items-center justify-center py-2 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-code-sm text-[10px] mt-1">LOG</span>
+</button>
+</nav>
+<div class="mt-auto pb-gap-md">
+<button class="w-12 h-12 bg-primary-container flex items-center justify-center hover:bg-secondary-fixed-dim transition-colors active:scale-95 duration-75">
+<span class="material-symbols-outlined text-on-primary font-bold">bolt</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-8 h-[calc(100vh-32px)] p-gap-md grid grid-cols-12 grid-rows-6 gap-gap-sm bg-[#0a0a0a]">
+<!-- Central Visualization Window -->
+<section class="col-span-9 row-span-4 glass-panel flex flex-col relative overflow-hidden">
+<header class="h-6 bg-primary-container px-gap-sm flex items-center justify-between">
+<span class="text-on-primary font-code-sm text-[11px] font-bold">STREAM_VIZ // REALTIME_TELEMETRY</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-on-primary/50"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/50"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/50"></div>
+</div>
+</header>
+<div class="flex-grow relative bg-surface-container-lowest/50">
+<!-- Background Visualization Grid -->
+<div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#3b494b 1px, transparent 1px), linear-gradient(90deg, #3b494b 1px, transparent 1px); background-size: 40px 40px;"></div>
+<!-- Animated Content Area -->
+<div class="absolute inset-0 p-gap-md flex items-center justify-center overflow-hidden">
+<!-- Data Flow Simulation -->
+<div class="w-full h-full relative font-code-sm text-primary-fixed-dim text-[10px] opacity-40" id="data-flow-container">
+<!-- JS will populate this with drifting data -->
+</div>
+<!-- Central Hub Graphic -->
+<div class="relative z-10 w-64 h-64 border border-primary-container/30 rounded-full flex items-center justify-center">
+<div class="w-48 h-48 border border-primary-container/50 rounded-full flex items-center justify-center animate-[spin_20s_linear_infinite]">
+<div class="w-full h-[1px] bg-primary-container/40 absolute"></div>
+<div class="h-full w-[1px] bg-primary-container/40 absolute"></div>
+</div>
+<div class="absolute w-32 h-32 glass-panel border-primary-container rounded-sm flex flex-col items-center justify-center text-center p-2">
+<span class="font-headline-md text-primary-container">98.4%</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">SYNC_RATE</span>
+</div>
+</div>
+</div>
+<!-- Frequency Overlay (Bottom) -->
+<div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-background/80 to-transparent flex items-end px-gap-md pb-gap-sm gap-1">
+<!-- Segmented progress-style bar chart -->
+<div class="flex-1 flex items-end gap-0.5 h-full">
+<div class="w-full bg-primary-container/20 h-[40%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[65%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[30%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[85%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[50%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[95%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[70%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[45%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[60%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[35%] hover:bg-primary-container transition-all"></div>
+<div class="w-full bg-primary-container/20 h-[80%] hover:bg-primary-container transition-all"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Configuration Sidebar -->
+<aside class="col-span-3 row-span-6 glass-panel flex flex-col">
+<header class="h-6 bg-primary-container px-gap-sm flex items-center">
+<span class="text-on-primary font-code-sm text-[11px] font-bold">NEURAL_CALIBRATION // S_04</span>
+</header>
+<div class="p-gap-md flex flex-col gap-gap-md flex-grow">
+<!-- Weight Controls -->
+<div class="flex flex-col gap-gap-sm">
+<label class="font-label-sm text-on-surface-variant flex justify-between">
+<span>ATTENTION_BIAS</span>
+<span class="text-primary-fixed-dim">0.882</span>
+</label>
+<div class="h-1 w-full bg-surface-container-highest flex">
+<div class="h-full bg-primary-container w-[88.2%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-gap-sm">
+<label class="font-label-sm text-on-surface-variant flex justify-between">
+<span>DECAY_RATE</span>
+<span class="text-primary-fixed-dim">0.004</span>
+</label>
+<div class="h-1 w-full bg-surface-container-highest flex">
+<div class="h-full bg-primary-container w-[15%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-gap-sm">
+<label class="font-label-sm text-on-surface-variant flex justify-between">
+<span>VECTOR_DENSITY</span>
+<span class="text-primary-fixed-dim">1024_PX</span>
+</label>
+<div class="h-1 w-full bg-surface-container-highest flex">
+<div class="h-full bg-secondary-container w-[65%]"></div>
+</div>
+</div>
+<div class="h-px bg-outline-variant my-2"></div>
+<!-- Toggles -->
+<div class="flex flex-col gap-gap-sm">
+<div class="flex items-center justify-between glass-panel p-2 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="font-code-sm text-on-surface">HEURISTIC_OVERRIDE</span>
+<div class="w-8 h-4 border border-outline flex items-center px-0.5 group-active:border-primary-container">
+<div class="w-3 h-3 bg-primary-container"></div>
+</div>
+</div>
+<div class="flex items-center justify-between glass-panel p-2 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="font-code-sm text-on-surface">QUANTUM_ENTROPY</span>
+<div class="w-8 h-4 border border-outline flex items-center px-0.5 justify-end">
+<div class="w-3 h-3 bg-outline"></div>
+</div>
+</div>
+</div>
+<!-- Visual Parameter Preview -->
+<div class="flex-grow bg-surface-container-lowest border border-outline-variant mt-2 relative overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A detailed digital abstract art visual representing a complex neural network architecture in dark obsidian and vibrant cyan. Wispy electric light strands interconnect glowing nodes in a three-dimensional fractal pattern. The atmosphere is technical and surgical, with a deep black void backdrop and sharp, crisp lines of high-tech data visualization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXS81cbC_8_Kd2p1ehVI55K9xqK3dxBMELMplOb8I0KhEct6r4aMOYe3UnF2SDx8lQO2KpJsMI5aAx6BjiUdwjLEgE2edHO6s6xdkFUabGLUwXlWIwYguSXuFQDizs4G6axxK_WsgFXlKzJjoFYYE50qUcAQK_HcrGx0RS5C_d2NsWgRLCwXweWFz_VTPAbMsxBURRmqWkptLedrSa4hGJoIqW3zEbwc1kkMnKzgThydQBceGpGk-T6neRzimk5UCwzsZmrH6N-p0o"/>
+</div>
+<div class="absolute top-2 left-2 font-label-sm text-[10px] text-primary-container bg-black/80 px-1">WEIGHT_MAP_PREVIEW</div>
+</div>
+<!-- Execute Button -->
+<button class="mt-auto h-12 bg-primary-container text-on-primary font-bold hover:bg-secondary-container transition-all active:scale-95 duration-75 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">bolt</span>
+                    EXECUTE_SUDO_SYNC
+                </button>
+</div>
+</aside>
+<!-- Bottom Terminal -->
+<section class="col-span-9 row-span-2 glass-panel flex flex-col">
+<header class="h-6 bg-surface-container-high px-gap-sm flex items-center border-b border-outline-variant">
+<span class="text-on-surface-variant font-code-sm text-[11px]">INFERENCE_LOG_v4.2.1</span>
+</header>
+<div class="p-gap-sm flex-grow bg-[#0c0f0f] font-code-sm text-[12px] overflow-y-auto space-y-1" id="terminal-logs">
+<div class="text-on-surface-variant flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:01]</span>
+<span class="text-primary-fixed-dim">SYSTEM:</span> Initializing sector-4 dataset parser...
+                </div>
+<div class="text-on-surface-variant flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:03]</span>
+<span class="text-primary-fixed-dim">SYSTEM:</span> Connecting to primary data stream at 10.0.4.1...
+                </div>
+<div class="text-on-surface-variant flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:04]</span>
+<span class="text-success text-primary-container">SUCCESS:</span> Pipeline synchronized. Sharding tokens.
+                </div>
+<div class="text-on-surface-variant flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:05]</span>
+<span class="text-secondary">TOKEN:</span> [X_VAL_771] :: weight_calibrated (0.912)
+                </div>
+<div class="text-on-surface-variant flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:06]</span>
+<span class="text-secondary">TOKEN:</span> [X_VAL_772] :: weight_calibrated (0.841)
+                </div>
+<div class="flex gap-4">
+<span class="opacity-40 shrink-0">[14:22:07]</span>
+<span class="text-primary-container animate-pulse">&gt;_ AWAITING_OPERATOR_COMMAND</span>
+<span class="terminal-cursor"></span>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Tooltip / Alert (Subtle) -->
+<div class="fixed bottom-4 right-4 bg-primary-container text-on-primary px-3 py-1 font-code-sm text-[11px] shadow-lg border border-white/20 animate-bounce">
+        SECTOR_04_STABLE
+    </div>
+<script>
+        // Data Flow Simulation Script
+        const container = document.getElementById('data-flow-container');
+        const chars = '01ABCDEFGH_#@$%';
+        
+        function createDataBit() {
+            const el = document.createElement('div');
+            el.className = 'absolute';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.top = '-20px';
+            el.style.transition = 'all ' + (2 + Math.random() * 5) + 's linear';
+            el.innerText = Array.from({length: 8}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            
+            container.appendChild(el);
+            
+            setTimeout(() => {
+                el.style.top = '110%';
+                el.style.opacity = '0';
+            }, 100);
+            
+            setTimeout(() => {
+                el.remove();
+            }, 7000);
+        }
+
+        setInterval(createDataBit, 300);
+
+        // Simulated Log Updates
+        const terminalLogs = document.getElementById('terminal-logs');
+        const logEntries = [
+            "SHARDING_PACKET_ID_992",
+            "VECTOR_SPACE_REALLOCATED",
+            "NEURAL_PATHWAY_OPTIMIZED",
+            "TOKEN_FREQ_HIGH_ALERT",
+            "CACHE_PURGED_0xFA2"
+        ];
+
+        function addLog() {
+            const lastChild = terminalLogs.lastElementChild;
+            const log = document.createElement('div');
+            log.className = "text-on-surface-variant flex gap-4 opacity-0 transition-opacity duration-300";
+            const time = new Date().toLocaleTimeString([], { hour12: false });
+            const entry = logEntries[Math.floor(Math.random() * logEntries.length)];
+            log.innerHTML = `<span class="opacity-40 shrink-0">[${time}]</span> <span class="text-primary-fixed-dim">STREAM:</span> ${entry}`;
+            
+            terminalLogs.insertBefore(log, lastChild);
+            setTimeout(() => log.classList.remove('opacity-0'), 10);
+            
+            if (terminalLogs.children.length > 15) {
+                terminalLogs.removeChild(terminalLogs.children[0]);
+            }
+            terminalLogs.scrollTop = terminalLogs.scrollHeight;
+        }
+
+        setInterval(addLog, 2000);
+    </script>
+</body></html>

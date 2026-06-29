@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Data Sovereignty Vault | AETHER AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-bg: rgba(10, 14, 26, 0.6);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(0, 219, 233, 0.3);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.1);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.4);
+        }
+        .pulse-cyan {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #00dbe9;
+        }
+        .linear-mask {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+    </style>
+<!-- Tailwind Config defined in prompt -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-primary-container": "#006970",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary": "#520072",
+                    "inverse-on-surface": "#2e3134",
+                    "on-surface": "#e1e2e7",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#1d2023",
+                    "background": "#111417",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "tertiary-container": "#d9d9d9",
+                    "secondary-container": "#b600f8",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-error": "#690005",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-container": "#5d5f5f",
+                    "outline-variant": "#3b494b",
+                    "surface-container-high": "#282a2e",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-tertiary": "#2f3131",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-primary-fixed": "#002022",
+                    "inverse-primary": "#006970",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#323539",
+                    "primary": "#dbfcff",
+                    "surface-variant": "#323539",
+                    "on-primary": "#00363a",
+                    "surface-container-low": "#191c1f",
+                    "error": "#ffb4ab",
+                    "surface-dim": "#111417",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary-container": "#00f0ff",
+                    "surface": "#111417",
+                    "secondary": "#ebb2ff",
+                    "outline": "#849495",
+                    "on-secondary-fixed": "#320047",
+                    "tertiary": "#f5f5f5",
+                    "primary-fixed": "#7df4ff",
+                    "on-background": "#e1e2e7",
+                    "on-secondary-container": "#fff6fc",
+                    "surface-tint": "#00dbe9",
+                    "surface-bright": "#37393d",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-fixed-dim": "#00dbe9",
+                    "inverse-surface": "#e1e2e7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed-dim/30">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-[24px] font-extrabold tracking-tighter text-primary-fixed-dim">AETHER AI</h1>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-mono-label text-on-surface-variant hover:text-primary-fixed transition-colors">Sign In</button>
+<button class="bg-primary-container text-on-primary px-6 py-2 font-semibold active:scale-95 transition-transform hover:bg-primary-fixed transition-colors">Get Started</button>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 pt-24 hidden lg:flex flex-col z-40">
+<div class="px-6 mb-8">
+<h2 class="font-mono-label text-primary-fixed-dim uppercase text-[10px] tracking-widest opacity-50 mb-4">Vault Control</h2>
+<div class="space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-mono-label">SEIS OS</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="font-mono-label">SEIS AI</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-mono-label">SEIS Code</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+<span class="font-mono-label">SEIS Cloud</span>
+</a>
+</div>
+</div>
+<div class="mt-auto px-6 pb-8 space-y-4">
+<div class="p-4 glass-card border-secondary-container/30 bg-secondary-container/5 rounded-lg">
+<p class="font-mono-label text-[12px] text-secondary-fixed mb-2">Vault Integrity</p>
+<div class="flex items-center justify-between">
+<span class="text-white font-bold">99.98%</span>
+<span class="material-symbols-outlined text-secondary-fixed animate-pulse">verified_user</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+<span class="font-mono-label text-[12px]">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:text-primary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">contact_support</span>
+<span class="font-mono-label text-[12px]">Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="lg:ml-64 pt-24 px-6 md:px-margin-desktop pb-section-gap">
+<div class="max-w-container-max mx-auto">
+<!-- Dashboard Header -->
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-primary-container/10 text-primary-fixed-dim px-2 py-0.5 font-mono-label text-[10px] rounded border border-primary-fixed-dim/20 uppercase tracking-widest">Sovereign Tier</span>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-cyan"></span>
+<span class="font-mono-label text-[12px] text-primary-fixed-dim">SYSTEM ARMED</span>
+</div>
+</div>
+<h2 class="font-display-lg text-[48px] md:text-[64px] font-extrabold tracking-tighter leading-none text-on-surface">Data Sovereignty Vault</h2>
+<p class="text-on-surface-variant mt-4 max-w-2xl font-body-lg">Enterprise-grade cryptographic sanctuary. Managing 4.2PB of sovereign data with lattice-based encryption and global residency compliance.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface px-6 py-3 border border-outline-variant/30 flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                        Export Report
+                    </button>
+<button class="bg-primary-container text-on-primary px-8 py-3 font-bold flex items-center gap-2 hover:bg-primary-fixed transition-all active:scale-95 shadow-[0_0_20px_rgba(0,219,233,0.3)]">
+<span class="material-symbols-outlined text-[20px]">lock_open</span>
+                        Emergency Purge
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Section: Global Data Residency (Large) -->
+<div class="md:col-span-8 glass-card p-8 min-h-[500px] flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-start mb-8 relative z-10">
+<div>
+<h3 class="font-headline-md text-on-surface">Global Data Residency</h3>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase mt-1">Real-time localized storage telemetry</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="text-[10px] font-mono-label text-on-surface-variant uppercase">Nodes Online</p>
+<p class="text-primary-fixed-dim font-bold">14 / 14</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim text-[32px]">public</span>
+</div>
+</div>
+<div class="flex-grow rounded border border-outline-variant/10 relative overflow-hidden bg-black/40">
+<!-- Simulated Map Image with data-location -->
+<div class="w-full h-full bg-cover bg-center opacity-40 mix-blend-luminosity" data-alt="A futuristic holographic world map visualized through thin cyan glowing lines and dots on a deep obsidian background. Strategic data nodes are highlighted with pulsing geometric markers. The aesthetic is clean, technical, and high-contrast, mimicking a high-security monitoring interface in a cyberpunk control room." data-location="World Map" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+<!-- Data Node Overlays -->
+<div class="absolute top-1/4 left-1/4 group cursor-pointer">
+<div class="w-3 h-3 bg-primary-fixed-dim rounded-full glow-cyan pulse-cyan"></div>
+<div class="absolute left-6 top-0 glass-card p-3 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">
+<p class="font-mono-label text-[10px] text-primary-fixed-dim">REGION: EU-WEST-1</p>
+<p class="text-[12px] font-bold">Residency: Iceland (Encrypted)</p>
+<p class="text-[10px] text-on-surface-variant">Lat: 64.96° N | Lon: 19.02° W</p>
+</div>
+</div>
+<div class="absolute top-1/2 left-3/4 group cursor-pointer">
+<div class="w-3 h-3 bg-primary-fixed-dim rounded-full glow-cyan pulse-cyan"></div>
+<div class="absolute left-6 top-0 glass-card p-3 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20">
+<p class="font-mono-label text-[10px] text-primary-fixed-dim">REGION: APAC-SOUTH</p>
+<p class="text-[12px] font-bold">Residency: Singapore (Isolated)</p>
+</div>
+</div>
+<!-- Atmospheric Grid -->
+<div class="absolute inset-0 pointer-events-none" style="background-image: radial-gradient(circle, #ffffff05 1px, transparent 1px); background-size: 30px 30px;"></div>
+</div>
+<div class="mt-6 flex flex-wrap gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-green-400"></span>
+<span class="font-mono-label text-[11px]">GDPR Compliant</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-green-400"></span>
+<span class="font-mono-label text-[11px]">CCPA Compliant</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant/20">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed"></span>
+<span class="font-mono-label text-[11px]">Quantum-Safe Tunnel</span>
+</div>
+</div>
+</div>
+<!-- Section: Encryption Health (Small) -->
+<div class="md:col-span-4 glass-card p-8 flex flex-col">
+<h3 class="font-headline-md text-on-surface mb-1">Encryption Health</h3>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase mb-8">Lattice-Based Crypto Status</p>
+<div class="flex-grow flex flex-col justify-center gap-12">
+<div class="relative flex justify-center">
+<!-- Circular Visualization -->
+<div class="w-48 h-48 rounded-full border-2 border-primary-fixed-dim/20 flex items-center justify-center relative">
+<div class="w-40 h-40 rounded-full border-4 border-primary-fixed-dim border-t-transparent animate-spin" style="animation-duration: 3s;"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-[32px] font-extrabold text-on-surface tracking-tighter">99.9%</span>
+<span class="font-mono-label text-[10px] text-primary-fixed-dim uppercase">Entropy</span>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="font-mono-label text-[11px] text-on-surface-variant">Lattice Parameters (Kyber-1024)</span>
+<span class="text-[12px] font-bold text-on-surface">OPTIMAL</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-fixed-dim h-full w-[94%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="font-mono-label text-[11px] text-on-surface-variant">Key Rotation (ETA: 4h 12m)</span>
+<span class="text-[12px] font-bold text-on-surface">ACTIVE</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-fixed h-full w-[62%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10">
+<p class="text-[11px] font-mono-label text-on-surface-variant italic text-center">"Advanced Dilithium signatures active on all egress points."</p>
+</div>
+</div>
+<!-- Section: Access Control Matrix (Medium) -->
+<div class="md:col-span-7 glass-card p-8">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-on-surface">Access Control Matrix</h3>
+<p class="font-mono-label text-[12px] text-on-surface-variant uppercase mt-1">Multi-factor & Biometric Authentication Logs</p>
+</div>
+<button class="text-primary-fixed-dim font-mono-label text-[12px] hover:underline flex items-center gap-1">
+                            Review Policy <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full font-mono-label text-[13px]">
+<thead>
+<tr class="text-left text-on-surface-variant border-b border-outline-variant/20">
+<th class="pb-4 font-medium uppercase tracking-wider">Identity Entity</th>
+<th class="pb-4 font-medium uppercase tracking-wider">Auth Type</th>
+<th class="pb-4 font-medium uppercase tracking-wider">Resource</th>
+<th class="pb-4 font-medium uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr>
+<td class="py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Admin-72A</p>
+<p class="text-[10px] text-on-surface-variant">Global Controller</p>
+</div>
+</div>
+</td>
+<td class="py-5">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[16px]">fingerprint</span>
+<span>Biometric + HSM</span>
+</div>
+</td>
+<td class="py-5 text-on-surface-variant">Vault_Root_Access</td>
+<td class="py-5 text-green-400 font-bold">GRANTED</td>
+</tr>
+<tr>
+<td class="py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">robot_2</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Svc_ML_Training</p>
+<p class="text-[10px] text-on-surface-variant">Automated Agent</p>
+</div>
+</div>
+</td>
+<td class="py-5">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-secondary-fixed text-[16px]">key</span>
+<span>mTLS Cert</span>
+</div>
+</td>
+<td class="py-5 text-on-surface-variant">Bucket_Training_V3</td>
+<td class="py-5 text-green-400 font-bold">GRANTED</td>
+</tr>
+<tr>
+<td class="py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-error/10 border border-error/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px] text-error">warning</span>
+</div>
+<div>
+<p class="text-on-surface font-bold">Unknown_Entry</p>
+<p class="text-[10px] text-error uppercase">External IP</p>
+</div>
+</div>
+</td>
+<td class="py-5">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-error text-[16px]">block</span>
+<span>Failed Pass</span>
+</div>
+</td>
+<td class="py-5 text-on-surface-variant">Financial_Ledger_S2</td>
+<td class="py-5 text-error font-bold">DENIED</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Section: Audit Trail (Medium - Terminal) -->
+<div class="md:col-span-5 glass-card bg-black/60 p-0 overflow-hidden flex flex-col border border-primary-fixed-dim/10">
+<div class="bg-surface-container-low px-6 py-3 border-b border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex gap-1.5">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed-dim/40"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/40"></div>
+</div>
+<h4 class="font-mono-label text-[11px] text-on-surface-variant tracking-widest uppercase">System Audit Terminal</h4>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="font-mono-label text-[10px] text-on-surface-variant">LIVE_FEED</span>
+</div>
+</div>
+<div class="flex-grow p-6 font-mono-code text-[12px] text-primary-fixed-dim overflow-y-auto terminal-scroll max-h-[400px] linear-mask" id="terminal">
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:02:11]</span> SYSTEM_BOOT: Verifying sovereign hardware modules...</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:02:15]</span> HSM_CORE: Initialization successful. Entropy source: Quantum White Noise.</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:03:01]</span> NETWORK: Establishing geo-fenced perimeters for region EU-NORTH.</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:04:44]</span> ENCRYPTION: Lattice migration at 42% completion...</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:05:01]</span> <span class="text-secondary-fixed">WARN: Latency spike detected in Singapore Node [APAC-S].</span></div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:06:22]</span> AUTH: Biometric signature verified for user ID: ADMIN-72A.</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:06:23]</span> ACCESS: Granted READ permissions for "Vault_Root_Access".</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:07:01]</span> <span class="text-error">SECURITY: Blocked 12 recursive SSH attempts from unauthorized IP 192.168.1.1.</span></div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:08:15]</span> AUDIT: Snapshot 0x7F2B generated and committed to blockchain ledger.</div>
+<div class="mb-2"><span class="text-on-surface-variant">[2024-05-12 14:10:00]</span> STORAGE: Optimizing block placement for zero-knowledge retrieval.</div>
+<div class="opacity-50">_ awaiting next event... <span class="animate-pulse">|</span></div>
+</div>
+</div>
+</div>
+<!-- Quick Actions Bar -->
+<div class="mt-section-gap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="glass-card p-6 border-outline-variant/10 hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim mb-4">shield_lock</span>
+<h4 class="font-bold mb-2">Zero-Knowledge Storage</h4>
+<p class="text-[13px] text-on-surface-variant">We never hold your keys. All decryption happens client-side in secure enclaves.</p>
+</div>
+<div class="glass-card p-6 border-outline-variant/10 hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-secondary-fixed mb-4">gavel</span>
+<h4 class="font-bold mb-2">Policy Enforcer</h4>
+<p class="text-[13px] text-on-surface-variant">Automated compliance mapping for GDPR, HIPAA, and custom sovereign mandates.</p>
+</div>
+<div class="glass-card p-6 border-outline-variant/10 hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim mb-4">database</span>
+<h4 class="font-bold mb-2">Sharded Resilience</h4>
+<p class="text-[13px] text-on-surface-variant">Data is fragmented across three sovereign regions to prevent physical seizure.</p>
+</div>
+<div class="glass-card p-6 border-outline-variant/10 hover:translate-y-[-4px] transition-transform">
+<span class="material-symbols-outlined text-secondary-fixed mb-4">hub</span>
+<h4 class="font-bold mb-2">API Control</h4>
+<p class="text-[13px] text-on-surface-variant">Granular token-level access with time-to-live and geographic restrictions.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter mb-12">
+<div class="col-span-2">
+<h5 class="font-display-lg text-[24px] text-primary-fixed-dim font-extrabold tracking-tighter mb-4">AETHER AI</h5>
+<p class="text-on-surface-variant font-mono-label text-[12px] max-w-xs mb-6">Building the infrastructure for the next generation of sovereign artificial intelligence and secure data management.</p>
+</div>
+<div>
+<h6 class="font-mono-label text-[11px] text-white uppercase tracking-widest mb-6">Platform</h6>
+<ul class="space-y-3 font-mono-label text-[13px]">
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+</ul>
+</div>
+<div>
+<h6 class="font-mono-label text-[11px] text-white uppercase tracking-widest mb-6">Security</h6>
+<ul class="space-y-3 font-mono-label text-[13px]">
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Whitepaper</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Audit Logs</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">CVE Database</a></li>
+</ul>
+</div>
+<div>
+<h6 class="font-mono-label text-[11px] text-white uppercase tracking-widest mb-6">Legal</h6>
+<ul class="space-y-3 font-mono-label text-[13px]">
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+<li><a class="text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">SLA</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-outline-variant/5 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant opacity-80">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed transition-all" href="#">public</a>
+<a class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed transition-all" href="#">hub</a>
+<a class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary-fixed transition-all" href="#">alternate_email</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Terminal Auto-Scroll simulation
+        const terminal = document.getElementById('terminal');
+        const phrases = [
+            "CRYPTO: Periodic key rotation initiating in 3... 2... 1...",
+            "REGION: Mirroring encrypted shards to Reykjavik facility.",
+            "POLICY: Compliance check PASSED for data bucket 'Project-Xenon'.",
+            "SECURITY: Deep packet inspection revealed no anomalies.",
+            "LATTICE: Strengthening matrix coefficients for enhanced noise-safety."
+        ];
+
+        function addTerminalLine() {
+            const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+            const date = new Date().toISOString().split('T')[0];
+            const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            const line = document.createElement('div');
+            line.className = 'mb-2 opacity-0 transition-opacity duration-500';
+            line.innerHTML = `<span class="text-on-surface-variant">[${date} ${time}]</span> ${phrase}`;
+            
+            terminal.appendChild(line);
+            
+            // Limit terminal lines
+            if (terminal.children.length > 20) {
+                terminal.removeChild(terminal.children[0]);
+            }
+            
+            setTimeout(() => {
+                line.classList.remove('opacity-0');
+                terminal.scrollTop = terminal.scrollHeight;
+            }, 50);
+        }
+
+        setInterval(addTerminalLine, 4000);
+    </script>
+</body></html>

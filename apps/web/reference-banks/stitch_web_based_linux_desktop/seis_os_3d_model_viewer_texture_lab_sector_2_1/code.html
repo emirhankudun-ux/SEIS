@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - Media Engine</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#dbfcff",
+                    "on-tertiary": "#313030",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#333535",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "outline-variant": "#3b494b",
+                    "on-secondary": "#520071",
+                    "secondary-container": "#ce5dff",
+                    "on-secondary-fixed": "#320047",
+                    "on-primary-fixed-variant": "#004f54",
+                    "primary-fixed-dim": "#00dbe9",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-surface": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-surface-variant": "#b9cacb",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "primary-container": "#00f0ff",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-dim": "#121414",
+                    "on-secondary-container": "#480064",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "on-background": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "outline": "#849495",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e2e2e2",
+                    "background": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-container": "#1e2020",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006970",
+                    "on-primary-fixed": "#002022",
+                    "inverse-on-surface": "#2f3131",
+                    "secondary": "#ebb2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-page": "32px",
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "gap-md": "16px",
+                    "stroke-thick": "2px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Space Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                    "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                    "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Grid Background for Node Graph */
+        .bg-grid-pattern {
+            background-size: 20px 20px;
+            background-image: 
+                linear-gradient(to right, theme('colors.outline-variant' / 20%) 1px, transparent 1px),
+                linear-gradient(to bottom, theme('colors.outline-variant' / 20%) 1px, transparent 1px);
+        }
+
+        /* Custom scrollbar for terminal feel */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.outline-variant'); }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.primary-fixed-dim'); }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center w-full px-4 h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 fixed top-0 left-0 z-50">
+<div class="flex items-center gap-6 h-full">
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim flex items-center gap-2">
+<span class="material-symbols-outlined icon-fill text-primary-fixed">memory</span>
+                SEIS KERNEL OS
+            </div>
+<div class="flex items-center gap-4 h-full font-label-sm text-label-sm pt-1">
+<!-- Active Item -->
+<div class="text-primary-fixed border-b border-primary-fixed pb-1 cursor-pointer active:opacity-70 h-full flex items-center">
+                    WORKSPACES
+                </div>
+<!-- Inactive Items -->
+<div class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 h-full flex items-center">
+                    TELEMETRY
+                </div>
+<div class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 h-full flex items-center">
+                    AGENTS
+                </div>
+<div class="text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 h-full flex items-center">
+                    NETWORK
+                </div>
+</div>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200 text-[18px]">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200 text-[18px]">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors duration-200 text-[18px]">settings</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<!-- Header -->
+<div class="flex items-center p-4 border-b border-outline-variant/20 min-w-[16rem]">
+<div class="w-10 h-10 bg-surface-variant border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">account_circle</span>
+</div>
+<div class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="font-label-sm text-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex-1 py-4 flex flex-col gap-1 font-label-sm text-label-sm">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</div>
+<!-- Active Tab -->
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">terminal</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150 min-w-[16rem]">
+<span class="material-symbols-outlined text-[20px] shrink-0 w-6">list_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</div>
+</div>
+<!-- CTA & Footer -->
+<div class="border-t border-outline-variant/20 min-w-[16rem]">
+<div class="p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<button class="w-full bg-secondary-fixed/10 hover:bg-secondary-fixed/20 text-secondary-fixed border border-secondary-fixed/50 font-label-sm text-label-sm py-2 flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                    NEW_SESSION
+                </button>
+</div>
+<div class="flex">
+<div class="flex-1 flex items-center justify-center py-3 border-r border-outline-variant/20 cursor-pointer text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors" title="POWER">
+<span class="material-symbols-outlined text-[18px]">power_settings_new</span>
+</div>
+<div class="flex-1 flex items-center justify-center py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed hover:bg-secondary-fixed/10 transition-colors" title="LOCK">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 p-gap-md h-[calc(100vh-40px)] flex flex-col gap-gap-md relative z-10">
+<!-- Grid Layout Container -->
+<div class="grid grid-cols-12 gap-gap-md flex-1 min-h-0">
+<!-- Center/Left Column: Viewport & Nodes -->
+<div class="col-span-12 md:col-span-8 flex flex-col gap-gap-md h-full">
+<!-- Viewport Panel (Level 1 Elevation style) -->
+<div class="flex-1 bg-surface-container/85 border border-outline-variant backdrop-blur-md flex flex-col overflow-hidden relative">
+<!-- Title Bar -->
+<div class="h-6 bg-primary-container text-on-primary-container font-label-sm text-label-sm flex items-center justify-between px-2 tracking-widest shrink-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">view_in_ar</span>
+                            VIEWPORT // RENDER_ENG: CYCLES
+                        </div>
+<div class="text-xs opacity-70">FPS: 144.2 | MS: 6.9</div>
+</div>
+<!-- Viewport Content Area -->
+<div class="flex-1 relative bg-surface-container-lowest">
+<!-- Placeholder Image mimicking 3D viewport -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-80 mix-blend-screen" data-alt="A highly complex cybernetic mechanical engine component rendered in an orthographic 3D viewport. The aesthetic is deep dark mode with glowing cyan and violet wireframe overlays highlighting specific geometric details. The lighting is harsh and technical, creating high contrast stark shadows typical of industrial CAD software. The mood is precise, futuristic, and clinically digital." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDgrwSqxQj5wSnBT9iHjoll1WMKRoMOgzsYrzjsDPwPseOruTrCXErWCn9W2L-iTeTynk98K6CssrmBU5mobQDTsO7LtsA5NHx5fQ9qfmiGZK9aWc1O5ASIwTIIExo0Tq7JnT7F8HdPcatmqgIDgxX22I0oLSRt59RXHQD33t3V4EBZ7kDXLJVW07E96E6-hDwpJcTJdTih_2XgPYaEM0QyqrctJEdldmFZQNNftyOpjOZ1W5OIY-bqgDYPrLY3kP4OJforiLZDSbLj')">
+</div>
+<!-- Overlay Toggles -->
+<div class="absolute top-4 right-4 flex gap-1 bg-surface-container/90 border border-outline-variant p-1 backdrop-blur-sm">
+<button class="px-3 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary-fixed border border-transparent hover:border-outline-variant transition-colors">WIRE</button>
+<button class="px-3 py-1 font-label-sm text-label-sm bg-primary-fixed/10 text-primary-fixed border border-primary-fixed/50 shadow-[0_0_8px_rgba(125,244,255,0.2)]">SOLID</button>
+<button class="px-3 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary-fixed border border-transparent hover:border-outline-variant transition-colors">RNDR</button>
+</div>
+<!-- Axis Gizmo Placeholder -->
+<div class="absolute bottom-4 left-4 w-16 h-16 border-l-2 border-b-2 border-outline-variant relative">
+<div class="absolute bottom-0 left-0 w-full h-[1px] bg-error"></div>
+<div class="absolute bottom-0 left-0 w-[1px] h-full bg-primary-fixed"></div>
+</div>
+</div>
+</div>
+<!-- Material Node Graph Panel -->
+<div class="h-64 bg-surface-container/85 border border-outline-variant backdrop-blur-md flex flex-col shrink-0">
+<div class="h-6 bg-surface-variant text-on-surface font-label-sm text-label-sm flex items-center px-2 tracking-widest border-b border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-2">hub</span>
+                        MATERIAL // SHADER_GRAPH
+                    </div>
+<!-- Node Canvas Area -->
+<div class="flex-1 bg-grid-pattern relative overflow-hidden">
+<!-- Example Node 1 -->
+<div class="absolute top-4 left-4 w-48 bg-surface border border-outline-variant text-body-md shadow-lg">
+<div class="bg-secondary-container/20 border-b border-outline-variant px-2 py-1 font-label-sm text-label-sm text-secondary-fixed flex justify-between items-center">
+                                Tex_Coord <span class="material-symbols-outlined text-[12px]">code</span>
+</div>
+<div class="p-2 space-y-2 font-code-sm text-code-sm text-on-surface-variant">
+<div class="flex justify-between items-center"><span class="w-2 h-2 rounded-full bg-secondary-fixed mr-2 inline-block"></span> UV <span class="w-2 h-2 rounded-full bg-outline-variant ml-2 inline-block"></span></div>
+<div class="flex justify-between items-center"><span class="w-2 h-2 rounded-full bg-outline-variant mr-2 inline-block"></span> Normal <span class="w-2 h-2 rounded-full bg-primary-fixed ml-2 inline-block"></span></div>
+</div>
+</div>
+<!-- Example Node 2 -->
+<div class="absolute top-12 left-64 w-48 bg-surface border border-primary-fixed/50 shadow-[0_0_8px_rgba(125,244,255,0.1)] text-body-md z-10">
+<div class="bg-primary-container text-on-primary-container px-2 py-1 font-label-sm text-label-sm flex justify-between items-center">
+                                Noise_Tex <span class="material-symbols-outlined text-[12px]">settings</span>
+</div>
+<div class="p-2 space-y-2 font-code-sm text-code-sm text-on-surface-variant">
+<div class="flex justify-between items-center"><span class="w-2 h-2 rounded-full bg-primary-fixed mr-2 inline-block"></span> Vector <span class="w-2 h-2 rounded-full bg-outline-variant ml-2 inline-block"></span></div>
+<div class="flex items-center gap-2 mt-2">
+<span class="text-xs opacity-50">SCL:</span>
+<input class="w-full bg-surface-variant border border-outline-variant text-on-surface text-xs px-1 h-5 focus:border-primary-fixed focus:ring-0" type="text" value="45.2"/>
+</div>
+</div>
+</div>
+<!-- Connection Line Mockup -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 0;">
+<path d="M 210 50 C 240 50, 240 80, 270 80" fill="none" opacity="0.6" stroke="theme('colors.primary-fixed')" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Right Column: Telemetry & Sidebar -->
+<div class="col-span-12 md:col-span-4 flex flex-col gap-gap-md h-full overflow-y-auto pr-1">
+<!-- Telemetry Panel -->
+<div class="bg-surface-container/85 border border-outline-variant backdrop-blur-md flex flex-col">
+<div class="h-6 bg-surface-variant text-on-surface font-label-sm text-label-sm flex items-center px-2 tracking-widest border-b border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-2">speed</span>
+                        TELEMETRY // SCENE_ENV
+                    </div>
+<div class="p-3 font-code-sm text-code-sm text-on-surface-variant space-y-3">
+<div class="grid grid-cols-2 gap-2">
+<div><span class="text-outline">CAM_FOV:</span> <span class="text-primary-fixed">85.0°</span></div>
+<div><span class="text-outline">FOCAL_L:</span> <span class="text-primary-fixed">35mm</span></div>
+<div><span class="text-outline">EXPOSURE:</span> 0.00</div>
+<div><span class="text-outline">LUM_SAMP:</span> 2048</div>
+</div>
+<div class="border-t border-outline-variant/30 pt-2">
+<div class="flex justify-between mb-1">
+<span>LIGHT_RIG: STUDIO_04</span>
+<span class="text-primary-fixed">ACTIVE</span>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="flex gap-[2px] h-3 w-full">
+<div class="flex-1 bg-primary-fixed/80"></div>
+<div class="flex-1 bg-primary-fixed/80"></div>
+<div class="flex-1 bg-primary-fixed/80"></div>
+<div class="flex-1 bg-primary-fixed/40"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Mesh Metadata Panel -->
+<div class="flex-1 bg-surface-container/85 border border-outline-variant backdrop-blur-md flex flex-col">
+<div class="h-6 bg-surface-variant text-on-surface font-label-sm text-label-sm flex items-center px-2 tracking-widest border-b border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-2">deployed_code</span>
+                        MESH // METADATA
+                    </div>
+<div class="p-3 flex flex-col gap-4">
+<div class="font-headline-md text-headline-md text-on-surface">
+                            PRT_0X88A_CORE
+                        </div>
+<div class="space-y-2 font-code-sm text-code-sm">
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-on-surface-variant">VERTICES:</span>
+<span class="text-primary-fixed">1,204,550</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-on-surface-variant">EDGES:</span>
+<span class="text-primary-fixed">2,408,000</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-on-surface-variant">FACES:</span>
+<span>1,203,450</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-on-surface-variant">TRIANGLES:</span>
+<span>2,406,900</span>
+</div>
+</div>
+<div class="mt-auto">
+<div class="text-xs font-label-sm text-on-surface-variant mb-1">VRAM_ALLOCATION</div>
+<div class="w-full h-4 bg-surface border border-outline-variant flex">
+<div class="w-[65%] bg-secondary-container h-full"></div>
+<div class="w-[15%] bg-primary-fixed h-full border-l border-surface"></div>
+</div>
+<div class="flex justify-between text-[10px] font-code-sm text-outline mt-1">
+<span>12.4 GB</span>
+<span>24.0 GB MAX</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Export Panel -->
+<div class="bg-surface-container/85 border border-outline-variant backdrop-blur-md flex flex-col shrink-0">
+<div class="h-6 bg-surface-variant text-on-surface font-label-sm text-label-sm flex items-center px-2 tracking-widest border-b border-outline-variant">
+<span class="material-symbols-outlined text-[14px] mr-2">output</span>
+                        I/O // EXPORT
+                    </div>
+<div class="p-3 space-y-3">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">FORMAT_TYPE</label>
+<select class="bg-surface border border-outline-variant text-on-surface font-code-sm text-code-sm w-full p-1 focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed">
+<option>.GLTF (BINARY)</option>
+<option>.USDZ (APPLE)</option>
+<option>.FBX (AUTODESK)</option>
+<option>.OBJ (WAVEFRONT)</option>
+</select>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col gap-1">
+<label class="font-label-sm text-label-sm text-on-surface-variant">TEX_RES</label>
+<select class="bg-surface border border-outline-variant text-on-surface font-code-sm text-code-sm w-full p-1">
+<option>4096px</option>
+<option>2048px</option>
+</select>
+</div>
+<div class="flex items-end">
+<label class="flex items-center gap-2 cursor-pointer mb-1 w-full border border-outline-variant p-1 justify-center bg-surface hover:bg-surface-variant transition-colors">
+<input checked="" class="form-checkbox text-primary-fixed bg-transparent border-outline-variant" type="checkbox"/>
+<span class="font-label-sm text-[10px] text-on-surface">BAKE_LIT</span>
+</label>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary hover:bg-secondary-container hover:text-on-secondary-container font-headline-md text-headline-md py-2 transition-colors duration-200 uppercase mt-2 shadow-[0_0_15px_rgba(219,252,255,0.2)]">
+                            INIT EXPORT
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

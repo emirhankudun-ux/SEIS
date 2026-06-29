@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Project Vaults (Sector 1)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-variant": "#333535",
+                        "outline-variant": "#3b494b",
+                        "on-background": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1a1c1c",
+                        "primary": "#dbfcff",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-tertiary": "#313030",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-lowest": "#0c0f0f",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "secondary": "#ebb2ff",
+                        "surface-dim": "#121414",
+                        "background": "#121414",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-container": "#480064",
+                        "on-secondary": "#520071",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#e2e2e2",
+                        "inverse-primary": "#006970",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "surface-container-high": "#282a2b",
+                        "primary-fixed": "#7df4ff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container": "#1e2020",
+                        "outline": "#849495",
+                        "on-primary-fixed": "#002022",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container-highest": "#333535",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary-container": "#006970",
+                        "on-error": "#690005",
+                        "surface": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-xs": "4px",
+                        "gap-md": "16px",
+                        "stroke-thick": "2px",
+                        "margin-page": "32px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-surface'); }
+        .glass-panel { background: rgba(12, 15, 15, 0.85); backdrop-filter: blur(12px); border: 1px solid theme('colors.surface-container-high'); }
+        .glass-panel-hover:hover { border-color: theme('colors.primary-fixed-dim'); box-shadow: inset 0 0 10px rgba(0, 219, 233, 0.1); }
+        .accent-border { border-color: theme('colors.primary-fixed-dim'); }
+        .grid-tiling { display: grid; gap: theme('spacing.gap-md'); padding: theme('spacing.gap-md'); }
+        
+        /* Scrollbar styling for that technical feel */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: theme('colors.surface-container-high'); border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: theme('colors.primary-fixed-dim'); }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col font-body-md text-body-md selection:bg-secondary-container selection:text-white">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-4 h-10 z-50 shrink-0">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="hidden md:flex items-center gap-4">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm text-label-sm" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm text-label-sm" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm text-label-sm" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 font-label-sm text-label-sm" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed transition-colors text-[20px]">settings</span>
+</div>
+</nav>
+<!-- Main Layout -->
+<div class="flex-1 flex overflow-hidden w-full relative">
+<!-- SideNavBar (Shared Component) -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col shrink-0">
+<div class="p-4 border-b border-outline-variant/20 flex items-center gap-3 overflow-hidden whitespace-nowrap group-hover:w-full">
+<div class="w-8 h-8 bg-surface-container-high rounded flex items-center justify-center shrink-0 border border-outline-variant text-secondary-fixed">
+<span class="material-symbols-outlined">shield_person</span>
+</div>
+<div class="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+<span class="font-label-caps text-secondary-fixed font-label-sm text-label-sm">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto py-2">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">dashboard</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">folder_open</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">terminal</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">smart_toy</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">cloud_queue</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">list_alt</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 py-2">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">power_settings_new</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">POWER</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0">lock</span>
+<span class="ml-4 font-label-caps text-label-caps font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOCK</span>
+</div>
+<div class="px-4 py-3 overflow-hidden">
+<button class="w-full bg-surface-container-high hover:bg-surface-variant text-on-surface border border-outline-variant py-2 px-2 font-label-sm text-label-sm flex items-center justify-center transition-colors whitespace-nowrap">
+<span class="opacity-0 group-hover:opacity-100 transition-opacity">NEW_SESSION</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-20 flex flex-col h-full bg-[#0a0a0a]">
+<!-- Context Header -->
+<header class="h-14 border-b border-surface-container-high flex items-center px-6 shrink-0 justify-between">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md text-on-surface">SECTOR 1 VAULTS</span>
+<span class="px-2 py-1 bg-primary-container/10 text-primary border border-primary/30 font-code-sm text-code-sm rounded-sm">ENCRYPTED_STATE: ACTIVE</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+<input class="w-full bg-surface-container-low border border-surface-container-high text-on-surface font-code-sm text-code-sm pl-8 pr-3 py-1.5 focus:outline-none focus:border-primary-fixed focus:shadow-[inset_0_0_4px_rgba(0,219,233,0.3)] placeholder:text-outline-variant transition-all rounded-none" placeholder="QUERY_INDEX..." type="text"/>
+</div>
+<button class="bg-primary text-[#0a0a0a] px-4 py-1.5 font-label-sm text-label-sm hover:bg-secondary hover:text-on-secondary transition-colors uppercase">Deploy Vault</button>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden">
+<!-- Central Grid (Vaults) -->
+<div class="flex-1 overflow-y-auto p-4 lg:p-6 pb-20">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<!-- Vault Card 1 (Active) -->
+<div class="glass-panel glass-panel-hover accent-border flex flex-col h-48 relative overflow-hidden group cursor-pointer transition-all duration-200">
+<div class="h-6 bg-primary-fixed-dim/20 border-b border-primary-fixed-dim/30 flex items-center justify-between px-3 shrink-0">
+<span class="font-code-sm text-code-sm text-primary-fixed font-bold">VLT-ALPHA-09</span>
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Project Phoenix</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> AES-256-GCM
+                                    </p>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-surface-container-high">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Size</span>
+<span class="font-code-sm text-code-sm text-on-surface">14.2 TB</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Last Sync</span>
+<span class="font-code-sm text-code-sm text-on-surface">12s ago</span>
+</div>
+</div>
+</div>
+<!-- subtle background texture -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(circle, theme('colors.primary-fixed') 1px, transparent 1px); background-size: 8px 8px;"></div>
+</div>
+<!-- Vault Card 2 -->
+<div class="glass-panel glass-panel-hover flex flex-col h-48 relative overflow-hidden group cursor-pointer transition-all duration-200">
+<div class="h-6 bg-surface-container-high border-b border-outline-variant/30 flex items-center justify-between px-3 shrink-0">
+<span class="font-code-sm text-code-sm text-on-surface-variant">VLT-BETA-42</span>
+<span class="material-symbols-outlined text-[14px] text-outline">cloud_off</span>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1 opacity-80">DeepCore Model</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1 opacity-80">
+<span class="material-symbols-outlined text-[14px]">lock</span> ChaCha20
+                                    </p>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-surface-container-high opacity-80">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Size</span>
+<span class="font-code-sm text-code-sm text-on-surface">890 GB</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Last Sync</span>
+<span class="font-code-sm text-code-sm text-on-surface">4h ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Vault Card 3 -->
+<div class="glass-panel glass-panel-hover flex flex-col h-48 relative overflow-hidden group cursor-pointer transition-all duration-200 border-error/30">
+<div class="h-6 bg-error/10 border-b border-error/30 flex items-center justify-between px-3 shrink-0">
+<span class="font-code-sm text-code-sm text-error font-bold">VLT-GAMMA-11</span>
+<span class="material-symbols-outlined text-[14px] text-error">warning</span>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1">Archive 2023</h3>
+<p class="font-code-sm text-code-sm text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock_open</span> KEY_COMPROMISE
+                                    </p>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-error/20">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Size</span>
+<span class="font-code-sm text-code-sm text-on-surface">4.1 TB</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Last Sync</span>
+<span class="font-code-sm text-code-sm text-error">FAILED</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Vault Card 4 -->
+<div class="glass-panel glass-panel-hover flex flex-col h-48 relative overflow-hidden group cursor-pointer transition-all duration-200">
+<div class="h-6 bg-surface-container-high border-b border-outline-variant/30 flex items-center justify-between px-3 shrink-0">
+<span class="font-code-sm text-code-sm text-on-surface-variant">VLT-ZETA-99</span>
+<span class="material-symbols-outlined text-[14px] text-outline">sync</span>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1 opacity-80">Neural Logs</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant flex items-center gap-1 opacity-80">
+<span class="material-symbols-outlined text-[14px]">lock</span> RSA-4096
+                                    </p>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 pt-2 border-t border-surface-container-high opacity-80">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Size</span>
+<span class="font-code-sm text-code-sm text-on-surface">12 MB</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider">Last Sync</span>
+<span class="font-code-sm text-code-sm text-on-surface">2m ago</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side Properties Panel -->
+<aside class="w-80 border-l border-surface-container-high bg-surface-container-lowest/50 backdrop-blur-md flex flex-col shrink-0 overflow-y-auto hidden lg:flex">
+<div class="h-10 bg-primary/10 border-b border-primary/30 flex items-center px-4 shrink-0">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Inspector: VLT-ALPHA-09</span>
+</div>
+<div class="p-4 flex flex-col gap-6">
+<!-- Mini Terminal / Visualizer -->
+<div class="border border-surface-container-high bg-surface-dim p-3 relative h-32 overflow-hidden group">
+<div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(0deg, transparent, transparent 1px, theme('colors.primary-fixed-dim') 1px, theme('colors.primary-fixed-dim') 2px); background-size: 100% 4px;"></div>
+<div class="relative z-10 flex flex-col h-full font-code-sm text-[10px] text-primary-fixed-dim opacity-70 leading-tight">
+<span>[sys] mount /dev/xvdf1 /mnt/vault_alpha</span>
+<span>[crypt] aes_gcm init... OK</span>
+<span>[auth] bio_sig validated</span>
+<span>[io] r: 142MB/s w: 12MB/s</span>
+<span class="mt-auto animate-pulse">_</span>
+</div>
+</div>
+<!-- Technical Meta -->
+<div>
+<h4 class="font-label-sm text-label-sm text-outline border-b border-surface-container-high pb-1 mb-3 uppercase">Metadata</h4>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center border-b border-surface-container-high/50 pb-1">
+<span class="font-code-sm text-[11px] text-on-surface-variant">Owner ID</span>
+<span class="font-code-sm text-[11px] text-on-surface">USR-77B-9A</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-container-high/50 pb-1">
+<span class="font-code-sm text-[11px] text-on-surface-variant">Location</span>
+<span class="font-code-sm text-[11px] text-on-surface">EU-WEST-AZ2</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-container-high/50 pb-1">
+<span class="font-code-sm text-[11px] text-on-surface-variant">Compression</span>
+<span class="font-code-sm text-[11px] text-on-surface">LZ4 (Ratio: 1.4)</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-container-high/50 pb-1">
+<span class="font-code-sm text-[11px] text-on-surface-variant">Replicas</span>
+<span class="font-code-sm text-[11px] text-on-surface">3/3 Healthy</span>
+</div>
+</div>
+</div>
+<!-- Biometric Access Logs -->
+<div class="flex-1">
+<h4 class="font-label-sm text-label-sm text-outline border-b border-surface-container-high pb-1 mb-3 uppercase flex justify-between items-center">
+                                Access Logs <span class="material-symbols-outlined text-[14px]">fingerprint</span>
+</h4>
+<div class="flex flex-col gap-3">
+<div class="flex gap-2 items-start group">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed mt-1.5 shrink-0 group-hover:shadow-[0_0_8px_rgba(0,219,233,0.8)]"></div>
+<div class="flex flex-col w-full border-b border-surface-container-high/30 pb-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-[12px] text-on-surface">Retina Scan [Pass]</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">10:42:01Z</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline mt-0.5">Terminal T-44 (ROOT)</span>
+</div>
+</div>
+<div class="flex gap-2 items-start group">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed mt-1.5 shrink-0"></div>
+<div class="flex flex-col w-full border-b border-surface-container-high/30 pb-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-[12px] text-on-surface opacity-80">Voice Print [Pass]</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">08:11:44Z</span>
+</div>
+<span class="font-code-sm text-[10px] text-outline mt-0.5 opacity-80">API Gateway #2</span>
+</div>
+</div>
+<div class="flex gap-2 items-start group">
+<div class="w-1.5 h-1.5 rounded-full bg-error mt-1.5 shrink-0"></div>
+<div class="flex flex-col w-full border-b border-surface-container-high/30 pb-2">
+<div class="flex justify-between items-center">
+<span class="font-code-sm text-[12px] text-error">Auth Token [Fail]</span>
+<span class="font-code-sm text-[10px] text-error/80">02:05:12Z</span>
+</div>
+<span class="font-code-sm text-[10px] text-error/60 mt-0.5">Unknown IP: 192.168.x.x</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-4 flex gap-2">
+<button class="flex-1 bg-transparent border border-outline text-on-surface py-1.5 font-label-sm text-label-sm hover:border-primary-fixed hover:text-primary-fixed transition-colors">LOCK</button>
+<button class="flex-1 bg-surface-container-high text-on-surface py-1.5 font-label-sm text-label-sm hover:bg-surface-variant transition-colors border border-surface-container-high">PURGE</button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+</body></html>

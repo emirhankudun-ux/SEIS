@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Firewall &amp; Global Proxy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-dim": "#121414",
+                        "secondary-container": "#ce5dff",
+                        "primary": "#dbfcff",
+                        "on-secondary": "#520071",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface": "#e2e2e2",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary": "#00363a",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1e2020",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-high": "#282a2b",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-bright": "#37393a",
+                        "on-secondary-container": "#480064",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-container": "#006970",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-fixed": "#7df4ff",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary-container": "#605e5e",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-on-surface": "#2f3131",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-variant": "#333535",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed": "#320047",
+                        "surface": "#121414",
+                        "outline": "#849495",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-highest": "#333535",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "margin-page": "32px",
+                        "gap-sm": "8px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "stroke-thick": "2px"
+                    },
+                    fontFamily: {
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background: rgba(18, 20, 20, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-panel-focus { border-color: #7df4ff; box-shadow: inset 0 0 8px rgba(125, 244, 255, 0.1); }
+        .blinking-cursor::after { content: '█'; animation: blink 1s step-start infinite; color: #7df4ff; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Thin scrollbar for terminal vibe */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #7df4ff; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md overflow-hidden antialiased">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl flex justify-between items-center w-full px-4 h-10 border-b border-outline-variant/30 flex-shrink-0 z-50">
+<div class="flex items-center gap-gap-md">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+</div>
+<div class="hidden md:flex items-center h-full">
+<a class="h-full flex items-center px-4 text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="h-full flex items-center px-4 text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="h-full flex items-center px-4 text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="h-full flex items-center px-4 text-primary-fixed font-label-sm text-label-sm border-b border-primary-fixed hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="bg-surface-container/50 border border-outline-variant/50 focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed text-code-sm font-code-sm text-on-surface rounded-sm px-3 py-1 w-48 transition-all" placeholder="Search rules..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
+</div>
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">memory</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">terminal</span></button>
+<button class="text-on-surface-variant hover:text-primary-fixed transition-colors"><span class="material-symbols-outlined text-[18px]">settings</span></button>
+</div>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flex flex-col justify-between py-4 group z-40 flex-shrink-0 relative">
+<div>
+<div class="flex items-center px-4 mb-8 overflow-hidden whitespace-nowrap">
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface">admin_panel_settings</span>
+</div>
+<div class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<div class="font-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1 w-full">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0" style="font-variation-settings: 'FILL' 1;">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 overflow-hidden whitespace-nowrap" href="#">
+<span class="material-symbols-outlined flex-shrink-0">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">LOGS</span>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-1 w-full mt-auto">
+<button class="mx-4 mb-4 py-2 border border-secondary-fixed text-secondary-fixed font-label-sm text-label-sm hover:bg-secondary-fixed/10 transition-colors opacity-0 group-hover:opacity-100 whitespace-nowrap">NEW_SESSION</button>
+<div class="flex justify-around border-t border-outline-variant/20 pt-4">
+<button class="text-on-surface-variant hover:text-error transition-colors p-2" title="POWER">
+<span class="material-symbols-outlined text-[20px]">power_settings_new</span>
+</button>
+<button class="text-on-surface-variant hover:text-secondary-fixed transition-colors p-2" title="LOCK">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-gap-md lg:p-gap-lg flex flex-col gap-gap-md bg-surface-dim relative">
+<!-- Header -->
+<header class="flex justify-between items-end mb-2 flex-shrink-0">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed mb-1 uppercase tracking-tight">Firewall &amp; Global Proxy</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SECTOR 5 // TRAFFIC MANAGEMENT &amp; RULE ENFORCEMENT</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-fixed text-surface-container-lowest font-label-sm text-label-sm px-4 py-2 hover:bg-secondary-fixed transition-colors uppercase">Deploy Rules</button>
+<button class="border border-primary-fixed text-primary-fixed font-label-sm text-label-sm px-4 py-2 hover:bg-primary-fixed/10 transition-colors uppercase">Reload</button>
+</div>
+</header>
+<!-- Top Row: Topology & Quick Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gap-md flex-shrink-0">
+<!-- Topology Diagram -->
+<section class="glass-panel lg:col-span-8 rounded-sm overflow-hidden flex flex-col h-80 relative">
+<header class="bg-primary-fixed/10 px-3 py-2 border-b border-outline-variant/30 flex justify-between items-center z-10 backdrop-blur-sm">
+<h2 class="font-label-sm text-label-sm text-primary-fixed uppercase">Traffic Flow Topology</h2>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 font-code-sm text-[10px] text-primary-fixed"><span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span> LIVE</span>
+</div>
+</header>
+<div class="flex-1 relative overflow-hidden bg-surface-container-lowest/50 p-4 flex items-center justify-center">
+<!-- Abstract Topology Representation (Static SVG for layout, envision animated) -->
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#3b494b 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="w-full max-w-2xl h-full flex items-center justify-between relative z-10">
+<!-- External Node -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 border-2 border-outline-variant rounded-sm flex items-center justify-center bg-surface-dim relative group">
+<span class="material-symbols-outlined text-outline-variant text-[32px] group-hover:text-primary-fixed transition-colors">public</span>
+<div class="absolute -bottom-6 font-code-sm text-[10px] text-on-surface-variant whitespace-nowrap">WAN / EXT</div>
+</div>
+</div>
+<!-- Lines & Proxy Node -->
+<div class="flex-1 h-px bg-outline-variant/50 relative mx-4">
+<div class="absolute top-1/2 left-1/4 w-2 h-2 bg-primary-fixed -translate-y-1/2 rounded-full shadow-[0_0_8px_#7df4ff]"></div>
+<div class="absolute top-1/2 left-3/4 w-2 h-2 bg-error -translate-y-1/2 rounded-full shadow-[0_0_8px_#ffb4ab]"></div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-20 h-20 border border-primary-fixed rounded-sm flex items-center justify-center bg-primary-fixed/5 relative shadow-[0_0_15px_rgba(125,244,255,0.1)]">
+<span class="material-symbols-outlined text-primary-fixed text-[40px]">security</span>
+<div class="absolute -bottom-6 font-code-sm text-[10px] text-primary-fixed whitespace-nowrap">SEIS PROXY L7</div>
+</div>
+</div>
+<div class="flex-1 h-px bg-outline-variant/50 relative mx-4">
+<div class="absolute top-1/2 left-1/2 w-2 h-2 bg-primary-fixed -translate-y-1/2 rounded-full shadow-[0_0_8px_#7df4ff]"></div>
+</div>
+<!-- Internal Nodes -->
+<div class="flex flex-col gap-4">
+<div class="w-12 h-12 border border-outline-variant rounded-sm flex items-center justify-center bg-surface-dim relative group">
+<span class="material-symbols-outlined text-outline-variant text-[24px] group-hover:text-secondary-fixed transition-colors">database</span>
+<div class="absolute -right-12 top-1/2 -translate-y-1/2 font-code-sm text-[10px] text-on-surface-variant whitespace-nowrap">DB-01</div>
+</div>
+<div class="w-12 h-12 border border-outline-variant rounded-sm flex items-center justify-center bg-surface-dim relative group">
+<span class="material-symbols-outlined text-outline-variant text-[24px] group-hover:text-secondary-fixed transition-colors">dns</span>
+<div class="absolute -right-12 top-1/2 -translate-y-1/2 font-code-sm text-[10px] text-on-surface-variant whitespace-nowrap">APP-02</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Stats -->
+<section class="glass-panel lg:col-span-4 rounded-sm flex flex-col gap-px bg-outline-variant/30 h-80 overflow-hidden">
+<div class="bg-surface-dim p-4 flex-1 flex flex-col justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-primary-fixed/5 rounded-bl-full blur-xl group-hover:bg-primary-fixed/10 transition-all"></div>
+<h3 class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Total Throughput</h3>
+<div class="font-headline-md text-headline-md text-primary-fixed">14.2 <span class="text-sm text-on-surface-variant">GB/s</span></div>
+<div class="mt-2 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed w-[65%]"></div>
+</div>
+</div>
+<div class="bg-surface-dim p-4 flex-1 flex flex-col justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-error/5 rounded-bl-full blur-xl group-hover:bg-error/10 transition-all"></div>
+<h3 class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Packets Dropped</h3>
+<div class="font-headline-md text-headline-md text-error">8,492 <span class="text-sm text-on-surface-variant">/hr</span></div>
+<div class="mt-2 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error w-[15%]"></div>
+</div>
+</div>
+<div class="bg-surface-dim p-4 flex-1 flex flex-col justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-secondary-fixed/5 rounded-bl-full blur-xl group-hover:bg-secondary-fixed/10 transition-all"></div>
+<h3 class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Active Connections</h3>
+<div class="font-headline-md text-headline-md text-secondary-fixed">1.2M</div>
+<div class="mt-2 flex gap-1 h-2 items-end">
+<div class="w-1/6 bg-secondary-fixed/20 h-1/3"></div>
+<div class="w-1/6 bg-secondary-fixed/40 h-2/3"></div>
+<div class="w-1/6 bg-secondary-fixed/60 h-1/2"></div>
+<div class="w-1/6 bg-secondary-fixed/80 h-full"></div>
+<div class="w-1/6 bg-secondary-fixed h-3/4"></div>
+<div class="w-1/6 bg-secondary-fixed h-full"></div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Row: Rule Editor & Logs -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gap-md flex-1 min-h-[400px]">
+<!-- Rule Editor (Bento Style Table) -->
+<section class="glass-panel lg:col-span-7 rounded-sm flex flex-col overflow-hidden">
+<header class="bg-surface-container-high px-4 py-3 border-b border-outline-variant/30 flex justify-between items-center">
+<h2 class="font-label-sm text-label-sm text-on-surface uppercase">Access Control Lists (ACL)</h2>
+<button class="text-primary-fixed hover:bg-primary-fixed/10 p-1 rounded-sm transition-colors"><span class="material-symbols-outlined text-[18px]">add</span></button>
+</header>
+<div class="flex-1 overflow-auto bg-surface-dim/50 p-2">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/20">
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">ID</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">Source</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">Dest</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">Port</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">Proto</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase">Action</th>
+<th class="font-label-sm text-[10px] text-on-surface-variant p-2 uppercase text-right">Edit</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-[12px]">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/30 transition-colors">
+<td class="p-2 text-primary-fixed-dim">100</td>
+<td class="p-2 text-on-surface">192.168.1.0/24</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2 text-on-surface">80,443</td>
+<td class="p-2 text-on-surface">TCP</td>
+<td class="p-2"><span class="bg-primary-fixed/10 text-primary-fixed px-2 py-0.5 rounded-sm border border-primary-fixed/30 text-[10px] uppercase">ALLOW</span></td>
+<td class="p-2 text-right"><button class="text-on-surface-variant hover:text-primary-fixed"><span class="material-symbols-outlined text-[16px]">edit</span></button></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/30 transition-colors">
+<td class="p-2 text-primary-fixed-dim">101</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2 text-on-surface">10.0.0.5</td>
+<td class="p-2 text-on-surface">22</td>
+<td class="p-2 text-on-surface">TCP</td>
+<td class="p-2"><span class="bg-error/10 text-error px-2 py-0.5 rounded-sm border border-error/30 text-[10px] uppercase">DROP</span></td>
+<td class="p-2 text-right"><button class="text-on-surface-variant hover:text-primary-fixed"><span class="material-symbols-outlined text-[16px]">edit</span></button></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/30 transition-colors bg-secondary-container/5 border-l-2 border-l-secondary-fixed">
+<td class="p-2 text-primary-fixed-dim">102</td>
+<td class="p-2 text-on-surface">10.0.0.0/8</td>
+<td class="p-2 text-on-surface">10.0.0.100</td>
+<td class="p-2 text-on-surface">5432</td>
+<td class="p-2 text-on-surface">TCP/UDP</td>
+<td class="p-2"><span class="bg-primary-fixed/10 text-primary-fixed px-2 py-0.5 rounded-sm border border-primary-fixed/30 text-[10px] uppercase">ALLOW</span></td>
+<td class="p-2 text-right"><button class="text-secondary-fixed hover:text-primary-fixed"><span class="material-symbols-outlined text-[16px]">edit</span></button></td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-variant/30 transition-colors opacity-50">
+<td class="p-2 text-primary-fixed-dim">999</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2 text-on-surface">ANY</td>
+<td class="p-2"><span class="bg-error/10 text-error px-2 py-0.5 rounded-sm border border-error/30 text-[10px] uppercase">DROP</span></td>
+<td class="p-2 text-right"><button class="text-on-surface-variant hover:text-primary-fixed"><span class="material-symbols-outlined text-[16px]">edit</span></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Packet Sniffing Log (Terminal Style) -->
+<section class="glass-panel lg:col-span-5 rounded-sm flex flex-col overflow-hidden bg-[#0c0f0f]">
+<header class="bg-surface-container-highest px-3 py-1 flex justify-between items-center border-b border-outline-variant/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[14px]">terminal</span>
+<span class="font-code-sm text-[11px] text-on-surface-variant">tcpdump -i eth0 -n</span>
+</div>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-error/50 border border-error/80"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant/50 border border-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-primary-fixed/50 border border-primary-fixed/80"></div>
+</div>
+</header>
+<div class="flex-1 p-3 overflow-y-auto font-code-sm text-[11px] leading-relaxed text-on-surface/80 flex flex-col gap-1">
+<div><span class="text-primary-fixed-dim">14:22:01.452</span> IP 192.168.1.45.54321 &gt; 10.0.0.5.443: Flags [S], seq 123456789, win 65535, options [mss 1460,nop,wscale 6,sackOK,TS val 1234 ecr 0], length 0 <span class="text-primary-fixed">[ALLOW]</span></div>
+<div><span class="text-primary-fixed-dim">14:22:01.455</span> IP 10.0.0.5.443 &gt; 192.168.1.45.54321: Flags [S.], seq 987654321, ack 123456790, win 65535, options [mss 1460,nop,wscale 6,sackOK,TS val 4321 ecr 1234], length 0</div>
+<div><span class="text-primary-fixed-dim">14:22:01.456</span> IP 192.168.1.45.54321 &gt; 10.0.0.5.443: Flags [.], ack 1, win 65535, options [nop,nop,TS val 1235 ecr 4321], length 0</div>
+<div class="text-error/90 bg-error/10 px-1"><span class="text-error">14:22:02.110</span> IP 203.0.113.5.1234 &gt; 10.0.0.5.22: Flags [S], seq 4444444, win 1024, length 0 <span class="font-bold">[DROP: RULE 101]</span></div>
+<div><span class="text-primary-fixed-dim">14:22:02.500</span> IP 10.0.0.10.3306 &gt; 10.0.0.100.45678: Flags [P.], seq 1:100, ack 100, win 256, length 99 <span class="text-secondary-fixed">[ALLOW: RULE 102]</span></div>
+<div class="text-error/90 bg-error/10 px-1"><span class="text-error">14:22:03.005</span> IP 198.51.100.22.80 &gt; 10.0.0.254.8080: Flags [S], seq 555555, win 2048, length 0 <span class="font-bold">[DROP: DEFAULT]</span></div>
+<div><span class="text-primary-fixed-dim">14:22:03.150</span> IP 192.168.1.45.54321 &gt; 10.0.0.5.443: Flags [P.], seq 1:500, ack 1, win 65535, length 499</div>
+<div class="mt-auto blinking-cursor">root@seis-fw-01:~# </div>
+</div>
+</section>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Compute Fabric Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "secondary": "#ebb2ff",
+                    "inverse-surface": "#e1e2e7",
+                    "primary-container": "#00f0ff",
+                    "outline-variant": "#3b494b",
+                    "surface-tint": "#00dbe9",
+                    "surface-bright": "#37393d",
+                    "error": "#ffb4ab",
+                    "outline": "#849495",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-background": "#e1e2e7",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-highest": "#323539",
+                    "on-primary-fixed": "#002022",
+                    "primary-fixed": "#7df4ff",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary": "#dbfcff",
+                    "on-surface": "#e1e2e7",
+                    "on-primary": "#00363a",
+                    "on-secondary-fixed": "#320047",
+                    "secondary-container": "#b600f8",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-primary-container": "#006970",
+                    "surface-container-high": "#282a2e",
+                    "tertiary": "#f5f5f5",
+                    "surface-container": "#1d2023",
+                    "inverse-on-surface": "#2e3134",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-tertiary-container": "#5d5f5f",
+                    "background": "#111417",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#b9cacb",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-secondary-container": "#fff6fc",
+                    "error-container": "#93000a",
+                    "primary-fixed-dim": "#00dbe9",
+                    "tertiary-container": "#d9d9d9",
+                    "surface-dim": "#111417",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-tertiary": "#2f3131",
+                    "surface": "#111417",
+                    "surface-variant": "#323539",
+                    "surface-container-low": "#191c1f",
+                    "on-secondary": "#520072",
+                    "inverse-primary": "#006970"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "mono-label": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.2), transparent) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(0, 219, 233, 0.5), transparent);
+            position: absolute;
+            top: 0;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body-md">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold">AETHER AI</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md" href="#">Pricing</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 active:scale-95 px-4 py-2">Sign In</button>
+<button class="bg-primary-container text-on-primary px-6 py-2 rounded-lg font-semibold active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 pt-20 flex flex-col z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded bg-primary-fixed-dim flex items-center justify-center">
+<span class="material-symbols-outlined text-background text-sm">terminal</span>
+</div>
+<div>
+<h3 class="font-mono-label text-primary-fixed-dim text-xs uppercase tracking-widest">Aether Platform</h3>
+<p class="text-[10px] text-on-surface-variant">Enterprise Infrastructure</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-mono-label">SEIS OS</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="font-mono-label">SEIS AI</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-mono-label">SEIS Code</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+<span class="font-mono-label">SEIS Cloud</span>
+</a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-transparent border border-primary-fixed-dim text-primary-fixed-dim rounded font-mono-label text-sm hover:bg-primary-fixed-dim/10 transition-colors">
+                Deploy Now
+            </button>
+</div>
+<div class="mt-auto border-t border-outline-variant/10">
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="font-mono-label">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:text-on-surface px-6 py-4 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+<span class="font-mono-label">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-64 pt-16 min-h-screen bg-[#020408]">
+<div class="p-margin-mobile md:p-12 space-y-8">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="px-2 py-0.5 bg-primary-fixed-dim/10 text-primary-fixed-dim text-[10px] font-mono-label border border-primary-fixed-dim/20">LIVE_FABRIC_O1</span>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-dot shadow-[0_0_10px_#00dbe9]"></span>
+<span class="text-on-surface-variant text-[12px] font-mono-label uppercase tracking-widest">Global Status: Active</span>
+</div>
+</div>
+<h1 class="font-display-lg text-headline-md md:text-display-lg-mobile text-primary-fixed-dim">Compute Fabric</h1>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel px-6 py-4 flex flex-col min-w-[160px]">
+<span class="font-mono-label text-[10px] text-on-surface-variant uppercase">Current Load</span>
+<span class="font-display-lg text-[24px] text-primary-fixed-dim">84.2<span class="text-sm">PFLOPS</span></span>
+</div>
+<div class="glass-panel px-6 py-4 flex flex-col min-w-[160px]">
+<span class="font-mono-label text-[10px] text-on-surface-variant uppercase">Avg Latency</span>
+<span class="font-display-lg text-[24px] text-secondary">0.42<span class="text-sm">MS</span></span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Main View -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Massive Node Map (Left Column) -->
+<div class="lg:col-span-8 space-y-gutter">
+<div class="glass-panel h-[600px] relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<!-- Shader Background -->
+
+<!-- Animated Map Overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen" data-alt="A highly detailed global network map showing stylized interconnected nodes and glowing cyan data pathways across a dark obsidian-textured world map. Digital futuristic grid lines subtly crisscross the background, with bright light points indicating GPU cluster locations in major global hubs. The aesthetic is cinematic and high-tech, using primary cyan and deep navy tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCWNm_D-ExlHZRqA6Mbh3weKsElv2fhWqCOLXj87SXEBJYtpdtm-fKhQDFyOrdlpgvejhln6314Z46YQ2B8iU9_uv4vXWeyGSG2GCx_E9sFn9-BPLxkIDi5Ew-9J26q5tBZiIU-KdgJ1tDEXag6eF_fGBsS8c8l-csfjVMf5JqwipMm29DN46tFcf_gjmzZWS4-aeg5NHxgpYe9NJW7THQyGBbulWwQEhlhxd3AVXIvpkjqLbQ9F6inEAnDIlmzg8S5rNzHtfehjw')">
+</div>
+</div>
+<!-- Scanline Effect -->
+<div class="scanline"></div>
+<!-- Map Controls -->
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-2">
+<button class="w-10 h-10 glass-panel flex items-center justify-center hover:bg-primary-fixed-dim/20 transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center hover:bg-primary-fixed-dim/20 transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+<!-- Cluster Labels -->
+<div class="absolute top-6 right-6 z-10 flex flex-col items-end gap-3">
+<div class="glass-panel px-4 py-2 flex items-center gap-4 bg-background/80">
+<span class="font-mono-label text-xs">FILTER:</span>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 border border-primary-fixed-dim text-primary-fixed-dim text-[10px] font-mono-label">H100_ULTRA</span>
+<span class="px-2 py-0.5 border border-outline-variant text-on-surface-variant text-[10px] font-mono-label opacity-50">A100_NODE</span>
+<span class="px-2 py-0.5 border border-outline-variant text-on-surface-variant text-[10px] font-mono-label opacity-50">L40S_CORE</span>
+</div>
+</div>
+</div>
+<!-- Bottom HUD Overlay -->
+<div class="absolute bottom-6 left-6 right-6 z-10 flex justify-between items-end">
+<div class="glass-panel p-4 flex gap-8 backdrop-blur-3xl">
+<div>
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Fabric Integrity</p>
+<div class="w-32 h-1 bg-outline-variant/30 mt-2 relative">
+<div class="absolute top-0 left-0 h-full w-[98%] bg-primary-fixed-dim"></div>
+</div>
+<p class="font-mono-label text-[12px] text-primary-fixed-dim mt-1">99.998%</p>
+</div>
+<div>
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase">Sync Frequency</p>
+<p class="font-mono-label text-[16px] text-secondary mt-1">12,402 Hz</p>
+</div>
+</div>
+<div class="glass-panel p-4 flex gap-4 backdrop-blur-3xl">
+<div class="flex flex-col items-center">
+<div class="h-16 w-1 bg-outline-variant/20 relative">
+<div class="absolute bottom-0 left-0 w-full h-[40%] bg-primary-fixed-dim"></div>
+</div>
+<span class="font-mono-label text-[8px] mt-2">NA-E</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-1 bg-outline-variant/20 relative">
+<div class="absolute bottom-0 left-0 w-full h-[70%] bg-primary-fixed-dim"></div>
+</div>
+<span class="font-mono-label text-[8px] mt-2">EU-W</span>
+</div>
+<div class="flex flex-col items-center">
+<div class="h-16 w-1 bg-outline-variant/20 relative">
+<div class="absolute bottom-0 left-0 w-full h-[55%] bg-primary-fixed-dim"></div>
+</div>
+<span class="font-mono-label text-[8px] mt-2">AS-P</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-6 glow-hover transition-all">
+<h4 class="font-mono-label text-xs text-on-surface-variant mb-4 uppercase flex justify-between items-center">
+                                Fabric Status <span class="material-symbols-outlined text-primary-fixed-dim text-sm">sensors</span>
+</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-primary-fixed-dim font-display-lg text-headline-md tracking-tight">Active</span>
+<span class="font-mono-label text-[10px] text-on-surface-variant">UPTIME: 1,422H</span>
+</div>
+<div class="h-12 w-full flex items-end gap-0.5">
+<div class="flex-1 bg-primary-fixed-dim/40 h-[60%]"></div>
+<div class="flex-1 bg-primary-fixed-dim/40 h-[75%]"></div>
+<div class="flex-1 bg-primary-fixed-dim/40 h-[50%]"></div>
+<div class="flex-1 bg-primary-fixed-dim/40 h-[85%]"></div>
+<div class="flex-1 bg-primary-fixed-dim/40 h-[90%]"></div>
+<div class="flex-1 bg-primary-fixed-dim h-[100%]"></div>
+<div class="flex-1 bg-primary-fixed-dim h-[95%]"></div>
+<div class="flex-1 bg-primary-fixed-dim h-[80%]"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 glow-hover transition-all">
+<h4 class="font-mono-label text-xs text-on-surface-variant mb-4 uppercase flex justify-between items-center">
+                                Cluster Health <span class="material-symbols-outlined text-secondary text-sm">memory</span>
+</h4>
+<div class="space-y-3">
+<div class="flex justify-between text-xs font-mono-label">
+<span>H100 CLUSTERS</span>
+<span class="text-primary-fixed-dim">OK</span>
+</div>
+<div class="w-full bg-outline-variant/20 h-1">
+<div class="bg-primary-fixed-dim h-full w-[100%]"></div>
+</div>
+<div class="flex justify-between text-xs font-mono-label">
+<span>A100 CLUSTERS</span>
+<span class="text-secondary">92%</span>
+</div>
+<div class="w-full bg-outline-variant/20 h-1">
+<div class="bg-secondary h-full w-[92%]"></div>
+</div>
+<div class="flex justify-between text-xs font-mono-label">
+<span>STORAGE NODES</span>
+<span class="text-primary-fixed-dim">OK</span>
+</div>
+<div class="w-full bg-outline-variant/20 h-1">
+<div class="bg-primary-fixed-dim h-full w-[98%]"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 glow-hover transition-all">
+<h4 class="font-mono-label text-xs text-on-surface-variant mb-4 uppercase flex justify-between items-center">
+                                Resource Allocation <span class="material-symbols-outlined text-on-surface-variant text-sm">tune</span>
+</h4>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-mono-label text-[10px]">INFERENCE</span>
+<span class="font-mono-label text-[10px] text-primary-fixed-dim">65%</span>
+</div>
+<input class="w-full h-1 bg-outline-variant/30 appearance-none cursor-pointer accent-primary-fixed-dim" max="100" min="0" type="range" value="65"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-mono-label text-[10px]">TRAINING</span>
+<span class="font-mono-label text-[10px] text-secondary">35%</span>
+</div>
+<input class="w-full h-1 bg-outline-variant/30 appearance-none cursor-pointer accent-secondary" max="100" min="0" type="range" value="35"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column Sidebar Info -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Real-time Terminal Log -->
+<div class="glass-panel flex flex-col h-[400px]">
+<div class="border-b border-outline-variant/20 px-4 py-2 flex items-center justify-between">
+<span class="font-mono-label text-[10px] uppercase tracking-widest text-on-surface-variant">System_Kernel_Log</span>
+<div class="flex gap-1.5">
+<div class="w-2 h-2 rounded-full bg-error/40"></div>
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim/40"></div>
+</div>
+</div>
+<div class="flex-1 p-4 font-mono-code text-[11px] text-primary-fixed-dim/70 overflow-y-auto space-y-2 leading-relaxed">
+<p><span class="text-on-surface-variant opacity-40">[14:22:01]</span> INITIALIZING FABRIC_HANDSHAKE...</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:04]</span> AUTHENTICATING 4,096 H100 GPU NODES in US-EAST-1</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:05]</span> <span class="text-primary-fixed-dim">SUCCESS:</span> LATENCY BALANCED AT 0.12ms</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:09]</span> SHIFTING WORKLOAD: LLM-TRAIN-V4 -&gt; EU-CENTRAL</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:12]</span> MONITORING THROUGHPUT... CURRENT: 84.2 PFLOPS</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:15]</span> WARNING: THERMAL INCREASE ON NODE_A8_9</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:16]</span> ADJUSTING FAN SPEEDS... OK.</p>
+<p><span class="text-on-surface-variant opacity-40">[14:22:20]</span> NEW TASK QUEUED: DIFFUSION_MODEL_GEN_09</p>
+<p class="animate-pulse">_</p>
+</div>
+</div>
+<!-- Workload Distribution -->
+<div class="glass-panel p-6">
+<h4 class="font-mono-label text-xs text-on-surface-variant mb-6 uppercase">Workload Distribution</h4>
+<div class="flex justify-center mb-8">
+<div class="relative w-40 h-40">
+<!-- Minimal SVG Chart -->
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path class="stroke-outline-variant/10 fill-none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke-width="3"></path>
+<path class="stroke-primary-fixed-dim fill-none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="65, 100" stroke-width="3"></path>
+<path class="stroke-secondary fill-none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke-dasharray="25, 100" stroke-dashoffset="-65" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim">GLOBAL</span>
+<span class="font-mono-label text-[10px] text-on-surface-variant">OPTIMIZED</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary-fixed-dim rounded-full"></div>
+<span class="font-mono-label text-xs">Customer Inference</span>
+</div>
+<span class="font-mono-label text-xs">65.0%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary rounded-full"></div>
+<span class="font-mono-label text-xs">Aether Internal</span>
+</div>
+<span class="font-mono-label text-xs">25.0%</span>
+</div>
+<div class="flex items-center justify-between opacity-50">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-outline-variant rounded-full"></div>
+<span class="font-mono-label text-xs">Idle / Reserve</span>
+</div>
+<span class="font-mono-label text-xs">10.0%</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-4">
+<button class="glass-panel p-4 flex flex-col items-center gap-2 group hover:bg-primary-fixed-dim/5 transition-all">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:scale-110 transition-transform">rocket_launch</span>
+<span class="font-mono-label text-[10px]">BURST_NODE</span>
+</button>
+<button class="glass-panel p-4 flex flex-col items-center gap-2 group hover:bg-secondary/5 transition-all">
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform">restart_alt</span>
+<span class="font-mono-label text-[10px]">SYNC_FABRIC</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="md:pl-64 bg-surface-container-lowest border-t border-outline-variant/10 w-full py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="lg:col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim font-extrabold block mb-4">AETHER AI</span>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant leading-relaxed">
+                    The backbone of synthetic intelligence. Global compute fabric for the next generation of neural architectures.
+                </p>
+</div>
+<div>
+<h5 class="font-mono-label text-xs text-on-surface uppercase mb-6">Resources</h5>
+<ul class="space-y-4">
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-mono-label text-xs text-on-surface uppercase mb-6">Security</h5>
+<ul class="space-y-4">
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-mono-label text-[12px] text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="lg:col-span-2 flex flex-col justify-between">
+<div class="flex gap-4">
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary-fixed-dim hover:text-primary-fixed-dim transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</div>
+<div class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary-fixed-dim hover:text-primary-fixed-dim transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">hub</span>
+</div>
+</div>
+<p class="font-mono-label text-[10px] text-on-tertiary-fixed-variant mt-8">
+                    © 2024 Aether AI Infrastructure. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for sliders and real-time feel
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const label = e.target.previousElementSibling.querySelector('.font-mono-label.text-primary-fixed-dim, .font-mono-label.text-secondary');
+                if (label) {
+                    label.textContent = e.target.value + '%';
+                }
+            });
+        });
+
+        // Simulating flickering terminal effect
+        const terminal = document.querySelector('.font-mono-code');
+        const logs = [
+            "OPTIMIZING CLUSTER_B7 MESH...",
+            "RE-ROUTING TRAFFIC VIA HYPER-LOOP 4",
+            "DATA INTEGRITY CHECK: 100%",
+            "ALLOCATING 512GB VRAM FOR NEW TASK",
+            "NEURAL_MESH_ALPHA: SYNCHRONIZED"
+        ];
+
+        setInterval(() => {
+            const p = document.createElement('p');
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            p.innerHTML = `<span class="text-on-surface-variant opacity-40">[${time}]</span> ${logs[Math.floor(Math.random() * logs.length)]}`;
+            terminal.insertBefore(p, terminal.lastElementChild);
+            if (terminal.children.length > 20) terminal.removeChild(terminal.firstChild);
+            terminal.scrollTop = terminal.scrollHeight;
+        }, 3000);
+    </script>
+</body></html>

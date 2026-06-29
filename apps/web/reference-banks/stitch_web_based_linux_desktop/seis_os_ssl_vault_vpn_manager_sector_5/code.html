@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — SSL Vault &amp; VPN Manager (Sector 5)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2b",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#690005",
+                        "tertiary-container": "#dcd9d8",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-container": "#605e5e",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container": "#1e2020",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline": "#849495",
+                        "on-surface": "#e2e2e2",
+                        "surface-bright": "#37393a",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-container": "#ce5dff",
+                        "surface-variant": "#333535",
+                        "surface-container-low": "#1a1c1c",
+                        "background": "#121414",
+                        "on-primary": "#00363a",
+                        "on-background": "#e2e2e2",
+                        "surface": "#121414",
+                        "on-tertiary": "#313030",
+                        "on-primary-container": "#006970",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-container-highest": "#333535",
+                        "surface-tint": "#00dbe9",
+                        "on-secondary-fixed": "#320047",
+                        "error": "#ffb4ab",
+                        "primary-container": "#00f0ff",
+                        "primary": "#dbfcff",
+                        "outline-variant": "#3b494b",
+                        "secondary": "#ebb2ff",
+                        "on-primary-fixed": "#002022",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed-dim": "#00dbe9",
+                        "inverse-primary": "#006970",
+                        "on-secondary-container": "#480064",
+                        "on-secondary": "#520071",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#121414"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "stroke-thick": "2px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "margin-page": "32px",
+                        "gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["JetBrains Mono", "monospace"],
+                        "body-md": ["JetBrains Mono", "monospace"],
+                        "label-sm": ["Space Mono", "monospace"],
+                        "headline-lg": ["JetBrains Mono", "monospace"],
+                        "code-sm": ["JetBrains Mono", "monospace"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+        .grid-bg {
+            background-size: 32px 32px;
+            background-image: linear-gradient(to right, rgba(59, 73, 75, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(59, 73, 75, 0.1) 1px, transparent 1px);
+        }
+        /* Custom Scrollbar for terminal feel */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f0ff; }
+    </style>
+</head>
+<body class="grid-bg font-body-md text-body-md min-h-screen flex flex-col antialiased overflow-x-hidden selection:bg-secondary-container selection:text-white">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl flex justify-between items-center w-full px-gap-md h-10 border-b border-outline-variant/30 sticky top-0 z-50">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex h-full items-end">
+<ul class="flex gap-gap-lg h-full">
+<li class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full">WORKSPACES</li>
+<li class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full">TELEMETRY</li>
+<li class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 flex items-center h-full">AGENTS</li>
+<li class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps flex items-center h-full pt-1">NETWORK</li>
+</ul>
+</nav>
+</div>
+<div class="flex items-center gap-gap-sm text-primary-fixed">
+<span class="material-symbols-outlined hover:text-secondary-fixed transition-colors cursor-pointer" style="font-size: 20px;">memory</span>
+<span class="material-symbols-outlined hover:text-secondary-fixed transition-colors cursor-pointer" style="font-size: 20px;">terminal</span>
+<span class="material-symbols-outlined hover:text-secondary-fixed transition-colors cursor-pointer" style="font-size: 20px;">settings</span>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-gap-md border-b border-outline-variant/20 flex items-center gap-gap-sm min-w-max">
+<div class="w-8 h-8 rounded-full bg-surface-variant border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" style="font-size: 18px;">account_circle</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<nav class="flex-1 py-gap-sm flex flex-col gap-gap-xs overflow-y-auto">
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">dashboard</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">DASHBOARD</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">folder_open</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">FILESYSTEM</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">terminal</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">TERMINAL</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">smart_toy</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">AI_AGENTS</span>
+</a>
+<a class="bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">cloud_queue</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">INFRASTRUCTURE</span>
+</a>
+<a class="text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 flex items-center px-4 py-3 cursor-pointer min-w-max" href="#">
+<span class="material-symbols-outlined mr-gap-md shrink-0">list_alt</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOGS</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/20 p-gap-md flex flex-col gap-gap-xs min-w-max">
+<button class="w-full text-left font-label-caps text-label-caps text-secondary-fixed hover:bg-surface-variant/20 py-2 px-2 transition-colors opacity-0 group-hover:opacity-100 duration-200">
+                    + NEW_SESSION
+                </button>
+<div class="flex gap-gap-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed cursor-pointer" style="font-size: 20px;">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed cursor-pointer" style="font-size: 20px;">lock</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-20 p-gap-md grid grid-cols-12 gap-gap-md h-[calc(100vh-40px)] overflow-y-auto">
+<header class="col-span-12 mb-gap-sm">
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase border-b border-outline-variant/30 pb-2">SEIS OS — SSL Vault &amp; VPN Manager (Sector 5)</h1>
+<div class="flex gap-gap-md mt-2 text-on-surface-variant font-code-sm text-code-sm">
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-primary-fixed rounded-full animate-pulse"></span> SYSTEM: ONLINE</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-[#ff6b00] rounded-full"></span> ALERTS: 1</span>
+<span>UPTIME: 94:12:08</span>
+</div>
+</header>
+<!-- Global VPN Map (Top Left, Large) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest/85 border border-outline-variant/50 backdrop-blur-md flex flex-col h-[400px]">
+<div class="h-6 bg-primary-container text-[#0a0a0a] px-gap-sm flex items-center font-label-caps text-label-caps justify-between shrink-0">
+<span>GLOBAL_VPN_TOPOLOGY</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">map</span>
+</div>
+<div class="flex-1 relative bg-[#050505] overflow-hidden">
+<!-- Placeholder Map Image with overlay -->
+<div class="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-screen grayscale" data-alt="A highly stylized, dark-mode vector map of the world resembling a war room interface. Nodes are scattered across continents connected by thin, glowing, bright cyan arcs indicating active VPN tunnels. The background is pitch black with subtle grid overlays. The overall aesthetic is cyberpunk minimalism, highly technical and precise." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuANM-fH9A1FHbXWj_A491JAgDDRm3v_9Wn6s2ZbAqez3U8MW4c0Xh_B_A0pSQzaDNX4g3NYhA1BDiQ6pp1cies-HXnM_rpytcZd1PDnYXWaZr17k8yqXCK_w58XIX2V-3YTnctyks-20higxWFXVyNDCvDaY_omkI7kL_FALWmjaUWo8tv0lehnuF6Mh908Jme1eI-J95UGR3TQt6ypdIGRYHeI2EFqI4Xib-57WtceO5x6B6jUzSJEPHpc_wCSGQGR9Ywf2xt_08Ei')"></div>
+<!-- SVG Overlay for precise paths -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 800 400">
+<path class="opacity-70 animate-[dash_20s_linear_infinite]" d="M 200 150 Q 400 50 600 120" fill="none" stroke="#00f0ff" stroke-dasharray="4 4" stroke-width="1.5"></path>
+<path class="opacity-40" d="M 600 120 Q 500 250 300 300" fill="none" stroke="#00f0ff" stroke-width="1"></path>
+<path class="opacity-90" d="M 300 300 Q 150 250 200 150" fill="none" stroke="#00f0ff" stroke-width="2"></path>
+<!-- Nodes -->
+<circle class="animate-pulse" cx="200" cy="150" fill="#00f0ff" r="4"></circle>
+<circle class="animate-pulse" cx="600" cy="120" fill="#00f0ff" r="4"></circle>
+<circle class="animate-pulse" cx="300" cy="300" fill="#00f0ff" r="4"></circle>
+</svg>
+<div class="absolute bottom-4 left-4 font-code-sm text-code-sm text-primary-fixed bg-[#0a0a0a]/80 p-2 border border-primary-fixed/30 backdrop-blur-sm">
+<div class="flex justify-between gap-4"><span>ACTIVE_NODES:</span> <span>03</span></div>
+<div class="flex justify-between gap-4"><span>TOTAL_BANDWIDTH:</span> <span>1.2 Tbps</span></div>
+<div class="flex justify-between gap-4"><span>LATENCY_AVG:</span> <span>42ms</span></div>
+</div>
+</div>
+</div>
+<!-- Key Rotation Panel (Top Right, Narrow) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest/85 border border-outline-variant/50 backdrop-blur-md flex flex-col h-[400px]">
+<div class="h-6 bg-primary-container text-[#0a0a0a] px-gap-sm flex items-center font-label-caps text-label-caps justify-between shrink-0">
+<span>KEY_ROTATION_MATRIX</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">autorenew</span>
+</div>
+<div class="flex-1 p-gap-md flex flex-col gap-gap-md overflow-y-auto">
+<!-- Progress Block 1 -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface mb-1">
+<span>SEIS-ROOT-CA</span>
+<span class="text-primary-fixed">92%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant flex">
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 20%"></div>
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 20%"></div>
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 20%"></div>
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 20%"></div>
+<div class="h-full bg-primary-fixed/50 border-r border-[#0a0a0a]" style="width: 12%"></div>
+</div>
+<div class="text-[10px] font-label-sm text-on-surface-variant mt-1 text-right">TTL: 48h 12m</div>
+</div>
+<!-- Progress Block 2 (Warning) -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface mb-1">
+<span>SECTOR-5-TUNNEL</span>
+<span class="text-[#ff6b00]">14%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant flex">
+<div class="h-full bg-[#ff6b00] border-r border-[#0a0a0a]" style="width: 14%"></div>
+</div>
+<div class="text-[10px] font-label-sm text-[#ff6b00] mt-1 text-right animate-pulse">ROTATION_REQUIRED</div>
+</div>
+<!-- Progress Block 3 -->
+<div>
+<div class="flex justify-between font-code-sm text-code-sm text-on-surface mb-1">
+<span>AGENT-AUTH-ECC</span>
+<span class="text-primary-fixed">100%</span>
+</div>
+<div class="w-full h-2 bg-surface-variant flex">
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 25%"></div>
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 25%"></div>
+<div class="h-full bg-primary-fixed border-r border-[#0a0a0a]" style="width: 25%"></div>
+<div class="h-full bg-primary-fixed" style="width: 25%"></div>
+</div>
+<div class="text-[10px] font-label-sm text-on-surface-variant mt-1 text-right">TTL: 365d</div>
+</div>
+<div class="mt-auto">
+<button class="w-full bg-primary-container text-[#0a0a0a] font-label-caps text-label-caps py-2 hover:bg-secondary-container hover:text-white transition-colors">
+                            INITIATE_FORCE_ROTATION
+                        </button>
+</div>
+</div>
+</div>
+<!-- Vault Inventory Table (Bottom Full Width) -->
+<div class="col-span-12 bg-surface-container-lowest/85 border border-outline-variant/50 backdrop-blur-md flex flex-col min-h-[300px]">
+<div class="h-6 bg-primary-container text-[#0a0a0a] px-gap-sm flex items-center font-label-caps text-label-caps justify-between shrink-0">
+<span>VAULT_INVENTORY [SSL_CERTS]</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
+</div>
+<div class="flex-1 overflow-x-auto">
+<table class="w-full text-left border-collapse whitespace-nowrap">
+<thead>
+<tr class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/50 bg-surface-variant/30">
+<th class="p-gap-sm font-normal">CERT_ID</th>
+<th class="p-gap-sm font-normal">COMMON_NAME</th>
+<th class="p-gap-sm font-normal">CIPHER_SUITE</th>
+<th class="p-gap-sm font-normal">ISSUER</th>
+<th class="p-gap-sm font-normal text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-code-sm">
+<tr class="border-b border-outline-variant/30 hover:bg-secondary-container/10 transition-colors">
+<td class="p-gap-sm text-primary-fixed">0x7F4A...B921</td>
+<td class="p-gap-sm text-on-surface">vpn-eu-central.seis.net</td>
+<td class="p-gap-sm text-on-surface-variant">AES-256-GCM / SHA384</td>
+<td class="p-gap-sm text-on-surface-variant">SEIS Internal CA</td>
+<td class="p-gap-sm text-right"><span class="px-2 py-1 bg-primary-fixed/20 text-primary-fixed border border-primary-fixed/50 text-[10px] uppercase">SECURE</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-secondary-container/10 transition-colors">
+<td class="p-gap-sm text-primary-fixed">0x3E1C...D445</td>
+<td class="p-gap-sm text-on-surface">api-gateway.sector5.seis.net</td>
+<td class="p-gap-sm text-on-surface-variant">CHACHA20-POLY1305</td>
+<td class="p-gap-sm text-on-surface-variant">SEIS External CA</td>
+<td class="p-gap-sm text-right"><span class="px-2 py-1 bg-primary-fixed/20 text-primary-fixed border border-primary-fixed/50 text-[10px] uppercase">SECURE</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 bg-[#ff6b00]/10 hover:bg-[#ff6b00]/20 transition-colors">
+<td class="p-gap-sm text-[#ff6b00]">0x9A2B...F10C</td>
+<td class="p-gap-sm text-on-surface">legacy-auth.sector5.seis.net</td>
+<td class="p-gap-sm text-on-surface-variant">AES-128-GCM / SHA256</td>
+<td class="p-gap-sm text-on-surface-variant">Deprecated CA</td>
+<td class="p-gap-sm text-right"><span class="px-2 py-1 bg-[#ff6b00]/20 text-[#ff6b00] border border-[#ff6b00]/50 text-[10px] uppercase animate-pulse">EXPIRING_SOON</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-secondary-container/10 transition-colors">
+<td class="p-gap-sm text-primary-fixed">0x11BC...A778</td>
+<td class="p-gap-sm text-on-surface">telemetry-ingest.seis.net</td>
+<td class="p-gap-sm text-on-surface-variant">AES-256-GCM / SHA384</td>
+<td class="p-gap-sm text-on-surface-variant">SEIS Internal CA</td>
+<td class="p-gap-sm text-right"><span class="px-2 py-1 bg-primary-fixed/20 text-primary-fixed border border-primary-fixed/50 text-[10px] uppercase">SECURE</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<style>
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+    </style>
+</body></html>

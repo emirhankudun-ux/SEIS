@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Boot Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary-fixed-variant": "#92002a",
+                      "tertiary-container": "#ff516a",
+                      "primary-fixed": "#f0dbff",
+                      "on-secondary-fixed-variant": "#842500",
+                      "on-primary-fixed-variant": "#6900b3",
+                      "surface-container-high": "#282a2a",
+                      "tertiary-fixed": "#ffdadb",
+                      "on-error": "#690005",
+                      "inverse-surface": "#e1e3e2",
+                      "on-tertiary-container": "#5b0017",
+                      "surface-container": "#1d2020",
+                      "tertiary-fixed-dim": "#ffb2b7",
+                      "secondary-fixed": "#ffdbd0",
+                      "on-surface-variant": "#cfc2d6",
+                      "outline": "#988d9f",
+                      "secondary-fixed-dim": "#ffb59e",
+                      "on-surface": "#e1e3e2",
+                      "surface-bright": "#373a3a",
+                      "on-tertiary-fixed": "#40000d",
+                      "secondary-container": "#fc5b1f",
+                      "on-background": "#e1e3e2",
+                      "surface-variant": "#323535",
+                      "background": "#111414",
+                      "surface-container-low": "#191c1c",
+                      "on-primary": "#490080",
+                      "on-primary-container": "#400071",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#323535",
+                      "tertiary": "#ffb2b7",
+                      "surface": "#111414",
+                      "on-tertiary": "#67001b",
+                      "surface-tint": "#ddb7ff",
+                      "on-secondary-fixed": "#390b00",
+                      "secondary": "#ffb59e",
+                      "inverse-on-surface": "#2e3131",
+                      "on-primary-fixed": "#2c0051",
+                      "error": "#ffb4ab",
+                      "primary-container": "#b76dff",
+                      "primary": "#ddb7ff",
+                      "outline-variant": "#4d4354",
+                      "inverse-primary": "#842bd2",
+                      "primary-fixed-dim": "#ddb7ff",
+                      "on-secondary": "#5d1800",
+                      "on-secondary-container": "#521400",
+                      "surface-dim": "#111414",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "container-padding": "32px",
+                      "gutter": "24px",
+                      "safe-area": "40px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Geist"
+                      ],
+                      "label-sm": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-lg": [
+                              "Geist"
+                      ],
+                      "display": [
+                              "Geist"
+                      ],
+                      "code-md": [
+                              "JetBrains Mono"
+                      ],
+                      "body-lg": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "code-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        @media (prefers-reduced-motion: no-preference) {
+            @keyframes logo-entrance {
+                0% { opacity: 0; transform: scale(0.95); filter: drop-shadow(0 0 0px rgba(168, 85, 247, 0)); }
+                100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.4)); }
+            }
+            @keyframes bar-expand {
+                0% { transform: scaleX(0); opacity: 0; }
+                100% { transform: scaleX(1); opacity: 0.5; }
+            }
+            @keyframes load-bar {
+                0% { width: 0%; }
+                100% { width: 100%; }
+            }
+            @keyframes bar-shimmer {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(200%); }
+            }
+            @keyframes text-glitch {
+                0% { opacity: 0; transform: translateX(-10px); }
+                20% { opacity: 1; transform: translateX(5px); }
+                40% { opacity: 0.5; transform: translateX(-2px); }
+                60% { opacity: 1; transform: translateX(2px); }
+                80% { opacity: 0.8; transform: translateX(-1px); }
+                100% { opacity: 1; transform: translateX(0); }
+            }
+            @keyframes pulse-dot {
+                0%, 100% { opacity: 0.2; transform: scale(0.8); }
+                50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 10px rgba(221,183,255,0.8); }
+            }
+            
+            .animate-logo {
+                animation: logo-entrance 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            }
+            .animate-bar {
+                transform-origin: center;
+                animation: bar-expand 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s forwards;
+                opacity: 0;
+            }
+            .progress-fill {
+                animation: load-bar 5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            }
+            .progress-shimmer {
+                animation: bar-shimmer 2s linear infinite;
+            }
+            .log-item {
+                opacity: 0;
+            }
+            .log-item.visible {
+                animation: text-glitch 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            }
+            .pulse-dot-anim {
+                animation: pulse-dot 1s ease-in-out infinite;
+            }
+            
+            .parallax-container {
+                transition: transform 0.1s ease-out;
+                will-change: transform;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen w-full overflow-hidden flex flex-col items-center justify-center relative select-none">
+<!-- Background Shader -->
+
+<!-- Radial Vignette overlay to focus center -->
+<div class="absolute inset-0 z-0 pointer-events-none" style="background: radial-gradient(circle at center, transparent 0%, rgba(17,20,20,0.8) 70%, #111414 100%);"></div>
+<!-- Main Content Container -->
+<main class="z-10 flex flex-col items-center justify-center w-full max-w-[600px] px-container-padding parallax-container" id="main-container">
+<!-- Logo Area -->
+<div class="mb-16 flex flex-col items-center relative">
+<!-- Subtle luminous shadow behind logo -->
+<div class="absolute inset-0 rounded-full bg-primary blur-[80px] opacity-20 transform scale-150 z-0"></div>
+<h1 class="font-display text-display text-on-surface tracking-widest uppercase z-10 animate-logo opacity-0">SEIS<span class="text-primary font-bold">OS</span></h1>
+<div class="h-1 w-12 bg-primary mt-4 rounded-full animate-bar"></div>
+</div>
+<!-- Loading Interface -->
+<div class="w-full max-w-md flex flex-col gap-6">
+<!-- Loading Bar Container -->
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden border border-white/5 relative">
+<div class="h-full bg-primary progress-fill relative shadow-[0_0_15px_rgba(221,183,255,0.6)] w-0 overflow-hidden" id="progress-bar">
+<!-- Loading bar glare/shimmer -->
+<div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent progress-shimmer"></div>
+</div>
+</div>
+<!-- Terminal Status Text -->
+<div class="font-code-md text-code-md text-on-surface-variant flex flex-col gap-2 w-full mt-8 border-t border-white/5 pt-6 bg-surface-container/30 backdrop-blur-md rounded-lg p-4 font-label-sm border border-white/5">
+<div class="flex justify-between items-center w-full log-item" id="log-1">
+<span class="opacity-60">&gt; CORE_INITIALIZATION:</span>
+<span class="text-on-surface">[OK]</span>
+</div>
+<div class="flex justify-between items-center w-full log-item" id="log-2">
+<span class="opacity-60">&gt; MEMORY_MOUNT:</span>
+<span class="text-on-surface">[SUCCESS]</span>
+</div>
+<div class="flex justify-between items-center w-full relative log-item" id="log-3">
+<span class="opacity-60">&gt; AI_ENGINE:</span>
+<span class="text-primary font-bold" id="ai-status">[LOADING...]</span>
+<!-- AI processing pulse effect -->
+<div class="absolute right-0 -mr-4 w-2 h-2 rounded-full bg-primary pulse-dot-anim"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer subtle branding -->
+<div class="absolute bottom-safe-area font-label-sm text-label-sm text-on-surface-variant/40 tracking-widest z-10 animate-logo" style="animation-delay: 1s;">
+        V 2.0.4.88 // KERNEL ONLINE
+    </div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (!prefersReducedMotion) {
+                // Parallax effect
+                const container = document.getElementById('main-container');
+                document.addEventListener('mousemove', (e) => {
+                    const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+                    const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+                    container.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                });
+
+                // Reset parallax on mouse leave
+                document.addEventListener('mouseleave', () => {
+                    container.style.transform = `rotateY(0deg) rotateX(0deg)`;
+                });
+
+                // Simulated progress milestones for logs
+                const logs = [
+                    { id: 'log-1', time: 1250 }, // ~25%
+                    { id: 'log-2', time: 2500 }, // ~50%
+                    { id: 'log-3', time: 3750 }  // ~75%
+                ];
+
+                logs.forEach(log => {
+                    setTimeout(() => {
+                        const el = document.getElementById(log.id);
+                        if (el) el.classList.add('visible');
+                    }, log.time);
+                });
+
+                // Update final status
+                setTimeout(() => {
+                    const aiStatus = document.getElementById('ai-status');
+                    if(aiStatus) {
+                        aiStatus.textContent = '[SYNTHESIZING]';
+                    }
+                }, 4500);
+            } else {
+                // Fallback for reduced motion: just show logs immediately or handle gracefully
+                document.querySelectorAll('.log-item').forEach(el => {
+                    el.style.opacity = 1;
+                    el.classList.remove('log-item');
+                });
+                document.querySelector('.animate-logo').classList.remove('opacity-0');
+                document.querySelector('.animate-bar').style.opacity = 0.5;
+                document.querySelector('.animate-bar').style.transform = 'scaleX(1)';
+            }
+        });
+    </script>
+</body></html>

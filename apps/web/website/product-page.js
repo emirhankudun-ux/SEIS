@@ -7,7 +7,7 @@
       eyebrow: "Product website hub",
       subtitle: "A premium local website map for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents.",
       pageStatus: "Local website pages. No provider key, SSH command, deployment, or external API call required.",
-      cta: ["Open SEIS OS", "../desktop.html#seis-system-os"],
+      cta: ["Open SEIS OS", "../seis-linux-replica.html?demo=live"],
       secondary: ["Open Search", "../desktop.html#search"],
       stats: [["9", "website pages"], ["0", "core API keys"], ["Local", "demo boundary"], ["190", "WOW references"]],
       capabilities: [
@@ -41,16 +41,16 @@
       eyebrow: "Desktop operating surface",
       subtitle: "Linux-like flexibility, macOS-level polish, and Windows-like productivity expressed as an original SEIS browser OS.",
       pageStatus: "Browser-contained OS demo. It is not a host OS replacement and does not execute privileged system commands.",
-      cta: ["Open System OS", "../desktop.html#seis-system-os"],
-      secondary: ["Open Launchpad", "../desktop.html#launchpad"],
-      stats: [["76", "apps"], ["38", "commands"], ["3", "workspace profiles"], ["100%", "smoked interactivity"]],
+      cta: ["Open Live SEIS OS", "../seis-linux-replica.html?demo=live"],
+      secondary: ["Open Classic Desktop", "../desktop.html#seis-system-os"],
+      stats: [["286", "apps"], ["219", "reference modules"], ["3", "smoked entry modes"], ["0", "provider keys"]],
       capabilities: [
         ["Window manager", "Draggable, resizable, snapped, minimized, restored, and persisted app windows."],
         ["System shell", "Top bar, dock, launcher, command palette, recents, notifications, quick settings, and wallpapers."],
         ["Virtual files", "Files, Terminal, SEIS Code, and exports share one browser-local VFS."],
         ["Responsive mode", "Desktop windows collapse to a usable mobile shell with no horizontal overflow."]
       ],
-      proof: ["check:desktop-os", "check:desktop-os-browser-smoke", "desktop.html", "desktop.js"],
+      proof: ["check:seis-linux-replica-browser-smoke", "summary.json", "seis-linux-replica.html?demo=live", "desktop.html"],
       related: ["seis-code", "seis-search", "seis-store", "seis-cloud"]
     },
     "seis-code": {
@@ -181,7 +181,7 @@
           ${navOrder.map((navId) => `<a href="./${navId === "overview" ? "index" : navId}.html"${navId === id ? ' aria-current="page"' : ""}>${escapeHtml(pages[navId].title.replace("SEIS ", ""))}</a>`).join("")}
         </nav>
         <div class="header-actions">
-          <a href="../desktop.html">OS</a>
+          <a href="../seis-linux-replica.html?demo=live">OS</a>
           <a class="primary-action" href="../desktop.html#search">Search</a>
         </div>
       </header>

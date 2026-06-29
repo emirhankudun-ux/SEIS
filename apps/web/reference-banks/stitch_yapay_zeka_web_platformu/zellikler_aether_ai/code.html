@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Özellikler</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --cyan-glow: rgba(0, 219, 233, 0.25);
+        }
+        body {
+            background-color: #111417;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            transition: all 0.3s ease-out;
+        }
+        .glass-card:hover {
+            border: 1px solid rgba(0, 219, 233, 0.4);
+            box-shadow: 0 0 30px var(--cyan-glow);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 219, 233, 0.5);
+        }
+        .gradient-border {
+            position: relative;
+            border-radius: 0.125rem;
+        }
+        .gradient-border::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.5), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#111417",
+                    "primary": "#dbfcff",
+                    "surface": "#111417",
+                    "on-primary-fixed": "#002022",
+                    "on-secondary-fixed": "#320047",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-tertiary-container": "#5d5f5f",
+                    "tertiary-container": "#d9d9d9",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-secondary": "#520072",
+                    "on-tertiary": "#2f3131",
+                    "surface-container": "#1d2023",
+                    "secondary": "#ebb2ff",
+                    "on-primary": "#00363a",
+                    "surface-variant": "#323539",
+                    "error": "#ffb4ab",
+                    "outline": "#849495",
+                    "on-surface": "#e1e2e7",
+                    "on-background": "#e1e2e7",
+                    "on-secondary-container": "#fff6fc",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#3b494b",
+                    "inverse-surface": "#e1e2e7",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-surface-variant": "#b9cacb",
+                    "primary-fixed-dim": "#00dbe9",
+                    "surface-container-highest": "#323539",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006970",
+                    "inverse-on-surface": "#2e3134",
+                    "primary-container": "#00f0ff",
+                    "surface-container-lowest": "#0c0e12",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "surface-dim": "#111417",
+                    "surface-container-low": "#191c1f",
+                    "primary-fixed": "#7df4ff",
+                    "tertiary": "#f5f5f5",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-bright": "#37393d",
+                    "on-primary-container": "#006970",
+                    "secondary-container": "#b600f8",
+                    "surface-container-high": "#282a2e",
+                    "surface-tint": "#00dbe9",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "section-gap": "120px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "mono-label": ["JetBrains Mono"],
+                    "mono-code": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)]">
+<nav class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-display-lg-mobile md:text-[32px] tracking-tighter text-primary">AETHER AI</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Platform</a>
+<a class="font-body-md text-primary border-b-2 border-primary pb-1" href="#">Solutions</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Developers</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Pricing</a>
+</div>
+<div class="flex gap-4 items-center">
+<button class="hidden lg:block font-mono-label px-4 py-2 text-on-surface hover:text-primary transition-all duration-300">Documentation</button>
+<button class="bg-primary-fixed-dim text-on-primary-fixed font-mono-label px-6 py-2 rounded-lg hover:brightness-110 transition-all shadow-[0_0_20px_rgba(0,219,233,0.3)]">Launch Console</button>
+</div>
+</nav>
+</header>
+<main class="pt-32 pb-section-gap">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-margin-desktop mb-section-gap relative">
+
+<div class="max-w-3xl">
+<div class="flex items-center gap-3 mb-6">
+<span class="pulse-dot"></span>
+<span class="font-mono-label text-primary-fixed-dim tracking-widest uppercase">Teknik Kapasiteler</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg mb-8 leading-tight">
+                    Sentetik Zekanın <span class="text-primary-fixed-dim text-glow">Sınırlarını</span> Genişletin.
+                </h1>
+<p class="font-body-lg text-on-surface-variant max-w-2xl">
+                    Aether AI, büyük ölçekli dil modellerini, üretken görsel motorlarını ve gerçek zamanlı veri analitiğini tek bir mühendislik harikası platformda birleştirir.
+                </p>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- LLM Capability -->
+<div class="md:col-span-8 glass-card rounded-xl p-10 flex flex-col justify-between overflow-hidden relative min-h-[500px]">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary-container/20 rounded flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<h2 class="font-headline-md text-primary mb-4">Büyük Dil Modelleri (LLM)</h2>
+<p class="font-body-md text-on-surface-variant max-w-md mb-8">
+                        70B+ parametreli özel eğitilmiş modellerimiz, karmaşık mantık yürütme, kod üretimi ve bağlamsal anlama konularında sektör lideri performans sunar.
+                    </p>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 border border-outline-variant/30 rounded">
+<div class="font-mono-label text-primary-fixed-dim mb-1">Düşük Gecikme</div>
+<div class="font-headline-md">1.2ms</div>
+</div>
+<div class="bg-surface-container-low p-4 border border-outline-variant/30 rounded">
+<div class="font-mono-label text-primary-fixed-dim mb-1">Bağlam Penceresi</div>
+<div class="font-headline-md">256k</div>
+</div>
+</div>
+</div>
+<div class="absolute right-0 bottom-0 w-1/2 h-full opacity-30 pointer-events-none">
+
+</div>
+</div>
+<!-- Generative Images -->
+<div class="md:col-span-4 glass-card rounded-xl p-10 flex flex-col justify-center text-center items-center group">
+<div class="w-16 h-16 bg-secondary-container/20 rounded-full flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary-fixed" style="font-variation-settings: 'FILL' 1;">filter_hdr</span>
+</div>
+<h2 class="font-headline-md text-primary mb-4">Üretken Görseller</h2>
+<p class="font-body-md text-on-surface-variant mb-8">
+                    Fotogerçekçi 8K görseller ve dinamik vektör grafikleri saniyeler içinde oluşturun.
+                </p>
+<div class="w-full aspect-square bg-surface-container relative rounded-lg overflow-hidden border border-outline-variant/30">
+<img class="object-cover w-full h-full" data-alt="A futuristic hyper-realistic 8K digital artwork of a cybernetic nebula, glowing with intense cyan and neon purple filaments of energy. The composition is dark and cinematic, with sharp mechanical details floating in the foreground. High-tech glassmorphism aesthetic with atmospheric lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATvzIAYZLReGzaMZee63AuF-JbIYG3vZ4l9-X4vbh_ytCaQrEZ3OEW1e0ghVWm8G5tgyCE7fcHMq8UauweA9J5MRt71oLMzAlGiGHHI1S_LHlW2s_UXiIqCKULLV72yoYOMmyTksvesK4CuXe_Tw8Sb0fyTNLjV7EjO9I_kz4W64-TLxpp6TTyPhx6MK6V1RP9Gl6LNjrl2ayOL_N1XadSELFp_3BHDoF7-3RJ3F2muV3E2cSU_Bu6LlBElwpokuVfEMiNDLFg5A"/>
+</div>
+</div>
+<!-- Real-time Analysis -->
+<div class="md:col-span-12 glass-card rounded-xl p-10 grid md:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="font-headline-md text-primary mb-6">Gerçek Zamanlı Analiz</h2>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<div class="mt-1"><span class="material-symbols-outlined text-primary-fixed-dim">query_stats</span></div>
+<div>
+<h4 class="font-body-lg font-bold">Olay Bağıntılama</h4>
+<p class="text-on-surface-variant">Milyonlarca veri noktası arasındaki gizli kalıpları nanosaniyeler içinde tespit edin.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="mt-1"><span class="material-symbols-outlined text-primary-fixed-dim">security</span></div>
+<div>
+<h4 class="font-body-lg font-bold">Anomali Tespiti</h4>
+<p class="text-on-surface-variant">Güvenlik tehditlerini ve sistem sapmalarını gerçekleştiği an bloke edin.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="mt-1"><span class="material-symbols-outlined text-primary-fixed-dim">bolt</span></div>
+<div>
+<h4 class="font-body-lg font-bold">Kenar Bilişim (Edge)</h4>
+<p class="text-on-surface-variant">Analitiği doğrudan veri kaynağında, gecikme olmadan çalıştırın.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-highest p-6 rounded-lg border border-outline-variant/20 relative h-[400px]">
+<div class="absolute inset-0 p-8 flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<span class="font-mono-code text-on-surface-variant">LIVE_TRAFFIC_FEED.json</span>
+<span class="text-primary-fixed-dim font-mono-code">[ RUNNING ]</span>
+</div>
+<div class="flex-grow space-y-4 font-mono-code text-[11px] overflow-hidden">
+<div class="text-secondary-fixed">09:41:22 &gt;&gt; DATA_STREAM_INBOUND [CLUSTER_A1]</div>
+<div class="text-on-surface-variant">&gt;&gt; ANALYZING_TENSOR_NODES... 98.4% MATCH</div>
+<div class="text-primary-fixed-dim">&gt;&gt; VECTOR_EMBEDDING_GENERATED: [0.12, 0.44, -0.92...]</div>
+<div class="text-on-surface-variant">&gt;&gt; SYNCING_GLOBAL_STATE...</div>
+<div class="text-secondary-fixed">09:41:23 &gt;&gt; OPTIMIZING_LOAD_BALANCER [NODE_X]</div>
+<div class="text-primary-fixed-dim">&gt;&gt; ALERT: ANOMALY_SCORE &lt; 0.002 [NOMINAL]</div>
+<div class="text-on-surface-variant">&gt;&gt; EXECUTING_PREDICTIVE_MAINTENANCE...</div>
+<div class="text-secondary-fixed">09:41:24 &gt;&gt; REFRESHING_CACHED_MODELS</div>
+</div>
+<div class="mt-8">
+<div class="w-full bg-surface-variant h-[2px] mb-4">
+<div class="bg-primary-fixed-dim h-full w-[75%] shadow-[0_0_10px_#00dbe9]"></div>
+</div>
+<div class="flex justify-between font-mono-label text-[10px]">
+<span>SYSTEM LOAD</span>
+<span>75.2%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Specs Section -->
+<section class="mt-section-gap max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-16">
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md mb-4">Teknik Özellikler</h2>
+<p class="text-on-surface-variant">En zorlu kurumsal gereksinimler için tasarlandı.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="p-8 border-l border-outline-variant/30">
+<h3 class="font-mono-label text-primary-fixed-dim mb-4">MİMARİ</h3>
+<p class="text-on-surface">Distributed Tensor Mesh</p>
+</div>
+<div class="p-8 border-l border-outline-variant/30">
+<h3 class="font-mono-label text-primary-fixed-dim mb-4">GÜVENLİK</h3>
+<p class="text-on-surface">End-to-End Quantum-Proof</p>
+</div>
+<div class="p-8 border-l border-outline-variant/30">
+<h3 class="font-mono-label text-primary-fixed-dim mb-4">ENTEGRASYON</h3>
+<p class="text-on-surface">Universal GraphQL Gateway</p>
+</div>
+<div class="p-8 border-l border-outline-variant/30">
+<h3 class="font-mono-label text-primary-fixed-dim mb-4">ÖLÇEKLENEBİLİRLİK</h3>
+<p class="text-on-surface">Auto-Sharding Nodes</p>
+</div>
+</div>
+</section>
+<!-- Call to Action -->
+<section class="mt-section-gap max-w-container-max mx-auto px-margin-desktop">
+<div class="glass-card rounded-3xl p-16 text-center relative overflow-hidden">
+<!-- STITCH_SHADER_START:ANIMATION_3 class="absolute inset-0 w-full h-full opacity-20 -z-10" -->
+<div class="absolute inset-0 w-full h-full opacity-20 -z-10" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_3" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_3');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+varying vec2 v_texCoord;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = v_texCoord;
+    float time = u_time * 0.5;
+    
+    // Abstract flowing energy pattern
+    float color1 = sin(uv.x * 10.0 + time) * 0.5 + 0.5;
+    float color2 = cos(uv.y * 12.0 - time * 0.7) * 0.5 + 0.5;
+    float color3 = sin((uv.x + uv.y) * 8.0 + time * 1.2) * 0.5 + 0.5;
+    
+    vec3 baseColor = vec3(0.0, 0.05, 0.1); // Deep obsidian/blue
+    vec3 cyanAccent = vec3(0.0, 0.94, 1.0); // Electric cyan
+    vec3 purpleAccent = vec3(0.7, 0.0, 1.0); // Neon purple
+    
+    vec3 finalColor = mix(baseColor, cyanAccent, color1 * 0.2);
+    finalColor = mix(finalColor, purpleAccent, color2 * 0.15);
+    finalColor = mix(finalColor, cyanAccent, color3 * 0.1);
+    
+    // Add some "digital" grain
+    float noise = fract(sin(dot(uv, vec2(12.9898, 78.233))) * 43758.5453);
+    finalColor += noise * 0.02;
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_3 -->
+<h2 class="font-display-lg text-display-lg-mobile md:text-headline-md mb-6">Geleceği İnşa Etmeye Hazır mısınız?</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto mb-10 text-body-lg">
+                    Aether AI platformunun tüm gücünü bugün keşfetmeye başlayın. Ücretsiz deneme sürümü ile sınırları zorlayın.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary-fixed-dim text-on-primary-fixed font-mono-label px-10 py-4 rounded-lg hover:brightness-110 transition-all shadow-[0_0_30px_rgba(0,219,233,0.4)] text-lg">Hemen Başla</button>
+<button class="border border-primary-fixed-dim text-primary-fixed-dim font-mono-label px-10 py-4 rounded-lg hover:bg-primary-fixed-dim/10 transition-all text-lg">Satışla Görüş</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full rounded-t-full bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="font-display-lg text-headline-md text-primary mb-2">AETHER AI</div>
+<p class="font-mono-label text-on-tertiary-container max-w-xs">Sentetik çağ için inşa edildi.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="font-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">Security</a>
+<a class="font-mono-label text-on-tertiary-container hover:text-on-surface transition-colors" href="#">System Status</a>
+</div>
+<div class="font-mono-label text-on-tertiary-container opacity-80 hover:opacity-100 transition-all">
+                © 2024 Aether Intelligence Systems. Tüm hakları saklıdır.
+            </div>
+</div>
+</footer>
+<script>
+        // Smooth scroll implementation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple mouse tracking for glass glow effect enhancement
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Synthetic Data Factory | AETHER AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-bg: rgba(10, 14, 26, 0.6);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.2) 0%, transparent 40%) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.3);
+            transition: all 0.3s ease;
+        }
+        .pulsing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .grid-pattern {
+            background-image: linear-gradient(#ffffff05 1px, transparent 1px), linear-gradient(90deg, #ffffff05 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#1d2023",
+                "on-error": "#690005",
+                "on-tertiary-container": "#5d5f5f",
+                "surface-container-low": "#191c1f",
+                "secondary-container": "#b600f8",
+                "primary-fixed": "#7df4ff",
+                "on-secondary-fixed": "#320047",
+                "surface-bright": "#37393d",
+                "secondary-fixed-dim": "#ebb2ff",
+                "on-primary": "#00363a",
+                "inverse-surface": "#e1e2e7",
+                "surface-container-lowest": "#0c0e12",
+                "on-background": "#e1e2e7",
+                "surface": "#111417",
+                "tertiary-fixed": "#e2e2e2",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "surface-container-high": "#282a2e",
+                "secondary-fixed": "#f8d8ff",
+                "outline-variant": "#3b494b",
+                "outline": "#849495",
+                "on-tertiary-fixed-variant": "#454747",
+                "primary": "#dbfcff",
+                "tertiary-container": "#d9d9d9",
+                "inverse-primary": "#006970",
+                "tertiary": "#f5f5f5",
+                "surface-dim": "#111417",
+                "on-secondary": "#520072",
+                "surface-container-highest": "#323539",
+                "on-primary-fixed-variant": "#004f54",
+                "error-container": "#93000a",
+                "on-tertiary": "#2f3131",
+                "on-secondary-fixed-variant": "#74009f",
+                "on-surface-variant": "#b9cacb",
+                "error": "#ffb4ab",
+                "on-primary-container": "#006970",
+                "background": "#111417",
+                "surface-tint": "#00dbe9",
+                "primary-container": "#00f0ff",
+                "inverse-on-surface": "#2e3134",
+                "secondary": "#ebb2ff",
+                "on-primary-fixed": "#002022",
+                "surface-variant": "#323539",
+                "on-secondary-container": "#fff6fc",
+                "on-error-container": "#ffdad6",
+                "on-surface": "#e1e2e7",
+                "primary-fixed-dim": "#00dbe9",
+                "on-tertiary-fixed": "#1a1c1c"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "section-gap": "120px",
+                "container-max": "1280px",
+                "unit": "8px",
+                "margin-desktop": "64px",
+                "margin-mobile": "20px"
+            },
+            "fontFamily": {
+                "mono-label": ["JetBrains Mono"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "mono-code": ["JetBrains Mono"],
+                "headline-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "display-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Background Shader -->
+
+<div class="fixed inset-0 grid-pattern -z-20 opacity-30"></div>
+<!-- TopNavBar Navigation Shell -->
+<nav class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold">AETHER AI</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-mono-label text-mono-label px-4 py-2 text-on-surface-variant hover:text-primary-fixed transition-colors duration-300">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-mono-label text-mono-label rounded-lg font-bold hover:scale-105 active:scale-95 transition-transform duration-200 shadow-[0_0_20px_rgba(0,219,233,0.3)]">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Sidebar Shell (Hidden on Mobile) -->
+<aside class="hidden lg:flex flex-col h-screen w-64 fixed left-0 top-0 pt-20 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 z-40">
+<div class="px-6 py-4 mb-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">factory</span>
+</div>
+<div>
+<h3 class="font-mono-label text-mono-label text-primary-fixed-dim leading-none">Data Factory</h3>
+<p class="text-[10px] text-on-surface-variant/70 uppercase tracking-widest mt-1">Enterprise Infra</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+<span class="font-mono-label text-mono-label">SEIS OS</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+<span class="font-mono-label text-mono-label">SEIS AI</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+<span class="font-mono-label text-mono-label">SEIS Code</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+<span class="font-mono-label text-mono-label">SEIS Cloud</span>
+</a>
+</nav>
+<div class="p-6 border-t border-outline-variant/10">
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-mono-label transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-mono-label transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">contact_support</span> Support
+                </a>
+</div>
+<div class="mt-8 p-4 glass-card rounded-xl border border-primary-container/20">
+<p class="text-[11px] text-on-surface-variant font-mono-label mb-3">CURRENT CAPACITY</p>
+<div class="w-full bg-surface-container h-1 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[72%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] font-mono-label text-primary-fixed">
+<span>7.2 TB / 10 TB</span>
+<span>72%</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 px-margin-mobile md:px-margin-desktop pb-section-gap">
+<div class="max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="font-mono-label text-[12px] text-primary-fixed bg-primary/10 px-2 py-0.5 rounded border border-primary/20 tracking-tighter uppercase">Production Environment</span>
+<div class="flex items-center gap-2">
+<div class="pulsing-dot"></div>
+<span class="font-mono-label text-[12px] text-on-surface-variant">Live Generator Active</span>
+</div>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-headline-md lg:text-[56px] text-on-surface tracking-tighter font-extrabold leading-tight">Synthetic Data Factory</h1>
+<p class="font-body-md text-body-lg text-on-surface-variant mt-2 max-w-2xl">Orchestrate large-scale synthetic data generation pipelines with mathematically guaranteed distribution accuracy and enterprise validation.</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 border border-outline px-6 py-3 rounded-lg text-on-surface font-mono-label hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">analytics</span> VIEW REPORTS
+                    </button>
+<button class="flex items-center gap-2 bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-mono-label font-bold shadow-[0_0_30px_rgba(0,219,233,0.2)] hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span> NEW GENERATION
+                    </button>
+</div>
+</header>
+<!-- Bento Grid Dashboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Pipeline Visualizer (Large) -->
+<div class="md:col-span-8 glass-card rounded-2xl p-8 glow-hover min-h-[400px]">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h2 class="font-mono-label text-mono-label text-primary-fixed uppercase tracking-wider">Active Generation Pipeline</h2>
+<p class="text-[12px] text-on-surface-variant mt-1">Project: NeuroSim-2024-v4</p>
+</div>
+<div class="flex gap-2">
+<span class="font-mono-code text-[11px] text-on-surface-variant bg-surface-container px-2 py-1 rounded">ID: FF-882-QX</span>
+<span class="font-mono-code text-[11px] text-primary-fixed bg-primary/10 px-2 py-1 rounded border border-primary/20">STATUS: RUNNING</span>
+</div>
+</div>
+<!-- SVG Visualizer Placeholder -->
+<div class="relative h-64 w-full flex items-center justify-center border border-outline-variant/10 rounded-xl bg-surface-container-lowest/30 overflow-hidden">
+
+<!-- Overlay Labels for Nodes -->
+<div class="absolute inset-0 flex items-center justify-around px-12 pointer-events-none">
+<div class="flex flex-col items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-primary-container glow-active"></div>
+<span class="font-mono-label text-[10px] text-on-surface-variant">Schema Injection</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-secondary-container glow-active"></div>
+<span class="font-mono-label text-[10px] text-on-surface-variant">Latent Diffusion</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-primary border-2 border-primary-container"></div>
+<span class="font-mono-label text-[10px] text-on-surface-variant">Quality Scrutiny</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-4 h-4 rounded-full border border-outline-variant"></div>
+<span class="font-mono-label text-[10px] text-on-surface-variant">Final Parquet</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-6 mt-8">
+<div>
+<p class="text-[11px] font-mono-label text-on-surface-variant/60 uppercase">Throughput</p>
+<p class="font-mono-label text-body-lg text-primary-fixed mt-1">124.5k <span class="text-xs">rows/sec</span></p>
+</div>
+<div>
+<p class="text-[11px] font-mono-label text-on-surface-variant/60 uppercase">Integrity</p>
+<p class="font-mono-label text-body-lg text-primary-fixed mt-1">99.98%</p>
+</div>
+<div>
+<p class="text-[11px] font-mono-label text-on-surface-variant/60 uppercase">Entropy</p>
+<p class="font-mono-label text-body-lg text-primary-fixed mt-1">0.842 <span class="text-xs">bits</span></p>
+</div>
+<div>
+<p class="text-[11px] font-mono-label text-on-surface-variant/60 uppercase">Est. Completion</p>
+<p class="font-mono-label text-body-lg text-primary-fixed mt-1">14m 22s</p>
+</div>
+</div>
+</div>
+<!-- Quality Score Indicator (Tall) -->
+<div class="md:col-span-4 glass-card rounded-2xl p-8 glow-hover flex flex-col items-center justify-center text-center">
+<h2 class="font-mono-label text-mono-label text-on-surface-variant uppercase tracking-wider mb-8">Data Fidelity Score</h2>
+<div class="relative w-48 h-48 mb-6">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary-container transition-all duration-1000" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="38.7" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-[48px] font-extrabold text-on-surface tracking-tighter">93</span>
+<span class="font-mono-label text-mono-label text-primary-fixed mt-[-8px]">A+ RANK</span>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant text-sm px-4">Dataset satisfies all Kolmogorov-Smirnov distribution tests against source gold-standards.</p>
+<div class="w-full mt-8 space-y-4 text-left">
+<div class="flex justify-between items-center text-[12px] font-mono-label">
+<span class="text-on-surface-variant">Dist. Similarity</span>
+<span class="text-primary-fixed">98.2%</span>
+</div>
+<div class="flex justify-between items-center text-[12px] font-mono-label">
+<span class="text-on-surface-variant">Outlier Detection</span>
+<span class="text-primary-fixed">Passed</span>
+</div>
+<div class="flex justify-between items-center text-[12px] font-mono-label">
+<span class="text-on-surface-variant">Schema Drift</span>
+<span class="text-error">0.02%</span>
+</div>
+</div>
+</div>
+<!-- Data Distribution Chart (Medium) -->
+<div class="md:col-span-6 glass-card rounded-2xl p-8 glow-hover">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-mono-label text-mono-label text-on-surface uppercase tracking-wider">Distribution Balance</h2>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">filter_list</span>
+</div>
+<div class="h-48 w-full flex items-end gap-2 border-b border-outline-variant/30 pb-2">
+<!-- Simulated Bars -->
+<div class="bg-primary/20 w-full h-[60%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[85%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[45%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[95%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[30%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[70%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+<div class="bg-primary/20 w-full h-[55%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-primary-container h-0 group-hover:h-full transition-all duration-300"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] font-mono-label text-on-surface-variant uppercase">
+<span>Class A</span>
+<span>Class B</span>
+<span>Class C</span>
+<span>Class D</span>
+<span>Class E</span>
+<span>Class F</span>
+<span>Class G</span>
+</div>
+</div>
+<!-- Industrial Controls (Medium) -->
+<div class="md:col-span-6 glass-card rounded-2xl p-8 glow-hover">
+<h2 class="font-mono-label text-mono-label text-on-surface uppercase tracking-wider mb-6">Pipeline Parameters</h2>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="space-y-6">
+<div>
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase block mb-2">Noise Injection</label>
+<div class="flex items-center gap-4">
+<input class="flex-1 accent-primary-container" type="range" value="45"/>
+<span class="font-mono-code text-primary-fixed">0.45</span>
+</div>
+</div>
+<div>
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase block mb-2">Parallel Workers</label>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container">-</button>
+<div class="flex-1 text-center font-mono-code text-on-surface bg-surface-container py-1 rounded">256</div>
+<button class="w-8 h-8 rounded border border-outline-variant flex items-center justify-center hover:bg-surface-container">+</button>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase block mb-2">Augmentation Mode</label>
+<select class="w-full bg-surface-container border-outline-variant text-on-surface rounded-lg font-mono-label text-xs py-2">
+<option>Standard Generative</option>
+<option>Edge Case Focus</option>
+<option>Adversarial Tuning</option>
+</select>
+</div>
+<div class="flex items-end h-full">
+<button class="w-full py-2 border border-primary-container/30 text-primary-container font-mono-label rounded-lg hover:bg-primary-container/10 transition-colors">
+                                    RESET TO DEFAULT
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Generation Logs (Full Width) -->
+<div class="md:col-span-12 glass-card rounded-2xl p-0 glow-hover overflow-hidden">
+<div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h2 class="font-mono-label text-mono-label text-on-surface uppercase tracking-wider">Live System Logs</h2>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 text-xs font-mono-label text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary-fixed"></span>
+                                System OK
+                            </div>
+<div class="flex items-center gap-2 text-xs font-mono-label text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+                                GPU Load: 88%
+                            </div>
+</div>
+</div>
+<div class="bg-black/20 p-6 font-mono-code text-[13px] h-64 overflow-y-auto custom-scrollbar">
+<div class="flex gap-4 mb-2 opacity-80">
+<span class="text-on-surface-variant">[2024-05-12 14:22:01]</span>
+<span class="text-primary-fixed-dim">INFO</span>
+<span class="text-on-surface">Initializing Batch #4492 - 50,000 entities requested.</span>
+</div>
+<div class="flex gap-4 mb-2 opacity-80">
+<span class="text-on-surface-variant">[2024-05-12 14:22:05]</span>
+<span class="text-primary-fixed-dim">INFO</span>
+<span class="text-on-surface">Validating schema constraints for 'Financial_Temporal_Vector'.</span>
+</div>
+<div class="flex gap-4 mb-2">
+<span class="text-on-surface-variant">[2024-05-12 14:22:08]</span>
+<span class="text-secondary-fixed-dim">WARN</span>
+<span class="text-on-surface">Slight skew detected in 'Class_C' distribution. Adjusting weights...</span>
+</div>
+<div class="flex gap-4 mb-2 opacity-80">
+<span class="text-on-surface-variant">[2024-05-12 14:22:15]</span>
+<span class="text-primary-fixed-dim">INFO</span>
+<span class="text-on-surface">Batch #4492 successfully committed to SEIS Storage. Integrity: 1.0</span>
+</div>
+<div class="flex gap-4 mb-2 opacity-80">
+<span class="text-on-surface-variant">[2024-05-12 14:22:20]</span>
+<span class="text-primary-fixed-dim">INFO</span>
+<span class="text-on-surface">Starting Generator Instance 'AETHER-GEN-PX9'. Handshaking protocol...</span>
+</div>
+<div class="flex gap-4 mb-2 text-primary-fixed animate-pulse">
+<span class="text-on-surface-variant">[2024-05-12 14:22:25]</span>
+<span class="text-primary-fixed-dim">SYSTEM</span>
+<span class="text-on-surface">Awaiting instructions for next latent sequence...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Section -->
+<footer class="mt-section-gap pt-12 border-t border-outline-variant/10">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter mb-12">
+<div class="col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim font-extrabold block mb-4">AETHER AI</span>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant leading-relaxed max-w-xs">
+                            Architecting the world's most resilient synthetic data infrastructure for the next generation of autonomous intelligence.
+                        </p>
+</div>
+<div class="space-y-3">
+<h4 class="font-mono-label text-[13px] text-on-surface uppercase mb-4">Platform</h4>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">Documentation</a>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">System Status</a>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">API Reference</a>
+</div>
+<div class="space-y-3">
+<h4 class="font-mono-label text-[13px] text-on-surface uppercase mb-4">Governance</h4>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">Security</a>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">Privacy Policy</a>
+<a class="block text-on-tertiary-fixed-variant hover:text-primary-fixed font-mono-label text-[13px] transition-colors" href="#">Compliance</a>
+</div>
+<div class="col-span-2 flex flex-col items-end">
+<div class="flex gap-4 mb-6">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed">share</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed">database</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed">hub</span>
+</div>
+<p class="font-mono-label text-[11px] text-on-tertiary-fixed-variant text-right">
+                            © 2024 Aether AI Infrastructure. All rights reserved. <br/>
+                            Engineered for high-fidelity synthetic reality.
+                        </p>
+</div>
+</div>
+</footer>
+</div>
+</main>
+<!-- Interactive Script for micro-interactions -->
+<script>
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Simple animation for numbers (simulated)
+        const throughputEl = document.querySelector('.pipeline-visualizer-throughput'); // Assuming class was added
+        // Adding dynamic behavior to the "Distribution Balance" bars
+        const bars = document.querySelectorAll('.bg-primary\/20');
+        setInterval(() => {
+            bars.forEach(bar => {
+                const newHeight = Math.floor(Math.random() * 70) + 20;
+                bar.style.height = `${newHeight}%`;
+            });
+        }, 3000);
+    </script>
+</body></html>

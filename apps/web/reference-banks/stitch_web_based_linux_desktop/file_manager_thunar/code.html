@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPR_OS_01 // FILE_MANAGER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .tiling-border {
+            border: 1px solid #3b494b;
+        }
+        .tiling-border-active {
+            border: 1px solid #00f0ff;
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.2);
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: cursor-blink 1s infinite;
+        }
+        .segmented-progress div {
+            height: 100%;
+            background: #00f0ff;
+            border-right: 2px solid #0c0f0f;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full h-8 bg-background/85 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gap-md z-50">
+<div class="flex items-center gap-gap-sm">
+<span class="font-headline-md text-headline-md text-primary-container tracking-tighter uppercase">HYPR_OS_01</span>
+<span class="text-on-surface-variant opacity-40 ml-4 font-code-sm">v4.2.0-stable</span>
+</div>
+<nav class="hidden md:flex gap-gap-lg">
+<a class="text-primary-container font-bold border-b-stroke-thick border-primary-container font-code-sm hover:bg-surface-container-highest transition-colors duration-150" href="#">FILES</a>
+<a class="text-on-surface-variant font-medium font-code-sm hover:bg-surface-container-highest transition-colors duration-150" href="#">TASKS</a>
+<a class="text-on-surface-variant font-medium font-code-sm hover:bg-surface-container-highest transition-colors duration-150" href="#">SHELL</a>
+</nav>
+<div class="flex items-center gap-gap-md text-primary-container">
+<span class="material-symbols-outlined text-[18px] hover:bg-surface-container-highest cursor-pointer">memory</span>
+<span class="material-symbols-outlined text-[18px] hover:bg-surface-container-highest cursor-pointer">terminal</span>
+<span class="material-symbols-outlined text-[18px] hover:bg-surface-container-highest cursor-pointer">settings</span>
+<span class="material-symbols-outlined text-[18px] hover:bg-surface-container-highest cursor-pointer">power_settings_new</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-8 h-[calc(100vh-32px)] w-20 bg-surface-container-lowest/90 backdrop-blur-md border-r border-outline-variant flex flex-col items-center py-gap-md space-y-gap-lg z-40">
+<div class="flex flex-col items-center mb-4">
+<div class="w-10 h-10 bg-primary-container/20 border border-primary-container flex items-center justify-center mb-1">
+<span class="material-symbols-outlined text-primary-container">database</span>
+</div>
+<span class="text-[10px] font-bold text-primary-container">ARCH</span>
+</div>
+<div class="flex flex-col gap-gap-sm w-full">
+<!-- DASH (Inactive) -->
+<button class="w-full py-4 flex flex-col items-center gap-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75 active:scale-95">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[9px] font-bold">DASH</span>
+</button>
+<!-- SYS (Active) -->
+<button class="w-full py-4 flex flex-col items-center gap-1 bg-secondary-container text-on-secondary-container rounded-none border-l-stroke-thick border-primary-container transition-all duration-75">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+<span class="text-[9px] font-bold">SYS</span>
+</button>
+<!-- NET -->
+<button class="w-full py-4 flex flex-col items-center gap-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75">
+<span class="material-symbols-outlined">lan</span>
+<span class="text-[9px] font-bold">NET</span>
+</button>
+<!-- DEV -->
+<button class="w-full py-4 flex flex-col items-center gap-1 text-on-surface-variant opacity-60 hover:bg-surface-container-highest hover:opacity-100 transition-all duration-75">
+<span class="material-symbols-outlined">code</span>
+<span class="text-[9px] font-bold">DEV</span>
+</button>
+</div>
+<div class="mt-auto flex flex-col items-center gap-4">
+<div class="w-8 h-8 rounded-none border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A pixel-art style minimalist avatar of a hooded developer silhouette against a glowing turquoise grid background, high contrast cyberpunk aesthetic, dark mode theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi8HeJHh3Q2USXheQQCO7tJRgCEnD8lzF1DsxR6jLJU3mYpntET76Vg8aQjsjYQxnVoYVe45pYOnGqqyIY4fw2IlpWrtX1V9wjFGSMiJom2LF_DUI0bMra8oOmW6kmXCkshDD5Y4ojlt7lsdRCXaamyYfCBwbpcbpN0ogSnuAjlKfjlN9mVqh63ZlWYlXqgJdHks6fxF57lobDf9j6U4LizD2H5Bz2ukFz_LahmDvgFGGblZoj2LG-xmtePdtAmfTEAMescxmWs4c4"/>
+</div>
+<div class="text-[8px] text-center opacity-40 font-code-sm">
+                UPTIME<br/>12:43:02
+            </div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-8 h-[calc(100vh-32px)] flex flex-col">
+<!-- Breadcrumb & Toolbar -->
+<div class="h-12 border-b border-outline-variant flex items-center px-gap-md bg-surface-container-low/50 gap-gap-md">
+<div class="flex items-center gap-gap-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">home</span>
+<span class="text-xs">~</span>
+<span class="text-xs">/</span>
+<span class="text-xs">configs</span>
+<span class="text-xs">/</span>
+<span class="text-primary-container font-bold text-xs">hypr</span>
+</div>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex-1 flex items-center bg-surface-container-lowest border border-outline-variant px-2 h-8">
+<span class="material-symbols-outlined text-primary-container text-sm mr-2">search</span>
+<input class="bg-transparent border-none outline-none text-code-sm text-white w-full placeholder:text-outline-variant" placeholder="FILTER_FILES..." type="text"/>
+<span class="text-[10px] text-outline-variant ml-2 font-bold">[CTRL+F]</span>
+</div>
+<div class="flex gap-gap-sm">
+<button class="h-8 px-3 border border-primary-container text-primary-container font-bold text-[11px] flex items-center gap-2 hover:bg-primary-container hover:text-black transition-colors">
+<span class="material-symbols-outlined text-sm">add_box</span> NEW_NODE
+                </button>
+<button class="h-8 w-8 border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-sm">sort_by_alpha</span>
+</button>
+<button class="h-8 w-8 border border-outline-variant flex items-center justify-center hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-sm">view_module</span>
+</button>
+</div>
+</div>
+<!-- File Explorer Layout -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Contextual Sidebar (File Categories) -->
+<aside class="w-48 border-r border-outline-variant bg-surface-container-lowest flex flex-col p-gap-md">
+<section class="mb-gap-lg">
+<h3 class="text-[10px] font-bold text-outline-variant mb-2 tracking-widest">FILESYSTEM</h3>
+<ul class="space-y-1">
+<li class="flex items-center gap-2 px-2 py-1 hover:bg-surface-container-highest cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm opacity-60">folder_special</span> ROOT
+                        </li>
+<li class="flex items-center gap-2 px-2 py-1 bg-primary-container/10 text-primary-container border-l-2 border-primary-container cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm">home</span> HOME
+                        </li>
+<li class="flex items-center gap-2 px-2 py-1 hover:bg-surface-container-highest cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm opacity-60">terminal</span> DEV
+                        </li>
+<li class="flex items-center gap-2 px-2 py-1 hover:bg-surface-container-highest cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm opacity-60">settings_input_component</span> CONFIGS
+                        </li>
+</ul>
+</section>
+<section class="mb-gap-lg">
+<h3 class="text-[10px] font-bold text-outline-variant mb-2 tracking-widest">DEVICES</h3>
+<ul class="space-y-1">
+<li class="flex items-center gap-2 px-2 py-1 hover:bg-surface-container-highest cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm opacity-60">hard_drive</span> NVME_01
+                        </li>
+<li class="flex items-center gap-2 px-2 py-1 hover:bg-surface-container-highest cursor-pointer text-code-sm">
+<span class="material-symbols-outlined text-sm opacity-60">usb</span> USB_RECOVERY
+                        </li>
+</ul>
+</section>
+<div class="mt-auto space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] font-bold text-on-surface-variant">
+<span>STORAGE_01</span>
+<span>84%</span>
+</div>
+<div class="h-2 bg-surface-container-highest flex segmented-progress">
+<div style="width: 20%"></div>
+<div style="width: 20%"></div>
+<div style="width: 20%"></div>
+<div style="width: 24%"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Grid Container -->
+<section class="flex-1 p-gap-md overflow-y-auto scrollbar-hide grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-gap-md content-start">
+<!-- Folder Item -->
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-primary-container group-hover:scale-110 transition-transform">folder</span>
+<div class="absolute inset-0 bg-primary-container/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">hyprland.conf</span>
+<span class="text-[9px] text-outline-variant">DIR</span>
+</div>
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-primary-container group-hover:scale-110 transition-transform">folder</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">waybar</span>
+<span class="text-[9px] text-outline-variant">DIR</span>
+</div>
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-secondary-container group-hover:scale-110 transition-transform">folder</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">scripts</span>
+<span class="text-[9px] text-outline-variant">DIR</span>
+</div>
+<!-- File Item -->
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer bg-surface-container-low/30">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant opacity-60 group-hover:opacity-100">description</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">colors.scss</span>
+<span class="text-[9px] text-outline-variant">2.4 KB</span>
+</div>
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant opacity-60 group-hover:opacity-100">javascript</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">init.js</span>
+<span class="text-[9px] text-outline-variant">12 KB</span>
+</div>
+<div class="group flex flex-col items-center p-gap-sm tiling-border hover:tiling-border-active transition-all cursor-pointer">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-on-surface-variant opacity-60 group-hover:opacity-100">image</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">wallpaper.png</span>
+<span class="text-[9px] text-outline-variant">4.8 MB</span>
+</div>
+<!-- Active Selection Mockup -->
+<div class="group flex flex-col items-center p-gap-sm tiling-border-active bg-primary-container/10 transition-all cursor-pointer relative">
+<div class="absolute top-1 right-1">
+<span class="material-symbols-outlined text-[10px] text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-primary-container">description</span>
+</div>
+<span class="mt-2 text-[11px] font-bold text-center truncate w-full text-on-surface">readme.md</span>
+<span class="text-[9px] text-outline-variant">512 B</span>
+</div>
+</section>
+<!-- Info Panel (Right Sidebar) -->
+<aside class="w-64 border-l border-outline-variant bg-surface-container-lowest/50 p-gap-md hidden xl:flex flex-col">
+<div class="tiling-border p-gap-sm mb-gap-md bg-surface-container-low">
+<div class="w-full aspect-square bg-background border border-outline-variant flex items-center justify-center overflow-hidden mb-2">
+<img class="w-full h-full object-cover" data-alt="A macro close-up of computer circuitry with glowing cyan and purple neon tracers, high detailed tech photography, dark atmosphere, ultra-sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa_7_6LTTLDmbPQ-7TK8PHuANrZ-xZ8Uqi9MDnGdZ81mQT4c6hbfXPMI5-mfuDbpCSN3UqXpyL101oFqT5aKhsN5zNHk0zW-E92bvv8W1wvqBNVDzZ990DogWSEW5ZBGA8DYndHLGwrajKcxYCByUikeIyZzW2dwX54srrKUw4LOPV20bXURyQ0fGsZMB-es_qN7jE0NUtICGPsQBx0M63AOketvdkqVHm9igXwDy1CVDQadx8nyNs6HFfG0xwW39UJcY70RtWh47T"/>
+</div>
+<h2 class="text-xs font-bold text-primary-container">README.MD</h2>
+<p class="text-[10px] text-outline-variant uppercase">Markdown Document</p>
+</div>
+<div class="space-y-4">
+<div>
+<h4 class="text-[10px] font-bold text-outline-variant border-b border-outline-variant pb-1 mb-2">METADATA</h4>
+<div class="space-y-2 text-[10px]">
+<div class="flex justify-between"><span class="opacity-40">CREATED:</span> <span>2024.03.12</span></div>
+<div class="flex justify-between"><span class="opacity-40">MODIFIED:</span> <span>10m ago</span></div>
+<div class="flex justify-between"><span class="opacity-40">PERMS:</span> <span class="text-secondary-container">rwxr-xr-x</span></div>
+<div class="flex justify-between"><span class="opacity-40">OWNER:</span> <span>root</span></div>
+</div>
+</div>
+<div>
+<h4 class="text-[10px] font-bold text-outline-variant border-b border-outline-variant pb-1 mb-2">ACTIONS</h4>
+<div class="grid grid-cols-2 gap-2">
+<button class="tiling-border p-2 text-[10px] flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">edit</span> EDIT
+                            </button>
+<button class="tiling-border p-2 text-[10px] flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-sm">share</span> PUSH
+                            </button>
+<button class="tiling-border p-2 text-[10px] flex items-center gap-2 border-error/50 text-error hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span> PURGE
+                            </button>
+</div>
+</div>
+</div>
+<!-- Mini Console / Terminal Panel -->
+<div class="mt-auto h-32 tiling-border bg-black/40 p-2 overflow-hidden flex flex-col font-code-sm text-[10px]">
+<div class="flex items-center gap-2 text-primary-container mb-1 border-b border-outline-variant/30 pb-1">
+<span class="material-symbols-outlined text-xs">terminal</span>
+<span class="font-bold">SHELL_OUTPUT</span>
+</div>
+<div class="flex-1 space-y-0.5 overflow-y-auto scrollbar-hide opacity-80">
+<p class="text-secondary-container">$ ls -la ~/configs/hypr</p>
+<p>total 48</p>
+<p>drwxr-xr-x 4 user user 4096 Mar 12 12:00 .</p>
+<p>drwxr-xr-x 8 user user 4096 Mar 10 14:22 ..</p>
+<p>-rw-r--r-- 1 user user  512 Mar 12 12:43 readme.md</p>
+<p class="flex items-center gap-1">$ <span class="w-1.5 h-3 bg-primary-container cursor-blink"></span></p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Footer / Status Bar -->
+<footer class="h-6 border-t border-outline-variant bg-surface-container-lowest flex items-center justify-between px-gap-md text-[9px] font-bold uppercase tracking-wider">
+<div class="flex items-center gap-gap-lg">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_4px_rgba(0,240,255,0.8)]"></span>
+<span class="text-primary-container">SYSTEM_SYNCED</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="opacity-40">SELECT:</span>
+<span>1 FILE (512 B)</span>
+</div>
+</div>
+<div class="flex items-center gap-gap-lg text-on-surface-variant">
+<span>HYPRLAND_WM</span>
+<span>UTF-8</span>
+<span class="text-secondary-container">127.0.0.1:8080</span>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for folder selection simulation
+        document.querySelectorAll('.tiling-border').forEach(item => {
+            item.addEventListener('click', function() {
+                // Clear others
+                document.querySelectorAll('.tiling-border').forEach(el => {
+                    el.classList.remove('tiling-border-active', 'bg-primary-container/10');
+                    const icon = el.querySelector('.check_circle');
+                    if(icon) icon.remove();
+                });
+                // Set active
+                this.classList.add('tiling-border-active', 'bg-primary-container/10');
+            });
+        });
+
+        // Hover sounds or effects could be added here
+        console.log("HYPR_OS_01 File Manager initialized.");
+    </script>
+</body></html>
