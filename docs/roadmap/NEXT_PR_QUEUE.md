@@ -234,6 +234,27 @@ Date: 2026-06-23
 | Validation | `npm run check:seis-20b-benchmark-dry-run`, `npm run check:seis-model-local-hardware-preflight`, `npm run check:seis-150b-frontier-model-program`, `npm run check:seis-512b-apex-model-program`, `npm run check:seis-model-frontier-escalation-policy`, `npm run check:seis-model-parameter-ladder`, `npm run check:seis-model-scaling-subagent-council`, `npm run check:seis-model-scaling-hardware-profile`, `npm run check:seis-ai-core-provider-registry`, `npm test --prefix packages/seis-ai`, `git diff --check`. |
 | Approval needed | None for docs/JSON/validator/status-tool/UI evidence work; explicit approval required for model downloads, training, benchmarks, cloud/GPU spend, provider credentials, SSH, deployment, push, merge, or publication. |
 
+## PR 4G: AGI GitHub readiness gates
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Keep GitHub-facing readiness claims gated while preserving Local Demo and explicitly blocking AGI/512B claims until independent evidence exists. |
+| Include | `content/development/seis-agi-public-readiness-evidence.json`, `content/development/seis-agi-github-user-readiness-gates.json`, `content/development/seis-agi-evaluation-protocol.json`, `content/development/seis-512b-apex-model-program.json`, `docs/ai/seis-agi-public-readiness-evidence.md`, `docs/ai/seis-agi-github-user-readiness-gates.md`, `docs/ai/seis-agi-evaluation-protocol.md`, `docs/ai/seis-ai-core.md`, `scripts/check-seis-agi-github-user-readiness-gates.mjs`, `scripts/check-seis-agi-public-readiness-evidence.mjs`, `scripts/check-seis-agi-evaluation-protocol.mjs`, `scripts/check-seis-512b-apex-model-program.mjs`, `docs/roadmap/NEXT_PR_QUEUE.md`. |
+| Exclude | Live provider routing, AGI ownership claims, parameter-count-only claims, 512B checkpoint/training claims, live benchmarks, SSH execution, deployment, and merge without explicit approval. |
+| Validation | `node scripts/check-seis-agi-github-user-readiness-gates.mjs`, `node scripts/check-seis-agi-public-readiness-evidence.mjs`, `node scripts/check-seis-agi-evaluation-protocol.mjs`, `npm run check:seis-512b-apex-model-program`, `git diff --check`. |
+| Approval needed | None for JSON/docs/validator updates; explicit approval required for AGI/512B public route claims, real training/inference evidence, merge/release/deployment actions, and any provider credential setup. |
+
+## PR 4H: AGI independent evidence ledger
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Add a single source-of-truth AGI/512B independent-evidence ledger so public claims remain blocked until external reviews, independent validation traces, and human approval are complete. |
+| Include | `content/development/seis-agi-independent-evidence-ledger.json`, `scripts/check-seis-agi-independent-evidence-ledger.mjs`, `package.json` (for `check:seis-agi-independent-evidence-ledger`), `content/development/seis-agi-github-user-readiness-gates.json`, `content/development/seis-agi-public-readiness-evidence.json`, `content/development/seis-agi-evaluation-protocol.json`, `docs/ai/seis-agi-github-user-readiness-gates.md`, `docs/ai/seis-agi-public-readiness-evidence.md`, `docs/roadmap/NEXT_PR_QUEUE.md`. |
+| Exclude | Live model training or inference claims, AGI ownership claims, real 512B benchmark/inference assertions, provider credential setup, deployment, push/merge/deploy actions, and secret changes. |
+| Validation | `node scripts/check-seis-agi-independent-evidence-ledger.mjs`, `node scripts/check-seis-agi-github-user-readiness-gates.mjs`, `node scripts/check-seis-agi-public-readiness-evidence.mjs`, `npm run check:seis-agi-independent-evidence-ledger`, `git diff --check`. |
+| Approval needed | None for local JSON/docs/validator updates; explicit approval required for real AGI/512B training or inference evidence claims, provider credential setup, and release/merge actions. |
 ## PR 4E: SEIS Second Brain Foundation
 
 | Field | Value |

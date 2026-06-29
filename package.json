@@ -85,6 +85,7 @@
     "check:seis-execution-packages": "python3 scripts/create-seis-execution-packages.py --check",
     "check:seis-execution-runway": "python3 scripts/create-seis-execution-runway.py --check",
     "check:seis-agi-system": "python3 scripts/create-seis-agi-system.py --check",
+    "check:seis-agi-independent-evidence-ledger": "node scripts/check-seis-agi-independent-evidence-ledger.mjs",
     "check:seis-nonjs-kernel": "python3 scripts/check-seis-nonjs-kernel.py",
     "check:seis-platform-kernel": "python3 scripts/check-seis-platform-kernel.py",
     "check:language-distribution": "python3 scripts/create-language-distribution-report.py --check",
