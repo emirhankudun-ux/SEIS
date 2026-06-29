@@ -58,6 +58,23 @@ npm run check:seis-ssh-cloud-roadmap
 These commands prove repo governance and public-access wiring. They do not
 prove a live SSH session.
 
+When a user already has `SEIS-SSH` in `~/.ssh/config`, the connection entrypoint is:
+
+```bash
+ssh SEIS-SSH
+```
+
+This preserves the existing host and port from the local `HostName` / `Port`
+settings. If `Port` is not set, OpenSSH defaults to `22`, so the same-port
+invariant remains enforced by contract.
+
+Use this one-line check to confirm the resolved host/port before attempting a
+session:
+
+```bash
+ssh -G SEIS-SSH
+```
+
 The latest approval-gated live probe is recorded in
 [`seis-ssh-live-readiness-evidence.md`](./seis-ssh-live-readiness-evidence.md).
 As of 2026-06-29, it is blocked by a GitHub Codespaces billing issue. The

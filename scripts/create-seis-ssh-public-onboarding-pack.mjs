@@ -124,7 +124,8 @@ function buildOnboardingPack(report) {
           "npm run check:seis-ssh-public-onboarding",
           "npm run check:seis-ssh-public-contributor-doctor",
           "npm run report:seis-ssh-public-onboarding",
-          "npm run report:seis-ssh-public-contributor-doctor"
+          "npm run report:seis-ssh-public-contributor-doctor",
+          "ssh -G SEIS-SSH"
         ],
         forbiddenActions: [
           "execute live SSH",
@@ -141,7 +142,8 @@ function buildOnboardingPack(report) {
         commands: [
           "npm run report:seis-ssh-public-access",
           "npm run report:seis-ssh-public-onboarding",
-          "npm run check:seis-ssh-picker-compatibility"
+          "npm run check:seis-ssh-picker-compatibility",
+          "ssh -G SEIS-SSH"
         ],
         forbiddenActions: [
           "silently rewrite ~/.ssh/config",
@@ -157,7 +159,9 @@ function buildOnboardingPack(report) {
         commands: [
           "gh auth refresh -h github.com -s codespace",
           "npm run cloud:ssh-config:install -- --dry-run",
-          "npm run check:seis-ssh-picker-compatibility"
+          "npm run check:seis-ssh-picker-compatibility",
+          "ssh -G SEIS-SSH",
+          "ssh SEIS-SSH -o BatchMode=yes"
         ],
         forbiddenActions: [
           "request shared private keys",
