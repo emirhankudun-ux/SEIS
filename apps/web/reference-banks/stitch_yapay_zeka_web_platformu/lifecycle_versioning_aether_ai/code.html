@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model Lifecycle Management | AETHER AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(10, 14, 26, 0.6);
+            --glass-stroke: rgba(0, 219, 233, 0.2);
+        }
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-stroke);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .glow-cyan:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.25);
+            border-color: #00dbe9;
+        }
+        .version-line {
+            background: linear-gradient(90deg, #00dbe9 0%, transparent 100%);
+            height: 1px;
+        }
+        .pulsing-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(to bottom, transparent, rgba(0, 219, 233, 0.05), transparent);
+            position: absolute;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            from { top: -100px; }
+            to { top: 100%; }
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #3b494b;
+            border-radius: 2px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 16px;
+            width: 16px;
+            border-radius: 2px;
+            background: #00dbe9;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(0, 219, 233, 0.8);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#690005",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "tertiary-container": "#d9d9d9",
+                      "secondary-container": "#b600f8",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "background": "#020408",
+                      "surface-container": "#1d2023",
+                      "on-surface": "#e1e2e7",
+                      "on-error-container": "#ffdad6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary": "#520072",
+                      "inverse-on-surface": "#2e3134",
+                      "on-primary-container": "#006970",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "primary": "#dbfcff",
+                      "surface-container-highest": "#323539",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-primary-fixed": "#002022",
+                      "inverse-primary": "#006970",
+                      "on-tertiary": "#2f3131",
+                      "surface-container-high": "#282a2e",
+                      "on-primary-fixed-variant": "#004f54",
+                      "outline-variant": "#3b494b",
+                      "on-tertiary-container": "#5d5f5f",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "surface": "#111417",
+                      "surface-dim": "#111417",
+                      "surface-container-lowest": "#0c0e12",
+                      "primary-container": "#00f0ff",
+                      "surface-container-low": "#191c1f",
+                      "error": "#ffb4ab",
+                      "on-primary": "#00363a",
+                      "surface-variant": "#323539",
+                      "secondary-fixed": "#f8d8ff",
+                      "primary-fixed-dim": "#00dbe9",
+                      "inverse-surface": "#e1e2e7",
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-tint": "#00dbe9",
+                      "surface-bright": "#37393d",
+                      "on-secondary-container": "#fff6fc",
+                      "tertiary": "#f5f5f5",
+                      "primary-fixed": "#7df4ff",
+                      "on-background": "#e1e2e7",
+                      "secondary": "#ebb2ff",
+                      "outline": "#849495",
+                      "on-secondary-fixed": "#320047"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "unit": "8px",
+                      "margin-desktop": "64px",
+                      "margin-mobile": "20px",
+                      "section-gap": "120px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "display-lg-mobile": ["Inter"],
+                      "mono-code": ["JetBrains Mono"],
+                      "headline-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "mono-label": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="font-body-md text-body-md bg-background">
+<!-- Atmospheric Layer -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+
+<div class="scanline"></div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] h-16">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-full">
+<div class="flex items-center gap-12">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold uppercase">AETHER AI</span>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Models</a>
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Enterprise</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md active:scale-95">Sign In</button>
+<button class="bg-primary-container text-on-primary font-bold px-6 py-2 rounded-lg transition-all hover:brightness-110 active:scale-95 shadow-[0_0_15px_rgba(0,219,233,0.4)] font-body-md text-body-md">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Sidebar (Contextual) -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 hidden lg:flex flex-col border-r border-outline-variant/20 bg-surface-container-lowest/80 backdrop-blur-2xl z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim pulsing-dot"></div>
+<div>
+<h3 class="font-mono-label text-mono-label text-primary-fixed-dim uppercase tracking-widest">System Status</h3>
+<p class="text-[10px] text-outline uppercase">Active Cluster: US-WEST-2</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col flex-1">
+<div class="bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-6 py-4 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="terminal">terminal</span>
+<span class="font-mono-label text-mono-label">MODEL LINEAGE</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-4 flex items-center gap-3 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+<span class="font-mono-label text-mono-label">TRAINING LABS</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-4 flex items-center gap-3 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="code">code</span>
+<span class="font-mono-label text-mono-label">API INTEGRATION</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-6 py-4 flex items-center gap-3 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="cloud_queue">cloud_queue</span>
+<span class="font-mono-label text-mono-label">INFRASTRUCTURE</span>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant/10">
+<button class="w-full py-3 bg-outline-variant/20 border border-outline-variant/30 text-primary-fixed-dim font-mono-label text-mono-label hover:bg-outline-variant/40 transition-colors uppercase">Deploy Now</button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="lg:pl-64 pt-24 pb-section-gap px-margin-mobile md:px-margin-desktop min-h-screen">
+<header class="max-w-container-max mx-auto mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-display-lg text-headline-md lg:text-display-lg text-primary-fixed-dim tracking-tighter mb-2">MODEL LIFECYCLE</h1>
+<div class="flex items-center gap-4">
+<span class="px-3 py-1 bg-primary-fixed-dim/10 border border-primary-fixed-dim/30 text-primary-fixed-dim font-mono-label text-[12px] rounded-sm">V2.8.4-STABLE</span>
+<span class="text-outline font-mono-label text-[12px]">PROJECT: NEURAL_AEGIS_PRIME</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="p-3 border border-outline-variant/30 hover:border-primary-fixed-dim transition-all group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim" data-icon="refresh">refresh</span>
+</button>
+<button class="p-3 border border-outline-variant/30 hover:border-primary-fixed-dim transition-all group">
+<span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim" data-icon="share">share</span>
+</button>
+</div>
+</div>
+</header>
+<section class="max-w-container-max mx-auto grid grid-cols-12 gap-gutter">
+<!-- Version Tree Visualization -->
+<div class="col-span-12 lg:col-span-8 glass-card p-gutter rounded-xl relative overflow-hidden group">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="account_tree">account_tree</span>
+<h2 class="font-mono-label text-mono-label text-primary-fixed-dim uppercase">Lineage Explorer</h2>
+</div>
+<div class="text-[10px] text-outline font-mono-label uppercase tracking-widest">LIVE_SYNC_ENABLED</div>
+</div>
+<!-- Tree Canvas -->
+<div class="h-[400px] w-full relative border border-outline-variant/10 bg-surface-container-lowest/40 rounded-lg p-8 flex flex-col justify-center">
+<!-- Branch 1 (Main) -->
+<div class="flex items-center mb-12 relative">
+<div class="w-4 h-4 rounded-full bg-primary-fixed-dim pulsing-dot z-10"></div>
+<div class="flex-1 h-[1px] version-line mx-4 opacity-50"></div>
+<div class="px-4 py-2 border border-primary-fixed-dim/40 bg-primary-fixed-dim/5 rounded group/node cursor-pointer hover:bg-primary-fixed-dim/10 transition-all">
+<p class="font-mono-label text-[10px] text-primary-fixed-dim">AEGIS-MAIN-V2.1</p>
+<p class="text-[9px] text-outline">2024.11.12</p>
+</div>
+<div class="flex-1 h-[1px] version-line mx-4 opacity-30"></div>
+<div class="w-3 h-3 rounded-full border border-primary-fixed-dim/50 z-10"></div>
+</div>
+<!-- Branch 2 (Experimental) -->
+<div class="flex items-center relative pl-24 mb-12">
+<div class="absolute -top-12 left-4 w-[1px] h-12 bg-outline-variant/30"></div>
+<div class="w-3 h-3 rounded-full bg-secondary-fixed opacity-60 z-10"></div>
+<div class="flex-1 h-[1px] bg-outline-variant/30 mx-4"></div>
+<div class="px-4 py-2 border border-secondary/30 bg-secondary/5 rounded group/node cursor-pointer hover:bg-secondary/10 transition-all">
+<p class="font-mono-label text-[10px] text-secondary">FT-LLAMA3-LOW-LATENCY</p>
+<p class="text-[9px] text-outline">In-Progress</p>
+</div>
+<div class="flex-1 h-[1px] bg-outline-variant/10 mx-4"></div>
+</div>
+<!-- Branch 3 (Deployment Ready) -->
+<div class="flex items-center relative">
+<div class="w-3 h-3 rounded-full bg-outline-variant/50 z-10"></div>
+<div class="flex-1 h-[1px] bg-outline-variant/10 mx-4"></div>
+<div class="px-4 py-2 border border-outline-variant/30 bg-surface-container/30 rounded opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all cursor-pointer">
+<p class="font-mono-label text-[10px] text-on-surface-variant">ARCHIVED-V1.9</p>
+</div>
+<div class="flex-1 h-[1px] bg-outline-variant/5 mx-4"></div>
+</div>
+</div>
+<div class="mt-6 flex flex-wrap gap-6 border-t border-outline-variant/10 pt-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase mb-1">Total Models</span>
+<span class="text-headline-md font-display-lg text-primary-fixed-dim">142</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase mb-1">Compute Used</span>
+<span class="text-headline-md font-display-lg text-primary-fixed-dim">8.4 PH</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase mb-1">Avg Success Rate</span>
+<span class="text-headline-md font-display-lg text-secondary">92.4%</span>
+</div>
+</div>
+</div>
+<!-- Safe Deployment Control -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card p-gutter rounded-xl glow-cyan transition-all duration-500">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="verified_user">verified_user</span>
+<h2 class="font-mono-label text-mono-label text-primary-fixed-dim uppercase">Deployment Engine</h2>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="font-mono-label text-[12px] text-on-surface-variant uppercase">Canary Release</label>
+<span class="text-primary-fixed-dim font-mono-label text-[12px]" id="canary-val">15% Traffic</span>
+</div>
+<input class="w-full" max="100" min="0" oninput="document.getElementById('canary-val').innerText = this.value + '% Traffic'" type="range" value="15"/>
+<div class="flex justify-between mt-2 text-[10px] text-outline font-mono-label uppercase">
+<span>Sandbox</span>
+<span>Production</span>
+</div>
+</div>
+<div class="p-4 border border-outline-variant/10 bg-surface-container-lowest/50 rounded-lg">
+<div class="flex items-center justify-between mb-4">
+<span class="text-[12px] text-on-surface-variant font-mono-label uppercase">Auto-Rollback</span>
+<div class="w-10 h-5 bg-primary-fixed-dim/20 rounded-full relative cursor-pointer border border-primary-fixed-dim/30">
+<div class="absolute right-1 top-1 w-3 h-3 bg-primary-fixed-dim rounded-full shadow-[0_0_8px_#00dbe9]"></div>
+</div>
+</div>
+<p class="text-[11px] text-outline leading-relaxed">Triggered if error rate exceeds 0.04% over 30s window.</p>
+</div>
+<button class="w-full py-4 bg-primary-container text-on-primary font-bold uppercase tracking-widest text-[14px] rounded hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="rocket_launch">rocket_launch</span>
+                            Initiate Deployment
+                        </button>
+</div>
+</div>
+<!-- A/B Testing Results -->
+<div class="glass-card p-gutter rounded-xl flex-1">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-mono-label text-mono-label text-on-surface-variant uppercase">A/B Traffic Split</h2>
+<span class="text-[10px] text-secondary font-mono-label">LIVE DATA</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-12 text-[12px] font-mono-label text-outline">A</div>
+<div class="flex-1 bg-outline-variant/10 h-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[85%]"></div>
+</div>
+<div class="w-12 text-right text-[12px] font-mono-label text-primary-fixed-dim">85%</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 text-[12px] font-mono-label text-outline">B</div>
+<div class="flex-1 bg-outline-variant/10 h-2 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[15%]"></div>
+</div>
+<div class="w-12 text-right text-[12px] font-mono-label text-secondary">15%</div>
+</div>
+</div>
+<div class="mt-8 p-3 border border-outline-variant/10 border-dashed rounded text-center">
+<p class="text-[10px] text-outline uppercase mb-1">Win Probability</p>
+<p class="font-mono-label text-secondary text-lg">Model B: +12.4% Accuracy</p>
+</div>
+</div>
+</div>
+<!-- Performance Tradeoff Charts -->
+<div class="col-span-12 glass-card p-gutter rounded-xl">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-mono-label text-mono-label text-primary-fixed-dim uppercase">Efficiency Matrix</h2>
+<p class="text-[11px] text-outline uppercase mt-1">Inference Cost vs. Prediction Accuracy</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim"></div>
+<span class="text-[10px] text-outline font-mono-label uppercase">Optimized</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-[10px] text-outline font-mono-label uppercase">Baseline</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<!-- Chart Placeholder 1 -->
+<div class="relative h-48 border-l border-b border-outline-variant/30 flex items-end px-4">
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<span class="text-[10px] text-outline/30 font-mono-label uppercase tracking-widest rotate-[-15deg]">Throughput Analysis</span>
+</div>
+<div class="flex-1 h-[60%] bg-primary-fixed-dim/20 border-t-2 border-primary-fixed-dim mx-1"></div>
+<div class="flex-1 h-[40%] bg-primary-fixed-dim/20 border-t-2 border-primary-fixed-dim mx-1"></div>
+<div class="flex-1 h-[85%] bg-primary-fixed-dim/20 border-t-2 border-primary-fixed-dim mx-1"></div>
+<div class="flex-1 h-[70%] bg-primary-fixed-dim/20 border-t-2 border-primary-fixed-dim mx-1"></div>
+<div class="flex-1 h-[95%] bg-primary-fixed-dim/20 border-t-2 border-primary-fixed-dim mx-1"></div>
+</div>
+<!-- Chart Placeholder 2 -->
+<div class="relative h-48 border-l border-b border-outline-variant/30">
+<svg class="w-full h-full p-4" preserveaspectratio="none" viewbox="0 0 100 100">
+<path d="M0 80 Q 25 10, 50 60 T 100 20" fill="none" stroke="#00dbe9" stroke-width="2"></path>
+<path d="M0 90 Q 30 40, 60 70 T 100 40" fill="none" stroke="#ebb2ff" stroke-dasharray="4" stroke-width="2"></path>
+</svg>
+<div class="absolute bottom-[-20px] left-1/2 -translate-x-1/2 text-[9px] text-outline font-mono-label uppercase">Accuracy Curve</div>
+</div>
+<!-- Chart Placeholder 3 -->
+<div class="relative h-48 border-l border-b border-outline-variant/30 flex items-end justify-around px-2">
+<div class="w-4 h-[90%] bg-secondary/30 border-t border-secondary"></div>
+<div class="w-4 h-[40%] bg-secondary/30 border-t border-secondary"></div>
+<div class="w-4 h-[65%] bg-secondary/30 border-t border-secondary"></div>
+<div class="w-4 h-[80%] bg-secondary/30 border-t border-secondary"></div>
+<div class="absolute bottom-[-20px] left-1/2 -translate-x-1/2 text-[9px] text-outline font-mono-label uppercase">Resource Load</div>
+</div>
+</div>
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="p-4 border border-outline-variant/10 rounded">
+<p class="text-[10px] text-outline uppercase mb-2">Token / Sec</p>
+<p class="text-headline-md font-display-lg text-on-surface">1,240 <span class="text-body-md text-primary-fixed-dim">↑</span></p>
+</div>
+<div class="p-4 border border-outline-variant/10 rounded">
+<p class="text-[10px] text-outline uppercase mb-2">P99 Latency</p>
+<p class="text-headline-md font-display-lg text-on-surface">42ms <span class="text-body-md text-secondary">↓</span></p>
+</div>
+<div class="p-4 border border-outline-variant/10 rounded">
+<p class="text-[10px] text-outline uppercase mb-2">VRAM Usage</p>
+<p class="text-headline-md font-display-lg text-on-surface">6.8 GB</p>
+</div>
+<div class="p-4 border border-outline-variant/10 rounded">
+<p class="text-[10px] text-outline uppercase mb-2">Inference Cost</p>
+<p class="text-headline-md font-display-lg text-on-surface">$0.0012</p>
+</div>
+</div>
+</div>
+<!-- Bento Assets/Logs -->
+<div class="col-span-12 md:col-span-6 glass-card p-gutter rounded-xl overflow-hidden group">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="description">description</span>
+<h2 class="font-mono-label text-mono-label text-on-surface uppercase">Audit Logs</h2>
+</div>
+<div class="space-y-3 font-mono-code text-[11px]">
+<div class="flex gap-4 py-2 border-b border-outline-variant/10">
+<span class="text-outline">14:22:01</span>
+<span class="text-primary-fixed-dim uppercase">[DEPLOY]</span>
+<span>Canary V2.8.4 initialized on Cluster 4</span>
+</div>
+<div class="flex gap-4 py-2 border-b border-outline-variant/10">
+<span class="text-outline">14:18:55</span>
+<span class="text-secondary uppercase">[TEST]</span>
+<span>A/B Validation complete. Bias: 0.0002%</span>
+</div>
+<div class="flex gap-4 py-2 border-b border-outline-variant/10">
+<span class="text-outline">14:05:22</span>
+<span class="text-error uppercase">[ALERT]</span>
+<span>Cluster 2 latency anomaly detected. Self-healing.</span>
+</div>
+<div class="flex gap-4 py-2 opacity-50">
+<span class="text-outline">13:58:10</span>
+<span class="text-primary-fixed-dim uppercase">[STAG]</span>
+<span>Model branch 'low-latency-llama' staged.</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 md:col-span-6 glass-card p-0 rounded-xl overflow-hidden relative min-h-[300px]">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A futuristic technical visualization of a neural network being optimized, featuring glowing cyan data points connected by thin silver lines against a dark obsidian background. Digital artifacts and subtle geometric overlays create a high-precision, corporate tech aesthetic. The lighting is cold and clinical, emphasizing reliability and advanced engineering." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB4PMJmnpcvRq72y2Zy14hqTq16fr-A19fC8o0z7Bzt8H-cx-jmb7lU1Ff9OdaYpuwOet6k450JBRavfLq5TrN3J1Ku1I1JNC39h3g6ATRumMDYUTsDShBMnZnIfkJajLyFZmjnAfXymfg8xVTIM0jfxGkGzvo5yfKQRyyJRTDf-cLSIYF2OORiWEPuzpL30J6amw9zq1ZUfKdrT4HRmmywQ12RgrpMZoNwH0GNz5QiFEDLDzE21p6Cn71aBWj2OOpgXRg6QMfqhA')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent p-gutter flex flex-col justify-end">
+<span class="text-[10px] text-primary-fixed-dim font-mono-label uppercase tracking-widest mb-2">Automated Optimization</span>
+<h3 class="text-headline-md font-display-lg text-on-surface leading-tight">Neural Pruning v4.2 now active for all TensorRT deployments.</h3>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim tracking-tighter font-extrabold uppercase mb-4 block">AETHER AI</span>
+<p class="font-mono-label text-mono-label text-on-tertiary-fixed-variant leading-relaxed max-w-xs">
+                    Pioneering the future of enterprise intelligence through high-precision infrastructure.
+                </p>
+</div>
+<div>
+<h4 class="font-mono-label text-mono-label text-on-surface uppercase mb-6">Resources</h4>
+<div class="flex flex-col gap-4">
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">System Status</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</div>
+</div>
+<div>
+<h4 class="font-mono-label text-mono-label text-on-surface uppercase mb-6">Safety</h4>
+<div class="flex flex-col gap-4">
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">Security</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label text-mono-label hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="col-span-2 flex flex-col justify-between items-end">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-outline-variant/10 flex items-center justify-center cursor-pointer hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="public">public</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-outline-variant/10 flex items-center justify-center cursor-pointer hover:bg-primary-fixed-dim/20 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="hub">hub</span>
+</div>
+</div>
+<p class="font-mono-label text-[12px] text-on-tertiary-fixed-variant mt-12 text-right">
+                    © 2024 Aether AI Infrastructure. All rights reserved. Precision. Reliability. Future.
+                </p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and Canvas animations
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.glass-card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                if (x > 0 && x < rect.width && y > 0 && y < rect.height) {
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                }
+            });
+        });
+
+        // Initialize any specific node tooltips or interactive behaviors here
+        const nodes = document.querySelectorAll('.group/node');
+        nodes.forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                // Add node expansion or detail reveal logic
+            });
+        });
+    </script>
+</body></html>

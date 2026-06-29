@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS | Sector 4 - Neural Prompt Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#282a2b",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "on-tertiary": "#313030",
+                    "surface-container-lowest": "#0c0f0f",
+                    "surface-dim": "#121414",
+                    "on-primary-fixed": "#002022",
+                    "outline-variant": "#3b494b",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-container-low": "#1a1c1c",
+                    "primary-fixed": "#7df4ff",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "surface-container": "#1e2020",
+                    "on-surface": "#e2e2e2",
+                    "on-primary-container": "#006970",
+                    "surface": "#121414",
+                    "tertiary": "#f9f5f5",
+                    "on-secondary-container": "#480064",
+                    "primary": "#dbfcff",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "on-error": "#690005",
+                    "secondary-container": "#ce5dff",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-background": "#e2e2e2",
+                    "surface-container-highest": "#333535",
+                    "secondary": "#ebb2ff",
+                    "on-secondary-fixed": "#320047",
+                    "surface-variant": "#333535",
+                    "surface-bright": "#37393a",
+                    "background": "#121414",
+                    "tertiary-fixed": "#e5e2e1",
+                    "inverse-primary": "#006970",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-secondary": "#520071",
+                    "on-tertiary-container": "#605e5e",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "outline": "#849495",
+                    "on-surface-variant": "#b9cacb",
+                    "secondary-fixed": "#f8d8ff",
+                    "inverse-on-surface": "#2f3131",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "cyber-lime": "#ccff00"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-page": "32px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px",
+                    "stroke-thick": "2px",
+                    "gap-lg": "24px",
+                    "gap-sm": "8px",
+                    "gap-md": "16px"
+            },
+            "fontFamily": {
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .obsidian-glass {
+            background: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .terminal-glow {
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.1);
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #ccff00;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 2px;
+            background: #333;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            background: #ccff00;
+            cursor: pointer;
+            margin-top: -5px;
+        }
+        .token-keyword { color: #ce5dff; }
+        .token-string { color: #ccff00; }
+        .token-function { color: #00f0ff; }
+        .token-comment { color: #666; }
+    </style>
+</head>
+<body class="h-screen w-screen selection:bg-secondary-container selection:text-white">
+<!-- Top Navigation Bar -->
+<header class="bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10 flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</span>
+<div class="h-4 w-px bg-white/20 mx-2"></div>
+<nav class="flex gap-md font-body-md text-body-md">
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors px-2 py-1" href="#">Activities</a>
+<a class="text-on-surface-variant hover:bg-white/5 transition-colors px-2 py-1" href="#">Files</a>
+<a class="text-primary border-b-2 border-primary px-2 py-1" href="#">Network</a>
+</nav>
+</div>
+<div class="flex items-center gap-md text-primary">
+<span class="material-symbols-outlined text-[18px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[18px]">battery_charging_full</span>
+<span class="font-label-sm">23:42:09</span>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-12 bottom-0 flex flex-col items-center py-8 z-40 bg-[#1A1C1C]/70 backdrop-blur-3xl border-r border-white/10 w-20">
+<div class="flex flex-col gap-8 items-center">
+<button class="p-3 text-on-surface-variant hover:bg-white/10 transition-all duration-300 rounded-lg group">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="p-3 text-on-surface-variant hover:bg-white/10 transition-all duration-300 rounded-lg">
+<span class="material-symbols-outlined">insights</span>
+</button>
+<button class="p-3 text-primary bg-white/5 border-l-4 border-primary transition-all duration-300">
+<span class="material-symbols-outlined">hub</span>
+</button>
+<button class="p-3 text-on-surface-variant hover:bg-white/10 transition-all duration-300 rounded-lg">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="mt-auto pb-4">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a futuristic system administrator with subtle cybernetic implants on the temple, glowing cyan accents, high-contrast lighting, technical cyberpunk aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC92JO-7P78OuQ16tqvSL8VipkDJH47lrRyystFLoQk6CK0n-Yl7lN_HA8jQxH2_EX2OkFutYiMBk3HZp3uITHWjy6Kz74GueJc3UFOqiQh5MnsQJTk-JkNa1OJSL5OZUQEAKeeWRHCylo0DTIACzEKre1tkcZQQMBhGrAskhmBNjYArDzaW1YKJDZaIRBrtgW7oLOhh4yW_l3SBIridoLwAE7Y93UsROWwBR_Xe_AzzbiVQyoatrUem8S2Z27Ep0MOCrE7_5bKPT6Z"/>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Canvas -->
+<main class="ml-20 mt-12 h-[calc(100vh-3rem)] p-gap-md grid grid-cols-12 grid-rows-12 gap-gap-md overflow-hidden bg-background">
+<!-- Header Info Bar (Tiling Grid Item) -->
+<div class="col-span-12 row-span-1 obsidian-glass p-gap-sm flex items-center justify-between border-cyber-lime/30">
+<div class="flex items-center gap-md">
+<div class="bg-cyber-lime text-black px-2 py-0.5 font-label-sm">SECTOR 04</div>
+<h1 class="font-headline-md text-on-surface">NEURAL PROMPT LAB // ENGINE_V4.2</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">NODE_LATENCY</span>
+<span class="font-code-sm text-cyber-lime">12ms</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-sm text-[10px] text-on-surface-variant">ACTIVE_SESSIONS</span>
+<span class="font-code-sm text-primary">0014</span>
+</div>
+<button class="bg-primary text-on-primary px-gap-md py-1 font-label-sm hover:bg-secondary-container transition-colors">INITIATE_DEPLOYMENT</button>
+</div>
+</div>
+<!-- Weight Calibration Sidebar -->
+<div class="col-span-3 row-span-11 obsidian-glass flex flex-col p-gap-md border-white/5">
+<div class="flex items-center gap-sm mb-gap-lg">
+<span class="material-symbols-outlined text-cyber-lime">tune</span>
+<h2 class="font-label-sm uppercase tracking-widest text-on-surface">Calibration</h2>
+</div>
+<div class="space-y-gap-lg overflow-y-auto pr-2 custom-scrollbar">
+<!-- Sliders -->
+<div class="space-y-gap-sm">
+<div class="flex justify-between items-end">
+<label class="font-label-sm text-on-surface-variant">TEMPERATURE</label>
+<span class="font-code-sm text-cyber-lime">0.85</span>
+</div>
+<input class="w-full" type="range"/>
+<p class="text-[10px] text-on-surface-variant leading-tight">Controls randomness. Higher values lead to more creative outputs.</p>
+</div>
+<div class="space-y-gap-sm">
+<div class="flex justify-between items-end">
+<label class="font-label-sm text-on-surface-variant">TOP_P</label>
+<span class="font-code-sm text-cyber-lime">0.90</span>
+</div>
+<input class="w-full" type="range"/>
+</div>
+<div class="space-y-gap-sm">
+<div class="flex justify-between items-end">
+<label class="font-label-sm text-on-surface-variant">FREQ_PENALTY</label>
+<span class="font-code-sm text-cyber-lime">0.00</span>
+</div>
+<input class="w-full" type="range"/>
+</div>
+<div class="h-px bg-white/10 my-gap-md"></div>
+<h3 class="font-label-sm text-on-surface-variant mb-gap-sm">MODEL_ARCHITECTURE</h3>
+<div class="space-y-2">
+<button class="w-full text-left p-2 obsidian-glass border-cyber-lime text-cyber-lime font-code-sm flex items-center justify-between">
+                        NEURAL_CORE_X1 <span class="material-symbols-outlined text-[16px]">check_circle</span>
+</button>
+<button class="w-full text-left p-2 obsidian-glass border-white/10 text-on-surface-variant font-code-sm hover:border-white/30 transition-all">
+                        SYNAPSE_BETA_9
+                    </button>
+<button class="w-full text-left p-2 obsidian-glass border-white/10 text-on-surface-variant font-code-sm hover:border-white/30 transition-all">
+                        SHADOW_KERNEL_V2
+                    </button>
+</div>
+<div class="mt-auto pt-gap-lg">
+<div class="bg-surface-container p-gap-sm rounded border border-white/5">
+<h4 class="text-[10px] text-white/40 mb-2">SYSTEM_LOGS</h4>
+<div class="text-[11px] font-code-sm space-y-1">
+<div class="text-cyber-lime/60">&gt; Calibration synched.</div>
+<div class="text-primary/60">&gt; Layer 12 optimized.</div>
+<div class="text-white/40">&gt; Waiting for prompt...</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Neural Input Editor -->
+<div class="col-span-6 row-span-11 obsidian-glass flex flex-col border-white/10">
+<div class="h-8 bg-cyber-lime flex items-center px-4 justify-between">
+<span class="font-label-sm text-black">CENTRAL_NEURAL_INPUT.py</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-black/20"></div>
+<div class="w-2 h-2 rounded-full bg-black/20"></div>
+<div class="w-2 h-2 rounded-full bg-black/50"></div>
+</div>
+</div>
+<div class="flex-1 p-gap-md overflow-hidden relative group">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(204,255,0,0.03),transparent)] pointer-events-none"></div>
+<div class="font-code-sm text-body-md leading-relaxed h-full focus:outline-none whitespace-pre-wrap selection:bg-cyber-lime/20" contenteditable="true" spellcheck="false">
+<span class="token-comment"># Define core instruction set</span>
+<span class="token-keyword">set</span> <span class="token-function">IDENTITY</span> = "Advanced Neural Architect"
+<span class="token-keyword">set</span> <span class="token-function">GOAL</span> = "Generate high-entropy conceptual frameworks"
+
+<span class="token-keyword">instruction</span> [
+    "Synthesize the following <span class="token-string">input_stream</span><span> into a unified matrix.",
+    "Apply </span><span class="token-string">recursive_logic</span><span> to ensure data integrity.",
+    "Prioritize </span><span class="token-string">technical_clarity</span><span> over verbosity."
+]
+
+<span class="token-comment">// Awaiting runtime telemetry...</span>
+<span class="cursor-blink"></span>
+</span></div>
+</div>
+<div class="h-10 border-t border-white/10 flex items-center px-gap-md bg-black/30">
+<div class="flex items-center gap-md">
+<span class="text-[10px] text-on-surface-variant font-code-sm">LN: 12 COL: 24</span>
+<span class="text-[10px] text-on-surface-variant font-code-sm">UTF-8</span>
+</div>
+<div class="ml-auto flex items-center gap-md">
+<span class="material-symbols-outlined text-[16px] text-cyber-lime cursor-pointer">play_arrow</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer">save</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant cursor-pointer">content_copy</span>
+</div>
+</div>
+</div>
+<!-- Semantic Preview & Telemetry -->
+<div class="col-span-3 row-span-11 flex flex-col gap-gap-md">
+<!-- Activation Map (Top) -->
+<div class="flex-1 obsidian-glass border-primary/20 p-gap-sm flex flex-col">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-label-sm text-primary uppercase text-[10px]">Neural Activation Map</h3>
+<span class="material-symbols-outlined text-primary text-[14px]">view_in_ar</span>
+</div>
+<div class="flex-1 relative bg-black/40 border border-white/5 rounded overflow-hidden">
+
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="grid grid-cols-4 grid-rows-4 gap-1">
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-cyber-lime/40 bg-cyber-lime/10 animate-pulse"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+<div class="w-8 h-8 border border-primary/20 bg-primary/5"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Graph (Middle) -->
+<div class="h-40 obsidian-glass border-white/5 p-gap-sm flex flex-col">
+<h3 class="font-label-sm text-on-surface-variant uppercase text-[10px] mb-2">Entropy Telemetry</h3>
+<div class="flex-1 flex items-end gap-1 px-1">
+<div class="flex-1 bg-cyber-lime/20 h-[20%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/30 h-[45%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/20 h-[30%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/40 h-[65%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/60 h-[85%] border-t border-cyber-lime/40 animate-pulse"></div>
+<div class="flex-1 bg-cyber-lime/40 h-[55%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/30 h-[40%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/20 h-[25%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/10 h-[15%] border-t border-cyber-lime/40"></div>
+<div class="flex-1 bg-cyber-lime/20 h-[35%] border-t border-cyber-lime/40"></div>
+</div>
+</div>
+<!-- Semantic Preview (Bottom) -->
+<div class="h-48 obsidian-glass border-white/5 p-gap-md">
+<h3 class="font-label-sm text-on-surface-variant uppercase text-[10px] mb-2">Real-time Preview</h3>
+<div class="font-body-md text-[12px] text-on-surface leading-tight italic overflow-y-auto h-32 custom-scrollbar">
+                    "The integration of the neural core within the sector 4 interface represents a paradigm shift in autonomous system management. By utilizing high-entropy prompts..."
+                </div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Dock -->
+<nav class="fixed bottom-4 left-1/2 -translate-x-1/2 flex gap-4 px-6 py-3 z-50 bg-[#1A1C1C]/60 backdrop-blur-[64px] border border-white/20 rounded-xl mx-auto shadow-2xl shadow-primary/10 ease-out">
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300">
+<span class="material-symbols-outlined">folder</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<button class="bg-primary-container text-on-primary-container rounded-lg p-2 scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300">
+<span class="material-symbols-outlined">code</span>
+</button>
+<button class="text-on-surface-variant p-2 hover:scale-125 transition-transform duration-300">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+</nav>
+<script>
+        // Micro-interactions for the editor
+        const editor = document.querySelector('[contenteditable]');
+        editor.addEventListener('input', () => {
+            // Optional: Logic to simulate token highlighting or terminal updates
+        });
+
+        // Initialize any specific UI effects
+        console.log("SEIS OS Sector 4: Online.");
+    </script>
+</body></html>

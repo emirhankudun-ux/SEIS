@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SEIS WOW Gallery</title>
+    <meta name="description" content="SEIS WOW Gallery collects imported SEIS visual reference pages, Kimi references, and safe demo handoff links.">
+    <link rel="stylesheet" href="./wow-gallery.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#gallery-grid">Skip to gallery</a>
+    <main class="wow-shell">
+      <header class="wow-hero">
+        <nav class="wow-nav" aria-label="WOW gallery navigation">
+          <a href="./desktop.html">SEIS System OS</a>
+          <a href="./desktop.html#search">Search</a>
+          <a href="./seis-code.html">SEIS Code</a>
+          <a href="./mythic-gacha.html">Mythic Gacha</a>
+        </nav>
+        <section class="wow-hero-grid">
+          <div>
+            <p class="eyebrow">Imported reference pack</p>
+            <h1>SEIS WOW Gallery</h1>
+            <p class="hero-copy">A safe visual catalog for the Kimi LinuxOS and VS Code Web references plus the local SEIS_WOW page packs. These assets are reference material, not live implementation proof.</p>
+            <div class="hero-actions">
+              <a class="primary-link" href="./desktop.html#search">Open in SEIS Search</a>
+              <button type="button" class="secondary-link" data-action="focus-search">Search pages</button>
+            </div>
+          </div>
+          <aside class="hero-status" aria-label="Import status">
+            <strong id="page-count">Loading</strong>
+            <span>Visual pages indexed</span>
+            <small>No cloud keys. No SSH. No provider calls.</small>
+          </aside>
+        </section>
+      </header>
+
+      <section class="wow-panel external-panel" aria-labelledby="external-title">
+        <div class="section-heading">
+          <p class="eyebrow">External references</p>
+          <h2 id="external-title">Kimi links</h2>
+          <p>Opened as external reference pages. SEIS keeps them clearly labeled and does not claim their runtime as local SEIS functionality.</p>
+        </div>
+        <div class="external-grid" id="kimi-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="wow-controls" aria-label="Gallery filters">
+        <label class="search-box">
+          <span>Search</span>
+          <input id="gallery-search" type="search" placeholder="code, cloud, gacha, agent, design...">
+        </label>
+        <label class="select-box">
+          <span>Collection</span>
+          <select id="collection-filter">
+            <option value="all">All collections</option>
+          </select>
+        </label>
+        <label class="select-box">
+          <span>Tag</span>
+          <select id="tag-filter">
+            <option value="all">All tags</option>
+          </select>
+        </label>
+        <button type="button" class="secondary-link" data-action="reset-filters">Reset</button>
+      </section>
+
+      <section class="wow-panel" aria-labelledby="collections-title">
+        <div class="section-heading">
+          <p class="eyebrow">Local zip imports</p>
+          <h2 id="collections-title">Collections</h2>
+        </div>
+        <div class="collection-grid" id="collection-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="wow-panel" aria-labelledby="gallery-title">
+        <div class="section-heading compact">
+          <div>
+          <p class="eyebrow">190 page board</p>
+            <h2 id="gallery-title">Reference screens</h2>
+          </div>
+          <p id="result-count">Loading pages...</p>
+        </div>
+        <div class="gallery-grid" id="gallery-grid" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <dialog class="preview-dialog" id="preview-dialog" aria-labelledby="preview-title">
+      <div class="dialog-toolbar">
+        <div>
+          <p class="eyebrow" id="preview-collection">Reference</p>
+          <h2 id="preview-title">Preview</h2>
+        </div>
+        <button type="button" class="icon-button" data-action="close-preview" aria-label="Close preview">x</button>
+      </div>
+      <img id="preview-image" alt="">
+      <p id="preview-note" class="preview-note"></p>
+      <div class="dialog-actions">
+        <a id="preview-html" class="secondary-link" href="#" target="_blank" rel="noopener">Open HTML reference</a>
+        <a id="preview-image-link" class="primary-link" href="#" target="_blank" rel="noopener">Open PNG</a>
+      </div>
+    </dialog>
+
+    <script src="./wow-gallery.js" defer></script>
+  </body>
+</html>

@@ -67,6 +67,8 @@ Rules:
 - `content/development/seis-goal-risk-register.json`
 - `content/development/seis-goal-validation-steps.json`
 - `content/development/seis-goal-roadmap-links.json`
+- `content/development/seis-universe-omega-goal-system.json`
+- `content/development/seis-universe-omega-phase-evidence.json`
 - `docs/goals/evidence-ledger.md`
 - `docs/goals/execution-board.md`
 - `docs/goals/review-cadence.md`
@@ -78,11 +80,15 @@ Rules:
 - `docs/goals/risk-register.md`
 - `docs/goals/validation-steps.md`
 - `docs/goals/roadmap-links.md`
+- `docs/goals/seis-universe-omega-goal-system.md`
+- `docs/goals/seis-universe-omega-phase-evidence.md`
 - `docs/goals/command-center-view-model.md`
 - `scripts/check-goal-tracking.mjs`
+- `scripts/check-seis-universe-omega-goal-system.mjs`
 
 Run:
 
 ```bash
 npm run check:goal-tracking
+npm run check:seis-universe-omega-goal-system
 ```

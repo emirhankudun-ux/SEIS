@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>System Status | Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-bright": "#37393d",
+                "error": "#ffb4ab",
+                "tertiary-container": "#d9d9d9",
+                "surface-container-high": "#282a2e",
+                "on-tertiary-container": "#5d5f5f",
+                "on-error": "#690005",
+                "primary": "#dbfcff",
+                "surface-container-highest": "#323539",
+                "inverse-primary": "#006970",
+                "on-tertiary-fixed-variant": "#454747",
+                "surface-container-low": "#191c1f",
+                "surface-container-lowest": "#0c0e12",
+                "on-secondary-fixed-variant": "#74009f",
+                "on-secondary-fixed": "#320047",
+                "secondary": "#ebb2ff",
+                "on-error-container": "#ffdad6",
+                "inverse-surface": "#e1e2e7",
+                "tertiary": "#f5f5f5",
+                "on-background": "#e1e2e7",
+                "surface-tint": "#00dbe9",
+                "primary-fixed": "#7df4ff",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "tertiary-fixed": "#e2e2e2",
+                "on-secondary": "#520072",
+                "secondary-fixed": "#f8d8ff",
+                "surface-container": "#1d2023",
+                "on-primary-fixed": "#002022",
+                "primary-fixed-dim": "#00dbe9",
+                "secondary-fixed-dim": "#ebb2ff",
+                "on-surface": "#e1e2e7",
+                "primary-container": "#00f0ff",
+                "on-primary": "#00363a",
+                "on-tertiary": "#2f3131",
+                "on-surface-variant": "#b9cacb",
+                "on-secondary-container": "#fff6fc",
+                "surface-dim": "#111417",
+                "on-primary-container": "#006970",
+                "inverse-on-surface": "#2e3134",
+                "background": "#111417",
+                "surface-variant": "#323539",
+                "on-primary-fixed-variant": "#004f54",
+                "on-tertiary-fixed": "#1a1c1c",
+                "surface": "#111417",
+                "secondary-container": "#b600f8",
+                "outline": "#849495",
+                "outline-variant": "#3b494b",
+                "error-container": "#93000a"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "margin-desktop": "64px",
+                "gutter": "24px",
+                "unit": "8px",
+                "section-gap": "120px",
+                "margin-mobile": "20px",
+                "container-max": "1280px"
+            },
+            "fontFamily": {
+                "mono-label": ["JetBrains Mono"],
+                "display-lg-mobile": ["Inter"],
+                "mono-code": ["JetBrains Mono"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.2), transparent, rgba(182, 0, 248, 0.1)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .hover-glow:hover {
+            box-shadow: 0 0 40px -10px rgba(0, 219, 233, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .pulse-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00dbe9, transparent);
+            position: absolute;
+            top: -2px;
+            animation: scan 8s linear infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes scan {
+            0% { top: -2%; }
+            100% { top: 102%; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
+<div class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">
+            Aether AI
+        </div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Pricing</a>
+</div>
+<div class="flex gap-4 items-center">
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary font-semibold text-body-md hover:opacity-90 active:scale-95 transition-all">Get Started</button>
+<button class="hidden md:block text-on-surface font-body-md text-body-md hover:text-primary-fixed transition-colors">Sign In</button>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto space-y-gutter">
+<!-- Page Header -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-primary-fixed-dim/10 text-primary-fixed-dim font-mono-label text-mono-label border border-primary-fixed-dim/20">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-dot"></span>
+                        ALL SYSTEMS OPERATIONAL
+                    </span>
+<span class="text-on-surface-variant font-mono-label text-mono-label">Uptime: 99.998%</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface tracking-tight">System Status</h1>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="text-on-surface-variant font-mono-label text-mono-label uppercase">Last Refreshed</p>
+<p class="text-primary-fixed font-mono-code text-mono-code" id="refresh-timer">14s ago</p>
+</div>
+</div>
+</header>
+<!-- Global Infrastructure Pulse -->
+<section class="glass-panel rounded-xl h-[500px] relative">
+<div class="absolute top-6 left-6 z-10 space-y-1">
+<h2 class="text-on-surface font-headline-md text-[20px] font-bold">Global Infrastructure Pulse</h2>
+<p class="text-on-surface-variant font-body-md text-sm">Real-time edge node latency and regional traffic distribution.</p>
+</div>
+<!-- Map Visualization Placeholder -->
+<div class="absolute inset-0 bg-[#0A0E1A]/40 flex items-center justify-center">
+<div class="relative w-full h-full opacity-60">
+<div class="w-full h-full bg-cover bg-center" data-alt="A sophisticated dark-themed world map illustration showing a network of glowing cyan nodes and pulsating data connections between global tech hubs like San Francisco, London, Tokyo, and Singapore. The style is professional, minimalist, and high-tech with a focus on dark obsidian tones and electric blue accents, matching the Aether AI brand aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD_9G8ZG17hchrigFOxaXX8dK7ApG9EOdyIw077xGEwYqLQbs1VDXtRnhITrl9G6cCub3AT1NYbf1Pb1PjdKDTn67rMDSsB-EnQWtxTli1Kig12d9OIvpNkIsNJPxOFpO3PQKQVZUu0xGhJQ_uKHJZIt5MI4PES_PCFnklaYHq030UQ0_2UlF7B73SS7lo_D3Oob3xbIk2qmIXw-jucr0IPqwL6XIu5kCN35FnQPpdobNfoYWvL5IVq0mpkpumPGps-Nk94QhLp2Q')"></div>
+</div>
+<!-- Floating Data Points -->
+<div class="absolute top-1/2 left-1/4 group cursor-help">
+<div class="w-3 h-3 bg-primary-fixed rounded-full pulse-dot"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 glass-panel p-2 rounded scale-0 group-hover:scale-100 transition-transform origin-bottom">
+<p class="text-[10px] font-mono-label text-primary-fixed">US-EAST-1</p>
+<p class="text-xs font-bold">12ms Latency</p>
+</div>
+</div>
+<div class="absolute top-1/3 left-[60%] group cursor-help">
+<div class="w-3 h-3 bg-primary-fixed rounded-full pulse-dot"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 glass-panel p-2 rounded scale-0 group-hover:scale-100 transition-transform origin-bottom">
+<p class="text-[10px] font-mono-label text-primary-fixed">EU-WEST-2</p>
+<p class="text-xs font-bold">42ms Latency</p>
+</div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 group cursor-help">
+<div class="w-3 h-3 bg-primary-fixed rounded-full pulse-dot"></div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 glass-panel p-2 rounded scale-0 group-hover:scale-100 transition-transform origin-bottom">
+<p class="text-[10px] font-mono-label text-primary-fixed">AP-SOUTH-1</p>
+<p class="text-xs font-bold">89ms Latency</p>
+</div>
+</div>
+</div>
+<div class="absolute bottom-6 right-6 glass-panel p-4 rounded-lg flex gap-8">
+<div>
+<span class="text-[10px] font-mono-label text-on-surface-variant block mb-1">GLOBAL LOAD</span>
+<span class="text-xl font-bold text-on-surface">3.4M <span class="text-xs font-normal text-on-surface-variant">req/s</span></span>
+</div>
+<div class="w-px h-10 bg-outline-variant/30"></div>
+<div>
+<span class="text-[10px] font-mono-label text-on-surface-variant block mb-1">AVG. RESP.</span>
+<span class="text-xl font-bold text-on-surface">142<span class="text-xs font-normal text-on-surface-variant">ms</span></span>
+</div>
+</div>
+</section>
+<!-- Main Health Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- GPU Cluster Health - Bento Grid Style -->
+<section class="lg:col-span-2 space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="text-on-surface font-headline-md text-[20px] font-bold">GPU Cluster Health</h2>
+<button class="text-primary-fixed hover:underline font-mono-label text-xs">View All Clusters</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Cluster Card 1 -->
+<div class="glass-panel hover-glow p-6 rounded-xl relative group">
+<div class="scanline"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-on-surface font-bold">Cluster-NVIDIA-H100-A</h3>
+<p class="text-on-surface-variant text-xs font-mono-code">ID: cl_492019482</p>
+</div>
+<span class="px-2 py-0.5 rounded-sm bg-primary-fixed-dim/10 text-primary-fixed-dim text-[10px] font-mono-label">PRIMARY</span>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Load</p>
+<div class="h-1 w-full bg-surface-container-high rounded-full overflow-hidden mb-1">
+<div class="h-full bg-primary-fixed w-[78%]"></div>
+</div>
+<p class="text-sm font-bold">78.2%</p>
+</div>
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Temp</p>
+<p class="text-sm font-bold text-on-surface">64°C</p>
+</div>
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Uptime</p>
+<p class="text-sm font-bold text-on-surface">14d 2h</p>
+</div>
+</div>
+</div>
+<!-- Cluster Card 2 -->
+<div class="glass-panel hover-glow p-6 rounded-xl relative">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-on-surface font-bold">Cluster-A100-PROD-01</h3>
+<p class="text-on-surface-variant text-xs font-mono-code">ID: cl_118274550</p>
+</div>
+<span class="px-2 py-0.5 rounded-sm bg-primary-fixed-dim/10 text-primary-fixed-dim text-[10px] font-mono-label">ACTIVE</span>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Load</p>
+<div class="h-1 w-full bg-surface-container-high rounded-full overflow-hidden mb-1">
+<div class="h-full bg-primary-fixed w-[42%]"></div>
+</div>
+<p class="text-sm font-bold">42.1%</p>
+</div>
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Temp</p>
+<p class="text-sm font-bold text-on-surface">51°C</p>
+</div>
+<div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1 uppercase">Uptime</p>
+<p class="text-sm font-bold text-on-surface">256d 1h</p>
+</div>
+</div>
+</div>
+<!-- Cluster Card 3 (Bento-Large) -->
+<div class="glass-panel hover-glow p-6 rounded-xl md:col-span-2">
+<div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-8">
+<div>
+<h3 class="text-on-surface font-bold text-lg">Inference Engine Throughput</h3>
+<p class="text-on-surface-variant text-sm">Aggregated performance across 1,200 inference nodes.</p>
+</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 rounded bg-surface-container-highest border border-outline-variant/30 text-xs font-mono-label">1H</div>
+<div class="px-3 py-1 rounded bg-primary-fixed text-on-primary text-xs font-mono-label">24H</div>
+<div class="px-3 py-1 rounded bg-surface-container-highest border border-outline-variant/30 text-xs font-mono-label">7D</div>
+</div>
+</div>
+<div class="h-48 w-full flex items-end gap-1 px-2">
+<!-- Mock Visualization Columns -->
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[40%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[45%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[60%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[75%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[90%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[85%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[70%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[80%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[95%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[65%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[50%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[60%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[75%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[90%] hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary-fixed-dim/20 rounded-t-sm h-[100%] hover:bg-primary-fixed transition-colors shadow-[0_-5px_15px_rgba(0,219,233,0.3)]"></div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] font-mono-label text-on-surface-variant">
+<span>00:00 AM</span>
+<span>06:00 AM</span>
+<span>12:00 PM</span>
+<span>06:00 PM</span>
+<span>PRESENT</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Incident History & Real-time Telemetry Sidebar -->
+<aside class="space-y-gutter">
+<!-- Real-time Telemetry -->
+<section class="glass-panel rounded-xl p-6">
+<h2 class="text-on-surface font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-lg">monitoring</span>
+                        Real-time Telemetry
+                    </h2>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-mono-label text-on-surface-variant uppercase">Req Volume</span>
+<span class="text-sm font-bold text-on-surface">1.2k/s</span>
+</div>
+<div class="h-12 w-full overflow-hidden">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path class="animate-[dash_2s_linear_infinite]" d="M0 15 Q 10 5, 20 12 T 40 10 T 60 15 T 80 8 T 100 12" fill="none" stroke="#00dbe9" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-mono-label text-on-surface-variant uppercase">Error Rate</span>
+<span class="text-sm font-bold text-error">0.003%</span>
+</div>
+<div class="h-12 w-full overflow-hidden">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 20">
+<path d="M0 18 L 10 17 L 20 18 L 30 18 L 40 17 L 50 18 L 60 18 L 70 18 L 80 17 L 90 18 L 100 17" fill="none" stroke="#ffb4ab" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+</section>
+<!-- Incident History -->
+<section class="glass-panel rounded-xl p-6 max-h-[600px] flex flex-col">
+<h2 class="text-on-surface font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">history</span>
+                        Incident History
+                    </h2>
+<div class="space-y-6 overflow-y-auto pr-2 custom-scrollbar flex-1">
+<!-- Incident 1 -->
+<div class="relative pl-6 border-l border-outline-variant/50">
+<div class="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-surface-container-highest border border-outline-variant"></div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1">NOV 24, 2023 · 14:20 UTC</p>
+<h4 class="text-sm font-bold text-on-surface">API Gateway Latency Spike</h4>
+<p class="text-xs text-on-surface-variant mt-1">Resolved: Automated scaling triggered a re-indexing of route tables in the US-West region.</p>
+</div>
+<!-- Incident 2 -->
+<div class="relative pl-6 border-l border-outline-variant/50">
+<div class="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-surface-container-highest border border-outline-variant"></div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1">NOV 22, 2023 · 09:12 UTC</p>
+<h4 class="text-sm font-bold text-on-surface">Scheduled Maintenance</h4>
+<p class="text-xs text-on-surface-variant mt-1">Completed: Upgraded H100 cluster firmware to v4.2.1-stable.</p>
+</div>
+<!-- Incident 3 -->
+<div class="relative pl-6 border-l border-outline-variant/50">
+<div class="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-surface-container-highest border border-outline-variant"></div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1">NOV 18, 2023 · 21:05 UTC</p>
+<h4 class="text-sm font-bold text-on-surface">Network Congestion (Telia/Level3)</h4>
+<p class="text-xs text-on-surface-variant mt-1">Resolved: Rerouted traffic through Aether Backbone to bypass upstream carrier outage.</p>
+</div>
+<!-- Incident 4 -->
+<div class="relative pl-6 border-l border-outline-variant/50 opacity-60">
+<div class="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-surface-container-highest border border-outline-variant"></div>
+<p class="text-[10px] font-mono-label text-on-surface-variant mb-1">NOV 15, 2023 · 02:44 UTC</p>
+<h4 class="text-sm font-bold text-on-surface">Model Weights CDN Refresh</h4>
+<p class="text-xs text-on-surface-variant mt-1">Completed: All regions synced to newest Aether-4 snapshot.</p>
+</div>
+</div>
+</section>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter max-w-container-max mx-auto bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="lg:col-span-2">
+<div class="font-headline-md text-headline-md text-on-surface font-bold mb-4">Aether AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container max-w-xs">
+                © 2024 Aether AI. Engineering the future of intelligence.
+            </p>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="text-on-surface font-bold text-sm mb-2">Developers</h5>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Documentation</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">API Reference</a>
+<a class="text-primary-fixed transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Status</a>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="text-on-surface font-bold text-sm mb-2">Legal</h5>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Terms of Service</a>
+<a class="text-on-tertiary-container hover:text-on-surface transition-colors font-mono-label text-mono-label hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Security</a>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for refresh timer
+        let seconds = 0;
+        const timerElement = document.getElementById('refresh-timer');
+        
+        setInterval(() => {
+            seconds++;
+            if (seconds > 60) {
+                seconds = 0;
+                // Imagine an AJAX reload here
+            }
+            timerElement.textContent = `${seconds}s ago`;
+        }, 1000);
+
+        // Simulated data fluctuations for health bars
+        const healthBars = document.querySelectorAll('.h-full.bg-primary-fixed');
+        setInterval(() => {
+            healthBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width);
+                const jitter = (Math.random() - 0.5) * 2;
+                bar.style.width = Math.max(10, Math.min(100, (currentWidth || 50) + jitter)) + '%';
+            });
+        }, 3000);
+    </script>
+</body></html>

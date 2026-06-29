@@ -377,8 +377,17 @@ function collectRelevantIssues(events) {
     })
     .filter((issue) => {
       const text = `${issue.text} ${issue.url}`;
-      if (text.includes("cdn.jsdelivr.net") || text.includes("monaco-editor")) {
+      if (
+        text.includes("cdn.jsdelivr.net") ||
+        text.includes("monaco-editor") ||
+        text.includes("vs/css!vs/editor/editor.main") ||
+        text.includes("Here are the modules that depend on it:")
+      ) {
         notes.push("Monaco CDN issue ignored because SEIS Code has a local fallback editor path.");
+        return false;
+      }
+      if (text.includes("Array(95)") && events.some((event) => JSON.stringify(event).includes("vs/css!vs/editor/editor.main"))) {
+        notes.push("Monaco loader dependency list ignored because SEIS Code fallback is validated separately.");
         return false;
       }
       return true;
@@ -715,6 +724,73 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(result.routeButtons >= 3, "Desktop Search/Launcher route buttons missing in product smoke");
 
   await clickSelector(client, "[data-action='toggle-launcher']");
+  await clickSelector(client, "[data-demo-route-group] [data-value='seis-command-center-app']");
+  await waitFor(client, "Boolean(document.querySelector('[data-seis-command-center]'))", 5000);
+  const commandCenter = await evaluate(client, `(() => ({
+    modules: document.querySelectorAll('[data-seis-command-center] [data-v17-module]').length,
+    appActions: document.querySelectorAll('[data-seis-command-center] [data-v17-open-app]').length,
+    routeActions: document.querySelectorAll('[data-seis-command-center] [data-v17-open-route]').length,
+    text: document.querySelector('[data-seis-command-center]')?.textContent || '',
+    diagnostics: window.__SEIS_DESKTOP__.v17CommandCenter()
+  }))()`);
+  ensure(commandCenter.modules >= 16, `Desktop V17 Command Center expected at least 16 modules, got ${commandCenter.modules}`);
+  ensure(commandCenter.appActions >= 15, `Desktop V17 Command Center expected at least 15 app actions, got ${commandCenter.appActions}`);
+  ensure(commandCenter.routeActions >= 7, `Desktop V17 Command Center expected at least 7 route actions, got ${commandCenter.routeActions}`);
+  ensure(commandCenter.diagnostics.moduleCount === commandCenter.modules, "Desktop V17 Command Center diagnostics must match rendered module count");
+  ensure(commandCenter.diagnostics.providerKeysRequiredForCoreDemo === 0, "Desktop V17 Command Center must keep core demo zero-key");
+  ensure(commandCenter.diagnostics.liveSshExecution === false, "Desktop V17 Command Center must keep live SSH disabled");
+  ensure(commandCenter.diagnostics.liveDeployment === false, "Desktop V17 Command Center must keep live deployment disabled");
+  ensure(commandCenter.text.includes("20B / 16GB+"), "Desktop V17 Command Center must show the 20B on 16GB+ model floor");
+  ensure(commandCenter.text.includes("150B gated"), "Desktop V17 Command Center must show the 150B future boundary");
+  ensure(commandCenter.text.includes("SEIS 150B Frontier Research Target"), "Desktop V17 Command Center must show the SEIS 150B frontier target");
+  ensure(commandCenter.text.includes("content/development/seis-model-frontier-escalation-policy.json"), "Desktop V17 Command Center must show the frontier escalation policy path");
+  ensure(commandCenter.text.includes("seis://ai/model-frontier-escalation-policy.json"), "Desktop V17 Command Center must show the frontier escalation policy MCP resource URI");
+  ensure(commandCenter.text.includes("check:seis-model-frontier-escalation-policy"), "Desktop V17 Command Center must show the frontier escalation quality gate");
+  ensure(commandCenter.text.includes("content/development/seis-150b-frontier-model-program.json"), "Desktop V17 Command Center must show the 150B frontier model program path");
+  ensure(commandCenter.text.includes("seis://ai/150b-frontier-model-program.json"), "Desktop V17 Command Center must show the 150B frontier model program MCP resource URI");
+  ensure(commandCenter.text.includes("check:seis-150b-frontier-model-program"), "Desktop V17 Command Center must show the 150B frontier model program quality gate");
+  ensure(commandCenter.text.includes("No-skip-20B"), "Desktop V17 Command Center must show the no-skip-20B escalation rule");
+  ensure(commandCenter.text.includes("Master Objective Coverage"), "Desktop V17 Command Center must show the master objective coverage panel");
+  ensure(commandCenter.text.includes("seis-ai-150b-frontier-boundary"), "Desktop V17 Command Center must show the 150B objective coverage boundary");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.activeCoverage === "seis-ai-150b-frontier-boundary", "Desktop V17 Command Center diagnostics must expose the 150B objective coverage boundary");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.itemCount >= 10, "Desktop V17 Command Center diagnostics must expose all master objective coverage items");
+  ensure(commandCenter.diagnostics.masterObjectiveCoverage.itemIds.includes("god-mode-every-topic-feature-growth"), "Desktop V17 Command Center diagnostics must expose God Mode coverage");
+  ensure(commandCenter.text.includes("user-work-protection"), "Desktop V17 Command Center must show the coverage matrix rows");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.status === "dry-run-only", "Desktop V17 Command Center diagnostics must expose dry-run 20B preflight");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.benchmarkDryRunReport === "reports/seis-model-scaling/20b-benchmark-dry-run.json", "Desktop V17 Command Center diagnostics must expose the 20B benchmark dry-run report path");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.benchmarkDryRunStatus === "dry-run-not-measured", "Desktop V17 Command Center diagnostics must keep benchmark dry-run not-measured");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.measuredBenchmark === false, "Desktop V17 Command Center 20B preflight must not claim measured benchmark evidence");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.routeEligibleToday === false, "Desktop V17 Command Center 20B preflight must keep routing blocked");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.hostPreflightCommand === "npm run inspect:seis-model-local-hardware", "Desktop V17 Command Center must expose the host RAM preflight command");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.modelCardTemplate === "content/development/seis-20b-model-card-template.json", "Desktop V17 Command Center diagnostics must expose the 20B model card template path");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.datasetCardTemplate === "content/development/seis-20b-dataset-card-template.json", "Desktop V17 Command Center diagnostics must expose the 20B dataset card template path");
+  ensure(commandCenter.diagnostics.modelScalingPreflight.evidenceTemplateStatus === "template-not-filled / human-review-required", "Desktop V17 Command Center diagnostics must keep 20B evidence templates review-gated");
+  ensure(commandCenter.diagnostics.modelFrontierEscalationPolicy.path === "content/development/seis-model-frontier-escalation-policy.json", "Desktop V17 Command Center diagnostics must expose the frontier escalation policy path");
+  ensure(commandCenter.diagnostics.modelFrontierEscalationPolicy.resource === "seis://ai/model-frontier-escalation-policy.json", "Desktop V17 Command Center diagnostics must expose the frontier escalation policy MCP resource URI");
+  ensure(commandCenter.diagnostics.modelFrontierEscalationPolicy.status === "policy-active-research-gated", "Desktop V17 Command Center diagnostics must expose the frontier escalation policy status");
+  ensure(commandCenter.diagnostics.modelFrontierEscalationPolicy.qualityGate === "npm run check:seis-model-frontier-escalation-policy", "Desktop V17 Command Center diagnostics must expose the frontier escalation policy quality gate");
+  ensure(commandCenter.diagnostics.modelFrontierEscalationPolicy.routeEligibleToday === false, "Desktop V17 Command Center diagnostics must keep frontier escalation routing blocked");
+  ensure(commandCenter.diagnostics.frontierModelProgram.path === "content/development/seis-150b-frontier-model-program.json", "Desktop V17 Command Center diagnostics must expose the 150B frontier model program path");
+  ensure(commandCenter.diagnostics.frontierModelProgram.resource === "seis://ai/150b-frontier-model-program.json", "Desktop V17 Command Center diagnostics must expose the 150B frontier model program MCP resource URI");
+  ensure(commandCenter.diagnostics.frontierModelProgram.status === "frontier-program-plan-only", "Desktop V17 Command Center diagnostics must keep the 150B frontier model program plan-only");
+  ensure(commandCenter.diagnostics.frontierModelProgram.qualityGate === "npm run check:seis-150b-frontier-model-program", "Desktop V17 Command Center diagnostics must expose the 150B frontier model program quality gate");
+  ensure(commandCenter.diagnostics.frontierModelProgram.routeEligibleToday === false, "Desktop V17 Command Center diagnostics must keep the 150B frontier model program route-ineligible");
+  ensure(commandCenter.diagnostics.frontierModelProgram.stages.length === 6, "Desktop V17 Command Center diagnostics must expose six 150B frontier program stages");
+  ensure(commandCenter.text.includes("seis-20b-local-preflight.md"), "Desktop V17 Command Center must show the 20B local preflight report path");
+  ensure(commandCenter.text.includes("reports/seis-model-scaling/20b-benchmark-dry-run.json"), "Desktop V17 Command Center must show the 20B benchmark dry-run report path");
+  ensure(commandCenter.text.includes("Parameter Ladder"), "Desktop V17 Command Center must show the model parameter ladder section");
+  ensure(commandCenter.text.includes("content/development/seis-model-parameter-ladder.json"), "Desktop V17 Command Center must show the model parameter ladder source path");
+  ensure(commandCenter.text.includes("seis://ai/model-parameter-ladder.json"), "Desktop V17 Command Center must show the model parameter ladder MCP resource URI");
+  ensure(commandCenter.text.includes("300B+"), "Desktop V17 Command Center must show the 300B+ exploration boundary");
+  ensure(commandCenter.text.includes("dist/qa/model-scaling/local-hardware-preflight.json"), "Desktop V17 Command Center must show the ignored host RAM preflight output path");
+  ensure(commandCenter.text.includes("content/development/seis-20b-model-card-template.json"), "Desktop V17 Command Center must show the 20B model card template path");
+  ensure(commandCenter.text.includes("content/development/seis-20b-dataset-card-template.json"), "Desktop V17 Command Center must show the 20B dataset card template path");
+  await clickSelector(client, "[data-seis-command-center] [data-action='export-model-preflight']");
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-20b-local-preflight.md')", 5000);
+  await clickSelector(client, "[data-seis-command-center] [data-action='app-primary']");
+  await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-v17-command-center-snapshot.md')", 5000);
+
+  await clickSelector(client, "[data-action='toggle-launcher']");
   await clickSelector(client, "[data-demo-route-group] [data-value='seis-ai-app']");
   await waitFor(client, "Boolean(document.querySelector('[data-window-app-id=\"ai-assistant\"]'))", 5000);
   await waitFor(client, "document.querySelectorAll('[data-ai-plugin-tab]').length >= 4 && Boolean(document.querySelector('[data-ai-plugin-center]'))", 5000);
@@ -761,8 +837,9 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   ensure(installedAiSystems.personalPluginLaneMatrixText.includes("seis-cloud@personal"), "Desktop Personal Plugin AI Core Lane Matrix must show seis-cloud@personal");
   ensure(installedAiSystems.personalPluginLaneMatrixText.includes("v0.4-multi-workspace-readiness"), "Desktop Personal Plugin AI Core Lane Matrix must show canonical version targets");
   ensure(installedAiSystems.mcpRuntimeRows === 4, `Desktop MCP Runtime Contract expected four rows, got ${installedAiSystems.mcpRuntimeRows}`);
-  ensure(installedAiSystems.mcpRuntimeDiagnostics.toolCount === 32, `Desktop MCP Runtime Contract diagnostics expected 32 tools, got ${installedAiSystems.mcpRuntimeDiagnostics.toolCount}`);
-  ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceCount === 17, `Desktop MCP Runtime Contract diagnostics expected 17 resources, got ${installedAiSystems.mcpRuntimeDiagnostics.resourceCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.toolCount === 34, `Desktop MCP Runtime Contract diagnostics expected 34 tools, got ${installedAiSystems.mcpRuntimeDiagnostics.toolCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceCount === 26, `Desktop MCP Runtime Contract diagnostics expected 26 resources, got ${installedAiSystems.mcpRuntimeDiagnostics.resourceCount}`);
+  ensure(installedAiSystems.mcpRuntimeDiagnostics.resourceUri === "seis://ai/mcp-runtime-contract.json", "Desktop MCP Runtime Contract diagnostics must expose the canonical MCP resource URI");
   ensure(installedAiSystems.mcpRuntimeText.includes("stdio JSON-RPC"), "Desktop MCP Runtime Contract must show stdio JSON-RPC evidence");
   await clickSelector(client, "[data-action='export-personal-plugin-ai-core-lane-matrix']");
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-personal-plugin-ai-core-lane-matrix.md')", 5000);
@@ -772,7 +849,10 @@ async function smokeDesktopSharedVfs(client, baseUrl) {
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-installed-ai-core-route-matrix.md')", 5000);
   ensure(installedAiSystems.localDemoText.includes("SEIS Local Demo Runtime"), "Desktop Installed AI must show the Local Demo profile");
   ensure(installedAiSystems.resourceBridgeText.includes("seis://ai/sub-agent-5-year-plan-view.json"), "Desktop Installed AI must show the generated AI Core plan-view resource bridge");
+  ensure(installedAiSystems.resourceBridgeText.includes("seis://ai/provider-registry.json"), "Desktop Installed AI must show the provider registry resource bridge");
+  ensure(installedAiSystems.resourceBridgeText.includes("seis://ai/mcp-runtime-contract.json"), "Desktop Installed AI must show the MCP runtime contract resource bridge");
   ensure(installedAiSystems.resourceBridge.planView === "apps/seis-demo-web/data/seis-sub-agent-five-year-plan-view.json", "Desktop diagnostics must expose the generated AI Core plan-view file");
+  ensure(installedAiSystems.resourceBridge.mcpRuntimeContractResource === "seis://ai/mcp-runtime-contract.json", "Desktop diagnostics must expose the MCP runtime contract resource");
   await clickSelector(client, "[data-action='export-ai-core-resource-bridge']");
   await waitFor(client, "window.__SEIS_DESKTOP__.filePaths().includes('/home/seis/Documents/seis-ai-core-resource-bridge.md')", 5000);
   await clickSelector(client, "[data-action='audit-installed-ai-systems']");
@@ -809,6 +889,10 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
     document.querySelectorAll('[data-sub-agent-version-target]').length === 5 &&
     document.querySelectorAll('[data-installed-ai-route]').length === 6 &&
     document.querySelectorAll('[data-personal-plugin-lane]').length === 5 &&
+    document.querySelectorAll('[data-mcp-runtime-surface]').length === 4 &&
+    document.querySelectorAll('[data-constellation-node]').length === 3 &&
+    document.querySelectorAll('[data-constellation-action]').length === 3 &&
+    window.__SEIS_DEMO__?.constellationInspector?.()?.status === 'local-demo-integrated' &&
     Boolean(document.querySelector('#sub-agent-run-full-demo'))
   ))()`, 20000);
   ensure(demoReady, "SEIS demo did not finish generated plan-view and 3D hero startup before smoke assertions");
@@ -838,9 +922,15 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
     versionCards: document.querySelectorAll('[data-sub-agent-version-target]').length,
     installedAiRouteCards: document.querySelectorAll('[data-installed-ai-route]').length,
     personalPluginLaneCards: document.querySelectorAll('[data-personal-plugin-lane]').length,
+    mcpRuntimeSurfaceCards: document.querySelectorAll('[data-mcp-runtime-surface]').length,
+    constellationNodeCards: document.querySelectorAll('[data-constellation-node]').length,
+    constellationActionButtons: document.querySelectorAll('[data-constellation-action]').length,
     activeVersionTarget: document.querySelector('.sub-agent-version-card.is-active')?.dataset.subAgentVersionTarget || '',
     routeMeshText: document.querySelector('#sub-agent-route-mesh')?.textContent || '',
     pluginMeshText: document.querySelector('#sub-agent-plugin-mesh')?.textContent || '',
+    mcpRuntimeText: document.querySelector('#sub-agent-mcp-runtime-mesh')?.textContent || '',
+    constellationText: document.querySelector('#sub-agent-constellation-inspector')?.textContent || '',
+    constellationInspector: window.__SEIS_DEMO__?.constellationInspector?.() || null,
     detailText: document.querySelector('#sub-agent-quarter-detail')?.textContent || '',
     hasRunButton: Boolean(document.querySelector('#sub-agent-run-demo')),
     hasFullRunButton: Boolean(document.querySelector('#sub-agent-run-full-demo')),
@@ -854,7 +944,7 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(initial.hero3dButtonCount === 3, `SEIS demo expected three 3D hero controls, got ${initial.hero3dButtonCount}`);
   ensure(initial.hero3dStatus.includes("v0.1-foundation"), `SEIS demo 3D hero status missing active version target: ${initial.hero3dStatus}`);
   ensure(initial.hero3dDiagnostics?.ready === true, "SEIS demo 3D hero diagnostics not ready");
-  ensure(initial.hero3dDiagnostics?.nodeCount >= 16, `SEIS demo 3D hero node count too low: ${initial.hero3dDiagnostics?.nodeCount}`);
+  ensure(initial.hero3dDiagnostics?.nodeCount >= 32, `SEIS demo 3D hero node count too low for AI routes, plugin lanes, and MCP runtime: ${initial.hero3dDiagnostics?.nodeCount}`);
   ensure(initial.hero3dDiagnostics?.nonBlankSample > 0, "SEIS demo 3D hero diagnostics appears blank");
   ensure(initial.hero3dReady === "true", "SEIS demo 3D hero canvas did not mark ready");
   ensure(["animated", "static"].includes(initial.hero3dMode), `SEIS demo 3D hero mode invalid: ${initial.hero3dMode}`);
@@ -865,11 +955,30 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(initial.versionCards === 5, `SEIS demo expected five AI Core version cards, got ${initial.versionCards}`);
   ensure(initial.installedAiRouteCards === 6, `SEIS demo expected six installed AI Core route cards, got ${initial.installedAiRouteCards}`);
   ensure(initial.personalPluginLaneCards === 5, `SEIS demo expected five personal plugin lane cards, got ${initial.personalPluginLaneCards}`);
+  ensure(initial.mcpRuntimeSurfaceCards === 4, `SEIS demo expected four MCP runtime surface cards, got ${initial.mcpRuntimeSurfaceCards}`);
+  ensure(initial.constellationNodeCards === 3, `SEIS demo expected three AI Core constellation node cards, got ${initial.constellationNodeCards}`);
+  ensure(initial.constellationActionButtons === 3, `SEIS demo expected three AI Core constellation actions, got ${initial.constellationActionButtons}`);
   ensure(initial.routeMeshText.includes("Claude Review Profile") && initial.routeMeshText.includes("Missing Key"), "SEIS demo route mesh missing Claude review Missing Key evidence");
   ensure(initial.pluginMeshText.includes("seis-cloud@personal") && initial.pluginMeshText.includes("plan-only"), "SEIS demo plugin mesh missing personal plugin plan-only evidence");
+  ensure(initial.mcpRuntimeText.includes("stdio JSON-RPC") && initial.mcpRuntimeText.includes("LightweightMcpServer"), "SEIS demo MCP runtime mesh missing stdio fallback evidence");
+  ensure(initial.constellationText.includes("SEIS AI Core constellation"), "SEIS demo constellation inspector title missing");
+  ensure(initial.constellationText.includes("34 MCP tools") && initial.constellationText.includes("26 resources"), "SEIS demo constellation inspector missing MCP contract counts");
+  ensure(initial.constellationText.includes("seis@personal") && initial.constellationText.includes("seis-data@personal"), "SEIS demo constellation inspector missing personal plugin lanes");
+  ensure(initial.constellationText.includes("Local Demo only"), "SEIS demo constellation inspector missing Local Demo boundary");
+  ensure(initial.constellationInspector?.status === "local-demo-integrated", `SEIS demo constellation inspector status mismatch: ${initial.constellationInspector?.status}`);
+  ensure(initial.constellationInspector?.routeCount === 6, `SEIS demo constellation route count mismatch: ${initial.constellationInspector?.routeCount}`);
+  ensure(initial.constellationInspector?.pluginLaneCount === 5, `SEIS demo constellation plugin lane count mismatch: ${initial.constellationInspector?.pluginLaneCount}`);
+  ensure(initial.constellationInspector?.mcpRuntimeToolCount === 34, `SEIS demo constellation MCP tool count mismatch: ${initial.constellationInspector?.mcpRuntimeToolCount}`);
+  ensure(Number(initial.constellationInspector?.mcpRuntimeResourceCount) === 26, `SEIS demo constellation MCP resource count mismatch: ${initial.constellationInspector?.mcpRuntimeResourceCount}`);
+  ensure(initial.constellationInspector?.mcpRuntimePromptCount === 3, `SEIS demo constellation MCP prompt count mismatch: ${initial.constellationInspector?.mcpRuntimePromptCount}`);
+  ensure(initial.constellationInspector?.heroNodeCount >= 32, `SEIS demo constellation 3D node count too low: ${initial.constellationInspector?.heroNodeCount}`);
   ensure(initial.hero3dDiagnostics?.installedAiRouteCount === 6, `SEIS demo 3D route diagnostic count mismatch: ${initial.hero3dDiagnostics?.installedAiRouteCount}`);
   ensure(initial.hero3dDiagnostics?.personalPluginLaneCount === 5, `SEIS demo 3D plugin lane diagnostic count mismatch: ${initial.hero3dDiagnostics?.personalPluginLaneCount}`);
-  ensure(initial.hero3dStatus.includes("6 AI routes") && initial.hero3dStatus.includes("5 plugin lanes"), `SEIS demo 3D hero status missing installed AI/plugin lane count: ${initial.hero3dStatus}`);
+  ensure(initial.hero3dDiagnostics?.mcpRuntimeSurfaceCount === 4, `SEIS demo 3D MCP surface diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeSurfaceCount}`);
+  ensure(initial.hero3dDiagnostics?.mcpRuntimeToolCount === 34, `SEIS demo 3D MCP tool diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeToolCount}`);
+  ensure(Number(initial.hero3dDiagnostics?.mcpRuntimeResourceCount) === 26, `SEIS demo 3D MCP resource diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimeResourceCount}`);
+  ensure(initial.hero3dDiagnostics?.mcpRuntimePromptCount === 3, `SEIS demo 3D MCP prompt diagnostic count mismatch: ${initial.hero3dDiagnostics?.mcpRuntimePromptCount}`);
+  ensure(initial.hero3dStatus.includes("6 AI routes") && initial.hero3dStatus.includes("5 plugin lanes") && initial.hero3dStatus.includes("34 MCP tools"), `SEIS demo 3D hero status missing installed AI/plugin/MCP count: ${initial.hero3dStatus}`);
   ensure(initial.activeVersionTarget === "v0.1-foundation", `SEIS demo active version target mismatch: ${initial.activeVersionTarget}`);
   ensure(initial.detailText.includes("AI Core version"), "SEIS demo quarter detail missing AI Core version evidence");
   ensure(initial.detailText.includes("Promotion decision"), "SEIS demo quarter detail missing promotion decision evidence");
@@ -883,6 +992,19 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(initial.hasExportButton, "SEIS demo sub-agent evidence export button missing");
   ensure(initial.hasResetButton, "SEIS demo sub-agent reset button missing");
   ensure(!initial.horizontalOverflow, "SEIS demo sub-agent desktop horizontal overflow detected");
+
+  await clickSelector(client, "[data-constellation-action='sync']");
+  const afterConstellationSync = await evaluate(client, `(() => {
+    const events = JSON.parse(localStorage.getItem('seis-demo-events-v1') || '[]');
+    return {
+      diagnostics: window.__SEIS_DEMO__?.hero3dDiagnostics?.() || null,
+      inspector: window.__SEIS_DEMO__?.constellationInspector?.() || null,
+      syncEvent: events.some((event) => event.event_name === 'seis_demo_constellation_inspector_synced')
+    };
+  })()`);
+  ensure(afterConstellationSync.syncEvent, "SEIS demo constellation inspector sync event missing");
+  ensure(afterConstellationSync.diagnostics?.lastAction === "sync-quarter", `SEIS demo constellation sync did not drive 3D map sync: ${afterConstellationSync.diagnostics?.lastAction}`);
+  ensure(afterConstellationSync.inspector?.heroInteractionCount >= 1, "SEIS demo constellation sync did not update hero interaction count");
 
   await clickSelector(client, "#seis-hero-3d-rotate");
   await clickSelector(client, "#seis-hero-3d-sync");
@@ -963,12 +1085,26 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
       installedAiCoreRoutes: report?.installedAiCoreRoutes?.length || 0,
       personalPluginLaneCount: report?.personalPluginLaneCount || 0,
       personalPluginLaneMatrix: report?.personalPluginLaneMatrix?.length || 0,
+      mcpRuntimeSurfaceCount: report?.mcpRuntimeSurfaceCount || 0,
+      mcpRuntimeToolCount: report?.mcpRuntimeToolCount || 0,
+      mcpRuntimeResourceCount: report?.mcpRuntimeResourceCount || 0,
+      mcpRuntimePromptCount: report?.mcpRuntimePromptCount || 0,
+      mcpRuntimeTransport: report?.mcpRuntimeTransport || '',
+      mcpRuntimeSurfaces: report?.mcpRuntimeContract?.surfaces?.length || 0,
+      constellationInspectorStatus: report?.constellationInspectorStatus || '',
+      constellationInspectorRouteCount: report?.constellationInspectorRouteCount || 0,
+      constellationInspectorPluginLaneCount: report?.constellationInspectorPluginLaneCount || 0,
+      constellationInspectorMcpToolCount: report?.constellationInspectorMcpToolCount || 0,
+      constellationInspectorMcpResourceCount: report?.constellationInspectorMcpResourceCount || 0,
+      constellationInspectorHeroNodeCount: report?.constellationInspectorHeroNodeCount || 0,
+      constellationInspectorBoundary: report?.constellationInspector?.boundary || '',
       seisAgentPluginIntegration: report?.seisAgentPluginIntegration || '',
       planViewSource: report?.subAgentPlanView || '',
       planViewStatus: report?.planViewStatus || '',
       planViewGeneratedBy: report?.planViewGeneratedBy || '',
       promotionMapStatus: report?.promotionMapStatus || '',
       promotionMapSource: report?.seisAiCoreVersionPromotionMap || '',
+      providerRegistrySource: report?.seisAiCoreProviderRegistry || '',
       completionPercent: report?.completionPercent || 0,
       demoBoundary: report?.demoBoundary || '',
       releasePromotionAllowed: report?.releasePromotionAllowed,
@@ -976,6 +1112,7 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
       firstRecordVersionTarget: report?.records?.[0]?.aiCoreVersionTarget || '',
       lastRecordVersionTarget: report?.records?.[report?.records?.length - 1]?.aiCoreVersionTarget || '',
       validationBrowserSmoke: report?.validation?.browserSmoke || '',
+      validationProviderRegistry: report?.validation?.providerRegistry || '',
       validationVersionRegistry: report?.validation?.versionRegistry || '',
       validationPromotionGates: report?.validation?.promotionGates || '',
       statusText: document.querySelector('#sub-agent-export-status')?.textContent || '',
@@ -992,6 +1129,19 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(afterExport.installedAiCoreRoutes === 6, `SEIS demo evidence report expected six installed AI Core route records, got ${afterExport.installedAiCoreRoutes}`);
   ensure(afterExport.personalPluginLaneCount === 5, `SEIS demo evidence report expected five personal plugin lanes, got ${afterExport.personalPluginLaneCount}`);
   ensure(afterExport.personalPluginLaneMatrix === 5, `SEIS demo evidence report expected five personal plugin lane records, got ${afterExport.personalPluginLaneMatrix}`);
+  ensure(afterExport.mcpRuntimeSurfaceCount === 4, `SEIS demo evidence report expected four MCP runtime surfaces, got ${afterExport.mcpRuntimeSurfaceCount}`);
+  ensure(afterExport.mcpRuntimeToolCount === 34, `SEIS demo evidence report expected 34 MCP tools, got ${afterExport.mcpRuntimeToolCount}`);
+  ensure(Number(afterExport.mcpRuntimeResourceCount) === 26, `SEIS demo evidence report expected 26 MCP resources, got ${afterExport.mcpRuntimeResourceCount}`);
+  ensure(afterExport.mcpRuntimePromptCount === 3, `SEIS demo evidence report expected three MCP prompts, got ${afterExport.mcpRuntimePromptCount}`);
+  ensure(afterExport.mcpRuntimeTransport === "stdio JSON-RPC", `SEIS demo evidence report MCP transport mismatch: ${afterExport.mcpRuntimeTransport}`);
+  ensure(afterExport.mcpRuntimeSurfaces === 4, `SEIS demo evidence report expected four MCP runtime surface records, got ${afterExport.mcpRuntimeSurfaces}`);
+  ensure(afterExport.constellationInspectorStatus === "local-demo-integrated", `SEIS demo evidence constellation status mismatch: ${afterExport.constellationInspectorStatus}`);
+  ensure(afterExport.constellationInspectorRouteCount === 6, `SEIS demo evidence constellation route count mismatch: ${afterExport.constellationInspectorRouteCount}`);
+  ensure(afterExport.constellationInspectorPluginLaneCount === 5, `SEIS demo evidence constellation plugin count mismatch: ${afterExport.constellationInspectorPluginLaneCount}`);
+  ensure(afterExport.constellationInspectorMcpToolCount === 34, `SEIS demo evidence constellation MCP tool count mismatch: ${afterExport.constellationInspectorMcpToolCount}`);
+  ensure(Number(afterExport.constellationInspectorMcpResourceCount) === 26, `SEIS demo evidence constellation MCP resource count mismatch: ${afterExport.constellationInspectorMcpResourceCount}`);
+  ensure(afterExport.constellationInspectorHeroNodeCount >= 32, `SEIS demo evidence constellation 3D node count too low: ${afterExport.constellationInspectorHeroNodeCount}`);
+  ensure(afterExport.constellationInspectorBoundary === "local-demo-only", `SEIS demo evidence constellation boundary mismatch: ${afterExport.constellationInspectorBoundary}`);
   ensure(
     afterExport.seisAgentPluginIntegration === "content/development/seis-agent-plugin-integration.json",
     `SEIS demo evidence plugin integration source mismatch: ${afterExport.seisAgentPluginIntegration}`
@@ -1017,6 +1167,8 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(afterExport.firstRecordVersionTarget === "v0.1-foundation", `SEIS demo evidence first record version mismatch: ${afterExport.firstRecordVersionTarget}`);
   ensure(afterExport.lastRecordVersionTarget === "v1.0-public-enterprise-candidate", `SEIS demo evidence last record version mismatch: ${afterExport.lastRecordVersionTarget}`);
   ensure(afterExport.validationBrowserSmoke === "npm run check:product-experience-browser-smoke", "SEIS demo evidence report missing browser smoke validation command");
+  ensure(afterExport.providerRegistrySource === "content/development/seis-ai-core-provider-registry.json", "SEIS demo evidence report missing provider registry source");
+  ensure(afterExport.validationProviderRegistry === "npm run check:seis-ai-core-provider-registry", "SEIS demo evidence report missing AI Core provider registry validation command");
   ensure(afterExport.validationVersionRegistry === "npm run check:seis-ai-core-version-registry", "SEIS demo evidence report missing AI Core version registry validation command");
   ensure(afterExport.validationPromotionGates === "npm run check:seis-ai-core-version-promotion-gates", "SEIS demo evidence report missing AI Core promotion gate validation command");
   ensure(afterExport.statusText.includes("20/20 quarters"), "SEIS demo evidence export status did not show 20/20 quarters");
@@ -1043,7 +1195,7 @@ async function smokeSubAgentFiveYearDemo(client, baseUrl) {
   ensure(afterReset.resetEvent, "SEIS demo reset event missing");
 
   const screenshotPath = await screenshot(client, "sub-agent-five-year-demo.png");
-  return { initial, afterHero3dControls, afterFullRun, afterExport, afterReset, screenshot: screenshotPath };
+  return { initial, afterConstellationSync, afterHero3dControls, afterFullRun, afterExport, afterReset, screenshot: screenshotPath };
 }
 
 async function smokeMobile(client, baseUrl) {

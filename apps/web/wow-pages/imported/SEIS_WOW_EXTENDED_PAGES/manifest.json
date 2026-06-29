@@ -1,0 +1,139 @@
+{
+  "name": "SEIS_WOW_EXTENDED_PAGES",
+  "version": "1.0",
+  "page_count": 18,
+  "pages": [
+    {
+      "id": "01_boot_screen",
+      "title": "Boot Screen",
+      "description": "AI Core initialization and cinematic startup.",
+      "png": "png/01_boot_screen.png",
+      "html": "html/01_boot_screen.html"
+    },
+    {
+      "id": "02_login_screen",
+      "title": "Login Screen",
+      "description": "Glass login card, guest session and power controls.",
+      "png": "png/02_login_screen.png",
+      "html": "html/02_login_screen.html"
+    },
+    {
+      "id": "03_desktop_overview",
+      "title": "Desktop Overview",
+      "description": "Unified desktop with Files, Browser, Terminal and SEIS Code.",
+      "png": "png/03_desktop_overview.png",
+      "html": "html/03_desktop_overview.html"
+    },
+    {
+      "id": "04_launchpad_all_apps",
+      "title": "Launchpad / All Apps",
+      "description": "Searchable application grid with categories.",
+      "png": "png/04_launchpad_all_apps.png",
+      "html": "html/04_launchpad_all_apps.html"
+    },
+    {
+      "id": "05_settings_appearance",
+      "title": "System Settings",
+      "description": "Appearance, colors, wallpapers and UI scaling.",
+      "png": "png/05_settings_appearance.png",
+      "html": "html/05_settings_appearance.html"
+    },
+    {
+      "id": "06_file_manager",
+      "title": "File Manager",
+      "description": "Projects, SEIS Drive and virtual folders.",
+      "png": "png/06_file_manager.png",
+      "html": "html/06_file_manager.html"
+    },
+    {
+      "id": "07_terminal_ssh",
+      "title": "Terminal / SSH Center",
+      "description": "Local demo terminal and Claude-style REPL entry.",
+      "png": "png/07_terminal_ssh.png",
+      "html": "html/07_terminal_ssh.html"
+    },
+    {
+      "id": "08_seis_code_workspace",
+      "title": "SEIS Code Workspace",
+      "description": "IDE, Git client, terminal, API tester and JSON tool.",
+      "png": "png/08_seis_code_workspace.png",
+      "html": "html/08_seis_code_workspace.html"
+    },
+    {
+      "id": "09_seis_ai_core",
+      "title": "SEIS AI Core",
+      "description": "Agent runtime, AI chat and goal progress.",
+      "png": "png/09_seis_ai_core.png",
+      "html": "html/09_seis_ai_core.html"
+    },
+    {
+      "id": "10_seis_search",
+      "title": "SEIS Search",
+      "description": "Search across AI, code, docs, files, cloud and web.",
+      "png": "png/10_seis_search.png",
+      "html": "html/10_seis_search.html"
+    },
+    {
+      "id": "11_seis_design_studio",
+      "title": "SEIS Design Studio",
+      "description": "Canvas, components, design tokens and checks.",
+      "png": "png/11_seis_design_studio.png",
+      "html": "html/11_seis_design_studio.html"
+    },
+    {
+      "id": "12_seis_cloud",
+      "title": "SEIS Cloud",
+      "description": "Infrastructure, deployment, sync and SSH status.",
+      "png": "png/12_seis_cloud.png",
+      "html": "html/12_seis_cloud.html"
+    },
+    {
+      "id": "13_seis_store",
+      "title": "SEIS Store",
+      "description": "Apps, plugins, agents, themes and install states.",
+      "png": "png/13_seis_store.png",
+      "html": "html/13_seis_store.html"
+    },
+    {
+      "id": "14_seis_music",
+      "title": "SEIS Music",
+      "description": "Player, playlists and focus audio experience.",
+      "png": "png/14_seis_music.png",
+      "html": "html/14_seis_music.html"
+    },
+    {
+      "id": "15_seis_agents",
+      "title": "SEIS Agents",
+      "description": "Autonomous agent cards and active mission.",
+      "png": "png/15_seis_agents.png",
+      "html": "html/15_seis_agents.html"
+    },
+    {
+      "id": "16_workflow_automation",
+      "title": "Workflow Automation",
+      "description": "Plan → Build → Validate → Ship workflow.",
+      "png": "png/16_workflow_automation.png",
+      "html": "html/16_workflow_automation.html"
+    },
+    {
+      "id": "17_command_center",
+      "title": "Command Center",
+      "description": "Central dashboard and system status.",
+      "png": "png/17_command_center.png",
+      "html": "html/17_command_center.html"
+    },
+    {
+      "id": "18_website_landing",
+      "title": "Website Landing",
+      "description": "Premium product landing page.",
+      "png": "png/18_website_landing.png",
+      "html": "html/18_website_landing.html"
+    }
+  ],
+  "design_tokens": {
+    "background": "#050712",
+    "accent": "#7c3dff",
+    "secondary": "#ff7a18",
+    "style": "dark, glassmorphism, cinematic, AI-native OS"
+  }
+}

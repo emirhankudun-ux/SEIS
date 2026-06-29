@@ -13,7 +13,8 @@
     "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
     "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
     "modelPromotionPolicy": "packages/seis-ai/models/seis-model-promotion-policy.json",
-    "modelBenchmarkSuite": "packages/seis-ai/models/seis-model-benchmark-suite.json"
+    "modelBenchmarkSuite": "packages/seis-ai/models/seis-model-benchmark-suite.json",
+    "languageModelIntakeRegistry": "content/development/seis-language-model-intake-registry.json"
   },
   "truthBoundary": "Repository-local training control plane only. It performs no live provider calls, no credential validation, no SSH, no deployment, no external dataset download, no cloud fine-tuning, and no claim that SEIS owns a trained foundation model.",
   "trainingMeaning": {
@@ -184,6 +185,13 @@
       "input": "Minimum sanitized context only",
       "output": "Candidate training cases, contradiction notes, UX notes, or runbook cases.",
       "acceptanceGate": "Candidate output stays untrusted until Codex checks it against repo evidence."
+    },
+    {
+      "id": "language_model_intake_review",
+      "owner": "codex",
+      "input": "Public model-family metadata, local hardware class, license status, and user-approved target model ids",
+      "output": "Metadata-only model intake decision with install, download, fine-tune, and foundation-training authority still blocked by default.",
+      "acceptanceGate": "No model family becomes installable or trainable until license, hardware, model-card, dataset-card, benchmark, and human approval gates exist."
     },
     {
       "id": "dataset_candidate_review",

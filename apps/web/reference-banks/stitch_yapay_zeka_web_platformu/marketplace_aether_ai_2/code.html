@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Next-Gen Model Marketplace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "tertiary-container": "#d9d9d9",
+                    "secondary-container": "#b600f8",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "background": "#020408",
+                    "surface-container": "#1d2023",
+                    "on-surface": "#e1e2e7",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary": "#520072",
+                    "inverse-on-surface": "#2e3134",
+                    "on-primary-container": "#006970",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "primary": "#dbfcff",
+                    "surface-container-highest": "#323539",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-primary-fixed": "#002022",
+                    "inverse-primary": "#006970",
+                    "on-tertiary": "#2f3131",
+                    "surface-container-high": "#282a2e",
+                    "on-primary-fixed-variant": "#004f54",
+                    "outline-variant": "#3b494b",
+                    "on-tertiary-container": "#5d5f5f",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "surface": "#111417",
+                    "surface-dim": "#111417",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary-container": "#00f0ff",
+                    "surface-container-low": "#191c1f",
+                    "error": "#ffb4ab",
+                    "on-primary": "#00363a",
+                    "surface-variant": "#323539",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-fixed-dim": "#00dbe9",
+                    "inverse-surface": "#e1e2e7",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-tint": "#00dbe9",
+                    "surface-bright": "#37393d",
+                    "on-secondary-container": "#fff6fc",
+                    "tertiary": "#f5f5f5",
+                    "primary-fixed": "#7df4ff",
+                    "on-background": "#e1e2e7",
+                    "secondary": "#ebb2ff",
+                    "outline": "#849495",
+                    "on-secondary-fixed": "#320047"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "margin-mobile": "20px",
+                    "section-gap": "120px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "mono-label": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "display-lg": ["72px", { "lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                    "display-lg-mobile": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                    "mono-code": ["13px", { "lineHeight": "22px", "fontWeight": "400" }],
+                    "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "mono-label": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border: 1px solid rgba(0, 219, 233, 0.4);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 219, 233, 0.3);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020408; }
+        ::-webkit-scrollbar-thumb { background: #1d2023; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #323539; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold uppercase">AETHER AI</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium px-4 py-2 hover:text-primary-fixed transition-colors">Sign In</button>
+<button class="bg-primary-container text-on-primary font-bold px-6 py-2 rounded-lg active:scale-95 transition-transform glow-cyan">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-16 min-h-screen">
+<!-- Hero Section: Featured Model -->
+<section class="relative w-full h-[600px] flex items-center overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+<div class="relative z-10 max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<div class="space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-secondary-container/10 border border-secondary-container/30">
+<span class="pulse-dot"></span>
+<span class="font-mono-label text-secondary text-xs uppercase tracking-widest">New Release</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary-fixed-dim leading-[1.1]">SEIS-70B <br/><span class="text-white/40">Architected for Speed.</span></h1>
+<p class="text-on-surface-variant font-body-lg max-w-md">
+                        Our flagship foundation model with unprecedented reasoning capabilities and a 128k context window. Optimized for production-grade enterprise deployments.
+                    </p>
+<div class="flex items-center gap-4 pt-4">
+<button class="bg-primary-container text-on-primary font-bold px-8 py-4 rounded-xl text-lg hover:scale-105 active:scale-95 transition-all glow-cyan">Deploy SEIS-70B</button>
+<button class="border border-outline-variant text-white font-medium px-8 py-4 rounded-xl text-lg hover:bg-white/5 transition-all">View Benchmarks</button>
+</div>
+</div>
+<div class="hidden lg:block relative group">
+<div class="absolute -inset-2 bg-gradient-to-tr from-primary-fixed-dim/20 to-secondary/20 rounded-2xl blur-2xl group-hover:blur-3xl transition-all duration-700"></div>
+<div class="relative glass-card aspect-video rounded-2xl overflow-hidden border border-white/10 p-1">
+<img class="w-full h-full object-cover rounded-xl grayscale hover:grayscale-0 transition-all duration-1000" data-alt="A cinematic, high-detail macro shot of a sleek, dark metallic AI server unit with glowing cyan circuits and crystalline cooling elements. The lighting is dramatic and moody, emphasizing the high-tech, futuristic hardware engineering with a luxury Apple-like aesthetic. Depth of field is shallow, focusing on the intricate textures of the hardware casing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0r8yOeLiYngbqEyC9OtWrKtVNlGQsgu7rE04jSfKGa9CjT2lA7B2zE8TxA81oSGKgpjK9omaS9y6zoVHfVzQJzvLht6gL6h-hkrvWlgC9XVqysSt7d9gcU9E8HKwgyRnhMnWrh3DL-yC5K3blD6HtsDap3kVA6r1QUFBv2bX9l2AuBTSmSiXTX1UjRq3gcunTfY1v5e1W6cwWjLH4wQ1L2sF2uwIzeMwITKRv0XI4Pw3aAk7zclhnyhnCZrNSdsr9GR-0dRvXBw"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Marketplace Main Content -->
+<section class="max-w-container-max mx-auto px-margin-desktop py-section-gap grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Sidebar Filters -->
+<aside class="lg:col-span-3 space-y-8">
+<div>
+<h3 class="font-mono-label text-on-surface-variant uppercase tracking-widest text-xs mb-6 border-b border-outline-variant/20 pb-2">Filters</h3>
+<div class="space-y-8">
+<!-- Architecture -->
+<div class="space-y-4">
+<span class="font-bold text-white text-sm">Architecture Type</span>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-checkbox bg-surface-container border-outline-variant rounded text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">Transformer</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox bg-surface-container border-outline-variant rounded text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">MoE (Mixture of Experts)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-checkbox bg-surface-container border-outline-variant rounded text-primary-fixed-dim focus:ring-primary-fixed-dim" type="checkbox"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">Vision-Encoder</span>
+</label>
+</div>
+</div>
+<!-- Precision -->
+<div class="space-y-4">
+<span class="font-bold text-white text-sm">Precision</span>
+<div class="space-y-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-radio bg-surface-container border-outline-variant text-primary-fixed-dim focus:ring-primary-fixed-dim" name="precision" type="radio"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">FP16 / BF16</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="form-radio bg-surface-container border-outline-variant text-primary-fixed-dim focus:ring-primary-fixed-dim" name="precision" type="radio"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">INT8 (Quantized)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="form-radio bg-surface-container border-outline-variant text-primary-fixed-dim focus:ring-primary-fixed-dim" name="precision" type="radio"/>
+<span class="text-on-surface-variant group-hover:text-white transition-colors">INT4 (Edge Optimized)</span>
+</label>
+</div>
+</div>
+<!-- Industry Vertical -->
+<div class="space-y-4">
+<span class="font-bold text-white text-sm">Industry Vertical</span>
+<div class="space-y-2 flex flex-wrap gap-2">
+<span class="bg-surface-container-high px-3 py-1 text-xs font-mono-label border border-outline-variant/30 rounded cursor-pointer hover:bg-primary-fixed-dim hover:text-on-primary transition-all">Health</span>
+<span class="bg-primary-container text-on-primary px-3 py-1 text-xs font-mono-label border border-primary-container rounded cursor-pointer">Finance</span>
+<span class="bg-surface-container-high px-3 py-1 text-xs font-mono-label border border-outline-variant/30 rounded cursor-pointer hover:bg-primary-fixed-dim hover:text-on-primary transition-all">Legal</span>
+<span class="bg-surface-container-high px-3 py-1 text-xs font-mono-label border border-outline-variant/30 rounded cursor-pointer hover:bg-primary-fixed-dim hover:text-on-primary transition-all">Gaming</span>
+<span class="bg-surface-container-high px-3 py-1 text-xs font-mono-label border border-outline-variant/30 rounded cursor-pointer hover:bg-primary-fixed-dim hover:text-on-primary transition-all">DevOps</span>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-card p-6 rounded-2xl border-secondary-container/20 space-y-4">
+<span class="material-symbols-outlined text-secondary-fixed text-4xl">auto_awesome</span>
+<h4 class="text-white font-bold">Custom Fine-Tuning</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Need a private model? Upload your dataset and train a custom variant of any SEIS foundation model in hours.</p>
+<button class="w-full py-2 bg-secondary-container/20 text-secondary-fixed border border-secondary-container/40 rounded-lg text-sm font-bold hover:bg-secondary-container/40 transition-all">Launch Trainer</button>
+</div>
+</aside>
+<!-- Model Grid -->
+<div class="lg:col-span-9">
+<div class="flex justify-between items-center mb-8">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-xl pl-10 pr-4 py-3 font-mono-code text-sm focus:border-primary-fixed-dim focus:ring-0 transition-all" placeholder="Search models, benchmarks, or architectures..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 glass-card rounded-lg flex items-center justify-center"><span class="material-symbols-outlined">grid_view</span></button>
+<button class="p-2 text-outline hover:text-white transition-colors flex items-center justify-center"><span class="material-symbols-outlined">list</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Model Card 1: SEIS-Vision -->
+<div class="glass-card rounded-3xl overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A mesmerizing digital render of an abstract neural network shaped like a crystalline eye. Intricate glowing filaments connect floating geometric shards in shades of electric cyan and deep midnight blue. The style is ultra-modern glassmorphism with high-key reflections and atmospheric fog, suggesting advanced vision processing capabilities." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgzFWz53X9pidRjN0611Zl0-dYxt_BVPPrncQROr3tI09-jCJDq8eKPCcP6WgVwh69UVoKivhgiD8y-uopEUqv6tyH7xLzOf_oxoZyqxidpX_yDMxZFMRuGYxu7WhMQGGM9gdw5iPZhDX9fNIqou_F1t52vjFwYKXHqHOtCru8ZLNSdFiqTM7BRmr7zLHAntC5vEAU2cTr6a3BEVVhn20Dm6SZqmhGKusRbGLdeDTLJc28wqnhuOrxjr7g-vUGcjo9jm20kl2gXQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] to-transparent"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-2">
+<span class="bg-primary-container/20 text-primary-fixed-dim border border-primary-fixed-dim/30 px-2 py-0.5 rounded text-[10px] font-mono-label uppercase">Multimodal</span>
+</div>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-2xl font-bold text-white mb-1">SEIS-Vision</h3>
+<span class="font-mono-label text-xs text-outline">v2.4.0 • 12B Params</span>
+</div>
+<div class="text-right">
+<div class="text-primary-fixed-dim font-bold text-lg">91.4%</div>
+<div class="text-[10px] uppercase tracking-tighter text-outline">MMMU Score</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">Image QA</div>
+<div class="text-white font-bold">88.2%</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">OCR Acc</div>
+<div class="text-white font-bold">99.1%</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 bg-white text-black font-bold py-3 rounded-xl active:scale-95 transition-all">Deploy</button>
+<button class="p-3 border border-outline-variant/50 rounded-xl hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-white">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Model Card 2: SEIS-Audio -->
+<div class="glass-card rounded-3xl overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="Visual representation of sound waves as glowing 3D obsidian ribbons floating in a dark void. The ribbons are illuminated by purple and cyan light pulses, creating a sense of rhythmic motion. The overall aesthetic is clean, technical, and high-fidelity, resembling a futuristic audio interface in a dark mode professional environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhZPMPXgVlcQu9rghc-O1_lRKx26fKVPTpWdidZ9Dz1O9HzjYpKn0_6IJ_1qPlL7b1ZgIjM0qdyLZo9WsX5zZNBb2EuVqYbVBG7jGHTPqK_JOt3Gs7gNE-57LLEk0l2i9du_0Napj-0XXGVDuD2x4_RUv4W0fbDmFEAeij_e_VpzON4KGaa3aK_Bnz3XIzNTf4uau6ntAo8cp-6wtIcugGmAQv7P7Kq1mWrv1fC8gIRF0d4t7HZ9pUKxso0xkp4w-oEmi82Dd0pQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] to-transparent"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-2">
+<span class="bg-secondary-container/20 text-secondary-fixed border border-secondary-container/30 px-2 py-0.5 rounded text-[10px] font-mono-label uppercase">Real-time</span>
+</div>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-2xl font-bold text-white mb-1">SEIS-Audio</h3>
+<span class="font-mono-label text-xs text-outline">v1.2.0 • 7B Params</span>
+</div>
+<div class="text-right">
+<div class="text-secondary-fixed font-bold text-lg">&lt;80ms</div>
+<div class="text-[10px] uppercase tracking-tighter text-outline">Latency</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">WER (Eng)</div>
+<div class="text-white font-bold">2.4%</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">Sample Rate</div>
+<div class="text-white font-bold">48kHz</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 bg-white text-black font-bold py-3 rounded-xl active:scale-95 transition-all">Deploy</button>
+<button class="p-3 border border-outline-variant/50 rounded-xl hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-white">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Model Card 3: SEIS-Code -->
+<div class="glass-card rounded-3xl overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A technical visualization of infinite lines of code transforming into a solid 3D cubic structure. The code is rendered in monospaced neon green and white text, while the cube has a semi-transparent frosted glass texture. The background is a deep obsidian black with subtle grid patterns. High-tech, developer-centric, and precise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXpL4ZdvdQycXhgs-KLCHOybjLTHyM8Dh5kUqDds9xWnNSJn0DmwEFjhh20b5_zWxkh1dpKz9gzOnftRg268X8ynPaZ_lUB_ws6pCppS3hJPNEGxjvH7PGsIj0LLkfLDB3qvH1w0HMWlXm1FUt3vqd-0vXUpdAZRlCjiFdKhTStwAqEq_QtC6fwbaRe0r_PTf3Tt-c5hvU0yIxPIou9lucFwaM9L7V8V8w37GSY2noceCtKMyr_OLMvS1XbbDsZWPlxY6AUc_daw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] to-transparent"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-2">
+<span class="bg-tertiary-container/20 text-tertiary border border-tertiary/30 px-2 py-0.5 rounded text-[10px] font-mono-label uppercase">Developer</span>
+</div>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-2xl font-bold text-white mb-1">SEIS-Code</h3>
+<span class="font-mono-label text-xs text-outline">v3.0.0 • 34B Params</span>
+</div>
+<div class="text-right">
+<div class="text-primary-fixed-dim font-bold text-lg">78.5%</div>
+<div class="text-[10px] uppercase tracking-tighter text-outline">HumanEval</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">Python pass@1</div>
+<div class="text-white font-bold">82.1%</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">Languages</div>
+<div class="text-white font-bold">80+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 bg-white text-black font-bold py-3 rounded-xl active:scale-95 transition-all">Deploy</button>
+<button class="p-3 border border-outline-variant/50 rounded-xl hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-white">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Model Card 4: SEIS-Lite -->
+<div class="glass-card rounded-3xl overflow-hidden group">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A minimalist, geometric representation of efficiency, featuring a single glowing sphere held within a complex but lightweight wireframe structure. The materials are polished silver and soft-glow LEDs. The background is a clean, dark gradient. The mood is sophisticated, focused, and highlights the beauty of optimization and high-performance edge computing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7pXUr92di4MEIAymM-t8hLW0fhqZV7mVO4NLIiOtiCZp10ghThhLK8cMKpb5AscALJfrYj1u33_Y3tIARxuBdHu7rt2YDmn-9TcPTq25UuFj3cf1kTlwW35d0_BE1snUJGSPIh8Uo32NR2JEGc1EjBd2Iy3L_NE2uEEIA0js-12veThus-Ogs0lRM-PtPshJSl5ENPNSOTzcK7W4yDONpthegtrQzKUhbeV3C1PiyyzJBbyvtgr5db0ynbPcY-qlDT__Cpo49SQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0a0e1a] to-transparent"></div>
+<div class="absolute bottom-4 left-6 flex items-center gap-2">
+<span class="bg-error-container/20 text-error border border-error/30 px-2 py-0.5 rounded text-[10px] font-mono-label uppercase">Edge</span>
+</div>
+</div>
+<div class="p-6 space-y-6">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-2xl font-bold text-white mb-1">SEIS-Lite</h3>
+<span class="font-mono-label text-xs text-outline">v1.1.0 • 1.8B Params</span>
+</div>
+<div class="text-right">
+<div class="text-error font-bold text-lg">2GB</div>
+<div class="text-[10px] uppercase tracking-tighter text-outline">VRAM Req</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">MMLU</div>
+<div class="text-white font-bold">45.2%</div>
+</div>
+<div class="bg-surface-container-lowest/50 p-3 rounded-xl border border-outline-variant/20">
+<div class="text-[10px] text-outline uppercase font-mono-label mb-1">Tok/Sec</div>
+<div class="text-white font-bold">240+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<button class="flex-1 bg-white text-black font-bold py-3 rounded-xl active:scale-95 transition-all">Deploy</button>
+<button class="p-3 border border-outline-variant/50 rounded-xl hover:bg-white/5 transition-all">
+<span class="material-symbols-outlined text-white">bookmark</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More / Pagination -->
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 glass-card rounded-xl text-white font-bold hover:bg-white/5 transition-all">Load More Foundation Models</button>
+</div>
+</div>
+</section>
+<!-- Newsletter / CTA -->
+<section class="bg-surface-container-lowest/50 py-section-gap border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop text-center">
+<div class="max-w-2xl mx-auto space-y-6">
+<h2 class="text-headline-md font-headline-md text-white">Stay ahead of the curve.</h2>
+<p class="text-on-surface-variant">Get notified when new foundation models or major weight updates are released to the Aether Model Marketplace.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+<input class="bg-background border border-outline-variant/30 rounded-xl px-6 py-4 w-full sm:max-w-md focus:border-primary-fixed-dim focus:ring-0" placeholder="Enter your developer email" type="email"/>
+<button class="bg-primary-container text-on-primary font-bold px-8 py-4 rounded-xl whitespace-nowrap glow-cyan">Subscribe Updates</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-outline-variant/10 bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2 space-y-6">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim font-extrabold tracking-tighter">AETHER AI</span>
+<p class="text-on-tertiary-fixed-variant text-sm font-mono-label leading-relaxed">
+                    Building the neural foundation for the next generation of autonomous enterprise intelligence. High-performance, secure, and infinitely scalable.
+                </p>
+<div class="flex gap-4">
+<a class="text-outline hover:text-white transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-outline hover:text-white transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-white font-bold text-sm">Platform</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-white font-bold text-sm">Infrastructure</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Compute Clouds</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Edge Nodes</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Quantum R&amp;D</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-white font-bold text-sm">Company</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">About Us</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Careers</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-white font-bold text-sm">Legal</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop mt-16 pt-8 border-t border-outline-variant/10 flex justify-between items-center">
+<span class="text-on-tertiary-fixed-variant font-mono-label text-xs">© 2024 Aether AI Infrastructure. All rights reserved.</span>
+<div class="flex items-center gap-2">
+<span class="pulse-dot"></span>
+<span class="text-[10px] text-primary-fixed-dim font-mono-label uppercase tracking-widest">All Systems Operational</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and subtle glow tracking
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+
+        // Search bar interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('glow-cyan');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('glow-cyan');
+        });
+    </script>
+</body></html>

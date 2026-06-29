@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Training Monitor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-stroke: rgba(0, 219, 233, 0.15);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(0, 219, 233, 0.3);
+            box-shadow: 0 0 40px -15px rgba(0, 219, 233, 0.15);
+        }
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(0, 219, 233, 0.5);
+        }
+        .pulse-cyan {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.2); }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b494b;
+            border-radius: 10px;
+        }
+        .activation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(12px, 1fr));
+            gap: 2px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "surface-container": "#1d2023",
+                    "on-tertiary-container": "#5d5f5f",
+                    "surface-container-low": "#191c1f",
+                    "secondary-container": "#b600f8",
+                    "primary-fixed": "#7df4ff",
+                    "on-secondary-fixed": "#320047",
+                    "surface-bright": "#37393d",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-primary": "#00363a",
+                    "inverse-surface": "#e1e2e7",
+                    "on-background": "#e1e2e7",
+                    "surface-container-lowest": "#0c0e12",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface": "#111417",
+                    "outline-variant": "#3b494b",
+                    "outline": "#849495",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "surface-container-high": "#282a2e",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary": "#dbfcff",
+                    "tertiary": "#f5f5f5",
+                    "surface-dim": "#111417",
+                    "tertiary-container": "#d9d9d9",
+                    "inverse-primary": "#006970",
+                    "on-secondary": "#520072",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#323539",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-surface-variant": "#b9cacb",
+                    "on-tertiary": "#2f3131",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-tint": "#00dbe9",
+                    "primary-container": "#00f0ff",
+                    "inverse-on-surface": "#2e3134",
+                    "error": "#ffb4ab",
+                    "on-primary-container": "#006970",
+                    "background": "#111417",
+                    "secondary": "#ebb2ff",
+                    "on-primary-fixed": "#002022",
+                    "surface-variant": "#323539",
+                    "on-secondary-container": "#fff6fc",
+                    "on-surface": "#e1e2e7",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-gap": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "mono-label": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "headline-md": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md bg-background selection:bg-primary-container/30">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim font-extrabold uppercase">AETHER AI</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-low border border-outline-variant/20 rounded px-3 py-1.5 gap-2 group">
+<span class="material-symbols-outlined text-outline text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-mono-label font-mono-label p-0 w-48 placeholder:text-outline/50" placeholder="Search clusters..." type="text"/>
+<span class="text-[10px] bg-outline-variant/30 px-1.5 py-0.5 rounded text-outline font-mono-label">⌘K</span>
+</div>
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed active:scale-95 transition-all">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-4 py-1.5 rounded font-semibold active:scale-95 transition-all">Get Started</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Shared Component) -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 flex flex-col bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/10 z-40 hidden xl:flex">
+<div class="px-6 py-4 mb-2">
+<h2 class="text-primary-fixed-dim font-display-lg text-[18px] uppercase tracking-widest font-bold">Aether Platform</h2>
+<p class="text-on-surface-variant text-[12px] font-mono-label opacity-60">Enterprise Infrastructure</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-4 py-3 font-mono-label text-mono-label transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+                SEIS OS
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+                SEIS AI
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">code</span>
+                SEIS Code
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-[20px]">cloud_queue</span>
+                SEIS Cloud
+            </a>
+</nav>
+<div class="p-4">
+<button class="w-full bg-surface-container-highest border border-outline-variant/30 text-on-surface py-2.5 rounded font-mono-label hover:border-primary-fixed-dim transition-all">
+                Deploy Now
+            </button>
+</div>
+<div class="px-2 pb-6 space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                Settings
+            </a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 font-mono-label text-mono-label" href="#">
+<span class="material-symbols-outlined text-[20px]">contact_support</span>
+                Support
+            </a>
+</div>
+</aside>
+<main class="xl:ml-64 pt-24 pb-section-gap px-margin-mobile md:px-margin-desktop">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="px-2 py-0.5 bg-primary-fixed-dim/10 text-primary-fixed-dim text-[11px] font-mono-label border border-primary-fixed-dim/20 rounded-sm">LIVE</span>
+<span class="text-on-surface-variant font-mono-label text-mono-label">PROJECT / LLM-TITAN-X3</span>
+</div>
+<h1 class="font-display-lg text-headline-md md:text-[48px] text-on-surface tracking-tight font-extrabold">Training Monitor</h1>
+</div>
+<div class="flex gap-3">
+<div class="flex flex-col items-end">
+<span class="text-[10px] text-outline font-mono-label uppercase tracking-widest mb-1">Status</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-cyan shadow-[0_0_8px_#00dbe9]"></div>
+<span class="text-primary-fixed-dim font-mono-label text-mono-label">Syncing Clusters...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
+<div class="glass-panel p-6 rounded-xl">
+<p class="text-outline text-mono-label text-[12px] uppercase tracking-widest mb-4">Current Loss</p>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-md font-mono-label text-primary-fixed-dim glow-cyan">0.0241</span>
+<span class="text-error text-[12px] font-mono-label">-4.2%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim" style="width: 78%"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<p class="text-outline text-mono-label text-[12px] uppercase tracking-widest mb-4">Accuracy (Top-1)</p>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-md font-mono-label text-on-surface">94.82%</span>
+<span class="text-primary-fixed-dim text-[12px] font-mono-label">+0.15%</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 94%"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<p class="text-outline text-mono-label text-[12px] uppercase tracking-widest mb-4">Tokens / Sec</p>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-md font-mono-label text-on-surface">1.2M</span>
+<span class="text-on-surface-variant text-[12px] font-mono-label">P50</span>
+</div>
+<div class="mt-4 h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-outline" style="width: 65%"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<p class="text-outline text-mono-label text-[12px] uppercase tracking-widest mb-4">Time Remaining</p>
+<div class="flex items-baseline gap-2">
+<span class="text-headline-md font-mono-label text-on-surface">14:22:04</span>
+</div>
+<p class="text-on-surface-variant text-[12px] font-mono-label mt-4">Epoch 14 / 200</p>
+</div>
+</div>
+<!-- Main Dashboard Content -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Training Curves -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden min-h-[480px] flex flex-col">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim">show_chart</span>
+                        Real-Time Training Metrics
+                    </h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-highest text-[11px] font-mono-label rounded border border-outline-variant/30 text-on-surface">Linear</button>
+<button class="px-3 py-1 text-[11px] font-mono-label rounded text-outline hover:text-on-surface">Logarithmic</button>
+</div>
+</div>
+<div class="flex-1 relative p-6">
+
+<!-- Simulated Graph Overlay -->
+<div class="relative z-10 w-full h-full flex flex-col justify-between pointer-events-none">
+<div class="flex justify-between text-[10px] font-mono-label text-outline/30 border-b border-outline-variant/10 pb-1">
+<span>Y: LOSS (0.0 - 1.0)</span>
+<span>LAST 1000 STEPS</span>
+</div>
+<div class="h-full flex items-end">
+<svg class="w-full h-full overflow-visible" viewbox="0 0 800 300">
+<path class="opacity-80 drop-shadow-[0_0_10px_rgba(0,219,233,0.5)]" d="M0 250 Q 50 200, 100 220 T 200 180 T 300 190 T 400 140 T 500 150 T 600 80 T 700 90 T 800 40" fill="none" stroke="#00dbe9" stroke-width="2"></path>
+<path class="opacity-50" d="M0 280 Q 50 270, 100 275 T 200 260 T 300 255 T 400 258 T 500 250 T 600 240 T 700 245 T 800 230" fill="none" stroke="#b600f8" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="flex justify-between text-[10px] font-mono-label text-outline/30 border-t border-outline-variant/10 pt-1">
+<span>0</span>
+<span>250</span>
+<span>500</span>
+<span>750</span>
+<span>1000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- GPU Cluster Allocation -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl flex flex-col">
+<div class="p-6 border-b border-outline-variant/10">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">memory</span>
+                        Cluster Allocation
+                    </h3>
+</div>
+<div class="p-6 space-y-6 flex-1 overflow-y-auto custom-scrollbar">
+<div class="space-y-3">
+<div class="flex justify-between text-[12px] font-mono-label">
+<span class="text-on-surface">US-EAST-01 (H100)</span>
+<span class="text-primary-fixed-dim">98% Load</span>
+</div>
+<div class="grid grid-cols-8 gap-1">
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-surface-container-highest animate-pulse rounded-sm"></div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[12px] font-mono-label">
+<span class="text-on-surface">EU-WEST-04 (A100)</span>
+<span class="text-on-surface-variant">42% Load</span>
+</div>
+<div class="grid grid-cols-8 gap-1">
+<div class="h-6 bg-secondary-container rounded-sm"></div>
+<div class="h-6 bg-secondary-container rounded-sm"></div>
+<div class="h-6 bg-secondary-container rounded-sm"></div>
+<div class="h-6 bg-secondary-container/30 rounded-sm"></div>
+<div class="h-6 bg-surface-container-highest rounded-sm"></div>
+<div class="h-6 bg-surface-container-highest rounded-sm"></div>
+<div class="h-6 bg-surface-container-highest rounded-sm"></div>
+<div class="h-6 bg-surface-container-highest rounded-sm"></div>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[12px] font-mono-label">
+<span class="text-on-surface">ASIA-NE-02 (H100)</span>
+<span class="text-primary-fixed-dim">100% Load</span>
+</div>
+<div class="grid grid-cols-8 gap-1">
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+<div class="h-6 bg-primary-fixed-dim rounded-sm"></div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low/50">
+<div class="flex justify-between items-center">
+<span class="text-[11px] font-mono-label text-outline">Total Memory Pressure</span>
+<span class="text-[11px] font-mono-label text-on-surface">1,482 GB / 2,048 GB</span>
+</div>
+</div>
+</div>
+<!-- Model Weights Explorer -->
+<div class="col-span-12 lg:col-span-7 glass-panel rounded-xl p-6">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim">grid_view</span>
+                        Layer Activations Explorer
+                    </h3>
+<div class="flex items-center gap-4">
+<select class="bg-surface-container-highest border-outline-variant/30 text-on-surface text-[11px] font-mono-label rounded focus:ring-primary-fixed-dim">
+<option>Layer 42 (Attention)</option>
+<option>Layer 43 (FeedForward)</option>
+<option>Layer 44 (Normalization)</option>
+</select>
+</div>
+</div>
+<div class="activation-grid" id="activation-grid">
+<!-- JS will populate some varying opacity cells -->
+<script>
+                        const grid = document.getElementById('activation-grid');
+                        for(let i=0; i<320; i++) {
+                            const div = document.createElement('div');
+                            const opacity = Math.random() > 0.7 ? Math.random() * 0.9 + 0.1 : Math.random() * 0.3;
+                            div.className = `h-3 rounded-[1px] transition-all duration-1000`;
+                            div.style.backgroundColor = `rgba(0, 219, 233, ${opacity})`;
+                            if (opacity > 0.7) div.classList.add('shadow-[0_0_8px_rgba(0,219,233,0.4)]');
+                            grid.appendChild(div);
+                        }
+                    </script>
+</div>
+<div class="mt-8 flex justify-between items-center">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase tracking-widest">Sparsity</span>
+<span class="text-on-surface font-mono-label">12.4%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase tracking-widest">Mean Value</span>
+<span class="text-on-surface font-mono-label">0.0042</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-outline font-mono-label uppercase tracking-widest">Grad Norm</span>
+<span class="text-on-surface font-mono-label text-primary-fixed-dim">1.02</span>
+</div>
+</div>
+<button class="text-primary-fixed-dim text-[12px] font-mono-label flex items-center gap-1 hover:underline">
+                        Detailed Inspector <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Checkpoint Management & Eval Logs -->
+<div class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-6 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-mono-label text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">history</span>
+                        Checkpoint &amp; Evaluation
+                    </h3>
+</div>
+<div class="space-y-4 flex-1 overflow-y-auto custom-scrollbar pr-2">
+<!-- Log Item -->
+<div class="p-3 rounded bg-surface-container-low border border-outline-variant/10 hover:border-outline-variant/30 transition-colors">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-mono-label text-[13px]">ckpt_epoch_14.bin</span>
+<span class="text-[10px] bg-secondary-container/20 text-secondary-fixed px-1.5 rounded uppercase font-mono-label">Latest</span>
+</div>
+<span class="text-outline text-[11px] font-mono-label">2m ago</span>
+</div>
+<div class="flex gap-4">
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">BLEU:</span> <span class="text-primary-fixed-dim">34.2</span>
+</div>
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">MMLU:</span> <span class="text-primary-fixed-dim">68.1%</span>
+</div>
+</div>
+</div>
+<!-- Log Item -->
+<div class="p-3 rounded bg-surface-container-low border border-outline-variant/10">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-mono-label text-[13px]">ckpt_epoch_13.bin</span>
+</div>
+<span class="text-outline text-[11px] font-mono-label">15m ago</span>
+</div>
+<div class="flex gap-4">
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">BLEU:</span> <span class="text-on-surface">34.0</span>
+</div>
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">MMLU:</span> <span class="text-on-surface">67.9%</span>
+</div>
+</div>
+</div>
+<!-- Log Item -->
+<div class="p-3 rounded bg-surface-container-low border border-outline-variant/10">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<span class="text-on-surface font-mono-label text-[13px]">ckpt_epoch_12.bin</span>
+</div>
+<span class="text-outline text-[11px] font-mono-label">28m ago</span>
+</div>
+<div class="flex gap-4">
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">BLEU:</span> <span class="text-on-surface">33.5</span>
+</div>
+<div class="text-[11px] font-mono-label">
+<span class="text-outline">MMLU:</span> <span class="text-on-surface">67.2%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/10 flex gap-3">
+<button class="flex-1 py-2 bg-primary-fixed-dim text-on-primary-fixed font-semibold rounded text-[13px] active:scale-95 transition-all">Manual Eval</button>
+<button class="flex-1 py-2 bg-surface-container-highest border border-outline-variant/30 text-on-surface font-semibold rounded text-[13px] active:scale-95 transition-all">Export Logs</button>
+</div>
+</div>
+</div>
+<!-- System Logs Bento -->
+<div class="mt-gutter glass-panel rounded-xl overflow-hidden">
+<div class="p-4 border-b border-outline-variant/10 bg-surface-container-low/30 flex justify-between items-center">
+<span class="text-[11px] font-mono-label text-outline uppercase tracking-widest">Cluster Output (Standard Error)</span>
+<div class="flex gap-4 text-[11px] font-mono-label">
+<span class="flex items-center gap-1 text-primary-fixed-dim"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></span> System OK</span>
+<span class="text-outline">v2.4.1-alpha</span>
+</div>
+</div>
+<div class="p-6 font-mono-code text-mono-code h-48 overflow-y-auto custom-scrollbar bg-black/40">
+<p class="text-outline/40">[2024-05-24 14:02:11] <span class="text-primary-fixed-dim">INFO</span> DistributedDataParallel initialization complete.</p>
+<p class="text-outline/40">[2024-05-24 14:02:15] <span class="text-primary-fixed-dim">INFO</span> Loading dataset slice 42/1000 from remote shard...</p>
+<p class="text-outline/40">[2024-05-24 14:03:02] <span class="text-secondary">WARN</span> Optimizer state reset detected. Checkpoint resume successful.</p>
+<p class="text-outline/40">[2024-05-24 14:05:44] <span class="text-primary-fixed-dim">INFO</span> Global Step: 145,200 | Avg. Loss: 0.0241 | Throughput: 1.2M tokens/sec</p>
+<p class="text-outline/40">[2024-05-24 14:05:59] <span class="text-primary-fixed-dim">INFO</span> Validation started for split 'eval_v1'</p>
+<p class="text-on-surface animate-pulse">&gt; tailing logs...</p>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-[20px] text-primary-fixed-dim font-extrabold uppercase">AETHER AI</span>
+<p class="mt-4 text-on-tertiary-fixed-variant font-mono-label max-w-xs">
+                    Advanced machine learning infrastructure and real-time monitoring for the next generation of intelligence.
+                </p>
+</div>
+<div>
+<h4 class="text-on-surface font-bold text-[14px] mb-4">Product</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Documentation</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">System Status</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">API Reference</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-on-surface font-bold text-[14px] mb-4">Legal</h4>
+<ul class="space-y-2">
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Security</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+<div class="col-span-2 lg:col-span-1">
+<p class="text-on-tertiary-fixed-variant font-mono-label text-[12px] opacity-60">
+                    © 2024 Aether AI Infrastructure. All rights reserved.
+                </p>
+</div>
+</div>
+</footer>
+<!-- Interactive Layer Logic -->
+<script>
+        // Smooth scroll reveal or micro-interactions can go here
+        // Randomly flicker some activation grid cells for "live" feel
+        setInterval(() => {
+            const cells = document.querySelectorAll('#activation-grid div');
+            const randomIndices = Array.from({length: 10}, () => Math.floor(Math.random() * cells.length));
+            randomIndices.forEach(idx => {
+                const opacity = Math.random() > 0.6 ? Math.random() * 0.9 + 0.1 : Math.random() * 0.2;
+                cells[idx].style.backgroundColor = `rgba(0, 219, 233, ${opacity})`;
+                if(opacity > 0.7) {
+                    cells[idx].style.boxShadow = '0 0 8px rgba(0, 219, 233, 0.4)';
+                } else {
+                    cells[idx].style.boxShadow = 'none';
+                }
+            });
+        }, 1500);
+    </script>
+</body></html>

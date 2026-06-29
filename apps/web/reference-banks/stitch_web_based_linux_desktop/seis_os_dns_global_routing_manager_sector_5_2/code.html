@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NETWORK_OPS :: DNS_MANAGER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#dbfcff",
+                    "on-tertiary": "#313030",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-primary": "#00363a",
+                    "secondary-container": "#ce5dff",
+                    "error": "#ffb4ab",
+                    "surface-variant": "#333535",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "outline-variant": "#3b494b",
+                    "on-secondary": "#520071",
+                    "on-secondary-fixed": "#320047",
+                    "on-primary-fixed-variant": "#004f54",
+                    "tertiary-fixed": "#e5e2e1",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-surface": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "on-surface-variant": "#b9cacb",
+                    "secondary-fixed": "#f8d8ff",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-dim": "#121414",
+                    "on-secondary-container": "#480064",
+                    "on-tertiary-container": "#605e5e",
+                    "on-primary-container": "#006970",
+                    "primary-container": "#00f0ff",
+                    "surface-container-highest": "#333535",
+                    "surface-container-high": "#282a2b",
+                    "outline": "#849495",
+                    "on-background": "#e2e2e2",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "surface-container": "#1e2020",
+                    "inverse-surface": "#e2e2e2",
+                    "background": "#121414",
+                    "surface-container-lowest": "#0c0f0f",
+                    "on-primary-fixed": "#002022",
+                    "inverse-on-surface": "#2f3131",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-container-low": "#1a1c1c",
+                    "on-error": "#690005",
+                    "inverse-primary": "#006970",
+                    "secondary": "#ebb2ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "margin-page": "32px",
+                    "stroke-thick": "2px",
+                    "gap-xs": "4px",
+                    "stroke-thin": "1px",
+                    "gap-md": "16px"
+            },
+            "fontFamily": {
+                    "code-sm": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"]
+            },
+            "fontSize": {
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background: rgba(18, 20, 20, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .cyber-border:focus-within { border-color: #00f0ff; box-shadow: inset 0 0 4px rgba(0, 240, 255, 0.5); }
+        
+        /* Progress Block */
+        .progress-block { display: inline-block; width: 6px; height: 12px; margin-right: 2px; background-color: #333333; }
+        .progress-block.active { background-color: #00f0ff; }
+        .progress-block.warning { background-color: #ce5dff; }
+        
+        /* Blinking Cursor */
+        .blink-cursor::after { content: "█"; animation: blink 1s step-start infinite; color: #00f0ff; margin-left: 4px; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* Grid */
+        .bg-grid { background-size: 40px 40px; background-image: linear-gradient(to right, rgba(59, 73, 75, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(59, 73, 75, 0.1) 1px, transparent 1px); }
+    </style>
+</head>
+<body class="min-h-screen bg-grid flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<nav class="hidden md:flex flex-col border-b border-outline-variant/30 bg-surface-container-lowest/80 backdrop-blur-xl w-full top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-page h-10">
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<div class="flex gap-sm ml-gap-lg">
+<span class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1">WORKSPACES</span>
+<span class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1">TELEMETRY</span>
+<span class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1">AGENTS</span>
+<span class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps px-2 py-1">NETWORK</span>
+</div>
+</div>
+<div class="flex items-center gap-sm text-primary-fixed">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary-fixed-dim transition-colors" data-icon="settings">settings</span>
+</div>
+</div>
+</nav>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col border-r border-outline-variant/20 bg-surface-container-lowest/90 backdrop-blur-2xl w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="flex items-center p-4 border-b border-outline-variant/20 whitespace-nowrap overflow-hidden">
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline flex-shrink-0 flex items-center justify-center overflow-hidden">
+<img alt="Root User Avatar" class="w-full h-full object-cover" data-alt="A highly detailed, ultra-realistic portrait of a cyborg user profile avatar. Dark background, intense cyber lime and electric cyan highlights reflecting off chrome implants. Cinematic lighting, cyberpunk aesthetic, moody atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtjV0iHu1_Ybaz563zvWJdQNoDIfgvlw0B8uU9USexhtLvMBg4SsHRLyyc9r2Uc_13QAHLw0Mr0KT03CXZtsWJS1gQLqy29XjZEtH4GbTLH4qYpY6Qa1U1XMiz4zionfBtL8fKhnnLspvsR4JdiynhDlPGn4qld5PyO8YRlPWh8_OxQ9TLkZHScfFVOsUbVhcUI9izppeJ439aizyVWErckkciFm64Lk113FGgt2uoc0pGUGnCN9XEzRhpRlLErscPjQFoPrxX2yI7"/>
+</div>
+<div class="ml-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col">
+<span class="font-label-caps text-secondary-fixed">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<div class="flex-1 py-4 flex flex-col gap-1">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">INFRASTRUCTURE</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOGS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/20">
+<div class="p-4 flex justify-center group-hover:justify-start">
+<button class="bg-primary-container text-on-primary w-full py-2 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute left-0 px-4 whitespace-nowrap">NEW_SESSION</button>
+<span class="material-symbols-outlined text-primary-container group-hover:hidden" data-icon="add">add</span>
+</div>
+<div class="flex flex-col gap-1 py-2">
+<div class="group/item flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="power_settings_new">power_settings_new</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">POWER</span>
+</div>
+<div class="group/item flex items-center px-4 py-2 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150 whitespace-nowrap">
+<span class="material-symbols-outlined flex-shrink-0" data-icon="lock">lock</span>
+<span class="ml-4 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity duration-200">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-20 p-gap-md md:p-margin-page overflow-y-auto h-[calc(100vh-40px)]">
+<header class="mb-gap-lg flex justify-between items-end border-b border-outline-variant/30 pb-gap-sm">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase tracking-tight">NETWORK_OPS :: DNS_MANAGER</h1>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-1">Sector 5 Routing Matrix | Global State: <span class="text-secondary-container">ACTIVE</span></p>
+</div>
+<div class="flex gap-gap-sm">
+<button class="border border-primary-fixed text-primary-fixed hover:bg-primary-fixed hover:text-surface-lowest px-4 py-2 font-label-caps text-label-caps transition-colors">FLUSH CACHE</button>
+<button class="bg-primary-container text-on-primary px-4 py-2 font-label-caps text-label-caps hover:bg-secondary-fixed transition-colors">ADD RECORD</button>
+</div>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gap-md">
+<!-- Global Map Matrix -->
+<div class="col-span-1 md:col-span-8 glass-panel flex flex-col">
+<div class="h-6 bg-primary-container text-on-primary font-label-caps text-label-caps flex items-center px-2">
+                        GLOBAL ROUTING TOPOLOGY
+                    </div>
+<div class="p-gap-md flex-1 relative min-h-[300px]">
+<!-- Embedded shader/map representation -->
+<div class="w-full h-full bg-cover bg-center absolute inset-0 opacity-40" data-alt="A highly technical, stylized world map UI. Dark background with electric cyan glowing nodes and cyber lime connection lines showing global network paths. Minimalist, brutalist interface overlay, high contrast, cyberpunk aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg3HddFX3vXjQ6lLMsHf3qZKtTgLQMNpOtCA5zhmU--tIExOx3gF3VagUBVKvn2aS1f128sBgI5--HC2c7a2xMVYwrU1mTJnsKQKJ6oe6fcgqwtlHfZtID_jiHEFXUKxJK7SQg2L9HoEq61h9e3bpVUWqxNX8UWfO5FYTJF_2biHliKMIaoX_LrJTr1kgI3aKz4DYo4MWhLJhkxmCJgaWrl_5z92Aou9WsaqcRt00Z2W_p4EhRcSXICE7AkStadofLyQxIzRNRDOdl')"></div>
+<div class="absolute inset-0 bg-grid opacity-30"></div>
+<!-- Simulated Nodes -->
+<div class="absolute top-1/4 left-1/4 w-2 h-2 bg-primary-container rounded-full shadow-[0_0_8px_#00f0ff] animate-pulse"></div>
+<div class="absolute top-1/3 left-1/2 w-2 h-2 bg-secondary-container rounded-full shadow-[0_0_8px_#ce5dff] animate-pulse delay-75"></div>
+<div class="absolute top-2/3 left-3/4 w-2 h-2 bg-primary-container rounded-full shadow-[0_0_8px_#00f0ff] animate-pulse delay-150"></div>
+<!-- Stats Overlay -->
+<div class="absolute bottom-4 left-4 font-code-sm text-code-sm text-primary-fixed-dim bg-surface/80 p-2 border border-outline-variant/30">
+                            &gt; NODE_COUNT: 1,024<br/>
+                            &gt; ACTIVE_LINKS: 98.7%<br/>
+                            &gt; AVG_LATENCY: 12ms
+                         </div>
+</div>
+</div>
+<!-- Latency Monitor -->
+<div class="col-span-1 md:col-span-4 glass-panel flex flex-col">
+<div class="h-6 bg-primary-container text-on-primary font-label-caps text-label-caps flex items-center px-2">
+                        LATENCY_MONITOR
+                    </div>
+<div class="p-gap-md flex-1 flex flex-col">
+<div class="font-code-sm text-code-sm text-on-surface-variant mb-2">REAL-TIME PING (ms)</div>
+<div class="flex-1 flex items-end gap-[1px] h-24 mb-4 border-b border-outline-variant/30 pb-1">
+<!-- Simulated Waveform -->
+<div class="w-2 bg-primary-container h-4"></div>
+<div class="w-2 bg-primary-container h-8"></div>
+<div class="w-2 bg-primary-container h-12"></div>
+<div class="w-2 bg-secondary-container h-16 opacity-80"></div>
+<div class="w-2 bg-primary-container h-10"></div>
+<div class="w-2 bg-primary-container h-6"></div>
+<div class="w-2 bg-primary-container h-14"></div>
+<div class="w-2 bg-error h-20 opacity-80"></div>
+<div class="w-2 bg-primary-container h-12"></div>
+<div class="w-2 bg-primary-container h-8"></div>
+<div class="w-2 bg-primary-container h-4"></div>
+</div>
+<div class="grid grid-cols-2 gap-gap-sm font-code-sm text-code-sm">
+<div class="border border-outline-variant/30 p-2">
+<div class="text-on-surface-variant">EU-WEST-1</div>
+<div class="text-primary-fixed">14ms</div>
+</div>
+<div class="border border-outline-variant/30 p-2">
+<div class="text-on-surface-variant">US-EAST-2</div>
+<div class="text-secondary-fixed">87ms</div>
+</div>
+<div class="border border-outline-variant/30 p-2">
+<div class="text-on-surface-variant">AP-SOUTHEAST</div>
+<div class="text-error">142ms</div>
+</div>
+<div class="border border-outline-variant/30 p-2">
+<div class="text-on-surface-variant">SA-EAST-1</div>
+<div class="text-primary-fixed">45ms</div>
+</div>
+</div>
+</div>
+</div>
+<!-- DNS Records Table -->
+<div class="col-span-1 md:col-span-12 glass-panel flex flex-col mt-gap-sm">
+<div class="h-6 bg-primary-container text-on-primary font-label-caps text-label-caps flex items-center px-2">
+                        DNS_RECORDS :: ZONE: SEIS.IO
+                    </div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-code-sm text-code-sm border-collapse">
+<thead>
+<tr class="text-on-surface-variant border-b border-outline-variant/50">
+<th class="p-3 font-normal">TYPE</th>
+<th class="p-3 font-normal">NAME</th>
+<th class="p-3 font-normal">VALUE</th>
+<th class="p-3 font-normal">TTL</th>
+<th class="p-3 font-normal">STATUS</th>
+<th class="p-3 font-normal text-right">ACTION</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/20">
+<td class="p-3 text-primary-fixed">A</td>
+<td class="p-3 text-on-surface">@</td>
+<td class="p-3 text-on-surface">192.168.1.100</td>
+<td class="p-3 text-on-surface-variant">300</td>
+<td class="p-3 text-secondary-container">PROPAGATING</td>
+<td class="p-3 text-right">
+<span class="material-symbols-outlined text-outline hover:text-primary-fixed cursor-pointer text-[18px]" data-icon="edit">edit</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/20 bg-secondary-container/10">
+<td class="p-3 text-primary-fixed">AAAA</td>
+<td class="p-3 text-on-surface">ipv6</td>
+<td class="p-3 text-on-surface">2001:0db8:85a3:0000:0000:8a2e:0370:7334</td>
+<td class="p-3 text-on-surface-variant">300</td>
+<td class="p-3 text-primary-fixed">SYNCED</td>
+<td class="p-3 text-right">
+<span class="material-symbols-outlined text-outline hover:text-primary-fixed cursor-pointer text-[18px]" data-icon="edit">edit</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/20">
+<td class="p-3 text-primary-fixed">CNAME</td>
+<td class="p-3 text-on-surface">www</td>
+<td class="p-3 text-on-surface">lb.seis.io</td>
+<td class="p-3 text-on-surface-variant">3600</td>
+<td class="p-3 text-primary-fixed">SYNCED</td>
+<td class="p-3 text-right">
+<span class="material-symbols-outlined text-outline hover:text-primary-fixed cursor-pointer text-[18px]" data-icon="edit">edit</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/20">
+<td class="p-3 text-primary-fixed">TXT</td>
+<td class="p-3 text-on-surface">_dmarc</td>
+<td class="p-3 text-on-surface truncate max-w-xs">v=DMARC1; p=reject; rua=mailto:dmarc@seis.io</td>
+<td class="p-3 text-on-surface-variant">3600</td>
+<td class="p-3 text-secondary-container">PROPAGATING</td>
+<td class="p-3 text-right">
+<span class="material-symbols-outlined text-outline hover:text-primary-fixed cursor-pointer text-[18px]" data-icon="edit">edit</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Terminal Log Panel -->
+<div class="col-span-1 md:col-span-12 glass-panel flex flex-col bg-surface-container-lowest mt-gap-sm h-48">
+<div class="h-6 bg-surface-variant text-on-surface-variant font-label-caps text-label-caps flex items-center px-2 border-b border-outline-variant/30">
+                        SYS_LOGS :: /var/log/dns.log
+                    </div>
+<div class="p-gap-sm font-code-sm text-code-sm text-outline-variant overflow-y-auto flex-1">
+<div>[10:42:01] INF: BIND 9.16.15-Ubuntu starting up</div>
+<div>[10:42:02] INF: loading configuration from '/etc/bind/named.conf'</div>
+<div>[10:42:05] WRN: zone seis.io/IN: loaded serial 2023102501</div>
+<div class="text-secondary-fixed">[10:43:12] INF: received control channel command 'reload'</div>
+<div class="text-primary-fixed">[10:43:15] INF: zone seis.io/IN: sending notifies (serial 2023102502)</div>
+<div class="text-primary-fixed blink-cursor">[10:43:18] INF: zone seis.io/IN: sync in progress...</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

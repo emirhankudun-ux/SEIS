@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Community &amp; Ecosystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass-bg: rgba(10, 14, 26, 0.6);
+            --cyan-glow: rgba(125, 244, 255, 0.25);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(125, 244, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(125, 244, 255, 0.5);
+            box-shadow: 0 0 30px var(--cyan-glow);
+            transform: translateY(-4px);
+        }
+        .neon-border-top {
+            position: relative;
+        }
+        .neon-border-top::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #7df4ff, transparent);
+        }
+        .pulsing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #7df4ff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #7df4ff;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(125, 244, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(125, 244, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(125, 244, 255, 0); }
+        }
+        .grid-pattern {
+            background-image: radial-gradient(rgba(125, 244, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#7df4ff",
+                    "surface": "#111417",
+                    "secondary": "#ebb2ff",
+                    "inverse-on-surface": "#2e3134",
+                    "tertiary-fixed": "#e2e2e2",
+                    "outline-variant": "#3b494b",
+                    "on-tertiary-container": "#5d5f5f",
+                    "on-tertiary": "#2f3131",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#282a2e",
+                    "surface-dim": "#111417",
+                    "inverse-primary": "#006970",
+                    "on-primary-fixed": "#002022",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "secondary-container": "#b600f8",
+                    "outline": "#849495",
+                    "surface-tint": "#00dbe9",
+                    "surface-container-highest": "#323539",
+                    "surface-variant": "#323539",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-container-low": "#191c1f",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-error": "#690005",
+                    "on-secondary": "#520072",
+                    "on-surface": "#e1e2e7",
+                    "surface-container-lowest": "#0c0e12",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary-container": "#fff6fc",
+                    "error-container": "#93000a",
+                    "primary": "#dbfcff",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-background": "#e1e2e7",
+                    "surface-bright": "#37393d",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-container": "#00f0ff",
+                    "on-primary-container": "#006970",
+                    "on-primary": "#00363a",
+                    "tertiary-container": "#d9d9d9",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container": "#1d2023",
+                    "on-secondary-fixed": "#320047",
+                    "background": "#111417",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "inverse-surface": "#e1e2e7",
+                    "tertiary": "#f5f5f5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "section-gap": "120px",
+                    "margin-mobile": "20px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "mono-label": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "mono-code": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 px-margin-desktop py-4 flex justify-between items-center max-w-container-max mx-auto shadow-2xl">
+<div class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">Aether AI</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Models</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Pricing</a>
+</nav>
+<div class="flex gap-4">
+<button class="hidden lg:block text-on-surface font-body-md text-body-md px-4 py-2 hover:bg-primary-fixed/10 transition-all rounded-lg active:scale-95">Sign In</button>
+<button class="bg-primary-fixed text-on-primary-fixed font-body-md text-body-md px-6 py-2 rounded-lg font-semibold hover:brightness-110 transition-all active:scale-95 shadow-[0_0_20px_rgba(125,244,255,0.3)]">Get Started</button>
+</div>
+</header>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="px-margin-desktop max-w-container-max mx-auto text-center mb-section-gap relative">
+<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-full h-full -z-10 opacity-20">
+
+</div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-fixed/10 border border-primary-fixed/20 rounded-full mb-6">
+<span class="pulsing-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed">12,403 ACTIVE DEVELOPERS ONLINE</span>
+</div>
+<h1 class="font-display-lg text-display-lg mb-6 leading-none">The Engine of <br/><span class="text-primary-fixed">Collective Intelligence</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                Aether AI isn't just code. It's a living ecosystem of researchers, engineers, and creators building the future of open-source artificial intelligence.
+            </p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary-fixed text-on-primary-fixed font-semibold px-8 py-4 rounded-xl flex items-center gap-2 hover:shadow-[0_0_30px_rgba(125,244,255,0.4)] transition-all">
+<span class="material-symbols-outlined">groups</span> Join the Discord
+                </button>
+<button class="bg-surface-container-high border border-outline-variant text-on-surface px-8 py-4 rounded-xl flex items-center gap-2 hover:border-primary-fixed transition-all">
+<span class="material-symbols-outlined">terminal</span> Read Discussions
+                </button>
+</div>
+</section>
+<!-- Ecosystem Grid -->
+<section class="px-margin-desktop max-w-container-max mx-auto mb-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Discord -->
+<div class="glass-card p-8 rounded-3xl flex flex-col h-full">
+<div class="w-12 h-12 bg-[#5865F2]/20 rounded-xl flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-[#5865F2]">chat</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Discord</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">Our real-time command center. Chat with core contributors, get instant help, and join weekly voice hangouts.</p>
+<div class="flex items-center gap-4 border-t border-outline-variant/30 pt-6 mt-auto">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Close up high quality portrait of a modern software engineer wearing tech-wear inspired clothing, neon blue lighting background, hyper-realistic style for a professional AI company community page." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUgM9XUp9bde4TtYIpjX5eqcvtHxBDcZ-bUsYAi5POwXu5PKqxVnPSbaubBsh1FiMMrBgEuw1h8xl2EuX1bLwwiXrKIJpOCYZ0lCj5x2g5RnUqSM-hKmoYqkRJbMCQ45InLAS_z6OAZsxJhelIVhWR_E2Q3uTDirqa6CsMN1fmiG7ol1jmNkGa5OCRg9I7EYpOG04jNgxrqZ5dc_ervq7g-9BBL7X90rwQ4Fb3f53_ZqTJgyt9HQilUxGfE4zdcu_uzcNVdWn2IA')"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Portrait of a diverse female developer with artistic studio lighting, vibrant cyan and purple color palette, futuristic and professional aesthetic for a tech ecosystem website." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAE_w_V1_Lfm_394QJdQKDeA1SeK527_X9ZKwAYV6RsKY2ZBmcAaqF53YNUv8cLVLdeUeSO1amwZf5UD7Hz4noDEoKLKJmJqj5FHQWI0AkEcm4RLhUgbF7iQ_bQEtLy6Ovng1vO2o2kdLblnfbNphZ33Lc3y4gVZySKc8arwg5r9omiyCoYzG4JVDuodN2yH6jdG7lVDK690ht8eZbvKjGhy2uszs8-rEhIwIrQBDEoLuALl7_PLw45BNa-s-2oLAzPx5D_LG7DHQ')"></div>
+<div class="w-8 h-8 rounded-full border-2 border-surface" data-alt="Profile photo of a young male tech entrepreneur with soft glowing screen reflections on his face, dark professional background with minimal geometric shapes." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD8bmkuwIAWnwFKLzkr7hntwVbQAS_57uYEYJ2pUBxH-I5AAKdiEwrAxRHxlw-rqzFh54xl_PemcC5xN30mWicKUYDWwqAVFv7vIR8MzChPDOC8kM2jjouUnEZB9MoiT-nC503Us8HgrXfDq_NqNAP__8NmvtSuY7z3C4YI-wpII7GRlirnW_uvdYkG_JjclScIo1SVOIEdZCInJEMjO7X62662UAkuSBfHkgaho80V6lY_snzgFl5gsFxdAF9mjltiBE040INliA')"></div>
+</div>
+<span class="font-mono-label text-mono-label text-on-surface-variant">+85k Members</span>
+</div>
+</div>
+<!-- GitHub Discussions -->
+<div class="glass-card p-8 rounded-3xl flex flex-col h-full">
+<div class="w-12 h-12 bg-on-surface/10 rounded-xl flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-on-surface">forum</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Discussions</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">Asynchronous architectural debates and RFCs. Shape the roadmap and propose new Aether AI models.</p>
+<div class="flex items-center gap-2 font-mono-label text-mono-label text-primary-fixed mt-auto">
+<span class="material-symbols-outlined text-sm">history</span> Updated 2m ago
+                    </div>
+</div>
+<!-- Events -->
+<div class="glass-card p-8 rounded-3xl flex flex-col h-full">
+<div class="w-12 h-12 bg-secondary/20 rounded-xl flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary">event</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Events</h3>
+<p class="text-on-surface-variant mb-8 flex-grow">Global hackathons, monthly community calls, and technical deep-dives with our lead researchers.</p>
+<div class="space-y-3">
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/20 flex justify-between items-center">
+<span class="font-body-md text-body-md">Aether Hack Oct</span>
+<span class="text-primary-fixed text-xs font-mono-label">LIVE</span>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg border border-outline-variant/20 flex justify-between items-center opacity-60">
+<span class="font-body-md text-body-md">Model Training 101</span>
+<span class="text-on-surface-variant text-xs font-mono-label">Nov 12</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Community Spotlights (Bento Style) -->
+<section class="px-margin-desktop max-w-container-max mx-auto mb-section-gap">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-md text-headline-md mb-2">Member Spotlights</h2>
+<p class="text-on-surface-variant">The incredible tools being built on top of Aether AI.</p>
+</div>
+<button class="text-primary-fixed font-mono-label text-mono-label flex items-center gap-2 hover:underline">
+                    SUBMIT PROJECT <span class="material-symbols-outlined">north_east</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-gutter h-[600px]">
+<div class="md:col-span-2 md:row-span-2 glass-card rounded-3xl overflow-hidden relative group">
+<div class="absolute inset-0 z-0" data-alt="Cinematic high-angle shot of a futuristic data center with flowing neon cyan liquid cooling pipes, glowing server racks, and a sense of immense computational power. Dark obsidian aesthetic with glass reflections and depth of field." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC90EO-twXeqMMTMwrmUdWpXnrZ7X4Dry_2wWzV9lf4urCXGU3nwQ5ZhYU2pUoMf6lJdKvsa3gRah9z3IwvQiZpjDrD-MBSCasTHVKla5PjmJ_OQ6_m8G1VFZoVa6XFig87eZAeleD1thiY_pGtcKfKcw5ykPbseB9hkBhL4HXBC-1F5SOZmaIcn_b_fcAXOk9R7vaHVpHOI3-vysDHGofIgTCT3QRF-Mho4R052PLobdwzCxRbInlSHloXCsKQ6LGWPdI0aobtyg')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent z-10"></div>
+<div class="absolute bottom-0 left-0 p-8 z-20">
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-sm font-mono-label text-xs mb-4 inline-block">PROJECT OF THE MONTH</span>
+<h3 class="font-headline-md text-headline-md mb-2">AetherFlow Engine</h3>
+<p class="text-on-surface-variant mb-6 max-w-sm">A visual node-based editor for chaining AI models and multi-modal workflows. Built by @arch_dev.</p>
+<div class="flex gap-4">
+<span class="flex items-center gap-1 font-mono-label text-sm"><span class="material-symbols-outlined text-sm">star</span> 2.4k</span>
+<span class="flex items-center gap-1 font-mono-label text-sm"><span class="material-symbols-outlined text-sm">fork_right</span> 412</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-2 glass-card rounded-3xl p-8 flex flex-col justify-center">
+<h4 class="font-body-lg text-body-lg font-bold text-secondary mb-2">OmniSynth API</h4>
+<p class="text-on-surface-variant mb-4">A high-performance wrapper for real-time audio synthesis using Aether L3 models.</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-outline-variant"></div>
+<span class="text-sm font-mono-label">by @synth_lab</span>
+</div>
+<span class="material-symbols-outlined text-primary-fixed">open_in_new</span>
+</div>
+</div>
+<div class="glass-card rounded-3xl p-8 flex flex-col">
+<h4 class="font-body-lg text-body-lg font-bold mb-2">VisionDiff</h4>
+<p class="text-on-surface-variant text-sm flex-grow">Edge-optimized computer vision using Aether's minimal kernel.</p>
+<span class="text-xs font-mono-label text-on-tertiary-container mt-4">8.2k Downloads/mo</span>
+</div>
+<div class="glass-card rounded-3xl p-8 flex flex-col">
+<h4 class="font-body-lg text-body-lg font-bold mb-2">NeuroLink</h4>
+<p class="text-on-surface-variant text-sm flex-grow">Browser-based playground for Aether inference testing.</p>
+<span class="text-xs font-mono-label text-on-tertiary-container mt-4">OSS Contribution</span>
+</div>
+</div>
+</section>
+<!-- Wall of Fame -->
+<section class="bg-surface-container-lowest py-section-gap relative overflow-hidden">
+<div class="absolute inset-0 grid-pattern opacity-30"></div>
+<div class="px-margin-desktop max-w-container-max mx-auto relative z-10 text-center">
+<h2 class="font-headline-md text-headline-md mb-4">Wall of Fame</h2>
+<p class="text-on-surface-variant max-w-xl mx-auto mb-16">Celebrating the top contributors who have helped optimize the Aether AI core infrastructure this quarter.</p>
+<div class="flex flex-wrap justify-center gap-12">
+<!-- Contributor 1 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-4">
+<div class="absolute -inset-2 bg-primary-fixed/20 rounded-full blur-xl group-hover:bg-primary-fixed/40 transition-all opacity-0 group-hover:opacity-100"></div>
+<div class="w-24 h-24 rounded-full border-2 border-primary-fixed relative z-10 p-1">
+<div class="w-full h-full rounded-full bg-cover" data-alt="Square avatar of a software engineer with glasses, digital matrix-like reflections on lenses, tech company headshot style, high quality bokeh background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLmjt-IFhcVzDUYvO0pQ9uJVeXleQTiyQv6a_CGGaojTR_UNl6_gnyQynFxSfbiAtjIHgdBmfUgWydvvpQwzMa45NCyfSizNVtdxqBXZwv68UzcrBIjNpbUaNW0w10dg5cBVzXptArlixMuBZwTiBOm2CNNhaNJaDu1MtpwF4jtMfJB4vjtJJjV6K-n1dH5tYIykGqRlENdpP59hviEBYhsKS2Jk1fB_QGGZ0tqAV3oHJtykqzggmaguaFeCwRS9MP9DyPAWYTKQ')"></div>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-primary-fixed text-on-primary-fixed w-8 h-8 rounded-full flex items-center justify-center border-2 border-surface font-bold text-sm">1</div>
+</div>
+<span class="font-bold text-on-surface group-hover:text-primary-fixed transition-colors">alex_volkov</span>
+<span class="text-xs font-mono-label text-on-surface-variant uppercase tracking-widest">+1.2k Commits</span>
+</div>
+<!-- Contributor 2 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-4">
+<div class="w-20 h-20 rounded-full border-2 border-secondary relative z-10 p-1 mt-2">
+<div class="w-full h-full rounded-full bg-cover" data-alt="Portrait of a creative technologist with minimalist aesthetic, futuristic white and silver clothing, studio lighting with cyan highlights, sharp details for a professional tech bio." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCb15HK2hvokJnMIY_a9AtIBTkirBahrAM6GkTZG8nBe1lb1qKTOZWAdpCt-_FuSbwU8lNdNRsMHJIl3iPtAqtTFXSpy2SYxwVCx0uKC9jQDIfRvsOSy292hUjGrKQN3QuOKvy_iWyABeOFmbOxIqHQf-d-Tb4m6fA1Xz7iTgF-F9Mxj0IEtQQmfZYxXrfC1nYBgRu__Z5P5hEhukA3kgUDABfL_8_Dc8c7HdeDa9qkUTRvttWCSLFSS8-sQJ6B4-otlo-uW6WgWg')"></div>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-secondary text-on-secondary w-7 h-7 rounded-full flex items-center justify-center border-2 border-surface font-bold text-sm">2</div>
+</div>
+<span class="font-bold text-on-surface">elara_dev</span>
+<span class="text-xs font-mono-label text-on-surface-variant uppercase tracking-widest">+840 PRs</span>
+</div>
+<!-- Contributor 3 -->
+<div class="flex flex-col items-center group">
+<div class="relative mb-4">
+<div class="w-20 h-20 rounded-full border-2 border-outline relative z-10 p-1 mt-2">
+<div class="w-full h-full rounded-full bg-cover" data-alt="High-end professional portrait of a senior system architect, sophisticated black and white aesthetic with a pop of cyan light in the background, sharp focus, professional tech look." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBH8T9NO8XajpmpxXH9C8372Avjk_s-n44w2vwukygEIEqmzz6CKn_hzS6sfCd9Uc1kdUuM9VwXL8eKmSp2n4jZK3xgse1fQ_KLatJ6LGSTvFf12198ZHTEh6jWRl1wm5Kn0fFrkR9xT38W8mtRsVlDKWouLvgMSnetNfLOXEicAJvSvity42_r7eDfNJGfT60oSx4tyzm2GwNVPerobxdwZ0yvNdDJ_bzAolUKSRtwO8MoVzZf0tSM92bezsFEZH2qvpiyfn19XQ')"></div>
+</div>
+<div class="absolute -bottom-1 -right-1 bg-outline text-on-surface w-7 h-7 rounded-full flex items-center justify-center border-2 border-surface font-bold text-sm">3</div>
+</div>
+<span class="font-bold text-on-surface">marcus_k</span>
+<span class="text-xs font-mono-label text-on-surface-variant uppercase tracking-widest">Model Guru</span>
+</div>
+<!-- More Contributors Placeholder -->
+<div class="flex flex-col items-center opacity-40">
+<div class="w-20 h-20 rounded-full border-2 border-dashed border-outline-variant flex items-center justify-center mb-4 mt-2">
+<span class="material-symbols-outlined text-on-surface">add</span>
+</div>
+<span class="font-bold">You?</span>
+<span class="text-xs font-mono-label">Get Contributing</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="glass-card rounded-[40px] p-16 text-center relative overflow-hidden neon-border-top">
+<div class="absolute top-0 left-0 w-full h-full -z-10 opacity-30">
+
+</div>
+<h2 class="font-display-lg text-4xl md:text-6xl mb-8 leading-tight">Ready to build the future <br/>with us?</h2>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<button class="bg-primary-fixed text-on-primary-fixed font-bold px-10 py-5 rounded-2xl text-lg hover:scale-105 transition-transform flex items-center gap-3">
+<span class="material-symbols-outlined">rocket_launch</span> Access the Ecosystem
+                    </button>
+<a class="text-on-surface font-mono-label hover:text-primary-fixed transition-colors flex items-center gap-2" href="#">
+                        READ THE MANIFESTO <span class="material-symbols-outlined">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-16 px-margin-desktop bg-surface-container-lowest border-t border-outline-variant/20 max-w-container-max mx-auto">
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter mb-12">
+<div class="col-span-2">
+<div class="font-headline-md text-headline-md text-on-surface mb-4">Aether AI</div>
+<p class="text-on-tertiary-container font-mono-label text-sm max-w-xs">Building scalable, ethical, and performant AI infrastructure for the next generation of computing.</p>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-on-surface">Resources</h5>
+<ul class="space-y-3 font-mono-label text-mono-label text-on-tertiary-container">
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Documentation</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">API Reference</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Status</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-on-surface">Community</h5>
+<ul class="space-y-3 font-mono-label text-mono-label text-on-tertiary-container">
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Discord</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">GitHub</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">X / Twitter</a></li>
+</ul>
+</div>
+<div>
+<h5 class="font-bold mb-6 text-on-surface">Legal</h5>
+<ul class="space-y-3 font-mono-label text-mono-label text-on-tertiary-container">
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Terms of Service</a></li>
+<li><a class="hover:text-on-surface hover:underline decoration-primary-fixed/50 underline-offset-4 transition-all" href="#">Security</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="font-mono-label text-mono-label text-on-tertiary-container">© 2024 Aether AI. Engineering the future of intelligence.</span>
+<div class="flex gap-6">
+<span class="flex items-center gap-2 text-on-tertiary-container font-mono-label text-xs">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> ALL SYSTEMS OPERATIONAL
+                </span>
+</div>
+</div>
+</footer>
+<script>
+        // Optional micro-interactions
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

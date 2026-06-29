@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | Sync &amp; Backup Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Geist:wght@300;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Components JSON Integration & Style Guidance -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#605e5e",
+                    "surface-container-lowest": "#0c0f0f",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "outline-variant": "#3b494b",
+                    "on-surface": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#002022",
+                    "surface-dim": "#121414",
+                    "tertiary-fixed": "#e5e2e1",
+                    "primary": "#dbfcff",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "outline": "#849495",
+                    "on-secondary": "#520071",
+                    "on-background": "#e2e2e2",
+                    "inverse-primary": "#006970",
+                    "surface-bright": "#37393a",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-container": "#00f0ff",
+                    "inverse-on-surface": "#2f3131",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "on-primary": "#00363a",
+                    "surface-container-highest": "#333535",
+                    "tertiary-container": "#dcd9d8",
+                    "on-secondary-container": "#480064",
+                    "on-primary-container": "#006970",
+                    "tertiary": "#f9f5f5",
+                    "surface": "#121414",
+                    "background": "#121414",
+                    "surface-tint": "#00dbe9",
+                    "surface-container-high": "#282a2b",
+                    "secondary": "#ebb2ff",
+                    "surface-variant": "#333535",
+                    "on-error": "#690005",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#7df4ff",
+                    "surface-container": "#1e2020",
+                    "secondary-container": "#ce5dff",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-surface-variant": "#b9cacb",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-fixed-dim": "#00dbe9",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#313030",
+                    "on-secondary-fixed": "#320047",
+                    "obsidian": "#a371ff" /* Obsidian Purple for Version History */
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stroke-thick": "2px",
+                    "stroke-thin": "1px",
+                    "margin-page": "32px",
+                    "gap-xs": "4px",
+                    "gap-sm": "8px",
+                    "gap-lg": "24px",
+                    "gap-md": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "geist": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow-x: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        }
+
+        .obsidian-glow {
+            box-shadow: 0 0 15px rgba(163, 113, 255, 0.2);
+        }
+
+        .cyber-border {
+            border: 1px solid #3b494b;
+        }
+
+        .cyber-border-focus {
+            border: 1px solid #00f0ff;
+            box-shadow: inset 0 0 4px rgba(0, 240, 255, 0.2);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+
+        .segment {
+            height: 8px;
+            flex: 1;
+            background: #1e2020;
+        }
+
+        .segment.active {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="terminal-grid min-h-screen">
+<div class="scanline"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-10 flex justify-between items-center px-8 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 z-50">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim uppercase">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 text-[10px] tracking-widest" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 text-[10px] tracking-widest" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200 text-[10px] tracking-widest" href="#">AGENTS</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 text-[10px] tracking-widest" href="#">NETWORK</a>
+</nav>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-sm">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-sm">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer text-sm">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-16 hover:w-56 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-3 border-b border-outline-variant/10">
+<div class="w-8 h-8 rounded bg-secondary-fixed/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed text-lg" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<div class="text-[10px] font-bold text-secondary-fixed leading-tight">ROOT_USER</div>
+<div class="text-[9px] text-on-surface-variant font-code-sm">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 py-4">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">dashboard</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 whitespace-nowrap text-[11px] font-bold text-on-surface-variant">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">folder_open</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 whitespace-nowrap text-[11px] font-bold text-on-surface-variant">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 whitespace-nowrap text-[11px] font-bold">SYNC_MANAGER</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">smart_toy</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 whitespace-nowrap text-[11px] font-bold text-on-surface-variant">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant group-hover/item:text-secondary-fixed">cloud_queue</span>
+<span class="ml-4 opacity-0 group-hover:opacity-100 whitespace-nowrap text-[11px] font-bold text-on-surface-variant">INFRASTRUCTURE</span>
+</div>
+</div>
+<div class="p-4 space-y-4 border-t border-outline-variant/10">
+<div class="flex items-center gap-4 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="opacity-0 group-hover:opacity-100 text-[10px] font-bold">POWER</span>
+</div>
+<div class="flex items-center gap-4 cursor-pointer text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">lock</span>
+<span class="opacity-0 group-hover:opacity-100 text-[10px] font-bold">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-16 mt-10 p-gap-md md:p-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+<div>
+<div class="flex items-center gap-2 text-primary-fixed mb-1">
+<span class="material-symbols-outlined text-sm">security</span>
+<span class="font-label-sm uppercase tracking-widest text-[10px]">Sector 5 // System Integrity Control</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary uppercase">SYNC &amp; BACKUP MANAGER</h1>
+<p class="font-code-sm text-on-surface-variant mt-2">Active Node: <span class="text-secondary">seis-core-alpha-09</span> | Protocol: <span class="text-primary-fixed">AES-256-GCM</span></p>
+</div>
+<button class="bg-primary-container text-on-primary px-6 py-2 font-bold text-[12px] flex items-center gap-2 hover:bg-secondary-container transition-colors active:scale-95">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                INITIATE GLOBAL SYNC
+            </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gap-md">
+<!-- Cloud Mirror Status Map (Left Large Tile) -->
+<div class="col-span-12 lg:col-span-8 cyber-border bg-surface-container-lowest/40 backdrop-blur-md overflow-hidden flex flex-col">
+<div class="h-6 bg-primary-container px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-on-primary uppercase tracking-tighter">CLOUD_MIRROR_STATUS_MAP</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-on-primary/20"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/20"></div>
+<div class="w-2 h-2 rounded-full bg-on-primary/50"></div>
+</div>
+</div>
+<div class="relative flex-1 min-h-[400px]">
+<div class="absolute inset-0 z-0 overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
+<div class="w-full h-full bg-cover bg-center grayscale opacity-40 mix-blend-screen" data-alt="A futuristic topographical map rendered in high-contrast cyan wireframe on a dark background. Data nodes glow with soft neon intensity, connected by pulsating light trails. The overall aesthetic is hyper-technical, mimicking a tactical military interface or a global data visualization system." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC08LAuWYTl4Q26rT-SOJfpFqOSutPEN3MpsAJJ0_mKJ6jf5newEHPxkWvOp-06BsmkcFsP3drpHl1u-EsunA9oueqlO-1HqABh16IiI3ptPSlve2hILqfT_IJB7JqmsjnVYJwlViZU9fu8BH40Ondlpkw8eI_WMwpHlEeJJYYSVFDKtO75yr0A4A9Dy7wRsOvQv3BkUOoTC62JvioVWPxabCALQvQn1ufXTfgP70fq_MKjMxXIdzVrLWrRbk8jF0nhCWG7hiZaokjX')"></div>
+</div>
+<!-- Map Overlays -->
+<div class="absolute top-4 left-4 z-10 space-y-2">
+<div class="bg-surface-container/80 border border-primary-fixed/30 p-2 backdrop-blur-md">
+<div class="text-[9px] text-primary-fixed font-bold">LATENCY_GLOBAL</div>
+<div class="text-lg font-bold text-primary">12.4ms</div>
+<div class="segmented-progress mt-1 w-24">
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+</div>
+</div>
+<div class="bg-surface-container/80 border border-secondary/30 p-2 backdrop-blur-md">
+<div class="text-[9px] text-secondary font-bold">ACTIVE_NODES</div>
+<div class="text-lg font-bold text-secondary">32 / 40</div>
+</div>
+</div>
+<!-- Floating Node Details -->
+<div class="absolute bottom-8 right-8 z-10 w-64 cyber-border bg-surface-container-lowest/90 backdrop-blur-xl p-4 obsidian-glow">
+<div class="flex items-center justify-between mb-3">
+<span class="text-[10px] font-bold text-primary tracking-widest uppercase">Mirror_Node_01</span>
+<span class="px-1 bg-green-500/20 text-green-400 text-[8px] font-bold border border-green-500/40">SYNCHRONIZED</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">LOC:</span>
+<span class="text-on-surface font-code-sm">SVALBARD_VAULT</span>
+</div>
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">HASH:</span>
+<span class="text-primary-fixed font-code-sm">0x88FE...A91</span>
+</div>
+<div class="flex justify-between text-[10px]">
+<span class="text-on-surface-variant">LAST_BACKUP:</span>
+<span class="text-on-surface font-code-sm">2024-10-21 14:02:11</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Version History Timeline (Right Column) -->
+<div class="col-span-12 lg:col-span-4 cyber-border bg-surface-container-lowest/40 backdrop-blur-md flex flex-col">
+<div class="h-6 bg-obsidian px-3 flex items-center justify-between">
+<span class="text-[10px] font-bold text-white uppercase tracking-tighter">VERSION_HISTORY_LOG</span>
+<span class="material-symbols-outlined text-white text-xs">history</span>
+</div>
+<div class="flex-1 p-4 space-y-4 overflow-y-auto max-h-[600px] custom-scrollbar">
+<!-- Timeline Item -->
+<div class="relative pl-6 border-l border-obsidian/40 py-2">
+<div class="absolute -left-[5px] top-4 w-2 h-2 rounded-full bg-obsidian shadow-[0_0_8px_rgba(163,113,255,0.8)]"></div>
+<div class="text-[9px] font-bold text-obsidian tracking-tighter mb-1">SNAP_V.9.4.12 - 5 MINS AGO</div>
+<div class="bg-surface-container-high/30 p-2 cyber-border">
+<div class="text-[11px] font-bold text-on-surface">Auto-sync: Kernel Patch 012</div>
+<div class="text-[9px] text-on-surface-variant font-code-sm mt-1 truncate">/etc/seis/sys_integrity.conf</div>
+<div class="flex gap-2 mt-2">
+<span class="text-[8px] bg-secondary-container/20 text-secondary px-1 border border-secondary/30">MODIFIED</span>
+<span class="text-[8px] text-on-surface-variant font-code-sm">342KB</span>
+</div>
+</div>
+</div>
+<div class="relative pl-6 border-l border-obsidian/40 py-2">
+<div class="absolute -left-[5px] top-4 w-2 h-2 rounded-full border border-obsidian bg-surface-container-lowest"></div>
+<div class="text-[9px] font-bold text-on-surface-variant tracking-tighter mb-1">SNAP_V.9.4.11 - 2 HOURS AGO</div>
+<div class="bg-surface-container-high/30 p-2 cyber-border opacity-60">
+<div class="text-[11px] font-bold text-on-surface">Scheduled Deep Backup</div>
+<div class="text-[9px] text-on-surface-variant font-code-sm mt-1 truncate">/users/root/agent_logs/*</div>
+<div class="flex gap-2 mt-2">
+<span class="text-[8px] bg-primary-container/20 text-primary-fixed px-1 border border-primary-fixed/30">STABLE</span>
+<span class="text-[8px] text-on-surface-variant font-code-sm">1.2GB</span>
+</div>
+</div>
+</div>
+<div class="relative pl-6 border-l border-obsidian/40 py-2">
+<div class="absolute -left-[5px] top-4 w-2 h-2 rounded-full border border-obsidian bg-surface-container-lowest"></div>
+<div class="text-[9px] font-bold text-on-surface-variant tracking-tighter mb-1">SNAP_V.9.4.10 - 24 HOURS AGO</div>
+<div class="bg-surface-container-high/30 p-2 cyber-border opacity-60">
+<div class="text-[11px] font-bold text-on-surface">Disaster Recovery Restore Point</div>
+<div class="text-[9px] text-on-surface-variant font-code-sm mt-1 truncate">SYS_IMAGE_20231020_FULL.ISO</div>
+<div class="flex gap-2 mt-2">
+<span class="text-[8px] bg-error-container/20 text-error px-1 border border-error/30">LOCKED</span>
+<span class="text-[8px] text-on-surface-variant font-code-sm">45.8GB</span>
+</div>
+</div>
+</div>
+<div class="flex justify-center pt-4">
+<button class="text-[10px] text-obsidian font-bold hover:underline">LOAD_ARCHIVED_SNAPSHOTS</button>
+</div>
+</div>
+</div>
+<!-- Scheduled Backup Configuration (Bottom Left) -->
+<div class="col-span-12 lg:col-span-7 cyber-border bg-surface-container-lowest/40 backdrop-blur-md p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed">schedule</span>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase text-lg">SCHEDULED_BACKUP_RULES</h3>
+</div>
+<div class="space-y-4">
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 cyber-border bg-surface-container-low/50 gap-4">
+<div>
+<div class="text-[12px] font-bold text-primary-fixed">CRITICAL_CORE_DUMP</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mt-1">Incremental sync every 15 minutes to Off-site Node A</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-green-400 font-bold">ENABLED</span>
+<div class="w-8 h-4 bg-primary-fixed rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-2 h-2 bg-on-primary rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between p-4 cyber-border bg-surface-container-low/50 gap-4">
+<div>
+<div class="text-[12px] font-bold text-on-surface">TELEMETRY_DATA_PURGE</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mt-1">Full archive every 7 days; purge original after hash verify</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-on-surface-variant font-bold">DISABLED</span>
+<div class="w-8 h-4 bg-outline-variant rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-2 h-2 bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 flex gap-4">
+<button class="border border-primary-fixed text-primary-fixed px-4 py-2 text-[10px] font-bold hover:bg-primary-fixed/10 transition-all uppercase">
+                        ADD_NEW_RULE
+                    </button>
+<button class="text-on-surface-variant px-4 py-2 text-[10px] font-bold hover:text-white transition-all uppercase">
+                        EXPORT_CONFIG
+                    </button>
+</div>
+</div>
+<!-- System Resource Monitor (Bottom Right) -->
+<div class="col-span-12 lg:col-span-5 cyber-border bg-surface-container-lowest/40 backdrop-blur-md p-6 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase text-lg">IO_TRAFFIC</h3>
+<span class="text-[10px] font-code-sm text-secondary animate-pulse">● LIVE_FEED</span>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-[10px] mb-2">
+<span class="text-on-surface-variant">UPLINK_ENCRYPTED</span>
+<span class="text-primary-fixed">142.8 MB/s</span>
+</div>
+<div class="segmented-progress h-3">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] mb-2">
+<span class="text-on-surface-variant">DOWNLINK_ENCRYPTED</span>
+<span class="text-secondary">48.2 MB/s</span>
+</div>
+<div class="segmented-progress h-3">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div></div></div></div></div></div></main></body></html>

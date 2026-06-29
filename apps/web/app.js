@@ -260,6 +260,7 @@ const fallbackPluginInterfaces = {
 
 const state = {
   mode: "cinematic",
+  language: "en",
   gaps: [],
   capabilities: fallbackCapabilities,
   marketplace: fallbackMarketplace,
@@ -278,6 +279,66 @@ const state = {
   thresholds: [],
   filter: "all",
   pluginProofFilter: "all"
+};
+
+const rootCopy = {
+  en: {
+    heroEyebrow: "AI-native creative engineering operating system",
+    heroTitle: "SEIS AI OS",
+    heroSubtitle:
+      "A runnable local demo that connects SEIS AI Core, Desktop OS, SEIS Code, SEIS Design, SEIS Cloud, Search, SSH boundaries, and the five-year sub-agent plan.",
+    metricOne: "One ecosystem",
+    metricTwo: "Seven demo doors",
+    metricThree: "Cloud keys required",
+    oneSentence:
+      "SEIS is not a chatbot or a dashboard; it is a working local operating-system demo for AI, code, design, cloud readiness, search, creative websites, and human-governed sub-agent evolution."
+  },
+  tr: {
+    heroEyebrow: "AI-native yaratıcı mühendislik işletim sistemi",
+    heroTitle: "SEIS AI OS",
+    heroSubtitle:
+      "SEIS AI Core, Desktop OS, SEIS Code, SEIS Design, SEIS Cloud, arama, SSH sınırları ve beş yıllık alt-ajan planını bağlayan çalışır yerel demo.",
+    metricOne: "Tek ekosistem",
+    metricTwo: "Yedi demo kapısı",
+    metricThree: "Bulut anahtarı gerekir",
+    oneSentence:
+      "SEIS bir chatbot veya dashboard değildir; AI, kod, tasarım, cloud hazırlığı, arama, yaratıcı websiteler ve insan onaylı alt-ajan evrimi için çalışan yerel işletim sistemi demosudur."
+  }
+};
+
+const proofFocusCopy = {
+  desktop: {
+    eyebrow: "Selected signal",
+    title: "Desktop OS",
+    copy:
+      "The SEIS desktop shell demonstrates the ecosystem as a Linux/macOS/Windows-style workspace: files, terminal, launchable apps, shared persistence, search, and responsive interaction.",
+    href: "desktop.html",
+    cta: "Open Desktop OS"
+  },
+  code: {
+    eyebrow: "Selected signal",
+    title: "SEIS Code",
+    copy:
+      "SEIS Code is the VS Code-like app inside the system: Monaco-backed editing, multi-panel workspace, terminal behavior, and shared browser file persistence.",
+    href: "seis-code.html",
+    cta: "Open SEIS Code"
+  },
+  ai: {
+    eyebrow: "Selected signal",
+    title: "SEIS AI Core",
+    copy:
+      "The AI Core demo keeps provider identity honest while surfacing the model-router, prompt-engine, agent-runtime, SEIS Code, SEIS Design, SEIS Cloud, and SSH orbit as a local 3D map.",
+    href: "ai-core-demo/index.html",
+    cta: "Open AI Core 3D"
+  },
+  creative: {
+    eyebrow: "Selected signal",
+    title: "Creative demos",
+    copy:
+      "Mythic Gacha and the Video Hero pages prove that SEIS can ship playable, cinematic, visually refined product surfaces without requiring runtime model-provider keys.",
+    href: "mythic-gacha.html",
+    cta: "Open Mythic Gacha"
+  }
 };
 
 function el(selector) {
@@ -418,6 +479,96 @@ function setupModeToggle() {
   });
 }
 
+function setupRootDemoControls() {
+  setupLanguageToggle();
+  setupCopySummary();
+  setupProofFocusBoard();
+}
+
+function setupLanguageToggle() {
+  const button = el("#language-toggle");
+  if (!button) return;
+
+  const applyLanguage = (language) => {
+    state.language = language;
+    const copy = rootCopy[language] || rootCopy.en;
+    document.documentElement.lang = language;
+    button.textContent = language === "tr" ? "EN" : "TR";
+    button.setAttribute("aria-label", language === "tr" ? "Switch language to English" : "Dili Türkçe yap");
+
+    document.querySelectorAll("[data-copy-key]").forEach((node) => {
+      const value = copy[node.dataset.copyKey];
+      if (value) node.textContent = value;
+    });
+  };
+
+  button.addEventListener("click", () => {
+    applyLanguage(state.language === "tr" ? "en" : "tr");
+    showToast(state.language === "tr" ? "Türkçe demo metni aktif." : "English demo copy active.");
+  });
+
+  applyLanguage(state.language);
+}
+
+function setupCopySummary() {
+  const button = el("#copy-summary");
+  if (!button) return;
+
+  button.addEventListener("click", async () => {
+    const summary =
+      state.language === "tr"
+        ? "SEIS AI OS; Desktop, Code, Design, Cloud, Search, SSH sınırı ve alt-ajan planını tek çalışır yerel demoda birleştirir."
+        : "SEIS AI OS unifies Desktop, Code, Design, Cloud, Search, SSH boundaries, and sub-agent planning in one runnable local demo.";
+
+    try {
+      await navigator.clipboard.writeText(summary);
+      showToast(state.language === "tr" ? "Özet panoya kopyalandı." : "Summary copied to clipboard.");
+    } catch {
+      showToast(summary);
+    }
+  });
+}
+
+function setupProofFocusBoard() {
+  const board = el(".status-board");
+  const detail = el("#proof-copy");
+  if (!board || !detail) return;
+
+  board.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-focus]");
+    if (!button) return;
+    const focus = proofFocusCopy[button.dataset.focus] || proofFocusCopy.desktop;
+
+    board.querySelectorAll("[data-focus]").forEach((item) => {
+      const active = item === button;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    detail.replaceChildren(
+      create("p", "eyebrow", focus.eyebrow),
+      create("h3", "", focus.title),
+      create("p", "", focus.copy)
+    );
+    const link = create("a", "", focus.cta);
+    link.href = focus.href;
+    detail.append(link);
+  });
+
+  board.querySelectorAll("[data-focus]").forEach((button) => {
+    button.setAttribute("aria-pressed", button.classList.contains("active") ? "true" : "false");
+  });
+}
+
+function showToast(message) {
+  const toast = el("#toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("visible");
+  window.clearTimeout(showToast.timeout);
+  showToast.timeout = window.setTimeout(() => toast.classList.remove("visible"), 2400);
+}
+
 function setupAnchorTransitions() {
   document.addEventListener("click", (event) => {
     const link = event.target.closest('a[href^="#"]');
@@ -459,7 +610,7 @@ function focusSectionTarget(target) {
 }
 
 function setActiveNav(hash) {
-  const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+  const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"], .primary-nav a[href^="#"]'));
   navLinks.forEach((link) => {
     const isActive = hash && link.getAttribute("href") === hash;
     if (isActive) {
@@ -471,7 +622,7 @@ function setActiveNav(hash) {
 }
 
 function setupActiveSectionNav() {
-  const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+  const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"], .primary-nav a[href^="#"]'));
   if (!navLinks.length) return;
 
   const sections = navLinks
@@ -1514,7 +1665,7 @@ async function loadQualityConsole() {
 }
 
 function setupCinematicField() {
-  const canvas = el("[data-cinematic-field]");
+  const canvas = el("[data-cinematic-field]") || el("#signal-canvas");
   if (!canvas) return;
   const context = canvas.getContext("2d", { alpha: true });
   if (!context) return;
@@ -1635,6 +1786,7 @@ async function init() {
   applyMode(getDefaultMode());
   setupLoader();
   setupModeToggle();
+  setupRootDemoControls();
   setupAnchorTransitions();
   setupActiveSectionNav();
   setupParallax();

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS_KERNEL_OS_v1.0 | Automation Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Geist:wght@400;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --neon-magenta: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-cyan: #00dbe9;
+            --obsidian: #0c0f0f;
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .node-glow-magenta { box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
+        .node-glow-purple { box-shadow: 0 0 15px rgba(188, 19, 254, 0.2); }
+        .node-glow-cyan { box-shadow: 0 0 15px rgba(0, 219, 233, 0.2); }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 0, 255, 0.1);
+            opacity: 0.75;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: 0%; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333535; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
+
+        .canvas-container {
+            cursor: grab;
+        }
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#c3f400",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-container": "#dbd8d9",
+                      "on-tertiary-fixed-variant": "#474647",
+                      "on-primary-container": "#006970",
+                      "on-tertiary-container": "#5f5e5f",
+                      "primary": "#dbfcff",
+                      "secondary": "#ffffff",
+                      "surface-tint": "#00dbe9",
+                      "inverse-on-surface": "#2f3131",
+                      "on-primary-fixed": "#002022",
+                      "surface-bright": "#38393a",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#3c4d00",
+                      "tertiary-fixed-dim": "#c8c6c7",
+                      "surface": "#121414",
+                      "secondary-fixed-dim": "#abd600",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-fixed": "#1c1b1c",
+                      "tertiary-fixed": "#e5e2e3",
+                      "surface-dim": "#121414",
+                      "on-surface": "#e2e2e2",
+                      "surface-variant": "#333535",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed": "#161e00",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-secondary": "#283500",
+                      "surface-container-highest": "#333535",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#00f0ff",
+                      "surface-container": "#1e2020",
+                      "on-primary": "#00363a",
+                      "background": "#121414",
+                      "on-tertiary": "#313031",
+                      "on-secondary-container": "#556d00",
+                      "tertiary": "#f8f5f6",
+                      "surface-container-low": "#1a1c1c",
+                      "outline-variant": "#3b494b",
+                      "secondary-container": "#c3f400",
+                      "inverse-primary": "#006970",
+                      "on-background": "#e2e2e2",
+                      "error": "#ffb4ab",
+                      "outline": "#849495",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "gutter": "16px",
+                      "max-width": "1440px",
+                      "unit": "4px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "code-lg": ["JetBrains Mono"],
+                      "headline-md": ["Geist"],
+                      "label-caps": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-main": ["Geist"],
+                      "display-lg-mobile": ["Geist"],
+                      "display-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "code-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                      "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+</body></html>

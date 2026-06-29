@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - File Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#313030",
+                        "background": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-container": "#ce5dff",
+                        "inverse-on-surface": "#2f3131",
+                        "outline-variant": "#3b494b",
+                        "error-container": "#93000a",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-container": "#00f0ff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-background": "#e2e2e2",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#006970",
+                        "inverse-primary": "#006970",
+                        "on-secondary": "#520071",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#605e5e",
+                        "surface-container-highest": "#333535",
+                        "outline": "#849495",
+                        "tertiary-container": "#dcd9d8",
+                        "primary": "#dbfcff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary": "#ebb2ff",
+                        "on-surface": "#e2e2e2",
+                        "on-secondary-container": "#480064",
+                        "on-primary": "#00363a",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-variant": "#333535",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "primary-fixed": "#7df4ff",
+                        "on-error-container": "#ffdad6",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-container-high": "#282a2b",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#002022"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stroke-thin": "1px",
+                        "stroke-thick": "2px",
+                        "gap-sm": "8px",
+                        "gap-lg": "24px",
+                        "gap-xs": "4px",
+                        "margin-page": "32px",
+                        "gap-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for terminal feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(12, 15, 15, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dbe9;
+        }
+        
+        .blinking-cursor::after {
+            content: '█';
+            animation: blink 1s step-start infinite;
+            color: #00dbe9;
+            margin-left: 4px;
+        }
+        
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen overflow-hidden selection:bg-secondary-container selection:text-on-secondary-container flex flex-col font-body-md">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 docked full-width top-0 z-50">
+<div class="flex justify-between items-center w-full px-gap-md h-10">
+<div class="flex items-center gap-gap-md">
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex items-center gap-gap-sm ml-gap-lg">
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70 px-2 py-1" href="#">AGENTS</a>
+<a class="text-primary-fixed font-label-sm text-label-sm border-b border-primary-fixed pb-1 cursor-pointer active:opacity-70 px-2 py-1" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-gap-md text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-[18px] cursor-pointer hover:text-primary-fixed transition-colors" data-icon="settings">settings</span>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar (Shared Component) -->
+<nav class="bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 docked left-0 h-full w-20 hover:w-64 transition-all duration-300 fixed md:relative z-40 flex flex-col group/sidenav">
+<div class="flex flex-col flex-1 py-gap-md overflow-y-auto overflow-x-hidden">
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open" data-weight="fill">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150" href="#">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</a>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 p-4 overflow-hidden">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0 border border-outline-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="person">person</span>
+</div>
+<div class="opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface">ROOT_USER</span>
+<span class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</span>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-2 px-3 hover:bg-secondary transition-colors duration-200">
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span>
+<span class="font-label-sm text-label-sm opacity-0 group-hover/sidenav:opacity-100 transition-opacity duration-300 whitespace-nowrap absolute group-hover/sidenav:relative">NEW_SESSION</span>
+</button>
+<div class="flex justify-between mt-4">
+<a class="text-on-surface-variant hover:text-error transition-colors" href="#" title="POWER">
+<span class="material-symbols-outlined text-[18px]" data-icon="power_settings_new">power_settings_new</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors" href="#" title="LOCK">
+<span class="material-symbols-outlined text-[18px]" data-icon="lock">lock</span>
+</a>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full bg-background md:ml-0 ml-20 overflow-hidden">
+<!-- Context Header -->
+<div class="h-12 border-b border-outline-variant/30 bg-surface-container-low flex items-center px-gap-md justify-between shrink-0">
+<div class="flex items-center gap-gap-sm font-code-sm text-code-sm text-on-surface-variant">
+<span class="text-primary-fixed-dim">root@seis-01</span>
+<span>:</span>
+<span class="text-secondary-fixed">/var/vault/projects</span>
+</div>
+<div class="flex items-center gap-gap-md">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]" data-icon="search">search</span>
+<input class="bg-surface-container border border-outline-variant/50 text-on-surface font-code-sm text-code-sm pl-8 pr-3 py-1 focus:outline-none focus:border-primary-fixed focus:ring-1 focus:ring-primary-fixed w-64 placeholder:text-on-surface-variant/50" placeholder="Grep filesystem..." type="text"/>
+</div>
+<div class="flex border border-outline-variant/50">
+<button class="bg-surface-variant/50 px-2 py-1 text-on-surface hover:bg-surface-variant transition-colors"><span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span></button>
+<button class="bg-transparent px-2 py-1 text-on-surface-variant hover:bg-surface-variant transition-colors border-l border-outline-variant/50"><span class="material-symbols-outlined text-[18px]" data-icon="view_list">view_list</span></button>
+</div>
+</div>
+</div>
+<div class="flex flex-1 overflow-hidden">
+<!-- Inner Sidebar (Sectors) -->
+<aside class="w-64 border-r border-outline-variant/30 bg-surface-container-lowest/50 flex flex-col shrink-0 overflow-y-auto">
+<div class="p-gap-md border-b border-outline-variant/20">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-gap-sm">VOLUMES</h3>
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-2 py-1.5 bg-primary-fixed/10 text-primary-fixed border border-primary-fixed/30 group" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="dns">dns</span>
+<span class="font-code-sm text-code-sm">Project Vaults</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-2 py-1.5 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors border border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="perm_media">perm_media</span>
+<span class="font-code-sm text-code-sm">Media Index</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-2 py-1.5 text-on-surface-variant hover:bg-surface-variant/30 hover:text-on-surface transition-colors border border-transparent" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="cloud">cloud</span>
+<span class="font-code-sm text-code-sm">Cloud Drive [Ext]</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="p-gap-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant mb-gap-sm">QUICK ACCESS</h3>
+<ul class="space-y-1 font-code-sm text-code-sm">
+<li><a class="flex items-center gap-2 px-2 py-1 text-on-surface-variant hover:text-on-surface" href="#"><span class="text-secondary-fixed">~</span>/configs</a></li>
+<li><a class="flex items-center gap-2 px-2 py-1 text-on-surface-variant hover:text-on-surface" href="#"><span class="text-secondary-fixed">~</span>/scripts</a></li>
+<li><a class="flex items-center gap-2 px-2 py-1 text-on-surface-variant hover:text-on-surface" href="#"><span class="text-secondary-fixed">~</span>/data_models</a></li>
+</ul>
+</div>
+</aside>
+<!-- Grid View -->
+<div class="flex-1 bg-background p-gap-lg overflow-y-auto relative">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-gap-md auto-rows-max">
+<!-- Folder Item (Selected) -->
+<div class="bg-surface-container-low/80 border border-primary-fixed p-gap-sm flex flex-col group cursor-pointer relative shadow-[0_0_8px_rgba(125,244,255,0.2)]">
+<div class="absolute top-2 right-2 flex gap-1 opacity-100">
+<span class="material-symbols-outlined text-[14px] text-primary-fixed" data-icon="star">star</span>
+</div>
+<div class="flex justify-center py-4 text-primary-fixed">
+<span class="material-symbols-outlined text-[48px]" data-icon="folder" data-weight="fill">folder</span>
+</div>
+<div class="border-t border-outline-variant/30 pt-2 mt-auto">
+<h4 class="font-code-sm text-code-sm text-on-surface truncate">Neural_Nets_v2</h4>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-on-surface-variant">drwxr-xr-x</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">4.2 GB</span>
+</div>
+</div>
+</div>
+<!-- Folder Item -->
+<div class="bg-surface-container-lowest/80 border border-outline-variant/30 p-gap-sm flex flex-col group cursor-pointer hover:border-outline hover:bg-surface-container-low transition-colors">
+<div class="flex justify-center py-4 text-secondary-fixed">
+<span class="material-symbols-outlined text-[48px]" data-icon="folder">folder</span>
+</div>
+<div class="border-t border-outline-variant/30 pt-2 mt-auto">
+<h4 class="font-code-sm text-code-sm text-on-surface truncate">Sys_Logs_Archive</h4>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-on-surface-variant">drwxr-xr-x</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">128 MB</span>
+</div>
+</div>
+</div>
+<!-- File Item -->
+<div class="bg-surface-container-lowest/80 border border-outline-variant/30 p-gap-sm flex flex-col group cursor-pointer hover:border-outline hover:bg-surface-container-low transition-colors">
+<div class="flex justify-center py-4 text-on-surface-variant group-hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[48px]" data-icon="description">description</span>
+</div>
+<div class="border-t border-outline-variant/30 pt-2 mt-auto">
+<h4 class="font-code-sm text-code-sm text-on-surface truncate">config_matrix.yaml</h4>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-on-surface-variant">-rw-r--r--</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">12 KB</span>
+</div>
+</div>
+</div>
+<!-- Image File Item -->
+<div class="bg-surface-container-lowest/80 border border-outline-variant/30 p-gap-sm flex flex-col group cursor-pointer hover:border-outline hover:bg-surface-container-low transition-colors">
+<div class="h-20 mb-2 relative overflow-hidden border border-outline-variant/30 flex items-center justify-center bg-surface-container">
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant" data-icon="image">image</span>
+</div>
+<div class="border-t border-outline-variant/30 pt-2 mt-auto">
+<h4 class="font-code-sm text-code-sm text-on-surface truncate">render_pass_04.png</h4>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-on-surface-variant">-rw-r--r--</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">2.4 MB</span>
+</div>
+</div>
+</div>
+<!-- Terminal Script File Item -->
+<div class="bg-surface-container-lowest/80 border border-outline-variant/30 p-gap-sm flex flex-col group cursor-pointer hover:border-outline hover:bg-surface-container-low transition-colors">
+<div class="flex justify-center py-4 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-[48px]" data-icon="terminal">terminal</span>
+</div>
+<div class="border-t border-outline-variant/30 pt-2 mt-auto">
+<h4 class="font-code-sm text-code-sm text-on-surface truncate">deploy_agents.sh</h4>
+<div class="flex justify-between items-center mt-1">
+<span class="font-code-sm text-[10px] text-primary-fixed">-rwxr-xr-x</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">4 KB</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail / Metadata Pane (Right Sidebar) -->
+<aside class="w-72 border-l border-outline-variant/30 bg-surface-container-lowest/80 backdrop-blur-md flex flex-col shrink-0">
+<div class="bg-primary-fixed px-gap-md py-2 text-on-primary font-label-sm text-label-sm flex items-center justify-between">
+<span>INSPECTOR</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="info">info</span>
+</div>
+<div class="p-gap-md flex-1 overflow-y-auto">
+<div class="flex justify-center mb-gap-md">
+<span class="material-symbols-outlined text-[64px] text-primary-fixed" data-icon="folder" data-weight="fill">folder</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface break-words mb-1 text-center">Neural_Nets_v2</h2>
+<p class="font-code-sm text-code-sm text-on-surface-variant text-center mb-gap-lg">Directory</p>
+<div class="space-y-4">
+<div>
+<span class="font-label-sm text-[10px] text-on-surface-variant/70 uppercase block mb-1">Location</span>
+<div class="font-code-sm text-code-sm text-on-surface break-all bg-surface-container p-2 border border-outline-variant/30">
+                                    /var/vault/projects/Neural_Nets_v2
+                                </div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div>
+<span class="font-label-sm text-[10px] text-on-surface-variant/70 uppercase block mb-1">Size</span>
+<div class="font-code-sm text-code-sm text-on-surface">4.2 GB</div>
+</div>
+<div>
+<span class="font-label-sm text-[10px] text-on-surface-variant/70 uppercase block mb-1">Contains</span>
+<div class="font-code-sm text-code-sm text-on-surface">142 Items</div>
+</div>
+</div>
+<div>
+<span class="font-label-sm text-[10px] text-on-surface-variant/70 uppercase block mb-1">Permissions</span>
+<div class="font-code-sm text-code-sm text-secondary-fixed bg-surface-container p-2 border border-outline-variant/30 flex justify-between">
+<span>drwxr-xr-x</span>
+<span>0755</span>
+</div>
+</div>
+<div>
+<span class="font-label-sm text-[10px] text-on-surface-variant/70 uppercase block mb-1">Dates</span>
+<div class="space-y-1 font-code-sm text-[11px]">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Created:</span>
+<span class="text-on-surface">2023-10-24 09:12:44</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Modified:</span>
+<span class="text-on-surface">2023-10-26 14:33:01</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Accessed:</span>
+<span class="text-on-surface">2023-10-26 15:01:22</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-gap-md border-t border-outline-variant/30 bg-surface-container-low flex gap-2">
+<button class="flex-1 bg-transparent border border-primary-fixed text-primary-fixed font-code-sm text-code-sm py-1.5 hover:bg-primary-fixed/10 transition-colors">OPEN</button>
+<button class="w-10 flex items-center justify-center bg-surface-variant border border-outline-variant text-on-surface hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="delete">delete</span>
+</button>
+</div>
+</aside>
+</div>
+<!-- Footer / Disk Utility Widget -->
+<footer class="h-8 border-t border-outline-variant/30 bg-surface-container-lowest shrink-0 flex items-center px-gap-md justify-between font-code-sm text-[11px] text-on-surface-variant">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]" data-icon="dns">dns</span> /var/vault</span>
+<div class="flex items-center gap-2 w-48">
+<span>42%</span>
+<div class="flex-1 h-1.5 bg-surface-variant flex">
+<div class="h-full bg-primary-fixed w-[42%]"></div>
+</div>
+<span>8.4 TB Free</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-secondary-fixed">1 Item Selected (4.2 GB)</span>
+<span class="blinking-cursor">sys_ready</span>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

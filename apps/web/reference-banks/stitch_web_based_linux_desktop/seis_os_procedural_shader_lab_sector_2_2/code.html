@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - SHADER LAB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ce5dff;
+            --bg-dark: #0c0f0f;
+        }
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+        .window-header {
+            background: #00f0ff;
+            color: #002022;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #00f0ff;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+            margin-left: 4px;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .custom-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 2px;
+            background: #3b494b;
+            outline: none;
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #00f0ff;
+            cursor: pointer;
+            border-radius: 0;
+        }
+        .shader-overlay {
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#00f0ff",
+                      "outline-variant": "#3b494b",
+                      "surface-tint": "#00dbe9",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "secondary": "#ebb2ff",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-background": "#e2e2e2",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-container-highest": "#333535",
+                      "surface-bright": "#37393a",
+                      "error": "#ffb4ab",
+                      "outline": "#849495",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary-fixed": "#7df4ff",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary": "#dbfcff",
+                      "on-surface": "#e2e2e2",
+                      "on-primary": "#00363a",
+                      "on-primary-fixed": "#002022",
+                      "tertiary": "#f9f5f5",
+                      "surface-container": "#1e2020",
+                      "inverse-on-surface": "#2f3131",
+                      "on-secondary-fixed": "#320047",
+                      "secondary-container": "#ce5dff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-primary-container": "#006970",
+                      "surface-container-high": "#282a2b",
+                      "on-error-container": "#ffdad6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-secondary-container": "#480064",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#f8d8ff",
+                      "on-tertiary-container": "#605e5e",
+                      "background": "#121414",
+                      "tertiary-container": "#dcd9d8",
+                      "surface-dim": "#121414",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-tertiary": "#313030",
+                      "surface": "#121414",
+                      "primary-fixed-dim": "#00dbe9",
+                      "inverse-primary": "#006970",
+                      "surface-variant": "#333535",
+                      "surface-container-low": "#1a1c1c",
+                      "on-secondary": "#520071"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-xs": "4px",
+                      "gap-md": "16px",
+                      "stroke-thick": "2px",
+                      "margin-page": "32px",
+                      "gap-lg": "24px",
+                      "stroke-thin": "1px",
+                      "gap-sm": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-secondary-container selection:text-on-secondary-container h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl text-primary-fixed border-b border-outline-variant/30 flex justify-between items-center w-full px-8 h-10 fixed top-0 z-50">
+<div class="font-label-caps text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-label-caps text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-caps text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps text-label-sm" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-caps text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors" style="font-variation-settings: 'FILL' 0;">memory</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors" style="font-variation-settings: 'FILL' 0;">terminal</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed transition-colors" style="font-variation-settings: 'FILL' 0;">settings</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex items-center gap-4 mb-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="font-label-caps text-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed-dim transition-all duration-150">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-6 font-label-caps text-label-sm opacity-0 group-hover:opacity-100">LOGS</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/20">
+<button class="w-full bg-secondary-container text-on-secondary-container py-2 text-label-sm font-label-caps hover:bg-secondary transition-colors duration-200">NEW_SESSION</button>
+<div class="mt-4 flex flex-col gap-2">
+<div class="flex items-center gap-6 px-4 py-2 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="font-label-caps text-label-sm opacity-0 group-hover:opacity-100">POWER</span>
+</div>
+<div class="flex items-center gap-6 px-4 py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-caps text-label-sm opacity-0 group-hover:opacity-100">LOCK</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 h-[calc(100vh-40px)] p-gap-md grid grid-cols-12 grid-rows-6 gap-2">
+<!-- Viewport Title Bar (Part of the Grid Tiling) -->
+<div class="col-span-8 row-span-4 glass-panel relative overflow-hidden group">
+<div class="window-header justify-between">
+<span>PROCEDURAL_VIEWPORT: //LIQUID_METAL.GLSL</span>
+<div class="flex gap-2 items-center">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="font-code-sm text-[10px]">LIVE_RENDER_ACTIVE</span>
+<span class="material-symbols-outlined text-[14px] ml-2">open_in_full</span>
+</div>
+</div>
+<!-- Shader Placeholder -->
+<div class="absolute inset-0 top-6 overflow-hidden">
+
+<div class="shader-overlay absolute inset-0"></div>
+<!-- HUD Overlays -->
+<div class="absolute bottom-4 left-4 font-code-sm text-primary-fixed-dim bg-black/60 px-3 py-2 border border-outline-variant/40">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">filter_center_focus</span>
+<span>RES: 2560x1440</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">speed</span>
+<span>FPS: 144.2</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 flex gap-1">
+<button class="bg-primary/10 hover:bg-primary/30 border border-primary/40 p-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+<button class="bg-primary/10 hover:bg-primary/30 border border-primary/40 p-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+</button>
+<button class="bg-primary/10 hover:bg-primary/30 border border-primary/40 p-2 text-primary">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Parameters Bay -->
+<div class="col-span-4 row-span-3 glass-panel flex flex-col">
+<div class="window-header">PARAMETER_BAY</div>
+<div class="p-4 space-y-6 overflow-y-auto scrollbar-hide">
+<div class="space-y-2">
+<div class="flex justify-between text-code-sm font-label-caps text-on-surface-variant">
+<span>U_FREQUENCY</span>
+<span class="text-primary-fixed">0.652</span>
+</div>
+<input class="w-full custom-slider" max="1" min="0" step="0.001" type="range" value="0.652"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-code-sm font-label-caps text-on-surface-variant">
+<span>U_TIME_SCALE</span>
+<span class="text-primary-fixed">1.200</span>
+</div>
+<input class="w-full custom-slider" max="2" min="0" step="0.01" type="range" value="1.2"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-code-sm font-label-caps text-on-surface-variant">
+<span>U_DISPLACEMENT</span>
+<span class="text-primary-fixed">0.150</span>
+</div>
+<input class="w-full custom-slider" max="1" min="0" step="0.005" type="range" value="0.15"/>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-code-sm font-label-caps text-on-surface-variant">
+<span>U_COLOR_SHIFT</span>
+<span class="text-secondary-fixed">0.880</span>
+</div>
+<input class="w-full custom-slider accent-secondary" max="1" min="0" step="0.001" type="range" value="0.88"/>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 grid grid-cols-2 gap-2">
+<button class="border border-outline-variant py-2 font-label-caps text-label-sm hover:border-primary-fixed transition-colors">SAVE_PRESET</button>
+<button class="border border-outline-variant py-2 font-label-caps text-label-sm hover:border-primary-fixed transition-colors">LOAD_DATA</button>
+</div>
+</div>
+</div>
+<!-- Telemetry Graph -->
+<div class="col-span-4 row-span-3 glass-panel flex flex-col">
+<div class="window-header">GPU_TELEMETRY</div>
+<div class="p-4 flex-1 flex flex-col">
+<div class="flex justify-between mb-4">
+<div>
+<div class="text-[10px] text-on-surface-variant">VRAM_USAGE</div>
+<div class="text-headline-md text-primary-fixed leading-tight">4.2 <span class="text-sm">GB</span></div>
+</div>
+<div class="text-right">
+<div class="text-[10px] text-on-surface-variant">FRAME_TIME</div>
+<div class="text-headline-md text-secondary leading-tight">6.94 <span class="text-sm">MS</span></div>
+</div>
+</div>
+<!-- Simple SVG Graph placeholder -->
+<div class="flex-1 relative border-t border-l border-outline-variant/30 mt-2 overflow-hidden">
+<svg class="w-full h-full stroke-primary-container fill-none" viewbox="0 0 400 100">
+<path d="M0 80 L20 75 L40 82 L60 70 L80 72 L100 65 L120 78 L140 60 L160 55 L180 62 L200 58 L220 50 L240 52 L260 45 L280 48 L300 40 L320 42 L340 35 L360 38 L380 30 L400 32" stroke-width="1.5"></path>
+<path class="stroke-secondary" d="M0 90 L20 85 L40 88 L60 82 L80 84 L100 78 L120 86 L140 75 L160 70 L180 78 L200 74 L220 68 L240 70 L260 65 L280 68 L300 60 L320 62 L340 58 L360 60 L380 55 L400 58" stroke-width="1"></path>
+</svg>
+<!-- Scanning line -->
+<div class="absolute inset-y-0 w-[1px] bg-primary/20 animate-[move_5s_linear_infinite]" style="left: 0;"></div>
+</div>
+<div class="grid grid-cols-3 gap-1 mt-4">
+<div class="bg-surface-container-high p-2">
+<div class="text-[9px] text-on-surface-variant">TEMP</div>
+<div class="text-xs font-bold text-primary-fixed">64°C</div>
+</div>
+<div class="bg-surface-container-high p-2">
+<div class="text-[9px] text-on-surface-variant">CLOCK</div>
+<div class="text-xs font-bold text-primary-fixed">2450MHz</div>
+</div>
+<div class="bg-surface-container-high p-2">
+<div class="text-[9px] text-on-surface-variant">FAN</div>
+<div class="text-xs font-bold text-primary-fixed">1200RPM</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Code Editor -->
+<div class="col-span-8 row-span-2 glass-panel flex flex-col">
+<div class="window-header justify-between">
+<div class="flex items-center gap-4">
+<span>FRAGMENT_SHADER_EDITOR</span>
+<span class="text-[10px] text-on-surface/40">LAST_COMPILED: 0.04s ago</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[14px]">save</span>
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+</div>
+</div>
+<div class="flex-1 flex overflow-hidden">
+<!-- Line Numbers -->
+<div class="w-12 bg-surface-container-low text-on-surface-variant/30 text-[11px] py-4 flex flex-col items-center select-none border-r border-outline-variant/20">
+<span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+</div>
+<!-- Editor Body -->
+<div class="flex-1 p-4 font-code-sm text-code-sm overflow-y-auto scrollbar-hide relative">
+<div class="space-y-1">
+<p><span class="text-secondary">#version</span> 300 es</p>
+<p><span class="text-secondary">precision</span> highp float;</p>
+<p> </p>
+<p><span class="text-primary-fixed">uniform</span> float u_time;</p>
+<p><span class="text-primary-fixed">uniform</span> vec2 u_resolution;</p>
+<p><span class="text-primary-fixed">uniform</span> float u_frequency;</p>
+<p> </p>
+<p><span class="text-primary-fixed">out</span> vec4 fragColor;</p>
+<p> </p>
+<p><span class="text-secondary">void</span> <span class="text-primary-fixed">main</span>() {</p>
+<p class="pl-4">vec2 uv = gl_FragCoord.xy / u_resolution.xy;</p>
+<p class="pl-4">float dist = <span class="text-secondary">length</span>(uv - <span class="text-secondary">vec2</span>(0.5));</p>
+<p class="pl-4">float ripple = <span class="text-secondary">sin</span>(dist * u_frequency + u_time);</p>
+<p class="pl-4">fragColor = <span class="text-secondary">vec4</span>(<span class="text-secondary">vec3</span>(ripple), 1.0);<span class="terminal-cursor"></span></p>
+<p>}</p>
+</div>
+<!-- Glow effect in editor -->
+<div class="absolute top-4 left-4 w-64 h-32 bg-primary/5 blur-3xl pointer-events-none"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Restricted to relevant views) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary-container text-on-primary-container shadow-[0_0_20px_rgba(0,240,255,0.4)] flex items-center justify-center group active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<div class="absolute right-16 bg-surface-container px-4 py-2 border border-primary-container text-primary-container text-label-sm font-label-caps whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+            OPTIMIZE_KERNELS
+        </div>
+</button>
+<script>
+        // Micro-interaction: Update FPS and telemetry values
+        setInterval(() => {
+            const fpsEl = document.querySelector('span:contains("FPS:")');
+            const fps = (140 + Math.random() * 8).toFixed(1);
+            // In a real env, we'd target more precisely
+        }, 1000);
+
+        // Custom Animation for the telemetry scan line
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes move {
+                0% { left: 0%; opacity: 0; }
+                5% { opacity: 1; }
+                95% { opacity: 1; }
+                100% { left: 100%; opacity: 0; }
+            }
+        `;
+        document.head.append(style);
+    </script>
+</body></html>

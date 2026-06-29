@@ -25,22 +25,54 @@
   </header>
 
   <main id="main-content" class="app-shell">
-    <section class="hero card">
-      <p class="eyebrow">AI-native demo surface</p>
-      <h1>Open-source SEIS demo for <span>macOS + iOS</span></h1>
-      <p>
-        This demo validates how SEIS orchestrates specialists and returns
-        structured artifacts for analytics, quality signals, and handoff.
-      </p>
-      <div class="hero-cta-row">
-        <button type="button" class="button" data-route="/demo" data-cta-id="hero_start_demo">Start Demo</button>
-        <a href="#/results/demo-home" class="button ghost" data-route="/results/demo-home" data-cta-id="view_default_results">View Sample Result</a>
-        <button type="button" id="download-native" class="button ghost" data-cta-id="open_release_download" title="Download latest macOS package">Download macOS</button>
-        <button type="button" id="copy-native-link" class="button ghost" data-cta-id="copy_deep_link">Copy deep-link demo</button>
+    <section class="hero card" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">SEIS AI Core / five-year agent operating layer</p>
+        <h1 id="hero-title">Build the SEIS ecosystem with <span>versioned AI Core</span> and bounded agents.</h1>
+        <p>
+          A premium local demo for SEIS AI Core, sub-agent lanes, promotion gates,
+          dry-run evidence, and Apple-first handoff surfaces without live provider,
+          SSH, deploy, credential, or GitHub write authority.
+        </p>
+        <div class="hero-cta-row">
+          <button type="button" class="button" data-route="/demo" data-cta-id="hero_start_demo">Start Demo</button>
+          <a href="#/results/demo-home" class="button ghost" data-route="/results/demo-home" data-cta-id="view_default_results">View Sample Result</a>
+          <button type="button" id="download-native" class="button ghost" data-cta-id="open_release_download" title="Download latest macOS package">Download macOS</button>
+          <button type="button" id="copy-native-link" class="button ghost" data-cta-id="copy_deep_link">Copy deep-link demo</button>
+        </div>
+        <p class="live-hint">
+          Active route: <strong id="route-pill"></strong>
+        </p>
       </div>
-      <p class="live-hint">
-        Active route: <strong id="route-pill"></strong>
-      </p>
+      <div class="hero-visual" aria-label="Animated SEIS AI Core agent and version network">
+        <canvas
+          id="seis-hero-3d-canvas"
+          width="720"
+          height="520"
+          role="img"
+          tabindex="0"
+          aria-label="Interactive 3D SEIS AI Core map connected to the five-year sub-agent plan"
+        ></canvas>
+        <div class="hero-visual-toolbar" aria-label="SEIS AI Core 3D map controls">
+          <button type="button" id="seis-hero-3d-rotate" class="ghost-button" data-cta-id="ai_core_3d_rotate">Rotate map</button>
+          <button type="button" id="seis-hero-3d-sync" class="ghost-button" data-cta-id="ai_core_3d_sync">Sync quarter</button>
+          <button type="button" id="seis-hero-3d-pause" class="ghost-button" aria-pressed="false" data-cta-id="ai_core_3d_pause">Pause</button>
+        </div>
+        <div class="hero-visual-panel">
+          <span>SEIS AI Core v0.1 → v1.0</span>
+          <strong id="seis-hero-3d-version">5-year agent version mesh</strong>
+          <small id="seis-hero-3d-status">3D map initializing</small>
+        </div>
+        <div class="hero-visual-tags" aria-hidden="true">
+          <span>Model router</span>
+          <span>Prompt engine</span>
+          <span>Agent runtime</span>
+          <span>SEIS Code</span>
+          <span>SEIS Design</span>
+          <span>SEIS Cloud</span>
+          <span>SEIS-SSH</span>
+        </div>
+      </div>
     </section>
 
     <section class="card release-panel">
@@ -177,12 +209,94 @@
           <p class="eyebrow">Live operating lanes + plugin fabric</p>
           <h2 id="ecosystem-lanes-title">God Mode ecosystem lanes</h2>
           <p class="ecosystem-lanes-summary">
-            Goals, Repos, Docs, Agents, and the SEIS plugin fabric now have visible operating status, evidence source, quality gate, next action, and seis_plugin_integration routing.
+            Goals, Repos, Docs, Agents, and the SEIS plugin fabric now have visible operating status, evidence source, quality gate, next action, seis_plugin_integration routing, seis_ai_core_version_promotion_dry_run readiness evidence, seis_ai_core_subagent_model planning evidence, and seis_ai_core_subagent_review_ledger quarterly evidence.
           </p>
         </div>
-        <span class="ecosystem-lanes-badge" id="ecosystem-lanes-badge">10 lanes</span>
+        <span class="ecosystem-lanes-badge" id="ecosystem-lanes-badge">11 lanes</span>
       </div>
       <div class="ecosystem-lanes-grid" id="ecosystem-lanes-grid" aria-live="polite"></div>
+    </section>
+
+    <section class="card sub-agent-plan-panel" aria-labelledby="sub-agent-plan-title">
+      <div class="sub-agent-plan-heading">
+        <div>
+          <p class="eyebrow">Bounded sub-autonomous agents</p>
+          <h2 id="sub-agent-plan-title">5-year sub-agent demo</h2>
+          <p class="sub-agent-plan-summary">
+            The demo turns the five-year sub-agent plan into a local, evidence-backed operator surface.
+            It shows lanes, quarters, gates, and next actions without granting background write, deploy,
+            credential, SSH, merge, or provider authority.
+          </p>
+        </div>
+        <span class="sub-agent-plan-badge" id="sub-agent-plan-badge">5 years / 20 quarters</span>
+      </div>
+      <div class="sub-agent-plan-controls" aria-label="Sub-agent quarter controls">
+        <button type="button" id="sub-agent-prev" class="ghost-button" data-cta-id="sub_agent_previous_quarter">Previous quarter</button>
+        <button type="button" id="sub-agent-run-demo" class="button" data-cta-id="sub_agent_demo_pulse">Run demo pulse</button>
+        <button type="button" id="sub-agent-run-full-demo" class="ghost-button" data-cta-id="sub_agent_full_dry_run">Dry-run 5 years</button>
+        <button type="button" id="sub-agent-next" class="ghost-button" data-cta-id="sub_agent_next_quarter">Next quarter</button>
+        <button type="button" id="sub-agent-export-evidence" class="ghost-button" data-cta-id="sub_agent_export_evidence">Export evidence JSON</button>
+        <button type="button" id="sub-agent-reset-demo" class="ghost-button" data-cta-id="sub_agent_reset_demo">Reset local run</button>
+      </div>
+      <div class="sub-agent-plan-grid" id="sub-agent-plan-grid" aria-live="polite"></div>
+      <section class="sub-agent-version-map" id="sub-agent-version-map" aria-labelledby="sub-agent-version-map-title" aria-live="polite">
+        <div class="sub-agent-version-map__heading">
+          <div>
+            <p class="eyebrow">SEIS AI Core version promotion</p>
+            <h3 id="sub-agent-version-map-title">Read-only promotion map</h3>
+          </div>
+          <span>dry-run only</span>
+        </div>
+      </section>
+      <section class="sub-agent-route-mesh" id="sub-agent-route-mesh" aria-labelledby="sub-agent-route-mesh-title" aria-live="polite">
+        <div class="sub-agent-version-map__heading">
+          <div>
+            <p class="eyebrow">Installed AI route mesh</p>
+            <h3 id="sub-agent-route-mesh-title">AI Core profile routing</h3>
+          </div>
+          <span>local demo only</span>
+        </div>
+      </section>
+      <section class="sub-agent-plugin-mesh" id="sub-agent-plugin-mesh" aria-labelledby="sub-agent-plugin-mesh-title" aria-live="polite">
+        <div class="sub-agent-version-map__heading">
+          <div>
+            <p class="eyebrow">Personal plugin lane mesh</p>
+            <h3 id="sub-agent-plugin-mesh-title">SEIS plugin lanes inside AI Core</h3>
+          </div>
+          <span>plan-only</span>
+        </div>
+      </section>
+      <section class="sub-agent-mcp-runtime-mesh" id="sub-agent-mcp-runtime-mesh" aria-labelledby="sub-agent-mcp-runtime-mesh-title" aria-live="polite">
+        <div class="sub-agent-version-map__heading">
+          <div>
+            <p class="eyebrow">MCP runtime mesh</p>
+            <h3 id="sub-agent-mcp-runtime-mesh-title">SEIS AI Core tool contract</h3>
+          </div>
+          <span>local smoke verified</span>
+        </div>
+      </section>
+      <section class="sub-agent-constellation-inspector" id="sub-agent-constellation-inspector" data-constellation-inspector aria-labelledby="sub-agent-constellation-inspector-title" aria-live="polite">
+        <div class="sub-agent-version-map__heading">
+          <div>
+            <p class="eyebrow">AI Core integration inspector</p>
+            <h3 id="sub-agent-constellation-inspector-title">SEIS AI Core constellation</h3>
+          </div>
+          <span>local demo only</span>
+        </div>
+      </section>
+      <div class="sub-agent-quarter-shell">
+        <ol class="sub-agent-quarter-list" id="sub-agent-quarter-list" aria-label="Five-year sub-agent quarters"></ol>
+        <article class="sub-agent-quarter-detail" id="sub-agent-quarter-detail" aria-live="polite"></article>
+      </div>
+      <section class="sub-agent-run-ledger" aria-labelledby="sub-agent-run-ledger-title">
+        <div>
+          <p class="eyebrow">Local execution simulator</p>
+          <h3 id="sub-agent-run-ledger-title">Sub-agent pulse ledger</h3>
+          <p id="sub-agent-run-status">No local pulses recorded yet.</p>
+          <p class="sub-agent-export-status" id="sub-agent-export-status">No evidence export yet.</p>
+        </div>
+        <ol class="sub-agent-run-list" id="sub-agent-run-list" aria-live="polite"></ol>
+      </section>
     </section>
 
     <section class="card handoff-panel" aria-labelledby="handoff-title">

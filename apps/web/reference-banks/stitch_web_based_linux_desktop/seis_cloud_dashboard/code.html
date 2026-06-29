@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS Cloud Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.cdnfonts.com/css/geist');
+
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            overflow: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .cyber-glow {
+            box-shadow: 0 0 15px rgba(210, 240, 0, 0.2);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #333535;
+            border-radius: 10px;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @keyframes pulse-lime {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+        .animate-pulse-lime {
+            animation: pulse-lime 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .line-chart-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 3s ease-out forwards;
+        }
+
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#313030",
+                        "surface": "#121414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "surface-variant": "#333535",
+                        "surface-container": "#1e2020",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#2c3400",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-container": "#5d6b00",
+                        "surface-container-highest": "#333535",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-bright": "#38393a",
+                        "secondary-container": "#474646",
+                        "background": "#121414",
+                        "on-secondary-container": "#b7b4b4",
+                        "inverse-primary": "#576500",
+                        "inverse-on-surface": "#2f3131",
+                        "primary": "#ffffff",
+                        "on-surface": "#e2e2e2",
+                        "on-tertiary-container": "#656464",
+                        "on-secondary-fixed-variant": "#474646",
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#d2f000",
+                        "outline": "#909378",
+                        "on-error": "#690005",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-tint": "#b8d300",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-container": "#e5e2e1",
+                        "on-primary-fixed": "#191e00",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-fixed-variant": "#414c00",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "primary-container": "#d2f000",
+                        "on-surface-variant": "#c6c9ab",
+                        "primary-fixed-dim": "#b8d300",
+                        "on-background": "#e2e2e2",
+                        "secondary": "#c9c6c5",
+                        "surface-container-high": "#282a2b",
+                        "outline-variant": "#454932",
+                        "tertiary": "#ffffff",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "stack-md": "24px",
+                        "stack-lg": "48px",
+                        "gutter": "24px",
+                        "stack-sm": "12px",
+                        "unit": "8px",
+                        "stack-xs": "4px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "title-sm": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "title-sm": ["18px", {"lineHeight": "1.5", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "mono-code": ["13px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center h-12 px-margin-desktop border-b border-white/5 bg-background/80 backdrop-blur-xl">
+<div class="flex items-center gap-stack-md">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary">SEIS</span>
+<nav class="hidden md:flex items-center gap-stack-md ml-stack-lg">
+<a class="font-mono-code text-mono-code text-primary-fixed font-bold border-b-2 border-primary-fixed transition-colors" href="#">DASHBOARD</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">CLUSTERS</a>
+<a class="font-mono-code text-mono-code text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-sm">
+<button class="material-symbols-outlined text-primary-fixed hover:scale-110 duration-100" data-icon="memory">memory</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed duration-100" data-icon="sensors">sensors</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed duration-100" data-icon="offline_bolt">offline_bolt</button>
+<div class="w-6 h-6 rounded-full bg-surface-container-highest border border-white/10 ml-stack-xs overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sharp, minimalist user profile avatar with a clean, cinematic aesthetic. The person is silhouetted against a soft, high-contrast digital backlight with deep blacks and cool gray tones, emphasizing a professional and tech-focused persona. The lighting is precise, following the brand's luxury minimalism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-8b5ijEyil3tF-08d4gfAVh90ys3IUHF1Z5iBDibtS9YrrKa0fvPQggVuGVnf5noAhW1H7q4QiqC6JdshUZC99jLNkVmFcS_6P4Jata39G_pICse4SS1CXjk8gq8-o6hf9pPthZZzTTB2r1jreK9XImLXATNnCTnQ6s23CI8K5ZsVIz1G2RVGMYojvrTFWg3Cw1jNsKbmaZGJsur6Y7szubvVpIjYdOoh6gSrt1lLDpehbqOO5m_s7Q2Ft52XQF9QuI2hkHHhDQth"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Left) -->
+<aside class="fixed left-0 h-full w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/5 shadow-2xl flex flex-col py-stack-md z-40 group">
+<div class="px-6 mb-stack-lg transition-all duration-300 opacity-0 group-hover:opacity-100">
+<h2 class="font-label-caps text-label-caps text-primary">SEIS OS</h2>
+<p class="text-[10px] text-on-surface-variant/60">v1.0.4-alpha</p>
+</div>
+<div class="flex flex-col gap-stack-xs px-2">
+<div class="text-on-primary-fixed bg-primary-fixed rounded-lg mx-2 p-3 flex items-center gap-4 cursor-pointer">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud">cloud</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity">Cloud</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 p-3 flex items-center gap-4 cursor-pointer transition-all">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity">SSH Manager</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 p-3 flex items-center gap-4 cursor-pointer transition-all">
+<span class="material-symbols-outlined shrink-0" data-icon="account_tree">account_tree</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity">Containers</span>
+</div>
+</div>
+<div class="mt-auto px-2 flex flex-col gap-stack-xs">
+<div class="text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 p-3 flex items-center gap-4 cursor-pointer transition-all">
+<span class="material-symbols-outlined shrink-0" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps opacity-0 group-hover:opacity-100 transition-opacity">Settings</span>
+</div>
+</div>
+</aside>
+<!-- Activity Sidebar (Right) -->
+<aside class="fixed right-0 h-full w-12 bg-background/50 backdrop-blur-md border-l border-white/5 flex flex-col items-center py-stack-md z-30">
+<div class="flex flex-col gap-stack-lg items-center text-on-surface-variant/40">
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer animate-spin-slow" data-icon="sync" style="animation-duration: 8s;">sync</span>
+<span class="material-symbols-outlined hover:text-on-surface cursor-pointer" data-icon="psychology">psychology</span>
+</div>
+</aside>
+<!-- Main Dashboard Canvas -->
+<main class="ml-20 mr-12 mt-12 h-[calc(100vh-3rem)] overflow-hidden grid grid-cols-12 gap-gutter p-gutter">
+<!-- Left: Server List & SSH -->
+<div class="col-span-3 flex flex-col gap-stack-md h-full">
+<div class="glass-panel rounded-xl p-stack-md flex-1 flex flex-col overflow-hidden">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">INFRASTRUCTURE</h3>
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-stack-xs pr-2">
+<!-- Server Item -->
+<div class="group border border-white/5 bg-surface-container-low p-stack-sm rounded-lg hover:border-primary-fixed/30 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-pulse-lime"></div>
+<span class="font-mono-code text-on-surface text-sm">us-east-core-01</span>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<span class="text-[10px] text-on-surface-variant uppercase font-bold tracking-tighter">192.168.1.42</span>
+<span class="font-mono-code text-[10px] text-primary-fixed">Active</span>
+</div>
+</div>
+<div class="group border border-white/5 p-stack-sm rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></div>
+<span class="font-mono-code text-on-surface-variant text-sm">eu-west-node-edge</span>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<span class="text-[10px] text-on-surface-variant/60 uppercase">45.2.19.102</span>
+<span class="font-mono-code text-[10px] text-on-surface-variant">Idle</span>
+</div>
+</div>
+<div class="group border border-white/5 p-stack-sm rounded-lg hover:bg-surface-variant/20 transition-all cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-error"></div>
+<span class="font-mono-code text-on-surface-variant text-sm">asia-south-db-replica</span>
+</div>
+<div class="mt-2 flex items-center justify-between">
+<span class="text-[10px] text-on-surface-variant/60 uppercase">10.0.4.11</span>
+<span class="font-mono-code text-[10px] text-error">Timeout</span>
+</div>
+</div>
+</div>
+<!-- SSH Manager Quick Connect -->
+<div class="mt-stack-md pt-stack-md border-t border-white/5">
+<h4 class="font-label-caps text-[10px] text-on-surface-variant mb-stack-sm">SSH MANAGER</h4>
+<div class="bg-black/40 rounded border border-white/10 p-2 flex items-center gap-2">
+<span class="font-mono-code text-primary-fixed text-xs">$</span>
+<input class="bg-transparent border-none focus:ring-0 font-mono-code text-xs w-full text-on-surface" placeholder="ssh root@seis-core..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Live Monitoring -->
+<div class="col-span-6 flex flex-col gap-stack-md h-full">
+<div class="grid grid-cols-3 gap-gutter">
+<div class="glass-panel p-stack-sm rounded-xl">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">CPU LOAD</p>
+<p class="font-display-lg text-2xl text-primary-fixed">24.8%</p>
+</div>
+<div class="glass-panel p-stack-sm rounded-xl">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">MEM UTIL</p>
+<p class="font-display-lg text-2xl text-primary">6.4GB</p>
+</div>
+<div class="glass-panel p-stack-sm rounded-xl">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">LATENCY</p>
+<p class="font-display-lg text-2xl text-primary">12ms</p>
+</div>
+</div>
+<!-- Main Monitor Graph Area -->
+<div class="glass-panel rounded-xl p-stack-md flex-1 relative overflow-hidden flex flex-col">
+<div class="flex justify-between items-center mb-stack-lg z-10">
+<div class="flex flex-col">
+<h3 class="font-headline-md text-xl text-primary font-bold">SYSTEM METRICS</h3>
+<p class="text-xs text-on-surface-variant">Real-time aggregate data across 14 nodes</p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-fixed text-on-primary-fixed px-stack-sm py-1.5 rounded text-xs font-bold cyber-glow hover:scale-105 duration-200">DEPLOY</button>
+<button class="glass-panel text-primary px-stack-sm py-1.5 rounded text-xs font-bold hover:bg-white/5 duration-200">REBOOT</button>
+</div>
+</div>
+<div class="flex-1 w-full relative">
+<!-- Smooth Data Line (Simulation) -->
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 400 150">
+<defs>
+<lineargradient id="lineGrad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(210,240,0,0.2);stop-opacity:0.3"></stop>
+<stop offset="100%" style="stop-color:rgba(210,240,0,0);stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path class="line-chart-path" d="M0,120 Q50,80 100,100 T200,60 T300,90 T400,40" fill="none" stroke="#d2f000" stroke-width="2"></path>
+<path d="M0,120 Q50,80 100,100 T200,60 T300,90 T400,40 V150 H0 Z" fill="url(#lineGrad)"></path>
+<!-- Grid Lines -->
+<line stroke="white" stroke-dasharray="2,2" stroke-opacity="0.05" x1="0" x2="400" y1="30" y2="30"></line>
+<line stroke="white" stroke-dasharray="2,2" stroke-opacity="0.05" x1="0" x2="400" y1="75" y2="75"></line>
+<line stroke="white" stroke-dasharray="2,2" stroke-opacity="0.05" x1="0" x2="400" y1="120" y2="120"></line>
+</svg>
+<!-- Activity Points -->
+<div class="absolute top-[40%] left-[25%] w-2 h-2 bg-primary-fixed rounded-full cyber-glow"></div>
+<div class="absolute top-[25%] left-[75%] w-2 h-2 bg-primary-fixed rounded-full cyber-glow animate-ping"></div>
+</div>
+<div class="flex justify-between mt-stack-sm text-[10px] font-mono-code text-on-surface-variant/40">
+<span>T-30M</span>
+<span>T-20M</span>
+<span>T-10M</span>
+<span>NOW</span>
+</div>
+</div>
+</div>
+<!-- Right: Deployment Logs & Containers -->
+<div class="col-span-3 flex flex-col gap-stack-md h-full">
+<div class="glass-panel rounded-xl p-stack-md h-1/2 flex flex-col overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest mb-stack-md">CONTAINERS</h3>
+<div class="flex-1 flex flex-col gap-stack-sm overflow-y-auto custom-scrollbar pr-2">
+<div class="flex items-center justify-between p-2 border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="settings_input_component">settings_input_component</span>
+<span class="text-xs font-mono-code">api-gateway-v2</span>
+</div>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-primary-fixed/10 text-primary-fixed border border-primary-fixed/20">99.2%</span>
+</div>
+<div class="flex items-center justify-between p-2 border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="database">database</span>
+<span class="text-xs font-mono-code">redis-cache</span>
+</div>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-primary-fixed/10 text-primary-fixed border border-primary-fixed/20">OK</span>
+</div>
+<div class="flex items-center justify-between p-2 border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant/40 text-sm" data-icon="cyclone">cyclone</span>
+<span class="text-xs font-mono-code text-on-surface-variant/60">worker-sqs-04</span>
+</div>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-surface-variant/50 text-on-surface-variant border border-white/5">DORMANT</span>
+</div>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-stack-md h-1/2 flex flex-col overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest mb-stack-md">DEPLOYMENT LOGS</h3>
+<div class="flex-1 bg-black/40 rounded-lg p-stack-sm overflow-y-auto custom-scrollbar font-mono-code text-[11px] leading-relaxed text-on-surface-variant">
+<div class="mb-2"><span class="text-primary-fixed">[INFO]</span> Booting SEIS Cluster OS...</div>
+<div class="mb-2"><span class="text-primary-fixed">[INFO]</span> Syncing node: us-east-core-01</div>
+<div class="mb-2"><span class="text-primary-fixed">[PASS]</span> SSH handshake successful.</div>
+<div class="mb-2"><span class="text-primary-fixed">[INFO]</span> Pushing docker image v2.4.1...</div>
+<div class="mb-2"><span class="text-primary-fixed">[INFO]</span> Layer 45fe892 existing.</div>
+<div class="mb-2 text-primary-fixed underline">Tracing network paths...</div>
+<div class="mb-2"><span class="text-primary-fixed">[INFO]</span> Container 'api-gateway' healthy.</div>
+<div class="mb-2 animate-pulse"><span class="text-primary-fixed">&gt;</span> _</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Atmosphere: Background Shader -->
+<div class="fixed inset-0 -z-10 opacity-30 pointer-events-none">
+
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.querySelectorAll('button, .cursor-pointer').forEach(el => {
+            el.addEventListener('mousedown', () => el.classList.add('scale-95'));
+            el.addEventListener('mouseup', () => el.classList.remove('scale-95'));
+            el.addEventListener('mouseleave', () => el.classList.remove('scale-95'));
+        });
+        
+        // Random log generator simulation
+        const logContainer = document.querySelector('.custom-scrollbar.font-mono-code');
+        const phrases = [
+            "<span class='text-primary-fixed'>[INFO]</span> Fetching latest telemetry...",
+            "<span class='text-primary-fixed'>[OK]</span> Latency spike resolved.",
+            "<span class='text-primary-fixed'>[WARN]</span> Memory threshold approaching 85%",
+            "<span class='text-primary-fixed'>[INFO]</span> Garbage collection complete.",
+            "<span class='text-primary-fixed'>[INFO]</span> Heartbeat detected from asia-south"
+        ];
+        
+        setInterval(() => {
+            const entry = document.createElement('div');
+            entry.className = 'mb-2 opacity-0 transition-opacity duration-500';
+            entry.innerHTML = phrases[Math.floor(Math.random() * phrases.length)];
+            logContainer.prepend(entry);
+            setTimeout(() => entry.classList.remove('opacity-0'), 100);
+            if (logContainer.children.length > 20) logContainer.lastElementChild.remove();
+        }, 4000);
+    </script>
+</body></html>

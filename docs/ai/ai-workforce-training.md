@@ -14,10 +14,14 @@ or production model training.
 Machine-readable source:
 `content/development/seis-ai-workforce-training-plan.json`.
 
+Language Model Intake Registry:
+`content/development/seis-language-model-intake-registry.json`.
+
 Validation:
 
 ```bash
 npm run check:seis-ai-workforce-training
+npm run check:seis-language-model-intake
 npm run automation:seis-ai-workforce-training
 ```
 
@@ -28,6 +32,7 @@ npm run automation:seis-ai-workforce-training
 | Installed route inventory | Observed | `npm run ai -- list` on 2026-06-23 | Route readiness only; no provider prompt or credential verification. | Re-run before any secondary assistant handoff. |
 | Workforce assignments | Documented | `content/development/ai-workforce-assignments.json` | Codex remains the only writer by default. | Keep secondary assistants in reviewer/draft mode. |
 | Training control plane | Active local contract | `content/development/seis-ai-workforce-training-plan.json` | No live provider calls, SSH, deployment, dataset download, or cloud fine-tuning. | Run the local validator and seed training runner. |
+| Language model intake | Active metadata-only contract | `content/development/seis-language-model-intake-registry.json` | This is not bulk installation and grants no download, fine-tune, training, runtime, or AGI authority. | Review one specific model family at a time with license, hardware, model-card, dataset-card, benchmark, and approval gates. |
 | Seed models | Local deterministic lab | `packages/seis-ai/data/*`, `packages/seis-ai/models/*` | Runtime authority remains false. | Rebuild artifacts and promotion policy after accepted case updates. |
 | Live providers | Disabled or missing key unless verified | `content/development/seis-ai-core-provider-registry.json` | Missing Key is not Error, and no browser secrets are allowed. | Add server-only adapters only after typed validation exists. |
 
@@ -38,17 +43,37 @@ npm run automation:seis-ai-workforce-training
 2. Installed assistants such as Qwen, Ollama, OpenCode, Hermes, Goose, and
    OpenDesign may provide bounded review, contradiction, runbook, or design
    candidate material from sanitized context.
-3. Codex treats every assistant output as untrusted until it is checked against
+3. Codex checks the Language Model Intake Registry before any local model
+   experiment. The registry is metadata-only; it is not bulk installation,
+   not checkpoint download, and not training authorization.
+4. Codex treats every assistant output as untrusted until it is checked against
    repo evidence.
-4. Accepted material becomes SEIS-owned synthetic cases only when it excludes
+5. Accepted material becomes SEIS-owned synthetic cases only when it excludes
    secrets and user-private data.
-5. Local deterministic builders rebuild the permission policy, memory ranker,
+6. Local deterministic builders rebuild the permission policy, memory ranker,
    eval critic, and agent router seed artifacts.
-6. Benchmark and promotion gates decide whether the artifacts remain lab-ready,
+7. Benchmark and promotion gates decide whether the artifacts remain lab-ready,
    need benchmark expansion, or stay blocked.
-7. Human approval is required before live provider calls, cloud fine-tuning,
+8. Human approval is required before live provider calls, cloud fine-tuning,
    paid benchmarks, dataset downloads, SSH, deployment, push, merge, or model
    publication.
+
+## Language Model Intake Registry
+
+The registry answers the request to evaluate broad model families without
+blindly installing everything. It tracks Llama, Qwen, Gemma, Mistral, DeepSeek,
+OpenAI open-weight candidates, embeddings/rerankers, and code-specialist
+families as metadata-only candidates.
+
+This is retrieval first and model-install second:
+
+- build a clean SEIS knowledge graph and retrieval layer before fine-tuning;
+- review license, checkpoint provenance, checksum, disk, RAM/GPU, and safety
+  boundaries before any model install;
+- keep 16GB machines on metadata, deterministic seed models, and explicitly
+  approved small/quantized experiments only;
+- keep 70B, 150B, 300B+, 405B, 512B, and larger models blocked until hardware,
+  budget, evaluation, observability, rollback, and approval evidence exists.
 
 ## Model Targets
 

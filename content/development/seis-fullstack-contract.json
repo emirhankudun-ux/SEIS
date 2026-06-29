@@ -1,0 +1,459 @@
+{
+  "schemaVersion": 1,
+  "id": "seis-fullstack-contract",
+  "updated": "2026-06-24",
+  "status": "validated-contract",
+  "mode": "local-demo-no-key-fullstack-foundation",
+  "qualityGate": "npm run check:seis-fullstack-contract",
+  "runtimeGate": "npm run check:seis-fullstack-server-smoke",
+  "fallbackGate": "npm run check:seis-fullstack-no-server-fallback-smoke",
+  "coreCredentialRequirement": "none",
+  "liveCredentialRequirement": "optional-backend-only-after-approval",
+  "localDemoFirst": true,
+  "staticDemoFallbackRequired": true,
+  "description": "SEIS full-stack foundation contract for the first safe server/API/data boundary. It preserves the current static demo and defines read-only Local Demo data before auth, database, live AI, SSH, or deployment work.",
+  "sourceOfTruth": {
+    "contract": "content/development/seis-fullstack-contract.json",
+    "server": "server/node/static-server.mjs",
+    "architectureDoc": "docs/architecture/seis-full-stack-transition.md",
+    "laneDoc": "apps/fullstack/README.md",
+    "status": "docs/STATUS.md",
+    "backlog": "docs/roadmap/MASTER_BACKLOG.md",
+    "nextPrQueue": "docs/roadmap/NEXT_PR_QUEUE.md"
+  },
+  "securityInvariants": [
+    "Core SEIS must start with zero cloud provider keys.",
+    "Provider secrets must never be stored in browser localStorage, IndexedDB, route config, static JSON, or frontend bundles.",
+    "Live provider requests must be backend-only after explicit approval and redacted audit logging.",
+    "SSH, deployment, Git push, merge, and file deletion remain disabled until explicitly approved.",
+    "Local Demo fallback must remain available when every optional provider key is missing."
+  ],
+  "frontendState": {
+    "currentStorage": [
+      "localStorage",
+      "IndexedDB browser-local VFS"
+    ],
+    "allowedClientPersistence": [
+      "locale preference",
+      "theme preference",
+      "window/session geometry",
+      "browser-local VFS demo files",
+      "Local Demo app install toggles"
+    ],
+    "forbiddenClientPersistence": [
+      "API keys",
+      "tokens",
+      "passwords",
+      "SSH private keys",
+      "service accounts",
+      "provider credentials",
+      "private host fingerprints",
+      "cookies copied from external services"
+    ],
+    "fallbackContract": "Every frontend surface must still render and respond without the server endpoints, external network, auth, provider keys, SSH, or deployment."
+  },
+  "serverBoundary": {
+    "runtime": "node:http static server",
+    "dependencyPolicy": "no-new-dependencies-first",
+    "writePolicy": "read-only endpoints for first contract slice",
+    "storagePolicy": "fixture-backed Local Demo JSON until database/auth approval",
+    "secretPolicy": "server-only environment variables may be detected later, but values must never be serialized",
+    "approvalRequiredFor": [
+      "new runtime dependencies",
+      "external database",
+      "authentication provider",
+      "live AI provider calls",
+      "SSH execution",
+      "deployment",
+      "GitHub write actions",
+      "real credential handling"
+    ]
+  },
+  "publicEndpoints": [
+    {
+      "route": "/_server/session",
+      "method": "GET",
+      "sourceKey": "session",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Anonymous Local Demo session and capability summary."
+    },
+    {
+      "route": "/_server/capabilities",
+      "method": "GET",
+      "sourceKey": "capabilities",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Frontend, backend, AI, cloud, SSH, deployment, and storage capability states."
+    },
+    {
+      "route": "/_server/projects",
+      "method": "GET",
+      "sourceKey": "projects",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Demo workspace/project records that can later become durable database rows."
+    },
+    {
+      "route": "/_server/app-installs",
+      "method": "GET",
+      "sourceKey": "appInstalls",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Store install/update/enable state records without package installation."
+    },
+    {
+      "route": "/_server/provider-status",
+      "method": "GET",
+      "sourceKey": "providerStatus",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Provider status rows with no credential values and no live provider calls."
+    },
+    {
+      "route": "/_server/audit-log",
+      "method": "GET",
+      "sourceKey": "auditLogs",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Redacted Local Demo audit events."
+    },
+    {
+      "route": "/_server/agent-tasks",
+      "method": "GET",
+      "sourceKey": "agentTasks",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Safe dry-run agent task records with approvals, denials, and validation gates."
+    },
+    {
+      "route": "/_server/fullstack-contract",
+      "method": "GET",
+      "sourceKey": "self",
+      "status": "working-local-demo",
+      "mode": "read-only",
+      "description": "Complete contract payload for validators and manual inspection."
+    }
+  ],
+  "session": {
+    "sessionId": "local-demo-session",
+    "userMode": "anonymous-local-demo",
+    "localeStorageKey": "seis.locale.v1",
+    "privacyMode": "local-first",
+    "storageMode": "browser-local-plus-read-only-server-fixture",
+    "auth": {
+      "status": "planned",
+      "provider": "none",
+      "approvalRequired": true
+    },
+    "capabilitySummary": {
+      "desktopOs": "working",
+      "linuxReplica": "working",
+      "seisCode": "working-local-demo",
+      "designStudio": "working-local-demo",
+      "cloud": "mock-safe",
+      "aiCore": "local-demo",
+      "agents": "dry-run",
+      "ssh": "disabled",
+      "deployment": "disabled",
+      "liveProviders": "disabled-or-missing-key"
+    }
+  },
+  "capabilities": [
+    {
+      "id": "frontend-os-shell",
+      "name": "SEIS Desktop OS and Linux Replica",
+      "layer": "frontend",
+      "state": "working",
+      "evidence": [
+        "npm run check:desktop-os",
+        "npm run check:seis-linux-replica-browser-smoke"
+      ]
+    },
+    {
+      "id": "browser-local-vfs",
+      "name": "Browser-local VFS",
+      "layer": "frontend-data",
+      "state": "working-local-demo",
+      "evidence": [
+        "npm run check:product-experience-browser-smoke"
+      ]
+    },
+    {
+      "id": "server-api-fixtures",
+      "name": "Read-only server API fixtures",
+      "layer": "backend-api",
+      "state": "working-local-demo",
+      "evidence": [
+        "npm run check:seis-fullstack-contract",
+        "npm run check:seis-fullstack-server-smoke",
+        "npm run check:seis-fullstack-no-server-fallback-smoke"
+      ]
+    },
+    {
+      "id": "provider-router",
+      "name": "Provider router",
+      "layer": "backend-ai",
+      "state": "planned",
+      "evidence": [
+        "docs/ai/model-router.md",
+        "content/development/seis-ai-core-provider-registry.json"
+      ]
+    },
+    {
+      "id": "external-database",
+      "name": "Durable external database",
+      "layer": "backend-storage",
+      "state": "planned",
+      "evidence": [
+        "apps/fullstack/README.md"
+      ]
+    },
+    {
+      "id": "ssh-execution",
+      "name": "SSH execution plane",
+      "layer": "operations",
+      "state": "disabled",
+      "evidence": [
+        "SECURITY.md",
+        "docs/operations/seis-cloud-foundation.md"
+      ]
+    },
+    {
+      "id": "deployment",
+      "name": "Deployment plane",
+      "layer": "operations",
+      "state": "disabled",
+      "evidence": [
+        "docs/roadmap/NEXT_PR_QUEUE.md"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "seis-local-demo",
+      "name": "SEIS Local Demo Workspace",
+      "state": "working-local-demo",
+      "storage": "browser-local-vfs",
+      "routes": [
+        "apps/web/desktop.html",
+        "apps/web/seis-linux-replica.html",
+        "apps/web/seis-code.html",
+        "apps/web/website/index.html"
+      ],
+      "approvalRequiredForPromotion": [
+        "auth",
+        "external database",
+        "deployment",
+        "live provider routing"
+      ]
+    },
+    {
+      "id": "seis-fullstack-alpha",
+      "name": "SEIS Full-stack Alpha Contract",
+      "state": "planned",
+      "storage": "fixture-backed-contract",
+      "routes": [
+        "/_server/session",
+        "/_server/provider-status",
+        "/_server/agent-tasks"
+      ],
+      "approvalRequiredForPromotion": [
+        "database writes",
+        "user auth",
+        "background jobs",
+        "live provider calls"
+      ]
+    }
+  ],
+  "appInstalls": [
+    {
+      "appId": "seis-code",
+      "name": "SEIS Code IDE",
+      "state": "enabled",
+      "version": "local-demo",
+      "source": "packaged-static-route",
+      "updates": "manual-repo-change"
+    },
+    {
+      "appId": "seis-design",
+      "name": "SEIS Design Studio",
+      "state": "enabled",
+      "version": "local-demo",
+      "source": "linux-replica-mini-workspace",
+      "updates": "manual-repo-change"
+    },
+    {
+      "appId": "seis-cloud",
+      "name": "SEIS Cloud",
+      "state": "mock-safe",
+      "version": "local-demo",
+      "source": "linux-replica-mini-workspace",
+      "updates": "approval-required"
+    },
+    {
+      "appId": "ai-core",
+      "name": "SEIS AI Core",
+      "state": "local-demo",
+      "version": "provider-neutral-contract",
+      "source": "installed-ai-fixtures",
+      "updates": "approval-required-for-live-providers"
+    }
+  ],
+  "providerStatus": [
+    {
+      "providerId": "seis-local-demo",
+      "name": "SEIS Local Demo",
+      "status": "Available",
+      "credentialRequirement": "none",
+      "expectedEnv": [],
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "liveCallVerified": false,
+      "routeEligible": true,
+      "notes": "Deterministic local responses only."
+    },
+    {
+      "providerId": "openai-general",
+      "name": "OpenAI",
+      "status": "Missing Key",
+      "credentialRequirement": "optional-backend-only",
+      "expectedEnv": [
+        "OPENAI_API_KEY"
+      ],
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "liveCallVerified": false,
+      "routeEligible": false,
+      "notes": "Do not mark Available until backend env validation and provider health checks pass."
+    },
+    {
+      "providerId": "anthropic-claude",
+      "name": "Anthropic Claude",
+      "status": "Missing Key",
+      "credentialRequirement": "optional-backend-only",
+      "expectedEnv": [
+        "ANTHROPIC_API_KEY"
+      ],
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "liveCallVerified": false,
+      "routeEligible": false,
+      "notes": "Local Demo REPL must not imply live Claude access."
+    },
+    {
+      "providerId": "google-gemini",
+      "name": "Google Gemini",
+      "status": "Missing Key",
+      "credentialRequirement": "optional-backend-only",
+      "expectedEnv": [
+        "GEMINI_API_KEY"
+      ],
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "liveCallVerified": false,
+      "routeEligible": false,
+      "notes": "Provider status only; no browser key exposure."
+    },
+    {
+      "providerId": "ollama-local",
+      "name": "Ollama Local",
+      "status": "Disabled",
+      "credentialRequirement": "none",
+      "expectedEnv": [
+        "OLLAMA_BASE_URL"
+      ],
+      "backendOnly": true,
+      "frontendSecretAllowed": false,
+      "liveCallVerified": false,
+      "routeEligible": false,
+      "notes": "Enable only after local runtime probe is approved and redacted."
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "audit-local-demo-start",
+      "kind": "session",
+      "severity": "info",
+      "redacted": true,
+      "message": "Local Demo session contract initialized.",
+      "source": "seis-fullstack-contract"
+    },
+    {
+      "id": "audit-provider-boundary",
+      "kind": "security",
+      "severity": "notice",
+      "redacted": true,
+      "message": "Provider credentials are backend-only and unavailable to frontend routes.",
+      "source": "seis-fullstack-contract"
+    },
+    {
+      "id": "audit-ssh-disabled",
+      "kind": "operations",
+      "severity": "notice",
+      "redacted": true,
+      "message": "SSH and deployment actions are disabled until explicit approval.",
+      "source": "seis-fullstack-contract"
+    }
+  ],
+  "agentTasks": [
+    {
+      "taskId": "agent-architect-contract-review",
+      "agent": "Architect Agent",
+      "state": "dry-run",
+      "allowedActions": [
+        "review",
+        "plan",
+        "write local fixture",
+        "validate contract"
+      ],
+      "forbiddenActions": [
+        "provider call",
+        "SSH",
+        "deployment",
+        "push",
+        "merge",
+        "secret access"
+      ],
+      "approvalRequired": false,
+      "validation": "npm run check:seis-fullstack-contract"
+    },
+    {
+      "taskId": "agent-security-secret-boundary",
+      "agent": "Security Agent",
+      "state": "dry-run",
+      "allowedActions": [
+        "redacted scan",
+        "policy validation",
+        "path-only report"
+      ],
+      "forbiddenActions": [
+        "print secret",
+        "copy credential",
+        "rotate secret without approval",
+        "provider call"
+      ],
+      "approvalRequired": false,
+      "validation": "npm run audit:ai-providers"
+    },
+    {
+      "taskId": "agent-devops-deploy-gate",
+      "agent": "DevOps Agent",
+      "state": "blocked-by-approval",
+      "allowedActions": [
+        "dry-run",
+        "readiness report",
+        "rollback plan"
+      ],
+      "forbiddenActions": [
+        "deploy",
+        "SSH",
+        "change DNS",
+        "open firewall",
+        "spend cloud budget"
+      ],
+      "approvalRequired": true,
+      "validation": "npm run check:deploy-readiness"
+    }
+  ]
+}

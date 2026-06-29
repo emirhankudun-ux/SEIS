@@ -1,0 +1,86 @@
+{
+  "id": "seis-read-only-model-router-contract",
+  "title": "SEIS Provider-Neutral Read-Only Model Router Contract",
+  "status": "planned-read-only-contract",
+  "version": "2026-06-24",
+  "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
+  "runtimeAuthority": false,
+  "providerCalls": false,
+  "credentialValidation": false,
+  "browserSecrets": false,
+  "silentFallback": false,
+  "localOnlyCanUseCloud": false,
+  "defaultMode": "Local Demo",
+  "routerInputsAllowed": [
+    "task type",
+    "capability label",
+    "privacy mode",
+    "local-only flag",
+    "provider status fixture",
+    "cost preference",
+    "speed preference",
+    "context size requirement",
+    "tool support requirement",
+    "fallback policy"
+  ],
+  "routerInputsForbidden": [
+    "API keys",
+    "private prompts",
+    "private Obsidian vault contents",
+    "SSH credentials",
+    "cookies",
+    "service accounts",
+    "unredacted provider errors"
+  ],
+  "providerStates": [
+    "Local Demo",
+    "Available",
+    "Missing Key",
+    "Disabled",
+    "Rate Limited",
+    "Error",
+    "Unknown"
+  ],
+  "routingRules": [
+    "Missing Key is not Error",
+    "Disabled providers are never selected",
+    "Rate Limited providers require explicit retry",
+    "Error providers require repair before selection",
+    "Local-only mode never routes to cloud providers.",
+    "Local-only mode never falls back to a cloud provider",
+    "read-only router output explains why a candidate is eligible or blocked",
+    "Live execution stays blocked until backend-only provider mediation exists.",
+    "live execution stays blocked until backend-only adapters and no-secret tests exist"
+  ],
+  "blockedModelClasses": [
+    "20B planned-not-validated",
+    "70B research-roadmap",
+    "150B frontier-program-plan-only",
+    "300B+ not-scoped",
+    "512B apex-program-plan-only",
+    "highest-available-future not-scoped"
+  ],
+  "requiredEvidenceBeforeLiveRouting": [
+    "server-only provider registry",
+    "typed environment validation",
+    "no-key startup fixture",
+    "local-only fallback fixture",
+    "rate-limit fixture",
+    "invalid credential fixture",
+    "redacted routing decision log",
+    "client bundle secret exposure check",
+    "safety eval evidence",
+    "human approval"
+  ],
+  "readOnlyDecisionShape": {
+    "taskType": "string",
+    "privacyMode": "local-only | standard | review-gated",
+    "selectedProvider": "Local Demo unless verified otherwise",
+    "selectedModel": "explicit model id or Local Demo fixture",
+    "providerState": "one of providerStates",
+    "routeEligible": false,
+    "executionPerformed": false,
+    "fallbackUsed": false,
+    "blockedReasons": []
+  }
+}

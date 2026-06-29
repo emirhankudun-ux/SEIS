@@ -2,7 +2,27 @@ import { readFileSync, readdirSync, statSync, writeFileSync, mkdirSync } from "n
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 
-import { pluginIntegrationStatus } from "../lib/plugin-integration.mjs";
+import {
+  AI_CORE_MODEL_SCALING_STATUS_TOOL,
+  AI_CORE_PROVIDER_STATUS_TOOL,
+  AI_CORE_VERSION_PROMOTION_TOOL,
+  AI_CORE_VERSION_STATUS_TOOL,
+  PERSONAL_PLUGIN_LANE_TOOLS,
+  SUBAGENT_DRY_RUN_TASK_TOOL,
+  SUBAGENT_OPERATING_MODEL_TOOL,
+  SUBAGENT_REVIEW_LEDGER_TOOL,
+  aiCoreModelScalingStatus,
+  aiCoreProviderStatus,
+  aiCoreVersionPromotionDryRun,
+  aiCoreVersionStatus,
+  personalPluginLanePlan,
+  personalPluginLaneStatus,
+  pluginIntegrationStatus,
+  resolvePersonalPluginLaneTool,
+  subagentDryRunTaskDecision,
+  subagentOperatingModelStatus,
+  subagentReviewLedgerStatus,
+} from "../lib/plugin-integration.mjs";
 import { resolveInside } from "../lib/repo.mjs";
 import { runAllChecks, i18nStatus, seoAudit, contractCheck, drawingsCatalog, styleAudit, perfAudit, a11yAudit, securityAudit } from "../lib/checks.mjs";
 
@@ -88,6 +108,113 @@ export function toolDefinitions({ allowWrite = false } = {}) {
       },
     },
     {
+      name: AI_CORE_PROVIDER_STATUS_TOOL,
+      description:
+        "Read the SEIS AI Core provider registry for zero-key Local Demo, supervised Codex, optional server-only cloud providers, local-provider candidates, public provider states, and security invariants. Read-only; performs no live provider calls, credential validation, network checks, SSH, deployment, or GitHub mutation.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullRegistry: { type: "boolean", description: "Return the full machine-readable provider registry." },
+        },
+      },
+    },
+    {
+      name: AI_CORE_MODEL_SCALING_STATUS_TOOL,
+      description:
+        "Read content/development/seis-model-scaling-hardware-profile.json for the planned 20B target on 16GB+ RAM, memory budget contract, 16GB+/24GB+/32GB+/64GB+ compatibility profiles, benchmark manifest contract, quantization lanes, local runtime candidates, future 70B scale ladder, 150B frontier research lane, compatibility gates, and forbidden model-ownership claims. Read-only; performs no training, inference, download, benchmark, provider call, SSH, deployment, or credential access.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullProfile: { type: "boolean", description: "Return the full machine-readable model scaling profile." },
+        },
+      },
+    },
+    {
+      name: AI_CORE_VERSION_STATUS_TOOL,
+      description:
+        "Read the SEIS AI Core version registry for SEIS AI Core v0.1, SEIS Language v0.1, model-router, prompt-engine, agent-runtime, sub-agent lane bindings, truth boundaries, and five-year promotion gates. Read-only; never claims trained model ownership or live autonomous execution.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullRegistry: { type: "boolean", description: "Return the full machine-readable version registry." },
+        },
+      },
+    },
+    {
+      name: AI_CORE_VERSION_PROMOTION_TOOL,
+      description:
+        "Dry-run a SEIS AI Core version promotion gate against repository-local evidence for the embedded SEIS plugin lanes. Read-only; never approves a release, mutates files, calls providers, accesses credentials, deploys, or runs autonomous execution.",
+      input_schema: {
+        type: "object",
+        properties: {
+          versionTarget: { type: "string", description: "Optional target such as v0.1-foundation or v0.3-write-gated-runtime." },
+          year: { type: "integer", description: "Optional roadmap year from 1 to 5." },
+        },
+      },
+    },
+    {
+      name: SUBAGENT_OPERATING_MODEL_TOOL,
+      description:
+        "Read the SEIS AI Core bounded sub-agent operating model, five-year plan linkage, permission levels, lane quality gates, cadence, and current approval boundaries. Read-only; does not execute sub-agents or claim autonomous runtime.",
+      input_schema: {
+        type: "object",
+        properties: {
+          includeFullModel: { type: "boolean", description: "Return the full machine-readable operating model." },
+          includeLongHorizonPlan: { type: "boolean", description: "Return the full five-year long-horizon plan record." },
+        },
+      },
+    },
+    {
+      name: SUBAGENT_DRY_RUN_TASK_TOOL,
+      description:
+        "Evaluate one SEIS AI Core sub-agent dry-run fixture task against role, permission, approval, cancellation, tool, and path-scope rules. Read-only; returns a decision and never mutates files, queues, GitHub, cloud, SSH, providers, or credentials.",
+      input_schema: {
+        type: "object",
+        properties: {
+          taskId: { type: "string", description: "Dry-run task id from content/development/seis-ai-core-dry-run-task-queue.json" },
+          requestedTool: { type: "string", description: "Optional tool name to evaluate against the assigned role allow/deny list." },
+          requestedPath: { type: "string", description: "Optional repo-relative path to evaluate against the task target scope." },
+          signal: { type: "string", description: "Optional cancellation signal such as operator-cancel, timeout, policy-deny, or validation-failure." },
+        },
+        required: ["taskId"],
+      },
+    },
+    {
+      name: SUBAGENT_REVIEW_LEDGER_TOOL,
+      description:
+        "Read the SEIS AI Core five-year sub-agent quarterly review ledger. Read-only; shows current/planned quarters, evidence, approval boundaries, and next safe actions without mutating queues, files, GitHub, cloud, SSH, providers, or credentials.",
+      input_schema: {
+        type: "object",
+        properties: {
+          quarterId: { type: "string", description: "Optional quarter id such as Y1-Q2 or Y3-Q4." },
+          includeQuarters: { type: "boolean", description: "Return all 20 quarterly ledger records." },
+        },
+      },
+    },
+    ...PERSONAL_PLUGIN_LANE_TOOLS.flatMap((lane) => [
+      {
+        name: lane.statusTool,
+        description:
+          `Read the ${lane.displayName} embedded lane status from the canonical SEIS-Agent plugin manifest, skill mirror, and lane profile. Read-only; never claims external authentication.`,
+        input_schema: {
+          type: "object",
+          properties: {},
+        },
+      },
+      {
+        name: lane.planTool,
+        description:
+          `Create a scoped ${lane.displayName} execution plan from SEIS repo evidence, guardrails, and quality gates. Plan-only; does not mutate GitHub, cloud, SSH, files, providers, or credentials.`,
+        input_schema: {
+          type: "object",
+          properties: {
+            request: { type: "string", description: `Task request to route through ${lane.displayName}.` },
+          },
+          required: ["request"],
+        },
+      },
+    ]),
+    {
       name: "run_checks",
       description:
         "Run the SEIS audit suite against apps/web. scope: 'i18n' (translation parity), 'seo', 'contract' (HTML/JS selector contract), 'drawings' (media integrity), 'style' (CSS custom props + dead classes), 'perf' (file size budgets + render-blocking scripts), 'a11y' (accessibility), 'security' (blank-link safety, CSP, mixed content), or 'all'. Always run 'contract' and 'i18n' after editing index.html, script.js or translations.json; run 'style' after style.css; run 'a11y' after any structural HTML change.",
@@ -138,6 +265,14 @@ export function toolDefinitions({ allowWrite = false } = {}) {
 
 /** Execute one tool call. Always returns a string (JSON or plain text). */
 export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false }) {
+  const laneTool = resolvePersonalPluginLaneTool(name);
+  if (laneTool) {
+    const payload = laneTool.kind === "status"
+      ? personalPluginLaneStatus(repoRoot, laneTool.laneId)
+      : personalPluginLanePlan(repoRoot, laneTool.laneId, input?.request);
+    return JSON.stringify(payload, null, 2);
+  }
+
   switch (name) {
     case "list_files": {
       const abs = resolveInside(repoRoot, input.dir ?? ".");
@@ -195,6 +330,53 @@ export function executeTool(name, input, { repoRoot, webRoot, allowWrite = false
     case "seis_plugin_integration": {
       return JSON.stringify(
         pluginIntegrationStatus(repoRoot, { includeFullManifest: input.includeFullManifest === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_PROVIDER_STATUS_TOOL: {
+      return JSON.stringify(
+        aiCoreProviderStatus(repoRoot, { includeFullRegistry: input?.includeFullRegistry === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_MODEL_SCALING_STATUS_TOOL: {
+      return JSON.stringify(
+        aiCoreModelScalingStatus(repoRoot, { includeFullProfile: input?.includeFullProfile === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_VERSION_STATUS_TOOL: {
+      return JSON.stringify(
+        aiCoreVersionStatus(repoRoot, { includeFullRegistry: input?.includeFullRegistry === true }),
+        null,
+        2
+      );
+    }
+    case AI_CORE_VERSION_PROMOTION_TOOL: {
+      return JSON.stringify(aiCoreVersionPromotionDryRun(repoRoot, input), null, 2);
+    }
+    case SUBAGENT_OPERATING_MODEL_TOOL: {
+      return JSON.stringify(
+        subagentOperatingModelStatus(repoRoot, {
+          includeFullModel: input.includeFullModel === true,
+          includeLongHorizonPlan: input.includeLongHorizonPlan === true,
+        }),
+        null,
+        2
+      );
+    }
+    case SUBAGENT_DRY_RUN_TASK_TOOL: {
+      return JSON.stringify(subagentDryRunTaskDecision(repoRoot, input), null, 2);
+    }
+    case SUBAGENT_REVIEW_LEDGER_TOOL: {
+      return JSON.stringify(
+        subagentReviewLedgerStatus(repoRoot, {
+          quarterId: input?.quarterId,
+          includeQuarters: input?.includeQuarters === true,
+        }),
         null,
         2
       );

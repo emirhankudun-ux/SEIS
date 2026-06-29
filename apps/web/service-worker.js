@@ -2,7 +2,7 @@
 (function () {
   "use strict";
 
-  const CACHE_NAME = "seis-product-foundation-v11";
+  const CACHE_NAME = "seis-product-foundation-v13";
 
   const PRECACHE = [
     "./",
@@ -23,6 +23,24 @@
     "./seis-code.html",
     "./seis-code.css",
     "./seis-code.js",
+    "./seis-linux-replica.html",
+    "./seis-linux-replica-public-demo.html",
+    "./wow-gallery.html",
+    "./wow-gallery.css",
+    "./wow-gallery.js",
+    "./website/index.html",
+    "./website/seis-ai.html",
+    "./website/seis-os.html",
+    "./website/seis-code.html",
+    "./website/seis-design.html",
+    "./website/seis-search.html",
+    "./website/seis-cloud.html",
+    "./website/seis-store.html",
+    "./website/seis-agents.html",
+    "./website/product-page.css",
+    "./website/product-page.js",
+    "./wow-pages/wow-catalog.json",
+    "./wow-pages/sub-agent-evidence-summary.json",
     "./mythic-gacha.html",
     "./mythic-gacha.css",
     "./mythic-gacha.js",

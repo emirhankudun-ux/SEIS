@@ -1,0 +1,307 @@
+{
+  "id": "seis-agi-evaluation-protocol",
+  "version": "2026.06.29",
+  "status": "protocol-draft-not-run",
+  "resourceUri": "seis://ai/agi-evaluation-protocol.json",
+  "qualityGate": "node scripts/check-seis-agi-evaluation-protocol.mjs",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "runtimeAuthority": false,
+  "agiClaimAllowed": false,
+  "evaluationRunStatus": "not-run",
+  "benchmarkStatus": "not-run",
+  "trainingStatus": "not-started",
+  "weightsAvailable": false,
+  "inferenceAvailable": false,
+  "productionReady": false,
+  "truthBoundary": "This protocol defines the minimum evidence required before any future SEIS AGI claim can be evaluated. It does not prove AGI, train or download models, run inference, run benchmarks, call providers, execute SSH, provision cloud/GPU resources, publish checkpoints, or grant route eligibility.",
+  "sourceOfTruth": {
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "modelRouterDoc": "docs/ai/model-router.md",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "protocolDoc": "docs/ai/seis-agi-evaluation-protocol.md",
+    "publicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "publicReadinessDoc": "docs/ai/seis-agi-public-readiness-evidence.md"
+  },
+  "publicResearchBaseline": {
+    "updatedAt": "2026-06-29",
+    "status": "public-sources-reviewed",
+    "sources": [
+      {
+        "id": "meta-llama-3-1-405b",
+        "url": "https://ai.meta.com/blog/meta-llama-3-1/",
+        "evidenceType": "frontier-scale model release context",
+        "seisImplication": "Frontier-scale parameter counts are engineering scope indicators, not AGI proof."
+      },
+      {
+        "id": "megatron-turing-nlg-530b",
+        "url": "https://arxiv.org/abs/2201.11990",
+        "evidenceType": "530B distributed training report",
+        "seisImplication": "512B-class work requires distributed architecture, observability, cost controls, and reproducible training evidence before any claim."
+      },
+      {
+        "id": "deepseek-v3-671b-moe",
+        "url": "https://github.com/deepseek-ai/DeepSeek-V3",
+        "evidenceType": "public MoE frontier reference",
+        "seisImplication": "Total parameters, active parameters, routing, memory, and safety evidence must be tracked separately."
+      },
+      {
+        "id": "qwen3-235b-a22b-instruct",
+        "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B-Instruct-2507",
+        "evidenceType": "public MoE model-card reference",
+        "seisImplication": "Model cards must record activated parameters, context length, license, inference constraints, and evaluation limitations."
+      },
+      {
+        "id": "nist-ai-risk-management-framework",
+        "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "evidenceType": "AI risk management framework",
+        "seisImplication": "AGI readiness must include govern, map, measure, and manage style risk evidence before public claims."
+      },
+      {
+        "id": "anthropic-responsible-scaling-policy",
+        "url": "https://www.anthropic.com/responsible-scaling-policy",
+        "evidenceType": "frontier scaling safety policy",
+        "seisImplication": "Capability thresholds, deployment safeguards, security posture, and escalation reviews must be promotion gates."
+      },
+      {
+        "id": "nist-generative-ai-profile-ai-600-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "evidenceType": "generative AI risk management profile",
+        "seisImplication": "512B readiness must include documented generative-AI risk mapping, misuse, privacy, security, transparency, and measurement evidence before any public claim."
+      },
+      {
+        "id": "metr-long-task-horizon-evaluation",
+        "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+        "evidenceType": "agent autonomy and long-task capability evaluation",
+        "seisImplication": "Long-horizon agent capability must be measured as time-bounded task completion evidence, not inferred from demos or sub-agent plans."
+      },
+      {
+        "id": "google-deepmind-frontier-safety-framework",
+        "url": "https://deepmind.google/blog/introducing-the-frontier-safety-framework/",
+        "evidenceType": "frontier model safety threshold framework",
+        "seisImplication": "Frontier capability thresholds, safety mitigations, deployment limits, and escalation paths must be explicit gates before 512B route eligibility."
+      },
+      {
+        "id": "arc-agi-abstract-reasoning",
+        "url": "https://arcprize.org/arc-agi",
+        "evidenceType": "abstract reasoning and skill-acquisition benchmark context",
+        "seisImplication": "AGI claims require novel-task generalization and skill-acquisition evidence, not memorized benchmark performance or broad parameter count claims."
+      }
+    ]
+  },
+  "sourceDerivedReadinessGates": [
+    {
+      "id": "generative-ai-risk-profile-gate",
+      "sourceIds": ["nist-ai-risk-management-framework", "nist-generative-ai-profile-ai-600-1"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "SEIS-specific generative AI risk map",
+        "misuse, privacy, security, transparency, and measurement controls",
+        "documented residual-risk decision before any public AGI or 512B claim"
+      ]
+    },
+    {
+      "id": "long-task-autonomy-gate",
+      "sourceIds": ["metr-long-task-horizon-evaluation"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "time-horizon task suite with held-out tasks",
+        "agent completion, interruption, recovery, and failure logs",
+        "human-reviewed autonomy limits and no-background-autonomy proof"
+      ]
+    },
+    {
+      "id": "frontier-safety-threshold-gate",
+      "sourceIds": ["anthropic-responsible-scaling-policy", "google-deepmind-frontier-safety-framework"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "capability threshold definitions",
+        "deployment and route-eligibility safeguards",
+        "security posture, escalation path, rollback, and cost-stop review"
+      ]
+    },
+    {
+      "id": "abstract-generalization-gate",
+      "sourceIds": ["arc-agi-abstract-reasoning"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "novel abstract-reasoning task set",
+        "contamination-control and non-memorization review",
+        "skill-acquisition failure analysis across smaller SEIS baselines"
+      ]
+    }
+  ],
+  "evaluationDimensions": [
+    {
+      "id": "multi-domain-reasoning",
+      "status": "not-run",
+      "requiredEvidence": [
+        "independent benchmark suite across code, math, science, language, planning, design, security, and systems tasks",
+        "held-out task inventory and contamination-control statement",
+        "failure taxonomy and regression report"
+      ]
+    },
+    {
+      "id": "long-horizon-planning",
+      "status": "not-run",
+      "requiredEvidence": [
+        "multi-step task environment with time-bounded objectives",
+        "plan repair and interruption handling logs",
+        "human-reviewed success and failure examples"
+      ]
+    },
+    {
+      "id": "agentic-autonomy-time-horizon",
+      "status": "not-run",
+      "requiredEvidence": [
+        "time-horizon task completion suite",
+        "autonomous action boundary and cancellation logs",
+        "human-reviewed evidence that no background autonomy, SSH, deployment, or credential access occurred without approval"
+      ]
+    },
+    {
+      "id": "tool-use-reliability",
+      "status": "not-run",
+      "requiredEvidence": [
+        "sandboxed tool-call trace set",
+        "permission-boundary adherence report",
+        "safe fallback and cancellation evidence"
+      ]
+    },
+    {
+      "id": "out-of-distribution-generalization",
+      "status": "not-run",
+      "requiredEvidence": [
+        "novel task set with provenance record",
+        "distribution-shift analysis",
+        "comparison against smaller SEIS baselines"
+      ]
+    },
+    {
+      "id": "abstract-skill-acquisition",
+      "status": "not-run",
+      "requiredEvidence": [
+        "novel abstract reasoning tasks",
+        "contamination-control and memorization review",
+        "skill acquisition trace with failures, retries, and baseline comparison"
+      ]
+    },
+    {
+      "id": "memory-and-learning-boundary",
+      "status": "not-run",
+      "requiredEvidence": [
+        "what can be stored, forgotten, retrieved, and audited",
+        "privacy-preserving memory retention policy",
+        "no-secret learning and redaction evidence"
+      ]
+    },
+    {
+      "id": "safety-and-misuse-resistance",
+      "status": "not-run",
+      "requiredEvidence": [
+        "red-team plan",
+        "misuse refusal and safe-completion evaluation",
+        "safety regression suite"
+      ]
+    },
+    {
+      "id": "frontier-safety-threshold-governance",
+      "status": "not-run",
+      "requiredEvidence": [
+        "frontier capability threshold definitions",
+        "deployment safeguard and escalation policy",
+        "security, observability, rollback, and cost-stop evidence"
+      ]
+    },
+    {
+      "id": "security-and-data-governance",
+      "status": "not-run",
+      "requiredEvidence": [
+        "secret-scan evidence",
+        "training-data rights map",
+        "checkpoint access control and release governance"
+      ]
+    },
+    {
+      "id": "human-alignment-and-review",
+      "status": "not-run",
+      "requiredEvidence": [
+        "human review rubric",
+        "external review record",
+        "documented disagreements, mitigations, and final approval decision"
+      ]
+    }
+  ],
+  "minimumEvidenceBeforeAnyAgiClaim": [
+    "20B gate evidence accepted",
+    "70B gate evidence accepted",
+    "150B gate evidence accepted",
+    "300B+ feasibility accepted",
+    "512B training or inference evidence independently verified",
+    "independent multi-domain capability evaluation passed",
+    "long-horizon planning evaluation passed",
+    "agentic autonomy time-horizon evaluation passed",
+    "tool-use reliability evaluation passed",
+    "out-of-distribution generalization report accepted",
+    "abstract skill-acquisition evaluation accepted",
+    "safety and misuse evaluation accepted",
+    "frontier safety threshold review accepted",
+    "generative AI risk profile accepted",
+    "privacy, data-rights, and clean-room review accepted",
+    "red-team report accepted",
+    "model card and system card published",
+    "training logs and checkpoint governance reviewed",
+    "external review completed",
+    "explicit human approval recorded"
+  ],
+  "negativeControls": [
+    "parameter count alone is not AGI evidence",
+    "prompt engineering is not AGI evidence",
+    "RAG or search quality is not AGI evidence",
+    "provider API access is not SEIS-owned AGI",
+    "Local Demo behavior is not live model capability",
+    "sub-agent council consensus is not benchmark evidence",
+    "green CI is not AGI proof"
+  ],
+  "requiredReviewers": [
+    "architect-agent",
+    "code-agent",
+    "research-agent",
+    "security-agent",
+    "devops-agent",
+    "documentation-agent",
+    "qa-agent",
+    "cloud-agent",
+    "automation-agent",
+    "human-owner",
+    "external-reviewer"
+  ],
+  "promotionDecisionModel": {
+    "defaultDecision": "blocked",
+    "silentPromotionAllowed": false,
+    "selfApprovalAllowed": false,
+    "providerWrapperPromotionAllowed": false,
+    "publicClaimRequiresExternalReview": true,
+    "routeEligibilityRequiresHumanApproval": true
+  },
+  "forbiddenClaims": [
+    "SEIS has achieved real AGI.",
+    "SEIS has proven AGI capability.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has routeable 512B inference.",
+    "SEIS can skip 20B, 70B, 150B, or 300B+ evidence.",
+    "Installed AI or sub-agents prove AGI.",
+    "A provider wrapper, RAG system, prompt profile, or demo route is a SEIS AGI model."
+  ],
+  "nextSafeActions": [
+    "Keep AGI status as definition-only-not-demonstrated.",
+    "Expose this protocol as a read-only MCP resource for installed AI and sub-agents.",
+    "Use the protocol to reject premature AGI, 512B, benchmark, and route-eligibility claims.",
+    "Add real evaluation artifacts only after human-approved model, dataset, runtime, safety, and budget gates exist."
+  ]
+}

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - API MONITOR (SECTOR 3)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0c0f0f; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #00dbe9; }
+        
+        .syntax-key { color: #ebb2ff; }
+        .syntax-string { color: #00f0ff; }
+        .syntax-number { color: #f8d8ff; }
+        .syntax-bool { color: #ce5dff; }
+
+        .terminal-glow {
+            text-shadow: 0 0 8px rgba(0, 219, 233, 0.4);
+        }
+
+        .tiling-border {
+            border: 1px solid rgba(59, 73, 75, 0.3);
+        }
+
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor { display: inline-block; width: 8px; height: 16px; background: #00dbe9; animation: cursor-blink 1s infinite; vertical-align: middle; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#605e5e",
+                        "on-primary-fixed-variant": "#004f54",
+                        "secondary-container": "#ce5dff",
+                        "on-primary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container": "#1e2020",
+                        "on-secondary-container": "#480064",
+                        "surface": "#121414",
+                        "tertiary-container": "#dcd9d8",
+                        "inverse-surface": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "surface-dim": "#121414",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary": "#520071",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "primary-fixed": "#7df4ff",
+                        "background": "#121414",
+                        "secondary": "#ebb2ff",
+                        "surface-container-highest": "#333535",
+                        "on-primary-container": "#006970",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-tint": "#00dbe9",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-high": "#282a2b",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#313030",
+                        "inverse-primary": "#006970",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "surface-variant": "#333535",
+                        "primary-container": "#00f0ff",
+                        "outline": "#849495",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-error": "#690005",
+                        "tertiary": "#f9f5f5",
+                        "surface-bright": "#37393a",
+                        "on-surface": "#e2e2e2",
+                        "on-primary": "#00363a",
+                        "on-secondary-fixed": "#320047"
+                    },
+                    fontFamily: {
+                        "label-sm": ["Space Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"]
+                    },
+                    fontSize: {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-8 h-10 fixed top-0 z-50">
+<div class="font-label-caps text-label-sm tracking-widest text-primary-fixed-dim flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed" style="font-size: 18px;">terminal</span>
+            SEIS KERNEL OS
+        </div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-surface-container-high border-none text-code-sm font-code-sm text-on-surface py-1 pl-9 pr-4 w-64 focus:ring-1 focus:ring-primary-fixed-dim placeholder:text-outline/50" placeholder="GLOBAL API REGISTRY..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- SideNavBar (Hidden/Collapsed) -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-4 mb-4 border-b border-outline-variant/10 flex items-center gap-4">
+<div class="w-10 h-10 bg-secondary-container/20 border border-secondary-fixed/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity">
+<p class="font-label-sm text-secondary-fixed">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 hover:text-secondary-fixed transition-all">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-sm opacity-0 group-hover:opacity-100 whitespace-nowrap">AI_AGENTS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/10 p-4">
+<button class="bg-secondary text-on-secondary font-label-sm px-4 py-2 w-full flex items-center justify-center gap-2 group-hover:justify-start">
+<span class="material-symbols-outlined text-sm">add</span>
+<span class="hidden group-hover:block">NEW_SESSION</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas (Sector 3 API Monitor) -->
+<main class="ml-20 mt-10 flex-1 flex overflow-hidden">
+<!-- Left Pane: Endpoint Collection -->
+<section class="w-72 bg-surface-container-low border-r border-outline-variant/20 flex flex-col shrink-0">
+<div class="p-4 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container">
+<h2 class="font-label-sm text-primary-fixed-dim">ENDPOINTS</h2>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary-fixed">filter_list</span>
+</div>
+<div class="flex-1 overflow-y-auto">
+<!-- Group -->
+<div class="p-2">
+<div class="flex items-center gap-2 px-2 py-1 text-on-surface-variant text-label-sm cursor-pointer">
+<span class="material-symbols-outlined text-xs">expand_more</span>
+                        AUTHENTICATION_V1
+                    </div>
+<div class="ml-4 space-y-1 mt-1">
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-surface-variant/30 group cursor-pointer transition-all border-l border-transparent hover:border-primary-fixed">
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-on-primary-container/20 text-primary-container">POST</span>
+<span class="font-code-sm text-code-sm text-on-surface">/auth/login</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-surface-variant/30 group cursor-pointer transition-all border-l border-transparent hover:border-primary-fixed">
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-on-primary-container/20 text-primary-container">POST</span>
+<span class="font-code-sm text-code-sm text-on-surface">/auth/renew</span>
+</div>
+</div>
+</div>
+<!-- Group Active -->
+<div class="p-2">
+<div class="flex items-center gap-2 px-2 py-1 text-on-surface-variant text-label-sm cursor-pointer">
+<span class="material-symbols-outlined text-xs">expand_more</span>
+                        PAYMENT_GATEWAY_V4
+                    </div>
+<div class="ml-4 space-y-1 mt-1">
+<div class="flex items-center gap-2 px-2 py-1.5 bg-primary-fixed/5 border-l-2 border-primary-fixed group cursor-pointer">
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-secondary-container/20 text-secondary">GET</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">/tx/status/:id</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-surface-variant/30 group cursor-pointer transition-all border-l border-transparent hover:border-primary-fixed">
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-on-primary-container/20 text-primary-container">POST</span>
+<span class="font-code-sm text-code-sm text-on-surface">/tx/process</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1.5 hover:bg-surface-variant/30 group cursor-pointer transition-all border-l border-transparent hover:border-primary-fixed">
+<span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-error-container/20 text-error">PUT</span>
+<span class="font-code-sm text-code-sm text-on-surface">/tx/update</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant/20">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-label-sm text-on-surface-variant">ACTIVE CLUSTER</span>
+<span class="text-[10px] font-label-sm text-primary-fixed">US-EAST-1</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-full" style="width: 78%"></div>
+</div>
+</div>
+</section>
+<!-- Center Pane: Request/Response Editor -->
+<section class="flex-1 flex flex-col bg-background relative">
+<!-- URL Bar -->
+<div class="h-14 border-b border-outline-variant/30 flex items-center px-4 gap-4 bg-surface-container/20">
+<div class="flex bg-surface-container-high rounded overflow-hidden">
+<button class="px-3 py-1.5 text-secondary font-bold text-code-sm border-r border-outline-variant/20">GET</button>
+<input class="bg-transparent border-none text-code-sm w-96 px-3 focus:ring-0 text-on-surface" type="text" value="https://api.seis-kernel.os/v4/tx/status/772-00X"/>
+</div>
+<button class="bg-primary-fixed text-on-primary font-label-sm px-6 py-1.5 hover:bg-primary-fixed-dim transition-all flex items-center gap-2">
+                    SEND <span class="material-symbols-outlined text-sm">send</span>
+</button>
+<div class="flex-1"></div>
+<div class="flex items-center gap-4 text-code-sm">
+<span class="text-on-surface-variant">STATUS: <span class="text-primary-fixed">200 OK</span></span>
+<span class="text-on-surface-variant">TIME: <span class="text-primary-fixed">42ms</span></span>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant/20 bg-surface-container-low">
+<button class="px-6 py-2 text-label-sm text-primary-fixed border-b border-primary-fixed bg-primary-fixed/5">PARAMS</button>
+<button class="px-6 py-2 text-label-sm text-on-surface-variant hover:text-on-surface">HEADERS</button>
+<button class="px-6 py-2 text-label-sm text-on-surface-variant hover:text-on-surface">AUTH</button>
+<button class="px-6 py-2 text-label-sm text-on-surface-variant hover:text-on-surface">BODY</button>
+</div>
+<!-- Editor Windows -->
+<div class="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
+<!-- Request Body / Editor -->
+<div class="flex-1 flex flex-col border border-outline-variant/20 rounded-sm bg-surface-container-lowest/50">
+<div class="px-3 py-1.5 bg-primary-fixed/10 border-b border-outline-variant/20 flex justify-between items-center">
+<span class="text-[10px] font-label-sm text-primary-fixed">PAYLOAD.JSON</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">content_copy</span>
+</div>
+<div class="flex-1 p-4 font-code-sm text-code-sm overflow-auto">
+<pre class="leading-relaxed">{
+  <span class="syntax-key">"request_id"</span>: <span class="syntax-string">"772-00X"</span>,
+  <span class="syntax-key">"timestamp"</span>: <span class="syntax-number">1715428800</span>,
+  <span class="syntax-key">"origin"</span>: <span class="syntax-string">"SECTOR_3_HUB"</span>,
+  <span class="syntax-key">"flags"</span>: [
+    <span class="syntax-string">"ENCRYPTED"</span>,
+    <span class="syntax-string">"PERSISTENT"</span>
+  ],
+  <span class="syntax-key">"metadata"</span>: {
+    <span class="syntax-key">"retry"</span>: <span class="syntax-bool">true</span>,
+    <span class="syntax-key">"count"</span>: <span class="syntax-number">0</span>
+  }
+}<span class="cursor"></span></pre>
+</div>
+</div>
+<!-- Response Panel -->
+<div class="h-64 flex flex-col border border-outline-variant/20 rounded-sm bg-surface-container-lowest">
+<div class="px-3 py-1.5 bg-surface-container-high border-b border-outline-variant/20 flex justify-between items-center">
+<span class="text-[10px] font-label-sm text-on-surface-variant uppercase">Response Terminal</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<div class="w-2 h-2 rounded-full bg-primary-fixed"></div>
+</div>
+</div>
+<div class="flex-1 p-4 font-code-sm text-code-sm text-primary-fixed-dim bg-[#080a0a] overflow-auto terminal-glow">
+<div class="mb-1 text-on-surface-variant">[14:32:01] INCOMING_SIGNAL: OK_200</div>
+<div class="mb-1">{</div>
+<div class="ml-4"><span class="text-secondary-fixed-dim">"status"</span>: <span class="text-primary-fixed">"SUCCESS"</span>,</div>
+<div class="ml-4"><span class="text-secondary-fixed-dim">"tx_hash"</span>: <span class="text-primary-fixed">"0x9928AF..."</span>,</div>
+<div class="ml-4"><span class="text-secondary-fixed-dim">"latency"</span>: <span class="text-primary-fixed">"42ms"</span></div>
+<div class="mb-1">}</div>
+<div class="mt-2 text-on-surface-variant">_ SYNC COMPLETE. SECTOR 3 READY.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: Real-time Telemetry -->
+<section class="w-80 bg-surface-container border-l border-outline-variant/20 flex flex-col shrink-0">
+<div class="p-4 border-b border-outline-variant/20 bg-surface-container-high">
+<h2 class="font-label-sm text-secondary-fixed">LIVE_TELEMETRY</h2>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- Mini Stats Grid -->
+<div class="grid grid-cols-2 gap-2">
+<div class="p-3 bg-surface-container-low border border-outline-variant/10">
+<p class="text-[10px] font-label-sm text-on-surface-variant mb-1">LATENCY (AVG)</p>
+<p class="text-headline-md font-headline-md text-primary-fixed">38<span class="text-sm font-code-sm ml-1">ms</span></p>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant/10">
+<p class="text-[10px] font-label-sm text-on-surface-variant mb-1">ERR_RATE</p>
+<p class="text-headline-md font-headline-md text-error">0.02<span class="text-sm font-code-sm ml-1">%</span></p>
+</div>
+</div>
+<!-- Status Monitor Table -->
+<div>
+<h3 class="text-[10px] font-label-sm text-on-surface-variant mb-3 tracking-widest">ENDPOINT_HEALTH</h3>
+<div class="space-y-2">
+<!-- Table Row -->
+<div class="flex items-center justify-between p-2 border border-outline-variant/5 bg-surface-container-lowest/40">
+<div>
+<p class="text-code-sm font-code-sm text-on-surface">/auth/login</p>
+<p class="text-[9px] font-code-sm text-on-surface-variant">512 req/min</p>
+</div>
+<div class="text-right">
+<div class="flex gap-0.5 justify-end mb-1">
+<div class="w-1 h-3 bg-primary-fixed"></div>
+<div class="w-1 h-3 bg-primary-fixed"></div>
+<div class="w-1 h-3 bg-primary-fixed"></div>
+<div class="w-1 h-3 bg-primary-fixed/30"></div>
+<div class="w-1 h-3 bg-primary-fixed"></div>
+</div>
+<span class="text-[9px] font-label-sm text-primary-fixed-dim">99.8% UP</span>
+</div>
+</div>
+<!-- Table Row -->
+<div class="flex items-center justify-between p-2 border border-outline-variant/5 bg-surface-container-lowest/40">
+<div>
+<p class="text-code-sm font-code-sm text-on-surface">/tx/process</p>
+<p class="text-[9px] font-code-sm text-on-surface-variant">1.2k req/min</p>
+</div>
+<div class="text-right">
+<div class="flex gap-0.5 justify-end mb-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+</div>
+<span class="text-[9px] font-label-sm text-secondary-fixed">STABLE</span>
+</div>
+</div>
+<!-- Table Row (Warning) -->
+<div class="flex items-center justify-between p-2 border border-error/20 bg-error/5">
+<div>
+<p class="text-code-sm font-code-sm text-error">/static/assets</p>
+<p class="text-[9px] font-code-sm text-on-surface-variant">88 req/min</p>
+</div>
+<div class="text-right">
+<div class="flex gap-0.5 justify-end mb-1">
+<div class="w-1 h-3 bg-error"></div>
+<div class="w-1 h-3 bg-error/20"></div>
+<div class="w-1 h-3 bg-error/20"></div>
+<div class="w-1 h-3 bg-error/20"></div>
+<div class="w-1 h-3 bg-error/20"></div>
+</div>
+<span class="text-[9px] font-label-sm text-error">LATENCY HIGH</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Payload Size Visualization -->
+<div>
+<h3 class="text-[10px] font-label-sm text-on-surface-variant mb-3 tracking-widest">INGRESS_TRAFFIC</h3>
+<div class="h-24 relative overflow-hidden bg-surface-container-lowest border border-outline-variant/10">
+<canvas class="absolute inset-0 w-full h-full" id="trafficChart"></canvas>
+<script>
+                            const canvas = document.getElementById('trafficChart');
+                            const ctx = canvas.getContext('2d');
+                            function draw() {
+                                canvas.width = canvas.offsetWidth;
+                                canvas.height = canvas.offsetHeight;
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.strokeStyle = '#00dbe9';
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                ctx.moveTo(0, canvas.height * 0.8);
+                                for(let i = 0; i < canvas.width; i+=10) {
+                                    ctx.lineTo(i, canvas.height * (0.4 + Math.random() * 0.4));
+                                }
+                                ctx.stroke();
+                                requestAnimationFrame(() => {});
+                            }
+                            // Simplified static visual for the prompt
+                            window.onload = () => {
+                                canvas.width = canvas.offsetWidth;
+                                canvas.height = canvas.offsetHeight;
+                                ctx.strokeStyle = '#00dbe9';
+                                ctx.beginPath();
+                                ctx.moveTo(0, 50);
+                                for(let i=0; i<300; i+=20) {
+                                    ctx.lineTo(i, 40 + Math.random()*30);
+                                }
+                                ctx.stroke();
+                            };
+                        </script>
+</div>
+<div class="flex justify-between mt-2">
+<span class="text-[10px] font-code-sm text-on-surface-variant">TOTAL: 1.4 GB</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant">PEAK: 12 MB/s</span>
+</div>
+</div>
+</div>
+<!-- Bottom Control -->
+<div class="p-4 border-t border-outline-variant/20 bg-surface-container-high">
+<button class="w-full py-2 border border-outline-variant/30 text-on-surface-variant font-label-sm flex items-center justify-center gap-2 hover:bg-surface-variant hover:text-on-surface transition-all">
+<span class="material-symbols-outlined text-sm">download</span> EXPORT_TELEMETRY.CSV
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer Status -->
+<footer class="h-6 bg-surface-container-lowest border-t border-outline-variant/20 px-4 flex items-center justify-between fixed bottom-0 w-full z-50">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5 text-[10px] font-code-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-primary-fixed shadow-[0_0_5px_#00dbe9]"></span> 
+                SECTOR_3_ACTIVE
+            </span>
+<span class="text-[10px] font-code-sm text-outline-variant">|</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant">KERN: 4.1.2-STABLE</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">cloud_sync</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant">SYNC: 100%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">notifications</span>
+<span class="text-[10px] font-code-sm text-on-surface-variant">ALERTS: 0</span>
+</div>
+<span class="text-[10px] font-code-sm text-primary-fixed">14:32:44 UTC</span>
+</div>
+</footer>
+</body></html>

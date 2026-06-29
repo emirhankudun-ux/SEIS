@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Infrastructure: K8s Cluster Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline-variant": "#3b494b",
+                    "surface-tint": "#00dbe9",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "secondary": "#ebb2ff",
+                    "primary": "#dbfcff",
+                    "on-surface": "#e2e2e2",
+                    "on-primary": "#00363a",
+                    "primary-fixed": "#7df4ff",
+                    "surface-container-lowest": "#0c0f0f",
+                    "on-primary-fixed": "#002022",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-container-highest": "#333535",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-background": "#e2e2e2",
+                    "outline": "#849495",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-bright": "#37393a",
+                    "error": "#ffb4ab",
+                    "on-surface-variant": "#b9cacb",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-secondary-container": "#480064",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#f8d8ff",
+                    "on-tertiary-container": "#605e5e",
+                    "background": "#121414",
+                    "inverse-on-surface": "#2f3131",
+                    "tertiary": "#f9f5f5",
+                    "surface-container": "#1e2020",
+                    "secondary-container": "#ce5dff",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-primary-container": "#006970",
+                    "surface-container-high": "#282a2b",
+                    "on-secondary-fixed": "#320047",
+                    "inverse-primary": "#006970",
+                    "surface-variant": "#333535",
+                    "surface-container-low": "#1a1c1c",
+                    "on-secondary": "#520071",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "on-tertiary": "#313030",
+                    "surface": "#121414",
+                    "tertiary-container": "#dcd9d8",
+                    "surface-dim": "#121414",
+                    "primary-fixed-dim": "#00dbe9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stroke-thin": "1px",
+                    "gap-sm": "8px",
+                    "margin-page": "32px",
+                    "gap-lg": "24px",
+                    "stroke-thick": "2px",
+                    "gap-md": "16px",
+                    "gap-xs": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"],
+                    "label-sm": ["Space Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { background-color: #0a0a0a; color: #e2e2e2; }
+        .glass-panel { background: rgba(18, 20, 20, 0.85); backdrop-filter: blur(12px); border: 1px solid #333333; }
+        .glass-panel-focused { border-color: theme('colors.primary-fixed'); }
+        .cyber-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .cyber-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .cyber-scrollbar::-webkit-scrollbar-thumb { background: #3b494b; }
+        .cyber-scrollbar::-webkit-scrollbar-thumb:hover { background: theme('colors.primary-fixed'); }
+        .blinking-cursor { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen w-screen overflow-hidden flex flex-col">
+<!-- Top NavBar (Desktop) -->
+<nav class="hidden md:flex bg-surface-container-lowest/80 backdrop-blur-xl docked full-width top-0 border-b border-outline-variant/30 flat no shadows flex justify-between items-center w-full px-gap-md h-10 z-50">
+<div class="flex items-center gap-gap-md h-full">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim mr-gap-lg">SEIS KERNEL OS</span>
+<div class="flex h-full gap-gap-md">
+<a class="flex items-center h-full font-label-sm text-label-sm text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">WORKSPACES</a>
+<a class="flex items-center h-full font-label-sm text-label-sm text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="flex items-center h-full font-label-sm text-label-sm text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">AGENTS</a>
+<a class="flex items-center h-full font-label-sm text-label-sm text-primary-fixed border-b border-primary-fixed hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70" href="#">NETWORK</a>
+</div>
+</div>
+<div class="flex items-center gap-gap-md">
+<div class="flex items-center gap-gap-sm">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer">memory</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer">terminal</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant hover:text-primary-fixed cursor-pointer">settings</span>
+</div>
+</div>
+</nav>
+<!-- Main Layout -->
+<div class="flex flex-1 overflow-hidden mt-10 md:mt-0 pt-0 md:pt-10">
+<!-- SideNav -->
+<aside class="bg-surface-container-lowest/90 backdrop-blur-2xl docked left-0 h-full w-20 hover:w-64 transition-all duration-300 border-r border-outline-variant/20 flat no shadows fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col overflow-hidden group">
+<div class="p-gap-md mb-gap-md flex items-center border-b border-outline-variant/20 pb-gap-md">
+<div class="w-8 h-8 bg-surface-variant rounded flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface">person</span>
+</div>
+<div class="ml-gap-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+<div class="font-label-sm text-label-sm text-on-surface">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto cyber-scrollbar py-gap-sm">
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">dashboard</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">folder_open</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">terminal</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">smart_toy</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">cloud_queue</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0 text-[20px]">list_alt</span>
+<span class="ml-gap-md font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">LOGS</span>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/20 pt-gap-sm pb-gap-sm">
+<div class="px-4 py-2">
+<button class="w-full bg-primary-fixed text-[#0a0a0a] font-label-sm text-label-sm py-2 hover:bg-secondary transition-colors duration-200 opacity-0 group-hover:opacity-100 whitespace-nowrap">NEW_SESSION</button>
+</div>
+<div class="flex justify-around px-2 py-2">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer text-[20px]">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer text-[20px]">lock</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-20 p-gap-md flex flex-col gap-gap-md h-full overflow-hidden bg-[#0a0a0a]">
+<!-- Header -->
+<header class="flex justify-between items-center shrink-0">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">SEIS OS — Infrastructure: K8s Cluster Map</h1>
+<div class="flex gap-gap-sm">
+<button class="border border-primary-fixed text-primary-fixed px-3 py-1 font-label-sm text-label-sm hover:bg-primary-fixed/10 transition-colors">REFRESH</button>
+<button class="bg-primary-fixed text-[#0a0a0a] px-3 py-1 font-label-sm text-label-sm hover:bg-secondary transition-colors">DEPLOY</button>
+</div>
+</header>
+<!-- Dashboard Grid -->
+<div class="flex-1 grid grid-cols-12 gap-gap-md min-h-0">
+<!-- Namespace Tree (Left Sidebar) -->
+<div class="col-span-3 glass-panel flex flex-col h-full overflow-hidden">
+<div class="bg-primary-fixed text-[#0a0a0a] px-3 py-1 font-label-sm text-label-sm shrink-0">NAMESPACES</div>
+<div class="p-gap-sm overflow-y-auto cyber-scrollbar flex-1 font-code-sm text-code-sm">
+<ul class="space-y-1">
+<li class="flex items-center gap-2 cursor-pointer hover:bg-surface-variant/30 p-1">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">folder_open</span>
+<span>default</span>
+</li>
+<li class="flex items-center gap-2 cursor-pointer bg-secondary/20 border-l-2 border-secondary p-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">folder_open</span>
+<span>kube-system</span>
+</li>
+<ul class="ml-6 border-l border-[#333333] pl-2 space-y-1 mt-1">
+<li class="flex items-center gap-2 cursor-pointer hover:bg-surface-variant/30 p-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">dns</span>
+<span>coredns</span>
+</li>
+<li class="flex items-center gap-2 cursor-pointer hover:bg-surface-variant/30 p-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">router</span>
+<span>kube-proxy</span>
+</li>
+</ul>
+<li class="flex items-center gap-2 cursor-pointer hover:bg-surface-variant/30 p-1">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">folder</span>
+<span>ingress-nginx</span>
+</li>
+<li class="flex items-center gap-2 cursor-pointer hover:bg-surface-variant/30 p-1">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">folder</span>
+<span>monitoring</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Central Pod Grid -->
+<div class="col-span-6 flex flex-col gap-gap-md h-full min-h-0">
+<div class="glass-panel flex-1 flex flex-col min-h-0 glass-panel-focused">
+<div class="bg-primary-fixed text-[#0a0a0a] px-3 py-1 font-label-sm text-label-sm shrink-0 flex justify-between">
+<span>ACTIVE PODS [kube-system]</span>
+<span>TOTAL: 12</span>
+</div>
+<div class="p-gap-md grid grid-cols-2 gap-gap-md overflow-y-auto cyber-scrollbar">
+<!-- Pod Card 1 -->
+<div class="border border-[#333333] p-gap-sm bg-[#121414]/50">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-code-sm text-primary-fixed truncate pr-2">coredns-5d78c9869d-wx2r</span>
+<span class="w-2 h-2 rounded-full bg-[#00ff00] mt-1 shrink-0"></span>
+</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mb-2">IP: 10.244.0.5 | Node: worker-1</div>
+<div class="flex gap-2 h-8">
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[30%] w-full bg-primary-fixed/30 border-t border-primary-fixed"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">CPU 12%</span>
+</div>
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[65%] w-full bg-secondary/30 border-t border-secondary"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">MEM 45Mi</span>
+</div>
+</div>
+</div>
+<!-- Pod Card 2 -->
+<div class="border border-[#333333] p-gap-sm bg-[#121414]/50">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-code-sm text-primary-fixed truncate pr-2">kube-proxy-8zt9x</span>
+<span class="w-2 h-2 rounded-full bg-[#00ff00] mt-1 shrink-0"></span>
+</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mb-2">IP: 192.168.1.10 | Node: worker-1</div>
+<div class="flex gap-2 h-8">
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[10%] w-full bg-primary-fixed/30 border-t border-primary-fixed"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">CPU 2%</span>
+</div>
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[80%] w-full bg-secondary/30 border-t border-secondary"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">MEM 120Mi</span>
+</div>
+</div>
+</div>
+<!-- Pod Card 3 (Warning) -->
+<div class="border border-error/50 p-gap-sm bg-error/5">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-code-sm text-error truncate pr-2">metrics-server-7b4f8b59d-klp</span>
+<span class="w-2 h-2 rounded-full bg-error mt-1 shrink-0"></span>
+</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mb-2">IP: 10.244.0.8 | Node: worker-2</div>
+<div class="flex gap-2 h-8">
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[95%] w-full bg-error/30 border-t border-error"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">CPU 95%</span>
+</div>
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[40%] w-full bg-secondary/30 border-t border-secondary"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">MEM 80Mi</span>
+</div>
+</div>
+</div>
+<!-- Pod Card 4 -->
+<div class="border border-[#333333] p-gap-sm bg-[#121414]/50">
+<div class="flex justify-between items-start mb-2">
+<span class="font-code-sm text-code-sm text-primary-fixed truncate pr-2">calico-node-b2v8m</span>
+<span class="w-2 h-2 rounded-full bg-[#00ff00] mt-1 shrink-0"></span>
+</div>
+<div class="text-[10px] text-on-surface-variant font-code-sm mb-2">IP: 192.168.1.11 | Node: worker-2</div>
+<div class="flex gap-2 h-8">
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[5%] w-full bg-primary-fixed/30 border-t border-primary-fixed"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">CPU 1%</span>
+</div>
+<div class="flex-1 bg-[#1a1c1c] relative border border-[#333333]">
+<div class="absolute bottom-0 left-0 h-[55%] w-full bg-secondary/30 border-t border-secondary"></div>
+<span class="absolute top-0 left-1 text-[8px] text-on-surface-variant">MEM 60Mi</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar (Node Allocation) -->
+<div class="col-span-3 glass-panel flex flex-col h-full overflow-hidden">
+<div class="bg-primary-fixed text-[#0a0a0a] px-3 py-1 font-label-sm text-label-sm shrink-0">NODE ALLOCATION</div>
+<div class="p-gap-sm overflow-y-auto cyber-scrollbar flex-1 flex flex-col gap-gap-sm">
+<!-- Node 1 -->
+<div class="border border-[#333333] p-2 bg-[#1a1c1c]">
+<div class="font-label-sm text-label-sm text-on-surface mb-1 flex justify-between">
+<span>master-1</span>
+<span class="text-primary-fixed">Ready</span>
+</div>
+<div class="space-y-2 mt-2">
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>CPU (4 Cores)</span>
+<span>25%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-primary-fixed h-full w-[25%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>MEM (16GB)</span>
+<span>40%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-secondary h-full w-[40%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Node 2 -->
+<div class="border border-[#333333] p-2 bg-[#1a1c1c]">
+<div class="font-label-sm text-label-sm text-on-surface mb-1 flex justify-between">
+<span>worker-1</span>
+<span class="text-primary-fixed">Ready</span>
+</div>
+<div class="space-y-2 mt-2">
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>CPU (8 Cores)</span>
+<span>60%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-primary-fixed h-full w-[60%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>MEM (32GB)</span>
+<span>75%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-secondary h-full w-[75%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Node 3 -->
+<div class="border border-error/50 p-2 bg-error/5">
+<div class="font-label-sm text-label-sm text-on-surface mb-1 flex justify-between">
+<span>worker-2</span>
+<span class="text-error">Pressure</span>
+</div>
+<div class="space-y-2 mt-2">
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>CPU (8 Cores)</span>
+<span class="text-error">92%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-error h-full w-[92%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-code-sm text-on-surface-variant mb-1">
+<span>MEM (32GB)</span>
+<span>55%</span>
+</div>
+<div class="h-1 bg-[#121414] flex border border-[#333333]">
+<div class="bg-secondary h-full w-[55%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tail Logs Terminal (Bottom) -->
+<div class="h-48 glass-panel flex flex-col shrink-0">
+<div class="bg-[#1a1c1c] text-on-surface-variant px-3 py-1 font-label-sm text-label-sm shrink-0 border-b border-[#333333] flex justify-between items-center">
+<span>&gt; TAIL LOGS: kube-system/coredns-5d78c9869d-wx2r</span>
+<span class="material-symbols-outlined text-[16px] cursor-pointer hover:text-primary-fixed">open_in_new</span>
+</div>
+<div class="p-gap-sm bg-[#080909] flex-1 overflow-y-auto cyber-scrollbar font-code-sm text-[12px] text-outline leading-tight">
+<div>[INFO] 2023-10-27T14:32:01Z plugin/reload: Running configuration SHA512 = 59132...</div>
+<div>[INFO] 2023-10-27T14:32:01Z CoreDNS-1.10.1</div>
+<div>[INFO] 2023-10-27T14:32:01Z linux/amd64, go1.20.4, 0f5d471</div>
+<div class="text-primary-fixed">[INFO] 2023-10-27T14:32:01Z plugin/ready: All plugins ready</div>
+<div>[INFO] 2023-10-27T14:35:12Z plugin/kubernetes: watching endpoints...</div>
+<div class="text-secondary">[WARN] 2023-10-27T14:40:05Z plugin/errors: 2 domain.local. A: read udp 10.244.0.5:53321-&gt;192.168.1.1:53: i/o timeout</div>
+<div>[INFO] 2023-10-27T14:41:22Z plugin/health: health check passed</div>
+<div class="mt-1"><span class="text-primary-fixed">root@seis-os:~#</span> tail -f /var/log/pods/kube-system_coredns<span class="blinking-cursor bg-primary-fixed w-2 inline-block h-3 ml-1"></span></div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

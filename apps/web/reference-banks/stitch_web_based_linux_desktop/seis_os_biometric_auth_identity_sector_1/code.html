@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS — Biometric Auth &amp; Identity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2b",
+                        "surface-container": "#1e2020",
+                        "on-secondary": "#520071",
+                        "on-primary-fixed-variant": "#004f54",
+                        "background": "#121414",
+                        "outline": "#849495",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#dcd9d8",
+                        "surface-variant": "#333535",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#333535",
+                        "primary-fixed-dim": "#00dbe9",
+                        "secondary-fixed": "#f8d8ff",
+                        "inverse-on-surface": "#2f3131",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#ebb2ff",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-tertiary-container": "#605e5e",
+                        "surface-dim": "#121414",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#1a1c1c",
+                        "surface": "#121414",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-tint": "#00dbe9",
+                        "secondary-container": "#ce5dff",
+                        "on-secondary-fixed": "#320047",
+                        "surface-container-lowest": "#0c0f0f",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-container": "#480064",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#dbfcff",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-bright": "#37393a",
+                        "primary-fixed": "#7df4ff",
+                        "on-surface": "#e2e2e2",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary": "#f9f5f5",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary": "#313030",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gap-sm": "8px",
+                        "stroke-thick": "2px",
+                        "gap-md": "16px",
+                        "gap-lg": "24px",
+                        "stroke-thin": "1px",
+                        "gap-xs": "4px",
+                        "margin-page": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.2", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0a0a0a;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+        
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00f0ff, transparent);
+            top: 0;
+            left: 0;
+            animation: scan 2s linear infinite;
+            opacity: 0.7;
+            box-shadow: 0 0 10px #00f0ff;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+
+        .pulse-border {
+            animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(206, 93, 255, 0.3); }
+            50% { border-color: rgba(206, 93, 255, 1); }
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 #00f0ff;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 #ce5dff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 83px, 0); }
+            20% { clip: rect(61px, 9999px, 4px, 0); }
+            40% { clip: rect(89px, 9999px, 52px, 0); }
+            60% { clip: rect(2px, 9999px, 93px, 0); }
+            80% { clip: rect(41px, 9999px, 14px, 0); }
+            100% { clip: rect(98px, 9999px, 34px, 0); }
+        }
+        
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(84px, 9999px, 97px, 0); }
+            20% { clip: rect(14px, 9999px, 63px, 0); }
+            40% { clip: rect(79px, 9999px, 2px, 0); }
+            60% { clip: rect(48px, 9999px, 35px, 0); }
+            80% { clip: rect(21px, 9999px, 81px, 0); }
+            100% { clip: rect(92px, 9999px, 18px, 0); }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col items-center justify-center p-margin-page relative">
+<!-- Background Grid Effect -->
+<div class="fixed inset-0 pointer-events-none opacity-20" style="background-image: linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-gap-md relative z-10">
+<!-- Central Auth Hub (Cinematic Layout) -->
+<main class="col-span-1 md:col-span-12 flex flex-col items-center justify-center space-y-gap-lg">
+<!-- Header -->
+<header class="text-center w-full max-w-2xl border-b border-outline-variant/30 pb-gap-md">
+<h1 class="font-headline-lg text-headline-lg text-on-surface uppercase tracking-tight glitch-text" data-text="SEIS OS IDENT CORE">SEIS OS IDENT CORE</h1>
+<p class="font-code-sm text-code-sm text-primary-fixed-dim mt-gap-xs uppercase tracking-widest">Sector 1 :: Biometric Authorization Sequence</p>
+</header>
+<!-- Main Auth Interface -->
+<div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-gap-lg">
+<!-- Neural Fingerprint Scanner -->
+<div class="bg-surface-container-lowest/85 backdrop-blur-xl border border-outline-variant rounded-none relative overflow-hidden group">
+<div class="h-6 bg-primary-container text-on-primary-container font-label-sm text-label-sm px-4 flex items-center justify-between">
+<span>SYS_AUTH_FINGERPRINT</span>
+<span class="material-symbols-outlined text-[14px]">fingerprint</span>
+</div>
+<div class="p-gap-lg flex flex-col items-center justify-center min-h-[300px] relative">
+<div class="scan-line hidden group-hover:block"></div>
+<!-- Biometric Interface UI Element -->
+<div class="relative w-48 h-48 border border-outline-variant/50 rounded-full flex items-center justify-center pulse-border">
+<!-- Simulated Fingerprint Graphic via CSS/HTML structure -->
+<div class="absolute inset-0 rounded-full border-t-2 border-primary-container opacity-50 animate-spin" style="animation-duration: 3s;"></div>
+<div class="absolute inset-2 rounded-full border-r-2 border-secondary-container opacity-50 animate-spin" style="animation-duration: 4s; animation-direction: reverse;"></div>
+<div class="absolute inset-4 rounded-full border-b-2 border-primary opacity-50 animate-spin" style="animation-duration: 5s;"></div>
+<span class="material-symbols-outlined text-[80px] text-surface-variant group-hover:text-primary-container transition-colors duration-500">fingerprint</span>
+<!-- Interaction overlay -->
+<div class="absolute inset-0 bg-primary-container/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+</div>
+<div class="mt-gap-lg text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Awaiting Neural Input</p>
+<p class="font-code-sm text-code-sm text-primary-fixed mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">Scanning bio-signature...</p>
+</div>
+</div>
+</div>
+<!-- Facial Telemetry -->
+<div class="bg-surface-container-lowest/85 backdrop-blur-xl border border-outline-variant rounded-none flex flex-col">
+<div class="h-6 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-4 flex items-center justify-between">
+<span>SYS_AUTH_FACIAL_MESH</span>
+<span class="material-symbols-outlined text-[14px]">face</span>
+</div>
+<div class="flex-1 p-gap-md relative bg-surface-container/50">
+<!-- Simulated 3D Mesh / Camera Feed Area -->
+<div class="w-full h-full border border-secondary/30 relative overflow-hidden flex items-center justify-center bg-black/50" data-alt="A highly stylized, cyberpunk-inspired 3D wireframe mesh of a human face rendered in bright neon cyan and deep electric purple against a pitch-black background. The mesh is composed of geometric polygons with glowing nodes at the intersections. Subtle digital noise and scanlines overlay the image, giving it the appearance of a high-tech security camera feed processing facial recognition data in a high-end corporate espionage setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDoAgH2cVcYN5JzzrDS98qX7eN4z8XOl7iGzzkuEAYmSsGbLJOdK8gUFFoUOuDQtbyiXxdCGp4m2tMZ5mWRpSabv9nUeyDf70CAU42SFQ_kXGAtk88-ws8Wa_EFI4HYZ7U-YVkb32qCzOVz9QIpvF4ijCzptfrcnbFylrngUg41enOnvzrIiGsFjXewV1Ku6vP9I4bbA_RYmEKp-qlKE_nOYriol8-PQ0k3OPZfvhPVUc8VpRsJrrkDa318ms4wWQQ2VgDWIXoXXrQo')">
+<!-- Telemetry Overlays -->
+<div class="absolute top-2 left-2 font-code-sm text-[10px] text-secondary opacity-70">
+                                CAM_FEED_01<br/>
+                                RES: 4K_NATIVE<br/>
+                                FPS: 120
+                            </div>
+<div class="absolute bottom-2 right-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+<span class="font-code-sm text-[10px] text-error uppercase">Rec</span>
+</div>
+<!-- Crosshair / Reticle -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50">
+<div class="w-32 h-32 border border-secondary/50 rounded-none relative">
+<div class="absolute -top-1 -left-1 w-2 h-2 border-t border-l border-secondary"></div>
+<div class="absolute -top-1 -right-1 w-2 h-2 border-t border-r border-secondary"></div>
+<div class="absolute -bottom-1 -left-1 w-2 h-2 border-b border-l border-secondary"></div>
+<div class="absolute -bottom-1 -right-1 w-2 h-2 border-b border-r border-secondary"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-gap-md border-t border-outline-variant/50">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mesh Integrity</span>
+<span class="font-code-sm text-code-sm text-secondary">98.4%</span>
+</div>
+<!-- Segmented Progress Bar -->
+<div class="w-full flex gap-1 h-2">
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Permission Matrix (Terminal Style) -->
+<div class="w-full max-w-4xl bg-surface-container-lowest/90 backdrop-blur-2xl border border-outline-variant rounded-none flex flex-col">
+<div class="h-6 bg-surface-bright text-on-surface font-label-sm text-label-sm px-4 flex items-center justify-between border-b border-outline-variant">
+<span>ROOT_ACCESS_MATRIX.sh</span>
+<span class="material-symbols-outlined text-[14px]">terminal</span>
+</div>
+<div class="p-gap-md overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="font-label-sm text-label-sm text-on-surface-variant border-b border-outline-variant/50">
+<th class="pb-2 pr-4">ID</th>
+<th class="pb-2 pr-4">USER</th>
+<th class="pb-2 pr-4">CLEARANCE</th>
+<th class="pb-2 pr-4">STATUS</th>
+<th class="pb-2 text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="font-code-sm text-code-sm">
+<tr class="border-b border-outline-variant/20 hover:bg-surface-variant/20 transition-colors">
+<td class="py-3 pr-4 text-primary-fixed-dim">USR_001</td>
+<td class="py-3 pr-4 text-on-surface">Kaelen_V</td>
+<td class="py-3 pr-4 text-error">OMEGA</td>
+<td class="py-3 pr-4 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<span class="text-error">LOCKOUT</span>
+</td>
+<td class="py-3 text-right">
+<button class="font-label-sm text-[10px] uppercase border border-outline-variant text-on-surface-variant px-2 py-1 hover:border-primary-container hover:text-primary-container transition-colors">Revoke</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/20 bg-secondary-container/10">
+<td class="py-3 pr-4 text-primary-fixed-dim">USR_002</td>
+<td class="py-3 pr-4 text-secondary-fixed">Elara_Prime</td>
+<td class="py-3 pr-4 text-primary">ALPHA</td>
+<td class="py-3 pr-4 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-primary-container">ACTIVE</span>
+</td>
+<td class="py-3 text-right">
+<button class="font-label-sm text-[10px] uppercase border border-secondary text-secondary px-2 py-1 hover:bg-secondary hover:text-black transition-colors">Manage</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="py-3 pr-4 text-primary-fixed-dim">USR_003</td>
+<td class="py-3 pr-4 text-on-surface">J_Doe_Terminal</td>
+<td class="py-3 pr-4 text-on-surface-variant">BETA</td>
+<td class="py-3 pr-4 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-surface-variant"></div>
+<span class="text-on-surface-variant">OFFLINE</span>
+</td>
+<td class="py-3 text-right">
+<button class="font-label-sm text-[10px] uppercase border border-outline-variant text-on-surface-variant px-2 py-1 hover:border-primary-container hover:text-primary-container transition-colors">Audit</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="mt-4 flex items-center font-code-sm text-code-sm text-on-surface-variant">
+<span class="text-primary-container mr-2">root@seis-core:~#</span>
+<span class="animate-pulse">_</span>
+</div>
+</div>
+</div>
+<!-- Action Controls -->
+<div class="w-full max-w-4xl flex justify-end gap-gap-md">
+<button class="font-label-sm text-label-sm uppercase px-6 py-2 border border-outline-variant text-on-surface hover:border-primary-container hover:text-primary-container transition-colors duration-200">
+                    Cancel Sequence
+                </button>
+<button class="font-label-sm text-label-sm uppercase px-6 py-2 bg-primary-container text-[#0a0a0a] hover:bg-secondary-container transition-colors duration-200">
+                    Initiate Handshake
+                </button>
+</div>
+</main>
+</div>
+<!-- Script for subtle interactive elements -->
+<script>
+        // Add random glitch effect to terminal lines
+        const terminalLines = document.querySelectorAll('.bg-secondary-container\\/10 td');
+        setInterval(() => {
+            if(Math.random() > 0.95) {
+                terminalLines.forEach(el => {
+                    el.style.opacity = Math.random() * 0.5 + 0.5;
+                    setTimeout(() => el.style.opacity = 1, 100);
+                });
+            }
+        }, 2000);
+    </script>
+</body></html>

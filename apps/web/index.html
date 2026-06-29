@@ -35,16 +35,41 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SEIS",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Web, macOS, iOS",
-    "description": "AI-native creative engineering operating system for product, design, code, agents, repositories, governance, and research.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://emirhankudun.com/#person",
+        "name": "Emirhan Kudun",
+        "url": "https://emirhankudun.com/",
+        "jobTitle": "SEIS Founder and Product Architect",
+        "email": "emirhan@kudun.com",
+        "sameAs": [
+          "https://github.com/emirhankudun-ux"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://emirhankudun.com/#website",
+        "url": "https://emirhankudun.com/",
+        "name": "SEIS",
+        "publisher": {
+          "@id": "https://emirhankudun.com/#person"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://emirhankudun.com/#seis",
+        "name": "SEIS",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web, macOS, iOS",
+        "description": "AI-native creative engineering operating system for product, design, code, agents, repositories, governance, and research.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
   }
   </script>
   <link rel="stylesheet" href="style.css">
@@ -68,7 +93,7 @@
     <div class="header-actions">
       <button class="icon-button" type="button" id="language-toggle" aria-label="Switch language">TR</button>
       <button class="icon-button" type="button" id="motion-mode" aria-label="Toggle motion mode" aria-pressed="false">Motion</button>
-      <a class="primary-link" href="./desktop.html" data-copy-key="openSeis">Open SEIS</a>
+      <a class="primary-link" href="./seis-linux-replica.html?demo=live" data-copy-key="openSeis">Open SEIS</a>
     </div>
   </header>
 
@@ -76,13 +101,14 @@
     <section class="hero-section" id="hero" aria-labelledby="hero-title">
       <canvas id="signal-canvas" class="signal-canvas" data-cinematic-field aria-hidden="true"></canvas>
       <div class="hero-content">
+        <img class="hero-product-mark" src="icons/icon-512.png" alt="SEIS product mark" width="96" height="96" decoding="async" fetchpriority="high">
         <p class="eyebrow" data-copy-key="heroEyebrow">AI-native creative engineering operating system</p>
         <h1 id="hero-title" data-copy-key="heroTitle">SEIS</h1>
         <p class="hero-subtitle" data-copy-key="heroSubtitle">
           A runnable local demo that connects SEIS AI Core, Desktop OS, SEIS Code, SEIS Design, SEIS Cloud, Search, SSH boundaries, and the five-year sub-agent plan.
         </p>
         <div class="hero-actions" aria-label="Primary actions">
-          <a class="hero-button primary" href="./desktop.html" data-copy-key="openOs">Open the OS</a>
+          <a class="hero-button primary" href="./seis-linux-replica.html?demo=live" data-copy-key="openOs">Open the OS</a>
           <a class="hero-button secondary" href="./desktop.html#seis-ai" data-copy-key="openAiCenter">Open AI Center</a>
           <a class="hero-button secondary" href="./seis-code.html" data-copy-key="openSeisCode">Open SEIS Code</a>
           <button class="hero-button secondary" type="button" id="copy-summary" data-copy-key="copySummaryButton">Copy one-line summary</button>
@@ -317,7 +343,7 @@
         <h2 id="launch-title" data-copy-key="launchTitle">One website, seven doors into SEIS.</h2>
       </div>
       <div class="launch-grid">
-        <a class="launch-tile launch-tile-feature" href="./desktop.html" data-depth-card>
+        <a class="launch-tile launch-tile-feature" href="./seis-linux-replica.html?demo=live" data-depth-card>
           <span data-copy-key="launchDesktopLabel">Workspace</span>
           <em class="launch-status" data-copy-key="launchDesktopStatus">Local demo</em>
           <strong data-copy-key="launchDesktopTitle">SEIS Desktop</strong>

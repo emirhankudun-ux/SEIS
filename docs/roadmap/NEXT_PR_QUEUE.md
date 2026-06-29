@@ -1,6 +1,17 @@
 # SEIS Next PR Queue
 
-Date: 2026-06-22
+Date: 2026-06-23
+
+## Current Recommended Product Demo Stack
+
+| Order | Suggested PR title | Scope | Validation | Approval needed |
+| --- | --- | --- | --- | --- |
+| 1 | `feat: stabilize SEIS Desktop single-entry demo` | Keep SEIS Desktop as the single browser demo entry with SEIS Demo Studio guided journeys/evidence export, SEIS Search launcher routes, AI/Web/Code/Design/Cloud/Apps/Plugins/Files tabs, the Command Center 10-row Master Objective Coverage matrix, and the 20B dry-run preflight VFS export for SEIS AI App, SEIS Code Workspace, SEIS Code Web, Mythic Gacha, and Video Hero Showcase. | `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke`, `npm run check:seis-ultimate-demo`, `npm run check:product-experience-browser-smoke`, `git diff --check` | None for local static/browser work and dry-run preflight export; approval required for deployment, dependencies, live providers, SSH, host integrations, model downloads, training, fine-tuning, or real benchmarks. |
+| 1A | `feat: add SEIS Second Brain foundation` | Keep installed AI profiles, managed sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault notes, graph/backlinks, and GitHub readiness gates connected inside the Desktop OS, SEIS AI, Search, Command Center, Files, and docs. | `npm run check:seis-second-brain`, `npm run check:seis-second-brain-browser-smoke`, `npm run check:desktop-os`, `git diff --check` | None for browser-local UI, JSON contract, docs, validator, and local browser-smoke evidence; approval required for private Obsidian import, live providers, external databases, SSH, deployment, GitHub push/merge/release/Pages, or public launch. |
+| 1B | `docs: add SEIS Second Brain readiness contracts` | Keep the Obsidian bridge safe import, Second Brain accessibility/focus QA, read-only model-router contract, and PR #54 public demo release checklist connected to docs, structured records, and validators before public demo review. | `npm run check:seis-second-brain-readiness-contracts`, `npm run check:seis-second-brain`, `npm run check:seis-second-brain-browser-smoke`, `git diff --check` | None for docs, JSON contracts, accessibility markers, and local validators; approval required for private Obsidian import, live provider routing, SSH, deployment, merge, Pages publication, or public release. |
+| 2 | `feat: deepen shared VFS contract and tests` | Keep Desktop Files search/grid/list/preview, Desktop Terminal, SEIS Code, SEIS Code terminal, and Mythic Gacha exports aligned through the browser-local `/home/seis` and `/workspace` bridge. | `npm run check:desktop-os-browser-smoke`, `npm run check:product-experience-browser-smoke`, `npm run check:seis-code`, `npm run check:mythic-gacha`, `git diff --check` | None for browser-local VFS tests/docs; approval required for production storage, cloud sync, encrypted vaults, SSH, or remote workspaces. |
+| 3 | `docs: publish product demo boundary and validation evidence` | Publish current-vs-planned boundaries for the single-entry Desktop demo, Local Demo AI, Plugin Center tabs, shared VFS, Mythic exports, and smoke evidence. | `npm run check:foundation`, `git diff --check`, product docs review | None for docs; approval required for public visibility changes or release publication. |
+| 4 | `feat: add SEIS full-stack contract foundation` | Keep `content/development/seis-fullstack-contract.json`, `server/node/static-server.mjs`, and `docs/architecture/seis-full-stack-transition.md` as the first server/API/data contract for sessions, projects, app install state, AI provider status, audit logs, and safe agent task records while keeping the current static demo usable without keys and without an API server. The Linux Replica now proves the frontend/local-state side through mini Code/Design/Cloud/Store/Music/AI workspaces; the next PR should deepen the durable backend boundary without placing backend-only secrets in the browser and without breaking Local Demo fallback. | `npm run check:seis-fullstack-contract`, `npm run check:seis-fullstack-server-smoke`, `npm run check:seis-fullstack-no-server-fallback-smoke`, `npm run check:seis-ultimate-demo`, `git diff --check`, redacted provider audit | Approval required for new dependencies, live provider calls, external databases, auth providers, deployment, SSH, or writing real credentials. |
 
 ## PR 0: SEIS Integration And GitHub Development Spine
 
@@ -13,6 +24,18 @@ Date: 2026-06-22
 | Exclude | Bulk copying from separate worktrees, cherry-picking unreviewed commits, live GitHub write actions, SSH, deployment, provider calls, secret rotation, file deletion, branch deletion, and history rewrite. |
 | Validation | `jq empty content/development/seis-integration-map.json`, documentation review, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON updates; approval required for cross-worktree merge, push, or deletion. |
+
+## PR 0C: SEIS Workspace Unification Spine
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/workspace-unification-spine` |
+| Priority | P0 |
+| Goal | Make `SEIS/` the single canonical writable local root and keep every other SEIS-like folder as a review-only input until a scoped PR extracts useful work. |
+| Include | `docs/reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`, `docs/governance/seis-integration-and-github-development.md`, `content/development/seis-integration-map.json`, `docs/STATUS.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/INDEX.md`, and backlog/queue updates. |
+| Exclude | Folder deletion, branch deletion, history rewrite, bulk copy, whole-branch cherry-pick, SSH, deployment, live provider calls, and secret rotation. |
+| Validation | `jq empty content/development/seis-integration-map.json`, `git diff --check`, documentation review. |
+| Approval needed | None for docs/JSON classification; approval required for physical consolidation, deletion, branch cleanup, push, merge, or remote changes. |
 
 ## PR 0A: Open PR Stack Triage
 
@@ -134,6 +157,18 @@ Date: 2026-06-22
 | Validation | `npm run check:goal-tracking`, `npm run check:goal-command-center-view`, `jq empty content/development/seis-goal-*.json`, scoped sensitive-pattern scan, `git diff --check`. |
 | Approval needed | None for scoped docs/JSON/generated-static work. |
 
+## PR 1H: SEIS Universe Omega Goal Coverage
+
+| Field | Value |
+| --- | --- |
+| Suggested branch | `seis/omega-goal-system` |
+| Priority | P0 |
+| Goal | Map the active SEIS Universe Omega objective into a 24-phase, file-backed Goal Tracking OS coverage record and add Phase 01/02/03/10 dependency, KPI, and success-metric evidence slices without claiming implementation or validation. |
+| Include | `content/development/seis-universe-omega-goal-system.json`, `content/development/seis-universe-omega-phase-evidence.json`, `docs/goals/seis-universe-omega-goal-system.md`, `docs/goals/seis-universe-omega-phase-evidence.md`, `scripts/check-seis-universe-omega-goal-system.mjs`, `scripts/check-goal-tracking.mjs`, `package.json`, `docs/INDEX.md`, `docs/STATUS.md`, `docs/roadmap/MASTER_BACKLOG.md`, `docs/roadmap/NEXT_PR_QUEUE.md`. |
+| Exclude | Runtime autonomy, live provider calls, SSH, deployment, release actions, model training, benchmarks, dataset downloads, repository settings changes, and public completion claims. |
+| Validation | `npm run check:seis-universe-omega-goal-system`, `node --check scripts/check-seis-universe-omega-goal-system.mjs`, `jq empty content/development/seis-universe-omega-goal-system.json content/development/seis-universe-omega-phase-evidence.json`, scoped sensitive-pattern scan, `git diff --check`. |
+| Approval needed | None for scoped docs/JSON/validator work; approval required for runtime autonomy, deployment, SSH, provider calls, model training, benchmarks, public visibility changes, or release publication. |
+
 ## PR 2: Repository Hygiene Recovery
 
 | Field | Value |
@@ -177,12 +212,56 @@ Date: 2026-06-22
 
 | Field | Value |
 | --- | --- |
+| Priority | P0 |
+| Goal | Let installed AI assistants improve SEIS AI through supervised candidate cases, deterministic local seed-model rebuilds, benchmark gates, and promotion-policy evidence without live provider calls or unsupported model claims. |
+| Include | `content/development/seis-ai-workforce-training-plan.json`, `docs/ai/ai-workforce-training.md`, `docs/ai/seis-ai-core.md`, `packages/seis-ai/data/*`, `packages/seis-ai/models/*`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs`, `package.json`, `reports/seis-ai-workforce-training/*`. |
+| Exclude | Cloud fine-tuning, live provider prompts, credential validation, dataset downloads, paid benchmarks, SSH, deployment, push, merge, runtime authority, and foundation-model ownership claims. |
+| Validation | `npm run check:seis-ai-workforce-training`, `npm run automation:seis-ai-workforce-training`, `npm run check:seis-universe-readiness`, `node --test packages/seis-ai/test/*.test.mjs`, `git diff --check`. |
+| Approval needed | None for local deterministic seed-model rebuilds; explicit approval required for secondary live-provider prompts, external datasets, paid benchmarks, model publication, SSH, deployment, push, or merge. |
+
+## PR 4D: SEIS Model Scaling Hardware Profile
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Track the requested 20B / 16GB+ RAM target plus future 70B, 150B, and 512B apex scale ladder as a validator-backed SEIS AI Core compatibility contract without claiming trained weights, live inference, AGI, downloads, or benchmark results. |
+| Include | `content/development/seis-model-scaling-hardware-profile.json`, `content/development/seis-model-parameter-ladder.json`, `content/development/seis-model-frontier-escalation-policy.json`, `content/development/seis-150b-frontier-model-program.json`, `content/development/seis-512b-apex-model-program.json`, `content/development/seis-model-scaling-subagent-council.json`, `content/development/seis-20b-model-card-template.json`, `content/development/seis-20b-dataset-card-template.json`, `reports/seis-model-scaling/20b-16gb-memory-benchmark.json`, `reports/seis-model-scaling/20b-benchmark-dry-run.json`, `docs/ai/seis-model-scaling.md`, `docs/ai/seis-ai-core.md`, `docs/ai/model-router.md`, `packages/seis-ai/src/lib/plugin-integration.mjs`, `packages/seis-ai/src/agent/tools.mjs`, `scripts/check-seis-model-frontier-escalation-policy.mjs`, `scripts/check-seis-150b-frontier-model-program.mjs`, `scripts/check-seis-512b-apex-model-program.mjs`, `scripts/check-seis-model-parameter-ladder.mjs`, `scripts/check-seis-model-scaling-subagent-council.mjs`, `scripts/check-seis-model-scaling-hardware-profile.mjs`, `scripts/inspect-seis-model-local-hardware.mjs`, `scripts/create-seis-20b-benchmark-dry-run.mjs`, `package.json`, Command Center model-scaling UI, `/home/seis/Documents/seis-20b-local-preflight.md` dry-run VFS export, `dist/qa/model-scaling/local-hardware-preflight.json` ignored optional output, `seis://ai/150b-frontier-model-program.json`, `seis://ai/512b-apex-model-program.json`, `frontier-program-plan-only` 150B program gate, `apex-program-plan-only` 512B program gate, 12 plan-only model-scaling sub-agent council, RAM compatibility profiles, benchmark manifest contract/template, benchmark dry-run report, no-skip-20B frontier escalation policy, parameter ladder resource, model/dataset card templates, memory-budget contract, quantization lanes, creation stages, candidate-only local runtimes, status/backlog/index updates. |
+| Exclude | Model downloads, dataset downloads, training, fine-tuning, paid benchmarks, GPU/cloud provisioning, SSH, deployment, provider credential setup, checkpoint publication, or claims that SEIS owns a 20B/70B/150B/512B foundation model or AGI. |
+| Validation | `npm run check:seis-20b-benchmark-dry-run`, `npm run check:seis-model-local-hardware-preflight`, `npm run check:seis-150b-frontier-model-program`, `npm run check:seis-512b-apex-model-program`, `npm run check:seis-model-frontier-escalation-policy`, `npm run check:seis-model-parameter-ladder`, `npm run check:seis-model-scaling-subagent-council`, `npm run check:seis-model-scaling-hardware-profile`, `npm run check:seis-ai-core-provider-registry`, `npm test --prefix packages/seis-ai`, `git diff --check`. |
+| Approval needed | None for docs/JSON/validator/status-tool/UI evidence work; explicit approval required for model downloads, training, benchmarks, cloud/GPU spend, provider credentials, SSH, deployment, push, merge, or publication. |
+
+## PR 4E: SEIS Second Brain Foundation
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Turn installed AI profiles, managed sub-agent lanes, the 12-agent target roster, Obsidian-style Markdown vault notes, graph/backlinks, and GitHub readiness gates into a validator-backed SEIS Second Brain foundation. |
+| Include | `apps/web/desktop.js`, `apps/web/desktop.css`, `content/development/seis-second-brain-system.json`, `docs/product/seis-second-brain.md`, `docs/product/seis-demo-status.md`, `docs/STATUS.md`, `docs/INDEX.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/roadmap/MASTER_BACKLOG.md`, `docs/roadmap/NEXT_PR_QUEUE.md`, `scripts/check-seis-second-brain.mjs`, `scripts/check-seis-second-brain-browser-smoke.mjs`, and `package.json`. |
+| Exclude | Private Obsidian vault import, Obsidian plugin install, live provider calls, external database setup, SSH, deployment, GitHub push, merge, release, Pages publication, public launch, or secret handling. |
+| Validation | `npm run check:seis-second-brain`, `npm run check:seis-second-brain-browser-smoke`, `npm run check:desktop-os`, `node --check apps/web/desktop.js`, `node --check scripts/check-seis-second-brain.mjs`, `node --check scripts/check-seis-second-brain-browser-smoke.mjs`, `git diff --check`. |
+| Approval needed | None for local browser/demo/docs/validator work; explicit approval required for private vault sync, live AI providers, GitHub write actions, deployment, or public release. |
+
+## PR 4F: SEIS Second Brain Readiness Contracts
+
+| Field | Value |
+| --- | --- |
+| Priority | P0 |
+| Goal | Add validator-backed Obsidian bridge safe import, Second Brain accessibility/focus QA, read-only model-router contract, and PR #54 public demo release checklist gates after PR #54 review. |
+| Include | `content/development/seis-obsidian-bridge-safe-import-contract.json`, `content/development/seis-second-brain-accessibility-focus-qa.json`, `content/development/seis-read-only-model-router-contract.json`, `content/development/seis-public-demo-release-checklist-pr54.json`, `docs/product/seis-obsidian-bridge-safe-import.md`, `docs/reviews/SECOND_BRAIN_ACCESSIBILITY_FOCUS_QA.md`, `docs/ai/read-only-model-router-contract.md`, `docs/releases/PUBLIC_DEMO_RELEASE_CHECKLIST_PR54.md`, `docs/product/seis-second-brain.md`, `docs/ai/model-router.md`, `docs/STATUS.md`, `docs/INDEX.md`, `docs/SEIS_MASTER_INDEX.md`, `docs/roadmap/MASTER_BACKLOG.md`, `docs/roadmap/NEXT_PR_QUEUE.md`, `scripts/check-seis-second-brain-readiness-contracts.mjs`, `package.json`, and accessibility/focus markers in `apps/web/desktop.js`. |
+| Exclude | Private Obsidian vault import, Obsidian plugin install, live provider routing, provider credential validation, browser secrets, SSH, deployment, merge, Pages publication, public release, or production-readiness claims. |
+| Validation | `npm run check:seis-second-brain-readiness-contracts`, `npm run check:seis-second-brain`, `npm run check:seis-second-brain-browser-smoke`, `node --check apps/web/desktop.js`, `node --check scripts/check-seis-second-brain-readiness-contracts.mjs`, `git diff --check`. |
+| Approval needed | None for local docs/JSON/validator/accessibility marker work; explicit approval required for private vault sync, live providers, GitHub merge or Pages publication, SSH, deployment, or public release. |
+
+## PR 4B: MCP SDK Compatibility Hardening
+
+| Field | Value |
+| --- | --- |
 | Priority | P1 |
-| Goal | Let installed assistants support SEIS-owned seed-model improvement through sanitized review, deterministic local training artifacts, and zero-runtime-authority promotion gates. |
-| Include | `docs/ai/ai-workforce-training.md`, `content/development/seis-ai-workforce-training-plan.json`, `scripts/check-seis-ai-workforce-training.mjs`, `scripts/run-seis-ai-workforce-training.mjs`, generated local seed artifacts, and AI Core/provider-registry notes. |
-| Exclude | Live provider calls, cloud fine-tuning, credential reads, dataset downloads, SSH execution, deployment, runtime autonomy, or foundation-model ownership claims. |
-| Validation | `npm run automation:seis-ai-workforce-training`, `npm run check:seis-ai-workforce-training`, SEIS seed-model validators, provider audit, targeted unit tests, `git diff --check`. |
-| Approval needed | Required before enabling live providers, external datasets, cloud training, SSH execution, or runtime authority above zero. |
+| Goal | Harden the SEIS MCP stdio surface after the no-dependency fallback restored local smoke coverage, then decide whether the official `@modelcontextprotocol/sdk` should also be installed for production MCP compatibility. |
+| Include | `package.json`, lockfile if dependency installation is approved, `packages/seis-ai/src/mcp/server.mjs`, `packages/seis-ai/test/mcp-smoke.test.mjs`, and validation notes. |
+| Exclude | Live MCP remote servers, external connector mutation, credential access, unrestricted shell tools, deployment, SSH, or GitHub writes. |
+| Validation | `node --test packages/seis-ai/test/mcp-smoke.test.mjs`, `npm run check:seis-agent-plugin-integration`, `node --test packages/seis-ai/test/agent.test.mjs`, `git diff --check`. |
+| Approval needed | Yes for dependency installation or lockfile mutation; none for no-dependency fallback hardening and local smoke coverage. |
 
 ## PR 5: Command Center Lane Status View
 
@@ -211,10 +290,10 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Harden SEIS Code browser foundation, expand the data schema registry, and add visual QA on top of the validator-backed design component inventory. |
-| Include | SEIS Code interaction tests, virtual file system persistence checks, Monaco/fallback editor QA, terminal and no-key AI REPL checks, JSON schema expectations, component inventory visual QA, Video Hero QA evidence, reduced-motion QA. |
+| Goal | Harden SEIS Code browser foundation, keep the Desktop Code IDE cockpit aligned with V17 IDE requirements, expand the data schema registry, and add visual QA on top of the validator-backed design component inventory. |
+| Include | SEIS Code interaction tests, Desktop Code IDE Explorer/Search/Source Control Safe Mock/Preview/AI Assistant Local Demo/Extensions/status-bar checks, virtual file system persistence checks, Monaco/fallback editor QA, terminal and no-key AI REPL checks, JSON schema expectations, component inventory visual QA, Video Hero QA evidence, reduced-motion QA. |
 | Exclude | Full product implementation or dependency installation unless separately approved. |
-| Validation | `npm run check:seis-code`, `npm run check:video-hero-showcase`, `npm run check:design-component-inventory`, `npm run check:data-schema-registry`, documentation review, JSON checks, manual accessibility checklist. |
+| Validation | `npm run check:desktop-os`, `npm run check:seis-code`, `npm run check:video-hero-showcase`, `npm run check:design-component-inventory`, `npm run check:data-schema-registry`, documentation review, JSON checks, manual accessibility checklist. |
 | Approval needed | Yes for dependency installation. |
 
 ## PR 6A: Video Hero Visual QA
@@ -233,11 +312,33 @@ Date: 2026-06-22
 | Field | Value |
 | --- | --- |
 | Priority | P1 |
-| Goal | Keep the browser-based SEIS Desktop OS foundation functional, mobile-safe, and honest about browser-local limits while the product suite grows. |
-| Include | `apps/web/desktop.html`, `apps/web/desktop.css`, `apps/web/desktop.js`, desktop-to-SEIS-Code workspace handoff for `/home/seis` files, `scripts/check-desktop-os.mjs`, `scripts/check-desktop-os-browser-smoke.mjs`, `docs/product/seis-desktop-os.md`, status/backlog/review updates, and ignored screenshot evidence under `dist/qa/desktop-os-smoke/`. |
+| Goal | Keep the browser-based SEIS Desktop OS foundation functional, mobile-safe, single-entry, and honest about browser-local limits while the product suite grows. |
+| Include | `apps/web/desktop.html`, `apps/web/desktop.css`, `apps/web/desktop.js`, `apps/web/seis-linux-replica.html`, SEIS Search launcher routes, AI Plugin Center tabs, desktop-to-SEIS-Code workspace handoff for `/home/seis` file/folder create, move, and delete operations, reverse import for current SEIS Code/Mythic exports, `scripts/check-desktop-os.mjs`, `scripts/check-desktop-os-browser-smoke.mjs`, `scripts/check-seis-linux-replica-browser-smoke.mjs`, `scripts/check-product-experience-browser-smoke.mjs`, `docs/product/seis-desktop-os.md`, `docs/product/seis-demo-status.md`, `docs/product/shared-vfs-contract.md`, status/backlog/review updates, and ignored screenshot evidence under `dist/qa/desktop-os-smoke/` plus `dist/qa/seis-linux-replica-smoke/`. |
 | Exclude | Host OS command execution, SSH, dependency installation, live AI provider calls, production credential storage, deployment, release publication, and claims that every app is production complete. |
-| Validation | `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke`, `node --check apps/web/desktop.js`, `node --check scripts/check-desktop-os-browser-smoke.mjs`, browser/mobile/bridge screenshot review, `git diff --check`. |
+| Validation | `npm run check:desktop-os`, `npm run check:desktop-os-browser-smoke`, `npm run check:seis-linux-replica-browser-smoke`, `npm run check:product-experience-browser-smoke`, `node --check apps/web/desktop.js`, `node --check scripts/check-desktop-os-browser-smoke.mjs`, `node --check scripts/check-seis-linux-replica-browser-smoke.mjs`, `node --check scripts/check-product-experience-browser-smoke.mjs`, browser/mobile/bridge screenshot review, `git diff --check`. |
 | Approval needed | None for the static browser foundation; approval required for dependencies, live providers, host integrations, SSH, or deployment. |
+
+## PR 6C: Shared VFS Contract And Tests
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Deepen the browser-local VFS contract between Desktop Files, Desktop Terminal, SEIS Code, SEIS Code terminal, and Mythic Gacha exports without claiming production storage. |
+| Include | `docs/product/shared-vfs-contract.md`, `apps/web/desktop.js`, `apps/web/seis-code.js`, `apps/web/mythic-gacha.js`, `scripts/check-desktop-os-browser-smoke.mjs`, `scripts/check-product-experience-browser-smoke.mjs`, product/status/review updates. |
+| Exclude | Production database, cloud sync, encrypted vaults, host filesystem access, SSH, remote workspaces, dependency installation, and deployment. |
+| Validation | `npm run check:desktop-os-browser-smoke`, `npm run check:product-experience-browser-smoke`, `npm run check:seis-code`, `npm run check:mythic-gacha`, `git diff --check`. |
+| Approval needed | None for browser-local VFS tests/docs; approval required for production storage, cloud sync, encrypted vaults, SSH, or remote workspace integration. |
+
+## PR 6D: Product Demo Boundary Evidence
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Publish the current-vs-planned boundary for the single-entry browser demo and keep validation evidence tied to source-of-truth docs. |
+| Include | `docs/product/seis-demo-status.md`, `docs/product/seis-desktop-os.md`, `docs/product/seis-code-foundation.md`, `docs/product/mythic-gacha.md`, `docs/reviews/PRODUCT_EXPERIENCE_BROWSER_SMOKE.md`, `docs/STATUS.md`, `docs/INDEX.md`, `docs/SEIS_MASTER_INDEX.md`. |
+| Exclude | Public visibility changes, release publication, fake deployment claims, live provider readiness claims, SSH readiness claims, and production storage claims. |
+| Validation | `npm run check:foundation`, product smoke evidence review, `git diff --check`. |
+| Approval needed | None for docs; approval required for public visibility changes, deployment, release, live provider, SSH, or production storage claims. |
 
 ## PR 7: Mythic Gacha Playable Foundation
 
@@ -260,6 +361,17 @@ Date: 2026-06-22
 | Exclude | Public visibility changes, deployment, release/tag creation, external asset purchases, model-provider calls, and branch protection changes. |
 | Validation | `npm run check:workspace`, product validators, manual accessibility checklist, `git diff --check`. |
 | Approval needed | None for docs/templates; approval required for repository settings or public visibility changes. |
+
+## PR 8B: AI Core Sub-Agent Role Schema And Permission Fixtures
+
+| Field | Value |
+| --- | --- |
+| Priority | P1 |
+| Goal | Convert the validated status/plan-only five-year sub-agent operating model into concrete role schema, permission matrix, dry-run queue, cancellation, and approval fixtures without enabling background autonomous writes. |
+| Include | `content/development/seis-ai-core-subagent-operating-model.json`, `content/development/seis-ai-core-agent-role-schema.json`, `content/development/seis-ai-core-agent-permission-matrix.json`, `content/development/seis-ai-core-dry-run-task-queue.json`, `content/development/seis-ai-core-cancellation-fixture.json`, `content/development/seis-ai-core-approval-fixture.json`, docs/status/backlog updates, and package validation scripts. |
+| Exclude | Live provider calls, external connector mutation, background automation, write-gated execution, GitHub writes, SSH, deployment, dependency installation, model training, dataset download, and secret access. |
+| Validation | `npm run check:seis-ai-core-subagent-operating-model`, `npm run check:seis-ai-core-subagent-runtime-fixtures`, `npm run check:ai-workforce-assignments`, `npm run check:seis-agent-lane-status`, `git diff --check`. |
+| Approval needed | None for docs/contracts/fixtures; approval required before autonomous writes, external mutations, provider calls, deployment, SSH, or GitHub write operations. |
 
 ## PR 9: Repository Policy Reconciliation
 

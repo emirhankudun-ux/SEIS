@@ -65,6 +65,46 @@ const server = createServer((request, response) => {
     return;
   }
 
+  if (url.pathname === "/_server/fullstack-contract") {
+    sendJson(response, 200, buildFullstackPayload("self"));
+    return;
+  }
+
+  if (url.pathname === "/_server/session") {
+    sendJson(response, 200, buildFullstackPayload("session"));
+    return;
+  }
+
+  if (url.pathname === "/_server/capabilities") {
+    sendJson(response, 200, buildFullstackPayload("capabilities"));
+    return;
+  }
+
+  if (url.pathname === "/_server/projects") {
+    sendJson(response, 200, buildFullstackPayload("projects"));
+    return;
+  }
+
+  if (url.pathname === "/_server/app-installs") {
+    sendJson(response, 200, buildFullstackPayload("appInstalls"));
+    return;
+  }
+
+  if (url.pathname === "/_server/provider-status") {
+    sendJson(response, 200, buildFullstackPayload("providerStatus"));
+    return;
+  }
+
+  if (url.pathname === "/_server/audit-log") {
+    sendJson(response, 200, buildFullstackPayload("auditLogs"));
+    return;
+  }
+
+  if (url.pathname === "/_server/agent-tasks") {
+    sendJson(response, 200, buildFullstackPayload("agentTasks"));
+    return;
+  }
+
   if (url.pathname === "/_server/plugin-sources") {
     sendJson(response, 200, buildPluginSourcesPayload());
     return;
@@ -221,6 +261,40 @@ function buildPluginSourcesPayload() {
     };
   } catch (_error) {
     return { ok: false, source: "node-server", error: "cloud_environment_unreadable" };
+  }
+}
+
+function buildFullstackPayload(sourceKey) {
+  const contract = readFullstackContract();
+  if (!contract) {
+    return { ok: false, source: "node-server", error: "fullstack_contract_missing" };
+  }
+
+  if (sourceKey === "self") {
+    return { ok: true, source: "node-server", ...contract };
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(contract, sourceKey)) {
+    return { ok: false, source: "node-server", error: "fullstack_contract_key_missing", sourceKey };
+  }
+
+  return {
+    ok: true,
+    source: "node-server",
+    contractId: contract.id,
+    sourceKey,
+    data: contract[sourceKey]
+  };
+}
+
+function readFullstackContract() {
+  const contractPath = resolve(join(workspaceRoot, "content/development/seis-fullstack-contract.json"));
+  if (!existsSync(contractPath)) return null;
+
+  try {
+    return JSON.parse(readText(contractPath));
+  } catch (_error) {
+    return null;
   }
 }
 

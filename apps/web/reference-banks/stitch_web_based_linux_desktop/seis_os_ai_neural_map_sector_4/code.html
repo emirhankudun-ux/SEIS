@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS - AI Neural Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-cyan: #00f0ff;
+            --secondary-purple: #ce5dff;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(132, 148, 149, 0.2);
+        }
+        .header-accent {
+            background: var(--primary-cyan);
+            color: #0c0f0f;
+            padding: 2px 8px;
+            font-weight: 700;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 240, 255, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        .neural-node {
+            transition: all 0.3s ease;
+        }
+        .neural-node:hover {
+            filter: drop-shadow(0 0 8px var(--primary-cyan));
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b494b;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#006970",
+                      "on-surface": "#e2e2e2",
+                      "surface-bright": "#37393a",
+                      "surface-container-low": "#1a1c1c",
+                      "primary-fixed": "#7df4ff",
+                      "on-error": "#690005",
+                      "primary": "#dbfcff",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#282a2b",
+                      "background": "#121414",
+                      "primary-container": "#00f0ff",
+                      "on-secondary-container": "#480064",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-tertiary-container": "#605e5e",
+                      "outline": "#849495",
+                      "error-container": "#93000a",
+                      "outline-variant": "#3b494b",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "tertiary-container": "#dcd9d8",
+                      "on-background": "#e2e2e2",
+                      "on-primary-fixed-variant": "#004f54",
+                      "secondary-fixed": "#f8d8ff",
+                      "surface-container": "#1e2020",
+                      "surface-container-lowest": "#0c0f0f",
+                      "surface-variant": "#333535",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "secondary": "#ebb2ff",
+                      "on-tertiary": "#313030",
+                      "secondary-container": "#ce5dff",
+                      "on-primary-container": "#006970",
+                      "on-primary": "#00363a",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed": "#320047",
+                      "inverse-surface": "#e2e2e2",
+                      "surface-tint": "#00dbe9",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "primary-fixed-dim": "#00dbe9",
+                      "surface-dim": "#121414",
+                      "tertiary-fixed": "#e5e2e1",
+                      "on-secondary": "#520071",
+                      "inverse-on-surface": "#2f3131",
+                      "surface-container-highest": "#333535",
+                      "surface": "#121414",
+                      "tertiary": "#f9f5f5",
+                      "on-primary-fixed": "#002022"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-page": "32px",
+                      "gap-xs": "4px",
+                      "stroke-thick": "2px",
+                      "gap-lg": "24px",
+                      "stroke-thin": "1px",
+                      "gap-sm": "8px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["Space Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface select-none">
+<!-- Global Scanline Effect -->
+<div class="scanline"></div>
+<!-- Top Navigation Bar (Shared Component) -->
+<nav class="fixed top-0 left-0 w-full z-50 h-10 flex justify-between items-center px-8 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</div>
+<div class="flex gap-md h-full">
+<a class="flex items-center text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="flex items-center text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="flex items-center text-primary-fixed border-b border-primary-fixed pb-1 font-label-caps transition-colors duration-200" href="#">AGENTS</a>
+<a class="flex items-center text-on-surface-variant font-label-caps hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-sm">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-sm">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70 text-sm">settings</span>
+</div>
+</nav>
+<!-- Side Navigation Bar (Shared Component) -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-16 hover:w-56 transition-all duration-300 group overflow-hidden">
+<div class="p-4 flex flex-col gap-1 items-center group-hover:items-start transition-all">
+<div class="w-8 h-8 rounded-sm bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="hidden group-hover:block mt-2">
+<div class="font-label-caps text-secondary-fixed text-xs">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant opacity-60">SEIS-01</div>
+</div>
+</div>
+<div class="mt-6 flex flex-col w-full">
+<div class="group flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">TERMINAL</span>
+</div>
+<div class="group flex items-center px-4 py-4 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">INFRASTRUCTURE</span>
+</div>
+<div class="group flex items-center px-4 py-4 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="ml-4 hidden group-hover:block font-label-caps">LOGS</span>
+</div>
+</div>
+<div class="mt-auto p-4 border-t border-outline-variant/10">
+<div class="group flex items-center py-2 cursor-pointer text-on-surface-variant hover:text-error transition-colors">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-4 hidden group-hover:block font-label-caps text-xs">POWER</span>
+</div>
+<div class="group flex items-center py-2 cursor-pointer text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined">lock</span>
+<span class="ml-4 hidden group-hover:block font-label-caps text-xs">LOCK</span>
+</div>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<main class="ml-16 mt-10 h-[calc(100vh-40px)] p-gap-md grid grid-cols-12 grid-rows-12 gap-gap-md">
+<!-- Center Neural Canvas -->
+<section class="col-span-8 row-span-9 glass-panel relative overflow-hidden rounded-sm border border-outline-variant/30 bg-black/40">
+<div class="absolute top-0 left-0 w-full p-3 flex justify-between items-center z-20 pointer-events-none">
+<div>
+<div class="header-accent inline-block mb-1">NEURAL_TOPOLOGY_V4.2</div>
+<h1 class="font-headline-md text-primary-fixed uppercase tracking-tighter">AI Neural Map (Sector 4)</h1>
+</div>
+<div class="flex gap-sm">
+<div class="px-3 py-1 bg-surface-container-high/60 border border-outline-variant/40 rounded-sm pointer-events-auto cursor-pointer">
+<span class="font-label-sm text-xs text-primary-fixed-dim">COORD: 42.083 / -102.394</span>
+</div>
+<div class="px-3 py-1 bg-primary-container border border-primary-container rounded-sm pointer-events-auto cursor-pointer">
+<span class="font-label-sm text-xs text-on-primary">RELAY ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- 3D-ish Neural Web Background -->
+
+<!-- Interaction Overlay (Simulated Nodes) -->
+<svg class="absolute inset-0 w-full h-full z-10 p-12 pointer-events-none" viewbox="0 0 1000 600">
+<!-- Connectors -->
+<line stroke="rgba(206, 93, 255, 0.2)" stroke-width="1" x1="200" x2="400" y1="300" y2="150"></line>
+<line stroke="rgba(0, 240, 255, 0.4)" stroke-width="2" x1="200" x2="400" y1="300" y2="300"></line>
+<line stroke="rgba(206, 93, 255, 0.2)" stroke-width="1" x1="200" x2="400" y1="300" y2="450"></line>
+<line stroke="rgba(0, 240, 255, 0.1)" stroke-width="1" x1="400" x2="700" y1="150" y2="150"></line>
+<line stroke="rgba(0, 240, 255, 0.6)" stroke-width="3" x1="400" x2="700" y1="300" y2="250"></line>
+<line stroke="rgba(206, 93, 255, 0.3)" stroke-width="1" x1="400" x2="700" y1="300" y2="400"></line>
+<!-- Nodes -->
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="200" cy="300" fill="#00f0ff" r="8"></circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="400" cy="150" fill="#ce5dff" opacity="0.6" r="5"></circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="400" cy="300" fill="#00f0ff" r="10">
+<animate attributename="r" dur="2s" repeatcount="indefinite" values="10;12;10"></animate>
+</circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="400" cy="450" fill="#ce5dff" opacity="0.6" r="5"></circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="700" cy="150" fill="#3b494b" r="4"></circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="700" cy="250" fill="#00f0ff" r="12"></circle>
+<circle class="neural-node pointer-events-auto cursor-crosshair" cx="700" cy="400" fill="#ce5dff" r="6"></circle>
+</svg>
+<!-- Bottom Left HUD -->
+<div class="absolute bottom-4 left-4 z-20 space-y-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-[10px] font-label-sm text-primary-container">NEURAL ENGINE OK</span>
+</div>
+<div class="text-[9px] font-code-sm text-on-surface-variant opacity-50 uppercase tracking-widest">
+                    SYNC_RATE: 0.992ms<br/>
+                    ACTIVE_NEURONS: 14.8M<br/>
+                    COMPUTE_LOAD: 28%
+                </div>
+</div>
+</section>
+<!-- Right Sidebar (Telemetry & Analysis) -->
+<aside class="col-span-4 row-span-9 flex flex-col gap-gap-md">
+<!-- LATENCY_TELEMETRY -->
+<div class="flex-1 glass-panel p-4 flex flex-col border border-outline-variant/30">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="header-accent inline-block mb-1">LATENCY_TELEMETRY</div>
+<div class="text-[10px] text-on-surface-variant opacity-40">REAL-TIME PACKET FLOW</div>
+</div>
+<span class="material-symbols-outlined text-primary-fixed text-sm">query_stats</span>
+</div>
+<div class="flex-1 flex flex-col gap-4">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-code-sm uppercase">
+<span>Ingress Loop</span>
+<span class="text-primary-fixed">12ms</span>
+</div>
+<div class="h-8 w-full bg-surface-container-high/40 relative overflow-hidden flex items-end gap-[2px]">
+<div class="w-full h-[1px] absolute top-1/2 bg-outline-variant/20"></div>
+<div class="flex-1 bg-primary-container/40 h-[40%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[60%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[30%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[80%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[50%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[90%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[40%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[60%]"></div>
+<div class="flex-1 bg-primary-container/40 h-[70%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-code-sm uppercase">
+<span>Synapse Weighting</span>
+<span class="text-secondary-fixed">88ms</span>
+</div>
+<div class="h-8 w-full bg-surface-container-high/40 relative overflow-hidden flex items-end gap-[2px]">
+<div class="w-full h-[1px] absolute top-1/2 bg-outline-variant/20"></div>
+<div class="flex-1 bg-secondary-container/40 h-[80%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[20%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[40%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[60%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[30%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[50%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[10%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[40%]"></div>
+<div class="flex-1 bg-secondary-container/40 h-[55%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- LAYER_ANALYSIS -->
+<div class="flex-1 glass-panel p-4 border border-outline-variant/30 flex flex-col">
+<div class="header-accent inline-block mb-3">LAYER_ANALYSIS</div>
+<div class="flex-1 grid grid-cols-6 gap-1 items-end">
+<div class="bg-primary-container/80 h-[20%] relative group">
+<div class="hidden group-hover:block absolute -top-6 left-0 text-[8px] bg-black p-1 whitespace-nowrap">L0: 0.12</div>
+</div>
+<div class="bg-primary-container/80 h-[45%] relative group"></div>
+<div class="bg-primary-container/80 h-[95%] relative group"></div>
+<div class="bg-secondary-container/80 h-[60%] relative group"></div>
+<div class="bg-secondary-container/80 h-[30%] relative group"></div>
+<div class="bg-primary-container/80 h-[80%] relative group"></div>
+</div>
+<div class="mt-4 flex justify-between text-[9px] font-code-sm border-t border-outline-variant/20 pt-2 opacity-60">
+<span>DIST_INDEX: HIGH</span>
+<span>σ: 0.0421</span>
+</div>
+</div>
+</aside>
+<!-- Bottom Row (Logs & Controls) -->
+<section class="col-span-12 row-span-3 grid grid-cols-12 gap-gap-md">
+<!-- SYNAPTIC_LOGS -->
+<div class="col-span-8 glass-panel border border-outline-variant/30 overflow-hidden flex flex-col">
+<div class="p-2 border-b border-outline-variant/20 bg-surface-container-low flex justify-between items-center">
+<span class="text-[10px] font-label-caps text-on-surface-variant">SYNAPTIC_LOGS_STREAM</span>
+<span class="text-[9px] font-code-sm opacity-50">LATEST_PKT: 0xF92A</span>
+</div>
+<div class="flex-1 p-3 overflow-y-auto custom-scrollbar font-code-sm text-[11px] space-y-1">
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:01]</span>
+<span class="text-on-surface">INFERENCE_TRIGGER: LAYER_7 :: VECTOR_MATCH: 0.892</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:01]</span>
+<span class="text-secondary-fixed">SYNAPTIC_REWEIGHTING :: NODE_712 -&gt; NODE_041 :: +0.002</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:02]</span>
+<span class="text-on-surface">TOKEN_EMISSION: "autonomous" (ID: 1042)</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:02]</span>
+<span class="text-on-surface">TOKEN_EMISSION: "logic" (ID: 552)</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:03]</span>
+<span class="text-error">ERROR: PKT_LOSS @ SECTOR_4_GATEWAY [RETRYING]</span>
+</div>
+<div class="flex gap-4">
+<span class="text-primary-fixed opacity-60 shrink-0">[14:22:03]</span>
+<span class="text-primary-fixed font-bold animate-pulse">&gt;&gt;&gt; SYSTEM_IDLE_AWAITING_BUFFER</span>
+</div>
+</div>
+</div>
+<!-- MODEL_CONTROLS -->
+<div class="col-span-4 glass-panel border border-outline-variant/30 p-4 flex flex-col justify-between">
+<div class="header-accent inline-block self-start mb-2">MODEL_CONTROLS</div>
+<div class="space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-code-sm">
+<span>TEMPERATURE</span>
+<span class="text-primary-fixed">0.72</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded-none appearance-none cursor-pointer accent-primary-container" max="100" min="0" type="range" value="72"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-code-sm">
+<span>TOP-P</span>
+<span class="text-primary-fixed">0.95</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded-none appearance-none cursor-pointer accent-primary-container" max="100" min="0" type="range" value="95"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-code-sm">
+<span>MAX_TOKENS</span>
+<span class="text-primary-fixed">4,096</span>
+</div>
+<input class="w-full h-1 bg-surface-container-high rounded-none appearance-none cursor-pointer accent-primary-container" max="8192" min="0" type="range" value="4096"/>
+</div>
+</div>
+<button class="w-full mt-4 bg-primary-container text-on-primary py-2 font-label-caps text-xs hover:bg-secondary-container transition-colors active:scale-[0.98]">
+                    COMMIT_PARAMETERS
+                </button>
+</div>
+</section>
+</main>
+<!-- Visual Polish: Corner Accents -->
+<div class="fixed top-12 left-20 pointer-events-none opacity-40">
+<div class="w-4 h-4 border-l border-t border-primary-fixed"></div>
+</div>
+<div class="fixed bottom-4 right-4 pointer-events-none opacity-40">
+<div class="w-4 h-4 border-r border-b border-primary-fixed"></div>
+</div>
+<script>
+        // Micro-interaction: Log streaming simulation
+        const logContainer = document.querySelector('.overflow-y-auto');
+        const timestamps = ['[14:22:04]', '[14:22:05]', '[14:22:06]'];
+        const messages = [
+            'HEURISTIC_CHECK: STABLE',
+            'NEURAL_DRIFT: +0.00012%',
+            'DATASET_RELAY: COMPLETED',
+            'LATENCY_SPIKE detected @ LAYER_2',
+            'RE-OPTIMIZING synapse paths...'
+        ];
+
+        setInterval(() => {
+            const logEntry = document.createElement('div');
+            logEntry.className = 'flex gap-4 opacity-0 transition-opacity duration-500';
+            logEntry.innerHTML = `
+                <span class="text-primary-fixed opacity-60 shrink-0">[${new Date().toLocaleTimeString('en-GB', { hour12: false })}]</span>
+                <span class="text-on-surface">${messages[Math.floor(Math.random() * messages.length)]}</span>
+            `;
+            logContainer.appendChild(logEntry);
+            setTimeout(() => logEntry.classList.remove('opacity-0'), 10);
+            
+            if (logContainer.children.length > 15) {
+                logContainer.removeChild(logContainer.children[0]);
+            }
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }, 3000);
+
+        // Hover effect for neural nodes
+        document.querySelectorAll('.neural-node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                node.style.cursor = 'crosshair';
+            });
+        });
+    </script>
+</body></html>

@@ -10,6 +10,34 @@ The goal is not to copy every local worktree into one uncontrolled branch. The
 goal is to make every SEIS surface traceable to the canonical GitHub repository,
 a reviewable branch, evidence records, validation, and a next PR queue entry.
 
+## Canonical Workspace Spine
+
+From the shared workspace parent, general SEIS work continues from one canonical
+local root:
+
+```text
+SEIS/
+```
+
+Nearby folders with `SEIS` or `seis` in their names are not discarded, but they
+are not second sources of truth. They are review-only inputs until a dedicated
+PR extracts a narrow, validated slice into `SEIS/`.
+
+| Relative path | Role | Rule |
+| --- | --- | --- |
+| `SEIS/` | Canonical writable root | Start all general SEIS work here. |
+| `SEIS-ai-core-app-foundation-continuation/` | Reviewable worktree | Extract AI Core work through a dedicated PR after diff review. |
+| `SEIS-ai-model-env-defaults/` | Reviewable worktree | Use for provider/env comparison only when that workstream is selected. |
+| `SEIS-ai-workforce-assignments-20260623/` | Reviewable worktree | Use for agent/workforce comparison only when selected. |
+| `SEIS-download-assets-app-integration/` | Reviewable worktree | Review asset provenance and size before integration. |
+| `SEIS-goal-tracking-os-foundation/` | Reviewable worktree | Compare Goal Tracking changes only when selected. |
+| `SEIS-ai-core-app-foundation/`, `SEIS-ai-demo-app-worktree/`, `SEIS-open-pr-consolidation-20260619/` | Legacy/broken worktree candidates | Do not bulk import; repair, archive, or recover specific files only after review. |
+| `Github/SEIS/` | Secondary checkout / SSH-AI lane | Do not edit for general SEIS work unless the SSH-AI workstream is explicitly selected. |
+| `seis-digital-experience-foundation/` | Separate intake candidate | Keep separate until a dedicated intake task is approved. |
+
+Current classification evidence is recorded in
+[`../reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md`](../reviews/SEIS_WORKSPACE_UNIFICATION_REVIEW.md).
+
 ## Scope
 
 This policy applies to:
@@ -30,7 +58,7 @@ This policy applies to:
 | Area | Status | Evidence | Blocker | Next Safe Action |
 | --- | --- | --- | --- | --- |
 | Canonical repository | Active | `origin` points to the SEIS GitHub repository. | Default-branch and branch-protection state were not verified in this pass. | Keep integration work on reviewable branches and do not push to `main`. |
-| Current branch | Active integration surface | `seis/product-experience-suite` | Existing tracked deletions remain unresolved. | Keep docs and contracts scoped; do not stage unrelated deletions. |
+| Current branch | Active integration surface | `codex/plugin-interface-handoff-20260623` | Dirty worktree with pre-existing product, docs, script, and content changes. | Keep docs and contracts scoped; do not stage unrelated changes. |
 | Goal Tracking OS | File-backed foundation | `docs/goals/*`, `content/development/seis-goal-*.json`, `apps/web/goal-tracking.html` | Must stay generated from records. | Keep `npm run check:goal-tracking` passing. |
 | AI Core branch work | Separate workstream | `seis/ai-core-app-foundation-continuation` has local changes. | Not reconciled into this branch. | Review diff, extract contracts, and land through a dedicated PR. |
 | Download/assets integration | Separate workstream | `seis/download-assets-app-integration` has local media integration changes. | Not reconciled into this branch. | Review provenance, asset size, and app integration before PR. |
@@ -103,6 +131,7 @@ Unsupported claims must remain `Unknown`, `Planned`, or `Blocked`.
 
 ## Next Safe Action
 
-Use the integration map to reconcile one workstream at a time. The next safest
-PR is the integration spine itself: status, backlog, next PR queue, and review
-updates that make every active SEIS branch visible without merging risky code.
+Use the integration map to reconcile one workstream at a time from the
+canonical `SEIS/` root. The next safest PR is the workspace/integration spine
+itself: status, backlog, next PR queue, and review updates that make every
+active SEIS branch visible without merging risky code.

@@ -13,6 +13,7 @@
     "npm run check:seis-god-mode-work-package",
     "npm run check:seis-god-mode-completion-audit",
     "npm run check:seis-operational-goal-tracker",
+    "npm run check:seis-model-scaling-hardware-profile",
     "npm run check:seis-master-prompt-report",
     "npm run check:seis-master-prompt",
     "npm run quality"
@@ -73,6 +74,14 @@
       "evidence": ["data/ssh-hardening-operation-contract.json", "docs/deployment/ssh-wireguard-vps-cloud-server.md"],
       "checks": ["npm run check:ssh-vpn-cloud-server", "npm run check:seis-master-prompt"],
       "gap": "Direct cloud mobile SSH remains blocked until strict readiness passes."
+    },
+    {
+      "id": "seis-ai-150b-frontier-boundary",
+      "requirement": "Track the requested SEIS AI 150B direction as an evidence-gated frontier research lane without claiming trained weights, routeable inference, provider access, SSH execution, or production readiness.",
+      "status": "active",
+      "evidence": ["content/development/seis-model-scaling-hardware-profile.json", "docs/ai/seis-model-scaling.md", "packages/seis-ai/src/lib/plugin-integration.mjs", "apps/web/desktop.js"],
+      "checks": ["npm run check:seis-model-scaling-hardware-profile", "npm test --prefix packages/seis-ai", "npm run check:desktop-os"],
+      "gap": "150B remains blocked until 20B and 70B evidence, clean-room training plan, distributed runtime budget, privacy and safety review, observability, rollback, and explicit human approval exist; no trained or routeable 150B SEIS model claim exists."
     },
     {
       "id": "open-source-github-readiness",

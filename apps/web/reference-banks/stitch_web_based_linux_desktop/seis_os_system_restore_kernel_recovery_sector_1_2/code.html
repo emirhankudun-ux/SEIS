@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | SYSTEM RECOVERY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Space+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .glass-panel {
+            background: rgba(12, 15, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid #3b494b;
+        }
+        .cyber-lime-glow {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.2);
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #00dbe9;
+        }
+        .cursor-blink {
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            pointer-events: none;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0%; }
+            to { top: 100%; }
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#121414",
+                    "surface": "#121414",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-container": "#1e2020",
+                    "on-primary-fixed": "#002022",
+                    "primary-fixed-dim": "#00dbe9",
+                    "surface-container-high": "#282a2b",
+                    "secondary-fixed-dim": "#ebb2ff",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-tint": "#00dbe9",
+                    "primary-fixed": "#7df4ff",
+                    "on-error-container": "#ffdad6",
+                    "on-error": "#690005",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed-variant": "#74009f",
+                    "surface-variant": "#333535",
+                    "on-surface": "#e2e2e2",
+                    "on-secondary-container": "#480064",
+                    "on-primary": "#00363a",
+                    "surface-container-highest": "#333535",
+                    "outline": "#849495",
+                    "tertiary-container": "#dcd9d8",
+                    "primary": "#dbfcff",
+                    "on-secondary-fixed": "#320047",
+                    "secondary": "#ebb2ff",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-tertiary-container": "#605e5e",
+                    "on-background": "#e2e2e2",
+                    "surface-container-low": "#1a1c1c",
+                    "on-primary-container": "#006970",
+                    "inverse-primary": "#006970",
+                    "on-secondary": "#520071",
+                    "error": "#ffb4ab",
+                    "secondary-fixed": "#f8d8ff",
+                    "primary-container": "#00f0ff",
+                    "tertiary-fixed": "#e5e2e1",
+                    "tertiary": "#f9f5f5",
+                    "surface-bright": "#37393a",
+                    "surface-container-lowest": "#0c0f0f",
+                    "error-container": "#93000a",
+                    "secondary-container": "#ce5dff",
+                    "inverse-on-surface": "#2f3131",
+                    "outline-variant": "#3b494b",
+                    "on-tertiary": "#313030",
+                    "background": "#121414",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "inverse-surface": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gap-xs": "4px",
+                    "gap-md": "16px",
+                    "margin-page": "32px",
+                    "stroke-thin": "1px",
+                    "gap-lg": "24px",
+                    "stroke-thick": "2px",
+                    "gap-sm": "8px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Space Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "headline-lg": ["JetBrains Mono"],
+                    "headline-md": ["JetBrains Mono"],
+                    "body-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Header Navigation -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-8 h-10">
+<div class="flex items-center gap-6">
+<span class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-primary-fixed border-b border-primary-fixed pb-1 font-label-sm text-label-sm transition-colors duration-200" href="#">WORKSPACES</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">TELEMETRY</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">AGENTS</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70">memory</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70">terminal</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer active:opacity-70">settings</span>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] z-40 flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 group">
+<div class="p-4 flex items-center gap-4 border-b border-outline-variant/10">
+<div class="w-8 h-8 bg-secondary-container/20 rounded-full flex items-center justify-center text-secondary-fixed">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap overflow-hidden">
+<p class="font-label-sm text-label-sm text-secondary-fixed">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">DASHBOARD</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">FILESYSTEM</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">terminal</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">TERMINAL</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">AI_AGENTS</span>
+</div>
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">INFRASTRUCTURE</span>
+</div>
+</nav>
+<div class="p-4 flex flex-col gap-2">
+<div class="group/item flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="ml-6 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity">POWER</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 mt-10 p-8 h-[calc(100vh-40px)] overflow-y-auto grid grid-cols-12 gap-6 relative">
+<div class="scanline"></div>
+<!-- Header Section -->
+<section class="col-span-12 flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-4xl">history_edu</span>
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed uppercase tracking-tighter">System Restore &amp; Kernel Recovery</h1>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant border-b border-outline-variant/30 pb-4">
+<span class="font-code-sm text-code-sm bg-primary-container/10 px-2 py-0.5 text-primary-fixed border border-primary-fixed/20">SECTOR_01</span>
+<span class="font-code-sm text-code-sm">KERNEL_VER: 8.4.2-LTS</span>
+<span class="font-code-sm text-code-sm">UPTIME: 128:44:12</span>
+<span class="ml-auto flex items-center gap-2 text-primary-fixed">
+<span class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></span>
+                    CORE_STABLE
+                </span>
+</div>
+</section>
+<!-- Left Column: Snapshot Timeline (Bento Style) -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="glass-panel p-4 flex flex-col gap-4 cyber-lime-glow">
+<div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+<h2 class="font-label-sm text-label-sm text-primary-fixed flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">schedule</span> KERNEL_SNAPSHOTS
+                    </h2>
+<span class="font-code-sm text-[10px] text-on-surface-variant">4 TOTAL</span>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Snapshot Item 1 (Active) -->
+<div class="border border-primary-fixed/40 bg-primary-fixed/5 p-3 relative cursor-pointer group">
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary-fixed"></div>
+<div class="flex justify-between">
+<span class="font-code-sm text-primary-fixed">SNAP_2023_10_24_01</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">LATEST</span>
+</div>
+<p class="font-body-md text-xs text-on-surface mt-2">Current boot configuration. No corruption detected.</p>
+<div class="mt-3 flex gap-2">
+<button class="bg-primary-fixed text-surface-container-lowest font-label-sm text-[10px] px-2 py-1 uppercase font-bold">Verify</button>
+</div>
+</div>
+<!-- Snapshot Item 2 -->
+<div class="border border-outline-variant/40 p-3 hover:border-primary-fixed/40 transition-colors cursor-pointer group">
+<div class="flex justify-between">
+<span class="font-code-sm text-on-surface-variant group-hover:text-primary-fixed">SNAP_2023_10_20_04</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">4 DAYS AGO</span>
+</div>
+<p class="font-body-md text-xs text-on-surface-variant mt-2">Post-update fallback. Kernel modules 24.1 stable.</p>
+<div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="border border-primary-fixed text-primary-fixed font-label-sm text-[10px] px-2 py-1 uppercase">Restore</button>
+</div>
+</div>
+<!-- Snapshot Item 3 -->
+<div class="border border-outline-variant/40 p-3 hover:border-primary-fixed/40 transition-colors cursor-pointer group">
+<div class="flex justify-between">
+<span class="font-code-sm text-on-surface-variant group-hover:text-primary-fixed">SNAP_2023_10_15_09</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">9 DAYS AGO</span>
+</div>
+<p class="font-body-md text-xs text-on-surface-variant mt-2">Factory state baseline. Minimum drivers.</p>
+</div>
+</div>
+</div>
+<!-- Health Audit Summary -->
+<div class="glass-panel p-4 flex flex-col gap-4">
+<h2 class="font-label-sm text-label-sm text-primary-fixed flex items-center gap-2 border-b border-outline-variant/30 pb-2">
+<span class="material-symbols-outlined text-sm">health_and_safety</span> HEALTH_AUDIT
+                </h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-label-sm text-on-surface-variant">MEMORY_STABILITY</span>
+<div class="flex gap-1">
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-2/3 bg-outline-variant"></div>
+</div>
+<span class="text-[10px] font-code-sm text-primary-fixed">88.4% NOMINAL</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-label-sm text-on-surface-variant">SYSCALL_INTEGRITY</span>
+<div class="flex gap-1">
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+<div class="h-1.5 w-full bg-primary-fixed"></div>
+</div>
+<span class="text-[10px] font-code-sm text-primary-fixed">SECURE</span>
+</div>
+</div>
+<div class="mt-2 bg-surface-container-high/50 p-2 border-l-2 border-primary-fixed">
+<p class="text-[11px] font-code-sm text-on-surface-variant">No buffer overflow signatures detected in last 24h. Sector 01 remains consistent.</p>
+</div>
+</div>
+</section>
+<!-- Right Column: Live Terminal & Visuals -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+<!-- Terminal Panel -->
+<div class="flex-1 glass-panel border-primary-fixed/20 flex flex-col overflow-hidden min-h-[400px]">
+<div class="bg-primary-fixed text-surface-container-lowest px-4 py-1 flex justify-between items-center h-6">
+<span class="font-label-sm text-[10px] font-bold">RECOVERY_TERMINAL::STDOUT</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 bg-surface-container-lowest"></div>
+<div class="w-2 h-2 border border-surface-container-lowest"></div>
+</div>
+</div>
+<div class="p-4 font-code-sm text-code-sm text-primary-fixed/80 terminal-scroll overflow-y-auto bg-black/40 flex-1 flex flex-col" id="terminal-stream">
+<p class="mb-1 text-primary-fixed">[ 0.000000 ] Booting SEIS Linux version 8.4.2-LTS</p>
+<p class="mb-1 text-primary-fixed">[ 0.000000 ] CPU: x86_64 Hardware detected (16 Cores)</p>
+<p class="mb-1 text-on-surface-variant">[ 0.001242 ] Loading sector map...</p>
+<p class="mb-1 text-on-surface-variant">[ 0.004512 ] [SECURE_BOOT] Signature verified.</p>
+<p class="mb-1 text-primary-fixed">[ 0.045612 ] Initializing memory management: slab...</p>
+<p class="mb-1 text-on-surface-variant">[ 0.102345 ] Mounting filesystem: Root@NVMe-0</p>
+<p class="mb-1 text-primary-fixed">[ 0.245611 ] KERNEL RECOVERY: Sector 01 initialized.</p>
+<p class="mb-1 text-primary-fixed">[ 0.551234 ] Awaiting user authentication for low-level access.</p>
+<p class="mt-4 flex items-center gap-2">
+<span class="text-secondary-fixed">root@seis-recovery:~#</span>
+<span class="w-2 h-4 bg-primary-fixed cursor-blink"></span>
+</p>
+</div>
+</div>
+<!-- Visualization Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 h-64">
+<!-- Memory Map SVG/Animation placeholder -->
+<div class="glass-panel relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+
+</div>
+<div class="relative z-10 p-4 h-full flex flex-col">
+<h3 class="font-label-sm text-label-sm text-primary-fixed mb-auto">MEMORY_MAP_INITIALIZATION</h3>
+<div class="mt-auto flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-4xl font-headline-md text-on-surface">12.4 <span class="text-sm">GB</span></span>
+<span class="text-[10px] text-on-surface-variant uppercase">Mapped_Allocated</span>
+</div>
+<span class="material-symbols-outlined text-primary-fixed text-4xl opacity-50">hub</span>
+</div>
+</div>
+</div>
+<!-- Syscall security visual -->
+<div class="glass-panel relative overflow-hidden p-4 flex flex-col gap-4">
+<h3 class="font-label-sm text-label-sm text-primary-fixed border-b border-outline-variant/30 pb-2">HARDWARE_RECOVERY_STATUS</h3>
+<div class="flex-1 flex flex-col justify-center gap-4">
+<div class="flex justify-between items-center text-xs">
+<span class="font-code-sm text-on-surface-variant">CPU_CORES_INIT</span>
+<span class="font-code-sm text-primary-fixed">16 / 16</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high overflow-hidden border border-outline-variant/20">
+<div class="h-full bg-primary-fixed w-full"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="font-code-sm text-on-surface-variant">GPU_RENDER_THREADS</span>
+<span class="font-code-sm text-primary-fixed">SYNCED</span>
+</div>
+<div class="h-2 w-full bg-surface-container-high overflow-hidden border border-outline-variant/20">
+<div class="h-full bg-primary-fixed w-[75%] shadow-[0_0_8px_rgba(0,219,233,0.4)]"></div>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="font-code-sm text-on-surface-variant">BUS_CONTROLLER</span>
+<span class="font-code-sm text-secondary-fixed">IDLE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recovery Actions (Fixed Bottom or Floater) -->
+<div class="col-span-12 glass-panel p-4 flex justify-between items-center bg-primary-container/5 border-primary-fixed/30 mt-4">
+<div class="flex flex-col">
+<span class="font-label-sm text-xs text-primary-fixed">SYSTEM_ALERT</span>
+<p class="font-body-md text-xs text-on-surface-variant">Confirm kernel roll-back to SNAP_2023_10_20_04?</p>
+</div>
+<div class="flex gap-4">
+<button class="border border-outline text-on-surface-variant hover:text-on-surface px-6 py-2 font-label-sm text-xs uppercase tracking-widest transition-all">Cancel</button>
+<button class="bg-primary-fixed text-surface-container-lowest px-8 py-2 font-label-sm text-xs uppercase tracking-widest font-bold cyber-lime-glow hover:bg-secondary-fixed transition-all">Initialize Recovery</button>
+</div>
+</div>
+</main>
+<!-- Micro-interaction Script -->
+<script>
+        // Fake terminal log streamer
+        const logs = [
+            "[ 0.823411 ] Checking inode consistency...",
+            "[ 1.121142 ] Sector 01: Clean.",
+            "[ 1.450123 ] Loading security modules: SeisArmor v2",
+            "[ 1.882141 ] [AUDIT] System calls monitored by Kernel-Shielder",
+            "[ 2.102312 ] Network stack: Disabled in recovery mode",
+            "[ 2.451231 ] Kernel entropy pool initialized",
+            "[ 3.012311 ] Awaiting command input..."
+        ];
+        
+        const terminal = document.getElementById('terminal-stream');
+        let index = 0;
+
+        function addLog() {
+            if (index < logs.length) {
+                const p = document.createElement('p');
+                p.className = 'mb-1 text-on-surface-variant opacity-0 transition-opacity duration-300';
+                p.textContent = logs[index];
+                terminal.insertBefore(p, terminal.lastElementChild);
+                setTimeout(() => p.classList.remove('opacity-0'), 10);
+                index++;
+                terminal.scrollTop = terminal.scrollHeight;
+                setTimeout(addLog, Math.random() * 2000 + 1000);
+            }
+        }
+
+        setTimeout(addLog, 2000);
+    </script>
+</body></html>

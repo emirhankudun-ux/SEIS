@@ -1,0 +1,196 @@
+{
+  "id": "seis-model-frontier-escalation-policy",
+  "version": "2026.06.24",
+  "status": "policy-active-research-gated",
+  "updatedAt": "2026-06-24",
+  "purpose": "Define how SEIS can move from the planned 20B local compatibility target toward 70B, 150B, 512B AGI research, and larger frontier model research without claiming trained weights, AGI capability, runtime eligibility, benchmark results, or model ownership before evidence exists.",
+  "resourceUri": "seis://ai/model-frontier-escalation-policy.json",
+  "qualityGate": "npm run check:seis-model-frontier-escalation-policy",
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+    "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json"
+  },
+  "truthBoundary": "Policy and escalation gate only. It does not download models, download datasets, run inference, train, fine-tune, benchmark memory, call providers, execute SSH, deploy infrastructure, publish weights, or claim SEIS owns a trained 20B, 70B, 150B, 512B, AGI, or larger foundation model.",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "local-demo",
+  "routeEligibleToday": false,
+  "currentAllowedMode": "Local Demo and deterministic seed-model lab only",
+  "decisionRules": [
+    {
+      "id": "no-skip-20b",
+      "rule": "70B, 150B, 512B, AGI, and larger parameter classes cannot be scoped for runtime until the 20B local compatibility gates produce real evidence.",
+      "enforcedStatus": "blocked"
+    },
+    {
+      "id": "no-silent-provider-fallback",
+      "rule": "Missing local model evidence must fall back to SEIS Local Demo and must not silently route to cloud providers.",
+      "enforcedStatus": "active"
+    },
+    {
+      "id": "human-approval-before-real-runtime",
+      "rule": "Any model download, runtime adapter execution, benchmark, provider credential setup, SSH, cloud/GPU provisioning, publication, or deployment requires explicit human approval.",
+      "enforcedStatus": "active"
+    },
+    {
+      "id": "evidence-before-ownership",
+      "rule": "SEIS-owned model claims require dataset provenance, training logs, checkpoints, evaluation reports, safety reports, and model cards.",
+      "enforcedStatus": "active"
+    }
+  ],
+  "escalationStages": [
+    {
+      "id": "stage-0-local-demo",
+      "parameterClass": "demo-only",
+      "status": "active",
+      "allowedToday": true,
+      "routeEligibleToday": true,
+      "requiredEvidenceBeforeNext": [
+        "20B model card template exists",
+        "20B dataset card template exists",
+        "20B benchmark manifest template exists",
+        "20B benchmark dry-run exists"
+      ]
+    },
+    {
+      "id": "stage-1-20b-local-compatibility",
+      "parameterClass": "20B",
+      "status": "planned-not-validated",
+      "allowedToday": false,
+      "routeEligibleToday": false,
+      "requiredEvidenceBeforeNext": [
+        "human-approved model artifact selection",
+        "filled 20B model card with clean-room provenance",
+        "filled 20B dataset or benchmark-data card with rights review",
+        "approved no-key local runtime adapter",
+        "measured 16GB+ memory benchmark",
+        "local-only fallback proof",
+        "redacted runtime logs",
+        "safety and regression evaluation summary"
+      ]
+    },
+    {
+      "id": "stage-2-70b-research",
+      "parameterClass": "70B",
+      "status": "research-roadmap",
+      "allowedToday": false,
+      "routeEligibleToday": false,
+      "requiredEvidenceBeforeNext": [
+        "20B gate evidence reviewed and accepted",
+        "70B hardware and cost plan",
+        "70B clean-room provenance plan",
+        "independent evaluation suite",
+        "privacy and safety review",
+        "rollback and fallback plan",
+        "explicit human approval"
+      ]
+    },
+    {
+      "id": "stage-3-150b-frontier",
+      "parameterClass": "150B",
+      "status": "frontier-research-roadmap",
+      "allowedToday": false,
+      "routeEligibleToday": false,
+      "requiredEvidenceBeforeNext": [
+        "20B and 70B gate evidence reviewed and accepted",
+        "clean-room training plan",
+        "distributed runtime architecture",
+        "distributed runtime budget",
+        "dataset provenance and contamination-control plan",
+        "safety evaluation and red-team plan",
+        "observability and kill-switch plan",
+        "rollback and cost-stop plan",
+        "explicit human approval"
+      ]
+    },
+    {
+      "id": "stage-4-512b-apex",
+      "parameterClass": "512B",
+      "status": "apex-program-plan-only",
+      "allowedToday": false,
+      "routeEligibleToday": false,
+      "requiredEvidenceBeforeNext": [
+        "20B, 70B, 150B, and 300B+ gate evidence reviewed and accepted",
+        "clean-room 512B training plan",
+        "frontier-scale distributed runtime architecture",
+        "frontier-scale distributed runtime budget",
+        "dataset provenance and contamination-control plan",
+        "AGI capability evaluation protocol",
+        "safety evaluation and red-team plan",
+        "observability and kill-switch plan",
+        "rollback and cost-stop plan",
+        "all installed AI and sub-agent council review recorded",
+        "explicit human approval"
+      ]
+    },
+    {
+      "id": "stage-5-highest-available-future",
+      "parameterClass": "highest-available-future",
+      "status": "not-scoped",
+      "allowedToday": false,
+      "routeEligibleToday": false,
+      "requiredEvidenceBeforeNext": [
+        "20B, 70B, 150B, 300B+, and 512B gates have real evidence",
+        "separate frontier research charter",
+        "safety, privacy, budget, and governance approval"
+      ]
+    }
+  ],
+  "requiredGlobalEvidence": [
+    "dataset provenance",
+    "license and rights review",
+    "secret and PII scan",
+    "training or fine-tuning logs before any training claim",
+    "checkpoint governance before any checkpoint claim",
+    "model card before any model ownership claim",
+    "evaluation report before any benchmark claim",
+    "provider and local-only routing disclosure before any live route claim"
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has trained a 70B foundation model.",
+    "SEIS has trained a 150B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has achieved real AGI.",
+    "SEIS has routeable 20B weights.",
+    "SEIS has routeable 70B weights.",
+    "SEIS has routeable 150B weights.",
+    "SEIS has routeable 512B weights.",
+    "SEIS has benchmarked 20B, 70B, or 150B memory usage.",
+    "SEIS has benchmarked 512B or AGI capability.",
+    "SEIS can skip 20B evidence and move directly to 70B, 150B, or 512B runtime scope.",
+    "A provider API, prompt profile, RAG system, wrapper, quantization, LoRA, adapter, or checkpoint template is a SEIS-owned foundation model."
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "runtime adapter execution",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "checkpoint publication",
+    "provider credential setup",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "public model or dataset release"
+  ],
+  "fallbackPolicy": {
+    "fallbackRuntime": "seis-local-demo",
+    "silentCloudFallbackAllowed": false,
+    "missingKeyIsError": false,
+    "providerAndModelMustBeVisible": true,
+    "localOnlyModeMustBeRespected": true
+  },
+  "nextSafeActions": [
+    "Keep the 20B lane planned-not-validated until model and dataset cards are filled with reviewed evidence.",
+    "Keep 70B and 150B route eligibility false until earlier gates produce real evidence.",
+    "Expose this policy in Command Center as an escalation gate, not as runtime readiness.",
+    "Validate this policy with npm run check:seis-model-frontier-escalation-policy."
+  ]
+}

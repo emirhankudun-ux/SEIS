@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | API Documentation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#111417",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#002022",
+                        "surface-container-lowest": "#0c0e12",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "on-surface": "#e1e2e7",
+                        "on-tertiary-container": "#5d5f5f",
+                        "tertiary-container": "#d9d9d9",
+                        "on-secondary-container": "#fff6fc",
+                        "on-primary-container": "#006970",
+                        "surface-container-low": "#191c1f",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#323539",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary": "#dbfcff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "outline": "#849495",
+                        "on-secondary": "#520072",
+                        "on-background": "#e1e2e7",
+                        "inverse-primary": "#006970",
+                        "surface-container": "#1d2023",
+                        "secondary-container": "#b600f8",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#7df4ff",
+                        "surface-container-high": "#282a2e",
+                        "secondary": "#ebb2ff",
+                        "surface-variant": "#323539",
+                        "on-error": "#690005",
+                        "tertiary": "#f5f5f5",
+                        "surface": "#111417",
+                        "background": "#111417",
+                        "surface-tint": "#00dbe9",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary-fixed": "#320047",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#b9cacb",
+                        "inverse-surface": "#e1e2e7",
+                        "primary-fixed-dim": "#00dbe9",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            scroll-behavior: smooth;
+        }
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .code-block {
+            background: #0c0e12;
+            border-left: 2px solid #00f0ff;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .syntax-keyword { color: #ebb2ff; }
+        .syntax-string { color: #7df4ff; }
+        .syntax-comment { color: #5d5f5f; }
+        .syntax-function { color: #f5f5f5; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-2xl">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary-fixed tracking-tight">Aether AI</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Models</a>
+<a class="text-primary-fixed font-semibold border-b-2 border-primary-fixed pb-1 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Compute</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Enterprise</a>
+<a class="text-on-surface-variant hover:text-primary-fixed transition-colors font-body-md text-body-md" href="#">Pricing</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary-fixed font-body-md text-body-md px-4 py-2 transition-all">Sign In</button>
+<button class="bg-primary-container text-on-primary-fixed px-6 py-2 font-semibold rounded-lg hover:brightness-110 active:scale-95 transition-all">Get Started</button>
+</div>
+</header>
+<main class="pt-24 flex min-h-screen">
+<!-- Left Sidebar Navigation -->
+<aside class="w-64 border-r border-outline-variant/20 h-[calc(100vh-6rem)] sticky top-24 overflow-y-auto scrollbar-hide px-6 py-8 hidden lg:block">
+<div class="space-y-8">
+<section>
+<h5 class="font-mono-label text-mono-label uppercase tracking-widest text-on-tertiary-container mb-4">Introduction</h5>
+<ul class="space-y-3">
+<li><a class="text-primary-fixed font-medium hover:text-primary-fixed transition-colors" href="#getting-started">Getting Started</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#authentication">Authentication</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#errors">Errors</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#rate-limits">Rate Limits</a></li>
+</ul>
+</section>
+<section>
+<h5 class="font-mono-label text-mono-label uppercase tracking-widest text-on-tertiary-container mb-4">Core Endpoints</h5>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#models">
+<span class="material-symbols-outlined text-[18px]">hub</span>Models
+                        </a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#completions">
+<span class="material-symbols-outlined text-[18px]">chat_bubble</span>Completions
+                        </a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#embeddings">
+<span class="material-symbols-outlined text-[18px]">scatter_plot</span>Embeddings
+                        </a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#fine-tuning">
+<span class="material-symbols-outlined text-[18px]">psychology</span>Fine-tuning
+                        </a></li>
+</ul>
+</section>
+<section>
+<h5 class="font-mono-label text-mono-label uppercase tracking-widest text-on-tertiary-container mb-4">Resources</h5>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Community Forum</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Support</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#">Change Log</a></li>
+</ul>
+</section>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-0 overflow-x-hidden">
+<!-- Documentation Text Column -->
+<div class="px-8 md:px-16 py-12 space-y-16 max-w-3xl">
+<section class="space-y-6" id="getting-started">
+<h1 class="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">API Documentation</h1>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">
+                        Welcome to the Aether AI API reference. Our API is organized around REST. All requests should be made to <code class="bg-surface-container-high px-2 py-1 rounded font-mono-code text-primary-fixed">https://api.aether.ai/v1</code>. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
+                    </p>
+<div class="glass-panel p-6 rounded-xl border-primary-container/20 border flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-body-md text-primary-fixed/80">Looking for our SDKs? Check out our <a class="underline font-bold" href="#">Node.js</a>, <a class="underline font-bold" href="#">Python</a>, and <a class="underline font-bold" href="#">Go</a> libraries.</p>
+</div>
+</section>
+<section class="space-y-6" id="authentication">
+<h2 class="font-headline-md text-headline-md text-on-surface">Authentication</h2>
+<p class="text-on-surface-variant">
+                        The Aether AI API uses API keys to authenticate requests. You can view and manage your API keys in the Aether Dashboard.
+                    </p>
+<p class="text-on-surface-variant">
+                        Your API keys carry many privileges, so be sure to keep them secure! Do not share your secret API keys in publicly accessible areas such as GitHub, client-side code, and so forth.
+                    </p>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/30 font-mono-code text-sm">
+                        Authorization: Bearer <span class="text-primary-fixed">AETHER_API_KEY</span>
+</div>
+</section>
+<section class="space-y-6" id="rate-limits">
+<h2 class="font-headline-md text-headline-md text-on-surface">Rate Limits</h2>
+<p class="text-on-surface-variant">
+                        Rate limits are enforced per organization. If you exceed the rate limit, the API will return a 429 Too Many Requests error.
+                    </p>
+<table class="w-full border-collapse border border-outline-variant/20 rounded-lg overflow-hidden">
+<thead>
+<tr class="bg-surface-container-highest/50 text-left font-mono-label text-mono-label text-on-tertiary-container">
+<th class="p-4 border-b border-outline-variant/20">TIER</th>
+<th class="p-4 border-b border-outline-variant/20">RPM</th>
+<th class="p-4 border-b border-outline-variant/20">TPM</th>
+</tr>
+</thead>
+<tbody class="font-mono-code text-sm">
+<tr class="border-b border-outline-variant/20">
+<td class="p-4 text-secondary">Free</td>
+<td class="p-4">3</td>
+<td class="p-4">40,000</td>
+</tr>
+<tr class="border-b border-outline-variant/20">
+<td class="p-4 text-primary-fixed">Developer</td>
+<td class="p-4">3,500</td>
+<td class="p-4">60,000</td>
+</tr>
+<tr>
+<td class="p-4 text-on-primary-container">Scale</td>
+<td class="p-4">10,000</td>
+<td class="p-4">1,000,000</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="space-y-6 pt-12 border-t border-outline-variant/20" id="completions">
+<div class="flex items-center gap-3">
+<span class="bg-primary-container/10 text-primary-fixed font-mono-label px-3 py-1 rounded text-xs">POST</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Create Completion</h2>
+</div>
+<p class="text-on-surface-variant font-mono-code bg-surface-container-lowest p-2 rounded">/v1/completions</p>
+<p class="text-on-surface-variant">
+                        Creates a completion for the provided prompt and parameters. Our inference engine optimizes the request for the fastest token generation possible.
+                    </p>
+<h4 class="font-bold text-on-surface mt-8 mb-4">Body Parameters</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-start pb-4 border-b border-outline-variant/10">
+<div>
+<span class="font-mono-code text-primary-fixed">model</span>
+<span class="text-on-tertiary-container text-xs ml-2">string</span>
+<p class="text-on-surface-variant text-sm mt-1">ID of the model to use. You can use <code class="text-xs">aether-1-pro</code>.</p>
+</div>
+<span class="text-xs text-error font-mono-label">REQUIRED</span>
+</div>
+<div class="flex justify-between items-start pb-4 border-b border-outline-variant/10">
+<div>
+<span class="font-mono-code text-primary-fixed">prompt</span>
+<span class="text-on-tertiary-container text-xs ml-2">string</span>
+<p class="text-on-surface-variant text-sm mt-1">The prompt(s) to generate completions for.</p>
+</div>
+<span class="text-xs text-error font-mono-label">REQUIRED</span>
+</div>
+<div class="flex justify-between items-start pb-4 border-b border-outline-variant/10">
+<div>
+<span class="font-mono-code text-primary-fixed">temperature</span>
+<span class="text-on-tertiary-container text-xs ml-2">float</span>
+<p class="text-on-surface-variant text-sm mt-1">Controls randomness. Higher values mean more random outputs.</p>
+</div>
+<span class="text-xs text-on-tertiary-container font-mono-label">OPTIONAL</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Code Examples Column -->
+<div class="bg-surface-container-lowest/80 border-l border-outline-variant/20 p-8 md:p-12 space-y-12 h-fit xl:sticky xl:top-24">
+<!-- Request Block -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex gap-4">
+<button class="text-primary-fixed border-b border-primary-fixed pb-1 font-mono-label text-xs">cURL</button>
+<button class="text-on-tertiary-container hover:text-on-surface font-mono-label text-xs">Python</button>
+<button class="text-on-tertiary-container hover:text-on-surface font-mono-label text-xs">Node.js</button>
+</div>
+<button class="text-on-tertiary-container hover:text-on-surface active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+</div>
+<div class="code-block rounded-xl p-6 font-mono-code text-sm overflow-x-auto shadow-2xl">
+<pre class="leading-relaxed"><span class="syntax-keyword">curl</span> https://api.aether.ai/v1/completions \
+  -H <span class="syntax-string">"Content-Type: application/json"</span> \
+  -H <span class="syntax-string">"Authorization: Bearer $AETHER_API_KEY"</span> \
+  -d '{
+    <span class="syntax-keyword">"model"</span>: <span class="syntax-string">"aether-1-pro"</span>,
+    <span class="syntax-keyword">"prompt"</span>: <span class="syntax-string">"Describe the future of computing."</span>,
+    <span class="syntax-keyword">"max_tokens"</span>: <span class="syntax-function">250</span>,
+    <span class="syntax-keyword">"temperature"</span>: <span class="syntax-function">0.7</span>
+  }'</pre>
+</div>
+</div>
+<!-- Response Block -->
+<div class="space-y-4">
+<h5 class="font-mono-label text-mono-label text-on-tertiary-container uppercase tracking-widest">Example Response</h5>
+<div class="code-block rounded-xl p-6 font-mono-code text-sm overflow-x-auto bg-[#0a0c10]">
+<pre class="leading-relaxed">{
+  <span class="syntax-keyword">"id"</span>: <span class="syntax-string">"cmpl-3u2v1x9y"</span>,
+  <span class="syntax-keyword">"object"</span>: <span class="syntax-string">"text_completion"</span>,
+  <span class="syntax-keyword">"created"</span>: <span class="syntax-function">1677652288</span>,
+  <span class="syntax-keyword">"model"</span>: <span class="syntax-string">"aether-1-pro"</span>,
+  <span class="syntax-keyword">"choices"</span>: [
+    {
+      <span class="syntax-keyword">"text"</span>: <span class="syntax-string">"\n\nThe future of computing is invisible..."</span>,
+      <span class="syntax-keyword">"index"</span>: <span class="syntax-function">0</span>,
+      <span class="syntax-keyword">"finish_reason"</span>: <span class="syntax-string">"stop"</span>
+    }
+  ],
+  <span class="syntax-keyword">"usage"</span>: {
+    <span class="syntax-keyword">"prompt_tokens"</span>: <span class="syntax-function">7</span>,
+    <span class="syntax-keyword">"completion_tokens"</span>: <span class="syntax-function">142</span>,
+    <span class="syntax-keyword">"total_tokens"</span>: <span class="syntax-function">149</span>
+  }
+}</pre>
+</div>
+</div>
+<div class="glass-panel p-8 rounded-2xl relative overflow-hidden group">
+
+<div class="relative z-10 space-y-4">
+<div class="flex items-center gap-3">
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-container"></span>
+</span>
+<span class="text-on-surface font-bold">API Status: Healthy</span>
+</div>
+<p class="text-sm text-on-surface-variant">Operational latency: 242ms</p>
+<button class="w-full py-2 border border-primary-container/30 rounded-lg hover:bg-primary-container/10 transition-colors font-mono-label text-xs">View Dashboard</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter max-w-container-max mx-auto border-t border-outline-variant/20 bg-surface-container-lowest mt-12">
+<div class="col-span-2">
+<span class="font-headline-md text-headline-md text-on-surface font-bold block mb-4">Aether AI</span>
+<p class="font-mono-label text-mono-label text-on-tertiary-container max-w-xs">
+                © 2024 Aether AI. Engineering the future of intelligence.
+            </p>
+</div>
+<div class="space-y-4">
+<h6 class="text-on-surface font-bold">Documentation</h6>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">API Reference</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Quickstart</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Libraries</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="text-on-surface font-bold">Product</h6>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Models</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Pricing</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Enterprise</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="text-on-surface font-bold">Company</h6>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">About</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Status</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Privacy</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="text-on-surface font-bold">Connect</h6>
+<ul class="space-y-2">
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">GitHub</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Twitter</a></li>
+<li><a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-on-surface transition-colors hover:underline decoration-primary-fixed/50 underline-offset-4" href="#">Discord</a></li>
+</ul>
+</div>
+</footer>
+<script>
+        // Simple scroll spy for active navigation state
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section[id]');
+            const scrollY = window.pageYOffset;
+            
+            sections.forEach(current => {
+                const sectionHeight = current.offsetHeight;
+                const sectionTop = current.offsetTop - 100;
+                const sectionId = current.getAttribute('id');
+                
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    document.querySelector(`aside a[href*=${sectionId}]`)?.classList.add('text-primary-fixed');
+                    document.querySelector(`aside a[href*=${sectionId}]`)?.classList.remove('text-on-surface-variant');
+                } else {
+                    document.querySelector(`aside a[href*=${sectionId}]`)?.classList.remove('text-primary-fixed');
+                    document.querySelector(`aside a[href*=${sectionId}]`)?.classList.add('text-on-surface-variant');
+                }
+            });
+        });
+
+        // Add visual micro-interaction on code copy
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                if (icon && icon.innerText === 'content_copy') {
+                    icon.innerText = 'check';
+                    setTimeout(() => icon.innerText = 'content_copy', 2000);
+                }
+            });
+        });
+    </script>
+</body></html>

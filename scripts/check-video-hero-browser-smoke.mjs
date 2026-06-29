@@ -271,7 +271,8 @@ function validateRouteState(route, state, context) {
   ensure(state.videoLoop, `${context} ${route.id}: video should loop`);
   ensure(state.videoPreload === "metadata", `${context} ${route.id}: video preload must be metadata`);
   ensure(state.videoSourceHost === "videos.pexels.com", `${context} ${route.id}: unexpected video host ${state.videoSourceHost}`);
-  ensure(state.controlCount === 3, `${context} ${route.id}: expected 3 video controls, got ${state.controlCount}`);
+  ensure(state.controlCount === 4, `${context} ${route.id}: expected 4 video controls, got ${state.controlCount}`);
+  ensure(state.controls.some((control) => control.action === "save-poster"), `${context} ${route.id}: save poster control missing`);
   ensure(state.ctaVisible, `${context} ${route.id}: CTA is not visible`);
   ensure(!state.horizontalOverflow, `${context} ${route.id}: horizontal overflow detected`);
   ensure(!state.overlayText, `${context} ${route.id}: framework/error overlay text detected`);
@@ -354,6 +355,9 @@ async function main() {
     const afterPlay = await evaluate(client, stateExpression);
     await clickSelector(client, '[data-video-action="toggle-mute"]');
     const afterMute = await evaluate(client, stateExpression);
+    await clickSelector(client, '[data-video-action="save-poster"]');
+    await delay(500);
+    const afterSavePoster = await evaluate(client, stateExpression);
     await clickSelector(client, '[data-smooth-scroll]');
     await delay(900);
     const afterCta = await evaluate(client, stateExpression);
@@ -374,9 +378,10 @@ async function main() {
       await delay(300);
     }
 
-    ensure(beforeInteraction.controlCount === 3, "interaction: Nature controls were not present before testing");
+    ensure(beforeInteraction.controlCount === 4, "interaction: Nature controls were not present before testing");
     ensure(afterPlay.controls.some((control) => control.action === "toggle-play" && control.text === "Play" && control.pressed === "false"), "interaction: play/pause control did not toggle to Play");
     ensure(afterMute.controls.some((control) => control.action === "toggle-mute" && control.text === "Mute" && control.pressed === "true"), "interaction: mute control did not toggle to Mute");
+    ensure(afterSavePoster.status.includes("/workspace/Pictures/untamed-silence-poster.json"), "interaction: save poster did not create a SEIS Code workspace record");
     ensure(afterCta.scrollY > 100 || afterCta.storyFocused, "interaction: CTA did not scroll/focus the story section");
     ensure(afterFullscreen.status === "Entered fullscreen." || fullscreenActive, "interaction: fullscreen did not report activation");
     ensure(fullscreenActive, "interaction: fullscreen did not activate");
@@ -428,6 +433,7 @@ async function main() {
       interaction: {
         playTextAfterClick: afterPlay.controls.find((control) => control.action === "toggle-play")?.text,
         muteTextAfterClick: afterMute.controls.find((control) => control.action === "toggle-mute")?.text,
+        savePosterStatusAfterClick: afterSavePoster.status,
         fullscreenActiveAfterClick: fullscreenActive,
         fullscreenStatusAfterClick: afterFullscreen.status,
         scrollYAfterCta: afterCta.scrollY,

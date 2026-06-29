@@ -1,0 +1,81 @@
+{
+  "id": "seis-20b-dataset-card-template",
+  "version": "2026.06.24",
+  "status": "template-not-filled",
+  "targetId": "seis-20b-local-compatibility-target",
+  "profileId": "seis-model-scaling-hardware-profile",
+  "parameterClass": "20B",
+  "purpose": "Define clean-room dataset-card evidence required before any future SEIS 20B training, fine-tuning, evaluation, or compatibility benchmark can be scoped.",
+  "truthBoundary": "Template only. This file does not approve, download, ingest, train on, fine-tune on, benchmark with, or publish any dataset.",
+  "datasetDownloadAuthorized": false,
+  "trainingAuthorized": false,
+  "fineTuningAuthorized": false,
+  "benchmarkDatasetAuthorized": false,
+  "routeEligibleToday": false,
+  "allowedSourceClasses": [
+    "SEIS-owned synthetic data after review",
+    "user-authored data with explicit permission",
+    "public-domain data with provenance review",
+    "permissively licensed data with license compatibility review"
+  ],
+  "forbiddenSourceClasses": [
+    "private user data without explicit permission",
+    "secrets, tokens, credentials, or keys",
+    "unclear-license scraped data",
+    "leaked, proprietary, or access-controlled material",
+    "personal data without privacy review",
+    "copyrighted material copied without rights"
+  ],
+  "requiredBeforeFilled": [
+    "source inventory",
+    "license map",
+    "rights and attribution review",
+    "PII and secret scan",
+    "safety and toxicity review",
+    "deduplication plan",
+    "data minimization statement",
+    "opt-out or removal process when applicable",
+    "dataset split plan",
+    "reviewer identity and review timestamp"
+  ],
+  "templateFields": {
+    "datasetId": null,
+    "datasetVersion": null,
+    "sourceInventoryPath": null,
+    "licenseSummary": null,
+    "rightsReviewStatus": "not-reviewed",
+    "privacyReviewStatus": "not-reviewed",
+    "piiScanStatus": "not-run",
+    "secretScanStatus": "not-run",
+    "safetyReviewStatus": "not-reviewed",
+    "deduplicationStatus": "not-run",
+    "dataMinimizationSummary": null,
+    "intendedUse": [],
+    "outOfScopeUse": [
+      "training before human approval",
+      "fine-tuning before human approval",
+      "benchmarking before human approval",
+      "provider upload",
+      "publication without rights review"
+    ],
+    "reviewedBy": null,
+    "reviewedAt": null
+  },
+  "approvalRequiredFor": [
+    "dataset download",
+    "dataset ingestion",
+    "training run",
+    "fine-tuning run",
+    "benchmark execution",
+    "provider upload",
+    "dataset publication"
+  ],
+  "forbiddenClaims": [
+    "SEIS has approved a 20B training dataset.",
+    "SEIS has downloaded a 20B training dataset.",
+    "SEIS has completed dataset rights review.",
+    "SEIS has completed dataset privacy review.",
+    "SEIS has trained or fine-tuned a 20B foundation model."
+  ],
+  "qualityGate": "npm run check:seis-model-scaling-hardware-profile"
+}

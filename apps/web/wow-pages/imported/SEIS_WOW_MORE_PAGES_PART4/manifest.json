@@ -1,0 +1,248 @@
+{
+  "name": "SEIS_WOW_MORE_PAGES_PART4",
+  "version": "1.0",
+  "page_count": 30,
+  "total_visual_set_after_this_pack": 100,
+  "pages": [
+    {
+      "number": 71,
+      "id": "71_global_search_results",
+      "title": "Global Search Results",
+      "description": "Universal results across AI, apps, files, docs, cloud and code.",
+      "png": "png/71_global_search_results.png",
+      "html": "html/71_global_search_results.html"
+    },
+    {
+      "number": 72,
+      "id": "72_code_debug_console",
+      "title": "Code Debug Console",
+      "description": "Debug, inspect variables and view safe console output.",
+      "png": "png/72_code_debug_console.png",
+      "html": "html/72_code_debug_console.html"
+    },
+    {
+      "number": 73,
+      "id": "73_code_diff_viewer",
+      "title": "Code Diff Viewer",
+      "description": "Side-by-side changes for safer PR review.",
+      "png": "png/73_code_diff_viewer.png",
+      "html": "html/73_code_diff_viewer.html"
+    },
+    {
+      "number": 74,
+      "id": "74_source_control_changes",
+      "title": "Source Control Changes",
+      "description": "Stage, unstage and commit in safe local mode.",
+      "png": "png/74_source_control_changes.png",
+      "html": "html/74_source_control_changes.html"
+    },
+    {
+      "number": 75,
+      "id": "75_design_prototype_preview",
+      "title": "Design Prototype Preview",
+      "description": "Interactive design prototype with device frames.",
+      "png": "png/75_design_prototype_preview.png",
+      "html": "html/75_design_prototype_preview.html"
+    },
+    {
+      "number": 76,
+      "id": "76_design_asset_export",
+      "title": "Design Asset Export",
+      "description": "Export icons, wallpapers, CSS tokens and screenshots.",
+      "png": "png/76_design_asset_export.png",
+      "html": "html/76_design_asset_export.html"
+    },
+    {
+      "number": 77,
+      "id": "77_cloud_logs",
+      "title": "Cloud Logs",
+      "description": "Deployment, agent and system logs with redaction.",
+      "png": "png/77_cloud_logs.png",
+      "html": "html/77_cloud_logs.html"
+    },
+    {
+      "number": 78,
+      "id": "78_cloud_deploy_preview",
+      "title": "Cloud Deploy Preview",
+      "description": "Preview URL, status cards and rollback plan.",
+      "png": "png/78_cloud_deploy_preview.png",
+      "html": "html/78_cloud_deploy_preview.html"
+    },
+    {
+      "number": 79,
+      "id": "79_store_app_detail",
+      "title": "Store App Detail",
+      "description": "Detailed app page for plugins, permissions and install state.",
+      "png": "png/79_store_app_detail.png",
+      "html": "html/79_store_app_detail.html"
+    },
+    {
+      "number": 80,
+      "id": "80_store_agent_detail",
+      "title": "Store Agent Detail",
+      "description": "Agent marketplace detail page with capability and safety view.",
+      "png": "png/80_store_agent_detail.png",
+      "html": "html/80_store_agent_detail.html"
+    },
+    {
+      "number": 81,
+      "id": "81_music_now_playing",
+      "title": "Music Now Playing",
+      "description": "Full music player with waveform and playlist focus mode.",
+      "png": "png/81_music_now_playing.png",
+      "html": "html/81_music_now_playing.html"
+    },
+    {
+      "number": 82,
+      "id": "82_video_player",
+      "title": "Video Player",
+      "description": "Media player for showcase videos and product stories.",
+      "png": "png/82_video_player.png",
+      "html": "html/82_video_player.html"
+    },
+    {
+      "number": 83,
+      "id": "83_photo_editor",
+      "title": "Photo Editor",
+      "description": "Image editing workspace with layers, crop and filters.",
+      "png": "png/83_photo_editor.png",
+      "html": "html/83_photo_editor.html"
+    },
+    {
+      "number": 84,
+      "id": "84_color_grading",
+      "title": "Color Grading",
+      "description": "Cinematic color controls for SEIS visuals.",
+      "png": "png/84_color_grading.png",
+      "html": "html/84_color_grading.html"
+    },
+    {
+      "number": 85,
+      "id": "85_whiteboard",
+      "title": "Whiteboard",
+      "description": "Spatial brainstorming canvas for design and architecture.",
+      "png": "png/85_whiteboard.png",
+      "html": "html/85_whiteboard.html"
+    },
+    {
+      "number": 86,
+      "id": "86_diagram_tool",
+      "title": "Diagram Tool",
+      "description": "Architecture diagrams for SEIS modules and agents.",
+      "png": "png/86_diagram_tool.png",
+      "html": "html/86_diagram_tool.html"
+    },
+    {
+      "number": 87,
+      "id": "87_roadmap_board",
+      "title": "Roadmap Board",
+      "description": "Five-year roadmap as a visual board.",
+      "png": "png/87_roadmap_board.png",
+      "html": "html/87_roadmap_board.html"
+    },
+    {
+      "number": 88,
+      "id": "88_backlog_kanban",
+      "title": "Master Backlog Kanban",
+      "description": "Prioritized backlog from safety to product polish.",
+      "png": "png/88_backlog_kanban.png",
+      "html": "html/88_backlog_kanban.html"
+    },
+    {
+      "number": 89,
+      "id": "89_issue_drafting",
+      "title": "Issue Drafting",
+      "description": "Generate GitHub issues from roadmap items.",
+      "png": "png/89_issue_drafting.png",
+      "html": "html/89_issue_drafting.html"
+    },
+    {
+      "number": 90,
+      "id": "90_pr_review_screen",
+      "title": "PR Review Screen",
+      "description": "Human-reviewed PR summary, risks and validation.",
+      "png": "png/90_pr_review_screen.png",
+      "html": "html/90_pr_review_screen.html"
+    },
+    {
+      "number": 91,
+      "id": "91_docs_hub",
+      "title": "Documentation Hub",
+      "description": "Source-of-truth docs and indexes.",
+      "png": "png/91_docs_hub.png",
+      "html": "html/91_docs_hub.html"
+    },
+    {
+      "number": 92,
+      "id": "92_architecture_center",
+      "title": "Architecture Center",
+      "description": "Modules, boundaries and dependency map.",
+      "png": "png/92_architecture_center.png",
+      "html": "html/92_architecture_center.html"
+    },
+    {
+      "number": 93,
+      "id": "93_agent_run_detail",
+      "title": "Agent Run Detail",
+      "description": "Timeline and tool-call states for one agent execution.",
+      "png": "png/93_agent_run_detail.png",
+      "html": "html/93_agent_run_detail.html"
+    },
+    {
+      "number": 94,
+      "id": "94_agent_memory",
+      "title": "Agent Memory Boundary",
+      "description": "Short-term, workspace and approved memory separation.",
+      "png": "png/94_agent_memory.png",
+      "html": "html/94_agent_memory.html"
+    },
+    {
+      "number": 95,
+      "id": "95_prompt_library",
+      "title": "Prompt Library",
+      "description": "Reusable prompts for repository, PR and security review.",
+      "png": "png/95_prompt_library.png",
+      "html": "html/95_prompt_library.html"
+    },
+    {
+      "number": 96,
+      "id": "96_eval_lab",
+      "title": "Evaluation Lab",
+      "description": "Prompt regression, no-key startup and UI tests.",
+      "png": "png/96_eval_lab.png",
+      "html": "html/96_eval_lab.html"
+    },
+    {
+      "number": 97,
+      "id": "97_dataset_governance",
+      "title": "Dataset Governance",
+      "description": "Future SEIS Universe data intake and provenance.",
+      "png": "png/97_dataset_governance.png",
+      "html": "html/97_dataset_governance.html"
+    },
+    {
+      "number": 98,
+      "id": "98_model_card_template",
+      "title": "Model Card Template",
+      "description": "Honest AI model and provider capability documentation.",
+      "png": "png/98_model_card_template.png",
+      "html": "html/98_model_card_template.html"
+    },
+    {
+      "number": 99,
+      "id": "99_public_website_pricing",
+      "title": "Website Pricing Page",
+      "description": "Public-facing product/pricing concept with honest demo status.",
+      "png": "png/99_public_website_pricing.png",
+      "html": "html/99_public_website_pricing.html"
+    },
+    {
+      "number": 100,
+      "id": "100_final_codex_pack",
+      "title": "Final Codex Pack Overview",
+      "description": "All visual packages summarized for implementation handoff.",
+      "png": "png/100_final_codex_pack.png",
+      "html": "html/100_final_codex_pack.html"
+    }
+  ]
+}

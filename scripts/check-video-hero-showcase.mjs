@@ -73,6 +73,7 @@ for (const required of requiredHeroes) {
   ensure(html.includes('preload="metadata"'), `${required.id} must metadata-preload video.`);
   ensure(html.includes('data-video-action="toggle-play"'), `${required.id} missing play/pause control.`);
   ensure(html.includes('data-video-action="toggle-mute"'), `${required.id} missing mute control.`);
+  ensure(html.includes('data-video-action="save-poster"'), `${required.id} missing save poster control.`);
   ensure(html.includes('data-video-action="fullscreen"'), `${required.id} missing fullscreen control.`);
   ensure(html.includes("data-smooth-scroll"), `${required.id} missing CTA smooth-scroll hook.`);
   ensure(html.includes("aria-live=\"polite\""), `${required.id} missing video status live region.`);
@@ -86,7 +87,19 @@ for (const marker of ["prefers-reduced-motion", ".video-hero", ".video-hero__con
   ensure(css.includes(marker), `video hero CSS missing ${marker}.`);
 }
 
-for (const marker of ["IntersectionObserver", "visibilitychange", "requestFullscreen", "data-next-video", "prefers-reduced-motion", "preload"]) {
+for (const marker of [
+  "IntersectionObserver",
+  "visibilitychange",
+  "requestFullscreen",
+  "data-next-video",
+  "prefers-reduced-motion",
+  "preload",
+  "saveVideoPoster",
+  "SEIS_VIDEO_POSTER_DIR",
+  "seis-code-workspace-v1",
+  "workspace-file-created",
+  "Poster record saved"
+]) {
   ensure(js.includes(marker), `video hero runtime missing ${marker}.`);
 }
 

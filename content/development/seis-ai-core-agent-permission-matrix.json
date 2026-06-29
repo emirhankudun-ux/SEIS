@@ -1,0 +1,54 @@
+{
+  "id": "seis-ai-core-agent-permission-matrix",
+  "version": "2026.06.23",
+  "status": "documented-fixture",
+  "purpose": "Define the current and future permission levels for bounded SEIS AI Core sub-agents.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "runtimeBoundary": "status-and-plan-only",
+  "levels": [
+    {
+      "level": "read-only",
+      "status": "enabled",
+      "actions": ["inspect repo-local manifests", "inspect docs", "inspect lane profiles", "inspect validation commands"],
+      "approvalRequired": false,
+      "evidenceRequired": ["source path", "observed status", "validation command when applicable"]
+    },
+    {
+      "level": "plan-only",
+      "status": "enabled",
+      "actions": ["produce scoped plan", "produce validation plan", "produce approval boundary", "produce handoff"],
+      "approvalRequired": false,
+      "evidenceRequired": ["lane id", "request summary", "quality gate", "human approval boundary"]
+    },
+    {
+      "level": "write-gated",
+      "status": "planned",
+      "actions": ["edit approved files", "update matching tests", "run local validators"],
+      "approvalRequired": "task-scoped",
+      "evidenceRequired": ["approved scope", "git diff", "validator output", "rollback note"]
+    },
+    {
+      "level": "external-gated",
+      "status": "planned",
+      "actions": ["GitHub write", "cloud provider mutation", "SSH or VPN operation", "external connector mutation"],
+      "approvalRequired": true,
+      "evidenceRequired": ["target", "actor", "rollback owner", "dry-run or preflight result", "redaction confirmation"]
+    },
+    {
+      "level": "forbidden",
+      "status": "active",
+      "actions": ["silent secret access", "private key handling", "history rewrite", "unbounded training", "unreviewed dataset ingestion"],
+      "approvalRequired": "separate security and recovery plan required",
+      "evidenceRequired": ["security review", "recovery plan", "explicit authorization"]
+    }
+  ],
+  "forbiddenWithoutSeparatePlan": [
+    "credential access",
+    "private key handling",
+    "history rewrite",
+    "public visibility change",
+    "model training",
+    "dataset ingestion",
+    "unrestricted shell execution"
+  ]
+}

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS KERNEL OS | EASING_STUDIO</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&family=Space+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        body {
+            background-color: #0c0f0f;
+            color: #e2e2e2;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+        .bezier-canvas-grid {
+            background-image: 
+                linear-gradient(to right, rgba(59, 73, 75, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(59, 73, 75, 0.2) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.1);
+            position: absolute;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            from { top: 0; }
+            to { top: 100%; }
+        }
+        .cyber-slider::-webkit-slider-runnable-track {
+            background: #1e2020;
+            height: 4px;
+            border: 1px solid #3b494b;
+        }
+        .cyber-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            background: #00dbe9;
+            margin-top: -5px;
+            border-radius: 0;
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e2e2e2",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-container": "#1e2020",
+                        "on-primary": "#00363a",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-container": "#605e5e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary": "#520071",
+                        "surface-variant": "#333535",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary": "#313030",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary": "#dbfcff",
+                        "on-secondary-container": "#480064",
+                        "tertiary-container": "#dcd9d8",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container-highest": "#333535",
+                        "surface-bright": "#37393a",
+                        "on-primary-container": "#006970",
+                        "secondary": "#ebb2ff",
+                        "surface-tint": "#00dbe9",
+                        "secondary-fixed": "#f8d8ff",
+                        "on-secondary-fixed": "#320047",
+                        "secondary-container": "#ce5dff",
+                        "primary-fixed": "#7df4ff",
+                        "primary-fixed-dim": "#00dbe9",
+                        "error-container": "#93000a",
+                        "background": "#121414",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-primary-fixed": "#002022",
+                        "primary-container": "#00f0ff",
+                        "surface-container-lowest": "#0c0f0f",
+                        "outline-variant": "#3b494b",
+                        "on-error": "#690005",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "inverse-surface": "#e2e2e2",
+                        "tertiary": "#f9f5f5",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-background": "#e2e2e2",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "outline": "#849495",
+                        "surface-container-high": "#282a2b"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "label-sm": ["Space Mono"],
+                        "code-sm": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-md": ["JetBrains Mono"],
+                        "label-caps": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"letterSpacing": "0.15em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP NAVIGATION SHELL -->
+<header class="fixed top-0 left-0 w-full h-10 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-6 z-50">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS KERNEL OS</span>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">WORKSPACES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-primary-fixed border-b border-primary-fixed pb-1" href="#">AGENTS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors" href="#">NETWORK</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- SIDE NAVIGATION SHELL -->
+<aside class="fixed left-0 top-10 h-[calc(100vh-40px)] w-20 hover:w-64 transition-all duration-300 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 z-40 flex flex-col group overflow-hidden">
+<div class="p-4 flex items-center gap-4 border-b border-outline-variant/10">
+<div class="w-10 h-10 bg-secondary-container rounded-sm flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary" data-icon="person">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+<p class="font-label-caps text-secondary-fixed text-[12px]">ROOT_USER</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</p>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="group flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">DASHBOARD</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">FILESYSTEM</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">AI_AGENTS</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">TERMINAL</span>
+</div>
+<div class="group flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:bg-surface-variant/20 transition-all">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap">INFRASTRUCTURE</span>
+</div>
+</nav>
+<div class="p-4 border-t border-outline-variant/10">
+<div class="group flex items-center px-6 py-3 cursor-pointer text-on-surface-variant hover:text-error transition-all">
+<span class="material-symbols-outlined" data-icon="power_settings_new">power_settings_new</span>
+<span class="ml-6 font-label-caps text-label-caps opacity-0 group-hover:opacity-100">POWER</span>
+</div>
+</div>
+</aside>
+<!-- MAIN STUDIO CANVAS -->
+<main class="ml-20 mt-10 p-4 h-[calc(100vh-40px)] grid grid-cols-12 gap-4 overflow-hidden relative">
+<!-- SECTION 7 HEADER -->
+<div class="col-span-12 h-12 flex items-center justify-between border-b border-outline-variant/30 px-4 bg-surface-container-low/50">
+<div class="flex items-center gap-4">
+<span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 text-[10px] font-bold">SECTOR 7</span>
+<h1 class="font-headline-md text-headline-md text-primary-fixed-dim uppercase tracking-tighter">Animation Easing Studio</h1>
+</div>
+<div class="flex gap-2 font-code-sm text-code-sm text-outline">
+<span>COORD: 52.40N / 13.04E</span>
+<span class="text-primary-fixed-dim animate-pulse">● LIVE_SYNC</span>
+</div>
+</div>
+<!-- LEFT PANEL: CONTROLS & CURVE EDITOR -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-4 overflow-hidden">
+<!-- BEZIER EDITOR WINDOW -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant/40 flex flex-col relative">
+<div class="h-8 bg-primary-fixed flex items-center px-4 justify-between">
+<span class="text-[10px] font-bold text-on-primary-fixed uppercase tracking-widest">Bezier Curve Editor — Node_01</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 border border-on-primary-fixed/30"></div>
+<div class="w-2 h-2 bg-on-primary-fixed"></div>
+</div>
+</div>
+<div class="flex-1 bezier-canvas-grid relative flex items-center justify-center p-12">
+<div class="scanline"></div>
+<!-- SVG Bezier Preview -->
+<svg class="w-full h-full max-w-lg max-h-lg overflow-visible" viewbox="0 0 100 100">
+<!-- Guide lines -->
+<line stroke="#3b494b" stroke-dasharray="2" stroke-width="0.5" x1="0" x2="20" y1="100" y2="20"></line>
+<line stroke="#3b494b" stroke-dasharray="2" stroke-width="0.5" x1="100" x2="80" y1="0" y2="80"></line>
+<!-- The Curve -->
+<path class="drop-shadow-[0_0_8px_rgba(0,219,233,0.6)]" d="M 0 100 C 20 20, 80 80, 100 0" fill="none" stroke="#00dbe9" stroke-width="1"></path>
+<!-- Control Points -->
+<circle cx="0" cy="100" fill="#e2e2e2" r="1.5"></circle>
+<circle cx="100" cy="0" fill="#e2e2e2" r="1.5"></circle>
+<!-- Interactive Handles -->
+<rect class="cursor-pointer hover:scale-150 transition-transform" fill="#00dbe9" height="4" width="4" x="18" y="18"></rect>
+<rect class="cursor-pointer hover:scale-150 transition-transform" fill="#00dbe9" height="4" width="4" x="78" y="78"></rect>
+</svg>
+<!-- Technical Callouts -->
+<div class="absolute top-4 left-4 font-code-sm text-primary-fixed text-[10px] bg-background/80 p-2 border border-outline-variant/20">
+                        P1: 0.20, 0.80<br/>P2: 0.80, 0.20
+                    </div>
+<div class="absolute bottom-4 right-4 text-right font-code-sm text-outline text-[10px]">
+                        EASING_TYPE: cubic-bezier<br/>STATE: PERSISTENT
+                    </div>
+</div>
+</div>
+<!-- TRANSITION ORCHESTRATION (TIMELINE) -->
+<div class="h-48 bg-surface-container-lowest border border-outline-variant/40 flex flex-col">
+<div class="h-6 bg-surface-variant flex items-center px-4">
+<span class="text-[9px] font-bold text-on-surface uppercase tracking-widest">Transition Orchestration</span>
+</div>
+<div class="flex-1 p-2 overflow-y-auto font-code-sm text-[11px]">
+<!-- Timeline Tracks -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="w-24 text-outline truncate">CARD_REVEAL</span>
+<div class="flex-1 h-4 bg-surface-container flex items-center px-1">
+<div class="h-2 w-1/3 bg-primary-fixed-dim/30 border-x border-primary-fixed translate-x-4"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-24 text-outline truncate">ICON_BOUNCE</span>
+<div class="flex-1 h-4 bg-surface-container flex items-center px-1">
+<div class="h-2 w-1/4 bg-secondary-fixed/30 border-x border-secondary-fixed translate-x-12"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-24 text-outline truncate">TEXT_FADE</span>
+<div class="flex-1 h-4 bg-surface-container flex items-center px-1">
+<div class="h-2 w-1/2 bg-on-surface-variant/30 border-x border-on-surface-variant translate-x-2"></div>
+</div>
+</div>
+</div>
+<!-- Playhead logic -->
+<div class="mt-4 border-t border-outline-variant/20 pt-2 flex justify-between items-center px-2">
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-primary-fixed hover:scale-110 active:scale-95" data-icon="play_arrow">play_arrow</button>
+<button class="material-symbols-outlined text-outline" data-icon="replay">replay</button>
+</div>
+<div class="flex gap-2">
+<span class="text-primary-fixed">00.42s</span>
+<span class="text-outline">/ 02.00s</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT PANEL: PREVIEW & INPUTS -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<!-- MOTION PREVIEW BAY -->
+<div class="h-1/2 bg-surface-container-lowest border border-outline-variant/40 flex flex-col">
+<div class="h-8 border-b border-outline-variant/30 flex items-center px-4 bg-surface-container-high">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Motion Preview Bay</span>
+</div>
+<div class="flex-1 p-6 flex flex-col gap-8 justify-center">
+<!-- Button Preview -->
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-outline">CTA_EASE</span>
+<button class="bg-primary-fixed text-on-primary-fixed px-6 py-2 font-bold hover:translate-x-2 transition-transform duration-500 ease-[cubic-bezier(0.2,0.8,0.8,0.2)]">
+                            PREVIEW
+                        </button>
+</div>
+<!-- Icon Preview -->
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-outline">ICON_FLIP</span>
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center hover:rotate-[360deg] transition-transform duration-1000 ease-[cubic-bezier(0.2,0.8,0.8,0.2)]">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="refresh">refresh</span>
+</div>
+</div>
+<!-- Card Preview -->
+<div class="flex flex-col gap-2">
+<span class="font-label-caps text-[10px] text-outline">MODAL_SCALE</span>
+<div class="h-20 bg-surface-container border border-outline-variant/20 hover:scale-105 transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.8,0.2)] flex items-center px-4">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full bg-secondary-container"></div>
+<div class="space-y-1">
+<div class="h-2 w-24 bg-surface-variant"></div>
+<div class="h-2 w-16 bg-surface-variant/50"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- DURATION & DELAY INPUTS -->
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant/40 flex flex-col">
+<div class="h-8 border-b border-outline-variant/30 flex items-center px-4 bg-surface-container-high">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Technical Inputs</span>
+</div>
+<div class="p-6 space-y-6">
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<label class="font-code-sm text-[11px] text-primary-fixed">DURATION (MS)</label>
+<span class="text-on-surface font-bold">450</span>
+</div>
+<input class="w-full cyber-slider appearance-none bg-transparent" max="2000" min="0" type="range" value="450"/>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<label class="font-code-sm text-[11px] text-primary-fixed">DELAY (MS)</label>
+<span class="text-on-surface font-bold">120</span>
+</div>
+<input class="w-full cyber-slider appearance-none bg-transparent" max="1000" min="0" type="range" value="120"/>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<label class="font-code-sm text-[11px] text-primary-fixed">ITERATIONS</label>
+<span class="text-on-surface font-bold">1</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="bg-surface-variant/50 border border-outline-variant/30 py-2 font-code-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors">1</button>
+<button class="bg-surface-variant/50 border border-outline-variant/30 py-2 font-code-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors">2</button>
+<button class="bg-surface-variant/50 border border-outline-variant/30 py-2 font-code-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors">5</button>
+<button class="bg-surface-variant/50 border border-outline-variant/30 py-2 font-code-sm hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors">∞</button>
+</div>
+</div>
+<button class="w-full py-3 bg-primary-fixed text-on-primary-fixed font-bold flex items-center justify-center gap-2 mt-4 hover:bg-secondary-fixed transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="save">save</span>
+                        SAVE_TO_SYSTEM_CONFIG
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- STATUS BAR / FOOTER -->
+<footer class="fixed bottom-0 left-20 right-0 h-6 bg-surface-container-lowest border-t border-outline-variant/20 flex items-center px-4 justify-between font-code-sm text-[10px] text-outline z-50">
+<div class="flex gap-4">
+<span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span> ENGINE: KERNEL_MOTION_v4.2</span>
+<span>MEM: 14.2MB</span>
+</div>
+<div class="flex gap-4">
+<span>BITRATE: 44.1kHz</span>
+<span class="text-primary-fixed-dim">USER: ADMIN@SEIS-OS</span>
+</div>
+</footer>
+<script>
+        // Micro-interaction for handles
+        document.querySelectorAll('rect').forEach(rect => {
+            rect.addEventListener('mouseover', () => {
+                rect.setAttribute('stroke', '#ffffff');
+                rect.setAttribute('stroke-width', '0.5');
+            });
+            rect.addEventListener('mouseout', () => {
+                rect.setAttribute('stroke', 'none');
+            });
+        });
+
+        // Simple preview logic (aesthetic only)
+        const sliders = document.querySelectorAll('.cyber-slider');
+        sliders.forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const label = e.target.parentElement.querySelector('span');
+                if (label) label.textContent = e.target.value;
+            });
+        });
+    </script>
+</body></html>

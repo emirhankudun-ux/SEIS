@@ -17,25 +17,27 @@ external provider.
 - Binary files, release archives, `node_modules`, generated build folders, and
   media assets are skipped.
 
-Inspected files: 1592
+Inspected files: 1921
 
 ## Provider Matrix
 
 | Provider | Category | Status | Expected env vars | Locations | Frontend direct | Backend side | Decision | Recommended action |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5791 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Anthropic Claude | cloud model provider | Live but Unverified | ANTHROPIC_API_KEY | 5837 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
 | Cloudflare Workers AI | cloud model platform | Live but Unverified | CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN | 6 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Cohere | cloud model provider | Unknown | COHERE_API_KEY | 15 | no | no | Retain | Review manually before enabling. |
-| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 110 | no | no | Retain | Review manually before enabling. |
-| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 91 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Groq | cloud model provider | Unknown | GROQ_API_KEY | 3 | no | no | Retain | Review manually before enabling. |
-| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 972 | no | no | Retain | Review manually before enabling. |
-| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 222 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 39 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
-| Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 74 | no | no | Retain | Review manually before enabling. |
+| Cohere | cloud model provider | Unknown | COHERE_API_KEY | 20 | no | no | Retain | Review manually before enabling. |
+| DeepSeek | cloud model provider | Unknown | DEEPSEEK_API_KEY | 120 | no | no | Retain | Review manually before enabling. |
+| Google Gemini | cloud model provider | Live but Unverified | GEMINI_API_KEY | 108 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Groq | cloud model provider | Unknown | GROQ_API_KEY | 4 | no | no | Retain | Review manually before enabling. |
+| Hugging Face | model hosting provider | Unknown | HF_TOKEN | 2 | no | no | Retain | Review manually before enabling. |
+| Mistral | cloud model provider | Unknown | MISTRAL_API_KEY | 8 | no | no | Retain | Review manually before enabling. |
+| NVIDIA NIM | cloud model provider | Unknown | NVIDIA_API_KEY | 1063 | no | no | Retain | Review manually before enabling. |
+| Ollama | local model provider | Live but Unverified | OLLAMA_BASE_URL, OLLAMA_HOST | 322 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| OpenAI | cloud model provider | Live but Unverified | OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID | 58 | no | yes | Retain | Retain as unverified until provider health, no-key startup, and redaction tests exist. |
+| Perplexity | cloud model provider | Unknown | PERPLEXITY_API_KEY | 76 | no | no | Retain | Review manually before enabling. |
 | Portkey | model gateway | Unknown | PORTKEY_API_KEY | 2 | no | no | Retain | Review manually before enabling. |
-| Runway | media provider | Unknown | RUNWAY_API_KEY | 333 | no | no | Retain | Review manually before enabling. |
-| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 95 | no | no | Retain | Review manually before enabling. |
+| Runway | media provider | Unknown | RUNWAY_API_KEY | 336 | no | no | Retain | Review manually before enabling. |
+| Together AI | cloud model provider | Unknown | TOGETHER_API_KEY | 102 | no | no | Retain | Review manually before enabling. |
 | Vercel AI SDK | abstraction layer | Unknown | none detected | 15 | no | no | Retain | Review manually before enabling. |
 
 ## Secret-Exposure Findings
@@ -100,14 +102,16 @@ only. They do not require API keys for core SEIS.
 
 ## SEIS AI Core Provider Registry Boundary
 
-SEIS AI Core provider registry work must remain server-only and credential-safe.
+The provider registry source of truth is
+`content/development/seis-ai-core-provider-registry.json`.
 
-- Provider registry evidence lives in `content/development/seis-ai-core-provider-registry.json` when present.
-- Browser-facing code must never receive provider API keys, tokens, cookies, or service credentials.
-- Missing provider keys must be reported as `Missing Key`, not `Error`.
-- Local Demo mode and zero-key deterministic behavior remain valid core product states.
-- Provider routing must not silently switch models when privacy mode, local-only mode, or approval requirements block a provider.
-- New live provider adapters require explicit validation for no-key startup, fallback identity, redaction, and client-bundle secret exposure.
+The local read-only status tool is `seis_ai_core_provider_status`.
+
+The MCP resource URI is `seis://ai/provider-registry.json`.
+
+These surfaces expose provider state evidence only. They do not perform live
+provider calls, credential validation, network health checks, SSH, deployment,
+or GitHub mutation.
 
 ## Final Required API Key List
 
@@ -133,6 +137,8 @@ These references do not prove enabled live features or required API keys.
 - DeepSeek: DEEPSEEK_API_KEY (Unknown)
 - Google Gemini: GEMINI_API_KEY (Live but Unverified)
 - Groq: GROQ_API_KEY (Unknown)
+- Hugging Face: HF_TOKEN (Unknown)
+- Mistral: MISTRAL_API_KEY (Unknown)
 - NVIDIA NIM: NVIDIA_API_KEY (Unknown)
 - Ollama: OLLAMA_BASE_URL, OLLAMA_HOST (Live but Unverified)
 - OpenAI: OPENAI_API_KEY, OPENAI_BASE_URL, OPENAI_ORG_ID, OPENAI_PROJECT_ID (Live but Unverified)

@@ -1,0 +1,237 @@
+{
+  "id": "seis-ai-core-version-promotion-gates",
+  "version": "0.1.0",
+  "status": "documented-fixture",
+  "updatedAt": "2026-06-23",
+  "purpose": "Evaluate SEIS AI Core version promotion readiness as a dry-run, evidence-only decision surface for the embedded SEIS plugin lanes without enabling live autonomous execution.",
+  "qualityGate": "npm run check:seis-ai-core-version-promotion-gates",
+  "sourceOfTruth": {
+    "versionRegistry": "content/development/seis-ai-core-version-registry.json",
+    "pluginIntegration": "content/development/seis-agent-plugin-integration.json",
+    "mcpRuntimeContract": "content/development/seis-ai-core-mcp-runtime-contract.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "operatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "runtimeFixtures": "content/development/seis-ai-core-subagent-runtime-fixtures.json",
+    "reviewLedger": "content/development/seis-ai-core-subagent-review-ledger.json",
+    "fiveYearPlan": "content/development/seis-sub-agent-5-year-plan.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "agentRuntimeDoc": "docs/ai/agent-runtime.md",
+    "pluginIntegrationDoc": "docs/platform/seis-agent-plugin-integration.md"
+  },
+  "tooling": {
+    "tool": "seis_ai_core_version_promotion_dry_run",
+    "mcpResource": "seis://ai/version-promotion-gates.json",
+    "helper": "packages/seis-ai/src/lib/plugin-integration.mjs",
+    "agentToolLoop": "packages/seis-ai/src/agent/tools.mjs",
+    "mcpServer": "packages/seis-ai/src/mcp/server.mjs"
+  },
+  "runtimeBoundary": {
+    "currentLevel": "status-and-plan-only",
+    "writeExecution": "disabled",
+    "backgroundAutomation": "disabled",
+    "externalMutation": "requires-explicit-human-approval",
+    "credentialAccess": "forbidden",
+    "liveProviderCalls": "disabled",
+    "coreRequiresCloudApiKey": false,
+    "dryRunOnly": true
+  },
+  "truthBoundaries": {
+    "promotionDryRunIsReleaseApproval": false,
+    "internalReviewIsPublicRelease": false,
+    "providerRoutingIsModelOwnership": false,
+    "promptEngineeringIsTraining": false,
+    "dryRunPermitsExternalMutation": false,
+    "dryRunPermitsCredentialAccess": false
+  },
+  "decisionStates": [
+    "eligible-for-internal-review",
+    "blocked-until-evidence",
+    "blocked-human-approval",
+    "not-ready"
+  ],
+  "currentDryRun": {
+    "requestedVersionTarget": "v0.1-foundation",
+    "decision": "eligible-for-internal-review",
+    "releasePromotionAllowed": false,
+    "realExecutionBlocked": true,
+    "externalMutationPerformed": false,
+    "credentialAccessPerformed": false,
+    "reason": "SEIS AI Core v0.1 has repository-local version identity, lane binding, runtime fixtures, and review ledger evidence, but no live release, provider, or write runtime is enabled.",
+    "nextSafeAction": "Use this result for internal review and Command Center status surfacing only."
+  },
+  "laneResponsibilities": [
+    {
+      "laneId": "seis",
+      "displayName": "SEIS Hub",
+      "promotionDuty": "Validate source-of-truth alignment, governance posture, branch safety, and public-readiness boundaries."
+    },
+    {
+      "laneId": "seis-cloud",
+      "displayName": "SEIS Cloud",
+      "promotionDuty": "Validate that cloud, SSH, VPN, deployment, rollback, and credential actions remain approval-gated."
+    },
+    {
+      "laneId": "seis-code",
+      "displayName": "SEIS-Code",
+      "promotionDuty": "Validate runtime helper, tool-loop, MCP, tests, and package quality gates for the requested version target."
+    },
+    {
+      "laneId": "seis-design",
+      "displayName": "SEIS-Design",
+      "promotionDuty": "Validate that Command Center and AI surfaces remain truthful, accessible, non-deceptive, and status-aware."
+    },
+    {
+      "laneId": "seis-data",
+      "displayName": "SEIS-DATA",
+      "promotionDuty": "Validate deterministic manifests, provenance records, generated reports, and evidence freshness."
+    }
+  ],
+  "gates": [
+    {
+      "year": 1,
+      "versionTarget": "v0.1-foundation",
+      "status": "documented-validated",
+      "dryRunDecision": "eligible-for-internal-review",
+      "humanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "requiredEvidence": [
+        "version registry validation",
+        "plugin integration validation",
+        "sub-agent operating model validation",
+        "runtime fixture validation",
+        "quarterly review ledger validation",
+        "five-year plan validation",
+        "no external mutation evidence",
+        "zero-key core boundary evidence",
+        "provider registry fixture evidence"
+      ],
+      "validationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "blockers": [
+        "Provider registry is documented only; no live provider adapter exists.",
+        "No write-gated runtime exists.",
+        "No public release approval exists."
+      ],
+      "nextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence."
+    },
+    {
+      "year": 2,
+      "versionTarget": "v0.2-read-only-intelligence",
+      "status": "planned",
+      "dryRunDecision": "blocked-until-evidence",
+      "humanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "requiredEvidence": [
+        "read-only Command Center status surface",
+        "stale-data UX evidence",
+        "evidence locker records",
+        "provider registry fixtures",
+        "no-key startup test"
+      ],
+      "validationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "blockers": [
+        "No read-only evidence dashboard exists.",
+        "No provider registry fixture exists."
+      ],
+      "nextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness."
+    },
+    {
+      "year": 3,
+      "versionTarget": "v0.3-write-gated-runtime",
+      "status": "planned",
+      "dryRunDecision": "blocked-human-approval",
+      "humanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "requiredEvidence": [
+        "executable permission enforcement tests",
+        "approval fixture execution tests",
+        "redacted tool-output tests",
+        "rollback evidence",
+        "single-writer enforcement"
+      ],
+      "validationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "blockers": [
+        "Write runtime is disabled.",
+        "Human approval model is not executable.",
+        "Persistent execution ledger storage does not exist."
+      ],
+      "nextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes."
+    },
+    {
+      "year": 4,
+      "versionTarget": "v0.4-multi-workspace-readiness",
+      "status": "planned",
+      "dryRunDecision": "blocked-human-approval",
+      "humanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "requiredEvidence": [
+        "workspace sync safety review",
+        "SSH and cloud approval records",
+        "provider-neutral deployment dry-run",
+        "rollback plan",
+        "credential boundary evidence"
+      ],
+      "validationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "blockers": [
+        "No approved external target exists.",
+        "No SSH, VPN, or deployment mutation is authorized."
+      ],
+      "nextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists."
+    },
+    {
+      "year": 5,
+      "versionTarget": "v1.0-public-enterprise-candidate",
+      "status": "planned",
+      "dryRunDecision": "blocked-until-evidence",
+      "humanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "requiredEvidence": [
+        "public readiness review",
+        "release evidence checklist",
+        "model-claims audit",
+        "security baseline review",
+        "license and asset attribution review",
+        "enterprise governance review"
+      ],
+      "validationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "blockers": [
+        "No release approval exists.",
+        "No public-enterprise evidence pack exists.",
+        "SEIS Universe remains research, not a released trained model."
+      ],
+      "nextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy."
+    }
+  ],
+  "forbiddenPromotionClaims": [
+    "Do not claim public release readiness from dry-run output.",
+    "Do not claim trained model ownership from SEIS Language or provider routing.",
+    "Do not claim external connector authentication from plugin inventory.",
+    "Do not claim write-gated automation until executable permission and approval tests exist.",
+    "Do not claim deployment, SSH, GitHub mutation, credential access, dataset download, benchmark, or model training without explicit human approval and observed evidence."
+  ],
+  "nextSafeActions": [
+    "Expose this promotion dry-run through the SEIS AI tool loop and MCP server.",
+    "Use the result in Command Center as evidence-only readiness, not release approval.",
+    "Add provider registry fixtures before v0.2 readiness claims.",
+    "Add executable permission enforcement tests before v0.3 write-gated claims."
+  ]
+}

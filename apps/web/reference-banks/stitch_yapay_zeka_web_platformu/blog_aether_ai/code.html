@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aether AI | Engineering the Synthetic Era</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 219, 233, 0.3);
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.1);
+        }
+        .neo-glow {
+            text-shadow: 0 0 10px rgba(0, 219, 233, 0.5);
+        }
+        .gradient-border {
+            position: relative;
+            background: linear-gradient(var(--obsidian), var(--obsidian)) padding-box,
+                        linear-gradient(135deg, rgba(0, 219, 233, 0.5), transparent) border-box;
+            border: 1px solid transparent;
+        }
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .status-dot {
+            animation: pulse-cyan 2s infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#7df4ff",
+                        "surface": "#111417",
+                        "secondary": "#ebb2ff",
+                        "inverse-on-surface": "#2e3134",
+                        "tertiary-fixed": "#e2e2e2",
+                        "outline-variant": "#3b494b",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-tertiary": "#2f3131",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#282a2e",
+                        "surface-dim": "#111417",
+                        "inverse-primary": "#006970",
+                        "on-primary-fixed": "#002022",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "secondary-container": "#b600f8",
+                        "outline": "#849495",
+                        "surface-tint": "#00dbe9",
+                        "surface-container-highest": "#323539",
+                        "surface-variant": "#323539",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-low": "#191c1f",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-error": "#690005",
+                        "on-secondary": "#520072",
+                        "on-surface": "#e1e2e7",
+                        "surface-container-lowest": "#0c0e12",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-container": "#fff6fc",
+                        "error-container": "#93000a",
+                        "primary": "#dbfcff",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-background": "#e1e2e7",
+                        "surface-bright": "#37393d",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-container": "#00f0ff",
+                        "on-primary-container": "#006970",
+                        "on-primary": "#00363a",
+                        "tertiary-container": "#d9d9d9",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-container": "#1d2023",
+                        "on-secondary-fixed": "#320047",
+                        "background": "#111417",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-surface": "#e1e2e7",
+                        "tertiary": "#f5f5f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "mono-label": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_30px_rgba(0,219,233,0.15)] transition-all duration-300 ease-out">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="font-display-lg text-[24px] md:text-display-lg-mobile tracking-tighter text-primary font-extrabold cursor-pointer">
+                AETHER AI
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Platform</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Solutions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors hover:drop-shadow-[0_0_10px_#00dbe9]" href="#">Developers</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">Journal</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:block font-mono-label text-mono-label text-on-surface-variant hover:text-primary px-4 py-2 transition-colors">
+                    Documentation
+                </button>
+<button class="bg-primary-container text-on-primary-container font-mono-label text-mono-label px-6 py-2.5 rounded-lg font-bold hover:brightness-110 transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    Launch Console
+                </button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap overflow-hidden">
+<!-- Hero Section: Featured Post -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-24">
+<div class="relative group cursor-pointer overflow-hidden rounded-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 glass-card border border-outline-variant/20 rounded-xl overflow-hidden">
+<!-- Featured Image Area -->
+<div class="lg:col-span-7 relative h-[400px] lg:h-[600px] overflow-hidden">
+
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A cinematic, ultra-high-definition abstract visualization of neural network pathways glowing in electric cyan and magenta against a deep obsidian void. The lighting is dramatic, with light trails suggesting rapid data transfer and computational speed. The aesthetic is sharp, mechanical, and futuristic, perfectly aligned with a professional AI enterprise identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPvGF8U4O2K09UkMPhlJcO5QeLsmh_23aajRHkRqecdyucuqM-IdiTpl7_jnMFVBc8qNsG7B_0pbUVK1cQaUk4jFBKCHPjFBAL_NdnFa-iMJem9sjZb-GCiRz8yP0q_UhXcWklz8ACU7bzZgFlP2beScERVdpzXSpS4KhpUdCPyj9ksuOquhgc5uB0br9FakVCNyTNMyRoNp2tGpDNJULAsnIz2Pqq-huvfQyjtp0VeuYpbGL16Cvsn-8wS-Pfeei14Se0uy4meA"/>
+</div>
+<!-- Featured Content Area -->
+<div class="lg:col-span-5 p-8 md:p-12 flex flex-col justify-center">
+<div class="flex items-center gap-4 mb-6">
+<span class="bg-primary/10 text-primary-fixed-dim text-mono-label px-3 py-1 rounded-sm border border-primary/20">Technical Deep Dive</span>
+<span class="text-on-surface-variant text-mono-label">12 Min Read</span>
+</div>
+<h1 class="font-display-lg text-headline-md md:text-display-lg-mobile text-primary mb-6 leading-tight tracking-tight">
+                            Synthesizing the Void: Neural Architecture in the Age of AGI
+                        </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 line-clamp-3">
+                            An exhaustive exploration of how Aether's latest transformer models are achieving sub-millisecond latent space navigation for real-time synthetic reasoning.
+                        </p>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female AI researcher in her 30s, wearing high-tech glasses, in a dimly lit office with soft blue ambient light from monitors. Professional, sharp focus, cinematic corporate photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs5YPsN1wNr_DX9ZpugGi1n35Vxw18S38r24agpKgiphP7U1c9Lnc3L3knioSY6TrzxpEIBbRadmQGeIQlYt2HLw2BanE8lBgJxbXLMA8jpbw7DMvwQkVZgTpNM1JSuHKH6_1487Ra4oNORUqijB4OmSJmQnDJ4_v2HynNKrohm2BAufCrcTKY1097FQC34c0xvNnlybjgVRY3m1SZtbvLY939cKkBj74SHL9TCDsQR4Qh1c--LooJ-uglpUHWpmc-28pIKLQHtw"/>
+</div>
+<div>
+<div class="text-primary font-bold">Dr. Aris Thorne</div>
+<div class="text-on-surface-variant text-mono-label">Chief of Research</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / Quick Updates Bento -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mb-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card p-8 rounded-xl flex flex-col justify-between border-t-primary/30 border-t-2">
+<div>
+<div class="flex items-center gap-2 text-primary mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-mono-label uppercase tracking-widest">System Status</span>
+</div>
+<h3 class="text-headline-md font-bold text-white mb-2">Platform v4.2 Live</h3>
+<p class="text-on-surface-variant text-body-md">Optimized kernels for H100 clusters now standard across all regions.</p>
+</div>
+<div class="mt-8 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim status-dot shadow-[0_0_8px_#00dbe9]"></div>
+<span class="text-mono-label text-primary">All Systems Operational</span>
+</div>
+</div>
+<div class="md:col-span-2 glass-card p-8 rounded-xl relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-headline-md font-bold text-white mb-4">Inside the Black Box</h3>
+<p class="text-on-surface-variant text-body-lg max-w-xl mb-6">
+                            Join 45k+ engineers receiving weekly insights on high-scale inference and AI safety protocols. No fluff, just architecture.
+                        </p>
+<form class="flex flex-col sm:flex-row gap-4">
+<input class="bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-6 py-3 flex-grow font-mono-code focus:outline-none focus:border-primary-fixed-dim transition-all text-on-surface" placeholder="engineer@enterprise.ai" type="email"/>
+<button class="bg-white text-black px-8 py-3 rounded-lg font-bold hover:bg-primary-fixed transition-all">Subscribe</button>
+</form>
+</div>
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-[100px]"></div>
+</div>
+</div>
+</section>
+<!-- Latest Updates Grid -->
+<section class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="text-headline-md font-bold text-primary tracking-tight">Latest Updates</h2>
+<p class="text-on-surface-variant font-body-md">Technical journals and product engineering logs.</p>
+</div>
+<div class="flex gap-4">
+<button class="p-2 border border-outline-variant rounded-full hover:border-primary text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Post Card 1 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Microscopic view of an integrated circuit with pulsating neon blue light paths, suggesting data flow and computational power. High contrast, sharp detail, macro photography style with a futuristic sci-fi aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5kaS0-Lsowg9gh_JiyrTJaZwZFNRGtR96rxCnLPjC0kwVfWtnzNslLkDXML2iBUJSZpoEEFsXhqTW1ywmcVyanUPeoez4mhxwEAVJPucDTswBA23MPtUITAgEObeEwje3LqqjdQ2Q1pKXixrhE0VIDekJgrpgA5I5CyseHGmlzZ8k59gNmvGiHqZCEV-BXsjtJjkwYTitRQBmCBCcA7OVO8sZHOjcIn4dqwygjIFHDaygxOay-3xX6gIB_GHCN0x2pVV_4rdOWA"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded tracking-tighter uppercase">New</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Ethics &amp; Safety</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">The Alignment Problem: Beyond the Asimovian Fallacy</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">Redefining objective functions to ensure synthetic compliance in multi-agent environments.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Oct 24, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Post Card 2 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A vast data center with rows of sleek black server racks, illuminated by vertical glowing cyan LED strips. A light fog hangs in the air, catching the light beams. Cinematic, wide-angle lens, professional architecture photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoARsz-mya0OMMiUks2BJSTY04v9ymb61SObYnYOikqOnvNnqctT_eV2q3I6xebggBIRrq6y1-UUoE6IO-H2-pbWMefDeHfSnlMCH2cClCf-eWfNbuqPhdSLql813E1ia21KKPIdlSmUmGmpCrjQraalP3k241dSlobyh5o83suCqo_d6KL1_QmQKqZnDSRwyMQWVv-ip25--pXEYvP6b7-UywS2IjFynzQla6GYn8ZbH-3gE28VzL2jmhLNS4v-0cZuSnPKcb6w"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Product Updates</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">Aether Cloud: Serverless GPU Clusters for Enterprise</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">Scalable compute that breathes with your traffic. Auto-scaling just met 100k H100s.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Oct 19, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Post Card 3 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A clean, minimalist 3D rendering of complex mathematical equations floating in a dark 3D space, rendered with a thin glowing wireframe aesthetic in primary cyan. Cyberpunk academic style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgWBCvoDIscs_6uOkD3hnINy64pJ1WKo73Zdb3so28189fi10_yzRTcCmhB9GbytJigcVqWcdby2q__vYI8feNKSNcw87D47Ry7erECmiX7j7TnHaAHG0C3FS8CpAqUtRm1aKyYP4W3ly-KT2hX_9lKauPBkEQglxXNA60sZbEvoIx-5I_wwa8Qaj7aJuhveNVRUNAGffnaPLGhqbLPDyMPO0_hy69CA_A2My3U0ac-4Rqs1iRij-zk-U7S_Grz4XGXpdpXr8iBw"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Engineering</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">LLM Distillation: Cutting the Fat Without Losing the Mind</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">How we compressed Aether-v4 to run on edge devices with 98% accuracy retention.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Oct 12, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Post Card 4 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close up of a robotic hand with translucent polymer skin, showing the internal glowing circuits. The lighting is soft and ambient with deep shadows. Precision engineering meets biological elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQ-RRfwNouKm8N-0LQbZWG6iQJVLW7kljS5O8Ba7Cs_rmSajIeC_g7C6qXtG78KqL7Jy17q8JA6WML_4x9kbZI9QNSZqlAGccHFUeUmdzA6r3bmEU_dNQer_P8erw02kujOM2AWNb6F8tZHBQgwh3DboyzUApUB80yFo0IcfcyCBn1fO-QciLtwM80Pjc-2784TciwNAcvPot--CgGxtM_2PVLfmLpKZ0TIxlYpFmPm-2SMpICy5Pv1cynhooadCopz5s0UwrKZQ"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Vision</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">The Physical Frontier: Embodied AI in Robotics</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">Bridging the gap between digital reasoning and physical dexterity in warehouse automation.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Oct 05, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Post Card 5 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Digital art featuring a rain-slicked futuristic city street at night, illuminated by neon holograms and advertisements for AI companies. Cinematic lighting, cyberpunk atmosphere, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQh_Lqb4NW_-OFM1q6-0ctmvAL6BKNHnKKnksQK8rjU7ULrjUkY1lZNilmTpbLfHagxUGgArjk0qdeLl6jmzM6Fj3A_4ZzcNZnu9elNt5k20A_kmdatqs3gGlMc0bsFbL0KiBV36vb_7Fh01SGv03ndUmIbWF6-hPfXw14m9e7IjYDqvlud7WOtIGRVYNxx3rVLvYzKG6Bl8kUNSmAHAme6orlVaHIk31k3a-R2uOPer9nHACH_qQy1q8BE7aJgq_VXEPyOYwkow"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Ethics &amp; Safety</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">Synthetic Labor and the New Global Economy</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">A deep dive into the socioeconomic shifts caused by the transition to autonomous production.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Sept 28, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Post Card 6 -->
+<div class="glass-card group flex flex-col rounded-xl overflow-hidden hover:-translate-y-1">
+<div class="h-48 overflow-hidden relative">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A stylized 3D visualization of a galaxy where the stars are interconnected by thin glowing filaments, representing a global AI mesh network. Dreamy, epic scale, purple and cyan color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzmKLBk-mE-Zq56MiGwyIad96-jsO1me7jMTqXETPYtEg5K1wuv-uM6ONFEJMiuSHPIk1wVousobr-5i4uH4nbKhqPSicPINc4tVyvNG_1-Xzc44wBKFmx5Azh3b_QL46EsAN3CWqwehnfMhY8cvhh87M7_37GQpnbYYFw-1bh38ARlukiPq2K5YxIVHtkctLEKypeBfNWqQ8H0m83m0lAryT6wVTwtUte0uFcNwQxAtyf7w8KWFC6XhUkbHjatRpYQwbFKGFrsA"/>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<span class="text-mono-label text-secondary-fixed-dim mb-2">Developers</span>
+<h3 class="text-xl font-bold text-white mb-4 group-hover:text-primary transition-colors">Introducing Aether Mesh: Peer-to-Peer Model Training</h3>
+<p class="text-on-surface-variant text-body-md line-clamp-2 mb-6">Decentralized compute protocols for training world-scale foundation models without central silos.</p>
+<div class="mt-auto flex justify-between items-center pt-6 border-t border-outline-variant/10">
+<span class="text-mono-label opacity-60">Sept 22, 2024</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-20 flex justify-center items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-on-surface hover:border-primary transition-colors disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary font-bold rounded-lg">1</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary rounded-lg transition-all">2</button>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary rounded-lg transition-all">3</button>
+<span class="flex items-center justify-center w-10 text-on-surface-variant">...</span>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary rounded-lg transition-all">12</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-on-surface hover:border-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-lowest w-full rounded-t-full border-t border-outline-variant/20 transition-all duration-300">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-section-gap max-w-container-max mx-auto">
+<div class="flex flex-col items-center md:items-start gap-4 mb-8 md:mb-0">
+<div class="font-display-lg text-headline-md text-primary font-extrabold">AETHER AI</div>
+<p class="font-mono-label text-mono-label text-on-tertiary-container max-w-sm text-center md:text-left">
+                    © 2024 Aether Intelligence Systems. All rights reserved. Built for the synthetic era.
+                </p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 md:gap-12">
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Terms of Service</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">Security</a>
+<a class="font-mono-label text-mono-label text-on-tertiary-container hover:text-secondary-fixed transition-colors" href="#">System Status</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for scroll depth
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('py-2', 'bg-surface/90');
+                nav.classList.remove('py-4', 'bg-surface/60');
+            } else {
+                nav.classList.add('py-4', 'bg-surface/60');
+                nav.classList.remove('py-2', 'bg-surface/90');
+            }
+        });
+
+        // Simple card hover effect enhancement
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

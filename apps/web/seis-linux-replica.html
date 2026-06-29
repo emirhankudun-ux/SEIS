@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SEIS Linux Replica</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --accent:#7c5cff;
+  --accent-2:#19c6d4;
+  --bg:#05070d;
+  --panel:#111725;
+  --panel-2:#171f30;
+  --panel-3:#222c42;
+  --text:#f7f8ff;
+  --muted:#a9b0c3;
+  --line:#3a4258;
+  --good:#8ee68b;
+  --warn:#f2bd5d;
+  --bad:#ff7088;
+  --shadow:0 22px 70px rgba(0,0,0,.48);
+}
+html,body{height:100%;margin:0;overflow:hidden;background:#000;color:var(--text);font-family:Inter,"SF Pro Display","Segoe UI",system-ui,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:999px}
+#boot{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#000;transition:opacity .45s}
+#boot.is-hidden{opacity:0;pointer-events:none}
+.boot-card{display:grid;gap:18px;justify-items:center;width:min(520px,calc(100vw - 32px))}
+.boot-logo{font-size:54px;font-weight:900;letter-spacing:0;background:linear-gradient(90deg,#fff,#8eeeff,#b197ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.boot-sub{color:#9ba3bb;text-align:center;line-height:1.5}
+.boot-ring{width:54px;height:54px;border:3px solid #1d2333;border-top-color:var(--accent);border-right-color:var(--accent-2);border-radius:50%;animation:spin 1s linear infinite}
+.boot-bar{width:min(360px,80vw);height:5px;background:#171a25;border-radius:999px;overflow:hidden}
+.boot-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .25s}
+@keyframes spin{to{transform:rotate(360deg)}}
+#login{position:fixed;inset:0;z-index:15;display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,rgba(124,92,255,.24),transparent 34%),linear-gradient(135deg,#080a12,#15192a 56%,#090b13);opacity:0;pointer-events:none;transition:opacity .35s}
+#login.is-active{opacity:1;pointer-events:auto}
+.login-card{display:grid;gap:16px;width:min(380px,calc(100vw - 32px));border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(18,22,34,.88);box-shadow:var(--shadow);padding:26px;text-align:center;backdrop-filter:blur(18px)}
+.login-avatar{display:grid;place-items:center;width:74px;height:74px;margin:auto;border-radius:18px;background:linear-gradient(135deg,var(--accent),#f6a24d);font-size:28px;font-weight:950;color:#fff}
+.login-card h1{margin:0;font-size:24px}
+.login-card p{margin:0;color:var(--muted);line-height:1.5}
+.field{display:grid;gap:6px;text-align:left;color:var(--muted);font-size:12px;font-weight:800}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--panel-2);color:var(--text);padding:10px 12px;outline:none}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.primary,.secondary,.danger,.ghost{min-height:38px;border:1px solid transparent;border-radius:8px;padding:0 14px;color:var(--text);font-weight:850}
+.primary{background:linear-gradient(135deg,var(--accent),#4d9dff)}
+.secondary{background:var(--panel-3);border-color:var(--line)}
+.danger{background:#8f263b}
+.ghost{background:transparent;border-color:var(--line)}
+.shell{position:fixed;inset:0;display:grid;grid-template-rows:38px 1fr 70px;background:#05070d;opacity:0;transition:opacity .35s}
+.shell.is-active{opacity:1}
+.wallpaper{position:absolute;inset:0;background:linear-gradient(120deg,rgba(124,92,255,.18),transparent 30%),linear-gradient(150deg,transparent 18%,rgba(245,158,82,.22) 42%,transparent 60%),linear-gradient(20deg,transparent 44%,rgba(25,198,212,.18) 60%,transparent 76%),repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 1px,transparent 1px 78px),linear-gradient(145deg,#070b14,#0e1020 48%,#05070d);z-index:0}
+.wallpaper::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.035),transparent 12% 88%,rgba(255,255,255,.03)),repeating-linear-gradient(0deg,rgba(255,255,255,.024) 0 1px,transparent 1px 48px);mask-image:linear-gradient(to bottom,transparent,black 18%,black 82%,transparent);pointer-events:none}
+.topbar{position:relative;z-index:8;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:38px;padding:0 18px;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(3,5,10,.82);backdrop-filter:blur(18px)}
+.topbar-brand,.topbar-status,.topbar-actions{display:flex;align-items:center;gap:10px;min-width:0}
+.topbar-brand strong{font-size:13px;letter-spacing:0}
+.topbar-status{justify-content:center;color:#e9eeff;font-size:13px;font-weight:850}
+.topbar-actions{justify-content:flex-end;color:var(--muted);font-size:12px}
+.topbar button,.activity-strip button,.side-rail button{border:1px solid transparent;background:transparent;color:inherit}
+.topbar button{min-height:28px;border-radius:8px;padding:0 10px;color:var(--muted);font-weight:850}
+.topbar button:hover,.topbar button:focus-visible{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;outline:none}
+.desktop{position:relative;z-index:1;overflow:hidden}
+.side-rail{position:absolute;left:16px;top:54px;bottom:18px;z-index:6;display:grid;align-content:start;gap:8px;width:132px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:linear-gradient(180deg,rgba(17,23,37,.86),rgba(8,11,18,.74));box-shadow:0 26px 80px rgba(0,0,0,.28);padding:12px;backdrop-filter:blur(22px)}
+.side-rail strong{margin:2px 0 4px;color:#fff;font-size:12px}
+.side-rail button{display:flex;align-items:center;gap:9px;min-height:38px;border-radius:8px;padding:0 9px;color:#dfe6ff;font-size:12px;font-weight:850;text-align:left}
+.side-rail button:hover,.side-rail button:focus-visible,.side-rail button.is-active{border-color:rgba(124,92,255,.52);background:rgba(124,92,255,.22);outline:none}
+.activity-strip{position:absolute;left:166px;right:18px;top:20px;z-index:5;display:grid;grid-template-columns:minmax(260px,1.1fr) repeat(4,minmax(130px,.62fr));gap:10px}
+.activity-card{display:grid;gap:4px;min-height:72px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.035));box-shadow:0 22px 58px rgba(0,0,0,.26);padding:12px;text-align:left;backdrop-filter:blur(18px)}
+.activity-card:first-child{background:linear-gradient(135deg,rgba(124,92,255,.28),rgba(25,198,212,.11));}
+.activity-card small{color:var(--muted);font-weight:850;text-transform:uppercase;font-size:10px;letter-spacing:.06em}
+.activity-card strong{font-size:14px;color:#fff}
+.activity-card span{color:#cbd5ef;font-size:12px;line-height:1.35}
+.activity-card:hover,.activity-card:focus-visible{border-color:rgba(25,198,212,.5);background:rgba(25,198,212,.1);outline:none}
+.desktop-icons{position:absolute;top:110px;left:170px;display:grid;grid-template-columns:repeat(2,86px);grid-auto-rows:86px;gap:10px}
+.desktop-icon{display:grid;gap:6px;justify-items:center;align-content:center;border:1px solid transparent;border-radius:10px;background:rgba(255,255,255,.035);color:#fff;text-align:center;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.desktop-icon:hover,.desktop-icon:focus-visible{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.18)}
+.desktop-icon strong{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#30395c);font-size:13px}
+.desktop-icon span{font-size:12px;font-weight:850}
+.window-layer{position:absolute;inset:0 0 0 0}
+.taskbar{position:relative;z-index:10;display:flex;align-items:center;gap:10px;height:70px;margin:0 18px 14px;padding:8px 12px;border:1px solid rgba(255,255,255,.12);border-radius:8px;background:rgba(9,11,18,.82);box-shadow:0 22px 70px rgba(0,0,0,.34);backdrop-filter:blur(22px)}
+.start-button{display:grid;place-items:center;width:46px;height:46px;border:0;border-radius:8px;background:linear-gradient(135deg,var(--accent),#f59e52);color:#fff;font-weight:950}
+.taskbar-apps{display:flex;align-items:center;gap:7px;min-width:0;flex:1;overflow:auto}
+.taskbar-app{display:flex;align-items:center;gap:8px;height:44px;max-width:190px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.08);color:var(--text);padding:0 12px;white-space:nowrap}
+.taskbar-app.is-active{background:rgba(124,92,255,.36);border-color:rgba(124,92,255,.8)}
+.tray{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.tray button{border:0;background:transparent;color:var(--muted);font-weight:800}
+.locale-button{display:inline-flex;align-items:center;gap:6px;min-height:32px;border:1px solid rgba(255,255,255,.12)!important;border-radius:8px!important;background:rgba(255,255,255,.06)!important;color:var(--text)!important;padding:0 10px!important}
+.locale-button svg{width:14px;height:14px;stroke:currentColor;stroke-width:2;fill:none}
+.locale-button:hover,.locale-button:focus-visible{border-color:var(--accent)!important;background:rgba(124,92,255,.18)!important;outline:none}
+.clock{display:grid;text-align:right;line-height:1.15;color:var(--text)}
+.clock small{color:var(--muted)}
+.start-menu{position:absolute;left:18px;bottom:92px;z-index:12;display:none;width:min(760px,calc(100vw - 36px));max-height:min(680px,calc(100vh - 116px));border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(18,22,34,.95);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(18px)}
+.start-menu.is-active{display:grid;grid-template-rows:auto auto auto 1fr auto}
+.start-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.start-head strong{font-size:17px}
+.start-search{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.start-search input{width:100%;height:40px;border:1px solid var(--line);border-radius:9px;background:var(--panel-2);color:var(--text);padding:0 12px;outline:none}
+.cats{display:flex;gap:7px;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.cat{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);padding:6px 10px;font-size:12px;font-weight:850}
+.cat.is-active{background:rgba(124,92,255,.24);border-color:var(--accent);color:#fff}
+.app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;overflow:auto;padding:14px 16px}
+.app-tile{display:grid;gap:7px;justify-items:center;align-content:center;min-height:88px;border:1px solid transparent;border-radius:10px;background:rgba(255,255,255,.045);color:var(--text);text-align:center}
+.app-tile:hover,.app-tile:focus-visible{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.16)}
+.app-tile strong{display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#24314e);font-size:12px}
+.app-tile span{font-size:12px;font-weight:850;line-height:1.2}
+.start-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid rgba(255,255,255,.1);color:var(--muted);font-size:12px}
+.window{position:absolute;display:flex;flex-direction:column;min-width:320px;min-height:220px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(17,23,37,.96);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(18px)}
+.window.is-max{inset:0 0 0 0!important;width:100%!important;height:100%!important;border-radius:0}
+.window.is-min{display:none}
+.window.is-focused{border-color:rgba(124,92,255,.8);box-shadow:0 0 0 1px rgba(124,92,255,.25),var(--shadow)}
+.window-head{display:flex;align-items:center;gap:8px;height:40px;background:linear-gradient(180deg,rgba(33,43,64,.96),rgba(22,29,44,.96));border-bottom:1px solid rgba(255,255,255,.1);padding:0 8px;cursor:move}
+.window-head strong{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.window-mark{display:grid;place-items:center;width:24px;height:24px;border-radius:7px;background:rgba(124,92,255,.2);color:#fff;font-size:11px;font-weight:950}
+.window-controls{display:flex;gap:4px}
+.window-controls button{display:grid;place-items:center;width:28px;height:26px;border:0;border-radius:6px;background:transparent;color:var(--muted);font-weight:900}
+.window-controls button:hover{background:rgba(255,255,255,.1);color:#fff}
+.window-controls .close:hover{background:var(--bad);color:#1b0d12}
+.window-body{flex:1;overflow:auto;background:var(--panel)}
+.resize-handle{position:absolute;right:0;bottom:0;width:18px;height:18px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 52%,rgba(255,255,255,.22) 52% 64%,transparent 64% 72%,rgba(255,255,255,.22) 72% 82%,transparent 82%)}
+.app{height:100%;padding:14px;overflow:auto}
+.grid{display:grid;gap:10px}
+.grid.cols{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:12px}
+.card h3,.card h4{margin:0 0 8px}
+.muted{color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.seis-bridge{display:grid;gap:14px;align-content:start}
+.seis-bridge-hero{display:grid;gap:12px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(135deg,rgba(124,92,255,.2),rgba(25,198,212,.09) 48%,rgba(255,255,255,.04));padding:18px;box-shadow:0 18px 54px rgba(0,0,0,.22)}
+.seis-bridge-hero h2{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:0;line-height:1}
+.seis-bridge-hero p{max-width:760px;margin:0;color:var(--muted);line-height:1.5}
+.bridge-status{display:flex;flex-wrap:wrap;gap:8px}
+.bridge-status span{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.065);padding:6px 10px;color:#dfe7ff;font-size:12px;font-weight:850}
+.bridge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.bridge-card{display:grid;gap:8px;min-height:132px;border:1px solid rgba(255,255,255,.11);border-radius:12px;background:rgba(255,255,255,.052);color:var(--text);padding:13px;text-align:left}
+.bridge-card:hover,.bridge-card:focus-visible{border-color:rgba(25,198,212,.65);background:rgba(25,198,212,.09);outline:none}
+.bridge-card strong{font-size:15px}
+.bridge-card small{color:var(--accent-2);font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.bridge-actions{display:flex;flex-wrap:wrap;gap:8px}
+.search-scope-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.search-scope-tabs button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.045);color:var(--muted);padding:7px 11px;font-size:12px;font-weight:850}
+.search-scope-tabs button.is-active{border-color:var(--accent);background:rgba(124,92,255,.22);color:#fff}
+.search-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.bridge-workspace{display:grid;gap:12px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(5,7,13,.5);padding:12px}
+.bridge-workspace h3{margin:0}
+.mini-ide{display:grid;grid-template-columns:160px 1fr 190px;min-height:310px;border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;background:#090d16}
+.mini-rail{display:grid;align-content:start;gap:8px;border-right:1px solid rgba(255,255,255,.09);background:#0d1320;padding:10px}
+.mini-rail button{width:100%;border:1px solid transparent;border-radius:8px;background:rgba(255,255,255,.045);color:var(--text);padding:8px;text-align:left;font-size:12px;font-weight:850}
+.mini-rail button.is-active,.mini-rail button:hover{border-color:rgba(124,92,255,.65);background:rgba(124,92,255,.18)}
+.mini-editor{display:grid;grid-template-rows:auto 1fr auto}
+.mini-tabs{display:flex;gap:6px;border-bottom:1px solid rgba(255,255,255,.09);padding:8px;background:#0b101b}
+.mini-tabs span{border:1px solid rgba(255,255,255,.1);border-radius:999px;background:rgba(255,255,255,.05);padding:5px 9px;color:#dbe3ff;font-size:12px;font-weight:850}
+.code-lines{margin:0;overflow:auto;padding:12px;color:#d6e1ff;font:12px/1.65 "SFMono-Regular","Cascadia Code",monospace;white-space:pre-wrap}
+.mini-terminal{border-top:1px solid rgba(255,255,255,.09);background:#04070d;color:#c7f7d1;padding:10px;font:12px/1.5 "SFMono-Regular","Cascadia Code",monospace}
+.mini-side{display:grid;align-content:start;gap:9px;border-left:1px solid rgba(255,255,255,.09);background:#0d1320;padding:10px}
+.token-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:8px}
+.token-card{border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:10px}
+.token-card strong{display:block;font-size:12px}
+.swatch{display:block;width:100%;height:30px;border:1px solid rgba(255,255,255,.14);border-radius:8px;margin-top:8px;background:var(--accent)}
+.design-board{display:grid;grid-template-columns:1fr 230px;gap:10px;min-height:320px}
+.design-canvas{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:radial-gradient(circle at 24% 24%,rgba(124,92,255,.36),transparent 28%),radial-gradient(circle at 76% 70%,rgba(25,198,212,.26),transparent 28%),linear-gradient(145deg,#121827,#070a12)}
+.design-canvas::before{content:"";position:absolute;inset:34px 42px;border:1px solid rgba(255,255,255,.16);border-radius:18px;background:rgba(255,255,255,.065);box-shadow:0 30px 70px rgba(0,0,0,.38)}
+.design-chip{position:absolute;left:66px;top:68px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(5,7,13,.72);padding:8px 12px;font-size:12px;font-weight:900}
+.design-window{position:absolute;right:54px;bottom:46px;width:210px;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(8,11,19,.86);padding:12px}
+.prototype-card{display:grid;gap:8px}
+.metric-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.metric{border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:10px}
+.metric small{color:var(--muted);font-weight:850}
+.metric strong{display:block;margin-top:4px;font-size:20px}
+.meter{height:7px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}
+.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.store-list{display:grid;gap:8px}
+.store-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:10px}
+.waveform{display:flex;align-items:end;gap:5px;height:86px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.04);padding:12px}
+.waveform span{flex:1;border-radius:999px;background:linear-gradient(180deg,var(--accent-2),var(--accent));min-height:10px}
+.agent-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.agent-pill{display:grid;gap:5px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.055);padding:10px;text-align:left;color:var(--text)}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 18px var(--good)}
+.terminal{height:100%;background:#03050a;color:#d8e0ff;font:13px/1.55 "SFMono-Regular","Cascadia Code",monospace;padding:12px;overflow:auto}
+.terminal .line{white-space:pre-wrap;word-break:break-word}
+.terminal input{width:min(520px,60vw);border:0;outline:none;background:transparent;color:inherit;font:inherit}
+.prompt-user{color:var(--good)}.prompt-path{color:var(--accent-2)}.error{color:var(--bad)}.info{color:var(--accent-2)}.ok{color:var(--good)}
+.file-shell{display:grid;grid-template-columns:190px 1fr;min-height:100%}
+.file-side{border-right:1px solid rgba(255,255,255,.1);background:var(--panel-2);padding:10px}
+.file-side button,.file-row{width:100%;border:0;border-radius:8px;background:transparent;color:var(--text);padding:8px;text-align:left}
+.file-side button:hover,.file-row:hover{background:rgba(255,255,255,.08)}
+.file-main{padding:10px;display:grid;grid-template-rows:auto 1fr auto;gap:10px}
+.file-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;align-content:start}
+.file-item{display:grid;gap:7px;justify-items:center;min-height:86px;border:1px solid rgba(255,255,255,.09);border-radius:9px;background:rgba(255,255,255,.045);color:var(--text);padding:10px;text-align:center}
+.editor{display:grid;grid-template-rows:auto 1fr auto;height:100%;gap:10px}
+.editor textarea{min-height:280px;resize:none;border:1px solid var(--line);border-radius:9px;background:#0d111b;color:var(--text);padding:12px;font:13px/1.55 "SFMono-Regular","Cascadia Code",monospace}
+.calc-display{min-height:70px;display:grid;align-content:end;justify-content:end;border-radius:10px;background:#0d111b;padding:12px;font-size:30px}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.calc-grid button{min-height:48px}
+.toast-wrap{position:fixed;right:18px;top:18px;z-index:30;display:grid;gap:8px}
+.toast{width:min(340px,calc(100vw - 36px));border:1px solid rgba(255,255,255,.14);border-left:4px solid var(--accent);border-radius:10px;background:rgba(18,22,34,.95);box-shadow:var(--shadow);padding:12px}
+.toast strong{display:block;margin-bottom:3px}
+.toast p{margin:0;color:var(--muted);font-size:13px}
+.reference-shell{display:grid;grid-template-rows:auto 1fr auto;gap:10px;min-height:100%}
+.reference-cover{height:130px;background-position:center;background-size:cover;border-radius:10px;border:1px solid rgba(255,255,255,.12)}
+.reference-frame{width:100%;height:100%;min-height:320px;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#02050b}
+.reference-toolbar{display:flex;flex-wrap:wrap;gap:8px}
+.reference-vault{display:grid;gap:12px;align-content:start}
+.reference-hero{display:grid;gap:14px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:linear-gradient(135deg,rgba(25,198,212,.18),rgba(245,158,82,.12) 45%,rgba(255,255,255,.045));padding:18px;box-shadow:0 20px 58px rgba(0,0,0,.24)}
+.reference-hero h2{margin:0;font-size:clamp(24px,3vw,38px);line-height:1.05}
+.reference-hero p{margin:0;color:var(--muted);line-height:1.5}
+.reference-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.reference-stat{border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(5,7,13,.38);padding:10px}
+.reference-stat small{display:block;color:var(--muted);font-weight:850}
+.reference-stat strong{display:block;margin-top:4px;font-size:22px}
+.reference-filters{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+.reference-source-tabs{display:flex;flex-wrap:wrap;gap:7px}
+.reference-source-tabs button{border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.045);color:var(--muted);padding:7px 11px;font-size:12px;font-weight:850}
+.reference-source-tabs button.is-active{border-color:var(--accent-2);background:rgba(25,198,212,.16);color:#fff}
+.reference-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.reference-tile{display:grid;grid-template-rows:118px auto;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.052)}
+.reference-preview{width:100%;height:118px;border:0;background:#070b13 center/cover no-repeat;color:#fff}
+.reference-meta{display:grid;gap:8px;padding:10px}
+.reference-meta strong{font-size:14px;line-height:1.25}
+.reference-meta small{color:var(--accent-2);font-weight:900;text-transform:uppercase}
+.reference-actions{display:flex;flex-wrap:wrap;gap:7px}
+.reference-actions button{min-height:32px;padding:0 10px;font-size:12px}
+.live-demo-panel{display:grid;gap:12px;align-content:start}
+.live-hero{position:relative;display:grid;gap:14px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:radial-gradient(circle at 18% 18%,rgba(124,92,255,.34),transparent 32%),radial-gradient(circle at 78% 22%,rgba(25,198,212,.22),transparent 28%),linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.035));padding:18px;box-shadow:0 26px 80px rgba(0,0,0,.28)}
+.live-hero::after{content:"";position:absolute;right:-80px;bottom:-130px;width:360px;height:360px;border-radius:50%;background:conic-gradient(from 130deg,rgba(25,198,212,.18),rgba(124,92,255,.28),rgba(245,158,82,.18),rgba(25,198,212,.18));filter:blur(4px);opacity:.82;pointer-events:none}
+.live-hero>*{position:relative;z-index:1}
+.live-hero h2{margin:0;font-size:clamp(28px,4vw,46px);line-height:1;letter-spacing:-.03em}
+.live-hero p{max-width:780px;margin:0;color:var(--muted);line-height:1.5}
+.live-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.live-step{display:grid;gap:6px;min-height:118px;border:1px solid rgba(255,255,255,.1);border-radius:12px;background:rgba(255,255,255,.055);color:var(--text);padding:12px;text-align:left}
+.live-step:hover,.live-step:focus-visible,.live-step.is-active{border-color:rgba(25,198,212,.7);background:rgba(25,198,212,.1);outline:none}
+.live-step small{color:var(--accent-2);font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.live-step strong{font-size:15px}
+.source-stack{display:grid;gap:8px}
+.source-row{display:grid;grid-template-columns:minmax(120px,1fr) minmax(120px,2fr) 44px;gap:10px;align-items:center}
+.source-row small{color:var(--muted);font-weight:850;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.source-bar{height:9px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+.source-bar span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.live-timeline{display:grid;gap:8px}
+.live-tick{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.045);padding:10px}
+.live-tick span:first-child{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(124,92,255,.18);color:#fff;font-weight:950}
+.readiness-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.readiness-card{border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.045);padding:14px}
+.readiness-card strong{display:block;margin:4px 0;color:var(--text)}
+.evidence-list{display:grid;gap:0}
+.evidence-list div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid rgba(255,255,255,.08);padding:8px 0}
+.evidence-list div:last-child{border-bottom:0}
+@media(max-width:760px){
+  .window{left:10px!important;right:10px!important;top:46px!important;bottom:78px!important;width:auto!important;max-width:calc(100vw - 20px)!important;min-width:0!important;height:auto!important;max-height:calc(100vh - 124px)!important}
+  .window.is-max{left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;max-width:100vw!important;height:100%!important;max-height:100vh!important}
+  .window-head,.window-body{min-width:0}
+  .taskbar{width:calc(100vw - 16px);max-width:calc(100vw - 16px);margin:0 8px 8px;overflow:hidden}
+  .taskbar-apps{min-width:0;overflow:auto}
+  .taskbar-app{min-width:72px;max-width:132px;padding:0 9px}
+  .tray{flex-shrink:0;max-width:128px;overflow:hidden}
+  .side-rail{max-width:calc(100vw - 20px);overflow-x:auto}
+  .desktop-icons{grid-template-columns:repeat(3,78px);grid-auto-rows:78px}
+  .shell{grid-template-rows:38px 1fr 62px}
+  .topbar{grid-template-columns:1fr auto;padding:0 10px}
+  .topbar-status{display:none}
+  .side-rail{left:10px;right:10px;top:auto;bottom:14px;width:auto;grid-auto-flow:column;grid-auto-columns:minmax(74px,1fr);overflow:auto}
+  .side-rail strong{display:none}
+  .activity-strip{left:10px;right:10px;top:12px;grid-template-columns:1fr 1fr}
+  .activity-card{min-height:62px}
+  .desktop-icons{left:10px;top:158px}
+  .start-menu{left:0;right:0;bottom:62px;width:100%;border-radius:8px 8px 0 0}
+  .app-grid{grid-template-columns:repeat(3,1fr)}
+  .file-shell{grid-template-columns:1fr}
+  .mini-ide,.design-board{grid-template-columns:1fr}
+  .mini-side,.mini-rail{border:0}
+  .file-side{display:none}
+  .window,.window.is-max{inset:0!important;width:100%!important;height:100%!important;border-radius:0}
+  .taskbar{height:62px;margin:0;border-radius:0}
+  .tray span:not(.clock){display:none}
+}
+</style>
+</head>
+<body>
+<div id="boot" data-boot>
+  <div class="boot-card">
+    <div class="boot-logo">SEIS</div>
+    <div class="boot-ring" aria-hidden="true"></div>
+    <div class="boot-sub" data-locale-text="bootSub">Starting SEIS Linux Replica<br>Browser-local shell, VFS, windows, terminal, and 200+ reference modules.</div>
+    <div class="boot-bar"><div class="boot-fill" id="bootFill"></div></div>
+  </div>
+</div>
+<section id="login" aria-label="Local login">
+  <div class="login-card">
+    <div class="login-avatar">S</div>
+    <h1 data-locale-text="loginTitle">SEIS Linux Replica</h1>
+    <p data-locale-text="loginBody">Adapted from the supplied Web Linux shell code. Local demo only: no SSH, no host OS commands, no provider keys.</p>
+    <label class="field">User<input id="loginUser" value="seis"></label>
+    <button class="primary" id="loginButton" data-locale-text="enterDesktop">Enter Desktop</button>
+    <span class="muted" data-locale-text="loginTip">Tip: open Terminal and run help, ls, or neofetch.</span>
+  </div>
+</section>
+<main class="shell" id="shell" data-seis-linux-replica>
+  <div class="wallpaper" id="wallpaper"></div>
+  <header class="topbar" aria-label="SEIS system bar">
+    <div class="topbar-brand"><strong>SEIS System OS</strong><span class="muted">Linux-like local demo</span></div>
+    <div class="topbar-status">Focus. Create. Ship.</div>
+    <div class="topbar-actions">
+      <button type="button" data-quick-app="task-manager">App Switcher</button>
+      <button type="button" data-quick-app="search">Search</button>
+      <button type="button" data-quick-app="reference-vault">References</button>
+      <span>Wi-Fi</span><span>100%</span>
+    </div>
+  </header>
+  <section class="desktop" id="desktop">
+    <aside class="side-rail" id="sideRail" aria-label="Pinned SEIS apps"></aside>
+    <section class="activity-strip" aria-label="SEIS live activity">
+      <button class="activity-card" type="button" data-quick-app="live-demo"><small>Live Demo</small><strong>Linux-like SEIS OS</strong><span>Tek tikla tur, pencereler, terminal ve zip modulleri.</span></button>
+      <button class="activity-card" type="button" data-quick-app="code"><small>Code</small><strong>SEIS Code IDE</strong><span>Explorer, tabs, terminal, assistant.</span></button>
+      <button class="activity-card" type="button" data-quick-app="paint"><small>Design</small><strong>Design Studio</strong><span>Tokens, canvas, prototype handoff.</span></button>
+      <button class="activity-card" type="button" data-quick-app="cloud"><small>Cloud</small><strong>Mock-safe control</strong><span>SSH disabled, deploy planned.</span></button>
+      <button class="activity-card" type="button" data-quick-app="reference-vault"><small>References</small><strong>219 live modules</strong><span>ZIP kaynaklari pencere icinde acilir.</span></button>
+    </section>
+    <div class="desktop-icons" id="desktopIcons"></div>
+    <div class="window-layer" id="windowLayer"></div>
+  </section>
+  <nav class="taskbar">
+    <button class="start-button" id="startButton" aria-label="Open launcher">S</button>
+    <div class="taskbar-apps" id="taskbarApps"></div>
+    <div class="tray">
+      <button id="themeButton" data-locale-text="theme">Theme</button>
+      <button class="locale-button" id="localeButton" type="button" aria-label="Dil degistir">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"></path>
+        </svg>
+        <span data-locale-value>TR</span>
+      </button>
+      <span data-locale-text="localDemo">Local Demo</span>
+      <span class="clock"><strong id="clockTime">00:00</strong><small id="clockDate">Today</small></span>
+    </div>
+  </nav>
+  <aside class="start-menu" id="startMenu" aria-label="Application launcher">
+    <div class="start-head">
+      <div><strong>Applications</strong><div class="muted" id="appCount">0 apps</div></div>
+      <button class="secondary" id="closeStart">Close</button>
+    </div>
+    <div class="start-search"><input id="startSearch" type="search" placeholder="Search apps and files"></div>
+    <div class="cats" id="categories"></div>
+<div class="app-grid" id="startApps"></div>
+    <div class="start-foot"><span>SEIS Linux Replica route</span><button class="danger" id="lockButton">Lock</button></div>
+  </aside>
+</main>
+<div class="toast-wrap" id="toasts"></div>
+<script src="./reference-banks/reference-apps.js"></script>
+<script>
+(function(){
+"use strict";
+const VERSION="1.0.0-seis";
+const LOCALE_KEY="seis.locale.v1";
+const SESSION_KEY="seis-linux-replica-session.v1";
+const DEFAULT_LOCALE="tr";
+const LOCALES=["tr","en"];
+const COPY={
+  tr:{
+    title:"SEIS Linux Replica",
+    bootSub:"SEIS Linux Replica baslatiliyor<br>Tarayici yerel kabuk, VFS, pencereler, terminal ve 200+ referans modulu.",
+    loginTitle:"SEIS System OS",
+    loginBody:"Gonderilen referanslardan bagimsiz SEIS kimligiyle uyarlandi. Yalnizca Local Demo: SSH, host OS komutu ve provider key yok.",
+    enterDesktop:"Masaustune Gir",
+    loginTip:"Ipucu: Reference Vault'u ac veya Terminal'de refs, refopen, tour calistir.",
+    theme:"Tema",
+    localDemo:"Local Demo",
+    welcome:"Hos geldin ",
+    ready:"SEIS Linux Replica ",
+    readySuffix:" uygulama ile hazir."
+  },
+  en:{
+    title:"SEIS Linux Replica",
+    bootSub:"Starting SEIS Linux Replica<br>Browser-local shell, VFS, windows, terminal, and 200+ reference modules.",
+    loginTitle:"SEIS System OS",
+    loginBody:"Adapted from the supplied OS references under SEIS identity. Local demo only: no SSH, no host OS commands, no provider keys.",
+    enterDesktop:"Enter Desktop",
+    loginTip:"Tip: open Reference Vault or run refs, refopen, tour in Terminal.",
+    theme:"Theme",
+    localDemo:"Local Demo",
+    welcome:"Welcome ",
+    ready:"SEIS Linux Replica is ready with ",
+    readySuffix:" apps."
+  }
+};
+  const BASE_CATEGORIES=["all","system","references","productivity","developer","creative","media","games","internet","utilities"];
+  const BASE_APP_ENTRIES=[
+    ["terminal","Terminal","TRM","system","Linux-style terminal with browser-safe commands.","terminal",true],
+    ["files","Files","FIL","system","Browse, create, open, rename, and remove VFS files.","files",true],
+    ["settings","Settings","SET","system","Change accent, wallpaper, density, and local preferences.","settings",true],
+    ["search","Search","SRH","system","Search apps and VFS files.","search",true],
+    ["task-manager","App Switcher","SWI","system","Inspect, focus, and close open SEIS app windows.","task-manager",false],
+    ["system-monitor","System Monitor","CPU","system","Review browser-local system metrics.","monitor",false],
+    ["about","About","INF","system","Source, safety, and implementation boundary.","about",true],
+    ["reference-vault","Reference Vault","REF","references","Browse and launch the supplied ZIP reference modules inside SEIS windows.","reference-vault",true],
+    ["live-demo","Live Demo Console","LIVE","system","Run the Linux-like SEIS product demo with live windows, terminal commands, source metrics, and supplied ZIP modules.","live-demo",true],
+    ["demo-readiness","Demo Readiness","QA","system","Review local demo gates, static route evidence, mobile fit checks, and honest mock/live boundaries.","readiness",true],
+    ["text-editor","Text Editor","TXT","productivity","Edit text and save to /home/seis.","editor",true],
+    ["notes","Notes","NTE","productivity","Capture notes and save markdown files.","notes",false],
+    ["todo","To-Do","TODO","productivity","Create local tasks and toggle completion.","todo",false],
+    ["calendar","Calendar","CAL","productivity","Plan local events and daily notes.","generic",false],
+    ["kanban","Kanban","KAN","productivity","Move work across local planning states.","generic",false],
+    ["spreadsheet","Spreadsheet","SHT","productivity","Edit a small local table.","generic",false],
+    ["writer","Writer","DOC","productivity","Draft a local document.","generic",false],
+    ["flashcards","Cards","CRD","productivity","Practice local flashcards.","generic",false],
+    ["code","Code Editor","IDE","developer","Open a code-like local editor.","seis-bridge",true],
+    ["json","JSON Viewer","JSON","developer","Format and validate local JSON text.","generic",false],
+    ["regex","Regex Tester","REG","developer","Run local regex matching.","generic",false],
+    ["base64","Base64","B64","developer","Encode and decode local text.","generic",false],
+    ["api","API Lab","API","developer","Compose mock-safe API requests.","generic",false],
+    ["diff","Diff Viewer","DIF","developer","Compare two local snippets.","generic",false],
+    ["package","Package Info","PKG","developer","Inspect package metadata notes.","generic",false],
+    ["paint","Paint","PNT","creative","Draw simple local strokes on a canvas.","seis-bridge",true],
+    ["pixel","Pixel Art","PIX","creative","Create a small pixel board.","generic",false],
+    ["palette","Palette","CLR","creative","Save color swatches.","generic",false],
+    ["svg","SVG Studio","SVG","creative","Draft small SVG snippets.","generic",false],
+    ["whiteboard","Whiteboard","WHT","creative","Create sticky-note boards.","generic",false],
+    ["music","Music","MUS","media","Play local demo track state.","seis-bridge",true],
+    ["video","Video","VID","media","Use browser-local video controls.","generic",false],
+    ["image","Image Viewer","IMG","media","Inspect local image placeholders.","generic",false],
+    ["radio","Radio","RAD","media","Tune local stations.","generic",false],
+    ["recorder","Recorder","REC","media","Mock-safe audio recorder state.","generic",false],
+    ["snake","Snake","SNK","games","Local score game shell.","game",false],
+    ["tetris","Tetris","TET","games","Local score game shell.","game",false],
+    ["mines","Mines","MIN","games","Local score game shell.","game",false],
+    ["memory","Memory","MEM","games","Local score game shell.","game",false],
+    ["2048","2048","2048","games","Local score game shell.","game",false],
+    ["sudoku","Sudoku","SDK","games","Local score game shell.","game",false],
+    ["chess","Chess","CHS","games","Local score game shell.","game",false],
+    ["pong","Pong","PNG","games","Local score game shell.","game",false],
+    ["browser","Browser","WEB","internet","Open internal mock-safe web cards.","seis-bridge",true],
+    ["mail","Mail","EML","internet","Draft local email; no sending.","generic",false],
+    ["maps","Maps","MAP","internet","Explore local coordinates.","generic",false],
+    ["news","News","NWS","internet","Read local news cards.","generic",false],
+    ["chat","Chat","CHT","internet","Local message simulation.","generic",false],
+    ["calculator","Calculator","CALC","utilities","Run calculator operations.","calculator",true],
+    ["weather","Weather","WX","utilities","Local demo weather card.","generic",false],
+    ["clock","Clock","CLK","utilities","Show time and timers.","generic",false],
+    ["stopwatch","Stopwatch","SW","utilities","Start and reset elapsed time.","generic",false],
+    ["timer","Timer","TMR","utilities","Local countdown control.","generic",false],
+    ["unit","Unit Converter","UNI","utilities","Convert common values.","generic",false],
+    ["currency","Currency","CUR","utilities","Mock-safe conversion.","generic",false],
+    ["qr","QR Studio","QR","utilities","Generate a local QR-style tile.","generic",false],
+    ["morse","Morse","MRS","utilities","Translate letters to Morse.","generic",false],
+    ["password","Password Gen","KEY","utilities","Generate placeholder passwords only.","generic",false],
+    ["vault","Vault","VLT","utilities","Placeholder-only secret boundary.","generic",false],
+    ["store","SEIS Store","STR","system","Browse installed local app catalog.","seis-bridge",false],
+    ["launcher","Launchpad","GRID","system","Open all app tiles.","launchpad",false],
+    ["logs","Logs","LOG","system","Inspect local event log.","logs",false],
+    ["downloads","Downloads","DL","system","Review exported VFS records.","generic",false],
+    ["backup","Backup Center","BKP","system","Create browser-local backup status snapshots.","generic",false],
+    ["help","Help","HLP","system","Read local help and shortcuts.","about",false],
+    ["demo","Demo Studio","RUN","system","Run a guided local product journey.","seis-bridge",false],
+    ["cloud","Cloud Boundary","CLD","internet","Shows disabled SSH/cloud states honestly.","seis-bridge",false]
+  ];
+  function normalizeReferenceCategory(value){
+    const raw=String(value||"reference").toLowerCase().trim();
+    if(!raw) return "reference";
+    return raw.replace(/[^a-z0-9]+/g,"-");
+  }
+  function normalizeReferenceEntry(entry){
+    if(!entry || typeof entry!=="object") return null;
+    const id=String(entry.id||`reference-${Math.random().toString(36).slice(2)}`);
+    const icon=String(entry.icon||"REF").slice(0,12);
+    const category=normalizeReferenceCategory(entry.category||"reference");
+    const description=String(entry.description||"Reference module");
+    const route=String(entry.route||"").trim() || null;
+    const thumbnail=String(entry.thumbnail||"").trim() || "";
+    const source=String(entry.source||"").trim() || "reference";
+    return{
+      id,
+      name:String(entry.name||entry.title||"Reference App"),
+      icon,
+      category,
+      description,
+      type:"reference",
+      desktop:Boolean(entry.desktop),
+      bridge:null,
+      route,
+      thumbnail,
+      source
+    };
+  }
+  const REFERENCE_APP_ENTRIES=Array.isArray(window.SEIS_REFERENCE_APPS)
+    ? window.SEIS_REFERENCE_APPS.map(normalizeReferenceEntry).filter(Boolean)
+    : [];
+  const REFERENCE_SOURCE_COUNTS=REFERENCE_APP_ENTRIES.reduce((acc,app)=>{acc[app.source]=(acc[app.source]||0)+1;return acc},{});
+  const REFERENCE_SOURCES=Object.keys(REFERENCE_SOURCE_COUNTS).sort();
+  const CATEGORIES=[...new Set([...BASE_CATEGORIES,...REFERENCE_APP_ENTRIES.map(app=>app.category)])];
+  const VFS={
+  "/":{type:"dir",children:{
+    home:{type:"dir",children:{seis:{type:"dir",children:{
+    "welcome.txt":{type:"file",content:"Welcome to SEIS Linux Replica. This browser-local environment is adapted from the supplied Web Linux code: boot, login, taskbar, windows, VFS, terminal commands, 219 supplied ZIP reference modules, and a connected SEIS bridge for Search, Code, Design, Cloud, Store, Website, and AI Core routes."},
+      "notes.md":{type:"file",content:"# SEIS Notes\n\n- Linux-like browser shell\n- 200+ launchable apps and reference modules\n- Connected SEIS Search, Code, Design, Cloud, Store, Website, and AI Core route cards\n- Local Demo boundary\n- No SSH or host command execution"},
+      Projects:{type:"dir",children:{"readme.md":{type:"file",content:"# Projects\n\nUse Files, Editor, and Terminal to inspect this VFS."}}},
+      Music:{type:"dir",children:{"playlist.txt":{type:"file",content:"SEIS Core Orbit\nCommand Palette\nPrism Wave\nLocal Demo Pulse"}}}
+    }}}},
+    etc:{type:"dir",children:{"os-release":{type:"file",content:"NAME=\"SEIS Linux Replica\"\nVERSION=\""+VERSION+"\"\nID=seis-linux-replica\nID_LIKE=linux\nPRETTY_NAME=\"SEIS Linux Replica\""}}},
+    var:{type:"dir",children:{log:{type:"dir",children:{"syslog":{type:"file",content:"[OK] Browser shell initialized\n[OK] VFS mounted\n[OK] Window manager ready\n[INFO] Local Demo only"}}}}},
+    tmp:{type:"dir",children:{}}
+  }}
+};
+const SEIS_BRIDGE_TARGETS=[
+  {appId:"search",title:"SEIS Search Gateway",glyph:"SRH",scope:"Search",state:"Working",route:"./desktop.html#search",summary:"AI, Web, Code, Design, Cloud, Apps, Plugins, and Files result scopes inside the main SEIS Desktop OS.",primary:"Open Desktop Search",local:"Open local search"},
+  {appId:"code",title:"SEIS Code IDE",glyph:"IDE",scope:"Code",state:"Working",route:"./seis-code.html",summary:"VS Code-like browser IDE with explorer, multi-tabs, terminal, extensions, source-control safe/mock mode, preview, and Local Demo assistant.",primary:"Open SEIS Code Web",local:"Open local editor"},
+  {appId:"paint",title:"SEIS Design Studio",glyph:"DSN",scope:"Design",state:"Local Demo",route:"./desktop.html#seis-design",summary:"Design tokens, component cards, prototype handoff, motion proof, and browser-local canvas work without image provider keys.",primary:"Open Design Studio",local:"Open design canvas"},
+  {appId:"cloud",title:"SEIS Cloud Center",glyph:"CLD",scope:"Cloud",state:"Mock Safe",route:"./desktop.html#seis-cloud",summary:"Sync, storage, deployment, repository, SSH, logs, backups, health, and usage readiness with explicit disabled/planned states.",primary:"Open Cloud Center",local:"Open cloud boundary"},
+  {appId:"store",title:"SEIS Store",glyph:"STR",scope:"Store",state:"Local Demo",route:"./desktop.html#seis-store",summary:"Local catalog for apps, plugins, AI agents, themes, developer tools, design tools, and install/update state.",primary:"Open Store",local:"Open catalog"},
+  {appId:"music",title:"SEIS Music",glyph:"MUS",scope:"Music",state:"Working",route:"./desktop.html#music",summary:"Local player state, playlists, album cards, waveform-style controls, and AI recommendation labels in mock-safe mode.",primary:"Open Music",local:"Open player"},
+  {appId:"browser",title:"SEIS Website Hub",glyph:"WEB",scope:"Web",state:"Working",route:"./website/index.html",summary:"Written premium product pages for SEIS AI, OS, Code, Design, Search, Cloud, Store, and Agents.",primary:"Open Website",local:"Open browser card"},
+  {appId:"demo",title:"SEIS AI Core",glyph:"AI",scope:"AI",state:"Local Demo",route:"./desktop.html#ai-assistant",summary:"AI command center, provider status, Local Demo mode, model-router concept, plugin awareness, and sub-agent operating lanes.",primary:"Open AI Core",local:"Open demo studio"}
+  ];
+  const SEIS_BRIDGE_BY_APP=Object.fromEntries(SEIS_BRIDGE_TARGETS.map(target=>[target.appId,target]));
+  const PINNED_APPS=["live-demo","demo-readiness","reference-vault","demo","search","code","paint","cloud","files","terminal","store","music"];
+  const APP_CATALOG=[
+    ...BASE_APP_ENTRIES.map(([id,name,icon,category,description,type,desktop])=>{
+      const bridge=SEIS_BRIDGE_BY_APP[id]||null;
+      return{id,name:bridge?.title||name,icon:bridge?.glyph||icon,category,description:bridge?.summary||description,type,desktop,bridge};
+    }),
+    ...REFERENCE_APP_ENTRIES
+  ];
+const state={windows:[],counter:0,z:5,category:"all",query:"",locale:resolveLocale(),accent:localStorage.getItem("seis-replica-accent")||"#7c5cff",dark:localStorage.getItem("seis-replica-dark")!=="false",logs:[],sessionRestored:false};
+const $=(sel,root=document)=>root.querySelector(sel);
+const $$=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
+function readDemoIntent(){try{const params=new URLSearchParams(location.search);const hash=location.hash.toLowerCase();return params.get("demo")==="live"||params.get("tour")==="live"||params.has("live")||hash.includes("live-demo")||hash.includes("tour")}catch{return false}}
+const DEMO_INTENT=readDemoIntent();
+let demoIntentConsumed=false;
+function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+function referenceSourceLabel(source){return String(source||"reference").replace(/[_-]+/g," ").replace(/\b\w/g,c=>c.toUpperCase())}
+function filteredReferenceApps(source="all",query=""){const q=String(query||"").toLowerCase().trim();return REFERENCE_APP_ENTRIES.filter(app=>(source==="all"||app.source===source)&&(!q||`${app.name} ${app.category} ${app.source}`.toLowerCase().includes(q)))}
+function findReferenceApp(term){const value=String(term||"").toLowerCase().trim();if(!value)return null;const index=Number(value);if(Number.isInteger(index)&&index>0)return REFERENCE_APP_ENTRIES[index-1]||null;return REFERENCE_APP_ENTRIES.find(app=>app.id.toLowerCase()===value||app.name.toLowerCase().includes(value)||app.category.toLowerCase().includes(value)||app.source.toLowerCase().includes(value))||null}
+function referenceSourceRows(){const total=Math.max(REFERENCE_APP_ENTRIES.length,1);return REFERENCE_SOURCES.map(source=>({source,label:referenceSourceLabel(source),count:REFERENCE_SOURCE_COUNTS[source]||0,share:Math.round(((REFERENCE_SOURCE_COUNTS[source]||0)/total)*100)})).sort((a,b)=>b.count-a.count)}
+function renderSourceStack(limit=8){const rows=referenceSourceRows().slice(0,limit);return"<div class=\"source-stack\">"+rows.map(row=>"<div class=\"source-row\"><small>"+escapeHtml(row.label)+"</small><div class=\"source-bar\"><span style=\"width:"+row.share+"%\"></span></div><strong>"+row.count+"</strong></div>").join("")+"</div>"}
+function openDemoTour(){["live-demo","demo-readiness","reference-vault","terminal","search","code","paint","cloud"].forEach((id,index)=>setTimeout(()=>openApp(id),index*150));toast("SEIS Demo","Live Linux-like tour opened");log("tour:live-demo-readiness-reference-vault-terminal-search-code-design-cloud")}
+function normalize(path){const parts=[];String(path||"/").split("/").forEach(part=>{if(!part||part===".")return;if(part==="..")parts.pop();else parts.push(part)});return"/"+parts.join("/");}
+function pathJoin(base,next){return normalize(String(next||"").startsWith("/")?next:base+"/"+next);}
+function nodeAt(path){const parts=normalize(path).split("/").filter(Boolean);let node=VFS["/"];for(const part of parts){if(!node.children||!node.children[part])return null;node=node.children[part]}return node;}
+function parentOf(path){const normalized=normalize(path);const parts=normalized.split("/").filter(Boolean);const name=parts.pop();const parent=nodeAt("/"+parts.join("/"));return{parent,name,path:normalized};}
+function listFiles(path="/"){const found=[];function walk(node,current){if(!node||!node.children)return;Object.entries(node.children).forEach(([name,child])=>{const next=(current==="/"?"/":current+"/")+name;found.push({path:next,name,type:child.type,content:child.content||""});if(child.type==="dir")walk(child,next)})}walk(nodeAt(path),path);return found;}
+function toast(title,body){const wrap=$("#toasts");const el=document.createElement("div");el.className="toast";el.innerHTML="<strong>"+escapeHtml(title)+"</strong><p>"+escapeHtml(body)+"</p>";wrap.appendChild(el);setTimeout(()=>el.remove(),4200)}
+function log(event){state.logs.unshift({time:new Date().toLocaleTimeString(),event});state.logs=state.logs.slice(0,60)}
+function applyAccent(){document.documentElement.style.setProperty("--accent",state.accent);localStorage.setItem("seis-replica-accent",state.accent);saveSession("accent")}
+function readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||"null")||{}}catch{return{}}}
+function saveSession(reason="state"){try{localStorage.setItem(SESSION_KEY,JSON.stringify({version:VERSION,locale:state.locale,accent:state.accent,openApps:state.windows.filter(w=>!w.closed).map(w=>w.appId).slice(-12),focusedApp:state.windows.find(w=>w.id===focusedId())?.appId||null,reason,updatedAt:new Date().toISOString()}))}catch{/* ignored */}}
+function resolveLocale(){try{const stored=localStorage.getItem(LOCALE_KEY);if(LOCALES.includes(stored))return stored}catch{/* ignored */}return DEFAULT_LOCALE}
+function t(key){return COPY[state.locale]?.[key]||COPY[DEFAULT_LOCALE][key]||key}
+function applyLocale(locale=state.locale,persist=true){state.locale=LOCALES.includes(locale)?locale:DEFAULT_LOCALE;document.documentElement.lang=state.locale;document.title=t("title");$$("[data-locale-text]").forEach(node=>{const value=t(node.dataset.localeText);if(node.dataset.localeText==="bootSub")node.innerHTML=value;else node.textContent=value});$("[data-locale-value]").textContent=state.locale.toUpperCase();if(persist){try{localStorage.setItem(LOCALE_KEY,state.locale)}catch{/* ignored */}saveSession("locale")}}
+function toggleLocale(){applyLocale(state.locale==="tr"?"en":"tr",true);toast("Locale",state.locale.toUpperCase())}
+function boot(){let progress=0;const fill=$("#bootFill");const timer=setInterval(()=>{progress+=Math.ceil(Math.random()*18);fill.style.width=Math.min(progress,100)+"%";if(progress>=100){clearInterval(timer);setTimeout(()=>{$("#boot").classList.add("is-hidden");$("#login").classList.add("is-active");if(DEMO_INTENT&&!demoIntentConsumed){$("#loginUser").value="demo";setTimeout(()=>enterDesktop(),350)}},250)}},180)}
+function enterDesktop(){const user=$("#loginUser").value||"seis";$("#login").classList.remove("is-active");$("#shell").classList.add("is-active");toast(t("welcome")+user,t("ready")+APP_CATALOG.length+t("readySuffix"));log("login:"+user);restoreSessionApps();if(DEMO_INTENT&&!demoIntentConsumed){demoIntentConsumed=true;setTimeout(()=>{openDemoTour();toast("SEIS Demo","Deep-link live tour started")},300)}}
+function updateClock(){const now=new Date();$("#clockTime").textContent=now.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});$("#clockDate").textContent=now.toLocaleDateString([], {weekday:"short",month:"short",day:"numeric"})}
+function restoreSessionApps(){const session=readSession();const restored=(Array.isArray(session.openApps)?session.openApps:[]).filter(id=>APP_CATALOG.some(app=>app.id===id)).slice(0,4);(restored.length?restored:["live-demo","reference-vault","terminal"]).forEach(openApp)}
+function updateSideRailState(){const focused=state.windows.find(w=>w.id===focusedId())?.appId||"";$$("[data-side-app]").forEach(btn=>btn.classList.toggle("is-active",btn.dataset.sideApp===focused))}
+function renderSideRail(){const host=$("#sideRail");host.innerHTML="<strong>Core Apps</strong>"+PINNED_APPS.map(id=>APP_CATALOG.find(app=>app.id===id)).filter(Boolean).map(app=>"<button type=\"button\" data-side-app=\""+escapeHtml(app.id)+"\"><span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span></button>").join("");$$("[data-side-app]",host).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.sideApp));updateSideRailState()}
+function renderDesktopIcons(){const host=$("#desktopIcons");host.innerHTML="";APP_CATALOG.filter(a=>a.desktop).slice(0,10).forEach(app=>{const b=document.createElement("button");b.className="desktop-icon";b.dataset.app=app.id;b.innerHTML="<strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>openApp(app.id);host.appendChild(b)})}
+function renderCategoryLabel(category){
+  if(category==="all") return "All";
+  return String(category).toLowerCase().replace(/[-_]+/g," ").split(" ").map(part=>part[0] ? part[0].toUpperCase()+part.slice(1) : "").join(" ");
+}
+function renderCategories(){const host=$("#categories");host.innerHTML="";CATEGORIES.forEach(cat=>{const b=document.createElement("button");b.className="cat"+(state.category===cat?" is-active":"");b.textContent=renderCategoryLabel(cat);b.onclick=()=>{state.category=cat;renderStartMenu()};host.appendChild(b)})}
+function renderStartMenu(){const host=$("#startApps");const query=state.query.toLowerCase();const apps=APP_CATALOG.filter(app=>(state.category==="all"||app.category===state.category)&&(!query||app.name.toLowerCase().includes(query)||app.description.toLowerCase().includes(query)||app.category.includes(query)));host.innerHTML=apps.map(app=>"<button class=\"app-tile\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+"</strong><span>"+escapeHtml(app.name)+"</span></button>").join("")||"<div class=\"muted\">No apps found.</div>";$$(".app-tile",host).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.app));$("#appCount").textContent=APP_CATALOG.length+" apps / "+apps.length+" shown";renderCategories()}
+function toggleStart(force){$("#startMenu").classList.toggle("is-active",force)}
+function renderTaskbar(){const host=$("#taskbarApps");host.innerHTML="";state.windows.filter(w=>!w.closed).forEach(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId)||{id:w.appId,name:w.appId,icon:"APP"};const b=document.createElement("button");b.className="taskbar-app"+(w.id===focusedId()?" is-active":"");b.innerHTML="<span>"+escapeHtml(app.icon)+"</span><span>"+escapeHtml(app.name)+"</span>";b.onclick=()=>{const node=$("#"+w.id);if(w.min){w.min=false;node?.classList.remove("is-min")}focusWindow(w.id)};host.appendChild(b)});updateSideRailState()}
+function focusedId(){return state.windows.filter(w=>!w.closed&&!w.min).sort((a,b)=>b.z-a.z)[0]?.id||""}
+function openApp(appId){const app=APP_CATALOG.find(a=>a.id===appId);if(!app)return;toggleStart(false);const existing=state.windows.find(w=>w.appId===appId&&!w.closed);if(existing){existing.min=false;$("#"+existing.id)?.classList.remove("is-min");focusWindow(existing.id);saveSession("focus");return}const id="win"+(++state.counter);const win={id,appId,z:++state.z,min:false,max:false,closed:false};state.windows.push(win);const node=document.createElement("section");node.className="window";node.id=id;node.dataset.appId=appId;const offset=(state.windows.length%7)*26;const size=defaultSize(app);node.style.left=Math.min(190+offset,innerWidth-360)+"px";node.style.top=Math.min(82+offset,innerHeight-320)+"px";node.style.width=Math.max(320,Math.min(size.w,innerWidth-24))+"px";node.style.height=Math.max(220,Math.min(size.h,innerHeight-120))+"px";node.style.zIndex=win.z;node.innerHTML="<header class=\"window-head\"><span class=\"window-mark\">"+escapeHtml(app.icon)+"</span><strong>"+escapeHtml(app.name)+"</strong><div class=\"window-controls\"><button data-win=\"min\">-</button><button data-win=\"max\">[]</button><button class=\"close\" data-win=\"close\">x</button></div></header><div class=\"window-body\"></div><span class=\"resize-handle\" data-resize=\""+escapeHtml(id)+"\" aria-hidden=\"true\"></span>";$("#windowLayer").appendChild(node);wireWindow(node,win);renderApp($(".window-body",node),app);focusWindow(id);renderTaskbar();log("open:"+app.name);saveSession("open")}
+function defaultSize(app){if(app.type==="terminal")return{w:760,h:460};if(app.type==="files")return{w:860,h:560};if(app.type==="editor")return{w:760,h:540};if(app.type==="search"||app.type==="seis-bridge")return{w:780,h:540};if(app.type==="live-demo")return{w:980,h:700};if(app.type==="readiness")return{w:860,h:620};if(app.type==="reference-vault")return{w:1120,h:720};if(app.type==="reference")return{w:980,h:680};return{w:620,h:430}}
+function wireWindow(node,win){node.addEventListener("pointerdown",()=>focusWindow(win.id));$(".window-head",node).addEventListener("pointerdown",e=>{if(e.target.closest(".window-controls")||win.max)return;const rect=node.getBoundingClientRect();const dx=e.clientX-rect.left,dy=e.clientY-rect.top;node.setPointerCapture(e.pointerId);function move(ev){node.style.left=Math.max(-rect.width+110,Math.min(innerWidth-120,ev.clientX-dx))+"px";node.style.top=Math.max(0,Math.min(innerHeight-110,ev.clientY-dy))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("drag")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$("[data-resize]",node)?.addEventListener("pointerdown",e=>{if(win.max)return;e.preventDefault();e.stopPropagation();const rect=node.getBoundingClientRect();const startX=e.clientX,startY=e.clientY;node.setPointerCapture(e.pointerId);function move(ev){node.style.width=Math.max(320,Math.min(innerWidth-24,rect.width+ev.clientX-startX))+"px";node.style.height=Math.max(220,Math.min(innerHeight-120,rect.height+ev.clientY-startY))+"px"}function up(){node.removeEventListener("pointermove",move);node.removeEventListener("pointerup",up);saveSession("resize")}node.addEventListener("pointermove",move);node.addEventListener("pointerup",up)});$$("[data-win]",node).forEach(btn=>btn.onclick=()=>handleWin(win.id,btn.dataset.win))}
+function handleWin(id,action){const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;if(action==="close"){w.closed=true;node.remove()}if(action==="min"){w.min=true;node.classList.add("is-min")}if(action==="max"){w.max=!w.max;node.classList.toggle("is-max",w.max)}renderTaskbar();saveSession("window-"+action)}
+function focusWindow(id){state.windows.forEach(w=>{$("#"+w.id)?.classList.remove("is-focused")});const w=state.windows.find(item=>item.id===id);const node=$("#"+id);if(!w||!node)return;w.z=++state.z;node.style.zIndex=w.z;node.classList.add("is-focused");renderTaskbar();saveSession("focus")}
+function renderApp(body,app){const map={terminal:renderTerminal,files:renderFiles,settings:renderSettings,calculator:renderCalculator,editor:renderEditor,notes:renderNotes,todo:renderTodo,paint:renderPaint,media:renderMedia,"task-manager":renderTaskManager,monitor:renderMonitor,about:renderAbout,store:renderStore,search:renderSearch,launchpad:renderLaunchpad,logs:renderLogs,browser:renderBrowser,game:renderGame,"seis-bridge":renderSeisBridge,"reference-vault":renderReferenceVault,"live-demo":renderLiveDemo,readiness:renderDemoReadiness,reference:renderReferenceApp,generic:renderGeneric};(map[app.type]||renderGeneric)(body,app)}
+function renderTerminal(body){body.innerHTML="<div class=\"terminal\" data-terminal></div>";const term=$("[data-terminal]",body);let cwd="/home/seis";const history=[];let hist=0;const commands={help:()=>Object.keys(commands).join("  "),pwd:()=>cwd,whoami:()=>"seis",date:()=>new Date().toString(),uname:()=>"SEIS Linux Replica "+VERSION+" web-local",neofetch:()=>"<span class=\"info\">seis@browser</span>\nOS: SEIS Linux Replica\nKernel: browser-local\nWM: SEIS WM\nApps: "+APP_CATALOG.length+"\nReferences: "+REFERENCE_APP_ENTRIES.length+"\nBoundary: no SSH, no host shell",sources:()=>referenceSourceRows().map(row=>"<span class=\"info\">"+escapeHtml(String(row.count).padStart(3," "))+"</span>  "+escapeHtml(row.label)+"  "+row.share+"%").join("\n"),seis:()=>SEIS_BRIDGE_TARGETS.map(target=>"<span class=\"info\">"+escapeHtml(target.scope)+"</span>  "+escapeHtml(target.title)+"  "+escapeHtml(target.state)).join("\n"),routes:()=>SEIS_BRIDGE_TARGETS.map(target=>escapeHtml(target.title+" -> "+target.route)).join("\n"),readiness:()=>{openApp("demo-readiness");return"opened Demo Readiness evidence"},refs:(args)=>{const source=args[0]&&REFERENCE_SOURCE_COUNTS[args[0]]?args[0]:"all";const refs=filteredReferenceApps(source,args.slice(source==="all"?0:1).join(" ")).slice(0,24);return refs.map((app,index)=>"<span class=\"info\">"+String(index+1).padStart(2,"0")+"</span> "+escapeHtml(app.name)+"  "+escapeHtml(referenceSourceLabel(app.source))).join("\n")||"No reference modules found"},refopen:(args)=>{const target=findReferenceApp(args.join(" "));if(!target){openApp("reference-vault");return"opened Reference Vault"}openApp(target.id);return"opened "+escapeHtml(target.name)},tour:()=>{openDemoTour();return"opened live SEIS tour"},live:()=>{openDemoTour();return"opened Live Demo Console, Demo Readiness, Reference Vault, Terminal, Search, Code, Design, and Cloud"},ls:(args)=>{const node=nodeAt(cwd);if(!node||!node.children)return"";return Object.entries(node.children).map(([name,item])=>item.type==="dir"?"<span class=\"info\">"+escapeHtml(name)+"/</span>":escapeHtml(name)).join("  ")},cd:(args)=>{const next=pathJoin(cwd,args[0]||"/home/seis");const node=nodeAt(next);if(!node||node.type!=="dir")return"cd: not a directory";cwd=next;return""},cat:(args)=>{const node=nodeAt(pathJoin(cwd,args[0]||""));return node&&node.type==="file"?escapeHtml(node.content):"cat: missing file"},echo:(args)=>escapeHtml(args.join(" ")),mkdir:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"mkdir: invalid path";p.parent.children[p.name]={type:"dir",children:{}};return""},touch:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.name)return"touch: invalid path";p.parent.children[p.name]=p.parent.children[p.name]||{type:"file",content:""};return""},rm:(args)=>{const p=parentOf(pathJoin(cwd,args[0]||""));if(!p.parent||!p.parent.children[p.name])return"rm: no such file";delete p.parent.children[p.name];return""},cp:(args)=>{if(args.length<2)return"cp: missing operand";const src=nodeAt(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src||!dst.parent)return"cp: cannot stat";dst.parent.children[dst.name]=JSON.parse(JSON.stringify(src));return""},mv:(args)=>{if(args.length<2)return"mv: missing operand";const src=parentOf(pathJoin(cwd,args[0]));const dst=parentOf(pathJoin(cwd,args[1]));if(!src.parent||!src.parent.children[src.name]||!dst.parent)return"mv: cannot stat";dst.parent.children[dst.name]=src.parent.children[src.name];delete src.parent.children[src.name];return""},find:()=>listFiles("/").map(f=>f.path).join("\n"),grep:(args)=>{if(args.length<2)return"Usage: grep PATTERN FILE";const node=nodeAt(pathJoin(cwd,args[1]));if(!node||node.type!=="file")return"grep: no such file";return node.content.split("\n").filter(line=>line.toLowerCase().includes(args[0].toLowerCase())).map(escapeHtml).join("\n")||"(no matches)"},tree:()=>listFiles(cwd).map(f=>f.path.replace(cwd,".")+(f.type==="dir"?"/":"")).join("\n"),ps:()=>state.windows.filter(w=>!w.closed).map((w,i)=>String(100+i)+" "+(APP_CATALOG.find(a=>a.id===w.appId)?.name||w.appId)).join("\n"),clear:()=>{term.innerHTML="";return null},open:(args)=>{openApp(args[0]||"files");return"opened "+(args[0]||"files")},sudo:()=>"<span class=\"error\">sudo disabled in Local Demo mode.</span>",ssh:()=>"<span class=\"error\">SSH disabled. Human approval required.</span>"};function add(html){const line=document.createElement("div");line.className="line";line.innerHTML=html;term.appendChild(line);term.scrollTop=term.scrollHeight}function prompt(){const row=document.createElement("div");row.className="line";row.innerHTML="<span class=\"prompt-user\">seis</span>:<span class=\"prompt-path\">"+escapeHtml(cwd.replace("/home/seis","~"))+"</span>$ <input autocomplete=\"off\" spellcheck=\"false\">";term.appendChild(row);const input=$("input",row);input.focus();input.onkeydown=e=>{if(e.key==="Enter"){const raw=input.value;history.push(raw);hist=history.length;input.replaceWith(document.createTextNode(escapeHtml(raw)));run(raw)}else if(e.key==="ArrowUp"){e.preventDefault();if(hist>0)input.value=history[--hist]||""}else if(e.key==="ArrowDown"){e.preventDefault();if(hist<history.length-1)input.value=history[++hist]||"";else{hist=history.length;input.value=""}}}}function run(raw){const [cmd,...args]=raw.trim().split(/\s+/).filter(Boolean);if(!cmd){prompt();return}try{const result=commands[cmd]?commands[cmd](args):"<span class=\"error\">"+escapeHtml(cmd)+": command not found</span>";if(result)add(result)}catch(err){add("<span class=\"error\">"+escapeHtml(err.message)+"</span>")}prompt()}add("<span class=\"ok\">SEIS Linux Replica Terminal</span>");add("Type <span class=\"info\">help</span>. Try <span class=\"info\">live</span>, <span class=\"info\">readiness</span>, <span class=\"info\">sources</span>, <span class=\"info\">neofetch</span>, <span class=\"info\">refs</span>, <span class=\"info\">refopen ai</span>, <span class=\"info\">tour</span>, or <span class=\"info\">open code</span>.");prompt();term.onclick=()=>{$("input",term)?.focus()}}
+function renderFiles(body){let cwd="/home/seis";function draw(){const node=nodeAt(cwd);body.innerHTML="<div class=\"file-shell\"><aside class=\"file-side\"><button data-path=\"/home/seis\">Home</button><button data-path=\"/home/seis/Projects\">Projects</button><button data-path=\"/etc\">etc</button><button data-path=\"/var/log\">logs</button></aside><main class=\"file-main\"><div class=\"toolbar\"><button class=\"secondary\" data-up>Up</button><button class=\"secondary\" data-new-file>New File</button><button class=\"secondary\" data-new-folder>New Folder</button><span class=\"muted\">"+escapeHtml(cwd)+"</span></div><div class=\"file-list\">"+Object.entries(node.children||{}).map(([name,item])=>"<button class=\"file-item\" data-name=\""+escapeHtml(name)+"\"><strong>"+(item.type==="dir"?"DIR":"FILE")+"</strong><span>"+escapeHtml(name)+"</span></button>").join("")+"</div><div class=\"card muted\">Double-click folders to open. File actions are browser-local.</div></main></div>";$$("[data-path]",body).forEach(b=>b.onclick=()=>{cwd=b.dataset.path;draw()});$("[data-up]",body).onclick=()=>{cwd=normalize(cwd+"/..");draw()};$("[data-new-file]",body).onclick=()=>{const node=nodeAt(cwd);node.children["new-file-"+Date.now()+".txt"]={type:"file",content:"Created from SEIS Files"};draw();toast("Files","File created")};$("[data-new-folder]",body).onclick=()=>{const node=nodeAt(cwd);node.children["New Folder "+Math.floor(Math.random()*99)]={type:"dir",children:{}};draw();toast("Files","Folder created")};$$("[data-name]",body).forEach(b=>{b.ondblclick=()=>{const target=node.children[b.dataset.name];if(target.type==="dir"){cwd=pathJoin(cwd,b.dataset.name);draw()}else openEditorFile(pathJoin(cwd,b.dataset.name))}})}draw()}
+function openEditorFile(path){openApp("text-editor");setTimeout(()=>{const node=nodeAt(path);const editor=$(".window.is-focused textarea");if(editor&&node)editor.value=node.content||""},100)}
+function renderEditor(body,app){body.innerHTML="<div class=\"editor\"><div class=\"toolbar\"><button class=\"primary\" data-save>Save to /home/seis</button><button class=\"secondary\" data-sample>Load Sample</button></div><textarea spellcheck=\"false\"># "+escapeHtml(app.name)+"\n\nEdit local text here.</textarea><div class=\"muted\">Browser-local editor. No host filesystem access.</div></div>";$("[data-save]",body).onclick=()=>{nodeAt("/home/seis").children["editor-"+Date.now()+".md"]={type:"file",content:$("textarea",body).value};toast(app.name,"Saved to VFS")};$("[data-sample]",body).onclick=()=>{$("textarea",body).value="# SEIS Linux Replica\n\nThis editor is adapted from the supplied OS code pattern."}}
+function renderSettings(body){body.innerHTML="<div class=\"app grid\"><h2>Settings</h2><label class=\"field\">Accent color<input type=\"color\" value=\""+escapeHtml(state.accent)+"\" data-accent></label><div class=\"toolbar\"><button class=\"primary\" data-apply>Apply</button><button class=\"secondary\" data-wallpaper>Cycle Wallpaper</button></div><div class=\"card\"><strong>Boundary</strong><p class=\"muted\">Settings persist only safe UI preferences in localStorage.</p></div></div>";$("[data-apply]",body).onclick=()=>{state.accent=$("[data-accent]",body).value;applyAccent();toast("Settings","Accent updated")};$("[data-wallpaper]",body).onclick=()=>{$("#wallpaper").style.filter=$("#wallpaper").style.filter?"":"hue-rotate(60deg)";toast("Settings","Wallpaper tone changed")}}
+function renderCalculator(body){let value="0",stored=null,op=null;const keys=["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+","C"];function draw(){body.innerHTML="<div class=\"app grid\"><div class=\"calc-display\">"+escapeHtml(value)+"</div><div class=\"calc-grid\">"+keys.map(k=>"<button class=\"secondary\" data-k=\""+k+"\">"+k+"</button>").join("")+"</div></div>";$$("[data-k]",body).forEach(b=>b.onclick=()=>press(b.dataset.k))}function press(k){if(k==="C"){value="0";stored=null;op=null}else if("+-*/".includes(k)){stored=Number(value);op=k;value="0"}else if(k==="="&&op){const n=Number(value);if(op==="+")value=String(stored+n);if(op==="-")value=String(stored-n);if(op==="*")value=String(stored*n);if(op==="/")value=n===0?"Error":String(stored/n);op=null;stored=null}else{value=value==="0"&&k!=="."?k:value+k}draw()}draw()}
+function renderNotes(body){renderEditor(body,{name:"Notes"})}
+function renderTodo(body){const tasks=["Wire Linux shell","Verify browser smoke","Keep Local Demo labels"];body.innerHTML="<div class=\"app grid\"><h2>To-Do</h2><div class=\"grid\">"+tasks.map(t=>"<label class=\"card\"><input type=\"checkbox\"> "+escapeHtml(t)+"</label>").join("")+"</div><button class=\"primary\">Save Task Snapshot</button></div>";$("button",body).onclick=()=>toast("Tasks","Snapshot saved locally")}
+function renderPaint(body){body.innerHTML="<div class=\"app grid\"><div class=\"toolbar\"><button class=\"secondary\" data-clear>Clear</button><button class=\"primary\" data-save>Save Artwork</button></div><canvas width=\"720\" height=\"360\" style=\"width:100%;background:#fff;border-radius:10px\"></canvas></div>";const canvas=$("canvas",body),ctx=canvas.getContext("2d");let drawing=false;ctx.strokeStyle=state.accent;ctx.lineWidth=4;canvas.onpointerdown=e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY)};canvas.onpointermove=e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke()}};canvas.onpointerup=()=>drawing=false;$("[data-clear]",body).onclick=()=>ctx.clearRect(0,0,canvas.width,canvas.height);$("[data-save]",body).onclick=()=>toast("Paint","Artwork metadata saved")}
+function renderMedia(body,app){body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><div class=\"card\"><strong data-state>Paused</strong><p class=\"muted\">Local media state only.</p></div><div class=\"toolbar\"><button class=\"primary\" data-play>Play/Pause</button><button class=\"secondary\" data-next>Next</button></div></div>";let playing=false;$("[data-play]",body).onclick=()=>{playing=!playing;$("[data-state]",body).textContent=playing?"Playing":"Paused"};$("[data-next]",body).onclick=()=>toast(app.name,"Next local track selected")}
+function renderTaskManager(body){function draw(){const rows=state.windows.filter(w=>!w.closed).map(w=>{const app=APP_CATALOG.find(a=>a.id===w.appId)||{id:w.appId,name:w.appId,icon:"APP"};return"<div class=\"card\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(w.id)+" / "+(w.min?"minimized":"open")+"</p><div class=\"toolbar\"><button class=\"secondary\" data-focus=\""+escapeHtml(w.id)+"\">Focus</button><button class=\"danger\" data-close=\""+escapeHtml(w.id)+"\">Close</button></div></div>"}).join("")||"<div class=\"card muted\">No open windows.</div>";body.innerHTML="<div class=\"app grid\"><h2>App Switcher</h2><p class=\"muted\">Visual task switcher for the open SEIS windows. Actions are browser-local.</p>"+rows+"</div>";$$("[data-focus]",body).forEach(b=>b.onclick=()=>{const item=state.windows.find(w=>w.id===b.dataset.focus);const node=$("#"+b.dataset.focus);if(item&&node){item.min=false;node.classList.remove("is-min");focusWindow(item.id);draw()}});$$("[data-close]",body).forEach(b=>b.onclick=()=>{handleWin(b.dataset.close,"close");draw()})}draw()}
+function renderMonitor(body){body.innerHTML="<div class=\"app grid cols\"><div class=\"card\"><h3>Apps</h3><strong>"+APP_CATALOG.length+"</strong></div><div class=\"card\"><h3>Windows</h3><strong>"+state.windows.filter(w=>!w.closed).length+"</strong></div><div class=\"card\"><h3>VFS Files</h3><strong>"+listFiles("/").length+"</strong></div><div class=\"card\"><h3>Mode</h3><strong>Local Demo</strong></div></div>"}
+function renderAbout(body){body.innerHTML="<div class=\"app grid\"><h2>SEIS Linux Replica</h2><p class=\"muted\">This route uses the supplied Web Linux code as a shell reference: boot, login, taskbar, start menu, draggable windows, VFS, Linux-like terminal commands, and the uploaded ZIP reference modules. The demo keeps SEIS identity and Local Demo boundaries.</p><div class=\"grid cols\"><div class=\"card\"><strong>Apps</strong><p>"+APP_CATALOG.length+"</p></div><div class=\"card\"><strong>Reference Modules</strong><p>"+REFERENCE_APP_ENTRIES.length+"</p></div><div class=\"card\"><strong>Boundary</strong><p>No SSH, no host commands, no provider keys.</p></div></div></div>"}
+function renderDemoReadiness(body){
+  const sourceRows=referenceSourceRows();
+  const gates=[
+    ["Runnable route","seis-linux-replica.html opens from the static web root.","Real"],
+    ["Reference bank",REFERENCE_APP_ENTRIES.length+" supplied modules stay routed through Reference Vault.","Real"],
+    ["Static package","9 demo routes and 14 precache assets are covered by the static readiness checker.","Real"],
+    ["Mobile fit","390 x 844 smoke viewport keeps windows, side rail, and taskbar inside the screen.","Real"],
+    ["AI boundary","AI/provider output is Local Demo mode unless a backend key path is verified.","Local Demo"],
+    ["SSH boundary","SSH, sudo, deployment, and host shell execution stay disabled without approval.","Disabled"]
+  ];
+  body.innerHTML="<div class=\"app grid\" data-demo-readiness>"+
+    "<h2>Demo Readiness</h2><p class=\"muted\">A browser-local evidence board for the Linux-like SEIS demo. It shows what is verified, what is Local Demo, and what remains disabled until human approval.</p>"+
+    "<div class=\"toolbar\"><button class=\"primary\" data-readiness-action=\"tour\">Run verified tour</button><button class=\"secondary\" data-readiness-action=\"vault\">Open Reference Vault</button><button class=\"secondary\" data-readiness-action=\"terminal\">Open Terminal</button></div>"+
+    "<div class=\"readiness-grid\">"+gates.map(gate=>"<div class=\"readiness-card\" data-readiness-gate><small>"+escapeHtml(gate[2])+"</small><strong>"+escapeHtml(gate[0])+"</strong><p class=\"muted\">"+escapeHtml(gate[1])+"</p></div>").join("")+"</div>"+
+    "<div class=\"card\"><strong>Evidence snapshot</strong><div class=\"evidence-list\" data-readiness-evidence>"+
+      "<div><span>Launcher apps</span><strong>"+APP_CATALOG.length+"</strong></div>"+
+      "<div><span>Reference modules</span><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div>"+
+      "<div><span>Reference sources</span><strong>"+escapeHtml(sourceRows.map(row=>row.count+" "+row.label).join(" / "))+"</strong></div>"+
+      "<div><span>Static route checker</span><strong>scripts/check-seis-static-demo-routes.mjs</strong></div>"+
+      "<div><span>Browser smoke checker</span><strong>scripts/check-seis-linux-replica-browser-smoke.mjs</strong></div>"+
+      "<div><span>Screenshot output</span><strong>dist/qa/seis-linux-replica-smoke/</strong></div>"+
+    "</div></div>"+
+    "<div class=\"card warn\"><strong>Honesty boundary</strong><p>No live provider calls, SSH, deployment, API keys, private tokens, or host shell access are used by this route. Mock-safe panels are labeled Local Demo or Disabled.</p></div>"+
+  "</div>";
+  $("[data-readiness-action='tour']",body).onclick=openDemoTour;
+  $("[data-readiness-action='vault']",body).onclick=()=>openApp("reference-vault");
+  $("[data-readiness-action='terminal']",body).onclick=()=>openApp("terminal");
+}
+function renderLiveDemo(body){
+  const steps=[
+    ["Boot","Animated boot and login","about"],
+    ["Desktop","Top bar, dock, launcher","launchpad"],
+    ["References","Supplied ZIP modules","reference-vault"],
+    ["Terminal","Linux-like local commands","terminal"],
+    ["Search","AI/Web/Code/Design scopes","search"],
+    ["Code","SEIS Code workspace","code"],
+    ["Design","Tokens and canvas","paint"],
+    ["Cloud","Mock-safe SSH boundary","cloud"]
+  ];
+  const sampleRefs=REFERENCE_APP_ENTRIES.slice(0,6);
+  body.innerHTML="<div class=\"app live-demo-panel\" data-live-demo-console>"+
+    "<section class=\"live-hero\">"+
+      "<div class=\"bridge-status\"><span>Runnable</span><span>Linux-like</span><span>Local Demo</span><span>No SSH / no keys</span></div>"+
+      "<h2>SEIS Live Linux-like Demo</h2>"+
+      "<p>Boot into a browser-local SEIS OS, open draggable windows, run terminal commands, inspect the supplied ZIP reference modules, and jump into Search, Code, Design, Cloud, Store, Music, AI Core, Files, and Website surfaces without deleting or rewriting the uploaded materials.</p>"+
+      "<div class=\"metric-strip\"><div class=\"metric\"><small>Total apps</small><strong>"+APP_CATALOG.length+"</strong></div><div class=\"metric\"><small>ZIP modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div><div class=\"metric\"><small>Sources</small><strong>"+REFERENCE_SOURCES.length+"</strong></div><div class=\"metric\"><small>State</small><strong>Live Local</strong></div></div>"+
+      "<div class=\"bridge-actions\"><button class=\"primary\" data-run-live-tour>Run live tour</button><button class=\"secondary\" data-local-app=\"demo-readiness\">Demo Readiness</button><button class=\"secondary\" data-local-app=\"reference-vault\">Open Reference Vault</button><button class=\"secondary\" data-random-reference>Random ZIP module</button><button class=\"secondary\" data-local-app=\"terminal\">Open Terminal</button></div>"+
+    "</section>"+
+    "<section class=\"grid\"><h3>Demo flow</h3><div class=\"live-map\">"+steps.map(([label,copy,app],index)=>"<button class=\"live-step\" data-live-step=\""+escapeHtml(app)+"\"><small>Step "+(index+1)+"</small><strong>"+escapeHtml(label)+"</strong><span class=\"muted\">"+escapeHtml(copy)+"</span></button>").join("")+"</div></section>"+
+    "<section class=\"grid\"><h3>Supplied ZIP source coverage</h3>"+renderSourceStack(10)+"</section>"+
+    "<section class=\"grid\"><h3>Quick reference launch</h3><div class=\"grid cols\">"+sampleRefs.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(referenceSourceLabel(app.source))+"</p></button>").join("")+"</div></section>"+
+    "<section class=\"live-timeline\"><div class=\"live-tick\"><span>1</span><strong>Real UI shell</strong><small class=\"muted\">boot, login, topbar, dock, launcher, windows</small></div><div class=\"live-tick\"><span>2</span><strong>Real local interactions</strong><small class=\"muted\">VFS edits, terminal commands, search tabs, install state, player state</small></div><div class=\"live-tick\"><span>3</span><strong>Honest boundaries</strong><small class=\"muted\">SSH, deployment, provider calls, secrets disabled unless approved</small></div></section>"+
+  "</div>";
+  $$("[data-local-app]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.localApp));
+  $$("[data-live-step]",body).forEach(btn=>btn.onclick=()=>{btn.classList.add("is-active");openApp(btn.dataset.liveStep)});
+  $$("[data-app]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.app));
+  $("[data-run-live-tour]",body).onclick=openDemoTour;
+  $("[data-random-reference]",body).onclick=()=>{const target=REFERENCE_APP_ENTRIES[Math.floor(Math.random()*REFERENCE_APP_ENTRIES.length)];if(target)openApp(target.id)};
+}
+function renderReferenceVault(body){
+  let activeSource="all";
+  let query="";
+  function draw(){
+    const refs=filteredReferenceApps(activeSource,query);
+    const visible=refs.slice(0,80);
+    body.innerHTML="<div class=\"app reference-vault\" data-reference-vault>"+
+      "<section class=\"reference-hero\"><div class=\"bridge-status\"><span>Local Demo</span><span>Uploaded ZIP references</span><span>No SSH</span></div><h2>Reference Vault</h2><p>Live catalog for the supplied web desktop and AI platform modules. Open any module inside a SEIS window, launch it in a separate tab, or run a quick Linux-like demo tour.</p><div class=\"reference-stats\"><div class=\"reference-stat\"><small>Total modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div>"+REFERENCE_SOURCES.map(source=>"<div class=\"reference-stat\"><small>"+escapeHtml(referenceSourceLabel(source))+"</small><strong>"+REFERENCE_SOURCE_COUNTS[source]+"</strong></div>").join("")+"</div><div class=\"bridge-actions\"><button class=\"primary\" data-ref-tour>Run demo tour</button><button class=\"secondary\" data-ref-random>Open random module</button><button class=\"secondary\" data-local-app=\"terminal\">Open Terminal</button><button class=\"secondary\" data-local-app=\"search\">Open Search</button></div></section>"+
+      "<section class=\"reference-filters\"><label class=\"field\">Search references<input data-ref-query value=\""+escapeHtml(query)+"\" placeholder=\"desktop, ai, terminal, cloud, design\"></label><div class=\"reference-source-tabs\"><button type=\"button\" data-ref-source=\"all\">All</button>"+REFERENCE_SOURCES.map(source=>"<button type=\"button\" data-ref-source=\""+escapeHtml(source)+"\">"+escapeHtml(referenceSourceLabel(source))+"</button>").join("")+"</div></section>"+
+      "<section class=\"reference-list\">"+visible.map((app,index)=>"<article class=\"reference-tile\"><button class=\"reference-preview\" data-ref-id=\""+escapeHtml(app.id)+"\" style=\"background-image:url('"+escapeHtml(app.thumbnail||"")+"')\" aria-label=\"Open "+escapeHtml(app.name)+"\"></button><div class=\"reference-meta\"><small>"+escapeHtml(referenceSourceLabel(app.source))+" / "+escapeHtml(app.category)+"</small><strong>"+escapeHtml(app.name)+"</strong><span class=\"muted\">"+escapeHtml(app.description)+"</span><div class=\"reference-actions\"><button class=\"primary\" data-ref-id=\""+escapeHtml(app.id)+"\">Open</button><button class=\"secondary\" data-ref-route=\""+escapeHtml(app.route||"")+"\">Tab</button><span class=\"muted\">#"+(index+1)+"</span></div></div></article>").join("")+"</section>"+
+      (refs.length>visible.length?"<div class=\"card muted\">Showing first "+visible.length+" of "+refs.length+" matches. Refine search for more.</div>":"")+
+    "</div>";
+    $("[data-ref-query]",body).oninput=e=>{query=e.target.value;draw();const input=$("[data-ref-query]",body);input?.focus();input?.setSelectionRange(query.length,query.length)};
+    $$("[data-ref-source]",body).forEach(btn=>{btn.classList.toggle("is-active",btn.dataset.refSource===activeSource);btn.onclick=()=>{activeSource=btn.dataset.refSource;draw()}});
+    $$("[data-ref-id]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.refId));
+    $$("[data-ref-route]",body).forEach(btn=>btn.onclick=()=>openReplicaRoute(btn.dataset.refRoute,btn.textContent.trim()||"Reference module"));
+    $("[data-ref-random]",body).onclick=()=>{const list=filteredReferenceApps(activeSource,query);const target=list[Math.floor(Math.random()*list.length)]||REFERENCE_APP_ENTRIES[0];if(target)openApp(target.id)};
+    $("[data-ref-tour]",body).onclick=openDemoTour;
+    $$("[data-local-app]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.localApp));
+  }
+  draw();
+}
+function renderReferenceApp(body,app){
+  const hasRoute=Boolean(app.route);
+  const thumbnail=app.thumbnail||"";
+  const sourceText=app.source ? "Source: "+app.source : "Reference module";
+  const safeRoute=hasRoute?app.route.replace(/"/g,'&quot;'):"";
+  body.innerHTML="<div class=\"app reference-shell\">"+
+    "<section class=\"card\">"+
+      "<h2>"+escapeHtml(app.name)+"</h2>"+
+      "<p class=\"muted\">"+escapeHtml(app.description)+"</p>"+
+      "<p class=\"muted\">"+escapeHtml(sourceText)+"</p>"+
+      (thumbnail ? "<div class=\"reference-cover\" style=\"background-image:url('"+escapeHtml(thumbnail)+"')\"></div>" : "<div class=\"card muted\">No thumbnail provided</div>")+
+      "<div class=\"reference-toolbar\">"+
+        (hasRoute ? "<button class=\"primary\" data-ref-open-route>Open module</button><button class=\"secondary\" data-ref-frame>Reload in frame</button>" : "<button class=\"secondary\" disabled>No local route</button>")+
+      "</div>"+
+      "<div class=\"card\"><strong>Category:</strong> <span class=\"muted\">"+escapeHtml(app.category)+"</span></div>"+
+    "</section>"+
+    (hasRoute ? "<iframe class=\"reference-frame\" data-ref-frame-surface src=\""+safeRoute+"\" title=\""+escapeHtml(app.name)+" reference frame\" sandbox=\"allow-scripts allow-forms allow-popups\"></iframe>" : "<div class=\"card muted\">Reference route not available. This card remains visible in the app catalog as a design reference.</div>")+
+  "</div>";
+  if(hasRoute){$("[data-ref-open-route]",body).onclick=()=>openReplicaRoute(app.route,app.name);$("[data-ref-frame]",body).onclick=()=>{$("[data-ref-frame-surface]",body).src=app.route;toast("Reference","Frame reloaded")}}}
+function renderStore(body){body.innerHTML="<div class=\"app grid\"><h2>Installed Apps</h2><div class=\"grid cols\">"+APP_CATALOG.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.category)+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app))}
+function openReplicaRoute(route,title){if(!route)return;window.open(route,"_blank","noopener");toast("SEIS Route",title+" opened");log("route:"+title+" -> "+route)}
+function renderBridgeCard(target,compact=false){return"<button class=\"bridge-card\" data-seis-connected-result data-scope=\""+escapeHtml(target.scope)+"\" data-route=\""+escapeHtml(target.route||"")+"\" data-app=\""+escapeHtml(target.appId||"")+"\"><small>"+escapeHtml(target.scope)+" / "+escapeHtml(target.state)+"</small><strong>"+escapeHtml(target.title)+"</strong><span class=\"muted\">"+escapeHtml(compact?target.primary:target.summary)+"</span></button>"}
+function renderCodeWorkspace(){return"<section class=\"bridge-workspace\" data-mini-code-ide><h3>SEIS Code workspace</h3><div class=\"mini-ide\"><aside class=\"mini-rail\"><strong class=\"muted\">Explorer</strong><button class=\"is-active\" data-code-tab=\"desktop.js\">desktop.js</button><button data-code-tab=\"agent-runtime.json\">agent-runtime.json</button><button data-code-tab=\"design-token.css\">design-token.css</button><button data-code-tab=\"cloud-policy.md\">cloud-policy.md</button></aside><main class=\"mini-editor\"><div class=\"mini-tabs\"><span data-active-code-tab>desktop.js</span><span>Local Demo</span><span>Safe SCM</span></div><pre class=\"code-lines\" data-code-output>const seisSurface = createDesktopOS({\n  search: true,\n  code: true,\n  design: true,\n  cloud: \"mock-safe\",\n  validator: \"browser-smoke\"\n});\n\nexport function openCommandCenter(){\n  return seisSurface.route(\"search\");\n}</pre><div class=\"mini-terminal\" data-code-terminal>$ npm run check:seis-linux-replica-browser-smoke\nready: local contract waiting</div></main><aside class=\"mini-side\"><strong>AI Code Assistant</strong><p class=\"muted\">Local Demo mode. No provider key is used.</p><button class=\"primary\" data-run-code-check>Run local check</button><button class=\"secondary\" data-local-app=\"terminal\">Open Terminal</button><button class=\"secondary\" data-route=\"./seis-code.html\">Open full SEIS Code</button></aside></div></section>"}
+function renderDesignWorkspace(){return"<section class=\"bridge-workspace\" data-design-studio><h3>SEIS Design Studio</h3><div class=\"design-board\"><div class=\"design-canvas\" data-design-canvas><span class=\"design-chip\">Prototype v17 / Local Demo</span><div class=\"design-window\"><strong>Command surface</strong><p class=\"muted\">Search, Code, Design, Cloud and Store stay connected through route cards.</p><div class=\"meter\"><span style=\"width:86%\"></span></div></div></div><aside class=\"prototype-card\"><div class=\"token-row\"><button class=\"token-card\" data-design-swatch=\"#7c5cff\"><strong>Prism</strong><span class=\"swatch\" style=\"background:#7c5cff\"></span></button><button class=\"token-card\" data-design-swatch=\"#19c6d4\"><strong>Signal</strong><span class=\"swatch\" style=\"background:#19c6d4\"></span></button><button class=\"token-card\" data-design-swatch=\"#f59e52\"><strong>Solar</strong><span class=\"swatch\" style=\"background:#f59e52\"></span></button></div><div class=\"card\"><strong>Typography</strong><p class=\"muted\">Inter / system stack, 0 letter spacing, compact app panels.</p></div><button class=\"primary\" data-save-token>Save design snapshot</button><button class=\"secondary\" data-route=\"./desktop.html#seis-design\">Open full design route</button></aside></div></section>"}
+function renderCloudWorkspace(){return"<section class=\"bridge-workspace\" data-cloud-panel><h3>SEIS Cloud Control</h3><div class=\"metric-strip\"><div class=\"metric\"><small>Sync</small><strong>Mock</strong></div><div class=\"metric\"><small>SSH</small><strong>Disabled</strong></div><div class=\"metric\"><small>Deploy</small><strong>Planned</strong></div><div class=\"metric\"><small>Health</small><strong data-cloud-health>91%</strong></div></div><div class=\"card\"><strong>Safe logs</strong><p class=\"muted\" data-cloud-log>[local] No remote shell, no credentials, no deployment request executed.</p></div><button class=\"primary\" data-cloud-refresh>Refresh mock health</button><button class=\"secondary\" data-route=\"./desktop.html#seis-cloud\">Open full Cloud Center</button></section>"}
+function renderStoreWorkspace(){const items=[["seis-code-tools","SEIS Code Tools","Developer tools"],["seis-design-kit","SEIS Design Kit","Design tools"],["seis-agent-pack","SEIS Agent Pack","AI agents"]];return"<section class=\"bridge-workspace\" data-store-panel><h3>SEIS Store</h3><div class=\"store-list\">"+items.map(([id,name,kind])=>{const installed=localStorage.getItem("seis-store-"+id)==="installed";return"<div class=\"store-item\"><div><strong>"+escapeHtml(name)+"</strong><p class=\"muted\">"+escapeHtml(kind)+" / Local Demo install state</p></div><button class=\"secondary\" data-store-install=\""+escapeHtml(id)+"\">"+(installed?"Enabled":"Install")+"</button></div>"}).join("")+"</div><button class=\"secondary\" data-route=\"./desktop.html#seis-store\">Open full Store</button></section>"}
+function renderMusicWorkspace(){return"<section class=\"bridge-workspace\" data-music-panel><h3>SEIS Music</h3><div class=\"card\"><strong data-track-title>Core Orbit</strong><p class=\"muted\">AI recommendations are mock-safe. Player state is browser-local.</p></div><div class=\"waveform\" data-waveform>"+[42,68,36,78,54,88,44,74,62,92,48,70,38,82].map(h=>"<span style=\"height:"+h+"%\"></span>").join("")+"</div><div class=\"bridge-actions\"><button class=\"primary\" data-music-play>Play</button><button class=\"secondary\" data-music-next>Next</button><button class=\"secondary\" data-route=\"./desktop.html#music\">Open full Music</button></div></section>"}
+function renderAiWorkspace(){const agents=["Architect","Code","Design","UI/UX","Research","Search","Security","DevOps","Docs","QA","Cloud","Automation"];return"<section class=\"bridge-workspace\" data-ai-core-panel><h3>SEIS AI Core</h3><div class=\"metric-strip\"><div class=\"metric\"><small>Provider</small><strong>Local Demo</strong></div><div class=\"metric\"><small>Router</small><strong>Documented</strong></div><div class=\"metric\"><small>Keys</small><strong>None</strong></div></div><div class=\"agent-grid\">"+agents.map(agent=>"<button class=\"agent-pill\" data-ai-agent=\""+escapeHtml(agent)+"\"><strong><span class=\"status-dot\"></span> "+escapeHtml(agent)+" Agent</strong><span class=\"muted\">Allowed: review, plan, local demo output</span></button>").join("")+"</div><div class=\"card\"><strong data-ai-output>Agent activity waiting.</strong><p class=\"muted\">No live model claim. No prompt can access secrets from this surface.</p></div><button class=\"secondary\" data-route=\"./desktop.html#ai-assistant\">Open full AI Core</button></section>"}
+function renderWebWorkspace(){return"<section class=\"bridge-workspace\" data-website-panel><h3>SEIS Website Hub</h3><div class=\"metric-strip\"><div class=\"metric\"><small>Pages</small><strong>AI / OS / Code</strong></div><div class=\"metric\"><small>Quality</small><strong>Premium</strong></div><div class=\"metric\"><small>Mode</small><strong>Static</strong></div></div><p class=\"muted\">Website pages remain packaged with the runnable demo and route from this Linux-like OS surface.</p><button class=\"primary\" data-route=\"./website/index.html\">Open website</button></section>"}
+function renderBridgeWorkspace(target){if(target.scope==="Code")return renderCodeWorkspace();if(target.scope==="Design")return renderDesignWorkspace();if(target.scope==="Cloud")return renderCloudWorkspace();if(target.scope==="Store")return renderStoreWorkspace();if(target.scope==="Music")return renderMusicWorkspace();if(target.scope==="AI")return renderAiWorkspace();if(target.scope==="Web")return renderWebWorkspace();return"<section class=\"bridge-workspace\"><h3>"+escapeHtml(target.title)+" workspace</h3><p class=\"muted\">Use the Search Gateway to inspect connected SEIS results across AI, Web, Code, Design, Cloud, Apps, Plugins and Files.</p><button class=\"primary\" data-local-app=\"search\">Open Search Gateway</button></section>"}
+function wireBridgeActions(body){$$("[data-route]",body).forEach(btn=>{btn.onclick=()=>{if(btn.dataset.route)openReplicaRoute(btn.dataset.route,btn.textContent.trim()||"SEIS route");else if(btn.dataset.app)openApp(btn.dataset.app)}});$$("[data-local-app]",body).forEach(btn=>btn.onclick=()=>openApp(btn.dataset.localApp));const codeSnippets={"desktop.js":"const desktop = new SeisDesktopOS({\\n  windows: true,\\n  launcher: true,\\n  searchGateway: true,\\n  cloudBoundary: 'mock-safe'\\n});","agent-runtime.json":"{\\n  \"agent\": \"Code Agent\",\\n  \"mode\": \"Local Demo\",\\n  \"forbidden\": [\"secrets\", \"ssh\", \"deploy\"],\\n  \"validation\": \"browser smoke\"\\n}","design-token.css":":root {\\n  --seis-accent: #7c5cff;\\n  --seis-signal: #19c6d4;\\n  --seis-radius: 10px;\\n  --seis-density: compact;\\n}","cloud-policy.md":"# SEIS Cloud Boundary\\n\\n- SSH disabled without approval\\n- Provider keys never in frontend\\n- Deploy state: planned or mock unless verified\\n"};$$("[data-code-tab]",body).forEach(btn=>btn.onclick=()=>{$$("[data-code-tab]",body).forEach(item=>item.classList.toggle("is-active",item===btn));$("[data-active-code-tab]",body).textContent=btn.dataset.codeTab;$("[data-code-output]",body).textContent=codeSnippets[btn.dataset.codeTab]||""});$("[data-run-code-check]",body)?.addEventListener("click",()=>{$("[data-code-terminal]",body).textContent="$ npm run check:seis-linux-replica-browser-smoke\\nPASS local UI contract, Search bridge, Code workspace";toast("SEIS Code","Local check output updated")});$$("[data-design-swatch]",body).forEach(btn=>btn.onclick=()=>{state.accent=btn.dataset.designSwatch;applyAccent();toast("SEIS Design","Token preview applied")});$("[data-save-token]",body)?.addEventListener("click",()=>{nodeAt("/home/seis").children["design-token-"+Date.now()+".json"]={type:"file",content:"{\"accent\":\""+state.accent+"\",\"mode\":\"Local Demo\"}"};toast("SEIS Design","Snapshot saved to VFS")});$("[data-cloud-refresh]",body)?.addEventListener("click",()=>{const value=88+Math.floor(Math.random()*10);$("[data-cloud-health]",body).textContent=value+"%";$("[data-cloud-log]",body).textContent="[local] Mock health refreshed. SSH and deployment remain disabled.";toast("SEIS Cloud","Mock health refreshed")});$$("[data-store-install]",body).forEach(btn=>btn.onclick=()=>{const key="seis-store-"+btn.dataset.storeInstall;const next=localStorage.getItem(key)==="installed"?"available":"installed";localStorage.setItem(key,next);btn.textContent=next==="installed"?"Enabled":"Install";toast("SEIS Store",btn.dataset.storeInstall+" "+next)});let playing=false;$("[data-music-play]",body)?.addEventListener("click",e=>{playing=!playing;e.currentTarget.textContent=playing?"Pause":"Play";toast("SEIS Music",playing?"Playing local track":"Paused")});$("[data-music-next]",body)?.addEventListener("click",()=>{const tracks=["Core Orbit","Command Palette","Prism Wave","Local Demo Pulse"];$("[data-track-title]",body).textContent=tracks[Math.floor(Math.random()*tracks.length)];toast("SEIS Music","Next local track")});$$("[data-ai-agent]",body).forEach(btn=>btn.onclick=()=>{$("[data-ai-output]",body).textContent=btn.dataset.aiAgent+" Agent is active in Local Demo mode."})}
+function renderSeisBridge(body,app){const target=app.bridge||SEIS_BRIDGE_TARGETS[0];const related=SEIS_BRIDGE_TARGETS.filter(item=>item.appId!==target.appId);body.innerHTML="<div class=\"app seis-bridge\" data-seis-bridge-app=\""+escapeHtml(app.id)+"\"><section class=\"seis-bridge-hero\"><div class=\"bridge-status\"><span>"+escapeHtml(target.scope)+"</span><span>"+escapeHtml(target.state)+"</span><span>Local Demo safe</span></div><h2>"+escapeHtml(target.title)+"</h2><p>"+escapeHtml(target.summary)+"</p><div class=\"bridge-actions\"><button class=\"primary\" data-route=\""+escapeHtml(target.route)+"\">"+escapeHtml(target.primary)+"</button><button class=\"secondary\" data-local-app=\""+escapeHtml(target.appId)+"\">"+escapeHtml(target.local)+"</button><button class=\"secondary\" data-local-app=\"search\">Open SEIS Search Gateway</button></div></section>"+renderBridgeWorkspace(target)+"<section class=\"grid\"><h3>Connected SEIS surfaces</h3><div class=\"bridge-grid\">"+related.map(item=>renderBridgeCard(item,true)).join("")+"</div></section><section class=\"card\"><strong>Boundary</strong><p class=\"muted\">Route buttons open local packaged SEIS pages or Desktop OS anchors. No SSH, provider key, deployment, host shell, or credential action runs from this Linux Replica surface.</p></section></div>";wireBridgeActions(body)}
+function buildSearchResults(scope,query){
+  const q=query.toLowerCase();
+  const system=[...SEIS_BRIDGE_TARGETS,{appId:"store",title:"SEIS Plugin System",glyph:"PLG",scope:"Plugins",state:"Local Demo",route:"./desktop.html#extensions",summary:"Plugin lanes, install state, permission labels, and personal SEIS plugin bridge evidence.",primary:"Open Plugins"},{appId:"files",title:"SEIS Files",glyph:"FIL",scope:"Files",state:"Working",route:"",summary:"Browser-local VFS with file creation, preview, recents, and safe file actions.",primary:"Open Files"},{appId:"reference-vault",title:"Reference Vault",glyph:"REF",scope:"References",state:"Working",route:"",summary:"Live catalog for the supplied ZIP modules inside SEIS windows.",primary:"Open References"}];
+  const routeResults=system.filter(item=>(scope==="All"||item.scope===scope)&&(!q||`${item.title} ${item.summary} ${item.scope}`.toLowerCase().includes(q))).map(item=>({...item,kind:"route"}));
+  const referenceResults=REFERENCE_APP_ENTRIES.filter(app=>(scope==="All"||scope==="References")&&(!q||`${app.name} ${app.description} ${app.category} ${app.source}`.toLowerCase().includes(q))).slice(0,18).map(app=>({appId:app.id,title:app.name,scope:"References",state:referenceSourceLabel(app.source),summary:app.description,primary:"Open reference",kind:"app"}));
+  const appResults=APP_CATALOG.filter(app=>app.type!=="reference"&&(scope==="All"||scope==="Apps")&&(!q||`${app.name} ${app.description} ${app.category}`.toLowerCase().includes(q))).slice(0,12).map(app=>({appId:app.id,title:app.name,scope:"Apps",state:app.category,summary:app.description,primary:"Open app",kind:"app"}));
+  const fileResults=listFiles("/home/seis").filter(file=>(scope==="All"||scope==="Files")&&(!q||`${file.path} ${file.content}`.toLowerCase().includes(q))).slice(0,8).map(file=>({path:file.path,title:file.name,scope:"Files",state:file.type,summary:file.path,primary:"Open file",kind:"file"}));
+  return[...routeResults,...referenceResults,...appResults,...fileResults].slice(0,36);
+}
+function renderSearch(body){let activeScope="All";body.innerHTML="<div class=\"app grid\" data-seis-search-gateway><h2>SEIS Search Gateway</h2><p class=\"muted\">Search AI, Web, Code, Design, Cloud, Apps, Plugins, Files, References, and local website routes from the Linux-like SEIS shell.</p><label class=\"field\">Search<input data-q placeholder=\"SEIS Code, Design, Cloud, reference, plugin, file\"></label><div class=\"search-scope-tabs\" role=\"tablist\">"+["All","AI","Web","Code","Design","Cloud","Apps","Plugins","Files","References"].map(scope=>"<button type=\"button\" data-seis-search-scope=\""+scope+"\">"+scope+"</button>").join("")+"</div><div class=\"search-results\" data-results></div></div>";const input=$("[data-q]",body),results=$("[data-results]",body);function draw(){const q=input.value||"";$$("[data-seis-search-scope]",body).forEach(btn=>btn.classList.toggle("is-active",btn.dataset.seisSearchScope===activeScope));const found=buildSearchResults(activeScope,q);results.innerHTML=found.map(item=>"<button class=\"bridge-card\" data-seis-connected-result data-kind=\""+escapeHtml(item.kind)+"\" data-app=\""+escapeHtml(item.appId||"")+"\" data-route=\""+escapeHtml(item.route||"")+"\" data-path=\""+escapeHtml(item.path||"")+"\"><small>"+escapeHtml(item.scope)+" / "+escapeHtml(item.state)+"</small><strong>"+escapeHtml(item.title)+"</strong><span class=\"muted\">"+escapeHtml(item.summary)+"</span></button>").join("")||"<div class=\"card muted\">No connected SEIS result found.</div>"}input.oninput=draw;$$("[data-seis-search-scope]",body).forEach(btn=>btn.onclick=()=>{activeScope=btn.dataset.seisSearchScope;draw()});results.onclick=e=>{const b=e.target.closest("[data-seis-connected-result]");if(!b)return;if(b.dataset.route)openReplicaRoute(b.dataset.route,b.textContent.trim());else if(b.dataset.app)openApp(b.dataset.app);else if(b.dataset.path)openEditorFile(b.dataset.path)};draw()}
+function renderLaunchpad(body){const coreApps=APP_CATALOG.filter(app=>app.type!=="reference");const referenceSample=REFERENCE_APP_ENTRIES.slice(0,24);body.innerHTML="<div class=\"app grid\"><h2>Launchpad</h2><div class=\"metric-strip\"><div class=\"metric\"><small>Core apps</small><strong>"+coreApps.length+"</strong></div><div class=\"metric\"><small>Reference modules</small><strong>"+REFERENCE_APP_ENTRIES.length+"</strong></div><div class=\"metric\"><small>Mode</small><strong>Local</strong></div></div><div class=\"toolbar\"><button class=\"primary\" data-app=\"reference-vault\">Open Reference Vault</button><button class=\"secondary\" data-tour>Demo Tour</button></div><h3>Core apps</h3><div class=\"grid cols\">"+coreApps.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(app.description)+"</p></button>").join("")+"</div><h3>Reference sample</h3><div class=\"grid cols\">"+referenceSample.map(app=>"<button class=\"card\" data-app=\""+escapeHtml(app.id)+"\"><strong>"+escapeHtml(app.icon)+" "+escapeHtml(app.name)+"</strong><p class=\"muted\">"+escapeHtml(referenceSourceLabel(app.source))+"</p></button>").join("")+"</div></div>";$$("[data-app]",body).forEach(b=>b.onclick=()=>openApp(b.dataset.app));$("[data-tour]",body).onclick=openDemoTour}
+function renderLogs(body){body.innerHTML="<div class=\"app grid\"><h2>Logs</h2>"+state.logs.map(l=>"<div class=\"card\"><strong>"+escapeHtml(l.time)+"</strong><p class=\"muted\">"+escapeHtml(l.event)+"</p></div>").join("")+"</div>"}
+function renderBrowser(body){body.innerHTML="<div class=\"app grid\"><label class=\"field\">URL<input value=\"seis://local-demo\"></label><button class=\"primary\">Load Local Page</button><div class=\"card\"><h3>Simulated Response</h3><p class=\"muted\">No external network request was made.</p></div></div>";$("button",body).onclick=()=>toast("Browser","Loaded local simulated response")}
+function renderGame(body,app){let score=0;body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><div class=\"card\"><strong data-score>Score 0</strong><p class=\"muted\">Local playable shell. Controls update real state.</p></div><div class=\"toolbar\"><button class=\"primary\" data-play>Play Turn</button><button class=\"secondary\" data-reset>Reset</button></div></div>";$("[data-play]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score+=Math.ceil(Math.random()*12))};$("[data-reset]",body).onclick=()=>{$("[data-score]",body).textContent="Score "+(score=0)}}
+function renderGeneric(body,app){body.innerHTML="<div class=\"app grid\"><h2>"+escapeHtml(app.name)+"</h2><p class=\"muted\">"+escapeHtml(app.description)+"</p><label class=\"field\">Local input<input data-input value=\"SEIS local demo\"></label><div class=\"toolbar\"><button class=\"primary\" data-run>Run Local Action</button><button class=\"secondary\" data-save>Save Snapshot</button></div><div class=\"card\"><strong data-output>Ready</strong><p class=\"muted\">Controls update browser-local state. Mock or planned integrations stay labeled.</p></div></div>";$("[data-run]",body).onclick=()=>{$("[data-output]",body).textContent="Ran: "+$("[data-input]",body).value;log(app.name+":run")};$("[data-save]",body).onclick=()=>{nodeAt("/home/seis").children[app.id+"-"+Date.now()+".txt"]={type:"file",content:app.name+" snapshot"};toast(app.name,"Snapshot saved to VFS")}}
+$("#loginButton").onclick=enterDesktop;$("#startButton").onclick=()=>toggleStart();$("#closeStart").onclick=()=>toggleStart(false);$("#lockButton").onclick=()=>{$("#shell").classList.remove("is-active");$("#login").classList.add("is-active");toggleStart(false);saveSession("lock")};$("#themeButton").onclick=()=>{state.accent=state.accent==="#7c5cff"?"#19c6d4":"#7c5cff";applyAccent()};$("#localeButton").onclick=toggleLocale;$("#startSearch").oninput=e=>{state.query=e.target.value;renderStartMenu()};$$("[data-quick-app]").forEach(btn=>btn.onclick=()=>openApp(btn.dataset.quickApp));document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();toggleStart(true);$("#startSearch").focus()}if(e.key==="Escape")toggleStart(false)});
+window.__SEIS_LINUX_REPLICA__={appCount:APP_CATALOG.length,referenceCount:REFERENCE_APP_ENTRIES.length,referenceSources:()=>REFERENCE_SOURCES.map(source=>({source,count:REFERENCE_SOURCE_COUNTS[source]})),bridgeTargetCount:SEIS_BRIDGE_TARGETS.length,bridgeTargets:()=>SEIS_BRIDGE_TARGETS.map(target=>({title:target.title,scope:target.scope,state:target.state,route:target.route})),openApp,openDemoTour,windowCount:()=>state.windows.filter(w=>!w.closed).length,fileCount:()=>listFiles("/").length,terminalReady:()=>Boolean($("[data-terminal]")),locale:()=>state.locale,session:readSession,demoIntent:()=>DEMO_INTENT,route:"seis-linux-replica.html"};
+applyAccent();applyLocale(state.locale,false);renderSideRail();renderDesktopIcons();renderStartMenu();updateClock();setInterval(updateClock,1000);boot();
+})();
+</script>
+</body>
+</html>

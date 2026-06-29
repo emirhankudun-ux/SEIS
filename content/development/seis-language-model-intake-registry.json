@@ -1,0 +1,241 @@
+{
+  "id": "seis-language-model-intake-registry",
+  "version": "2026.06.24",
+  "status": "active-intake-contract",
+  "updatedAt": "2026-06-24",
+  "purpose": "Track the language-model families SEIS may evaluate for local/private use, retrieval, adapter experiments, or future supervised training without bulk-downloading models, bypassing licenses, exposing secrets, or claiming unsupported SEIS-owned foundation models.",
+  "qualityGate": "npm run check:seis-language-model-intake",
+  "truthBoundary": "Model intake registry only. It installs no models, downloads no weights, trains no foundation model, runs no inference, calls no providers, reads no credentials, and proves no AGI capability.",
+  "sourceResearch": [
+    {
+      "id": "ollama-library",
+      "url": "https://ollama.com/library",
+      "observedDate": "2026-06-24",
+      "usedFor": "Public local-runtime model-family discovery for Llama, DeepSeek, Gemma, Qwen, Mistral, embedding, and coding model families."
+    },
+    {
+      "id": "huggingface-transformers",
+      "url": "https://huggingface.co/docs/transformers/index",
+      "observedDate": "2026-06-24",
+      "usedFor": "Training and inference framework boundary: Transformers supports model definitions, training, distributed training, quantization, and many ecosystem runtimes, but model license and checkpoint provenance remain separate gates."
+    },
+    {
+      "id": "meta-llama-3-1",
+      "url": "https://ai.meta.com/blog/meta-llama-3-1/",
+      "observedDate": "2026-06-24",
+      "usedFor": "Frontier-scale planning baseline: 405B-class models require explicit compute, safety, evaluation, and license review; they are not ordinary local installs."
+    }
+  ],
+  "installPolicy": {
+    "bulkInstallAllowed": false,
+    "defaultInstallState": "not-installed",
+    "downloadAuthorized": false,
+    "runtimeAuthorityGranted": false,
+    "providerCallAuthorized": false,
+    "trainingAuthorized": false,
+    "fineTuningAuthorized": false,
+    "adapterTrainingAuthorized": false,
+    "datasetDownloadAuthorized": false,
+    "secretReadAllowed": false,
+    "browserSecretAllowed": false,
+    "reason": "Installing every language model is not safe or useful without license, storage, hardware, security, and evaluation gates."
+  },
+  "requiredBeforeAnyModelInstall": [
+    "human approval for the specific model id and quantization",
+    "license and acceptable-use review",
+    "disk, RAM, GPU/CPU, and thermal budget estimate",
+    "checkpoint source, checksum, and provenance record",
+    "model card or model-card template",
+    "no-secret prompt and log boundary",
+    "local-only fallback plan",
+    "rollback and deletion plan"
+  ],
+  "requiredBeforeAnyTraining": [
+    "completed dataset card with source inventory and license map",
+    "PII, secrets, credentials, and private-data scan",
+    "clean-room provenance statement",
+    "training objective and expected artifact type",
+    "eval suite and held-out benchmark definition",
+    "compute budget and stop condition",
+    "safety review and misuse review",
+    "checkpoint governance and model card",
+    "human approval recorded before execution"
+  ],
+  "candidateModelFamilies": [
+    {
+      "id": "llama",
+      "displayName": "Meta Llama family",
+      "representativeClasses": ["1B-8B local", "70B research", "405B frontier"],
+      "source": "ollama-library/meta-llama",
+      "licenseReviewStatus": "required",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["405B-class use is frontier-scale and requires separate budget, safety, and license review."]
+    },
+    {
+      "id": "qwen",
+      "displayName": "Qwen family",
+      "representativeClasses": ["0.6B-14B local", "30B-32B research", "235B MoE frontier"],
+      "source": "ollama-library/qwen",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Use only sanitized, license-reviewed checkpoints; Qwen assistant output remains candidate evidence until Codex validates it."]
+    },
+    {
+      "id": "gemma",
+      "displayName": "Google Gemma family",
+      "representativeClasses": ["small local", "12B-31B research"],
+      "source": "ollama-library/gemma",
+      "licenseReviewStatus": "required",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Good candidate for local/offline experiments only after license, hardware, and fallback gates."]
+    },
+    {
+      "id": "mistral",
+      "displayName": "Mistral family",
+      "representativeClasses": ["7B local", "22B-24B research", "MoE frontier"],
+      "source": "ollama-library/mistral",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Do not mix Apache, community, modified, or proprietary licenses without explicit review."]
+    },
+    {
+      "id": "deepseek",
+      "displayName": "DeepSeek family",
+      "representativeClasses": ["1.5B-70B reasoning", "671B MoE frontier"],
+      "source": "ollama-library/deepseek",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["MoE total parameter count and active parameter count must be tracked separately."]
+    },
+    {
+      "id": "openai-open-weight",
+      "displayName": "OpenAI open-weight candidates",
+      "representativeClasses": ["20B planning", "120B research"],
+      "source": "ollama-library/gpt-oss",
+      "licenseReviewStatus": "required",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Do not confuse OpenAI API models, Codex/ChatGPT assistance, and any separate open-weight model artifact."]
+    },
+    {
+      "id": "embedding-and-reranker",
+      "displayName": "Embedding and reranker families",
+      "representativeClasses": ["small embedding", "large embedding", "reranker"],
+      "source": "ollama-library/huggingface-transformers",
+      "licenseReviewStatus": "required",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Preferred first real model lane for SEIS knowledge retrieval because it can improve recall without claiming foundation-model ownership."]
+    },
+    {
+      "id": "code-specialist",
+      "displayName": "Code specialist model families",
+      "representativeClasses": ["1B-7B local", "14B-34B research", "70B+ frontier"],
+      "source": "ollama-library/huggingface-transformers",
+      "licenseReviewStatus": "required-per-checkpoint",
+      "allowedToday": "metadata-only",
+      "installState": "not-installed-by-registry",
+      "trainingUse": "not-authorized",
+      "notes": ["Coding models may propose patches, but SEIS must validate with tests and security checks before accepting output."]
+    }
+  ],
+  "hardwareInstallLanes": [
+    {
+      "id": "developer-16gb",
+      "ramClass": "16GB+",
+      "allowedToday": "metadata and deterministic seed-model lab only",
+      "candidateModelClass": "small or quantized local model after approval",
+      "blockedClasses": ["70B", "150B", "300B+", "405B", "512B", "671B+"]
+    },
+    {
+      "id": "workstation-64gb-plus",
+      "ramClass": "64GB+",
+      "allowedToday": "planning only",
+      "candidateModelClass": "larger local evaluation after approval",
+      "blockedClasses": ["150B", "300B+", "405B", "512B", "671B+"]
+    },
+    {
+      "id": "frontier-distributed",
+      "ramClass": "approved distributed cluster",
+      "allowedToday": "disabled",
+      "candidateModelClass": "150B/300B+/512B research only after evidence chain",
+      "blockedClasses": ["all runtime until budget, safety, eval, observability, and approval exist"]
+    }
+  ],
+  "trainingLanes": [
+    {
+      "id": "repo-local-seed-models",
+      "status": "active",
+      "meaning": "Deterministic SEIS-owned seed models for permission policy, memory ranking, eval criticism, and agent routing.",
+      "allowedToday": true,
+      "foundationModelTraining": false
+    },
+    {
+      "id": "retrieval-knowledge-layer",
+      "status": "planned",
+      "meaning": "Index SEIS docs and evidence with reviewed embeddings or local retrieval before any LLM fine-tune.",
+      "allowedToday": false,
+      "foundationModelTraining": false
+    },
+    {
+      "id": "lora-or-adapter-experiment",
+      "status": "approval-required",
+      "meaning": "Small adapter experiment only after model license, dataset card, model card, and benchmark plan are accepted.",
+      "allowedToday": false,
+      "foundationModelTraining": false
+    },
+    {
+      "id": "full-fine-tune",
+      "status": "disabled",
+      "meaning": "Full fine-tune requires explicit approval, compute budget, checkpoint governance, and safety evaluation.",
+      "allowedToday": false,
+      "foundationModelTraining": false
+    },
+    {
+      "id": "foundation-pretraining",
+      "status": "disabled",
+      "meaning": "True SEIS-owned foundation model pretraining requires dataset provenance, training logs, checkpoints, model cards, and independent benchmarks.",
+      "allowedToday": false,
+      "foundationModelTraining": true
+    }
+  ],
+  "knowledgeStrategy": {
+    "goal": "Tam bilgili SEIS means evidence-backed retrieval and evaluated reasoning, not pretending a single model memorized everything.",
+    "preferredOrder": [
+      "clean repository knowledge graph",
+      "retrieval index with provenance",
+      "deterministic seed-model gates",
+      "local/offline model experiment after approval",
+      "adapter or fine-tune only after dataset and model cards",
+      "frontier model research only after evidence chain"
+    ],
+    "forbiddenShortcut": "Do not scrape or download everything to make a model appear knowledgeable."
+  },
+  "forbiddenClaims": [
+    "SEIS installed every language model.",
+    "SEIS trained a 20B foundation model.",
+    "SEIS trained a 512B model.",
+    "SEIS is a real AGI.",
+    "SEIS can use all model checkpoints without license review.",
+    "SEIS can download datasets without provenance review.",
+    "SEIS can send private repository data to external providers by default."
+  ],
+  "nextSafeActions": [
+    "Keep the registry as metadata-only until a single target model is approved.",
+    "Prioritize retrieval/embedding intake before any fine-tune.",
+    "Run the workforce seed-model training validator after registry changes.",
+    "Create separate model cards and dataset cards for any future local model experiment."
+  ]
+}

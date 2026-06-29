@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS - Animation Easing Studio</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: JetBrains Mono & Space Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration (Provided) -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#dcd9d8",
+                      "surface-dim": "#121414",
+                      "on-secondary-container": "#480064",
+                      "on-tertiary-container": "#605e5e",
+                      "on-primary-container": "#006970",
+                      "primary-container": "#00f0ff",
+                      "on-surface-variant": "#b9cacb",
+                      "secondary-fixed": "#f8d8ff",
+                      "outline": "#849495",
+                      "on-background": "#e2e2e2",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "surface-container-highest": "#333535",
+                      "surface-container-high": "#282a2b",
+                      "surface-container": "#1e2020",
+                      "inverse-surface": "#e2e2e2",
+                      "background": "#121414",
+                      "surface-container-lowest": "#0c0f0f",
+                      "primary-fixed": "#7df4ff",
+                      "on-error-container": "#ffdad6",
+                      "secondary": "#ebb2ff",
+                      "on-primary-fixed": "#002022",
+                      "inverse-on-surface": "#2f3131",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "surface-container-low": "#1a1c1c",
+                      "on-error": "#690005",
+                      "inverse-primary": "#006970",
+                      "on-tertiary": "#313030",
+                      "primary": "#dbfcff",
+                      "secondary-container": "#ce5dff",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#333535",
+                      "surface": "#121414",
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "outline-variant": "#3b494b",
+                      "on-secondary": "#520071",
+                      "tertiary": "#f9f5f5",
+                      "surface-bright": "#37393a",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "on-primary": "#00363a",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-secondary-fixed": "#320047",
+                      "on-primary-fixed-variant": "#004f54",
+                      "error-container": "#93000a",
+                      "surface-tint": "#00dbe9",
+                      "on-surface": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gap-sm": "8px",
+                      "gap-lg": "24px",
+                      "margin-page": "32px",
+                      "stroke-thick": "2px",
+                      "gap-xs": "4px",
+                      "stroke-thin": "1px",
+                      "gap-md": "16px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "body-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "label-sm": ["Space Mono"]
+              },
+              "fontSize": {
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for Terminal aesthetic */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #121414; }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 0; }
+        ::-webkit-scrollbar-thumb:hover { background: #7df4ff; }
+        
+        /* Blinking Cursor */
+        .cursor-blink { animation: blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Grid Background pattern */
+        .bg-grid-pattern {
+            background-image: linear-gradient(to right, rgba(59, 73, 75, 0.2) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(59, 73, 75, 0.2) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen overflow-hidden flex flex-col font-body-md text-body-md selection:bg-secondary-container selection:text-white">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center w-full px-gap-md h-10 shrink-0 relative z-50">
+<!-- Brand -->
+<div class="font-label-sm text-label-sm tracking-widest text-primary-fixed-dim uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">developer_board</span>
+            SEIS KERNEL OS
+        </div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-6 h-full">
+<div class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70">
+                WORKSPACES
+            </div>
+<div class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70">
+                TELEMETRY
+            </div>
+<div class="h-full flex items-center text-on-surface-variant font-label-sm text-label-sm hover:text-primary-fixed transition-colors duration-200 cursor-pointer active:opacity-70">
+                AGENTS
+            </div>
+<!-- Active State -->
+<div class="h-full flex items-center text-primary-fixed font-label-sm text-label-sm border-b-2 border-primary-fixed pt-[2px] cursor-pointer">
+                NETWORK
+            </div>
+</nav>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[18px]" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[18px]" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed transition-colors duration-200 cursor-pointer text-[18px]" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- Main Workspace Area -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 w-20 hover:w-64 transition-all duration-300 z-40 group h-full overflow-hidden shrink-0">
+<!-- Header -->
+<div class="p-4 border-b border-outline-variant/20 flex items-center gap-3 shrink-0 h-[72px]">
+<div class="w-10 h-10 rounded-DEFAULT bg-surface-variant flex items-center justify-center border border-outline-variant shrink-0">
+<span class="material-symbols-outlined text-secondary-fixed">person</span>
+</div>
+<div class="opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap overflow-hidden">
+<div class="font-label-sm text-label-sm text-secondary-fixed">ROOT_USER</div>
+<div class="font-code-sm text-code-sm text-on-surface-variant">SEIS-01</div>
+</div>
+</div>
+<!-- Tabs -->
+<nav class="flex-1 py-2 overflow-y-auto overflow-x-hidden">
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="dashboard">dashboard</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">DASHBOARD</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="folder_open">folder_open</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">FILESYSTEM</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="terminal">terminal</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">TERMINAL</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="smart_toy">smart_toy</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">AI_AGENTS</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center px-4 py-3 cursor-pointer bg-secondary-container/10 text-secondary-fixed border-l-2 border-secondary-fixed transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="cloud_queue">cloud_queue</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">INFRASTRUCTURE</span>
+</a>
+<a class="flex items-center px-4 py-3 cursor-pointer text-on-surface-variant hover:text-secondary-fixed-dim hover:bg-surface-variant/20 transition-all duration-150">
+<span class="material-symbols-outlined shrink-0" data-icon="list_alt">list_alt</span>
+<span class="ml-4 font-label-sm text-label-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap">LOGS</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="p-4 border-t border-outline-variant/20 shrink-0">
+<button class="w-full bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm py-2 px-4 rounded-DEFAULT hover:bg-secondary-fixed transition-colors duration-200 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-[16px] mr-2 shrink-0 group-hover:hidden">add</span>
+<span class="hidden group-hover:inline whitespace-nowrap">NEW_SESSION</span>
+</button>
+<div class="flex justify-between mt-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed cursor-pointer text-[18px]" data-icon="power_settings_new">power_settings_new</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary-fixed cursor-pointer text-[18px]" data-icon="lock">lock</span>
+</div>
+</div>
+</aside>
+<!-- Canvas (Main Content) -->
+<main class="flex-1 h-full overflow-y-auto p-gap-md">
+<!-- Context Header -->
+<div class="mb-gap-md flex justify-between items-end">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary-fixed uppercase tracking-tight">Easing Studio <span class="text-on-surface-variant font-code-sm text-code-sm ml-2">// Sct.07</span></h1>
+<p class="font-code-sm text-code-sm text-on-tertiary-container mt-1">Surgical interface for systemic motion choreography.</p>
+</div>
+<div class="flex gap-2">
+<button class="border border-primary-fixed text-primary-fixed font-label-sm text-label-sm px-4 py-1 hover:bg-primary-fixed/10 transition-colors">IMPORT</button>
+<button class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-4 py-1 hover:bg-secondary-container transition-colors">APPLY TO KERNEL</button>
+</div>
+</div>
+<!-- Tiling Grid Layout -->
+<div class="grid grid-cols-12 gap-gap-md auto-rows-[minmax(180px,auto)]">
+<!-- Large Interactive Bezier Editor (Left 8 cols) -->
+<div class="col-span-12 lg:col-span-8 row-span-2 bg-surface-container-low/80 backdrop-blur-xl border border-outline-variant flex flex-col relative group">
+<!-- Title Bar -->
+<div class="h-6 flex items-center px-2 bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm uppercase justify-between">
+<span>Cubic-Bezier Matrix</span>
+<span class="material-symbols-outlined text-[14px]">open_in_full</span>
+</div>
+<!-- Editor Body -->
+<div class="flex-1 relative bg-grid-pattern p-6 flex items-center justify-center overflow-hidden">
+<!-- Simulated Bezier Curve Graphic (SVG) -->
+<svg class="w-full max-w-md h-full max-h-80 overflow-visible" preserveaspectratio="none" viewbox="0 0 100 100">
+<defs>
+<lineargradient id="cyanGlow" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#7df4ff"></stop>
+<stop offset="100%" stop-color="#ce5dff"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines internal -->
+<line stroke="#3b494b" stroke-width="0.5" x1="0" x2="100" y1="100" y2="100"></line>
+<line stroke="#3b494b" stroke-width="0.5" x1="0" x2="0" y1="0" y2="100"></line>
+<!-- Curve -->
+<path class="drop-shadow-[0_0_8px_rgba(125,244,255,0.4)]" d="M 0 100 C 25 0, 75 100, 100 0" fill="none" stroke="url(#cyanGlow)" stroke-width="2"></path>
+<!-- Control Points & Handles -->
+<line stroke="#849495" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="25" y1="100" y2="0"></line>
+<circle class="cursor-pointer hover:r-3 transition-all" cx="25" cy="0" fill="#7df4ff" r="2"></circle>
+<line stroke="#849495" stroke-dasharray="2 2" stroke-width="0.5" x1="100" x2="75" y1="0" y2="100"></line>
+<circle class="cursor-pointer hover:r-3 transition-all" cx="75" cy="100" fill="#ce5dff" r="2"></circle>
+</svg>
+<!-- Floating Data Tooltip -->
+<div class="absolute top-4 left-4 bg-surface-container-highest border border-outline px-2 py-1 font-code-sm text-code-sm text-primary-fixed pointer-events-none">
+                            cubic-bezier(0.25, 1.00, 0.75, 0.00)
+                        </div>
+</div>
+</div>
+<!-- Preview Timeline (Right 4 cols) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low/80 backdrop-blur-xl border border-outline-variant flex flex-col">
+<div class="h-6 flex items-center px-2 bg-surface-bright text-on-surface font-label-sm text-label-sm uppercase border-b border-outline-variant">
+                        Live Preview
+                    </div>
+<div class="flex-1 p-4 flex flex-col justify-center gap-4">
+<!-- Track 1 -->
+<div class="w-full h-8 bg-surface-container-highest border border-outline-variant/50 relative overflow-hidden flex items-center">
+<div class="h-4 w-4 bg-primary-fixed absolute left-2" style="animation: previewAnim 2s cubic-bezier(0.25, 1, 0.75, 0) infinite alternate;"></div>
+<span class="absolute right-2 font-code-sm text-code-sm text-on-surface-variant opacity-50 text-[10px]">X-AXIS</span>
+</div>
+<!-- Track 2 -->
+<div class="w-full h-8 bg-surface-container-highest border border-outline-variant/50 relative overflow-hidden flex items-center">
+<div class="h-4 w-4 bg-secondary-fixed absolute left-2 rounded-full" style="animation: previewAnim 2s cubic-bezier(0.25, 1, 0.75, 0) infinite alternate; animation-delay: 0.2s;"></div>
+<span class="absolute right-2 font-code-sm text-code-sm text-on-surface-variant opacity-50 text-[10px]">ALPHA</span>
+</div>
+<div class="flex justify-between items-center mt-2 border-t border-outline-variant/50 pt-2">
+<span class="font-code-sm text-code-sm text-on-surface-variant">Dur: 2.0s</span>
+<span class="material-symbols-outlined text-primary-fixed cursor-pointer hover:text-white" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<!-- Easing Presets Library (Right 4 cols) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low/80 backdrop-blur-xl border border-outline-variant flex flex-col">
+<div class="h-6 flex items-center px-2 bg-surface-bright text-on-surface font-label-sm text-label-sm uppercase border-b border-outline-variant">
+                        Library // Presets
+                    </div>
+<div class="flex-1 p-2 overflow-y-auto grid grid-cols-2 gap-2">
+<button class="bg-surface-container border border-outline-variant p-2 flex flex-col items-start hover:border-primary-fixed/50 group transition-colors">
+<span class="font-code-sm text-code-sm text-on-surface">ease-in-out</span>
+<svg class="w-full h-8 mt-1 opacity-50 group-hover:opacity-100" preserveaspectratio="none" viewbox="0 0 100 20"><path d="M0 20 C 50 20, 50 0, 100 0" fill="none" stroke="#7df4ff" stroke-width="2"></path></svg>
+</button>
+<button class="bg-secondary-container/10 border border-secondary-container p-2 flex flex-col items-start group transition-colors">
+<span class="font-code-sm text-code-sm text-secondary-container">snappy-spring</span>
+<svg class="w-full h-8 mt-1 opacity-100" preserveaspectratio="none" viewbox="0 0 100 20"><path d="M0 20 C 20 20, 30 -5, 100 0" fill="none" stroke="#ce5dff" stroke-width="2"></path></svg>
+</button>
+<button class="bg-surface-container border border-outline-variant p-2 flex flex-col items-start hover:border-primary-fixed/50 group transition-colors">
+<span class="font-code-sm text-code-sm text-on-surface">linear</span>
+<svg class="w-full h-8 mt-1 opacity-50 group-hover:opacity-100" preserveaspectratio="none" viewbox="0 0 100 20"><line stroke="#7df4ff" stroke-width="2" x1="0" x2="100" y1="20" y2="0"></line></svg>
+</button>
+<button class="bg-surface-container border border-outline-variant p-2 flex flex-col items-start hover:border-primary-fixed/50 group transition-colors">
+<span class="font-code-sm text-code-sm text-on-surface">cyber-decel</span>
+<svg class="w-full h-8 mt-1 opacity-50 group-hover:opacity-100" preserveaspectratio="none" viewbox="0 0 100 20"><path d="M0 20 C 10 0, 20 0, 100 0" fill="none" stroke="#7df4ff" stroke-width="2"></path></svg>
+</button>
+</div>
+</div>
+<!-- Telemetry & Physics Data (Bottom Left 6 cols) -->
+<div class="col-span-12 lg:col-span-6 bg-surface-container-lowest border border-outline-variant flex flex-col font-code-sm text-code-sm">
+<div class="h-6 flex items-center px-2 bg-surface-highest text-on-surface-variant font-label-sm text-label-sm uppercase border-b border-outline-variant/30 flex justify-between">
+<span>Telemetry Stream</span>
+<span class="text-error animate-pulse">● REC</span>
+</div>
+<div class="flex-1 p-3 overflow-y-auto text-on-tertiary-container space-y-1">
+<div class="flex justify-between"><span class="text-primary-fixed-dim">Velocity(max):</span> <span>1.42 px/ms</span></div>
+<div class="flex justify-between"><span class="text-primary-fixed-dim">Acceleration:</span> <span>0.05 px/ms²</span></div>
+<div class="flex justify-between"><span class="text-primary-fixed-dim">Jerk (Δa/Δt):</span> <span>Spike @ 0.2s</span></div>
+<div class="w-full bg-surface-container mt-2 h-1 flex">
+<div class="bg-primary-fixed w-[40%] h-full"></div>
+<div class="bg-error w-[5%] h-full"></div>
+</div>
+<div class="text-[10px] text-outline mt-1 text-right">Stress load distribution</div>
+</div>
+</div>
+<!-- Code Export Bay (Bottom Right 6 cols) -->
+<div class="col-span-12 lg:col-span-6 bg-[#0a0a0a] border border-outline-variant flex flex-col font-code-sm text-code-sm">
+<div class="h-6 flex items-center px-2 bg-surface-bright text-on-surface font-label-sm text-label-sm uppercase border-b border-outline-variant justify-between">
+<span>Export_Bay.sh</span>
+<span class="material-symbols-outlined text-[14px] cursor-pointer hover:text-primary-fixed">content_copy</span>
+</div>
+<div class="flex-1 p-3 overflow-y-auto text-on-surface-variant whitespace-pre">
+<span class="text-secondary-fixed">--motion-sys-snappy</span>: cubic-bezier(0.25, 1, 0.75, 0);
+<span class="text-secondary-fixed">--motion-dur-base</span>: 200ms;
+
+<span class="text-primary-fixed">.animate-panel</span> {
+  <span class="text-tertiary-fixed-dim">transition</span>: transform var(--motion-sys-snappy);
+  <span class="text-tertiary-fixed-dim">transition-duration</span>: var(--motion-dur-base);
+}
+<span class="text-primary-fixed cursor-blink">_</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Inline styles for functional preview animation to avoid extra files -->
+<style>
+        @keyframes previewAnim {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100% + 150px)); /* Approximate width for demo */ }
+        }
+    </style>
+</body></html>

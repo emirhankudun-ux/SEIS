@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS OS Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-container": "#ff516a",
+                        "primary-fixed": "#f0dbff",
+                        "on-secondary-fixed-variant": "#842500",
+                        "on-primary-fixed-variant": "#6900b3",
+                        "surface-container-high": "#282a2a",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e1e3e2",
+                        "on-tertiary-container": "#5b0017",
+                        "surface-container": "#1d2020",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-surface-variant": "#cfc2d6",
+                        "outline": "#988d9f",
+                        "secondary-fixed-dim": "#ffb59e",
+                        "on-surface": "#e1e3e2",
+                        "surface-bright": "#373a3a",
+                        "on-tertiary-fixed": "#40000d",
+                        "secondary-container": "#fc5b1f",
+                        "on-background": "#e1e3e2",
+                        "surface-variant": "#323535",
+                        "background": "#111414",
+                        "surface-container-low": "#191c1c",
+                        "on-primary": "#490080",
+                        "on-primary-container": "#400071",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#323535",
+                        "tertiary": "#ffb2b7",
+                        "surface": "#111414",
+                        "on-tertiary": "#67001b",
+                        "surface-tint": "#ddb7ff",
+                        "on-secondary-fixed": "#390b00",
+                        "secondary": "#ffb59e",
+                        "inverse-on-surface": "#2e3131",
+                        "on-primary-fixed": "#2c0051",
+                        "error": "#ffb4ab",
+                        "primary-container": "#b76dff",
+                        "primary": "#ddb7ff",
+                        "outline-variant": "#4d4354",
+                        "inverse-primary": "#842bd2",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "on-secondary": "#5d1800",
+                        "on-secondary-container": "#521400",
+                        "surface-dim": "#111414",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "2xl": "1.5rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "container-padding": "32px",
+                        "gutter": "24px",
+                        "safe-area": "40px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "display": ["Geist"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background-color: rgba(26, 28, 28, 0.7);
+            backdrop-filter: blur(48px);
+            -webkit-backdrop-filter: blur(48px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 100px 10px rgba(168, 85, 247, 0.1);
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+            border-color: #A855F7;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen w-screen overflow-hidden relative font-body-md">
+<!-- Background Shader (Blurred) -->
+<div class="absolute inset-0 w-full h-full filter blur-[10px] scale-110 -z-10">
+<!-- STITCH_SHADER_START:ANIMATION_21 class="w-full h-full" -->
+<div class="w-full h-full" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_21" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_21');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+    float time = u_time * 0.2;
+    
+    // Abstract fluid motion with purple and orange tones
+    vec3 color1 = vec3(0.66, 0.33, 0.97); // Electric Purple
+    vec3 color2 = vec3(0.97, 0.45, 0.25); // Cinematic Orange
+    vec3 color3 = vec3(0.05, 0.06, 0.06); // Deep Obsidian
+    
+    float noise = sin(uv.x * 3.0 + time) * cos(uv.y * 2.0 - time);
+    noise += sin(uv.y * 5.0 + time * 1.5) * 0.5;
+    
+    vec3 finalColor = mix(color3, color1, clamp(noise + uv.y * 0.5, 0.0, 1.0));
+    finalColor = mix(finalColor, color2, clamp(sin(time + uv.x * 2.0) * 0.3, 0.0, 1.0));
+    
+    gl_FragColor = vec4(finalColor * 0.8, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_21 -->
+</div>
+<!-- Top System Bar -->
+<header class="flex justify-between items-center w-full px-10 h-12 fixed top-0 z-50 bg-[#1A1C1C]/70 backdrop-blur-3xl border-b border-white/10">
+<div class="font-headline-md text-headline-md font-bold text-primary">SEIS OS</div>
+<div class="flex gap-4 items-center">
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="material-symbols-outlined text-primary font-label-sm" data-icon="schedule">schedule</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="h-full w-full flex items-center justify-center relative z-10 pt-12">
+<!-- Login Card -->
+<div class="glass-panel rounded-[24px] p-container-padding w-full max-w-md flex flex-col items-center">
+<!-- Avatar -->
+<div class="w-32 h-32 rounded-full overflow-hidden border-2 border-primary/50 mb-unit relative shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+<img class="w-full h-full object-cover" data-alt="A cinematic, high-fidelity portrait of a futuristic tech user, glowing ambient purple lighting, sharp focus, set against a dark tech lab background. The styling is sleek, modern, and aligned with a dark-mode cyberpunk aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAA9JCa4YLHZ-hjkDaRb2azZ2qrSl7KnnWxAZHXzfJ9e4wZ2TUYR2PedxuOXpisTdNEKzprFJQlR07ES0CTdlyjOi__8uYW4VMdFX-EQNotgnZ6L5ZVY3_ipJ3OXsm3H08s3C0M9EJmYGMN6-QnNumIHtA2D4-Hp15eGgLJJPeGtX2IShkJ9X7AHau97IG0fX9gxATu1zVyEzv5T6SvgXY_Ttcw8iZ0FI0N3ejIaAtAekLRzplelz-nBf5w7wd3x0Mhim2OAZ_LAuct"/>
+</div>
+<!-- Username -->
+<h1 class="font-display text-display text-on-surface mb-gutter">Emirhan</h1>
+<!-- Login Form -->
+<form class="w-full flex flex-col gap-unit" onsubmit="event.preventDefault();">
+<div class="relative w-full">
+<input class="w-full bg-[#000000] border border-outline-variant rounded-lg px-4 py-3 font-code-md text-code-md text-on-surface placeholder-on-surface-variant focus:outline-none input-glow transition-all duration-300" placeholder="Password" type="password"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-primary text-on-primary hover:scale-110 transition-transform duration-200 shadow-[0_0_15px_rgba(168,85,247,0.5)]" type="submit">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-center mt-2 opacity-70">Enter credentials to unlock SEIS OS</p>
+</form>
+</div>
+</main>
+<!-- Bottom Action Icons -->
+<div class="fixed bottom-safe-area left-safe-area z-50 flex gap-gutter">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="power_settings_new">power_settings_new</span>
+</button>
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="nightlight">nightlight</span>
+</button>
+</div>
+<div class="fixed bottom-safe-area right-safe-area z-50 flex gap-gutter">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors duration-300">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="accessibility_new">accessibility_new</span>
+</button>
+</div>
+</body></html>

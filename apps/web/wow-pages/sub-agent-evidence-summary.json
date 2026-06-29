@@ -1,0 +1,164 @@
+{
+  "id": "seis-sub-agent-five-year-demo-evidence",
+  "status": "local-demo-evidence",
+  "generatedAt": "2026-06-23T13:37:19.969Z",
+  "demoBoundary": "local-demo-only",
+  "quarterCount": 20,
+  "completionPercent": 100,
+  "laneCount": 6,
+  "versionTargetCount": 5,
+  "installedAiCoreRouteCount": 6,
+  "mcpRuntimeStatus": "local-smoke-verified",
+  "mcpRuntimeToolCount": 32,
+  "dryRunOnly": true,
+  "releasePromotionAllowed": false,
+  "forbiddenAutonomy": [
+    "merge",
+    "push-to-main",
+    "deploy",
+    "secret-access",
+    "ssh-execution",
+    "history-rewrite",
+    "provider-key-collection",
+    "model-training",
+    "public-visibility-change"
+  ],
+  "validation": {
+    "staticCheck": "npm run check:seis-sub-agent-5-year-plan",
+    "versionRegistry": "npm run check:seis-ai-core-version-registry",
+    "promotionGates": "npm run check:seis-ai-core-version-promotion-gates",
+    "browserSmoke": "npm run check:product-experience-browser-smoke"
+  },
+  "versionTargets": [
+    {
+      "year": 1,
+      "versionTarget": "v0.1-foundation",
+      "theme": "Version identity and bounded sub-agent evidence",
+      "promotionGate": "Version registry, operating model, runtime fixtures, and review ledger all validate without external mutation.",
+      "promotionGateStatus": "documented-validated",
+      "promotionDryRunDecision": "eligible-for-internal-review",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "npm run check:seis-ai-core-version-promotion-gates",
+        "npm run check:seis-ai-core-version-registry",
+        "npm run check:seis-agent-plugin-integration",
+        "npm run check:seis-ai-core-subagent-operating-model",
+        "npm run check:seis-ai-core-subagent-runtime-fixtures",
+        "npm run check:seis-ai-core-subagent-review-ledger",
+        "npm run check:seis-sub-agent-5-year-plan"
+      ],
+      "nextSafeAction": "Surface v0.1 as internal, zero-key, status-and-plan-only SEIS AI Core evidence."
+    },
+    {
+      "year": 2,
+      "versionTarget": "v0.2-read-only-intelligence",
+      "theme": "Read-only evidence dashboards and stale-data UX",
+      "promotionGate": "Command Center surfaces version status from repository evidence and marks mock, stale, blocked, and validated states.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": false,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future read-only Command Center checks",
+        "future provider registry fixture checks"
+      ],
+      "nextSafeAction": "Create provider registry and Command Center read-only evidence fixtures before claiming v0.2 readiness."
+    },
+    {
+      "year": 3,
+      "versionTarget": "v0.3-write-gated-runtime",
+      "theme": "Human-approved write lanes",
+      "promotionGate": "Write actions are permission-scoped, approval-backed, reversible, and covered by executable tests.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future permission enforcement tests",
+        "future write-gated runtime smoke tests"
+      ],
+      "nextSafeAction": "Promote permission matrix fixtures into executable tests before enabling write-gated lanes."
+    },
+    {
+      "year": 4,
+      "versionTarget": "v0.4-multi-workspace-readiness",
+      "theme": "Cloud, SSH, workspace, and provider readiness",
+      "promotionGate": "External integrations remain disabled unless target, auth, rollback, and approval evidence are explicit.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-human-approval",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future workspace sync safety checks",
+        "future cloud preflight checks"
+      ],
+      "nextSafeAction": "Keep cloud and SSH surfaces disabled until explicit target, rollback, and approval evidence exists."
+    },
+    {
+      "year": 5,
+      "versionTarget": "v1.0-public-enterprise-candidate",
+      "theme": "Public, enterprise, and SEIS Universe governance",
+      "promotionGate": "Release, security, provenance, model-claims, and public-readiness evidence support the version claim.",
+      "promotionGateStatus": "planned",
+      "promotionDryRunDecision": "blocked-until-evidence",
+      "promotionHumanApprovalRequired": true,
+      "releasePromotionAllowed": false,
+      "validationCommands": [
+        "future public readiness checks",
+        "future release evidence checks"
+      ],
+      "nextSafeAction": "Build public and release readiness evidence before claiming v1.0 candidacy."
+    }
+  ],
+  "lanes": [
+    {
+      "id": "architecture-agent",
+      "label": "Architecture",
+      "role": "Architecture and platform coherence",
+      "authority": "review-only",
+      "defaultAuthority": "review-only",
+      "wipLimit": 2
+    },
+    {
+      "id": "implementation-agent",
+      "label": "Implementation",
+      "role": "Bounded code and product implementation",
+      "authority": "scoped-worker",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "security-agent",
+      "label": "Security",
+      "role": "Security, privacy, permission, and credential boundaries",
+      "authority": "review-only",
+      "defaultAuthority": "review-only",
+      "wipLimit": 1
+    },
+    {
+      "id": "documentation-agent",
+      "label": "Documentation",
+      "role": "Source-of-truth docs, evidence, and handoffs",
+      "authority": "scoped-worker",
+      "defaultAuthority": "scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "validation-agent",
+      "label": "Validation",
+      "role": "Tests, smoke checks, audit scripts, and release evidence",
+      "authority": "review-only-or-scoped-worker",
+      "defaultAuthority": "review-only-or-scoped-worker",
+      "wipLimit": 2
+    },
+    {
+      "id": "design-agent",
+      "label": "Design",
+      "role": "Command Center, SEIS Desktop, SEIS Code, and creative product UX",
+      "authority": "proposal-or-scoped-worker",
+      "defaultAuthority": "proposal-or-scoped-worker",
+      "wipLimit": 1
+    }
+  ]
+}

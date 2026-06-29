@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Network Pulse | AETHER AI Status</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e1e2e7",
+                        "surface-container-highest": "#323539",
+                        "on-error": "#690005",
+                        "secondary": "#ebb2ff",
+                        "surface-container": "#1d2023",
+                        "on-primary": "#00363a",
+                        "inverse-primary": "#006970",
+                        "surface": "#111417",
+                        "on-secondary-container": "#fff6fc",
+                        "surface-dim": "#111417",
+                        "primary-fixed-dim": "#00dbe9",
+                        "outline-variant": "#3b494b",
+                        "surface-container-high": "#282a2e",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "on-background": "#e1e2e7",
+                        "inverse-on-surface": "#2e3134",
+                        "primary": "#dbfcff",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "on-primary-container": "#006970",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-lowest": "#0c0e12",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-fixed-variant": "#004f54",
+                        "error": "#ffb4ab",
+                        "background": "#111417",
+                        "on-secondary": "#520072",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-secondary-fixed": "#320047",
+                        "primary-container": "#00f0ff",
+                        "on-tertiary": "#2f3131",
+                        "outline": "#849495",
+                        "on-tertiary-container": "#5d5f5f",
+                        "primary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "error-container": "#93000a",
+                        "surface-variant": "#323539",
+                        "on-surface": "#e1e2e7",
+                        "surface-tint": "#00dbe9",
+                        "on-surface-variant": "#b9cacb",
+                        "on-primary-fixed": "#002022",
+                        "tertiary-container": "#d9d9d9",
+                        "secondary-fixed": "#f8d8ff",
+                        "surface-container-low": "#191c1f",
+                        "secondary-container": "#b600f8",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#f5f5f5",
+                        "surface-bright": "#37393d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-gap": "120px",
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "mono-code": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 219, 233, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid transparent;
+            border-image: linear-gradient(135deg, rgba(0, 219, 233, 0.3) 0%, transparent 40%) 1;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+            border-color: rgba(0, 219, 233, 0.4);
+        }
+        .pulse-green {
+            box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 219, 233, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 219, 233, 0); }
+        }
+        .scanning-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00dbe9, transparent);
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)]">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Compute</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Enterprise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed px-4 py-2 transition-all">Sign In</button>
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-6 py-2 font-semibold active:scale-95 transition-all">Get Started</button>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative h-[60vh] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Macro detail of an advanced AI processing unit with glowing neural pathways" class="w-full h-full object-cover opacity-40 mix-blend-screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwvmWK-oxs0CE6R1tj17sBA-Nw1gbYE5acGKo92Emt_IS9UPOQaTDRmI3krKEmxQUYPxYvwQChRklngKgfi3ZsUjcuAhV1k7_0xxKQgqct3oz2R3tH1qultK1XoW0H_mQ9Sse5T6MH4WDCMhcYEErJS9cB0QGqoaqa4drj9x57i_4A73Onk-DOuPGRVtTmUkUV1RRbGroi_Zgi56rP2ttXU4HRzd0BM1ovjROGZD9Nx1hx52pEtgHFvnGL1JdHBkxhkvUW4yU56w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#020408] via-transparent to-[#020408]/80"></div>
+</div>
+<div class="relative z-10 text-center px-margin-mobile">
+<div class="inline-flex items-center gap-3 px-4 py-2 rounded-full glass-card mb-6">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-green"></span>
+<span class="font-mono-label text-mono-label tracking-widest text-primary-fixed-dim">SYSTEMS STATUS: OPERATIONAL</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4">Network Pulse</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    Real-time telemetry and infrastructure health from Aether's global compute fabric.
+                </p>
+</div>
+</section>
+<!-- Main Content Dashboard -->
+<section class="max-w-container-max mx-auto px-margin-desktop -mt-20 relative z-20 pb-section-gap">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Regional Latency (Left Column) -->
+<div class="lg:col-span-4 glass-card p-8 group transition-all duration-500">
+<div class="scanning-line"></div>
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-md text-headline-md text-primary-fixed-dim">Regional Latency</h2>
+<span class="material-symbols-outlined text-outline">public</span>
+</div>
+<div class="space-y-6" id="latency-container">
+<!-- Dynamic Latency Items -->
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div>
+<p class="font-mono-label text-on-surface">US-EAST-1</p>
+<p class="text-xs text-on-tertiary-fixed-variant">Virginia, USA</p>
+</div>
+<div class="text-right">
+<p class="font-mono-label text-primary-fixed-dim" data-region="us-east">12ms</p>
+<div class="w-16 h-1 bg-surface-container-highest mt-1">
+<div class="bg-primary-fixed-dim h-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div>
+<p class="font-mono-label text-on-surface">EU-WEST-2</p>
+<p class="text-xs text-on-tertiary-fixed-variant">London, UK</p>
+</div>
+<div class="text-right">
+<p class="font-mono-label text-primary-fixed-dim" data-region="eu-west">24ms</p>
+<div class="w-16 h-1 bg-surface-container-highest mt-1">
+<div class="bg-primary-fixed-dim h-full" style="width: 28%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div>
+<p class="font-mono-label text-on-surface">ASIA-SOUTH-1</p>
+<p class="text-xs text-on-tertiary-fixed-variant">Mumbai, IN</p>
+</div>
+<div class="text-right">
+<p class="font-mono-label text-primary-fixed-dim" data-region="asia-south">48ms</p>
+<div class="w-16 h-1 bg-surface-container-highest mt-1">
+<div class="bg-primary-fixed-dim h-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="mt-8 w-full py-3 border border-primary-fixed-dim/30 text-primary-fixed-dim font-mono-label hover:bg-primary-fixed-dim/10 transition-all">VIEW FULL MAP</button>
+</div>
+<!-- Cluster Load (Center Column) -->
+<div class="lg:col-span-8 space-y-gutter">
+<div class="glass-card p-8">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary-fixed-dim">Cluster Utilization</h2>
+<p class="font-mono-label text-xs text-on-tertiary-fixed-variant">REAL-TIME TELEMETRY FEED v4.2</p>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-primary-fixed-dim/10 text-primary-fixed-dim text-[10px] font-bold border border-primary-fixed-dim/20">LIVE</span>
+<span class="px-2 py-1 bg-secondary/10 text-secondary text-[10px] font-bold border border-secondary/20">H100 OPTIMIZED</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- GPU Load 1 -->
+<div class="p-6 bg-surface-container-lowest/50 border border-outline-variant/10">
+<div class="flex justify-between items-end mb-4">
+<span class="font-mono-label text-on-surface">NVIDIA H100</span>
+<span class="text-2xl font-display-lg text-primary-fixed-dim" id="h100-val">84%</span>
+</div>
+<div class="h-12 w-full flex items-end gap-1">
+<div class="bg-primary-fixed-dim/20 w-full h-1/2"></div>
+<div class="bg-primary-fixed-dim/20 w-full h-2/3"></div>
+<div class="bg-primary-fixed-dim/20 w-full h-3/4"></div>
+<div class="bg-primary-fixed-dim w-full h-5/6"></div>
+<div class="bg-primary-fixed-dim/20 w-full h-1/2"></div>
+</div>
+</div>
+<!-- GPU Load 2 -->
+<div class="p-6 bg-surface-container-lowest/50 border border-outline-variant/10">
+<div class="flex justify-between items-end mb-4">
+<span class="font-mono-label text-on-surface">NVIDIA A100</span>
+<span class="text-2xl font-display-lg text-secondary" id="a100-val">62%</span>
+</div>
+<div class="h-12 w-full flex items-end gap-1">
+<div class="bg-secondary/20 w-full h-1/3"></div>
+<div class="bg-secondary w-full h-1/2"></div>
+<div class="bg-secondary/20 w-full h-2/3"></div>
+<div class="bg-secondary/20 w-full h-1/2"></div>
+<div class="bg-secondary/20 w-full h-1/3"></div>
+</div>
+</div>
+<!-- GPU Load 3 -->
+<div class="p-6 bg-surface-container-lowest/50 border border-outline-variant/10">
+<div class="flex justify-between items-end mb-4">
+<span class="font-mono-label text-on-surface">L40S CLUSTER</span>
+<span class="text-2xl font-display-lg text-tertiary-fixed-dim" id="l40s-val">41%</span>
+</div>
+<div class="h-12 w-full flex items-end gap-1">
+<div class="bg-tertiary-fixed-dim/20 w-full h-1/4"></div>
+<div class="bg-tertiary-fixed-dim/20 w-full h-1/3"></div>
+<div class="bg-tertiary-fixed-dim w-full h-1/2"></div>
+<div class="bg-tertiary-fixed-dim/20 w-full h-1/3"></div>
+<div class="bg-tertiary-fixed-dim/20 w-full h-1/4"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Incident History (Linear Style) -->
+<div class="glass-card">
+<div class="px-8 py-6 border-b border-outline-variant/10 flex items-center justify-between">
+<h2 class="font-mono-label text-on-surface">Incident &amp; Maintenance Log</h2>
+<span class="text-xs text-on-tertiary-fixed-variant">HISTORY: LAST 30 DAYS</span>
+</div>
+<div class="p-0">
+<div class="flex items-start gap-6 p-6 hover:bg-surface-container-high/20 transition-colors border-b border-outline-variant/10">
+<span class="material-symbols-outlined text-primary-fixed-dim mt-1">check_circle</span>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-semibold text-on-surface">Core Infrastructure Patching - Completed</h3>
+<span class="font-mono-label text-xs text-on-tertiary-fixed-variant">OCT 24, 02:00 UTC</span>
+</div>
+<p class="text-sm text-on-surface-variant">Scheduled maintenance for upgrading the SEIS OS kernel across all North American clusters. No downtime recorded.</p>
+</div>
+</div>
+<div class="flex items-start gap-6 p-6 hover:bg-surface-container-high/20 transition-colors border-b border-outline-variant/10">
+<span class="material-symbols-outlined text-secondary mt-1">info</span>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-semibold text-on-surface">Network Optimization: EU-WEST-2</h3>
+<span class="font-mono-label text-xs text-on-tertiary-fixed-variant">OCT 21, 14:30 UTC</span>
+</div>
+<p class="text-sm text-on-surface-variant">Routing tables optimized for European backbone. Latency improved by average 8% for API endpoints.</p>
+</div>
+</div>
+<div class="flex items-start gap-6 p-6 hover:bg-surface-container-high/20 transition-colors">
+<span class="material-symbols-outlined text-primary-fixed-dim mt-1">check_circle</span>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-semibold text-on-surface">Database Sharding Expansion</h3>
+<span class="font-mono-label text-xs text-on-tertiary-fixed-variant">OCT 18, 10:00 UTC</span>
+</div>
+<p class="text-sm text-on-surface-variant">Completed horizontal scaling for global vector stores. Write throughput capacity increased by 200%.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CTA Section -->
+<div class="mt-section-gap glass-card p-12 text-center relative">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at center, #00dbe9 0%, transparent 70%);"></div>
+<h2 class="font-display-lg text-headline-md text-primary mb-6">Stay ahead of the curve.</h2>
+<p class="font-body-lg text-on-surface-variant mb-10 max-w-xl mx-auto">Receive instant alerts for maintenance windows, regional outages, and critical system upgrades delivered directly to your engineering team.</p>
+<div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+<input class="bg-surface-container-lowest border border-outline-variant/30 px-6 py-4 w-full max-w-sm font-mono-code focus:ring-1 focus:ring-primary-fixed-dim focus:border-primary-fixed-dim outline-none transition-all" placeholder="Enter engineering email..." type="email"/>
+<button class="bg-primary-fixed-dim text-on-primary-fixed px-10 py-4 font-semibold glow-hover transition-all w-full md:w-auto">Subscribe to Updates</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/10 w-full py-section-gap">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-display-lg text-primary-fixed-dim block mb-4">AETHER AI</span>
+<p class="text-on-tertiary-fixed-variant font-mono-label leading-relaxed">Advanced AI infrastructure for the next generation of synthetic intelligence.</p>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-on-surface font-bold text-sm uppercase tracking-widest">Resources</h4>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">System Status</a>
+</div>
+<div class="flex flex-col gap-4">
+<h4 class="text-on-surface font-bold text-sm uppercase tracking-widest">Legal</h4>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Security</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="text-on-tertiary-fixed-variant font-mono-label hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="col-span-2 lg:col-span-6 mt-12 pt-12 border-t border-outline-variant/5 text-center">
+<p class="text-on-tertiary-fixed-variant font-mono-label">© 2024 Aether AI Infrastructure. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and data simulation
+        function simulateData() {
+            // Randomize Latency
+            document.querySelectorAll('[data-region]').forEach(el => {
+                const base = el.dataset.region === 'us-east' ? 10 : (el.dataset.region === 'eu-west' ? 20 : 45);
+                const variance = Math.floor(Math.random() * 5);
+                el.innerText = (base + variance) + 'ms';
+            });
+
+            // Update GPU Loads
+            const h100 = 80 + Math.floor(Math.random() * 10);
+            const a100 = 55 + Math.floor(Math.random() * 15);
+            const l40s = 35 + Math.floor(Math.random() * 10);
+
+            document.getElementById('h100-val').innerText = h100 + '%';
+            document.getElementById('a100-val').innerText = a100 + '%';
+            document.getElementById('l40s-val').innerText = l40s + '%';
+        }
+
+        setInterval(simulateData, 3000);
+
+        // Smooth scroll reveal effect
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-8');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-8');
+            observer.observe(card);
+        });
+    </script>
+</body></html>

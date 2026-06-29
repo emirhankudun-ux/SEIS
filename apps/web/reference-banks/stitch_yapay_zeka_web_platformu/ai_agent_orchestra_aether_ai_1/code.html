@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER AI | Swarm Orchestration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --obsidian: #020408;
+            --glass: rgba(10, 14, 26, 0.6);
+            --cyan-glow: rgba(0, 219, 233, 0.25);
+        }
+        body {
+            background-color: var(--obsidian);
+            color: #e1e2e7;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.3) 0%, transparent 40%, transparent 60%, rgba(182, 0, 248, 0.1) 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 30px var(--cyan-glow);
+            border-color: #00dbe9;
+            transition: all 0.3s ease;
+        }
+        .pulse-cyan {
+            animation: pulse-cyan 2s infinite ease-in-out;
+        }
+        @keyframes pulse-cyan {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+        }
+        .grid-pattern {
+            background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: #3b494b; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#ebb2ff",
+                      "on-primary": "#00363a",
+                      "error": "#ffb4ab",
+                      "surface-tint": "#00dbe9",
+                      "error-container": "#93000a",
+                      "on-surface": "#e1e2e7",
+                      "surface-container-low": "#191c1f",
+                      "on-error-container": "#ffdad6",
+                      "secondary": "#ebb2ff",
+                      "outline-variant": "#3b494b",
+                      "primary-fixed-dim": "#00dbe9",
+                      "surface-dim": "#111417",
+                      "secondary-container": "#b600f8",
+                      "primary": "#dbfcff",
+                      "on-secondary": "#520072",
+                      "background": "#111417",
+                      "on-error": "#690005",
+                      "on-secondary-container": "#fff6fc",
+                      "surface-bright": "#37393d",
+                      "tertiary-container": "#d9d9d9",
+                      "surface-container-high": "#282a2e",
+                      "secondary-fixed": "#f8d8ff",
+                      "inverse-primary": "#006970",
+                      "on-primary-fixed": "#002022",
+                      "surface-container": "#1d2023",
+                      "on-tertiary-container": "#5d5f5f",
+                      "primary-container": "#00f0ff",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "primary-fixed": "#7df4ff",
+                      "on-background": "#e1e2e7",
+                      "inverse-surface": "#e1e2e7",
+                      "surface-container-lowest": "#0c0e12",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-secondary-fixed-variant": "#74009f",
+                      "on-primary-container": "#006970",
+                      "on-surface-variant": "#b9cacb",
+                      "tertiary": "#f5f5f5",
+                      "surface-container-highest": "#323539",
+                      "on-primary-fixed-variant": "#004f54",
+                      "surface": "#111417",
+                      "outline": "#849495",
+                      "on-secondary-fixed": "#320047",
+                      "on-tertiary": "#2f3131",
+                      "surface-variant": "#323539",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "inverse-on-surface": "#2e3134",
+                      "tertiary-fixed-dim": "#c6c6c7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "64px",
+                      "unit": "8px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "section-gap": "120px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "mono-code": ["JetBrains Mono"],
+                      "headline-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "mono-label": ["JetBrains Mono"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                      "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="grid-pattern">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_40px_-15px_rgba(0,219,233,0.15)] z-50">
+<div class="flex justify-between items-center max-w-container-max mx-auto px-margin-desktop h-16">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-[24px] tracking-tighter text-primary-fixed-dim">AETHER AI</span>
+<div class="h-4 w-[1px] bg-outline-variant/50 mx-2"></div>
+<div class="flex gap-6">
+<a class="text-primary-fixed-dim font-semibold border-b-2 border-primary-fixed-dim pb-1 font-body-md text-body-md transition-colors duration-300" href="#">Models</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Infrastructure</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md" href="#">Compute</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant font-medium hover:text-primary-fixed transition-colors duration-300 font-body-md text-body-md px-4">Sign In</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-semibold active:scale-95 transition-transform">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 pt-20 z-40 flex flex-col">
+<div class="px-6 mb-8">
+<h2 class="font-display-lg text-[20px] text-primary-fixed-dim">Aether Platform</h2>
+<p class="font-mono-label text-[10px] uppercase tracking-widest text-on-surface-variant">Enterprise Infrastructure</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-container px-4 py-3 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-mono-label text-mono-label">SEIS OS</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 flex items-center gap-3 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-mono-label text-mono-label">SEIS AI</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 flex items-center gap-3 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">code</span>
+<span class="font-mono-label text-mono-label">SEIS Code</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container-high/50 px-4 py-3 flex items-center gap-3 cursor-pointer transition-all duration-200">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="font-mono-label text-mono-label">SEIS Cloud</span>
+</div>
+</nav>
+<div class="p-4">
+<button class="w-full bg-surface-container-highest border border-outline-variant/30 py-3 rounded text-primary-fixed-dim font-mono-label text-xs uppercase tracking-tighter hover:bg-primary-container hover:text-on-primary-container transition-all">
+                Deploy Now
+            </button>
+</div>
+<div class="mt-auto border-t border-outline-variant/10 p-4 space-y-2">
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-primary-fixed transition-colors cursor-pointer px-2">
+<span class="material-symbols-outlined text-sm">settings</span>
+<span class="font-mono-label text-xs">Settings</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-primary-fixed transition-colors cursor-pointer px-2">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span class="font-mono-label text-xs">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-10 pb-20 max-w-[1440px]">
+<!-- Header & Stats -->
+<header class="mb-12 flex justify-between items-end">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim pulse-cyan"></div>
+<span class="font-mono-label text-xs text-primary-fixed-dim uppercase tracking-[0.2em]">System Status: Operational</span>
+</div>
+<h1 class="font-display-lg text-[48px] text-on-surface leading-tight">Swarm Orchestrator <span class="text-outline">v4.0</span></h1>
+</div>
+<div class="flex gap-8">
+<div class="text-right">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-1">Active Agents</p>
+<p class="font-mono-code text-2xl text-primary-fixed-dim">1,248</p>
+</div>
+<div class="text-right">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-1">Throughtput</p>
+<p class="font-mono-code text-2xl text-secondary-fixed-dim">4.2 PB/s</p>
+</div>
+<div class="text-right">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-1">Latency</p>
+<p class="font-mono-code text-2xl text-primary-fixed-dim">0.4 ms</p>
+</div>
+</div>
+</header>
+<!-- Bento Grid Infrastructure -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Collaborative Intelligence Graph -->
+<div class="col-span-8 glass-panel rounded-xl p-8 h-[500px] flex flex-col group transition-all duration-500">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-xl flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim">hub</span>
+                        Collaborative Intelligence Graph
+                    </h3>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary/10 border border-primary-fixed-dim/30 rounded text-[10px] font-mono-label text-primary-fixed-dim">REAL-TIME</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">fullscreen</span>
+</div>
+</div>
+<div class="flex-1 relative rounded-lg bg-surface-container-lowest/50 border border-outline-variant/10 overflow-hidden">
+<!-- Background Shader for the Graph -->
+
+<!-- Overlay Controls -->
+<div class="absolute bottom-4 left-4 flex gap-4">
+<div class="glass-panel px-4 py-2 rounded-full border border-outline-variant/20 flex items-center gap-3">
+<span class="material-symbols-outlined text-xs text-primary-fixed-dim">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-mono-label text-xs w-32 placeholder:text-on-surface-variant/40" placeholder="Locate Node..." type="text"/>
+</div>
+</div>
+<!-- Visual Nodes (Simulated) -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-[400px] h-[400px] border border-primary-fixed-dim/5 rounded-full animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute w-[250px] h-[250px] border border-secondary-fixed-dim/10 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+</div>
+</div>
+</div>
+<!-- Agent Lifecycle Management -->
+<div class="col-span-4 space-y-gutter">
+<div class="glass-panel rounded-xl p-6 glow-hover">
+<h3 class="font-headline-md text-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-fixed-dim">sync</span>
+                        Lifecycle Control
+                    </h3>
+<div class="space-y-4">
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/20">
+<div class="flex justify-between items-center mb-2">
+<span class="font-mono-label text-xs">Provisioning Cluster A-9</span>
+<span class="text-primary-fixed-dim font-mono-code text-xs">82%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[82%]"></div>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/20">
+<div class="flex justify-between items-center mb-2">
+<span class="font-mono-label text-xs">Pruning Idle Entities</span>
+<span class="text-on-surface-variant font-mono-code text-xs">Complete</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim w-full"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 bg-primary-container text-on-primary-container py-3 rounded font-bold uppercase tracking-widest text-[11px] active:scale-95 transition-transform">
+                        Initiate Global Resync
+                    </button>
+</div>
+<div class="glass-panel rounded-xl p-6">
+<h3 class="font-headline-md text-lg mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim">groups</span>
+                        Agent Registry
+                    </h3>
+<div class="space-y-3 max-h-[200px] overflow-y-auto pr-2">
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></div>
+<span class="font-mono-label text-xs">NEURAL_OBS_71</span>
+</div>
+<span class="font-mono-code text-[10px] text-on-surface-variant">LVL_4_INF</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary-fixed-dim"></div>
+<span class="font-mono-label text-xs">QUANT_EXEC_12</span>
+</div>
+<span class="font-mono-code text-[10px] text-on-surface-variant">LVL_5_SUP</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/10">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim pulse-cyan"></div>
+<span class="font-mono-label text-xs">LOGIC_SYN_09</span>
+</div>
+<span class="font-mono-code text-[10px] text-on-surface-variant">LVL_2_LRN</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Execution Heatmaps -->
+<div class="col-span-12 glass-panel rounded-xl p-8">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-xl mb-1">Execution Heatmaps</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Visualizing compute density across distributed neural networks.</p>
+</div>
+<div class="flex gap-4 items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary-fixed-dim/20 rounded-sm"></div>
+<span class="font-mono-label text-[10px]">Low</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-primary-fixed-dim rounded-sm"></div>
+<span class="font-mono-label text-[10px]">Critical</span>
+</div>
+<select class="bg-surface-container-high border-none text-xs font-mono-label rounded py-1 px-3">
+<option>Last 24 Hours</option>
+<option>Last 7 Days</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-24 gap-1 h-32">
+<!-- Generating a dense heatmap-like grid via JS or loops normally, here manually representative -->
+<script>
+                        document.write(Array(144).fill(0).map(() => {
+                            const op = Math.random();
+                            const color = op > 0.8 ? 'bg-primary-fixed-dim' : op > 0.4 ? 'bg-primary-fixed-dim/40' : 'bg-surface-container-highest';
+                            return `<div class="h-full w-full ${color} rounded-sm opacity-${Math.floor(op * 100)}"></div>`;
+                        }).join(''));
+                    </script>
+</div>
+<div class="mt-8 grid grid-cols-4 gap-gutter">
+<div class="p-4 border border-outline-variant/20 rounded">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Max Load Region</p>
+<p class="font-mono-code text-sm text-primary-fixed-dim">US-EAST-4B</p>
+</div>
+<div class="p-4 border border-outline-variant/20 rounded">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Error Density</p>
+<p class="font-mono-code text-sm text-on-surface">0.00032%</p>
+</div>
+<div class="p-4 border border-outline-variant/20 rounded">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Packet Loss</p>
+<p class="font-mono-code text-sm text-on-surface">Minimal</p>
+</div>
+<div class="p-4 border border-outline-variant/20 rounded">
+<p class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Swarm Cohesion</p>
+<p class="font-mono-code text-sm text-secondary-fixed-dim">99.98%</p>
+</div>
+</div>
+</div>
+<!-- Task Delegation Control -->
+<div class="col-span-5 glass-panel rounded-xl p-8">
+<h3 class="font-headline-md text-xl mb-6">Task Delegation</h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase">Instruction Prompt</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded p-4 font-mono-code text-xs text-on-surface h-32 focus:border-primary-fixed-dim transition-colors resize-none" placeholder="Enter high-level goal for the agent swarm..."></textarea>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase">Priority Level</label>
+<div class="flex gap-2">
+<button class="flex-1 py-2 border border-outline-variant/30 rounded font-mono-label text-[10px] hover:bg-surface-container-high">Standard</button>
+<button class="flex-1 py-2 border border-primary-fixed-dim/50 bg-primary/5 rounded font-mono-label text-[10px] text-primary-fixed-dim">Critical</button>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-mono-label text-[11px] text-on-surface-variant uppercase">Scaling Limit</label>
+<input class="w-full accent-primary-fixed-dim" type="range"/>
+</div>
+</div>
+<button class="w-full bg-secondary-container text-on-secondary-container py-4 rounded-lg font-bold flex items-center justify-center gap-2 glow-hover">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        DEPLOY MISSION
+                    </button>
+</div>
+</div>
+<!-- Real-time Console Log -->
+<div class="col-span-7 glass-panel rounded-xl p-8 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-headline-md text-xl">Event Stream</h3>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">filter_alt</span>
+<span class="font-mono-label text-[10px]">Filter: All Events</span>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-lowest rounded border border-outline-variant/20 p-4 font-mono-code text-[11px] text-on-surface-variant/80 overflow-y-auto space-y-1">
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:22:01]</span> <span>SWARM_ORCHESTRATOR: Syncing local states with Global_V4...</span></div>
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:22:05]</span> <span>AGENT_71: Processing task shard [7723-A]</span></div>
+<div class="flex gap-4"><span class="text-secondary-fixed-dim">[14:22:12]</span> <span>SYSTEM: Memory overhead at 42% - Scaling permitted</span></div>
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:22:18]</span> <span>COLLAB_GRAPH: New edge detected between Node_02 and Node_99</span></div>
+<div class="flex gap-4"><span class="text-error">[14:23:01]</span> <span class="text-error">WARNING: Latency spike in Seoul-CN-1 region (+12ms)</span></div>
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:23:05]</span> <span>SWARM_ORCHESTRATOR: Load balancing triggered...</span></div>
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:23:10]</span> <span>AGENT_09: Optimization loop concluded. Delta: +0.4%</span></div>
+<div class="flex gap-4"><span class="text-primary-fixed-dim">[14:23:15]</span> <span>SYSTEM: Ready for mission deployment.</span></div>
+</div>
+</div>
+</div>
+<!-- Futuristic Details / Decorative -->
+<div class="mt-section-gap grid grid-cols-3 gap-gutter">
+<div class="glass-panel p-10 rounded-full flex flex-col items-center justify-center text-center">
+<div class="w-16 h-16 rounded-full border border-primary-fixed-dim/20 mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">architecture</span>
+</div>
+<h4 class="font-headline-md text-lg mb-2">Neural Fabric</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Advanced mesh architecture for zero-latency agent communication.</p>
+</div>
+<div class="glass-panel p-10 rounded-full flex flex-col items-center justify-center text-center">
+<div class="w-16 h-16 rounded-full border border-secondary-fixed-dim/20 mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-3xl">shield_with_heart</span>
+</div>
+<h4 class="font-headline-md text-lg mb-2">Sentience Guard</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Real-time ethical alignment monitoring and safety interlocks.</p>
+</div>
+<div class="glass-panel p-10 rounded-full flex flex-col items-center justify-center text-center">
+<div class="w-16 h-16 rounded-full border border-primary-fixed-dim/20 mb-6 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl">query_stats</span>
+</div>
+<h4 class="font-headline-md text-lg mb-2">Predictive Flux</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Forecasting swarm behavior patterns using temporal modeling.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-gutter">
+<div class="col-span-2">
+<span class="font-display-lg text-[24px] text-primary-fixed-dim">AETHER AI</span>
+<p class="font-mono-label text-xs text-on-tertiary-fixed-variant mt-4 leading-relaxed">
+                    © 2024 Aether AI Infrastructure. All rights reserved. <br/>
+                    Global Command Interface v4.2.0-stable
+                </p>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Resources</span>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Documentation</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">System Status</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">API Reference</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-mono-label text-[10px] text-on-surface-variant uppercase mb-2">Security</span>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Security</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Privacy Policy</a>
+<a class="font-mono-label text-on-tertiary-fixed-variant hover:text-primary-fixed transition-colors" href="#">Terms of Service</a>
+</div>
+<div class="col-span-2 flex justify-end items-end">
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-all">
+<span class="material-symbols-outlined">public</span>
+</div>
+<div class="w-10 h-10 rounded border border-outline-variant/20 flex items-center justify-center text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-all">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Atmosphere Overlay (Ambient Glows) -->
+<div class="fixed top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary-fixed-dim/5 blur-[120px] pointer-events-none rounded-full"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-secondary-container/5 blur-[150px] pointer-events-none rounded-full"></div>
+<script>
+        // Micro-interaction for mission deployment button
+        const missionBtn = document.querySelector('button.bg-secondary-container');
+        if(missionBtn) {
+            missionBtn.addEventListener('click', () => {
+                const icon = missionBtn.querySelector('.material-symbols-outlined');
+                icon.style.transition = 'transform 1s cubic-bezier(0.19, 1, 0.22, 1)';
+                icon.style.transform = 'translateY(-50px) scale(0.5)';
+                missionBtn.classList.add('opacity-50');
+                
+                setTimeout(() => {
+                    icon.style.transform = 'translateY(0) scale(1)';
+                    missionBtn.classList.remove('opacity-50');
+                }, 2000);
+            });
+        }
+
+        // Pulse effect for agents on hover
+        const agentRows = document.querySelectorAll('.registry-row');
+        agentRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.background = 'rgba(0, 219, 233, 0.05)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.background = 'transparent';
+            });
+        });
+    </script>
+</body></html>

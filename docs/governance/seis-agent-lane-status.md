@@ -21,6 +21,28 @@ Agent lanes are source-controlled operating capabilities. They are not decorativ
 | SEIS Master Prompt Governance | Long-term operating rules and architecture mission. |
 | SEIS Security Review | Security posture, secret-safety, and rollback evidence. |
 | SEIS GitHub Workflow | Branch, commit, CI, PR, release, and repository hygiene. |
+| SEIS Hub Sub-Agent Lane | Repository governance, plugin coordination, source-of-truth routing, and migration safety planning inside SEIS AI Core. |
+| SEIS Cloud Sub-Agent Lane | Cloud readiness, provider-neutral deployment planning, SSH/VPN boundary review, and rollback-safe infrastructure guidance. |
+| SEIS-Code Sub-Agent Lane | Architecture-aware implementation planning, tests, CI gates, MCP/plugin code, and repository automation. |
+| SEIS-Design Sub-Agent Lane | Product design, UI/UX, design systems, accessibility, motion, and visual QA planning. |
+| SEIS-DATA Sub-Agent Lane | Data architecture, analytics, generated reports, schema governance, memory/context, and provenance planning. |
+
+## SEIS AI Core Lane Tools
+
+The SEIS AI runtime exposes these sub-agent lane tools as read-only status and
+plan-only actions:
+
+| Lane | Status tool | Plan tool |
+| --- | --- | --- |
+| SEIS Hub | `seis_hub_status` | `seis_hub_plan` |
+| SEIS Cloud | `seis_cloud_status` | `seis_cloud_plan` |
+| SEIS-Code | `seis_code_status` | `seis_code_plan` |
+| SEIS-Design | `seis_design_status` | `seis_design_plan` |
+| SEIS-DATA | `seis_data_status` | `seis_data_plan` |
+
+These tools do not perform deployment, SSH, credential, GitHub write, or
+destructive work. They only expose repo-backed lane posture and safe execution
+guidance.
 
 ## Canonical contract
 

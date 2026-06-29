@@ -1,0 +1,71 @@
+{
+  "id": "seis-ai-core-dry-run-task-queue",
+  "version": "2026.06.23",
+  "status": "dry-run-only",
+  "purpose": "Fixture the future SEIS AI Core sub-agent task queue without enabling background or write-capable execution.",
+  "qualityGate": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+  "writerPolicy": "single-writer",
+  "dryRunOnly": true,
+  "states": ["queued", "assigned", "running", "awaiting-approval", "cancelled", "failed", "validated", "archived"],
+  "transitionRules": [
+    "queued may become assigned",
+    "assigned may become running",
+    "running may become validated, failed, cancelled, or awaiting-approval",
+    "awaiting-approval may not execute until explicit human approval exists",
+    "validated, failed, cancelled, and archived are terminal for execution"
+  ],
+  "sampleTasks": [
+    {
+      "id": "dry-run-seis-hub-foundation-review",
+      "laneId": "seis",
+      "roleId": "repository-governance-subagent",
+      "permissionLevel": "plan-only",
+      "state": "validated",
+      "dryRunOnly": true,
+      "approvalRequired": false,
+      "externalMutation": false,
+      "targetScope": ["docs/**", "content/development/**"],
+      "validator": "npm run check:seis-ai-core-subagent-runtime-fixtures",
+      "rollbackNote": "No mutation performed; discard dry-run plan output if stale."
+    },
+    {
+      "id": "dry-run-seis-cloud-preflight",
+      "laneId": "seis-cloud",
+      "roleId": "cloud-readiness-subagent",
+      "permissionLevel": "plan-only",
+      "state": "validated",
+      "dryRunOnly": true,
+      "approvalRequired": false,
+      "externalMutation": false,
+      "targetScope": ["docs/operations/**", "docs/security/**", "deploy/**"],
+      "validator": "npm run check:cloud-access-policy",
+      "rollbackNote": "No infrastructure mutation performed."
+    },
+    {
+      "id": "dry-run-seis-code-patch-plan",
+      "laneId": "seis-code",
+      "roleId": "engineering-subagent",
+      "permissionLevel": "plan-only",
+      "state": "validated",
+      "dryRunOnly": true,
+      "approvalRequired": false,
+      "externalMutation": false,
+      "targetScope": ["apps/**", "packages/**", "scripts/**", "docs/**"],
+      "validator": "npm run test:web",
+      "rollbackNote": "No file edits performed by this dry-run task."
+    },
+    {
+      "id": "approval-gated-cloud-deploy-preview",
+      "laneId": "seis-cloud",
+      "roleId": "cloud-readiness-subagent",
+      "permissionLevel": "external-gated",
+      "state": "awaiting-approval",
+      "dryRunOnly": true,
+      "approvalRequired": true,
+      "externalMutation": false,
+      "targetScope": ["deploy/**"],
+      "validator": "provider-neutral preflight required before execution",
+      "rollbackNote": "Deployment remains blocked until target, credential boundary, and rollback owner are approved."
+    }
+  ]
+}

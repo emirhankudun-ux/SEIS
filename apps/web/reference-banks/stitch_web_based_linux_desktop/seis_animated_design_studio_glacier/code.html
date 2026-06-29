@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS_KERNEL_OS_v1.0 | Glacier Design Studio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#c3f400",
+                    "surface-container-lowest": "#0c0f0f",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-container": "#dbd8d9",
+                    "on-tertiary-fixed-variant": "#474647",
+                    "on-primary-container": "#006970",
+                    "on-tertiary-container": "#5f5e5f",
+                    "primary": "#dbfcff",
+                    "secondary": "#ffffff",
+                    "surface-tint": "#00dbe9",
+                    "inverse-on-surface": "#2f3131",
+                    "on-primary-fixed": "#002022",
+                    "surface-bright": "#38393a",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#282a2b",
+                    "on-secondary-fixed-variant": "#3c4d00",
+                    "tertiary-fixed-dim": "#c8c6c7",
+                    "surface": "#121414",
+                    "secondary-fixed-dim": "#abd600",
+                    "primary-fixed": "#7df4ff",
+                    "on-tertiary-fixed": "#1c1b1c",
+                    "tertiary-fixed": "#e5e2e3",
+                    "surface-dim": "#121414",
+                    "on-surface": "#e2e2e2",
+                    "surface-variant": "#333535",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed": "#161e00",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary": "#283500",
+                    "surface-container-highest": "#333535",
+                    "inverse-surface": "#e2e2e2",
+                    "primary-container": "#00f0ff",
+                    "surface-container": "#1e2020",
+                    "on-primary": "#00363a",
+                    "background": "#121414",
+                    "on-tertiary": "#313031",
+                    "on-secondary-container": "#556d00",
+                    "tertiary": "#f8f5f6",
+                    "surface-container-low": "#1a1c1c",
+                    "outline-variant": "#3b494b",
+                    "secondary-container": "#c3f400",
+                    "inverse-primary": "#006970",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "outline": "#849495",
+                    "on-error": "#690005"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "gutter": "16px",
+                    "max-width": "1440px",
+                    "unit": "4px",
+                    "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                    "code-lg": ["JetBrains Mono"],
+                    "headline-md": ["Geist"],
+                    "label-caps": ["JetBrains Mono"],
+                    "code-sm": ["JetBrains Mono"],
+                    "body-main": ["Geist"],
+                    "display-lg-mobile": ["Geist"],
+                    "display-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "code-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #000;
+            color: #e2e2e2;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glacier-gradient {
+            background: radial-gradient(circle at 50% 0%, rgba(0, 219, 233, 0.1) 0%, transparent 70%);
+        }
+
+        .terminal-bg {
+            background: #000000;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.4);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Ambient Pulses and Shimmers */
+        @keyframes breathe {
+            0%, 100% { opacity: 0.8; box-shadow: 0 0 8px rgba(255,255,255,0.1); }
+            50% { opacity: 1; box-shadow: 0 0 16px rgba(255,255,255,0.3); }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+        .swatch-breathe {
+            animation: breathe 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+        .swatch-breathe::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shimmer 3s infinite linear;
+            pointer-events: none;
+        }
+
+        /* Terminal Typing Cursor */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+
+        /* 3D Tilt Card Container */
+        .tilt-container {
+            perspective: 1000px;
+        }
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease, box-shadow 0.3s ease;
+            will-change: transform;
+        }
+        .tilt-card:hover {
+            box-shadow: 0 10px 30px rgba(0, 219, 233, 0.2);
+            z-index: 10;
+        }
+        .tilt-inner {
+            transform: translateZ(30px);
+        }
+
+        /* Entrance Transitions */
+        .entrance-slide-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .entrance-slide-right {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideRightFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideRightFade {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Sidebar Nav Indicator */
+        .nav-item-relative {
+            position: relative;
+        }
+        .nav-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background-color: var(--color-secondary-fixed, #c3f400);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .swatch-breathe, .cursor-blink, .entrance-slide-up, .entrance-slide-right, .tilt-card, .nav-indicator {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+            .swatch-breathe::after { display: none; }
+        }
+    </style>
+</head>
+<body class="font-body-main text-body-main glacier-gradient min-h-screen">
+<!-- TopAppBar from JSON -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-12 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 text-primary-fixed-dim font-code-sm text-code-sm transition-all duration-150 ease-in-out entrance-slide-up" style="animation-delay: 0.1s;">
+<div class="flex items-center gap-8">
+<span class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">SEIS_KERNEL_OS_v1.0</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-primary-fixed-dim font-bold transition-all duration-150 ease-in-out relative group" href="#">KERNEL
+    <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-fixed-dim transform origin-left scale-x-100 transition-transform"></span>
+</a>
+<a class="text-on-surface-variant hover:text-primary-fixed hover:bg-surface-variant/50 px-2 py-0.5 rounded transition-all relative group" href="#">SYSTEM
+    <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-fixed transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+</a>
+<a class="text-on-surface-variant hover:text-primary-fixed hover:bg-surface-variant/50 px-2 py-0.5 rounded transition-all relative group" href="#">VISUAL
+    <span class="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-fixed transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-variant/30 rounded border border-white/5 transition-colors hover:border-white/20">
+<span class="material-symbols-outlined text-[14px]">search</span>
+<span class="opacity-40">QUERY_SYSTEM...</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary-fixed hover:scale-110 transition-all">terminal</span>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary-fixed hover:scale-110 transition-all">sensors</span>
+<span class="material-symbols-outlined cursor-pointer text-error/70 hover:text-error hover:scale-110 transition-all">power_settings_new</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar from JSON -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col pt-16 pb-8 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant/20 font-code-lg text-code-lg entrance-slide-right" style="animation-delay: 0.2s;">
+<div class="px-6 mb-8 flex items-center gap-3 group cursor-pointer">
+<div class="w-10 h-10 rounded bg-secondary-fixed/10 border border-secondary-fixed/20 flex items-center justify-center group-hover:bg-secondary-fixed/20 transition-colors">
+<span class="material-symbols-outlined text-secondary-fixed group-hover:scale-110 transition-transform">face</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-secondary-fixed">ROOT_USER</div>
+<div class="text-[10px] opacity-50 uppercase tracking-tighter group-hover:opacity-100 transition-opacity">STATUS: OPTIMAL</div>
+</div>
+</div>
+<nav class="flex-grow flex flex-col gap-1 relative" id="sidebar-nav">
+<div class="nav-indicator" id="nav-indicator" style="transform: translateY(104px);"></div>
+<a class="nav-item-relative flex items-center gap-4 py-2 text-on-surface-variant pl-4 hover:text-primary-fixed-dim hover:bg-white/5 transition-all group" data-index="0" href="#">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">memory</span> KERNEL
+            </a>
+<a class="nav-item-relative flex items-center gap-4 py-2 text-on-surface-variant pl-4 hover:text-primary-fixed-dim hover:bg-white/5 transition-all group" data-index="1" href="#">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">psychology</span> LOGIC
+            </a>
+<a class="nav-item-relative flex items-center gap-4 py-2 text-secondary-fixed bg-secondary-fixed/5 pl-4 active:scale-95 transition-transform" data-index="2" href="#">
+<span class="material-symbols-outlined">brush</span> VISUAL
+            </a>
+<a class="nav-item-relative flex items-center gap-4 py-2 text-on-surface-variant pl-4 hover:text-primary-fixed-dim hover:bg-white/5 transition-all group" data-index="3" href="#">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">database</span> ASSETS
+            </a>
+<a class="nav-item-relative flex items-center gap-4 py-2 text-on-surface-variant pl-4 hover:text-primary-fixed-dim hover:bg-white/5 transition-all group" data-index="4" href="#">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">settings</span> SYSTEM
+            </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 border border-secondary-fixed text-secondary-fixed font-label-caps text-[10px] tracking-widest hover:bg-secondary-fixed hover:text-black transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
+                INITIALIZE_THREAD
+            </button>
+<div class="mt-8 flex flex-col gap-2">
+<a class="flex items-center gap-2 text-on-surface-variant text-sm hover:text-primary-fixed transition-colors group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:-translate-y-0.5 transition-transform">description</span> DOCS
+                </a>
+<a class="flex items-center gap-2 text-on-surface-variant text-sm hover:text-primary-fixed transition-colors group" href="#">
+<span class="material-symbols-outlined text-sm group-hover:rotate-12 transition-transform">help_outline</span> HELP
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-12 min-h-screen">
+<div class="px-margin-desktop py-12">
+<!-- Hero Header -->
+<div class="mb-16 entrance-slide-up" style="animation-delay: 0.3s;">
+<div class="font-label-caps text-label-caps text-primary-fixed-dim mb-4 tracking-widest">MODULE: DESIGN_STUDIO_ALPHA</div>
+<h1 class="font-display-lg text-display-lg text-secondary mb-2">Glacier Ecosystem</h1>
+<p class="text-on-surface-variant max-w-2xl font-body-main text-body-main">
+                    A high-fidelity creative environment optimized for rapid iteration. Seamlessly manage tokens, asset libraries, and color scales across distributed threads.
+                </p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Primary Asset Browser (Large Glass Card) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden flex flex-col entrance-slide-up" style="animation-delay: 0.4s;">
+<div class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+<div class="font-label-caps text-label-caps text-primary">ASSET_INDEX // REV_04</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white transition-colors">grid_view</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-white transition-colors">list</span>
+</div>
+</div>
+<div class="p-6 grid grid-cols-2 md:grid-cols-3 gap-6">
+<div class="tilt-container group aspect-square rounded-lg cursor-pointer">
+<div class="tilt-card relative w-full h-full rounded-lg overflow-hidden border border-white/5">
+<img class="object-cover w-full h-full tilt-inner transition-transform duration-700" data-alt="A macro photograph of geometric crystal structures in soft arctic blue and frosted white tones. The lighting is diffused and ethereal, highlighting the sharp edges and translucent depths of the crystals. The image has a clean, professional aesthetic fitting for a high-end design studio's asset library." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8hkbboQggU33SfjEjXCLNdiwx_MLu6Xst8DPjjOBU689MMfaqc_WBHoxbslxl-jEv3eS2DRFrfkofzmZACL-HRt9xpKJGWpvQmQQVu5PKkyZ_xbvqg6jU2r0aTvrndWfTanUuIK7b5-3mRYxyKalCPrJqg5g5nVuthjlWtxF0jzMQkEsTCeiLFYWMCWW3n9mpgNjLJLzqubCdOoSh0MHHV4xqXELsSu3XpfP_7A00JfR-xOmATdxPu5fXLUIkz36FKVQMQl0TqDlO"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end">
+<span class="font-label-caps text-[10px] transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 text-white">CRYSTAL_MESH_01</span>
+<span class="text-[9px] text-primary-fixed-dim transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">4.2MB // .OBJ</span>
+</div>
+</div>
+</div>
+<div class="tilt-container group aspect-square rounded-lg cursor-pointer">
+<div class="tilt-card relative w-full h-full rounded-lg overflow-hidden border border-white/5">
+<img class="object-cover w-full h-full tilt-inner transition-transform duration-700" data-alt="Abstract digital render of flowing liquid glass in a minimalist white space. The liquid exhibits soft reflections of cyan and lime green light, creating a high-contrast but serene visual. The composition is asymmetrical and modern, representing technical luxury and fluid design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsGr_W_iRQ_q73mbKTmZJ9a_BkHCQ1lzeFsxM4ecS_P4rcHu3U6fB_-TYxzSkRLodgfLsomVCHMlp4J5c2d7Pq0gIXqNwFfjHYgcjNmWKpvrgFT9flo4Dk_iVEEqLVFUJ-9g5WaiHRjJ_fujl8MCenD_f-vUM8XNl8uLOdl8xqbnFl3XQExjqzWyNCvi_JQ11aryzDzFK98NlmE0KAI0clDxGkRw14c_Blx1y5cbCiP17PFo7U5ClbEZZm_PksYDTID-3QBdvcXu7M"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end">
+<span class="font-label-caps text-[10px] transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 text-white">FLUID_BASE_V3</span>
+<span class="text-[9px] text-primary-fixed-dim transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">12.8MB // .EXR</span>
+</div>
+</div>
+</div>
+<div class="tilt-container group aspect-square rounded-lg cursor-pointer">
+<div class="tilt-card relative w-full h-full rounded-lg overflow-hidden border border-white/5">
+<div class="w-full h-full bg-surface-container-highest flex items-center justify-center tilt-inner">
+<span class="material-symbols-outlined text-on-surface-variant opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all">add_circle</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-4 flex flex-col justify-end">
+<span class="font-label-caps text-[10px] transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 text-white">ACTIVE_NODE_SHDR</span>
+<span class="text-[9px] text-primary-fixed-dim transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 delay-75">PROCEDURAL</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Palette Control (Sidebar Card) -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-6 flex flex-col entrance-slide-up" style="animation-delay: 0.5s;">
+<div class="font-label-caps text-label-caps text-secondary-fixed mb-6 flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary-fixed rounded-sm glow-cyan animate-pulse"></div>
+                        ACTIVE_PALETTE: GLACIER
+                    </div>
+<div class="space-y-4">
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-code-sm text-on-surface-variant group-hover:text-white transition-colors">PRIMARY_FIXED</span>
+<div class="flex items-center gap-3">
+<span class="font-code-sm text-secondary opacity-50 group-hover:opacity-100 transition-opacity">#00DBE9</span>
+<div class="w-12 h-6 bg-primary-fixed-dim rounded border border-white/20 swatch-breathe group-hover:scale-105 transition-transform"></div>
+</div>
+</div>
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-code-sm text-on-surface-variant group-hover:text-white transition-colors">SECONDARY_FIXED</span>
+<div class="flex items-center gap-3">
+<span class="font-code-sm text-secondary opacity-50 group-hover:opacity-100 transition-opacity">#C3F400</span>
+<div class="w-12 h-6 bg-secondary-fixed rounded border border-white/20 swatch-breathe group-hover:scale-105 transition-transform" style="animation-delay: 0.5s;"></div>
+</div>
+</div>
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="font-code-sm text-on-surface-variant group-hover:text-white transition-colors">SURFACE_BASE</span>
+<div class="flex items-center gap-3">
+<span class="font-code-sm text-secondary opacity-50 group-hover:opacity-100 transition-opacity">#121414</span>
+<div class="w-12 h-6 bg-surface rounded border border-white/20 swatch-breathe group-hover:scale-105 transition-transform" style="animation-delay: 1s;"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 border-t border-white/5 pt-6 group">
+<div class="font-label-caps text-[10px] text-on-surface-variant mb-4 group-hover:text-primary-fixed-dim transition-colors">CONTRAST_ANALYSIS</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed w-[92%] transform origin-left transition-transform duration-1000 ease-out"></div>
+</div>
+<div class="flex justify-between mt-2 font-code-sm text-[10px]">
+<span class="group-hover:text-white transition-colors">PASSED (WCAG AAA)</span>
+<span class="text-secondary-fixed">92%</span>
+</div>
+</div>
+<button class="mt-auto w-full py-3 border border-outline-variant text-on-surface hover:border-primary hover:text-primary hover:bg-primary/5 transition-all font-label-caps text-[11px] transform active:scale-95">
+                        GENERATE_COMPLEMENTS
+                    </button>
+</div>
+<!-- System Terminal (Full Width Bottom) -->
+<div class="col-span-12 terminal-bg rounded-lg overflow-hidden border border-outline-variant/30 mt-gutter entrance-slide-up" style="animation-delay: 0.6s;">
+<div class="h-8 bg-surface-container-highest px-4 flex items-center justify-between border-b border-white/10">
+<div class="flex gap-1.5 group">
+<div class="w-2.5 h-2.5 rounded-full bg-error/40 group-hover:bg-error transition-colors cursor-pointer"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-secondary-fixed/40 group-hover:bg-secondary-fixed transition-colors cursor-pointer"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-primary-fixed-dim/40 group-hover:bg-primary-fixed-dim transition-colors cursor-pointer"></div>
+</div>
+<div class="font-label-caps text-[10px] opacity-40">NODE_SHELL — bash — 120x40</div>
+</div>
+<div class="p-4 font-code-sm text-primary-fixed-dim/80 leading-relaxed custom-scrollbar max-h-48 overflow-y-auto" id="terminal-output">
+<div class="terminal-line">[09:24:01] <span class="text-secondary-fixed">root@seis</span>: ~ initializing Glacier core...</div>
+<div class="terminal-line">[09:24:02] <span class="text-secondary-fixed">root@seis</span>: ~ loading shader modules... [OK]</div>
+<div class="terminal-line">[09:24:02] <span class="text-secondary-fixed">root@seis</span>: ~ mounting asset_vault/rev_04... [OK]</div>
+<div class="terminal-line">[09:24:03] <span class="text-secondary-fixed">root@seis</span>: ~ contrast check: 14.2:1 [OPTIMAL]</div>
+<div class="terminal-line">[09:24:05] <span class="text-secondary-fixed">root@seis</span>: ~ system ready. standing by for thread initialization.</div>
+<div class="flex items-center gap-1 mt-1 terminal-active-line">
+<span>[09:25:12] <span class="text-secondary-fixed">root@seis</span>: ~ </span>
+<span class="typing-text"></span><span class="w-2 h-4 bg-primary-fixed-dim cursor-blink inline-block align-middle ml-1"></span>
+</div>
+</div>
+</div>
+<!-- Token Grid -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mt-gutter entrance-slide-up" style="animation-delay: 0.7s;">
+<div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group transform hover:-translate-y-1 duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:rotate-180 transition-transform duration-700">blur_on</span>
+<span class="text-[10px] font-code-sm opacity-40">01</span>
+</div>
+<h3 class="font-label-caps text-label-caps mb-1">BLUR_SCALE</h3>
+<p class="text-[12px] text-on-surface-variant mb-4">8px, 12px, 20px, 40px</p>
+<div class="flex gap-2">
+<div class="w-4 h-4 rounded-full bg-white/10 blur-[1px] group-hover:bg-primary-fixed/20 transition-colors"></div>
+<div class="w-4 h-4 rounded-full bg-white/10 blur-[2px] group-hover:bg-primary-fixed/40 transition-colors"></div>
+<div class="w-4 h-4 rounded-full bg-white/10 blur-[4px] group-hover:bg-primary-fixed/60 transition-colors"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group border-l-2 border-l-primary-fixed-dim transform hover:-translate-y-1 duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:scale-110 transition-transform">text_fields</span>
+<span class="text-[10px] font-code-sm opacity-40">02</span>
+</div>
+<h3 class="font-label-caps text-label-caps mb-1">TYPE_FLUID</h3>
+<p class="text-[12px] text-on-surface-variant mb-4">Geist x JetBrains Mono</p>
+<span class="text-[10px] text-primary-fixed-dim group-hover:translate-x-2 transition-transform inline-block">VIEW_SPECIFICATIONS →</span>
+</div>
+<div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group transform hover:-translate-y-1 duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:rotate-90 transition-transform duration-500">category</span>
+<span class="text-[10px] font-code-sm opacity-40">03</span>
+</div>
+<h3 class="font-label-caps text-label-caps mb-1">RADII_SYSTEM</h3>
+<p class="text-[12px] text-on-surface-variant mb-4">0px, 4px, 8px, 12px, Full</p>
+<div class="flex gap-2 items-end">
+<div class="w-4 h-4 rounded-sm border border-white/20 group-hover:border-primary-fixed/50 transition-colors"></div>
+<div class="w-4 h-4 rounded border border-white/20 group-hover:border-primary-fixed/50 transition-colors delay-75"></div>
+<div class="w-4 h-4 rounded-lg border border-white/20 group-hover:border-primary-fixed/50 transition-colors delay-150"></div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group transform hover:-translate-y-1 duration-300">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:-translate-y-1 transition-transform">layers</span>
+<span class="text-[10px] font-code-sm opacity-40">04</span>
+</div>
+<h3 class="font-label-caps text-label-caps mb-1">Z_INDEX_MAP</h3>
+<p class="text-[12px] text-on-surface-variant mb-4">Void, Glass, Elevated, Overlay</p>
+<span class="text-[10px] text-primary-fixed-dim group-hover:translate-x-2 transition-transform inline-block">REORDER_STACK →</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Visual Background Element (Atmospheric) -->
+<div class="fixed bottom-0 right-0 w-1/2 h-1/2 pointer-events-none opacity-20 z-0 bg-[radial-gradient(ellipse_at_bottom_right,_var(--tw-gradient-stops))] from-primary-fixed-dim/20 to-transparent mix-blend-screen transition-opacity duration-1000" id="ambient-bg">
+</div>
+<!-- Scripts for Interactions -->
+<script>
+        // Check for reduced motion preference
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. 3D Tilt Effect for Asset Cards
+        if (!prefersReducedMotion) {
+            const tiltContainers = document.querySelectorAll('.tilt-container');
+            
+            tiltContainers.forEach(container => {
+                const card = container.querySelector('.tilt-card');
+                
+                container.addEventListener('mousemove', e => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -10; // Max rotation 10deg
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+                
+                container.addEventListener('mouseleave', () => {
+                    card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+        }
+
+        // 2. Terminal Typing Logic
+        const terminalOutput = document.getElementById('terminal-output');
+        const activeLineContainer = document.querySelector('.terminal-active-line');
+        const typingSpan = document.querySelector('.typing-text');
+        
+        const commands = [
+            "fetching updates for crystal_renderer...",
+            "analyzing palette drift: 0.002%",
+            "caching visual assets to local vault...",
+            "optimization protocol complete."
+        ];
+        
+        let currentCommandIndex = 0;
+        let isTyping = false;
+
+        async function typeCommand(text) {
+            if (prefersReducedMotion) {
+                typingSpan.textContent = text;
+                return;
+            }
+            
+            isTyping = true;
+            typingSpan.textContent = '';
+            for (let i = 0; i < text.length; i++) {
+                typingSpan.textContent += text.charAt(i);
+                await new Promise(r => setTimeout(r, 30 + Math.random() * 50)); // Random typing speed
+            }
+            isTyping = false;
+        }
+
+        async function terminalLoop() {
+            if (currentCommandIndex < commands.length) {
+                // Wait before typing
+                await new Promise(r => setTimeout(r, 1000));
+                
+                // Type the command
+                await typeCommand(commands[currentCommandIndex]);
+                
+                // Wait before "executing"
+                await new Promise(r => setTimeout(r, 500));
+                
+                // Commit to log
+                const div = document.createElement('div');
+                const time = new Date().toLocaleTimeString('en-GB', { hour12: false });
+                div.className = 'terminal-line';
+                div.innerHTML = `[${time}] <span class="text-secondary-fixed">root@seis</span>: ~ ${commands[currentCommandIndex]}`;
+                
+                terminalOutput.insertBefore(div, activeLineContainer);
+                terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                
+                // Reset active line
+                typingSpan.textContent = '';
+                const timeSpan = activeLineContainer.querySelector('span:first-child');
+                timeSpan.innerHTML = `[${new Date().toLocaleTimeString('en-GB', { hour12: false })}] <span class="text-secondary-fixed">root@seis</span>: ~ `;
+                
+                currentCommandIndex++;
+                terminalLoop();
+            } else {
+                // Occasional blink or short status update when done
+                setInterval(async () => {
+                    if(!isTyping && Math.random() > 0.7) {
+                        await typeCommand("sys.ping...");
+                        await new Promise(r => setTimeout(r, 400));
+                        typingSpan.textContent = '';
+                    }
+                }, 5000);
+            }
+        }
+
+        // Start terminal sequence shortly after load
+        setTimeout(terminalLoop, 1500);
+
+        // 3. Sidebar Navigation Indicator
+        if (!prefersReducedMotion) {
+            const navItems = document.querySelectorAll('.nav-item-relative');
+            const indicator = document.getElementById('nav-indicator');
+            
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const index = parseInt(item.getAttribute('data-index'));
+                    // Base offset + (item height + gap) * index
+                    const yPos = index * (40 + 4); // 40px height approx, 4px gap
+                    indicator.style.transform = `translateY(${yPos}px)`;
+                    indicator.style.opacity = '0.5';
+                });
+            });
+
+            document.getElementById('sidebar-nav').addEventListener('mouseleave', () => {
+                // Return to VISUAL (index 2)
+                indicator.style.transform = `translateY(${2 * 44}px)`;
+                indicator.style.opacity = '1';
+            });
+        }
+
+        // Mouse follow glass effect (existing but refined)
+        if (!prefersReducedMotion) {
+            document.querySelectorAll('.glass-panel').forEach(panel => {
+                panel.addEventListener('mousemove', (e) => {
+                    const { left, top, width, height } = panel.getBoundingClientRect();
+                    const x = ((e.clientX - left) / width) * 100;
+                    const y = ((e.clientY - top) / height) * 100;
+                    // Subtle background gradient shift based on mouse
+                    panel.style.background = `radial-gradient(circle at ${x}% ${y}%, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.01) 100%)`;
+                });
+                panel.addEventListener('mouseleave', () => {
+                    panel.style.background = `rgba(255, 255, 255, 0.03)`;
+                });
+            });
+            
+            // Ambient bg follow mouse subtly
+            const ambientBg = document.getElementById('ambient-bg');
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                ambientBg.style.transform = `translate(${(x-0.5)*20}px, ${(y-0.5)*20}px)`;
+            });
+        }
+    </script>
+</body></html>

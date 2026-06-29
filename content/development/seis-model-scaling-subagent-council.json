@@ -1,0 +1,338 @@
+{
+  "id": "seis-model-scaling-subagent-council",
+  "version": "2026.06.24",
+  "status": "active-plan-only",
+  "updatedAt": "2026-06-24",
+  "qualityGate": "npm run check:seis-model-scaling-subagent-council",
+  "purpose": "Bind the full SEIS sub-agent set to the 20B local compatibility target, 70B research lane, 150B frontier lane, 512B AGI apex program, and higher-parameter roadmap without granting runtime, training, provider, SSH, cloud, or GitHub mutation authority.",
+  "truthBoundary": "Sub-agent council contract only. It does not run agents, download models, download datasets, train, fine-tune, benchmark memory, call providers, execute SSH, provision cloud/GPU resources, publish checkpoints, or claim SEIS owns trained 20B, 70B, 150B, 512B, AGI, or larger foundation-model weights.",
+  "runtimeBoundary": "status-and-plan-only",
+  "coreCredentialRequirement": "none",
+  "defaultRuntimeMode": "seis-local-demo",
+  "routeEligibleToday": false,
+  "sourceOfTruth": {
+    "modelScalingProfile": "content/development/seis-model-scaling-hardware-profile.json",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+    "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
+    "subagentOperatingModel": "content/development/seis-ai-core-subagent-operating-model.json",
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelScalingDoc": "docs/ai/seis-model-scaling.md"
+  },
+  "councilRules": [
+    {
+      "id": "no-runtime-authority",
+      "rule": "Council agents may report status and produce plans, but may not execute real model runtime, benchmark, training, provider, SSH, deployment, or cloud/GPU actions.",
+      "status": "active"
+    },
+    {
+      "id": "20b-first",
+      "rule": "70B, 150B, 300B+, 512B, AGI, and highest-future work remains blocked until 20B evidence is complete and reviewed.",
+      "status": "active"
+    },
+    {
+      "id": "evidence-before-claim",
+      "rule": "Any model ownership, compatibility, benchmark, inference, fine-tune, checkpoint, or training claim requires matching evidence before it can be surfaced.",
+      "status": "active"
+    },
+    {
+      "id": "local-demo-fallback",
+      "rule": "Missing model, provider key, benchmark, or approval must fall back to SEIS Local Demo without silent cloud provider routing.",
+      "status": "active"
+    }
+  ],
+  "agents": [
+    {
+      "id": "architect-agent",
+      "displayName": "Architect Agent",
+      "lane": "architecture",
+      "authority": "plan-only",
+      "primaryDuty": "Maintain the 20B-first architecture, promotion gates, non-claim boundaries, and 70B/150B escalation sequence.",
+      "allowedActions": ["read scaling contracts", "draft architecture plans", "map evidence gaps"],
+      "forbiddenActions": ["approve route eligibility", "claim trained weights", "expand permissions"],
+      "requiredEvidence": ["model scaling profile", "frontier escalation policy", "parameter ladder"],
+      "validationGate": "npm run check:seis-model-scaling-hardware-profile"
+    },
+    {
+      "id": "code-agent",
+      "displayName": "Code Agent",
+      "lane": "engineering",
+      "authority": "plan-only",
+      "primaryDuty": "Keep validators, MCP payloads, and Command Center model-scaling surfaces synchronized with source contracts.",
+      "allowedActions": ["read code paths", "draft scoped implementation plan", "identify validator coverage"],
+      "forbiddenActions": ["install dependencies", "download weights", "run unapproved benchmarks"],
+      "requiredEvidence": ["validator output", "MCP smoke coverage", "git diff scope"],
+      "validationGate": "npm run check:seis-model-scaling-subagent-council"
+    },
+    {
+      "id": "design-agent",
+      "displayName": "Design Agent",
+      "lane": "design",
+      "authority": "plan-only",
+      "primaryDuty": "Keep the 20B/70B/150B status visible, honest, and premium inside the SEIS Command Center.",
+      "allowedActions": ["inspect UI", "draft UI states", "label mock/planned/real status"],
+      "forbiddenActions": ["invent live model status", "hide blocked states", "add unapproved assets"],
+      "requiredEvidence": ["desktop UI surface", "browser smoke result", "mock/real labels"],
+      "validationGate": "npm run check:desktop-os"
+    },
+    {
+      "id": "ui-ux-agent",
+      "displayName": "UI/UX Agent",
+      "lane": "product-experience",
+      "authority": "plan-only",
+      "primaryDuty": "Ensure users understand that 16GB+ is a planning floor, not a verified 20B benchmark claim.",
+      "allowedActions": ["review interaction copy", "review responsive state", "review accessibility state"],
+      "forbiddenActions": ["bury safety notes", "ship inert clickable controls", "overstate readiness"],
+      "requiredEvidence": ["product smoke", "mobile no-overflow check", "interactive export path"],
+      "validationGate": "npm run check:product-experience-browser-smoke"
+    },
+    {
+      "id": "research-agent",
+      "displayName": "Research Agent",
+      "lane": "ai-research",
+      "authority": "plan-only",
+      "primaryDuty": "Track future 70B, 150B, and higher-parameter research requirements without claiming SEIS-owned model evidence.",
+      "allowedActions": ["draft research questions", "map evaluation needs", "map contamination-control needs"],
+      "forbiddenActions": ["use private data", "create fake checkpoints", "create fake model cards"],
+      "requiredEvidence": ["dataset provenance plan", "evaluation report plan", "model card template"],
+      "validationGate": "npm run check:seis-model-parameter-ladder"
+    },
+    {
+      "id": "search-agent",
+      "displayName": "Search Agent",
+      "lane": "retrieval",
+      "authority": "plan-only",
+      "primaryDuty": "Keep retrieval, knowledge, and file-aware search tied to local evidence before any model route is promoted.",
+      "allowedActions": ["index repo-local evidence paths", "return local file references", "report missing evidence"],
+      "forbiddenActions": ["send sensitive repo data to providers", "perform unapproved web search for private data", "claim RAG is training"],
+      "requiredEvidence": ["source path", "retrieval boundary", "local-only mode"],
+      "validationGate": "npm run check:seis-command-center-knowledge-system"
+    },
+    {
+      "id": "security-agent",
+      "displayName": "Security Agent",
+      "lane": "security",
+      "authority": "plan-only",
+      "primaryDuty": "Block secrets, unsafe providers, private data, unreviewed datasets, and premature runtime authority.",
+      "allowedActions": ["run redacted scans", "review forbidden claims", "draft approval boundaries"],
+      "forbiddenActions": ["print secrets", "approve credential setup", "weaken SSH/provider policies"],
+      "requiredEvidence": ["secret scan", "forbidden claim scan", "human approval boundary"],
+      "validationGate": "git diff --check"
+    },
+    {
+      "id": "devops-agent",
+      "displayName": "DevOps Agent",
+      "lane": "devops",
+      "authority": "plan-only",
+      "primaryDuty": "Plan local runtime, benchmark, rollback, observability, and cloud/GPU approval gates without provisioning anything.",
+      "allowedActions": ["draft dry-run plan", "map rollback steps", "map observability requirements"],
+      "forbiddenActions": ["provision cloud", "execute SSH", "start paid GPU jobs"],
+      "requiredEvidence": ["dry-run report", "rollback plan", "human approval"],
+      "validationGate": "npm run check:seis-20b-benchmark-dry-run"
+    },
+    {
+      "id": "documentation-agent",
+      "displayName": "Documentation Agent",
+      "lane": "documentation",
+      "authority": "plan-only",
+      "primaryDuty": "Keep README, AI docs, roadmap, reviews, and next-PR queue aligned with model scaling truth boundaries.",
+      "allowedActions": ["inspect docs", "draft doc updates", "report stale claims"],
+      "forbiddenActions": ["document fake benchmark results", "hide missing approvals", "publish fake model cards"],
+      "requiredEvidence": ["docs index", "status doc", "review doc"],
+      "validationGate": "npm run check:seis-model-scaling-subagent-council"
+    },
+    {
+      "id": "qa-agent",
+      "displayName": "QA Agent",
+      "lane": "quality",
+      "authority": "plan-only",
+      "primaryDuty": "Prove validator coverage for the 20B planning floor, 70B research gate, 150B frontier gate, and no-skip policy.",
+      "allowedActions": ["run safe local validators", "compare expected evidence", "report gaps"],
+      "forbiddenActions": ["claim unrun tests passed", "replace broad checks with narrow checks", "ignore dirty-tree risk"],
+      "requiredEvidence": ["validator command", "pass/fail result", "scope note"],
+      "validationGate": "npm run check:seis-model-frontier-escalation-policy"
+    },
+    {
+      "id": "cloud-agent",
+      "displayName": "Cloud Agent",
+      "lane": "cloud",
+      "authority": "plan-only",
+      "primaryDuty": "Keep 150B distributed/cloud research disabled until cost, privacy, safety, observability, rollback, and approval evidence exists.",
+      "allowedActions": ["draft cloud readiness plan", "draft cost boundary", "draft SSH-disabled status"],
+      "forbiddenActions": ["execute SSH", "deploy", "create cloud resources", "store provider keys"],
+      "requiredEvidence": ["cloud approval boundary", "rollback owner", "cost ceiling plan"],
+      "validationGate": "npm run check:cloud-access-policy"
+    },
+    {
+      "id": "automation-agent",
+      "displayName": "Automation Agent",
+      "lane": "automation",
+      "authority": "plan-only",
+      "primaryDuty": "Keep generation scripts, stale-report checks, quality gates, and non-claim validators synchronized.",
+      "allowedActions": ["inspect scripts", "draft automation plan", "report stale generated artifacts"],
+      "forbiddenActions": ["run destructive automation", "auto-push", "auto-merge", "auto-deploy"],
+      "requiredEvidence": ["script path", "quality gate", "stale check result"],
+      "validationGate": "npm run check:seis-model-scaling-subagent-council"
+    }
+  ],
+  "stageAssignments": [
+    {
+      "stage": "20B",
+      "status": "planned-not-validated",
+      "leadAgents": ["architect-agent", "code-agent", "security-agent", "qa-agent", "documentation-agent"],
+      "requiredBeforePromotion": ["filled model card", "filled dataset card", "human-approved runtime adapter", "measured 16GB+ local benchmark", "redacted logs", "local-only fallback proof"],
+      "routeEligibleToday": false
+    },
+    {
+      "stage": "70B",
+      "status": "research-roadmap",
+      "leadAgents": ["research-agent", "devops-agent", "cloud-agent", "security-agent"],
+      "requiredBeforePromotion": ["20B evidence accepted", "hardware and cost plan", "privacy and safety review", "independent eval suite", "human approval"],
+      "routeEligibleToday": false
+    },
+    {
+      "stage": "150B",
+      "status": "frontier-research-roadmap",
+      "leadAgents": ["architect-agent", "research-agent", "cloud-agent", "security-agent", "qa-agent"],
+      "requiredBeforePromotion": ["20B and 70B evidence accepted", "clean-room training plan", "distributed runtime budget", "contamination-control plan", "safety red-team plan", "observability and kill-switch plan", "rollback and cost-stop plan", "explicit human approval"],
+      "routeEligibleToday": false
+    },
+    {
+      "stage": "512B",
+      "status": "apex-program-plan-only",
+      "leadAgents": [
+        "architect-agent",
+        "code-agent",
+        "design-agent",
+        "ui-ux-agent",
+        "research-agent",
+        "search-agent",
+        "security-agent",
+        "devops-agent",
+        "documentation-agent",
+        "qa-agent",
+        "cloud-agent",
+        "automation-agent"
+      ],
+      "requiredBeforePromotion": [
+        "20B evidence accepted",
+        "70B evidence accepted",
+        "150B evidence accepted",
+        "300B+ feasibility accepted",
+        "clean-room 512B training plan",
+        "frontier-scale distributed runtime budget",
+        "dataset provenance and contamination-control plan",
+        "AGI capability evaluation protocol",
+        "safety red-team plan",
+        "observability and kill-switch plan",
+        "rollback and cost-stop plan",
+        "explicit human approval"
+      ],
+      "routeEligibleToday": false
+    },
+    {
+      "stage": "highest-available-future",
+      "status": "not-scoped",
+      "leadAgents": ["architect-agent", "research-agent", "security-agent", "documentation-agent"],
+      "requiredBeforePromotion": ["20B, 70B, and 150B evidence accepted", "separate frontier charter", "public safety and governance review"],
+      "routeEligibleToday": false
+    }
+  ],
+  "apex512bCouncilDuties": [
+    {
+      "agentId": "architect-agent",
+      "duty": "Own the 512B apex architecture charter, no-skip promotion map, and AGI-readiness definition without granting runtime authority.",
+      "evidence": ["architecture plan", "promotion gate map", "AGI readiness definition"]
+    },
+    {
+      "agentId": "code-agent",
+      "duty": "Keep 512B validators, MCP payload references, and local-demo fallbacks synchronized with source contracts.",
+      "evidence": ["validator output", "MCP resource reference", "Local Demo fallback check"]
+    },
+    {
+      "agentId": "design-agent",
+      "duty": "Keep all 512B and AGI labels visually honest, premium, and clearly marked as plan-only until evidence exists.",
+      "evidence": ["Command Center copy review", "planned/blocked state labels", "mock vs real status"]
+    },
+    {
+      "agentId": "ui-ux-agent",
+      "duty": "Make 512B readiness understandable to users without overstating capability, runtime, or AGI status.",
+      "evidence": ["reader-facing status text", "accessibility notes", "no-overclaim review"]
+    },
+    {
+      "agentId": "research-agent",
+      "duty": "Maintain public frontier-model research references, architecture options, evaluation gaps, and contamination-control questions.",
+      "evidence": ["internet research baseline", "architecture comparison", "evaluation gap list"]
+    },
+    {
+      "agentId": "search-agent",
+      "duty": "Tie 512B readiness search results to local source-of-truth files and external public references with provenance.",
+      "evidence": ["source path map", "public reference map", "missing evidence report"]
+    },
+    {
+      "agentId": "security-agent",
+      "duty": "Block secrets, unsafe datasets, unreviewed providers, unsafe release claims, and premature AGI/runtime authority.",
+      "evidence": ["secret-scan note", "forbidden-claim review", "approval boundary"]
+    },
+    {
+      "agentId": "devops-agent",
+      "duty": "Plan frontier-scale compute, observability, kill-switch, rollback, and cost-stop gates without provisioning resources.",
+      "evidence": ["distributed runtime plan", "observability plan", "rollback and cost-stop plan"]
+    },
+    {
+      "agentId": "documentation-agent",
+      "duty": "Keep README, AI docs, status, backlog, and PR queue aligned with 512B plan-only truth boundaries.",
+      "evidence": ["docs diff", "status row", "next PR queue note"]
+    },
+    {
+      "agentId": "qa-agent",
+      "duty": "Validate that 512B, AGI, public-readiness, and no-claim gates are covered by deterministic local checks.",
+      "evidence": ["check:seis-512b-apex-model-program", "check:seis-model-scaling-subagent-council", "git diff --check"]
+    },
+    {
+      "agentId": "cloud-agent",
+      "duty": "Keep GPU/cloud, SSH, provider, and distributed runtime work disabled until cost, security, and approval evidence exists.",
+      "evidence": ["cloud disabled status", "approval requirement", "credential boundary"]
+    },
+    {
+      "agentId": "automation-agent",
+      "duty": "Keep generated reports, stale checks, and release-readiness automation blocked from push, merge, deploy, or runtime mutation without approval.",
+      "evidence": ["automation boundary", "stale check result", "GitHub mutation approval gate"]
+    }
+  ],
+  "forbiddenClaims": [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has trained a 70B foundation model.",
+    "SEIS has trained a 150B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has achieved real AGI.",
+    "SEIS has routeable 20B, 70B, 150B, or 512B weights.",
+    "Plan-only sub-agent assignments do not approve model training, provider keys, SSH, deployment, or cloud/GPU provisioning.",
+    "A plan-only sub-agent assignment is runtime evidence."
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "runtime adapter execution",
+    "benchmark execution",
+    "training run",
+    "fine-tuning run",
+    "provider credential setup",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "route eligibility change",
+    "public model or dataset release"
+  ],
+  "nextSafeActions": [
+    "Use this council to assign review duties across 20B evidence preparation without granting runtime authority.",
+    "Expose council status in Command Center as plan-only coordination.",
+    "Keep 70B and 150B assignments blocked until 20B evidence is reviewed.",
+    "Validate with npm run check:seis-model-scaling-subagent-council."
+  ]
+}

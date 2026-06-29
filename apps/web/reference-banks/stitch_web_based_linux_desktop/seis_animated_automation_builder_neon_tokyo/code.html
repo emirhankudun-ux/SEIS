@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SEIS_KERNEL_OS_v1.0 | Automation Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --neon-magenta: #ff00ff;
+            --neon-purple: #bc13fe;
+            --neon-cyan: #00dbe9;
+            --obsidian: #0c0f0f;
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #e2e2e2;
+            overflow: hidden;
+            font-family: 'Geist', sans-serif;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .node-glow-magenta { box-shadow: 0 0 15px rgba(255, 0, 255, 0.2); }
+        .node-glow-purple { box-shadow: 0 0 15px rgba(188, 19, 254, 0.2); }
+        .node-glow-cyan { box-shadow: 0 0 15px rgba(0, 219, 233, 0.2); }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(188, 19, 254, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 19, 254, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 0, 255, 0.1);
+            opacity: 0.75;
+            position: absolute;
+            bottom: 100%;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: 0%; }
+        }
+
+        /* Motion and Interactivity Classes */
+        @media (prefers-reduced-motion: no-preference) {
+            .node-entrance {
+                opacity: 0;
+                transform: translateY(20px);
+                animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+
+            .node-entrance:nth-child(1) { animation-delay: 0.1s; }
+            .node-entrance:nth-child(2) { animation-delay: 0.2s; }
+            .node-entrance:nth-child(3) { animation-delay: 0.3s; }
+            .node-entrance:nth-child(4) { animation-delay: 0.4s; }
+
+            @keyframes fadeInUp {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .node-interactive {
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            .node-interactive:hover {
+                transform: scale(1.02) translateY(-4px);
+                box-shadow: 0 12px 30px rgba(188, 19, 254, 0.3), 0 0 15px rgba(0, 219, 233, 0.4);
+                z-index: 10;
+            }
+
+            .breathing-connection {
+                animation: breathGlow 3s ease-in-out infinite alternate;
+                stroke-dasharray: 10 5;
+                animation-name: breathGlow, dashMove;
+                animation-duration: 3s, 20s;
+                animation-timing-function: ease-in-out, linear;
+                animation-iteration-count: infinite, infinite;
+            }
+
+            @keyframes breathGlow {
+                0% { filter: drop-shadow(0 0 2px var(--neon-magenta)); stroke-width: 2px; }
+                100% { filter: drop-shadow(0 0 8px var(--neon-cyan)); stroke-width: 3px; }
+            }
+            
+            @keyframes dashMove {
+                to {
+                    stroke-dashoffset: -1000;
+                }
+            }
+
+            .btn-pulse {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-pulse::after {
+                content: '';
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                box-shadow: inset 0 0 0 2px var(--neon-cyan);
+                border-radius: inherit;
+                opacity: 0;
+                animation: buttonPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+            }
+
+            @keyframes buttonPulse {
+                0% { transform: scale(0.95); opacity: 1; }
+                100% { transform: scale(1.1); opacity: 0; }
+            }
+            
+            .parallax-layer {
+                transition: transform 0.1s cubic-bezier(0.1, 0.5, 0.9, 0.5);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333535; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--neon-purple); }
+
+        .canvas-container {
+            cursor: grab;
+        }
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#c3f400",
+                      "surface-container-lowest": "#0c0f0f",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-container": "#dbd8d9",
+                      "on-tertiary-fixed-variant": "#474647",
+                      "on-primary-container": "#006970",
+                      "on-tertiary-container": "#5f5e5f",
+                      "primary": "#dbfcff",
+                      "secondary": "#ffffff",
+                      "surface-tint": "#00dbe9",
+                      "inverse-on-surface": "#2f3131",
+                      "on-primary-fixed": "#002022",
+                      "surface-bright": "#38393a",
+                      "error-container": "#93000a",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#3c4d00",
+                      "tertiary-fixed-dim": "#c8c6c7",
+                      "surface": "#121414",
+                      "secondary-fixed-dim": "#abd600",
+                      "primary-fixed": "#7df4ff",
+                      "on-tertiary-fixed": "#1c1b1c",
+                      "tertiary-fixed": "#e5e2e3",
+                      "surface-dim": "#121414",
+                      "on-surface": "#e2e2e2",
+                      "surface-variant": "#333535",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed": "#161e00",
+                      "primary-fixed-dim": "#00dbe9",
+                      "on-secondary": "#283500",
+                      "surface-container-highest": "#333535",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#00f0ff",
+                      "surface-container": "#1e2020",
+                      "on-primary": "#00363a",
+                      "background": "#121414",
+                      "on-tertiary": "#313031",
+                      "on-secondary-container": "#556d00",
+                      "tertiary": "#f8f5f6",
+                      "surface-container-low": "#1a1c1c",
+                      "outline-variant": "#3b494b",
+                      "secondary-container": "#c3f400",
+                      "inverse-primary": "#006970",
+                      "on-background": "#e2e2e2",
+                      "error": "#ffb4ab",
+                      "outline": "#849495",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "20px",
+                      "gutter": "16px",
+                      "max-width": "1440px",
+                      "unit": "4px",
+                      "margin-desktop": "40px"
+              },
+              "fontFamily": {
+                      "code-lg": ["JetBrains Mono"],
+                      "headline-md": ["Geist"],
+                      "label-caps": ["JetBrains Mono"],
+                      "code-sm": ["JetBrains Mono"],
+                      "body-main": ["Geist"],
+                      "display-lg-mobile": ["Geist"],
+                      "display-lg": ["Geist"]
+              },
+              "fontSize": {
+                      "code-lg": ["16px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "code-sm": ["13px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                      "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container w-screen h-screen relative flex flex-col">
+<!-- TopAppBar -->
+<header class="glass-panel border-b border-white/10 px-6 py-4 flex justify-between items-center z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[var(--neon-cyan)]">hub</span>
+<h1 class="font-headline-md text-white tracking-wide">SEIS_KERNEL_OS <span class="text-[var(--neon-purple)]">v1.0</span></h1>
+</div>
+<button class="btn-pulse bg-white/10 hover:bg-white/20 border border-[var(--neon-cyan)] text-[var(--neon-cyan)] px-6 py-2 rounded-lg font-code-sm flex items-center gap-2 transition-colors duration-300">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+        EXECUTE SEQUENCE
+    </button>
+</header>
+<!-- Main Canvas Area with Parallax Grid -->
+<main class="flex-1 relative overflow-hidden canvas-container group" id="parallax-container">
+<div class="absolute inset-0 grid-bg opacity-30 parallax-layer" data-speed="0.2"></div>
+<div class="scanline"></div>
+<!-- Nodes Layer -->
+<div class="absolute inset-0 p-12 parallax-layer" data-speed="0.6">
+<!-- SVG Connections -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none z-0">
+<path class="breathing-connection" d="M 300 200 C 450 200, 450 400, 600 400" fill="none" stroke="var(--neon-magenta)" stroke-width="2"></path>
+<path class="breathing-connection" d="M 300 600 C 450 600, 450 400, 600 400" fill="none" stroke="var(--neon-cyan)" stroke-width="2" style="animation-delay: -1.5s;"></path>
+</svg>
+<!-- Node 1 -->
+<div class="absolute top-[150px] left-[100px] w-64 glass-panel rounded-xl p-4 node-glow-cyan node-entrance node-interactive z-10 flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-white/10 pb-2">
+<span class="font-code-sm text-[var(--neon-cyan)]">DATA_INGEST</span>
+<span class="material-symbols-outlined text-white/50 text-sm">input</span>
+</div>
+<p class="font-body-main text-sm text-white/70">Listening on port 8080</p>
+</div>
+<!-- Node 2 -->
+<div class="absolute top-[550px] left-[100px] w-64 glass-panel rounded-xl p-4 node-glow-purple node-entrance node-interactive z-10 flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-white/10 pb-2">
+<span class="font-code-sm text-[var(--neon-purple)]">FILTER_STREAM</span>
+<span class="material-symbols-outlined text-white/50 text-sm">filter_alt</span>
+</div>
+<p class="font-body-main text-sm text-white/70">Excluding null vectors</p>
+</div>
+<!-- Node 3 -->
+<div class="absolute top-[350px] left-[600px] w-64 glass-panel rounded-xl p-4 node-glow-magenta node-entrance node-interactive z-10 flex flex-col gap-3">
+<div class="flex items-center justify-between border-b border-white/10 pb-2">
+<span class="font-code-sm text-[var(--neon-magenta)]">PROCESS_KERNEL</span>
+<span class="material-symbols-outlined text-white/50 text-sm">memory</span>
+</div>
+<p class="font-body-main text-sm text-white/70">Aggregating payload</p>
+</div>
+</div>
+</main>
+<script>
+    // Mouse Parallax Effect
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('parallax-container');
+        const layers = document.querySelectorAll('.parallax-layer');
+        
+        // Respect prefers-reduced-motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (!prefersReducedMotion && container) {
+            container.addEventListener('mousemove', (e) => {
+                const x = (e.clientX - window.innerWidth / 2);
+                const y = (e.clientY - window.innerHeight / 2);
+
+                layers.forEach(layer => {
+                    const speed = layer.getAttribute('data-speed') || 0.5;
+                    const xOffset = (x * speed) / 10;
+                    const yOffset = (y * speed) / 10;
+                    layer.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+                });
+            });
+
+            container.addEventListener('mouseleave', () => {
+                layers.forEach(layer => {
+                    layer.style.transform = `translate(0px, 0px)`;
+                });
+            });
+        }
+    });
+</script>
+</body></html>

@@ -1,0 +1,499 @@
+{
+  "id": "seis-model-scaling-hardware-profile",
+  "version": "2026.06.24",
+  "status": "planned-compatibility-contract",
+  "updatedAt": "2026-06-24",
+  "purpose": "Define the safe SEIS model scaling path from a 20B local-compatibility target for 16GB+ RAM machines toward future 70B, 150B, 512B AGI research, and larger parameter classes without claiming trained weights, AGI capability, or live runtime readiness.",
+  "qualityGate": "npm run check:seis-model-scaling-hardware-profile",
+  "sourceOfTruth": {
+    "aiCoreDoc": "docs/ai/seis-ai-core.md",
+    "modelRouterDoc": "docs/ai/model-router.md",
+    "scalingDoc": "docs/ai/seis-model-scaling.md",
+    "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
+    "apexModelProgram": "content/development/seis-512b-apex-model-program.json",
+    "frontierEscalationPolicy": "content/development/seis-model-frontier-escalation-policy.json",
+    "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
+    "benchmarkManifest": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "benchmarkDryRun": "reports/seis-model-scaling/20b-benchmark-dry-run.json",
+    "localHardwarePreflightCheck": "scripts/check-seis-model-local-hardware-preflight.mjs",
+    "parameterLadder": "content/development/seis-model-parameter-ladder.json",
+    "modelCardTemplate": "content/development/seis-20b-model-card-template.json",
+    "datasetCardTemplate": "content/development/seis-20b-dataset-card-template.json",
+    "providerRegistry": "content/development/seis-ai-core-provider-registry.json",
+    "workforceTrainingPlan": "content/development/seis-ai-workforce-training-plan.json",
+    "modelFamilyRegistry": "packages/seis-ai/models/seis-model-family-registry.json",
+    "modelPromotionPolicy": "packages/seis-ai/models/seis-model-promotion-policy.json"
+  },
+  "truthBoundary": "Repository-local model scaling and hardware compatibility profile only. It creates no trained 20B, 70B, 150B, 512B, or AGI weights, performs no model download, performs no inference, performs no benchmark, performs no live provider calls, performs no cloud fine-tuning, and does not claim SEIS owns a trained foundation model or a real AGI.",
+  "coreCredentialRequirement": "none",
+  "defaultMode": "local-demo-until-validated",
+  "currentTarget": {
+    "id": "seis-20b-local-compatibility-target",
+    "displayName": "SEIS 20B Local Compatibility Target",
+    "parameterClass": "20B",
+    "parameterCountBillion": 20,
+    "minimumSystemRamGb": 16,
+    "targetRamClass": "16GB+ RAM",
+    "compatibilityStatus": "planned-not-validated",
+    "trainingStatus": "not-started",
+    "weightsAvailable": false,
+    "inferenceAvailable": false,
+    "benchmarkStatus": "not-run",
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "localDemoFallback": "seis-local-demo",
+    "quantizationRequired": true,
+    "quantizationStatus": "planned-not-benchmarked",
+    "routerEligibility": "blocked-until-model-card-dataset-card-runtime-adapter-and-memory-benchmark-pass",
+    "notes": [
+      "16GB+ is a target compatibility class, not a verified throughput or memory claim.",
+      "The target can become selectable only after clean-room provenance, quantized runtime, memory ceiling tests, redaction tests, and human approval exist.",
+      "Core SEIS continues to run with zero cloud provider keys by falling back to Local Demo mode."
+    ]
+  },
+  "frontierTarget": {
+    "id": "seis-150b-frontier-research-target",
+    "displayName": "SEIS 150B Frontier Research Target",
+    "parameterClass": "150B",
+    "parameterCountBillion": 150,
+    "targetHardwareClass": "approved distributed, multi-accelerator, or cloud research runtime",
+    "compatibilityStatus": "not-scoped",
+    "trainingStatus": "not-started",
+    "weightsAvailable": false,
+    "inferenceAvailable": false,
+    "benchmarkStatus": "not-run",
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "localDemoFallback": "seis-local-demo",
+    "routerEligibility": "blocked-until-20b-and-70b-evidence-clean-room-training-plan-distributed-runtime-budget-safety-eval-and-human-approval",
+    "notes": [
+      "150B is a long-horizon SEIS AI research objective, not a local 16GB+ compatibility promise.",
+      "No 150B download, training, fine-tuning, inference, benchmark, publication, deployment, SSH, or cloud provisioning is authorized by this profile.",
+      "The 150B lane can become scoped only after the 20B and 70B gates produce real evidence and a separate human-approved frontier research plan exists."
+    ]
+  },
+  "apexTarget": {
+    "id": "seis-512b-apex-frontier-target",
+    "displayName": "SEIS 512B AGI Apex Research Target",
+    "parameterClass": "512B",
+    "parameterCountBillion": 512,
+    "targetHardwareClass": "human-approved frontier-scale distributed research cluster",
+    "compatibilityStatus": "not-scoped",
+    "trainingStatus": "not-started",
+    "weightsAvailable": false,
+    "inferenceAvailable": false,
+    "benchmarkStatus": "not-run",
+    "agiCapabilityStatus": "not-demonstrated",
+    "runtimeAuthority": false,
+    "productionReady": false,
+    "localDemoFallback": "seis-local-demo",
+    "routerEligibility": "blocked-until-20b-70b-150b-and-300b-plus-evidence-clean-room-training-plan-frontier-cluster-budget-safety-eval-and-human-approval",
+    "notes": [
+      "512B is an AGI research objective and apex program boundary, not a claim that SEIS currently has AGI.",
+      "No 512B download, training, fine-tuning, inference, benchmark, checkpoint publication, deployment, SSH, or cloud/GPU provisioning is authorized by this profile.",
+      "All installed AI and sub-agent roles may coordinate review duties only; they cannot create evidence by assertion or approve their own runtime promotion."
+    ]
+  },
+  "memoryBudgetContract": {
+    "id": "seis-20b-16gb-memory-budget-contract",
+    "status": "planning-estimate-not-benchmark-evidence",
+    "targetRamClass": "16GB+ RAM",
+    "parameterClass": "20B",
+    "compatibilityClaim": "not-verified",
+    "planningAssumptions": [
+      "20B on 16GB+ requires a quantized local runtime profile.",
+      "Usable context length, OS memory pressure, GPU/CPU split, KV cache, tokenizer, runtime overhead, and background apps must be measured on real hardware.",
+      "A planning estimate cannot be used as a benchmark or production readiness claim."
+    ],
+    "requiredMeasurements": [
+      "cold start peak resident memory",
+      "steady-state idle resident memory",
+      "prompt prefill memory at declared context length",
+      "decode memory at declared context length",
+      "tokens per second with hardware profile",
+      "fallback behavior when memory ceiling is exceeded",
+      "redacted logs proving no provider key or secret exposure",
+      "KV-cache memory and OS memory pressure"
+    ],
+    "minimumBenchmarkFields": [
+      "machineRamGb",
+      "runtimeName",
+      "runtimeVersion",
+      "modelArtifactId",
+      "quantization",
+      "contextTokens",
+      "peakResidentMemoryGb",
+      "kvCacheMemoryGb",
+      "osMemoryPressure",
+      "tokensPerSecond",
+      "fallbackVerified",
+      "secretsRedacted",
+      "localOnlyFallbackPassed",
+      "measuredAt"
+    ],
+    "plannedArtifactPath": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "requiredFailureBehavior": "fall back to seis-local-demo without cloud routing, provider calls, SSH, deployment, or credential access"
+  },
+  "compatibilityProfiles": [
+    {
+      "id": "ram-16gb-plus-local-demo-floor",
+      "label": "16GB+ RAM developer floor",
+      "ramClass": "16GB+",
+      "targetParameterClass": "20B",
+      "quantizationLane": "Q4-class candidate only",
+      "status": "planning-only-not-verified",
+      "allowedToday": "Local Demo and deterministic seed-model lab only",
+      "routeEligibleToday": false,
+      "requiredEvidence": [
+        "20B quantized artifact selected with clean-room provenance",
+        "peak resident memory benchmark stays within approved 16GB+ ceiling",
+        "local-only fallback succeeds when memory ceiling is exceeded",
+        "redacted logs show no provider key, SSH, deployment, or credential access"
+      ]
+    },
+    {
+      "id": "ram-24gb-plus-20b-candidate",
+      "label": "24GB+ RAM 20B candidate lane",
+      "ramClass": "24GB+",
+      "targetParameterClass": "20B",
+      "quantizationLane": "Q4-class candidate, larger context only after measurement",
+      "status": "planning-only-not-verified",
+      "allowedToday": "Local Demo only",
+      "routeEligibleToday": false,
+      "requiredEvidence": [
+        "same 16GB+ gates",
+        "context-length memory benchmark",
+        "thermal and latency notes"
+      ]
+    },
+    {
+      "id": "ram-32gb-plus-20b-validation",
+      "label": "32GB+ RAM 20B validation lane",
+      "ramClass": "32GB+",
+      "targetParameterClass": "20B",
+      "quantizationLane": "Q5/Q6-class candidate after Q4 baseline",
+      "status": "planning-only-not-verified",
+      "allowedToday": "Local Demo and future approved adapter tests",
+      "routeEligibleToday": false,
+      "requiredEvidence": [
+        "same 16GB+ gates",
+        "Q5/Q6 memory benchmark",
+        "quality regression comparison against Q4 baseline"
+      ]
+    },
+    {
+      "id": "ram-64gb-plus-70b-research",
+      "label": "64GB+ RAM or approved accelerator research lane",
+      "ramClass": "64GB+",
+      "targetParameterClass": "70B",
+      "quantizationLane": "research candidate only",
+      "status": "research-roadmap",
+      "allowedToday": "Planning only",
+      "routeEligibleToday": false,
+      "requiredEvidence": [
+        "20B compatibility gates passed first",
+        "clean-room dataset and model cards",
+        "independent evaluation suite",
+        "explicit human approval"
+      ]
+    },
+    {
+      "id": "distributed-150b-plus-frontier",
+      "label": "150B+ distributed frontier lane",
+      "ramClass": "approved distributed, multi-accelerator, or cloud research runtime",
+      "targetParameterClass": "150B+",
+      "quantizationLane": "not scoped",
+      "status": "not-scoped",
+      "allowedToday": "Disabled",
+      "routeEligibleToday": false,
+      "requiredEvidence": [
+        "20B and 70B evidence exists",
+        "distributed runtime budget",
+        "privacy, safety, observability, and rollback plans",
+        "explicit human approval before any download, training, benchmark, deployment, SSH, or publication"
+      ]
+    }
+  ],
+  "benchmarkManifestContract": {
+    "id": "seis-20b-compatibility-benchmark-manifest",
+    "status": "required-before-compatibility-claim",
+    "artifactPath": "reports/seis-model-scaling/20b-16gb-memory-benchmark.json",
+    "mustBeHumanReviewed": true,
+    "mustStayLocalOnly": true,
+    "requiredFields": [
+      "machineRamGb",
+      "runtimeName",
+      "runtimeVersion",
+      "modelArtifactId",
+      "modelArtifactLicense",
+      "quantization",
+      "contextTokens",
+      "peakResidentMemoryGb",
+      "kvCacheMemoryGb",
+      "osMemoryPressure",
+      "wallClockStartupSeconds",
+      "tokensPerSecond",
+      "fallbackVerified",
+      "secretsRedacted",
+      "localOnlyFallbackPassed",
+      "measuredAt",
+      "verifiedBy"
+    ],
+    "forbiddenInManifest": [
+      "provider keys",
+      "SSH private keys",
+      "access tokens",
+      "unredacted local paths containing secrets",
+      "claims that training happened without training logs"
+    ]
+  },
+  "creationStages": [
+    {
+      "stage": "stage-0-current",
+      "label": "Local Demo and deterministic seed-model lab",
+      "status": "active",
+      "parameterClass": "demo-only",
+      "evidenceRequiredToPromote": "No-key startup and validator evidence."
+    },
+    {
+      "stage": "stage-1-20b-local-compatibility",
+      "label": "SEIS 20B local compatibility target",
+      "status": "planned-not-validated",
+      "parameterClass": "20B",
+      "evidenceRequiredToPromote": "Clean-room provenance, quantized runtime adapter, benchmark manifest, model card, dataset card, local-only fallback, redacted logs, and human approval."
+    },
+    {
+      "stage": "stage-2-70b-research",
+      "label": "SEIS 70B research target",
+      "status": "research-roadmap",
+      "parameterClass": "70B",
+      "evidenceRequiredToPromote": "20B evidence, high-memory hardware plan, independent eval suite, safety review, cost plan, and human approval."
+    },
+    {
+      "stage": "stage-3-150b-frontier",
+      "label": "SEIS 150B frontier research target",
+      "status": "frontier-research-roadmap",
+      "parameterClass": "150B",
+      "evidenceRequiredToPromote": "20B and 70B evidence, distributed runtime budget, clean-room training plan, privacy review, safety eval, observability, rollback, and explicit human approval."
+    },
+    {
+      "stage": "stage-4-512b-apex",
+      "label": "SEIS 512B AGI apex research target",
+      "status": "apex-program-plan-only",
+      "parameterClass": "512B",
+      "evidenceRequiredToPromote": "20B, 70B, 150B, and 300B+ evidence, clean-room frontier training plan, frontier-scale cluster budget, safety red-team plan, AGI capability evaluation plan, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
+    },
+    {
+      "stage": "stage-5-highest-available-future",
+      "label": "Highest future parameter class",
+      "status": "not-scoped",
+      "parameterClass": "highest-available-future",
+      "evidenceRequiredToPromote": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
+    }
+  ],
+  "quantizationProfiles": [
+    {
+      "id": "q4-planned-20b-16gb-candidate",
+      "label": "Q4-class 20B local candidate",
+      "status": "planned-not-benchmarked",
+      "expectedUse": "Primary 16GB+ exploration profile after human-approved runtime and artifact selection.",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "q5-q6-planned-20b-workstation-candidate",
+      "label": "Q5/Q6-class 20B workstation candidate",
+      "status": "planned-not-benchmarked",
+      "expectedUse": "32GB+ validation lane if Q4 quality is not enough.",
+      "routeEligibleToday": false
+    },
+    {
+      "id": "higher-precision-research-only",
+      "label": "Higher precision research-only lane",
+      "status": "future-research",
+      "expectedUse": "Research runtime only after hardware, cost, and approval gates exist.",
+      "routeEligibleToday": false
+    }
+  ],
+  "localRuntimeCandidates": [
+    {
+      "id": "llama-cpp-compatible-runtime",
+      "label": "llama.cpp-compatible local runtime",
+      "status": "candidate-only",
+      "credentialRequirement": "none",
+      "approvalRequiredBeforeUse": true
+    },
+    {
+      "id": "ollama-local-runtime",
+      "label": "Ollama local runtime",
+      "status": "candidate-only",
+      "credentialRequirement": "none",
+      "approvalRequiredBeforeUse": true
+    }
+  ],
+  "scaleLadder": [
+    {
+      "id": "seis-20b-local-target",
+      "parameterClass": "20B",
+      "horizon": "now",
+      "targetHardwareClass": "16GB+ RAM",
+      "status": "planned-not-validated",
+      "promotionGate": "Quantized local compatibility benchmark and no-key startup validation."
+    },
+    {
+      "id": "seis-70b-research-target",
+      "parameterClass": "70B",
+      "horizon": "future",
+      "targetHardwareClass": "high-memory local workstation or approved server runtime",
+      "status": "research-roadmap",
+      "promotionGate": "Clean-room dataset, model card, safety eval, hardware budget, and explicit human approval."
+    },
+    {
+      "id": "seis-150b-frontier-research-target",
+      "parameterClass": "150B",
+      "horizon": "future-frontier",
+      "targetHardwareClass": "approved distributed, multi-accelerator, or cloud research runtime",
+      "status": "frontier-research-roadmap",
+      "promotionGate": "Do not scope runtime until 20B and 70B gates have real evidence, then require clean-room training plan, distributed-runtime budget, safety eval, observability, rollback, privacy, and explicit human approval."
+    },
+    {
+      "id": "seis-512b-agi-apex-target",
+      "parameterClass": "512B",
+      "horizon": "apex-frontier",
+      "targetHardwareClass": "frontier-scale distributed research cluster after approval",
+      "status": "apex-program-plan-only",
+      "promotionGate": "Do not scope runtime until 20B, 70B, 150B, and 300B+ evidence exists, then require clean-room training plan, frontier cluster budget, AGI eval protocol, safety red-team, observability, rollback, cost-stop, all-agent council review, and explicit human approval."
+    },
+    {
+      "id": "seis-300b-plus-exploration-boundary",
+      "parameterClass": "300B+",
+      "horizon": "future",
+      "targetHardwareClass": "approved multi-device or cloud research runtime",
+      "status": "research-roadmap",
+      "promotionGate": "Independent evaluation, privacy review, observability, rollback plan, and cost approval."
+    },
+    {
+      "id": "seis-highest-parameter-research-target",
+      "parameterClass": "highest-available-future",
+      "horizon": "long-term",
+      "targetHardwareClass": "to be defined from measured hardware and model availability",
+      "status": "not-scoped",
+      "promotionGate": "Do not scope until 20B, 70B, 150B, 300B+, and 512B gates have real evidence."
+    }
+  ],
+  "hardwareTiers": [
+    {
+      "id": "developer-16gb-plus",
+      "label": "16GB+ RAM developer machine",
+      "allowedToday": "Local Demo and seed-model lab only",
+      "modelTarget": "20B planned compatibility target",
+      "claimStatus": "target-not-validated",
+      "mustPassBeforeUse": [
+        "quantized runtime selected",
+        "memory ceiling benchmark",
+        "no-key startup test",
+        "fallback identity visible",
+        "model card and dataset card reviewed"
+      ]
+    },
+    {
+      "id": "workstation-32gb-plus",
+      "label": "32GB+ RAM workstation",
+      "allowedToday": "Local Demo, seed-model lab, and future local adapter tests after approval",
+      "modelTarget": "20B validation and larger-context experiments",
+      "claimStatus": "target-not-validated",
+      "mustPassBeforeUse": [
+        "same 20B gates as 16GB+",
+        "thermal and latency budget",
+        "redacted runtime logs"
+      ]
+    },
+    {
+      "id": "research-64gb-plus",
+      "label": "64GB+ RAM or approved accelerator research runtime",
+      "allowedToday": "Planning only",
+      "modelTarget": "70B research target",
+      "claimStatus": "future-research",
+      "mustPassBeforeUse": [
+        "explicit human approval",
+        "cost and hardware plan",
+        "clean-room provenance",
+        "independent eval suite"
+      ]
+    },
+    {
+      "id": "cloud-research-runtime",
+      "label": "Approved cloud or multi-device research runtime",
+      "allowedToday": "Disabled",
+      "modelTarget": "150B, 300B+, and highest-available future classes",
+      "claimStatus": "not-scoped",
+      "mustPassBeforeUse": [
+        "deployment approval",
+        "credential boundary review",
+        "provider contract review",
+        "rollback and observability plan"
+      ]
+    }
+  ],
+  "promotionGates": [
+    "clean-room dataset plan",
+    "dataset card with source and rights review",
+    "model card with training and evaluation summary",
+    "quantized runtime adapter selected",
+    "16GB+ memory ceiling benchmark for 20B target",
+    "no-key core startup remains passing",
+    "local-only fallback never routes to cloud silently",
+    "redacted logs and client-bundle secret scan",
+    "independent benchmark suite",
+    "150B frontier research plan with distributed runtime budget, privacy review, safety eval, observability, rollback plan, and explicit human approval",
+    "512B apex AGI research plan with frontier cluster budget, AGI capability evaluation protocol, safety red-team, observability, rollback, cost-stop, all-agent review, and explicit human approval",
+    "human approval before download, training, fine-tuning, publication, deployment, SSH, or paid benchmark"
+  ],
+  "routerPolicy": {
+    "localOnlyRespected": true,
+    "silentCloudFallbackAllowed": false,
+    "missingKeyIsError": false,
+    "actualProviderAndModelMustBeVisible": true,
+    "eligibleToday": [
+      "seis-local-demo",
+      "deterministic local seed-model lab"
+    ],
+    "blockedToday": [
+      "20B live inference",
+      "70B live inference",
+      "150B live inference",
+      "512B live inference",
+      "cloud fine-tuning",
+      "public model publication"
+    ]
+  },
+  "forbiddenClaims": [
+    "SEIS has trained a 20B foundation model.",
+    "SEIS has trained a 70B foundation model.",
+    "SEIS has trained a 150B foundation model.",
+    "SEIS has trained a 512B foundation model.",
+    "SEIS has achieved real AGI.",
+    "SEIS has downloadable or routeable 150B weights.",
+    "SEIS owns ChatGPT-level or Claude-level frontier weights.",
+    "A prompt profile, RAG system, wrapper, LoRA, checkpoint, quantization, or provider API is a SEIS foundation model.",
+    "Do not mark 16GB+ compatibility as verified before benchmark evidence exists."
+  ],
+  "humanApprovalRequiredFor": [
+    "model download",
+    "dataset download",
+    "training run",
+    "fine-tuning run",
+    "paid benchmark",
+    "GPU or cloud provisioning",
+    "SSH execution",
+    "deployment",
+    "model publication",
+    "provider credential setup"
+  ],
+  "nextSafeActions": [
+    "Keep SEIS AI Core in Local Demo mode while the 20B profile is planned.",
+    "Keep clean-room dataset and model card templates in template-not-filled status until reviewed evidence exists.",
+    "Add a measured memory benchmark fixture before marking 16GB+ compatibility verified.",
+    "Keep 70B and larger targets in research-roadmap status until 20B gates produce real evidence.",
+    "Treat 150B as a frontier research objective that needs separate distributed-runtime, safety, cost, privacy, and human-approval evidence before it can be scoped."
+  ]
+}

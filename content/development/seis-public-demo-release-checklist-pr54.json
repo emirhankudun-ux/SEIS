@@ -1,0 +1,68 @@
+{
+  "id": "seis-public-demo-release-checklist-pr54",
+  "title": "SEIS Public Demo Release Checklist After PR 54 Review",
+  "status": "review-gated-not-released",
+  "version": "2026-06-24",
+  "pullRequest": {
+    "number": 54,
+    "url": "https://github.com/emirhankudun-ux/SEIS/pull/54",
+    "base": "main",
+    "head": "codex/seis-demo-github-upload-20260624",
+    "requiredState": "reviewed before merge or public release"
+  },
+  "qualityGate": "npm run check:seis-second-brain-readiness-contracts",
+  "releaseDecision": "not ready until checklist gates pass",
+  "requiredValidation": [
+    "npm run check:seis-second-brain",
+    "npm run check:seis-second-brain-browser-smoke",
+    "npm run check:seis-second-brain-readiness-contracts",
+    "npm run check:desktop-os",
+    "npm run check:desktop-os-browser-smoke",
+    "npm run check:seis-ultimate-demo",
+    "npm run check:product-experience-browser-smoke",
+    "npm run check:seis-fullstack-contract",
+    "npm run check:seis-fullstack-server-smoke",
+    "npm run check:seis-fullstack-no-server-fallback-smoke",
+    "npm run check:seis-model-scaling-hardware-profile",
+    "npm test",
+    "git diff --check"
+  ],
+  "requiredReviews": [
+    "PR 54 code review",
+    "Second Brain accessibility/focus QA",
+    "Obsidian safe import contract review",
+    "provider-neutral model-router boundary review",
+    "security/no-secret review",
+    "mock versus real status review",
+    "public docs clarity review",
+    "release rollback review"
+  ],
+  "blockedActions": [
+    "merge to main without approval",
+    "GitHub Pages publication without approval",
+    "public release tag without approval",
+    "Obsidian private vault import",
+    "live provider routing",
+    "SSH execution",
+    "deployment",
+    "claiming production readiness"
+  ],
+  "approvalNeeded": [
+    "merge PR 54",
+    "public demo release",
+    "GitHub Pages update",
+    "release tag",
+    "live provider enablement",
+    "private Obsidian import",
+    "SSH or deployment action"
+  ],
+  "goNoGoCriteria": [
+    "all required validation passes on the release candidate",
+    "worktree has no unrelated release-blocking dirty files",
+    "no secret-like values or private vault content are committed",
+    "Second Brain import and accessibility gates are documented",
+    "router remains read-only and provider-neutral",
+    "all mock, local demo, planned, disabled, and real states are labelled",
+    "human owner approves release"
+  ]
+}

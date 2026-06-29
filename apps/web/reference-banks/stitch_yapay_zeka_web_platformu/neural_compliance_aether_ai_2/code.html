@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neural Compliance | Aether AI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #020408;
+            color: #e1e2e7;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(10, 14, 26, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 219, 233, 0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 30px rgba(0, 219, 233, 0.15);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00dbe9;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px #00dbe9;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .compliance-gradient {
+            background: linear-gradient(90deg, #00dbe9 0%, #b600f8 100%);
+        }
+
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 219, 233, 0.2);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#520072",
+                        "surface-variant": "#323539",
+                        "surface-container-lowest": "#0c0e12",
+                        "surface": "#111417",
+                        "surface-container": "#1d2023",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-primary": "#00363a",
+                        "surface-container-highest": "#323539",
+                        "on-primary-container": "#006970",
+                        "primary": "#dbfcff",
+                        "inverse-on-surface": "#2e3134",
+                        "surface-bright": "#37393d",
+                        "secondary-container": "#b600f8",
+                        "on-secondary-container": "#fff6fc",
+                        "background": "#111417",
+                        "inverse-primary": "#006970",
+                        "secondary-fixed-dim": "#ebb2ff",
+                        "error": "#ffb4ab",
+                        "on-surface": "#e1e2e7",
+                        "on-tertiary-container": "#5d5f5f",
+                        "on-secondary-fixed-variant": "#74009f",
+                        "surface-tint": "#00dbe9",
+                        "surface-dim": "#111417",
+                        "secondary-fixed": "#f8d8ff",
+                        "primary-fixed": "#7df4ff",
+                        "outline": "#849495",
+                        "on-error": "#690005",
+                        "surface-container-low": "#191c1f",
+                        "tertiary-container": "#d9d9d9",
+                        "on-primary-fixed": "#002022",
+                        "on-tertiary": "#2f3131",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "inverse-surface": "#e1e2e7",
+                        "on-secondary-fixed": "#320047",
+                        "on-primary-fixed-variant": "#004f54",
+                        "primary-fixed-dim": "#00dbe9",
+                        "primary-container": "#00f0ff",
+                        "on-surface-variant": "#b9cacb",
+                        "on-background": "#e1e2e7",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#282a2e",
+                        "secondary": "#ebb2ff",
+                        "outline-variant": "#3b494b",
+                        "tertiary": "#f5f5f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "container-max": "1280px",
+                        "section-gap": "120px",
+                        "margin-desktop": "64px",
+                        "unit": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "mono-label": ["JetBrains Mono"],
+                        "mono-code": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-label": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "mono-code": ["13px", {"lineHeight": "22px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest">
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto bg-surface/60 backdrop-blur-[20px] border-b border-white/10 shadow-[0_0_30px_rgba(0,219,233,0.25)]">
+<div class="font-display-lg text-display-lg-mobile md:text-display-lg font-extrabold text-primary tracking-tighter">
+            Aether AI
+        </div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-body-md text-body-md" href="#">OS</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-body-md text-body-md" href="#">AI</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Code</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-300 font-body-md text-body-md" href="#">Cloud</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">account_circle</span>
+<button class="bg-primary-container text-on-primary-fixed px-6 py-2 font-mono-label text-mono-label uppercase tracking-wider Active: scale-95 transition-transform rounded-lg">
+                Get Started
+            </button>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<span class="pulse-dot"></span>
+<span class="font-mono-label text-mono-label text-primary-fixed-dim uppercase">Live Engine Monitoring</span>
+</div>
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Neural Compliance</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                        Autonomous AI ethics auditing and regulatory enforcement. Unified governance for enterprise-grade generative deployments.
+                    </p>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel px-6 py-4 rounded-xl flex flex-col justify-center">
+<span class="font-mono-label text-mono-label text-on-surface-variant text-xs uppercase opacity-60">Engine Health</span>
+<span class="font-headline-md text-headline-md text-primary-fixed-dim">99.98%</span>
+</div>
+<div class="glass-panel px-6 py-4 rounded-xl flex flex-col justify-center">
+<span class="font-mono-label text-mono-label text-on-surface-variant text-xs uppercase opacity-60">Active Guards</span>
+<span class="font-headline-md text-headline-md text-secondary">4,291</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Real-time Bias Detection (Left Column) -->
+<section class="md:col-span-8 flex flex-col gap-gutter">
+<div class="glass-panel p-8 rounded-xl h-[480px] relative">
+<div class="scanline"></div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Neural Bias Analytics</h2>
+<p class="font-mono-label text-mono-label text-on-surface-variant">Real-time spectral analysis of model weights</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl">analytics</span>
+</div>
+<div class="absolute inset-0 top-32 px-8">
+
+<div class="mt-8 grid grid-cols-3 gap-6">
+<div class="border-l-2 border-primary pl-4">
+<span class="block font-mono-label text-mono-label text-on-surface-variant text-xs uppercase">Demographic Parity</span>
+<span class="text-2xl font-bold text-primary">0.942</span>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="h-full bg-primary w-[94%]"></div>
+</div>
+</div>
+<div class="border-l-2 border-secondary pl-4">
+<span class="block font-mono-label text-mono-label text-on-surface-variant text-xs uppercase">Equality of Opportunity</span>
+<span class="text-2xl font-bold text-secondary">0.887</span>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="h-full bg-secondary w-[88%]"></div>
+</div>
+</div>
+<div class="border-l-2 border-error pl-4">
+<span class="block font-mono-label text-mono-label text-on-surface-variant text-xs uppercase">Output Skew</span>
+<span class="text-2xl font-bold text-error">0.021</span>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="h-full bg-error w-[5%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-mono-label text-mono-label text-primary uppercase mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">security</span> Guardrail Toggles
+                        </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 rounded bg-surface/40">
+<span class="font-body-md text-body-md">PII Redaction</span>
+<button class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1">
+<div class="w-4 h-4 rounded-full bg-on-primary ml-auto"></div>
+</button>
+</div>
+<div class="flex justify-between items-center p-3 rounded bg-surface/40">
+<span class="font-body-md text-body-md">Toxicity Filter</span>
+<button class="w-12 h-6 rounded-full bg-primary-container relative flex items-center px-1">
+<div class="w-4 h-4 rounded-full bg-on-primary ml-auto"></div>
+</button>
+</div>
+<div class="flex justify-between items-center p-3 rounded bg-surface/40">
+<span class="font-body-md text-body-md">Fact-Check Overlay</span>
+<button class="w-12 h-6 rounded-full bg-surface-variant relative flex items-center px-1">
+<div class="w-4 h-4 rounded-full bg-on-surface-variant"></div>
+</button>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-mono-label text-mono-label text-secondary uppercase mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span> Recent Audit Trail
+                        </h3>
+<ul class="space-y-3 font-mono-code text-mono-code text-xs text-on-surface-variant">
+<li class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="text-secondary">[14:02:11]</span> PII leak blocked in Node-7
+                            </li>
+<li class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="text-secondary">[13:58:45]</span> EU AI Act compliance sync complete
+                            </li>
+<li class="flex items-center gap-2 border-b border-white/5 pb-2">
+<span class="text-secondary">[13:42:01]</span> Model weights bias re-evaluated
+                            </li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Regulatory Scorecards (Right Column) -->
+<aside class="md:col-span-4 flex flex-col gap-gutter">
+<div class="glass-panel p-8 rounded-xl flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Global Scorecards</h3>
+<div class="space-y-8">
+<div class="relative">
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-body-md font-bold">EU AI Act</span>
+<span class="font-mono-label text-mono-label text-primary">A+ Certified</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full compliance-gradient w-[98%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-2">Latest update: 4 mins ago</p>
+</div>
+<div class="relative">
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-body-md font-bold">GDPR Compliance</span>
+<span class="font-mono-label text-mono-label text-primary">94% Compliant</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full compliance-gradient w-[94%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-2">Data residency: Frankfurt-1</p>
+</div>
+<div class="relative">
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-body-md font-bold">NIST AI RMF</span>
+<span class="font-mono-label text-mono-label text-secondary">Review Needed</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full compliance-gradient w-[62%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant mt-2">3 advisory flags raised</p>
+</div>
+</div>
+<div class="mt-12 p-6 rounded-xl border border-dashed border-primary/30 bg-primary/5">
+<h4 class="font-mono-label text-mono-label text-primary mb-2 uppercase">Compliance Forecast</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            System projecting 99% alignment with upcoming Section 230 amendments by Q3 2024.
+                        </p>
+</div>
+<button class="w-full mt-8 py-4 border border-primary text-primary font-mono-label text-mono-label rounded hover:bg-primary hover:text-on-primary transition-all duration-300">
+                        GENERATE AUDIT REPORT
+                    </button>
+</div>
+<div class="glass-panel p-6 rounded-xl overflow-hidden relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-20" data-alt="A macro photograph of high-tech fiber optic cables glowing with electric cyan and deep violet light, representing secure data transmission. The image is captured in a dark, atmospheric server room environment with cinematic bokeh and sharp technical focus. The aesthetic is clean, professional, and futuristic, aligning with a corporate cybersecurity brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA12_BSE5QhICi7zp1Jge1aamJKyIsPybCyL7U_hgWKJ3XwbkXrpCnlGZ3K-I5e9NtD90RcraQSu2isChfyFzGGD2MprmdupyBB3ezpEK9XpLHz9PRjmi98WaZFF-zgzRzIxTZPy2Q3r964M8_R-q8ycxK47ahPU8M6c8aOzJ1wlMnLomWvePqLL_IvfySj2mrAaNqvWj25mSW735D-ruOuuX408JxVNRAdsbaTbcv_saOawbEm5jEOkq1fD5CAMAuB8NaiRV0peA"/>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-secondary text-3xl mb-2">lock_open</span>
+<h4 class="font-headline-md text-headline-md text-on-surface">Data Transparency</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">All model training logs are encrypted and verified via ZK-Proof.</p>
+</div>
+</div>
+</aside>
+</div>
+<!-- System Architecture Section -->
+<section class="mt-section-gap">
+<h2 class="font-headline-md text-headline-md text-primary mb-8 border-l-4 border-primary pl-4">Governance Nodes</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-panel p-6 rounded-xl group hover:border-primary/50 transition-colors">
+<div class="w-12 h-12 bg-primary/10 rounded flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary">hub</span>
+</div>
+<h3 class="font-body-lg text-body-lg font-bold mb-2">Inference Hub</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Monitors outgoing tokens for sensitivity and ethical alignment in real-time.</p>
+</div>
+<div class="glass-panel p-6 rounded-xl group hover:border-secondary/50 transition-colors">
+<div class="w-12 h-12 bg-secondary/10 rounded flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<h3 class="font-body-lg text-body-lg font-bold mb-2">Vault Node</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Secure storage for audit logs and forensic data traces using blockchain anchoring.</p>
+</div>
+<div class="glass-panel p-6 rounded-xl group hover:border-primary-fixed-dim/50 transition-colors">
+<div class="w-12 h-12 bg-primary-fixed-dim/10 rounded flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary-fixed-dim">query_stats</span>
+</div>
+<h3 class="font-body-lg text-body-lg font-bold mb-2">Ethics API</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">External interface for third-party auditing and regulatory validation requests.</p>
+</div>
+<div class="glass-panel p-6 rounded-xl group hover:border-on-primary-container/50 transition-colors">
+<div class="w-12 h-12 bg-on-primary-container/10 rounded flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-on-primary-container">psychology</span>
+</div>
+<h3 class="font-body-lg text-body-lg font-bold mb-2">Cognitive Guard</h3>
+<p class="text-xs text-on-surface-variant leading-relaxed">Advanced logic layer preventing jailbreak attempts and prompt injections.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface-container-lowest border-t border-surface-variant">
+<div class="font-display-lg text-display-lg-mobile text-primary">Aether AI</div>
+<div class="flex flex-wrap justify-center gap-8 font-mono-label text-mono-label">
+<a class="text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Documentation</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Status</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Security</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors uppercase" href="#">Terms</a>
+</div>
+<div class="text-on-surface-variant font-mono-label text-mono-label opacity-60">
+            © 2024 Aether AI Infrastructure. All rights reserved.
+        </div>
+</footer>
+<script>
+        // Micro-interaction for toggles
+        document.querySelectorAll('button.relative').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const dot = this.querySelector('div');
+                if (this.classList.contains('bg-primary-container')) {
+                    this.classList.remove('bg-primary-container');
+                    this.classList.add('bg-surface-variant');
+                    dot.classList.remove('ml-auto', 'bg-on-primary');
+                    dot.classList.add('bg-on-surface-variant');
+                } else {
+                    this.classList.add('bg-primary-container');
+                    this.classList.remove('bg-surface-variant');
+                    dot.classList.add('ml-auto', 'bg-on-primary');
+                    dot.classList.remove('bg-on-surface-variant');
+                }
+            });
+        });
+
+        // Simple parallax effect for glass cards
+        document.addEventListener('mousemove', (e) => {
+            const amount = 5;
+            const x = (e.clientX / window.innerWidth - 0.5) * amount;
+            const y = (e.clientY / window.innerHeight - 0.5) * amount;
+            
+            document.querySelectorAll('.glass-panel').forEach(card => {
+                card.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
+            });
+        });
+    </script>
+</body></html>
