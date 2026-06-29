@@ -82,6 +82,19 @@ explicit human approval.
 
 None of that evidence exists today.
 
+## Public Readiness Evidence Matrix
+
+The public-readiness matrix records each missing minimum evidence item and keeps
+the GitHub-facing decision explicit:
+
+`content/development/seis-agi-public-readiness-evidence.json`
+
+Human-readable companion:
+
+`docs/ai/seis-agi-public-readiness-evidence.md`
+
+Current decision: `not-ready-for-agi-or-512b-public-claim`.
+
 ## MCP Resource
 
 The protocol is exposed read-only through:

@@ -12,12 +12,14 @@ const paths = {
   profile: "content/development/seis-model-scaling-hardware-profile.json",
   policy: "content/development/seis-model-frontier-escalation-policy.json",
   council: "content/development/seis-model-scaling-subagent-council.json",
+  publicReadinessEvidence: "content/development/seis-agi-public-readiness-evidence.json",
   pluginIntegration: "content/development/seis-agent-plugin-integration.json",
   mcpRuntime: "content/development/seis-ai-core-mcp-runtime-contract.json",
   helper: "packages/seis-ai/src/lib/plugin-integration.mjs",
   mcpServer: "packages/seis-ai/src/mcp/server.mjs",
   mcpSmoke: "packages/seis-ai/test/mcp-smoke.test.mjs",
   protocolDoc: "docs/ai/seis-agi-evaluation-protocol.md",
+  publicReadinessDoc: "docs/ai/seis-agi-public-readiness-evidence.md",
   scalingDoc: "docs/ai/seis-model-scaling.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   routerDoc: "docs/ai/model-router.md"
@@ -30,6 +32,7 @@ const apexProgram = readJson(paths.apexProgram, "512B apex model program");
 const profile = readJson(paths.profile, "model scaling profile");
 const policy = readJson(paths.policy, "frontier escalation policy");
 const council = readJson(paths.council, "model scaling council");
+const publicReadinessEvidence = readJson(paths.publicReadinessEvidence, "AGI public readiness evidence");
 const pluginIntegration = readJson(paths.pluginIntegration, "plugin integration");
 const mcpRuntime = readJson(paths.mcpRuntime, "MCP runtime contract");
 
@@ -37,6 +40,7 @@ const helper = readText(paths.helper, "AI Core helper");
 const mcpServer = readText(paths.mcpServer, "MCP server");
 const mcpSmoke = readText(paths.mcpSmoke, "MCP smoke tests");
 const protocolDoc = readText(paths.protocolDoc, "AGI evaluation protocol docs");
+const publicReadinessDoc = readText(paths.publicReadinessDoc, "AGI public readiness evidence docs");
 const scalingDoc = readText(paths.scalingDoc, "model scaling docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
 const routerDoc = readText(paths.routerDoc, "model router docs");
@@ -67,6 +71,8 @@ if (protocol) {
   ensure(protocol.sourceOfTruth?.frontierEscalationPolicy === paths.policy, "sourceOfTruth.frontierEscalationPolicy mismatch");
   ensure(protocol.sourceOfTruth?.modelScalingSubagentCouncil === paths.council, "sourceOfTruth.modelScalingSubagentCouncil mismatch");
   ensure(protocol.sourceOfTruth?.protocolDoc === paths.protocolDoc, "sourceOfTruth.protocolDoc mismatch");
+  ensure(protocol.sourceOfTruth?.publicReadinessEvidence === paths.publicReadinessEvidence, "sourceOfTruth.publicReadinessEvidence mismatch");
+  ensure(protocol.sourceOfTruth?.publicReadinessDoc === paths.publicReadinessDoc, "sourceOfTruth.publicReadinessDoc mismatch");
 
   ensure(protocol.publicResearchBaseline?.status === "public-sources-reviewed", "public research baseline status mismatch");
   ensure(protocol.publicResearchBaseline?.updatedAt === "2026-06-29", "public research baseline date mismatch");
@@ -193,12 +199,18 @@ if (protocol) {
 }
 
 ensure(apexProgram?.sourceOfTruth?.agiEvaluationProtocol === paths.protocol, "512B apex program must point to the AGI evaluation protocol");
+ensure(apexProgram?.sourceOfTruth?.agiPublicReadinessEvidence === paths.publicReadinessEvidence, "512B apex program must point to AGI public readiness evidence");
 ensure(apexProgram?.agiReadinessDefinition?.protocol === paths.protocol, "512B AGI readiness definition must link protocol path");
 ensure(apexProgram?.agiReadinessDefinition?.resourceUri === "seis://ai/agi-evaluation-protocol.json", "512B AGI readiness definition must link protocol MCP URI");
 ensure(apexProgram?.agiReadinessDefinition?.claimStatus === "real-agi-not-proven", "512B AGI claim status must remain not proven");
 ensure(profile?.apexTarget?.agiCapabilityStatus === "not-demonstrated", "model scaling profile must keep AGI capability not-demonstrated");
 ensure((policy?.escalationStages || []).some((stage) => stage.id === "stage-4-512b-apex" && stage.routeEligibleToday === false), "frontier policy must keep 512B route blocked");
 ensure((council?.stageAssignments || []).some((stage) => stage.stage === "512B" && stage.routeEligibleToday === false), "council must keep 512B stage route blocked");
+ensure(publicReadinessEvidence?.status === "blocked-missing-real-agi-evidence", "public readiness evidence must stay blocked");
+ensure(publicReadinessEvidence?.agiClaimAllowed === false, "public readiness evidence must block AGI claims");
+ensure(publicReadinessEvidence?.publicReadyAsAgi === false, "public readiness evidence must not be public-ready as AGI");
+ensure(publicReadinessEvidence?.readinessSummary?.minimumClaimEvidenceCount === protocol?.minimumEvidenceBeforeAnyAgiClaim?.length, "public readiness evidence minimum evidence count must match protocol");
+ensure((publicReadinessEvidence?.minimumClaimEvidenceMatrix || []).every((item) => item.claimAllowedIfMissing === false && item.routeEligibleIfMissing === false), "public readiness evidence must block missing claim evidence");
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-evaluation-protocol.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
@@ -209,6 +221,7 @@ for (const [text, label] of [
   [mcpServer, "MCP server"],
   [mcpSmoke, "MCP smoke tests"],
   [protocolDoc, "AGI evaluation docs"],
+  [publicReadinessDoc, "AGI public readiness evidence docs"],
   [scalingDoc, "model scaling docs"],
   [aiCoreDoc, "AI Core docs"],
   [routerDoc, "model router docs"]

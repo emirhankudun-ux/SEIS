@@ -21,6 +21,7 @@
     "frontierModelProgram": "content/development/seis-150b-frontier-model-program.json",
     "modelScalingSubagentCouncil": "content/development/seis-model-scaling-subagent-council.json",
     "agiEvaluationProtocol": "content/development/seis-agi-evaluation-protocol.json",
+    "agiPublicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
     "modelScalingDoc": "docs/ai/seis-model-scaling.md",
     "modelRouterDoc": "docs/ai/model-router.md"

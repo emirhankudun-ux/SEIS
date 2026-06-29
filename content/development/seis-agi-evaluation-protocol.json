@@ -24,7 +24,9 @@
     "modelRouterDoc": "docs/ai/model-router.md",
     "modelScalingDoc": "docs/ai/seis-model-scaling.md",
     "aiCoreDoc": "docs/ai/seis-ai-core.md",
-    "protocolDoc": "docs/ai/seis-agi-evaluation-protocol.md"
+    "protocolDoc": "docs/ai/seis-agi-evaluation-protocol.md",
+    "publicReadinessEvidence": "content/development/seis-agi-public-readiness-evidence.json",
+    "publicReadinessDoc": "docs/ai/seis-agi-public-readiness-evidence.md"
   },
   "publicResearchBaseline": {
     "updatedAt": "2026-06-29",

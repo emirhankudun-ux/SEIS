@@ -9,6 +9,7 @@ const failures = [];
 const paths = {
   program: "content/development/seis-512b-apex-model-program.json",
   agiEvaluationProtocol: "content/development/seis-agi-evaluation-protocol.json",
+  agiPublicReadinessEvidence: "content/development/seis-agi-public-readiness-evidence.json",
   profile: "content/development/seis-model-scaling-hardware-profile.json",
   ladder: "content/development/seis-model-parameter-ladder.json",
   policy: "content/development/seis-model-frontier-escalation-policy.json",
@@ -30,6 +31,7 @@ for (const [label, relativePath] of Object.entries(paths)) ensureFile(relativePa
 
 const program = readJson(paths.program, "512B apex model program");
 const agiEvaluationProtocol = readJson(paths.agiEvaluationProtocol, "AGI evaluation protocol");
+const agiPublicReadinessEvidence = readJson(paths.agiPublicReadinessEvidence, "AGI public readiness evidence");
 const profile = readJson(paths.profile, "model scaling profile");
 const ladder = readJson(paths.ladder, "parameter ladder");
 const policy = readJson(paths.policy, "frontier escalation policy");
@@ -71,7 +73,8 @@ if (program) {
     paths.policy,
     "content/development/seis-150b-frontier-model-program.json",
     paths.council,
-    paths.agiEvaluationProtocol
+    paths.agiEvaluationProtocol,
+    paths.agiPublicReadinessEvidence
   ], "program.sourceOfTruth values");
   ensure((program.programStages || []).length === 7, "program must expose seven 512B stages");
   ensure((program.programStages || []).every((stage) => stage.routeEligibleToday === false), "all 512B stages must be route-ineligible");
@@ -211,6 +214,29 @@ if (agiEvaluationProtocol) {
     "Local Demo behavior is not live model capability",
     "green CI is not AGI proof"
   ], "AGI evaluation protocol negativeControls");
+}
+
+if (agiPublicReadinessEvidence) {
+  ensure(agiPublicReadinessEvidence.id === "seis-agi-public-readiness-evidence", "AGI public readiness evidence id mismatch");
+  ensure(agiPublicReadinessEvidence.status === "blocked-missing-real-agi-evidence", "AGI public readiness evidence must stay blocked");
+  ensure(agiPublicReadinessEvidence.qualityGate === "node scripts/check-seis-agi-public-readiness-evidence.mjs", "AGI public readiness evidence quality gate mismatch");
+  ensure(agiPublicReadinessEvidence.routeEligibleToday === false, "AGI public readiness evidence must not be route eligible");
+  ensure(agiPublicReadinessEvidence.runtimeAuthority === false, "AGI public readiness evidence must not grant runtime authority");
+  ensure(agiPublicReadinessEvidence.agiClaimAllowed === false, "AGI public readiness evidence must block AGI claims");
+  ensure(agiPublicReadinessEvidence.publicReadyAsAgi === false, "AGI public readiness evidence must not be public-ready as AGI");
+  ensure(agiPublicReadinessEvidence.publicReadyAsLocalDemo === true, "AGI public readiness evidence must allow Local Demo public use");
+  ensure(agiPublicReadinessEvidence.readinessSummary?.minimumClaimEvidenceCount === (agiEvaluationProtocol?.minimumEvidenceBeforeAnyAgiClaim || []).length, "AGI public readiness evidence minimum count must match protocol");
+  ensure(agiPublicReadinessEvidence.readinessSummary?.acceptedClaimEvidenceCount === 0, "AGI public readiness evidence accepted count must be zero");
+  ensureArrayIncludesAll(
+    (agiPublicReadinessEvidence.sourceDerivedGateMatrix || []).map((gate) => gate.gateId),
+    (agiEvaluationProtocol?.sourceDerivedReadinessGates || []).map((gate) => gate.id),
+    "AGI public readiness evidence sourceDerivedGateMatrix"
+  );
+  ensureArrayIncludesAll(
+    (agiPublicReadinessEvidence.minimumClaimEvidenceMatrix || []).map((item) => item.requirement),
+    agiEvaluationProtocol?.minimumEvidenceBeforeAnyAgiClaim || [],
+    "AGI public readiness evidence minimumClaimEvidenceMatrix"
+  );
 }
 
 ensure(profile?.sourceOfTruth?.apexModelProgram === paths.program, "profile must point to 512B apex model program");
