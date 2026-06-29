@@ -25,6 +25,7 @@ ensure(roadmap?.targetAlias === "SEIS-SSH", "roadmap target alias must be SEIS-S
 ensure(roadmap?.strategy === "cloud-only-long-horizon", "roadmap strategy must be cloud-only-long-horizon");
 ensure(roadmap?.status === "active", "roadmap status must be active");
 ensure(roadmap?.enterpriseBenchmarkSource === "deploy/seis-ssh-5-year-enterprise-benchmark.json", "roadmap must link enterprise benchmark source");
+ensure(roadmap?.publicAccessContract === "deploy/seis-ssh-public-access-contract.json", "roadmap must link public access contract");
 ensure(accessModel?.longTermDevelopment?.roadmapSource === "deploy/seis-ssh-cloud-roadmap.json", "access model must link to roadmap source");
 ensure(accessModel?.longTermDevelopment?.closedRuntimeContract === "deploy/seis-ssh-closed-runtime-contract.json", "access model must link to closed runtime contract");
 ensure(accessModel?.longTermDevelopment?.enterpriseBenchmarkSource === "deploy/seis-ssh-5-year-enterprise-benchmark.json", "access model must link to enterprise benchmark source");
@@ -53,6 +54,9 @@ ensure((enterpriseBenchmark?.officialReferenceBaseline || []).length >= 7, "ente
 const scripts = packageJson?.scripts || {};
 ensure(scripts["check:seis-ssh-cloud-roadmap"] === "node scripts/check-seis-ssh-cloud-roadmap.mjs", "missing check:seis-ssh-cloud-roadmap script");
 ensure(scripts["check:seis-ssh-picker-compatibility"] === "node scripts/check-seis-ssh-picker-compatibility.mjs", "missing check:seis-ssh-picker-compatibility script");
+ensure(scripts["check:seis-ssh-public-onboarding"] === "node scripts/create-seis-ssh-public-onboarding-pack.mjs --check", "missing check:seis-ssh-public-onboarding script");
+ensure(scripts["check:seis-ssh-public-contributor-doctor"] === "node scripts/check-seis-ssh-public-contributor-doctor.mjs --check", "missing check:seis-ssh-public-contributor-doctor script");
+ensure(scripts["check:seis-ssh-live-readiness-evidence"] === "node scripts/check-seis-ssh-live-readiness-evidence.mjs", "missing check:seis-ssh-live-readiness-evidence script");
 ensure(scripts["check:seis-ssh-closed-runtime"] === "node scripts/check-seis-ssh-closed-runtime.mjs", "missing check:seis-ssh-closed-runtime script");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-cloud-roadmap"), "quality governance must include SSH cloud roadmap check");
 ensure((scripts["quality:governance"] || "").includes("npm run check:seis-ssh-picker-compatibility"), "quality governance must include SSH picker compatibility check");
@@ -96,6 +100,10 @@ for (const phaseId of [
 
 const validationCommands = roadmap?.validationCommands || [];
 for (const command of [
+  "npm run check:seis-ssh-public-access",
+  "npm run check:seis-ssh-public-onboarding",
+  "npm run check:seis-ssh-public-contributor-doctor",
+  "npm run check:seis-ssh-live-readiness-evidence",
   "npm run check:seis-ssh-cloud-roadmap",
   "npm run check:seis-ssh-closed-runtime",
   "npm run check:seis-ssh-access-model",
@@ -121,6 +129,9 @@ ensure(docs.includes("Phase 3: Closed Developer Runtime"), "roadmap docs must do
 ensure(docs.includes("SEIS SSH New Device Bootstrap"), "roadmap docs must include new-device bootstrap");
 ensure(docs.includes("SEIS SSH Closed Developer Runtime"), "roadmap docs must include closed developer runtime");
 ensure(docs.includes("Picker Compatibility"), "roadmap docs must include picker compatibility");
+ensure(docs.includes("Public GitHub onboarding"), "roadmap docs must include public GitHub onboarding");
+ensure(docs.includes("Contributor doctor evidence"), "roadmap docs must include contributor doctor evidence");
+ensure(docs.includes("Live readiness blockers"), "roadmap docs must include live readiness blocker evidence");
 ensure(docs.includes("deploy/seis-ssh-closed-runtime-contract.json"), "closed runtime docs must link contract");
 ensure(docs.includes("ChatGPT mobile and Codex surfaces"), "bootstrap docs must mention ChatGPT mobile and Codex surfaces");
 ensure(docs.includes("gh auth refresh -h github.com -s codespace"), "bootstrap docs must document GitHub Codespaces auth refresh");
