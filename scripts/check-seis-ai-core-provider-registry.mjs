@@ -120,8 +120,9 @@ ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-
 
 if (mcpRuntimeContract) {
   ensure(mcpRuntimeContract.toolCount === 34, "MCP runtime contract must record 34 tools");
-  ensure(mcpRuntimeContract.resourceCount === 27, "MCP runtime contract must record 27 resources");
+  ensure(mcpRuntimeContract.resourceCount === 28, "MCP runtime contract must record 28 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP runtime contract resource evidence must mention AGI evaluation protocol");
+  ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP runtime contract resource evidence must mention AGI public readiness evidence");
 }
 
 for (const [text, label] of [

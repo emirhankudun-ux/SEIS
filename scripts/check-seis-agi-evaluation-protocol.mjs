@@ -212,9 +212,12 @@ ensure(publicReadinessEvidence?.publicReadyAsAgi === false, "public readiness ev
 ensure(publicReadinessEvidence?.readinessSummary?.minimumClaimEvidenceCount === protocol?.minimumEvidenceBeforeAnyAgiClaim?.length, "public readiness evidence minimum evidence count must match protocol");
 ensure((publicReadinessEvidence?.minimumClaimEvidenceMatrix || []).every((item) => item.claimAllowedIfMissing === false && item.routeEligibleIfMissing === false), "public readiness evidence must block missing claim evidence");
 
-ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-evaluation-protocol.json"], "pluginIntegration.runtimeIntegration.mcpResources");
+ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, [
+  "seis://ai/agi-evaluation-protocol.json",
+  "seis://ai/agi-public-readiness-evidence.json"
+], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 27, "MCP runtime contract must record 27 resources");
+ensure(mcpRuntime?.resourceCount === 28, "MCP runtime contract must record 28 resources");
 
 for (const [text, label] of [
   [helper, "AI Core helper"],
@@ -228,6 +231,16 @@ for (const [text, label] of [
 ]) {
   ensure(text.includes("seis-agi-evaluation-protocol"), `${label} must reference the AGI evaluation protocol id/path`);
   ensure(text.includes("seis://ai/agi-evaluation-protocol.json"), `${label} must reference the AGI evaluation protocol MCP URI`);
+}
+
+for (const [text, label] of [
+  [helper, "AI Core helper"],
+  [mcpServer, "MCP server"],
+  [mcpSmoke, "MCP smoke tests"],
+  [publicReadinessDoc, "AGI public readiness evidence docs"]
+]) {
+  ensure(text.includes("seis-agi-public-readiness-evidence"), `${label} must reference AGI public readiness evidence`);
+  ensure(text.includes("seis://ai/agi-public-readiness-evidence.json"), `${label} must reference the AGI public readiness evidence MCP URI`);
 }
 
 finish("SEIS AGI evaluation protocol check passed.");

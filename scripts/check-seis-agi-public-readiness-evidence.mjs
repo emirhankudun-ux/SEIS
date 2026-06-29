@@ -33,6 +33,7 @@ const modelRouterDoc = readText(paths.modelRouterDoc, "model router docs");
 if (evidence) {
   ensure(evidence.id === "seis-agi-public-readiness-evidence", "evidence id mismatch");
   ensure(evidence.status === "blocked-missing-real-agi-evidence", "evidence status must stay blocked");
+  ensure(evidence.resourceUri === "seis://ai/agi-public-readiness-evidence.json", "resource URI mismatch");
   ensure(evidence.qualityGate === "node scripts/check-seis-agi-public-readiness-evidence.mjs", "qualityGate mismatch");
   ensure(evidence.coreCredentialRequirement === "none", "core credential requirement must stay none");
   ensure(evidence.defaultRuntimeMode === "seis-local-demo", "default runtime must be seis-local-demo");
@@ -129,6 +130,7 @@ for (const [text, label] of [
 }
 
 ensure(doc.includes("blocked-missing-real-agi-evidence"), "public readiness docs must state blocked status");
+ensure(doc.includes("seis://ai/agi-public-readiness-evidence.json"), "public readiness docs must include MCP resource URI");
 ensure(doc.includes("node scripts/check-seis-agi-public-readiness-evidence.mjs"), "public readiness docs must include validation command");
 
 finish("SEIS AGI public readiness evidence check passed.");

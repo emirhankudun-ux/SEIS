@@ -2,6 +2,8 @@
 
 `content/development/seis-agi-public-readiness-evidence.json` is the current
 machine-readable public readiness matrix for SEIS AGI and the 512B apex target.
+It is exposed to local MCP clients as the read-only resource
+`seis://ai/agi-public-readiness-evidence.json`.
 
 Status: `blocked-missing-real-agi-evidence`.
 

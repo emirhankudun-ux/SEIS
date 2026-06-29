@@ -111,6 +111,7 @@ if (manifest) {
     "seis://ai/150b-frontier-model-program.json",
     "seis://ai/512b-apex-model-program.json",
     "seis://ai/agi-evaluation-protocol.json",
+    "seis://ai/agi-public-readiness-evidence.json",
     "seis://ai/20b-model-card-template.json",
     "seis://ai/20b-dataset-card-template.json",
     "seis://ai/version-promotion-gates.json",

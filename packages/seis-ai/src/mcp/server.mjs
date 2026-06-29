@@ -24,6 +24,7 @@ import {
   AI_CORE_150B_FRONTIER_MODEL_PROGRAM_PATH,
   AI_CORE_512B_APEX_MODEL_PROGRAM_PATH,
   AI_CORE_AGI_EVALUATION_PROTOCOL_PATH,
+  AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH,
   AI_CORE_20B_DATASET_CARD_TEMPLATE_PATH,
   AI_CORE_20B_MODEL_CARD_TEMPLATE_PATH,
   AI_CORE_PROVIDER_REGISTRY_PATH,
@@ -946,6 +947,25 @@ Steps:
           uri: "seis://ai/agi-evaluation-protocol.json",
           mimeType: "application/json",
           text: readFileSync(path.join(repoRoot, ...AI_CORE_AGI_EVALUATION_PROTOCOL_PATH.split("/")), "utf8"),
+        },
+      ],
+    })
+  );
+
+  server.resource(
+    "ai-core-agi-public-readiness-evidence",
+    "seis://ai/agi-public-readiness-evidence.json",
+    {
+      description:
+        "SEIS AI Core read-only seis-agi-public-readiness-evidence from content/development/seis-agi-public-readiness-evidence.json; not AGI proof, training, inference, benchmark, public-release, or route authority",
+      mimeType: "application/json",
+    },
+    async () => ({
+      contents: [
+        {
+          uri: "seis://ai/agi-public-readiness-evidence.json",
+          mimeType: "application/json",
+          text: readFileSync(path.join(repoRoot, ...AI_CORE_AGI_PUBLIC_READINESS_EVIDENCE_PATH.split("/")), "utf8"),
         },
       ],
     })

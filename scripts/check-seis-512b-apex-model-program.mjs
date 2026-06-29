@@ -263,9 +263,10 @@ for (const duty of council?.apex512bCouncilDuties || []) {
 
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/512b-apex-model-program.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-evaluation-protocol.json"], "pluginIntegration.runtimeIntegration.mcpResources");
+ensureArrayIncludesAll(pluginIntegration?.runtimeIntegration?.mcpResources, ["seis://ai/agi-public-readiness-evidence.json"], "pluginIntegration.runtimeIntegration.mcpResources");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["npm run check:seis-512b-apex-model-program"], "pluginIntegration.qualityCommands");
 ensureArrayIncludesAll(pluginIntegration?.qualityCommands, ["node scripts/check-seis-agi-evaluation-protocol.mjs"], "pluginIntegration.qualityCommands");
-ensure(mcpRuntime?.resourceCount === 27, "MCP runtime contract must record 27 resources");
+ensure(mcpRuntime?.resourceCount === 28, "MCP runtime contract must record 28 resources");
 
 if (packageJson) {
   ensure(packageJson.scripts?.["check:seis-512b-apex-model-program"] === "node scripts/check-seis-512b-apex-model-program.mjs", "package.json must expose check:seis-512b-apex-model-program");
@@ -296,6 +297,15 @@ for (const [text, label] of [
 ]) {
   ensure(text.includes("seis-agi-evaluation-protocol"), `${label} must reference AGI evaluation protocol id/path`);
   ensure(text.includes("seis://ai/agi-evaluation-protocol.json"), `${label} must reference AGI evaluation protocol MCP URI`);
+}
+
+for (const [text, label] of [
+  [helper, "AI Core helper"],
+  [mcpServer, "MCP server"],
+  [mcpSmoke, "MCP smoke tests"]
+]) {
+  ensure(text.includes("seis-agi-public-readiness-evidence"), `${label} must reference AGI public readiness evidence`);
+  ensure(text.includes("seis://ai/agi-public-readiness-evidence.json"), `${label} must reference AGI public readiness evidence MCP URI`);
 }
 
 finish("SEIS 512B apex model program check passed.");

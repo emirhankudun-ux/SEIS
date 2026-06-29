@@ -2,6 +2,7 @@
   "id": "seis-agi-public-readiness-evidence",
   "version": "2026.06.29",
   "status": "blocked-missing-real-agi-evidence",
+  "resourceUri": "seis://ai/agi-public-readiness-evidence.json",
   "qualityGate": "node scripts/check-seis-agi-public-readiness-evidence.mjs",
   "coreCredentialRequirement": "none",
   "defaultRuntimeMode": "seis-local-demo",
