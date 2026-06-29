@@ -92,9 +92,10 @@ Primary demo routes:
   `seis.locale.v1`, and connected SEIS Search, Code, Design, Cloud, Store,
   Website, Music, AI Core, and Reference surfaces open mini workspaces or
   iframe-backed local reference modules with browser-local state changes. The
-  focused browser smoke check captures desktop, mobile, and deep-link evidence for the live
-  demo console, Demo Readiness gates, source coverage, reference modules,
-  terminal commands, and viewport-safe window sizing. It also validates every populated Reference
+  focused browser smoke check captures desktop, mobile, deep-link, public entry
+  CTA, landing CTA, and product CTA evidence for the live demo console, Demo
+  Readiness gates, source coverage, reference modules, terminal commands, and
+  viewport-safe window sizing. It also validates every populated Reference
   Vault route and thumbnail path in `apps/web/reference-banks/reference-apps.js`
   from the static web serving root, so missing supplied-module assets fail the
   demo gate instead of silently shipping broken cards. The focused review packet

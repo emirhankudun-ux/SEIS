@@ -81,7 +81,10 @@ Latest verified evidence from the focused smoke check:
 | Evidence | Result |
 | --- | --- |
 | Overall smoke status | `ok: true` |
-| Static route package | `9` routes, `14` precache assets |
+| Static route package | `10` routes, `15` precache assets |
+| Public demo entry route | `seis-linux-replica-public-demo.html` |
+| Public demo entry CTA clickthrough | `seis-linux-replica-public-demo.html` -> `/seis-linux-replica.html?demo=live` |
+| Public demo entry CTA shell auto-enter | `true` |
 | Landing live-demo CTA | `./seis-linux-replica.html?demo=live` |
 | Landing hero CTA clickthrough | `index.html` -> `/seis-linux-replica.html?demo=live` |
 | Landing CTA shell auto-enter | `true` |
@@ -225,8 +228,8 @@ Suggested verification checklist:
 - [ ] `node --check scripts/check-seis-linux-replica-public-walkthrough.mjs`
 - [ ] `node scripts/check-seis-linux-replica-public-walkthrough.mjs`
 - [ ] `node scripts/check-seis-static-demo-routes.mjs`
-- [ ] `git diff --check`
 - [ ] `npm run check:seis-linux-replica-browser-smoke`
+- [ ] `git diff --check`
 
 ## Remaining Work
 
