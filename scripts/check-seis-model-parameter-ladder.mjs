@@ -184,10 +184,11 @@ if (pluginIntegration) {
 }
 
 if (mcpRuntimeContract) {
-  ensure(mcpRuntimeContract.resourceCount === 28, "MCP runtime contract must record 28 resources");
+  ensure(mcpRuntimeContract.resourceCount === 29, "MCP runtime contract must record 29 resources");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("parameter ladder"), "MCP resource evidence must mention parameter ladder");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI evaluation protocol"), "MCP resource evidence must mention AGI evaluation protocol");
   ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI public readiness evidence"), "MCP resource evidence must mention AGI public readiness evidence");
+  ensure(String(mcpRuntimeContract.surfaces?.find((surface) => surface.id === "resources")?.evidence || "").includes("AGI GitHub user readiness gates"), "MCP resource evidence must mention AGI GitHub user readiness gates");
 }
 
 if (packageJson) {

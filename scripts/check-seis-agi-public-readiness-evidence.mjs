@@ -10,9 +10,11 @@ const paths = {
   evidence: "content/development/seis-agi-public-readiness-evidence.json",
   protocol: "content/development/seis-agi-evaluation-protocol.json",
   apexProgram: "content/development/seis-512b-apex-model-program.json",
+  githubUserReadinessGates: "content/development/seis-agi-github-user-readiness-gates.json",
   modelScalingProfile: "content/development/seis-model-scaling-hardware-profile.json",
   council: "content/development/seis-model-scaling-subagent-council.json",
   doc: "docs/ai/seis-agi-public-readiness-evidence.md",
+  githubUserReadinessDoc: "docs/ai/seis-agi-github-user-readiness-gates.md",
   protocolDoc: "docs/ai/seis-agi-evaluation-protocol.md",
   aiCoreDoc: "docs/ai/seis-ai-core.md",
   modelRouterDoc: "docs/ai/model-router.md"
@@ -23,9 +25,11 @@ for (const [label, relativePath] of Object.entries(paths)) ensureFile(relativePa
 const evidence = readJson(paths.evidence, "AGI public readiness evidence");
 const protocol = readJson(paths.protocol, "AGI evaluation protocol");
 const apexProgram = readJson(paths.apexProgram, "512B apex model program");
+const githubUserReadinessGates = readJson(paths.githubUserReadinessGates, "AGI GitHub user readiness gates");
 const profile = readJson(paths.modelScalingProfile, "model scaling profile");
 const council = readJson(paths.council, "model scaling council");
 const doc = readText(paths.doc, "AGI public readiness evidence docs");
+const githubUserReadinessDoc = readText(paths.githubUserReadinessDoc, "AGI GitHub user readiness gates docs");
 const protocolDoc = readText(paths.protocolDoc, "AGI evaluation protocol docs");
 const aiCoreDoc = readText(paths.aiCoreDoc, "AI Core docs");
 const modelRouterDoc = readText(paths.modelRouterDoc, "model router docs");
@@ -50,6 +54,7 @@ if (evidence) {
 
   ensure(evidence.sourceOfTruth?.agiEvaluationProtocol === paths.protocol, "sourceOfTruth.agiEvaluationProtocol mismatch");
   ensure(evidence.sourceOfTruth?.apexModelProgram === paths.apexProgram, "sourceOfTruth.apexModelProgram mismatch");
+  ensure(evidence.sourceOfTruth?.githubUserReadinessGates === paths.githubUserReadinessGates, "sourceOfTruth.githubUserReadinessGates mismatch");
   ensure(evidence.sourceOfTruth?.modelScalingProfile === paths.modelScalingProfile, "sourceOfTruth.modelScalingProfile mismatch");
   ensure(evidence.sourceOfTruth?.modelScalingCouncil === paths.council, "sourceOfTruth.modelScalingCouncil mismatch");
   ensure(evidence.sourceOfTruth?.publicReadinessDoc === paths.doc, "sourceOfTruth.publicReadinessDoc mismatch");
@@ -112,6 +117,20 @@ if (evidence) {
   ], "forbiddenGreenlights");
 }
 
+if (githubUserReadinessGates) {
+  ensure(githubUserReadinessGates.id === "seis-agi-github-user-readiness-gates", "GitHub user readiness gates id mismatch");
+  ensure(githubUserReadinessGates.status === "review-gated-local-demo-ready", "GitHub user readiness gates status mismatch");
+  ensure(githubUserReadinessGates.resourceUri === "seis://ai/agi-github-user-readiness-gates.json", "GitHub user readiness gates resource URI mismatch");
+  ensure(githubUserReadinessGates.qualityGate === "node scripts/check-seis-agi-github-user-readiness-gates.mjs", "GitHub user readiness gates quality gate mismatch");
+  ensure(githubUserReadinessGates.routeEligibleToday === false, "GitHub user readiness gates must not be route eligible");
+  ensure(githubUserReadinessGates.runtimeAuthority === false, "GitHub user readiness gates must not grant runtime authority");
+  ensure(githubUserReadinessGates.agiClaimAllowed === false, "GitHub user readiness gates must block AGI claims");
+  ensure(githubUserReadinessGates.publicReadyAsAgi === false, "GitHub user readiness gates must not be public-ready as AGI");
+  ensure(githubUserReadinessGates.publicReadyForLocalDemo === true, "GitHub user readiness gates must allow Local Demo review");
+  ensure(githubUserReadinessGates.githubReadyForEveryone === false, "GitHub user readiness gates must not mark GitHub ready for everyone");
+  ensure((githubUserReadinessGates.requiredBeforeEveryoneReady || []).length >= 6, "GitHub user readiness gates must list blockers before everyone-ready");
+}
+
 ensure(protocol?.status === "protocol-draft-not-run", "protocol must stay draft-not-run");
 ensure(protocol?.agiClaimAllowed === false, "protocol must not allow AGI claims");
 ensure(protocol?.routeEligibleToday === false, "protocol must not be route eligible");
@@ -122,6 +141,7 @@ ensure((council?.stageAssignments || []).some((stage) => stage.stage === "512B" 
 
 for (const [text, label] of [
   [doc, "public readiness docs"],
+  [githubUserReadinessDoc, "GitHub user readiness gates docs"],
   [protocolDoc, "AGI protocol docs"],
   [aiCoreDoc, "AI Core docs"],
   [modelRouterDoc, "model router docs"]
@@ -131,7 +151,10 @@ for (const [text, label] of [
 
 ensure(doc.includes("blocked-missing-real-agi-evidence"), "public readiness docs must state blocked status");
 ensure(doc.includes("seis://ai/agi-public-readiness-evidence.json"), "public readiness docs must include MCP resource URI");
+ensure(doc.includes("seis://ai/agi-github-user-readiness-gates.json"), "public readiness docs must include GitHub user readiness MCP resource URI");
 ensure(doc.includes("node scripts/check-seis-agi-public-readiness-evidence.mjs"), "public readiness docs must include validation command");
+ensure(githubUserReadinessDoc.includes("review-gated-local-demo-ready"), "GitHub user readiness docs must state review-gated Local Demo status");
+ensure(githubUserReadinessDoc.includes("node scripts/check-seis-agi-github-user-readiness-gates.mjs"), "GitHub user readiness docs must include validation command");
 
 finish("SEIS AGI public readiness evidence check passed.");
 
