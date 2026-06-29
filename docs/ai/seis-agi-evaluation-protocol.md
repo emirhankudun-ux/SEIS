@@ -31,6 +31,25 @@ Public frontier-model and risk-management references used by the protocol:
   `https://www.nist.gov/itl/ai-risk-management-framework`
 - Anthropic Responsible Scaling Policy:
   `https://www.anthropic.com/responsible-scaling-policy`
+- NIST Generative AI Profile, AI 600-1:
+  `https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf`
+- METR long-task horizon evaluation:
+  `https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/`
+- Google DeepMind Frontier Safety Framework:
+  `https://deepmind.google/blog/introducing-the-frontier-safety-framework/`
+- ARC-AGI abstract reasoning benchmark context:
+  `https://arcprize.org/arc-agi`
+
+## Source-Derived Readiness Gates
+
+The protocol now turns public research references into explicit SEIS gates:
+
+| Gate | Source basis | Current status |
+| --- | --- | --- |
+| Generative AI risk profile gate | NIST AI RMF and AI 600-1 | Not run |
+| Long-task autonomy gate | METR time-horizon evaluation | Not run |
+| Frontier safety threshold gate | Anthropic RSP and Google DeepMind Frontier Safety Framework | Not run |
+| Abstract generalization gate | ARC-AGI | Not run |
 
 ## Evaluation Dimensions
 
@@ -40,10 +59,13 @@ The protocol requires evidence in these dimensions before any future AGI claim:
 | --- | --- |
 | Multi-domain reasoning | Not run |
 | Long-horizon planning | Not run |
+| Agentic autonomy time horizon | Not run |
 | Tool-use reliability | Not run |
 | Out-of-distribution generalization | Not run |
+| Abstract skill acquisition | Not run |
 | Memory and learning boundary | Not run |
 | Safety and misuse resistance | Not run |
+| Frontier safety threshold governance | Not run |
 | Security and data governance | Not run |
 | Human alignment and review | Not run |
 
@@ -52,9 +74,11 @@ The protocol requires evidence in these dimensions before any future AGI claim:
 Before any AGI claim, SEIS must have accepted lower-tier evidence for 20B, 70B,
 150B, and 300B+, independently verified 512B training or inference evidence,
 multi-domain evaluation, long-horizon planning evaluation, tool-use reliability,
-generalization analysis, safety review, privacy/data-rights review, red-team
-report, model card, system card, training logs, checkpoint governance, external
-review, and explicit human approval.
+agentic autonomy time-horizon evaluation, generalization analysis, abstract
+skill-acquisition evaluation, frontier safety threshold review, generative AI
+risk profile, safety review, privacy/data-rights review, red-team report, model
+card, system card, training logs, checkpoint governance, external review, and
+explicit human approval.
 
 None of that evidence exists today.
 

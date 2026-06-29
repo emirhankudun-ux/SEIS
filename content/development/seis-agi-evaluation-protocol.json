@@ -65,9 +65,75 @@
         "url": "https://www.anthropic.com/responsible-scaling-policy",
         "evidenceType": "frontier scaling safety policy",
         "seisImplication": "Capability thresholds, deployment safeguards, security posture, and escalation reviews must be promotion gates."
+      },
+      {
+        "id": "nist-generative-ai-profile-ai-600-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "evidenceType": "generative AI risk management profile",
+        "seisImplication": "512B readiness must include documented generative-AI risk mapping, misuse, privacy, security, transparency, and measurement evidence before any public claim."
+      },
+      {
+        "id": "metr-long-task-horizon-evaluation",
+        "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+        "evidenceType": "agent autonomy and long-task capability evaluation",
+        "seisImplication": "Long-horizon agent capability must be measured as time-bounded task completion evidence, not inferred from demos or sub-agent plans."
+      },
+      {
+        "id": "google-deepmind-frontier-safety-framework",
+        "url": "https://deepmind.google/blog/introducing-the-frontier-safety-framework/",
+        "evidenceType": "frontier model safety threshold framework",
+        "seisImplication": "Frontier capability thresholds, safety mitigations, deployment limits, and escalation paths must be explicit gates before 512B route eligibility."
+      },
+      {
+        "id": "arc-agi-abstract-reasoning",
+        "url": "https://arcprize.org/arc-agi",
+        "evidenceType": "abstract reasoning and skill-acquisition benchmark context",
+        "seisImplication": "AGI claims require novel-task generalization and skill-acquisition evidence, not memorized benchmark performance or broad parameter count claims."
       }
     ]
   },
+  "sourceDerivedReadinessGates": [
+    {
+      "id": "generative-ai-risk-profile-gate",
+      "sourceIds": ["nist-ai-risk-management-framework", "nist-generative-ai-profile-ai-600-1"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "SEIS-specific generative AI risk map",
+        "misuse, privacy, security, transparency, and measurement controls",
+        "documented residual-risk decision before any public AGI or 512B claim"
+      ]
+    },
+    {
+      "id": "long-task-autonomy-gate",
+      "sourceIds": ["metr-long-task-horizon-evaluation"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "time-horizon task suite with held-out tasks",
+        "agent completion, interruption, recovery, and failure logs",
+        "human-reviewed autonomy limits and no-background-autonomy proof"
+      ]
+    },
+    {
+      "id": "frontier-safety-threshold-gate",
+      "sourceIds": ["anthropic-responsible-scaling-policy", "google-deepmind-frontier-safety-framework"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "capability threshold definitions",
+        "deployment and route-eligibility safeguards",
+        "security posture, escalation path, rollback, and cost-stop review"
+      ]
+    },
+    {
+      "id": "abstract-generalization-gate",
+      "sourceIds": ["arc-agi-abstract-reasoning"],
+      "status": "not-run",
+      "requiredEvidence": [
+        "novel abstract-reasoning task set",
+        "contamination-control and non-memorization review",
+        "skill-acquisition failure analysis across smaller SEIS baselines"
+      ]
+    }
+  ],
   "evaluationDimensions": [
     {
       "id": "multi-domain-reasoning",
@@ -85,6 +151,15 @@
         "multi-step task environment with time-bounded objectives",
         "plan repair and interruption handling logs",
         "human-reviewed success and failure examples"
+      ]
+    },
+    {
+      "id": "agentic-autonomy-time-horizon",
+      "status": "not-run",
+      "requiredEvidence": [
+        "time-horizon task completion suite",
+        "autonomous action boundary and cancellation logs",
+        "human-reviewed evidence that no background autonomy, SSH, deployment, or credential access occurred without approval"
       ]
     },
     {
@@ -106,6 +181,15 @@
       ]
     },
     {
+      "id": "abstract-skill-acquisition",
+      "status": "not-run",
+      "requiredEvidence": [
+        "novel abstract reasoning tasks",
+        "contamination-control and memorization review",
+        "skill acquisition trace with failures, retries, and baseline comparison"
+      ]
+    },
+    {
       "id": "memory-and-learning-boundary",
       "status": "not-run",
       "requiredEvidence": [
@@ -121,6 +205,15 @@
         "red-team plan",
         "misuse refusal and safe-completion evaluation",
         "safety regression suite"
+      ]
+    },
+    {
+      "id": "frontier-safety-threshold-governance",
+      "status": "not-run",
+      "requiredEvidence": [
+        "frontier capability threshold definitions",
+        "deployment safeguard and escalation policy",
+        "security, observability, rollback, and cost-stop evidence"
       ]
     },
     {
@@ -150,9 +243,13 @@
     "512B training or inference evidence independently verified",
     "independent multi-domain capability evaluation passed",
     "long-horizon planning evaluation passed",
+    "agentic autonomy time-horizon evaluation passed",
     "tool-use reliability evaluation passed",
     "out-of-distribution generalization report accepted",
+    "abstract skill-acquisition evaluation accepted",
     "safety and misuse evaluation accepted",
+    "frontier safety threshold review accepted",
+    "generative AI risk profile accepted",
     "privacy, data-rights, and clean-room review accepted",
     "red-team report accepted",
     "model card and system card published",

@@ -142,6 +142,34 @@
         "url": "https://www.anthropic.com/responsible-scaling-policy",
         "evidenceType": "frontier model scaling safety policy",
         "seisImplication": "SEIS must treat capability thresholds, deployment safeguards, security posture, and escalation reviews as promotion gates, not optional release notes."
+      },
+      {
+        "id": "nist-generative-ai-profile-ai-600-1",
+        "label": "NIST Generative AI Profile AI 600-1",
+        "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+        "evidenceType": "generative AI risk profile",
+        "seisImplication": "A 512B SEIS target must include generative-AI misuse, privacy, security, transparency, and measurement controls before any public readiness claim."
+      },
+      {
+        "id": "metr-long-task-horizon-evaluation",
+        "label": "METR long-task horizon evaluation",
+        "url": "https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/",
+        "evidenceType": "agent autonomy and long-task evaluation",
+        "seisImplication": "512B AGI readiness must measure time-bounded autonomous task completion and failure modes rather than infer autonomy from demos."
+      },
+      {
+        "id": "google-deepmind-frontier-safety-framework",
+        "label": "Google DeepMind Frontier Safety Framework",
+        "url": "https://deepmind.google/blog/introducing-the-frontier-safety-framework/",
+        "evidenceType": "frontier safety threshold framework",
+        "seisImplication": "512B route eligibility must be blocked until capability thresholds, safeguards, escalation, rollback, and deployment limits are documented."
+      },
+      {
+        "id": "arc-agi-abstract-reasoning",
+        "label": "ARC-AGI abstract reasoning benchmark context",
+        "url": "https://arcprize.org/arc-agi",
+        "evidenceType": "novel abstract reasoning benchmark context",
+        "seisImplication": "SEIS AGI claims require novel skill-acquisition evidence and contamination controls, not broad benchmark or parameter-count shortcuts."
       }
     ]
   },
@@ -155,6 +183,10 @@
       "robust out-of-distribution generalization report",
       "tool-use reliability and recovery evaluation",
       "long-horizon planning evaluation",
+      "agentic autonomy time-horizon evaluation",
+      "abstract skill-acquisition evaluation",
+      "frontier safety threshold review",
+      "generative AI risk profile",
       "safety and misuse evaluation",
       "privacy and data-rights review",
       "red-team report",
@@ -221,6 +253,10 @@
     "dataset provenance and contamination-control plan accepted",
     "privacy and data rights review accepted",
     "AGI evaluation protocol accepted",
+    "generative AI risk profile accepted",
+    "agentic autonomy time-horizon evidence accepted",
+    "frontier safety threshold review accepted",
+    "abstract generalization evidence accepted",
     "safety evaluation and red-team plan accepted",
     "observability, kill-switch, rollback, and cost-stop plan accepted",
     "all installed AI and sub-agent council review recorded",

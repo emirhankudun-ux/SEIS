@@ -78,7 +78,11 @@ if (protocol) {
       "deepseek-v3-671b-moe",
       "qwen3-235b-a22b-instruct",
       "nist-ai-risk-management-framework",
-      "anthropic-responsible-scaling-policy"
+      "anthropic-responsible-scaling-policy",
+      "nist-generative-ai-profile-ai-600-1",
+      "metr-long-task-horizon-evaluation",
+      "google-deepmind-frontier-safety-framework",
+      "arc-agi-abstract-reasoning"
     ],
     "publicResearchBaseline.sources"
   );
@@ -88,17 +92,38 @@ if (protocol) {
     ensureNonEmpty(source.seisImplication, `${source.id}.seisImplication`);
   }
 
+  const sourceDerivedGates = Array.isArray(protocol.sourceDerivedReadinessGates) ? protocol.sourceDerivedReadinessGates : [];
+  ensure(sourceDerivedGates.length >= 4, "protocol must define source-derived readiness gates");
+  ensureArrayIncludesAll(
+    sourceDerivedGates.map((gate) => gate.id),
+    [
+      "generative-ai-risk-profile-gate",
+      "long-task-autonomy-gate",
+      "frontier-safety-threshold-gate",
+      "abstract-generalization-gate"
+    ],
+    "sourceDerivedReadinessGates"
+  );
+  for (const gate of sourceDerivedGates) {
+    ensure(gate.status === "not-run", `${gate.id}.status must remain not-run`);
+    ensure(Array.isArray(gate.sourceIds) && gate.sourceIds.length >= 1, `${gate.id}.sourceIds must be populated`);
+    ensure(Array.isArray(gate.requiredEvidence) && gate.requiredEvidence.length >= 3, `${gate.id}.requiredEvidence must be populated`);
+  }
+
   const dimensions = Array.isArray(protocol.evaluationDimensions) ? protocol.evaluationDimensions : [];
-  ensure(dimensions.length >= 8, "protocol must define at least eight evaluation dimensions");
+  ensure(dimensions.length >= 11, "protocol must define at least eleven evaluation dimensions");
   ensureArrayIncludesAll(
     dimensions.map((dimension) => dimension.id),
     [
       "multi-domain-reasoning",
       "long-horizon-planning",
+      "agentic-autonomy-time-horizon",
       "tool-use-reliability",
       "out-of-distribution-generalization",
+      "abstract-skill-acquisition",
       "memory-and-learning-boundary",
       "safety-and-misuse-resistance",
+      "frontier-safety-threshold-governance",
       "security-and-data-governance",
       "human-alignment-and-review"
     ],
@@ -117,8 +142,12 @@ if (protocol) {
     "512B training or inference evidence independently verified",
     "independent multi-domain capability evaluation passed",
     "long-horizon planning evaluation passed",
+    "agentic autonomy time-horizon evaluation passed",
     "tool-use reliability evaluation passed",
+    "abstract skill-acquisition evaluation accepted",
     "safety and misuse evaluation accepted",
+    "frontier safety threshold review accepted",
+    "generative AI risk profile accepted",
     "training logs and checkpoint governance reviewed",
     "external review completed",
     "explicit human approval recorded"

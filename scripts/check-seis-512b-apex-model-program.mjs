@@ -85,7 +85,11 @@ if (program) {
       "deepseek-v3-671b-moe",
       "qwen3-235b-a22b-instruct",
       "nist-ai-risk-management-framework",
-      "anthropic-responsible-scaling-policy"
+      "anthropic-responsible-scaling-policy",
+      "nist-generative-ai-profile-ai-600-1",
+      "metr-long-task-horizon-evaluation",
+      "google-deepmind-frontier-safety-framework",
+      "arc-agi-abstract-reasoning"
     ],
     "program.internetResearchBaseline.sources"
   );
@@ -101,6 +105,10 @@ if (program) {
   ensureArrayIncludesAll(program.agiReadinessDefinition?.minimumEvidenceBeforeAnyAgiClaim, [
     "independent multi-domain capability evaluation",
     "long-horizon planning evaluation",
+    "agentic autonomy time-horizon evaluation",
+    "abstract skill-acquisition evaluation",
+    "frontier safety threshold review",
+    "generative AI risk profile",
     "safety and misuse evaluation",
     "training logs and checkpoint governance",
     "human approval and external review"
@@ -141,6 +149,10 @@ if (program) {
     "150B evidence accepted",
     "300B+ feasibility accepted",
     "AGI evaluation protocol accepted",
+    "generative AI risk profile accepted",
+    "agentic autonomy time-horizon evidence accepted",
+    "frontier safety threshold review accepted",
+    "abstract generalization evidence accepted",
     "all installed AI and sub-agent council review recorded",
     "explicit human approval recorded"
   ], "program.promotionGates");
@@ -160,13 +172,37 @@ if (agiEvaluationProtocol) {
   ensure(agiEvaluationProtocol.routeEligibleToday === false, "AGI evaluation protocol must not be route eligible");
   ensure(agiEvaluationProtocol.runtimeAuthority === false, "AGI evaluation protocol must not grant runtime authority");
   ensure(agiEvaluationProtocol.evaluationRunStatus === "not-run", "AGI evaluation protocol must not claim an evaluation run");
-  ensure((agiEvaluationProtocol.evaluationDimensions || []).length >= 8, "AGI evaluation protocol must define at least eight evaluation dimensions");
+  ensure((agiEvaluationProtocol.evaluationDimensions || []).length >= 11, "AGI evaluation protocol must define at least eleven evaluation dimensions");
+  ensureArrayIncludesAll(
+    (agiEvaluationProtocol.publicResearchBaseline?.sources || []).map((source) => source.id),
+    [
+      "nist-generative-ai-profile-ai-600-1",
+      "metr-long-task-horizon-evaluation",
+      "google-deepmind-frontier-safety-framework",
+      "arc-agi-abstract-reasoning"
+    ],
+    "AGI evaluation protocol publicResearchBaseline.sources"
+  );
+  ensureArrayIncludesAll(
+    (agiEvaluationProtocol.sourceDerivedReadinessGates || []).map((gate) => gate.id),
+    [
+      "generative-ai-risk-profile-gate",
+      "long-task-autonomy-gate",
+      "frontier-safety-threshold-gate",
+      "abstract-generalization-gate"
+    ],
+    "AGI evaluation protocol sourceDerivedReadinessGates"
+  );
   ensureArrayIncludesAll(agiEvaluationProtocol.minimumEvidenceBeforeAnyAgiClaim, [
     "20B gate evidence accepted",
     "70B gate evidence accepted",
     "150B gate evidence accepted",
     "300B+ feasibility accepted",
     "512B training or inference evidence independently verified",
+    "agentic autonomy time-horizon evaluation passed",
+    "abstract skill-acquisition evaluation accepted",
+    "frontier safety threshold review accepted",
+    "generative AI risk profile accepted",
     "external review completed",
     "explicit human approval recorded"
   ], "AGI evaluation protocol minimumEvidenceBeforeAnyAgiClaim");
